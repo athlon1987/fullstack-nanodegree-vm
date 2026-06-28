@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a1722" />
+  <meta name="description" content="SwimPath — track, coach and predict youth swimming development." />
+  <title>SwimPath</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%8A%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="appbar">
+      <div class="brand">
+        <span class="logo">🌊</span>
+        <span>SwimPath<small>YOUTH PROGRESS</small></span>
+      </div>
+      <span class="spacer"></span>
+      <button class="iconbtn" id="themeBtn" title="Toggle theme" aria-label="Toggle theme">🌙</button>
+    </header>
+
+    <main id="view" class="fadein"><!-- rendered by app.js --></main>
+  </div>
+
+  <nav class="nav">
+    <div class="inner">
+      <button class="navbtn active" data-tab="home"><span class="ic">🏠</span>Home</button>
+      <button class="navbtn" data-tab="strokes"><span class="ic">🏊</span>Strokes</button>
+      <button class="navbtn" data-tab="times"><span class="ic">⏱️</span>Times</button>
+      <button class="navbtn" data-tab="progress"><span class="ic">📈</span>Progress</button>
+      <button class="navbtn" data-tab="profile"><span class="ic">👤</span>Profile</button>
+    </div>
+  </nav>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/store.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/seed.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
