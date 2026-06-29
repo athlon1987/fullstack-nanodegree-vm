@@ -77,15 +77,13 @@
 
     view.appendChild(el(
       '<section class="card hero">' +
-        '<div class="hero-top">' +
-          '<div class="ringwrap"><canvas id="scoreRing"></canvas></div>' +
-          '<div class="hero-meta">' +
-            '<div class="muted tiny">SWIM SHARK SCORE</div>' +
-            '<div class="pill ' + exp.tone + '">' + esc(exp.label) + '</div>' +
-            '<div class="tiny muted mt">Confidence ' + ov.confidence + '% · based on recorded data</div>' +
-            '<div class="tiny muted">' + esc(p.avatar + ' ' + (p.name || 'Your swimmer')) + ' · age ' + p.age + '</div>' +
-          '</div>' +
+        '<div class="scoregauge" style="--pct:' + ov.score + '%">' +
+          '<div class="scoreinner"><div class="scorenum">' + ov.score + '</div><div class="scoreunit">/ 100</div></div>' +
         '</div>' +
+        '<div class="muted tiny" style="letter-spacing:1.5px">SWIM SHARK SCORE</div>' +
+        '<div class="pill ' + exp.tone + '" style="margin-top:8px">' + esc(exp.label) + '</div>' +
+        '<div class="tiny muted mt">Confidence ' + ov.confidence + '% · based on recorded data</div>' +
+        '<div class="tiny muted" style="margin-top:3px">' + esc(p.avatar + ' ' + (p.name || 'Your swimmer')) + ' · age ' + p.age + '</div>' +
         '<div class="wave"></div>' +
       '</section>'));
 
@@ -124,7 +122,6 @@
     view.appendChild(el('<section class="card"><h3>Recommended goals</h3><p class="sub">Tap to mark complete.</p>' + goalsHtml + '</section>'));
 
     mount(view);
-    charts.ring($('#scoreRing'), ov.score, C[engine.strengthsAndWeaknesses(state).best ? engine.strengthsAndWeaknesses(state).best.stroke : 'freestyle'], '/100');
 
     view.querySelectorAll('[data-goal]').forEach(function (cb) {
       cb.addEventListener('change', function () {
