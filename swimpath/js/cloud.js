@@ -9,7 +9,7 @@
  * This module is optional. If firebase-config.js is blank, the app keeps
  * working with localStorage only and the sharing UI shows a setup hint.
  */
-import { firebaseConfig } from './firebase-config.js';
+import { firebaseConfig } from './firebase-config.js?v=3';
 
 const VERSION = '10.12.2';
 const CDN = 'https://www.gstatic.com/firebasejs/' + VERSION;
