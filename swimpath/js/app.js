@@ -15,10 +15,35 @@
 
   var ui = { tab: 'home', stroke: state.profile.favouriteStroke || 'freestyle', event: null };
 
+  // Bridge for the optional cloud-sync layer (js/cloud.js).
+  global.SP.app = {
+    getState: function () { return state; },
+    applyRemote: function (s) {
+      state = s;
+      store.save(state);
+      var ae = document.activeElement;
+      // don't yank the view out from under someone who's mid-edit
+      if (ae && /^(INPUT|SELECT|TEXTAREA)$/.test(ae.tagName)) return;
+      render();
+    }
+  };
+
   // ---- utilities ----------------------------------------------------------
   function $(sel, root) { return (root || document).querySelector(sel); }
   function el(html) { var t = document.createElement('template'); t.innerHTML = html.trim(); return t.content.firstChild; }
-  function persist() { store.save(state); }
+  function persist() {
+    store.save(state);
+    if (global.SP.cloud && global.SP.cloud.onPersist) global.SP.cloud.onPersist(state);
+  }
+  function copyText(t) {
+    try { navigator.clipboard.writeText(t); }
+    catch (e) {
+      var i = document.createElement('textarea');
+      i.value = t; document.body.appendChild(i); i.select();
+      try { document.execCommand('copy'); } catch (_) {}
+      i.remove();
+    }
+  }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
     return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
 
@@ -367,6 +392,71 @@
     });
   }
 
+  // ---- cloud sync card ----------------------------------------------------
+  function statusLabel(st) {
+    var map = { connecting: 'Connecting…', synced: 'Synced ✓', saving: 'Saving…',
+      ready: 'Ready', 'not-configured': 'Not set up' };
+    if (map[st]) return map[st];
+    if (st && String(st).indexOf('error') === 0) return 'Offline — will retry';
+    return '…';
+  }
+
+  function cloudCardHtml() {
+    var c = global.SP.cloud;
+    if (!c || !c.configured()) {
+      return '<section class="card"><h3>Cloud sync &amp; sharing</h3>' +
+        '<p class="sub">Your data is saved on this device only.</p>' +
+        '<p class="tiny muted">To sync and share this swimmer with another person, a one-time Firebase setup is needed (free). Once it’s configured, a "Create shared team" button appears here.</p></section>';
+    }
+    var team = c.getTeam();
+    var st = statusLabel(c.getStatus());
+    if (!team) {
+      return '<section class="card"><h3>Cloud sync &amp; sharing</h3>' +
+        '<p class="sub">Create a shared team to sync this swimmer between both of you, live.</p>' +
+        '<button class="btn" id="cloudCreate">Create shared team</button>' +
+        '<div class="btnrow"><input id="cloudJoin" placeholder="Or enter a team code…" autocapitalize="off" autocorrect="off">' +
+        '<button class="btn secondary" id="cloudJoinBtn" style="width:auto;padding:13px 18px">Join</button></div>' +
+        '<p class="tiny muted mt">Status: ' + st + '</p></section>';
+    }
+    return '<section class="card"><h3>Cloud sync &amp; sharing</h3>' +
+      '<p class="sub">This swimmer is shared and syncing automatically. Anyone with the link below can view &amp; edit — keep it private.</p>' +
+      '<div class="stat" style="text-align:left"><div class="l">Team code</div>' +
+      '<div class="v" style="font-size:12px;word-break:break-all">' + esc(team) + '</div></div>' +
+      '<div class="btnrow"><button class="btn" id="cloudShare">Copy invite link</button>' +
+      '<button class="btn secondary" id="cloudCopyCode" style="width:auto;padding:13px 18px">Copy code</button></div>' +
+      '<div class="btnrow"><button class="btn ghost" id="cloudLeave">Leave team</button></div>' +
+      '<p class="tiny muted mt">Status: ' + st + '</p></section>';
+  }
+
+  function wireCloudCard() {
+    var cc = $('#cloudCreate');
+    if (cc) cc.addEventListener('click', function () {
+      cc.disabled = true; cc.textContent = 'Creating…';
+      global.SP.cloud.createTeam()
+        .then(function () { toast('Shared team created'); renderProfile(); })
+        .catch(function () { toast('Could not create team'); cc.disabled = false; cc.textContent = 'Create shared team'; });
+    });
+    var cj = $('#cloudJoinBtn');
+    if (cj) cj.addEventListener('click', function () {
+      var code = ($('#cloudJoin').value || '').trim();
+      if (!code) { toast('Enter a team code'); return; }
+      cj.disabled = true;
+      global.SP.cloud.join(code)
+        .then(function () { toast('Joined — syncing'); renderProfile(); })
+        .catch(function (e) { toast(e && e.message === 'not-found' ? 'Team code not found' : 'Could not join'); cj.disabled = false; });
+    });
+    var cs = $('#cloudShare');
+    if (cs) cs.addEventListener('click', function () { copyText(global.SP.cloud.shareLink()); toast('Invite link copied'); });
+    var ccode = $('#cloudCopyCode');
+    if (ccode) ccode.addEventListener('click', function () { copyText(global.SP.cloud.getTeam()); toast('Code copied'); });
+    var cl = $('#cloudLeave');
+    if (cl) cl.addEventListener('click', function () {
+      if (global.confirm('Leave this shared team? This device keeps its current data but stops syncing.')) {
+        global.SP.cloud.leave(); toast('Left team'); renderProfile();
+      }
+    });
+  }
+
   // ---- PROFILE ------------------------------------------------------------
   function renderProfile() {
     var p = state.profile;
@@ -405,8 +495,10 @@
         '<button class="btn mt" id="saveProfile">Save profile</button>' +
       '</section>'));
 
+    view.appendChild(el(cloudCardHtml()));
+
     view.appendChild(el(
-      '<section class="card"><h3>Data</h3><p class="sub">Everything is stored locally on this device.</p>' +
+      '<section class="card"><h3>Data</h3><p class="sub">Stored on this device, and synced to your team when sharing is on.</p>' +
         '<div class="btnrow"><button class="btn secondary" id="exportBtn">Export JSON</button>' +
         '<button class="btn secondary" id="demoBtn">Load demo</button></div>' +
         '<div class="btnrow"><button class="btn ghost" id="resetBtn">Reset all data</button></div>' +
@@ -415,6 +507,7 @@
     view.appendChild(el('<section class="card center tiny muted"><p>SwimPath prototype · v0.1<br>Predictions are data-driven estimates, not guarantees.</p></section>'));
 
     mount(view);
+    wireCloudCard();
 
     view.querySelectorAll('[data-av]').forEach(function (b) {
       b.addEventListener('click', function () { state.profile.avatar = b.getAttribute('data-av'); persist(); renderProfile(); });
@@ -470,6 +563,28 @@
     $('#themeBtn').textContent = cur === 'dark' ? '🌙' : '☀️';
     render();
   });
+
+  // cloud sync status chip in the header
+  var cloudBtn = $('#cloudBtn');
+  function updateCloudBtn(stat) {
+    if (!cloudBtn) return;
+    var map = {
+      'not-configured': ['🌐', 'Saved on this device only'],
+      connecting: ['🔄', 'Connecting…'],
+      ready: ['🌐', 'Tap to create or join a shared team'],
+      synced: ['☁️', 'Synced — tap for sharing options'],
+      saving: ['⏫', 'Saving…']
+    };
+    var m = map[stat] || (stat && String(stat).indexOf('error') === 0 ? ['⚠️', 'Offline — will retry'] : ['☁️', 'Sync']);
+    cloudBtn.textContent = m[0];
+    cloudBtn.title = m[1];
+  }
+  if (cloudBtn) cloudBtn.addEventListener('click', function () { ui.tab = 'profile'; global.scrollTo(0, 0); render(); });
+  document.addEventListener('sp-cloud', function (e) {
+    updateCloudBtn(e.detail && e.detail.status);
+    if (ui.tab === 'profile') render();
+  });
+  updateCloudBtn(global.SP.cloud ? global.SP.cloud.getStatus() : 'not-configured');
 
   // redraw charts on resize/orientation
   var rt;
