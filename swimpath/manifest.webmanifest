@@ -1,6 +1,6 @@
 {
-  "name": "SwimPath — Youth Swimming Progress",
-  "short_name": "SwimPath",
+  "name": "Swim Shark — Youth Swimming Progress",
+  "short_name": "Swim Shark",
   "description": "Track, coach and predict youth swimming development.",
   "start_url": "./index.html",
   "scope": "./",

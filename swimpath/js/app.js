@@ -11,7 +11,7 @@
   var fmt = engine.fmtTime;
 
   var state = store.load();
-  if (!state) { state = seed.buildDemo(); store.save(state); }
+  if (!state) { state = store.emptyState(); store.save(state); } // start blank; demo is opt-in from Profile
 
   var ui = { tab: 'home', stroke: state.profile.favouriteStroke || 'freestyle', event: null };
 
@@ -80,7 +80,7 @@
         '<div class="hero-top">' +
           '<div class="ringwrap"><canvas id="scoreRing"></canvas></div>' +
           '<div class="hero-meta">' +
-            '<div class="muted tiny">SWIMPATH SCORE</div>' +
+            '<div class="muted tiny">SWIM SHARK SCORE</div>' +
             '<div class="pill ' + exp.tone + '">' + esc(exp.label) + '</div>' +
             '<div class="tiny muted mt">Confidence ' + ov.confidence + '% · based on recorded data</div>' +
             '<div class="tiny muted">' + esc(p.avatar + ' ' + (p.name || 'Your swimmer')) + ' · age ' + p.age + '</div>' +
@@ -504,7 +504,7 @@
         '<div class="btnrow"><button class="btn ghost" id="resetBtn">Reset all data</button></div>' +
       '</section>'));
 
-    view.appendChild(el('<section class="card center tiny muted"><p>SwimPath prototype · v0.1<br>Predictions are data-driven estimates, not guarantees.</p></section>'));
+    view.appendChild(el('<section class="card center tiny muted"><p>Swim Shark prototype · v0.1<br>Predictions are data-driven estimates, not guarantees.</p></section>'));
 
     mount(view);
     wireCloudCard();
