@@ -1,0 +1,90 @@
+{
+  "id": "bu-9-10-q4",
+  "title": "Make the Showcase Things",
+  "pillar_primary": "build",
+  "pillars_supporting": ["create", "wealth"],
+  "age_band": "9-10",
+  "quarter": 4,
+  "developmental_frame": "In the capstone, Build supplies what the day shows and sells. At 9–10 a child can make a small batch of things and a sign, pulling together hand-making (Q1), problem-solving (Q2), and their first digital creation (Q3). Keep the batch small — a few good items plus one digital piece — so 'finished and good' beats 'lots and rushed', the lesson they've heard all year.",
+  "authentic_value_meaning": "Value here is having real things to show and sell — the maker's contribution to the day. It's every making skill from the year, aimed at one real event: a small collection the child is proud to put on a table in front of guests.",
+  "motivation_lever": {
+    "lever": "mastery",
+    "mechanism": "The child produces the actual stuff of their Showcase Day — things people will look at, pick up, and buy. Knowing real guests will see and judge the work raises the bar in a good way, and the pride of a table full of things you made yourself is a powerful finish to the year of building."
+  },
+  "artifact": "A small set of things for Showcase Day: a few physical items to show or sell, plus at least one digital piece (a sign, poster, or slideshow made on a screen).",
+  "success_criteria": [
+    "The child made a small batch of good-quality physical things (not many rushed ones).",
+    "They made at least one digital piece and can explain every part of it.",
+    "The display was set up and tested, with one thing fixed after testing."
+  ],
+  "prereq_project_ids": ["bu-9-10-q3", "th-9-10-q4"],
+  "lessons": [
+    {
+      "id": "bu-9-10-q4-l1",
+      "sequence": 1,
+      "title": "What to make for the day",
+      "concept": "Decide your small batch: a few items to show or sell, plus one digital piece like a sign. Remember the year's rule — a few good things beat a pile of rushed ones. Choose what you can make really well in the time you have.",
+      "real_example": "Your batch might be: six good bookmarks to sell, your phone-stand invention to show, and a digital price sign made on screen. Small, doable, and proud-making.",
+      "apply_task": "List your small batch: the physical things and the one digital piece you'll make for the day.",
+      "reflection_prompt": "Is your batch small enough to make *well* in the time before the day? Quality over quantity, as always.",
+      "feedback_task": "Show your batch plan to a parent and check it fits the time in your step ladder.",
+      "teach_back_task": "Explain to a sibling why a small batch of good things beats lots of rushed ones.",
+      "ai_judgment_note": "You decide what to make from your year's skills — that's yours. Keep it to what you can genuinely do well.",
+      "assets_needed": ["Batch plan card"],
+      "est_minutes": 15,
+      "success_criteria": ["A small, realistic batch (physical + one digital) is planned."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "bu-9-10-q4-l2",
+      "sequence": 2,
+      "title": "Make the physical things",
+      "concept": "Make your batch of physical items using everything you've learned about hand-making — plan, gather, make well, finish. These are going in front of guests, so make each one something you'd be proud to sell.",
+      "real_example": "Making six bookmarks: you plan the design, gather materials, and make each one carefully. They don't have to be identical — but each should be good enough that you'd happily hand it over.",
+      "apply_task": "Make your batch of physical things, finishing each to a quality you're proud of.",
+      "reflection_prompt": "Would you pay for these yourself? If not, which needs improving before the day?",
+      "feedback_task": "Show your finished items to an honest family member and ask which is best and which needs work.",
+      "teach_back_task": "Show someone your batch and explain how you kept the quality up.",
+      "ai_judgment_note": "Hand-making is yours — the care in each item is what makes guests want them. No shortcut replaces good making.",
+      "assets_needed": [],
+      "est_minutes": 40,
+      "success_criteria": ["A small batch of good-quality physical items is finished."],
+      "prereq_lesson_ids": ["bu-9-10-q4-l1"]
+    },
+    {
+      "id": "bu-9-10-q4-l3",
+      "sequence": 3,
+      "title": "Make the digital sign",
+      "concept": "Make your digital piece — a sign, price list, or slideshow — using your screen-making skill. Keep the golden rule: understand every part. A neat digital sign makes your stall look real and welcoming.",
+      "real_example": "A digital sign reading 'Aisha's Handmade Bookmarks — RM2 each' with a little drawing, made on screen and printed out, makes the whole stall look proper.",
+      "apply_task": "Make your digital sign or slideshow from a quick plan. Be ready to explain every part of it.",
+      "reflection_prompt": "Can you explain every part of your digital piece? If any bit is a mystery, learn it or change it.",
+      "feedback_task": "Show your digital piece to a parent and have them check it's clear and readable from a distance.",
+      "teach_back_task": "Walk someone through how you made your digital sign, part by part.",
+      "ai_judgment_note": "If AI helped with an image or layout, you must still understand and have chosen it — **never show a part you can't explain.** The sign is yours because you understand it.",
+      "assets_needed": ["List of kid-safe creation tools"],
+      "est_minutes": 30,
+      "success_criteria": ["A digital piece is finished and the child can explain every part."],
+      "prereq_lesson_ids": ["bu-9-10-q4-l2"]
+    },
+    {
+      "id": "bu-9-10-q4-l4",
+      "sequence": 4,
+      "title": "Set it up and test",
+      "concept": "Before the day, set up your display exactly as it'll be — items laid out, sign up. Then test it like a guest would see it, and fix the one thing that looks off. A tested setup means a calm, proud day.",
+      "real_example": "You lay out your stall the night before and notice the sign is hard to read from where guests will stand. You move it higher — problem fixed before anyone arrives.",
+      "apply_task": "Set up your full display and look at it as a guest would. Fix the one thing that most needs it.",
+      "reflection_prompt": "What looked different once it was all set up? Seeing it as a guest often reveals a quick fix.",
+      "feedback_task": "Have a family member look at your setup as a 'pretend guest' and say what catches their eye or confuses them.",
+      "teach_back_task": "Teach someone why testing the setup beforehand makes the real day go smoothly.",
+      "ai_judgment_note": "Seeing your real display in your real space is something only you can do — trust your own eyes and a family member's.",
+      "assets_needed": ["Setup checklist"],
+      "est_minutes": 20,
+      "success_criteria": [
+        "The full display was set up and tested from a guest's view.",
+        "One improvement was made before the day."
+      ],
+      "prereq_lesson_ids": ["bu-9-10-q4-l3"]
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "id": "cw-9-10-q3",
+  "title": "A Little Business",
+  "pillar_primary": "wealth",
+  "pillars_supporting": ["communicate", "think"],
+  "age_band": "9-10",
+  "quarter": 3,
+  "developmental_frame": "At 9–10, children can make a simple offer to a few real people and keep a simple tally, though real profit and complex pricing are still beyond them. The leap this quarter is doing it *more than once* and *keeping track* — discovering that repeating and counting teaches you what works. Keep money tiny and the whole thing playful. This sets up the year-end capstone where several skills come together.",
+  "authentic_value_meaning": "Value here is making something a few real people genuinely want, and using a simple tally to see what worked. It's the first real 'little business' — not about getting rich, but about the loop of offer, count, learn, improve.",
+  "motivation_lever": {
+    "lever": "real_stakes",
+    "mechanism": "The child runs a tiny real business — a few offers to a few real people — and keeps score. Real people choosing (or not), and a tally that visibly adds up, makes it feel like a genuine venture rather than pretend. Watching the count grow and spotting what people liked is motivating in the same way keeping score in a game is."
+  },
+  "artifact": "A small repeated offer made to at least three real people, with a simple tally of yeses/nos and what was made or earned, plus one noticed pattern about what people liked.",
+  "success_criteria": [
+    "The child offered the same thing to at least three real people.",
+    "They kept a simple written tally of the results.",
+    "They can name one thing people liked or one thing they'd change, based on the tally."
+  ],
+  "prereq_project_ids": ["cw-9-10-q2"],
+  "lessons": [
+    {
+      "id": "cw-9-10-q3-l1",
+      "sequence": 1,
+      "title": "Do it more than once",
+      "concept": "In Q1 you made one offer. A little business means doing it a few times with a few people. Repeating is where you start to learn — one yes could be luck, but three tries shows you a real pattern.",
+      "real_example": "Selling bookmarks to one aunt tells you little. Offering them to three neighbours tells you if people actually want bookmarks — or if you should make something else.",
+      "apply_task": "Pick something simple to offer (make it, or a small service) and list three real people you could offer it to.",
+      "reflection_prompt": "Why is trying three people better than trying one? What might three answers show you that one can't?",
+      "feedback_task": "Run your idea past a parent and check your three people are ones you can safely reach.",
+      "teach_back_task": "Explain to a sibling why doing a thing three times teaches more than doing it once.",
+      "ai_judgment_note": "The real people you'll offer to are from your own life — a computer can't pick them. That's yours to plan.",
+      "assets_needed": ["Little-business plan card (offer + 3 people)"],
+      "est_minutes": 20,
+      "success_criteria": ["An offer and three real people to approach are chosen."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "cw-9-10-q3-l2",
+      "sequence": 2,
+      "title": "Keep a simple tally",
+      "concept": "A little business keeps score. Make a simple tally: who you asked, yes or no, and what you made or earned. The tally turns your business from guessing into knowing.",
+      "real_example": "A tally might read: Aunt — yes — RM2; Neighbour — no; Friend — yes — RM2. Now you can *see* it worked twice out of three, and earned RM4. Real numbers, not vibes.",
+      "apply_task": "Make a tally sheet with columns: who, yes/no, what I made. Get it ready before you start offering.",
+      "reflection_prompt": "Why write it down instead of just remembering? What might you forget without a tally?",
+      "feedback_task": "Show your blank tally to an adult and check it's clear and easy to fill in.",
+      "teach_back_task": "Show a friend how a simple tally helps a little business keep score.",
+      "ai_judgment_note": "Keep your tally by hand — writing down your own real results helps you understand them. This is your score to keep.",
+      "assets_needed": ["Tally sheet (who / yes-no / earned)"],
+      "est_minutes": 15,
+      "success_criteria": ["A clear tally sheet is ready to use."],
+      "prereq_lesson_ids": ["cw-9-10-q3-l1"]
+    },
+    {
+      "id": "cw-9-10-q3-l3",
+      "sequence": 3,
+      "title": "Run it and notice what people liked",
+      "concept": "Now make your offers and fill in your tally. As you go, notice *why* people said yes or no — 'she liked the colour', 'he didn't need one'. Those little reasons are the most valuable part of the tally.",
+      "real_example": "You notice both yeses loved the sparkly bookmarks but nobody wanted the plain ones. That's gold — it tells you exactly what to make more of.",
+      "apply_task": "Make your three offers, fill in your tally, and jot the reason next to each yes or no.",
+      "reflection_prompt": "Do you see a pattern in the reasons? Patterns are the business telling you what to do next.",
+      "feedback_task": "Share your filled tally with a parent and talk about what the reasons show.",
+      "teach_back_task": "Tell someone one pattern you spotted in why people said yes or no.",
+      "ai_judgment_note": "The reasons come from real people you spoke to — no computer could tell you why *your* neighbour said yes. That listening is the valuable skill.",
+      "assets_needed": ["Filled tally with reasons"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "At least three real offers were made and tallied with reasons.",
+        "The child spotted at least one pattern."
+      ],
+      "prereq_lesson_ids": ["cw-9-10-q3-l2"]
+    },
+    {
+      "id": "cw-9-10-q3-l4",
+      "sequence": 4,
+      "title": "Do one thing better",
+      "concept": "The point of a tally is to improve. Look at your pattern and pick one thing to do better next time — make more of what people liked, change what they didn't. That's how a little business grows.",
+      "real_example": "Your tally says sparkly sells, plain doesn't. Next time: make mostly sparkly ones. One clear improvement, straight from your own numbers.",
+      "apply_task": "Based on your tally, write down the one thing you'll do better next time and why.",
+      "reflection_prompt": "How did it feel to change your plan based on real results instead of guessing? That's what real businesses do.",
+      "feedback_task": "Tell a parent or mentor your improvement idea and why your tally points to it.",
+      "teach_back_task": "Teach someone the loop: offer, tally, spot the pattern, do one thing better.",
+      "ai_judgment_note": "Your improvement comes from your own real results — that's the honest way to get better. Trust your tally over any guess.",
+      "assets_needed": ["Do-better card"],
+      "est_minutes": 15,
+      "success_criteria": [
+        "One specific improvement is chosen, justified by the tally.",
+        "The child can explain the offer-tally-improve loop."
+      ],
+      "prereq_lesson_ids": ["cw-9-10-q3-l3"]
+    }
+  ]
+}

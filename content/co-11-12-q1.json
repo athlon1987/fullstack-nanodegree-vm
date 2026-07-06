@@ -1,0 +1,90 @@
+{
+  "id": "co-11-12-q1",
+  "title": "Say It So They Get It",
+  "pillar_primary": "communicate",
+  "pillars_supporting": ["think", "create"],
+  "age_band": "11-12",
+  "quarter": 1,
+  "developmental_frame": "At 11–12 a child can hold a listener in mind — they're starting to notice when someone doesn't follow them, though they don't yet reliably adjust. They know a lot about the things they love and will happily info-dump; the growth edge is shaping that flood so someone else can actually receive it. Short, performable tasks with a real listener beat abstract 'communication skills' talk.",
+  "authentic_value_meaning": "Value here is a real person's face lighting up with 'oh, I get it now'. Making something you understand land in someone else's head is a genuine gift — and at this age it's mostly given to people they know: a parent, a friend, a younger sibling.",
+  "motivation_lever": {
+    "lever": "real_audience",
+    "mechanism": "The child explains something they genuinely love — a game, a hobby, an animal — to a real person who honestly doesn't know it, and finds out whether that person actually understood. The live reaction (confusion or the click of understanding) is the motivator; you can't fake your way past a real listener's blank face, and landing it feels great."
+  },
+  "artifact": "A 2-minute explainer (performed live or recorded as a short video) that makes one real listener genuinely understand something they didn't before — plus that listener's honest 'did you get it?' verdict.",
+  "success_criteria": [
+    "A real listener can restate the main idea in their own words afterward.",
+    "The explainer starts from something the listener already knew.",
+    "The child cut at least one thing that was interesting to them but confusing to the listener."
+  ],
+  "prereq_project_ids": [],
+  "lessons": [
+    {
+      "id": "co-11-12-q1-l1",
+      "sequence": 1,
+      "title": "Start where they already are",
+      "concept": "People understand new things by hooking them onto things they already know. Start from the listener's world, not yours — a bridge from something familiar to something new.",
+      "real_example": "Explaining chess to someone new? 'It's like a battle where every soldier moves in its own special way' lands better than opening with 'the knight moves in an L'. The battle idea is already in their head.",
+      "apply_task": "Pick your topic. Write one sentence that connects it to something your listener already knows and likes. That's your opening bridge.",
+      "reflection_prompt": "What does your listener already know that you can build on? If you don't know, that's your first question to ask them.",
+      "feedback_task": "Try your opening bridge on your real listener and watch: did they nod, or look lost? Adjust.",
+      "teach_back_task": "Show a friend how to make a 'bridge' opening for a topic *they* care about.",
+      "ai_judgment_note": "AI can suggest analogies if you're stuck — a fair nudge. But the best bridge uses what *this specific listener* knows, and only you know them. Don't hand your listener a stranger's analogy.",
+      "assets_needed": ["Bridge-opening worksheet"],
+      "est_minutes": 25,
+      "success_criteria": ["An opening line exists that links the topic to the listener's existing knowledge."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "co-11-12-q1-l2",
+      "sequence": 2,
+      "title": "One idea at a time",
+      "concept": "When you love a topic, everything feels important and it all rushes out at once — and the listener drowns. Great explaining is putting ideas in a line, one clear step after another.",
+      "real_example": "A good recipe never says 'do everything now'. It's step 1, step 2, step 3. Explaining works the same way: land one idea, then the next.",
+      "apply_task": "List everything you want to say, then number them into an order where each step makes sense only after the one before. Cross out any that don't earn a place.",
+      "reflection_prompt": "Which idea *must* come first for the rest to make sense? Getting the order right is half the battle.",
+      "feedback_task": "Read your ordered steps to someone. Ask where they got lost — that's usually where two ideas got crammed together.",
+      "teach_back_task": "Help someone put their own jumbled explanation into a clear order.",
+      "ai_judgment_note": "You can ask AI to help sort your points into an order, then check the order yourself against your listener. If a step only makes sense to you and not to them, the order is still wrong — trust the human, not the tidy list.",
+      "assets_needed": ["Idea-ordering worksheet"],
+      "est_minutes": 25,
+      "success_criteria": ["The explanation is broken into an ordered sequence with at least one idea cut."],
+      "prereq_lesson_ids": ["co-11-12-q1-l1"]
+    },
+    {
+      "id": "co-11-12-q1-l3",
+      "sequence": 3,
+      "title": "Show it, don't just say it",
+      "concept": "A picture, a demo, or a quick example lands harder than words alone. Showing turns a vague idea into something the listener can actually see.",
+      "real_example": "Explaining how a lever works? Don't just describe it — grab a ruler and a pencil and lift a book. Now they *see* it, and they'll remember.",
+      "apply_task": "Find one place in your explainer to show instead of tell — a drawing, an object, a quick demo. Build it into your 2 minutes.",
+      "reflection_prompt": "Where in your explanation did the listener's eyes glaze? That's the spot that most needs a show-not-tell.",
+      "feedback_task": "Do the explainer with your 'show' moment. Ask the listener which part stuck most — was it the shown bit?",
+      "teach_back_task": "Challenge a friend to add a 'show' moment to their explanation and compare before/after.",
+      "ai_judgment_note": "AI can suggest what to demonstrate, but the actual showing — the object, the drawing, your hands — is yours to make real. A demo you performed beats a clever one you only described.",
+      "assets_needed": ["Show-don't-tell idea card"],
+      "est_minutes": 30,
+      "success_criteria": ["The explainer includes at least one concrete demonstration or visual."],
+      "prereq_lesson_ids": ["co-11-12-q1-l2"]
+    },
+    {
+      "id": "co-11-12-q1-l4",
+      "sequence": 4,
+      "title": "Deliver it and read the room",
+      "concept": "The final skill is watching your listener while you talk and adjusting — slowing down at a frown, moving on at a nod. An explainer is a two-way thing, not a speech at someone.",
+      "real_example": "A good teacher notices the class going quiet-confused and stops to re-explain. They're reading faces, not just reciting.",
+      "apply_task": "Deliver your full 2-minute explainer to your real listener. Watch their face and adjust live at least once.",
+      "reflection_prompt": "Where did you have to slow down or change course? Those spots show you what's genuinely hard to explain.",
+      "feedback_task": "Afterward, ask your listener to say the main idea back in their own words. If they can, you succeeded. If not, find where it broke.",
+      "teach_back_task": "Teach someone the trick of 'ask them to say it back' as the real test of any explanation.",
+      "ai_judgment_note": "This is a *no-AI* delivery — it's a human moment between you and a real listener. Reading a real face and adjusting is the whole skill, and no tool can stand in that spot for you.",
+      "assets_needed": ["Listener 'say-it-back' check card"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "The explainer was delivered live and adjusted at least once mid-way.",
+        "The listener restated the main idea in their own words."
+      ],
+      "prereq_lesson_ids": ["co-11-12-q1-l3"]
+    }
+  ]
+}

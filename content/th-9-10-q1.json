@@ -1,0 +1,87 @@
+{
+  "id": "th-9-10-q1",
+  "title": "The Noticing Game",
+  "pillar_primary": "think",
+  "pillars_supporting": ["explore"],
+  "age_band": "9-10",
+  "quarter": 1,
+  "developmental_frame": "At 9–10, thinking is concrete and literal, and learning happens through play, doing, and collecting rather than abstract discussion. Kids this age are natural noticers and sorters — they love grouping, comparing, and asking 'why' — but they can't yet hold a hypothesis or run a fair test the way an older child can. Keep every loop short, hands-on, and finishing the same day, or attention drifts.",
+  "authentic_value_meaning": "Value at this age is being the one who *noticed* something real that everyone else walked past, and getting to share it. It's not money and not a product — it's 'look what I found out'. The audience is family and friends, and the reward is their genuine interest.",
+  "motivation_lever": {
+    "lever": "mastery",
+    "mechanism": "The child becomes a 'noticer' — collecting and studying ordinary things (leaves, coins, sounds, bugs) and spotting things grown-ups miss. The pull is the pride of being sharp-eyed and the small delight of surprising an adult with something they noticed. Collecting and sorting are already deeply satisfying at this age, so the activity motivates itself."
+  },
+  "artifact": "A 'noticing journal' or discovery card: a small collection the child observed and sorted into groups, with one real 'why' question and their best guess at the answer.",
+  "success_criteria": [
+    "The child looked closely enough to describe details they hadn't noticed before.",
+    "They sorted their collection into groups and can explain the rule they used.",
+    "They asked one real 'why' question and offered a guess."
+  ],
+  "prereq_project_ids": [],
+  "lessons": [
+    {
+      "id": "th-9-10-q1-l1",
+      "sequence": 1,
+      "title": "Look really closely",
+      "concept": "Most people glance at things. A noticer *looks* — long enough to see the little details everyone else misses. Slowing down and really looking is the first thinking skill.",
+      "real_example": "Look at a single leaf for a whole minute. Suddenly you see tiny lines, little holes, colours changing at the edge — all there the whole time, just unnoticed.",
+      "apply_task": "Pick five ordinary things (a coin, a leaf, a shoe, whatever). Look at each for one minute and write or draw one detail you'd never noticed before.",
+      "reflection_prompt": "Which thing surprised you most when you really looked? Was the detail there all along?",
+      "feedback_task": "Show an adult one of your things and share your detail. Ask if they'd ever noticed it. Their surprise is your reward.",
+      "teach_back_task": "Play the one-minute looking game with a younger child and help them find a detail.",
+      "ai_judgment_note": "This is a look-with-your-own-eyes game — no screen needed. The whole point is *you* noticing, which a computer can't do for you.",
+      "assets_needed": ["Noticing journal pages (5 slots for detail drawings)"],
+      "est_minutes": 20,
+      "success_criteria": ["Five never-before-noticed details are recorded from real objects."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "th-9-10-q1-l2",
+      "sequence": 2,
+      "title": "Sort it into groups",
+      "concept": "Once you've collected things, you can sort them — big/small, smooth/rough, by colour. Sorting is thinking: you're deciding what's the same and what's different, and picking a rule.",
+      "real_example": "Tip out a box of buttons and you'll naturally start grouping them — by colour, then by size. Scientists sort the whole world this way, from animals to stars.",
+      "apply_task": "Gather a collection (leaves, rocks, toys, coins). Sort it into groups. Write down the rule you used, then re-sort it a totally different way.",
+      "reflection_prompt": "You sorted the same things two different ways — so which grouping is 'right'? (Trick question: it depends on what you care about.)",
+      "feedback_task": "Show your groups to someone and see if they can guess your sorting rule. If they can't, was your rule clear?",
+      "teach_back_task": "Give a friend your collection and challenge them to sort it, then explain their rule to you.",
+      "ai_judgment_note": "Sort with your own hands and eyes — that's the thinking. No app needed to move real objects into real piles.",
+      "assets_needed": ["Sorting mat / group labels"],
+      "est_minutes": 25,
+      "success_criteria": ["A collection was sorted two different ways with each rule stated."],
+      "prereq_lesson_ids": ["th-9-10-q1-l1"]
+    },
+    {
+      "id": "th-9-10-q1-l3",
+      "sequence": 3,
+      "title": "Ask a big 'why?'",
+      "concept": "Noticers don't just look — they wonder. Pick one thing you noticed and ask why it's like that. Then make your best guess. A good guess isn't cheating; it's how thinking starts.",
+      "real_example": "'Why are most leaves green?' or 'Why do heavier coins feel colder?' You don't need the final answer yet — asking the question and guessing is the win.",
+      "apply_task": "Pick one thing from your collection and write a 'why' question about it. Then write your best guess at the answer.",
+      "reflection_prompt": "Where did your guess come from — something you already knew? Good guesses usually connect to things you've seen before.",
+      "feedback_task": "Ask an adult your 'why' question. Compare their answer to your guess. Were you close?",
+      "teach_back_task": "Ask a family member to make up their own 'why' question about something at home, and swap guesses.",
+      "ai_judgment_note": "Make your *own* guess first, before anyone (or any computer) tells you the answer. The guessing is the exercise; getting handed the answer skips the workout.",
+      "assets_needed": ["Why-question + guess card"],
+      "est_minutes": 20,
+      "success_criteria": ["One real 'why' question and a reasoned guess are written down."],
+      "prereq_lesson_ids": ["th-9-10-q1-l2"]
+    },
+    {
+      "id": "th-9-10-q1-l4",
+      "sequence": 4,
+      "title": "Share your discovery",
+      "concept": "A discovery isn't finished until you share it. Telling someone what you noticed, sorted, and wondered turns you from a looker into a discoverer.",
+      "real_example": "Show-and-tell works because sharing a real find is exciting for everyone. 'Look what I noticed' is a great thing to be able to say.",
+      "apply_task": "Finish your noticing journal (details + your groups + your why-question and guess) and present it to your family like a real discovery.",
+      "reflection_prompt": "How did it feel to share something *you* noticed? Which part were you proudest of?",
+      "feedback_task": "Ask your listeners what they found most interesting. Note it — it tells you what makes a discovery exciting to others.",
+      "teach_back_task": "Help someone else in your family start their own noticing journal.",
+      "ai_judgment_note": "Share it with real people, face to face. The joy here is a real person going 'wow, I never noticed that' — that's a human moment, not a screen one.",
+      "assets_needed": ["Completed noticing-journal template"],
+      "est_minutes": 25,
+      "success_criteria": ["The child presented a completed noticing journal to a real audience."],
+      "prereq_lesson_ids": ["th-9-10-q1-l3"]
+    }
+  ]
+}

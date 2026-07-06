@@ -1,0 +1,127 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://futurefounder.app/schemas/curriculum.schema.json",
+  "title": "Future Founder Curriculum — Project",
+  "description": "One quarterly Project containing an ordered array of Lessons. This is the atomic file the app ingests: projects are milestones, lessons are the sequence nodes.",
+  "type": "object",
+  "required": [
+    "id", "title", "pillar_primary", "age_band", "quarter",
+    "developmental_frame", "authentic_value_meaning", "motivation_lever",
+    "artifact", "success_criteria", "lessons"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z]{2}-(9-10|11-12|13-14|15-16)-q[1-4]$",
+      "description": "Convention: {pillarcode}-{ageband}-q{n}. Pillar codes: th,co,bu,le,cw,ex,lw,cr. e.g. cw-13-14-q1"
+    },
+    "title": { "type": "string", "minLength": 4 },
+    "pillar_primary": {
+      "type": "string",
+      "enum": ["think","communicate","build","lead","wealth","explore","live_well","create"]
+    },
+    "pillars_supporting": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["think","communicate","build","lead","wealth","explore","live_well","create"]
+      },
+      "maxItems": 3,
+      "description": "Keep to <=3. If a project touches every pillar, it is unfocused."
+    },
+    "age_band": { "type": "string", "enum": ["9-10","11-12","13-14","15-16"] },
+    "quarter": { "type": "integer", "minimum": 1, "maximum": 4 },
+    "developmental_frame": {
+      "type": "string",
+      "description": "Markdown. What is cognitively/emotionally/socially REAL at this age. Cite the capability, not the aspiration."
+    },
+    "authentic_value_meaning": {
+      "type": "string",
+      "description": "Markdown. What 'creating value' genuinely means at THIS age. A lemonade stand and a startup are different acts, not one scaled."
+    },
+    "motivation_lever": {
+      "type": "object",
+      "required": ["lever", "mechanism"],
+      "additionalProperties": false,
+      "properties": {
+        "lever": {
+          "type": "string",
+          "enum": ["autonomy","mastery","peer_status","real_stakes","real_audience","belonging"],
+          "description": "The specific psychological driver. 'Make it fun' is not a lever."
+        },
+        "mechanism": {
+          "type": "string",
+          "description": "Markdown. How this project's design actually pulls that lever."
+        }
+      }
+    },
+    "artifact": {
+      "type": "string",
+      "description": "The tangible portfolio thing the child ends with (a live offer, a published piece, a working demo)."
+    },
+    "success_criteria": {
+      "type": "array",
+      "minItems": 2,
+      "items": { "type": "string" },
+      "description": "Observable statements a PARENT could verify. No vanity metrics."
+    },
+    "prereq_project_ids": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "lessons": {
+      "type": "array",
+      "minItems": 3,
+      "items": { "$ref": "#/definitions/lesson" }
+    }
+  },
+  "definitions": {
+    "lesson": {
+      "type": "object",
+      "required": [
+        "id", "sequence", "title", "concept", "real_example",
+        "apply_task", "reflection_prompt", "feedback_task", "teach_back_task",
+        "ai_judgment_note", "est_minutes", "success_criteria"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z]{2}-(9-10|11-12|13-14|15-16)-q[1-4]-l[0-9]+$",
+          "description": "Parent project id + -l{n}. e.g. cw-13-14-q1-l1"
+        },
+        "sequence": { "type": "integer", "minimum": 1 },
+        "title": { "type": "string", "minLength": 3 },
+        "concept": { "type": "string", "description": "Markdown. STEP 1 — learn the concept. Tight, age-honest." },
+        "real_example": { "type": "string", "description": "Markdown. STEP 2 — a concrete real-world example the child can picture." },
+        "apply_task": { "type": "string", "description": "Markdown. STEP 3 — apply it, advancing the project artifact directly." },
+        "reflection_prompt": { "type": "string", "description": "Markdown. STEP 4 — reflect." },
+        "feedback_task": { "type": "string", "description": "Markdown. STEP 5 — get feedback and improve." },
+        "teach_back_task": { "type": "string", "description": "Markdown. STEP 6 — teach someone else. Weighted heavily: this is where retention lives." },
+        "ai_judgment_note": {
+          "type": "string",
+          "description": "Markdown. The DURABLE skill: when to reach for AI in this lesson and — more important — when NOT to (struggle first, verify, think unaided). Tools named here are disposable examples."
+        },
+        "assets_needed": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "description": "What the app must supply: printables, images, templates, a worksheet."
+        },
+        "est_minutes": { "type": "integer", "minimum": 5, "maximum": 120 },
+        "success_criteria": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "prereq_lesson_ids": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": []
+        }
+      }
+    }
+  }
+}

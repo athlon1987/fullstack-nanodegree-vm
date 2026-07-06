@@ -1,0 +1,93 @@
+{
+  "id": "bu-11-12-q1",
+  "title": "Make a Thing That Works",
+  "pillar_primary": "build",
+  "pillars_supporting": ["think", "communicate"],
+  "age_band": "11-12",
+  "quarter": 1,
+  "developmental_frame": "At 11–12, children can follow a multi-step plan and love making something *real* appear from their own effort, but they get discouraged fast when a first attempt is messy. They don't need programming syntax; they need the experience of turning an idea into a working thing and seeing a real person use it. Keep the build small enough to finish in a sitting or two so the payoff arrives before the patience runs out.",
+  "authentic_value_meaning": "Value at this age is: 'I made this, and it actually works, and someone used it.' The thrill is the gap between an idea in your head and a real thing on a screen that does something. Usefulness to one real person beats polish.",
+  "motivation_lever": {
+    "lever": "mastery",
+    "mechanism": "The child builds the smallest possible working version of something useful — a quiz for a friend, a tiny web page for a family event, a simple automation — and watches a real person use it. The magic of 'the thing I imagined now exists and works' is the driver, sharpened by one real user actually trying it. Finishing something real is the reward."
+  },
+  "artifact": "One small working digital thing (a quiz, a one-page site, a simple automation) that does something useful, tried at least once by a real person who isn't the builder.",
+  "success_criteria": [
+    "The thing runs and does what it's meant to for a real user.",
+    "The child can explain in plain words what each part does — nothing in it is a mystery to them.",
+    "They changed at least one thing after watching a real person get confused by it."
+  ],
+  "prereq_project_ids": [],
+  "lessons": [
+    {
+      "id": "bu-11-12-q1-l1",
+      "sequence": 1,
+      "title": "Who is it for, and what does it do?",
+      "concept": "Before building anything, name the one person it's for and the one thing it does for them. A builder who skips this makes something cool that nobody needs.",
+      "real_example": "'A quiz to help my little brother practise his times tables' beats 'a maths app'. One person, one job — now you know exactly what to build.",
+      "apply_task": "Write one sentence: 'This is for [name], and it helps them [do one thing].' If you can't, your idea isn't ready yet.",
+      "reflection_prompt": "Is the one thing small enough to actually finish? Beginners always pick too big — what could you cut?",
+      "feedback_task": "Tell your chosen person your sentence and ask: 'Would that actually help you?' Listen for a real yes.",
+      "teach_back_task": "Help a friend write their own 'for [name], helps them [do X]' sentence.",
+      "ai_judgment_note": "Fine to brainstorm ideas with AI, but *you* pick the real person and the real job — the model doesn't know who's actually in your life to help.",
+      "assets_needed": ["One-sentence project brief card"],
+      "est_minutes": 20,
+      "success_criteria": ["A one-person, one-job project sentence is written and checked with the real person."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "bu-11-12-q1-l2",
+      "sequence": 2,
+      "title": "Sketch before you build",
+      "concept": "Draw the thing on paper first — what's on the screen, what happens when you tap. A sketch is cheap to change; a half-built project is painful to change.",
+      "real_example": "Game designers draw levels on paper before touching a computer. Ten seconds with a pencil can save an hour of building the wrong thing.",
+      "apply_task": "Sketch every screen or step of your thing on paper, with arrows showing what happens next. Keep it rough.",
+      "reflection_prompt": "Walking through your own sketch, where does it get confusing? Better to find it now, on paper.",
+      "feedback_task": "Show the sketch to your real user and have them 'tap' through it with a finger. Note where they hesitate.",
+      "teach_back_task": "Show someone why sketching first saves time, using your own before/after.",
+      "ai_judgment_note": "Sketch by hand yourself — this is thinking, not decoration. AI can't do your thinking about what the thing should be; that has to live in your own head first.",
+      "assets_needed": ["Blank sketch/flow sheets"],
+      "est_minutes": 30,
+      "success_criteria": ["A hand sketch shows every screen/step with the flow between them."],
+      "prereq_lesson_ids": ["bu-11-12-q1-l1"]
+    },
+    {
+      "id": "bu-11-12-q1-l3",
+      "sequence": 3,
+      "title": "Build the smallest version",
+      "concept": "Build the tiniest version that works at all — one question, one page, one action. You can always add more, but only once the small thing runs. Understand every piece you put in.",
+      "real_example": "The first version of a big app is usually embarrassingly basic — one screen that barely works. That's correct. Small-and-working beats big-and-broken every time.",
+      "apply_task": "Build the smallest working version from your sketch, using whatever tool fits (a no-code builder, a simple site maker, AI help). Get it to actually run.",
+      "reflection_prompt": "Can you explain what every part does? Anything you can't explain is a part you don't yet control.",
+      "feedback_task": "Show a mentor or parent the running thing and have them point to any part that looks like a 'mystery box' to you. Go understand that part.",
+      "teach_back_task": "Walk someone through your build and explain what each piece does in plain words.",
+      "ai_judgment_note": "AI can help you build — but the rule is: **never ship what you can't explain.** If AI made a piece you don't understand, either learn it or take it out. A builder who can't explain their own thing isn't really building, they're copying.",
+      "assets_needed": ["List of kid-safe no-code / site-builder tools"],
+      "est_minutes": 45,
+      "success_criteria": [
+        "A minimal version runs and does its one job.",
+        "The child can explain every part of it in their own words."
+      ],
+      "prereq_lesson_ids": ["bu-11-12-q1-l2"]
+    },
+    {
+      "id": "bu-11-12-q1-l4",
+      "sequence": 4,
+      "title": "Test it on a real person and fix one thing",
+      "concept": "You can't see your own thing clearly — you know how it's *meant* to work, so you skip past the confusing bits. A real user finds them in seconds. Then you fix the worst one.",
+      "real_example": "Watch someone use your quiz without helping them. Where they get stuck or press the wrong thing tells you exactly what to fix — no guessing needed.",
+      "apply_task": "Hand your thing to your real user and stay quiet. Write down every place they get confused. Then fix the single most confusing one.",
+      "reflection_prompt": "Was the confusing part the bit you were most proud of? That happens a lot — building for yourself vs building for them are different.",
+      "feedback_task": "After fixing, have them try again. Did the fix work? If not, you found the wrong thing to fix.",
+      "teach_back_task": "Teach a friend the rule: 'watch them use it, stay silent, fix what confused them.'",
+      "ai_judgment_note": "A real human tester beats any AI check here — AI won't get confused the way a real 8-year-old will. Use AI afterward only to help *fix* the specific thing your tester tripped on.",
+      "assets_needed": ["User-test observation sheet"],
+      "est_minutes": 35,
+      "success_criteria": [
+        "A real person tested the thing while the builder observed silently.",
+        "At least one change was made based on real confusion, then re-tested."
+      ],
+      "prereq_lesson_ids": ["bu-11-12-q1-l3"]
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "id": "bu-11-12-q4",
+  "title": "Ship the Product",
+  "pillar_primary": "build",
+  "pillars_supporting": ["think", "wealth"],
+  "age_band": "11-12",
+  "quarter": 4,
+  "developmental_frame": "In the capstone, Build produces what the launch sells. At 11–12 a child can pull together iteration (Q2) and building-for-strangers (Q3) to make the actual product or service customers will buy — tested, stranger-ready, and in enough quantity to hit the launch goal. This is the leap to making something genuinely ready to sell to people they've never met.",
+  "authentic_value_meaning": "Value here is a real product or service ready for real customers — the maker's contribution to the launch. It's every building skill from two years, aimed at one bar: a stranger can buy it, use it, and be happy, with no help from you.",
+  "motivation_lever": {
+    "lever": "mastery",
+    "mechanism": "The child produces the real thing that real strangers will pay for and use on launch day. Knowing paying customers — not just friends — will judge the work raises the bar in a motivating way, and a table of finished, sell-ready product (or a service ready to deliver) is a powerful, tangible source of pride."
+  },
+  "artifact": "The finished, stranger-ready product or service, produced in enough quantity/capacity for the launch goal, and given a final test by a stranger.",
+  "success_criteria": [
+    "The product/service is stranger-ready: usable and trustworthy with no help from the maker.",
+    "There is enough stock or capacity to meet the launch goal.",
+    "A final stranger test was done and the last issue fixed before launch."
+  ],
+  "prereq_project_ids": ["bu-11-12-q3", "th-11-12-q4"],
+  "lessons": [
+    {
+      "id": "bu-11-12-q4-l1",
+      "sequence": 1,
+      "title": "Decide the product and how much you need",
+      "concept": "Match your product to the launch goal. If the goal is 10 customers, you need enough for at least 10 (plus a few spare). Making too little means turning customers away; too much wastes effort. Plan the quantity on purpose.",
+      "real_example": "Goal: 10 snack sales. So you make 12 portions — enough for the goal plus a couple extra, without over-making and wasting ingredients you paid for.",
+      "apply_task": "Decide exactly what you're making/offering and how many, based on your launch goal. Write the number.",
+      "reflection_prompt": "Does your quantity match your goal, with a small buffer? Too little or too much both cost you.",
+      "feedback_task": "Check your quantity plan with a parent against your goal and your budget.",
+      "teach_back_task": "Explain to someone why you plan quantity from the goal, not just 'as many as possible'.",
+      "ai_judgment_note": "This is simple planning tied to your real goal and budget — do it yourself so you understand your own numbers.",
+      "assets_needed": ["Quantity-plan card"],
+      "est_minutes": 15,
+      "success_criteria": ["Product and quantity are decided to match the launch goal."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "bu-11-12-q4-l2",
+      "sequence": 2,
+      "title": "Make it stranger-ready",
+      "concept": "Apply your Q3 skills: the product must work for strangers. That means clear labelling, obvious use, trustworthy presentation, and no need for you to explain anything. A launch customer should 'get it' instantly.",
+      "real_example": "Your snacks get clear labels ('Spicy — RM2'), neat packaging, and an allergy note. A stranger can see what it is, what it costs, and trust it — no explanation needed.",
+      "apply_task": "Make your product stranger-ready: labelling, presentation, and anything a customer needs to know without asking.",
+      "reflection_prompt": "Could a total stranger understand and trust your product at a glance? If not, what's missing?",
+      "feedback_task": "Show your prepared product to someone unfamiliar and ask if anything is unclear.",
+      "teach_back_task": "Show a friend what 'stranger-ready' means for a product on a stall.",
+      "ai_judgment_note": "AI can help with clear label wording or a neat design, but keep the Q1 rule — understand and stand behind every part. And a real stranger's glance is the true test of clarity.",
+      "assets_needed": ["Stranger-ready checklist"],
+      "est_minutes": 30,
+      "success_criteria": ["The product is labelled, presented, and usable with no maker explanation."],
+      "prereq_lesson_ids": ["bu-11-12-q4-l1"]
+    },
+    {
+      "id": "bu-11-12-q4-l3",
+      "sequence": 3,
+      "title": "Produce enough for the launch",
+      "concept": "Now actually produce your batch (or prepare to deliver your service) to the quantity you planned — at consistent quality. The tenth item should be as good as the first. Consistency is what a real customer expects.",
+      "real_example": "You make all 12 snack portions to the same standard, not great-then-sloppy. Every customer gets the quality you promised in your pitch.",
+      "apply_task": "Produce your full batch (or set up your service capacity) at consistent quality.",
+      "reflection_prompt": "Did quality hold from first to last? Tiredness makes the last few slip — how did you keep them good?",
+      "feedback_task": "Have someone check a few items from across your batch for consistent quality.",
+      "teach_back_task": "Explain to someone why consistency across a whole batch matters for real customers.",
+      "ai_judgment_note": "Production is your real work and craft — no shortcut. The consistency that builds a good name comes from you.",
+      "assets_needed": [],
+      "est_minutes": 40,
+      "success_criteria": ["Enough product for the goal is produced at consistent quality."],
+      "prereq_lesson_ids": ["bu-11-12-q4-l2"]
+    },
+    {
+      "id": "bu-11-12-q4-l4",
+      "sequence": 4,
+      "title": "Final stranger test and fix",
+      "concept": "One last check before launch: have a stranger 'buy' and use your product exactly as a customer would. Any confusion or flaw they hit is your final fix — far better found now than in front of paying customers.",
+      "real_example": "A neighbour 'buys' a snack, and you notice the label smudges when handled. You fix the labels the night before — crisis avoided before real customers ever see it.",
+      "apply_task": "Run a final stranger test of the whole customer experience. Fix the last issue it reveals.",
+      "reflection_prompt": "What did the final test catch? The last stranger always finds something the maker can't see.",
+      "feedback_task": "Ask your final tester: as a customer, would you buy this and be happy? Take the answer seriously.",
+      "teach_back_task": "Tell someone why a final stranger test right before launch is worth the effort.",
+      "ai_judgment_note": "Only a real, fresh stranger can catch what you've gone blind to — AI can't experience your product as a surprised customer. Use a real person for the final check.",
+      "assets_needed": ["Final-test card"],
+      "est_minutes": 20,
+      "success_criteria": [
+        "A final stranger test of the full experience was done.",
+        "The last issue was fixed before launch."
+      ],
+      "prereq_lesson_ids": ["bu-11-12-q4-l3"]
+    }
+  ]
+}

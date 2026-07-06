@@ -1,0 +1,93 @@
+{
+  "id": "bu-9-10-q3",
+  "title": "Make Something on a Screen",
+  "pillar_primary": "build",
+  "pillars_supporting": ["create"],
+  "age_band": "9-10",
+  "quarter": 3,
+  "developmental_frame": "At 9–10, after two quarters of hands-on making, a first *digital* creation is exciting and doable with kid-friendly tools — a slideshow story, a digital comic, a simple animation. Keep it small and purposeful, and hold the same rule as always: understand what you make and stay the boss of the tool. This is the gentle on-ramp to the 'Build' skills that grow through the later years, introduced without drowning them in screens.",
+  "authentic_value_meaning": "Value here is the thrill of a new kind of making — 'I made a real thing on a screen, and it's mine.' The same pride as a hand-made object, now in a digital shape someone can view and enjoy.",
+  "motivation_lever": {
+    "lever": "mastery",
+    "mechanism": "The child makes their first real digital creation and shows it to someone who enjoys it. The novelty of making on a screen, combined with the familiar pride of finishing something real, is highly motivating — and doing it with the 'I understand every part' rule means they feel like a maker, not just a button-presser."
+  },
+  "artifact": "One simple digital creation (a short slideshow story, a digital drawing or comic, or a simple animation) made with a kid-friendly tool and viewed by a real person.",
+  "success_criteria": [
+    "The child planned the digital thing before making it.",
+    "They can explain what every part of it is and how they made it — nothing is a mystery button.",
+    "A real person viewed it and the child improved one thing based on the reaction."
+  ],
+  "prereq_project_ids": ["bu-9-10-q2"],
+  "lessons": [
+    {
+      "id": "bu-9-10-q3-l1",
+      "sequence": 1,
+      "title": "You can make on a screen too",
+      "concept": "You've made things with your hands — now you can make things on a screen: a story slideshow, a comic, a little animation. It's the same idea (make a real thing someone enjoys), just with a digital tool instead of glue and cardboard.",
+      "real_example": "A slideshow that tells the story of your weekend, with your own drawings or photos on each slide, is a real digital creation — and you can share it with family far away.",
+      "apply_task": "Pick one small digital thing to make and who it's for. Say it: 'I'll make a ___ for ___.'",
+      "reflection_prompt": "Is your digital idea small enough to finish? Same rule as hand-making: small and finished beats big and abandoned.",
+      "feedback_task": "Tell an adult your idea and ask them to help pick a simple, safe kid-friendly tool for it.",
+      "teach_back_task": "Explain to a sibling that making on a screen follows the same steps as making by hand.",
+      "ai_judgment_note": "A grown-up should help you choose a safe tool. And remember: the *idea* is yours — the tool just helps you make it. You're the maker, not the tool.",
+      "assets_needed": ["Digital project brief card", "List of kid-safe creation tools"],
+      "est_minutes": 20,
+      "success_criteria": ["A small digital creation and its audience are chosen."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "bu-9-10-q3-l2",
+      "sequence": 2,
+      "title": "Plan it first (yes, still!)",
+      "concept": "Making on a screen doesn't skip the planning. Sketch your slides or scenes on paper first — what's on each one, in what order. A paper plan makes the screen part quick and calm instead of confusing.",
+      "real_example": "Before touching the computer, comic-makers draw tiny boxes on paper showing each scene. Then the digital part is just 'copy my plan onto the screen' — much easier.",
+      "apply_task": "Sketch your digital thing on paper — each slide, scene, or part, in order.",
+      "reflection_prompt": "Did planning on paper first make the idea clearer? It almost always does.",
+      "feedback_task": "Show your paper plan to someone and check the order makes sense before you build.",
+      "teach_back_task": "Show a friend why planning on paper first makes screen-making easier.",
+      "ai_judgment_note": "Plan with your own hands on paper — this is your thinking. Doing it yourself keeps you the boss of the whole project.",
+      "assets_needed": ["Storyboard/plan sheet"],
+      "est_minutes": 20,
+      "success_criteria": ["A paper plan of the digital creation exists, in order."],
+      "prereq_lesson_ids": ["bu-9-10-q3-l1"]
+    },
+    {
+      "id": "bu-9-10-q3-l3",
+      "sequence": 3,
+      "title": "Make it — and understand every part",
+      "concept": "Now build your digital thing from your plan. The golden rule: understand every part you add. If a tool (or AI) makes something for you, make sure you know what it is and could explain it — otherwise it's not really yours.",
+      "real_example": "If you use a tool to add a picture, you should be able to say 'I chose that picture and put it there because…' If you can't explain a part, you're not the maker of it yet.",
+      "apply_task": "Make your digital creation from your plan. For each part, be ready to say what it is and why it's there.",
+      "reflection_prompt": "Is there any part you can't explain? If so, learn it or change it — a maker understands their own work.",
+      "feedback_task": "Show a parent the thing as you build and have them point to any 'mystery part' you can't explain. Go understand it.",
+      "teach_back_task": "Walk someone through your digital creation, explaining each part in your own words.",
+      "ai_judgment_note": "If AI helps you make a part (like a picture), you must still understand and choose it — **never keep a part you can't explain.** A maker who can't explain their work is just copying; you're better than that.",
+      "assets_needed": [],
+      "est_minutes": 40,
+      "success_criteria": [
+        "A finished digital creation exists.",
+        "The child can explain every part in their own words."
+      ],
+      "prereq_lesson_ids": ["bu-9-10-q3-l2"]
+    },
+    {
+      "id": "bu-9-10-q3-l4",
+      "sequence": 4,
+      "title": "Show it and make it better",
+      "concept": "Show your creation to a real viewer and watch how they react. Where they smile, where they look confused — that tells you what to keep and what to fix. Then improve one thing. Same as hand-making: real viewers make your work better.",
+      "real_example": "You show your slideshow story and your viewer looks lost on slide 3. That's your fix — maybe slide 3 needs to be clearer or split in two.",
+      "apply_task": "Show your creation to a real person, stay quiet, and note where they react or get confused. Improve the most confusing part.",
+      "reflection_prompt": "Was the confusing part one you were proud of? Making for a viewer is different from making for yourself.",
+      "feedback_task": "After improving, show it again. Did the fix work?",
+      "teach_back_task": "Teach someone the 'show it, watch quietly, fix what confused them' rule for digital things too.",
+      "ai_judgment_note": "A real human viewer's reaction is the best feedback — a screen can't be delighted or confused the way a person can. Trust the real reaction.",
+      "assets_needed": ["Viewer-reaction card"],
+      "est_minutes": 25,
+      "success_criteria": [
+        "A real person viewed the creation.",
+        "One improvement was made from real reaction and re-checked."
+      ],
+      "prereq_lesson_ids": ["bu-9-10-q3-l3"]
+    }
+  ]
+}

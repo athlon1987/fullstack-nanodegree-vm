@@ -1,0 +1,90 @@
+{
+  "id": "th-9-10-q4",
+  "title": "Plan the Showcase",
+  "pillar_primary": "think",
+  "pillars_supporting": ["communicate", "wealth"],
+  "age_band": "9-10",
+  "quarter": 4,
+  "developmental_frame": "This is the year's capstone, and Think leads it. At 9–10, a child can genuinely plan a small real event if it's broken into steps (Q3), helped along with clear decisions (Q2), and grounded in noticing what's needed (Q1). Owning the plan for a real Showcase Day — a small at-home event where they show and sell what they've made this year — is a huge, proud milestone. Keep the scope small and the child genuinely in charge.",
+  "authentic_value_meaning": "Value here is being the *planner* of a real event that actually happens — the whole year's thinking skills put to work on something that matters. It's the leap from doing small tasks to organising a whole day, and being trusted to do it.",
+  "motivation_lever": {
+    "lever": "autonomy",
+    "mechanism": "The child is put genuinely in charge of planning a real event that their family will attend. Being trusted to run the plan — making the decisions, owning the list, setting the date — is enormously motivating at this age. The event is real, the responsibility is real, and that pulls their best thinking out of them."
+  },
+  "artifact": "A written plan for Showcase Day: what the day will include, a list of everything needed, a step-ladder of things to do (with who and when), and the key decisions made — pulling together noticing, deciding, and step-planning from the whole year.",
+  "success_criteria": [
+    "The child decided what Showcase Day will include and can explain their choices.",
+    "They listed what's needed and broke the preparation into ordered steps.",
+    "They presented the plan and a real date was set."
+  ],
+  "prereq_project_ids": ["th-9-10-q3"],
+  "lessons": [
+    {
+      "id": "th-9-10-q4-l1",
+      "sequence": 1,
+      "title": "What's the showcase?",
+      "concept": "First, decide what your Showcase Day will be: a small event where you show and share the things you've made this year, with a little stall to sell some. Use your deciding skills to choose what to include — you can't do everything, so pick the best bits.",
+      "real_example": "Your showcase might be: a table showing your inventions and digital creation, a little stall selling your bookmarks, and a five-minute 'tour' you give your family. Small, real, and doable in an afternoon.",
+      "apply_task": "Decide what your Showcase Day will include. Write a short list of the 3–4 things that will happen.",
+      "reflection_prompt": "Did you pick things you're proud of and that are doable at home? What did you leave out, and why?",
+      "feedback_task": "Share your showcase idea with a parent and check it's the right size — not too big, not too small.",
+      "teach_back_task": "Explain to a sibling what your Showcase Day will be and why you chose those parts.",
+      "ai_judgment_note": "This is your day, built from your year — you decide what goes in it. That's yours, not a computer's.",
+      "assets_needed": ["Showcase plan card"],
+      "est_minutes": 20,
+      "success_criteria": ["A short list of what Showcase Day will include is decided."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "th-9-10-q4-l2",
+      "sequence": 2,
+      "title": "Notice what's needed",
+      "concept": "Use your noticing skills to spot everything the day needs — a table, chairs, signs, snacks, money box, your things to show. Missing one thing can cause a wobble on the day, so list it all now.",
+      "real_example": "A stall needs: a table, a sign with prices, your things laid out, a box for money, and a chair. Noticing all of it beforehand means no panic on the day.",
+      "apply_task": "Walk through your Showcase Day in your mind and list everything you'll need for each part.",
+      "reflection_prompt": "Which thing would be easiest to forget? Those are exactly the ones a good list catches.",
+      "feedback_task": "Show your 'needed' list to a parent and ask what you've missed.",
+      "teach_back_task": "Help a family member list what's needed for something *they're* planning.",
+      "ai_judgment_note": "Picturing your real day at your real home is something only you can do. Walk through it in your own mind.",
+      "assets_needed": ["Needed-things checklist"],
+      "est_minutes": 20,
+      "success_criteria": ["A checklist of everything needed for the day exists."],
+      "prereq_lesson_ids": ["th-9-10-q4-l1"]
+    },
+    {
+      "id": "th-9-10-q4-l3",
+      "sequence": 3,
+      "title": "Make the step ladder",
+      "concept": "Now use your step-by-step skill to turn the whole plan into ordered steps: what to do this week, what to do the day before, what to do on the morning. A big event is just a step ladder, same as any tricky task.",
+      "real_example": "This week: make the goods and the sign. Day before: set up the table, make snacks. Morning of: lay out the stall, put up signs, invite everyone in. One rung at a time.",
+      "apply_task": "Break your whole plan into a step ladder, in order, with roughly when each step happens.",
+      "reflection_prompt": "Looking at your ladder, is anything left too late? Better to spot it now than the morning of.",
+      "feedback_task": "Show your step ladder to a parent and agree which steps they might help with.",
+      "teach_back_task": "Show someone how a whole event becomes a simple step ladder.",
+      "ai_judgment_note": "Build your own ladder — sequencing the steps is the thinking. An adult can help with timing since they know the household's week.",
+      "assets_needed": ["Event step-ladder sheet"],
+      "est_minutes": 25,
+      "success_criteria": ["The preparation is broken into an ordered, timed step ladder."],
+      "prereq_lesson_ids": ["th-9-10-q4-l2"]
+    },
+    {
+      "id": "th-9-10-q4-l4",
+      "sequence": 4,
+      "title": "Share the plan and set the date",
+      "concept": "A plan isn't real until people agree to it. Present your whole plan to your family, get their buy-in, and set a real date. Now Showcase Day is actually happening — and the other three parts (inviting, making, selling) can begin.",
+      "real_example": "You show your family the plan, they say 'great — let's do it two Saturdays from now', and suddenly it's real. That date is what turns a plan into an event.",
+      "apply_task": "Present your full plan to your family and agree on a real date for Showcase Day. Write the date at the top of your plan.",
+      "reflection_prompt": "How did it feel to present a whole plan you made? What questions did your family ask?",
+      "feedback_task": "Ask your family if the plan makes sense and if the date works for everyone.",
+      "teach_back_task": "Tell someone the whole plan for your Showcase Day as if inviting them to help.",
+      "ai_judgment_note": "This is a real family conversation to agree a real date — a very human, in-person moment. Present it yourself, proudly.",
+      "assets_needed": ["Finalised plan with date"],
+      "est_minutes": 20,
+      "success_criteria": [
+        "The plan was presented to the family.",
+        "A real date for Showcase Day was set."
+      ],
+      "prereq_lesson_ids": ["th-9-10-q4-l3"]
+    }
+  ]
+}

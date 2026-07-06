@@ -1,0 +1,90 @@
+{
+  "id": "cw-11-12-q2",
+  "title": "Did You Actually Make Money?",
+  "pillar_primary": "wealth",
+  "pillars_supporting": ["think"],
+  "age_band": "11-12",
+  "quarter": 2,
+  "developmental_frame": "At 11–12, children can grasp a genuinely important idea that younger kids can't: money coming in is not the same as money made. They can list simple costs, track revenue, and work out real profit by subtracting. This builds directly on Q1's first sale — now they look behind the sale at whether it was actually worth it, which is the foundation of all real business thinking.",
+  "authentic_value_meaning": "Value here is knowing whether your thing *actually* makes money — the difference between feeling successful (money came in!) and being successful (money was left over after costs). It's a grown-up truth that reframes every little venture they'll ever run.",
+  "motivation_lever": {
+    "lever": "real_stakes",
+    "mechanism": "The child discovers the real answer to 'did I make money?' about their own venture — sometimes a surprising, slightly deflating one — and then gets to fix it. The stakes are real (it's their own money and effort), and the satisfying 'aha' of seeing the true profit, then improving it, drives the learning far better than a lecture on costs ever could."
+  },
+  "artifact": "A simple profit calculation for a real or realistic little venture: costs listed, revenue listed, profit worked out, and a decision about what the number means.",
+  "success_criteria": [
+    "The child listed all the costs that went into their venture, not just the obvious one.",
+    "They calculated profit as revenue minus costs and can explain the difference.",
+    "They made one decision (raise price, cut a cost, or change) based on the real profit."
+  ],
+  "prereq_project_ids": ["cw-11-12-q1"],
+  "lessons": [
+    {
+      "id": "cw-11-12-q2-l1",
+      "sequence": 1,
+      "title": "Money in isn't money made",
+      "concept": "'I sold RM20 of bracelets!' feels like success. But if the beads cost RM15, you only actually *made* RM5. The money that comes in is 'revenue'; the money you keep after costs is 'profit'. Only profit is real earnings.",
+      "real_example": "A lemonade stand takes RM30 in sales — sounds great. But lemons, cups, and sugar cost RM22. Real profit: RM8. The RM30 was never the real number.",
+      "apply_task": "Think of your Q1 venture (or a realistic one). Write down the revenue — all the money that came in.",
+      "reflection_prompt": "Before counting costs, how much did you *feel* you made? Hold that number — it might change.",
+      "feedback_task": "Explain 'revenue vs profit' to a parent in your own words and check you've got it right.",
+      "teach_back_task": "Teach a friend why 'I sold RM50!' doesn't mean 'I made RM50'.",
+      "ai_judgment_note": "The numbers are yours to gather from your real venture — a computer doesn't know what you actually sold. Do the counting yourself.",
+      "assets_needed": ["Revenue tracking card"],
+      "est_minutes": 20,
+      "success_criteria": ["Revenue is listed and the child can define revenue vs profit."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "cw-11-12-q2-l2",
+      "sequence": 2,
+      "title": "Count your costs",
+      "concept": "Costs are everything that went in: materials, packaging, even a share of things you reused. Beginners forget the small costs and think they made more than they did. A real count includes all of it.",
+      "real_example": "For the bracelets: beads RM15, string RM3, little bags RM2. That's RM20 of costs — easy to forget the string and bags and overcount your profit by RM5.",
+      "apply_task": "List every cost that went into your venture — the obvious ones and the easy-to-forget small ones. Add them up.",
+      "reflection_prompt": "Which cost did you almost forget? Those hidden costs are exactly what trip people up.",
+      "feedback_task": "Show your cost list to a parent and ask what you might have missed.",
+      "teach_back_task": "Show someone how forgetting a small cost makes you think you made more than you did.",
+      "ai_judgment_note": "You might ask AI to help you think of cost categories you forgot — a fair prompt. But the real amounts come from your real venture.",
+      "assets_needed": ["Cost checklist"],
+      "est_minutes": 25,
+      "success_criteria": ["A full cost list (including small/hidden costs) is totalled."],
+      "prereq_lesson_ids": ["cw-11-12-q2-l1"]
+    },
+    {
+      "id": "cw-11-12-q2-l3",
+      "sequence": 3,
+      "title": "Work out your profit",
+      "concept": "Now the moment of truth: profit = revenue − costs. This one subtraction tells you whether your venture actually made money. Sometimes the answer is a happy surprise; sometimes it's a useful shock.",
+      "real_example": "Revenue RM30, costs RM20, profit RM10. Or maybe revenue RM30, costs RM32 — a loss of RM2! Either way, now you *know*, instead of guessing.",
+      "apply_task": "Subtract your total costs from your revenue. Write down your real profit (or loss).",
+      "reflection_prompt": "Was your real profit higher or lower than you felt in lesson 1? What surprised you?",
+      "feedback_task": "Show your full calculation to a parent and check the maths is right.",
+      "teach_back_task": "Walk someone through the profit = revenue − costs calculation with your real numbers.",
+      "ai_judgment_note": "Do this subtraction yourself — it's simple and it's *your* money. Understanding your own number matters more than any tool doing it for you.",
+      "assets_needed": ["Profit calculation sheet"],
+      "est_minutes": 20,
+      "success_criteria": ["Profit (or loss) is correctly calculated from real numbers."],
+      "prereq_lesson_ids": ["cw-11-12-q2-l2"]
+    },
+    {
+      "id": "cw-11-12-q2-l4",
+      "sequence": 4,
+      "title": "What does it mean?",
+      "concept": "A profit number is only useful if you act on it. Low or negative profit? You have three real levers: raise the price, cut a cost, or change what you make. Deciding which to pull is real business thinking.",
+      "real_example": "Profit was only RM2 per bracelet. Options: raise price from RM5 to RM7, find cheaper beads, or make a fancier bracelet people happily pay more for. You pick the lever that fits.",
+      "apply_task": "Based on your profit, choose one lever — raise price, cut a cost, or change the product — and write why.",
+      "reflection_prompt": "Which lever felt right for your venture? What would you expect it to do to your profit?",
+      "feedback_task": "Talk your chosen lever over with a parent or mentor. Would they pull the same one?",
+      "teach_back_task": "Teach someone the three levers for improving profit and when to use each.",
+      "ai_judgment_note": "AI can help you think through options, but the decision depends on your real venture and your judgement — you're the one who knows your customers and your costs.",
+      "assets_needed": ["Profit-lever decision card"],
+      "est_minutes": 20,
+      "success_criteria": [
+        "One improvement lever is chosen based on the real profit.",
+        "The child can explain why that lever fits their venture."
+      ],
+      "prereq_lesson_ids": ["cw-11-12-q2-l3"]
+    }
+  ]
+}

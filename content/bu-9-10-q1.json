@@ -1,0 +1,90 @@
+{
+  "id": "bu-9-10-q1",
+  "title": "Make Something Real",
+  "pillar_primary": "build",
+  "pillars_supporting": ["create"],
+  "age_band": "9-10",
+  "quarter": 1,
+  "developmental_frame": "At 9–10, children love making things with their hands and can follow a few simple steps, but they lose heart quickly if a project is too big or the first try looks messy. They don't need computers or code — they need the pure experience of turning an idea into a real object someone enjoys. Keep it finishable in one or two sittings so the pride of 'I made this' arrives before frustration does.",
+  "authentic_value_meaning": "Value at this age is 'I made this real thing, and someone likes it or uses it.' The magic is watching an idea in your head become an actual object in your hands. Usefulness or joy to one real person matters far more than how polished it looks.",
+  "motivation_lever": {
+    "lever": "mastery",
+    "mechanism": "The child makes one real thing — a card, a paper toy, a simple gadget, a decoration — and gives it to someone who genuinely enjoys it. The deep satisfaction of finishing something real with your own hands, plus a real person's delight, is the driver. Finishing is the reward; keep it small enough to finish."
+  },
+  "artifact": "One simple made thing (a craft, a paper build, a decoration, or a very simple digital drawing) that a real person uses or enjoys.",
+  "success_criteria": [
+    "The child finished a real thing, not just started one.",
+    "They planned it before making it (even a quick sketch).",
+    "A real person used or enjoyed it, and the child improved one thing after seeing them."
+  ],
+  "prereq_project_ids": [],
+  "lessons": [
+    {
+      "id": "bu-9-10-q1-l1",
+      "sequence": 1,
+      "title": "Pick something small to make",
+      "concept": "The trick to finishing is starting small. Pick one simple thing to make for one real person. Big dreams are exciting but small things actually get finished — and a finished thing beats a giant unfinished one.",
+      "real_example": "'A birthday card for Grandma' will get made. 'A giant castle model' probably won't. Small and finished wins.",
+      "apply_task": "Choose one small thing to make and one person to make it for. Say it out loud: 'I'll make a ___ for ___.'",
+      "reflection_prompt": "Is your thing small enough to finish today or tomorrow? If not, what's a smaller version?",
+      "feedback_task": "Tell an adult your plan and ask: 'Is that small enough to finish?' Listen to their honest answer.",
+      "teach_back_task": "Help a sibling pick one small thing to make instead of something too big.",
+      "ai_judgment_note": "You pick the thing and the person — a computer doesn't know who in your family would love a homemade gift. That's yours to decide.",
+      "assets_needed": ["Make-it plan card"],
+      "est_minutes": 15,
+      "success_criteria": ["A small, finishable thing and a real recipient are chosen."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "bu-9-10-q1-l2",
+      "sequence": 2,
+      "title": "Plan it first",
+      "concept": "Before you make, plan: draw what it'll look like and gather what you need. A quick plan means fewer 'oh no, I don't have glue' moments halfway through.",
+      "real_example": "Builders draw a picture and lay out their tools before starting. Two minutes of planning saves a lot of stopping and starting.",
+      "apply_task": "Draw a quick picture of your thing and list what you need to make it. Gather it all before you start.",
+      "reflection_prompt": "Looking at your plan, is anything missing or too tricky? Better to spot it now than halfway through.",
+      "feedback_task": "Show your plan to someone and ask if they see anything you forgot.",
+      "teach_back_task": "Show a friend why drawing a plan first makes making easier.",
+      "ai_judgment_note": "Draw your plan yourself — the plan is your idea taking shape, and doing it by hand helps you think it through.",
+      "assets_needed": ["Plan-and-gather sheet"],
+      "est_minutes": 20,
+      "success_criteria": ["A simple plan drawing and a materials list exist, and materials are gathered."],
+      "prereq_lesson_ids": ["bu-9-10-q1-l1"]
+    },
+    {
+      "id": "bu-9-10-q1-l3",
+      "sequence": 3,
+      "title": "Make it and finish it",
+      "concept": "Now make your thing, following your plan, all the way to finished. It won't be perfect — that's completely fine. Finished-and-a-bit-wonky beats perfect-and-unfinished every time.",
+      "real_example": "The first thing anyone makes is a little rough. That's not failure, that's normal — every maker's first try looks like a first try.",
+      "apply_task": "Make your thing from start to finish. If a bit goes wrong, keep going — you can fix it after.",
+      "reflection_prompt": "What was trickier than you expected? That's the part you'll be better at next time.",
+      "feedback_task": "Show your finished thing to an adult. Ask what they like about it before you point out the flaws.",
+      "teach_back_task": "Tell someone why 'finished but wonky' is better than 'perfect but never done'.",
+      "ai_judgment_note": "This is hands-and-materials making — no screen. The wobbly bits are proof you made it yourself, and that's a good thing.",
+      "assets_needed": [],
+      "est_minutes": 35,
+      "success_criteria": ["A real finished thing exists, completed by the child."],
+      "prereq_lesson_ids": ["bu-9-10-q1-l2"]
+    },
+    {
+      "id": "bu-9-10-q1-l4",
+      "sequence": 4,
+      "title": "Give it and make it better",
+      "concept": "Give your thing to the person it's for and watch. What they enjoy, and any little thing that could be better, tells you how to improve — the first real lesson of every maker.",
+      "real_example": "You give Grandma the card and notice her name is spelled wrong. Next card, you check the spelling first. The person using it shows you the fix.",
+      "apply_task": "Give your thing to the real person. Watch their reaction, then improve one small thing (or note it for next time).",
+      "reflection_prompt": "How did it feel to give something you made? What one thing would you do better next time?",
+      "feedback_task": "Ask the person what they liked most and if there's anything they'd change. Take it kindly.",
+      "teach_back_task": "Help a friend give something they made and spot one improvement together.",
+      "ai_judgment_note": "A real person's smile is the feedback that matters here — that's a human moment no device can give you.",
+      "assets_needed": ["Improve-one-thing card"],
+      "est_minutes": 20,
+      "success_criteria": [
+        "The thing was given to its real person.",
+        "The child named or made one improvement based on the real reaction."
+      ],
+      "prereq_lesson_ids": ["bu-9-10-q1-l3"]
+    }
+  ]
+}

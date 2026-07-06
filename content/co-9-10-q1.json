@@ -1,0 +1,90 @@
+{
+  "id": "co-9-10-q1",
+  "title": "Tell a Story People Remember",
+  "pillar_primary": "communicate",
+  "pillars_supporting": ["create"],
+  "age_band": "9-10",
+  "quarter": 1,
+  "developmental_frame": "At 9–10, children love stories and can retell events, but they tend to ramble — every detail feels equally important and the point gets lost. 'Beginning, middle, end' is a handle they can genuinely grasp at this age, and they light up performing for a real audience. Keep it spoken and playful; writing long pieces is a different, harder skill best kept small here.",
+  "authentic_value_meaning": "Value at this age is a listener who's genuinely gripped — leaning in, laughing, remembering your story afterward. It's the first taste of holding an audience, usually family or friends, with something you experienced or imagined.",
+  "motivation_lever": {
+    "lever": "real_audience",
+    "mechanism": "The child tells a real story to a real listener and finds out whether it landed — did they laugh, gasp, remember it later? A live audience reacting (or not) is powerfully motivating at this age; performing and being enjoyed feels great, and the flat moments teach fast."
+  },
+  "artifact": "A short told-or-recorded story (2–3 minutes) about something real that happened, with a clear beginning, middle, and end, delivered to a real listener.",
+  "success_criteria": [
+    "The story has a clear beginning, middle, and end a listener can follow.",
+    "The child left out boring bits and kept the interesting part.",
+    "A real listener could retell the main thing that happened afterward."
+  ],
+  "prereq_project_ids": [],
+  "lessons": [
+    {
+      "id": "co-9-10-q1-l1",
+      "sequence": 1,
+      "title": "Beginning, middle, end",
+      "concept": "Every good story has three parts: a beginning (who and where), a middle (what happened — usually a problem or surprise), and an end (how it turned out). That shape is what makes a story feel like a story.",
+      "real_example": "'I went to the park (beginning), a dog stole my sandwich (middle), and the owner bought me an ice cream to say sorry (end).' Simple — but it's a real story because it has all three.",
+      "apply_task": "Think of something real that happened to you. Say it in just three sentences: beginning, middle, end.",
+      "reflection_prompt": "Which part was hardest to pin down? Often it's the middle — the actual interesting thing.",
+      "feedback_task": "Tell your three-sentence version to someone. Ask if it felt complete or like something was missing.",
+      "teach_back_task": "Help a younger child turn something that happened to them into a beginning-middle-end.",
+      "ai_judgment_note": "Use your own real memory here — a story that happened to *you* beats any made-up one a computer could write, because you actually lived it.",
+      "assets_needed": ["Three-part story card (beginning / middle / end)"],
+      "est_minutes": 20,
+      "success_criteria": ["A real event is told in a clear three-part shape."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "co-9-10-q1-l2",
+      "sequence": 2,
+      "title": "Keep the good part",
+      "concept": "A rambly story buries the good bit under boring details. Find the most interesting moment — the surprise, the problem, the funny part — and make sure it shines. Cut the rest.",
+      "real_example": "Nobody needs to hear what you had for breakfast before the dog stole your sandwich. Skip to the good part — the theft!",
+      "apply_task": "Take your story and underline the single most interesting moment. Cross out two boring details that don't help it.",
+      "reflection_prompt": "Was it hard to cut things? We get attached to details even when they slow the story down.",
+      "feedback_task": "Tell the trimmed version to someone. Did it feel snappier than before?",
+      "teach_back_task": "Listen to a friend's story and gently help them spot the one boring bit to cut.",
+      "ai_judgment_note": "You decide what the 'good part' is — it's your story and your sense of what's exciting. That judgement is yours to build, not a computer's to hand you.",
+      "assets_needed": ["Story-trimming worksheet"],
+      "est_minutes": 20,
+      "success_criteria": ["The most interesting moment is identified and at least two boring details cut."],
+      "prereq_lesson_ids": ["co-9-10-q1-l1"]
+    },
+    {
+      "id": "co-9-10-q1-l3",
+      "sequence": 3,
+      "title": "Use your voice and face",
+      "concept": "The same words are boring in a flat voice and thrilling with expression. Slowing down at the exciting bit, going quiet, making a face — that's how you pull a listener in.",
+      "real_example": "Watch how a good storyteller drops their voice to a whisper right before the scary part. You lean in without even deciding to.",
+      "apply_task": "Tell your story out loud twice — once totally flat, once with your best voice and faces. Feel the difference.",
+      "reflection_prompt": "Which version would *you* rather listen to? What did your voice do at the exciting moment?",
+      "feedback_task": "Perform the expressive version for someone and watch their face. Did they react more than to the flat one?",
+      "teach_back_task": "Show a family member the flat-vs-expressive trick with a single sentence.",
+      "ai_judgment_note": "This is all you — your real voice and face. It's a performing skill, and no screen can do the performing for you.",
+      "assets_needed": ["Expression practice prompts"],
+      "est_minutes": 25,
+      "success_criteria": ["The story was performed with deliberate voice/expression changes at key moments."],
+      "prereq_lesson_ids": ["co-9-10-q1-l2"]
+    },
+    {
+      "id": "co-9-10-q1-l4",
+      "sequence": 4,
+      "title": "Tell it for real",
+      "concept": "Now put it together and tell your whole story to a real audience. The test of a story is simple: can they remember what happened afterward?",
+      "real_example": "If your friend is still talking about your sandwich-thief dog the next day, your story worked. Being remembered is the goal.",
+      "apply_task": "Tell (or record) your full 2–3 minute story for a real listener, using your three-part shape, the good part, and your best expression.",
+      "reflection_prompt": "Where did your listener react most? That's the part that worked — remember what you did there.",
+      "feedback_task": "A little later, ask your listener to retell your story. What they remember (and forget) shows you what landed.",
+      "teach_back_task": "Coach someone else through telling their story to a real audience.",
+      "ai_judgment_note": "Tell it to a real person, not a device. The whole reward — a human remembering your story — only happens with a real listener.",
+      "assets_needed": ["Listener retell check card"],
+      "est_minutes": 25,
+      "success_criteria": [
+        "A complete story was told to a real audience.",
+        "The listener could retell the main event afterward."
+      ],
+      "prereq_lesson_ids": ["co-9-10-q1-l3"]
+    }
+  ]
+}

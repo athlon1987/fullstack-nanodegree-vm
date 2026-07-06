@@ -1,0 +1,90 @@
+{
+  "id": "co-11-12-q4",
+  "title": "Promote and Pitch",
+  "pillar_primary": "communicate",
+  "pillars_supporting": ["think", "wealth"],
+  "age_band": "11-12",
+  "quarter": 4,
+  "developmental_frame": "In the capstone, Communicate brings in the customers. At 11–12 a child can pull together persuasive writing (Q2) and live pitching (Q3) to promote a real launch and win over real potential customers — not just family. This is persuasion aimed at driving actual action (show up, buy), the highest-stakes communicating of the two years.",
+  "authentic_value_meaning": "Value here is getting real people interested enough to turn up or buy — persuasion that moves strangers to act. It's the difference between a good product nobody hears about and a launch people actually come to.",
+  "motivation_lever": {
+    "lever": "real_audience",
+    "mechanism": "The child promotes to real potential customers and pitches live at the launch, then sees whether their words brought people in. Persuasion that visibly works — a stranger showing up because of your promo, buying after your pitch — is thrilling and validating, and it makes every rehearsal worth it."
+  },
+  "artifact": "Promotional materials (a written promo plus a short spoken launch pitch) prepared, rehearsed, and delivered to real potential customers before and at the launch.",
+  "success_criteria": [
+    "The written promo is honest, clear, and tempting to the target customer.",
+    "The spoken pitch has a hook and one clear message and was rehearsed.",
+    "Both were delivered to real potential customers (safely, with adult approval)."
+  ],
+  "prereq_project_ids": ["co-11-12-q3", "th-11-12-q4"],
+  "lessons": [
+    {
+      "id": "co-11-12-q4-l1",
+      "sequence": 1,
+      "title": "Write the promo",
+      "concept": "Write a short promotional message using your persuasive-writing skills: a clear claim, a reason to care, aimed at your target customer. Keep it honest — over-promising wins one sale and loses all trust.",
+      "real_example": "'Spicy homemade snacks at Saturday's open day — RM2, made fresh, tested on the whole class. Come hungry!' Short, honest, tempting, and aimed right at snack-buyers.",
+      "apply_task": "Write your promo message (a few lines) for your target customer. Make it honest and tempting.",
+      "reflection_prompt": "Would your target customer stop and read this? Does it promise only what you can deliver?",
+      "feedback_task": "Show your promo to a parent for approval and a 'would this make you come?' check.",
+      "teach_back_task": "Show a friend how to write an honest promo that still tempts people.",
+      "ai_judgment_note": "AI can help polish the wording, but keep it true and in your voice — and never promise what your product can't deliver. Honesty is your reputation.",
+      "assets_needed": ["Promo-writing card"],
+      "est_minutes": 20,
+      "success_criteria": ["An honest, tempting promo aimed at the target customer is written."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "co-11-12-q4-l2",
+      "sequence": 2,
+      "title": "Prepare the launch pitch",
+      "concept": "Prepare a short spoken pitch for launch day using your Q3 pitching skills — a hook, one clear message, and a friendly close that invites the sale. This is what you say to someone standing at your stall or watching your drop.",
+      "real_example": "'Hungry? These are fresh spicy snacks I made and tested with my whole class — RM2 each, and the first batch always goes fast. Want to try one?' Hook, message, invite to buy.",
+      "apply_task": "Write your 20–30 second launch pitch: hook, core message, and a friendly invitation to buy.",
+      "reflection_prompt": "Does your pitch end by actually inviting the sale? Many pitches forget to ask.",
+      "feedback_task": "Say your pitch to a parent and ask if it would make them want to try one.",
+      "teach_back_task": "Show someone the shape of a good sales pitch: hook, message, invite.",
+      "ai_judgment_note": "AI can help draft it, but you deliver it live in your own voice — a pitch that sounds scripted or fake loses customers. Make it sound like you.",
+      "assets_needed": ["Launch-pitch card"],
+      "est_minutes": 20,
+      "success_criteria": ["A short launch pitch with hook, message, and invitation is prepared."],
+      "prereq_lesson_ids": ["co-11-12-q4-l1"]
+    },
+    {
+      "id": "co-11-12-q4-l3",
+      "sequence": 3,
+      "title": "Rehearse and refine",
+      "concept": "Rehearse your pitch until it flows, and get a second pair of eyes on your promo. The launch is a one-shot moment — practising now means you'll be confident and clear when real customers are watching.",
+      "real_example": "You practise the pitch ten times and it stops sounding stiff. A friend reads your promo and points out a confusing line. Both are far better before launch day than during it.",
+      "apply_task": "Rehearse your pitch several times aloud, and refine your promo based on one piece of feedback.",
+      "reflection_prompt": "Where does your pitch still stumble? Those spots need one more run-through.",
+      "feedback_task": "Do a full dress rehearsal for a family member and ask what would make it land better.",
+      "teach_back_task": "Explain to someone why rehearsing a one-shot pitch matters so much.",
+      "ai_judgment_note": "Rehearsing your real voice is all you. AI can suggest a tweak to wording, but the confident delivery only comes from your own practice.",
+      "assets_needed": ["Rehearsal checklist"],
+      "est_minutes": 25,
+      "success_criteria": ["The pitch was rehearsed to fluency and the promo refined once."],
+      "prereq_lesson_ids": ["co-11-12-q4-l2"]
+    },
+    {
+      "id": "co-11-12-q4-l4",
+      "sequence": 4,
+      "title": "Promote for real",
+      "concept": "Put your promo out (safely, adult-approved) before the launch, and deliver your pitch to real customers on the day. This is the whole communication arc — writing and speaking to persuade — driving a real event.",
+      "real_example": "Your promo goes up on the approved school board mid-week; on Saturday you pitch to everyone who stops by. Some came because of the promo; some buy because of the pitch. Persuasion, working.",
+      "apply_task": "Share your promo (adult-approved) ahead of the launch, then deliver your pitch to real customers on launch day.",
+      "reflection_prompt": "Did your promo bring anyone in? Did your pitch turn lookers into buyers? What worked best?",
+      "feedback_task": "Afterward, ask a customer what made them stop or buy — the promo, the pitch, or the product?",
+      "teach_back_task": "Tell someone the story of promoting and pitching your launch and what landed.",
+      "ai_judgment_note": "Delivering to real customers is fully human and needs adult-approved, safe channels. This is your voice winning real people — no tool does it for you.",
+      "assets_needed": ["Promo + pitch outcome log"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "The promo was shared safely and the pitch delivered to real customers.",
+        "The child noted what drew customers in."
+      ],
+      "prereq_lesson_ids": ["co-11-12-q4-l3"]
+    }
+  ]
+}

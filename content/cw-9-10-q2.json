@@ -1,0 +1,90 @@
+{
+  "id": "cw-9-10-q2",
+  "title": "Save, Spend, Share",
+  "pillar_primary": "wealth",
+  "pillars_supporting": ["think"],
+  "age_band": "9-10",
+  "quarter": 2,
+  "developmental_frame": "At 9–10, money is becoming a bit more real, and children can genuinely grasp the three-jar idea — some to save, some to spend, some to share — if it's concrete and the amounts are tiny. Waiting (delayed gratification) is hard at this age, so a saving goal must be short-term and visible. Having made and offered something in Q1, they now meet the natural next question: what do you do with what you get?",
+  "authentic_value_meaning": "Value here is feeling genuinely in charge of your own small money — making a plan on purpose instead of spending it all the moment you get it. The reward is the grown-up feeling of having decided, and watching a small saving goal actually get closer.",
+  "motivation_lever": {
+    "lever": "autonomy",
+    "mechanism": "The child is trusted to manage a small, real amount of their own money and make real choices about it. Being in charge — genuinely deciding save vs spend vs share, and watching a goal jar fill — is deeply motivating at this age. The trust itself is the driver; nobody has to force a plan when the money and the choice are really theirs."
+  },
+  "artifact": "A three-jar (save / spend / share) plan for a small real amount of money, with a chosen saving goal and at least one real money choice recorded.",
+  "success_criteria": [
+    "The child split a small real amount into save, spend, and share.",
+    "They chose a real short-term saving goal and can name it.",
+    "They can explain one money choice they made and why."
+  ],
+  "prereq_project_ids": ["cw-9-10-q1"],
+  "lessons": [
+    {
+      "id": "cw-9-10-q2-l1",
+      "sequence": 1,
+      "title": "Money can do three jobs",
+      "concept": "Money isn't just for spending right now. It can do three jobs: **save** (keep for something bigger later), **spend** (enjoy now), and **share** (give to help someone). Smart money people use all three.",
+      "real_example": "Get RM6? You might put RM2 to save, RM2 to spend, RM2 to share. Three little jars, three jobs — and you decide how much goes where.",
+      "apply_task": "Set up three jars (or cups) labelled Save, Spend, Share. They're ready for your money.",
+      "reflection_prompt": "Which jar do you think will be hardest to put money in? For most people it's Save — because waiting is hard.",
+      "feedback_task": "Show your three jars to a parent and talk about what each one is for.",
+      "teach_back_task": "Explain the three jobs of money to a younger child using the jars.",
+      "ai_judgment_note": "This is about your real money and real jars you can touch — much more powerful than anything on a screen. Set them up for real.",
+      "assets_needed": ["Three jar labels (Save / Spend / Share)"],
+      "est_minutes": 20,
+      "success_criteria": ["Three labelled jars are set up."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "cw-9-10-q2-l2",
+      "sequence": 2,
+      "title": "Pick a save goal",
+      "concept": "Saving is much easier when you're saving *for* something. Pick one thing you really want that costs a bit more than you have now. That's your goal — the reason the Save jar is worth it.",
+      "real_example": "Wanting a RM15 toy when you get RM3 a week means saving over a few weeks. But now every coin in the Save jar is exciting, because it's getting you closer.",
+      "apply_task": "Choose one real thing you want to save for. Write it on your Save jar and how much it costs.",
+      "reflection_prompt": "Is your goal something you'll still want in a few weeks? Good saving goals are things you really care about.",
+      "feedback_task": "Tell a parent your save goal and check it's a realistic thing to save for.",
+      "teach_back_task": "Help a sibling pick a save goal worth waiting for.",
+      "ai_judgment_note": "Your goal is about what *you* really want — that's yours alone to choose. No computer knows what would make you happy.",
+      "assets_needed": ["Save-goal label"],
+      "est_minutes": 15,
+      "success_criteria": ["A real, specific saving goal is chosen and its cost noted."],
+      "prereq_lesson_ids": ["cw-9-10-q2-l1"]
+    },
+    {
+      "id": "cw-9-10-q2-l3",
+      "sequence": 3,
+      "title": "Choose on purpose",
+      "concept": "When you get some money, decide *on purpose* how to split it across your three jars — instead of spending it all at once. This is you being the boss of your money, not the other way round.",
+      "real_example": "You get RM6. You *could* spend it all on sweets. Or you choose: RM3 to save for the toy, RM2 to spend now, RM1 to share. That's a plan you made, not an accident.",
+      "apply_task": "Take a small real amount of money and split it across your three jars on purpose. Write down how you split it.",
+      "reflection_prompt": "Was it tempting to put it all in Spend? How did it feel to save some on purpose?",
+      "feedback_task": "Show a parent your split and explain why you chose it. Ask what they think.",
+      "teach_back_task": "Show someone how you split your money on purpose across the three jars.",
+      "ai_judgment_note": "This choice is yours to make — being the boss of your own money is the whole point, and that can't be handed to a computer.",
+      "assets_needed": ["Money-split record card"],
+      "est_minutes": 20,
+      "success_criteria": ["A real amount was split across the three jars with the split recorded."],
+      "prereq_lesson_ids": ["cw-9-10-q2-l2"]
+    },
+    {
+      "id": "cw-9-10-q2-l4",
+      "sequence": 4,
+      "title": "Watch it grow",
+      "concept": "Keep adding to your Save jar and watch it get closer to your goal. Seeing it grow — and finally reaching the goal — teaches the best money lesson of all: waiting a little can get you something better.",
+      "real_example": "Week by week the Save jar fills. The day it finally holds enough for the toy feels amazing — better than spending it on small stuff would have. That feeling is the reward for patience.",
+      "apply_task": "Track your Save jar over the next few weeks. Mark how close you are to your goal each week.",
+      "reflection_prompt": "How does it feel to watch your savings grow toward something you want? Was the waiting worth it?",
+      "feedback_task": "Show a parent your progress tracker. Celebrate together when you hit the goal.",
+      "teach_back_task": "Tell someone the story of saving up and reaching your goal — and how waiting paid off.",
+      "ai_judgment_note": "Watching real coins fill a real jar toward a real goal is the lesson here — no app needed. The patience is yours to build.",
+      "assets_needed": ["Save-goal progress tracker"],
+      "est_minutes": 15,
+      "success_criteria": [
+        "The child tracked their savings toward the goal over time.",
+        "They can explain what saving on purpose taught them."
+      ],
+      "prereq_lesson_ids": ["cw-9-10-q2-l3"]
+    }
+  ]
+}

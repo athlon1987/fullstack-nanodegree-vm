@@ -1,0 +1,90 @@
+{
+  "id": "co-9-10-q4",
+  "title": "Invite and Present",
+  "pillar_primary": "communicate",
+  "pillars_supporting": ["think"],
+  "age_band": "9-10",
+  "quarter": 4,
+  "developmental_frame": "In the capstone, Communicate becomes hosting. At 9–10 a child can invite people by making a case (Q3), tell the story of what they made (Q1), and talk with visitors by listening (Q2) — and now they pull all three together on a real day, in front of a real audience. Presenting to guests is a stretch but a thrilling one, and the whole year has built toward being able to do it.",
+  "authentic_value_meaning": "Value here is being a real host: getting people to come, and helping them understand and enjoy what you show. It's the year's communication skills made real — inviting, storytelling, and talking with guests all in one afternoon.",
+  "motivation_lever": {
+    "lever": "real_audience",
+    "mechanism": "The child hosts real guests at their Showcase Day, presenting what they made all year. A real audience — coming because they were invited well, then listening to the child's story — is deeply motivating. The child is briefly the star of their own event, which pulls out their best, bravest communicating."
+  },
+  "artifact": "Real invitations made for Showcase Day, plus a short 'welcome and tour' the child gives visitors on the day, telling the story of what they made this year.",
+  "success_criteria": [
+    "The child invited real guests with a genuine reason to come.",
+    "They prepared and rehearsed a short spoken welcome/tour.",
+    "On the day they presented to guests and answered questions by listening."
+  ],
+  "prereq_project_ids": ["co-9-10-q3", "th-9-10-q4"],
+  "lessons": [
+    {
+      "id": "co-9-10-q4-l1",
+      "sequence": 1,
+      "title": "Invite people well",
+      "concept": "An invitation is a little case: give people a real reason to come. Use your 'make your case' skill — tell them what they'll see and why it'll be fun, not just when and where.",
+      "real_example": "'Come to my Showcase Day! I'll show the inventions and digital story I made this year, and there's a stall with things I made — plus snacks!' That's an invite people actually want to say yes to.",
+      "apply_task": "Make invitations for your guests. Include a real reason to come, plus the date and time from your plan.",
+      "reflection_prompt": "Which part of your invite is most tempting? A good reason to come is what fills the room.",
+      "feedback_task": "Show an invite to a parent and ask if they'd want to come based on it.",
+      "teach_back_task": "Help a sibling write an inviting invitation for something of theirs.",
+      "ai_judgment_note": "Invite your real people in your own warm words — a heartfelt invite from you beats a fancy one from a computer.",
+      "assets_needed": ["Invitation template"],
+      "est_minutes": 20,
+      "success_criteria": ["Real invitations with a reason to come were made and given out."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "co-9-10-q4-l2",
+      "sequence": 2,
+      "title": "Prepare your story",
+      "concept": "Guests will want to know about what you made. Use your storytelling skill: prepare a short beginning-middle-end story of your year — what you tried, what was tricky, what you're proud of.",
+      "real_example": "'At the start of the year I could barely finish a project (beginning). I learned to break things into steps and fix real problems (middle). Now I've made all this — my favourite is my invention (end).' A real story of your year.",
+      "apply_task": "Write a short beginning-middle-end story of your year's making to tell your guests.",
+      "reflection_prompt": "What are you proudest of from this year? That belongs in the 'end' of your story.",
+      "feedback_task": "Tell your year-story to a parent and ask if it's clear and interesting.",
+      "teach_back_task": "Ask a family member to tell *their* beginning-middle-end of something they learned this year.",
+      "ai_judgment_note": "This is your real year and your real pride — only you can tell it truthfully. Use your own memories, not a made-up story.",
+      "assets_needed": ["Year-story card (beginning/middle/end)"],
+      "est_minutes": 20,
+      "success_criteria": ["A short three-part story of the year is prepared."],
+      "prereq_lesson_ids": ["co-9-10-q4-l1"]
+    },
+    {
+      "id": "co-9-10-q4-l3",
+      "sequence": 3,
+      "title": "Practise your welcome",
+      "concept": "Rehearse a short 'welcome and tour' — greet guests, tell your year-story, and point out what you made. Practising a few times means you'll feel calm and proud on the day instead of frozen.",
+      "real_example": "Good hosts rehearse. 'Welcome! Let me show you around — here are my inventions, and this is the digital story I made…' Said a few times in practice, it flows easily on the day.",
+      "apply_task": "Practise your welcome and tour out loud two or three times, using your best voice and expression (from Q1).",
+      "reflection_prompt": "Where do you stumble? Those spots need one more practice — that's what rehearsing is for.",
+      "feedback_task": "Do your welcome for a family member as a dress rehearsal. Ask what would make it warmer or clearer.",
+      "teach_back_task": "Show someone why hosts rehearse, using your before/after.",
+      "ai_judgment_note": "Rehearsing your real voice for a real welcome is all you — a screen can't practise being a warm host for you.",
+      "assets_needed": ["Welcome/tour script card"],
+      "est_minutes": 25,
+      "success_criteria": ["The welcome/tour was rehearsed until it flowed."],
+      "prereq_lesson_ids": ["co-9-10-q4-l2"]
+    },
+    {
+      "id": "co-9-10-q4-l4",
+      "sequence": 4,
+      "title": "Host on the day",
+      "concept": "On Showcase Day, welcome your guests, tell your story, show your work — and when they ask questions, use your listening skill to really hear them and answer. You're the host now: everything this year has led here.",
+      "real_example": "A guest asks 'how did you make the phone stand?' You listen, then tell them the story of that invention. That back-and-forth — presenting and listening — is you being a real host.",
+      "apply_task": "On Showcase Day, give your welcome, tell your year-story, and answer at least three guest questions by listening carefully.",
+      "reflection_prompt": "How did it feel to host? Which part were you proudest of? What surprised you?",
+      "feedback_task": "Afterward, ask a guest what they enjoyed most about your welcome and tour.",
+      "teach_back_task": "Tell someone who missed it the story of hosting your Showcase Day.",
+      "ai_judgment_note": "Hosting real guests is a fully human moment — presenting, listening, answering, all live. This is the year's communication skills, all yours.",
+      "assets_needed": ["Host-day question notes"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "The child presented a welcome/tour to real guests.",
+        "They answered guest questions by listening and responding."
+      ],
+      "prereq_lesson_ids": ["co-9-10-q4-l3"]
+    }
+  ]
+}

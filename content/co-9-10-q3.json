@@ -1,0 +1,90 @@
+{
+  "id": "co-9-10-q3",
+  "title": "Make Your Case",
+  "pillar_primary": "communicate",
+  "pillars_supporting": ["think"],
+  "age_band": "9-10",
+  "quarter": 3,
+  "developmental_frame": "At 9–10, children often ask for things by whining, demanding, or repeating 'pleeease'. They're ready to learn something better: making a calm, clear case with real reasons. They can hold two or three reasons in mind and, with help, anticipate the grown-up's likely 'but'. Real stakes make this land — a later bedtime, a pet, a class idea. Having learned to listen in Q2, they now learn to be worth listening to.",
+  "authentic_value_meaning": "Value here is being taken seriously — getting a fair hearing, and sometimes a yes, because you made a thoughtful case instead of a fuss. It's the discovery that good reasons, said calmly, are far more powerful than volume.",
+  "motivation_lever": {
+    "lever": "autonomy",
+    "mechanism": "The child argues for something they genuinely want, and finds that a calm, reasoned case gets them taken seriously in a way whining never does. The pull is real influence over their own life — being heard and treated like someone with sensible reasons. That taste of being taken seriously makes them want to do it well."
+  },
+  "artifact": "A real case the child made to a real person (a parent or teacher) for something they want, using two or three reasons and a response to the likely 'but'.",
+  "success_criteria": [
+    "The child gave two or three real reasons, not just 'because I want it'.",
+    "They thought about the other person's likely worry and had a response.",
+    "They made the case calmly and can say how it was received."
+  ],
+  "prereq_project_ids": ["co-9-10-q2"],
+  "lessons": [
+    {
+      "id": "co-9-10-q3-l1",
+      "sequence": 1,
+      "title": "A good reason beats a whine",
+      "concept": "Whining and demanding make people say no faster. A calm, clear reason makes them actually think about it. The secret to getting a fair hearing isn't being louder — it's being reasonable.",
+      "real_example": "'Can I stay up later, PLEEEASE?' gets a quick no. 'Could I stay up 15 minutes later on Fridays, since there's no school the next day?' gets a real 'hmm, let me think.' The reason changed everything.",
+      "apply_task": "Think of one real thing you'd like to ask for. Write it as a calm request instead of a demand.",
+      "reflection_prompt": "How do you usually ask for things — calmly or with a fuss? Which do you think works better?",
+      "feedback_task": "Try your calm version on a parent (just the request, no reasons yet) and notice if they listen differently.",
+      "teach_back_task": "Show a sibling the difference between whining for something and asking calmly.",
+      "ai_judgment_note": "This is about your real wish and your real family — you know the situation. Frame your own request; it means more coming from you.",
+      "assets_needed": ["Calm-request card"],
+      "est_minutes": 15,
+      "success_criteria": ["A real want is framed as a calm request rather than a demand."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "co-9-10-q3-l2",
+      "sequence": 2,
+      "title": "Give two or three reasons",
+      "concept": "'Because I want it' isn't a reason — it's a wish. Real reasons explain *why* it's a good idea, ideally good for others too, not just you. Two or three solid reasons make a case hard to wave away.",
+      "real_example": "For the later Friday bedtime: 1) no school next day, 2) I'll still get enough sleep, 3) we could use it as family film time. Three reasons — and one even helps the whole family.",
+      "apply_task": "Write two or three real reasons for your request. Try to make at least one good for someone besides you.",
+      "reflection_prompt": "Which of your reasons is strongest? Reasons that help others too are often the most convincing.",
+      "feedback_task": "Test your reasons on someone neutral. Ask which reason they find most convincing.",
+      "teach_back_task": "Help a friend find a 'good for others too' reason for something they want.",
+      "ai_judgment_note": "Come up with your own reasons first — thinking of *why* is the real skill. If you ask AI, you must believe the reasons yourself, or they'll sound fake when you say them.",
+      "assets_needed": ["Reasons worksheet (2–3 slots)"],
+      "est_minutes": 20,
+      "success_criteria": ["Two or three genuine reasons are written, ideally one benefiting others."],
+      "prereq_lesson_ids": ["co-9-10-q3-l1"]
+    },
+    {
+      "id": "co-9-10-q3-l3",
+      "sequence": 3,
+      "title": "Answer the 'but'",
+      "concept": "The person you're asking will have a worry — a 'but'. If you think of it first and have an answer ready, your case gets much stronger. It shows you've thought about their side, not just yours.",
+      "real_example": "The 'but' for a later bedtime is 'but you'll be tired'. Your answer: 'I'll have a quiet wind-down and still wake up fine — we can try it one Friday and see.' You met their worry head-on.",
+      "apply_task": "Guess the other person's biggest 'but'. Write it down, then write your calm answer to it.",
+      "reflection_prompt": "Was it easy to guess their worry? Thinking about the other person's view is a real thinking skill (and it's kind).",
+      "feedback_task": "Check your guessed 'but' with someone who knows the person. Did you guess their worry right?",
+      "teach_back_task": "Show someone how guessing the 'but' makes a request stronger.",
+      "ai_judgment_note": "Guessing what a *specific real person* worries about needs your knowledge of them — you know your parent or teacher far better than any computer does.",
+      "assets_needed": ["Answer-the-but card"],
+      "est_minutes": 20,
+      "success_criteria": ["The likely objection is anticipated and answered."],
+      "prereq_lesson_ids": ["co-9-10-q3-l2"]
+    },
+    {
+      "id": "co-9-10-q3-l4",
+      "sequence": 4,
+      "title": "Make your case for real",
+      "concept": "Now put it together and actually make your case: calm request, your reasons, your answer to the 'but'. Then — importantly — listen to the reply gracefully, even if it's not a full yes. A good case-maker is always respectful.",
+      "real_example": "You make your case well and get 'let's try it for two Fridays and see'. That's a win! Even a 'not yet' often comes with a reason you can work with next time.",
+      "apply_task": "Make your real case to the real person, calmly. Afterward, write down how it went and what they said.",
+      "reflection_prompt": "How did making a calm, reasoned case feel compared to how you'd normally ask? What was the result?",
+      "feedback_task": "Whatever the answer, ask the person: 'Did I make my case well?' Their feedback helps you next time.",
+      "teach_back_task": "Tell someone the story of your case — your reasons, the 'but', and how it went.",
+      "ai_judgment_note": "This is a real, calm conversation between you and a real person — no script can do it for you. Listening well to their reply is as important as your reasons.",
+      "assets_needed": ["Case outcome card"],
+      "est_minutes": 20,
+      "success_criteria": [
+        "The case was made calmly to a real person.",
+        "The child listened to the response and can describe how it went."
+      ],
+      "prereq_lesson_ids": ["co-9-10-q3-l3"]
+    }
+  ]
+}

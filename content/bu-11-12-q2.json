@@ -1,0 +1,90 @@
+{
+  "id": "bu-11-12-q2",
+  "title": "Build Version Two",
+  "pillar_primary": "build",
+  "pillars_supporting": ["think", "communicate"],
+  "age_band": "11-12",
+  "quarter": 2,
+  "developmental_frame": "At 11–12, children can handle the real iteration loop: get a thing into several people's hands, gather feedback that's actually useful, decide what matters, and build a genuine second version. This is a clear step up from Q1's single-user test — the leap from 'I made a thing' to 'I made it noticeably better because I listened'. It also introduces a mature judgement: not every request should be built.",
+  "authentic_value_meaning": "Value here is making something measurably better by listening to real users — the core loop every real builder lives by. It's the difference between a one-off project and a thing that actually improves, and the pride is in the visible jump from v1 to v2.",
+  "motivation_lever": {
+    "lever": "mastery",
+    "mechanism": "The child watches several real people use their creation, then builds a version two that's clearly better — and gets to see users prefer it. The satisfaction of a real, visible improvement driven by their own good decisions is deeply motivating, and it feels like how 'real' makers and companies work."
+  },
+  "artifact": "Version two of a digital or physical thing, improved from feedback gathered from at least three real users, with a short before/after showing what changed and why.",
+  "success_criteria": [
+    "At least three real people used version one, and the child gathered their feedback.",
+    "The child chose which changes mattered instead of trying to do all of them.",
+    "A real version two exists, and the child can explain why each change was made."
+  ],
+  "prereq_project_ids": ["bu-11-12-q1"],
+  "lessons": [
+    {
+      "id": "bu-11-12-q2-l1",
+      "sequence": 1,
+      "title": "Get it into real hands",
+      "concept": "One tester tells you a little; several tell you a pattern. Get your thing (from Q1, or a new small one) into the hands of at least three real people and let them actually use it — no hovering, no explaining.",
+      "real_example": "A quiz app tested by one friend seems fine. Tested by five, you notice three of them get stuck on the same screen — that's a real pattern you'd never have seen from one.",
+      "apply_task": "Get your thing used by at least three real people. Just watch and let them use it naturally.",
+      "reflection_prompt": "Did more testers reveal problems one wouldn't have? Patterns need a few people to show up.",
+      "feedback_task": "Ask each tester to simply use it while you watch quietly. Note where each one struggles.",
+      "teach_back_task": "Explain to someone why three testers beat one for finding real problems.",
+      "ai_judgment_note": "Real human testers find real human confusion — something AI can't simulate well. Use real people here; no shortcut.",
+      "assets_needed": ["Tester observation grid (3+ users)"],
+      "est_minutes": 30,
+      "success_criteria": ["At least three real people used the thing while the child observed."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "bu-11-12-q2-l2",
+      "sequence": 2,
+      "title": "Gather feedback that's useful",
+      "concept": "Vague feedback ('it's nice') is useless. Ask questions that get real answers: 'What was confusing?' 'What would you change?' 'Where did you get stuck?' And trust what you *saw* them do over what they politely say.",
+      "real_example": "A tester says 'it's great!' but you watched them fail the same button three times. What they *did* is the real feedback; the polite words are just being kind.",
+      "apply_task": "For each tester, write down one thing they said and one thing you saw them struggle with.",
+      "reflection_prompt": "Where did what people said differ from what they did? Which do you trust more, and why?",
+      "feedback_task": "Compare your notes with a parent — do any struggles show up across multiple testers?",
+      "teach_back_task": "Show a friend how to ask feedback questions that get useful answers, not just 'it's nice'.",
+      "ai_judgment_note": "AI can help you write good feedback questions to ask. But the feedback itself must come from real users doing real things — that's the data that counts.",
+      "assets_needed": ["Feedback capture sheet (said vs did)"],
+      "est_minutes": 25,
+      "success_criteria": ["Useful feedback (said and observed) is captured for each tester."],
+      "prereq_lesson_ids": ["bu-11-12-q2-l1"]
+    },
+    {
+      "id": "bu-11-12-q2-l3",
+      "sequence": 3,
+      "title": "Decide what to change",
+      "concept": "You can't and shouldn't build every request. Pick the changes that matter most — the problems several people hit, or the one that ruins the experience. Saying no to some feedback is as important as saying yes to the rest.",
+      "real_example": "Testers asked for rainbow colours, a login, and a fix for the stuck button. The stuck button broke the whole thing for three people — that's the one that matters. The rainbow can wait forever.",
+      "apply_task": "List all the feedback, then circle the two or three changes that matter most. Note why you're skipping the rest.",
+      "reflection_prompt": "Was it hard to ignore some requests? Good builders choose; they don't just obey every suggestion.",
+      "feedback_task": "Explain your chosen changes to a mentor and why you're skipping the others. Does your reasoning hold?",
+      "teach_back_task": "Show someone why building every request would actually make a thing worse.",
+      "ai_judgment_note": "This choosing is judgement — the most human part of building. Don't outsource it; a list of 'what users want' isn't a decision about what to build.",
+      "assets_needed": ["Change-prioritisation sheet"],
+      "est_minutes": 25,
+      "success_criteria": ["Two or three priority changes are chosen with reasons for skipping others."],
+      "prereq_lesson_ids": ["bu-11-12-q2-l2"]
+    },
+    {
+      "id": "bu-11-12-q2-l4",
+      "sequence": 4,
+      "title": "Build v2 and compare",
+      "concept": "Build your version two with the changes that mattered. Then show the before and after — ideally to a tester — so the improvement is visible. Seeing v1 and v2 side by side is proof your listening paid off.",
+      "real_example": "V2 fixes the stuck button and adds clearer instructions. You show a tester both versions and they breeze through v2. That visible jump is the whole reward.",
+      "apply_task": "Build version two with your priority changes. Write a short before/after: what changed and why.",
+      "reflection_prompt": "Is v2 clearly better? What did listening to real users get you that guessing wouldn't have?",
+      "feedback_task": "Show v2 to at least one original tester. Ask if it's better and where.",
+      "teach_back_task": "Walk someone through your v1 → v2 story and how feedback drove it.",
+      "ai_judgment_note": "AI can help you build the changes, but keep the rule from Q1: understand every part. A v2 full of parts you can't explain isn't really your improvement.",
+      "assets_needed": ["Before/after comparison card"],
+      "est_minutes": 40,
+      "success_criteria": [
+        "A real version two exists with the priority changes built.",
+        "The child can explain each change and show the improvement."
+      ],
+      "prereq_lesson_ids": ["bu-11-12-q2-l3"]
+    }
+  ]
+}

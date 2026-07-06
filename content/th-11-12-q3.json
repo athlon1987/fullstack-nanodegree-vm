@@ -1,0 +1,90 @@
+{
+  "id": "th-11-12-q3",
+  "title": "Do Real Research",
+  "pillar_primary": "think",
+  "pillars_supporting": ["wealth", "communicate"],
+  "age_band": "11-12",
+  "quarter": 3,
+  "developmental_frame": "At 11–12, children can run a simple structured investigation of what real people think — a small survey or a set of interviews — count the responses, and spot patterns. This is a real step beyond Q2's 'check other people's claims': now they *generate* new knowledge by gathering their own data. Keep the sample small and real. It also lays the groundwork for the year-end launch, where knowing your customer beats guessing.",
+  "authentic_value_meaning": "Value here is finding out what people actually think or want by asking properly, instead of assuming — real evidence you gathered yourself. It's the grown-up power of replacing 'I reckon' with 'I asked twelve people and here's what they said'.",
+  "motivation_lever": {
+    "lever": "mastery",
+    "mechanism": "The child becomes someone who can *find things out* — running a real mini-study and discovering something they (and often the adults) didn't know. The satisfaction of a surprising, data-backed finding, and being able to say 'I have evidence', is powerfully motivating and makes them feel genuinely capable."
+  },
+  "artifact": "A mini research finding: a clear question, data gathered from at least five real people, patterns counted, and a conclusion drawn — even if it surprises them.",
+  "success_criteria": [
+    "The child wrote one clear research question they could actually answer by asking people.",
+    "They asked the same questions to at least five real people and recorded answers.",
+    "They counted the patterns and drew a conclusion supported by the data."
+  ],
+  "prereq_project_ids": ["th-11-12-q2"],
+  "lessons": [
+    {
+      "id": "th-11-12-q3-l1",
+      "sequence": 1,
+      "title": "Ask one clear research question",
+      "concept": "Research starts with one clear question you can answer by asking people — 'what snack do kids in my class most wish the canteen sold?' Vague questions ('what do people like?') give mush. A sharp question gives usable answers.",
+      "real_example": "'Would people my age pay for a homework-reminder app?' is answerable. 'Is technology good?' is not — too big, too fuzzy to gather real data on.",
+      "apply_task": "Write one clear research question you genuinely want answered and could ask real people.",
+      "reflection_prompt": "Could five people actually answer your question in a sentence? If not, sharpen it.",
+      "feedback_task": "Run your question past a parent — is it clear and answerable, or too broad?",
+      "teach_back_task": "Help a friend sharpen a fuzzy research question into an answerable one.",
+      "ai_judgment_note": "AI can help you narrow a question, but the thing you're curious about is yours. And AI can't tell you what your real classmates think — only asking them can.",
+      "assets_needed": ["Research-question card"],
+      "est_minutes": 20,
+      "success_criteria": ["One clear, answerable research question is written."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "th-11-12-q3-l2",
+      "sequence": 2,
+      "title": "Ask real people",
+      "concept": "Ask the *same* questions to several people — that's what makes it research rather than a chat. Same questions, several people, answers written down. Consistency is what lets you compare and count later.",
+      "real_example": "You ask five classmates the exact same three questions about canteen snacks. Because the questions were identical, you can line up the answers and see what most people said.",
+      "apply_task": "Ask your question (plus one or two follow-ups) to at least five real people. Write down every answer.",
+      "reflection_prompt": "Did asking everyone the same way feel a bit formal? That sameness is exactly what makes the results trustworthy.",
+      "feedback_task": "After two people, check with a parent that your questions are getting useful answers before doing the rest.",
+      "teach_back_task": "Explain to someone why asking everyone the *same* questions matters in research.",
+      "ai_judgment_note": "AI can help you word neutral questions (ones that don't push people toward an answer). But the answers must come from real people — invented data is worthless and dishonest.",
+      "assets_needed": ["Response record sheet (5+ people)"],
+      "est_minutes": 30,
+      "success_criteria": ["The same questions were asked to at least five real people and answers recorded."],
+      "prereq_lesson_ids": ["th-11-12-q3-l1"]
+    },
+    {
+      "id": "th-11-12-q3-l3",
+      "sequence": 3,
+      "title": "Count the patterns",
+      "concept": "Now turn answers into numbers. Tally how many people said each thing. Patterns you can count ('4 out of 5 wanted spicy snacks') are far stronger than a vague feeling ('people seemed to like spicy stuff').",
+      "real_example": "Your tally: 4 of 5 want spicy snacks, 3 of 5 would pay RM2, nobody wanted sweets. Suddenly you can *see* what people want, in numbers.",
+      "apply_task": "Tally your answers into counts. Note the clearest pattern in the numbers.",
+      "reflection_prompt": "Did the numbers match what you expected before you started? Data often corrects our hunches.",
+      "feedback_task": "Show your tally to a parent and check your counting is fair and accurate.",
+      "teach_back_task": "Show someone how counting answers turns opinions into evidence.",
+      "ai_judgment_note": "Count your own data by hand — it's a small amount and doing it yourself keeps you honest about what it really says.",
+      "assets_needed": ["Tally/pattern sheet"],
+      "est_minutes": 20,
+      "success_criteria": ["Answers are tallied and the main pattern is identified."],
+      "prereq_lesson_ids": ["th-11-12-q3-l2"]
+    },
+    {
+      "id": "th-11-12-q3-l4",
+      "sequence": 4,
+      "title": "Draw a conclusion",
+      "concept": "Finish by stating what your data shows — your conclusion — in one clear sentence, backed by the numbers. Good researchers follow the data even when it disagrees with what they hoped.",
+      "real_example": "'Most kids my age want spicy snacks and would pay RM2 — so a spicy snack stall could work.' That conclusion is earned by real evidence, not a guess.",
+      "apply_task": "Write your conclusion in one sentence, backed by your numbers. Note if it surprised you.",
+      "reflection_prompt": "Did your evidence support your first hunch, or change your mind? Changing your mind because of data is a strength.",
+      "feedback_task": "Present your question, data, and conclusion to your family and ask if the conclusion follows from the numbers.",
+      "teach_back_task": "Walk someone through your whole mini-study, from question to evidence-backed conclusion.",
+      "ai_judgment_note": "The conclusion must come from *your* data, honestly read — not from what you wish were true, and not from an AI guess. Let the evidence lead.",
+      "assets_needed": ["Conclusion card"],
+      "est_minutes": 20,
+      "success_criteria": [
+        "A one-sentence conclusion supported by the data is written.",
+        "The child can explain how the numbers back the conclusion."
+      ],
+      "prereq_lesson_ids": ["th-11-12-q3-l3"]
+    }
+  ]
+}

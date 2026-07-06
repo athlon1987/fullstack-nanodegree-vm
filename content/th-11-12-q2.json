@@ -1,0 +1,90 @@
+{
+  "id": "th-11-12-q2",
+  "title": "Don't Get Fooled",
+  "pillar_primary": "think",
+  "pillars_supporting": ["communicate"],
+  "age_band": "11-12",
+  "quarter": 2,
+  "developmental_frame": "At 11–12, children are increasingly online and surrounded by ads, headlines, and confident claims — but they tend to believe things that look official or that they *want* to be true. They're now ready for the crucial next step beyond Q1's 'investigate your own question': evaluating claims that other people are pushing at them, and asking 'who's telling me this, and why?'. This is real, immediately useful, and slightly thrilling — nobody likes being fooled.",
+  "authentic_value_meaning": "Value here is not being anyone's fool — seeing through a misleading ad, a clickbait headline, or a too-good-to-be-true claim, and knowing how to check before believing. It's the beginning of thinking for yourself instead of swallowing whatever you're told.",
+  "motivation_lever": {
+    "lever": "autonomy",
+    "mechanism": "The child learns to think for themselves rather than be told what to believe — and at this age, being 'nobody's fool', the one who spots the trick, feels genuinely powerful and a little cool. Catching a real ad or headline trying to manipulate them turns critical thinking into a satisfying game of not-getting-caught."
+  },
+  "artifact": "A 'fool-proofing' breakdown of three real claims, ads, or headlines the child found, each showing the trick being used and how they checked whether it was true.",
+  "success_criteria": [
+    "For each claim, the child identified who was saying it and what they wanted.",
+    "They named the specific trick or missing information in each.",
+    "They checked at least one claim against another source before deciding."
+  ],
+  "prereq_project_ids": ["th-11-12-q1"],
+  "lessons": [
+    {
+      "id": "th-11-12-q2-l1",
+      "sequence": 1,
+      "title": "Who's telling you, and why?",
+      "concept": "Before believing a claim, ask two questions: who is saying it, and what do they want? An ad wants your money. A headline wants your click. Knowing the motive behind a message tells you how carefully to check it.",
+      "real_example": "'Dentists recommend this toothpaste!' — but the ad was paid for by the toothpaste company. Who's telling you (the seller) and why (to sell) changes how much you should trust it.",
+      "apply_task": "Find three real claims (ads, headlines, posts). For each, write who's saying it and what you think they want.",
+      "reflection_prompt": "Did knowing the 'why' change how much you believed any of them? Motive is a big clue.",
+      "feedback_task": "Show your three to a parent and compare your guesses about who benefits.",
+      "teach_back_task": "Show a friend how to ask 'who's telling me and why?' about an ad they've seen.",
+      "ai_judgment_note": "AI can also have a 'why' — it's trained to sound confident even when unsure. Ask 'who/why' about AI answers too, and never treat a confident tone as proof.",
+      "assets_needed": ["Who/why breakdown sheet (3 claims)"],
+      "est_minutes": 25,
+      "success_criteria": ["Three real claims are analysed for source and motive."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "th-11-12-q2-l2",
+      "sequence": 2,
+      "title": "Spot the common tricks",
+      "concept": "Misleading messages use a few tricks over and over: exaggeration ('the BEST ever!'), fake urgency ('only 2 left!'), missing information (leaving out the bad bits), and cherry-picking (showing only the numbers that help them). Once you know the tricks, you see them everywhere.",
+      "real_example": "'9 out of 10 people loved it!' sounds great — until you ask how many people they asked. If it was 10 friends of the seller, the number means nothing. That's cherry-picking plus missing information.",
+      "apply_task": "Look at your three claims again and name the trick each one uses (or admit if one seems honest).",
+      "reflection_prompt": "Which trick fools you most easily? Knowing your own weak spot helps you guard it.",
+      "feedback_task": "Ask a parent if they can spot a trick you missed in your three claims.",
+      "teach_back_task": "Teach someone the four common tricks with an example of each.",
+      "ai_judgment_note": "AI can help you name the tricks in an ad — a fair use. But spotting them yourself first builds the instinct that protects you when no AI is around.",
+      "assets_needed": ["Trick-spotting reference card"],
+      "est_minutes": 25,
+      "success_criteria": ["Each claim's trick (or honesty) is identified."],
+      "prereq_lesson_ids": ["th-11-12-q2-l1"]
+    },
+    {
+      "id": "th-11-12-q2-l3",
+      "sequence": 3,
+      "title": "Check before you believe",
+      "concept": "The real defence is checking. Cross-check a claim against a different, independent source — one that doesn't benefit from it. If you can't find the claim anywhere trustworthy, that's a red flag.",
+      "real_example": "A post says a certain food is 'poison'. You check a couple of reliable health sources — none agree. The claim doesn't survive the check, so you don't spread it.",
+      "apply_task": "Pick your most doubtful claim and check it against at least one independent source. Write what you found.",
+      "reflection_prompt": "Was the claim true, false, or somewhere in between? How hard was it to find a trustworthy check?",
+      "feedback_task": "Show your checking to an adult and ask if your source was a good, independent one.",
+      "teach_back_task": "Show someone how to cross-check a surprising claim before believing it.",
+      "ai_judgment_note": "AI can point you toward sources, but it sometimes makes things up ('hallucinates'). Always confirm with a real, findable source — don't let a confident AI answer be your only check.",
+      "assets_needed": ["Cross-check worksheet"],
+      "est_minutes": 30,
+      "success_criteria": ["At least one claim was cross-checked against an independent source."],
+      "prereq_lesson_ids": ["th-11-12-q2-l2"]
+    },
+    {
+      "id": "th-11-12-q2-l4",
+      "sequence": 4,
+      "title": "Share what you found",
+      "concept": "Put it together: present your three claims, the tricks they used, and what your checking revealed. Teaching others to spot tricks is how you protect your friends and family too — being fool-proof is more useful when it spreads.",
+      "real_example": "You show your family: 'This ad exaggerates, this headline uses fake urgency, and this so-called fact turned out to be false when I checked.' Now they're a bit harder to fool too.",
+      "apply_task": "Finish your fool-proofing breakdown of all three claims and present it to your family.",
+      "reflection_prompt": "Which of your three was the sneakiest? What will you check more carefully from now on?",
+      "feedback_task": "Ask your audience which breakdown surprised them most. Note it.",
+      "teach_back_task": "Walk a family member through all three claims and how you saw through them.",
+      "ai_judgment_note": "The judgement of what's misleading is yours, built from your own checking — that's the skill worth having. Share it in your own words.",
+      "assets_needed": ["Fool-proofing summary template"],
+      "est_minutes": 25,
+      "success_criteria": [
+        "A three-claim breakdown was completed and presented.",
+        "The child can explain the trick and the check for each."
+      ],
+      "prereq_lesson_ids": ["th-11-12-q2-l3"]
+    }
+  ]
+}

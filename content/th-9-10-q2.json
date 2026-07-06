@@ -1,0 +1,90 @@
+{
+  "id": "th-9-10-q2",
+  "title": "The Deciding Game",
+  "pillar_primary": "think",
+  "pillars_supporting": ["communicate"],
+  "age_band": "9-10",
+  "quarter": 2,
+  "developmental_frame": "At 9–10, children can compare two things but tend to decide on impulse or on a single flashy feature — the biggest, the shiniest, the one their friend picked. They're ready to learn that a choice can be made *on purpose*, by listing reasons, if the choices are concrete and real (which pet, how to spend Saturday, which project to do). Having just practised noticing in Q1, they can now notice the differences that matter between options.",
+  "authentic_value_meaning": "Value here is being a good decider — making a choice you can actually explain, instead of 'I just wanted to'. At this age it's the pride of being trusted to decide something real, and being able to give your reasons like a grown-up.",
+  "motivation_lever": {
+    "lever": "autonomy",
+    "mechanism": "The child gets to make a *real* decision that actually counts — and the deal is: you can choose, as long as you can explain why. Being genuinely trusted with a real choice is deeply motivating at this age, and the 'explain your reason' rule turns a snap judgement into real thinking without it feeling like a chore."
+  },
+  "artifact": "A real decision the child made using a good-points / not-so-good-points comparison, captured on a decision card with the final choice and the main reason for it.",
+  "success_criteria": [
+    "The child compared at least two real options side by side.",
+    "They listed good and not-so-good points for each instead of deciding on one feature.",
+    "They can explain the single reason that tipped their choice."
+  ],
+  "prereq_project_ids": ["th-9-10-q1"],
+  "lessons": [
+    {
+      "id": "th-9-10-q2-l1",
+      "sequence": 1,
+      "title": "Two choices, side by side",
+      "concept": "The first step in a good decision is putting your choices next to each other so you can really see them. It's hard to choose well when the options are jumbled in your head — line them up.",
+      "real_example": "Deciding how to spend Saturday? Write it out: 'Option A: go to the park. Option B: build a fort.' Now you can actually look at them instead of just feeling torn.",
+      "apply_task": "Think of a real choice you have this week. Write your two options side by side on a card.",
+      "reflection_prompt": "Was it easier to think once you saw both written down? Our heads get muddled; paper helps.",
+      "feedback_task": "Show your two options to a parent and check you've written them clearly.",
+      "teach_back_task": "Help a sibling line up two choices they're stuck between.",
+      "ai_judgment_note": "This is your real choice about your real life — a computer doesn't know what you'd enjoy. Line the options up yourself.",
+      "assets_needed": ["Decision card (two-option layout)"],
+      "est_minutes": 15,
+      "success_criteria": ["Two real options are written side by side."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "th-9-10-q2-l2",
+      "sequence": 2,
+      "title": "Good points and not-so-good points",
+      "concept": "Every choice has good bits and not-so-good bits. A good decider looks at *both* for each option, instead of only seeing the fun part of the one they already want.",
+      "real_example": "Park: good — fresh air, friends; not-so-good — might rain. Fort: good — cosy, creative; not-so-good — big mess to clean up. Now the choice is clearer.",
+      "apply_task": "For each of your two options, write two good points and one not-so-good point.",
+      "reflection_prompt": "Did writing the not-so-good points change how you felt about your favourite? Sometimes it does.",
+      "feedback_task": "Ask someone if they can think of a good or not-so-good point you missed.",
+      "teach_back_task": "Show a friend how to find the 'not-so-good points' of something they're excited about.",
+      "ai_judgment_note": "You know your life best — the real good and bad points come from you, not a screen. Do the thinking yourself.",
+      "assets_needed": ["Good/not-so-good points sheet"],
+      "est_minutes": 20,
+      "success_criteria": ["Both options have good and not-so-good points listed."],
+      "prereq_lesson_ids": ["th-9-10-q2-l1"]
+    },
+    {
+      "id": "th-9-10-q2-l3",
+      "sequence": 3,
+      "title": "What matters most?",
+      "concept": "Usually one thing matters most to you. Naming it helps you decide. If staying dry matters most today, that points one way; if being creative matters most, another. The deciding reason is the one you care about most.",
+      "real_example": "If you really don't want to clean up a big mess today, that one thing might tip you to the park — even if the fort sounded fun. Knowing what matters most decides it.",
+      "apply_task": "Look at your points and circle the ONE that matters most to you right now. That's your deciding reason.",
+      "reflection_prompt": "Was it easy to pick the one that matters most? Sometimes two feel equal — then you get to just choose.",
+      "feedback_task": "Tell someone your 'matters most' point and see if they understand why it's the tie-breaker for you.",
+      "teach_back_task": "Ask a family member what would matter most to *them* in your choice — notice it might be different!",
+      "ai_judgment_note": "What matters most to you is *yours* — nobody else, and no computer, can decide what you care about most.",
+      "assets_needed": ["Matters-most circle card"],
+      "est_minutes": 15,
+      "success_criteria": ["One 'matters most' reason is identified."],
+      "prereq_lesson_ids": ["th-9-10-q2-l2"]
+    },
+    {
+      "id": "th-9-10-q2-l4",
+      "sequence": 4,
+      "title": "Decide and explain",
+      "concept": "Now make your choice and say your reason out loud. 'I chose the park because staying dry mattered most today.' A decision you can explain is a good decision — even if it turns out imperfect.",
+      "real_example": "Explaining your reason is what makes you a decider, not a coin-flipper. And if it doesn't go perfectly, you'll know exactly what to think about next time.",
+      "apply_task": "Make your real choice and write (or say) your one-sentence reason on your decision card. Then actually do it!",
+      "reflection_prompt": "After doing it — was it a good choice? What did you learn for next time? (Both good and 'oops' are useful.)",
+      "feedback_task": "Tell a parent your choice and reason. Ask if your reason made sense to them.",
+      "teach_back_task": "Walk a sibling through the whole Deciding Game with a small choice of their own.",
+      "ai_judgment_note": "Owning your choice — and its reason — is the skill. It has to be your decision, made and explained by you.",
+      "assets_needed": ["Completed decision card"],
+      "est_minutes": 20,
+      "success_criteria": [
+        "A real decision was made and carried out.",
+        "The child stated a one-sentence reason for it."
+      ],
+      "prereq_lesson_ids": ["th-9-10-q2-l3"]
+    }
+  ]
+}

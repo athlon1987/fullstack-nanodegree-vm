@@ -1,0 +1,2 @@
+# Schema is law: no content file enters the app without passing validation.
+npm run validate

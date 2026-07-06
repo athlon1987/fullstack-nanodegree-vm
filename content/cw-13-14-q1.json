@@ -1,0 +1,118 @@
+{
+  "id": "cw-13-14-q1",
+  "title": "Ship a Real Micro-Offer",
+  "pillar_primary": "wealth",
+  "pillars_supporting": ["communicate", "build"],
+  "age_band": "13-14",
+  "quarter": 1,
+  "developmental_frame": "At 13–14, abstract reasoning is coming online: a teen can hold a hypothesis, test it, and revise. Peer standing is now a dominant social force — being *seen* as competent matters more than adult approval. They can handle real transactions and real rejection, and money stops being abstract. What they can't yet do reliably is sit with delayed payoff, so feedback loops must be short and visible.",
+  "authentic_value_meaning": "At this age, 'creating value' means a **real stranger voluntarily pays or opts in** — not a parent buying to be kind, not a simulation. The unit of proof is the first genuine yes from someone with no obligation to say it. Scale, margin, and branding come later; the whole quarter turns on crossing from 'imagined customer' to 'real one'.",
+  "motivation_lever": {
+    "lever": "real_stakes",
+    "mechanism": "The teen sets a public, concrete target — first RM100 (or $100) of genuine revenue, or first 20 real opt-ins — and reports progress to a small group of peers doing the same. Real money and visible peer progress do the motivating; the adult never has to nag. The stakes are small enough to be safe and real enough to sting, which is exactly the range that drives effort at this age."
+  },
+  "artifact": "A live micro-offer (product or service) with a written one-line value proposition, a price, and a record of its first real customer interactions — captured in a simple one-page 'offer sheet' plus a running tally of yeses and nos.",
+  "success_criteria": [
+    "The child can state, in one sentence, who the offer is for and what problem it solves.",
+    "At least three real people outside the family were asked to buy or opt in, and the responses (yes/no + why) are written down.",
+    "The child can explain why they set the price they set."
+  ],
+  "prereq_project_ids": [],
+  "lessons": [
+    {
+      "id": "cw-13-14-q1-l1",
+      "sequence": 1,
+      "title": "Value = someone else's problem, solved",
+      "concept": "Value isn't how hard you worked or how cool your idea is — it's whether it removes a problem *someone else* actually has. If no one has the problem, there's no value, however clever the solution.",
+      "real_example": "A 14-year-old noticed neighbours struggling to set up new phones. She didn't build an app — she offered a 30-minute 'new phone setup' visit for RM20. The problem was real and annoying enough that people paid.",
+      "apply_task": "Write down five real problems you've personally watched someone struggle with in the last month. Not global problems — small, specific, local ones. Circle the one where you could imagine helping this week.",
+      "reflection_prompt": "Which of your five is a problem *you* find interesting versus one *others* actually feel? Are they the same? If not, which should win?",
+      "feedback_task": "Read your circled problem to one person who fits the group that has it. Ask: 'Is this actually annoying to you, or only a little?' Write down their exact answer.",
+      "teach_back_task": "Explain to a younger sibling or friend, in under a minute, why a brilliant idea nobody needs is worth nothing. Use your own example.",
+      "ai_judgment_note": "Use AI to *broaden* your problem list — 'what do people my age's parents commonly find annoying about tech?' — after you've written your own five. Do NOT let it generate the list first: the point is to train your own noticing. And never let AI tell you whether a problem is real; only a real person you ask can answer that.",
+      "assets_needed": ["Problem-spotting worksheet (5 rows + circle)"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "Five real, specific, observed problems are written down.",
+        "One is circled with a reason it was chosen."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "cw-13-14-q1-l2",
+      "sequence": 2,
+      "title": "Find one real person, not an imaginary market",
+      "concept": "Beginners invent a giant 'everyone' who wants their thing. Real founders find *one* actual person first. One real yes teaches more than a thousand imagined ones.",
+      "real_example": "Before building anything, a teen selling custom study playlists messaged three classmates by name and asked if they'd use one. Two said yes, one said 'only if it's free' — which taught him his price was the problem, not his product.",
+      "apply_task": "Name three specific real people (first names, people you can actually reach) who have the problem you circled. Not 'students' — actual humans.",
+      "reflection_prompt": "Was it easy or hard to name three? If it was hard, that's a signal — maybe fewer people have this problem than you thought. What does that tell you?",
+      "feedback_task": "Message or speak to one of the three. Just describe the problem, not your solution, and ask if they recognise it. Write down whether they lit up or shrugged.",
+      "teach_back_task": "Tell a parent the difference between 'my market is teenagers' and 'my first customer is Aisha in my class', and why the second is more useful.",
+      "ai_judgment_note": "AI can help you script an opening message so you're not awkward — a fine use. But it cannot be your customer. If you catch yourself asking AI 'would people want this?' instead of asking a person, stop: you're using the machine to avoid the scary-but-essential step of talking to a human.",
+      "assets_needed": ["Named-customer worksheet (3 slots)"],
+      "est_minutes": 35,
+      "success_criteria": [
+        "Three named, reachable people are listed.",
+        "At least one was actually contacted and their reaction recorded."
+      ],
+      "prereq_lesson_ids": ["cw-13-14-q1-l1"]
+    },
+    {
+      "id": "cw-13-14-q1-l3",
+      "sequence": 3,
+      "title": "Price is a question, not a guess",
+      "concept": "A price is really a question you ask the market: 'is it worth this to you?' A 'no' isn't failure — it's an answer that tells you where the real line is.",
+      "real_example": "The phone-setup teen first said RM10, and everyone said yes instantly — which meant it was too cheap. She raised it to RM25; some said no, most still said yes. The 'some no' is how she knew she'd found roughly the right number.",
+      "apply_task": "Pick a starting price for your offer and write one sentence on why. Then write the price you'd raise to if the first three people all say yes too easily.",
+      "reflection_prompt": "How did it feel to attach a number to your own work? If it felt too high, is that the price talking or your nerves talking?",
+      "feedback_task": "Say your price out loud to one person in your target group and watch their face before they answer. Note the reaction — the pause before 'yes' is data.",
+      "teach_back_task": "Explain to someone why a price that everyone accepts instantly might actually be a mistake.",
+      "ai_judgment_note": "Ask AI how similar things are priced to get a rough range — useful reference. Then ignore it if your real three people tell you something different. The people paying always outrank the model guessing.",
+      "assets_needed": ["Pricing worksheet (start price + raise-to price)"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "A starting price and a reason are written down.",
+        "The price was said to at least one real person and their reaction noted."
+      ],
+      "prereq_lesson_ids": ["cw-13-14-q1-l2"]
+    },
+    {
+      "id": "cw-13-14-q1-l4",
+      "sequence": 4,
+      "title": "The one-line offer",
+      "concept": "If you can't say what you do in one sentence, the customer can't either — and a confused customer never buys. The offer sentence is: I help [who] do [what] so they [benefit].",
+      "real_example": "'I help busy neighbours set up a new phone in 30 minutes so they don't lose their photos or spend a whole afternoon.' One sentence, and the buyer instantly knows if it's for them.",
+      "apply_task": "Write your offer in that exact template. Then cut every word that isn't doing work. Read it aloud — if you stumble, it's not clean yet.",
+      "reflection_prompt": "Which was harder to pin down — the *who*, the *what*, or the *benefit*? The hard one is usually the part of your idea that's still fuzzy.",
+      "feedback_task": "Show the sentence to two people. Ask each to tell you, in their words, what you're offering. If they get it wrong, the sentence — not the listener — needs fixing.",
+      "teach_back_task": "Help a friend write *their* one-line offer using the template. Teaching the format is the fastest way to own it.",
+      "ai_judgment_note": "This is a good place to let AI give you five rewrites of your sentence to react against — it's a sharp editor. But you must choose and finalise the line yourself, out loud, in your own voice. If the sentence sounds like a robot wrote it, your customer will feel it.",
+      "assets_needed": ["Offer-sheet template (one page)"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "A single-sentence offer exists in the who/what/benefit format.",
+        "Two people were able to correctly restate it back."
+      ],
+      "prereq_lesson_ids": ["cw-13-14-q1-l3"]
+    },
+    {
+      "id": "cw-13-14-q1-l5",
+      "sequence": 5,
+      "title": "The first real ask",
+      "concept": "Everything so far was preparation. The venture becomes real the moment you ask someone to actually say yes and pay or commit. Rejection here is the tuition — every no carries a reason you can use.",
+      "real_example": "A teen selling handmade bracelets got four nos before the first yes. The nos weren't random: three said 'too expensive', so she offered a two-for-one and the yeses started. The rejections wrote her next move.",
+      "apply_task": "Make your first three real asks this week. Record each as: who, yes/no, and the reason they gave. Aim for the first genuine yes.",
+      "reflection_prompt": "What did the nos have in common? A pattern in your nos is more valuable than a lucky yes — what is yours telling you to change?",
+      "feedback_task": "Bring your yes/no tally to your peer group or mentor. Together, name the single change most likely to turn the next no into a yes.",
+      "teach_back_task": "Tell someone the story of your first no and what it taught you. Framing rejection as information — not failure — is the skill you're really building.",
+      "ai_judgment_note": "Use AI afterward to help you spot patterns across your nos if you're stuck. Do NOT use it to avoid making the asks — no model can make the first real ask for you, and that discomfort is the whole point of the quarter.",
+      "assets_needed": ["Yes/No tally sheet (who / result / reason)"],
+      "est_minutes": 45,
+      "success_criteria": [
+        "At least three real asks were made and logged with reasons.",
+        "The child can name one pattern in the responses and one change they'll make next."
+      ],
+      "prereq_lesson_ids": ["cw-13-14-q1-l4"]
+    }
+  ]
+}

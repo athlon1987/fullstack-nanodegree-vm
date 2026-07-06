@@ -1,0 +1,90 @@
+{
+  "id": "th-11-12-q4",
+  "title": "Plan the Launch",
+  "pillar_primary": "think",
+  "pillars_supporting": ["wealth", "communicate"],
+  "age_band": "11-12",
+  "quarter": 4,
+  "developmental_frame": "This is the year's capstone, and Think leads it: a real mini-launch to genuine customers. At 11–12 a child can plan it using evidence from their own research (Q3), make reasoned decisions (Q2), and break a real project into ordered steps. Grounding a launch in what they actually found out about customers — rather than hope — is a major, real-world milestone. Keep the scope small, safe, and adult-supported throughout.",
+  "authentic_value_meaning": "Value here is being the strategist of a real launch — using evidence, not wishful thinking, to decide what to sell, to whom, where, and how. It's every thinking skill from two years pointed at one genuine question: how do we make this actually work?",
+  "motivation_lever": {
+    "lever": "autonomy",
+    "mechanism": "The child owns the plan for a real launch that real customers will attend or buy from. Being genuinely in charge of a strategy — one grounded in their own research and judged by real results — is deeply motivating at this age. The launch is real, the responsibility is theirs, and that pulls out serious, evidence-based thinking."
+  },
+  "artifact": "A launch plan grounded in research: what to launch, the target customer (from real data), where and when, an ordered step plan, and a clear measurable goal (e.g., 10 real customers or RM50 profit).",
+  "success_criteria": [
+    "The choice of what to launch is justified by research, not just a hunch.",
+    "There is a specific target customer and a measurable goal.",
+    "The plan has ordered steps and a set launch date agreed with an adult."
+  ],
+  "prereq_project_ids": ["th-11-12-q3"],
+  "lessons": [
+    {
+      "id": "th-11-12-q4-l1",
+      "sequence": 1,
+      "title": "Decide what to launch",
+      "concept": "Use your research to choose what to launch. The whole point of Q3 was evidence about what people want — now you spend it. Pick the thing your data says real customers will actually pay for, not just the thing you feel like making.",
+      "real_example": "Your research found most classmates want spicy snacks and would pay RM2. So you launch a spicy-snack stall — a choice backed by evidence, far safer than guessing they'd want something.",
+      "apply_task": "Using your research findings, decide what you will launch. Write one sentence linking your choice to the evidence.",
+      "reflection_prompt": "Is your choice driven by your data or by what you personally fancy making? Let the evidence win.",
+      "feedback_task": "Explain your choice and its evidence to a parent — does the launch idea follow from your research?",
+      "teach_back_task": "Show someone how you used real research to pick what to launch.",
+      "ai_judgment_note": "This decision rests on your real data about your real community — yours to make. AI can't know what your customers said; only your research can.",
+      "assets_needed": ["Launch-choice card (idea + evidence)"],
+      "est_minutes": 20,
+      "success_criteria": ["A launch idea is chosen and justified by research."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "th-11-12-q4-l2",
+      "sequence": 2,
+      "title": "Who's it for, and what's the goal?",
+      "concept": "Name your target customer (from your research) and set one measurable goal for the launch — a number you can check afterward. A goal turns a vague hope into something you can actually hit or miss and learn from.",
+      "real_example": "Target: kids in my year who buy snacks at break. Goal: sell to 10 real customers and make RM20 profit on launch day. Now success is a clear number, not a feeling.",
+      "apply_task": "Write your target customer and one measurable goal for the launch (customers, sales, or profit).",
+      "reflection_prompt": "Is your goal ambitious but reachable? Too easy teaches nothing; impossible just disheartens.",
+      "feedback_task": "Check your goal with a parent or mentor — is it realistic for a first launch?",
+      "teach_back_task": "Explain to someone why a measurable goal beats 'I hope it goes well'.",
+      "ai_judgment_note": "Your target customer comes from your research; your goal is your judgement about what's reachable. Both are yours — set them honestly.",
+      "assets_needed": ["Target + goal card"],
+      "est_minutes": 20,
+      "success_criteria": ["A specific target customer and a measurable goal are set."],
+      "prereq_lesson_ids": ["th-11-12-q4-l1"]
+    },
+    {
+      "id": "th-11-12-q4-l3",
+      "sequence": 3,
+      "title": "Where, when, and how",
+      "concept": "Decide the launch setting — a safe pop-up (a school fair, a community table) or a small, adult-supervised online drop. Every launch needs a real place and time, and at your age it needs an adult in the loop for safety.",
+      "real_example": "You and a parent decide: a stall at the school open day next Saturday. Real place, real date, adult present. That's a launch that can actually happen safely.",
+      "apply_task": "With an adult, choose a safe launch setting, place, and date. Write them into your plan.",
+      "reflection_prompt": "Is your setting somewhere your target customer will actually be? Right product, wrong place still fails.",
+      "feedback_task": "Confirm the setting and safety plan with a parent before going further.",
+      "teach_back_task": "Explain to someone why the launch setting has to match where your customers are.",
+      "ai_judgment_note": "Anything public or online needs a real adult's approval and involvement — that's a safety judgement no tool makes for you. Keep an adult in the loop.",
+      "assets_needed": ["Launch-setting plan card"],
+      "est_minutes": 20,
+      "success_criteria": ["A safe, adult-approved launch setting, place, and date are decided."],
+      "prereq_lesson_ids": ["th-11-12-q4-l2"]
+    },
+    {
+      "id": "th-11-12-q4-l4",
+      "sequence": 4,
+      "title": "Build the step plan and get buy-in",
+      "concept": "Turn the whole launch into an ordered step plan — what the three other tracks (promote, build, sell) each need to do and by when. Then present it to your family or mentor for buy-in. Now the launch is real and the other three parts can begin.",
+      "real_example": "Your plan: this week — build the product and write the promo; next week — rehearse the pitch and promote; launch day — run the stall and track sales. Everyone knows their part.",
+      "apply_task": "Break the launch into ordered steps across the four tracks. Present the full plan and confirm the date.",
+      "reflection_prompt": "Does your plan connect all four pillars into one launch? That's the whole two years coming together.",
+      "feedback_task": "Present the plan to family/mentor and ask what you have missed or scheduled too late.",
+      "teach_back_task": "Walk someone through your entire launch plan as if recruiting them to help.",
+      "ai_judgment_note": "Sequencing your own launch is the strategic thinking that matters here — do it yourself. An adult helps with timing and safety, since they know the real-world constraints.",
+      "assets_needed": ["Launch step-plan sheet"],
+      "est_minutes": 25,
+      "success_criteria": [
+        "An ordered step plan across all four tracks exists.",
+        "The plan was presented and the launch date confirmed."
+      ],
+      "prereq_lesson_ids": ["th-11-12-q4-l3"]
+    }
+  ]
+}

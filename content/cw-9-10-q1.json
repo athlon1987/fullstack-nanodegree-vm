@@ -1,0 +1,90 @@
+{
+  "id": "cw-9-10-q1",
+  "title": "Make and Share",
+  "pillar_primary": "wealth",
+  "pillars_supporting": ["build", "communicate"],
+  "age_band": "9-10",
+  "quarter": 1,
+  "developmental_frame": "At 9–10, money is barely abstract and profit means little — but the idea that you can make something real that another person genuinely *wants* is powerful and graspable. A 'mini-business' at this age is very simple: handmade cards, a helper coupon, a small treat. The reward isn't earnings; it's the discovery that making something good and offering it can lead to a real 'yes, please' or 'thank you'. Keep any money tiny and the loop short.",
+  "authentic_value_meaning": "Value here means a real person *chooses* to have the thing you made — a genuine 'yes' or a delighted 'thank you', not just a grown-up being kind. It's the very first taste of creating something others actually want, which is the seed of every business.",
+  "motivation_lever": {
+    "lever": "real_stakes",
+    "mechanism": "The child makes something small and real, then offers it to a real person and finds out if they truly want it. Even without money, a real person choosing your thing feels different from pretend play — it's a small, safe, genuine stake. Landing that first honest 'yes' is a memorable milestone that makes them want to make the next thing."
+  },
+  "artifact": "One small thing made and offered to a real person, with the honest response recorded (a genuine yes/thank-you, or a no with its reason).",
+  "success_criteria": [
+    "The child made something real to offer.",
+    "They offered it to a real person outside their own household or immediate family.",
+    "They can say, in the person's own words, why the answer was yes or no."
+  ],
+  "prereq_project_ids": [],
+  "lessons": [
+    {
+      "id": "cw-9-10-q1-l1",
+      "sequence": 1,
+      "title": "What would make someone happy?",
+      "concept": "To make something people want, first notice what would make a real person happy. Watch and listen — what does someone near you enjoy, need, or wish for?",
+      "real_example": "A girl noticed her neighbour loved her garden but had no plant labels. Little painted labels were a perfect gift — because she spotted what would make *that* person happy.",
+      "apply_task": "Think of one real person and write down two things that might make them happy that you could make or do. Pick one.",
+      "reflection_prompt": "Did you pick something *they'd* like, or something *you'd* like to make? The best pick is a bit of both.",
+      "feedback_task": "If you can, gently ask that person (or someone who knows them) what they enjoy. Adjust your idea.",
+      "teach_back_task": "Help a sibling think of something that would make a specific family member happy.",
+      "ai_judgment_note": "A computer can't see who's around you or what they'd love. This noticing is yours — it's the real skill.",
+      "assets_needed": ["Who-would-love-this card"],
+      "est_minutes": 20,
+      "success_criteria": ["One idea is chosen based on what a real, specific person would want."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "cw-9-10-q1-l2",
+      "sequence": 2,
+      "title": "Make one good one",
+      "concept": "Make *one* really good version, not lots of rushed ones. A good thing earns a real 'yes'. A sloppy thing, however many you make, earns polite nos.",
+      "real_example": "One beautifully painted plant label makes the neighbour say 'oh, I'd love some!' Ten smudged ones don't. Quality does the asking for you.",
+      "apply_task": "Make one really good version of your thing. Take your time and make it something you'd be proud to give.",
+      "reflection_prompt": "Would you be happy to receive this yourself? If not, what would make it better?",
+      "feedback_task": "Show your one good version to someone honest and improve it once based on what they say.",
+      "teach_back_task": "Explain to a friend why one good one beats ten rushed ones.",
+      "ai_judgment_note": "The making is yours to do well. If it's something on a screen, you should still understand and control how it's made — don't hand the whole job to a computer.",
+      "assets_needed": ["Proud-to-give checklist"],
+      "est_minutes": 35,
+      "success_criteria": ["One good version exists, improved once after honest feedback."],
+      "prereq_lesson_ids": ["cw-9-10-q1-l1"]
+    },
+    {
+      "id": "cw-9-10-q1-l3",
+      "sequence": 3,
+      "title": "Offer it for real",
+      "concept": "The big moment: actually offer your thing to a real person and ask if they'd like it. Whether it's a gift or a small trade, a real person really choosing is what makes it count.",
+      "real_example": "The girl knocked on the neighbour's door: 'I made these plant labels — would you like some?' The neighbour's happy 'yes please!' was the whole reward.",
+      "apply_task": "Offer your thing to a real person (beyond your own home). Ask kindly if they'd like it. Notice their honest reaction.",
+      "reflection_prompt": "How did it feel to offer something you made? A little nervous? That nervous-brave feeling is part of it.",
+      "feedback_task": "Notice exactly what they said and did. Write it down — those real words are gold.",
+      "teach_back_task": "Tell a family member about your offer and how you asked, so they could try it too.",
+      "ai_judgment_note": "No device can make the offer for you — the little bit of bravery in asking a real person is exactly what you're practising.",
+      "assets_needed": ["Offer record card (who / their reaction)"],
+      "est_minutes": 25,
+      "success_criteria": ["The thing was genuinely offered to a real person and their reaction noted."],
+      "prereq_lesson_ids": ["cw-9-10-q1-l2"]
+    },
+    {
+      "id": "cw-9-10-q1-l4",
+      "sequence": 4,
+      "title": "What happened?",
+      "concept": "Look at what happened. A 'yes' or 'thank you' means you made something wanted — brilliant. A 'no' isn't bad; it usually comes with a reason that helps you make something even better next time.",
+      "real_example": "If someone says 'no thanks, I don't have plants', that's not a fail — it tells you to offer plant labels to gardeners next time. The no taught you who to ask.",
+      "apply_task": "Write down what happened and why. If it was a yes, what made them happy? If a no, what was their reason?",
+      "reflection_prompt": "What's the one thing you learned that would make your next 'make and share' go better?",
+      "feedback_task": "Talk it over with a parent: what would you make, or who would you offer to, next time?",
+      "teach_back_task": "Tell someone the story of your make-and-share and the one thing it taught you.",
+      "ai_judgment_note": "Afterward, if you're puzzling over a 'no', you could talk it through with an adult or even AI — but the real lesson came from the real person, and that's what counts most.",
+      "assets_needed": ["What-I-learned card"],
+      "est_minutes": 20,
+      "success_criteria": [
+        "The outcome and its reason are recorded in the person's own words.",
+        "The child named one thing to do differently next time."
+      ],
+      "prereq_lesson_ids": ["cw-9-10-q1-l3"]
+    }
+  ]
+}

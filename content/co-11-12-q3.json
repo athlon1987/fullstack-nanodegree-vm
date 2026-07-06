@@ -1,0 +1,90 @@
+{
+  "id": "co-11-12-q3",
+  "title": "Pitch It",
+  "pillar_primary": "communicate",
+  "pillars_supporting": ["think"],
+  "age_band": "11-12",
+  "quarter": 3,
+  "developmental_frame": "At 11–12, children can prepare and deliver a short spoken pitch to a small group, with a hook, a clear core message, and basic handling of questions. This steps up from Q2's written persuasion to live, on-your-feet persuasion in front of several people — where nerves are real and rehearsal genuinely helps. It directly prepares them to pitch their year-end launch.",
+  "authentic_value_meaning": "Value here is winning a room — getting a group interested in and on board with your idea, live and in person. It's a high-stakes, high-status skill at this age: the ability to stand up, say something well, and have people lean in.",
+  "motivation_lever": {
+    "lever": "real_audience",
+    "mechanism": "The child delivers a real pitch to a real small group and feels the room respond. Standing up in front of peers or family and landing it carries real weight at this age — a successful pitch feels like a genuine win, and that pull makes the rehearsal and nerves worth pushing through."
+  },
+  "artifact": "A short pitch (about 60–90 seconds) delivered live to a real small group, with a strong hook, one clear message, and at least one audience question handled.",
+  "success_criteria": [
+    "The pitch opens with a hook that grabs attention in the first line.",
+    "It has one clear message the audience could repeat afterward.",
+    "The child delivered it live and handled at least one real question."
+  ],
+  "prereq_project_ids": ["co-11-12-q2"],
+  "lessons": [
+    {
+      "id": "co-11-12-q3-l1",
+      "sequence": 1,
+      "title": "The hook",
+      "concept": "You have about five seconds before a group tunes out. A hook — a surprising fact, a question, a bold claim — buys their attention. Open strong, or the best pitch in the world goes unheard.",
+      "real_example": "'What if I told you our class wastes 200 sheets of paper a week?' grabs everyone. 'Um, so, I want to talk about paper…' loses them instantly. Same topic, totally different opening.",
+      "apply_task": "Pick something you want to pitch. Write three possible hooks, then choose the strongest.",
+      "reflection_prompt": "Which hook would make *you* look up if you were half-listening? That's your winner.",
+      "feedback_task": "Try your top hook on someone and watch — did they actually look up?",
+      "teach_back_task": "Help a friend write a hook for something they want to pitch.",
+      "ai_judgment_note": "AI can brainstorm hook ideas, but pick and shape the one that fits your real idea and your voice — a hook you don't believe falls flat when you say it.",
+      "assets_needed": ["Hook-writing card (3 options)"],
+      "est_minutes": 20,
+      "success_criteria": ["A strong opening hook is chosen from several options."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "co-11-12-q3-l2",
+      "sequence": 2,
+      "title": "One clear message",
+      "concept": "A pitch isn't everything you know — it's *one* thing you want them to remember or do. Pick your single core message and build the whole pitch around it. If the audience leaves remembering one sentence, what should it be?",
+      "real_example": "Core message: 'Let's put a paper-recycling box in every classroom.' Everything else in the pitch supports that one idea. Clear and repeatable.",
+      "apply_task": "Write your one core message in a single sentence. Then note two quick points that support it.",
+      "reflection_prompt": "If your audience forgot everything but one sentence, is your core message the one they'd keep?",
+      "feedback_task": "Say your message to someone and, a minute later, ask them to repeat it. Did it stick?",
+      "teach_back_task": "Show someone why a pitch needs one core message, not ten.",
+      "ai_judgment_note": "AI can help you tighten your message to one line, but the idea and the two supporting points should be yours and true — you have to defend them live.",
+      "assets_needed": ["Core-message + support card"],
+      "est_minutes": 20,
+      "success_criteria": ["One clear core message and two supporting points are written."],
+      "prereq_lesson_ids": ["co-11-12-q3-l1"]
+    },
+    {
+      "id": "co-11-12-q3-l3",
+      "sequence": 3,
+      "title": "Handle questions",
+      "concept": "After a pitch, people ask things — and how you handle it matters as much as the pitch. Listen fully, don't panic, and it's fine to say 'good question' and think for a second. Honest answers beat bluffing.",
+      "real_example": "'Who empties the recycling boxes?' You don't have a perfect answer, so you say: 'Good question — I'd suggest a class rota; I can work out the details.' Calm and honest wins trust.",
+      "apply_task": "Guess the three hardest questions your pitch might get. Write a calm, honest answer for each.",
+      "reflection_prompt": "Which question worried you most? Preparing it turns a scary moment into an easy one.",
+      "feedback_task": "Have someone fire your three questions (and a surprise one) at you. Practise staying calm.",
+      "teach_back_task": "Show a friend the trick of 'listen, pause, answer honestly' for tough questions.",
+      "ai_judgment_note": "AI can help you anticipate questions — useful prep. But answer honestly in the moment; if you don't know, saying so is stronger than a confident bluff.",
+      "assets_needed": ["Anticipated-questions sheet"],
+      "est_minutes": 20,
+      "success_criteria": ["Three likely questions are anticipated with prepared honest answers."],
+      "prereq_lesson_ids": ["co-11-12-q3-l2"]
+    },
+    {
+      "id": "co-11-12-q3-l4",
+      "sequence": 4,
+      "title": "Deliver it live",
+      "concept": "Now put it together and pitch — hook, message, support — to a real small group, then take their questions. Stand tall, speak up, use the voice and expression skills you've built. This is the whole skill, live.",
+      "real_example": "You pitch the recycling idea to your family or class, land the hook, deliver your message, and field two questions calmly. Whether they say yes or not, you *pitched* — and that's the win.",
+      "apply_task": "Deliver your pitch live to a real small group and handle at least one real question.",
+      "reflection_prompt": "How did it feel up there? What worked, and what would you tighten next time?",
+      "feedback_task": "Ask your audience: was the message clear, and was the hook strong? Note their answers.",
+      "teach_back_task": "Coach someone else through delivering a short pitch of their own.",
+      "ai_judgment_note": "Delivering live to a real group is fully human — presence, nerves, real questions. No tool stands up there for you; this one's all yours.",
+      "assets_needed": ["Pitch delivery checklist"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "The pitch was delivered live to a real group.",
+        "At least one real question was handled."
+      ],
+      "prereq_lesson_ids": ["co-11-12-q3-l3"]
+    }
+  ]
+}

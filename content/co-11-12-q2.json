@@ -1,0 +1,90 @@
+{
+  "id": "co-11-12-q2",
+  "title": "Write to Convince",
+  "pillar_primary": "communicate",
+  "pillars_supporting": ["think"],
+  "age_band": "11-12",
+  "quarter": 2,
+  "developmental_frame": "At 11–12, writing is developing fast and children hold strong opinions they're keen to defend. They can now learn to structure a persuasive piece — claim, then reasons, then evidence — and publish it somewhere real. This builds on Q1's clear spoken explaining and adds the harder discipline of persuading on paper, where you can't read the listener's face and every word has to carry itself.",
+  "authentic_value_meaning": "Value here is actually changing someone's mind or decision with your writing — a real person reads what you wrote and reconsiders, recommends, or acts. It's the first taste of influence through words that outlive the moment you speak them.",
+  "motivation_lever": {
+    "lever": "real_audience",
+    "mechanism": "The child writes a persuasive piece and publishes it to a real audience — a family chat, a class board, a note on the fridge — then sees genuine reactions. Real readers responding (agreeing, pushing back, acting on it) makes writing feel powerful rather than like homework. The stakes of a real audience sharpen every choice."
+  },
+  "artifact": "A short persuasive piece (roughly 150–250 words — a review, a recommendation, or an opinion) published to a real audience, containing a clear claim, reasons, and evidence.",
+  "success_criteria": [
+    "The piece opens with one clear claim or opinion.",
+    "It supports the claim with reasons and at least one piece of real evidence.",
+    "It was published to a real audience and the child noted the reaction."
+  ],
+  "prereq_project_ids": ["co-11-12-q1"],
+  "lessons": [
+    {
+      "id": "co-11-12-q2-l1",
+      "sequence": 1,
+      "title": "Start with your claim",
+      "concept": "Persuasive writing begins with one clear claim — the single thing you want the reader to believe or do. If your reader can't tell what you're arguing for in the first line, you've already lost them.",
+      "real_example": "'This game is the best value on the app store' is a claim. 'Some thoughts about games' is not. The claim tells the reader exactly where you're taking them.",
+      "apply_task": "Pick something you have a real opinion on (a game, book, place, idea). Write your claim in one clear sentence.",
+      "reflection_prompt": "Is your claim something people could actually disagree with? If nobody could disagree, it's not worth persuading.",
+      "feedback_task": "Show your claim to someone and ask if it's clear what you're arguing. Sharpen it if not.",
+      "teach_back_task": "Help a friend turn a vague opinion into one sharp claim.",
+      "ai_judgment_note": "The opinion must be genuinely *yours* — persuasion built on a claim you don't actually believe reads hollow. Don't let AI pick your position.",
+      "assets_needed": ["Claim-writing card"],
+      "est_minutes": 20,
+      "success_criteria": ["One clear, arguable claim is written."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "co-11-12-q2-l2",
+      "sequence": 2,
+      "title": "Back it with reasons and evidence",
+      "concept": "A claim without support is just a shout. Give two or three reasons, and back at least one with real evidence — a fact, an example, a number, a comparison. Evidence is what turns 'because I say so' into 'because look'.",
+      "real_example": "Claim: this game is great value. Reason + evidence: 'It costs RM10 but has 40 hours of levels — that's cheaper per hour than a single cinema trip.' The number makes it convincing.",
+      "apply_task": "Write two or three reasons for your claim, and add one real piece of evidence to your strongest reason.",
+      "reflection_prompt": "Which reason is strongest? Persuasive writers lead with their best, not their first.",
+      "feedback_task": "Read your reasons to someone and ask which convinced them most — and which fell flat.",
+      "teach_back_task": "Show someone the difference between a reason and actual evidence for it.",
+      "ai_judgment_note": "If you use AI to check a fact, verify it's real before you publish — putting a made-up statistic in your writing destroys your credibility. Real evidence only.",
+      "assets_needed": ["Reasons + evidence organiser"],
+      "est_minutes": 25,
+      "success_criteria": ["Two or three reasons with at least one real piece of evidence are written."],
+      "prereq_lesson_ids": ["co-11-12-q2-l1"]
+    },
+    {
+      "id": "co-11-12-q2-l3",
+      "sequence": 3,
+      "title": "Answer the other side",
+      "concept": "Strong persuasion admits the other side exists — then answers it. Naming the main objection and responding to it shows you've thought it through and makes doubters trust you more, not less.",
+      "real_example": "'Some say RM10 is too much for a phone game — but most games at that price give a few hours; this gives forty.' You raised the objection and knocked it down. Now the reader has no easy escape.",
+      "apply_task": "Write the strongest objection to your claim, then add a sentence answering it, into your piece.",
+      "reflection_prompt": "Was it uncomfortable to argue against yourself? Doing it well is what separates convincing from ranting.",
+      "feedback_task": "Ask someone who disagrees with you what their objection is. Did you already answer it? If not, add it.",
+      "teach_back_task": "Show someone why answering the other side makes an argument stronger, not weaker.",
+      "ai_judgment_note": "AI can suggest objections you hadn't thought of — a genuinely useful sparring partner here. But you decide which are real and how to answer them honestly.",
+      "assets_needed": ["Objection + answer card"],
+      "est_minutes": 20,
+      "success_criteria": ["The main objection is named and answered within the piece."],
+      "prereq_lesson_ids": ["co-11-12-q2-l2"]
+    },
+    {
+      "id": "co-11-12-q2-l4",
+      "sequence": 4,
+      "title": "Publish and see the reaction",
+      "concept": "Finish, polish, and publish to a real audience — a family group, a class board, a note somewhere people will read it. Then watch what happens. Real reactions are the truest feedback a writer gets.",
+      "real_example": "You post your game review in the family chat and your cousin actually buys the game because of it. That's persuasion working — your words changed a real decision.",
+      "apply_task": "Polish your piece and publish it somewhere real. Note who read it and how they reacted.",
+      "reflection_prompt": "Did anyone agree, disagree, or act on it? What in your writing seemed to land hardest?",
+      "feedback_task": "Ask one reader what convinced them most and what they'd push back on. Keep it for next time.",
+      "teach_back_task": "Tell someone the story of publishing your piece and the reaction it got.",
+      "ai_judgment_note": "AI can help you fix spelling and flow before publishing, but the argument and voice must stay yours — readers can feel when writing isn't really a person's. Keep it sounding like you.",
+      "assets_needed": ["Publish + reaction log"],
+      "est_minutes": 25,
+      "success_criteria": [
+        "The piece was published to a real audience.",
+        "The child recorded real reader reactions."
+      ],
+      "prereq_lesson_ids": ["co-11-12-q2-l3"]
+    }
+  ]
+}

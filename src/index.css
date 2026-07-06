@@ -1,0 +1,69 @@
+@import 'tailwindcss';
+
+/* Markdown rendering defaults for long-form content fields. Tailwind v4's reset
+   strips list/heading styling, so restore what Markdown needs inside .md blocks. */
+.md {
+  line-height: 1.65;
+}
+.md > * + * {
+  margin-top: 0.75em;
+}
+.md h1,
+.md h2,
+.md h3 {
+  font-weight: 700;
+  line-height: 1.3;
+}
+.md h1 {
+  font-size: 1.25rem;
+}
+.md h2 {
+  font-size: 1.15rem;
+}
+.md h3 {
+  font-size: 1.05rem;
+}
+.md ul {
+  list-style: disc;
+  padding-left: 1.4em;
+}
+.md ol {
+  list-style: decimal;
+  padding-left: 1.4em;
+}
+.md li + li {
+  margin-top: 0.25em;
+}
+.md a {
+  color: #4f46e5;
+  text-decoration: underline;
+}
+.md strong {
+  font-weight: 700;
+}
+.md em {
+  font-style: italic;
+}
+.md code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9em;
+  background: rgba(99, 102, 241, 0.12);
+  padding: 0.1em 0.35em;
+  border-radius: 0.3em;
+}
+.md blockquote {
+  border-left: 3px solid #c7d2fe;
+  padding-left: 0.9em;
+  color: #475569;
+  font-style: italic;
+}
+.md table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.md th,
+.md td {
+  border: 1px solid #e2e8f0;
+  padding: 0.4em 0.6em;
+  text-align: left;
+}

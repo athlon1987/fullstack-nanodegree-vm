@@ -1,0 +1,90 @@
+{
+  "id": "cw-11-12-q1",
+  "title": "Your First Real Yes",
+  "pillar_primary": "wealth",
+  "pillars_supporting": ["build", "communicate"],
+  "age_band": "11-12",
+  "quarter": 1,
+  "developmental_frame": "At 11–12, money is becoming real but is still often secondary to the pride of *making something people want*. A child this age can make one good thing and offer it, but handling many customers, real pricing strategy, or rejection from strangers is a stretch — the first 'yes' often comes from someone they know, and that's developmentally right. Keep stakes tiny and real, and keep the loop short so the yes arrives quickly.",
+  "authentic_value_meaning": "Value at this age means someone *chooses* to have the thing you made — a real, voluntary yes, even from a neighbour or aunt, as long as it isn't just to be kind. The lesson isn't profit; it's the discovery that making something good and offering it can lead to a genuine 'yes, I'd like that'.",
+  "motivation_lever": {
+    "lever": "real_stakes",
+    "mechanism": "The child makes one real thing (a baked treat, a small craft, a simple helper service) and aims for one honest yes from a real person. The stakes are small but real — a real person really deciding — which feels different from pretend play. Landing the first genuine yes is a memorable, motivating milestone at this age."
+  },
+  "artifact": "One real thing made or one real service offered, plus a record of the first genuine yes (who, what they said) and any nos with their reasons.",
+  "success_criteria": [
+    "The child made or prepared something real to offer.",
+    "They made a real ask to at least one person outside the immediate household.",
+    "They can say why the person said yes or no, in the person's own words."
+  ],
+  "prereq_project_ids": [],
+  "lessons": [
+    {
+      "id": "cw-11-12-q1-l1",
+      "sequence": 1,
+      "title": "What do people around you actually want?",
+      "concept": "You can only sell or give something people actually want. So start by *noticing* — what do the people near you wish they had, or wish was easier?",
+      "real_example": "A kid noticed her neighbours' plants dying while they were at work. 'I'll water your plants for RM5 a week' was an offer people actually wanted — because she spotted a real wish first.",
+      "apply_task": "Watch the people around you for a day. Write down three things they seem to want or find annoying. Circle one you could help with.",
+      "reflection_prompt": "Is the thing you circled something *they* want, or something *you'd* enjoy making? The best ideas are both — but their want has to be real.",
+      "feedback_task": "Ask the person: 'Would something like this be useful to you?' Write down their actual words.",
+      "teach_back_task": "Explain to a sibling why you should find out what people want *before* making something.",
+      "ai_judgment_note": "AI can help you think of ideas after you've watched real people — but it can't see your neighbours. The noticing has to be yours; that's the actual skill.",
+      "assets_needed": ["Noticing worksheet (3 wants + circle)"],
+      "est_minutes": 25,
+      "success_criteria": ["Three real wants are noted and one is chosen based on a real person's want."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "cw-11-12-q1-l2",
+      "sequence": 2,
+      "title": "Make one good one",
+      "concept": "Beginners rush to make ten of something and they're all a bit rubbish. Make *one*, and make it genuinely good. One good thing earns a yes; ten rushed ones earn nos.",
+      "real_example": "A boy selling friendship bracelets made one beautiful sample first. People saw the good one and *then* ordered — the quality did the selling.",
+      "apply_task": "Make one really good version of your thing (or plan your service carefully). Take your time; this one has to be good enough to earn a yes.",
+      "reflection_prompt": "Would *you* say yes to your own thing? If not, what needs to be better before you offer it?",
+      "feedback_task": "Show your one good version to someone honest and ask what would make it better. Improve it once.",
+      "teach_back_task": "Tell a friend why 'one good one' beats 'ten rushed ones'.",
+      "ai_judgment_note": "If your thing is digital, AI might help you make it — but you must be able to make it good *and* understand it. For a hands-made thing, the craft is yours; don't fake quality you didn't build.",
+      "assets_needed": ["Quality checklist card"],
+      "est_minutes": 40,
+      "success_criteria": ["One genuinely good version exists, improved at least once after feedback."],
+      "prereq_lesson_ids": ["cw-11-12-q1-l1"]
+    },
+    {
+      "id": "cw-11-12-q1-l3",
+      "sequence": 3,
+      "title": "What's it worth?",
+      "concept": "A price (or a trade) is you saying what your thing is worth. Too cheap and it feels worthless; too dear and people say no. You're looking for a fair number that feels right to both sides.",
+      "real_example": "The plant-watering kid started at RM2 and everyone said yes instantly — too cheap. At RM5, people still said yes, and she earned more for the same work. The price was a question she tested.",
+      "apply_task": "Decide a fair price or trade for your thing and write one sentence on why. Think about the time and materials it took.",
+      "reflection_prompt": "Does your price feel a little scary to say out loud? A price that feels slightly bold is often about right.",
+      "feedback_task": "Say your price to one person and watch their reaction before they answer. Note whether they blinked.",
+      "teach_back_task": "Explain to someone why a price that everyone accepts instantly might be too low.",
+      "ai_judgment_note": "AI can tell you what similar things cost, as a rough guide. But the fair price depends on your effort and your real people — trust what they show you over what the model guesses.",
+      "assets_needed": ["Simple pricing worksheet"],
+      "est_minutes": 25,
+      "success_criteria": ["A price or trade is set with a stated reason."],
+      "prereq_lesson_ids": ["cw-11-12-q1-l2"]
+    },
+    {
+      "id": "cw-11-12-q1-l4",
+      "sequence": 4,
+      "title": "The first ask",
+      "concept": "Everything so far was getting ready. It becomes real when you actually ask someone: 'Would you like this?' A yes is exciting; a no isn't failure — it usually comes with a reason you can learn from.",
+      "real_example": "A girl selling cookies heard 'no thanks, I don't like chocolate' — so her next batch had a plain option, and that person bought. The no taught her the fix.",
+      "apply_task": "Make your real ask to at least one person outside your home. Write down what they said — yes or no — and their reason.",
+      "reflection_prompt": "How did asking feel? If a no stung, remember: it's information, not a verdict on you. What did it teach you?",
+      "feedback_task": "Share your yes/no and the reason with a parent or mentor, and decide together one thing to try differently next time.",
+      "teach_back_task": "Tell someone the story of your first ask — the yes or the no — and what you learned from it.",
+      "ai_judgment_note": "No tool can make the ask for you, and that's the point — the small nervousness of a real ask is exactly the thing you're practising. Use AI only afterward, to help think through what a no was telling you.",
+      "assets_needed": ["First-ask record card (who / yes-no / reason)"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "A real ask was made to someone outside the household.",
+        "The response and its reason were recorded, and one next step was chosen."
+      ],
+      "prereq_lesson_ids": ["cw-11-12-q1-l3"]
+    }
+  ]
+}

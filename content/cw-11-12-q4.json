@@ -1,0 +1,90 @@
+{
+  "id": "cw-11-12-q4",
+  "title": "Run the Launch",
+  "pillar_primary": "wealth",
+  "pillars_supporting": ["communicate", "think"],
+  "age_band": "11-12",
+  "quarter": 4,
+  "developmental_frame": "In the capstone, Wealth runs the live launch. At 11–12 a child can bring together pricing (Q1), profit (Q2), and getting customers (Q3) in one real event: set the price, sell to real people including new ones, track the full revenue-cost-profit picture, and measure against the goal. As the final project of the young cohort, it closes with a reflection on the whole two-year journey from 'make and share' to 'run a launch'.",
+  "authentic_value_meaning": "Value here is running a genuine launch — hitting the goal (or learning exactly why not) and knowing the real profit. It's the complete wealth arc made real: price, sell, reach new customers, and read the true numbers, all in one day that the whole two years built toward.",
+  "motivation_lever": {
+    "lever": "real_stakes",
+    "mechanism": "The child runs a real launch with real customers, real money, and a real goal to hit. The stakes are exciting and safe: an actual till, actual new customers won by their promotion, an actual profit to calculate. Nothing makes two years of wealth lessons click like a live launch with a scoreboard at the end."
+  },
+  "artifact": "The launch run with real sales (including new customers), a full revenue-cost-profit calculation measured against the goal, and a written reflection on the two-year journey.",
+  "success_criteria": [
+    "The child set a price and ran a real launch to real customers.",
+    "They tracked revenue, costs, and profit, and compared the result to their goal.",
+    "They reflected on their growth across the whole 9–12 journey."
+  ],
+  "prereq_project_ids": ["cw-11-12-q3", "th-11-12-q4"],
+  "lessons": [
+    {
+      "id": "cw-11-12-q4-l1",
+      "sequence": 1,
+      "title": "Set price and confirm the goal",
+      "concept": "Set your launch price using everything you know — it must cover costs and leave real profit (Q2), while staying fair to customers (Q1). Then confirm your measurable goal so you'll know, by day's end, whether you hit it.",
+      "real_example": "Snacks cost RM0.80 each to make; you price at RM2, leaving RM1.20 profit each. Goal: 10 sold = RM12 profit. Price set, goal locked, scoreboard ready.",
+      "apply_task": "Set your final price (covering costs plus profit) and write your target number for the day.",
+      "reflection_prompt": "Does your price leave real profit after all costs? Recheck against your Q2 profit thinking.",
+      "feedback_task": "Confirm your price and goal with a parent or mentor before launch.",
+      "teach_back_task": "Explain to someone how you set a price that's both fair and profitable.",
+      "ai_judgment_note": "Your price rests on your real costs and customers — your judgement. Do the profit maths yourself so you truly own the number.",
+      "assets_needed": ["Price + goal confirmation card"],
+      "est_minutes": 20,
+      "success_criteria": ["A profitable, fair price and a target number are set."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "cw-11-12-q4-l2",
+      "sequence": 2,
+      "title": "Run the launch",
+      "concept": "Launch day: sell to real customers, including new ones your promotion brought in. Be friendly, deliver your pitch, handle money carefully, and give every customer the quality you promised. This is the whole venture, live.",
+      "real_example": "Customers arrive — some friends, some strangers who saw your promo. You pitch, they buy, you hand over the product and the change. A real business, running, with you at the helm.",
+      "apply_task": "Run your launch: sell to real customers, use your pitch, and handle the money carefully (with adult support).",
+      "reflection_prompt": "How did it feel to sell to strangers, not just friends? What was harder or easier than expected?",
+      "feedback_task": "Notice which customers came from your promotion versus who you already knew. That tells you if marketing worked.",
+      "teach_back_task": "Tell someone the story of a sale to a brand-new customer at your launch.",
+      "ai_judgment_note": "Running a real launch with real customers and money is fully human and needs adult support for safety. This is your moment — no tool runs it for you.",
+      "assets_needed": ["Money float", "Sales record sheet"],
+      "est_minutes": 40,
+      "success_criteria": ["The launch was run and sales made to real customers, including new ones."],
+      "prereq_lesson_ids": ["cw-11-12-q4-l1"]
+    },
+    {
+      "id": "cw-11-12-q4-l3",
+      "sequence": 3,
+      "title": "Track revenue, costs, and profit",
+      "concept": "After the launch, do the full picture: total revenue in, all costs out, and real profit (revenue − costs). This is the true scoreboard of your launch — the honest number behind the busy, fun day.",
+      "real_example": "Revenue: 11 sold at RM2 = RM22. Costs: RM9 of ingredients and packaging. Real profit: RM13. Now you know exactly how the launch really did.",
+      "apply_task": "Calculate your launch's total revenue, total costs, and real profit.",
+      "reflection_prompt": "Was the real profit more or less than it felt like during the busy day? The numbers tell the truth.",
+      "feedback_task": "Show your full revenue-cost-profit calculation to a parent and check the maths.",
+      "teach_back_task": "Walk someone through your launch's real profit using your numbers.",
+      "ai_judgment_note": "Do your own launch maths — understanding your real numbers is the whole wealth skill. A tool doing it for you skips the learning.",
+      "assets_needed": ["Launch P&L sheet"],
+      "est_minutes": 20,
+      "success_criteria": ["Real revenue, costs, and profit for the launch are correctly calculated."],
+      "prereq_lesson_ids": ["cw-11-12-q4-l2"]
+    },
+    {
+      "id": "cw-11-12-q4-l4",
+      "sequence": 4,
+      "title": "Did you hit the goal? And look back",
+      "concept": "Compare your result to your goal — hit, missed, or beat it, each teaches something. Then look back across two whole years: from making and sharing at 9, to researching, building for strangers, and running a real launch now. That's a remarkable distance.",
+      "real_example": "Goal was RM12 profit; you made RM13 — beaten! And two years ago you were nervously offering a bookmark to a neighbour. Now you research, build, pitch, and launch. That growth is the real prize.",
+      "apply_task": "Compare your profit to your goal and note why. Then write your proudest moment and biggest lesson from the whole 9–12 journey.",
+      "reflection_prompt": "Across two years — thinking, communicating, building, creating value — what changed most in what you can do and dare to try?",
+      "feedback_task": "Sit with a parent or mentor and share your goal result and your two-year reflection.",
+      "teach_back_task": "Tell someone the story of your whole journey, ending with launch day.",
+      "ai_judgment_note": "Whether you hit the goal, and what you're proud of, are honestly yours to judge and tell. This is your journey — own it in your own words.",
+      "assets_needed": ["Goal-vs-result card", "Two-year reflection sheet"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "The result was compared to the goal with a reason.",
+        "The child reflected on their growth across the whole 9–12 journey."
+      ],
+      "prereq_lesson_ids": ["cw-11-12-q4-l3"]
+    }
+  ]
+}

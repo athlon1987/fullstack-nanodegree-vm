@@ -1,0 +1,90 @@
+{
+  "id": "bu-9-10-q2",
+  "title": "Fix a Real Problem",
+  "pillar_primary": "build",
+  "pillars_supporting": ["think"],
+  "age_band": "9-10",
+  "quarter": 2,
+  "developmental_frame": "At 9–10, children can spot small annoyances and are thrilled by the idea of 'inventing' a fix, but they need the problem kept small and the materials kept simple (household bits, tape, cardboard). Having practised making a thing in Q1, they now aim it at a real problem — the first taste of building *to solve*, not just to make. Keep it finishable so the 'it actually works!' moment arrives.",
+  "authentic_value_meaning": "Value here is 'I made something that fixed a real annoying thing'. It's the leap from making for fun to making that's *useful* — an invention, however humble, that genuinely helps in daily life.",
+  "motivation_lever": {
+    "lever": "mastery",
+    "mechanism": "The child becomes an inventor: they hunt down a real little annoyance at home and build a fix for it. The pull is the pride of solving a real problem with your own hands and hearing 'oh, that's clever, it actually helps!' Spotting a problem nobody bothered to fix, and fixing it, feels genuinely powerful at this age."
+  },
+  "artifact": "A simple hand-made solution to a real small problem at home (a cable tidy, a phone stand, a reminder chart, a door-stopper) that actually helps.",
+  "success_criteria": [
+    "The child identified a real, specific annoyance — not an invented one.",
+    "They built a fix from simple materials and finished it.",
+    "The fix was tried against the real problem and genuinely helped (or was improved until it did)."
+  ],
+  "prereq_project_ids": ["bu-9-10-q1"],
+  "lessons": [
+    {
+      "id": "bu-9-10-q2-l1",
+      "sequence": 1,
+      "title": "Hunt for an annoying problem",
+      "concept": "Inventors don't start with an idea — they start with a problem. Look around your home for small annoying things: tangled cables, a door that won't stay open, a lost pencil. Annoyances are invention opportunities.",
+      "real_example": "Someone got annoyed that their phone kept sliding off the table while playing music. That annoyance became the phone stand — a real invention born from a real irritation.",
+      "apply_task": "Walk around your home and list three small annoying problems. Circle the one you'd most like to fix.",
+      "reflection_prompt": "Is your circled problem small enough to fix with things you have at home? Keep it simple.",
+      "feedback_task": "Ask your family which of your three annoyances bugs *them* too. A shared annoyance is a great one to fix.",
+      "teach_back_task": "Help a sibling hunt for their own annoying-problem to fix.",
+      "ai_judgment_note": "The annoyances in *your* home are yours to spot — a computer can't walk around your house. This hunting is real-world detective work.",
+      "assets_needed": ["Problem-hunt list (3 slots)"],
+      "est_minutes": 20,
+      "success_criteria": ["Three real home annoyances are listed and one chosen."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "bu-9-10-q2-l2",
+      "sequence": 2,
+      "title": "Think of a simple fix",
+      "concept": "Now dream up a fix. It doesn't need to be fancy — the best fixes are usually simple. Sketch a couple of ideas and pick the one you could actually build with what you have.",
+      "real_example": "For the sliding phone: idea one, a blob of sticky putty; idea two, a folded cardboard stand. The cardboard one is cheap, simple, and buildable — perfect.",
+      "apply_task": "Sketch two different fixes for your problem. Pick the simplest one you can build from stuff at home.",
+      "reflection_prompt": "Why did you pick that fix over the other? Simple-and-buildable usually beats clever-but-hard.",
+      "feedback_task": "Show your two ideas to an adult and ask which they'd try first, and why.",
+      "teach_back_task": "Help a friend come up with two fixes for their problem and choose one.",
+      "ai_judgment_note": "You could ask AI for fix ideas, but try your *own* ideas first — inventing the fix is the fun, brain-stretching part, and you might surprise yourself.",
+      "assets_needed": ["Two-idea sketch sheet"],
+      "est_minutes": 20,
+      "success_criteria": ["Two fix ideas sketched, one chosen for being simple and buildable."],
+      "prereq_lesson_ids": ["bu-9-10-q2-l1"]
+    },
+    {
+      "id": "bu-9-10-q2-l3",
+      "sequence": 3,
+      "title": "Build your fix",
+      "concept": "Time to build. Gather your materials and make your fix, following your sketch. First inventions are often rough and that's fine — you just need it to work, not to be beautiful.",
+      "real_example": "The first cardboard phone stand might be a bit wobbly. Doesn't matter — if the phone stays up, it works. Wobbly-but-working is a real invention.",
+      "apply_task": "Build your fix from start to finish. If a bit doesn't work, adjust and keep going.",
+      "reflection_prompt": "What was trickier to build than you expected? That's where you learned the most.",
+      "feedback_task": "Show your built fix to someone before testing it. Ask what they think might work or not.",
+      "teach_back_task": "Explain to someone how you built your fix, step by step.",
+      "ai_judgment_note": "This is real building with real materials — hands, not screens. The making is yours, wobbles and all.",
+      "assets_needed": [],
+      "est_minutes": 35,
+      "success_criteria": ["A finished fix exists, built by the child from their chosen idea."],
+      "prereq_lesson_ids": ["bu-9-10-q2-l2"]
+    },
+    {
+      "id": "bu-9-10-q2-l4",
+      "sequence": 4,
+      "title": "Does it actually help?",
+      "concept": "The real test: does your fix solve the real problem? Try it against the actual annoyance. If it helps — you're an inventor! If not quite, tweak it until it does. Real inventors improve until it works.",
+      "real_example": "Put the phone on your stand and play music. Does it stay up now? If it tips, add a bit more support and try again. Testing against the real problem is how you know.",
+      "apply_task": "Test your fix on the real problem. Does it help? If not fully, make one improvement and test again.",
+      "reflection_prompt": "Did your fix work first time, or did it need a tweak? Most real inventions need at least one tweak.",
+      "feedback_task": "Ask your family if the annoying problem is better now. Their 'oh, that helps!' is your success.",
+      "teach_back_task": "Show someone your working fix and how you tested it against the real problem.",
+      "ai_judgment_note": "The real test is the real problem in your real home — no simulation needed. Trust what actually happens when you try it.",
+      "assets_needed": ["Test-and-improve card"],
+      "est_minutes": 20,
+      "success_criteria": [
+        "The fix was tested against the real problem.",
+        "It helped, or was improved until it did."
+      ],
+      "prereq_lesson_ids": ["bu-9-10-q2-l3"]
+    }
+  ]
+}

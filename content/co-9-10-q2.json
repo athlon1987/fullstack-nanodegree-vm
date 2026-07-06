@@ -1,0 +1,90 @@
+{
+  "id": "co-9-10-q2",
+  "title": "Ask and Listen",
+  "pillar_primary": "communicate",
+  "pillars_supporting": ["think"],
+  "age_band": "9-10",
+  "quarter": 2,
+  "developmental_frame": "At 9–10, children can ask questions but often wait to talk rather than truly listen, and their questions tend to be yes/no ones. Learning to ask an open question and actually listen to the answer is a real leap. Interviewing a real person they like — a grandparent, a neighbour, a family friend — is concrete, warm, and gives instant reward. Having learned to *tell* a story in Q1, they now learn to *draw out* someone else's.",
+  "authentic_value_meaning": "Value here is making a real person feel truly listened to, and learning something about them you never knew. At this age that connection — an older person lighting up because a child actually wanted to hear their story — is the whole reward.",
+  "motivation_lever": {
+    "lever": "belonging",
+    "mechanism": "The child interviews someone they care about and discovers a real story they'd never heard. The warm connection — someone feeling genuinely listened to, and the child feeling closer to them — is powerfully motivating at this age. It turns 'practising questions' into a real relationship moment they'll want to repeat."
+  },
+  "artifact": "A short interview of a real person: a few good questions asked, answers truly listened to, and one surprising or interesting thing learned, shared back to the family.",
+  "success_criteria": [
+    "The child asked at least two open questions (not just yes/no ones).",
+    "They listened well enough to ask a follow-up based on the answer.",
+    "They can share one thing they learned that they didn't know before."
+  ],
+  "prereq_project_ids": ["co-9-10-q1"],
+  "lessons": [
+    {
+      "id": "co-9-10-q2-l1",
+      "sequence": 1,
+      "title": "Questions that open people up",
+      "concept": "Some questions get a one-word answer ('Did you like school?' → 'Yes'). Others open people up ('What was school like when you were my age?'). Open questions start with what, how, or why and invite a real story.",
+      "real_example": "'Was your childhood fun?' gets a shrug. 'What did you do for fun when there were no phones?' gets a whole story. Same idea, very different question.",
+      "apply_task": "Write three open questions (starting with what, how, or why) for someone you'd like to interview.",
+      "reflection_prompt": "Which of your questions do you think will get the best story? Why that one?",
+      "feedback_task": "Read your questions to a parent and ask which would open *them* up most.",
+      "teach_back_task": "Help a sibling turn a yes/no question into an open one.",
+      "ai_judgment_note": "AI could suggest generic questions, but the best ones fit the real person you're interviewing — and only you know them. Write your own.",
+      "assets_needed": ["Open-question starter card (what/how/why)"],
+      "est_minutes": 20,
+      "success_criteria": ["Three open questions are written for a real person."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "co-9-10-q2-l2",
+      "sequence": 2,
+      "title": "Really listen",
+      "concept": "Listening isn't waiting for your turn to talk — it's actually taking in what the person says. Look at them, don't interrupt, and let there be little quiet gaps. Good listeners make people want to keep talking.",
+      "real_example": "You can feel the difference between someone who's really listening and someone who's just nodding while thinking about themselves. Be the first kind.",
+      "apply_task": "Practise listening with a family member for two minutes: they talk, you only listen — no interrupting. Then tell them one thing they said.",
+      "reflection_prompt": "Was it hard not to jump in? Most people find it surprisingly tricky to just listen.",
+      "feedback_task": "Ask the person: 'Did you feel listened to?' Their answer tells you how you did.",
+      "teach_back_task": "Play the two-minute listening game with a friend and swap roles.",
+      "ai_judgment_note": "Listening is a human-to-human skill — a screen can't practise it for you. This one's all about real attention to a real person.",
+      "assets_needed": [],
+      "est_minutes": 15,
+      "success_criteria": ["The child listened without interrupting and recalled what was said."],
+      "prereq_lesson_ids": ["co-9-10-q2-l1"]
+    },
+    {
+      "id": "co-9-10-q2-l3",
+      "sequence": 3,
+      "title": "Ask 'tell me more'",
+      "concept": "The magic follow-up is simple: 'tell me more' or 'why was that?' It shows you were listening and it unlocks the best part of the story — the bit that doesn't come out in the first answer.",
+      "real_example": "Grandpa says 'I had a dog named Rex.' You say 'tell me more about Rex!' — and out comes the whole adventure. The follow-up got the good stuff.",
+      "apply_task": "Do your real interview. Ask your open questions, listen, and use 'tell me more' at least twice.",
+      "reflection_prompt": "Which 'tell me more' got the best story? Following someone's answer beats sticking to your list.",
+      "feedback_task": "Notice how the person responds when you ask for more — do they light up? That's you doing it right.",
+      "teach_back_task": "Show someone the 'tell me more' trick and how it unlocks better stories.",
+      "ai_judgment_note": "Following up means responding to what the *real* person actually just said — you can only do that live, in the moment. No script or app can do it for you.",
+      "assets_needed": ["Interview record sheet"],
+      "est_minutes": 25,
+      "success_criteria": ["A real interview happened with at least two follow-up questions used."],
+      "prereq_lesson_ids": ["co-9-10-q2-l2"]
+    },
+    {
+      "id": "co-9-10-q2-l4",
+      "sequence": 4,
+      "title": "Share what you learned",
+      "concept": "Finish by sharing the best thing you learned with your family. Passing on someone's story is a kind of gift — and it makes the person you interviewed feel special.",
+      "real_example": "'Did you know Grandpa once had a dog who followed him to school every day?' Now the whole family knows a story that might have been lost. You saved it.",
+      "apply_task": "Share the most interesting thing you learned with your family, told as a little story (using your Q1 storytelling skills!).",
+      "reflection_prompt": "How did it feel to pass on someone's story? Did the person you interviewed enjoy being talked about?",
+      "feedback_task": "Ask your family what surprised them most about what you learned.",
+      "teach_back_task": "Encourage a family member to interview someone and share what *they* learn.",
+      "ai_judgment_note": "Real stories from real people are treasures a computer could never invent. Share this one proudly — it's genuinely yours to tell.",
+      "assets_needed": ["Story-share card"],
+      "est_minutes": 20,
+      "success_criteria": [
+        "One thing learned was shared as a short story to the family.",
+        "The child connected it back to the real person interviewed."
+      ],
+      "prereq_lesson_ids": ["co-9-10-q2-l3"]
+    }
+  ]
+}

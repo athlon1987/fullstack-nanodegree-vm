@@ -1,0 +1,90 @@
+{
+  "id": "cw-9-10-q4",
+  "title": "Run Your Stall",
+  "pillar_primary": "wealth",
+  "pillars_supporting": ["communicate", "think"],
+  "age_band": "9-10",
+  "quarter": 4,
+  "developmental_frame": "In the capstone, Wealth is the live stall on Showcase Day. At 9–10 a child can set simple prices, offer to real visitors (Q1), keep a tally (Q3), and then save/spend/share what they earn (Q2) — the whole year's money and value skills in one real event. This is also the final project of the year, so it closes with a reflection on how far they've come.",
+  "authentic_value_meaning": "Value here is running a real little stall, earning a little real money, and deciding what to do with it. It's every wealth skill from the year — make, offer, price, tally, manage — brought to life in front of real customers, for real.",
+  "motivation_lever": {
+    "lever": "real_stakes",
+    "mechanism": "The child runs a genuine stall with real customers and real (small) money on a real day. The stakes are exciting and safe: actual guests deciding to buy, an actual tally climbing, actual earnings to manage afterward. Nothing motivates the year's wealth lessons like a real till at the end of a real event."
+  },
+  "artifact": "A stall run on Showcase Day with a tally of sales, followed by a save/spend/share plan for the earnings — plus a short reflection on the whole year.",
+  "success_criteria": [
+    "The child set simple prices and ran a stall for real guests.",
+    "They kept a tally of what sold and what they earned.",
+    "They made a save/spend/share plan for the earnings and can reflect on their year."
+  ],
+  "prereq_project_ids": ["cw-9-10-q3", "th-9-10-q4"],
+  "lessons": [
+    {
+      "id": "cw-9-10-q4-l1",
+      "sequence": 1,
+      "title": "Set your prices and offers",
+      "concept": "Decide what you'll sell and for how much, using your little-business skills. Keep prices simple and fair — a price is you saying what your thing is worth. Have your digital sign show the prices clearly.",
+      "real_example": "'Bookmarks RM2, or 3 for RM5.' Simple, clear, and the '3 for RM5' gives people a reason to buy more. Fair prices that a guest can understand in a second.",
+      "apply_task": "Set a simple price for each thing you're selling. Write them on your sign.",
+      "reflection_prompt": "Are your prices fair — not too cheap, not too dear? Think back to what you learned about pricing this year.",
+      "feedback_task": "Show your prices to a parent and check they feel fair for what you made.",
+      "teach_back_task": "Explain to someone why a clear, fair price helps a stall sell.",
+      "ai_judgment_note": "Your prices depend on your effort and your real guests — you decide them. A computer's guess matters less than what feels fair to you.",
+      "assets_needed": ["Price-setting card"],
+      "est_minutes": 15,
+      "success_criteria": ["Simple, fair prices are set and shown on the sign."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "cw-9-10-q4-l2",
+      "sequence": 2,
+      "title": "Run the stall",
+      "concept": "On the day, run your stall: greet guests warmly, tell them about your things, and make your offers. Use your listening skill — a friendly stall-holder who listens sells more than a pushy one.",
+      "real_example": "'Hi! These are bookmarks I made — this sparkly one's my favourite. Would you like one?' Friendly, honest, and you listen to what they say. That's how a real stall feels.",
+      "apply_task": "Run your stall on Showcase Day. Greet each guest, offer your things kindly, and make some real sales.",
+      "reflection_prompt": "How did it feel to sell to real guests? Easier or harder than you expected?",
+      "feedback_task": "Notice which of your offers guests responded to best. That's real-time learning.",
+      "teach_back_task": "Tell someone the story of a sale you made and how you made it.",
+      "ai_judgment_note": "Running a real stall with real guests is fully human — warmth, listening, offering. No screen does this for you; it's your moment.",
+      "assets_needed": ["Money box / float"],
+      "est_minutes": 30,
+      "success_criteria": ["The stall was run for real guests with real offers made."],
+      "prereq_lesson_ids": ["cw-9-10-q4-l1"]
+    },
+    {
+      "id": "cw-9-10-q4-l3",
+      "sequence": 3,
+      "title": "Keep the tally",
+      "concept": "As you sell, keep your tally — what sold, and what you earned. At the end, add it up. Your tally tells the true story of the day: what people wanted and how you did.",
+      "real_example": "End-of-day tally: 5 bookmarks sold, RM11 earned, and the sparkly ones went first. Real numbers that show you exactly what worked.",
+      "apply_task": "Keep your tally through the stall, then add up your total earnings at the end.",
+      "reflection_prompt": "What does your tally show about what guests liked most? Same lesson as your little business — the tally teaches.",
+      "feedback_task": "Show your final tally to a parent and talk about what sold best and why.",
+      "teach_back_task": "Show someone your tally and what it tells you about the day.",
+      "ai_judgment_note": "Keeping and adding your own tally helps you understand your own day — do the counting yourself.",
+      "assets_needed": ["Sales tally sheet"],
+      "est_minutes": 15,
+      "success_criteria": ["A tally of sales and total earnings was kept and totted up."],
+      "prereq_lesson_ids": ["cw-9-10-q4-l2"]
+    },
+    {
+      "id": "cw-9-10-q4-l4",
+      "sequence": 4,
+      "title": "Save, spend, share — and look back",
+      "concept": "Now use your three-jar skill on real earnings: decide how much to save, spend, and share, on purpose. Then look back on your whole year — everything you learned to get to this day. That's a lot to be proud of.",
+      "real_example": "You earned RM11: maybe RM5 to save, RM4 to spend, RM2 to share. And you look back — a year ago you couldn't finish a project; today you planned and ran a whole showcase. That's real growth.",
+      "apply_task": "Split your earnings into save/spend/share on purpose. Then write or tell one thing you're proudest of learning this year.",
+      "reflection_prompt": "Looking across the whole year — noticing, making, telling stories, running a stall — what changed most about what you can do?",
+      "feedback_task": "Sit with a parent and share your save/spend/share plan and your proudest moment of the year.",
+      "teach_back_task": "Tell a family member the story of your whole year of learning, ending with Showcase Day.",
+      "ai_judgment_note": "How you split real earnings and what you're proud of are deeply yours. This is your year — own it, in your own words.",
+      "assets_needed": ["Earnings save/spend/share card", "Year-reflection card"],
+      "est_minutes": 25,
+      "success_criteria": [
+        "Earnings were split across save/spend/share on purpose.",
+        "The child reflected on their growth across the whole year."
+      ],
+      "prereq_lesson_ids": ["cw-9-10-q4-l3"]
+    }
+  ]
+}

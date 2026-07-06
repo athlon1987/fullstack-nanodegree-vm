@@ -1,0 +1,96 @@
+{
+  "id": "th-11-12-q1",
+  "title": "The Question Detective",
+  "pillar_primary": "think",
+  "pillars_supporting": ["communicate"],
+  "age_band": "11-12",
+  "quarter": 1,
+  "developmental_frame": "At 11–12, thinking is mostly concrete but early abstract reasoning is appearing: a child can separate 'what I know' from 'what I'm guessing' if you give them the handle to do it. Fairness and rules feel enormous at this age, and they love catching an adult being wrong — that instinct is exactly the engine of good reasoning. Attention runs in shorter bursts than a teenager's, so loops must be quick and produce a visible result the same day.",
+  "authentic_value_meaning": "At this age 'value' isn't money — it's being *trusted to figure something out*. Cracking a real question by yourself, and being able to show how you did it, is the reward. The audience is usually people they know (family, a friend, a teacher), and the win is 'you were right, and you can prove it'.",
+  "motivation_lever": {
+    "lever": "mastery",
+    "mechanism": "The child picks a real question they personally want answered — is the '5-second rule' real, does our dog actually understand words, is the shortcut to school really faster — and gets to be the detective who settles it. The pull is the satisfaction of cracking it themselves plus the small thrill of proving something the grown-ups only assumed. No one has to make it fun; a genuine unanswered question they chose does that."
+  },
+  "artifact": "An 'investigation board' (paper or a simple slide) that states one real question, separates what was known / assumed / checked, shows the evidence gathered, and gives a verdict with the reasoning visible.",
+  "success_criteria": [
+    "The child can point to the difference between a fact, a guess, and an opinion on their board.",
+    "They gathered at least one piece of real evidence themselves rather than just looking up an answer.",
+    "They can explain, out loud, why their verdict follows from their evidence."
+  ],
+  "prereq_project_ids": [],
+  "lessons": [
+    {
+      "id": "th-11-12-q1-l1",
+      "sequence": 1,
+      "title": "Fact, guess, or opinion?",
+      "concept": "Three different things get said in the same confident voice: a **fact** (checkably true), a **guess** (might be true, not checked yet), and an **opinion** (how someone feels). Smart thinking starts with telling them apart.",
+      "real_example": "'It rained here yesterday' is a fact you can check. 'It'll rain tomorrow' is a guess. 'Rainy days are the best' is an opinion. Same tone of voice — very different things.",
+      "apply_task": "Grab five statements from a cereal box, an advert, or a family conversation. Label each one fact, guess, or opinion. The tricky ones are the point.",
+      "reflection_prompt": "Which was hardest to label? Sneaky statements often dress an opinion up as a fact — did you catch any?",
+      "feedback_task": "Show your five labels to a parent or friend. Where you two disagree, talk out why — the disagreement usually reveals the sneaky one.",
+      "teach_back_task": "Teach a younger child the three types using their own toys or snacks as examples. If they can label three new statements right, you nailed the teaching.",
+      "ai_judgment_note": "This is a *no-AI* lesson on purpose. The skill is your own ear catching the difference — outsourcing that to a chatbot defeats it. Later, once you can label reliably, AI can be a sparring partner to check yourself.",
+      "assets_needed": ["Fact/Guess/Opinion sorting sheet (5 rows)"],
+      "est_minutes": 25,
+      "success_criteria": [
+        "Five statements are labelled with at least one 'sneaky' one identified."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "th-11-12-q1-l2",
+      "sequence": 2,
+      "title": "A question you can actually answer",
+      "concept": "Big questions like 'are dogs smart?' can't be settled. Good detectives shrink a big question into a small, checkable one — 'does my dog come to the word *walk* even when I say it flat, with no excited voice?'",
+      "real_example": "'Is the school shortcut faster?' is too vague. 'Is the alley route faster than the main road when I walk normally?' can be timed and settled this week.",
+      "apply_task": "Take your big curious question and rewrite it as one small question you could actually check in a few days. Write both versions so you can see the shrink.",
+      "reflection_prompt": "Did shrinking the question change what you'd need to look at? Smaller questions usually point straight at the evidence you need.",
+      "feedback_task": "Ask an adult: 'If I checked this, would it really answer my big question?' Adjust if they poke a hole.",
+      "teach_back_task": "Help a friend shrink one of *their* big questions into a checkable one.",
+      "ai_judgment_note": "Fine to ask AI 'help me make this question more specific' — it's good at that. But you decide if the smaller question still matches what you actually wanted to know; the model can't feel your curiosity for you.",
+      "assets_needed": ["Big-question / small-question worksheet"],
+      "est_minutes": 25,
+      "success_criteria": [
+        "One checkable small question is written that clearly connects to the bigger curiosity."
+      ],
+      "prereq_lesson_ids": ["th-11-12-q1-l1"]
+    },
+    {
+      "id": "th-11-12-q1-l3",
+      "sequence": 3,
+      "title": "Go get the evidence",
+      "concept": "Evidence is proof you gather *yourself*: a measurement, a count, a test, a careful look. Looking up someone else's answer isn't evidence — it's borrowing a verdict.",
+      "real_example": "To test the alley shortcut, you don't Google it — you walk both routes with a timer, three times each, and write down the numbers. Now you *have* proof.",
+      "apply_task": "Run your check at least three times and write down what happened each time. Three tries, because one could be a fluke.",
+      "reflection_prompt": "Did every try give the same result? If not, what might explain the difference — and does it change your answer?",
+      "feedback_task": "Show your raw results to someone and ask: 'Would you believe this? Is three tries enough?' Note their answer.",
+      "teach_back_task": "Explain to someone why doing the test three times beats doing it once.",
+      "ai_judgment_note": "Do NOT ask AI for the answer to your question — that skips the whole job. AI can help you *design* a fair test ('how do I make this timing fair?'), but the evidence has to come from you doing it.",
+      "assets_needed": ["Evidence log (3+ rows for repeated tries)"],
+      "est_minutes": 35,
+      "success_criteria": [
+        "At least three real observations were gathered and recorded by the child."
+      ],
+      "prereq_lesson_ids": ["th-11-12-q1-l2"]
+    },
+    {
+      "id": "th-11-12-q1-l4",
+      "sequence": 4,
+      "title": "Show your verdict — and your working",
+      "concept": "A detective doesn't just announce 'guilty'. They walk you through the clues so you can see it too. Your verdict is only as strong as the reasoning you can show.",
+      "real_example": "'The alley is faster — here are my six times, the alley averaged 4 minutes, the main road 6. That's my proof.' Anyone can now check your thinking, not just trust your word.",
+      "apply_task": "Finish your investigation board: the question, what you knew vs assumed, your evidence, and the verdict with the reasoning laid out.",
+      "reflection_prompt": "If someone disagreed with your verdict, which part of your board would they attack? Is that part solid?",
+      "feedback_task": "Present the board to two people. Ask each to try to poke a hole. Fix the weakest spot they find.",
+      "teach_back_task": "Walk a family member through your whole investigation as if teaching them to be a detective — question, evidence, verdict.",
+      "ai_judgment_note": "AI can help you tidy how the board *reads*, but the reasoning must be yours and you must be able to defend every step without it. If you can't explain a line on your board yourself, take it off.",
+      "assets_needed": ["Investigation board template (question / known / assumed / evidence / verdict)"],
+      "est_minutes": 40,
+      "success_criteria": [
+        "A completed board shows the reasoning, not just the answer.",
+        "The child defended their verdict against at least one challenge."
+      ],
+      "prereq_lesson_ids": ["th-11-12-q1-l3"]
+    }
+  ]
+}

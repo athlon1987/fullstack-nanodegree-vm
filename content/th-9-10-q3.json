@@ -1,0 +1,90 @@
+{
+  "id": "th-9-10-q3",
+  "title": "Step by Step",
+  "pillar_primary": "think",
+  "pillars_supporting": ["build"],
+  "age_band": "9-10",
+  "quarter": 3,
+  "developmental_frame": "At 9–10, children often freeze at a task that looks 'too hard' because they see it as one big scary lump. Learning to break a tricky task into small steps and do them one at a time is a genuine superpower they can grasp now, especially with concrete tasks (a recipe, a build, a puzzle). Having learned to notice (Q1) and decide (Q2), they now learn to actually *tackle* something hard.",
+  "authentic_value_meaning": "Value here is getting through something that felt too hard by breaking it down — the proud realisation that 'hard' usually just means 'lots of small steps I haven't sorted yet'. It's the first taste of not giving up when something looks big.",
+  "motivation_lever": {
+    "lever": "mastery",
+    "mechanism": "The child picks something they've wanted to do but that felt too hard, and conquers it by breaking it into steps. The triumph of finishing a 'too hard' thing — and realising the trick that made it possible — is powerfully motivating, and it builds the grit to try the next hard thing."
+  },
+  "artifact": "A tricky task the child broke into small steps and completed, with the steps written out as a 'step ladder' they followed.",
+  "success_criteria": [
+    "The child took something that felt too big and broke it into small steps.",
+    "They put the steps in a sensible order and did them one at a time.",
+    "They finished the task, or got much further than they would have by charging in."
+  ],
+  "prereq_project_ids": ["th-9-10-q2"],
+  "lessons": [
+    {
+      "id": "th-9-10-q3-l1",
+      "sequence": 1,
+      "title": "Big things feel scary in one lump",
+      "concept": "When something looks 'too hard', it's usually because you're seeing the whole thing at once. 'Tidy my whole messy room' feels impossible. But it's really just a pile of small, easy jobs hiding inside one big scary word.",
+      "real_example": "'Bake a cake' sounds hard. But it's really: get ingredients, mix, pour, bake, wait, decorate. Six small steps — each one easy. The lump was the only scary part.",
+      "apply_task": "Pick one real thing you've been putting off because it feels too big. Just name it for now.",
+      "reflection_prompt": "Why has this felt too hard? Is it really hard, or just big?",
+      "feedback_task": "Tell a parent your 'too big' task and see if they agree it's been feeling scary as one lump.",
+      "teach_back_task": "Ask a family member about a task *they* find too big, and guess why it feels that way.",
+      "ai_judgment_note": "Pick something from your own real life — you know best what's been nagging at you. This is your task to name.",
+      "assets_needed": ["Too-big-task card"],
+      "est_minutes": 15,
+      "success_criteria": ["One real 'too big' task is named."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "th-9-10-q3-l2",
+      "sequence": 2,
+      "title": "Break it into a step ladder",
+      "concept": "Now chop the big task into small steps — each one a single easy thing you could do in a few minutes. Write them as a ladder, bottom to top. Suddenly the impossible thing is just a list of easy things.",
+      "real_example": "'Tidy my room' becomes: 1) pick up clothes, 2) put books on shelf, 3) clear the desk, 4) bin the rubbish, 5) make the bed. Five easy rungs instead of one scary word.",
+      "apply_task": "Break your task into small steps and write them as a step ladder, in order.",
+      "reflection_prompt": "Does the task look less scary now it's a list of small steps? That shrinking feeling is the whole trick.",
+      "feedback_task": "Show your step ladder to someone. Ask if any step is still too big and needs splitting again.",
+      "teach_back_task": "Help a sibling turn one of their big tasks into a step ladder.",
+      "ai_judgment_note": "Try breaking it down yourself first — figuring out the steps is the brain exercise. If you get stuck, an adult can help more than a screen, because they know your task.",
+      "assets_needed": ["Step-ladder worksheet"],
+      "est_minutes": 20,
+      "success_criteria": ["The task is broken into ordered small steps."],
+      "prereq_lesson_ids": ["th-9-10-q3-l1"]
+    },
+    {
+      "id": "th-9-10-q3-l3",
+      "sequence": 3,
+      "title": "One step at a time",
+      "concept": "Now just do the first step. Then the next. Don't look at the whole ladder — look at the one rung in front of you. Ticking off steps one by one is how big things actually get done.",
+      "real_example": "You don't climb a ladder by jumping to the top — you take one rung at a time. Same with your task: first step done, tick, next step. Before long, you're at the top.",
+      "apply_task": "Do your task one step at a time, ticking off each step as you finish it.",
+      "reflection_prompt": "How did it feel to tick off each step? Small wins add up to a big finish.",
+      "feedback_task": "Show someone your ticked-off ladder as you go. Let them cheer each step.",
+      "teach_back_task": "Explain to someone why doing 'one rung at a time' beats staring at the whole ladder.",
+      "ai_judgment_note": "This is you doing the real work, step by step. The doing is yours — a computer can't tick your rungs for you.",
+      "assets_needed": [],
+      "est_minutes": 30,
+      "success_criteria": ["The child worked through the steps in order, tracking progress."],
+      "prereq_lesson_ids": ["th-9-10-q3-l2"]
+    },
+    {
+      "id": "th-9-10-q3-l4",
+      "sequence": 4,
+      "title": "Stuck? Try, tweak, ask",
+      "concept": "Sometimes a step is harder than expected. That's normal — it doesn't mean stop. Try it, tweak your way if it doesn't work, and ask for help if you're really stuck. Getting unstuck is part of the skill.",
+      "real_example": "If 'put books on the shelf' fails because the shelf is full, you tweak: maybe some books go in a box. A blocked step isn't the end — it's a little puzzle inside the big one.",
+      "apply_task": "Find the step that was trickiest and write what you did to get past it — a tweak, a try, or asking someone.",
+      "reflection_prompt": "When you got stuck, what helped most — trying again, changing your plan, or asking? Remember it for next time.",
+      "feedback_task": "Tell an adult about a step you got stuck on and how you got unstuck. Ask if they'd have done it differently.",
+      "teach_back_task": "Teach someone the 'try, tweak, ask' trick for when a step gets hard.",
+      "ai_judgment_note": "When stuck, a real person who knows your task usually helps more than a screen. Learn to ask for help — that's a strength, not a weakness.",
+      "assets_needed": ["Got-unstuck card"],
+      "est_minutes": 15,
+      "success_criteria": [
+        "The task was finished or substantially advanced.",
+        "The child can describe how they handled a stuck moment."
+      ],
+      "prereq_lesson_ids": ["th-9-10-q3-l3"]
+    }
+  ]
+}

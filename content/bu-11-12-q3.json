@@ -1,0 +1,90 @@
+{
+  "id": "bu-11-12-q3",
+  "title": "Build for Strangers",
+  "pillar_primary": "build",
+  "pillars_supporting": ["communicate", "think"],
+  "age_band": "11-12",
+  "quarter": 3,
+  "developmental_frame": "At 11–12, children can take a build that worked for friends and make it work for people who've never met them: clear instructions, works without anyone explaining, looks trustworthy, and handles mistakes without breaking. This is a genuinely new design skill — empathy for a user you'll never talk to — and a clear step past Q2's iteration with friends. It prepares them to ship to real customers at the launch.",
+  "authentic_value_meaning": "Value here is a thing that works for people who've never met you — the real line between a friend-project and an actual product. When a stranger can pick it up and succeed with no help, you've built something that can stand on its own in the world.",
+  "motivation_lever": {
+    "lever": "mastery",
+    "mechanism": "The child watches a true stranger — someone who's never seen the thing and can't ask them for help — use their creation successfully. That moment, when it works without the maker in the room, feels like leveling up from 'kid who made a thing' to 'someone who builds real products'. It's a proud, concrete milestone."
+  },
+  "artifact": "A build made 'stranger-ready': clear instructions, works unaided, looks trustworthy, handles at least one common mistake, and tested by someone who didn't know it beforehand.",
+  "success_criteria": [
+    "The thing can be used by someone with no explanation from the maker.",
+    "It guides a first-timer and handles at least one likely mistake gracefully.",
+    "A real person who'd never seen it succeeded in using it."
+  ],
+  "prereq_project_ids": ["bu-11-12-q2"],
+  "lessons": [
+    {
+      "id": "bu-11-12-q3-l1",
+      "sequence": 1,
+      "title": "Strangers don't have you to explain",
+      "concept": "When friends test your thing, you're standing there to explain. Strangers aren't — they have only what's on the screen or page. So everything a user needs must be built *in*. If it needs you to explain it, it's not ready for strangers.",
+      "real_example": "Your quiz made sense because you told your friend 'tap the green one to start'. A stranger sees no green button explained anywhere and is stuck on the first screen. The instruction lived in your mouth, not the product.",
+      "apply_task": "Look at your Q2 build and list every place where a stranger would need you to explain something. Those are your gaps.",
+      "reflection_prompt": "How many hidden 'you have to explain it' moments did you find? Most builds have more than the maker expects.",
+      "feedback_task": "Ask a parent to spot places where your thing assumes the user already knows something.",
+      "teach_back_task": "Explain to someone why a thing that needs the maker present isn't really finished.",
+      "ai_judgment_note": "You know your build; imagining a stranger's confusion is your job here. AI can't feel lost the way a real first-timer will — but it can help you write clearer instructions once you've found the gaps.",
+      "assets_needed": ["Stranger-gap checklist"],
+      "est_minutes": 25,
+      "success_criteria": ["Places needing explanation are identified across the build."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "bu-11-12-q3-l2",
+      "sequence": 2,
+      "title": "Clear instructions and signposting",
+      "concept": "Guide the first-timer. A short instruction, a clear label, an obvious 'start here' — these signposts let a stranger find their way. Good design quietly tells people what to do next, without a manual.",
+      "real_example": "Adding 'Tap START to begin' and numbering the steps turns a confusing screen into one a stranger breezes through. Small signposts, big difference.",
+      "apply_task": "Add clear instructions and signposts to fix the gaps you found. Keep them short and obvious.",
+      "reflection_prompt": "Could a stranger now get started without asking anyone? Read it as if you'd never seen it.",
+      "feedback_task": "Show the updated version to someone and ask if it's now clear where to begin.",
+      "teach_back_task": "Show a friend how one good 'start here' signpost helps a first-timer.",
+      "ai_judgment_note": "AI is genuinely helpful for drafting clear, friendly instructions. But test them on a real person — clarity is judged by a confused human, not by how good the words look.",
+      "assets_needed": ["Instruction/signpost worksheet"],
+      "est_minutes": 30,
+      "success_criteria": ["Clear instructions and signposts were added to guide a first-timer."],
+      "prereq_lesson_ids": ["bu-11-12-q3-l1"]
+    },
+    {
+      "id": "bu-11-12-q3-l3",
+      "sequence": 3,
+      "title": "Handle mistakes gracefully",
+      "concept": "Strangers will do unexpected things — tap the wrong button, leave a box blank, get it 'wrong'. A good build expects this and handles it kindly, with a helpful nudge instead of breaking or a scary error. Plan for the mistake.",
+      "real_example": "A stranger leaves the name box empty and taps submit. Instead of crashing, your quiz gently says 'Please add your name first'. It caught the mistake and helped, rather than breaking.",
+      "apply_task": "Think of one common mistake a stranger might make. Build a graceful response to it (a gentle message or a safe default).",
+      "reflection_prompt": "What's the most likely 'wrong' thing a stranger could do? Handling that one well covers a lot.",
+      "feedback_task": "Have someone deliberately 'do it wrong' and see if your build handles it kindly.",
+      "teach_back_task": "Explain to someone why good things expect mistakes instead of assuming everyone does it right.",
+      "ai_judgment_note": "AI can help you build the graceful response, but keep the Q1 rule — understand every part. And you must decide *which* mistakes matter; that's judgement about your real users.",
+      "assets_needed": ["Mistake-handling card"],
+      "est_minutes": 30,
+      "success_criteria": ["At least one common user mistake is handled gracefully."],
+      "prereq_lesson_ids": ["bu-11-12-q3-l2"]
+    },
+    {
+      "id": "bu-11-12-q3-l4",
+      "sequence": 4,
+      "title": "Test with a true stranger",
+      "concept": "The real test: someone who has never seen your thing and can't ask you for help. Watch them (silently!) try to use it. If they succeed alone, it's stranger-ready. If they get stuck, you've found the last gaps to fix.",
+      "real_example": "You give your quiz to a cousin who's never seen it, say nothing, and watch. They start, play, and finish with no help. That silent success is proof you built for strangers.",
+      "apply_task": "Find someone who's never seen your build. Let them try it with zero help while you watch. Note any sticking points and fix the worst one.",
+      "reflection_prompt": "Where did the stranger struggle that friends never did? Strangers reveal the truth about your design.",
+      "feedback_task": "Ask the stranger afterward: was anything confusing or missing? Take it seriously.",
+      "teach_back_task": "Tell someone why a true stranger is the best test of whether a thing is really finished.",
+      "ai_judgment_note": "Only a real, unfamiliar human can truly test this — AI already 'knows too much' and won't get lost like a real first-timer. Use a real stranger.",
+      "assets_needed": ["Stranger-test observation sheet"],
+      "est_minutes": 25,
+      "success_criteria": [
+        "A true first-timer used the build unaided.",
+        "Remaining gaps were noted and the worst one fixed."
+      ],
+      "prereq_lesson_ids": ["bu-11-12-q3-l3"]
+    }
+  ]
+}

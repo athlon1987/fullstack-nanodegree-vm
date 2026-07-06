@@ -1,0 +1,90 @@
+{
+  "id": "cw-11-12-q3",
+  "title": "Get Customers",
+  "pillar_primary": "wealth",
+  "pillars_supporting": ["communicate", "think"],
+  "age_band": "11-12",
+  "quarter": 3,
+  "developmental_frame": "At 11–12, children can grasp that a venture has to reach people who don't already know them — the basics of marketing: who exactly is your customer, where are they, what's your message, and does one real attempt to reach them work. This steps up from selling to friends and family, and prepares them to bring real customers to the year-end launch. Keep every channel safe and adult-approved.",
+  "authentic_value_meaning": "Value here is reaching new people who become real customers — growing a venture beyond the people who already love you. It's the discovery that a good thing doesn't sell itself; you have to reach the right people with the right message.",
+  "motivation_lever": {
+    "lever": "real_stakes",
+    "mechanism": "The child tries to win a customer who isn't a friend or relative — a real stranger choosing their thing because the message reached them. That first 'cold' yes is a genuine thrill and a real stake, and the feedback loop (did the message work?) makes marketing feel like a solvable puzzle rather than luck."
+  },
+  "artifact": "A simple marketing plan tried for real: a defined customer, a chosen channel, a clear message, and the recorded result of one real attempt to reach new people.",
+  "success_criteria": [
+    "The child defined a specific customer rather than 'everyone'.",
+    "They wrote a clear message/offer and chose one safe channel to try it.",
+    "They made one real attempt to reach new people and recorded what happened."
+  ],
+  "prereq_project_ids": ["cw-11-12-q2"],
+  "lessons": [
+    {
+      "id": "cw-11-12-q3-l1",
+      "sequence": 1,
+      "title": "Who exactly is your customer?",
+      "concept": "'Everyone' is not a customer. The clearer you are about *who* your thing is for, the easier it is to reach them and speak to them. A specific customer is a marketing superpower.",
+      "real_example": "'Bookmarks for everyone' is hard to sell. 'Cute bookmarks for kids in my school who love reading' tells you exactly who to reach and what to say. Specific wins.",
+      "apply_task": "Describe your ideal customer in one specific sentence — age, interest, what they'd want it for.",
+      "reflection_prompt": "Is your customer specific enough that you could picture three real people who fit? If not, narrow it.",
+      "feedback_task": "Run your customer description past a parent — is it specific or still too broad?",
+      "teach_back_task": "Show a friend why 'everyone' is a weak answer to 'who's your customer?'",
+      "ai_judgment_note": "You know your real community and who'd want your thing — that's yours to define. AI guessing 'your customer' can't match your on-the-ground knowledge.",
+      "assets_needed": ["Customer-definition card"],
+      "est_minutes": 20,
+      "success_criteria": ["A specific customer is defined in one sentence."],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "cw-11-12-q3-l2",
+      "sequence": 2,
+      "title": "Where are they, and what's your message?",
+      "concept": "To reach your customer you need two things: a channel (where they'll see you — a noticeboard, a family group, a safe class chat) and a clear message (why they'd want your thing, in a line or two). Right place plus right words equals reach.",
+      "real_example": "Channel: the class reading-club board. Message: 'Handmade bookmarks that keep your page and look great — RM2, from a fellow book-lover.' It reaches the right people with the right pitch.",
+      "apply_task": "Pick one safe, adult-approved channel where your customer will see you, and write a clear one- or two-line message.",
+      "reflection_prompt": "Does your message speak to what your specific customer cares about? Generic messages get ignored.",
+      "feedback_task": "Show your channel and message to a parent for approval and a clarity check.",
+      "teach_back_task": "Explain to someone why the right channel matters as much as the right message.",
+      "ai_judgment_note": "AI can help you polish your message wording. But keep it honest and true to your thing — and a grown-up must approve any channel where you'll post publicly.",
+      "assets_needed": ["Channel + message worksheet"],
+      "est_minutes": 25,
+      "success_criteria": ["A safe channel and a clear message are chosen and approved."],
+      "prereq_lesson_ids": ["cw-11-12-q3-l1"]
+    },
+    {
+      "id": "cw-11-12-q3-l3",
+      "sequence": 3,
+      "title": "Try one channel for real",
+      "concept": "Now actually do it — post the message, put up the flyer, make the announcement (safely, with adult okay). One real attempt teaches you more than endless planning. You're finding out if your message reaches real new people.",
+      "real_example": "You put your approved bookmark message on the reading-club board with a few samples. Now you wait and watch — do new people, not just friends, come and ask?",
+      "apply_task": "Make one real, adult-approved attempt to reach new customers through your channel. Then watch for responses.",
+      "reflection_prompt": "How did it feel to put your thing out to people who don't know you? A bit nervous is normal and good.",
+      "feedback_task": "Check in with a parent about how the attempt went and whether it was safe and appropriate.",
+      "teach_back_task": "Tell someone about your real marketing attempt and what you did.",
+      "ai_judgment_note": "The real-world attempt is yours to make (with adult approval) — no tool can reach your real community for you. This is real action, not a simulation.",
+      "assets_needed": ["Attempt log"],
+      "est_minutes": 25,
+      "success_criteria": ["One real, safe attempt to reach new customers was made."],
+      "prereq_lesson_ids": ["cw-11-12-q3-l2"]
+    },
+    {
+      "id": "cw-11-12-q3-l4",
+      "sequence": 4,
+      "title": "Did it work?",
+      "concept": "Measure the result: how many new people noticed, asked, or bought? Whatever the number, it's data. If it worked, do more of it. If not, change the message or the channel — that's marketing, a loop of try, measure, adjust.",
+      "real_example": "Three new people asked and one bought — so the board works, but maybe the price note wasn't clear. Next time you make the price bigger. The result told you exactly what to tweak.",
+      "apply_task": "Count the response to your attempt. Write down one thing that worked and one thing to change next time.",
+      "reflection_prompt": "What did this real attempt teach you that guessing never could? Marketing is learned by trying.",
+      "feedback_task": "Share your result and your next-time change with a parent or mentor.",
+      "teach_back_task": "Teach someone the marketing loop: define customer, pick channel, try, measure, adjust.",
+      "ai_judgment_note": "Judge your real results honestly — a small real response beats an imagined big one. Trust what actually happened over any optimistic guess.",
+      "assets_needed": ["Result + adjust card"],
+      "est_minutes": 20,
+      "success_criteria": [
+        "The result of the attempt was measured.",
+        "One thing that worked and one change for next time were identified."
+      ],
+      "prereq_lesson_ids": ["cw-11-12-q3-l3"]
+    }
+  ]
+}
