@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a1722" />
+  <meta name="description" content="Swim Shark — track, coach and predict youth swimming development." />
+  <!-- iPhone: full-screen "Add to Home Screen" web app -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Swim Shark" />
+  <link rel="apple-touch-icon" href="icons/icon-180.png?v=3" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <title>Swim Shark</title>
+  <link rel="icon" href="icons/icon-192.png?v=3" />
+  <link rel="stylesheet" href="css/styles.css?v=4" />
+</head>
+<body>
+  <div class="app">
+    <header class="appbar">
+      <div class="brand">
+        <span class="logo"><img src="icons/icon-192.png?v=3" alt="Swim Shark logo" /></span>
+        <span>Swim Shark<small>YOUTH PROGRESS</small></span>
+      </div>
+      <span class="spacer"></span>
+      <button class="iconbtn" id="cloudBtn" title="Sync status" aria-label="Sync status">☁️</button>
+      <button class="iconbtn" id="themeBtn" title="Toggle theme" aria-label="Toggle theme">🌙</button>
+    </header>
+
+    <main id="view" class="fadein"><!-- rendered by app.js --></main>
+  </div>
+
+  <nav class="nav">
+    <div class="inner">
+      <button class="navbtn active" data-tab="home"><span class="ic">🏠</span>Home</button>
+      <button class="navbtn" data-tab="strokes"><span class="ic">🏊</span>Strokes</button>
+      <button class="navbtn" data-tab="times"><span class="ic">⏱️</span>Times</button>
+      <button class="navbtn" data-tab="progress"><span class="ic">📈</span>Progress</button>
+      <button class="navbtn" data-tab="profile"><span class="ic">👤</span>Profile</button>
+    </div>
+  </nav>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/store.js?v=4"></script>
+  <script src="js/engine.js?v=4"></script>
+  <script src="js/charts.js?v=4"></script>
+  <script src="js/seed.js?v=4"></script>
+  <script src="js/app.js?v=4"></script>
+  <script type="module" src="js/cloud.js?v=4"></script>
+</body>
+</html>
