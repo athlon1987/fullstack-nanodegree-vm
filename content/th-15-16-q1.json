@@ -1,0 +1,119 @@
+{
+  "id": "th-15-16-q1",
+  "title": "Choose Your Problem",
+  "pillar_primary": "think",
+  "pillars_supporting": ["explore"],
+  "age_band": "15-16",
+  "quarter": 1,
+  "developmental_frame": "At 15–16, abstract reasoning is essentially adult-grade: a teen can weigh long horizons, reason about their own aptitudes, and commit to something for a year. What's new — and urgent — is that choices start to *compound*: subjects, skills, and projects picked now visibly shape what's reachable at 18. The risk at this age is not inability but drift (defaulting into whatever's nearest) or its opposite, paralysis (keeping every option open until options expire). Choosing deliberately, with evidence and exit criteria, is developmentally ready and rarely taught.",
+  "authentic_value_meaning": "At 15–16, thinking creates value when it picks the **right thing to spend a year on** — a domain or problem chosen at the intersection of genuine interest, demonstrated aptitude, and real demand, committed to in writing with kill-criteria. The deliverable isn't certainty (nobody has that); it's a defensible bet the teen can pursue wholeheartedly *because* they know exactly what would change their mind.",
+  "motivation_lever": {
+    "lever": "autonomy",
+    "mechanism": "This quarter hands the teen the steering wheel of their own year: the domain they choose here becomes the backbone of their Build craft, their Wealth bets, and their year-end Open Door. No parent or teacher picks it. The seriousness of the commitment — a year of their one life, chosen by them, in writing — is the motivation; at 15, being trusted with a real bet on yourself outranks any external reward."
+  },
+  "artifact": "A year-bet memo: the domain or problem the teen will go deep on this year, chosen from a researched shortlist — with the evidence for interest, aptitude, and demand; the strongest case against it; kill-criteria that would trigger a re-decision; and a first-quarter commitment calendar.",
+  "success_criteria": [
+    "A shortlist of at least three candidate domains was researched with real evidence gathered for each.",
+    "The memo states the chosen bet with evidence on all three axes — interest, aptitude, demand — and an honest case against.",
+    "Written kill-criteria exist: observable conditions that would trigger reconsidering the bet.",
+    "The teen can explain why the runner-up lost, and the choice is reflected in an actual weekly time commitment."
+  ],
+  "prereq_project_ids": [],
+  "lessons": [
+    {
+      "id": "th-15-16-q1-l1",
+      "sequence": 1,
+      "title": "The compounding decade",
+      "concept": "From here, effort compounds: a year of focused work on one thing beats three years of scattered dabbling, because skill, reputation, and opportunity feed each other — but only when they stack in one place. The strategic question of being 15 isn't 'what am I passionate about?' (feelings change) but 'where should my next year of hours stack?' That's a decision, and decisions can be made well.",
+      "real_example": "Two capable teens, same year: one spent it sampling — a month of chess, a month of editing, a month of three other things; the other spent it on video editing alone — awful in January, paid by a local business in November. Sampling *felt* safer and taught surfaces; stacking built something the world could see and pay for. (Sampling has its place — it's how you build a shortlist. It's just not a strategy for a year.)",
+      "apply_task": "Audit your last twelve months: where did your discretionary hours actually go? Cluster them and ask of each cluster: did this stack (skills building on skills) or scatter? Write the one-line verdict on your current default trajectory — because doing nothing this quarter *is* choosing it.",
+      "reflection_prompt": "If your last year's pattern simply repeats until 18, where does it land you — and is that a place you chose or a place you drifted? What's the difference in how those two futures feel?",
+      "feedback_task": "Show your hours audit to an adult who knows you well and ask: 'what do you see me getting genuinely better at — and what am I just cycling through?' Their outside view of your stacking is data your inside view can't produce.",
+      "teach_back_task": "Explain compounding-versus-scattering to a friend using your own audit as the exhibit. If they immediately ask 'so what should I stack?', resist answering — teach them that the *question* is the gift; the shortlist comes next.",
+      "ai_judgment_note": "The hours audit is archaeology on your own life — calendars, chats, memory — and no model can dig that site. Where AI serves here: after your audit, ask it to challenge your clustering ('are these really one skill or three?'). The temptation to resist: asking AI what's *worth* stacking in, in general. Generic answers about 'high-value skills' are averages over millions of strangers; your bet must be built from your evidence, which is the next four lessons' work.",
+      "assets_needed": ["Twelve-month hours audit sheet (clusters / stacked or scattered / trajectory verdict)"],
+      "est_minutes": 40,
+      "success_criteria": [
+        "A twelve-month audit exists with clusters marked stacked or scattered.",
+        "A one-line default-trajectory verdict is written."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "th-15-16-q1-l2",
+      "sequence": 2,
+      "title": "Build the shortlist honestly",
+      "concept": "A good year-bet is found at an intersection: **interest** (you return to it without being pushed), **aptitude** (you improve faster than peers who try equally hard), and **demand** (someone, somewhere, pays for or deeply values it). One axis alone misleads — loving what you're bad at, being good at what bores you, chasing demand you feel nothing for. The shortlist is three to five candidates that plausibly score on all three, each written as a testable claim, not a vibe.",
+      "real_example": "A teen's honest shortlist surprised her: 'drawing' (deep interest, slow aptitude growth despite years — hard to admit), 'explaining things' (she was the one everyone asked before exams; never counted it as a *thing*), and 'organising events' (two successful ones, enjoyed the chaos, real demand at school). The strongest candidates are often invisible because they don't look like subjects. Aptitude leaves tracks; follow the tracks, not the labels.",
+      "apply_task": "Draft your shortlist of three to five candidate domains. For each, write one sentence per axis: the evidence of interest (what you return to unprompted), of aptitude (where you improve unusually fast — with an example), and of demand (who values it enough to pay, admit, or promote). Mark every sentence that's actually a hope rather than evidence.",
+      "reflection_prompt": "Which candidate has the most hope-sentences dressed as evidence? And which axis do you systematically flatter — most people inflate interest, deflate aptitude, and ignore demand entirely?",
+      "feedback_task": "Show the shortlist to two people who've seen you work — a parent and a non-parent. Ask each: 'where have you watched me improve fastest?' and 'what would you add that I've missed?' Unnoticed aptitude is the most common gift this conversation gives.",
+      "teach_back_task": "Teach the three-axis test to a friend circling their own future. Help them draft a shortlist and hunt the hope-sentences. The move to model: admitting an axis is weak without abandoning the candidate — weak evidence means *gather more*, which is exactly the next lesson.",
+      "ai_judgment_note": "Interest and aptitude evidence lives in your history — only you (and people who know you) can testify. Demand is where AI genuinely helps: 'who pays for X? what adjacent skills does X unlock? what does the path from beginner to paid look like?' are researchable questions, and a model is a fast first pass — verified against real postings, real people, real prices, because models describe yesterday's demand. The synthesis — which candidates survive all three axes — is judgment, and it's yours.",
+      "assets_needed": ["Shortlist grid (candidate × interest / aptitude / demand, hope-sentences marked)"],
+      "est_minutes": 45,
+      "success_criteria": [
+        "A shortlist of 3-5 candidates exists with per-axis evidence sentences.",
+        "Hope-sentences are marked, and outside observers contributed at least one addition or correction."
+      ],
+      "prereq_lesson_ids": ["th-15-16-q1-l1"]
+    },
+    {
+      "id": "th-15-16-q1-l3",
+      "sequence": 3,
+      "title": "Test before you bet",
+      "concept": "You don't resolve a shortlist by more thinking — you resolve it by *cheap tests*: a weekend project per finalist, designed to generate the missing evidence. A good test is small (hours, not weeks), real (produces something or touches someone outside your head), and aimed at your weakest axis for that candidate. This is your old two-way-door discipline pointed at your own future: try before you buy, on doors that swing both ways.",
+      "real_example": "Testing 'explaining things', she ran two cheap probes in a fortnight: recorded one ten-minute tutorial on the maths topic her class feared (aptitude test — was it actually clear?) and tutored two younger students for a fee (demand test — would anyone pay?). The video took a Saturday; the tutoring paid RM30 and produced a rebooking. Total cost: one weekend. Information gained: more than a year of wondering.",
+      "apply_task": "For your top two or three candidates, design and run one cheap test each within two weeks: name the weakest axis, the test that probes it, what result would count as strong or weak evidence — written *before* you run it. Then run them and log what actually happened.",
+      "reflection_prompt": "Which test result surprised you most against your prediction? Notice the feeling of *wanting* a test to succeed — how did you keep the scoring honest anyway, and where does that skill come from in your training?",
+      "feedback_task": "Show each test's result to someone from that domain if you can reach one (your outreach skills exist for this). Ask: 'is this beginner work promising or ordinary?' Calibration against the real field beats family applause.",
+      "teach_back_task": "Teach the cheap-test move to a friend stuck choosing between futures: help them design one weekend probe for their favourite candidate, with the evidence bar written in advance. Deciding by experiment instead of agonising is the most transferable gift in this whole quarter.",
+      "ai_judgment_note": "Use AI to *design* sharper tests ('what's the cheapest way to test real demand for X?') and to critique your evidence bars before you run ('is this bar actually diagnostic?') — good uses both. The tests themselves must touch reality: real viewers, real students, real feedback from the field. A model's opinion of your tutorial is not evidence of aptitude; a confused real student is. Run the probes in the world; the world is the examiner.",
+      "assets_needed": ["Test cards (candidate / weakest axis / test / evidence bar / result)"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "Cheap tests ran for the top candidates with evidence bars written before running.",
+        "Results are logged against the bars, including at least one surprise."
+      ],
+      "prereq_lesson_ids": ["th-15-16-q1-l2"]
+    },
+    {
+      "id": "th-15-16-q1-l4",
+      "sequence": 4,
+      "title": "Write the bet — and its kill-criteria",
+      "concept": "Now commit, on paper: the year-bet memo. The chosen domain, the evidence on all three axes, the strongest honest case *against* (your steelman years pay off here), and the part almost nobody writes — **kill-criteria**: the observable conditions under which you'd re-decide ('if by June I still haven't produced X', 'if three cheap attempts to find demand all fail'). Kill-criteria aren't pessimism; they're what makes wholehearted commitment safe. You can go all-in precisely because you know exactly where the exit is.",
+      "real_example": "Her memo bet on 'explaining things — specifically, tutoring and tutorial content for maths-anxious students'. Case against, stated at full strength: crowded field, and she'd never sustained content-making beyond a month. Kill-criteria: 'if by end of Q2 my rebooking rate is under 50%, or I've skipped content three weeks running and don't miss it — re-decide.' Two years later she still quotes the memo's last line: *a bet with an exit written down is the only kind you can make with your whole chest.*",
+      "apply_task": "Write the memo, one page: the bet, the three-axis evidence (from your tests, not your hopes), the runner-up and why it lost, the full-strength case against, two or three observable kill-criteria with dates, and the weekly hours you're committing. This memo feeds your Build, Wealth, and year-end quarters — write it like the founding document it is.",
+      "reflection_prompt": "Does writing the kill-criteria make the bet feel weaker or stronger? Why do serious investors and scientists — the people whose bets matter most — insist on writing the exit before the entry?",
+      "feedback_task": "Present the memo to your decision-maker with the case against *first* (the risk-led pitch — you know this move). Ask them to challenge the kill-criteria: too loose and you'll drift for a year; too tight and one bad month kills a good bet. Calibrate together.",
+      "teach_back_task": "Walk a friend through writing their own one-page bet memo, insisting on the two parts they'll want to skip: the case against and the kill-criteria. If they push back that it's 'negative', teach the reframe: the exit clause is what buys the wholeheartedness.",
+      "ai_judgment_note": "The memo is a promise from you to you — evidence yours, voice yours, signature yours. The machine's one legitimate seat at this table is the oldest one in your training: 'here is my bet memo; argue against it as hard as you can.' If its best attack is one your case-against already contains, your memo is ready. If it lands a hit you hadn't written — write it in, and thank the sparring partner. Then sign the thing yourself.",
+      "assets_needed": ["Year-bet memo template (bet / evidence / runner-up / case against / kill-criteria / hours)"],
+      "est_minutes": 50,
+      "success_criteria": [
+        "A one-page memo exists with three-axis evidence, a full-strength case against, and dated kill-criteria.",
+        "The memo was presented risk-first and the kill-criteria were calibrated with the decision-maker."
+      ],
+      "prereq_lesson_ids": ["th-15-16-q1-l3"]
+    },
+    {
+      "id": "th-15-16-q1-l5",
+      "sequence": 5,
+      "title": "Protect the bet from your calendar",
+      "concept": "A bet without protected hours is a wish with paperwork. The final move: install the bet into your real week — recurring, named, defended blocks — and set up the drift-alarm: a monthly fifteen-minute self-review against the memo (hours actually spent? evidence accumulating? kill-criteria approaching?). Your whole toolkit reports here: the hour budget, the review ritual, the health check — now pointed at the most important system you'll ever operate, which is you.",
+      "real_example": "January's bet memos die in March, always the same way: not rejected — *displaced*, by homework surges and the path of least resistance, two weeks at a time. Her defence was mechanical, not motivational: Tuesday and Sunday blocks named 'the bet' in the family calendar (public = defended), and a monthly memo-review with one question — 'did the bet get its hours, and if not, what took them?' Eleven months later the bet was alive. The calendar, not the passion, kept it breathing.",
+      "apply_task": "Install the bet: recurring weekly blocks in your real calendar matching the memo's committed hours, visible to your household. Design the monthly drift-review (fifteen minutes: hours check, evidence check, kill-criteria check) and schedule all of them through the year. Run the first week and the first review now.",
+      "reflection_prompt": "What will most plausibly eat your bet's hours — and is your defence against it structural (a system) or aspirational (a feeling)? You know from three years of this curriculum which kind survives. Why is 'protect the hours' the last lesson of choosing rather than the first lesson of doing?",
+      "feedback_task": "Show your installed calendar and drift-review to your decision-maker and make the ask explicit: 'these blocks are load-bearing — help me defend them.' A family that knows the Tuesday block matters is a structural defence; a family that doesn't is a risk your pre-mortem should have caught.",
+      "teach_back_task": "Help your bet-memo friend from last lesson do their installation: blocks in the calendar, drift-review scheduled, household informed. Teach the closing line of the quarter: *choosing is an event; staying chosen is a system.* Then go make your Tuesday block.",
+      "ai_judgment_note": "Scheduling mechanics, reminder systems, drift-review checklists — automate freely; this is exactly the boring infrastructure AI and calendars exist for. The monthly review's three answers, though, are readings of your own life and appetite, and the year's verdict will be built from them — so they get written by your hand, in your memo, every month. A machine can guard the door of the review. Only you can show up inside it.",
+      "assets_needed": ["Installed calendar blocks + monthly drift-review card (hours / evidence / kill-criteria)"],
+      "est_minutes": 35,
+      "success_criteria": [
+        "Recurring bet-blocks are installed in a calendar the household can see, matching the memo's hours.",
+        "The monthly drift-review is scheduled through the year and the first one has run."
+      ],
+      "prereq_lesson_ids": ["th-15-16-q1-l4"]
+    }
+  ]
+}

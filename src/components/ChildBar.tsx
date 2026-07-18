@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { addChild, selectChild, useProgressState } from '../lib/progress';
+import { PlusIcon } from './icons';
 
 /**
  * Per-child profile switcher. Progress is stored per child in localStorage, so
- * a family can share one device. Minimal on purpose — this is the MVP shell.
+ * a family can share one device.
  */
 export function ChildBar() {
   const { activeChildId, children } = useProgressState();
@@ -22,23 +23,28 @@ export function ChildBar() {
 
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <span className="text-sm font-medium text-slate-500">Explorer:</span>
-      {list.map((c) => (
-        <button
-          key={c.id}
-          onClick={() => selectChild(c.id)}
-          className={
-            'rounded-full px-3 py-1 text-sm font-semibold transition ' +
-            (c.id === activeChildId
-              ? 'bg-indigo-600 text-white shadow'
-              : 'bg-white text-slate-700 ring-1 ring-slate-300 hover:ring-indigo-400')
-          }
-        >
-          {c.name}
-        </button>
-      ))}
+      <span className="microlabel" style={{ color: 'var(--ink-faint)' }}>
+        Learner
+      </span>
+      {list.map((c) => {
+        const active = c.id === activeChildId;
+        return (
+          <button
+            key={c.id}
+            onClick={() => selectChild(c.id)}
+            className="border px-3 py-1 text-sm font-semibold transition-colors"
+            style={
+              active
+                ? { background: 'var(--ink)', color: 'var(--paper)', borderColor: 'var(--ink)' }
+                : { background: 'transparent', color: 'var(--ink)', borderColor: 'var(--line)' }
+            }
+          >
+            {c.name}
+          </button>
+        );
+      })}
       {adding ? (
-        <span className="flex items-center gap-1">
+        <span className="flex items-center gap-1.5">
           <input
             autoFocus
             value={name}
@@ -48,11 +54,13 @@ export function ChildBar() {
               if (e.key === 'Escape') setAdding(false);
             }}
             placeholder="Name"
-            className="w-28 rounded-full border border-slate-300 px-3 py-1 text-sm focus:border-indigo-500 focus:outline-none"
+            className="w-28 border px-3 py-1 text-sm focus:outline-none"
+            style={{ borderColor: 'var(--ink)', background: 'var(--paper-raised)' }}
           />
           <button
             onClick={submit}
-            className="rounded-full bg-indigo-600 px-3 py-1 text-sm font-semibold text-white"
+            className="border px-3 py-1 text-sm font-semibold"
+            style={{ background: 'var(--ink)', color: 'var(--paper)', borderColor: 'var(--ink)' }}
           >
             Add
           </button>
@@ -60,9 +68,11 @@ export function ChildBar() {
       ) : (
         <button
           onClick={() => setAdding(true)}
-          className="rounded-full border border-dashed border-slate-400 px-3 py-1 text-sm font-medium text-slate-600 hover:border-indigo-500 hover:text-indigo-600"
+          className="flex items-center gap-1.5 border border-dashed px-3 py-1 text-sm font-medium transition-colors hover:border-solid"
+          style={{ borderColor: 'var(--ink-faint)', color: 'var(--ink-soft)' }}
         >
-          + Add child
+          <PlusIcon size={12} />
+          Add learner
         </button>
       )}
     </div>

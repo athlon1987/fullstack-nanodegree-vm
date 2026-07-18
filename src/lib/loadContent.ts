@@ -87,16 +87,16 @@ export function loadCurriculum(): CurriculumIndex {
   return cached;
 }
 
-/** Human labels + display order for pillars. */
+/** Human labels + display order for pillars. Deep editorial tones. */
 export const PILLAR_META: Record<Pillar, { label: string; short: string; accent: string }> = {
-  think: { label: 'Think', short: 'TH', accent: '#6366f1' },
-  communicate: { label: 'Communicate', short: 'CO', accent: '#0ea5e9' },
-  build: { label: 'Build', short: 'BU', accent: '#f59e0b' },
-  wealth: { label: 'Create Wealth', short: 'CW', accent: '#10b981' },
-  lead: { label: 'Lead', short: 'LE', accent: '#ec4899' },
-  explore: { label: 'Explore', short: 'EX', accent: '#8b5cf6' },
-  live_well: { label: 'Live Well', short: 'LW', accent: '#14b8a6' },
-  create: { label: 'Create', short: 'CR', accent: '#f43f5e' },
+  think: { label: 'Think', short: '01', accent: '#3d3a94' },
+  communicate: { label: 'Communicate', short: '02', accent: '#0f5e80' },
+  build: { label: 'Build', short: '03', accent: '#9a5610' },
+  wealth: { label: 'Create Wealth', short: '04', accent: '#1d6b47' },
+  lead: { label: 'Lead', short: '05', accent: '#94285c' },
+  explore: { label: 'Explore', short: '06', accent: '#5b3a9e' },
+  live_well: { label: 'Live Well', short: '07', accent: '#0f6b66' },
+  create: { label: 'Create', short: '08', accent: '#a02c22' },
 };
 
 /** Load-bearing pillars come first, in curriculum order. */

@@ -1,0 +1,119 @@
+{
+  "id": "co-15-16-q1",
+  "title": "Own the Room",
+  "pillar_primary": "communicate",
+  "pillars_supporting": ["lead"],
+  "age_band": "15-16",
+  "quarter": 1,
+  "developmental_frame": "At 15–16, a teen can construct a twenty-minute argument, hold a room's attention, and — critically — survive being questioned by adults without collapsing or bristling. The physiological fear of public speaking peaks in adolescence, which is exactly the argument for training it now: the fear never fully leaves anyone, but the skill of performing *through* it is learnable, and learned at 15 it pays for fifty years. What's genuinely new at this age is Q&A: thinking on your feet in front of witnesses, which younger teens can't reliably do and adults are mostly bad at.",
+  "authentic_value_meaning": "At this age, communication creates value when a teen can **stand in front of a real room — including adults — and move it**: teach it something, change its mind, or win its backing, then hold up under questions. A delivered talk that survives Q&A is the adult world's entrance exam, sat early. Passing it changes how every adult in that room treats the teen afterward — and how the teen treats themselves.",
+  "motivation_lever": {
+    "lever": "real_audience",
+    "mechanism": "The quarter aims at one real event: a talk, actually delivered, to a real audience that includes adults who aren't family — a class, a club, a community group, a local business meetup. The date gets set in week one, which converts practice from optional to necessary. The room's real reaction — leaning in, laughing where intended, asking hard questions, applauding — is a payoff no rehearsal can counterfeit."
+  },
+  "artifact": "One real talk (10–20 minutes) on a topic from the teen's year-bet domain, delivered to a real audience including non-family adults — with the prepared structure, the rehearsal log, a survived Q&A, and recorded audience feedback.",
+  "success_criteria": [
+    "A real venue and date were secured by the teen's own ask, and the talk actually happened.",
+    "The audience included adults outside the family, and their questions were answered without reading from notes.",
+    "The rehearsal log shows at least three full run-throughs including one to a live practice listener.",
+    "Recorded feedback exists from at least three audience members, and the teen can name what they'd change for talk two."
+  ],
+  "prereq_project_ids": [],
+  "lessons": [
+    {
+      "id": "co-15-16-q1-l1",
+      "sequence": 1,
+      "title": "One room, one change",
+      "concept": "A talk is not information with a person attached — it's a *change* you intend to cause in a specific room. Before writing a word, answer two questions: who exactly will be sitting there, and what should be different in their heads when you finish (one thing, not five)? Every great talk can state its change in one sentence: 'they'll leave believing X' or 'they'll leave able to do Y'. No change, no talk — just an essay read aloud.",
+      "real_example": "A teen invited to speak at her school's parents' evening about study apps drafted a feature tour — forgettable. Reframed with the two questions (room: skeptical parents; change: 'they'll leave knowing the one setting that makes phones help instead of hurt homework'), the same knowledge became a talk parents actually acted on that night. Same speaker, same topic; the *change sentence* made the talk.",
+      "apply_task": "Pick your talk's topic from your year-bet domain — the thing you're becoming the person who knows about. Then secure the room: identify two or three plausible venues (class slot, club night, community group, library event), and make the ask for a date using your outreach craft. Write the change sentence for that specific room and pin it above everything you draft.",
+      "reflection_prompt": "How does knowing the exact room change what you'd say? And notice: the ask for a venue scared you more or less than the talk itself? Why is the ask the real gatekeeper of this skill?",
+      "feedback_task": "Test your change sentence on someone who fits your future audience: 'if a talk left you with this, would it have been worth twenty minutes?' A shrug means the change is too small or too vague — sharpen before you build on it.",
+      "teach_back_task": "Teach the two questions (who's in the room / what's the one change) to a friend with any presentation looming. Watch their content problem dissolve into a selection problem — that's the sign the frame took.",
+      "ai_judgment_note": "The change sentence is a decision about your audience and your intent — yours to make. AI's fair contribution at this stage: reconnaissance ('what do parents typically already believe about study apps?') so you aim the change at what the room actually thinks, not a straw-room. The venue ask is human-to-human — draft it yourself, tighten with the machine if you like, send it under your own name. The date you get back is the quarter's engine; no model can book a room that wants *you*.",
+      "assets_needed": ["Room-and-change card (venue / audience / change sentence) + venue ask tracker"],
+      "est_minutes": 40,
+      "success_criteria": [
+        "A change sentence exists for a specific real room.",
+        "Venue asks were sent and a date is secured or pending with a fallback."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "co-15-16-q1-l2",
+      "sequence": 2,
+      "title": "Build the spine",
+      "concept": "Rooms don't follow information; they follow *shape*. The reliable spine: a cold open that earns the room's attention honestly (a story, a stake, a surprising number — your hook craft, grown up); two to four points that each advance the one change, every point carried by a concrete story or demonstration; and a close that lands the change and tells the room what to do with it. Points without stories evaporate; stories without points entertain and change nothing. Weld each to each.",
+      "real_example": "The most-watched talks in the world run on this spine — 18 minutes, one idea, story-carried points, an unmistakable close. Her parents'-evening talk: cold open, a live phone timer showing 4 hours of pickups ('this was my Tuesday'); two points, each a story with a number; close, the one setting changed live on stage, room invited to do it now. Spine visible from orbit. Nobody's attention left the room.",
+      "apply_task": "Outline your talk as a spine, not a script: the cold open (written word-for-word — openings earn that), each point with its carrying story or demo named, the close (also word-for-word). Test: does every point serve the change sentence? Cut the orphans, however good they are. Then flesh the middle into talking points — bullets you speak from, not paragraphs you recite.",
+      "reflection_prompt": "Which favourite bit did you have to cut for not serving the change — and why does a talk, like a venture, get stronger when scope gets cut? Where else have you learned that this year?",
+      "feedback_task": "Deliver just the cold open and the close (two minutes total) to a practice listener. Ask: 'would you stay for the middle, and what do you think I want you to do?' If either answer is wrong, fix the ends before touching the middle — the ends carry the room.",
+      "teach_back_task": "Teach the spine to a friend or younger student facing any presentation: open earned, points story-carried, close landed. Rebuild one of their slides-full-of-bullets into a spine together and watch the talk appear from under the deck.",
+      "ai_judgment_note": "Structure is where AI can genuinely spar: hand it your spine and ask 'where does attention sag? which point doesn't serve the change?' — a structural edit from a tireless reader. What it cannot supply is your stories — the Tuesday timer, the student who cried over maths — because it wasn't there, and rooms detect secondhand stories instantly. The spine can be machine-checked; the flesh must have been lived.",
+      "assets_needed": ["Spine sheet (cold open verbatim / points + stories / close verbatim)"],
+      "est_minutes": 50,
+      "success_criteria": [
+        "A complete spine exists with open and close written verbatim and every point story-carried.",
+        "The two-minute ends test was run and both answers came back right."
+      ],
+      "prereq_lesson_ids": ["co-15-16-q1-l1"]
+    },
+    {
+      "id": "co-15-16-q1-l3",
+      "sequence": 3,
+      "title": "Rehearse like it's real",
+      "concept": "Amateurs read through their notes; performers rehearse the *event*: out loud, standing, timed, from the talking points — because the talk you can give is only the talk you've already given. Three full run-throughs minimum: one alone (find the clunks), one recorded (meet your habits — the pacing, the filler words, the disappearing hands), one to a live practice listener (feel the room's gravity early). Rehearsal doesn't remove the fear; it gives the fear a well-worn path to run on.",
+      "real_example": "Recording run two, she met her habits: 'basically' fourteen times, a sprint through the best story, eyes on the ceiling during transitions. None were audible from inside; all were obvious on tape. By run four the word was gone, the story had room to breathe, and the transitions had eye contact — not because she 'got confident', but because each habit, once seen, got a specific fix. Confidence isn't the entry fee for performing; it's the receipt.",
+      "apply_task": "Run the three rehearsals across a week: solo (edit the clunks out of the spine), recorded (list your habits, pick the top two to fix, run again), live listener (their only brief: 'tell me where you lost me'). Log each run — time, what broke, what you fixed. The log is your evidence that delivery is a build, not a trait.",
+      "reflection_prompt": "What surprised you most on the recording — and why could you not hear it from inside? Where else in your life might there be habits only a recording would show you?",
+      "feedback_task": "After the live-listener run, ask your listener the two performer's questions: 'where did I lose you?' and 'what do you remember without looking at notes?' What they remember is what actually transmitted — compare it against your change sentence and adjust the emphasis.",
+      "teach_back_task": "Coach a friend through their first recorded rehearsal of anything — a talk, an interview answer, a music piece. Sit with them through the cringe of the playback and teach the reframe: the tape isn't judging you; it's the only honest mirror you'll ever get for free.",
+      "ai_judgment_note": "Feed AI your recording's transcript and it will count your fillers, flag your pacing, and mark repetitive phrasing — genuinely useful, like a coach with infinite patience. What the transcript can't carry is the room: warmth, timing, the pause that lands. Those calibrate only against live humans, which is why run three is a person. Machine for the mechanics, humans for the music — and the fear is conquered by neither; it's conquered by repetitions.",
+      "assets_needed": ["Rehearsal log (run / time / habits found / fixes) + recording setup"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "Three full run-throughs happened including one recorded and one live.",
+        "The log shows named habits and their fixes across runs."
+      ],
+      "prereq_lesson_ids": ["co-15-16-q1-l2"]
+    },
+    {
+      "id": "co-15-16-q1-l4",
+      "sequence": 4,
+      "title": "Survive the questions",
+      "concept": "The talk proves you prepared; the Q&A proves you *know*. The craft: listen to the whole question (nerves make speakers answer the first six words), buy thinking time honestly ('good question — let me think for a second' is strength, not weakness), answer the question asked, and own the gaps — 'I don't know, but here's how I'd find out' outranks a bluff every time, because rooms forgive ignorance and never forgive bluffing. For the hostile question: steelman it back ('so your concern is…'), then answer the strongest version. You've trained for that move for two years.",
+      "real_example": "The question she feared arrived from the back row: 'aren't you a bit young to be telling parents about parenting?' The bluff would have died. Instead: 'fair concern — you're asking why you should trust a sixteen-year-old on this. You shouldn't, on parenting. On what's actually on our phones and what one setting changed for my Tuesday nights — that I can show you.' The room laughed, the questioner nodded, and three parents quoted the answer back to her afterwards. The hostile question, steelmanned and honestly bounded, became the talk's best moment.",
+      "apply_task": "Build the question bank: the eight most likely questions (ask your practice listener what they'd ask), the two you most fear, and one hostile one. For each, write the *first sentence* of your answer only — enough to start strong, not enough to sound recited. Then run a live fire drill: your listener asks in random order, including a curveball you haven't prepped, and you practice the full toolkit — whole-question listening, honest time-buying, owned gaps.",
+      "reflection_prompt": "Which question scares you most and what exactly is the fear — not knowing, or being *seen* not knowing? What does 'I don't know, but here's how I'd find out' do to that fear once you've said it out loud twice?",
+      "feedback_task": "After the drill, ask your questioner: 'which answer felt strongest, which felt recited, and did I ever answer a question you didn't ask?' Recited and mis-aimed answers get their first sentences rewritten — the bank serves the listening, never replaces it.",
+      "teach_back_task": "Run a Q&A drill for a friend before their next exam viva, interview, or presentation: build their bank, throw their curveballs, and teach the two power moves — the honest pause and the owned gap. Watching someone else bluff is the fastest way to vaccinate yourself against it.",
+      "ai_judgment_note": "AI is a superb question-generator: 'here's my talk — ask me the ten hardest questions this room might ask, including one hostile one.' Drill against its bank; let it surprise you. The live skill it can't train: reading *this* questioner in *this* moment — whether they want information, reassurance, or just to be heard. That's human weather, learnable only in weather. And carry the honest gap into every drill: a machine never says 'I don't know', which is exactly why rooms trust people who do.",
+      "assets_needed": ["Question bank (8 likely / 2 feared / 1 hostile, first sentences only) + drill log"],
+      "est_minutes": 45,
+      "success_criteria": [
+        "A question bank exists with first-sentence answers, including feared and hostile questions.",
+        "A live drill ran with at least one unprepped curveball, and recited answers were reworked."
+      ],
+      "prereq_lesson_ids": ["co-15-16-q1-l3"]
+    },
+    {
+      "id": "co-15-16-q1-l5",
+      "sequence": 5,
+      "title": "Deliver, debrief, book the next one",
+      "concept": "Then you walk into the room and give the talk — nerves included; the nerves mean it's real. Afterward, the professional's two moves: the debrief (collect real feedback while it's warm, watch the recording once, write what worked and what changes) and the *rebooking* — because one talk is an event, but the second talk is a skill, and speakers who book talk two within a week of talk one become people who speak. This room was never the destination; it was the door.",
+      "real_example": "Her parents'-evening talk ran nineteen minutes; the Q&A ran twenty-five — the sign of a room engaged, not a talk overlong. The debrief caught what the applause hid: the second point had sagged (two parents checked phones — the irony noted), and the close had landed word-for-word as rehearsed. The rebooking came from the room itself: the librarian who'd listened asked if she'd give it again for the community centre. She said yes before the fear could vote. Talk two, same spine, half the nerves.",
+      "apply_task": "Deliver the talk. Same day: collect feedback from at least three audience members (two questions: 'what stays with you?' / 'what would you change?'), and note every question the Q&A actually produced against your bank. Within three days: watch the recording once, write the debrief (what worked / what changes / what talk two looks like), and make one concrete rebooking move — an ask, an offer, a yes.",
+      "reflection_prompt": "Standing in the room: which was true — the fear you'd rehearsed against, or something else entirely? And what does the gap between the feared room and the real room teach you about every ask you've delayed this year?",
+      "feedback_task": "Compare the room's actual questions with your bank: what did you prepare that never came, what came that you never prepared? That delta is your model of this audience, corrected — carry it into talk two and into next quarter's professional voice.",
+      "teach_back_task": "Take everything the quarter built — the change sentence, the spine, the rehearsal log, the question bank, the debrief — and coach one person through their entire first talk, ask to applause. When *their* room applauds, you haven't just owned a room; you've minted another person who can. That's the pillar working at full compound interest.",
+      "ai_judgment_note": "The debrief's raw material is real — the recording, the room's questions, the feedback quotes — and AI can help you mine it ('what patterns do you see in this feedback?') once it's collected. What stays permanently human: the ninety seconds before you walk on. No tool goes there with you; that's the point of the whole quarter. You walk in alone, with your spine and your reps — and you come out someone who has done it, which is the one credential that can't be generated.",
+      "assets_needed": ["Delivery-day checklist + debrief sheet (feedback / Q&A delta / talk-two plan / rebooking move)"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "The talk was delivered to the real room and feedback from 3+ audience members is recorded.",
+        "A written debrief exists and one concrete rebooking move was made within a week."
+      ],
+      "prereq_lesson_ids": ["co-15-16-q1-l4"]
+    }
+  ]
+}

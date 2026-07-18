@@ -7,8 +7,8 @@ import { JourneyMap } from './components/JourneyMap';
 import { LessonView } from './components/LessonView';
 
 export function App() {
-  // Content is loaded + validated once at startup. Schema is law: if any file is
-  // off-spec it shows up here and is never rendered as a lesson.
+  // Content is loaded + validated once at startup. Schema is law: if any file
+  // is off-spec it shows up here and is never rendered as a lesson.
   const index = useMemo(() => loadCurriculum(), []);
   const child = useActiveChild();
 
@@ -22,15 +22,19 @@ export function App() {
   const bp = bandProgress(index, child, band);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-3">
+    <div className="min-h-screen" style={{ background: 'var(--paper)', color: 'var(--ink)' }}>
+      <header
+        className="sticky top-0 z-10 border-b backdrop-blur"
+        style={{ borderColor: 'var(--ink)', background: 'rgba(250,247,242,0.92)' }}
+      >
+        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <span className="text-xl">🚀</span>
-              <h1 className="text-lg font-extrabold tracking-tight">Future Founder</h1>
-              <span className="hidden text-sm text-slate-400 sm:inline">
-                — an interactive learning journey
+            <div className="flex items-baseline gap-3">
+              <h1 className="text-lg font-bold tracking-tight">
+                Future Founder<span style={{ color: 'var(--accent)' }}>.</span>
+              </h1>
+              <span className="microlabel hidden sm:inline" style={{ color: 'var(--ink-faint)' }}>
+                An interactive learning journey
               </span>
             </div>
             <ChildBar />
@@ -38,24 +42,35 @@ export function App() {
 
           {/* Age-band tabs */}
           <div className="flex flex-wrap items-center gap-2">
-            {index.ageBands.map((b) => (
-              <button
-                key={b}
-                onClick={() => {
-                  setBand(b);
-                  setOpenLessonId(null);
-                }}
-                className={
-                  'rounded-lg px-3 py-1 text-sm font-semibold transition ' +
-                  (b === band
-                    ? 'bg-slate-900 text-white'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200')
-                }
-              >
-                Ages {b}
-              </button>
-            ))}
-            <span className="ml-auto text-sm font-medium text-slate-500">
+            {index.ageBands.map((b) => {
+              const active = b === band;
+              return (
+                <button
+                  key={b}
+                  onClick={() => {
+                    setBand(b);
+                    setOpenLessonId(null);
+                  }}
+                  className="microlabel border px-3 py-1.5 transition-colors"
+                  style={
+                    active
+                      ? {
+                          background: 'var(--ink)',
+                          color: 'var(--paper)',
+                          borderColor: 'var(--ink)',
+                        }
+                      : {
+                          background: 'transparent',
+                          color: 'var(--ink-soft)',
+                          borderColor: 'var(--line)',
+                        }
+                  }
+                >
+                  Ages {b}
+                </button>
+              );
+            })}
+            <span className="index-num ml-auto text-xs" style={{ color: 'var(--ink-soft)' }}>
               {bp.lessonsDone}/{bp.lessonsTotal} lessons · {bp.projectsDone}/{bp.projectsTotal}{' '}
               projects
             </span>
@@ -63,7 +78,7 @@ export function App() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-4 py-6">
+      <main className="mx-auto max-w-6xl px-4 py-10">
         {openLessonId ? (
           <LessonView
             index={index}
@@ -74,10 +89,14 @@ export function App() {
           />
         ) : (
           <>
-            <div className="mb-5">
-              <h2 className="text-xl font-bold text-slate-900">Ages {band} — your journey</h2>
-              <p className="text-sm text-slate-500">
-                Each column is a pillar. Finish a quarter's lessons to light up the next milestone.
+            <div className="mb-10">
+              <p className="microlabel mb-2" style={{ color: 'var(--accent)' }}>
+                Your journey
+              </p>
+              <h2 className="text-3xl font-bold tracking-tight">Ages {band}</h2>
+              <p className="mt-2 max-w-xl text-sm" style={{ color: 'var(--ink-soft)' }}>
+                Each column is a pillar. Finish a quarter&rsquo;s lessons to unlock the next
+                milestone.
               </p>
             </div>
             <JourneyMap
@@ -89,15 +108,27 @@ export function App() {
           </>
         )}
       </main>
+
+      <footer className="border-t" style={{ borderColor: 'var(--line)' }}>
+        <div
+          className="microlabel mx-auto max-w-6xl px-4 py-6"
+          style={{ color: 'var(--ink-faint)' }}
+        >
+          Future Founder &amp; Leader — a project-based curriculum for an AI-first world
+        </div>
+      </footer>
     </div>
   );
 }
 
 function ValidationError({ issues }: { issues: string[] }) {
   return (
-    <div className="min-h-screen bg-red-50 p-8 text-red-900">
+    <div className="min-h-screen p-8" style={{ background: 'var(--paper)', color: 'var(--ink)' }}>
+      <p className="microlabel mb-2" style={{ color: 'var(--accent)' }}>
+        Validation failed
+      </p>
       <h1 className="text-xl font-bold">Curriculum failed validation</h1>
-      <p className="mt-1 text-sm">
+      <p className="mt-1 text-sm" style={{ color: 'var(--ink-soft)' }}>
         Off-spec content was rejected and will not be rendered. Fix these, then reload:
       </p>
       <ul className="mt-4 list-disc space-y-1 pl-6 text-sm">

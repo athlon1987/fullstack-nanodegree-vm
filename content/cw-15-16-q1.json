@@ -1,0 +1,119 @@
+{
+  "id": "cw-15-16-q1",
+  "title": "From Hours to Assets",
+  "pillar_primary": "wealth",
+  "pillars_supporting": ["build"],
+  "age_band": "15-16",
+  "quarter": 1,
+  "developmental_frame": "At 15–16, a teen who has run ventures can grasp the idea that separates wage-thinking from wealth-thinking: the difference between selling an hour (gone once sold) and building an asset (made once, sold or used many times). The abstraction is now fully available — they can reason about marginal cost, maintenance, and compounding — and their skills are finally good enough to package. The trap at this age is glamour: chasing 'passive income' fantasies from the internet instead of packaging the unglamorous thing they already provably do well.",
+  "authentic_value_meaning": "At this age, creating value means building **the first thing that earns or serves without your presence** — a study guide that sells while you're at school, a template used by strangers, a batch design produced without you touching each unit. The amount matters less than the category shift: the teen who has watched one real sale arrive unattended understands leverage from the inside, permanently.",
+  "motivation_lever": {
+    "lever": "real_stakes",
+    "mechanism": "The quarter's finish line is unmistakable and real: a sale or committed use of the asset that happens without the teen present — witnessed by a notification, not a conversation. Real money (or real adoption) arriving unattended is a qualitatively new experience with real stakes on both sides: the asset took real hours to build, and whether the world wants it is a question only the world can answer."
+  },
+  "artifact": "One make-once-sell-many asset, live: a packaged product built from the teen's proven skills (a guide, template pack, recorded mini-course, printable design, or batch-produced good) with a real shelf (marketplace listing, order form, or distribution point), its first unattended sales or uses logged, and an honest hours-in versus earnings-out audit.",
+  "success_criteria": [
+    "A finished asset exists, packaged to a written finish bar, built from a skill the teen has real evidence for.",
+    "The asset is on a real shelf where strangers or semi-strangers can get it without talking to the teen.",
+    "At least one sale or committed use happened without the teen present, and it is logged.",
+    "An honest audit exists: total hours invested, earnings or uses to date, and what weekly maintenance actually costs."
+  ],
+  "prereq_project_ids": [],
+  "lessons": [
+    {
+      "id": "cw-15-16-q1-l1",
+      "sequence": 1,
+      "title": "The hour you can only sell once",
+      "concept": "A service sells your hour; when the hour ends, so does the earning. An asset is different: you spend hours *once* building it, and each copy or use afterwards costs you almost nothing. Tutoring one student is a service; the revision guide you write from those sessions is an asset. Neither is superior everywhere — services teach you what people want; assets scale what you've learned. The wealth move at your stage: run services to *discover* the asset hiding inside them.",
+      "real_example": "A teen tutor earned RM25 an hour, capped by her own timetable. She noticed she was drawing the same six diagrams for every confused student. Those diagrams, cleaned up into a 14-page 'the six pictures that make trigonometry click' guide, became an asset: 40 hours to make, then RM8 a copy, forever, with her timetable untouched. The service found the asset; the asset freed the hours.",
+      "apply_task": "Audit your own service history — ventures, tutoring, helping, making. List every piece of repeatable value hiding in it: the questions you answer again and again, the template you remade five times, the thing you produce that others ask to copy. Write three candidate assets, each in one line: 'package X, for Y, who currently get it only by asking me.'",
+      "reflection_prompt": "Which candidate is glamorous, and which is *proven* — already requested, already repeated? Why does the internet's 'passive income' advice point at glamour, and what does your own service history point at?",
+      "feedback_task": "Show your three candidates to two people who've actually paid for or used your services. Ask: 'which of these would you have bought instead of, or as well as, asking me?' Their answer ranks the list better than any brainstorm.",
+      "teach_back_task": "Explain hours-versus-assets to a friend with a service hustle, using their own repeated work to find their hidden asset candidate. The moment they see the guide inside their tutoring — or the preset pack inside their editing — the idea has transferred.",
+      "ai_judgment_note": "The candidate list must come from your real service history — the repeated requests are the market's handwriting, and no model has seen your messages. Where AI helps: once you have candidates, 'what formats do assets like X usually take, and what do they sell for?' is honest reconnaissance. The trap to refuse: letting AI *invent* an asset idea unmoored from your evidence. An asset built on a model's guess is glamour with extra steps.",
+      "assets_needed": ["Service-history audit sheet + three candidate one-liners"],
+      "est_minutes": 40,
+      "success_criteria": [
+        "Three asset candidates are written, each traced to repeated real requests or work.",
+        "Two past users/customers ranked the candidates."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "cw-15-16-q1-l2",
+      "sequence": 2,
+      "title": "Validate before you build",
+      "concept": "The asset trap: spending eighty hours building before checking anyone wants it. The professional sequence runs backwards — validate first, build second. Three cheap validations, all under an hour each: the *conversation* (describe the asset to five people who fit the buyer; count who asks 'when can I get it?'), the *pre-order* (would anyone pay or sign up now, before it exists?), and the *smoke test* (a one-page description posted where buyers gather — measure real interest). Enthusiasm is polite; pre-orders are evidence.",
+      "real_example": "Before making the trig guide, the tutor ran the sequence: described it to five maths-anxious classmates — three said 'I need that before finals' (signal); offered pre-orders at RM8 — two actually paid (strong signal, and RM16 of funding); posted the one-pager in the year-group chat — eleven 'interested' replies, which she'd learned to discount ('interested' is free) but logged anyway. Eighty hours of building, green-lit by three hours of checking. Her friend skipped this step for his own asset; his eighty hours are still unsold.",
+      "apply_task": "Run all three validations on your top candidate inside two weeks: five buyer conversations (log exact words, not vibes), a real pre-order offer with a real price, and a one-page smoke test where your buyers gather. Set your evidence bar *before* you start — what result means build, what means back to the list — and honour it.",
+      "reflection_prompt": "What's the difference in information between 'that's a great idea!' and a RM8 pre-order? Why do people say the first freely and do the second rarely — and which behaviour is your build decision resting on?",
+      "feedback_task": "Show your validation log and your verdict to a fellow builder or adult: 'would you spend eighty hours on this evidence?' If you're bending the bar you set — arguing with your own rules — they'll catch it. That catch is the lesson.",
+      "teach_back_task": "Teach the validate-first sequence to the friend whose asset candidate you found last lesson. Design their three checks with them, evidence bar first. Saving one friend eighty misdirected hours is this lesson's teach-back trophy.",
+      "ai_judgment_note": "AI can sharpen the instruments — tighten your one-pager, draft the pre-order pitch, suggest what to listen for in buyer conversations. It cannot be the instrument: a model's judgment of demand is a summary of yesterday's internet, not evidence about your buyers this month. The validation data — the exact words, the paid pre-orders, the reply count — comes from real humans through your real asks. Evidence bar written first, machine forbidden from moving it after.",
+      "assets_needed": ["Validation log (conversations / pre-orders / smoke test) + pre-written evidence bar"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "All three validations ran with results logged against a pre-written evidence bar.",
+        "A build / don't-build verdict is written and matches the bar."
+      ],
+      "prereq_lesson_ids": ["cw-15-16-q1-l1"]
+    },
+    {
+      "id": "cw-15-16-q1-l3",
+      "sequence": 3,
+      "title": "Build the asset to a finish bar",
+      "concept": "Now build — with the discipline your Build pillar trained: a written finish bar first ('done means…'), the smallest version that fully delivers the promise (v2 features go on the NOT list; assets especially attract endless polishing because they feel *permanent*), and production values matching what buyers expect at the price. An asset carries your name to people you'll never meet — it must survive without you there to explain it. Everything must be *in* the thing: instructions, context, quality.",
+      "real_example": "The trig guide's finish bar, written before hour one: 'six diagrams redrawn cleanly, one worked example + one practice problem per diagram, printable PDF, a cover that doesn't look homemade, tested on two real students without me in the room.' That last clause did the most work — watching a student use the draft *silently* exposed every place the guide assumed she'd be there to explain. Assets are runbooks for knowledge: they work alone or they don't work.",
+      "apply_task": "Write the finish bar and the NOT list, then build the asset inside your bet-blocks. Include the without-you test in the bar: two real target users consume the near-final version with you silent, and every stumble becomes a fix. Log build hours honestly — the audit lesson is waiting for the true number.",
+      "reflection_prompt": "Where did the without-you test catch you assuming your own presence? What's the connection between this and your handoff-week training — what is an asset, in runbook terms?",
+      "feedback_task": "Give the finished asset to one of your pre-order customers (they funded it; they go first). Ask for the buyer's-eye review: 'was it worth what you paid, and what nearly stopped it being?' Fix what's fixable before the shelf lesson opens it to strangers.",
+      "teach_back_task": "Show a fellow builder your finish bar, NOT list, and hour log, and teach the asset-specific trap: because assets feel permanent, perfectionism feels responsible — and becomes the reason most assets never ship. The finish bar is the antidote; help them write theirs.",
+      "ai_judgment_note": "Build with the tools the craft really uses, disclosed by the professional's rule you learned in your portfolio quarter: you can say exactly what the tools did, and the judgment calls are yours. The knowledge inside the asset carries a harder rule: it must be *yours to sell* — tested by you, true in your experience, not paraphrased from a model into a product. Buyers are paying for what you actually know. An asset of laundered AI content is a refund waiting to happen, wearing your name while it waits.",
+      "assets_needed": ["Finish bar + NOT list + honest hour log + without-you test notes"],
+      "est_minutes": 120,
+      "success_criteria": [
+        "The asset is finished to its pre-written bar, including the without-you test.",
+        "Build hours are logged honestly, and a pre-order customer confirmed it was worth the price."
+      ],
+      "prereq_lesson_ids": ["cw-15-16-q1-l2"]
+    },
+    {
+      "id": "cw-15-16-q1-l4",
+      "sequence": 4,
+      "title": "Put it on a shelf that isn't you",
+      "concept": "An asset sold only through your conversations is still a service wearing a costume. It needs a *shelf*: a place where someone can discover, decide, pay, and receive without you present — a marketplace listing, an order form pinned where buyers gather, a consignment spot at a real shop, a download link with payment attached. Shelf design is its own craft: the description sells honestly (your receipts-not-claims training), the price is set by value delivered (not hours spent — buyers don't care about your hours), and the delivery works every time, tested like the machine it is.",
+      "real_example": "The trig guide's shelf: a simple order-form link pinned in three year-group chats plus ten printed copies on consignment at the school co-op shop (the co-op took RM1 a copy — her first distribution cost, noted for the audit). Pricing test: at RM8, buyers didn't blink — her Q2-margins training smelled underpricing, and the reprint went to RM10 with zero resistance. Value-priced, not hour-priced: the guide saved a student ten confused hours; RM10 was never the obstacle.",
+      "apply_task": "Choose and build your shelf. Write the listing with receipts (who it's for, what it does, proof it works — your without-you testers' words, with permission). Set the price on value delivered, with a one-line justification. Then test the whole pipeline as a stranger would: discover, decide, pay, receive — every step, without your presence. Fix what breaks; the shelf is a delivery machine and gets machine standards.",
+      "reflection_prompt": "What does your price say when you justify it by value instead of hours — and why is 'buyers don't care about your hours' both slightly insulting and completely liberating?",
+      "feedback_task": "Have someone who's never seen the asset walk the shelf cold and narrate: what they'd expect, what they'd doubt, where they'd abandon. Every abandonment point on a shelf is invisible lost sales — patch them before launch.",
+      "teach_back_task": "Help your asset-building friend design their shelf: listing with receipts, value-based price, the stranger-walk test. Teach the line that reframes the whole quarter: 'if you have to be in the room, it's not an asset yet.'",
+      "ai_judgment_note": "Listing copy is claims-and-receipts territory — machine may polish, only reality may supply the receipts, and testimonial rules are absolute (real words, real permission). Pricing research is a fair AI errand ('what do comparable assets charge?') — treated as reference, overruled by what your validation and your buyers actually said. And test the delivery pipeline with your own hands: a model can review your shelf's design, but only a real walk-through finds the broken link at step three.",
+      "assets_needed": ["Shelf checklist (listing with receipts / value-priced / stranger-walk test log)"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "A real shelf exists where discovery-to-delivery works without the teen present.",
+        "The stranger-walk test ran and every abandonment point found was fixed."
+      ],
+      "prereq_lesson_ids": ["cw-15-16-q1-l3"]
+    },
+    {
+      "id": "cw-15-16-q1-l5",
+      "sequence": 5,
+      "title": "The first unattended sale — and the honest audit",
+      "concept": "Launch the shelf through your channels (a year of acquisition craft reports for duty), then wait for the notification that defines the quarter: a sale or download that happened *while you weren't there*. Celebrate it — category shifts deserve celebration — then audit it like an operator, because 'passive' is marketing, not accounting: total hours in, revenue out, the true per-week maintenance cost (answering questions, restocking, updating), and the honest projection — at current pace, when does the asset repay its hours, and what does it earn per maintenance-hour after that? Some assets audit brilliantly, some don't; both verdicts, honestly reached, complete the lesson.",
+      "real_example": "Her notification came on a Tuesday, mid-class: RM10, order #14, from a student in the *other* stream she'd never met — the guide had been recommended sideways, her referral training working unattended too. The audit, run at month's end like a books-close: 43 hours in (build + shelf + launch), RM196 out, maintenance a real 30 minutes a week — payback around month four, then roughly RM20 per maintenance-hour after: four times her tutoring rate, uncapped by her timetable. Final line of the audit, worth the whole quarter: 'the guide earns while I sleep; the tutoring never did. Build the next asset.'",
+      "apply_task": "Launch through your real channels and drumbeat. Log every sale/use with its source door. When the first unattended one arrives, mark it — then run the full audit at month's end: hours in, earnings out, weekly maintenance measured (not guessed), payback point, per-maintenance-hour rate. Close with the verdict in writing: build on this asset, build the next one, or fold the learning back into services — and why.",
+      "reflection_prompt": "What did the unattended notification actually feel like — and why does that moment teach leverage better than any explanation ever could? If the audit disappointed: what did the eighty-ish hours buy that the revenue line doesn't show?",
+      "feedback_task": "Present the audit to your decision-maker or peer group exactly as you'd present closed books — because that's what it is. Take the hardest question; if the answer isn't in your logs, that's the number next quarter's asset tracks from day one.",
+      "teach_back_task": "Walk one person — your asset-friend, a sibling, a fellow seller — through the entire arc: service history, validation, finish bar, shelf, unattended sale, audit. When *their* first unattended notification arrives and they message you about it, the quarter has done the only thing curricula are for: it left the building.",
+      "ai_judgment_note": "The audit runs on your logged reality — hours from your log, sales from your shelf, maintenance from your clock — and by now the reflex is trained: no model fills a blank in your books. The verdict is a capital-allocation call, the first of many in your life: machine as sparring partner on the reasoning, never as the decider. And keep the notification screenshot. Years from now, whatever you build, that Tuesday was the moment the difference between working *for* money and building things that work *while you don't* stopped being a sentence and became a memory.",
+      "assets_needed": ["Launch log (sales by door) + asset audit sheet (hours / earnings / maintenance / payback / verdict)"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "At least one unattended sale or committed use is logged, with the launch run through real channels.",
+        "A complete honest audit exists with payback math and a written verdict."
+      ],
+      "prereq_lesson_ids": ["cw-15-16-q1-l4"]
+    }
+  ]
+}

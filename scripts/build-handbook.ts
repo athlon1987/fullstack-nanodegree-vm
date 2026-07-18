@@ -47,8 +47,8 @@ const PILLAR_LABEL: Record<string, string> = {
   lead: 'Lead', explore: 'Explore', live_well: 'Live Well', create: 'Create',
 };
 const PILLAR_COLOR: Record<string, string> = {
-  think: '#6366f1', communicate: '#0ea5e9', build: '#f59e0b', wealth: '#10b981',
-  lead: '#ec4899', explore: '#8b5cf6', live_well: '#14b8a6', create: '#f43f5e',
+  think: '#3d3a94', communicate: '#0f5e80', build: '#9a5610', wealth: '#1d6b47',
+  lead: '#94285c', explore: '#5b3a9e', live_well: '#0f6b66', create: '#a02c22',
 };
 const LEVER_LABEL: Record<string, string> = {
   autonomy: 'Autonomy', mastery: 'Mastery', peer_status: 'Peer status',
@@ -97,7 +97,7 @@ const parts: string[] = [];
 
 parts.push(`
 <header class="cover">
-  <div class="rocket">&#128640;</div>
+  <div class="monogram">F<span class="dotmark">.</span></div>
   <h1>Future Founder &amp; Leader</h1>
   <p class="subtitle">Curriculum Handbook</p>
   <p class="cover-meta">${all.length} quarterly projects &middot; ${totalLessons} lessons &middot; ages 9&ndash;14</p>
@@ -192,12 +192,12 @@ for (const [band, list] of byBand) {
     ${STEP_LABELS.map(
       ([key, label], i) => `
     <div class="step ${key === 'teach_back_task' ? 'teachback' : ''}">
-      <h5><span class="snum">${i + 1}</span> ${label}${key === 'teach_back_task' ? ' &#9733;' : ''}</h5>
+      <h5><span class="snum">0${i + 1}</span> ${label}${key === 'teach_back_task' ? ' &mdash; the step that makes it stick' : ''}</h5>
       <div class="md">${md(l[key] as string)}</div>
     </div>`,
     ).join('')}
     <div class="ai-note">
-      <h5>&#129517; AI judgment &mdash; when to use it, and when not to</h5>
+      <h5>AI judgment &mdash; when to use it, and when not to</h5>
       <div class="md">${md(l.ai_judgment_note)}</div>
     </div>
     ${
@@ -207,7 +207,7 @@ for (const [band, list] of byBand) {
     }
     <div class="crit">
       <h5>Success checklist</h5>
-      <ul>${l.success_criteria.map((c) => `<li>&#9744; ${esc(c)}</li>`).join('')}</ul>
+      <ul>${l.success_criteria.map((c) => `<li><span class="box"></span>${esc(c)}</li>`).join('')}</ul>
     </div>
     ${
       l.prereq_lesson_ids?.length
@@ -224,74 +224,89 @@ const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <title>Future Founder &amp; Leader — Curriculum Handbook</title>
 <style>
-  @page { size: A4; margin: 12mm 14mm; }
+  @page { size: A4; margin: 14mm 16mm; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DejaVu Sans', 'Segoe UI', Helvetica, Arial, sans-serif;
-         font-size: 9.5pt; line-height: 1.5; color: #1e293b; }
+  :root { --ink:#16130f; --ink-soft:#56514a; --ink-faint:#8d867c; --paper:#faf7f2;
+          --line:#e4ded4; --accent:#e8490f; --ok:#1d7a53; }
+  body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+         font-size: 9.5pt; line-height: 1.55; color: var(--ink); background: #fff; }
   .md > * + *, .md li + li { margin-top: 0.35em; }
   .md ul, .md ol { padding-left: 1.3em; margin-top: 0.35em; }
   .md em { font-style: italic; } .md strong { font-weight: 700; }
-  .md code { font-family: monospace; background: #eef2ff; padding: 0 0.3em; border-radius: 3px; }
+  .md code { font-family: monospace; background: #f2ede4; padding: 0 0.3em; }
 
-  .cover { text-align: center; padding: 90mm 0 20mm; page-break-after: always; }
-  .rocket { font-size: 34pt; }
-  .cover h1 { font-size: 26pt; margin-top: 8mm; letter-spacing: -0.5px; }
-  .subtitle { font-size: 14pt; color: #6366f1; font-weight: 600; margin-top: 2mm; }
-  .cover-meta { margin-top: 6mm; color: #475569; }
-  .cover-note { margin-top: 30mm; font-size: 8.5pt; color: #64748b; }
+  .microcap { font-size: 7pt; font-weight: 600; letter-spacing: 1.4px; text-transform: uppercase; }
+
+  .cover { text-align: center; padding: 78mm 0 20mm; page-break-after: always; }
+  .monogram { width: 22mm; height: 22mm; margin: 0 auto; background: var(--ink); color: #fff;
+              font-size: 22pt; font-weight: 700; line-height: 22mm; }
+  .dotmark { color: var(--accent); }
+  .cover h1 { font-size: 27pt; margin-top: 9mm; letter-spacing: -0.6px; }
+  .subtitle { font-size: 8.5pt; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase;
+              color: var(--accent); margin-top: 3mm; }
+  .cover-meta { margin-top: 7mm; color: var(--ink-soft); }
+  .cover-note { margin-top: 30mm; font-size: 8.5pt; color: var(--ink-faint); }
 
   .howto { page-break-after: always; }
-  .howto h2 { font-size: 15pt; margin-bottom: 4mm; }
+  .howto h2 { font-size: 15pt; letter-spacing: -0.3px; border-bottom: 1.5px solid var(--ink);
+              padding-bottom: 2mm; margin-bottom: 4mm; }
   .howto p { margin-bottom: 3mm; }
   .loop { margin: 3mm 0 3mm 6mm; }
   .coverage { border-collapse: collapse; margin-top: 4mm; width: 100%; }
-  .coverage th, .coverage td { border: 1px solid #cbd5e1; padding: 2mm 3mm; text-align: left; }
-  .coverage th { background: #f1f5f9; }
+  .coverage th, .coverage td { border: 1px solid var(--line); padding: 2mm 3mm; text-align: left; }
+  .coverage th { font-size: 7pt; font-weight: 600; letter-spacing: 1.4px; text-transform: uppercase;
+                 background: #f5f1ea; }
 
   .toc { page-break-after: always; }
-  .toc h2 { font-size: 15pt; margin-bottom: 4mm; }
-  .toc h3 { margin: 4mm 0 2mm; font-size: 11pt; }
+  .toc h2 { font-size: 15pt; letter-spacing: -0.3px; border-bottom: 1.5px solid var(--ink);
+            padding-bottom: 2mm; margin-bottom: 4mm; }
+  .toc h3 { margin: 4mm 0 2mm; font-size: 8pt; font-weight: 600; letter-spacing: 1.4px;
+            text-transform: uppercase; color: var(--ink-soft); }
   .toc ul { list-style: none; }
-  .toc li { margin: 1mm 0; }
-  .toc a { color: #1e293b; text-decoration: none; }
-  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 2mm; }
+  .toc li { margin: 1.2mm 0; }
+  .toc a { color: var(--ink); text-decoration: none; }
+  .dot { display: inline-block; width: 2.5mm; height: 2.5mm; margin-right: 2.5mm; }
 
-  .band-title { font-size: 22pt; padding: 60mm 0 0; text-align: center;
-                page-break-before: always; page-break-after: always; color: #334155; }
+  .band-title { font-size: 24pt; letter-spacing: -0.5px; padding: 60mm 0 0; text-align: center;
+                page-break-before: always; page-break-after: always; color: var(--ink); }
 
   .project { page-break-before: always; }
-  .project-head { border-left: 4px solid; padding-left: 4mm; margin-bottom: 4mm; }
-  .project-head h2 { font-size: 15pt; margin: 1.5mm 0 0.5mm; }
-  .pill { color: #fff; font-size: 7.5pt; font-weight: 700; padding: 0.8mm 2.5mm;
-          border-radius: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .pid { color: #94a3b8; font-size: 8pt; }
-  .meta h4 { font-size: 8pt; text-transform: uppercase; letter-spacing: 0.5px;
-             color: #64748b; margin: 3mm 0 1mm; }
+  .project-head { border-left: 3px solid; padding-left: 4mm; margin-bottom: 4mm; }
+  .project-head h2 { font-size: 16pt; letter-spacing: -0.3px; margin: 1.5mm 0 0.5mm; }
+  .pill { color: #fff; font-size: 6.5pt; font-weight: 700; padding: 1mm 2.5mm;
+          text-transform: uppercase; letter-spacing: 1.2px; }
+  .pid { color: var(--ink-faint); font-size: 8pt; }
+  .meta h4 { font-size: 7pt; text-transform: uppercase; letter-spacing: 1.4px;
+             color: var(--ink-faint); margin: 3mm 0 1mm; }
   .meta ul { padding-left: 5mm; }
-  .prereq { color: #64748b; font-size: 8.5pt; margin-top: 2mm; font-style: italic; }
+  .prereq { color: var(--ink-faint); font-size: 8.5pt; margin-top: 2mm; font-style: italic; }
 
-  .lesson { margin-top: 6mm; padding-top: 3mm; border-top: 1px solid #e2e8f0;
+  .lesson { margin-top: 7mm; padding-top: 3.5mm; border-top: 1px solid var(--ink);
             page-break-inside: avoid; }
-  .lesson h3 { font-size: 12pt; margin-bottom: 2.5mm; }
-  .lnum { display: inline-block; color: #fff; width: 6mm; height: 6mm; line-height: 6mm;
-          text-align: center; border-radius: 50%; font-size: 9pt; }
-  .mins { float: right; color: #94a3b8; font-size: 8.5pt; font-weight: 400; }
-  .step { border: 1px solid #e2e8f0; border-radius: 3mm; padding: 2.5mm 3mm; margin: 2mm 0;
+  .lesson h3 { font-size: 12.5pt; letter-spacing: -0.2px; margin-bottom: 2.5mm; }
+  .lnum { display: inline-block; color: #fff; min-width: 6.5mm; height: 6.5mm; line-height: 6.5mm;
+          text-align: center; font-size: 8pt; font-weight: 700; padding: 0 1mm; }
+  .mins { float: right; color: var(--ink-faint); font-size: 8pt; font-weight: 400; }
+  .step { border: 1px solid var(--line); background: #fff; padding: 2.5mm 3.5mm; margin: 2mm 0;
           page-break-inside: avoid; }
-  .step h5, .ai-note h5, .crit h5 { font-size: 8pt; text-transform: uppercase;
-          letter-spacing: 0.5px; color: #64748b; margin-bottom: 1mm; }
-  .snum { display: inline-block; background: #334155; color: #fff; width: 4.5mm; height: 4.5mm;
-          line-height: 4.5mm; text-align: center; border-radius: 50%; font-size: 7pt; }
-  .teachback { background: #eef2ff; border: 2px solid #6366f1; }
-  .teachback h5 { color: #4338ca; font-weight: 800; }
-  .ai-note { background: #fffbeb; border: 1.5px solid #f59e0b; border-radius: 3mm;
-             padding: 2.5mm 3mm; margin: 2mm 0; page-break-inside: avoid; }
-  .ai-note h5 { color: #92400e; }
-  .assets { font-size: 8.5pt; color: #475569; margin: 2mm 0; }
-  .crit { background: #ecfdf5; border: 1px solid #10b981; border-radius: 3mm;
-          padding: 2.5mm 3mm; margin: 2mm 0; page-break-inside: avoid; }
-  .crit h5 { color: #065f46; }
+  .step h5, .ai-note h5, .crit h5 { font-size: 7pt; text-transform: uppercase;
+          letter-spacing: 1.4px; color: var(--ink-faint); margin-bottom: 1.2mm; }
+  .snum { display: inline-block; color: var(--ink-faint); font-weight: 700; margin-right: 1mm; }
+  .teachback { background: var(--ink); border: none; border-top: 2.5px solid var(--accent);
+               color: #fff; }
+  .teachback h5 { color: var(--accent); font-weight: 700; }
+  .teachback .snum { color: var(--accent); }
+  .ai-note { background: #fff; border: 1.2px solid var(--ink); padding: 2.5mm 3.5mm;
+             margin: 2mm 0; page-break-inside: avoid; }
+  .ai-note h5 { color: var(--accent); }
+  .assets { font-size: 8.5pt; color: var(--ink-soft); margin: 2mm 0;
+            border-left: 2px solid var(--ink); padding-left: 3mm; }
+  .crit { background: #f4f9f6; border: 1px solid var(--ok); padding: 2.5mm 3.5mm;
+          margin: 2mm 0; page-break-inside: avoid; }
+  .crit h5 { color: var(--ok); }
   .crit ul { list-style: none; }
+  .box { display: inline-block; width: 2.8mm; height: 2.8mm; border: 1px solid var(--ok);
+         margin-right: 2.5mm; vertical-align: -0.3mm; }
 </style></head><body>
 ${parts.join('\n')}
 </body></html>`;

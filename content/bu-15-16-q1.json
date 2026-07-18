@@ -1,0 +1,119 @@
+{
+  "id": "bu-15-16-q1",
+  "title": "Go Deep on a Craft",
+  "pillar_primary": "build",
+  "pillars_supporting": ["think"],
+  "age_band": "15-16",
+  "quarter": 1,
+  "developmental_frame": "At 15–16, deliberate practice becomes fully available: a teen can practice at the edge of their ability on purpose, tolerate the specific discomfort of working just past competence, study masters analytically rather than just admiringly, and sustain a practice system for months. This is also the age where 'good for a kid' stops being the standard — the world begins comparing their work to everyone's, which stings and clarifies. The developmental trap is its own strength: capable teens plateau by practicing what they're already good at, because it feels like progress and photographs well.",
+  "authentic_value_meaning": "At this age, building creates value when the work **stands without the age disclaimer** — portfolio pieces judged good by the standards of the craft itself, not charming for sixteen. Reaching the edge of genuine competence in one craft teaches the meta-skill that matters more than any single craft: knowing, from inside, what the road from beginner to good actually feels like — which makes every future skill cheaper to acquire.",
+  "motivation_lever": {
+    "lever": "mastery",
+    "mechanism": "The quarter is built as a visible skill ascent in the teen's year-bet craft: baseline piece in week one, edge-practice system through the middle, three portfolio pieces at the end — with the baseline kept on purpose, so the distance travelled is undeniable. Nothing motivates a 15-year-old like objective evidence of getting good at their chosen thing; the before/after pair does the motivating that no lecture could."
+  },
+  "artifact": "Three portfolio-grade pieces in the teen's year-bet craft, produced through a documented practice system — plus the week-one baseline piece kept for comparison, a practice log showing edge-work across the quarter, and one piece critiqued by a real practitioner of the craft.",
+  "success_criteria": [
+    "A baseline piece from week one exists alongside three end-of-quarter pieces, and the gap is visible to a stranger.",
+    "The practice log shows a real system: regular sessions, specific edge-targets, and what each session attacked.",
+    "At least one piece received critique from a genuine practitioner outside family and school, and the critique was acted on.",
+    "The teen can articulate the craft's quality standards — what separates good from decent — in their own words."
+  ],
+  "prereq_project_ids": [],
+  "lessons": [
+    {
+      "id": "bu-15-16-q1-l1",
+      "sequence": 1,
+      "title": "Baseline, honestly",
+      "concept": "Every serious ascent starts with a fixed point: make one complete piece in your craft, now, at your current level, no excuses and no extra week of polish — then *keep it*. The baseline hurts a little to make (it's you, measured) and pays all year: it converts 'am I improving?' from a mood into a comparison. Skipping the baseline is the first symptom of practicing to feel good rather than to get good.",
+      "real_example": "A teen betting his year on video editing made his baseline in one honest weekend: a 90-second edit of family footage, current skills only. It had every beginner tell — jump cuts, muddy audio, an ending that just stopped. He hated it and kept it. In June, his club's showcase reel next to that baseline made the case no words could: same person, same laptop, one system of practice between them.",
+      "apply_task": "Define your craft precisely from your year-bet memo (not 'coding' — 'building small web tools'; not 'art' — 'digital character illustration'). Make your baseline piece this week: one complete, finished thing at today's skill level. Date it, store it where it won't be quietly deleted, and write three sentences on what you can see is weak — even if you can't yet fix it.",
+      "reflection_prompt": "What did you feel looking at your finished baseline — and what would it mean to feel that in June about today's best work? Why is 'I can see it's weak but can't fix it yet' actually a hopeful sentence?",
+      "feedback_task": "Show the baseline to one person and say the hard sentence out loud: 'this is my starting point; I'm going to make this look amateur by June.' The public stake converts the baseline from embarrassment into ignition.",
+      "teach_back_task": "Convince a friend starting anything — gym, language, instrument — to make and keep a baseline this week. Teach the reframe: the baseline isn't evidence you're bad; it's the 'before' photo that makes the 'after' mean something.",
+      "ai_judgment_note": "The baseline must be made without AI assistance even where AI could help — its whole value is measuring *you*, and a machine-assisted baseline poisons every comparison the year will make against it. (Where AI legitimately lives in your craft's real workflow, you'll add it deliberately in later lessons, and measure yourself with-tools against with-tools.) One fair use today: 'here's my piece — list what a professional would notice as beginner tells.' Seeing your weaknesses named early is a gift; just make sure the work they're named in is purely yours.",
+      "assets_needed": ["Baseline piece (dated, stored) + three-sentence weakness note"],
+      "est_minutes": 90,
+      "success_criteria": [
+        "A complete baseline piece exists, dated and stored.",
+        "A written weakness note names at least three specific weak points."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "bu-15-16-q1-l2",
+      "sequence": 2,
+      "title": "Steal like a student",
+      "concept": "Every craft has masters, and their work is an open textbook — if you read it analytically instead of admiringly. The study move: pick three works you wish you'd made, and *reverse-engineer* them — what exactly makes this good? Name the techniques, the decisions, the things they didn't do. Then the apprentice's oldest exercise: copy one, as closely as you can, purely to feel where your hands can't yet follow. Copying to learn is how every master started; copying to publish is theft. Know the line, use the first, never cross into the second.",
+      "real_example": "The video teen chose three edits he loved and watched each a dozen times with a notepad: cuts landed on beats (he'd never noticed), audio led the image by a half-second in scene changes, every sequence ended one shot earlier than he would have. Recreating a 30-second stretch shot-for-shot taught him more about pacing in three hours than a month of tutorials — because his hands met the exact places the master's choices lived. The recreation went in his practice folder, never his portfolio, labelled 'study of'.",
+      "apply_task": "Choose three exemplary works in your craft. For each, write the autopsy: five specific techniques or decisions that make it good, and one thing the maker *chose not to do*. Then copy one section of one work as a labelled study — close as you can — and log where your hands failed to follow. Those failure points are your practice targets for lesson three.",
+      "reflection_prompt": "What did the copy teach you that watching never did? And where's the line, in your own words, between studying someone's work and stealing it — why does labelling a study 'study of X' matter morally and not just legally?",
+      "feedback_task": "Show a fellow craft-learner one autopsy and your study-copy with its failure log. Ask what *they* see in the master's work that you missed — two students autopsy better than one, and their eye trains yours.",
+      "teach_back_task": "Teach the autopsy method to someone learning any craft: pick a work they admire, sit together and name five reasons it's good and one restraint. The shift from 'that's amazing' to 'that's amazing *because*' is the entire lesson — audible the moment it happens.",
+      "ai_judgment_note": "AI can accelerate the autopsy — 'what techniques are visible in this piece?' surfaces vocabulary you don't have yet, and knowing a technique's *name* unlocks a world of practice material. Two cautions. The failure log must come from your own hands attempting the copy — the machine can name the technique but only the attempt shows you which ones you lack. And never launder a study into original work, with or without AI transformation on top: the habit of honest labels, built now, is what will make your portfolio trustworthy for life.",
+      "assets_needed": ["Three autopsy sheets (5 techniques + 1 restraint each) + labelled study-copy with failure log"],
+      "est_minutes": 90,
+      "success_criteria": [
+        "Three written autopsies exist naming specific techniques and restraints.",
+        "One labelled study-copy exists with a failure log naming where the hands couldn't follow."
+      ],
+      "prereq_lesson_ids": ["bu-15-16-q1-l1"]
+    },
+    {
+      "id": "bu-15-16-q1-l3",
+      "sequence": 3,
+      "title": "Practice at the edge",
+      "concept": "Practice only builds skill when it happens at the *edge* — the narrow zone where you fail about a third of the time. Below it, you're performing (fun, photographs well, builds nothing); above it, you're flailing. Deliberate practice is engineered discomfort: isolate one weakness (your baseline notes and copy-failures are the menu), design a drill that attacks it specifically, repeat with immediate feedback, and stop when quality collapses — tired reps train sloppiness. It's the least glamorous thing in this curriculum and the most powerful.",
+      "real_example": "His failure log said transitions. The drill: cut the same 20-second sequence five different ways in one session, each transition style twice, comparing against the master study after every attempt. Not making videos — making *transitions*, over and over, at the exact spot his hands had failed. Three weeks of Tuesday/Thursday drills and the weakness inverted: reviewers of his June reel called transitions his signature. Edges, attacked specifically, become strengths — that's the entire economics of practice.",
+      "apply_task": "Build your practice system: two or three sessions a week inside your bet-blocks, each session opening with a named edge-target ('today attacks: ___'), a drill that isolates it, immediate comparison against a standard (the master work, the measurement, the playback), and a two-line log entry — what was attacked, what moved. Run the system for three weeks before judging it.",
+      "reflection_prompt": "What's the emotional difference between a performing session and an edge session — and which do you naturally drift toward when tired? Your whole training says systems beat moods: what in your system's design forces the edge when the mood says coast?",
+      "feedback_task": "After three weeks, show your practice log to someone who trains seriously in anything — an athlete, a musician, a coder. Ask: 'is this deliberate practice or organised performing?' Their outside read on your edge-honesty is worth more than a month of self-assessment.",
+      "teach_back_task": "Design an edge-drill for a friend stuck on a plateau in their thing: help them name the specific weakness, build the isolating drill, and set the failure-rate target. Plateaus are almost always performing-disguised-as-practice; teaching the diagnosis cements it in you.",
+      "ai_judgment_note": "AI earns real wages here: drill design ('give me five exercises that isolate X'), instant feedback where the craft allows it ('critique this attempt against professional standards'), and spotting patterns across your log. The two things it cannot do: feel where *your* edge is this week — that's proprioception, yours alone — and do the reps. Beware especially the AI shortcut that skips the rep ('just generate the transition'): in the portfolio lessons, tools are fair game where the craft's professionals use them; in the drill, the struggling *is* the product. Protect the struggle.",
+      "assets_needed": ["Practice system card (schedule / edge-target ritual / feedback source) + practice log"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "A practice system ran for three weeks with logged edge-targets per session.",
+        "An outside trainer-type confirmed the log shows edge-work, not performing."
+      ],
+      "prereq_lesson_ids": ["bu-15-16-q1-l2"]
+    },
+    {
+      "id": "bu-15-16-q1-l4",
+      "sequence": 4,
+      "title": "Make the portfolio pieces",
+      "concept": "Now convert practice into evidence: three finished pieces, chosen to *show range on purpose* — one that demonstrates your strongest technique, one that solves a real problem for a real person (craft applied, not just displayed), one that stretches into territory you couldn't touch at baseline. Portfolio pieces are finished to the craft's professional standard, which means the last 10% — the polish, the details, the boring completeness — that practice pieces skip. Finishing is its own skill, and the portfolio is where you build it.",
+      "real_example": "His three: a 60-second showcase built around his now-signature transitions (strength), a promo edit for his cousin's bakery that the bakery actually posted (real use — and his first work living in the world on its merits), and a short documentary-style piece requiring interview audio he'd never handled (stretch — it took three times longer than planned and taught him sound design exists). Strength, service, stretch: three pieces, three different proofs, one unmistakable ascent from the baseline.",
+      "apply_task": "Plan the trio — strength piece, real-use piece (find a real person or org who needs your craft this month), stretch piece — with a finish bar for each written in advance: what does 'done to standard' mean, specifically? Then make them, edge-system still running underneath. Log where the last 10% fought you; that's the finishing skill being built.",
+      "reflection_prompt": "Which fought harder — the stretch piece's new territory, or the last 10% of finishing the pieces you already knew how to make? What does that tell you about the difference between skill and *craftsmanship*?",
+      "feedback_task": "Put the real-use piece in front of its real user and ship it — their acceptance (or their change requests) is the piece's true finish bar. For the other two, run your before/after: baseline beside new work, shown to two people, one question: 'what changed?'",
+      "teach_back_task": "Help a fellow learner plan their own strength/service/stretch trio in their craft. Teach the finish-bar move — writing 'done means…' before starting — and watch it kill the endless-tinkering problem that eats most first portfolios.",
+      "ai_judgment_note": "Portfolio pieces live by the craft's real rules, and in most modern crafts professionals use AI tools somewhere — so use what the professionals use, *disclosed the way professionals disclose*: you should be able to say exactly which tools touched the piece and what they did, and the judgment calls that make the piece yours must be yours. The line that matters: a piece is portfolio-honest when showing your process would increase respect, not end it. If a tool did the part you're claiming credit for, the piece belongs in the practice folder, not the portfolio.",
+      "assets_needed": ["Trio plan (strength/service/stretch + finish bars) + the three finished pieces"],
+      "est_minutes": 120,
+      "success_criteria": [
+        "Three finished pieces exist matching their pre-written finish bars.",
+        "The real-use piece was actually delivered to and accepted by its real user."
+      ],
+      "prereq_lesson_ids": ["bu-15-16-q1-l3"]
+    },
+    {
+      "id": "bu-15-16-q1-l5",
+      "sequence": 5,
+      "title": "Face the field",
+      "concept": "The quarter's final test isn't self-assessment — it's *the field's* assessment: real critique from a genuine practitioner of your craft, someone whose standards come from doing it, not from loving you. Getting critique is a skill with rules: ask specific questions ('what would you fix first?' beats 'do you like it?'), listen without defending (write, don't argue), separate the work from your worth (they're critiquing the piece — the piece is not you), and act on one thing within a week, because critique unacted-on trains the critic to stop bothering. This conversation, survived and used, is the moment 'good for a kid' dies.",
+      "real_example": "Through a family friend, the video teen got fifteen minutes with a working editor. He asked the specific question and got specifics back: 'your cuts are genuinely good — your audio is what marks you as young. Learn levels and EQ basics and you jump a tier.' It stung precisely because it was true (the stretch piece had warned him). He spent the next fortnight on audio, re-finished the documentary piece, and sent it back with two lines of thanks. The editor's reply — 'better. Send me your next one' — was eleven words and worth more than any grade he'd ever received: a practitioner's open door.",
+      "apply_task": "Find your practitioner — your outreach craft exists for exactly this — and ask for fifteen minutes of critique on your best piece, with two specific questions prepared. Take the critique with the rules: write everything, defend nothing, thank them. Within one week: act on the first-priority fix, and close the loop by sending the improved work with your thanks. Then write the quarter's closing entry: baseline vs trio, what the field said, what the practice system attacks next.",
+      "reflection_prompt": "What did the practitioner see that nobody in your family could? Compare the sting of real critique to the comfort of praise — which one moved your work, and what does that teach you about which to seek for the next ten years?",
+      "feedback_task": "Show a peer the full arc — baseline, log, trio, critique, the improved piece — and ask them to judge one thing: 'does the improvement look like talent or like a system?' The answer you want is *system*, because systems are the only thing you can hand to someone else — or run again on the next craft.",
+      "teach_back_task": "Package the quarter's method — baseline, autopsy, edge-drills, strength/service/stretch, field critique — and walk one person through starting it in *their* craft this week, baseline and all. The method transferring intact to a different craft is the proof it was never about video, or code, or drawing. It was about the road — and now you both have the map.",
+      "ai_judgment_note": "By now you've used AI as autopsy assistant, drill designer, and tireless first-pass critic — all real. Here's what the quarter's final lesson makes plain: the machine's critique and the practitioner's differ in kind, because the practitioner's carries *skin* — years of their life in the standards they hold you to, and a relationship that continues if you're worth investing in. 'Send me your next one' is not a feature any model has. Use AI to prepare for the field; never mistake it for the field. The door that opened at the end of this quarter opened to a person.",
+      "assets_needed": ["Critique prep card (two specific questions) + closing entry (baseline vs trio / field verdict / next edge)"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "A real practitioner critiqued the work and the first-priority fix was acted on within a week.",
+        "The improved piece was sent back closing the loop, and the quarter's closing entry is written."
+      ],
+      "prereq_lesson_ids": ["bu-15-16-q1-l4"]
+    }
+  ]
+}
