@@ -1,0 +1,119 @@
+{
+  "id": "th-13-14-q3",
+  "title": "Find the Real Bottleneck",
+  "pillar_primary": "think",
+  "pillars_supporting": ["build"],
+  "age_band": "13-14",
+  "quarter": 3,
+  "developmental_frame": "At 13–14, a teen can finally think about *systems* — not just events but the loops and flows behind them: why cramming keeps happening, why the group chat always derails, why their venture's Saturdays feel chaotic. Younger children see a bad grade; this age can see the study-system that produced it. What's still hard is resisting the flashy fix: teens (like most adults) instinctively fix the most *visible* part of a system rather than the part that's actually setting the pace.",
+  "authentic_value_meaning": "At this age, thinking creates value when it **fixes the cause instead of the symptom** — one intervention at the right point that makes a whole routine, team, or venture measurably better, instead of ten effortful fixes that change nothing. A teen who has once found a real bottleneck and felt the whole system speed up owns a way of seeing that most people never acquire.",
+  "motivation_lever": {
+    "lever": "mastery",
+    "mechanism": "The quarter has a magic-trick payoff: map a system you're stuck in, find the one constraint, change *only that*, and watch a measured number move while everything you didn't touch improves anyway. That feeling — small lever, big result, proven by your own before/after numbers — is the purest mastery hit thinking can deliver, and it makes the skill self-reinforcing."
+  },
+  "artifact": "A one-page map of a real system the teen lives in (their study routine, morning routine, team process, or their venture's order-to-delivery flow), with the bottleneck identified and defended, one fix applied at the bottleneck only, and a before/after measurement showing what it did.",
+  "success_criteria": [
+    "A drawn system map exists with parts, flows, and at least one feedback loop labelled.",
+    "The claimed bottleneck is written down with the evidence for why it — and not the noisiest part — sets the system's pace.",
+    "One fix was applied at the bottleneck and a before/after measurement of the whole system's output exists.",
+    "The teen can explain why fixing a non-bottleneck wouldn't have helped, using their own map."
+  ],
+  "prereq_project_ids": ["th-13-14-q2"],
+  "lessons": [
+    {
+      "id": "th-13-14-q3-l1",
+      "sequence": 1,
+      "title": "See the system, not the event",
+      "concept": "An event is what happened; a system is the machine that keeps making it happen. 'I got a bad mark' is an event. The system is: when homework lands, where it gets written down, when studying actually starts, what interrupts it, and how tiredness feeds back into all of it. Events invite blame; systems invite fixes. The first skill is drawing the machine.",
+      "real_example": "A teen kept 'forgetting' homework. Drawn as a system: assignments announced in six places → some never reach the planner → the missing ones surface at 9pm → panic work → late night → tired morning → worse notes → more missing assignments. Nobody in that loop is lazy. The *system* forgets — and you can't fix a system you haven't drawn.",
+      "apply_task": "Pick a real system you're stuck in — study routine, mornings, your venture's order-to-delivery, a team's weekly chaos. Draw it: the stages as boxes, the flows between them as arrows, and where things pile up or vanish. Ugly is fine; complete matters.",
+      "reflection_prompt": "Drawing it, where were you tempted to write a person's name as the problem? What changes when you replace 'I'm lazy' or 'he's annoying' with a box and an arrow?",
+      "feedback_task": "Show the map to someone else inside the same system. Ask: 'what did I leave out?' Insiders always find a missing arrow — usually the embarrassing one. Add it.",
+      "teach_back_task": "Teach someone the event-versus-system distinction using their own recurring annoyance ('I'm always late', 'we always argue about dishes'). Help them draw their machine — stop before suggesting any fix. Seeing precedes fixing.",
+      "ai_judgment_note": "The map must come from your own observation — AI has never seen your mornings or your market stall, and a generic 'study system' diagram will be neat, plausible, and wrong. After you've drawn yours, one fair use: describe the system in words and ask 'what stage or flow might I be missing?' Treat its suggestions as questions to check against reality, not additions to paste in.",
+      "assets_needed": ["System-mapping sheet (boxes / arrows / pile-up marks)"],
+      "est_minutes": 35,
+      "success_criteria": [
+        "A drawn map of a real system exists with stages, flows, and pile-up points marked.",
+        "One missing piece found by an insider was added."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "th-13-14-q3-l2",
+      "sequence": 2,
+      "title": "Spot the loops",
+      "concept": "Systems don't run in straight lines — they loop. Some loops spiral things worse (tired → cram → sleep late → more tired). Some compound things better (small win → confidence → more practice → bigger win). Loops are why systems resist one-off fixes: push once and the loop pulls everything back. Find the loops in your map and you've found the system's engine room.",
+      "real_example": "A teen's bracelet stall had a vicious loop: rushed making → uneven quality → fewer repeat buyers → lower takings → more rush to compensate. Her friend's study system hid a virtuous one: revising with a friend → slightly better marks → parents extend screen time → happier revision → better marks. Neither teen had noticed the loop pushing them — loops are engines that don't announce themselves.",
+      "apply_task": "Find at least two loops touching your mapped system — one that makes things worse, one that makes things better (it may be small or only occasional). Draw them as circles of arrows on the map and label each 'vicious' or 'virtuous', with one line on what keeps each loop spinning.",
+      "reflection_prompt": "Which loop has been running your system without your permission? If you could feed one loop and starve the other, which single arrow would you touch first?",
+      "feedback_task": "Explain your two loops to an adult and ask them to name one loop — vicious or virtuous — running in *their* work or household. Comparing loops across lives makes the pattern portable.",
+      "teach_back_task": "Teach a younger sibling what a vicious cycle is using something from their world (rushing homework → mistakes → redo → less time → more rushing). Then show them a virtuous one. If they can find a third on their own, it stuck.",
+      "ai_judgment_note": "Trace the loops yourself first, on paper, following your own arrows — the tracing is the skill being built. AI is decent at loop-spotting if you describe your map ('what feedback loops might exist here?'), and it may name one you missed; verify it against a real week before believing it. A loop that sounds logical but doesn't actually spin in your life is a story, not a system.",
+      "assets_needed": ["Loop overlay on the system map (circles + vicious/virtuous labels)"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "Two loops are drawn on the map, labelled vicious/virtuous, each with what keeps it spinning.",
+        "The teen can say which loop currently dominates the system."
+      ],
+      "prereq_lesson_ids": ["th-13-14-q3-l1"]
+    },
+    {
+      "id": "th-13-14-q3-l3",
+      "sequence": 3,
+      "title": "Find the bottleneck",
+      "concept": "In any system, one stage sets the pace for everything — the bottleneck. Speed up anything else and the system doesn't care; speed up the bottleneck and everything moves. The tells: work piles up *in front of* it, stages after it sit hungry, and it's where everyone quietly waits. The discipline is proving which stage it is — because the noisiest, most annoying stage usually isn't it.",
+      "real_example": "At a busy burger stand, the till has the longest queue — but watch: orders pile up at the *grill*. Hire a second cashier (the visible fix) and the queue just moves. The grill is the bottleneck; a second grill-cook is the fix that actually shortens everyone's wait. The queue lies about where the problem lives.",
+      "apply_task": "Interrogate your map: where does work actually pile up? Which stage do other stages wait on? Name your bottleneck and write the evidence — real waits, real pile-ups from a real week, not vibes. Then write the decoy: the stage that *looks* like the problem but isn't, and how you know.",
+      "reflection_prompt": "Was your bottleneck the stage you'd been complaining about? If not — how much effort have you already spent 'fixing' stages that were never setting the pace?",
+      "feedback_task": "Present bottleneck-plus-evidence to someone in the system and let them argue for a different stage. Defend yours with the pile-up evidence, or update — either way, the claim gets stress-tested before you spend a fix on it.",
+      "teach_back_task": "Next time you're in any queue — canteen, checkout, traffic — bottleneck-spot out loud with whoever's next to you: where's the real constraint, and what's the decoy? Make it a game; the game installs the eye.",
+      "ai_judgment_note": "The bottleneck is an empirical fact about *your* system — it's found by watching where things pile up, and no model can watch for you. Where AI helps is the decoy trap: describe your system and your candidate bottleneck and ask 'what would have to be true for this to be wrong?' — then go check those things in reality. Diagnosis by observation, cross-examination by machine: that's the right division of labour.",
+      "assets_needed": ["Bottleneck evidence card (claimed stage / pile-up evidence / the decoy)"],
+      "est_minutes": 35,
+      "success_criteria": [
+        "A bottleneck is named with written pile-up/wait evidence from a real week.",
+        "The decoy stage is identified with the reason it fooled (or nearly fooled) the teen."
+      ],
+      "prereq_lesson_ids": ["th-13-14-q3-l2"]
+    },
+    {
+      "id": "th-13-14-q3-l4",
+      "sequence": 4,
+      "title": "Fix the constraint, only the constraint",
+      "concept": "Now the discipline that separates system-thinkers from busy people: change *one thing, at the bottleneck, and nothing else*. Measure the whole system's output before and after — not effort, output. Fixing only the constraint feels lazy ('but I could also improve…'), which is exactly why almost nobody does it and why it works: every unit of effort lands where the system actually bends.",
+      "real_example": "The homework teen's bottleneck was capture — assignments announced in six places, written down in none. Her one fix: a two-minute end-of-school ritual, checking all six places once, into one list. She changed nothing else — not her desk, not her app, not her 'discipline'. Late-night panics went from four a week to one. One fix, at the constraint, measured.",
+      "apply_task": "Design the smallest fix that directly widens your bottleneck. Write the before-number first (this week's waits, pile-ups, late nights, orders delivered). Apply the fix for at least a week, touching nothing else. Record the after-number next to it.",
+      "reflection_prompt": "What other 'improvements' did you have to resist making during the week — and why would making them have ruined the experiment even if they helped?",
+      "feedback_task": "Show your before/after pair to the insider from lesson one. Ask: 'did you feel the difference, and where?' If the numbers moved but nobody felt it — or everyone felt it but the numbers didn't move — dig into which measure is lying.",
+      "teach_back_task": "Tell the story — map, loops, bottleneck, one fix, numbers — to your family in five minutes. The punchline to teach: 'I changed one thing and the whole system moved.' If they ask 'what one thing should I change about X?', teach them to map X first.",
+      "ai_judgment_note": "Choosing the fix is judgment built on your evidence — AI can suggest candidate fixes for a bottleneck you describe, and that's a fair idea-source, but it will suggest five and the discipline is picking *one small one* and holding the rest. Never let it talk you into a bundle: bundled fixes teach you nothing about which one worked. One change, one week, one number.",
+      "assets_needed": ["Before/after card (before number / the one fix / after number)"],
+      "est_minutes": 40,
+      "success_criteria": [
+        "One fix was applied at the bottleneck with everything else deliberately held constant.",
+        "A before/after measurement of system output exists spanning at least a week."
+      ],
+      "prereq_lesson_ids": ["th-13-14-q3-l3"]
+    },
+    {
+      "id": "th-13-14-q3-l5",
+      "sequence": 5,
+      "title": "And then what?",
+      "concept": "Every fix changes the system that receives it — so the final thinking move is the second-order question: *and then what?* Fix one bottleneck and the constraint moves somewhere new (widen the grill and the till really is next). Some fixes even feed a vicious loop you didn't price in. Thinking one move past your fix is what separates a good decision from a good-looking one — and it's the habit this whole pillar has been building toward.",
+      "real_example": "A town added a lane to its jammed highway — and then what? Easier driving attracted more drivers; two years later, jammed again (planners call it induced demand). The homework teen asked it too: capture fixed — and then what? The new constraint became *starting* the work she now reliably knew about. Different bottleneck, same method. The method is the possession.",
+      "apply_task": "For your applied fix, write the second-order forecast: where does the constraint move next? What new behaviour might your fix attract or excuse? Watch the system for another week and record what actually shifted — then update your map: new bottleneck, new loops if any.",
+      "reflection_prompt": "Did the constraint move where you predicted? Looking at the updated map: is the next bottleneck worth fixing now, or is the system good enough — and how do you know when to stop optimising?",
+      "feedback_task": "Present the full arc — original map, fix, numbers, where the constraint moved — to your decision-maker or peer group. Ask them for one system in *their* life they'd want this done to; talking them through how you'd start is the final test.",
+      "teach_back_task": "Teach 'and then what?' as a two-word habit to a friend planning any fix or purchase: make them answer it three times in a row ('and then what? …and then what?'). Three rounds deep is where the interesting consequences live — and where your teaching either lands or doesn't.",
+      "ai_judgment_note": "Second-order forecasting is a genuinely strong AI use — 'here's my system and my fix: what knock-on effects might follow?' casts a wider net than any one head, and comparing its list against your own forecast trains you fast. The discipline that stays yours: writing *your* forecast first, and letting the real week — not the plausible list — decide what actually happened. Plausible and true are different species; the map only eats what reality confirms.",
+      "assets_needed": ["Second-order forecast card + updated system map"],
+      "est_minutes": 35,
+      "success_criteria": [
+        "A written second-order forecast exists from before the follow-up week.",
+        "The map is updated with where the constraint actually moved, compared against the forecast."
+      ],
+      "prereq_lesson_ids": ["th-13-14-q3-l4"]
+    }
+  ]
+}

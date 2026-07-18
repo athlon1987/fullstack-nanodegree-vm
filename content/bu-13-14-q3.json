@@ -1,0 +1,119 @@
+{
+  "id": "bu-13-14-q3",
+  "title": "Make It Run Without You",
+  "pillar_primary": "build",
+  "pillars_supporting": ["lead"],
+  "age_band": "13-14",
+  "quarter": 3,
+  "developmental_frame": "At 13–14, a teen can hold another person's perspective well enough to write instructions for them — a genuinely new capability — and can tolerate the ego hit of watching someone fumble with their creation without grabbing it back. They can also now think in failure modes: 'what breaks if…' is answerable. What's developmentally hard is letting go: at this age the builder and the build feel like the same thing, so a tool that only works with its maker hovering feels *safe*. This quarter teaches that it's actually fragile.",
+  "authentic_value_meaning": "At this age, building creates value when the thing you built **keeps working while you're not there** — through weird inputs, through other operators, through a week of your absence. A tool that needs its builder is a hobby; a tool that runs without them is infrastructure. The teen who crosses that line has learned what 'reliable' actually costs and why the world pays so much for it.",
+  "motivation_lever": {
+    "lever": "real_stakes",
+    "mechanism": "The tool from Q1 (or the automation from Q2) has real users now — and this quarter the teen steps away for a real week while someone else operates it from their runbook. If the docs are bad or the tool is fragile, real people feel it and say so. The stake is the builder's reputation with their own users, riding on work they can't touch for seven days. Nothing focuses documentation like knowing you won't be in the room."
+  },
+  "artifact": "The teen's real tool or automation, hardened and handed off: a failure-mode list with fixes or fences, a runbook another person actually operated from for a week without the builder's help, an incident log from that week, and a weekly health-check ritual the builder now runs.",
+  "success_criteria": [
+    "A written failure-mode list exists and the top risks are fixed or fenced, including the 'builder disappears' risk.",
+    "Another person operated the tool for a full week using only the runbook, with the builder forbidden from helping.",
+    "The week's incidents are logged with what the operator did and what the runbook was missing.",
+    "The runbook was updated from the incidents, and a recurring health-check ritual exists."
+  ],
+  "prereq_project_ids": ["bu-13-14-q2"],
+  "lessons": [
+    {
+      "id": "bu-13-14-q3-l1",
+      "sequence": 1,
+      "title": "List the ways it dies",
+      "concept": "Reliability starts morbid: sit down and list every way your tool could fail. The categories: inputs go weird (you know this one), parts go missing (the shared doc gets deleted, the phone dies), people go wrong (a user does the unexpected), and the big one — *you* go missing. Any failure whose answer is 'well, I'd just fix it' is really the you-failure wearing a costume. Count how many of your answers are secretly you.",
+      "real_example": "A teen's team-kit checklist ran perfectly for a month — then he got flu, missed the week, and nobody else knew how to reset it for the new match. The tool hadn't failed; the *system around the tool* had a single point of failure with a name and a temperature. Every builder discovers this; the good ones discover it on paper first.",
+      "apply_task": "Take your real tool or automation and write its death list: at least eight ways it could fail, sorted into inputs / parts / people / builder-missing. For each, note how likely and how bad. Circle the top three by likely × bad — those are this quarter's targets.",
+      "reflection_prompt": "How many failures on your list end with 'I'd just fix it'? What does that number tell you about the difference between a working tool and a reliable one?",
+      "feedback_task": "Show the death list to one of your tool's actual users and ask: 'what have you seen it do, or almost do, that isn't on here?' Users have watched failures you never saw. Add them.",
+      "teach_back_task": "Play 'how could this die?' with a family member about any system in the house — the wifi, the meal plan, the bin rota. Teach the four categories, and especially the invisible one: the person everything quietly depends on.",
+      "ai_judgment_note": "Machines are excellent pessimists: describe your tool and ask 'list ways this could fail' — merge its list with yours and note which failures you missed (miss-patterns are self-knowledge). What stays yours is the triage: which failures are likely and costly *in your group's reality* — a model has never met your teammates or your teacher's formatting habits. AI proposes deaths; you rank them.",
+      "assets_needed": ["Death list sheet (failure / category / likely / bad / top-3 circles)"],
+      "est_minutes": 35,
+      "success_criteria": [
+        "A death list of 8+ failures exists across all four categories with likely/bad ratings.",
+        "The top three are circled, and at least one 'I'd just fix it' answer is recognised as the builder-missing failure."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "bu-13-14-q3-l2",
+      "sequence": 2,
+      "title": "Fix, fence, or accept",
+      "concept": "Every failure on the list gets one of three verdicts: **fix** it (make it impossible), **fence** it (catch it loudly and route it to a human), or **accept** it (rare + cheap = write it down and move on). Trying to fix everything is how builders burn out and ship nothing; the craft is spending your effort on the circled three and consciously accepting the long tail. 'Accepted, on purpose, in writing' is a professional answer.",
+      "real_example": "The checklist teen's verdicts: deleted-doc → fix (a weekly backup copy); flu-week → fence for now (a second person gets edit rights and a two-line 'if I'm gone' note); a teammate typing in the wrong column → accept (happens monthly, costs thirty seconds). Three verdicts, one afternoon — and the tool went from 'works' to 'survives'.",
+      "apply_task": "Give every death-list entry a written verdict: fix, fence, or accept. Then implement the verdicts for your circled top three this week — the backup, the second key-holder, the loud error, whatever they need. Log what each took to implement.",
+      "reflection_prompt": "Which accept-verdict felt most uncomfortable to write down? What's the difference between accepting a risk consciously and just hoping — and which had you been doing before this week?",
+      "feedback_task": "Walk a user through your three implemented protections and ask: 'which failure that I *accepted* would actually annoy you most?' If their answer surprises you, your likely × bad ratings need their reality mixed in — re-verdict that one.",
+      "teach_back_task": "Teach fix/fence/accept to a friend using their own project or even their phone habits (lost phone: fix = backup on; fence = find-my-phone; accept = cracked screen). Three verdicts, everything sorted — watch how fast the framework sticks.",
+      "ai_judgment_note": "Implementation help is fair game — 'how do I auto-backup this doc?' is exactly what AI answers well, same rules as always: understand every piece you install. The verdicts themselves are budget decisions — your hours, your users' patience — and budget decisions belong to the person who pays. Beware the machine's completionism: asked for protections it will propose ten; your job is choosing the three that matter and writing 'accept' on the rest with a steady hand.",
+      "assets_needed": ["Verdict column on the death list + implementation log"],
+      "est_minutes": 45,
+      "success_criteria": [
+        "Every listed failure has a written fix/fence/accept verdict.",
+        "The top three verdicts are actually implemented and logged."
+      ],
+      "prereq_lesson_ids": ["bu-13-14-q3-l1"]
+    },
+    {
+      "id": "bu-13-14-q3-l3",
+      "sequence": 3,
+      "title": "Write the runbook",
+      "concept": "A runbook is instructions for operating your tool written for someone who isn't you and can't ask you: what it does in one line, the routine (daily/weekly steps), what 'healthy' looks like, the three most likely problems with their fixes, and who to contact if truly stuck. The test of every sentence: could a smart stranger follow it at 9pm with you unreachable? Write for that stranger. They're coming.",
+      "real_example": "Real operations teams live by runbooks — hospitals, data centres, theatres — because the person on duty is never the person who built the system. First drafts always fail the same way: 'reset the sheet like usual' (like *what*?), 'it's in the folder' (*which* folder?). The curse of knowledge is invisible to its owner, which is why the runbook gets tested next lesson, not trusted this one.",
+      "apply_task": "Write your tool's runbook, one to two pages: one-line purpose, the operating routine step by step, a 'healthy looks like' picture or checklist, the top-three problems with exact fixes, and the escalation line. Include real names, real locations, real clicks — nothing 'as usual', nothing 'you know where'.",
+      "reflection_prompt": "Which step was hardest to write down precisely — and is that because it's complicated, or because you've never actually watched yourself do it? What does the hard-to-write step tell you about what you do on autopilot?",
+      "feedback_task": "Do a tabletop read-through with your chosen operator (next lesson's volunteer): they read aloud, you stay silent, and every time they frown you mark the sentence. Rewrite every marked sentence before the real test.",
+      "teach_back_task": "Have a family member write a mini-runbook for something *they* run on autopilot — the washing machine, the family calendar — and be their frowning stranger. Teaching someone else to see their curse of knowledge is the fastest way to see your own.",
+      "ai_judgment_note": "Draft the runbook yourself — writing it is how you discover what you do on autopilot, and that discovery is half the quarter. Then a genuinely sharp use: paste the draft in and ask 'what would confuse someone following this at step N? what's ambiguous?' — machines are ruthless ambiguity-detectors. Accept its clarity fixes; reject any step it *invents*, because a runbook that's confidently wrong is worse at 9pm than one that's honestly incomplete.",
+      "assets_needed": ["Runbook template (purpose / routine / healthy / top-3 problems / escalation)"],
+      "est_minutes": 45,
+      "success_criteria": [
+        "A complete runbook exists with all five sections and zero 'as usual' steps.",
+        "Every sentence that made the read-through operator frown was rewritten."
+      ],
+      "prereq_lesson_ids": ["bu-13-14-q3-l2"]
+    },
+    {
+      "id": "bu-13-14-q3-l4",
+      "sequence": 4,
+      "title": "The handoff week",
+      "concept": "Now the real test: someone else operates your tool for a full week, using only the runbook. Your rule is brutal and non-negotiable — *you may not help*. Watch, log, but don't touch: every question they'd ask you is a hole in the runbook, and answering it out loud patches the operator instead of the document. The tool and the docs take the exam; you sit in the corner learning what you actually built.",
+      "real_example": "Software teams call this a bus test — could the project survive its creator being hit by a bus (or flu, or exams)? The checklist teen's handoff week produced four incidents: three the operator solved from the runbook (pass), one where she improvised something better than his documented fix (the runbook got *her* version). The week hurt his pride slightly and his tool not at all — which is the entire point.",
+      "apply_task": "Recruit your operator, hand over the runbook, and step away for seven real days. Keep an incident log from a distance: what happened, what the operator did, whether the runbook had it covered. If you catch yourself about to intervene, write down what you were going to say instead — that sentence belongs in the runbook.",
+      "reflection_prompt": "What was hardest about not helping? Which incident would have been invisible to you forever if you'd hovered and quietly fixed things — and what did your absence make visible?",
+      "feedback_task": "Debrief the operator at week's end with three questions: where did the runbook fail you? what did you work out yourself? would you run it another week? Their third answer is the tool's real reliability grade.",
+      "teach_back_task": "Tell the handoff-week story to another builder — the incidents, the not-helping, what the absence revealed. Then challenge them to name who could run *their* project for a week, and help them plan their own handoff. The bus test spreads one uncomfortable week at a time.",
+      "ai_judgment_note": "The one thing this week measures is whether the *system* — tool plus runbook plus fences — stands without any clever head nearby, so don't let the operator quietly substitute AI for you as the helper of last resort; if they must ask something outside the runbook, they ask a human and it gets logged as an incident. After the week, AI can help you sort the incident log into runbook fixes versus tool fixes. During the week: hands off, all of you.",
+      "assets_needed": ["Incident log (event / operator action / runbook covered? ) + operator debrief sheet"],
+      "est_minutes": 45,
+      "success_criteria": [
+        "A full week's handoff happened with the builder verifiably not helping.",
+        "An incident log exists, and the operator answered the three debrief questions."
+      ],
+      "prereq_lesson_ids": ["bu-13-14-q3-l3"]
+    },
+    {
+      "id": "bu-13-14-q3-l5",
+      "sequence": 5,
+      "title": "The health-check habit",
+      "concept": "Reliability isn't a project; it's a rhythm. Systems drift — data piles up, workarounds accumulate, the fence everyone ignores rusts open. The finishing move of this quarter is a small recurring ritual: a weekly five-minute health check against your 'healthy looks like' list, plus folding the handoff week's lessons back into the runbook and the tool. Builders who check weekly fix things while they're small. Everyone else meets their failures fully grown.",
+      "real_example": "Pilots walk around the plane before every flight — not because they expect a problem, but because the walk-around finds the problem *before altitude does*. The checklist teen's five-minute Friday check has twice caught the backup silently failing — a failure that costs nothing on Friday and everything the week the doc gets deleted. Drift never announces itself; the ritual is how you hear it anyway.",
+      "apply_task": "Update the runbook and tool from the handoff week's incident log — every hole patched, the operator's better fix adopted. Then design your health check: five minutes, a fixed day, a short checklist against 'healthy looks like'. Run it for the first time now, put it in your calendar as recurring, and log what the first run found (even if the answer is 'all healthy').",
+      "reflection_prompt": "Look back across the quarter: death list, verdicts, runbook, handoff, ritual. Which single piece would have saved past-you the most pain if you'd had it in Q1? What will you build *differently from the start* next time because of this quarter?",
+      "feedback_task": "Show the updated runbook and the health-check ritual to your operator and ask the graduation question: 'would you now trust this tool for a month without me?' If yes, the quarter succeeded. If no, their reason is your next verdict to implement.",
+      "teach_back_task": "Teach the whole reliability ladder — death list, fix/fence/accept, runbook, handoff, health check — to a friend with a project that has real users, and help them run their first health check. When their calendar has a recurring five-minute slot with the tool's name on it, you've handed the habit on.",
+      "ai_judgment_note": "AI can turn your incident log into runbook edits and draft the health-check checklist from your 'healthy looks like' notes — clerical lifting, fine, verify every line against the real tool. The habit itself cannot be delegated: the ritual works because a human who cares looks at the real system on a real day each week. The machine can remind you it's Friday. Only you can do the walk-around.",
+      "assets_needed": ["Updated runbook + health-check checklist + recurring calendar slot"],
+      "est_minutes": 35,
+      "success_criteria": [
+        "The runbook and tool are updated from every handoff incident.",
+        "A recurring five-minute health check exists in the calendar and its first run is logged."
+      ],
+      "prereq_lesson_ids": ["bu-13-14-q3-l4"]
+    }
+  ]
+}

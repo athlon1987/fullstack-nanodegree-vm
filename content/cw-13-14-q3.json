@@ -1,0 +1,119 @@
+{
+  "id": "cw-13-14-q3",
+  "title": "Customers on Repeat",
+  "pillar_primary": "wealth",
+  "pillars_supporting": ["communicate"],
+  "age_band": "13-14",
+  "quarter": 3,
+  "developmental_frame": "At 13–14, a teen can run a genuine comparison — two approaches, measured, winner chosen — and can handle the social exposure of asking for referrals and posting offers, which younger children find unbearable. Having real customers and real margins (Q1–Q2), they're ready for the question that separates ventures from lemonade stands: where does the *next* customer come from? The trap at this age is novelty-chasing — trying a new channel every week because trying feels like progress, instead of measuring one properly.",
+  "authentic_value_meaning": "At this age, wealth-thinking creates value when the teen builds a **repeatable path to the next customer** — not a lucky spike from one market day, but a channel they've tested, measured, and can run again next week for a known cost in time and money. Owning even one repeatable channel changes the venture from something that happens *to* the teen into something the teen operates.",
+  "motivation_lever": {
+    "lever": "real_stakes",
+    "mechanism": "Every channel test is run with the teen's real offer, real time, and (sometimes) real money — and the scoreboard is real customers gained per hour or ringgit spent. A test that works grows their actual income; a test that flops costs a real Saturday. The quarter ends with a working acquisition routine, which means the stakes compound: the winner they find keeps paying every week after."
+  },
+  "artifact": "A channel test log covering at least two acquisition channels run for real — each with its cost in time and money, customers gained, and cost-per-customer computed — plus a referral ask actually made to real customers, and a written weekly acquisition routine built around the winning channel.",
+  "success_criteria": [
+    "At least two channels were tested for real, each with time/money spent and customers gained recorded.",
+    "Cost-per-customer is computed for each channel and the teen can explain why the winner won.",
+    "A referral ask was made to at least three real customers and its results are logged.",
+    "A written weekly routine exists for running the winning channel, and it was run at least once."
+  ],
+  "prereq_project_ids": ["cw-13-14-q2"],
+  "lessons": [
+    {
+      "id": "cw-13-14-q3-l1",
+      "sequence": 1,
+      "title": "Where do customers actually come from?",
+      "concept": "Ask any seller where their customers come from and you'll get a shrug or a guess. But every customer arrived by some path — saw the stall, heard from a friend, read the group-chat post. Those paths are *channels*, and the first discipline of growth is embarrassingly simple: ask every customer 'how did you hear about this?' and write it down. You can't repeat a path you can't name.",
+      "real_example": "A teen selling phone-setup visits assumed his poster did the work — it was his biggest effort. Asking his last ten customers: seven came from one neighbour's recommendation, two from his mum mentioning it, one from the poster. His marketing budget was pointed at his weakest channel. Ten questions fixed a month of guessing.",
+      "apply_task": "Reconstruct where your existing customers actually came from — ask them if you don't know ('quick question: how did you first hear about my thing?'). Build the source map: every channel that has ever brought you a customer, with its rough count. Star the surprise.",
+      "reflection_prompt": "Which channel was doing more work than you realised, and which less? Why do sellers instinctively credit the channel they *worked hardest on* rather than the one that worked?",
+      "feedback_task": "Show your source map to a fellow seller or adult and ask what channels they'd add to the untested list — places your kind of customer gathers that you haven't touched. List every suggestion, even the awkward ones.",
+      "teach_back_task": "Next time you buy anything from a small seller, tell them how you found them — then teach a friend with a venture to ask the 'how did you hear?' question and keep the tally. It's the cheapest market research on earth.",
+      "ai_judgment_note": "The source map must be built from real answers by real customers — a model can only guess where customers *typically* come from, and 'typically' is exactly the guessing this lesson exists to kill. Where AI helps: brainstorming the untested-channels list for your kind of offer and your kind of town. It widens the menu; your customers' answers pick from it.",
+      "assets_needed": ["Source map sheet (channel / customers so far / untested ideas)"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "A source map exists with real how-did-you-hear answers behind the counts.",
+        "At least three untested channels are listed for the next lesson."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "cw-13-14-q3-l2",
+      "sequence": 2,
+      "title": "Design a fair test",
+      "concept": "Channels can't be judged by feel — they get *tested*: pick two, define the same success measure for both (customers gained), cap what you'll spend on each (hours and money), and decide the finish line before you start. The cost side matters as much as the customer side, because the real question isn't 'did it work?' but 'what does one customer cost me through this door?'",
+      "real_example": "A teen tested 'posters at the community centre' against 'a post in the neighbourhood group chat, twice a week'. Same offer, same fortnight, budget capped: three hours + RM10 for posters, two hours for the chat posts. Without the caps and the finish line, she'd have done what everyone does — quit the slow one early and over-credit the fun one.",
+      "apply_task": "Pick two channels from your untested list (or one untested versus your current best). Write the test card: the offer, the success measure, the spend cap for each (hours and RM), the finish line (two weeks or N attempts), and your prediction of which wins and by how much.",
+      "reflection_prompt": "Which channel are you secretly rooting for — and is it the one that's fun to do, or the one the evidence from lesson one points at? What would it cost you to be wrong in each direction?",
+      "feedback_task": "Show the test card to someone numerate and ask the lesson's own question back: 'is this test fair — same offer, same effort accounting, same finish line?' Fix any tilt they find before launching.",
+      "teach_back_task": "Explain to a friend why 'I tried posters once and nothing happened' isn't a test — no cap, no counter, no finish line. Help them design a fair two-channel test for their own venture using your card as the template.",
+      "ai_judgment_note": "Prediction first, in your own hand — this is your Decision Journal move applied to money. AI is a strong test-design assistant: 'what would make this comparison unfair or misleading?' catches tilts like different weeks, different offers, or forgetting travel time as a cost. But it doesn't know your neighbourhood; the channel *choice* comes from your source map and your read of where your customers actually are.",
+      "assets_needed": ["Channel test card (channels / measure / caps / finish line / prediction)"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "A written test card exists with capped spend, a finish line, and a pre-registered prediction.",
+        "An outside check confirmed the test is fair."
+      ],
+      "prereq_lesson_ids": ["cw-13-14-q3-l1"]
+    },
+    {
+      "id": "cw-13-14-q3-l3",
+      "sequence": 3,
+      "title": "Run it and count everything",
+      "concept": "Now run the test exactly as designed — and count like an accountant, not a fan. Every hour spent, every ringgit, every customer gained *and which door they came through* (keep asking the how-did-you-hear question; it's your tracking system). At the finish line, compute the only number that settles arguments: cost per customer, in time and money, for each channel.",
+      "real_example": "Her fortnight's tally: posters — three hours, RM10, two customers (1.5 hours + RM5 each). Chat posts — two hours, zero RM, five customers (24 minutes each). The chat won by a landslide she hadn't predicted; she'd rated posters higher because they felt more like *real marketing*. The counting beat the feeling — which is precisely the counting's job.",
+      "apply_task": "Run both channels to the finish line, logging every cost and every customer with their door. Then compute cost-per-customer for each — hours and money separately — and write the verdict next to your prediction: what won, by how much, and how wrong were you?",
+      "reflection_prompt": "Where did the numbers disagree with the feeling of the fortnight? Which channel *felt* productive versus which *was* — and what was making the loser feel good?",
+      "feedback_task": "Show your tally to your peer group or an adult seller before declaring the verdict final. Ask one question: 'what am I not counting?' (Common answers: travel, materials for samples, replies to messages at 10pm.) Recompute if they catch something real.",
+      "teach_back_task": "Teach cost-per-customer to a friend with any venture using your own two-channel tally as the worked example. If they can compute theirs for even one channel, they've left the shrug-marketing club forever.",
+      "ai_judgment_note": "Every number in the tally comes from your logs — hours from your clock, customers from your how-did-you-hear answers. AI can check the arithmetic and, once the tally is honest, help you probe it ('what might explain the poster channel underperforming?'). What it must never do is fill a gap in your counting with a plausible estimate: one invented number and the verdict is fiction wearing a spreadsheet.",
+      "assets_needed": ["Channel tally log (hours / RM / customers by door / cost-per-customer)"],
+      "est_minutes": 45,
+      "success_criteria": [
+        "Both channels ran to the finish line with complete cost and customer logs.",
+        "Cost-per-customer is computed for each and the verdict is written against the prediction."
+      ],
+      "prereq_lesson_ids": ["cw-13-14-q3-l2"]
+    },
+    {
+      "id": "cw-13-14-q3-l4",
+      "sequence": 4,
+      "title": "The referral ask",
+      "concept": "Your cheapest channel is hiding inside your happiest customers — but word of mouth mostly doesn't happen on its own; it happens when you *ask*. The referral ask is one sentence at the moment of delight: 'If you know anyone else who'd want this, I'd love it if you passed my name on.' Optional: a small thank-you for referrals that land. The ask costs ten seconds and outperforms almost everything you'll ever pay for.",
+      "real_example": "The phone-setup teen already knew seven of ten customers came from one neighbour's mouth — that was an *accidental* referral engine. He made it deliberate: after each visit, the one-sentence ask plus a card with his name. Referrals went from sometimes to steadily — same neighbourhood, same offer, ten deliberate seconds per customer.",
+      "apply_task": "Write your referral ask in your own words, plus the moment you'll say it (right when the customer is happiest). Make the ask to at least three real customers this week. Log each: who, their reaction, and any referral that arrives in the following weeks (keep the door-tracking running — referrals are a channel now).",
+      "reflection_prompt": "How did the ask feel the first time versus the third? Why do most sellers never ask — and what does the answer have in common with why most teens never send the outreach message (your Communicate quarter is smiling)?",
+      "feedback_task": "Ask one customer who *did* refer someone: 'what made you pass my name on, and what would make it easier?' Their answer tells you whether the engine needs a better ask, a card, a reward, or just a better product.",
+      "teach_back_task": "Teach the referral ask to any friend who sells or performs anything — the sentence, the moment, the log. Stand nearby for their first ask like they stood the queue with you. Ten seconds of courage, taught on, is a real gift.",
+      "ai_judgment_note": "The ask works because it's personal and deserved — a real teen, at a real moment of delight, in their own words. Drafting help is fine (tighten *your* sentence), but the moment-reading can't be delegated: no model knows when your customer's face says 'delighted'. And never fake urgency or invent 'my friend also wanted one' pressure tactics a model might suggest — trust is the asset the whole channel runs on.",
+      "assets_needed": ["Referral ask card (the sentence / the moment / the log)"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "The ask was made to at least three real customers and logged with reactions.",
+        "Referral arrivals are being tracked as their own channel door."
+      ],
+      "prereq_lesson_ids": ["cw-13-14-q3-l3"]
+    },
+    {
+      "id": "cw-13-14-q3-l5",
+      "sequence": 5,
+      "title": "Double down and make it a routine",
+      "concept": "Growth isn't finding new channels forever — it's finding one that works and *running it on schedule*. Take your winner (tested channel or referral engine), and turn it into a weekly routine: what gets done, which day, how long it takes, and the one number you check (customers per week, cost per customer). A mediocre channel run every week beats a brilliant one run when you remember.",
+      "real_example": "Her routine after the test: every Tuesday and Friday, 20 minutes — post in the neighbourhood chat with one fresh photo, answer replies, make the referral ask to the week's happiest customer, update the tally. Boring on purpose. Within a month the question changed from 'will anyone buy this week?' to 'how many this week?' — which is the sound of a venture becoming an operation.",
+      "apply_task": "Write the weekly acquisition routine for your winning channel: steps, day, time-box, and the number you'll check. Run it once for real this week. Then close the quarter's loop: update your one-page money picture (Q2) with the new line — what a customer costs you to acquire, and what they're worth against it.",
+      "reflection_prompt": "Customer worth minus customer cost: is the gap healthy? And the strategist's question — if you doubled the routine's hours, would customers double, or does this channel have a ceiling? How would you find out?",
+      "feedback_task": "Present the routine and the acquisition math to your peer group or decision-maker in three minutes. Take the hardest question you get; if you can't answer it from your logs, that's the number your routine starts tracking next week.",
+      "teach_back_task": "Teach the whole quarter's ladder to a fellow seller — source map, fair test, cost-per-customer, referral ask, weekly routine — and help them find their one winning channel. When their routine has a fixed day and a number, the skill has been fully handed on.",
+      "ai_judgment_note": "AI can help you systematise — turning your winning channel into checklist steps, drafting the recurring post format — and that's honest leverage for the boring parts. The strategy stays yours: which channel deserves the routine, when a channel has hit its ceiling, when to test a new door. Those calls come from your logs and your neighbourhood, and by now you've earned the right to trust your own numbers over anyone's guess — including the machine's, and including your own feelings.",
+      "assets_needed": ["Weekly routine card (steps / day / time-box / the number) + updated money picture"],
+      "est_minutes": 40,
+      "success_criteria": [
+        "A written weekly routine exists for the winning channel and was run at least once.",
+        "The money picture now includes acquisition cost per customer beside customer worth."
+      ],
+      "prereq_lesson_ids": ["cw-13-14-q3-l4"]
+    }
+  ]
+}

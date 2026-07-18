@@ -1,0 +1,119 @@
+{
+  "id": "co-13-14-q3",
+  "title": "Show Your Work",
+  "pillar_primary": "communicate",
+  "pillars_supporting": ["build"],
+  "age_band": "13-14",
+  "quarter": 3,
+  "developmental_frame": "At 13–14, teens curate their public image obsessively — which makes showing *unfinished* work feel dangerous, and precisely why learning it now is so valuable. The capabilities are ready: they can write short and concrete, capture a photo or 30-second demo, sustain a weekly rhythm, and read an audience's reaction. What needs scaffolding is the emotional reframe — that documenting real progress, including what went wrong, builds more durable status than polished announcements ever do.",
+  "authentic_value_meaning": "At this age, communication creates value when it **turns your work into a signal** — a public trail of real progress that peers, adults, and future opportunities can find and trust. One honest build log outweighs a hundred vague bios: it proves you do things. Teens who learn to show work-in-progress own the discovery that opportunities come to people whose work is visible.",
+  "motivation_lever": {
+    "lever": "peer_status",
+    "mechanism": "The build log is public in the teen's real world — the class, the club, the community group — and updates arrive on a rhythm, so the audience starts *expecting* them. Being known as 'the one building the thing, who shows the real progress' is a durable status position no single post can buy. Watching the reactions arrive, update after update, does the motivating."
+  },
+  "artifact": "A three-part public build log about the teen's real ongoing project (their venture, tool, or automation) — each update in the did/learned/next format with something visual, posted where their real audience gathers over three weeks — plus a recorded log of the reactions and what the teen learned about what resonates.",
+  "success_criteria": [
+    "Three updates were actually posted, roughly a week apart, where the real audience gathers.",
+    "Each update contains what was done, what was learned (including something that went wrong), what's next, and something visual.",
+    "Reactions to each update are recorded, and the teen can say which update resonated most and why.",
+    "At least one reply or conversation happened because of the log that wouldn't have happened otherwise."
+  ],
+  "prereq_project_ids": ["co-13-14-q2"],
+  "lessons": [
+    {
+      "id": "co-13-14-q3-l1",
+      "sequence": 1,
+      "title": "Progress beats polish",
+      "concept": "Most people only announce finished things — so their work is invisible for months, then over-polished for a day. Builders who show progress own the space in between: a short, regular update in three moves — what I did, what I learned, what's next. The 'learned' line carries the weight, and it hits hardest when it includes what went wrong. Honesty is the interesting part.",
+      "real_example": "Two teens built stalls for the same market. One went silent for a month, then posted 'launching Saturday!' — politely ignored. The other posted weekly: burnt batch photos, a price test that flopped, the fix that worked. By market day, her updates had made her stall the one everyone already had an opinion about. Same work; only one made the work *visible*.",
+      "apply_task": "Choose the real project your log will follow — your venture, your tool, your automation. Write update #1 in the three-move format: 5–8 sentences, concrete numbers where you have them, and at least one line about something that didn't work. Don't post yet — that's next lesson. Today is getting the shape right.",
+      "reflection_prompt": "Which felt more uncomfortable to write — the brag or the went-wrong line? Whose updates do *you* actually enjoy following, and how honest are they?",
+      "feedback_task": "Read your draft to someone who knows the project. Ask: 'does this sound like me, and would you want the next episode?' If it reads like an ad, cut until it reads like a note to a friend.",
+      "teach_back_task": "Teach the did/learned/next format to a friend with any ongoing effort — training, art, a team season — and help them draft their first update. The format transfers to everything.",
+      "ai_judgment_note": "The update must be written by you, in your voice — a build log is proof-of-person, and generated updates defeat its entire purpose. Fair use: after drafting, ask AI 'which sentence sounds least like a real teenager wrote it?' and fix that one yourself. The went-wrong line especially must be yours: machines can't know what actually went wrong, and inventing struggle is worse than hiding it.",
+      "assets_needed": ["Update template (did / learned / next + visual slot)"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "Update #1 exists in the three-move format with a genuine went-wrong line.",
+        "A listener confirmed it sounds like the teen and invites a next episode."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "co-13-14-q3-l2",
+      "sequence": 2,
+      "title": "Make it seeable",
+      "concept": "Words tell; visuals prove. Every update needs one thing the eye can land on — a photo of the actual bracelets, a screenshot of the spreadsheet, a 30-second phone demo of the tool doing its job. The bar isn't pretty; it's *real*. A blurry photo of the true thing beats a stock image of nothing every single time.",
+      "real_example": "An update saying 'the automation works now' got two likes. The next one attached a 20-second screen recording of messages turning into planner rows by themselves — and got questions, shares, and one 'can it do mine?'. Nothing about the project changed. Being *seeable* changed everything.",
+      "apply_task": "Capture the visual for update #1: photograph the real thing, screenshot the real numbers, or record a phone demo under 30 seconds (one take is fine; say what we're seeing out loud). Then post update #1 — text plus visual — where your real audience gathers.",
+      "reflection_prompt": "What could you show *only because the work is real*? That's the visual no competitor and no faker can produce — how does knowing that change how you feel about blurry-but-true?",
+      "feedback_task": "Watch the first reactions land. Note which arrived within a day, what people reacted to (the visual? the went-wrong line?), and exactly what any comment said. This is baseline data for the next two updates.",
+      "teach_back_task": "Help a friend make their first 30-second demo of something they do — a skill, a recipe, a build. Teach the rule: show the true thing doing its job; narrate; stop at 30 seconds.",
+      "ai_judgment_note": "The visual must be of the real thing — never generate an image of work you claim to have done; one faked visual poisons every honest update before and after it. AI is fine for trims: cropping advice, caption tightening, 'is 30 seconds too long for this?'. The camera points at reality. That's the law of the log.",
+      "assets_needed": ["Visual checklist (real thing / real numbers / ≤30s demo)"],
+      "est_minutes": 35,
+      "success_criteria": [
+        "Update #1 is posted with a visual of the real thing.",
+        "First reactions are recorded with what they responded to."
+      ],
+      "prereq_lesson_ids": ["co-13-14-q3-l1"]
+    },
+    {
+      "id": "co-13-14-q3-l3",
+      "sequence": 3,
+      "title": "Read the reactions",
+      "concept": "Public work gets three kinds of response: engagement (questions, shares, 'how did you—'), criticism (useful or lazy — learn to tell them apart), and silence (the loudest one; usually means unclear, wrong channel, or wrong hook — not 'you're bad'). Each is data. Reply to questions warmly, thank useful critics, ignore lazy ones, and treat silence as a puzzle rather than a verdict.",
+      "real_example": "A teen's update got one comment: 'prices seem high tbh'. Sting, then gold — she replied asking what price would feel fair, got three answers, and update #3's price experiment came directly from that thread. Meanwhile her friend's unanswered update wasn't bad — it was posted at 7am in a chat nobody reads before noon. The silence was a clock problem, not a quality problem.",
+      "apply_task": "Post update #2 (did/learned/next + visual — the 'learned' can include what update #1's reactions taught you). Then work the responses: reply to every genuine question within a day, thank any useful critic, and write one line diagnosing any silence: unclear, wrong place, wrong time, or wrong hook?",
+      "reflection_prompt": "Which reaction affected you most — and was its *usefulness* proportional to its sting? What would change if you treated every reaction, including silence, as information about the update rather than about you?",
+      "feedback_task": "Ask one engaged reader directly: 'what would make these updates worth following?' Their answer shapes update #3 — an audience consulted becomes an audience invested.",
+      "teach_back_task": "Teach a friend the three-response model (engagement/criticism/silence) and the useful-versus-lazy criticism test: useful tells you what to change; lazy only tells you how someone felt. Practice sorting real comments from any public post together.",
+      "ai_judgment_note": "Replies to real people must come from you — audiences invest in humans, and a templated reply reads as contempt. Where AI helps: drafting a *calm* response to criticism that stung (write your angry version, ask for the graceful one, then rewrite it in your voice), and brainstorming silence-diagnoses you hadn't considered. The feelings management is the skill; the machine is scaffolding, not spokesperson.",
+      "assets_needed": ["Reaction log (update / reactions / replies sent / silence diagnosis)"],
+      "est_minutes": 35,
+      "success_criteria": [
+        "Update #2 is posted and every genuine question received a reply within a day.",
+        "The reaction log covers both updates, including any silence diagnosis."
+      ],
+      "prereq_lesson_ids": ["co-13-14-q3-l2"]
+    },
+    {
+      "id": "co-13-14-q3-l4",
+      "sequence": 4,
+      "title": "Consistency compounds",
+      "concept": "One update is a post; three on a rhythm is a *show*. Rhythm does the heavy lifting: the audience starts expecting the next episode, and expectation is attention you no longer have to earn from zero. The secret that makes rhythm sustainable: lower the bar, keep the beat. A short honest update on time beats a brilliant one that never ships.",
+      "real_example": "Serialised stories, weekly podcasts, season episodes — every attention machine humans love runs on rhythm, not one-off brilliance. The stall teen's third weekly update opened with 'week 3:' and nothing else — and got her fastest reactions yet, because by then the audience was *waiting*. Nobody waits for someone whose last post was 'launching soon!' two months ago.",
+      "apply_task": "Post update #3 on schedule, even if the week's progress was small — especially if it was small; write the small week honestly. Then close the loop on the arc: note in the update one thing that changed across the three weeks that readers watched happen.",
+      "reflection_prompt": "Was there a day you nearly skipped the update? What got it shipped anyway — and what does that tell you about systems versus motivation (your Think quarter should be nodding here)?",
+      "feedback_task": "Ask two followers of the log: 'did you notice the updates became expected? which week would you have missed if it hadn't come?' Expectation confirmed by a reader is the quarter's quiet victory.",
+      "teach_back_task": "Convince a friend, using your own three-week evidence, that 'small but on-beat' beats 'perfect but someday' — then help them commit to a three-update rhythm for their own project, with dates in the calendar before they can reconsider.",
+      "ai_judgment_note": "On the tempted-to-skip day, the honest short update you write in ten minutes is worth more than the impressive one AI could fake in one — the entire value of the log is that it's true, and rhythm built on generated filler is a debt that comes due the first time someone asks a follow-up question. Use AI to trim on busy weeks, never to pretend a week happened differently than it did.",
+      "assets_needed": ["Posting calendar (3 dates) + arc-closing checklist"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "Update #3 was posted on schedule, completing three updates in three weeks.",
+        "The update names one change readers watched happen across the arc."
+      ],
+      "prereq_lesson_ids": ["co-13-14-q3-l3"]
+    },
+    {
+      "id": "co-13-14-q3-l5",
+      "sequence": 5,
+      "title": "What did the log earn you?",
+      "concept": "A build log isn't a diary — it's an asset, and assets get audited. Look back across the three updates: which earned the most real attention, what did the reactions teach you about your audience, and — the big one — what happened *because* the work was visible that wouldn't have happened in silence? That last answer is why builders keep logging long after this quarter ends.",
+      "real_example": "Auditing her log, the stall teen found: the burnt-batch update outperformed both polished ones, questions beat compliments ten to one as useful data, and — the kicker — a parent who'd seen the log ordered thirty bracelets for a birthday party. The order didn't come from an ad. It came from a month of being visibly, honestly at work.",
+      "apply_task": "Audit the log: for each update, note reach, reactions, and what you'd keep or change. Write the one-line answer to 'what did visibility earn me that silence wouldn't have?' Then decide, in writing, the log's future: continue on rhythm, change format, or pause with a stated reason.",
+      "reflection_prompt": "Three weeks ago, showing unfinished work felt like a risk. What actually happened to your standing with the people who watched? What does that teach you about where the real risk was?",
+      "feedback_task": "Share the audit's headline findings as a mini-update (yes, one more) and ask your audience what they'd want from a season two. Their answers are next quarter's launch-communication research, banked early.",
+      "teach_back_task": "Give a five-minute 'why you should show your work' talk to your class, club, or family — your own three updates as the evidence, the earned surprise as the closer. If one person starts a log because of it, the skill has officially left your head and entered the world.",
+      "ai_judgment_note": "The audit judgments — what resonated, what it earned, whether to continue — are readings of *your* audience and *your* trade-offs; make them yourself, on your recorded reactions. One strong final use: paste in your (own) three updates and reaction notes and ask 'what pattern do you see in what landed?' — a second pair of eyes on honest data. Then check its pattern against the reader who actually ordered the bracelets. Reality outranks pattern-matching, always.",
+      "assets_needed": ["Log audit sheet (per-update reach & reactions / earned outcomes / verdict)"],
+      "est_minutes": 35,
+      "success_criteria": [
+        "A written audit exists covering all three updates and their reactions.",
+        "The 'what visibility earned me' line and a stated continue/change/pause decision exist."
+      ],
+      "prereq_lesson_ids": ["co-13-14-q3-l4"]
+    }
+  ]
+}
