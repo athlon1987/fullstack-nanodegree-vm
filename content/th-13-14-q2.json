@@ -1,0 +1,118 @@
+{
+  "id": "th-13-14-q2",
+  "title": "The Decision Journal",
+  "pillar_primary": "think",
+  "pillars_supporting": ["live_well"],
+  "age_band": "13-14",
+  "quarter": 2,
+  "developmental_frame": "At 13–14, teens start making decisions with real consequences — how to spend money they earned, which commitments to take on, what to quit — but their forecasting is untrained: they overweight the vivid outcome, underweight the likely one, and rarely notice the option they didn't consider. The equipment for better deciding is present: they can hold multiple hypotheticals, imagine futures, and reflect on their own past calls. What's missing is a *practice* — and this is the age where one can be installed.",
+  "authentic_value_meaning": "At 13–14, thinking creates value when it produces **decisions the teen can stand behind** — made with named options, honest odds, and a written prediction that reality later gets to grade. The value isn't being right every time; it's becoming someone whose calls visibly improve, which is what earns a teen bigger decisions to make.",
+  "motivation_lever": {
+    "lever": "autonomy",
+    "mechanism": "The whole quarter runs on the teen's own real decisions — what to buy, join, quit, or build — not exercises. The deal that powers it: decisions worked through the journal are the teen's to make. Owning real calls, and getting visibly better at them, is the autonomy a 13-year-old is negotiating for everywhere; here it's the explicit reward for thinking well."
+  },
+  "artifact": "A decision journal containing at least five real decisions, each with named options, a one-way/two-way door label, best/worst/likely outcomes, the opportunity cost, and a written prediction — plus review entries where at least two predictions were graded against what actually happened.",
+  "success_criteria": [
+    "The journal contains five real decisions with options, door type, outcomes, and predictions written before deciding.",
+    "At least two decisions were reviewed later, with the prediction honestly graded against reality.",
+    "The teen can explain one thing their reviews taught them about their own predicting."
+  ],
+  "prereq_project_ids": ["th-13-14-q1"],
+  "lessons": [
+    {
+      "id": "th-13-14-q2-l1",
+      "sequence": 1,
+      "title": "Name your real options",
+      "concept": "Most bad decisions aren't bad choices between options — they're choices made before all the options were on the table. There are almost always more than two, and one is invisible: *do nothing*, which is also a choice. The first move: list at least three real options, including the default you'd drift into.",
+      "real_example": "'Should I buy the new console or not?' feels like two options. Written out, it's at least five: buy now, wait for the price drop, buy used, put the money toward something else entirely, or do nothing and keep saving. The best option is often one that wasn't in the original question.",
+      "apply_task": "Start your decision journal. Take one real decision you're facing now and write at least three genuine options — including the do-nothing default. Star any option you hadn't consciously considered before writing.",
+      "reflection_prompt": "Was the option you were leaning toward before the list still the best one after it? What does that tell you about deciding inside your head versus on paper?",
+      "feedback_task": "Show your option list to someone who knows the situation and ask: 'what option am I missing?' Add whatever they find — the exercise works even when their option is bad, because now you chose against it consciously.",
+      "teach_back_task": "Next time a friend says 'should I do X or not?', teach them the three-options rule and help them find the hidden third option. Watch how often it changes the decision.",
+      "ai_judgment_note": "Write your own option list first — noticing options is the muscle. *Then* AI is a fair prompt-partner: 'what options might someone be missing here?' If it surfaces one you missed, add it and note that you missed it — that's calibration data about your own blind spots. What AI must never do is pick for you: the choosing is the entire point.",
+      "assets_needed": ["Decision journal template (options / door / outcomes / prediction / review)"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "A journal entry exists with three or more real options including the do-nothing default.",
+        "One option was added or starred that wasn't considered before writing."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "th-13-14-q2-l2",
+      "sequence": 2,
+      "title": "One-way doors and two-way doors",
+      "concept": "Some decisions are two-way doors — walk through, dislike it, walk back (join a club, try a price, change a hairstyle). Some are one-way — hard or impossible to undo (quit the team mid-season, post something public, spend all your savings). The rule that saves years: decide *fast* on two-way doors and *slow* on one-way doors. Most people do the opposite.",
+      "real_example": "Agonising for three weeks over which free app to try is slow-deciding a two-way door — you could have tried all three in an afternoon. Impulse-posting an angry message in the group chat is fast-deciding a one-way door: the delete button doesn't unsend what forty people saw.",
+      "apply_task": "Label every decision currently in your journal as a one-way or two-way door, with one line on why. Then add one real decision you've been overthinking: if it's a two-way door, decide it *today* and write down what walking it back would cost if you're wrong.",
+      "reflection_prompt": "Which do you naturally do — agonise over reversible things, or rush irreversible ones? What's one one-way door you walked through this year without noticing it was one?",
+      "feedback_task": "Ask a parent about a one-way door they rushed and a two-way door they overthought. Compare their patterns with yours — the mislabeling habit runs in families.",
+      "teach_back_task": "Teach the door test to a sibling or friend with a decision on their plate: have them label it, then apply the rule — fast if two-way, slow if one-way. Make sure they can explain *why* the speed should differ.",
+      "ai_judgment_note": "The door label is a judgment about *your* life — how reversible something is depends on your money, your school, your family — so label it yourself. One good AI use: for a one-way door, ask 'what would make this harder to reverse than it looks?' Hidden one-way-ness is exactly the thing worth a second set of eyes. For two-way doors, skip the AI entirely: just decide.",
+      "assets_needed": ["Door-label column in the journal"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "Every journal entry carries a door label with a reason.",
+        "One overthought two-way door was decided the same day."
+      ],
+      "prereq_lesson_ids": ["th-13-14-q2-l1"]
+    },
+    {
+      "id": "th-13-14-q2-l3",
+      "sequence": 3,
+      "title": "Best case, worst case, likely case",
+      "concept": "Untrained deciding runs on the most *vivid* outcome — the daydream or the disaster. Trained deciding writes three: best case, worst case, and the boring likely case. Then it asks the two questions that matter: can I live with the worst case, and am I choosing based on the likely one — or just the shiniest one?",
+      "real_example": "Spending your savings on concert tickets to resell: best case, double your money. Worst case, the show flops and you lose most of it. Likely case, you make a little after fees and stress. The daydream sells the plan; the likely case is what you'll actually get — and the worst case is what you have to be able to afford.",
+      "apply_task": "For two live decisions in your journal, write all three cases, then mark how likely each feels (a rough percentage is fine). Answer in writing: can I live with the worst case? Am I deciding on the likely case or the best case?",
+      "reflection_prompt": "For which decision were the best case and the likely case furthest apart? What was making the best case feel more real than it deserved?",
+      "feedback_task": "Show your three cases to someone with more experience of that kind of decision. Ask one question: 'is my likely case actually likely?' Adjust, and note how far off you were.",
+      "teach_back_task": "When someone near you is excited about a plan, ask them for their three cases out loud — kindly. Teach them the 'can you live with the worst case?' question and watch it either sober the plan or strengthen it.",
+      "ai_judgment_note": "Write your three cases and your percentages *before* asking anything — your untrained guess is the thing being trained. Then AI is a decent reality-checker: 'what do people usually underestimate about doing X?' If its answer moves your likely case, move it — but the percentages stay yours, because in the review lesson it's *your* calibration being graded, and borrowed numbers grade nothing.",
+      "assets_needed": ["Three-cases section in the journal"],
+      "est_minutes": 35,
+      "success_criteria": [
+        "Two decisions have written best/worst/likely cases with rough likelihoods.",
+        "The 'can I live with the worst case?' question is answered in writing for both."
+      ],
+      "prereq_lesson_ids": ["th-13-14-q2-l2"]
+    },
+    {
+      "id": "th-13-14-q2-l4",
+      "sequence": 4,
+      "title": "Every yes is a no",
+      "concept": "Every choice spends something — money, time, energy — that can't also be spent elsewhere. The real cost of a decision isn't its price tag; it's the *best thing you gave up* to make it. Thinkers call it opportunity cost. Until you can name what your yes is saying no to, you don't know what the decision costs.",
+      "real_example": "Saying yes to a Saturday job pays RM40 a week. It also says no to the Saturday football league — and if football is where your closest friends are, the job's real price includes that. It might still be worth it. But 'worth it compared to *what*' is the only honest version of the question.",
+      "apply_task": "For each live decision in your journal, add a line: 'this yes is a no to ___' — the best real alternative use of the same time or money. If you can't name one, look harder: the no is always there.",
+      "reflection_prompt": "Which of your yeses had the most expensive hidden no? Have you ever made a choice that felt free but quietly cost you something you cared about?",
+      "feedback_task": "Trade journals (or just one decision) with a friend doing the same exercise, and try to spot each other's hidden nos. Other people see your trade-offs more clearly than you do.",
+      "teach_back_task": "Explain opportunity cost to a younger sibling using their pocket money: the sweets they buy are also the game they're not saving for. Keep going until they can produce their own example.",
+      "ai_judgment_note": "Naming what *you'd* otherwise do with the time or money requires knowing your own life — that part can't be delegated. Where AI helps is completeness: 'what do people typically give up when they take on X?' can surface a category you forgot (sleep is the classic). Take the category; fill in the specifics yourself.",
+      "assets_needed": ["'This yes is a no to' column in the journal"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "Every live decision in the journal names its opportunity cost.",
+        "The teen can say aloud which yes had the most expensive hidden no."
+      ],
+      "prereq_lesson_ids": ["th-13-14-q2-l3"]
+    },
+    {
+      "id": "th-13-14-q2-l5",
+      "sequence": 5,
+      "title": "Predict, decide, review",
+      "concept": "Here's what separates people who get better at deciding from people who just get older: they write the prediction down *before* deciding, and they come back and grade it. Memory rewrites history — 'I knew it all along' — but the journal doesn't. Predict, decide, review. Run that loop for a year and your judgment compounds like savings.",
+      "real_example": "Poker players and fund managers keep decision journals for exactly this reason: they can't trust their memory of what they believed before the outcome. One teen's review showed she rated things '90% sure' that happened about half the time — one page of reviews taught her more about her own overconfidence than a year of being told.",
+      "apply_task": "Finish the loop: make sure all five decisions carry written predictions, then review at least two whose outcomes have arrived. Grade each honestly — what did I predict, what happened, what did I miss — and write one sentence on the pattern your misses share.",
+      "reflection_prompt": "Were your predictions too confident, too timid, or blind in one particular direction? What will you check for in your *next* decision because of what the reviews showed?",
+      "feedback_task": "Walk your decision-maker (a parent works well) through one full journal entry — options, door, cases, cost, prediction, review. Ask them: 'based on this, is there a decision you'd now trust me to make alone?' That answer is the quarter's real payoff.",
+      "teach_back_task": "Set up a decision journal for a friend or sibling: template, first entry, and a review date in their calendar. Teach them the line 'memory rewrites history; the journal doesn't' — if they're still reviewing a month later, you taught it well.",
+      "ai_judgment_note": "The predictions and the grading must be yours — calibration is a measurement of *your* head, and letting AI write either side breaks the instrument. After several reviews, one genuinely good use: paste in your misses (just the predictions and outcomes) and ask 'what pattern do you see?' A pattern-spotter on your own honest data is AI at its best; a ghost-writer for your judgment is AI at its worst.",
+      "assets_needed": ["Review pages in the journal + a calendar reminder for review dates"],
+      "est_minutes": 40,
+      "success_criteria": [
+        "Five decisions carry pre-decision predictions; at least two are reviewed and graded.",
+        "One written sentence names the pattern in the teen's prediction misses."
+      ],
+      "prereq_lesson_ids": ["th-13-14-q2-l4"]
+    }
+  ]
+}

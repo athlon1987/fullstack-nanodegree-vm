@@ -1,0 +1,119 @@
+{
+  "id": "bu-13-14-q2",
+  "title": "Automate the Boring Part",
+  "pillar_primary": "build",
+  "pillars_supporting": ["think"],
+  "age_band": "13-14",
+  "quarter": 2,
+  "developmental_frame": "At 13–14, a teen can decompose a task into steps, express rules ('if this, then that'), and learn a tool from a tutorial without an adult driving — the raw material of automation. What's new at this age is the ability to think about *process itself*: to watch themselves do a chore and see the loop inside it. What still needs scaffolding is honesty about results — teens (like adults) fall in love with what they built and stop measuring whether it actually helps.",
+  "authentic_value_meaning": "At this age, building creates value when it **gives time back** — theirs or someone else's, every single week, without further effort. An automation that reliably saves twenty minutes a week is a machine that manufactures freedom. Learning that you can *build* leverage instead of just spending effort is one of the biggest ideas a 13-year-old can own, and this quarter makes it physical.",
+  "motivation_lever": {
+    "lever": "mastery",
+    "mechanism": "The quarter runs on a visible scoreboard: minutes saved per week, measured before and after, honestly. Watching a thing you built quietly do work while you don't is intrinsically addictive — and the measured number turns 'I made a cool thing' into 'I made a thing that provably works', which is the mastery feeling that keeps builders building."
+  },
+  "artifact": "One working automation — a spreadsheet that fills itself, a phone shortcut, a no-code workflow, a small script, a template pipeline — that removes a genuinely repeated task, with a before/after time measurement, a one-page 'how it works' note, and a keep-or-kill verdict based on the real numbers.",
+  "success_criteria": [
+    "A real repeated task was measured before automation and the automation now performs it, with the weekly minutes saved written down.",
+    "The automation survived at least one weird input or edge case, or was fenced so the weird case is handled by a human on purpose.",
+    "A one-page 'how it works' note exists that another person could use to understand and fix it.",
+    "The teen can explain every part of how the automation works."
+  ],
+  "prereq_project_ids": ["bu-13-14-q1"],
+  "lessons": [
+    {
+      "id": "bu-13-14-q2-l1",
+      "sequence": 1,
+      "title": "Hunt the repetition",
+      "concept": "Automation candidates hide in plain sight: tasks that are *repeated* and *rule-based* — done the same way every time, on a schedule, by rote. The hunt is a time audit: for a week, log the tasks you (or your family, or your Q1 tool's group) do repeatedly. If you can write the rule for doing it, a machine can probably follow the rule.",
+      "real_example": "A teen logged her week and found she spent ~25 minutes every Sunday copying the week's homework deadlines from four class chats into her planner. Repeated: weekly. Rule-based: completely. That half-hour was a machine's job wearing a human's name.",
+      "apply_task": "Run a five-day time audit: log every task you notice yourself or your household repeating, with rough minutes and how often. Mark each as rule-based or judgment-based. Circle the best candidate: most minutes × most rule-based. Write its rule out in plain words.",
+      "reflection_prompt": "How many minutes a week does your circled task actually eat? Multiply by 52 — what does the yearly number make you feel about 'it only takes a few minutes'?",
+      "feedback_task": "Show your audit to someone in your household and ask what repeated task *they'd* pay to never do again. Their answer either confirms your circle or gives you a better one with a built-in grateful user.",
+      "teach_back_task": "Teach a friend the two-question test — 'is it repeated? is it rule-based?' — and help them find one automation candidate in their own week.",
+      "ai_judgment_note": "The audit must come from watching your real week — AI can't see your Sundays, and generic 'tasks teens can automate' lists point at nobody's actual life. Once you've circled a candidate, asking AI 'how do people usually automate X?' is a fine scout for what's possible. But choose the target with your own eyes first.",
+      "assets_needed": ["Time-audit log (task / minutes / frequency / rule-based?)"],
+      "est_minutes": 35,
+      "success_criteria": [
+        "A five-day audit exists with minutes and frequency per repeated task.",
+        "One candidate is circled with its rule written in plain words."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "bu-13-14-q2-l2",
+      "sequence": 2,
+      "title": "Draw the flow before you build",
+      "concept": "Every automation is the same shape: input → steps → output. Drawing that flow on paper *before* touching any tool is what separates an afternoon of building from a week of thrashing. The drawing forces the two questions that kill most automations later: where exactly does the input come from, and what happens when the input is weird?",
+      "real_example": "The homework-deadline teen drew her flow: input = messages in four chats; steps = spot dates, extract subject + due date; output = planner rows. The drawing immediately exposed the hard part — the messages weren't written in any standard way. Knowing where the hard part is *before* building is the whole point of the drawing.",
+      "apply_task": "Draw your automation's flow: the input and where it lives, each step as a box with its rule, the output and where it goes. Then add a 'weird input' list — at least three ways the input could arrive broken or strange — and mark which step each weird case would hit.",
+      "reflection_prompt": "Which box in your flow is the hard one? Is it hard because the rule is complicated — or because the input is messier than you admitted in lesson one?",
+      "feedback_task": "Walk someone through your drawing box by box and have them play saboteur: 'what if the input is empty? doubled? in the wrong format?' Every break they find on paper is an hour saved in the build.",
+      "teach_back_task": "Teach the input→steps→output shape to someone using a non-computer example — making breakfast, doing laundry — and have them draw one. The shape is the lesson; the tool never was.",
+      "ai_judgment_note": "Draw the flow yourself — the drawing is you *understanding* the task, and skipping it means building something you don't understand. Then a genuinely strong AI use: describe your flow and ask 'what edge cases am I missing?' Machines are excellent at imagining broken inputs. Add the good ones to your weird list — with a note of which ones you missed, because that's your blind spot showing.",
+      "assets_needed": ["Flow-drawing sheet (input / steps / output / weird-input list)"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "A complete flow drawing exists with input, rule-labelled steps, and output.",
+        "A weird-input list of 3+ cases exists, each mapped to the step it would break."
+      ],
+      "prereq_lesson_ids": ["bu-13-14-q2-l1"]
+    },
+    {
+      "id": "bu-13-14-q2-l3",
+      "sequence": 3,
+      "title": "Build it with any lever",
+      "concept": "Tools are disposable; the flow is forever. Build the drawn flow with whatever lever ships fastest — spreadsheet formulas, a phone shortcuts app, a no-code automation, a template, a tiny script. Rule of the build: make the *smallest version that completes one real run end-to-end*, today if possible. A half-automation that runs beats a full one that doesn't exist.",
+      "real_example": "The deadline teen's v1 wasn't clever: a spreadsheet where she pasted the four chats' messages into one column, and formulas pulled out anything that looked like a date. Not magic — but Sunday went from 25 minutes to 6 on the very first run, and v1 taught her exactly what v2 needed.",
+      "apply_task": "Pick your lever and build the smallest end-to-end version of your flow. Run it once on real input, today's or last week's. Log what worked, what needed a human shove, and how long the run took versus your before-measurement.",
+      "reflection_prompt": "Where did the build match your drawing, and where did reality disagree with the plan? What did the first real run teach you that no amount of planning would have?",
+      "feedback_task": "Demo the working v1 to the person who feels this pain (maybe you — then demo to your household anyway). Ask: 'would you trust this to do the task without checking it?' Their hesitation points at exactly what v2 must fix.",
+      "teach_back_task": "Show a friend the before and after of your task, then help them build the smallest version of *their* candidate from lesson one — in any tool. Getting someone else's first automation running cements every step of yours.",
+      "ai_judgment_note": "This is the lesson where AI shines as a lever: formulas, shortcut recipes, snippets of code — ask for them freely, tools are disposable. One law, same as your Q1 tool: **you must understand every part well enough to fix it when it breaks**, because automations break quietly and wrong. If AI hands you a piece you can't explain, make it explain the piece until you can — or rebuild that piece simpler. An automation you can't repair isn't leverage; it's a debt.",
+      "assets_needed": ["Build log (lever chosen / first-run result / time vs. before)"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "A smallest end-to-end version ran on real input at least once.",
+        "The first run's time was logged against the before-measurement."
+      ],
+      "prereq_lesson_ids": ["bu-13-14-q2-l2"]
+    },
+    {
+      "id": "bu-13-14-q2-l4",
+      "sequence": 4,
+      "title": "Break it on purpose",
+      "concept": "An automation that works on nice input is a demo. One that survives *weird* input is a tool. Today you attack your own build with the weird-input list from your drawing: empty inputs, doubles, wrong formats, the message written by the one teacher who never writes dates like anyone else. For each break: fix it, or *fence* it — make the automation stop and hand the weird case to a human on purpose.",
+      "real_example": "Real engineers do this daily; they call it testing, and the good ones are proud of how hard they attack their own work. The deadline spreadsheet's famous failure: a teacher wrote 'next Friday' instead of a date. The fix wasn't teaching the sheet English — it was a fence: anything unparseable lands in a 'check me' box for human eyes. Fences are not defeats; they're design.",
+      "apply_task": "Run every case on your weird-input list through the automation, plus two new weird cases invented today. Log each result: passed, fixed, or fenced. The goal isn't zero fences — it's zero *silent* failures: nothing weird may pass through looking normal.",
+      "reflection_prompt": "Which break surprised you most? What's the difference in consequences between an automation that fails loudly and one that fails silently — and which kind had you built?",
+      "feedback_task": "Hand the automation to someone else with the instruction 'try to break this'. Outsiders find breaks the builder can't imagine. Log and handle whatever they find.",
+      "teach_back_task": "Teach someone the demo-versus-tool distinction and the idea of a fence, using your own best break as the example. If they can explain why a loud failure beats a silent one, it landed.",
+      "ai_judgment_note": "Ask AI to invent attacks — 'here's what my automation does; list ten inputs that might break it' — that's the machine doing exactly what it's good at, and every attack it invents is free testing. The judgment calls stay yours: which breaks are worth fixing, which get fenced, and what the fence hands to the human. Never let 'the AI says it handles it' replace running the weird case for real.",
+      "assets_needed": ["Break log (case / result / fixed-or-fenced)"],
+      "est_minutes": 40,
+      "success_criteria": [
+        "Every weird-input case was actually run, with results logged as passed, fixed, or fenced.",
+        "No weird case can pass through silently looking normal."
+      ],
+      "prereq_lesson_ids": ["bu-13-14-q2-l3"]
+    },
+    {
+      "id": "bu-13-14-q2-l5",
+      "sequence": 5,
+      "title": "Did it actually save time?",
+      "concept": "The last discipline is the honest ledger. Total time invested building versus minutes saved per week — divide, and you get the payback point: the week the machine breaks even. Some automations never do, and finding that out from your own numbers is not failure; it's the lesson that separates builders from tinkerers. Then write the one-page note that lets someone else run and fix it — leverage you have to babysit isn't leverage yet.",
+      "real_example": "The deadline sheet: about six hours to build and debug, saves 19 minutes a week — payback in around 19 weeks, then pure profit every Sunday after, forever. Her friend's elaborate chore-wheel bot: eleven hours to build, saved four minutes a week, abandoned in a month. Same skills, honest ledgers, opposite verdicts — and both teens learned exactly the right thing.",
+      "apply_task": "Fill in the ledger: hours invested, weekly minutes saved (measured across at least two real runs, not guessed), payback week. Write the keep-or-kill verdict and why. Then write the one-page 'how it works' note — what it does, where the pieces live, what the fences catch, how to fix the two most likely breaks — and have someone else run one cycle using only the note.",
+      "reflection_prompt": "Does your ledger say keep or kill — and would you have believed that verdict in week one? What would you automate differently next time, knowing the build cost runs double the guess?",
+      "feedback_task": "Present the ledger and the note to your household or group: numbers, verdict, and what the fences catch. Ask whether they'd trust the automation running unattended — and what would earn that trust if not.",
+      "teach_back_task": "Teach the payback-point idea to a friend with their own build: help them fill in the same ledger and reach an honest verdict. If you can talk someone through *killing* an automation they love because the numbers say so, you own this quarter.",
+      "ai_judgment_note": "The measurements must be real and yours — enthusiasm cooks numbers, and an AI asked 'estimate how much time this saves' will happily hallucinate a flattering figure. Measure with a clock. AI is fine help for drafting the how-it-works note from your bullet points — but walk the final note yourself against the real automation, because documentation that's *almost* right is worse than none when something breaks at 11pm.",
+      "assets_needed": ["Payback ledger + one-page how-it-works template"],
+      "est_minutes": 40,
+      "success_criteria": [
+        "A completed ledger exists with measured (not guessed) weekly savings and a payback week.",
+        "A keep-or-kill verdict is written, and someone else ran one cycle using only the how-it-works note."
+      ],
+      "prereq_lesson_ids": ["bu-13-14-q2-l4"]
+    }
+  ]
+}

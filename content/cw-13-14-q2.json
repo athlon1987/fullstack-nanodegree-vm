@@ -1,0 +1,119 @@
+{
+  "id": "cw-13-14-q2",
+  "title": "Know Your Numbers",
+  "pillar_primary": "wealth",
+  "pillars_supporting": ["think"],
+  "age_band": "13-14",
+  "quarter": 2,
+  "developmental_frame": "At 13–14, abstract quantities become workable: a teen can hold ratios, percentages, and per-unit thinking, and — crucially — can now treat *their own time* as a quantity with value, which younger children genuinely cannot. Having run a real micro-offer, they have real numbers of their own to reason about, which changes everything: arithmetic about your own money is a different subject from arithmetic about apples. The trap at this age is motivated math — bending the numbers to protect the venture they're proud of.",
+  "authentic_value_meaning": "At this age, wealth-thinking creates value when the teen can look at their own venture and answer, with evidence: **am I actually making money, per unit and per hour — and what should I change because of it?** Revenue is applause; margin is truth. A 13-year-old who has once computed their real hourly earnings and *acted* on it owns an idea most adults still avoid.",
+  "motivation_lever": {
+    "lever": "real_stakes",
+    "mechanism": "The numbers under the microscope are the teen's own — their real offer, their real costs, their real Saturday afternoons. The quarter ends in a real decision (raise the price, cut a cost, change the offer, or drop it) that changes what lands in their pocket next month. Getting the math right literally pays; getting it wrong literally costs. No worksheet can compete with that."
+  },
+  "artifact": "A one-page money picture of the teen's real micro-offer: true per-unit cost (materials and time included), effective hourly rate, margin, and a simple profit summary — plus one pricing or cost decision actually made and carried out because of what the numbers showed.",
+  "success_criteria": [
+    "A written per-unit cost exists for the offer that includes materials, fees, and the teen's time.",
+    "The teen can state their effective hourly rate and how it was computed.",
+    "One real decision (price change, cost cut, offer change, or drop) was made from the numbers and actually carried out.",
+    "The teen can explain the difference between revenue and profit using their own figures."
+  ],
+  "prereq_project_ids": ["cw-13-14-q1"],
+  "lessons": [
+    {
+      "id": "cw-13-14-q2-l1",
+      "sequence": 1,
+      "title": "What does one really cost?",
+      "concept": "Most young sellers know their price and almost nothing else. The first real number is the true cost of *one* — one bracelet, one phone-setup visit, one commission. True cost means everything: materials, packaging, fees, transport, the free samples, the failed batch. Until you know what one costs, your price is a guess and your profit is a rumor.",
+      "real_example": "A teen selling cookies at RM2 each 'made money' every weekend — until she costed one cookie honestly: ingredients 60 sen, packaging 15, stall share 25, plus the burnt tray split across the batch. True cost: RM1.15. Her 'RM2 profit per cookie' was actually 85 sen. Still profit — but half of what she was celebrating.",
+      "apply_task": "Cost one unit of your real offer, honestly: list every material and fee, split shared costs (equipment, transport, spoilage) across the batch, and land on a true cost-per-unit. If you sell a service, cost one *delivery* of it. Keep the working — the working is the artifact.",
+      "reflection_prompt": "Which cost surprised you most by existing at all? What were you unconsciously leaving out — and why is it always the costs that make the venture look better?",
+      "feedback_task": "Show your cost sheet to an adult who buys things for a household and ask: 'what am I still forgetting?' Household veterans find invisible costs instantly. Add what they catch.",
+      "teach_back_task": "Take a product a friend or sibling loves — a bubble tea, a game skin — and work out together what one probably costs to make versus what it sells for. Teach them the phrase 'true cost of one'.",
+      "ai_judgment_note": "The costs must come from your receipts and your reality — a model asked 'what does it cost to make cookies?' invents a generic bakery, not yours. Use AI as a checklist-checker after your own pass: 'here are my cost categories for X; what do sellers of X usually forget?' Take the categories it suggests, then fill in real numbers yourself. Never let it fill in a number.",
+      "assets_needed": ["Cost-of-one worksheet (materials / fees / shared costs / true cost)"],
+      "est_minutes": 40,
+      "success_criteria": [
+        "A written true cost-per-unit exists with every category included and shared costs split.",
+        "At least one previously invisible cost was found and added."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "cw-13-14-q2-l2",
+      "sequence": 2,
+      "title": "Your hour has a price",
+      "concept": "The biggest cost in a teen venture never appears on a receipt: your time. Total the hours one unit really takes — making, selling, travelling, messaging — and divide your profit by them. That's your *effective hourly rate*, and it's the venture's most honest number. It doesn't tell you to quit; it tells you what the venture must beat, and what your time is currently teaching you it's worth.",
+      "real_example": "The cookie teen: 85 sen profit per cookie, about 40 cookies per weekend — RM34. But baking, packing, selling and cleaning took nine hours: RM3.80 an hour. A neighbourhood car-wash gig pays RM10. She didn't quit cookies — she decided the extra RM6/hour was the price of learning to run something of her own. But now it was a *decision*, not a blur.",
+      "apply_task": "Track or reconstruct the full hours behind your last batch or week of the offer — every stage, honestly. Compute your effective hourly rate: total profit ÷ total hours. Write one sentence: 'my venture currently pays me RM__ per hour, and that is/isn't fine because ___.'",
+      "reflection_prompt": "Is your rate higher or lower than you assumed? If a friend offered you that rate to do the same work for *them*, would you take it — and what does your answer tell you?",
+      "feedback_task": "Ask a working adult what they'd say to your hourly rate and your 'because' sentence. Their reaction — impressed, alarmed, or nodding — is context you can't compute.",
+      "teach_back_task": "Teach a friend with a side hustle to compute their own effective hourly rate. Warn them it might sting, and teach the follow-up line: the number isn't a verdict, it's information.",
+      "ai_judgment_note": "The hours must be tracked or honestly reconstructed by you — nobody else was there, and rounding your hours down is the most popular way ventures lie to their owners. AI can help with the arithmetic and with framing comparisons ('what do typical part-time options pay a 13-year-old?') — but if you catch yourself wanting the machine to make the number look better, stop: the number is doing its job.",
+      "assets_needed": ["Hours log + hourly-rate calculation sheet"],
+      "est_minutes": 35,
+      "success_criteria": [
+        "A full hours count for one batch/week exists, all stages included.",
+        "The effective hourly rate is computed with a written 'and that is/isn't fine because' sentence."
+      ],
+      "prereq_lesson_ids": ["cw-13-14-q2-l1"]
+    },
+    {
+      "id": "cw-13-14-q2-l3",
+      "sequence": 3,
+      "title": "Margin is the game",
+      "concept": "Margin is the slice of each sale you actually keep: (price − true cost) ÷ price. It's the number that decides whether growth helps or hurts — selling more of a zero-margin thing just makes you busier. And there are exactly three levers that move it: raise the price, cut the cost, or cut the time. Every business decision you'll ever see is someone pulling one of the three.",
+      "real_example": "Two stalls sell drinks. One sells 100 cups at 10 sen margin (RM10). The other sells 30 cups at 60 sen margin (RM18) — less work, more money. The busy stall *looks* more successful all day long. Margin is why looks lie, and why 'how many did you sell?' is the amateur question. The pro question is 'what do you keep per sale?'",
+      "apply_task": "Compute your offer's margin from lessons one and two. Then write one concrete idea for each lever: what raising the price could look like, which cost could shrink, which step eats time without adding value. Rank the three by how much they'd move the margin.",
+      "reflection_prompt": "Which lever feels scariest to pull — and is that fear about the business, or about awkwardness (like telling customers a higher price)? Ideas that are cheap to try but feel scary are usually the underpriced ones.",
+      "feedback_task": "Show your three lever ideas to a fellow seller (or an adult who's run anything) and ask which they'd pull first and why. Note where their pick differs from your ranking.",
+      "teach_back_task": "Explain margin to a family member using the two-stalls story, then work out together the margin on something your household buys or makes. End with the three levers — see if they can name which one supermarkets pull hardest.",
+      "ai_judgment_note": "Margin math is simple enough to own with a calculator — do it yourself so the number feels like yours. Where AI helps is lever brainstorming breadth: 'how do small sellers of X usually cut costs?' will list ideas worth stealing. Where it can't help is the ranking: which lever fits *your* customers and *your* nerve is judgment, and it's the judgment this quarter is training.",
+      "assets_needed": ["Margin worksheet + three-levers sheet"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "The offer's margin is computed and written down.",
+        "One concrete idea per lever exists, ranked by expected effect."
+      ],
+      "prereq_lesson_ids": ["cw-13-14-q2-l2"]
+    },
+    {
+      "id": "cw-13-14-q2-l4",
+      "sequence": 4,
+      "title": "Run a margin experiment",
+      "concept": "You don't find out what a lever does by debating it — you pull it, briefly and reversibly, and measure. Pick your top-ranked lever, predict what it will do (to sales *and* margin), run it for one real selling cycle, and compare. A price rise that loses a few customers but lifts total profit is a win the spreadsheet can see and your nerves can't.",
+      "real_example": "The cookie teen raised RM2 to RM2.50 — a two-way door, tested one Saturday. Prediction: lose maybe a quarter of buyers. Reality: sold 34 instead of 40, but margin per cookie jumped from 85 sen to RM1.35. Total profit went from RM34 to RM45.90 for *less* baking. The scary lever was the profitable one — which is exactly why it had gone unpulled.",
+      "apply_task": "Write the experiment card: which lever, what change, your predicted effect on sales and profit. Run it for one real cycle (one market day, one week of orders). Record actual sales, margin, and total profit next to the prediction. Keep the change or roll it back — in writing, with the reason.",
+      "reflection_prompt": "What did customers actually do versus what you feared they'd do? Where does your prediction error point — do you under-rate your offer, or over-rate your customers' price-sensitivity?",
+      "feedback_task": "If any customer pushed back or walked away, note exactly what they said — that's the market speaking. Share the before/after card with your peer group or an adult and ask what they'd test next.",
+      "teach_back_task": "Teach the experiment shape — predict, change one thing, measure one cycle, decide — to a friend with any venture, and help them run their first pricing test. The shape transfers to everything; the sooner they own it, the better.",
+      "ai_judgment_note": "The prediction goes down *before* the experiment and it's yours — that's how you learn what your instincts are worth (your Think decision journal should recognise this move). AI can help design a clean test ('what would make this price test unfair or misleading?') — a genuinely good use. But no model knows your customers; only the Saturday knows. Run the Saturday.",
+      "assets_needed": ["Experiment card (lever / change / prediction / result / keep-or-rollback)"],
+      "est_minutes": 45,
+      "success_criteria": [
+        "An experiment card exists with a pre-registered prediction.",
+        "One real cycle ran, results are recorded next to the prediction, and a keep-or-rollback decision is written with its reason."
+      ],
+      "prereq_lesson_ids": ["cw-13-14-q2-l3"]
+    },
+    {
+      "id": "cw-13-14-q2-l5",
+      "sequence": 5,
+      "title": "The one-page money picture",
+      "concept": "Everything this quarter compresses onto one page: what comes in, what goes out, what one unit truly costs, what an hour of you earns, the margin, and the experiment's verdict. Businesses call it a P&L; call it your money picture. Its job is to make the next decision obvious — and to be simple enough that you'll actually keep it updated.",
+      "real_example": "Investors read a one-page summary before anything else, because a venture that can't fit its truth on a page usually doesn't know its truth. The cookie teen's page ended with one line — 'RM2.50 stays; next: cut packaging cost, it's 18% of true cost for zero taste' — which is a 13-year-old running a business by the numbers. That line is the whole quarter.",
+      "apply_task": "Build your one-page money picture from the quarter's sheets. End it with two written lines: the decision you already made (and its measured result), and the *next* decision the page points to. Then act on the next decision — or schedule exactly when you will.",
+      "reflection_prompt": "Looking at the finished page: is this venture worth your hours as-is, worth it after changes, or teaching you things worth more than the money? All three answers are wins — but which is true, on the evidence?",
+      "feedback_task": "Present the page to your decision-maker or peer group in under three minutes. Take one question you can't answer from the page, and add whatever number would have answered it.",
+      "teach_back_task": "Help a friend with any venture — bake sales, commissions, reselling — build their own one-page money picture from scratch: cost of one, hourly rate, margin, next decision. If their page ends with a real next decision, you've taught the whole quarter.",
+      "ai_judgment_note": "AI can lay out the page and check your arithmetic — clerical work, fine. The two ending lines it must never write: what the numbers *mean* and what you'll *do* — that's the judgment the page exists to sharpen, and outsourcing it turns your money picture back into decoration. One last honest use: show it your page and ask 'what would a skeptical investor question here?' Then answer the question yourself, with a number.",
+      "assets_needed": ["One-page money picture template (in / out / cost-of-one / hourly / margin / decisions)"],
+      "est_minutes": 40,
+      "success_criteria": [
+        "A complete one-page money picture exists with all five numbers current.",
+        "It ends with the made decision (with result) and a committed next decision."
+      ],
+      "prereq_lesson_ids": ["cw-13-14-q2-l4"]
+    }
+  ]
+}

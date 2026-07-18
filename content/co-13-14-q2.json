@@ -1,0 +1,119 @@
+{
+  "id": "co-13-14-q2",
+  "title": "Reach Out and Interview",
+  "pillar_primary": "communicate",
+  "pillars_supporting": ["explore"],
+  "age_band": "13-14",
+  "quarter": 2,
+  "developmental_frame": "At 13–14, teens can hold a real conversation with an unfamiliar adult — ask, listen, follow up — but almost never do, because initiating contact feels socially radioactive at exactly the age when embarrassment peaks. The capability that's genuinely ready: composing a considered message, preparing questions, and listening for substance. The fear is the obstacle, not the skill — which makes this the highest-leverage quarter to install the habit, because a teen who can comfortably reach out to adults has an advantage that compounds for decades.",
+  "authentic_value_meaning": "At this age, communication creates value when it **opens a door that was closed** — a busy adult who owed the teen nothing gives an hour, answers honestly, and remembers them afterwards. The teen walks away with knowledge that isn't on any feed, and something rarer: proof that the adult world answers when you knock properly. That proof changes what a 13-year-old believes they're allowed to attempt.",
+  "motivation_lever": {
+    "lever": "mastery",
+    "mechanism": "Getting a yes from a busy stranger, then running an interview that makes them talk for an hour, is a visible, unfakeable skill — and every rep gets measurably less scary and more smooth. The quarter is built as a ladder of reps: warm contact first, then colder, each one scored and debriefed. The pull is watching yourself get good at the thing most adults still fear."
+    },
+  "artifact": "Two completed interviews with adults doing work the teen finds genuinely interesting — landed through the teen's own outreach messages — plus a published write-up of what was learned (using the Q1 publishing skills) and thank-you notes actually sent.",
+  "success_criteria": [
+    "At least three real outreach messages were sent, and at least two interviews actually happened.",
+    "The teen ran each interview from their own prepared questions and can retell the best thing each person said.",
+    "A write-up of what was learned is published where others can read it, and thank-you notes were sent within two days.",
+    "The teen can describe how outreach number three felt compared to number one."
+  ],
+  "prereq_project_ids": ["co-13-14-q1"],
+  "lessons": [
+    {
+      "id": "co-13-14-q2-l1",
+      "sequence": 1,
+      "title": "Who's worth an hour?",
+      "concept": "Outreach starts with a real question, not a famous name. The best person to interview isn't the biggest name you can think of — it's someone close enough to reach who is actually *doing* a thing you want to understand: running the shop, coding the app, coaching the team, working the job you're curious about. Specific curiosity beats celebrity every time.",
+      "real_example": "A teen curious about game design messaged a famous YouTuber (no reply, ever) and then the developer of a small indie game he liked — who replied in a day and talked for an hour. The indie dev gets ten messages a month, not ten thousand. Reachability is a feature, not a compromise.",
+      "apply_task": "Write down what you genuinely want to understand — a job, a craft, a path. List three real, reachable people who are living it: one you already half-know (a coach, a family friend, a neighbour), two colder. For each, write the one thing you'd most want to ask them.",
+      "reflection_prompt": "Is your list built on what *you* actually want to know, or on who would impress your friends? What would change if nobody ever saw who you interviewed?",
+      "feedback_task": "Show your list to an adult who knows your world and ask two things: 'who am I missing?' and 'can you introduce me to any of these?' A warm introduction doubles your yes rate — asking for one is part of the skill.",
+      "teach_back_task": "Help a friend build their own three-person list for something *they're* curious about. Teach them the rule: reachable and real beats famous and silent.",
+      "ai_judgment_note": "The curiosity must be yours — AI doesn't know what pulls at you, and a borrowed question produces a dead interview. Where AI earns its keep here is research: once you've chosen your people, use it to learn what they've made and said publicly, so your questions start where their public answers end. Knowing someone's work before you knock is respect; asking what a two-minute search would answer is the opposite.",
+      "assets_needed": ["Target list sheet (person / what they do / the one question)"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "Three reachable people are listed with the one thing to ask each.",
+        "One possible warm introduction is identified."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "co-13-14-q2-l2",
+      "sequence": 2,
+      "title": "The message that gets a yes",
+      "concept": "Busy people say yes to messages that are short, specific, and easy. The formula: who you are in one line, why *them* specifically (proof you know their work), one clear small ask (20 minutes, their choice of time), and an easy out. No flattery walls, no life story, no 'pick your brain'. And silence isn't a no — one polite follow-up a week later is normal, not desperate.",
+      "real_example": "'Hi, I'm Mira, 13, I run a small bracelet stall at my school market. I read that you started your bakery at 19 with RM500. Could I ask you three questions about your first year — 20 minutes, whenever suits you? Totally fine if you're too busy.' Four lines. She got a reply in two hours, because saying yes to that is *easy*.",
+      "apply_task": "Draft your outreach message using the formula, out loud until it sounds like you. Send it to your warmest target today — before the nerves organise themselves. Log the send in a simple tracker: who, when, reply or silence, follow-up date.",
+      "reflection_prompt": "What was the exact feeling in the ten seconds before you hit send? Now that it's sent — how big was the thing you were afraid of, really?",
+      "feedback_task": "Show your draft to an adult before sending the colder two: 'would you say yes to this? what would make it easier to say yes to?' Tighten, then send both.",
+      "teach_back_task": "Teach the four-line formula to a friend who wants something from an adult — a trial, a signature, an interview — and stand next to them while they hit send on their first one. The standing-next-to matters.",
+      "ai_judgment_note": "Draft the message yourself, then let AI tighten *your* draft — cutting is a thing it does well. Never let it write the message from scratch: recipients can smell template outreach instantly, and the whole message works because a real 13-year-old wrote it. Same for follow-ups — short, human, yours. One genuine use: paste in your message and ask 'what would make a busy person ignore this?'",
+      "assets_needed": ["Outreach tracker (who / sent / reply / follow-up date)"],
+      "est_minutes": 35,
+      "success_criteria": [
+        "Three outreach messages in the four-line shape were actually sent.",
+        "The tracker shows send dates and scheduled follow-ups."
+      ],
+      "prereq_lesson_ids": ["co-13-14-q2-l1"]
+    },
+    {
+      "id": "co-13-14-q2-l3",
+      "sequence": 3,
+      "title": "Questions that open people up",
+      "concept": "Weak questions get facts you could have googled; strong questions get stories only this person can tell. The craft: open questions ('how did you…', 'what surprised you…') beat yes/no ones; 'tell me about the time…' beats 'do you like…'; and the best question in any interview is the follow-up — 'what happened next?', 'why was that hard?' — because it proves you're actually listening.",
+      "real_example": "'Do you like being a vet?' gets 'yes, mostly'. 'What's a day that almost made you quit — and why didn't you?' gets ten minutes you'll never forget. Same person, same knowledge; the question decided which one you got.",
+      "apply_task": "Write eight questions for your first confirmed interview: two about how they started, two about the hardest parts, two about what surprised them, one 'tell me about the time…', and one you're slightly scared to ask. Then star the three you'd keep if you only got ten minutes.",
+      "reflection_prompt": "Look at your eight: how many could be answered by their website or a search? Replace those — what does that rule teach you about what an interview is actually *for*?",
+      "feedback_task": "Test your starred three on a family member, having them role-play the interviewee. Which question made them think longest before answering? That pause is what you're hunting.",
+      "teach_back_task": "Teach a sibling or friend the open-vs-closed question game at dinner: take turns turning dull questions into story questions, and score whose version gets the longer answer.",
+      "ai_judgment_note": "Write your eight before consulting anything — the questions carry your curiosity, which is the one thing the interview runs on. Afterwards, two fair uses: ask AI what a beginner typically fails to ask people in this field, and check your list against it; and cut questions whose answers are already public. What you must not do is walk in with a machine's script — the follow-ups, which matter most, can only come from you listening.",
+      "assets_needed": ["Question sheet (8 questions, 3 starred)"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "Eight questions exist with three starred, none answerable by a basic search.",
+        "The starred three were tested on a stand-in and the strongest identified."
+      ],
+      "prereq_lesson_ids": ["co-13-14-q2-l2"]
+    },
+    {
+      "id": "co-13-14-q2-l4",
+      "sequence": 4,
+      "title": "Run the interview",
+      "concept": "The interview is won by listening, not performing. Talk 20%, listen 80%. Let silences sit — people fill them with the good stuff. Follow the interesting thread even if it breaks your question order; your list is a safety net, not a script. Capture as you go: short notes for facts, full attention for stories, and always ask permission before recording anything.",
+      "real_example": "A teen interviewing a paramedic froze when her third question got answered in one word. Then she used the rescue line — 'what happened next?' — and the paramedic talked for eight unplanned minutes about a night that changed his career. None of it was on her sheet. All of it was the interview.",
+      "apply_task": "Run your first interview. Open by thanking them and saying what you're hoping to learn in one line. Ask your starred questions, chase at least one unplanned thread, and close with: 'what should I have asked that I didn't?' Write your notes up within an hour, while it's warm — then run the second interview within the fortnight.",
+      "reflection_prompt": "Where did you talk when you should have listened? What was the best thing they said — and did it come from a planned question or a follow-up?",
+      "feedback_task": "At the end of each interview, ask directly: 'how was that to be interviewed by me — anything I should do differently next time?' Adults give gold feedback to teens who ask for it straight.",
+      "teach_back_task": "Retell the best story from your interview to your family at dinner — properly, with the details that made it land. Retelling is both the retention step and the proof you were actually listening.",
+      "ai_judgment_note": "Nothing about the live hour can be delegated — the listening, the silences, the followed thread are the entire craft. Two hard rules: never record or transcribe a person without asking first, and never paste someone's private words into an AI tool without their permission — what they gave you, they gave *you*. After writing your own notes, it's fine to use AI to help organise them; the hour itself belongs to humans.",
+      "assets_needed": ["Interview one-pager (starred questions + note space + closing question)"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "Two interviews were completed with notes written up within a day.",
+        "At least one unplanned follow-up thread per interview is visible in the notes."
+      ],
+      "prereq_lesson_ids": ["co-13-14-q2-l3"]
+    },
+    {
+      "id": "co-13-14-q2-l5",
+      "sequence": 5,
+      "title": "Write it up, say thanks, keep the door open",
+      "concept": "An interview isn't finished when the call ends. Three moves complete it: a thank-you within two days that names the specific thing that helped you most; a write-up that shares what you learned (your Q1 publishing skills, back on stage); and the long game — a door left open is worth more than the hour itself. Adults remember teens who close the loop, because almost nobody does.",
+      "real_example": "Six months after interviewing a local shop owner, a teen messaged her: 'I used your advice about starting smaller — here's the stall it turned into.' She replied the same day and offered him a market slot. The interview got him an hour; the closed loop got him an ally.",
+      "apply_task": "Send both thank-yous, naming the one specific insight each person gave you. Then write and publish your piece — the two or three things you learned that nobody had told you before — where your Q1 audience can read it, and send each interviewee the link.",
+      "reflection_prompt": "What did you learn across the two interviews that genuinely surprised you? And what did you learn about *yourself* between outreach number one and interview number two?",
+      "feedback_task": "Note what each interviewee says when you send them the write-up — whether they correct something, share it, or offer more. Their reaction is feedback on both your listening and your writing.",
+      "teach_back_task": "Coach one friend through the full ladder — list, message, questions, interview, thank-you, write-up — for a person *they* want to learn from. When their thank-you note goes out, you've taught the whole skill.",
+      "ai_judgment_note": "The thank-you must be handwritten-level personal — one specific detail from *your* conversation — and the write-up must be in your voice, since your name is on it and the interviewee will read it. Fine uses: AI as proofreader, and as an organiser for your quotes (with the speaker's permission to share them). The relationship itself — the door you're keeping open — can only be maintained by a human. That's the asset. Guard it.",
+      "assets_needed": ["Thank-you checklist + write-up template (3 things nobody had told me)"],
+      "est_minutes": 45,
+      "success_criteria": [
+        "Both thank-you notes were sent within two days, each naming a specific insight.",
+        "The write-up is published and the link was sent to both interviewees."
+      ],
+      "prereq_lesson_ids": ["co-13-14-q2-l4"]
+    }
+  ]
+}
