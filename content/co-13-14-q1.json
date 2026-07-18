@@ -1,0 +1,119 @@
+{
+  "id": "co-13-14-q1",
+  "title": "Publish Something Worth Reading",
+  "pillar_primary": "communicate",
+  "pillars_supporting": ["create"],
+  "age_band": "13-14",
+  "quarter": 1,
+  "developmental_frame": "At 13–14 the 'imaginary audience' is at full volume — teens feel watched and judged constantly, which makes publishing feel enormous, but it also means they finally *care* about audience reaction enough to revise. They can now hold a draft–edit–redraft loop across weeks, take critique of their work (if it's clearly not critique of them), and write with an authentic voice adults can't fake. What they can't yet do is judge their own writing cold — they need real reader reactions, not a grade.",
+  "authentic_value_meaning": "At this age, communication creates value when **strangers choose to spend their attention on your words** — not politeness-reads from family. Publishing one piece that real, unobligated readers actually finish is the first time a teen's words are judged purely on whether they're worth reading. That's a different act from writing for a teacher, and it's the one that matters.",
+  "motivation_lever": {
+    "lever": "real_audience",
+    "mechanism": "The piece is written for — and published in — a place where its real audience already gathers: the school paper or newsletter, a club or team chat, a community noticeboard, a blog shared where their people are. Real readers, reacting honestly and voluntarily, are the payoff. The teen watches actual humans respond to their words, which no grade or parental praise can substitute for."
+  },
+  "artifact": "One published piece (roughly 400–700 words, or the equivalent as a recorded script) on a topic the teen genuinely knows, published where its intended audience actually gathers — plus the first draft kept alongside the final to show the cuts, and a record of real reader responses.",
+  "success_criteria": [
+    "The piece is published somewhere its intended audience actually gathers, not just shown to family.",
+    "The teen can state the one idea of the piece in a single sentence.",
+    "The final draft is visibly shorter and sharper than the first draft, and both exist to compare.",
+    "At least three genuine responses from readers outside the family are recorded."
+  ],
+  "prereq_project_ids": [],
+  "lessons": [
+    {
+      "id": "co-13-14-q1-l1",
+      "sequence": 1,
+      "title": "One idea, one reader",
+      "concept": "Writing aimed at 'everyone' reads like it was written for no one. A piece works when one specific kind of reader feels it was written *for them* — and when it carries exactly one idea. Two ideas make two weak pieces wearing one title.",
+      "real_example": "'Ten tips for better gaming' vanishes into the noise. 'What I learned coming back after my account got hacked — written for players who think it can't happen to them' gets read, because a real reader recognises themselves in it and one clear idea pulls them through.",
+      "apply_task": "Pick a topic you actually know from experience — not one you'd have to research from zero. Write your one idea in a single sentence, and describe your one reader in a phrase ('year 8s who skip breakfast', 'players in my league who rage-quit'). Everything you draft later must serve those two lines.",
+      "reflection_prompt": "Is your one idea something your reader hasn't already heard ten times? If it's what everyone says, what do *you* know that changes it?",
+      "feedback_task": "Say your idea sentence to one person who fits your reader description. Watch their face: interest or politeness? Ask which — and note what they say.",
+      "teach_back_task": "Explain the 'one idea, one reader' rule to a friend who has to write something for school, and help them boil their piece down to the two lines.",
+      "ai_judgment_note": "The idea must come from what *you* know — an AI's take on any topic is the average take, and average is invisible. One sharp use: ask AI 'what would most people say about this topic?' so you know exactly what NOT to write. If your idea matches the machine's list, dig deeper into your own experience until it doesn't.",
+      "assets_needed": ["One-idea/one-reader card (two lines, kept visible while drafting)"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "A one-sentence idea and a one-phrase reader description are written down.",
+        "One real target reader reacted to the idea and their reaction is noted."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "co-13-14-q1-l2",
+      "sequence": 2,
+      "title": "Earn the first ten seconds",
+      "concept": "A stranger gives your piece about ten seconds before deciding to stay or scroll. The opening has to earn the rest — with a real question, a surprising fact, or the moment the story starts. One rule: the piece must pay off whatever the opening promises. A hook the piece can't cash is clickbait, and readers never forgive it twice.",
+      "real_example": "'Cyberbullying is a serious problem in today's society' loses the reader at 'society'. 'The message arrived at 11:43pm, and it was from my best friend' — same topic, but now you have to know what happened. Both openings are honest; only one earns the next paragraph.",
+      "apply_task": "Write five different openings for your piece — a question, a moment, a surprising fact, a bold claim, and one wild card. Read each aloud. Pick the one that pulls hardest *and* that your piece can genuinely pay off.",
+      "reflection_prompt": "Which opening was easiest to write, and which actually works best? Why are those usually not the same one?",
+      "feedback_task": "Show just your top two openings to someone in your reader group and ask: which one would make you keep reading — and would you feel cheated if the piece didn't deliver on it?",
+      "teach_back_task": "Collect three openings from things you read this week — one great, one boring, one clickbait — and teach someone the difference, using the 'can it pay it off?' test.",
+      "ai_judgment_note": "Draft your five openings yourself first — generating hooks is exactly the muscle this lesson trains. Afterwards, AI can pitch alternatives to react against; steal a *shape* if it helps, never a whole line. And reject any AI hook your piece can't pay off: borrowed clickbait spends your reader's trust, and you're the one who loses it.",
+      "assets_needed": ["Five-openings worksheet"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "Five distinct openings exist and one is chosen with a reason.",
+        "A target reader picked between the top two and their choice is noted."
+      ],
+      "prereq_lesson_ids": ["co-13-14-q1-l1"]
+    },
+    {
+      "id": "co-13-14-q1-l3",
+      "sequence": 3,
+      "title": "Draft it, then cut it in half",
+      "concept": "First drafts are for finding what you mean; editing is where writing gets good. Nearly every first draft is a third too long — warm-up sentences, repeated points, words doing nothing. Cutting feels like losing work. It isn't. It's the work.",
+      "real_example": "'Due to the fact that many students find it quite difficult to wake up early in the morning' — cut to 'Most students hate early mornings' and nothing is lost except fog. Professional writers routinely cut their favourite sentences; they call it 'killing your darlings' because it hurts and it works.",
+      "apply_task": "Write the full first draft in one sitting — messy is fine, just get to the end. Then make a copy and cut it by at least a third: warm-ups, repeats, every word not carrying weight. Keep both versions; the before/after is part of your artifact.",
+      "reflection_prompt": "Read the two versions aloud. What did the piece *gain* by losing a third of its words? Which cut hurt most — and was the piece worse without it, honestly?",
+      "feedback_task": "Give someone both versions without saying which is which. Ask which they'd rather keep reading and why. If they pick the long one, find out what the cut version lost.",
+      "teach_back_task": "Take a paragraph a friend or sibling wrote (with permission), and edit it together — teach them to hunt warm-up sentences and dead words. Cutting someone else's fog trains your eye for your own.",
+      "ai_judgment_note": "The draft must be yours — drafting is where you find what you actually think, and skipping it means publishing without ever thinking. For editing, one sharp AI use: 'what could be cut from this without losing the idea?' — then decide line by line yourself. Never 'rewrite this better': the voice stops being yours, and your reader can tell in one paragraph.",
+      "assets_needed": ["Draft + cut-pass checklist (warm-ups, repeats, dead words)"],
+      "est_minutes": 45,
+      "success_criteria": [
+        "A complete first draft exists.",
+        "A cut version at least a third shorter exists alongside it."
+      ],
+      "prereq_lesson_ids": ["co-13-14-q1-l2"]
+    },
+    {
+      "id": "co-13-14-q1-l4",
+      "sequence": 4,
+      "title": "Test it on real readers",
+      "concept": "You can't judge your own writing cold — you know what you *meant*, so your brain fills every gap. Real readers don't have that help. Watching where an actual reader slows down, skims, or stops tells you more than any opinion about whether it's 'good'.",
+      "real_example": "A writer watches someone read their piece and sees them skim the third paragraph — the one the writer worked hardest on. The reader can't even say why. That skim is data no compliment can give: the paragraph is doing less than it costs.",
+      "apply_task": "Give the piece to two or three people from your reader group. Watch them read if you can. Then ask exactly one question: 'where did you lose interest, even a little?' Revise the piece based on what they showed you — not just what they said.",
+      "reflection_prompt": "Did their stumbling points surprise you? What does the gap between what you meant and what they read tell you about writing for strangers?",
+      "feedback_task": "Show one reader the before/after of your revision and ask if the fix worked. A reader confirming the fix is your sign-off to publish.",
+      "teach_back_task": "Offer the same service to a friend: watch them read *your* method — one reader, one question, revise from the stumble. Then watch a reader read their piece and hand them what you observed.",
+      "ai_judgment_note": "AI cannot lose interest — it reads everything with infinite patience, which makes it useless for this lesson's question. Simulated 'reader feedback' from a model is practice at best. The one thing that counts here is a real human's attention faltering in front of you. Save AI for after: it can help you tighten the paragraph your real reader stumbled on.",
+      "assets_needed": ["Reader-test sheet (reader / where they slowed / what changed)"],
+      "est_minutes": 35,
+      "success_criteria": [
+        "At least two target readers read the piece and their lose-interest points are recorded.",
+        "The piece was revised and one reader confirmed the revision works."
+      ],
+      "prereq_lesson_ids": ["co-13-14-q1-l3"]
+    },
+    {
+      "id": "co-13-14-q1-l5",
+      "sequence": 5,
+      "title": "Publish where they already are",
+      "concept": "A piece nobody can find isn't published — it's stored. Publishing means putting it where your reader already spends attention: the school paper, the club chat, the noticeboard, the feed. And it means your name on it, in public, which is exactly why it counts.",
+      "real_example": "The same piece posted on a blog nobody visits gets three views from family; pinned in the club's group chat where its actual readers live, it gets read, replied to, and argued with the same day. Placement did that, not the writing.",
+      "apply_task": "List the two or three places your one reader actually gathers. Pick the best, handle its rules (ask the editor, the coach, the admin), and publish. Then collect what comes back: a simple tally of who read it and every genuine response, kept with the piece.",
+      "reflection_prompt": "How did it feel the moment it went public under your name? Which response mattered most — and was it the one you expected to matter?",
+      "feedback_task": "Debrief with one reader who responded: what made them read to the end? What would have made them share it with someone else? Note both for your next piece.",
+      "teach_back_task": "Walk a friend through the whole path — one idea, one reader, the hook, the cut, the reader test, the placement — and help them get their first piece actually published, not just written.",
+      "ai_judgment_note": "Never publish AI-written text under your name. Your name is the asset this whole quarter builds, and getting caught once — and readers do catch it — spends all of it. The legitimate final uses: a proofread for typos where you approve each fix, and afterwards asking 'why might this piece not have been shared?' as input for your next one. The words that carry your name must be yours.",
+      "assets_needed": ["Publication checklist + response tally sheet"],
+      "est_minutes": 40,
+      "success_criteria": [
+        "The piece is live in a place its intended audience actually gathers.",
+        "A response record exists with at least three genuine reader responses from outside the family."
+      ],
+      "prereq_lesson_ids": ["co-13-14-q1-l4"]
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "id": "bu-13-14-q1",
+  "title": "Build Something People Keep Using",
+  "pillar_primary": "build",
+  "pillars_supporting": ["think"],
+  "age_band": "13-14",
+  "quarter": 1,
+  "developmental_frame": "At 13–14 a teen can sustain a multi-week build–test loop, debug systematically instead of by frustration, and teach themselves a new tool from scratch when the project demands it. What drives them now is competence *witnessed by peers* — a build that stays invisible gets abandoned, however good it is. So the build must live in front of its users early. Frustration tolerance is better than at 11, but progress still needs to be visible weekly or motivation leaks away.",
+  "authentic_value_meaning": "At this age, building creates value when something you made becomes **part of someone's routine** — used a second time, without being asked. Not the demo, not the compliment: the return visit. A teen who has watched three real people come back to their tool has learned the difference between 'I built something' and 'I built something useful', and that difference is the whole craft.",
+  "motivation_lever": {
+    "lever": "peer_status",
+    "mechanism": "The tool is built for a real group the teen already belongs to — the class, the team, the club, the family group chat — and it lives where the whole group can see it. Being 'the one who built the thing we actually use' is visible competence, which is exactly the status currency of this age. Watching people actually use your thing, in public, does the motivating; no adult needs to push."
+  },
+  "artifact": "A working tool — digital or physical: a shared tracker, a sign-up system, a small app, a spreadsheet automation, a physical organiser — that a real group the teen belongs to has used more than once, plus a usage log and a change log showing at least one v2 change made because of what the users actually did.",
+  "success_criteria": [
+    "The tool exists, works, and at least three people in the target group have used it at least twice.",
+    "A written usage log and change log exist, with at least one change driven by observed use rather than opinions.",
+    "The teen can explain how every part of the tool works."
+  ],
+  "prereq_project_ids": [],
+  "lessons": [
+    {
+      "id": "bu-13-14-q1-l1",
+      "sequence": 1,
+      "title": "Find a recurring pain",
+      "concept": "A one-off problem earns you one thank-you. A *recurring* problem earns you users. Builders hunt for things a group does repeatedly and grumbles about every time — collecting money for something, remembering whose turn it is, sharing the same information again and again. Repetition is what turns a fix into a tool.",
+      "real_example": "A teen noticed his football team spent ten minutes of every practice arguing about who was bringing what to the next match. One shared checklist, pinned in the team chat, killed the argument — and because the problem returned weekly, so did the users.",
+      "apply_task": "Watch the groups you belong to for a week. List five things a group does repeatedly and grumbles about. For each, note how often it happens and who feels it. Circle the one that recurs most often for the most people — that's your build.",
+      "reflection_prompt": "Which problems on your list happen weekly or more, and which happened only once? Why would building for the once-off feel productive but be a trap?",
+      "feedback_task": "Describe the circled pain — just the pain, not your solution — to two people in that group. Ask: 'how annoying is this, honestly, out of ten?' Write their numbers down.",
+      "teach_back_task": "Explain to a parent or friend the difference between a one-off problem and a recurring one, and why builders should chase the second. Use your own list as the example.",
+      "ai_judgment_note": "The noticing must be yours — AI doesn't know your team's chat or what your class grumbles about, and generic 'problems teens have' lists will point you at things nobody around you actually feels. After you've chosen, it's fair to ask AI how other groups solve this pain — copy the boring parts of their answers, and keep the part that fits *your* group yours.",
+      "assets_needed": ["Recurring-pain log (pain / how often / who feels it)"],
+      "est_minutes": 35,
+      "success_criteria": [
+        "Five observed recurring pains are logged with frequency and who feels them.",
+        "One is circled, and two group members rated its annoyance."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "bu-13-14-q1-l2",
+      "sequence": 2,
+      "title": "Scope the smallest useful version",
+      "concept": "Version one is the smallest thing that is *genuinely useful this week* — not the dream version. The core builder's skill isn't adding features; it's deciding what v1 will NOT do, and writing that list down before you start. Every feature you postpone is time your users get the tool sooner.",
+      "real_example": "The team-checklist teen imagined an app with logins, reminders, and stats. What he shipped in week one was a single shared checklist with names next to items. It solved the argument at the very next practice. The dream version would still have been half-built a month later — solving nothing.",
+      "apply_task": "Write one sentence: what v1 does, for whom, by when (within two weeks). Then write the NOT list — at least three tempting features v1 will not have — and one line on what v1 will be made of (chat pin, shared doc, spreadsheet, cardboard — whatever ships fastest).",
+      "reflection_prompt": "Look at your NOT list. Which feature was hardest to postpone? Is that because users need it — or because building it sounds fun? Those are different reasons.",
+      "feedback_task": "Show your v1 sentence to one person from the group and ask: 'if this existed next week, would you actually use it?' If they hesitate, the scope is wrong — adjust before building anything.",
+      "teach_back_task": "A friend has a big project idea? Teach them the NOT list. Help them write what their version one will refuse to do — and watch how much more real the project instantly becomes.",
+      "ai_judgment_note": "Scoping is judgment, and the judgment must be yours: ask AI to plan your tool and it will cheerfully design the ten-feature dream version — that's the trap this lesson exists to avoid. The one sharp use is the opposite direction: show it your v1 plan and ask 'what would you cut?' If it finds something, cut it.",
+      "assets_needed": ["v1 scope card (does / for whom / by when / NOT list)"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "A one-sentence v1 scope and a NOT list of 3+ postponed features exist.",
+        "One group member confirmed they'd use v1 as scoped."
+      ],
+      "prereq_lesson_ids": ["bu-13-14-q1-l1"]
+    },
+    {
+      "id": "bu-13-14-q1-l3",
+      "sequence": 3,
+      "title": "Ship it to the group",
+      "concept": "'Done' doesn't mean finished — it means *in their hands*. Put v1 where the group already is, tell them what it's for in one sentence, and then watch the first real uses. Something will break or confuse in front of you. Good: fixing what breaks in front of users is the fastest building there is.",
+      "real_example": "The checklist went into the team chat on a Tuesday. Within an hour two players couldn't edit it — permissions. Fixed in five minutes, *because the builder was watching*. If he'd polished it privately for another month, he'd have found that bug a month later, in front of everyone, with less goodwill.",
+      "apply_task": "Build v1 within your scope and ship it to the group this week — post it, pin it, hand it out. Announce it in one sentence: what it's for and how to use it. Stay close for the first uses and fix the first thing that breaks or confuses, the same day.",
+      "reflection_prompt": "What was the gap between how you imagined the first use and what actually happened? What did shipping feel like — and did any of the fears come true?",
+      "feedback_task": "Ask the first two users one question each: 'what nearly stopped you using it?' Fix the biggest answer within a day and tell them you fixed it — users who see their feedback land come back.",
+      "teach_back_task": "Tell the story of your first hour after shipping — what broke, what you fixed — to a friend who's afraid to show anyone their project. Make the case that shipping early is safer than polishing in private, not braver.",
+      "ai_judgment_note": "Use AI freely for the boring parts of the build — a spreadsheet formula, a code snippet, a template; tools are disposable and speed is a real gain. One hard rule: you must understand every part well enough to fix it when it breaks in front of a user, because it will. If AI produced a part you can't explain, rebuild that part simpler — a tool its builder can't repair isn't yours.",
+      "assets_needed": ["Ship-day checklist (announce line / where posted / first fixes)"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "v1 is live in the place the group actually gathers, announced in one sentence.",
+        "The first breaking or confusing thing was found and fixed the same day."
+      ],
+      "prereq_lesson_ids": ["bu-13-14-q1-l2"]
+    },
+    {
+      "id": "bu-13-14-q1-l4",
+      "sequence": 4,
+      "title": "Watch what they do, not what they say",
+      "concept": "People will tell you your tool is 'cool' and never open it again; others will grumble and use it every day. Opinions are polite; usage is honest. From today your instrument panel is the usage log: who used it, when, unprompted or reminded. A second unprompted use is the only compliment that counts.",
+      "real_example": "A teen built a homework-sharing doc. Everyone said it was a great idea — the log showed three people opened it once and nobody came back. The praise said 'build more'; the log said 'something's wrong'. The log was right: it was three taps too far away. Moved into the class chat, real usage started.",
+      "apply_task": "Keep a usage log for one week: each real use — who, when, and whether they came back without being reminded. Rough counts are fine; honesty isn't optional. At week's end, write the single clearest pattern the log shows.",
+      "reflection_prompt": "Where do what-they-said and what-they-did disagree in your log? Which do you instinctively want to believe — and what does the log actually tell you to do?",
+      "feedback_task": "Show the log's pattern to one heavy user and one non-user. Ask the non-user only: 'what stopped you?' Their answer plus the log is your v2 brief.",
+      "teach_back_task": "Teach someone the sentence 'usage is the only honest feedback' with your own log as evidence — show them where politeness and behaviour disagreed and which one turned out to be true.",
+      "ai_judgment_note": "Count real uses yourself — the log must record what actually happened, and no model can see your group. Don't ask AI to *guess* why people aren't using the tool; ask the people, or watch them. Once you have a real log and real answers, AI is fine for a second opinion on the pattern — but the data comes from the world, never from the machine.",
+      "assets_needed": ["Usage log sheet (who / when / prompted or unprompted)"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "A week-long usage log exists with unprompted repeat uses marked.",
+        "One written pattern from the log, plus a non-user's 'what stopped you' answer, are recorded."
+      ],
+      "prereq_lesson_ids": ["bu-13-14-q1-l3"]
+    },
+    {
+      "id": "bu-13-14-q1-l5",
+      "sequence": 5,
+      "title": "Version two, from evidence",
+      "concept": "v2 is not 'add the features I postponed' — it's 'change what the evidence demands'. Take the usage log and the non-user answers, choose the one change most likely to increase real use, make it, and measure again. Keep or kill by evidence. That loop — ship, watch, change, watch — is the entire craft of building, and you now own it.",
+      "real_example": "Real product teams run exactly this loop: they propose a change, predict what it will do to usage, ship it, and check. Half their smart-sounding changes do nothing — which is why they measure instead of argue. Your checklist tool is small; the loop is the same one.",
+      "apply_task": "Write a change log entry: the change, and a one-line prediction of what it will do to usage. Make the change, tell the group in one sentence, and log another week of use. Compare before and after — did the evidence match your prediction? Keep or roll back accordingly.",
+      "reflection_prompt": "Did your change do what you predicted? If not — what did the users know that you didn't? And which postponed feature from your NOT list now looks like it was never needed at all?",
+      "feedback_task": "Show a before/after usage comparison to the group's most honest member and ask: 'what one change would make you use this twice as much?' That answer is v3's brief — whether or not you build it this quarter.",
+      "teach_back_task": "Teach the full loop — recurring pain, smallest version, ship, watch usage, change from evidence — to a friend with a project idea, and stay with them until their v1 is actually in front of real users.",
+      "ai_judgment_note": "The decision of *what* to change comes from your log and your users — never from a model's feature ideas, which are guesses about a group it has never met. Once you've chosen the change, AI is a fine assistant for implementing it. Predict first, then measure: if you let AI both choose and build, you're no longer the builder — you're the audience.",
+      "assets_needed": ["Change log template (change / prediction / result / keep-or-rollback)"],
+      "est_minutes": 45,
+      "success_criteria": [
+        "A change log entry exists with a prediction and a measured before/after result.",
+        "The keep-or-rollback decision is written down with its evidence."
+      ],
+      "prereq_lesson_ids": ["bu-13-14-q1-l4"]
+    }
+  ]
+}
