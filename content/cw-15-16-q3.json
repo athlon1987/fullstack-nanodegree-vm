@@ -1,0 +1,119 @@
+{
+  "id": "cw-15-16-q3",
+  "title": "The Bigger Bet",
+  "pillar_primary": "wealth",
+  "pillars_supporting": ["think"],
+  "age_band": "15-16",
+  "quarter": 3,
+  "developmental_frame": "At 15–16, a teen who has earned, systematised, and grown money faces the decision that defines every investor and founder: concentrating real resources into one larger commitment. The cognitive equipment is ready — scenario reasoning, honest odds, multi-month patience — and, uniquely, the teen now has actual capital: money from ventures and assets, skills with market proof, reputation with receipts. What this age still lacks (and what this quarter installs) is allocation discipline: the difference between backing an opportunity because the memo survived diligence, and backing it because it's exciting and the money is burning a hole.",
+  "authentic_value_meaning": "At this age, wealth-thinking creates value when the teen can **choose one bigger commitment from several candidates, on evidence, with their own resources, and structure it so being wrong is survivable**. The bet itself matters less than the allocation muscle: surveying options, writing investment memos, doing real diligence, sizing the commitment, and installing governance. That process, run once with real money at sixteen, is the process that runs for life.",
+  "motivation_lever": {
+    "lever": "real_stakes",
+    "mechanism": "The resources being allocated are entirely real and entirely the teen's: their venture profits and asset income (within their own money policy's rules), their next months of protected hours, and their accumulated reputation. The bet chosen this quarter gets executed as the year's capstone, so the decision carries its full natural weight — a good allocation compounds everything the year has built; a careless one burns real savings and real months. The quarter is calibrated so either outcome teaches, but the money is never pretend."
+  },
+  "artifact": "A funded decision: an opportunity survey of at least three candidate bigger bets, an investment memo for each finalist with scenarios and kill-criteria, cheap diligence actually performed on the leading candidates, one bet chosen and sized within the teen's money policy, and a governance sheet — milestones, review gates, stop-loss — signed before execution begins.",
+  "success_criteria": [
+    "At least three genuinely different candidate bets were surveyed with honest resource requirements for each.",
+    "Investment memos exist for the finalists: scenarios with rough odds, opportunity cost stated, and kill-criteria written before choosing.",
+    "Cheap diligence was actually performed — real conversations, real cost quotes, real tests — and at least one assumption was corrected by it.",
+    "One bet is chosen and sized within the money policy's rules, with a signed governance sheet: milestones, review gates, and a stop-loss the teen can state from memory."
+  ],
+  "prereq_project_ids": ["cw-15-16-q2"],
+  "lessons": [
+    {
+      "id": "cw-15-16-q3-l1",
+      "sequence": 1,
+      "title": "Survey the field before you fall in love",
+      "concept": "Allocation begins with a rule that feels almost rude: *generate alternatives before evaluating any of them*. The mind wants to fall for the first exciting idea and then 'evaluate' it by collecting reasons it's great — your motivated-reasoning training knows this pattern by name. The discipline: list at least three genuinely different candidate bets — scale the existing venture, launch the strategy memo's big move, a new asset at a bigger scale, an equipment or capability investment, even a boring high-certainty option — and write each one's honest resource ask (money, hours, reputation) *before* ranking anything. The boring candidate stays on the list on purpose: it's the baseline that keeps the exciting ones honest.",
+      "real_example": "A teen with RM600 of venture savings and a free summer surveyed four bets: doubling her market-stall inventory (known returns, known ceiling), the school-canteen certification push her strategy memo pointed at (big upside, institutional timeline), a professional-grade camera to unlock paid event work (a capability bet — equipment plus portfolio), and leaving it all in savings (the boring baseline, growing quietly). Her first instinct had been the camera — 'obviously'. Writing all four resource asks side by side, the camera's true cost appeared: RM550 *plus* every weekend of the summer learning it, which killed the canteen push entirely. The survey didn't pick a winner. It revealed that she'd been about to spend her whole war chest on a coin flip she hadn't noticed was one.",
+      "apply_task": "Build your survey: at least three genuinely different candidate bets (your strategy memo's directives supply at least one; your boring baseline supplies another), each with its full resource ask — money, protected hours, reputation risk — and what it would *displace* (every yes is a no; the old rule at new scale). No ranking yet. The survey's job is to make the field visible before the heart votes.",
+      "reflection_prompt": "Which candidate had your heart before the survey — and what did writing its full resource ask do to the romance? Why does the boring baseline belong on every allocation list you'll ever make?",
+      "feedback_task": "Show the survey to someone who allocates real resources — a parent who's made a big purchase decision, a small-business owner. Ask: 'what candidate am I not seeing?' Outsiders spot the missing option (often 'wait six months') that insiders' excitement hides.",
+      "teach_back_task": "Teach alternatives-before-evaluation to a friend about to spend big on their first instinct — the gaming rig, the trip, the course. Build their four-candidate survey together, boring baseline included. If their final choice survives the survey, it deserved to win; if it doesn't, you saved them the exact way this lesson saves you.",
+      "ai_judgment_note": "Candidate generation is honest machine work — 'given these skills, this capital, this strategy memo, what bigger bets might I be missing?' widens the field fast. The resource asks must be real quotes and real calendar math, not model estimates: a camera's price is checkable, your summer's hours are countable, and the survey is only as honest as its numbers. Machine widens the menu; reality prices it; nobody ranks anything yet.",
+      "assets_needed": ["Opportunity survey (3+ candidates / money / hours / reputation / what each displaces)"],
+      "est_minutes": 50,
+      "success_criteria": [
+        "Three-plus genuinely different candidates exist including a boring baseline.",
+        "Every candidate carries a real-numbers resource ask and its displacement line."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "cw-15-16-q3-l2",
+      "sequence": 2,
+      "title": "Write the investment memo",
+      "concept": "For your two or three finalists, the allocator's core document: the investment memo. Per candidate, one page: the thesis (why this could work, in one falsifiable sentence); the scenarios — best, likely, worst — each with rough odds and what you'd actually get (your three-cases training, now with money attached); the true cost including opportunity cost against the baseline; the kill-criteria written *now*, while you're neutral (observable conditions that would mean stop); and the honest sentence most memos omit: 'the main way I fool myself about this one is ___.' Memos exist because excitement is not analysis, and because six months from now you'll need to remember what you actually believed — not what the outcome rewrote.",
+      "real_example": "Her camera memo, key lines: thesis — 'paid event photography exists here and lacks a cheap reliable provider' (falsifiable: either bookings exist or they don't); scenarios — best (RM150/event, twice monthly, camera pays back by December: maybe 25%), likely (one event a month after a slow start: 50%), worst (three unpaid events, no repeat demand: 25%, and the RM550 is mostly unrecoverable — cameras resell at a loss); kill-criteria — 'no second paid booking within ten weeks of the first'; self-deception line — 'I want this camera personally, and I'm capable of dressing a toy as an investment.' Reading that last line back, she reported, was like meeting her own accountant. That meeting is the memo's entire purpose.",
+      "apply_task": "Write the one-page memo for each finalist: thesis, three scenarios with odds, true cost against the baseline, kill-criteria, and the self-deception line. Then apply your decision-journal discipline: date them, predict which memo will survive diligence, and file the prediction before lesson three tests anything.",
+      "reflection_prompt": "Which memo's self-deception line was hardest to write — and is that the candidate your heart pre-selected in lesson one? What does a written worst-case-with-odds do to a decision that vague excitement can't?",
+      "feedback_task": "Trade memos with a peer running their own allocation (or present to your money-policy advisor). One question per memo: 'which scenario's odds am I most wrong about?' Adjust the odds where their challenge lands — calibration is a team sport.",
+      "teach_back_task": "Teach the memo format to a friend facing any big commitment — a course, a team, a purchase. Insist on the two uncomfortable lines: kill-criteria and self-deception. Those two are what separate a memo from a brochure, and everyone writes brochures until taught otherwise.",
+      "ai_judgment_note": "The memo is your thinking made auditable, and AI's role is the standing one: red-team each memo ('attack this thesis; where are these odds naive?') and patch what lands. The odds themselves stay yours — they're predictions your journal will grade, and borrowed numbers grade nothing. One sharper caution at allocation scale: models trained on survivor-heavy business stories systematically flatter bold bets ('most startups that tried X…' — the failures wrote nothing). Your missing-data training is the antidote; apply it to every encouraging sentence, including the machine's.",
+      "assets_needed": ["Investment memos (thesis / scenarios+odds / true cost / kill-criteria / self-deception line) + dated prediction"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "One-page memos exist for all finalists with all five elements.",
+        "A dated prediction of the diligence survivor is filed."
+      ],
+      "prereq_lesson_ids": ["cw-15-16-q3-l1"]
+    },
+    {
+      "id": "cw-15-16-q3-l3",
+      "sequence": 3,
+      "title": "Diligence: kick the tires for real",
+      "concept": "A memo is a set of claims, and claims get the treatment your whole education prescribes: *test the load-bearing ones cheaply before committing*. Allocation diligence is your validate-before-build sequence pointed at bets: identify each memo's most load-bearing assumption (the one that, false, kills the thesis — your hidden-assumption training finds it in minutes), then design the cheapest real test — conversations with actual customers, real quotes replacing estimated costs, a borrowed or rented version of the equipment, one trial run at small scale. Days and single ringgits, not months and hundreds. The rule that makes it stick: *no bet gets funded on untested load-bearing assumptions*. Excitement calls diligence a delay. Every burned allocator alive calls it the cheapest money they never lost.",
+      "real_example": "Her camera memo's load-bearing assumption: paid demand exists. The cheap tests, one week, RM40: borrowed a cousin's camera and shot one birthday party free-with-a-price-list ('next one's RM120' — two enquiries arrived within days: assumption strengthening), called the town's two part-time photographers about their booking rates (both turn away small events: the structural-abandonment pattern her incentive training recognised on sight), and got real quotes that cut the camera's price by RM90 (refurbished, warrantied). Meanwhile the stall-inventory memo failed its own test quietly: her three best customers, asked casually, all said they buy monthly *regardless of stock depth* — doubling inventory would double cost, not sales. One week, two memos corrected, one thesis dead. The RM600 never moved. That's diligence: the money's bodyguard.",
+      "apply_task": "For each finalist memo: name the load-bearing assumption, design its cheapest real test, run it this fortnight, and log results against the memo — corrections in red where reality disagreed. Update the scenarios and odds with what you learned. Then check your lesson-two prediction: did the memo you expected to survive actually survive? Journal the grade.",
+      "reflection_prompt": "Which assumption's test surprised you most — and would you have found that surprise after committing instead of before? What's the emotional difference between killing a thesis in diligence versus watching it die funded?",
+      "feedback_task": "Present your diligence log to the adult advisor: tests run, corrections made, thesis standings. Ask the allocator's question: 'what would *you* have tested that I didn't?' Experienced money always has one more test; collect it.",
+      "teach_back_task": "Run a diligence session with your memo-writing friend: find their commitment's load-bearing assumption and design its RM20-or-less test together. 'Test the thing that kills the thesis' is the whole art, transferable to every decision with stakes, forever.",
+      "ai_judgment_note": "Test design is prime machine territory — 'what's the cheapest way to test whether paid demand exists for X?' — and so is finding the load-bearing assumption if yours is hiding ('what must be true for this thesis to hold?'). The tests themselves touch reality only: real customers asked, real quotes gathered, real trials run. And the locked-middle rule from your investigation quarter applies verbatim: diligence data is gathered, never generated — one synthesized 'customer response' and your memo is fiction with a bibliography.",
+      "assets_needed": ["Diligence log (assumption / test / result / memo corrections) + graded prediction"],
+      "est_minutes": 90,
+      "success_criteria": [
+        "Every finalist's load-bearing assumption was tested cheaply and really.",
+        "At least one memo was corrected by diligence, and the survival prediction is graded in the journal."
+      ],
+      "prereq_lesson_ids": ["cw-15-16-q3-l2"]
+    },
+    {
+      "id": "cw-15-16-q3-l4",
+      "sequence": 4,
+      "title": "Choose, and size the bet",
+      "concept": "Decision day — and allocation's two questions are separate on purpose: *which* bet, then *how big*. Which: the memo that survived diligence with the best odds-adjusted case against the baseline — decided with your full kit (door type, opportunity cost, the survived attacks). How big: never all of it. The sizing rules that keep allocators alive: commit only what your money policy's rules release (the policy exists precisely for this moment — calm-you already set the limits); keep a reserve you name in advance (your buffer training, applied to capital); and size so the *worst case is survivable and the lesson is affordable* — a bet sized right can fail without ending you, which is what makes bold theses affordable at all. Then the closing act of ownership: write the choice memo — what you chose, what you declined, and why — because declined options, written down, are what let future-you audit present-you honestly.",
+      "real_example": "Her decision: the camera bet — refurbished at RM460, thesis strengthened by diligence, structural moat confirmed by the incumbents' own disinterest. Sized by the policy: RM460 was 77% of savings — over her policy's single-commitment line — so the final structure took three weeks longer and taught the real lesson: RM300 from savings (inside policy), RM160 pre-committed from the two live enquiries ('deposits for September bookings' — customers funding the tool that serves them, her hours-to-assets instinct running at allocation scale), reserve intact, stop-loss inherited from the memo's kill-criteria. The stall-doubling memo went in the file marked *declined — demand is rhythm-bound, not stock-bound*, where it still teaches. The choice took one evening. Being *able* to make it took three years.",
+      "apply_task": "Make the call: choose the surviving bet (or the baseline — choosing boring on evidence is a full-credit allocation), then size it inside your money policy's rules with a named reserve and a worst-case-survivability check. Structure creatively if the straight size breaks policy — pre-commitments, phasing, partner resources — but never bend the policy itself. Write the choice memo including every declined candidate with its reason, and file the set beside your strategy and year-bet memos: the year's governing documents, now three.",
+      "reflection_prompt": "Was the sizing question harder than the choosing question — and why do beginners obsess over *which* while professionals obsess over *how much*? If your worst case arrives, reread your survivability check: is it honestly survivable, or did excitement edit it?",
+      "feedback_task": "Present choice and sizing to your money-policy advisor as a completed allocation: memo, diligence, size, reserve, structure. Their sign-off matters less than their stress-test — 'what does the policy say if this goes to zero?' — because that question, answered calmly now, is the difference between a setback and a spiral later.",
+      "teach_back_task": "Teach the two-questions separation to anyone about to commit big: which is analysis; how-big is survival. Walk them through sizing their own commitment so the worst case is a lesson, not an ending. Most financial ruin is a sizing error wearing a conviction costume — teach them to check the costume.",
+      "ai_judgment_note": "The machine red-teams the structure ('where does this sizing break? what does the phasing assume?') — standard practice by now. The choice and the size are the two most human calls in this entire curriculum: they encode your risk appetite, your policy, your read of your own resilience — things a model can discuss but cannot hold. One guardrail said plainly, allocator to allocator: if any tool, feed, or person ever pressures you to size *up* beyond your policy — 'fortune favours the bold', 'you'll miss the window' — that pressure is itself diligence data, about them. Your policy was written by calm-you for exactly that voice. Obey the policy.",
+      "assets_needed": ["Choice memo (chosen / declined+reasons) + sizing sheet (policy check / reserve / survivability) + structure"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "One bet is chosen on the diligence record and sized inside the money policy with a named reserve.",
+        "The choice memo exists with every declined candidate reasoned, filed with the year's governing documents."
+      ],
+      "prereq_lesson_ids": ["cw-15-16-q3-l3"]
+    },
+    {
+      "id": "cw-15-16-q3-l5",
+      "sequence": 5,
+      "title": "Govern the bet before it starts",
+      "concept": "Funded is not finished — funded is *supervised*. Before a single ringgit moves, the governance sheet: milestones (what done-by-when looks like, so drift is visible early); review gates (your weekly rhythm, plus decision points where continuing is a *choice*, not a default — 'after milestone two, we re-decide with real numbers'); the stop-loss, promoted from the memo's kill-criteria to standing orders ('if X by date Y, execution stops and the reserve stays whole') — memorised, because stop-losses consulted mid-panic arrive too late; and the escalation line (who hears about trouble early — your advisor's real role begins now). Governance feels like bureaucracy applied to your own dreams. It is the opposite: it's the structure that lets you execute *boldly*, because the downside has a fence and the fence has a keeper. Execution begins next quarter. This page is what makes it safe to begin at full speed.",
+      "real_example": "Her governance sheet, one page, pinned beside the money policy: milestones — camera acquired and mastered by week 3 (the practice-system quarter runs the mastering), first paid booking by week 6, third by week 10; gates — Sunday reviews, plus a full re-decision at week 6 with real booking data; stop-loss, memorised — 'no second paid booking by week 10: stop taking bookings, sell the camera at the researched resale price, bank the lesson at a known maximum cost of RM140'; escalation — 'Mum hears about any missed milestone within 48 hours, not at the month's end.' Her advisor's comment, worth the whole quarter: 'that stop-loss is better governance than most adults put on their life savings.' The bet launched the following Monday — at full speed, exactly because the fence was built.",
+      "apply_task": "Write and sign the governance sheet: milestones with dates, review gates including at least one full re-decision point, the stop-loss in words you can say from memory (test yourself), and the escalation line with its named human and its timing rule. Present it to your advisor for the keeper's role. Then — the quarter's closing ritual — assemble the allocation record: survey, memos, diligence log, choice memo, sizing, governance, one folder. Next quarter executes; this folder is what it executes *from*.",
+      "reflection_prompt": "Say your stop-loss out loud, from memory, right now. What does having it ready change about how boldly you can execute? And the year-scale question: survey, memo, diligence, sizing, governance — which discipline was newest to you, and which will you still be running at forty?",
+      "feedback_task": "Walk your advisor through the complete allocation folder in ten minutes. Ask the closing question: 'if I run every future big decision like this folder, what am I still missing?' Whatever they name is the first entry in your allocation practice's next iteration — the system improving itself, as your systems now do.",
+      "teach_back_task": "Take one person through the entire allocation arc on a decision of theirs — survey to governance, boring baseline to stop-loss. The moment their own stop-loss is written and memorised, you've transplanted the rarest money skill there is: not picking winners — *surviving being wrong*. Everything else in wealth is built on top of that. Now it's in two more hands.",
+      "ai_judgment_note": "Governance drafting is machine-friendly (milestone structures, gate checklists) with the usual human locks on every judgment inside. The closing note for the pillar's penultimate quarter: across three years you've built the full allocator's stack — honest books, a signed policy, leverage, diligence, sizing, governance — always with the same division of labour: machines for breadth, arithmetic, and adversarial pressure; you for values, odds, and the signature. Whatever the capstone's outcome, that stack is the fortune. The Real Launch will spend money. The stack is what makes sure it can never spend *you*.",
+      "assets_needed": ["Signed governance sheet (milestones / gates / memorised stop-loss / escalation) + complete allocation folder"],
+      "est_minutes": 50,
+      "success_criteria": [
+        "A signed governance sheet exists and the stop-loss can be stated from memory.",
+        "The complete allocation folder is assembled and the advisor holds the keeper's role."
+      ],
+      "prereq_lesson_ids": ["cw-15-16-q3-l4"]
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "id": "bu-15-16-q3",
+  "title": "Ship to the Public",
+  "pillar_primary": "build",
+  "pillars_supporting": ["wealth"],
+  "age_band": "15-16",
+  "quarter": 3,
+  "developmental_frame": "At 15–16, a builder can meet an external standard they didn't set — a platform's review guidelines, a marketplace's quality bar, a venue's requirements — and can operate something in public where strangers judge, rate, and request without softening anything for their age. That's a real threshold: every earlier shipping happened in worlds that knew them. What still needs training is the emotional metabolism of public operation: the two-star rating from a stranger, the support request at an inconvenient hour, the platform rejection with a form-letter reason. These are the weather of public life, and builders who learn the weather at sixteen stop fearing it forever.",
+  "authentic_value_meaning": "At this age, building creates value when the work **stands in a public venue on the venue's own terms** — an app in a store, a product in a marketplace, a print in a shop, a piece in a juried exhibition — discovered, used, and judged by strangers who owe the builder nothing and don't know their age. Passing a real gatekeeper's bar and then operating in public converts 'talented teen' into 'published builder', a category change no private excellence can buy.",
+  "motivation_lever": {
+    "lever": "real_stakes",
+    "mechanism": "The quarter aims at a public gate with a real reviewer behind it: submission can be rejected, the listing can be ignored, strangers can rate one star. But passing is equally real — the work live in a public venue, under the teen's name, with stranger usage accumulating. The gate's genuine pass/fail is the engine: every lesson exists because the gate doesn't care about effort, and clearing a bar that doesn't care is the most convincing proof of competence a builder can own."
+  },
+  "artifact": "A product live on a genuine public platform — an app store, marketplace, print-on-demand catalogue, retail consignment, juried show, or equivalent gated venue — having passed the venue's review process, plus the submission record (including any rejections and fixes), a month of public operation with stranger usage, and the operating log of ratings, support requests, and updates handled.",
+  "success_criteria": [
+    "A public venue with a real review gate was chosen and its written standards were studied before building to them.",
+    "The product passed the venue's review — with any rejections documented and fixed, not abandoned.",
+    "Strangers with no connection to the teen discovered and used or bought the product, verifiably.",
+    "A month of public operation is logged: ratings and feedback received, support requests answered, and at least one update shipped in response."
+  ],
+  "prereq_project_ids": ["bu-15-16-q2"],
+  "lessons": [
+    {
+      "id": "bu-15-16-q3-l1",
+      "sequence": 1,
+      "title": "Choose your gate",
+      "concept": "Public venues are not equal, and choosing one is a strategy decision (your memo's directives apply). The dimensions: the *gate* (how demanding is review — a juried show versus an open marketplace), the *audience* (who actually browses there — your territory's people or everyone-in-general), the *terms* (fees, revenue share, content rules, who owns what — read them; they're a contract), and the *fit* with your flagship ambitions. A harder gate costs more attempts and confers more credibility; an open venue ships faster and proves less. Pick the hardest gate you can plausibly clear this quarter — the gate's difficulty is the credential.",
+      "real_example": "Three fits from three builders: the video teen chose a regional youth film festival (juried — hard gate, exactly the credibility his portfolio lacked) over posting to an open platform he already used. The tutoring-guide teen chose a national print-on-demand marketplace (moderate gate: format and content review) because its search traffic was full of exactly her buyers. The web-tools teen chose a real app marketplace with a formal review process, knowing rejection was likely first try — 'that's why it's worth it.' Three gates, three strategies, one common move: each read the venue's rules *before* deciding, and rejected two venues whose terms took too much for too little.",
+      "apply_task": "List three candidate venues for your work, and for each: the gate's demands (find and read the actual submission guidelines — all of them), the audience it delivers, the terms (fees, splits, rights — summarised in your own words), and the strategic fit. Choose one, write the one-line reason, and file the venue's standards document where the whole quarter can see it: it is now your specification.",
+      "reflection_prompt": "What did actually reading the terms change about your choice — and what would signing terms you hadn't read have cost you? Which venue did you rule out for taking too much, and how does it feel to decline a door on purpose?",
+      "feedback_task": "Ask someone who has passed your chosen gate (search the venue's published creators; your outreach craft reaches them) one question: 'what do first-time submitters most often get rejected for?' Their answer reorders your whole quarter's priorities.",
+      "teach_back_task": "Teach the gate-choosing frame to a builder friend posting everything to the same default platform. Walk them through gate/audience/terms/fit for two alternatives. 'Where you publish is a decision, not a default' is the transferable sentence.",
+      "ai_judgment_note": "AI is a strong researcher here: summarising submission guidelines, comparing venue terms, surfacing venues you didn't know existed. Two verifications stay yours: read the actual current terms yourself before committing (models cite outdated policies confidently, and the terms are a contract you'll be held to), and confirm the audience claim with ground truth — browse the venue, count your territory's people there. The gate you choose shapes your quarter; choose it on verified facts.",
+      "assets_needed": ["Venue comparison (gate / audience / terms / fit × 3) + the chosen venue's standards filed as spec"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "Three venues are compared on all four dimensions with terms summarised in the teen's own words.",
+        "One venue is chosen with its full submission standards filed as the quarter's specification."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "bu-15-16-q3-l2",
+      "sequence": 2,
+      "title": "Build to the spec",
+      "concept": "Until now, your finish bars were your own. A public gate replaces them with an external specification — format requirements, quality thresholds, content policies, metadata demands — and the discipline is building *to the spec from the start*, not bolting compliance on at the end. Convert the venue's standards into your checklist; where the spec is vague ('high quality submissions only'), study what the venue actually accepts — its current catalogue is the spec made visible. And build to clear the bar with margin: gatekeepers reviewing hundreds of submissions reject borderline cases by reflex. The work that passes review easily is the work that aimed above it.",
+      "real_example": "The film-festival teen's conversion: the festival's rules yielded fourteen checklist items (length, format, rights cleared for every second of audio — 'that one disqualifies half of first-timers,' the past-winner had told him), and studying three past selected films yielded the invisible spec: every one opened with its strongest image, none wasted its first thirty seconds. He re-cut his flagship's opening twice for a rule written nowhere. Passing review is partly reading what's written; the rest is reading what wins.",
+      "apply_task": "Convert your venue's standards into a build checklist — every written requirement, plus the invisible spec: study three currently accepted works and extract what they share that the rules don't say. Then bring your product to spec-with-margin, running your own review against the checklist as ruthlessly as a stranger would. Your team-review training applies: recruit one peer to review your compliance claims before the gate does.",
+      "reflection_prompt": "Where did the external spec disagree with your taste — and which should win, for this purpose? What does 'the catalogue is the spec made visible' teach you about every gate you'll ever face, including admissions and hiring?",
+      "feedback_task": "Run a mock review: your peer reviewer plays the gatekeeper with the checklist and thirty seconds of attention per item — because that's what real review attention looks like. Everything they flag in thirty seconds, a real reviewer flags faster. Fix it all.",
+      "teach_back_task": "Teach spec-conversion to a friend facing any external gate — a competition, an application, a tryout. Build their checklist from the written rules, then study three past winners together for the invisible spec. The double-read (rules plus catalogue) is the transferable method.",
+      "ai_judgment_note": "AI accelerates spec work honestly: parsing guidelines into checklists, comparing your metadata against requirements, pre-checking compliance. The two standing locks hold at the gate: the work itself follows your disclosed-tools portfolio rule — a gate passed by work you couldn't defend is a credential that detonates on inspection — and rights must be genuinely cleared, every asset, every second of audio; 'the model said it was fine to use' has never once persuaded a rights holder. Gates check papers. Have papers.",
+      "assets_needed": ["Spec checklist (written + invisible) + mock-review results, all items cleared"],
+      "est_minutes": 90,
+      "success_criteria": [
+        "A complete spec checklist exists including the invisible spec from three accepted works.",
+        "The product passed a thirty-seconds-per-item mock review with every flag fixed."
+      ],
+      "prereq_lesson_ids": ["bu-15-16-q3-l1"]
+    },
+    {
+      "id": "bu-15-16-q3-l3",
+      "sequence": 3,
+      "title": "Submit, and survive the verdict",
+      "concept": "Submission day, and one mental model matters more than any checklist: *rejection is the system working, not the system judging you*. Real gates reject most of what they see — that's what makes passing them mean something — and professional builders treat a rejection as a review with homework: read the reason (or request it), fix precisely what it names, resubmit on the venue's rhythm. The builders who make it through gates aren't the ones who never get rejected; they're the ones whose resubmission arrives fixed, fast, and without a grievance attached. Meanwhile: prepare the listing itself — title, description, visuals — with your receipts-not-claims craft, because passing the gate only wins the *right* to be discovered.",
+      "real_example": "The app-marketplace teen's first submission bounced in forty-eight hours: two policy citations (a permissions issue, a metadata rule) — form-letter, no warmth, slightly crushing. His resubmission log, now a portfolio piece itself: day one, decoded both citations against the policy text; day two, fixed, re-tested, resubmitted with a two-line change note. Approved in a week. The festival teen's story ran the other way: selected, first try — and his 'overkill' rights-clearance folder was the reason, said the programmer, that his film didn't join the half that get disqualified in paperwork. Both learned the same lesson from opposite verdicts: gates respect preparation and process, and nothing else.",
+      "apply_task": "Prepare the public listing (title, description with receipts, visuals of the real thing) alongside the submission itself. Submit through the formal process. Then handle the verdict professionally: acceptance → proceed to launch prep; rejection → decode every cited reason against the venue's own text, fix, log the fix, and resubmit at the earliest allowed rhythm. Either way, keep the full submission record — verdicts, fixes, timestamps. It's evidence of process, and process is what your next gate will ask about.",
+      "reflection_prompt": "Read your emotional response to the verdict honestly: if accepted — how much was luck versus margin? If rejected — how long did it take you to move from sting to decode, and what would make that faster next time? Both answers calibrate you for two decades of gates.",
+      "feedback_task": "Share your submission record — verdict included — with your peer reviewer or practitioner. Ask the professional's question: 'is my response to this verdict the response of someone who ships?' Let them audit your fix log or your margin claim; verdicts distort self-assessment in both directions.",
+      "teach_back_task": "Tell your gate story — including the rejection if you got one — to a builder friend afraid to submit anywhere. The teaching point isn't 'you'll pass'; it's 'the verdict is survivable and informative either way.' Then stand next to them (or their metaphorical corridor) while they make their first real submission. Gate-fear dies by demonstration.",
+      "ai_judgment_note": "Rejection-decoding is genuinely good machine work — 'here's the policy citation and my product; what specifically triggers it?' turns form-letters into fix lists fast. Two boundaries: never let a model draft an appeal or dispute that argues with the gatekeeper (venues blacklist arguers; fixes beat arguments every time), and never fake compliance signals a reviewer might check — the gate you sneak past once bans you forever when the check comes. The submission record you're keeping is the honest version of speed: process, visible.",
+      "assets_needed": ["Listing (receipts-based) + submission record (verdicts / decoded reasons / fixes / timestamps)"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "The submission was made with a complete listing, and every verdict was handled by decode-fix-resubmit process.",
+        "The product is accepted and live, with the full submission record kept."
+      ],
+      "prereq_lesson_ids": ["bu-15-16-q3-l2"]
+    },
+    {
+      "id": "bu-15-16-q3-l4",
+      "sequence": 4,
+      "title": "Operate in public",
+      "concept": "Live is where the second education starts: strangers now discover, use, judge, and *contact* you. The public operator's disciplines: support requests get answered like professional threads (a stranger who bothered to write is your most motivated user); ratings and reviews get read as data, never fought — the two-star with a reason is worth ten five-stars for improving the product, and replying to criticism gracefully is read by every future browser, not just the critic; silence in the metrics gets diagnosed like any silence (discovery problem? listing problem? product problem?); and everything flows through your operating log, because public operation is your venture-month rhythm with the training wheels off — strangers don't schedule their needs inside your review cadence.",
+      "real_example": "The guide-seller's first month in public: eleven sales to strangers, one three-star review — 'good content, but page 9's diagram is mislabelled' (it was; fixed in the file that evening, replied with thanks, the reviewer amended to four stars and added 'author actually fixes things', which — she noticed — outsold her five-star reviews as social proof). One support message asking if a bundle existed (logged: demand signal). One week of zero sales that turned out to be a broken search keyword, not a dead product. Every event in the month was information wearing a small emotional cost — the operator's exchange rate, forever.",
+      "apply_task": "Operate for a full month in public: answer every support contact within a day in your professional register, reply to every substantive review (thank, fix if warranted, never argue), keep the operating log (usage, sales, ratings, requests, silences and their diagnoses), and run your weekly review rhythm over it. The month's rule: every piece of public feedback gets a logged disposition — acted on, banked as signal, or consciously declined with a reason.",
+      "reflection_prompt": "What surprised you about strangers versus every audience you've had before — harsher, kinder, or just *unscheduled*? Which single piece of public feedback was worth the most, and notice: was it comfortable?",
+      "feedback_task": "Mid-month, show your operating log to your practitioner or a fellow public operator: 'am I responding like a professional, and what am I missing in this data?' Public operation has conventions invisible to first-timers — reply norms, update cadences — that one experienced read-through transfers.",
+      "teach_back_task": "Teach the operator's exchange rate — 'every event is information wearing a small emotional cost' — to a friend whose work just went public anywhere. Walk them through their first negative review: read it together, extract the data, draft the graceful reply, log the disposition. The first metabolised criticism is the vaccine; administer it with company.",
+      "ai_judgment_note": "Operating scale is where your automation training returns: templated support answers for the recurring questions (drafted once, personalised each send), log automations, metric alerts — machine leverage on the boring loops, exactly as designed. The human locks are now instincts, but public operation adds one: never use AI to generate reviews, ratings, testimonials, or engagement for your own product, anywhere, ever — it's the survivorship-bias machine run in reverse, it's usually against the venue's terms, and it poisons the only thing public operation is building: a real record of real strangers choosing your work. The record is the asset. Guard it like one.",
+      "assets_needed": ["Operating log (usage / sales / ratings / requests / dispositions) + weekly review notes"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "A month of public operation is logged with every support contact answered within a day.",
+        "Every substantive review received a graceful reply and a logged disposition."
+      ],
+      "prereq_lesson_ids": ["bu-15-16-q3-l3"]
+    },
+    {
+      "id": "bu-15-16-q3-l5",
+      "sequence": 5,
+      "title": "Update, audit, and claim the credential",
+      "concept": "Public products breathe: the quarter closes by shipping at least one *update* driven by the month's real feedback — the fixed diagram, the requested feature, the sharpened listing — announced in the venue's own convention, because visible responsiveness is itself a public asset ('author actually fixes things'). Then the operator's audit, all your closing disciplines converging: the month's numbers against the venue's costs and your hours; what the gate, the strangers, and the operation each taught; and the verdict — grow this listing, maintain it, or harvest the credential and redeploy. Because that's the quarter's final truth: whatever the numbers say, *you now ship through real gates and operate in public*. That sentence goes on the portfolio page, and no one can write it who hasn't done it.",
+      "real_example": "Her quarter's close: update shipped (the bundle two strangers asked for — its first sale came from the reviewer who'd amended to four stars), audit run (RM247 gross, venue's cut RM37, roughly RM6.20 per operating hour — 'below my tutoring rate, above my old cookie rate, and the credential is doing work the hourly number can't see'), verdict written (maintain the listing at fifteen minutes a week, redeploy building hours into the flagship — 'the shelf now runs itself; that was the point'). Portfolio page, new line, receipts attached: *published on [venue]; four-star average from strangers; update cadence maintained.* Three gates she'd been afraid to approach a year ago replied to her next outreach within the week. Credentials compound. That was also the point.",
+      "apply_task": "Ship the feedback-driven update and announce it in-venue. Run the full audit: money and hours against the venue's terms, the month's lessons by source (gate / strangers / operation), and the written grow-maintain-harvest verdict with its reasons. Add the credential line — with receipts — to your portfolio page. Then close the loop that opened the quarter: send a two-line thanks to the person who told you what first-timers get rejected for, with the link to your live listing. Doors, kept open, all the way down.",
+      "reflection_prompt": "Reread your lesson-one venue comparison: knowing everything the gate and the month taught, would you choose the same venue — and what does your answer say about how you'll choose gates at twenty? What's the real product of this quarter: the listing, the numbers, or the person who now exists on the other side of a public gate?",
+      "feedback_task": "Present the full arc — spec, submission record, operating log, update, audit — to your practitioner as one artifact. Ask the career question: 'what gate should this person attempt next?' Write the answer down. Practitioners see trajectories; you're standing on one now.",
+      "teach_back_task": "Take everything — gate choice, spec conversion, verdict survival, public operation, the update rhythm — and walk one builder through their entire first public shipping, choice to credential. When their listing goes live and their first stranger arrives, the public world has gained another builder who ships on its terms. That's this pillar's finished work: not products. Builders who ship. You, and now them.",
+      "ai_judgment_note": "The audit and verdict run on your logged reality under your standing rules — machine checks arithmetic, human owns judgment, no exceptions at quarter's end. One graduation note, because this is the Build pillar's last ordinary quarter: across three years you've learned to use AI as drill designer, spec parser, rejection decoder, and support-scale lever — always as *leverage on your understanding, never a substitute for it*. That balance is the rarest build skill of your generation, and it was never really about the tools. It's about remaining the builder — the one who understands every part, signs the work, and answers on Friday. Carry that into the flagship. It's the only spec that never changes.",
+      "assets_needed": ["Shipped update + operator's audit (money / hours / lessons / verdict) + portfolio credential line with receipts"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "A feedback-driven update shipped and was announced in-venue.",
+        "The audit exists with a written verdict, and the credential line with receipts is live on the portfolio page."
+      ],
+      "prereq_lesson_ids": ["bu-15-16-q3-l4"]
+    }
+  ]
+}

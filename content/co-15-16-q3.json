@@ -1,0 +1,119 @@
+{
+  "id": "co-15-16-q3",
+  "title": "Persuade the Institution",
+  "pillar_primary": "communicate",
+  "pillars_supporting": ["lead", "think"],
+  "age_band": "15-16",
+  "quarter": 3,
+  "developmental_frame": "At 15–16, teens can finally see institutions as systems rather than monoliths: a school is not 'the school' but a principal with a budget, a teacher with a programme to defend, a committee with a meeting cycle. They can sustain a multi-month persuasion campaign, tolerate the slowness of institutional time, and — hardest — separate a 'no' from a verdict on themselves. What they almost universally believe, wrongly, is that institutions can't be moved by people like them. One successfully moved institution permanently deletes that belief.",
+  "authentic_value_meaning": "At this age, communication creates value when it **moves a real institution** — a school policy adjusted, a community space granted, a business partnership agreed, a council programme joined. Institutional persuasion converts the teen's private competence into public change, and teaches the adult world's deepest open secret: institutions are made of people, people respond to well-made cases, and almost nobody bothers to make one.",
+  "motivation_lever": {
+    "lever": "real_stakes",
+    "mechanism": "The teen picks something they genuinely want from a real institution — a certification, a venue, a policy change, a partnership their strategy memo needs — and pursues it to a real decision. The stake is the thing itself plus something larger: proof of standing. A teen who has moved an institution walks differently into every future room. The campaign's outcome is real either way; even a final 'no' arrives after the teen has been taken seriously by adults with power, which is itself the lever's payload."
+  },
+  "artifact": "A completed institutional campaign: the decision-path map of who actually decides, a formal written proposal in institutional register, evidence of support built before the ask, the submission and pitch actually made, and the documented outcome — with the follow-through note that keeps the door open regardless of verdict.",
+  "success_criteria": [
+    "A real institutional ask was chosen and its decision path mapped: who decides, who influences, what they each care about.",
+    "A formal proposal exists addressing the institution's interests, costs, benefits, and risks — not just the teen's wants.",
+    "At least one supporter inside or near the institution was genuinely enlisted before the formal ask.",
+    "The proposal was actually submitted and pitched, and the outcome — yes, no, partial, or pending — is documented with a professional follow-through."
+  ],
+  "prereq_project_ids": ["co-15-16-q2"],
+  "lessons": [
+    {
+      "id": "co-15-16-q3-l1",
+      "sequence": 1,
+      "title": "Institutions are people wearing a system",
+      "concept": "'The school won't allow it' is almost never true as stated. Somewhere there is a specific person with the authority to allow it, operating under specific constraints (budget, policy, risk, time), influenced by specific other people. Persuading an institution begins with cartography: who *actually* decides this? Who do they listen to? What is the formal path (the form, the meeting, the cycle) and the informal one (the conversation before the meeting)? Ninety percent of failed asks die from being aimed at the wrong person, at the wrong time, in the wrong format — before the merits are ever weighed.",
+      "real_example": "A teen wanting the community hall's Saturday slot for a workshop asked at the front desk and was refused — twice. The map she then drew told a different story: the desk enforces the rules; the *bookings committee* grants exceptions; the committee chair is advised by the caretaker, who cares mainly about cleanup and lockup; and the committee meets first Mondays. Same ask, re-aimed: a note to the chair before the Monday meeting, with a cleanup plan the caretaker had already approved. Granted in one cycle. The institution never changed. Her map did.",
+      "apply_task": "Choose your institutional ask — something real your strategy memo or venture actually needs (a venue, a certification, a school policy, a partnership, a stall permit). Then draw the decision map: the formal path, the actual decider, their influencers, their constraints and cares, and the calendar their decisions run on. Mark what you don't know yet — the gaps are next lesson's interview targets.",
+      "reflection_prompt": "How different is the mapped institution from the wall you imagined? Where did 'they won't allow it' turn out to mean 'nobody has asked the right person properly'?",
+      "feedback_task": "Show your map to an adult who has worked inside a similar institution. Ask: 'who am I missing, and what does the decider actually worry about?' Insiders redraw these maps in minutes — and often volunteer as guides, which is lesson three arriving early.",
+      "teach_back_task": "Teach the cartography move to a friend blocked by an institution ('the school never lets us…'). Draw their map together until a specific person with a specific constraint appears. The moment 'the school' becomes 'Mrs Devi, who worries about insurance', the wall becomes a door with a handle.",
+      "ai_judgment_note": "AI knows how institutions of each type *generally* work — 'how do community halls typically handle bookings? who decides?' is a fine first sketch. Your actual institution's map needs ground truth: the real chair's name, the real meeting cycle, the caretaker's actual cares — learned by asking humans (your outreach craft) and reading the institution's own documents. A campaign aimed by a generic map hits a generic institution, which does not exist.",
+      "assets_needed": ["Decision map (formal path / decider / influencers / constraints / calendar / gaps)"],
+      "est_minutes": 50,
+      "success_criteria": [
+        "A real ask is chosen and its decision map drawn with the actual decider named.",
+        "Knowledge gaps are marked and an insider has reviewed the map."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "co-15-16-q3-l2",
+      "sequence": 2,
+      "title": "Write the proposal in their language",
+      "concept": "An institutional proposal is your case-making craft in its most disciplined form — and its centre of gravity sits with *them*, not you. The structure deciders actually read: the problem or opportunity in their terms; the specific proposal (what, when, where, who); what it costs them (money, space, risk, staff time — stated honestly, because they'll compute it anyway); what it gains them (their goals, their metrics, their story — your incentive-mapping does the aiming); the risks with your mitigations pre-written (insurance, supervision, cleanup — answer the caretaker before he asks); and the small first step ('a one-session trial' — your trial-ask training, institutional edition). One to two pages, professional register, zero pleading.",
+      "real_example": "Two proposals for the same school coding club. Teen A: 'Coding is really important and we're really passionate, so we'd like a room.' Teen B, one page: the problem (40 students, no structured pathway, feeder school has one), the ask (Lab 2, Thursdays 3–5, term one trial), costs (RM0 budget; one staff supervisor — Ms Yong has agreed in principle), gains (supports the school's STEM plan §3, showcase at open day), risks answered (equipment policy, attendance register, closing procedure), first step (six-week trial, reviewed at half term). Teen B's proposal was approved largely unedited — because it was, in the principal's words, 'the only proposal this year I didn't have to finish writing myself.'",
+      "apply_task": "Write your proposal using the six-part structure, in the register your professional-voice quarter built. Fill the gaps your map flagged (a call, an email — your ledger is running anyway). Apply the decider's-desk test to every paragraph: does this answer a question they'd actually ask, in language they'd forward to a colleague unedited?",
+      "reflection_prompt": "How much of your first draft was about what *you* want versus what *they* get? Why is the honest cost paragraph — the one you most want to soften — the paragraph that buys the most trust?",
+      "feedback_task": "Give the draft to your insider reviewer with the forwarding test: 'could the decider send this upward without rewriting it?' Every rewrite they'd need is a revision you make now. Institutions run on documents that travel well.",
+      "teach_back_task": "Teach the six-part structure to a friend or club making any institutional ask. Convert their passionate paragraph into a decider's-desk document together. The 'what it costs them, stated honestly' section will feel wrong to them — teach why it's the trust engine of the whole document.",
+      "ai_judgment_note": "The register polish and structure check are fair machine work by your standing rules — and 'what questions would a school principal ask about this proposal?' is a genuinely useful red-team. Two human locks: every fact must be true — the supervisor really agreed, the policy section really says that; a proposal with one invented fact dies entirely and takes your name with it. And the institutional courtesy: if the document reads machine-written, it signals the ask cost you nothing. Deciders fund asks that cost the asker something. Let the care show.",
+      "assets_needed": ["Proposal (6-part structure, 1-2 pages) + forwarding-test feedback"],
+      "est_minutes": 90,
+      "success_criteria": [
+        "A complete proposal exists with honest costs, their-terms benefits, pre-answered risks, and a trial-sized first step.",
+        "It passed the forwarding test with an insider reviewer."
+      ],
+      "prereq_lesson_ids": ["co-15-16-q3-l1"]
+    },
+    {
+      "id": "co-15-16-q3-l3",
+      "sequence": 3,
+      "title": "Build support before you ask",
+      "concept": "Formal decisions are mostly made before the formal moment — in conversations, corridor mentions, and the decider's quick poll of people they trust. So campaigns *socialise* the idea first: brief your likely allies (who gains from your proposal succeeding? your incentive map knows), convert or neutralise likely objectors by incorporating their concerns before submission ('I spoke to the caretaker; the cleanup plan is his'), and — the master move — let the decider hear about the idea *positively, from someone they trust, before it lands on their desk*. This isn't manipulation; it's respect for how humans actually decide: nobody likes ruling on surprises.",
+      "real_example": "Before her canteen-certification pitch, the allergy-cake baker spent two weeks not-pitching: coffee with the PTA health rep (an instant ally — her own child carries an epi-pen), a question to the canteen manager about his supplier headaches (his objection — 'more paperwork' — became a pre-written procedures annex), and a mention by the PTA rep at the principal's briefing ('there's a student with a serious proposal coming — worth your time'). When the proposal arrived, the principal had already heard of it twice, favourably, from people she trusted. The meeting began at 'how would this work?' instead of 'why are you here?' — which is the entire distance between a pitch and a formality.",
+      "apply_task": "Run the socialising fortnight: identify two likely allies and one likely objector from your map; brief the allies and ask each for one concrete support act (a mention, a presence at the pitch, a named endorsement in the proposal); meet the objector's concern and build its answer into the document; and arrange, if you can, one positive pre-mention within the decider's earshot. Log it all in your ledger — this is thread discipline at campaign scale.",
+      "reflection_prompt": "How does it change your model of every past institutional decision you've watched — school rules, local changes — to know most were settled before the meeting? Where's the ethical line between socialising an idea and gaming a process, in your own words?",
+      "feedback_task": "Ask your strongest ally, after briefing them: 'what would make you *more* comfortable vouching for this?' Their hesitations are the campaign's real risk register — address them with the same seriousness as the decider's.",
+      "teach_back_task": "Teach the socialise-first principle to a friend about to spring a big ask cold — on a coach, a boss, a parent. Help them list two allies and one objector and plan the fortnight. 'Nobody likes ruling on surprises' transfers to every domain, including home.",
+      "ai_judgment_note": "Campaign choreography benefits from planning tools, and AI can war-game it: 'here's my map and plan — where does this campaign leak or backfire?' The bright ethical line the machine cannot hold for you: everything you socialise must be true, every endorsement genuinely given, every concern genuinely incorporated. The dark version of this lesson — astroturfed support, misrepresented endorsements — works exactly once and then never again anywhere, because institutions have long memories and short forgiveness. Build support the way you build moats: real, slow, compounding.",
+      "assets_needed": ["Campaign plan (allies + support acts / objector + incorporated answer / pre-mention) + ledger entries"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "Two allies are enlisted with concrete support acts and one objector's concern is built into the proposal.",
+        "The socialising fortnight ran and is logged."
+      ],
+      "prereq_lesson_ids": ["co-15-16-q3-l2"]
+    },
+    {
+      "id": "co-15-16-q3-l4",
+      "sequence": 4,
+      "title": "Submit and pitch",
+      "concept": "Now the formal moment, and everything you own converges: submit through the mapped channel, in the mapped cycle, then pitch — your talk craft (the change sentence: what should the decider believe when you finish), your Q&A survival (their questions are your pre-answered risks, plus curveballs), your meeting kit (both-sides prep, the summary within 24 hours). Institutional pitches have two special rules. Bring the document, speak the story: the proposal is for their files; the pitch is the human case for caring. And *close with the mechanism*: not 'so, yes?' but 'what would the next step be, and what do you need from me for it?' — because institutions move by process, and asking for the process is how insiders ask.",
+      "real_example": "Her fifteen minutes with the principal and canteen manager: the story of her brother's first safe birthday cake (ninety seconds — the room's temperature changed), the proposal walked in five minutes, then questions — three from her pre-answered risks (nodded through), one curveball about supplier costs ('I don't know the current supplier pricing — I'll find out by Friday'; the owned gap, landing as competence). Her close: 'what does the approval path look like from here?' Answer: canteen committee, next month, 'and I'll sponsor it there.' The summary email went out that evening; Friday's supplier answer went out on Friday. The pitch didn't win the decision — it won the sponsor who would.",
+      "apply_task": "Submit the proposal through the formal channel, then secure and run the pitch meeting: both-sides prep, the ninety-second human case, the document walk, Q&A (drill your pre-answered risks the night before), the mechanism close, and the 24-hour summary with every commitment dated. Any owned gap gets its answer delivered exactly when promised — that follow-through *is* the pitch, continued.",
+      "reflection_prompt": "Which moment carried the meeting — the story, the document, or a question handled well? Compare this room to your first talk's room two quarters ago: what does the difference tell you about what these pillars have been building all along?",
+      "feedback_task": "After the meeting, ask your sponsor or friendliest attendee: 'how did that land, honestly — and what should I do differently at the committee stage?' Every institution has a next room; the debrief from this one is the prep for that one.",
+      "teach_back_task": "Take a friend through pitch-prep for their own institutional moment — the story lead, the mechanism close, the summary discipline. Sit in the corridor during their meeting if they'll let you. Being someone's corridor person is half the teaching; the debrief after is the other half.",
+      "ai_judgment_note": "Full rehearsal stack, one last time: the machine drills your Q&A ('you are a skeptical principal; attack this proposal'), tightens the summary, checks the document's travel-readiness. The room is yours alone, and one institutional nuance matters more here than anywhere: deciders are betting on *you* — your reliability, your follow-through, your realness — as much as on the proposal. That bet can only be placed on a human they've met. Be unmistakably the person who wrote every word, owned every gap, and answered on Friday because they said Friday.",
+      "assets_needed": ["Submission confirmation + pitch kit (story / walk / drill / mechanism close) + 24-hour summary"],
+      "est_minutes": 90,
+      "success_criteria": [
+        "The proposal was formally submitted and the pitch delivered with the mechanism close.",
+        "The summary went out within 24 hours and any owned gap was answered exactly as promised."
+      ],
+      "prereq_lesson_ids": ["co-15-16-q3-l3"]
+    },
+    {
+      "id": "co-15-16-q3-l5",
+      "sequence": 5,
+      "title": "The long game: outcomes, persistence, and doors",
+      "concept": "Institutional time is geological: decisions arrive as yes, no, 'partial', or — most often — silence stretched across cycles. The professional's endgame: track the process you asked for (the committee date, the review point) and follow up *at the mechanism's rhythm*, not your anxiety's; treat a partial win as a win with homework ('trial approved, budget deferred' is a foothold — trials that go well rewrite budgets); treat a no as *data plus a door* — ask what would change the answer, thank every person who engaged, and file the relationship, because this year's no from a decider who was impressed becomes next year's yes with a different budget. Campaigns end. Standing compounds. You are now someone this institution knows can make a case — and that identity outlasts every individual verdict.",
+      "real_example": "Three real endings from three real campaigns. The coding club: approved as proposed — and its founder was invited onto the student council's facilities group ('you clearly know how this works'). The hall workshop: partial — one Saturday monthly, not weekly; six months of flawless cleanups later, the caretaker himself proposed weekly. The canteen certification: a no at committee — budget cycle — but with the principal's written line 'resubmit in the new financial year; I remain supportive', which is institutional for *yes, later, if you don't disappear*. She didn't disappear: a two-line update each term ('forty more families served; still interested'). The resubmission, one year on, passed without her in the room. The no was never the ending. The follow-through was the campaign.",
+      "apply_task": "Document your outcome, whatever it is: the verdict (or its pending state and next process date), what each engaged person said, and the follow-through plan — thank-yous sent (all of them, regardless of verdict), the mechanism-rhythm follow-up scheduled, and for a no: the 'what would change the answer?' question asked and its answer filed. Close the campaign in your ledger the professional way: no dangling threads, every door explicitly kept open. Then write the campaign retrospective: what moved this institution, what would move it faster next time, and what you now know about walls.",
+      "reflection_prompt": "Whatever your verdict: what changed in how the institution's people treat you between first contact and now? And the belief this quarter existed to test — 'institutions can't be moved by people like me' — read it again and write what you know now instead.",
+      "feedback_task": "Debrief the whole campaign with your original insider: map to proposal to socialising to pitch to outcome. Ask them: 'what did I do that insiders do — and what marked me as new?' Both lists go in the retrospective; the second one is next campaign's syllabus.",
+      "teach_back_task": "Package the full campaign method — cartography, the six-part proposal, socialising, the pitch, the long game — and coach one person or group through a real ask of their own from map to submission. When their institution moves, or even when it doesn't but *they* get invited closer, you've reproduced this quarter's real product: people who know that walls have handles. Institutions are changed by exactly such people, at every scale, for the rest of history. Now there are two more of you.",
+      "ai_judgment_note": "The retrospective and the relationship files are human records of human standing — machine-organisable, never machine-ownable. One closing recursion worth writing down where you'll reread it: institutions themselves are now learning to use AI, which means the documents that travel, the proposals that stand out, and the campaigns that succeed will increasingly be the ones that are *verifiably human where it counts* — real endorsements, real follow-through, a real person who answered on Friday. You've spent three quarters becoming that person. The institutions can tell. That's the point.",
+      "assets_needed": ["Outcome record + follow-through plan (thanks / rhythm / door-keepers) + campaign retrospective"],
+      "est_minutes": 50,
+      "success_criteria": [
+        "The outcome is documented with all thank-yous sent and follow-ups scheduled at the mechanism's rhythm.",
+        "A campaign retrospective exists including the rewritten belief about institutions."
+      ],
+      "prereq_lesson_ids": ["co-15-16-q3-l4"]
+    }
+  ]
+}

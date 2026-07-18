@@ -1,0 +1,119 @@
+{
+  "id": "th-15-16-q3",
+  "title": "Think in Strategy",
+  "pillar_primary": "think",
+  "pillars_supporting": ["wealth"],
+  "age_band": "15-16",
+  "quarter": 3,
+  "developmental_frame": "At 15–16, a teen can finally think *positionally* — not just 'how do I get better?' but 'where does better matter most?'. They can model other actors' incentives, reason about how advantages compound over years, and see themselves as one player among many rather than the centre of the map. This is also the age when undirected effort starts to hurt: working hard in a crowded, wrong-shaped territory and losing to worse work in a better position. Strategy — the discipline of choosing where to compete before competing — is the difference, and the equipment for it has just come online.",
+  "authentic_value_meaning": "At this age, thinking creates value when it finds the teen **a territory they can actually win** — a specific corner of their year-bet domain where their particular stack of skills, access, and history makes them not merely good but *hard to substitute*. A strategy memo that names the territory, the edge, and the plan to deepen it converts a year of effort from motion into position.",
+  "motivation_lever": {
+    "lever": "real_stakes",
+    "mechanism": "The strategy memo written this quarter steers the teen's real remaining year: their flagship build, their bigger financial bet, and their year-end Open Door all take direction from it. Choosing wrong costs real months; choosing well makes every later hour count double. The teen knows the memo is load-bearing — it's being written for their own life, not for a grade — and that weight is exactly what makes the thinking sharpen."
+  },
+  "artifact": "A one-page strategy memo for the teen's year-bet domain: the chosen territory (specific enough to dominate), the competitive map with the gap identified, the teen's honest edge, the moat-building plan for compounding advantages, and the implications written as directives for their Build, Communicate, and Wealth quarters.",
+  "success_criteria": [
+    "A competitive map exists naming at least four real alternatives their audience could choose, with what each does well.",
+    "The chosen territory passes the 'only' test: the teen can complete 'I am the only ___ who ___' truthfully and specifically.",
+    "The memo names an honest edge backed by evidence, and a moat plan with at least three compounding moves.",
+    "The memo ends with concrete directives that visibly shape the teen's plans for the rest of the year."
+  ],
+  "prereq_project_ids": ["th-15-16-q2"],
+  "lessons": [
+    {
+      "id": "th-15-16-q3-l1",
+      "sequence": 1,
+      "title": "Where you play beats how hard you play",
+      "concept": "Effort is multiplied or wasted by position. The same hundred hours of work produce fame in an empty niche and invisibility in a crowded one — which means the *choice of territory* is itself the highest-leverage decision, made before any work begins. Strategy's first move is shrinking the map: not 'video editing' but 'match-day highlight edits for local youth football clubs'. Small enough to dominate, real enough to matter, connected enough to grow from. The winners you admire mostly picked smaller ponds than you think — then grew the pond.",
+      "real_example": "Two equally skilled teen bakers. One sells 'cakes' — competing with every bakery, supermarket, and aunty in town. The other sells 'allergen-free birthday cakes parents can trust', the only such option within thirty minutes — competing with nobody, charging more, recommended by every allergy-parent group chat in the district. Same ovens, same skill. The second baker made one extra decision: where.",
+      "apply_task": "Take your year-bet domain and generate five candidate territories inside it — each specific enough that you could plausibly become the obvious choice within a year. For each: who exactly is served, what exactly is offered, and roughly how many providers currently serve it. Mark which are too big (you'd drown), too small (nobody's there), and which one or two are Goldilocks.",
+      "reflection_prompt": "Why does 'niche down' feel like ambition shrinking when the evidence says it's ambition sequencing? What's the biggest pond you can realistically be a top-three fish in *this year*?",
+      "feedback_task": "Show your five territories to someone inside your domain (your practitioner relationships exist for this). Ask: 'which of these is actually contested, and which is empty because it's worthless?' Empty-because-worthless is the trap only insiders can spot.",
+      "teach_back_task": "Teach the pond-picking idea to a friend grinding hard in a crowded space — sport, content, applications. Help them generate three narrower territories where their existing hours would count double. Watch the relief when effort and position finally point the same way.",
+      "ai_judgment_note": "AI is useful for territory *generation* — 'give me ten narrower niches inside X' widens your candidate list fast. It is unreliable for territory *evaluation*: it doesn't know your town, your school's networks, or which niche is empty because nobody wants it. The Goldilocks call needs ground truth — provider counts you verified, people you asked. Machine for breadth, legwork for truth, you for the choice.",
+      "assets_needed": ["Territory sheet (5 candidates / served / offered / provider count / Goldilocks marks)"],
+      "est_minutes": 45,
+      "success_criteria": [
+        "Five specific territories exist with provider-count evidence.",
+        "One or two Goldilocks candidates are marked with reasons."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "th-15-16-q3-l2",
+      "sequence": 2,
+      "title": "Follow the incentives",
+      "concept": "Strategy requires predicting other players — and people are predicted by their incentives, not their statements. The move: for every actor on your map (competitors, gatekeepers, customers, platforms), ask what they're *rewarded* for and what they *fear*, and expect behaviour to follow. Why does the big provider ignore your niche? Their incentives point at volume. Why might a teacher champion your proposal? It makes their programme look good. Incentive-reading isn't cynicism — it's empathy with the scoreboard people actually play on, and it turns 'why would they ever…' into 'here's exactly why they would.'",
+      "real_example": "A teen wondered why the town's big photo studio never covered small school events — until she read the incentives: their overheads made anything under RM2,000 a loss, so the entire under-RM500 event market was *structurally* abandoned, not overlooked. That's a different fact: overlooked niches get contested when noticed; structurally abandoned ones are defended by the incumbent's own cost structure. She wasn't hiding from the studio. Their spreadsheet was her moat.",
+      "apply_task": "For your Goldilocks territory, map the incentives of every relevant actor: current providers (what are they optimising? what's structurally unprofitable for them?), your customers (what are they rewarded/punished for choosing?), and any gatekeepers or platforms. Write one prediction per actor: 'because their incentive is X, expect them to do Y.' Date the predictions — your decision journal will grade them.",
+      "reflection_prompt": "Which actor's behaviour suddenly makes sense through incentives that seemed irrational before? Where in your own life are *you* the actor whose behaviour is perfectly predicted by a scoreboard someone else designed?",
+      "feedback_task": "Test your incentive map on an adult who knows one of the actors (a teacher for schools, a shop owner for retail). Ask: 'is this actually what they're rewarded for?' Insiders correct incentive maps fast — and their corrections are strategy gold.",
+      "teach_back_task": "Teach follow-the-incentives with a live example from your friend's world: why the canteen stocks what it stocks, why the algorithm promotes what it promotes. Have them generate one prediction from one incentive. When they start saying 'well, what's their incentive?' unprompted, it stuck.",
+      "ai_judgment_note": "AI knows textbook incentive structures — 'how do school procurement decisions typically work?' is a fine primer question. Your specific actors' real incentives need local verification: the actual teacher, the actual platform policy, the actual studio's pricing. And run the frame on your tools too, permanently: every feed, app, and AI product you use has incentives, and 'what is this tool optimised for, and is that what I'm optimising for?' is the single most protective question this curriculum can leave you with.",
+      "assets_needed": ["Incentive map (actor / rewarded for / fears / dated prediction)"],
+      "est_minutes": 45,
+      "success_criteria": [
+        "Every relevant actor has a written incentive line and a dated prediction.",
+        "At least one map entry was corrected by an insider."
+      ],
+      "prereq_lesson_ids": ["th-15-16-q3-l1"]
+    },
+    {
+      "id": "th-15-16-q3-l3",
+      "sequence": 3,
+      "title": "Find your unfair advantage",
+      "concept": "An edge is something you have that rivals in your territory can't easily copy — and honest edge-finding looks in unglamorous places: your *stack* (the unusual combination — good-not-great at three things beats great at one crowded thing), your *access* (the networks, places, and people you can reach that others can't), your *history* (the year of receipts, logs, and shipped work this curriculum made you keep), and your *cost structure* (a teen's low overheads are a genuine weapon — the photo studio's spreadsheet problem is your permission slip). 'I work hard' is not an edge; everyone claims it. An edge finishes the sentence: 'I am the only ___ who ___.'",
+      "real_example": "The allergy-cake baker's edge, honestly inventoried: baking skill (good, not town-best — not the edge); a sibling with severe allergies (eight years of unfakeable kitchen protocol and parent-trust vocabulary — the edge); membership in three allergy-parent groups where ads can't reach (access); and a home kitchen with near-zero overheads (cost). Her 'only' sentence wrote itself: the only baker in town for whom your child's allergy is not a market segment but a lived Tuesday. No competitor can study their way into that sentence.",
+      "apply_task": "Run the four-source inventory — stack, access, history, cost — with evidence for each entry (your portfolio, ledger, and logs are the receipts). Then write your 'only' sentence for the chosen territory and test it: is it true? specific? does anyone in your territory get closer to it than you? Rewrite until it survives all three questions.",
+      "reflection_prompt": "Which of your real advantages were you not counting because they don't look like achievements — the sibling, the neighbourhood, the language you speak at home, the thing your family does? Why do the most defensible edges so often come from life rather than effort?",
+      "feedback_task": "Test the 'only' sentence on two people: one who knows you well ('is this true of me?') and one inside the territory ('would this matter to customers?'). An edge must pass both — true *and* valued. Revise on whichever fails.",
+      "teach_back_task": "Run the four-source inventory for a friend who insists they have no advantages. There is always something in access or history — find it with them, write their 'only' sentence, and watch what it does to their posture. Edge-blindness is the default; the inventory is the cure.",
+      "ai_judgment_note": "This is the lesson where AI is nearly useless in the middle and sharp at the edge. Useless: it cannot know your sibling, your groups, your kitchen — asked for 'competitive advantages' it will return the generic list this lesson exists to replace. Sharp: once your 'only' sentence is drafted, 'how would a rival attack or copy this claimed edge?' is a fine stress test. Edges live in your actual life. The machine has never been there.",
+      "assets_needed": ["Four-source inventory (stack / access / history / cost, with receipts) + the 'only' sentence"],
+      "est_minutes": 45,
+      "success_criteria": [
+        "The inventory has evidenced entries in all four sources.",
+        "An 'only' sentence exists that passed the true/specific/closest tests with two reviewers."
+      ],
+      "prereq_lesson_ids": ["th-15-16-q3-l2"]
+    },
+    {
+      "id": "th-15-16-q3-l4",
+      "sequence": 4,
+      "title": "Build the moat",
+      "concept": "An edge gets you the territory; a *moat* keeps it. Moats are advantages that compound — that get harder to copy every month they run: reputation (each delivered promise makes the next sale easier — your receipts pile is a moat under construction), relationships (the practitioner who says 'send me your next one', the group chats that recommend you), skill-stack depth (every quarter of edge-practice widens the gap behind you), and switching costs (customers whose routines include you don't relitigate the choice). The strategic question for every week of your remaining year: *does this work only earn, or does it also deepen?* Work that does both is how positions become unassailable.",
+      "real_example": "Two years apart, the same question — 'why you?' — met two different answers from the baker. Year one: 'I'm careful with allergens' (a claim; copyable by anyone's poster). Year three: 'ask any of the forty families I've baked for' (a moat; copyable only by three years of flawless Tuesdays). Nothing dramatic happened in between — just every cake adding a receipt, every receipt deepening the trust, every month of trust raising the price of competing with her. Moats are boring to build and brutal to attack. That's the whole design.",
+      "apply_task": "Design your moat plan: three compounding moves you'll run for the rest of the year, each specified as (the move / what it compounds / how you'll see it deepening). Wire them into your existing systems — the drumbeat, the ledger, the practice blocks — so deepening happens by rhythm, not resolve. Then audit your current weekly work against the earn-or-deepen question and reallocate one hour from pure-earn to earn-and-deepen.",
+      "reflection_prompt": "Which of your current activities earn without deepening — and which quiet activity (the log, the thank-yous, the practice) has been building moat all along without you naming it? What does 'strategy is mostly consistency pointed at the right spot' mean in your specific case?",
+      "feedback_task": "Show the moat plan to your practitioner or a business-minded adult and ask the attacker's question: 'if you wanted to take my territory in two years, which of these moats would slow you most — and which is decoration?' Cut or strengthen the decoration.",
+      "teach_back_task": "Explain moats to a friend using their own life: the sports team where their three years of reliability is the moat, the friend group where their trust is. Then help them name one compounding move for their own ambition. Compounding is this curriculum's oldest song — moats are just compounding, weaponised.",
+      "ai_judgment_note": "AI can enumerate moat categories and critique your plan's logic — standard sparring. The strategic caution is subtler: in a world where machine assistance makes surface-level output cheap for everyone, the moats that *survive* are precisely the ones models can't mint — lived trust, named relationships, a verifiable history of kept promises. Your receipts-and-relationships moat is appreciating every year for exactly this reason. Build the kind of advantage that gets more valuable as generation gets cheaper. You already are; now do it on purpose.",
+      "assets_needed": ["Moat plan (3 moves / what compounds / how visible) + earn-vs-deepen audit"],
+      "est_minutes": 45,
+      "success_criteria": [
+        "Three compounding moves are specified and wired into existing rhythms.",
+        "The weekly-work audit exists and one hour was reallocated to earn-and-deepen."
+      ],
+      "prereq_lesson_ids": ["th-15-16-q3-l3"]
+    },
+    {
+      "id": "th-15-16-q3-l5",
+      "sequence": 5,
+      "title": "Write the strategy memo",
+      "concept": "Strategy that stays in your head is a mood; strategy on one page is an operating system. The memo compresses the quarter: the territory (with the 'only' sentence), the competitive map and its gap, the edge with its receipts, the moat plan — and then the part that makes it real: *directives*, one line each, to your other quarters: what the flagship build must be, what the launch communication must say, what the bigger bet should back, what you will *stop* doing because it serves no position. Strategy is as much subtraction as direction; the stop-list is where most of the courage lives.",
+      "real_example": "The baker's memo, final section: 'Flagship: the allergen-protocol recipe book — deepens trust-moat and works while I sleep. Launch comms: parent testimonials only; no price-talk in public — trust is the product. Bigger bet: the school-canteen certification pitch, not the second oven. STOP: birthday-party entertaining add-ons (earns, deepens nothing, eats Saturdays), and the general-cakes Instagram (feeds the wrong territory).' Four directives and two funerals, one page. Her next three quarters were harder to plan *badly* after that — which is the entire job of a strategy memo.",
+      "apply_task": "Write the memo, one page: territory and 'only' sentence, map and gap, evidenced edge, moat plan, then the directives — one line each to your Build, Communicate, and Wealth quarters, plus a stop-list of at least two things with reasons. Present it to your decision-maker risk-first (the pre-mortem move: 'here's how this strategy fails'). File it beside your year-bet memo; the pair now steers everything.",
+      "reflection_prompt": "What did writing the stop-list cost you emotionally — and why is stopping-the-decent the price of becoming-the-only? Looking at the memo pair: how different is this from how you chose what to do a year ago, and which single mental move made the biggest difference?",
+      "feedback_task": "Give the memo to someone strategic — a business owner, a coach who plans seasons, your practitioner — with one question: 'where is this strategy most likely to be wrong?' Add their answer to the memo as a named risk with a tripwire, the way your planning quarter taught you.",
+      "teach_back_task": "Walk a friend through writing their own one-page strategy for anything they're serious about — their sport, their applications, their craft. Insist on the 'only' sentence and the stop-list; those two force the real choices. When someone thanks you later for the thing you made them stop doing, you'll know the pillar's work is done.",
+      "ai_judgment_note": "Full-circle time: run the memo through your complete red-team ritual — 'attack this strategy: the territory choice, the claimed edge, the moat plan' — and patch what lands. Then notice what four years of this practice has actually built: not dependence on the machine, but a *procedure* — draft with your evidence, attack with every tool including the tireless one, decide with your judgment, sign with your name. That procedure is itself the deepest moat this curriculum leaves you with. It works on strategy memos. It works on everything.",
+      "assets_needed": ["One-page strategy memo (territory / map / edge / moat / directives / stop-list) + named-risk tripwire"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "The memo exists complete, including directives to all three other pillars and a two-item stop-list.",
+        "It was presented risk-first, carries a named risk with tripwire, and is filed beside the year-bet memo."
+      ],
+      "prereq_lesson_ids": ["th-15-16-q3-l4"]
+    }
+  ]
+}
