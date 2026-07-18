@@ -1,0 +1,119 @@
+{
+  "id": "cw-13-14-q4",
+  "title": "Run the Venture Month",
+  "pillar_primary": "wealth",
+  "pillars_supporting": ["think", "lead"],
+  "age_band": "13-14",
+  "quarter": 4,
+  "developmental_frame": "This is the quarter where a 13–14-year-old does something most adults have never done: operate a real venture for a sustained month against a signed plan. Developmentally, everything required is now in place — the delayed-payoff tolerance the band started without has been trained by a year of short loops, and the teen can hold a plan, a rhythm, and a setback in the same week. What still needs holding is perspective when reality diverges from plan: at this age a bad week feels like a verdict. The month teaches that it's a data point.",
+  "authentic_value_meaning": "At this age, creating value means **a month of real operation, honestly accounted** — customers served week after week, money tracked to the ringgit, a wobble survived, and at the end a decision made from evidence: keep, change, or stop. The number matters less than the completeness: a teen who has run a whole month and closed the books owns an experience that no simulation, class, or summer camp can substitute.",
+  "motivation_lever": {
+    "lever": "real_stakes",
+    "mechanism": "Everything from the year converges with real weight: the signed plan with the family watching, real customers with real orders arriving weekly, real money accumulating (or not) toward the goal, and a stop-condition that makes the green light meaningful. The month's stakes are the truest kind — visible weekly numbers against a public commitment — and the payoff at the end is owned outright: the verdict, the profit, and the story are all genuinely the teen's."
+  },
+  "artifact": "The completed Venture Month: four weeks of real operation logged, four weekly reviews held, one wobble diagnosed and handled, the books closed with final revenue-costs-profit against the plan, and a written keep-change-stop verdict with a plan for what the money becomes — all presented in a final review to the decision-maker who signed the plan.",
+  "success_criteria": [
+    "The venture operated for four real weeks and all four weekly reviews happened with written answers.",
+    "At least one mid-month problem was diagnosed with the year's tools and the response is documented.",
+    "The books are closed: revenue, costs, profit, and hours against the plan's goal, arithmetic checkable.",
+    "A written keep-change-stop verdict exists with reasons, the money's destination is decided and acted on, and the final review was presented to the plan's signer."
+  ],
+  "prereq_project_ids": ["cw-13-14-q3", "th-13-14-q4"],
+  "lessons": [
+    {
+      "id": "cw-13-14-q4-l1",
+      "sequence": 1,
+      "title": "Week one: run the plan, log the truth",
+      "concept": "Week one has one job: execute the plan as written and log what actually happens — orders, hours, costs, the input numbers, all of it. Not because week one will go to plan (it won't, quite) but because the *gap* between plan and reality is the month's most valuable information, and it's only visible if the logging is honest from day one. Operators log; dreamers remember.",
+      "real_example": "Her week one: the Tuesday post shipped on time, the Sunday batch ran 40 minutes long (the log now knows batches cost more than the plan thought), 13 orders against a target of 15, and one cost nobody budgeted — RM6 of tape and labels. Nothing dramatic. But four such weeks, honestly logged, is exactly what 'running a business' means — and the tape line saved week three's budget.",
+      "apply_task": "Run week one: the production schedule, the drumbeat, the acquisition routine, deliveries — all of it, logging as you go (money in/out, hours, input numbers, anything surprising). End the week by holding weekly review #1 on schedule: what happened, what did we learn, what one thing changes in week two.",
+      "reflection_prompt": "Where did reality diverge from the plan first — and was it in the direction your pre-mortem guessed? What's the difference between how tired you expected to feel and how tired you are?",
+      "feedback_task": "Share review #1's three answers with your plan's signer at the agreed slot. Their only job this week: confirm the review happened and hear the one change. The rhythm being real matters more than week one's numbers.",
+      "teach_back_task": "Tell a friend who 'wants to start something someday' what week one of really running something is like — the logging, the small gaps, the tape money. Puncture the dream gently and replace it with the real thing; the real thing is better.",
+      "ai_judgment_note": "The log is the month's foundation and it must be kept by the person living it — numbers typed in at the end of each real day, not reconstructed by anyone (or anything) later. AI's honest role starts at review time: with week one's real log in front of you, 'what should I be asking about these numbers?' is a fair prompt. The answers you act on remain yours — it's your name on the plan.",
+      "assets_needed": ["Venture Month log (money / hours / inputs / surprises) + review #1 sheet"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "Week one ran with a complete daily log of money, hours, and input numbers.",
+        "Review #1 happened on schedule with written answers and one change chosen."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "cw-13-14-q4-l2",
+      "sequence": 2,
+      "title": "Steer by the numbers",
+      "concept": "Weeks two and three are where the review rhythm earns its keep. Each week the same discipline: inputs versus targets, results versus goal, one change — and only one, so you can tell what worked (your experiment training, now running live). The operator's skill being built: reading which gaps are noise ('rain Saturday') and which are signal ('asks are up, sales aren't — the offer message is leaking'). Noise you ride out. Signal you act on.",
+      "real_example": "Week two's review showed the classic split: input numbers on target (posts shipped, 20 asks made) but sales at 60% of goal. Noise or signal? The log had the answer — replies were warm but 'maybe next week' kept appearing: a timing objection, not an interest one. One change: pre-orders for the following Saturday with pick-of-the-batch for early birds. Week three: 118% of target. That's steering — and it only works because only one thing changed.",
+      "apply_task": "Run weeks two and three at full rhythm, holding both reviews. At each: sort the plan-versus-reality gaps into noise or signal (write which and why), choose the one change, and predict its effect before the next week grades it — your decision journal running at business speed.",
+      "reflection_prompt": "Which gap did you initially misread — noise called signal, or signal called noise? What information settled it, and how would you spot it faster next time?",
+      "feedback_task": "At each review slot, present the noise/signal sort to your signer and defend one call they question. Being made to defend the sort *is* the training; a signer who pushes back is worth double.",
+      "teach_back_task": "Teach the noise-versus-signal sort to a friend tracking anything — grades, training times, follower counts. The gift phrase: 'one bad week is weather; the same bad week twice is climate.' Help them sort their own last month.",
+      "ai_judgment_note": "The noise/signal call is the month's hardest judgment and it belongs to you — but it's also where a second opinion is legitimately useful: paste the (real) weekly numbers and both hypotheses in and ask 'what evidence would distinguish these?' That's the machine as your Q1 sparring partner, pointed at operations. What it must never do is pick the change for you: the predict-then-grade loop only trains *your* judgment if the predictions are yours.",
+      "assets_needed": ["Reviews #2-3 sheets with noise/signal sort and predicted-effect line"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "Weeks two and three ran with reviews held, gaps sorted noise/signal in writing.",
+        "Each week's single change carried a written prediction, graded the following week."
+      ],
+      "prereq_lesson_ids": ["cw-13-14-q4-l1"]
+    },
+    {
+      "id": "cw-13-14-q4-l3",
+      "sequence": 3,
+      "title": "Handle the wobble",
+      "concept": "Every real month contains a wobble — the supplier delay, the demand dip, the week your hours evaporate. The pre-mortem meant you saw it coming in category if not in costume. The operator's protocol: name it precisely (which stage, which number), check the plan's prepared response, size it honestly (annoyance, problem, or stop-condition?), act small and fast, and tell the people affected before they find out. Panic is a wobble plus silence. Calm is a wobble plus a protocol.",
+      "real_example": "Week three, the classic double: exam week (pre-mortem, prepared — the buffer and the light schedule) plus the bead supplier going quiet (pre-mortem, prepared — the backup shop, 15% pricier). She ran the protocol: named both, triggered both responses, messaged the four affected customers a day early with the new delivery date — and logged the extra cost against the month. Two customers replied 'thanks for telling me'. The wobble cost RM11 and zero trust. That's the whole skill.",
+      "apply_task": "When your wobble arrives (it will), run the protocol in writing: name it, check the pre-mortem, size it against the stop-condition, act, and communicate to anyone affected before they notice. Log the full cost — money, hours, and any trust spent or banked. If the month somehow stays smooth, run the protocol once as a drill on your most likely pre-mortem risk.",
+      "reflection_prompt": "How did the wobble compare to the pre-mortem's imagined version — scarier or smaller? What did having a prepared response change about how it *felt*, not just how it went?",
+      "feedback_task": "Debrief the wobble at the next review with your signer: what happened, what the protocol did, what it cost. Ask them about a wobble from their own working life and what their version of a pre-mortem would have caught. Trade stories; that's how operators learn.",
+      "teach_back_task": "Tell the wobble story to your peer group or a younger builder — including the message you sent customers before they noticed. Teach the line 'panic is a wobble plus silence'. The story of a handled problem is worth ten stories of smooth sailing.",
+      "ai_judgment_note": "In the middle of a live wobble, the temptation is to ask a machine 'what should I do?' — resist the framing. The right prompt, if you use one, is your own protocol's: 'here's what happened and my planned response — what am I not seeing?' Thirty seconds of that is a fair check; but the sizing call against your stop-condition and the message to your customers are human duties. People forgive a problem told straight by a person. They don't forgive discovering it, or being handled by a robot when it mattered.",
+      "assets_needed": ["Wobble protocol card (name / check / size / act / tell) + wobble log entry"],
+      "est_minutes": 45,
+      "success_criteria": [
+        "A real wobble (or a full drill) was handled through the written protocol.",
+        "Affected people were told before they noticed, and the full cost is logged."
+      ],
+      "prereq_lesson_ids": ["cw-13-14-q4-l2"]
+    },
+    {
+      "id": "cw-13-14-q4-l4",
+      "sequence": 4,
+      "title": "Close the books",
+      "concept": "The month ends the way real businesses end periods: books closed, honestly. Total revenue, total costs (including the tape, the backup beads, the batch that failed), profit, hours worked, effective hourly rate — each against the plan's numbers. Then the operator's questions: where did the plan hold, where did it break, and *why* — with the answer traced to a specific week's log, not a feeling. A closed book is the difference between 'I think it went well' and 'I know exactly how it went'.",
+      "real_example": "Her close: revenue RM486 (goal RM450), costs RM272 (plan said RM240 — the wobble and the tape), profit RM214, 41 hours, RM5.22/hour (up from Q2's RM3.80 — the machine and the channel earned their keep). Plan held on revenue, broke on costs, and the *why* was written in week three's log before she even looked. Closing took forty minutes, because the logging had done the work all month. Books that close fast are the receipt for a month logged honestly.",
+      "apply_task": "Close the books: totals for revenue, costs, profit, hours, and hourly rate, each side-by-side with the plan. Write the holds and breaks with their traced whys. Update the one-page money picture with the month's final numbers — it now describes a business that has *operated*, not just sold.",
+      "reflection_prompt": "Your hourly rate versus Q2's: what changed it — and which quarter's work (the machine? the channel? the plan?) deserves the credit? If the number went down: what did the month buy that the rate doesn't show?",
+      "feedback_task": "Have someone numerate audit your close — check the arithmetic, question one cost, verify a traced why against the log. Passing an audit is a business skill in itself; welcome the red pen.",
+      "teach_back_task": "Teach a friend with any money-making activity to close one month of books — even roughly. Sit with them through the uncomfortable parts (the forgotten costs, the honest hours). The moment their real hourly rate lands is the moment you've passed on the year's most clarifying number.",
+      "ai_judgment_note": "Arithmetic checks and layout help: fine, as always — and by now you know why the numbers themselves must come from your log, not a model's reconstruction. The new frontier this lesson: resist asking AI to *explain* your variances. The whys must be traced to specific logged events, because 'plausible explanation' and 'what actually happened' are different things, and a closed book full of plausible stories is a beautifully formatted lie. Trace, don't theorize.",
+      "assets_needed": ["Books-close sheet (totals vs plan / holds and breaks with traced whys) + updated money picture"],
+      "est_minutes": 45,
+      "success_criteria": [
+        "The books are closed with every total side-by-side against the plan and arithmetic verified by an auditor.",
+        "Every hold and break carries a why traced to a specific logged event."
+      ],
+      "prereq_lesson_ids": ["cw-13-14-q4-l3"]
+    },
+    {
+      "id": "cw-13-14-q4-l5",
+      "sequence": 5,
+      "title": "Keep, change, or stop — and what the money becomes",
+      "concept": "The year's final decision is the fullest one: keep the venture as is, change it (what, exactly, and why), or stop it well — and every answer can be right. The evidence is all in: the closed books, the reviews, the hourly rate, what it cost your weeks. Then the second decision most young sellers never make consciously: what the money *becomes* — a split across save, reinvest, give, and spend, decided on purpose. Ventures end or continue; the habit of deciding-from-evidence is the asset that compounds either way.",
+      "real_example": "Three real verdicts from three real teens, all correct: keep (the numbers work and season three has a waiting list); change (the product's fine but Saturdays cost too much — moving to pre-order only); stop — written with pride: 'RM214 profit, but 41 hours a month isn't what I want year two for; I'm taking the operating skills to something new.' The third teen's parents later said the stop-memo impressed them more than the profit had. Stopping well, from evidence, is an operator's move.",
+      "apply_task": "Write the verdict memo: keep/change/stop, the three strongest pieces of evidence behind it, and — echoing your Q2 journal — what would have changed your mind. Decide the money split (save/reinvest/give/spend) with a reason per bucket, and act on it. Then present the whole arc — plan, month, books, verdict, split — to your plan's signer as the final review.",
+      "reflection_prompt": "A year ago you made your first real ask; this week you presented audited books and a verdict. What's the biggest change — in the venture, or in you? And what does your verdict memo teach you about how you want to decide things at 15?",
+      "feedback_task": "At the final review, ask your signer two questions: 'what did this year change about what you'd trust me with?' and 'what would you have done differently in my month?' Write both answers into the memo — the first is your earned autonomy in writing; the second is free consulting.",
+      "teach_back_task": "Package the year for the next teen: walk a younger sibling, cousin, or friend through the whole arc — first yes, real numbers, the machine, the channel, the month, the verdict — in fifteen minutes with your real artifacts as the slides. You're not just teaching a venture; you're proving to both of you that the whole thing is learnable. That proof is the band's true capstone.",
+      "ai_judgment_note": "The verdict is the one decision this year that must be made entirely unaided first — sit with the closed books and write keep/change/stop in your own hand before consulting anyone, machine or human. Then take counsel in the right order: the machine for stress-testing ('argue against my verdict'), the humans who watched your month for wisdom the numbers can't hold. The money split is a values question, not an optimisation — no model knows what saving, giving, or a new bet means to you at 14. A year of AI judgment comes down to this: the machine sharpened your thinking all year precisely because it was never allowed to do it for you.",
+      "assets_needed": ["Verdict memo template (verdict / evidence / mind-changer / money split) + final review checklist"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "A verdict memo exists with evidence, a mind-changer line, and an acted-on money split.",
+        "The final review was presented to the plan's signer and their two answers are recorded in the memo."
+      ],
+      "prereq_lesson_ids": ["cw-13-14-q4-l4"]
+    }
+  ]
+}

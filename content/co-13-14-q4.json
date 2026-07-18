@@ -1,0 +1,119 @@
+{
+  "id": "co-13-14-q4",
+  "title": "Launch Loud",
+  "pillar_primary": "communicate",
+  "pillars_supporting": ["wealth"],
+  "age_band": "13-14",
+  "quarter": 4,
+  "developmental_frame": "By Q4, this teen has published for strangers, interviewed adults, and run a three-week build log — the audience exists and the voice is trained. The Venture Month asks communication to do a new job: *selling in public, honestly, on a rhythm, while the thing is actually running*. At 13–14 the twin risks are overclaiming (hype feels like competence at this age) and going silent mid-month when energy dips. The craft this quarter installs is the professional middle: proof-based promotion sustained by rhythm rather than mood.",
+  "authentic_value_meaning": "At this age, communication creates value when **words move real customers without spending trust** — an offer message that says exactly what the thing is and proves it, objections answered in the open, and a month narrated honestly enough that the audience roots for the venture. A teen who learns that trust compounds faster than hype has learned the only marketing lesson that still works in ten years.",
+  "motivation_lever": {
+    "lever": "real_audience",
+    "mechanism": "Everything this quarter ships goes to the teen's real, warm audience — the people who followed the build log and the customers who bought before — and the results are visible in real numbers: replies, orders, referrals during the month. The audience watching the launch is the same one that watched the work get built, which raises the stakes honestly: they'll notice hype, and they'll reward truth."
+  },
+  "artifact": "The Venture Month's communication kit, used for real: a proof-based offer message, a launch announcement posted where the audience gathers, a public FAQ built from real objections, a weekly promotional drumbeat synced to the venture's routine, and a closing public recap of the month with its real numbers and thanks.",
+  "success_criteria": [
+    "A proof-based offer message exists and every claim in it can be pointed to in the venture's real records.",
+    "The launch announcement was actually posted and its immediate responses are logged.",
+    "A public FAQ exists built from at least five real questions or objections, including one about price.",
+    "The weekly drumbeat shipped every week of the month, and the closing recap with real numbers was posted."
+  ],
+  "prereq_project_ids": ["co-13-14-q3", "th-13-14-q4"],
+  "lessons": [
+    {
+      "id": "co-13-14-q4-l1",
+      "sequence": 1,
+      "title": "Claims need receipts",
+      "concept": "A selling message is a set of claims — and this year taught you exactly what claims need (your Think Q1 is about to earn its keep in public). The offer message formula: who it's for, what it does, and *proof* — a real customer's words, a real number, a real photo. 'Amazing quality!' is a claim wearing a costume. '38 orders delivered, zero returns; here's what Aisha said' — those are receipts. Sell like someone who has them, because you do.",
+      "real_example": "Two market posts for the same bracelets. 'Beautiful handmade bracelets, the best gift!' — scroll. 'Made 40 this month for customers in our neighbourhood — here's the one Mrs Tan ordered for her daughter's birthday (photo), and what she messaged me after (screenshot, with her permission).' The second sells because it can't be faked — a year of real work is the one marketing asset nobody can copy.",
+      "apply_task": "Write your offer message: who / what / benefit (your cw Q1 one-liner, matured), plus two receipts — a permissioned customer quote and a real number from your money picture or logs. Check every sentence: claim or receipt? Nothing ships with a claim that has no receipt behind it.",
+      "reflection_prompt": "Which receipt was most satisfying to include — and what did earning it cost you across the year? Why does proof-based selling get *easier* every month a venture runs honestly?",
+      "feedback_task": "Show the message to one real customer and one person who's never bought. Ask both: 'what do you doubt?' Any doubted claim gets a receipt or gets cut. That's the editing rule for the whole month.",
+      "teach_back_task": "Teach claim-versus-receipt to a friend promoting anything — a bake sale, a club event. Rewrite their poster together so every claim carries proof. Watch the message get shorter and stronger at the same time.",
+      "ai_judgment_note": "AI can tighten your message — but it will also cheerfully generate glowing copy with no receipts, because it has none: it never delivered your orders. The rule that keeps you honest: the machine may polish sentences, never add claims. And receipts are sacred — real quotes (with permission), real numbers, real photos. One invented testimonial, even a 'harmless' one, and the entire kit is poisoned. Your proof is the one thing that must be 100% human.",
+      "assets_needed": ["Offer message card (who/what/benefit + two receipts, permissions noted)"],
+      "est_minutes": 35,
+      "success_criteria": [
+        "An offer message exists where every claim is backed by a checkable receipt.",
+        "Customer permission for any quoted words is recorded."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "co-13-14-q4-l2",
+      "sequence": 2,
+      "title": "The launch announcement",
+      "concept": "A launch announcement is a story with a door in it: here's what I've been building (your log audience already knows), here's what's new for the month, here's exactly how to get it — one clear action, one clear way in. The build log did the trust-building for weeks; the announcement's only job is to open the door and point.",
+      "real_example": "'Season two announcement: you watched me test prices and survive the burnt-batch week. This month I'm running the real thing — 60 bracelets, four Saturdays, orders open now, two ways to get one: reply here or find me at the market. First ten orders get pick-of-the-batch.' Warm audience, clear door, small honest incentive. Twelve orders in 48 hours — and every one of them already knew the story.",
+      "apply_task": "Write the announcement in three beats: the story so far (one line, for the log audience), what's new this month (the offer, from lesson one), and the door (exactly how to order, when, where). Post it where your audience actually gathers — the same places your log lived. Log every response in the first 48 hours.",
+      "reflection_prompt": "Compare launching to a warm audience now versus announcing cold in Q1 of this year. What did the build log buy you — and what would launching cold have cost?",
+      "feedback_task": "Ask one person who responded and one who saw it but didn't: 'what made you act?' / 'what would have made you?' Both answers tune the drumbeat for the rest of the month.",
+      "teach_back_task": "Teach the three-beat announcement (story / new / door) to a friend launching anything. The move to insist on: one door, clearly marked — announcements with three different calls to action get zero of them taken.",
+      "ai_judgment_note": "By now the pattern is muscle memory: your draft, machine polish, your voice final — the announcement must sound like the person the audience has been following, or the warmth you banked evaporates. One good check: paste your draft and ask 'what's unclear about how to order?' Door-clarity is a thing machines test well, because unlike your audience, they haven't been rooting for you.",
+      "assets_needed": ["Announcement draft (story / new / door) + 48-hour response log"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "The announcement was posted with a single clear door.",
+        "48-hour responses are logged, including at least one 'what made you act' answer."
+      ],
+      "prereq_lesson_ids": ["co-13-14-q4-l1"]
+    },
+    {
+      "id": "co-13-14-q4-l3",
+      "sequence": 3,
+      "title": "Answer objections in the open",
+      "concept": "Every unanswered objection is a silent no. The move most sellers never make: collect the real questions and doubts — 'why so expensive?', 'is it really handmade?', 'what if it breaks?' — and answer them *in public*, once, well. A good FAQ is your steelman skill pointed at your own product: state the doubt at full strength, then answer it honestly, including the answers that admit limits. 'It's not for you if…' converts better than pretending it's for everyone.",
+      "real_example": "The bracelet seller's public FAQ included the hard one: 'RM15 seems a lot for a bracelet.' Her answer, receipts attached: materials RM4.10, about 40 minutes of work, and a repair-for-free promise — 'if that's more than you want to spend, the imperfects box at my stall is half price.' The objection she answered in public stopped arriving in private — and two customers said the price answer was *why* they trusted the rest.",
+      "apply_task": "Collect every real question and objection from the year — customer messages, market conversations, the announcement replies. Pick the five most common (price must be one). Write the public FAQ: each doubt stated at full strength, each answer honest with receipts where they exist, at least one 'this isn't for you if…'. Post it with the offer.",
+      "reflection_prompt": "Which objection was hardest to answer honestly — and did writing the answer change anything about the offer itself? (The best FAQs quietly improve the product.)",
+      "feedback_task": "Show the FAQ to your most skeptical known customer: 'what doubt did I miss or dodge?' A dodge they catch in private is a sale saved in public. Add what they find.",
+      "teach_back_task": "Teach a friend the full-strength rule: an FAQ that answers weak versions of the doubts convinces nobody (they've met your Q1 strawman). Help them write the price answer for their own venture — it's always the hardest and always the most read.",
+      "ai_judgment_note": "The objections must be real ones people actually raised — a model can generate plausible FAQs, but plausible-and-real diverge exactly at the doubts specific to *your* product and *your* price, which are the only ones that convert. Fair use: after collecting real objections, ask 'what's the strongest version of this objection?' — machine as sparring partner, the year's oldest move. The honesty in the answers, especially the limits, is yours to keep.",
+      "assets_needed": ["Objection collection sheet + public FAQ (5 doubts, full strength, receipts)"],
+      "est_minutes": 40,
+      "success_criteria": [
+        "A public FAQ exists with five real objections including price, answered with receipts.",
+        "At least one answer honestly names who the product is not for."
+      ],
+      "prereq_lesson_ids": ["co-13-14-q4-l2"]
+    },
+    {
+      "id": "co-13-14-q4-l4",
+      "sequence": 4,
+      "title": "The drumbeat",
+      "concept": "A launch isn't a bang; it's a rhythm. The month's communication runs on a drumbeat synced to the machine you already built: the acquisition routine's posts (cw Q3), the build-log update (co Q3), the week's receipt — a delivery photo, a customer's words, this week's number. Small, honest, on schedule, every week. The audience's attention is a fire; the drumbeat is how you feed it without burning your hours.",
+      "real_example": "Her month's beat, twenty minutes twice a week: Tuesday — fresh photo + order reminder (the routine); Sunday — the week's log update with real numbers ('week 2: 17 orders, one late delivery — fixed with Friday batching'). By week three, customers were *asking* for the Sunday number. The drumbeat had turned marketing into a show her buyers followed — and the late-delivery honesty got more replies than any promotion.",
+      "apply_task": "Design the month's drumbeat on one card: which beats, which days, what each contains (post / update / receipt), synced with your venture plan's weekly rhythm. Time-box it inside the plan's hour budget. Ship the first week's beats on schedule and log responses beat by beat.",
+      "reflection_prompt": "Which beat is at risk when the month gets hard — and what did your co Q3 quarter teach you about the week you most want to skip? What makes a drumbeat sustainable that a launch-bang isn't?",
+      "feedback_task": "After week one, ask two followers: 'which beat do you actually look forward to?' Feed that one; shrink or merge the ones nobody misses. A drumbeat is pruned by the audience, not the drummer.",
+      "teach_back_task": "Teach the drumbeat idea to a friend whose project announcements always spike and vanish. Help them design a two-beat week they can sustain for a month — and put the beats in their calendar before the enthusiasm fades.",
+      "ai_judgment_note": "Templates for recurring beats are exactly what AI is for — the Tuesday post's skeleton, drafted once, refilled weekly with the week's *real* photo and number. The rule that keeps the drumbeat honest: the skeleton can be machine; the week's flesh — what actually happened, the real number, the real photo — is always yours. A drumbeat of generated weeks is a show about a venture that isn't happening.",
+      "assets_needed": ["Drumbeat card (beats / days / contents) + week-one response log"],
+      "est_minutes": 35,
+      "success_criteria": [
+        "A drumbeat card exists, synced to the venture plan and inside its hour budget.",
+        "Week one's beats all shipped on schedule with responses logged."
+      ],
+      "prereq_lesson_ids": ["co-13-14-q4-l3"]
+    },
+    {
+      "id": "co-13-14-q4-l5",
+      "sequence": 5,
+      "title": "Tell the month's true story",
+      "concept": "The month ends in public, the way it ran: a closing recap with the real numbers — orders, the goal hit or missed, the week that nearly broke it — plus thanks by name (with permission) to the customers and helpers who made it real. Missed goals told honestly build more trust than hit goals told vaguely. This post is the year's graduation: an audience that watched the work, the launch, and now the truth of how it went, will follow this teen's *next* thing anywhere. That's what a reputation is.",
+      "real_example": "'Month closed: 61 orders against a goal of 60. Week three nearly sank it — exam week plus a supplier delay; the Thursday mini-batches and my sister's packing shift saved it (thanks, Lina). Real numbers: RM214 profit, 9 refer-a-friend orders, 2 imperfects sold honestly at half price. What's next: taking December off, then season three.' Shares, congratulations, and — two days later — a bulk order for a school event from someone who'd 'been following the whole thing'. The recap is never just a recap.",
+      "apply_task": "Write and post the closing recap: the goal and the real result, the hardest moment and what fixed it, three real numbers, thanks by name (permissions checked), and one line about what's next. Post it everywhere the drumbeat lived. Then log what comes back — replies, shares, and anything that walks through the door because of it.",
+      "reflection_prompt": "Reading your own recap: is this a story you're proud to have your name on? Across the year — the case, the interviews, the log, the launch — what has 'being good at communication' turned out to actually mean?",
+      "feedback_task": "Ask your most-followed reader one final question: 'what should season three's communication do differently?' Bank the answer — it's the first entry in next year's plan.",
+      "teach_back_task": "Help a friend write the honest closing post for *their* project — the real numbers, the hard week, the thanks. Teach the counterintuitive rule: the miss told straight is worth more than the win told shiny. When their honest recap outperforms their old hype posts, the year's biggest lesson has been passed on.",
+      "ai_judgment_note": "This post, more than any other this year, must be entirely yours — it's the one your customers, your family, and future-you will reread. The numbers come from your close-of-books, the thanks from your real memory of who showed up, the voice from twelve months of practice. If you want a machine's help, use the year's final honest trick: 'here's my recap — what would make a reader doubt it?' Fix that. Then sign your name to a month that actually happened.",
+      "assets_needed": ["Closing recap checklist (result / hard moment / 3 numbers / thanks / next) + response log"],
+      "est_minutes": 40,
+      "success_criteria": [
+        "The closing recap was posted with real numbers, an honest hard moment, and permissioned thanks.",
+        "Post-recap responses and any resulting opportunities are logged."
+      ],
+      "prereq_lesson_ids": ["co-13-14-q4-l4"]
+    }
+  ]
+}

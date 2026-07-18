@@ -1,0 +1,119 @@
+{
+  "id": "bu-13-14-q4",
+  "title": "Build the Delivery Machine",
+  "pillar_primary": "build",
+  "pillars_supporting": ["wealth"],
+  "age_band": "13-14",
+  "quarter": 4,
+  "developmental_frame": "By Q4 of this band a teen has built tools with users, automated real work, and survived a handoff week — so they know the difference between something that works once and something that runs. What the Venture Month demands is new: *throughput under pressure*. At 13–14 they can batch work, design simple processes, and keep quality standards when tired — but only if the process decides for them. Willpower-based quality collapses in a busy week at any age; process-based quality is what this quarter installs.",
+  "authentic_value_meaning": "At this age, building creates value when the venture can **take an order and deliver it, reliably, at the pace the month demands** — without heroics and without the founder doing every step by hand. The teen who turns their craft into a delivery machine discovers the difference between selling their hours and building something that multiplies them: the deepest builder-lesson this band can teach.",
+  "motivation_lever": {
+    "lever": "mastery",
+    "mechanism": "The pull is watching the machine hum: a peak Saturday that used to mean chaos now flows — orders in, batches out, quality holding, buffer absorbing the surprise. The stress-test at the quarter's end is a real performance with a clock and a scoreboard, and passing it is proof of a skill no one can fake: the teen didn't just make things this year; they built the thing that makes things."
+  },
+  "artifact": "The venture's delivery machine, documented and stress-tested for the Venture Month: an order-to-delivery flow map, founder-only steps reduced by templates and batching, a production plan with buffers sized to the month's targets, a busy-week quality check, and the results of one real peak-load test with its fixes applied.",
+  "success_criteria": [
+    "A drawn order-to-delivery flow exists and the teen can point to where orders wait and why.",
+    "At least two steps that only the founder could do are now templated, batched, or handed off.",
+    "A production plan with a buffer exists that covers the month's weekly targets inside the plan's hour budget.",
+    "One peak-load test was actually run, its failures logged, and at least one fix applied."
+  ],
+  "prereq_project_ids": ["bu-13-14-q3", "th-13-14-q4"],
+  "lessons": [
+    {
+      "id": "bu-13-14-q4-l1",
+      "sequence": 1,
+      "title": "Map order-to-delivery",
+      "concept": "Every venture has a hidden assembly line: the path from 'yes, I'll buy' to 'delivered, thanks'. Most founders have never drawn theirs — it lives in their head as a blur of doing. Draw it as stages with times: order arrives → confirmed → made/prepared → packed → delivered → followed up. The map turns 'busy' into something you can point at — and your Think-quarter eye will immediately start hunting the pile-ups.",
+      "real_example": "A bracelet seller drew her line and was shocked: making a bracelet took 12 minutes, but each *order* took closer to 40 — confirmation messages back and forth, finding the right beads mid-order, walking deliveries one at a time. The product was fast; the *process* was slow. Nobody can fix a blur; everybody can fix a map.",
+      "apply_task": "Draw your venture's order-to-delivery map: every stage, who does it, how long it really takes (time one real order end-to-end if you can). Mark where orders wait, where mistakes happen, and which stages the customer actually notices versus the ones only you see.",
+      "reflection_prompt": "Where does an order spend most of its life — being worked on, or waiting? What surprised you about the gap between product time and process time?",
+      "feedback_task": "Walk one recent customer's actual order through the map with someone — does the map match what really happened? Every mismatch is a stage you forgot you do. Add it.",
+      "teach_back_task": "Map a household 'order line' with a family member — dinner from decision to table, laundry from basket to drawer. Teach the move: stages, times, waits. Household lines are full of the same lessons, minus the customers.",
+      "ai_judgment_note": "The map must come from timing your real orders — a model can sketch a generic fulfilment flow, but the 40-minute bracelet truth only comes from your own stopwatch. After you've drawn it, fair use: describe your map and ask 'what stages do sellers like this usually forget?' (Follow-up and rework are the classics.) Check its suggestions against a real order before adding them.",
+      "assets_needed": ["Order-to-delivery map sheet (stages / who / time / waits)"],
+      "est_minutes": 35,
+      "success_criteria": [
+        "A complete map exists with real times from at least one traced order.",
+        "Wait points and mistake points are marked."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "bu-13-14-q4-l2",
+      "sequence": 2,
+      "title": "Fire yourself from two jobs",
+      "concept": "Look at your map and mark every stage with a crown: *only I can do this*. Some crowns are real (your craft, your judgment). Most are fake — things only you do because only you've ever done them. The three de-crowning tools: **template** it (the confirmation message, the label, the FAQ answer), **batch** it (all deliveries in one trip, all replies at 5pm), or **hand it off** (your runbook skills make this possible now). Every fake crown you remove is capacity the month will need.",
+      "real_example": "The bracelet seller's crowns: designing (real — her taste is the product) and answering every message live (fake — a saved reply template answered 80% of questions), plus walking each delivery separately (fake — Tuesday and Friday delivery batches, announced in advance, cut delivery time by two-thirds). Her making time didn't change; her *order* time halved.",
+      "apply_task": "Crown-audit your map. For every crowned stage, write real or fake and why. Then fire yourself from at least two fake-crown stages: build the template, set the batch schedule, or hand the stage off with a mini-runbook. Re-time an order through the new line.",
+      "reflection_prompt": "Which fake crown was hardest to give up — and was that about quality, or about liking being needed? What's the difference between a venture that needs you and one that needs *your best*?",
+      "feedback_task": "Ask a customer who experienced both versions (or show them both flows): did the template or batch make service worse, better, or invisible? 'Invisible' is a pass; 'better' is a bonus; 'worse' means the crown was real — put it back.",
+      "teach_back_task": "Teach the crown audit to a friend drowning in their own project or chores: mark the crowns, sort real from fake, pick one to template or batch. The phrase to gift: 'only-I-can-do-this is usually a habit wearing a crown.'",
+      "ai_judgment_note": "AI is a template factory — saved replies, label formats, FAQ drafts — and using it here is exactly right; polish its drafts into your voice once and reuse forever. The judgment it can't make: which crowns are real. Your taste, your quality bar, your customer relationships — a model will happily suggest templating those too, and that way lies a venture that feels like a vending machine. You decide what stays human; the machine helps with everything you've decided shouldn't need you.",
+      "assets_needed": ["Crown audit sheet + templates/batch schedule for two de-crowned stages"],
+      "est_minutes": 40,
+      "success_criteria": [
+        "Every crowned stage is marked real or fake with a reason.",
+        "Two fake-crown stages are templated, batched, or handed off, and an order was re-timed through the new line."
+      ],
+      "prereq_lesson_ids": ["bu-13-14-q4-l1"]
+    },
+    {
+      "id": "bu-13-14-q4-l3",
+      "sequence": 3,
+      "title": "Batch, buffer, and the make-ahead question",
+      "concept": "The month's plan (your Think Q4 hour budget) sets a pace: so many units, so many hours. Two machine-design questions decide whether the pace is survivable. *Make-ahead or make-to-order?* — ahead is efficient but risks waste; to-order is safe but slow under load. *Where's the buffer?* — the small stock of finished goods, prepped materials, or reserved hours that absorbs a surprise spike without breaking the week. Every real operation, from bakeries to hospitals, lives on these two answers.",
+      "real_example": "A cookie seller's month needed 60 cookies a week. To-order meant baking four separate school nights — impossible inside her hour budget. Her machine: one Sunday batch of 70 (make-ahead), the extra 10 as buffer for the week's surprise orders, and a rule — buffer empty by Wednesday means a Thursday mini-batch. Same oven, same hours, but now the *plan* did the worrying instead of her.",
+      "apply_task": "Take your weekly target from the venture plan. Decide make-ahead vs make-to-order (or the split) for each product/service, with the reason. Size your buffer: how much extra, stored where, and the rule for when it triggers a top-up. Write the week's production schedule — which hours, which days — inside your real hour budget.",
+      "reflection_prompt": "What does your buffer cost (materials, storage, risk of waste) versus what does it buy (calm, speed, saved Saturdays)? Where did you choose safety over efficiency, and why is that the right trade for a month with your name on it?",
+      "feedback_task": "Show the production schedule to whoever shares your kitchen/space/materials. Ask: 'which of these slots will collide with real life?' Fix the collisions now — the pre-mortem said exam week is coming.",
+      "teach_back_task": "Explain make-ahead versus make-to-order to a family member using a real shop you both know (the bakery makes ahead; the satay stall grills to order — why?). Then show them your machine's answer and let them challenge it.",
+      "ai_judgment_note": "Buffer math is honest arithmetic on your own numbers — targets from your plan, times from your map — and AI can check it ('does this schedule actually produce 60 units in these hours?'). What it can't know: your fridge space, your Sunday energy, how your product ages. The classic failure is letting a model optimise for efficiency when what your month needs is *slack* — machines under-value slack because they've never had a bad week. You have. Size the buffer like someone who has.",
+      "assets_needed": ["Production plan (make-ahead decisions / buffer size & rule / weekly schedule)"],
+      "est_minutes": 40,
+      "success_criteria": [
+        "A make-ahead/make-to-order decision exists per product with reasons.",
+        "A sized buffer with a top-up rule and a weekly schedule fit inside the plan's hour budget."
+      ],
+      "prereq_lesson_ids": ["bu-13-14-q4-l2"]
+    },
+    {
+      "id": "bu-13-14-q4-l4",
+      "sequence": 4,
+      "title": "Quality that survives a busy week",
+      "concept": "Quality by inspection-when-you-remember dies in week two of a real month. Machine-grade quality is a *checklist at a chokepoint*: one fixed check, at the stage where catching a problem is cheapest, with a written bar for what ships and what doesn't. And decide *now*, while calm, what happens to the not-quite-right ones — the 'seconds' policy: fix, discount honestly, or don't ship. Deciding at 9pm on a busy Friday, you'll ship them. Deciding today, you won't have to.",
+      "real_example": "Week three, 40 orders, tired hands: this is when the crooked bracelet ships and a customer posts a photo. The seller's defence, built in advance: a ten-second check against three written criteria (clasp holds, pattern matches order, no sharp edges) at packing — the chokepoint — and a seconds-box whose contents get sold honestly at the market as 'imperfects, half price'. Quality stopped being a mood and became a station on the line.",
+      "apply_task": "Write your quality bar: the three to five things that make a unit shippable, phrased so a tired you can check them in seconds. Choose the chokepoint stage for the check and add it to the map. Write the seconds policy. Then check a real batch against the bar and log what it catches.",
+      "reflection_prompt": "Think of the worst unit you've ever shipped — would this bar have caught it, and at what stage? Why is 'decide the standard while calm' the same move as the pre-mortem and the stop-condition (your whole year is one idea wearing different hats)?",
+      "feedback_task": "Give a customer or honest friend two units — one that passes your bar, one from the seconds box — without labels. If they can't tell which is which, your bar may be stricter than your customers need; if they instantly can, it's about right. Calibrate.",
+      "teach_back_task": "Teach 'checklist at the chokepoint' to a friend whose work gets sloppy under pressure — homework, sport kit, anything. Help them write a three-line bar and pick the chokepoint. The skill is identical at every scale from bracelets to aircraft.",
+      "ai_judgment_note": "AI can help phrase your criteria crisply and suggest what quality checks makers of your kind of product use — worth asking. The bar's *height* is a promise between you and your customers, and only you know what they paid for and what your name should mean; a model will set it generically. And never let 'the checklist passed' replace looking at the thing — the check serves your eyes, it doesn't retire them.",
+      "assets_needed": ["Quality bar card (3-5 criteria / chokepoint / seconds policy)"],
+      "est_minutes": 35,
+      "success_criteria": [
+        "A written quality bar and seconds policy exist, with the check placed at a chosen chokepoint.",
+        "A real batch was checked against the bar and the catches were logged."
+      ],
+      "prereq_lesson_ids": ["bu-13-14-q4-l3"]
+    },
+    {
+      "id": "bu-13-14-q4-l5",
+      "sequence": 5,
+      "title": "Stress-test the machine",
+      "concept": "Before the month bets on the machine, break it on purpose one more time — at full speed. Simulate (or better, really run) a peak week: the biggest plausible order load from your pre-mortem, inside real hours, with the templates, batches, buffer, and quality check all live. Log every buckle: the stage that jammed, the check that got skipped, the buffer that ran dry. Then fix the worst one. A machine that has survived its stress-test gives you the month's rarest asset: earned calm.",
+      "real_example": "Fire drills, dress rehearsals, load tests — every serious operation rehearses its peak before the peak. The cookie seller's test Saturday: a fake rush of 25 orders (friends recruited as customers, some deliberately awkward — 'no nuts', 'can I change my order?'). The line held except at packing, which jammed for 20 minutes — so packing got a template and a second pair of hands on rush days. The real month's biggest Saturday later beat the test by three orders. The machine held. She knew it would; that's the point.",
+      "apply_task": "Design and run your peak-load test: the load (from your pre-mortem's biggest week), the awkward cases to inject, and the numbers to watch (orders completed, time per order, quality catches, buffer level). Run it for real. Log every buckle, pick the worst, fix it, and update the map, plan, and runbook to match what the test taught.",
+      "reflection_prompt": "What buckled first — and had you predicted it? Compare your calm about the coming month before and after the test: what exactly did the rehearsal buy you, and what did it cost?",
+      "feedback_task": "Debrief the test with your recruits: where did they wait longest, what felt chaotic from the customer side, what impressed them? The customer-side view catches what your logs can't. Fold it in.",
+      "teach_back_task": "Tell the stress-test story to another builder — the load, the buckle, the fix — and help them design a test for *their* venture's machine before their next big day. When they've scheduled a fake rush of their own, this quarter's craft has been fully passed on.",
+      "ai_judgment_note": "AI is a good test designer — 'here's my machine; design a peak-load test with awkward cases I wouldn't think of' — and a good analyst afterwards on your logged results. The test itself must be run in the physical world with real hands and a real clock: the whole point is discovering what reality does to the plan, and no simulation of your Saturday knows your Saturday. Machine designs the drill; reality grades it; you fix what it finds.",
+      "assets_needed": ["Stress-test plan (load / awkward cases / metrics) + buckle log + updated docs"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "A peak-load test was actually run with metrics logged.",
+        "The worst buckle is fixed and the map, plan, and runbook reflect what the test taught."
+      ],
+      "prereq_lesson_ids": ["bu-13-14-q4-l4"]
+    }
+  ]
+}

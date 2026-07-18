@@ -1,0 +1,119 @@
+{
+  "id": "th-13-14-q4",
+  "title": "Plan the Venture Month",
+  "pillar_primary": "think",
+  "pillars_supporting": ["wealth"],
+  "age_band": "13-14",
+  "quarter": 4,
+  "developmental_frame": "By the fourth quarter of this band, a teen has real assets: a venture with margins and a channel, a tool that runs without them, an audience that expects updates, and a year of decision, argument, and systems practice. At 13–14 they can genuinely plan a month — hold a goal, forecast capacity, imagine failure in advance — but planning discipline is new and fragile: the pull is always toward the exciting parts (the offer! the launch!) and away from the boring load-bearing ones (hours available, what could kill it). This quarter makes the boring parts the whole point.",
+  "authentic_value_meaning": "At this age, thinking creates value when it turns ambition into an **operable plan other people will bet on** — a month of real business, sized to real hours, with risks named before they arrive and a review rhythm that catches drift early. The plan's value is proven the moment a real adult reads it and signs off — not to be kind, but because the plan actually holds.",
+  "motivation_lever": {
+    "lever": "real_stakes",
+    "mechanism": "This plan is not homework — it is the operating licence for the Venture Month, in which the teen's real offer runs at full rhythm with the family's real backing. A weak plan means a chaotic month with their name on it; a strong one means four weeks of running something real with everyone watching. The sign-off meeting at the end is a real gate: the month doesn't start until the plan earns it."
+  },
+  "artifact": "A one-page Venture Month operating plan: the goal and its one or two metrics, weekly targets, an honest capacity budget, a pre-mortem risk list with planned responses, the weekly review cadence on a calendar — presented to and signed off by the real decision-maker.",
+  "success_criteria": [
+    "A one-page plan exists with a goal, one or two metrics, and weekly targets that add up to it.",
+    "The capacity budget is honest: planned hours fit inside actually-available hours, shown against a real week.",
+    "A pre-mortem list names at least five ways the month could fail, each with a planned response.",
+    "The weekly review ritual is on the calendar, and the decision-maker signed the plan after hearing its risks — not just its hopes."
+  ],
+  "prereq_project_ids": ["th-13-14-q3"],
+  "lessons": [
+    {
+      "id": "th-13-14-q4-l1",
+      "sequence": 1,
+      "title": "Pick the goal and its number",
+      "concept": "A month of effort needs one goal and one or two numbers that measure it — no more. And the numbers come in two kinds: *result* numbers you can't directly control (profit, customers) and *input* numbers you fully control (asks made, batches produced, posts shipped). A strong plan sets a result goal and steers by input numbers — because you can always do the inputs, and the inputs are what move the result.",
+      "real_example": "'Have a great month' steers nothing. 'RM200 profit, steered by two inputs — 20 asks a week and the Tuesday/Friday channel routine' steers everything: any week the inputs happened and the result didn't, you learn something about the venture instead of about your mood.",
+      "apply_task": "Write your Venture Month goal as one result number (profit, customers, or opt-ins — your venture's truth from the money picture). Choose one or two input numbers that most drive it, from your own Q2–Q3 data. Break the result into four weekly targets that actually add up.",
+      "reflection_prompt": "Is your result number ambitious or safe — and which would teach you more? Why is 'I control the inputs, not the outcome' a calming thought rather than a depressing one?",
+      "feedback_task": "Show goal and numbers to a fellow builder or adult and ask: 'do these inputs actually drive this result, or are they just activity?' Adjust until the causal chain is defensible with your own data.",
+      "teach_back_task": "Teach the result-versus-input distinction to a friend with any goal — grades, sport, savings — and help them find their two input numbers. It's the single most portable planning idea they'll ever get.",
+      "ai_judgment_note": "The goal must be sized from *your* real numbers — last quarter's margins and channel data — not from a model's idea of what a teen venture 'should' make. Fair use: describe your venture's numbers and ask 'is this weekly target consistent with this history?' — an arithmetic sanity check. The ambition level itself is yours to set; that's not a math question.",
+      "assets_needed": ["Goal card (result number / input numbers / four weekly targets)"],
+      "est_minutes": 35,
+      "success_criteria": [
+        "A result goal with one or two input metrics is written, grounded in the teen's own data.",
+        "Four weekly targets exist that genuinely add up to the goal."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "th-13-14-q4-l2",
+      "sequence": 2,
+      "title": "Pre-mortem: imagine it already failed",
+      "concept": "A post-mortem examines a failure after it happens; a *pre-mortem* does it in advance: 'It's a month from now and the Venture Month flopped — write the story of why.' The trick works because imagining the failure as already real unlocks honesty that optimism blocks. Every cause you write down now is a risk you get to answer *before* it's an emergency.",
+      "real_example": "A teen's pre-mortem story surfaced what her planning had politely ignored: exam week landing mid-month (capacity crater), her one supplier going quiet (single point of failure — her Build quarter recognised it instantly), and rain on both market Saturdays. None were exotic. All were invisible until she wrote the failure story first.",
+      "apply_task": "Write the failure story: half a page, past tense, 'here's why my Venture Month failed.' Mine it for at least five distinct risks. For each: label the door (one-way or two-way), rate likely × bad, and write the response — prevent it, prepare for it, or accept it consciously.",
+      "reflection_prompt": "Which risk in your story embarrassed you to write down — and is that because it's unlikely, or because it's likely and you'd been avoiding it? What does the pre-mortem let you say that planning meetings don't?",
+      "feedback_task": "Read your failure story to someone who knows your month (a parent knows exam week; a teammate knows the schedule). Ask: 'what did my story miss?' Their addition goes on the list with its own response.",
+      "teach_back_task": "Run a five-minute pre-mortem with a friend before anything they're planning — a trip, a tryout, an event. Teach the magic sentence: 'it's afterwards and it failed — tell me the story.' Watch how much truth the past tense unlocks.",
+      "ai_judgment_note": "Write your own failure story first — the pre-mortem's power is *your* honesty, and it surfaces the risks you already secretly know. Then AI earns its seat: 'here's my venture and my month; what failure causes might I be missing?' — machines are tireless pessimists, and a cause you missed is worth having (note that you missed it). The responses and the accept-decisions stay yours: it's your month, your hours, your risk appetite.",
+      "assets_needed": ["Pre-mortem sheet (failure story / risks / door / likely×bad / response)"],
+      "est_minutes": 40,
+      "success_criteria": [
+        "A written failure story exists and yielded five or more distinct risks.",
+        "Every risk has a door label, a rating, and a written response."
+      ],
+      "prereq_lesson_ids": ["th-13-14-q4-l1"]
+    },
+    {
+      "id": "th-13-14-q4-l3",
+      "sequence": 3,
+      "title": "Budget the hours like money",
+      "concept": "Plans fail on capacity more than on ideas. Hours are a budget exactly like money: count what a real week actually offers (after school, homework, sport, family, sleep), then 'spend' those hours on the month's work — production, selling, the routine, the review. If the plan needs more hours than the week has, the plan is fiction, and it's better to know now. Cut scope until it fits; a plan that fits is a plan that happens.",
+      "real_example": "A teen's draft plan needed 14 hours a week. Her honest week-audit found 6, maybe 8 in a light week. The fix wasn't 'try harder' — it was scope: fewer product lines, batch production on Sunday, the channel routine kept (highest return per hour, said her own Q3 numbers), the new packaging idea dropped. The plan shrank; the odds of the month *happening* roughly doubled.",
+      "apply_task": "Audit a real week: count truly available hours, honestly (your Q2 time-audit skills apply). Then cost each planned activity in hours per week and fit the plan inside the budget — cut or batch until it fits with about 20% slack for the unexpected. Mark your capacity bottleneck: the resource (a day, a helper, an oven, you) that caps everything.",
+      "reflection_prompt": "What did you cut to make it fit — and why was that the right sacrifice? Where's the bottleneck, and does your plan protect it (your Q3 eye should twitch here)?",
+      "feedback_task": "Show the hour budget to someone who shares your week (a parent, honestly, is ideal). Ask: 'which of these hours don't actually exist?' Families are ruthless and correct about this. Refit the plan with what survives.",
+      "teach_back_task": "Teach 'hours are a budget' to an overcommitted friend: audit their real week together, cost their commitments, and watch the fiction reveal itself. Then teach the punchline — cutting scope isn't giving up; it's how plans become real.",
+      "ai_judgment_note": "The hour-audit must come from your actual week — a model doesn't know about Thursday training or how long your homework really takes, and an agreeable AI will happily bless a fictional budget. Use it after the honest count: 'here's my budget and my activities — what am I under-costing?' (Everyone under-costs travel, setup, and replies.) The cuts are judgment calls about your own life; make them yourself, out loud.",
+      "assets_needed": ["Hour budget sheet (available / planned per activity / slack / bottleneck)"],
+      "est_minutes": 35,
+      "success_criteria": [
+        "A real-week hour audit exists and the plan fits inside it with ~20% slack.",
+        "The capacity bottleneck is named and the plan visibly protects it."
+      ],
+      "prereq_lesson_ids": ["th-13-14-q4-l2"]
+    },
+    {
+      "id": "th-13-14-q4-l4",
+      "sequence": 4,
+      "title": "Set the weekly review",
+      "concept": "A month is too long to steer blind — so the plan installs a rhythm: one fixed weekly review, twenty minutes, same day, three questions: *what happened* (the numbers versus target), *what did we learn* (from customers, incidents, misses), *what changes next week* (one change, not five). The review is where all your year's tools report for duty: the journal's predictions, the log's honesty, the bottleneck eye. Plans don't survive contact with reality; plans with reviews do.",
+      "real_example": "Two teens ran venture months. One checked her numbers 'whenever' — and discovered in week four that week two had quietly broken her. The other held a Sunday review; in week two, seeing asks up but sales flat, changed one thing (the offer sentence), and weeks three and four paid for the whole month. Same effort. The rhythm was the difference.",
+      "apply_task": "Design your review: the fixed day and time, the numbers checked (your goal card's metrics), the three questions, and where answers get written (the venture's journal). Put all four reviews in the calendar now. Then dry-run one review on last week's real data to prove the ritual takes twenty minutes, not ninety.",
+      "reflection_prompt": "What's the realistic failure mode of your review — skipping it when the week went badly? Notice: that's the week it's worth the most. What will make it happen anyway (a shared slot with a parent is the classic answer)?",
+      "feedback_task": "Show the ritual design to whoever will be nearby during the month and ask them to hold you to it — not to run it, just to ask 'did you review?' every week. Accountability for the rhythm, not the results.",
+      "teach_back_task": "Teach the three-question review to a friend or your family for anything ongoing — a team season, a savings goal, a group project. Run their first one with them. The ritual is small enough to gift in fifteen minutes and big enough to change their year.",
+      "ai_judgment_note": "The review's answers must be written by you from your logs — the moment 'what did we learn' gets generated, the review is theatre. One honest use per review: after writing your answers, ask AI 'what question should I be asking about these numbers that I'm not?' — a standing outside prompt against your own blind spots. But the twenty minutes belong to you, your numbers, and one honest change.",
+      "assets_needed": ["Review ritual card (day / numbers / three questions) + four calendar slots"],
+      "est_minutes": 30,
+      "success_criteria": [
+        "The weekly review is designed and all four slots are in the calendar.",
+        "One dry-run review happened on real data inside twenty minutes."
+      ],
+      "prereq_lesson_ids": ["th-13-14-q4-l3"]
+    },
+    {
+      "id": "th-13-14-q4-l5",
+      "sequence": 5,
+      "title": "Earn the sign-off",
+      "concept": "The plan's final exam is a real one: present it to your decision-maker and earn a signature. The winning structure is the one you built in Q1 — and the counterintuitive move is to lead with the *risks*: 'here's my goal, here's how it fits my hours, here are the five ways it could fail and my answer to each.' Adults sign plans that have already argued against themselves. Hope is not a plan; a pre-mortem with responses is.",
+      "real_example": "Two pitches for the same month: 'I'm going to make RM200, it'll be great' — met with worried questions and a vague maybe. Versus: 'RM200, inside 8 real hours a week; the three big risks are exams, supplier, weather — here's my response to each; here's the Sunday review where you can see the numbers.' Signed on the spot — with the parent volunteering the Sunday slot. Steelmanning your own plan is what being taken seriously *is*.",
+      "apply_task": "Assemble the one-page plan: goal and metrics, weekly targets, hour budget, top risks with responses, review calendar. Present it in person. Take questions; where they find a real hole, fix the plan — that's the process working. Get the signature and the agreed support (the review slot, the market lift, the exam-week accommodation).",
+      "reflection_prompt": "Which question in the meeting was hardest — and had your pre-mortem predicted it? Compare this sign-off to your Q1 case: what's different about arguing for a *plan* versus arguing for a *change*?",
+      "feedback_task": "After the signature, ask your decision-maker one more question: 'what would make you *stop* the month early?' Write their answer into the plan as a tripwire. Knowing the stop-condition in advance is what makes the green light real.",
+      "teach_back_task": "Teach the risk-led pitch to a friend who needs a yes for anything: help them build the one-pager — goal, fit, risks, responses — and rehearse leading with the risks. When their adult says 'that's fair' before saying yes, the method has been fully passed on.",
+      "ai_judgment_note": "The plan on the page and the voice in the room must be yours — the signature is being given to *you*, and a decision-maker can hear borrowed words instantly (your Q1 lesson, still true). Final rehearsal use, the same one that's served all year: 'here's my plan — attack it as the skeptical parent.' Patch what the attack finds, then close the laptop and make the case yourself. That's the whole pillar in one move: machine as sparring partner, human as the one who stands up and argues.",
+      "assets_needed": ["One-page plan + sign-off sheet (signature / support agreed / stop-condition)"],
+      "est_minutes": 45,
+      "success_criteria": [
+        "The one-page plan was presented in person, risks first, and signed by the decision-maker.",
+        "Agreed support and a written stop-condition are recorded on the plan."
+      ],
+      "prereq_lesson_ids": ["th-13-14-q4-l4"]
+    }
+  ]
+}
