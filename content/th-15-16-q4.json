@@ -1,0 +1,119 @@
+{
+  "id": "th-15-16-q4",
+  "title": "Plan the Open Door",
+  "pillar_primary": "think",
+  "pillars_supporting": ["explore", "communicate"],
+  "age_band": "15-16",
+  "quarter": 4,
+  "developmental_frame": "At the top of this curriculum, a 15–16-year-old holds assets no application form was designed to expect: a chosen domain with a strategy, a public shipping record, professional relationships, institutional wins, allocated capital under governance. What remains is the orienting act of late adolescence: converting an accumulated year into a *next thing* — an internship, a first professional client, a program, a position — chosen deliberately rather than accepted by default. The planning capacity is fully adult now; what this quarter supplies is the frame most adults never get: doors are specified, keepers are people, readiness is auditable, and campaigns beat wishes.",
+  "authentic_value_meaning": "At this age, thinking creates value when it converts a year of evidence into **a real door, deliberately chosen and campaigned for** — defined observably, specced from its keeper's side, matched against an honest readiness audit, and pursued with a plan that has fallbacks. Whether the door opens this season or next, the teen who has run one full door-campaign owns the template for every threshold of adult life: jobs, admissions, partnerships, funding. They are all the same door, wearing different signs.",
+  "motivation_lever": {
+    "lever": "real_stakes",
+    "mechanism": "The door is real and the teen chooses it: a named internship, a first professional engagement, a juried program, a leadership position — something whose opening genuinely changes their next year. The campaign runs on the calendar with real asks to real keepers, and the whole year's accumulated work is the stake being played. The other three pillars' capstones take their aim from this plan, which the teen knows: this is the quarter where the year decides what it was for."
+  },
+  "artifact": "The Open Door campaign plan: the door defined observably, the keeper map with the door's spec written from the keeper's side, an honest readiness audit with its gap-closing plan, a campaign calendar with primary and fallback doors — presented to and signed off by the teen's decision-maker, with the first real ask already launched.",
+  "success_criteria": [
+    "One primary door is defined observably — the teen can state exactly what 'open' looks like and when.",
+    "The keeper map exists: who actually opens this door, and the door's spec written from the keeper's perspective.",
+    "A readiness audit compares the teen's actual assets against the spec, gap by gap, with a closing plan feeding the other capstones.",
+    "A campaign calendar with at least one fallback door was signed off, and the first real ask has actually been sent."
+  ],
+  "prereq_project_ids": ["th-15-16-q3"],
+  "lessons": [
+    {
+      "id": "th-15-16-q4-l1",
+      "sequence": 1,
+      "title": "Name the door",
+      "concept": "Vague ambitions can't be campaigned for. A door is defined when you can state, observably: what 'open' looks like (an offer letter, a signed first client, an acceptance, a seat), by when, and why *this* door — how it compounds your year-bet and strategy rather than abandoning them. The discipline of choosing one primary door (plus fallbacks, later) is your depth-over-breadth training at life scale: a season spent half-pursuing four doors opens none, while one door campaigned properly tends to open others you never knocked on — doors are strangely social that way.",
+      "real_example": "Three real doors from three curriculum veterans: 'a paid junior editing role with a production house — even four hours a week — by June' (the video teen: compounds his festival credential); 'the district's young entrepreneur program, next intake' (the baker: her canteen campaign made her known to exactly its selection committee); 'three retained tutoring clients at professional rates, forming a real practice' (the guide-seller: a door she opens *herself* — self-employment is also a door, with the hardest keeper: the market). Each is observable, dated, and strategy-continuous. None is 'get noticed' or 'do well' — those are wishes wearing ambition's clothes.",
+      "apply_task": "Generate three candidate doors that genuinely pull at you, each defined observably (what open looks like / by when / how it compounds the year-bet and strategy memo). Apply your allocation discipline — this is choosing where the year's final quarter concentrates. Choose the primary. Write the one-line reason the others lost; they'll return as fallbacks.",
+      "reflection_prompt": "Is your chosen door the ambitious one or the safe one — and which would your year-bet memo's author have chosen? What's the difference between a door you want and a door you're supposed to want?",
+      "feedback_task": "Say the door sentence — open-looks-like, by-when, why-this — to two people: your decision-maker and someone inside the door's world. The first tests family reality; the second tests world reality. Adjust for both.",
+      "teach_back_task": "Help a friend convert their vague next-year ambition into a named door: observable, dated, compounding. The moment 'I want to get into design' becomes 'a portfolio review with X program by March', they can start walking. Teach that moment.",
+      "ai_judgment_note": "AI can widen the field — 'what doors exist for someone with this portfolio in this domain?' surfaces programs, roles, and paths you haven't heard of; verify each against current reality (dates, existence, requirements — models cite last year's doors). The choice is the most personal allocation of the curriculum: it encodes what you want your seventeenth year to be, which no model can want for you. Generate widely, verify thoroughly, choose alone.",
+      "assets_needed": ["Door sheet (3 candidates, observable + dated + compounding) + primary chosen with reasons"],
+      "est_minutes": 45,
+      "success_criteria": [
+        "Three observable, dated candidate doors exist.",
+        "A primary is chosen with written reasons and both reality-tests passed."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "th-15-16-q4-l2",
+      "sequence": 2,
+      "title": "Spec the door from the keeper's side",
+      "concept": "Every door has keepers — the hiring manager, the selection committee, the market itself — and keepers run on specs, mostly unwritten. The move you now own from three campaigns: cartography plus incentive-reading, aimed at the door. Who actually decides? What are they *rewarded* for choosing well and *afraid* of choosing badly? What does their yes-pile look like — and their instant-no pile? Write the door's spec as the keeper would: 'I need someone who ___, with evidence of ___, who won't ___.' The unwritten lines matter most, and they're discoverable the way everything unwritten is: by asking people who've been through the door.",
+      "real_example": "The video teen's keeper research — two outreach conversations with junior editors (his interview craft, mature now) — rewrote his spec completely. The written job posts said 'proficiency in editing software'. The keepers' actual spec: 'someone who takes feedback without sulking, hits small deadlines reliably, and won't need supervising' — because the fear driving junior hires isn't skill (skill is checkable) but *maintenance cost*. His entire campaign re-aimed in one afternoon: his handoff-week story, his revision-after-critique receipts, and his kept-commitments ledger were suddenly the leading evidence, not his showreel. Doors are opened by answering fears, not just displaying merits.",
+      "apply_task": "Build the keeper map: the actual decider(s), their incentives and fears, the formal process and its calendar. Then write the door's spec from their side — needs, evidence expected, instant-nos — and fill the unwritten lines by talking to at least one person who's been through this door (your outreach and interview craft exist precisely for this conversation). File the spec: it is now the measuring stick for everything.",
+      "reflection_prompt": "What did the keeper's fear turn out to be — and how different is the true spec from the posted one? Why does 'answer their fear' beat 'display your merit' at almost every door in life?",
+      "feedback_task": "Show the spec to your through-the-door informant: 'is this what the keepers actually look for?' Their corrections are the campaign's aim being trued. Every degree of aim here saves weeks of campaign later.",
+      "teach_back_task": "Teach spec-from-the-keeper's-side to a friend facing any selection — a team, a program, a job. Help them find and interview one through-the-door person. The unwritten spec exists for everything; teach them that it's always discoverable and almost never discovered.",
+      "ai_judgment_note": "AI knows the *typical* specs of typical doors — a useful first draft of the written half. The unwritten half lives in specific keepers' heads and reaches you only through humans who've stood before them; no substitute exists. And a note your fool-yourself training will appreciate: through-the-door informants carry survivorship bias — they know what worked for *them*. Two informants beat one; an informant plus a keeper-adjacent view (the editor who's watched hires fail) beats both.",
+      "assets_needed": ["Keeper map + door spec (needs / evidence / instant-nos, unwritten lines sourced)"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "A keeper map exists with incentives, fears, process, and calendar.",
+        "The spec includes unwritten lines sourced from at least one through-the-door conversation."
+      ],
+      "prereq_lesson_ids": ["th-15-16-q4-l1"]
+    },
+    {
+      "id": "th-15-16-q4-l3",
+      "sequence": 3,
+      "title": "Audit your readiness, honestly",
+      "concept": "Spec in hand, run the audit your whole education has rehearsed: your actual assets — portfolio, credentials, receipts, relationships, ledgers — against the door's spec, line by line, graded three ways: *strong evidence* (receipts a keeper can check), *weak evidence* (true but unproven — the gap between what you are and what you can show), and *genuine gap* (not yet true). No flattery and no false modesty; both misallocate the final quarter. Then the plan: every weak-evidence line gets a proving move, every genuine gap gets either a closing move or an honest workaround — and the biggest moves get *delegated to your other capstones*: the flagship exists to close the spec's biggest evidence gap; the year-story exists to make the strong lines visible. This is the hub doing its job: the audit writes the other three quarters' briefs.",
+      "real_example": "The video teen's audit against his re-aimed spec: takes-feedback — strong (the critique-revision-return receipts); deadline reliability — *weak* (true for a year, but scattered across ledgers no keeper would ever assemble: the year-story capstone got its brief — 'make the reliability visible on one page'); professional editing under someone else's direction — *genuine gap* (all his work was self-directed: the flagship capstone got its brief — 'one piece cut to a client's brief, not my taste, documented'). One afternoon of honest grading, and his remaining quarter had exact marching orders. Audits don't just measure readiness. They *manufacture* it, by aiming the time that's left.",
+      "apply_task": "Run the audit: every spec line graded strong/weak/gap with the evidence named or its absence admitted. Write the closing plan: proving moves for weak lines, closing moves or workarounds for gaps — and issue the briefs: what the flagship must be and prove (to Build), what the year-story must make visible and what the ask must say (to Communicate), what the executing bet must demonstrate (to Wealth). The hub has spoken; the capstones now know their jobs.",
+      "reflection_prompt": "Which grade was hardest to write honestly — a strong you wanted to inflate, or a gap you wanted to blur? What does 'weak evidence' as a category teach you about the difference between being good and being *credible* — and whose job is closing that difference?",
+      "feedback_task": "Show the audit to someone who knows both you and the door's world (your practitioner is ideal). Ask: 'which grade is wrong?' Their regrade — in either direction — is the audit's calibration. Keepers will grade you cold; better to be regraded warm first.",
+      "teach_back_task": "Run a readiness audit with a friend against their door's spec — the three grades, the proving moves, the honest gaps. Most people have never once compared their evidence to a spec line by line; watch what it does to their aim. Then note: you just taught the move that turns anxiety into a work plan, which is most of what planning is for.",
+      "ai_judgment_note": "The machine can hold spec against portfolio and flag mismatches — a fine mechanical pass. The grades are yours: only you know which receipts are real, which strengths are unproven, which gaps are genuine. The oldest temptation arrives here in its final form — letting the machine (or anyone) inflate weak evidence into strong with confident wording. Keepers check. The entire value of your year of receipts is that checking them makes them *stronger*. Never spend that on one flattering sentence.",
+      "assets_needed": ["Readiness audit (spec lines × strong/weak/gap + evidence) + capstone briefs issued"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "Every spec line is graded with evidence named, calibrated by a knowledgeable reviewer.",
+        "Written briefs exist for the Build, Communicate, and Wealth capstones derived from the audit."
+      ],
+      "prereq_lesson_ids": ["th-15-16-q4-l2"]
+    },
+    {
+      "id": "th-15-16-q4-l4",
+      "sequence": 4,
+      "title": "Design the campaign",
+      "concept": "A door campaign is your institutional campaign generalised: sequence, allies, asks, and rhythm — against the keeper's calendar, not your impatience. The elements: the *timeline* backwards from the door's real dates (application windows, intake cycles, market seasons) with your capstones' deliveries slotted in; the *approach path* (warm beats cold at every door — who can introduce, vouch, or pre-mention you; your relationship ledger has been building this answer all year); the *asks* in escalating order (information, then advice, then the door itself — people who've given advice want the advisee to succeed); and the *fallback doors* with their own lighter paths — because a campaign with no plan B negotiates from fear, and keepers can smell it. Plan the fallbacks with real respect: this year's fallback has a way of becoming next year's front door.",
+      "real_example": "The campaign board of the baker, backwards from the program's March intake: December — flagship (the recipe book) done, an information conversation with one program alumna (ask #1); January — year-story published, the alumna's advice conversation (ask #2: 'what makes applications stand out?' — whose answer reshaped hers); February — application in, with the PTA rep and the principal (her institutional campaign's dividends) as referees; the ask itself (#3) riding on materials every earlier ask had sharpened. Fallbacks, planned not feared: the town's business association's youth membership (lighter door, same direction) and 'run the practice independently and reapply with a year of revenue' — which, she noted, was barely a fallback at all. That's what a good board does: it makes even the failure paths point forward.",
+      "apply_task": "Build the campaign board: timeline backwards from the door's real calendar with capstone deliveries slotted; the approach path with named humans and their roles; the ask ladder (information → advice → door) with dates; two fallback doors with their lighter paths. Pre-mortem the campaign (you know the ritual): the three likeliest failure modes and their answers, on the board.",
+      "reflection_prompt": "Where does your campaign depend on warmth you've already built versus warmth you must build fast — and what does the ratio say about the year's quiet relationship work? Why does the ask ladder work — what does each rung *actually* transfer besides information?",
+      "feedback_task": "Walk the board past your through-the-door informant: 'does this sequence match how this door actually opens?' Doors have rhythms invisible from outside — the month applications actually get read, the person who really screens. One insider pass on the timing is worth three revisions of the materials.",
+      "teach_back_task": "Teach the campaign board to a friend with a door and no plan — timeline backwards, ask ladder, fallbacks-with-respect. Most people approach doors with one cold ask and a prayer. Teach them the ladder, and stand nearby when they send ask #1; you know why the standing matters.",
+      "ai_judgment_note": "Campaign logistics are machine-friendly — calendar math, sequencing checks, 'what does this plan assume?' red-teams — under all standing rules. The asks themselves, rung by rung, are the year's relationship craft at full stretch: human, warm, specific, yours. One caution with a long horizon: as generated outreach floods every keeper's inbox, the campaigns that work will be the ones whose every touch is verifiably personal. You've practiced that for four years. It's about to become your biggest structural advantage.",
+      "assets_needed": ["Campaign board (backwards timeline / approach path / ask ladder / fallbacks / pre-mortem)"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "A complete campaign board exists, timed backwards from the door's real calendar.",
+        "The ask ladder is dated, fallbacks are planned with paths, and an insider validated the sequence."
+      ],
+      "prereq_lesson_ids": ["th-15-16-q4-l3"]
+    },
+    {
+      "id": "th-15-16-q4-l5",
+      "sequence": 5,
+      "title": "Sign off, and send the first ask",
+      "concept": "The hub's final act, in the shape you've made your signature: present the whole plan — door, spec, audit, campaign — to your decision-maker, risks first, and earn the sign-off that aligns the household behind the season. Then the move that separates planners from campaigners, the one this entire curriculum has been teaching in every register: *send the first ask before the meeting's warmth wears off*. Ask #1 goes out this week — the information conversation, the lightest rung — because campaigns begin when the first message leaves, not when the plan is admired. Planning was never the product. The open door was never even the product. The product is a person who can define a door, spec it, audit themselves against it, and walk toward it on a schedule — and that person now exists, mid-stride.",
+      "real_example": "Every campaign this curriculum has ever described began the same way its smallest lesson did, six years and four bands ago: a child showing an adult something they noticed, and asking. The noticing got systematic; the asks grew from 'is this interesting?' to 'would you buy this?' to 'may I have the room?' to — this week — 'I'm pursuing X; could I ask you three questions about how it opened for you?' The video teen's ask #1 got a reply in four hours. His note that evening, worth the whole hub quarter: 'the scary version of this year was never the asks. It was reaching June with no door named and no asks sent.' The plan is signed. The ask is out. The year is in motion toward its door.",
+      "apply_task": "Present the complete plan risk-first and earn the sign-off — support agreed, stop-conditions for the campaign written (yes, campaigns have them too: the date you pivot fully to a fallback). Then send ask #1 — really send it — and log the campaign's first entry. From here the rhythm runs: the board reviewed weekly beside your other governing documents, the capstones executing their briefs, the asks climbing their ladder on schedule.",
+      "reflection_prompt": "Four governing documents now steer your year — bet, strategy, allocation, campaign. Reread the first one: how far has the person who wrote it travelled? And the door itself: whatever the keepers decide, what has the campaign already given you that can't be taken back?",
+      "feedback_task": "After ask #1's reply arrives (it usually does — light rungs get answered), debrief with your decision-maker: what the reply teaches, what it changes on the board. The campaign is now a running system with its keeper — which was the sign-off's real meaning.",
+      "teach_back_task": "The hub's last teach-back is the curriculum's whole method in miniature: take one younger person — a sibling, a cousin, a mentee from any of your quarters — and teach them the smallest version of the door pattern: name something you want, find out what it takes, check yourself honestly, ask someone who can help. That pattern, planted at eleven or twelve, grows into everything this year has been. You know, because it did. Pass it down; that's what the top of a curriculum is for.",
+      "ai_judgment_note": "The final hub note is the shortest, because you already know it: the machine red-teamed the plan, drilled the asks, checked the calendar math — and the plan is yours, the asks are yours, the door will open to *you* or not at all. Four years of AI-judgment notes reduce to one sentence you can now carry unattended: use every tool to sharpen your thinking, and let none of them replace the person the thinking is for. Send the ask.",
+      "assets_needed": ["Signed campaign plan + campaign stop-conditions + ask #1 sent and logged"],
+      "est_minutes": 45,
+      "success_criteria": [
+        "The plan was presented risk-first and signed, with support and campaign stop-conditions recorded.",
+        "Ask #1 was actually sent and the campaign log has its first entry."
+      ],
+      "prereq_lesson_ids": ["th-15-16-q4-l4"]
+    }
+  ]
+}
