@@ -1,0 +1,119 @@
+{
+  "id": "co-15-16-q2",
+  "title": "The Professional Voice",
+  "pillar_primary": "communicate",
+  "pillars_supporting": ["wealth"],
+  "age_band": "15-16",
+  "quarter": 2,
+  "developmental_frame": "At 15–16, teens begin genuinely needing the adult world's channels — applications, work inquiries, client messages, meetings — and they arrive fluent in exactly the wrong register: chat-speak that reads as careless, or stiff formality copied from templates that reads as hollow. The capability that's ready is register-switching itself: this age can hold multiple voices and pick deliberately. What they lack is calibration — nobody has shown them what professional-but-human sounds like from a sixteen-year-old, or told them that it's a learnable surface over the skills they already have.",
+  "authentic_value_meaning": "At this age, communication creates value when the teen can **operate in adult channels and be taken at face value** — an email that gets a reply from a busy stranger, a portfolio a professional bookmarks, a meeting where nobody adjusts for their age. The professional voice isn't pretending to be older; it's removing every accidental signal of carelessness so the work underneath gets judged on its merits.",
+  "motivation_lever": {
+    "lever": "real_stakes",
+    "mechanism": "Every exercise this quarter is live ammunition: the emails go to real professionals, the portfolio goes to real reviewers, the meeting happens with a real adult about real work. The stakes are doors that actually open or don't — replies that arrive or never come — and each landed exchange visibly expands what the teen can reach without an adult intermediary. Nothing motivates register-learning like the first busy stranger who answers within the hour."
+  },
+  "artifact": "A working professional presence: a live portfolio page built on real work, a professional email voice proven in use, and a contact ledger recording three genuine professional exchanges conducted end-to-end — opening, thread, meeting or call where warranted, and follow-through.",
+  "success_criteria": [
+    "A portfolio page is live, built on the teen's real work, reviewed by at least one professional.",
+    "Three real professional exchanges were completed end-to-end, each with a purpose the teen can state.",
+    "At least one exchange included a live meeting or call the teen prepared for and summarised afterward in writing.",
+    "A contact ledger exists with every commitment made and kept, and no thread left dangling."
+  ],
+  "prereq_project_ids": ["co-15-16-q1"],
+  "lessons": [
+    {
+      "id": "co-15-16-q2-l1",
+      "sequence": 1,
+      "title": "Register is a choice",
+      "concept": "You already speak several languages — the group-chat voice, the teacher voice, the family voice. Professional is just one more register, and it has learnable rules: complete sentences without stiffness, warmth without emojis doing the work, specificity over filler, and zero apology-for-existing ('sorry to bother you' signals you agree you're a bother). The goal isn't sounding forty. It's sounding *deliberate* — like every word was chosen by someone careful, because it was.",
+      "real_example": "Three versions of the same message to a shop owner. Chat-register: 'hey any chance u need help w socials?' — deleted on sight. Costume-register: 'Dear Esteemed Sir/Madam, I wish to inquire…' — deleted slower. Deliberate: 'Hi Mr Rahim — I'm Ana, 16, I run the photography account for our school's food fair (300 followers, mostly local parents). I noticed your window display changes weekly but your page doesn't. Could I make you three sample posts, free, to show what I mean?' Same ask. Only one sounds like someone worth replying to.",
+      "apply_task": "Take three messages you'd realistically need to send this quarter (your Build practitioner, a venue, a potential client or supplier for your asset). Write each in all three registers — chat, costume, deliberate — then study your own gap: what specifically separates your deliberate version from the other two? Write your five personal rules from the comparison.",
+      "reflection_prompt": "Which register error are you naturally closer to — too casual or too costumed? Where did you learn that voice, and what does the deliberate register keep from your natural one?",
+      "feedback_task": "Show your deliberate versions to a working adult and ask the calibration question: 'if this arrived from a stranger, what would you assume about them?' Adjust until the answer is 'careful, competent, young — in that order'.",
+      "teach_back_task": "Teach the three-registers exercise to a friend about to send their first professional message. Have them write all three versions — the comparison teaches faster than any rules list, including yours.",
+      "ai_judgment_note": "AI speaks fluent costume-register — ask it for 'a professional email' and you'll get the exact hollow formality this lesson exists to kill. Better uses: paste your own draft and ask 'where does this sound careless, and where does it sound like a template?' — it diagnoses register drift well. The voice you're building must be recognisably yours with the carelessness removed, because you'll have to *speak* in this register too, live, where no model can follow you.",
+      "assets_needed": ["Three-registers worksheet + personal rules card (5 rules)"],
+      "est_minutes": 40,
+      "success_criteria": [
+        "Three real messages exist in all three registers with a written gap analysis.",
+        "A five-rule personal register card exists, calibrated by a working adult."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "co-15-16-q2-l2",
+      "sequence": 2,
+      "title": "The portfolio page",
+      "concept": "A professional presence answers one question before anyone asks it: *what has this person actually done?* Your portfolio page is your real work — the Build trio, the published pieces, the venture numbers — arranged so a busy stranger gets the answer in ninety seconds: who you are in two lines, three to five best works each with one line of context (what it is, for whom, what happened), and how to reach you. No inflated titles, no skills-lists without evidence, nothing you can't back in conversation. The page's power is that everything on it is checkable.",
+      "real_example": "Two sixteen-year-olds' pages. One: 'Passionate entrepreneur | Marketing expert | CEO @ …' — a costume made of words. The other: three work samples — 'Promo video for Kassim Bakery (they posted it; +40 followers that week)', a published article, a tutoring guide 'RM196 in sales to students I've never met' — plus two lines of who and one contact link. The second page got its owner a paid commission from a stranger who said, precisely: 'I could see exactly what I'd be getting.'",
+      "apply_task": "Build the page with whatever tool ships fastest — a simple site builder, a clean document, a one-page PDF. Two lines of who; your three to five strongest real works, each with its one-line context and receipt; contact. Apply the checkable rule ruthlessly: if you couldn't discuss it comfortably in an interview, it doesn't go on.",
+      "reflection_prompt": "What did you *want* to claim that the checkable rule made you cut — and what does the page look like without it? Sparser and stronger, or just sparser? (If just sparser, that's next quarter's to-do list, honestly discovered.)",
+      "feedback_task": "Send the live page to one professional (your Build practitioner relationship exists for moments like this) with one question: 'what would make you take this person seriously — and what undermines it?' Fix what they name before the exchanges lesson points strangers at it.",
+      "teach_back_task": "Help a friend build their first checkable portfolio page — the two lines, the works with receipts, the ruthless cut of everything unbackable. Watching someone else's costume-claims fall away shows you any that survived on yours.",
+      "ai_judgment_note": "Layout, tooling, tightening your context lines — all fair machine work. The two hard rules live where they've always lived: every word about your work must be checkably true (the page is a claims-and-receipts document — your training runs deep here), and the work itself follows your portfolio-honesty rule from the craft quarter — disclosed tools, your judgment, nothing you couldn't demonstrate. A portfolio inflated by machine-polish gets you one meeting, exactly once.",
+      "assets_needed": ["Portfolio page (live) + checkable-rule audit of every claim"],
+      "est_minutes": 90,
+      "success_criteria": [
+        "A live page exists: two-line who, 3-5 checkable works with receipts, contact.",
+        "One professional reviewed it and their named fixes are applied."
+      ],
+      "prereq_lesson_ids": ["co-15-16-q2-l1"]
+    },
+    {
+      "id": "co-15-16-q2-l3",
+      "sequence": 3,
+      "title": "Threads, follow-ups, and kept commitments",
+      "concept": "One good email starts a relationship; *thread discipline* builds one. The rules professionals silently grade you on: reply within a day even if only to say when you'll properly reply; every commitment you type ('I'll send it Friday') is a promise with a deadline — track it, keep it, or renegotiate it *before* it's late; follow up on silence once, politely, after a week; and close every thread explicitly — 'thanks, this is done' — because dangling threads read as flakiness. None of this is charisma. It's bookkeeping, and bookkeeping is a competitive advantage precisely because most people won't do it.",
+      "real_example": "A shop owner reflecting on two teens who'd both pitched her: 'The first one's message was actually better written. But the second one replied same-day, sent the samples exactly when he said, and checked back the following week like he said he would. I hired the second one. I'd have *forgotten* the first one existed — his thread just… stopped.' Deals at every level of the economy are lost exactly there: not to rejection, to silence.",
+      "apply_task": "Open your contact ledger — every professional thread you now have (practitioner, reviewers, prospects), with columns for: last message, whose turn, commitments made, due dates, thread status. Then work it for two weeks: launch your first two real exchanges (from your lesson-one drafts), reply within a day, keep every typed commitment, follow up on any silence once, and close what completes.",
+      "reflection_prompt": "Look at your ledger after two weeks: which discipline was hardest — the fast reply, the kept deadline, or the follow-up into silence? What does your answer predict about where you'll leak trust at twenty-five, and what system plugs the leak now?",
+      "feedback_task": "Show the ledger (redacted if needed) to a working adult and ask what their version looks like — a CRM, a folder system, flags. Steal one mechanism from how they track promises. Everyone senior has one; nobody was born with it.",
+      "teach_back_task": "Teach thread discipline to a friend with a dangling opportunity — the unanswered message they're avoiding. Sit with them while they send the revival: 'following up on this — still interested if the door's open.' Half the time the door is. Teach them the moral: silence kills more chances than no ever does.",
+      "ai_judgment_note": "The ledger is pure systems territory — spreadsheet formulas, reminder automations, your Build training applied to relationships; machine help is exactly right here. The messages inside the threads stay yours by the register rules, and one new hazard appears at thread-scale: AI-drafted replies are fast enough to answer without *reading properly*, and a reply that misses what the person actually said is worse than a slow one. Read like a human, track like a machine, reply like yourself.",
+      "assets_needed": ["Contact ledger (thread / last msg / whose turn / commitments / status)"],
+      "est_minutes": 50,
+      "success_criteria": [
+        "A contact ledger exists and was worked for two weeks with no dangling threads.",
+        "Two real exchanges are underway with every typed commitment kept or renegotiated early."
+      ],
+      "prereq_lesson_ids": ["co-15-16-q2-l2"]
+    },
+    {
+      "id": "co-15-16-q2-l4",
+      "sequence": 4,
+      "title": "The meeting",
+      "concept": "Sooner or later a thread graduates to a call or meeting — and meetings are won before they start. The professional's checklist: know what *both* sides want from the thirty minutes; prepare your three points and your questions (your interview craft, now bidirectional); handle the logistics flawlessly (on time is late for the person who called the meeting — be early, test the tech, have the documents open); take notes; and send the summary within a day — what was discussed, what was agreed, who does what by when. The summary is the move almost nobody makes. It quietly puts you in charge of the record, and the record is where commitments live.",
+      "real_example": "A sixteen-year-old's first client call, for a logo commission: she'd prepared three questions about the shop's customers, showed two rough directions, and — the part the owner told everyone about — sent a five-line summary an hour later: 'Direction B, green tones, first draft next Friday, RM80 on approval.' The owner had had *adult* contractors who never did that. The summary didn't just impress; three weeks later, when memory blurred on the price, the thread settled it in her favour. The record always wins.",
+      "apply_task": "Graduate one of your live exchanges into a real meeting or call with a purpose (portfolio review, client discussion, supplier terms — whatever your threads have earned). Run the full checklist: both-sides prep sheet, three points, logistics rehearsal, notes, and the summary sent within twenty-four hours. File everything in the ledger.",
+      "reflection_prompt": "What surprised you about the live meeting versus the thread — pace, tangents, how decisions actually got made? And what did writing the summary force you to realise you *hadn't* pinned down in the room?",
+      "feedback_task": "Ask your meeting counterpart afterward for one professional-to-professional note: 'what should I do differently in my next meeting?' Adults hand this gold to any teen who asks it straight — and asking it is itself the register, demonstrated.",
+      "teach_back_task": "Prep a friend for their first real call — the both-sides sheet, the three points, the summary move. Then debrief them after. The summary habit, transplanted into one more person, will quietly run for decades; that's the kind of teaching this pillar is for.",
+      "ai_judgment_note": "Prep is fair machine territory: rehearsing answers, anticipating their questions ('what would a shop owner ask a teen designer?'), tightening your three points. The meeting itself is entirely human — and one bright line inside it: never record or transcribe a call without asking, and if you use an AI notetaker, say so out loud at the start; consent in professional settings isn't optional courtesy, it's the register. The summary afterward: drafted from *your* notes, machine-tightened if you like, checked against what was actually said — because the record you're creating is only powerful while it's true.",
+      "assets_needed": ["Meeting kit (both-sides prep / three points / logistics check / summary template)"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "A real meeting or call happened with written prep on both sides' goals.",
+        "The summary went out within 24 hours and is filed in the ledger."
+      ],
+      "prereq_lesson_ids": ["co-15-16-q2-l3"]
+    },
+    {
+      "id": "co-15-16-q2-l5",
+      "sequence": 5,
+      "title": "Three exchanges, closed properly",
+      "concept": "The quarter closes with proof at professional standard: three real exchanges, end-to-end — opened deliberately, threaded with discipline, met where warranted, every commitment kept, closed explicitly. Then the professional's retrospective: reread your own threads as if grading a stranger. Where did your register slip? Which reply took three days? What would the other party say about working with you? The voice is now installed; the retrospective is how it keeps calibrating for the next forty years — because the professional world rarely gives feedback. It just decides, silently, whether to reply to you next time.",
+      "real_example": "Her quarter's ledger, closed: the practitioner exchange (portfolio review → critique → improved work returned → 'send me your next one' — door open); the bakery client (pitch → meeting → delivered posts → paid, testimonial banked for the portfolio); the supplier inquiry (quote requested → terms compared → politely declined — 'thank you, I've gone another way' — because *declining well is also professional*). Three threads, three different endings, zero silences. Reading them back, she found one two-day reply gap and a 'sorry to bother you' that had survived lesson one. Noted. Next quarter's threads won't have them.",
+      "apply_task": "Complete and explicitly close your third exchange. Then run the retrospective: reread all three threads cold, grade yourself against every rule this quarter installed (register, thread discipline, commitments, summaries, closes), and write the three-line verdict: what's now installed, what still slips, and the one repair to make — then make it, including anywhere you owe a close or a thank-you.",
+      "reflection_prompt": "Compare the person who wrote this quarter's first draft message with the one who just closed three professional threads. What actually changed — the writing, or your sense of what you're allowed to walk up to? Which change matters more?",
+      "feedback_task": "Ask one counterpart from your three exchanges the closing question, framed exactly professionally: 'I'm building my professional habits deliberately — one thing I did well, one thing to improve?' File both answers in the ledger where next quarter will find them.",
+      "teach_back_task": "Package the quarter for a friend entering their first professional situation — job application, client, cold ask. Walk them through register, the checkable portfolio, thread discipline, the meeting kit, and the explicit close, using your real (redacted) threads as the textbook. When their first professional reply arrives and they message you a screenshot — that's this quarter, compounding in someone else's life.",
+      "ai_judgment_note": "The retrospective works because the threads are a complete honest record — and rereading your own words cold is a skill AI can assist ('grade these threads against these rules') but not replace, because the grader you're training is you. One closing calibration for the decades ahead: the professional world will increasingly be full of machine-written messages, which means the deliberate human voice — checkable, warm, specific, *present* — is appreciating in value every year. You now own one. The threads where a real person can tell a real person showed up: those are yours, and they're the ones that get answered.",
+      "assets_needed": ["Closed ledger (3 complete exchanges) + retrospective sheet (installed / slips / repair)"],
+      "est_minutes": 50,
+      "success_criteria": [
+        "Three exchanges are complete and explicitly closed with all commitments kept.",
+        "A written retrospective exists with one repair identified and actually made."
+      ],
+      "prereq_lesson_ids": ["co-15-16-q2-l4"]
+    }
+  ]
+}

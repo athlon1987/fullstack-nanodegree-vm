@@ -1,0 +1,119 @@
+{
+  "id": "bu-15-16-q2",
+  "title": "Build With Others",
+  "pillar_primary": "build",
+  "pillars_supporting": ["lead", "communicate"],
+  "age_band": "15-16",
+  "quarter": 2,
+  "developmental_frame": "At 15–16, teens can genuinely divide creative labour — hold their piece of a shared design, trust a teammate's piece they didn't watch being made, and merge the two without either ego breaking. That's new: younger collaboration is mostly parallel play with a shared title. What makes it hard at this age is also what makes it teachable: peer relationships carry enormous weight, so the skills of disagreeing about work without damaging the friendship, and of being *depended on* by people whose opinion matters, land with full force. Every builder's career-ceiling is set by this skill, and almost nobody trains it deliberately.",
+  "authentic_value_meaning": "At this age, building creates value when a team ships something **no member could have built alone** — real division of labour, real interfaces between people's work, real friction survived — and each member can point at their part while honestly crediting the whole. Learning that coordination has costs, that agreements beat assumptions, and that reviewing a friend's work honestly is a form of respect: these are the lessons that turn good builders into people others want to build with.",
+  "motivation_lever": {
+    "lever": "belonging",
+    "mechanism": "The quarter's engine is the team itself: two or three builders shipping one real thing, with visible interdependence — my part doesn't work unless yours does. Being genuinely needed by people you chose, meeting the weekly rhythm because others are waiting, and the specific pride of 'we made this' are belonging at full strength, which at this age outpulls almost every other motivator. The retrospective at the end makes the bond explicit: teams that ship together, stay."
+  },
+  "artifact": "One shipped collaborative project — built by a team of two or three with a written work agreement, real division of labour, version discipline, and peer review — plus each member's visible individual contribution, the team's decision log, and a written retrospective on what the team made possible and what coordination cost.",
+  "success_criteria": [
+    "A team of 2-3 shipped one real thing with genuinely interdependent parts — not parallel solo work stapled together.",
+    "A written work agreement existed from the start: roles, interfaces, deadlines, and how disagreements get decided.",
+    "Each member's work was reviewed by another member at least twice, and at least one review changed something.",
+    "The teen can show their individual contribution and articulate, from the retrospective, one thing the team enabled and one thing coordination cost."
+  ],
+  "prereq_project_ids": ["bu-15-16-q1"],
+  "lessons": [
+    {
+      "id": "bu-15-16-q2-l1",
+      "sequence": 1,
+      "title": "Pick the team and split the seams",
+      "concept": "Team-building has two decisions, and most groups botch both in the first hour. The team: two or three people chosen for *complementary* skills and matched reliability — a brilliant flake costs more than a solid average, because teams run at the speed of their least reliable member. The split: divide the project along its natural seams so each person owns a whole part with a clear *interface* — the exact thing their part must hand to the next part. 'You do the design, I'll do the build, and the interface is: your files, in this format, by this date.' Vague splits are where friendships go to die.",
+      "real_example": "Three friends building a school-event site split it 'you do some pages, I'll do some pages' — and produced three clashing styles, two half-built duplicates, and one argument. The rebuild split along seams: one owned design (interface: a style sheet and assets), one owned build (interface: working pages from those assets), one owned content and launch (interface: final text by Wednesday, promotion after). Same three people, zero duplicated work, and every argument became a question about an interface instead of a person.",
+      "apply_task": "Form your team — two or three builders whose crafts complement yours (your professional voice knows how to make this ask well). Choose a project that genuinely needs all of you and can ship this quarter. Then map its seams together: each member's owned part, and every interface written as 'X hands Y to Z, in this form, by this date'.",
+      "reflection_prompt": "Did you choose teammates for skill, reliability, or comfort — and which choice will you feel in week four? Where are your project's real seams, and which interface is the one most likely to tear?",
+      "feedback_task": "Show your seam map to someone who has worked on real teams. Ask the veteran's question: 'which of these interfaces is going to fail first?' They'll spot it in seconds — vague handoffs glow in the dark to anyone who's been burned by one.",
+      "teach_back_task": "Teach seams-and-interfaces to a group tackling any joint task — a class project, an event. Convert one 'we'll all just help with everything' plan into owned parts with written handoffs, and watch the relief when everyone suddenly knows what's theirs.",
+      "ai_judgment_note": "AI can critique your seam map — 'where will these interfaces break?' is a good structural prompt — but it cannot pick your people; reliability, chemistry, and who shows up when it rains are facts about humans you've watched, not profiles a model can weigh. One team rule to set now, together: agree where AI is welcome in the build (each member's internal work, by the disclosed-tools rule) and where it isn't (nobody outsources their interface to a machine without telling the person on the other end — a generated handoff a teammate builds on is a trust debt between *people*).",
+      "assets_needed": ["Seam map (owned parts / interfaces as X→Y contracts) + team roster with the honest reliability note"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "A team of 2-3 exists with complementary skills and a chosen project that needs all of them.",
+        "A seam map exists with every interface written as a dated, formatted handoff contract."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "bu-15-16-q2-l2",
+      "sequence": 2,
+      "title": "One source of truth",
+      "concept": "Solo builders keep the project in their head; teams need it in a *place*. The disciplines that prevent ninety percent of team chaos: one shared workspace everyone actually uses (not three chats and someone's desktop), one source of truth per artifact — the current version lives in exactly one place, named so anyone can tell (v3-final-FINAL-real is a war crime), older versions kept but clearly retired, and decisions written down where they happened. Software teams solved this with version control; the *principles* — one truth, clear history, visible changes — transfer to any craft, and any team that skips them pays in merge disasters.",
+      "real_example": "The event-site team's near-death experience: two members spent an evening improving the *same* page from different starting copies — four hours of work, unmergeable, one furious night. Their fix was boring and total: one shared folder as law, a naming rule (page-v2-ana-editing means hands off), a five-line decision log ('Wednesday: dropped the countdown widget, too buggy — all agreed'), and for the coder, actual version control. Chaos went to zero in a day. Every professional team on earth runs on some version of these rules, learned the same way: the hard way, once.",
+      "apply_task": "Set up your team's infrastructure before real work starts: the one workspace, the naming convention, the source-of-truth rule per artifact type, the decision log, and version control if any part is code. Write it as a one-page team runbook (your reliability training knows this move) and get every member to actually work inside it for the first week.",
+      "reflection_prompt": "Where does your team's project most resemble the two-people-one-page disaster waiting to happen? What does 'one source of truth' cost in convenience, and why is the cost worth it anyway?",
+      "feedback_task": "After a week, audit each other: did everyone actually work in the workspace, follow the names, log the decisions? Every violation found kindly now is a merge disaster prevented later. Adjust any rule the team genuinely can't live with — rules nobody follows are worse than no rules.",
+      "teach_back_task": "Teach one-source-of-truth to any group drowning in 'which version is current?' — a family photo archive, a study-notes group. Set up their single place and naming rule in twenty minutes. It's the least glamorous gift you'll ever give and among the most used.",
+      "ai_judgment_note": "Infrastructure is machine-friendly territory: AI can draft naming conventions, explain version control basics for your stack, and template the decision log. The team-shaped caution: shared workspaces mean shared *content*, and nobody feeds a teammate's unfinished work, personal messages, or the team's private decisions into an AI tool without asking — the consent rules you learned for interviews apply inside teams too. What's shared with you is not yours to process; it's yours to protect.",
+      "assets_needed": ["Team runbook (workspace / naming / truth rules / decision log) + week-one audit notes"],
+      "est_minutes": 50,
+      "success_criteria": [
+        "The infrastructure exists and all members worked inside it for a week.",
+        "The decision log has real entries and the audit found (and fixed) at least one violation."
+      ],
+      "prereq_lesson_ids": ["bu-15-16-q2-l1"]
+    },
+    {
+      "id": "bu-15-16-q2-l3",
+      "sequence": 3,
+      "title": "The work agreement and the weekly beat",
+      "concept": "Friendly teams avoid writing things down — it feels like distrust. It's the opposite: the work agreement protects the friendship *from* the work. On one page: who owns what (from the seam map), what 'done' means per part, the deadlines each interface depends on, the weekly beat (a fixed 20-minute sync: what shipped, what's stuck, what changes), and — the clause that saves teams — how disagreements get decided when agreeing fails: whose call is it, per area? Decided calmly in week one, that clause is boring paperwork. Improvised mid-conflict in week five, it's the end of the band.",
+      "real_example": "Every famous band that imploded, every startup founder-war, every group project that ended a friendship shares one autopsy finding: no agreement about decisions, money, or credit — until the dispute arrived and wrote one in anger. The event-site trio's agreement took twenty minutes: design calls are Ana's, technical calls are Jun's, content ties break toward Mei, and anything cross-cutting goes to a vote with the owner breaking ties. Week four's font war — which in the counterfactual world becomes The Font War — lasted ninety seconds: 'design call. Ana's.' Done. Still friends.",
+      "apply_task": "Write and sign the team agreement: ownership, definitions of done, interface deadlines, the weekly beat's fixed time, and the decision clause per area. Then run the beat for two weeks of real building — twenty minutes, three questions, decisions logged. Real work now proceeds under the agreement.",
+      "reflection_prompt": "Which part of the agreement felt awkward to propose to friends — and can you now articulate why the awkwardness is precisely the evidence it's needed? What happens to teams whose members are too polite to write things down?",
+      "feedback_task": "After two weeks, review the agreement as a team: which clause has already earned its place, which needs amending, and has any disagreement been settled by the decision clause yet? Amend openly — an agreement that can't evolve gets abandoned instead.",
+      "teach_back_task": "Give the agreement template to another group forming around anything — a competition team, an event committee. Walk them through the decision clause especially, and tell them the band-war framing: this page is how you stay friends. It reframes paperwork as loyalty, which is what it is.",
+      "ai_judgment_note": "AI drafts good agreement skeletons and can war-game them — 'what disputes does this team's agreement fail to cover?' is worth one run. But the clauses themselves are promises between specific humans, negotiated out loud: whose call design is, what done means, what happens when someone's week collapses — a model has no standing in any of it. Sign it with your names, not a template's. And log the beat's decisions by hand: the log is the team's memory, and teams, like people, must own their memory.",
+      "assets_needed": ["Signed work agreement (ownership / done / deadlines / beat / decision clause) + two weeks of beat logs"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "A signed agreement exists with a per-area decision clause.",
+        "The weekly beat ran twice with logged decisions and real build progress under it."
+      ],
+      "prereq_lesson_ids": ["bu-15-16-q2-l2"]
+    },
+    {
+      "id": "bu-15-16-q2-l4",
+      "sequence": 4,
+      "title": "Review each other's work like professionals",
+      "concept": "The hardest team skill: telling a friend their part isn't good enough yet — and hearing it back. Professional review rules make it survivable: review the work against the *agreement's* definition of done, never against taste alone ('this fails the style sheet' beats 'I don't like it'); be specific and actionable (your field-critique training, now given as well as received); the maker decides how to fix, the reviewer decides whether it's fixed; and everything is reviewed before it crosses an interface — because catching a problem at the seam costs minutes, and catching it after integration costs the weekend. Software engineers review every line before merging. They're not being slow. They're being fast.",
+      "real_example": "Jun's review of Ana's checkout page design was one line: 'looks great' — friendship-preserving, useless, and nearly disastrous: the design had no error state, discovered when a real user's payment failed into a blank screen. Their post-mortem produced the review rule they still quote: *'looks great' is not a review.* The next review — 'passes style sheet; missing: error state, loading state, what happens on empty cart' — stung for a minute, saved a weekend, and taught them both what respect between builders actually sounds like.",
+      "apply_task": "Install review-before-integration: every part gets reviewed by another member against the definition of done before it crosses its interface. Run at least two review rounds each way during this fortnight's build. Log reviews in three lines: checked against what, found what, resolved how. Fold the best finds into the team's decision log.",
+      "reflection_prompt": "Which was harder — giving the honest review or receiving it — and what did your field-critique quarter teach you that transfers? What's the difference between a review that respects the work and one that just respects the feelings?",
+      "feedback_task": "As a team, audit your review log: did any review actually change anything? A log of all-passes means reviews are theatre — raise the bar together. And name the best catch of the fortnight out loud; teams that celebrate catches keep catching.",
+      "teach_back_task": "Teach 'looks great is not a review' to another collaborating group, with the checkout story. Give them the three-line review format and the maker-fixes/reviewer-verifies rule. If their next review finds something real, the culture transplanted.",
+      "ai_judgment_note": "A strong pattern for teams: run AI as the *pre-reviewer* — each member machine-checks their own part against the definition of done before requesting human review, so teammates spend their attention on judgment, not typo-hunting. Two boundaries hold: the human review is the one that counts (a teammate approving your work is a promise to build on it — no model can make promises), and reviewing a teammate's work with AI happens with their knowledge, per the team's own rule from lesson one. Trust is the interface all the other interfaces run on.",
+      "assets_needed": ["Review log (against-what / found / resolved) + review-before-integration rule in the runbook"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "Every interface crossing this fortnight was preceded by a logged review.",
+        "At least one review changed something real, and each member both gave and received two reviews."
+      ],
+      "prereq_lesson_ids": ["bu-15-16-q2-l3"]
+    },
+    {
+      "id": "bu-15-16-q2-l5",
+      "sequence": 5,
+      "title": "Ship it, then hold the retrospective",
+      "concept": "Integration week: the parts meet, the seams show, and the team ships one real thing into the world — launch it with everything your pillars know about launching. Then the closing ritual every serious team runs and every amateur team skips: the retrospective. Around one table: what did the *team* make possible that none of us could have built alone? What did coordination cost, honestly — the hours in syncs, the compromises, the friction? What would we do differently, and — said out loud, by name — what did each person carry? Credit given precisely is the final interface, and the one people remember longest.",
+      "real_example": "The event site shipped two days late (integration always takes longer — now they know) and handled four hundred visitors on event day without a blank screen, because of a one-line review. Their retrospective's ledger: possible-only-together — the design polish, the working code, and the content voice, simultaneously; the cost — roughly a fifth of their hours went to coordination itself ('the tax is real; the product is worth the tax'); by name — 'Jun's error states saved launch day. Ana's style sheet is why it looks like one site. Mei shipped the words while we argued about fonts.' Three builders walked out already planning the next thing — which is the only retrospective metric that really matters.",
+      "apply_task": "Integrate, test end-to-end (your stress-test instincts apply — try to break the assembled thing before the world does), and ship to the project's real audience. Within a week, hold the retrospective with the four questions, written down: enabled / cost / change-next-time / credit-by-name. Each member takes their named contribution into their portfolio — with the team credited on every one.",
+      "reflection_prompt": "Compare this shipped thing to your solo flagship work: what's genuinely different about what a team could reach? And the honest inverse — what did you miss about building alone? Both answers are true; builders spend careers choosing between them project by project.",
+      "feedback_task": "Show the shipped project and the retrospective to an adult who has worked on real teams. Ask them: 'does this retrospective sound like teams you've been on?' Their stories back — the coordination taxes, the credit wars avoided or not — are a preview of every workplace you'll ever join.",
+      "teach_back_task": "Take the whole quarter's kit — seams and interfaces, one source of truth, the agreement, professional review, the retrospective — and help a new team through their first week of a real joint project. When their agreement gets signed and their first review finds something, you've reproduced the rarest thing in building: a team that works. That's the skill the world is shortest of, and now you carry it.",
+      "ai_judgment_note": "The retrospective must be the humans in the room — the costs were felt by people, the credit belongs to people, and saying it face to face is the entire point of the ritual. AI's one good seat: before the meeting, each member might privately ask 'what questions should a team retrospective ask that we might avoid?' — machines are useful against a team's shared blind spots, since teams, like individuals, protect their own comfort. But the answers, the credit, and the 'let's build another one' belong to the three of you. Some interfaces are sacred. This is one.",
+      "assets_needed": ["Integration test checklist + retrospective sheet (enabled / cost / change / credit-by-name)"],
+      "est_minutes": 90,
+      "success_criteria": [
+        "The integrated project shipped to its real audience after an end-to-end break test.",
+        "A written retrospective exists with all four questions answered, including credit by name."
+      ],
+      "prereq_lesson_ids": ["bu-15-16-q2-l4"]
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "id": "cw-15-16-q2",
+  "title": "Money That Works",
+  "pillar_primary": "wealth",
+  "pillars_supporting": ["live_well", "think"],
+  "age_band": "15-16",
+  "quarter": 2,
+  "developmental_frame": "At 15–16, money gets real on both sides of the ledger: teens earn genuinely (ventures, assets, part-time work) and are targeted genuinely — in-app purchases, buy-now-pay-later, gambling-adjacent game mechanics, and algorithmic advertising tuned to their exact insecurities. The cognitive equipment for personal finance is fully present: they can project compound growth, reason about trade-offs across years, and design systems that outvote impulses. What no one tells them is the timing secret: habits and structures installed at sixteen, when amounts are small and stakes forgiving, are the ones that quietly run for life.",
+  "authentic_value_meaning": "At this age, wealth-thinking creates value when the teen's own money — really earned, really theirs — runs through **a system they designed on purpose**: tracked honestly, split deliberately, growing somewhere, defended against the traps aimed at them. The amounts are small; the architecture is permanent. A sixteen-year-old with a working money system and a written policy owns something most adults with salaries never build.",
+  "motivation_lever": {
+    "lever": "autonomy",
+    "mechanism": "This is the teen's own money — venture profits, asset sales, allowance, wages — under the teen's own designed control. The quarter's deal is pure autonomy: build the system, run it honestly for a month, and the money's management is genuinely yours, with the family's role shifting from gatekeeper to advisor. At sixteen, 'my money, my system, my policy — reviewed like an adult's' is worth more than any amount inside it."
+  },
+  "artifact": "A running personal money system: a 30-day honest tracking record, a deliberate account-and-jars structure with pay-yourself-first automation (or its manual ritual), a compounding projection built on the teen's real numbers, a trap-defence audit of their own devices and habits, and a signed one-page personal money policy.",
+  "success_criteria": [
+    "Thirty real days of spending and income are tracked with honest categories, and the teen can name their top three leaks.",
+    "An account/jar structure exists and money actually moves through it, with saving happening before spending, automatically or by fixed ritual.",
+    "A compounding projection exists using the teen's own numbers, and they can explain why starting years early beats contributing more later.",
+    "A trap-defence audit was done on their own devices and habits, with at least two concrete defences installed.",
+    "A signed one-page money policy exists covering split percentages, what savings are for, giving, and the rules the teen set for themselves."
+  ],
+  "prereq_project_ids": ["cw-15-16-q1"],
+  "lessons": [
+    {
+      "id": "cw-15-16-q2-l1",
+      "sequence": 1,
+      "title": "Thirty days of truth",
+      "concept": "Nobody knows where their money goes; everybody is sure they do. The foundation of every money system is a boring, honest record: thirty days, every ringgit in and out, categorised simply (needs, wants, tools-of-your-craft, giving), nothing hidden — especially not the embarrassing categories, which are the informative ones. You ran this discipline on a venture in your books-closing quarter. Now the business being audited is you.",
+      "real_example": "A sixteen-year-old who 'basically spends nothing' tracked thirty days and met himself: RM67 in micro-transactions across three games ('it's only RM3' — eleven times), RM48 in after-school snacks, and a RM12 subscription he'd forgotten existed. RM127 a month, invisible, from someone who spends nothing. Not one purchase was a mistake by itself. The pattern was the mistake, and patterns only show up in records.",
+      "apply_task": "Track every transaction for thirty days — app, notebook, whatever you'll actually sustain (your venture logging habits transfer directly). Categorise weekly, not at the end. At day thirty: total by category, find your top three leaks, and write one line each on what the leak buys you — because some leaks are worth it, and knowing which is the whole point.",
+      "reflection_prompt": "Which category surprised you most against your self-image? What's the difference between spending you *chose* and spending that just… happened — and what fraction of your month was each?",
+      "feedback_task": "Show your month's summary (totals, not every line) to a money-competent adult and ask what *their* thirty-day truth taught them when they first did it — most never have; watching them realise that is its own lesson. If they have: their leak stories will make yours feel normal, which matters.",
+      "teach_back_task": "Challenge a friend or sibling to their own thirty days, and check in weekly. When their invisible-money number lands, teach the reframe you learned: the record isn't there to shame the snacks; it's there to make the choosing conscious.",
+      "ai_judgment_note": "The record must be complete and yours — the embarrassing lines especially, because a track record that omits what you'd rather not see is your old friend selection bias, now running on your own wallet. Once thirty honest days exist, AI is a fine pattern-finder ('what do you notice in this spending?') and category-checker. It cannot know what a leak *buys you* — comfort, friendship, craft — and that judgment decides which leaks live or die. Machines optimise numbers; you're budgeting a life.",
+      "assets_needed": ["30-day tracking setup + category summary sheet (totals / top-3 leaks / what each buys)"],
+      "est_minutes": 40,
+      "success_criteria": [
+        "Thirty complete days are tracked and categorised.",
+        "The top three leaks are named with an honest line on what each buys."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "cw-15-16-q2-l2",
+      "sequence": 2,
+      "title": "Pay yourself first",
+      "concept": "The one money rule that outranks all others: savings happen *first*, not from what's left — because what's left is always zero; that's what left means. The mechanism is structure, not willpower: the moment money arrives, a fixed slice moves automatically (or by unbreakable ritual) into places with different jobs — spend, save-for-goals, long-term, give. Separate places matter psychologically: money mixed is money spent. You learned this building buffers into your venture; a buffer for your life works identically.",
+      "real_example": "Two teens, same RM200 monthly income. One saves 'whatever's left' — after eight months: RM40, twice raided. The other moves RM50 the day money lands — split RM30 goals, RM15 long-term, RM5 give — then spends the RM150 guilt-free: after eight months, RM400 and zero raids, with *less* self-discipline used, not more. The willpower teen fights a battle every day; the structure teen fought once, when she designed the system. Structure always beats willpower, because structure only has to win once.",
+      "apply_task": "Design your structure from your thirty-day truth: the places (real accounts where age allows, labelled jars or sub-balances where not), each place's job, and your percentages — split chosen by you, defensible to yourself. Then install pay-yourself-first: automatic transfer if your banking allows it, or a written ritual with a fixed trigger ('the day anything lands, before anything else'). Run the first cycle now, with real money.",
+      "reflection_prompt": "What split did you choose and why those numbers? Where will your structure face its first raid attempt — and what makes raiding a labelled 'new-laptop fund' psychologically harder than raiding a pile?",
+      "feedback_task": "Walk a parent or guardian through the structure — you'll likely need them for any real accounts anyway. Frame it as your system seeking an advisor, not permission: 'here's my design; what would you strengthen?' The register shift matters as much as the banking.",
+      "teach_back_task": "Set up a first pay-yourself-first split with a younger sibling or friend, tiny amounts included — RM2 of RM10 counts fully. Teach the sentence that carries the whole lesson: 'what's left is always zero, so pay the future first.'",
+      "ai_judgment_note": "AI can explain account types available to minors in your country, compare mechanisms, and stress-test your split ('what does this design assume about my income's steadiness?') — honest research and design review. The percentages are values wearing numbers: how much future versus present versus others is precisely the kind of question you must never delegate, because the answer is a description of who you're deciding to be. Ask the machine about mechanisms. Ask yourself about meaning.",
+      "assets_needed": ["Structure design (places / jobs / percentages) + first cycle executed with real money"],
+      "est_minutes": 50,
+      "success_criteria": [
+        "A place-and-percentage structure exists and the first real cycle ran through it.",
+        "Pay-yourself-first is automated or installed as a written fixed ritual."
+      ],
+      "prereq_lesson_ids": ["cw-15-16-q2-l1"]
+    },
+    {
+      "id": "cw-15-16-q2-l3",
+      "sequence": 3,
+      "title": "The absurd advantage of starting now",
+      "concept": "Compounding is growth on growth — and its arithmetic is genuinely absurd in one specific way: *time* beats *amount*, and it isn't close. Money growing at 7% doubles roughly every decade (the rule of 72: divide 72 by the rate). Which means the ringgit saved at sixteen doubles perhaps five more times than the ringgit saved at forty — the same coin, worth multiples more, purely for arriving early. Adults telling you this sound like a poster. Running *your own numbers* across your own decades is a different experience entirely — and you, unlike almost everyone, are hearing it while the advantage is still yours.",
+      "real_example": "The classic twins: one invests RM100 monthly from 16 to 26 then stops forever (RM12,000 in); the other starts at 26 and invests RM100 monthly for *forty years* (RM48,000 in). At 66, at 7%: the early twin's decade beats the late twin's four decades. Four times the money in, and still behind — because the early money spent forty years doubling. Nobody believes it until they compute it themselves. So compute it yourself.",
+      "apply_task": "Build your own projection: take your actual monthly save-rate from lesson two, project it at a modest growth rate to ages 20, 30, 50, and 66 — then run the twin scenario with your numbers (you-starting-now versus you-starting-at-26). Chart both curves. Then write the one-line conclusion in your own words, because the sentence you write is the one you'll keep.",
+      "reflection_prompt": "At what age does your curve go from 'meh' to 'wait, what?' — and what does that long flat beginning explain about why most people quit saving young? What would you tell the version of you tempted to quit in the flat part?",
+      "feedback_task": "Show your curves to an adult over forty and ask the honest question: 'knowing this arithmetic, what would you tell sixteen-year-old you?' The answers are nearly universal, slightly painful, and worth more than the chart. Write down what they say.",
+      "teach_back_task": "Run the twins computation live with a friend, their numbers, their screen. Don't lecture — just make them compute the crossover themselves and watch their face at the 'four times more in, still behind' moment. That face is the lesson landing. It only lands via arithmetic; that's why you make them drive.",
+      "ai_judgment_note": "The arithmetic is real math on real assumptions — AI can build the spreadsheet and explain the formulas, and verifying its numbers with the rule of 72 in your head is good practice in not outsourcing sense-checks. Two boundaries, one old, one new: the assumptions (your save-rate, a *modest* growth guess) stay yours and stay honest — optimistic rates make pretty lies; and if any tool or feed ever pitches you specific investments promising specific returns, your Don't-Fool-Yourself quarter is the immune system — who benefits, where's the missing data, and nobody guarantees growth. Compounding is patient. Everything promising to hurry it is selling something.",
+      "assets_needed": ["Personal projection sheet (curves to 66 / twin scenario / one-line conclusion)"],
+      "est_minutes": 45,
+      "success_criteria": [
+        "A projection with the teen's real numbers exists including the twin scenario crossover.",
+        "A one-line conclusion is written in the teen's own words."
+      ],
+      "prereq_lesson_ids": ["cw-15-16-q2-l2"]
+    },
+    {
+      "id": "cw-15-16-q2-l4",
+      "sequence": 4,
+      "title": "Know the traps aimed at you",
+      "concept": "You are a targeted market. Billions are spent engineering your specific age group's money out of your pocket: micro-transactions priced below the guilt threshold, loot-box mechanics running casino psychology without casino rules, buy-now-pay-later that splits every price into painless-looking quarters, influencer ads wearing friendship's clothing, and lifestyle inflation — the quiet rule that spending expands to match income unless something stops it. The defence isn't vigilance (vigilance tires); it's *design*: audit your own devices and habits for installed traps, then re-engineer the environment so the default action is the one you chose. You de-crowned a founder once; now de-fang a phone.",
+      "real_example": "The RM67-in-micro-transactions teen ran his audit and found the machinery: stored payment details (one-tap purchases — friction removed by professionals), notifications tuned to pull him back at his weakest hours, and one game whose 'limited-time offer' timer was, he discovered on the third look, always limited, always available. His defences were structural, not heroic: payment details deleted (adding two minutes of friction — enough for the wanting to pass), purchase notifications off, and a personal rule written into his policy: 'anything over RM20 waits 48 hours; if I still want it, it was real.' Month one under the design: micro-spend RM9. The traps hadn't gotten weaker. The environment had gotten stronger.",
+      "apply_task": "Run the trap audit on your own devices and month-one record: stored payments, subscription list (cancel the forgotten), notification permissions for anything that sells, the mechanics inside your top three apps and games (name the psychology being used on you — you know the vocabulary now), and any BNPL or credit-shaped offers you've seen. Install at least two structural defences and one written waiting-rule. Log what each defence is protecting against.",
+      "reflection_prompt": "Which trap was working best on you — and notice it wasn't the one you'd have guessed before the audit. How does it change your feelings toward these apps to see the machinery priced and aimed? Not outrage, necessarily — but does 'it's just a game' survive the audit?",
+      "feedback_task": "Compare audits with a friend who's done the same exercise (or walk them into doing it). Different traps catch different people — their catch teaches you a category you're blind to, and explaining your own catch out loud is the vaccine taking.",
+      "teach_back_task": "Teach the audit to your household — parents included; BNPL and subscription creep catch adults harder than teens. Run the family subscription hunt together and total the forgotten monthly cost. You'll likely pay for this curriculum's worth of value in one sitting, and the family treating you as the household's systems auditor is your autonomy lever, compounding.",
+      "ai_judgment_note": "AI can explain any mechanic you name — 'what psychology does a loot box use?' gets you the literature in plain language — and help you enumerate defence options. Two sharper notes for this decade: the recommendation feeds deciding what you see *are themselves the largest trap in the audit* — optimised for your attention, which is upstream of your money — so audit them too, with the missing-data question: who benefits from what I'm shown? And when AI tools themselves start carrying subscriptions, offers, and premium tiers aimed at you: same audit, same questions. No tool is exempt from the framework, including the ones helping you build it.",
+      "assets_needed": ["Trap audit checklist (payments / subs / notifications / mechanics / credit) + installed defences log"],
+      "est_minutes": 50,
+      "success_criteria": [
+        "A complete audit exists naming the mechanics found in the teen's own apps and habits.",
+        "Two structural defences and one written waiting-rule are installed and logged."
+      ],
+      "prereq_lesson_ids": ["cw-15-16-q2-l3"]
+    },
+    {
+      "id": "cw-15-16-q2-l5",
+      "sequence": 5,
+      "title": "Write the policy and run the system",
+      "concept": "Everything converges onto one page: your personal money policy. The split percentages and their reasons; what each savings place is *for* and what justifies touching it; the giving line and why; the waiting-rules and trap-defences; and the review rhythm — monthly, fifteen minutes, against the policy (your drift-review discipline, pointed at money). Written policies beat intentions for the same reason work agreements beat friendliness and pre-mortems beat optimism: the decisions get made once, calmly, by the version of you that thinks in decades — and then the system runs, quietly outvoting the version of you standing in front of something shiny. Sign it. Run it. Review it. That page may be the highest-interest asset you'll ever create.",
+      "real_example": "Her one-page policy, month three: '40% spend / 35% goals / 15% long-term / 10% give. Goals jar is for the camera — touching it for anything else requires two weeks' wait and one adult's second opinion. Long-term is not mine until 25; it doesn't exist. Giving goes to the animal shelter quarterly, in person. Over-RM20 purchases wait 48 hours. Review: first Sunday monthly.' When a friend's concert-ticket panic came asking to borrow from the goals jar — *her own* panic, technically — the policy answered before the panic could: two weeks, second opinion. She skipped the concert, bought the camera in November, and photographed the next concert for pay. She quotes the policy's real author now: 'calm me decided; panicked me just had to obey.'",
+      "apply_task": "Write your policy, one page, every element: splits with reasons, each place's purpose and touch-rules, giving, waiting-rules, defences, review rhythm. Sign it, date it, and post it where the money decisions happen. Then run the full system for one complete monthly cycle — income in, splits moving, policy consulted, review held — and log the cycle as proof of operation.",
+      "reflection_prompt": "Reading your signed policy: which line will be hardest to obey, and which future moment will test it first? Across this whole curriculum — plans, agreements, runbooks, policies — what have you learned about the power of decisions written down by your calmest self?",
+      "feedback_task": "Present the policy and your first cycle's log to your family advisor as a completed system: 'this is how my money runs now — annual review welcome.' Then ask the closing question of the quarter: 'what does my having this change about what you'd trust me with?' Log the answer. It's the autonomy you were playing for.",
+      "teach_back_task": "Help one person — friend, sibling, honestly even a parent — write their own one-page policy through the whole ladder: thirty days of truth, structure, projection, traps, policy. When theirs is signed and their first cycle runs, you haven't just taught a system. You've changed the trajectory of someone's decades, with one page. That's the wealth pillar's deepest lesson: the highest-return thing you'll ever build is capability — in yourself, and then in others.",
+      "ai_judgment_note": "The policy is the least delegable document in this entire curriculum: it's your values, addressed to your future weakness, signed by your present strength. AI's one honest role: after you've written it, the standing red-team pass — 'find the loopholes I've left myself.' Machines are excellent at finding loopholes; you were always going to find them too, at the worst possible moment. Better now. Then sign the closed version — by hand, on paper, the old way. Some documents deserve ink.",
+      "assets_needed": ["Signed one-page money policy + first full-cycle log + monthly review slot in the calendar"],
+      "est_minutes": 50,
+      "success_criteria": [
+        "A signed, dated one-page policy exists covering splits, purposes, touch-rules, giving, waiting-rules, and review rhythm.",
+        "One complete monthly cycle ran under the policy with its review held and logged."
+      ],
+      "prereq_lesson_ids": ["cw-15-16-q2-l4"]
+    }
+  ]
+}

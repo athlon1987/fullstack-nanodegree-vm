@@ -1,0 +1,119 @@
+{
+  "id": "th-15-16-q2",
+  "title": "Don't Fool Yourself",
+  "pillar_primary": "think",
+  "pillars_supporting": ["explore"],
+  "age_band": "15-16",
+  "quarter": 2,
+  "developmental_frame": "At 15–16, a teen can follow a statistical argument, hold two competing explanations for the same data, and — the crucial new capacity — turn skepticism on their *own* conclusions, not just other people's. They now swim in claims dressed as data: screenshots of studies, influencer statistics, algorithmic feeds optimised for certainty. The developmental risk isn't gullibility — it's *selective* rigor: teens this age can demolish arguments they dislike while giving a free pass to ones that flatter their side. Symmetric skepticism is the skill, and it's trainable now.",
+  "authentic_value_meaning": "At this age, thinking creates value when the teen can take a question that matters to them, gather real data honestly, and produce **an answer they'd bet on — with its limitations stated out loud**. The physicist Richard Feynman's line is the quarter's banner: 'the first principle is that you must not fool yourself — and you are the easiest person to fool.' A 16-year-old who has once caught their own motivated reasoning in the act owns a defence most adults never build.",
+  "motivation_lever": {
+    "lever": "mastery",
+    "mechanism": "The quarter runs as a detective ladder: each lesson hands the teen a sharper instrument for catching bad reasoning — first in the wild, where debunking is genuinely fun at this age, then pointed progressively closer to home until the final target is their own conclusion. The mastery payoff is a new kind of confidence: knowing your answer survived the same attack you'd use on anyone else's."
+  },
+  "artifact": "A completed mini-investigation: one real question the teen cares about, answered with honestly gathered data, methods and limitations written out, the strongest case against their own conclusion included — and the finding shared where its audience can challenge it.",
+  "success_criteria": [
+    "Three flawed claims from the wild are dissected in writing, each with the specific flaw named.",
+    "The investigation's data was really gathered, with methods described precisely enough that someone could repeat it.",
+    "The write-up includes a limitations section and the strongest case against the teen's own conclusion.",
+    "The finding was shared publicly and at least one challenge was answered with evidence rather than defensiveness."
+  ],
+  "prereq_project_ids": ["th-15-16-q1"],
+  "lessons": [
+    {
+      "id": "th-15-16-q2-l1",
+      "sequence": 1,
+      "title": "Correlation is not a cause",
+      "concept": "Two things moving together is the world's most seductive lie. When A and B rise together, there are always at least four possibilities: A causes B, B causes A (reverse causation), some C causes both (the third variable), or coincidence. The trained move is mechanical: every time you meet 'X is linked to Y', generate all four stories before believing any. The one the headline picked is merely the one that sells.",
+      "real_example": "'Teens who eat breakfast get better grades' — so breakfast causes grades? Run the four: maybe. Or organised households produce both breakfast and homework routines (third variable). Or struggling students skip breakfast *because* they're up late cramming (reverse). Ice cream sales and drownings rise together every year — nobody thinks ice cream drowns people, because the third variable (summer) is obvious. It's only obvious because you have no stake in ice cream.",
+      "apply_task": "Collect five 'X linked to Y' claims from your real feeds this week. For each, write the four stories and mark which the source wants you to believe versus which is most plausible. Keep the best one for your dissection portfolio — it's the first of three.",
+      "reflection_prompt": "For which claim did you *want* one story to be true — and did wanting it make the other three harder to generate? That resistance you felt is the exact muscle this quarter trains.",
+      "feedback_task": "Trade your five with someone else doing the exercise (or walk an adult through them). See if they generate a story you missed — third variables especially hide from single minds.",
+      "teach_back_task": "Teach the four-stories move to a friend using the ice-cream-and-drownings example, then have them run it live on the next 'studies show' claim that crosses their feed. It takes ninety seconds and inoculates for life.",
+      "ai_judgment_note": "Generate your four stories *before* asking anything — the generating is the skill. Then AI is a strong fifth mind: 'what third variables could explain this correlation?' often surfaces candidates you missed; note which, because your misses have patterns. The caution cuts deeper here than usual: models are trained on the same headline-world that produced the bad claim, and will sometimes repeat a popular causal story confidently. Treat AI's causal claims exactly like a headline's — four stories, every time.",
+      "assets_needed": ["Four-stories worksheet (claim / A→B / B→A / C→both / coincidence)"],
+      "est_minutes": 40,
+      "success_criteria": [
+        "Five real claims each carry all four written stories.",
+        "One dissection is finished with the flaw named and filed."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "th-15-16-q2-l2",
+      "sequence": 2,
+      "title": "The missing data problem",
+      "concept": "The deadliest errors hide in data you never see. Survivorship bias: you study the winners because the losers left no trace ('every successful founder dropped out!' — the failed dropouts wrote no books). Selection bias: who ended up in the sample, and who never could? ('9 of 10 customers recommend us' — asked which customers?). The trained question is always the same: *who's missing from this picture, and would they tell a different story?*",
+      "real_example": "In World War II, analysts mapped bullet holes on returning bombers to decide where to add armour — until statistician Abraham Wald pointed out they were mapping the planes that *made it home*. The holes showed where a bomber could be shot and survive; the armour belonged where the returning planes were clean, because planes hit there never returned. The missing planes held the answer. They always do.",
+      "apply_task": "Find two claims in your world built on missing data — one survivorship (success stories, 'this routine changed my life'), one selection (reviews, polls, 'everyone I know'). For each, write who's missing and how their inclusion would change the story. File the better one as dissection two of three.",
+      "reflection_prompt": "Your own beliefs about success — study methods, training routines, business advice — how many are built entirely on people who survived to talk about it? Pick one and honestly ask: where are the failures who did the same thing?",
+      "feedback_task": "Present your two dissections to an adult who makes decisions with data (anyone who hires, buys, or invests). Ask for a missing-data error from their own field — every field has a famous one, and collecting them sharpens the eye.",
+      "teach_back_task": "Tell the bomber story to a friend or your family at dinner — it's the best five-minute statistics lesson ever devised — then help them find one survivorship claim in their own feed before the meal ends.",
+      "ai_judgment_note": "'Who's missing from this sample?' is a genuinely good AI prompt — machines enumerate absence well once pointed at it. But notice the recursion, because it matters for the rest of your life: AI itself is trained on surviving data — the internet's writers, not its silent majority — so its picture of 'what people think' has selection bias built in at the foundation. Asking AI what's missing from a dataset is smart. Remembering what's missing from AI is wisdom.",
+      "assets_needed": ["Missing-data worksheet (claim / who's absent / how they'd change the story)"],
+      "est_minutes": 40,
+      "success_criteria": [
+        "One survivorship and one selection dissection exist with the missing group named.",
+        "The teen identified one of their own beliefs built on survivor-only evidence."
+      ],
+      "prereq_lesson_ids": ["th-15-16-q2-l1"]
+    },
+    {
+      "id": "th-15-16-q2-l3",
+      "sequence": 3,
+      "title": "Read the study, not the headline",
+      "concept": "Behind every 'science says' headline is a study the headline-writer may not have read. The six-question autopsy, runnable in ten minutes: Who was studied — and how many? (12 mice is not 'people'.) What was actually measured? (Often not what the headline claims.) How big is the effect? ('Doubles the risk' of something vanishingly rare is still vanishingly rare.) Compared to what? Who paid? And — the pro's question — has anyone replicated it? You don't need a lab coat to run these. You need the habit.",
+      "real_example": "Headline: 'chocolate improves memory'. The study: 37 adults, aged 50–69, high-dose cocoa flavanol extract — not chocolate — for one specific memory task, funded in part by a chocolate company. Every word of the headline is a stretch of something real. This isn't rare; it's the standard journey from lab to feed, and the six questions catch it in minutes.",
+      "apply_task": "Take one 'studies show' claim that matters to your life or your year-bet domain. Find the actual study (abstracts are free; AI can help locate — see the note). Run the six-question autopsy in writing. Verdict: does the study support the headline — fully, partly, or not at all? This is dissection three; your portfolio is complete.",
+      "reflection_prompt": "How far did the headline drift from the study — and at which step did the drift happen (researcher's caution → press release → headline → the screenshot in your feed)? Who benefits at each step from the stretch?",
+      "feedback_task": "Show your autopsy to a teacher of science or maths and ask them to grade it: did you read the study fairly, and what would a professional check that you didn't? Their additions are your seventh and eighth questions, permanently.",
+      "teach_back_task": "Run a live autopsy with a younger student on a headline they believe — gently. The goal isn't to humiliate the headline; it's to hand them the six questions. End with the reframe: this isn't 'science is fake' — it's 'read the label, not the advert'.",
+      "ai_judgment_note": "AI is genuinely excellent at this lesson's mechanics: finding the underlying study, translating jargon, extracting sample size and funding. Use it as your research assistant, with the librarian's rules — every extracted fact checked against the actual text, because models summarising studies sometimes import the *headline's* version. The verdict is yours: a machine can list the six answers, but weighing whether 37 flavanol-dosed adults supports your chocolate habit is judgment, and judgment is the job.",
+      "assets_needed": ["Six-question autopsy sheet (who-how-many / measured / effect size / baseline / funder / replicated)"],
+      "est_minutes": 50,
+      "success_criteria": [
+        "One real study was located and autopsied with all six questions answered from its text.",
+        "A written verdict grades the headline against the study."
+      ],
+      "prereq_lesson_ids": ["th-15-16-q2-l2"]
+    },
+    {
+      "id": "th-15-16-q2-l4",
+      "sequence": 4,
+      "title": "Run your own investigation",
+      "concept": "The fastest way to respect good data is to make some. Pick one real question you actually care about — from your venture, your school, your friends' debates — and run a small honest investigation: define what you'll measure *before* you measure (changing the question after seeing data is how fooling-yourself starts), gather from enough people or events to mean something, record everything including the inconvenient answers, and write your methods as you go. Every corner you're tempted to cut, a published study somewhere cut — now you know how it happens.",
+      "real_example": "Her question, live in her year-bet: 'do students actually revise differently before morning versus afternoon exams?' Pre-registered measure: hours and method, self-reported, 25 students across three friend groups (she noted the selection bias — her school, her networks — in the write-up). Inconvenient finding: no real difference, killing her planned tutoring-guide chapter. She published anyway, methods and all. Two teachers replied; one shared better data. The dead chapter cost a week; the reputation for honest methods started compounding immediately.",
+      "apply_task": "Design and run the investigation: the question, the pre-registered measure and sample plan, the gathering (your outreach and interview craft make this cheap), and the raw record kept intact. Write the finding with its methods — including what you'd distrust about your own sample.",
+      "reflection_prompt": "Where were you tempted to bend the method — leading question, convenient sample, quietly dropping an outlier? What does feeling the temptation from inside teach you about every dataset you'll ever read?",
+      "feedback_task": "Before finalising, show your raw data and method to one numerate person with no stake in the answer. Their one job: find where your method could have produced your finding even if the finding is false. Fix or disclose what they catch.",
+      "teach_back_task": "Help a friend design a mini-investigation for a question *they* care about — pre-registered measure first, sample plan, honesty rules. The pre-registration habit is the gift: deciding what counts as evidence before you see it is nine-tenths of not fooling yourself.",
+      "ai_judgment_note": "AI serves well at both ends of an investigation and must be locked out of the middle. Ends: designing the method ('what would make this survey leading?') and, once data is honestly in, checking your arithmetic and testing interpretations. The locked middle: the data itself — every point gathered from reality by you, no gaps filled, no 'representative' responses synthesised, ever. A dataset with one imagined point isn't mostly real; it's fiction with props. That line is absolute, this quarter and for life.",
+      "assets_needed": ["Investigation kit (pre-registered question & measure / sample plan / raw record / methods draft)"],
+      "est_minutes": 90,
+      "success_criteria": [
+        "A pre-registered investigation was run with the raw record intact.",
+        "The write-up states methods and sample limitations precisely enough to repeat."
+      ],
+      "prereq_lesson_ids": ["th-15-16-q2-l3"]
+    },
+    {
+      "id": "th-15-16-q2-l5",
+      "sequence": 5,
+      "title": "Attack your own answer, then publish it",
+      "concept": "The quarter's summit, and the habit that separates thinkers from debaters: before publishing, write the strongest case that *your own conclusion is wrong* — your steelman training, aimed at yourself. What would the missing data say? Which of the four stories did you privilege? If someone ran your own six-question autopsy on you, where would it bite? Then publish — finding, methods, limitations, self-attack and all — where people who might disagree can see it. Conclusions that have survived their author's honest attack, published with their weaknesses showing, are the only kind worth signing.",
+      "real_example": "Charles Darwin kept a special notebook for evidence *against* his own theory, because he knew he'd forget exactly those facts fastest. The revision-study teen's self-attack section — 'three reasons not to trust my finding: self-reported hours lie, my sample skews to my friends, and 25 is small' — did something counterintuitive: the teachers who read it trusted the finding *more*. Stated limitations are credibility, not weakness. Every real scientist knows it; now so does she.",
+      "apply_task": "Write the self-attack section: the three strongest reasons your conclusion might be wrong, drawn from every instrument this quarter gave you. Then publish the full investigation — question, methods, finding, limitations, self-attack — where its natural audience gathers (your build-log channels know the way). Answer whatever challenges arrive with evidence, or with 'good point — my data can't answer that', which is also evidence of something: you.",
+      "reflection_prompt": "Did the self-attack change your confidence in the finding — up, down, or into something more precise than either? Feynman again: why is the person easiest to fool *you* — what does this quarter's inventory of your own temptations say?",
+      "feedback_task": "After publishing, seek out one person who disagrees with the finding and ask them to make their best case. Practice the rare move: updating in public if they land a real hit. 'You're right, my data doesn't show that' costs ten seconds of pride and buys a reputation nothing else can.",
+      "teach_back_task": "Teach the full detective kit to someone — four stories, missing data, the six questions, pre-registration, the self-attack — using your published investigation as the worked example. Then set them the challenge that locks it in: 'find one thing wrong with my study.' Applaud whatever they find. That applause, taught by demonstration, is the whole quarter.",
+      "ai_judgment_note": "The self-attack is the one section AI genuinely strengthens without corrupting — 'here is my investigation; argue that my conclusion is wrong, as hard as you can' is your oldest sparring move at its highest use, and any hit it lands belongs in the published limitations. What stays yours: the decision of what the attacks *amount to* — publish, soften, or withdraw — and the public replies under your name. A year from now, in your venture, your studies, your feeds, the reflex this quarter built has one test: when the data flatters you, do you attack it harder? The machine can help you attack. Only you can want to.",
+      "assets_needed": ["Self-attack section template + publication checklist (finding / methods / limitations / attack)"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "The published investigation includes a three-point self-attack drawn from the quarter's tools.",
+        "At least one public challenge was answered with evidence or an honest concession."
+      ],
+      "prereq_lesson_ids": ["th-15-16-q2-l4"]
+    }
+  ]
+}
