@@ -1,0 +1,119 @@
+{
+  "id": "th-13-14-q1",
+  "title": "A Case for a Change",
+  "pillar_primary": "think",
+  "pillars_supporting": ["communicate"],
+  "age_band": "13-14",
+  "quarter": 1,
+  "developmental_frame": "At 13–14, abstract reasoning is genuinely coming online: a teen can hold a hypothetical, argue a position they don't hold, and reason about their own reasoning — but unevenly, and with a catch: their ego is now fused to their opinions, so being wrong feels like a status injury. They crave being taken seriously by adults and can detect adult inauthenticity instantly. They can sustain a multi-week project if the payoff is visible and the stakes are theirs. The capability to separate a claim from the person making it exists at this age — but only if it's exercised deliberately.",
+  "authentic_value_meaning": "At 13–14, 'creating value' with your thinking means **being taken seriously enough that a real decision changes**. Not winning a debate trophy — earning a real concession from the adult world because your case was genuinely good. The currency is trust and expanded autonomy, which is exactly what a 13-year-old wants most and can now legitimately earn.",
+  "motivation_lever": {
+    "lever": "real_stakes",
+    "mechanism": "The quarter's artifact is a written case for a real change the teen actually wants — a later curfew, a new privilege, a purchase, a change to a family or school rule — argued in person to the person who can actually grant it, with an agreement up front that the decision will be made on the strength of the case. The stakes are the teen's own autonomy: the single most motivating currency at this age. No adult needs to nag; wanting the change does the work."
+  },
+  "artifact": "A one-page written case brief for a real change the teen wants — the claim, evidence with fair baselines, the strongest version of the opposing side with their answer to it, and a small testable ask — argued in person to the real decision-maker, with the verdict and its reasons recorded at the bottom.",
+  "success_criteria": [
+    "A one-page written case exists containing a claim, compared-to-what evidence, a steelman of the other side, and a small testable ask.",
+    "The decision-maker confirmed, out loud, that the written steelman states their real concerns fairly.",
+    "The case was presented in person and a real decision — yes, no, or trial — was received with reasons.",
+    "The teen can name what evidence would change their own mind."
+  ],
+  "prereq_project_ids": [],
+  "lessons": [
+    {
+      "id": "th-13-14-q1-l1",
+      "sequence": 1,
+      "title": "Claim or evidence?",
+      "concept": "A claim is what someone *says* is true. Evidence is what they can *show*. Most arguments — including yours — fail because the two get blended. The first move of a strong thinker is the split: what exactly is being claimed, what has actually been shown, and how big is the gap between them.",
+      "real_example": "'Everyone in my year has a phone' is a claim. A count of your actual class — 19 of 27 own one — is evidence. Ads and headlines are usually claims wearing evidence costumes: 'studies show' with no study named is still just a claim in a lab coat.",
+      "apply_task": "Choose the real change you'll argue for this quarter and write your main claim in one sentence. Then split everything you'd say for it into two columns: what you can currently SHOW versus what you're merely SAYING. The 'saying' column is your evidence-hunting to-do list.",
+      "reflection_prompt": "Which items in your 'show' column turned out to be just claims when you looked hard at them? Why did they *feel* like evidence?",
+      "feedback_task": "Show your two columns to an adult and ask them to attack your weakest piece of evidence. Note which one fell first — that's where your case needs work.",
+      "teach_back_task": "Take one headline or ad this week and teach the split to a family member: what's claimed, what's shown, what's the gap. Then have them do the next one on their own while you coach.",
+      "ai_judgment_note": "Do the split with your own head first — the split IS the skill, and outsourcing it trains nothing. Afterwards, AI is useful for *hunting* evidence to fill your gaps. But treat every number and fact it gives you as a claim until you've seen the source yourself: AI is a fast librarian, not a witness.",
+      "assets_needed": ["Claim/evidence split sheet (show vs. say columns)"],
+      "est_minutes": 35,
+      "success_criteria": [
+        "The chosen change is written as a one-sentence claim.",
+        "A written show-vs-say split exists with at least three real evidence gaps identified."
+      ],
+      "prereq_lesson_ids": []
+    },
+    {
+      "id": "th-13-14-q1-l2",
+      "sequence": 2,
+      "title": "Find the hidden assumption",
+      "concept": "Every argument stands on things nobody said out loud. 'I should get a later curfew because I'm 13 now' silently assumes that age alone earns trust. Find the load-bearing assumption and you know exactly where an argument will crack — including your own.",
+      "real_example": "A shop sign says '9 out of 10 customers recommend us.' Hidden assumption: the ten people asked were typical customers — maybe they only asked the happy ones. Companies, politicians, and teenagers all lean on hidden assumptions; the person who can *name* them controls the conversation.",
+      "apply_task": "Write your case's core argument in two or three sentences. Then list every assumption it needs to be true — aim for at least three. Mark the load-bearing one: the assumption that, if false, kills the whole case. Write one line on how you'll support it.",
+      "reflection_prompt": "Which assumption was hardest to spot? What does that suggest about the assumptions hiding in arguments you already *agree* with?",
+      "feedback_task": "Without showing your list, ask your decision-maker what they think your argument assumes. Compare their list with yours — theirs is a preview of the objections your case will face.",
+      "teach_back_task": "Teach a friend or sibling the assumption hunt using an ad or a school rule: have them find what it silently assumes, and don't help until they've found at least one alone.",
+      "ai_judgment_note": "List your assumptions unaided first. *Then*, if you like, ask an AI to list the assumptions in your argument and compare — if it found one you missed, ask yourself why you missed it. Never run it the other way round: reading the machine's list first blinds you to your own blind spots, and spotting your own is the entire skill.",
+      "assets_needed": ["Assumption-hunt worksheet (argument + 3 assumptions + load-bearing mark)"],
+      "est_minutes": 35,
+      "success_criteria": [
+        "The case's argument is written with at least three named assumptions.",
+        "The load-bearing assumption is marked with a plan to support it."
+      ],
+      "prereq_lesson_ids": ["th-13-14-q1-l1"]
+    },
+    {
+      "id": "th-13-14-q1-l3",
+      "sequence": 3,
+      "title": "Compared to what?",
+      "concept": "A number on its own is a mood; a comparison is information. 'I'm on my phone three hours a day' — is that a lot? Compared to your classmates? To last year? To time spent on homework? Strong thinkers refuse naked numbers: they always demand the baseline.",
+      "real_example": "A game boasts 'over 1 million downloads!' Compared to what? The biggest games have hundreds of millions, so a million might mean tiny. '50% more effective!' — than what, than doing nothing? The comparison carries the meaning; the number is just decoration.",
+      "apply_task": "Find the two or three numbers your case actually turns on (sleep, screen time, cost, marks — whatever your change touches). For each, find a *fair* baseline and rewrite the naked number as a comparison sentence for your brief.",
+      "reflection_prompt": "Did any honest comparison turn out to hurt your case? What's the stronger move — hiding it, or addressing it head-on before the decision-maker finds it themselves?",
+      "feedback_task": "Show your comparison sentences to someone good with numbers and ask one question: is each baseline fair, or did I pick the one that flatters me?",
+      "teach_back_task": "Next time someone quotes a number at dinner or in the group chat, ask 'compared to what?' out loud — then walk them through how the baseline changes what the number means.",
+      "ai_judgment_note": "This is a genuinely good AI use: finding baselines fast ('what's the average screen time for 13-year-olds?'). But a confident number without a source is a rumor. Get the source, check it exists, and check it says what the AI said it says. If you can't verify it, it doesn't go in your brief — one fake number and your whole case loses its credibility.",
+      "assets_needed": ["Compared-to-what table (number / baseline / comparison sentence)"],
+      "est_minutes": 40,
+      "success_criteria": [
+        "Every number in the case is written as a comparison against a named, checkable baseline.",
+        "At least one comparison that does not flatter the case is included and addressed."
+      ],
+      "prereq_lesson_ids": ["th-13-14-q1-l2"]
+    },
+    {
+      "id": "th-13-14-q1-l4",
+      "sequence": 4,
+      "title": "Steelman the other side",
+      "concept": "A strawman is the weakest version of the other side; a steelman is the strongest. Beating a strawman convinces nobody — least of all your parents. If you can state their side so well they say 'yes, that's exactly my worry', you've earned the right to answer it. That's the move that changes minds.",
+      "real_example": "Lawyers prepare the other side's case before their own. Chess players study the opponent's *best* move, not the worst one. The teen who opens with 'here's the strongest reason you'd say no — and here's my answer to it' sounds ten years older than the one who pretends there's no reason at all.",
+      "apply_task": "Write the case *against* your change as if you believed it: the real worries — safety, sleep, cost, trust — at full strength, about half a page. Then write your honest answer to its single strongest point.",
+      "reflection_prompt": "While writing the other side, did any of their points start to feel… right? What did that do to your own case — weaken it, or make it more honest?",
+      "feedback_task": "Read *only* the steelman to your decision-maker and ask: did I miss a reason, or state one too weakly? Revise until they say 'that's fair' out loud. That sentence is your green light.",
+      "teach_back_task": "Find a disagreement a friend is stuck in and coach them to state the other person's side at full strength before responding. Watch what it does to the temperature of the argument — then explain to them why it works.",
+      "ai_judgment_note": "First draft unaided: if you can't voice the other side without a screen, you don't understand it yet. *After* that, AI makes an excellent sparring partner — 'argue against my case as hard as you can' — to find angles you missed. Use it to pressure-test your steelman, never to outsource the understanding itself.",
+      "assets_needed": ["Steelman worksheet (their side at full strength / your answer)"],
+      "est_minutes": 45,
+      "success_criteria": [
+        "A written steelman of about half a page exists, plus an answer to its strongest point.",
+        "The decision-maker said 'that's fair' (or equivalent) to the steelman after revision."
+      ],
+      "prereq_lesson_ids": ["th-13-14-q1-l3"]
+    },
+    {
+      "id": "th-13-14-q1-l5",
+      "sequence": 5,
+      "title": "Make the case — for real",
+      "concept": "Thinking that never meets a decision is just practice; thinking that gets a verdict is real. Assemble the one-page brief: claim, evidence with baselines, the steelman and your answer, and — the closer — a *small, testable ask*: not 'forever', but 'a three-week trial with a review'. Small reversible asks are how good cases win.",
+      "real_example": "In real companies, big changes get pitched as small experiments: 'try it for a month, measure, then decide.' A trial with a review date is far easier to grant than a permanent change — and if your case is good, the trial itself does the rest of the arguing for you.",
+      "apply_task": "Assemble your one-page case brief from lessons 1–4 and present it in person. Propose the trial version of your ask. Get an actual decision — yes, no, or trial — and write their reasons at the bottom of the brief.",
+      "reflection_prompt": "Whatever the verdict: which part of your case did the most work, and which did nothing? And the thinker's question — what evidence would change *your* mind about your own ask?",
+      "feedback_task": "Debrief the decision-maker afterwards: what nearly changed their mind, and what actually did (or would have)? Add their answer to the brief as a note to your future self.",
+      "teach_back_task": "Teach the whole method — claim, evidence, assumptions, compared-to-what, steelman, small ask — to a friend who wants something from *their* parents, and help them draft their own one-pager. If your friend's case wins, you've really learned it.",
+      "ai_judgment_note": "The brief must be in your own words — a parent can smell generated text a mile away, and it costs you the exact trust you're trying to earn. The legitimate use: hand AI your *finished* draft and ask 'what's the weakest point in this case?' — then fix it yourself. If AI writes the case, you didn't make it; you just delivered someone else's.",
+      "assets_needed": ["One-page case brief template (claim / evidence / steelman / ask / verdict)"],
+      "est_minutes": 60,
+      "success_criteria": [
+        "A completed one-page brief exists and was presented in person.",
+        "A real decision with stated reasons is recorded on the brief."
+      ],
+      "prereq_lesson_ids": ["th-13-14-q1-l4"]
+    }
+  ]
+}

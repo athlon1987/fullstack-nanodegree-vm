@@ -123,9 +123,16 @@ parts.push(`
   criteria are observable things a parent can verify.</p>
   <table class="coverage">
     <tr><th>Age band</th><th>Status</th></tr>
-    <tr><td>9&ndash;10</td><td>Complete &mdash; 16 projects, 4 per pillar</td></tr>
-    <tr><td>11&ndash;12</td><td>Complete &mdash; 16 projects, 4 per pillar</td></tr>
-    <tr><td>13&ndash;14</td><td>Sample &mdash; 1 project (Create Wealth Q1)</td></tr>
+    ${[...byBand.entries()]
+      .map(([band, list]) => {
+        const n = list.length;
+        const status =
+          n >= 16
+            ? `Complete &mdash; ${n} projects, 4 per pillar`
+            : `In progress &mdash; ${n} of 16 projects`;
+        return `<tr><td>${esc(band).replace('-', '&ndash;')}</td><td>${status}</td></tr>`;
+      })
+      .join('\n    ')}
   </table>
 </section>`);
 
