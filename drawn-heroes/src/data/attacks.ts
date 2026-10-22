@@ -1,0 +1,63 @@
+import type { AttackDef, ProjectileDef } from './types';
+
+const A = (d: AttackDef): AttackDef => d;
+
+/** Every attack in the game. Frame counts are at 60 fps. */
+export const ATTACKS: Record<string, AttackDef> = {
+  // ---------------- Momo: agile combo striker ----------------
+  m_l1: A({ id: 'm_l1', pose: 'jabL', startup: 4, active: 3, recovery: 9, damage: 6, hitbox: { fx: 52, w: 64, y: 30, h: 60, d: 22 }, kbX: 1.5, kbY: 0, hitstun: 16, reaction: 'stagger', lunge: 2.5, next: 'm_l2', hitstop: 3, meter: 2, sfx: 'swingLight', hitSfx: 'hitLight' }),
+  m_l2: A({ id: 'm_l2', pose: 'jabR', startup: 4, active: 3, recovery: 10, damage: 6, hitbox: { fx: 54, w: 66, y: 30, h: 60, d: 22 }, kbX: 1.5, kbY: 0, hitstun: 17, reaction: 'stagger', lunge: 2.5, next: 'm_l3', hitstop: 3, meter: 2, sfx: 'swingLight', hitSfx: 'hitLight' }),
+  m_l3: A({ id: 'm_l3', pose: 'tailWhip', startup: 6, active: 5, recovery: 12, damage: 8, hitbox: { fx: 50, w: 110, y: 10, h: 60, d: 28 }, kbX: 2.5, kbY: 0, hitstun: 19, reaction: 'stagger', lunge: 3, next: 'm_l4', hitstop: 4, meter: 3, sfx: 'swingLight', hitSfx: 'hitLight' }),
+  m_l4: A({ id: 'm_l4', pose: 'spinSlap', startup: 7, active: 6, recovery: 16, damage: 12, hitbox: { fx: 48, w: 96, y: 20, h: 90, d: 28 }, kbX: 3, kbY: 10.5, hitstun: 30, reaction: 'launch', lunge: 3, hitstop: 6, shake: 3, meter: 4, sfx: 'swingHeavy', hitSfx: 'hitHeavy', fxColor: '#ffd23f' }),
+  m_l5: A({ id: 'm_l5', pose: 'cartwheel', startup: 6, active: 8, recovery: 18, damage: 16, hitbox: { fx: 50, w: 100, y: 30, h: 120, d: 28 }, kbX: 8, kbY: 6, hitstun: 30, reaction: 'knockdown', lunge: 4, hitstop: 7, shake: 4, meter: 5, sfx: 'swingHeavy', hitSfx: 'hitHeavy', fxColor: '#ffd23f' }),
+  m_heavy: A({ id: 'm_heavy', pose: 'clap', startup: 14, active: 5, recovery: 18, damage: 20, hitbox: { fx: 56, w: 90, y: 0, h: 100, d: 30 }, kbX: 6, kbY: 7, hitstun: 30, reaction: 'knockdown', lunge: 2, hitstop: 8, shake: 6, meter: 5, sfx: 'swingHeavy', hitSfx: 'hitHeavy', charge: { max: 45, dmg: 0.9, kb: 0.6 }, breaksGuard: true, armorDamage: 2, fxColor: '#ff9f1c' }),
+  m_air: A({ id: 'm_air', pose: 'dive', startup: 5, active: 16, recovery: 8, damage: 10, hitbox: { fx: 34, w: 70, y: -10, h: 60, d: 24 }, kbX: 3, kbY: 6, hitstun: 22, reaction: 'launch', aerial: true, vy: -4, lunge: 5, hitstop: 4, meter: 3, sfx: 'swingLight', hitSfx: 'hitLight' }),
+  m_special: A({ id: 'm_special', pose: 'throw', startup: 8, active: 2, recovery: 14, damage: 0, hitbox: { fx: 0, w: 0, y: 0, h: 0, d: 0 }, kbX: 0, kbY: 0, hitstun: 0, reaction: 'stagger', projectile: 'banana', sfx: 'banana' }),
+  m_ult: A({ id: 'm_ult', pose: 'spinSlap', startup: 1, active: 1, recovery: 1, damage: 14, hitbox: { fx: 0, w: 120, y: 0, h: 140, d: 50 }, kbX: 2, kbY: 4, hitstun: 30, reaction: 'stagger', hitstop: 3, meter: 0, hitSfx: 'hitHeavy', unblockable: true, breaksGuard: true, armorDamage: 3 }),
+  m_coop: A({ id: 'm_coop', pose: 'ball', startup: 1, active: 1, recovery: 1, damage: 26, hitbox: { fx: 0, w: 100, y: 0, h: 100, d: 40 }, kbX: 7, kbY: 9, hitstun: 30, reaction: 'launch', hitstop: 6, shake: 5, hitSfx: 'hitHeavy', unblockable: true, breaksGuard: true, armorDamage: 4 }),
+
+  // ---------------- Scout: guardian / crowd control ----------------
+  s_l1: A({ id: 's_l1', pose: 'swipe', startup: 6, active: 4, recovery: 12, damage: 9, hitbox: { fx: 54, w: 80, y: 20, h: 80, d: 26 }, kbX: 2, kbY: 0, hitstun: 18, reaction: 'stagger', lunge: 2.5, next: 's_l2', hitstop: 4, meter: 2, sfx: 'swingLight', hitSfx: 'hitLight' }),
+  s_l2: A({ id: 's_l2', pose: 'swipe2', startup: 6, active: 4, recovery: 13, damage: 9, hitbox: { fx: 56, w: 84, y: 20, h: 80, d: 26 }, kbX: 2, kbY: 0, hitstun: 19, reaction: 'stagger', lunge: 2.5, next: 's_l3', hitstop: 4, meter: 2, sfx: 'swingLight', hitSfx: 'hitLight' }),
+  s_l3: A({ id: 's_l3', pose: 'headbutt', startup: 9, active: 5, recovery: 20, damage: 15, hitbox: { fx: 58, w: 90, y: 40, h: 80, d: 30 }, kbX: 9, kbY: 3, hitstun: 26, reaction: 'knockdown', lunge: 4.5, hitstop: 7, shake: 4, meter: 4, sfx: 'swingHeavy', hitSfx: 'hitHeavy', breaksGuard: true, armorDamage: 1, fxColor: '#4cc9f0' }),
+  s_heavy: A({ id: 's_heavy', pose: 'pounce', startup: 12, active: 12, recovery: 20, damage: 24, hitbox: { fx: 40, w: 100, y: 0, h: 100, d: 30 }, kbX: 9, kbY: 6, hitstun: 30, reaction: 'knockdown', lunge: 8, armor: true, hitstop: 8, shake: 6, meter: 5, sfx: 'swingHeavy', hitSfx: 'hitHeavy', charge: { max: 45, dmg: 0.8, kb: 0.5 }, breaksGuard: true, armorDamage: 3, fxColor: '#4cc9f0' }),
+  s_heavy2: A({ id: 's_heavy2', pose: 'pounce', startup: 6, active: 10, recovery: 22, damage: 18, hitbox: { fx: 40, w: 100, y: 0, h: 100, d: 30 }, kbX: 10, kbY: 7, hitstun: 30, reaction: 'knockdown', lunge: 9, armor: true, hitstop: 7, shake: 5, meter: 4, sfx: 'swingHeavy', hitSfx: 'hitHeavy', breaksGuard: true, armorDamage: 2, fxColor: '#4cc9f0' }),
+  s_air: A({ id: 's_air', pose: 'pawDrop', startup: 6, active: 30, recovery: 14, damage: 12, hitbox: { fx: 20, w: 90, y: -20, h: 70, d: 30 }, kbX: 3, kbY: 3, hitstun: 24, reaction: 'knockdown', aerial: true, vy: -9, hitstop: 5, meter: 3, sfx: 'swingHeavy', hitSfx: 'hitHeavy', shockwave: { radius: 90, damage: 8 } }),
+  s_bark_echo: A({ id: 's_bark_echo', pose: 'bark', startup: 10, active: 6, recovery: 18, damage: 18, hitbox: { fx: 0, w: 560, y: 0, h: 140, d: 90 }, kbX: 11, kbY: 2, hitstun: 36, reaction: 'stagger', ring: true, hitstop: 4, shake: 6, meter: 1, sfx: 'bark', hitSfx: 'hitLight', armorDamage: 2, unblockable: true }),
+  s_bark: A({ id: 's_bark', pose: 'bark', startup: 10, active: 6, recovery: 18, damage: 16, hitbox: { fx: 120, w: 220, y: 0, h: 130, d: 70 }, kbX: 10, kbY: 2, hitstun: 34, reaction: 'stagger', hitstop: 4, shake: 5, meter: 1, sfx: 'bark', hitSfx: 'hitLight', armorDamage: 2, unblockable: true }),
+  s_ult: A({ id: 's_ult', pose: 'howl', startup: 1, active: 1, recovery: 1, damage: 28, hitbox: { fx: 0, w: 2000, y: 0, h: 400, d: 400 }, kbX: 2, kbY: 4, hitstun: 30, reaction: 'stagger', hitstop: 4, meter: 0, unblockable: true, breaksGuard: true, armorDamage: 5, hitSfx: 'hitHeavy' }),
+  s_coop: A({ id: 's_coop', pose: 'pawDrop', startup: 1, active: 1, recovery: 1, damage: 34, hitbox: { fx: 0, w: 320, y: 0, h: 120, d: 110 }, kbX: 8, kbY: 10, hitstun: 30, reaction: 'launch', ring: true, hitstop: 8, shake: 8, hitSfx: 'hitHeavy', unblockable: true, breaksGuard: true, armorDamage: 5 }),
+
+  // shared
+  team: A({ id: 'team', pose: 'spinSlap', startup: 1, active: 1, recovery: 1, damage: 110, hitbox: { fx: 0, w: 4000, y: -50, h: 600, d: 600 }, kbX: 4, kbY: 12, hitstun: 40, reaction: 'launch', hitstop: 10, shake: 10, unblockable: true, breaksGuard: true, armorDamage: 10, hitSfx: 'hitHeavy' }),
+
+  // ---------------- Enemies ----------------
+  e_punch: A({ id: 'e_punch', pose: 'punch', startup: 20, active: 4, recovery: 26, damage: 8, hitbox: { fx: 48, w: 60, y: 30, h: 50, d: 22 }, kbX: 3, kbY: 0, hitstun: 20, reaction: 'stagger', lunge: 2, hitstop: 4, sfx: 'swingLight', hitSfx: 'hitLight', telegraph: true }),
+  e_bite: A({ id: 'e_bite', pose: 'lunge', startup: 16, active: 9, recovery: 30, damage: 6, hitbox: { fx: 30, w: 50, y: 0, h: 50, d: 20 }, kbX: 2, kbY: 0, hitstun: 16, reaction: 'stagger', lunge: 7, hitstop: 3, sfx: 'swingLight', hitSfx: 'hitLight', telegraph: true }),
+  e_slam: A({ id: 'e_slam', pose: 'slam', startup: 42, active: 6, recovery: 52, damage: 18, hitbox: { fx: 50, w: 140, y: 0, h: 80, d: 60 }, kbX: 6, kbY: 8, hitstun: 30, reaction: 'knockdown', armor: true, hitstop: 8, shake: 7, sfx: 'stomp', hitSfx: 'hitHeavy', telegraph: true, fxColor: '#e63946' }),
+  e_shove: A({ id: 'e_shove', pose: 'punch', startup: 24, active: 5, recovery: 30, damage: 10, hitbox: { fx: 60, w: 80, y: 20, h: 90, d: 26 }, kbX: 7, kbY: 0, hitstun: 22, reaction: 'stagger', lunge: 2, armor: true, hitstop: 5, sfx: 'swingHeavy', hitSfx: 'hitHeavy', telegraph: true }),
+  e_lob: A({ id: 'e_lob', pose: 'throw', startup: 36, active: 2, recovery: 40, damage: 0, hitbox: { fx: 0, w: 0, y: 0, h: 0, d: 0 }, kbX: 0, kbY: 0, hitstun: 0, reaction: 'stagger', projectile: 'inkblob', sfx: 'shoot', telegraph: true }),
+  e_thrust: A({ id: 'e_thrust', pose: 'lunge', startup: 28, active: 10, recovery: 32, damage: 14, hitbox: { fx: 60, w: 80, y: 30, h: 60, d: 24 }, kbX: 6, kbY: 0, hitstun: 24, reaction: 'stagger', lunge: 9, hitstop: 5, sfx: 'swingHeavy', hitSfx: 'hitHeavy', telegraph: true }),
+  e_explode: A({ id: 'e_explode', pose: 'slam', startup: 1, active: 3, recovery: 1, damage: 16, hitbox: { fx: 0, w: 190, y: 0, h: 120, d: 80 }, kbX: 8, kbY: 9, hitstun: 30, reaction: 'launch', ring: true, unblockable: true, hitstop: 6, shake: 8, sfx: 'explode', hitSfx: 'hitHeavy' }),
+
+  // ---------------- Bosses ----------------
+  b_swipe: A({ id: 'b_swipe', pose: 'punch', startup: 24, active: 6, recovery: 26, damage: 12, hitbox: { fx: 70, w: 120, y: 20, h: 100, d: 34 }, kbX: 6, kbY: 0, hitstun: 22, reaction: 'stagger', lunge: 3, hitstop: 5, sfx: 'swingHeavy', hitSfx: 'hitHeavy', telegraph: true }),
+  b_pound: A({ id: 'b_pound', pose: 'slam', startup: 40, active: 6, recovery: 46, damage: 16, hitbox: { fx: 40, w: 160, y: 0, h: 80, d: 60 }, kbX: 6, kbY: 8, hitstun: 30, reaction: 'knockdown', armor: true, hitstop: 8, shake: 8, sfx: 'stomp', hitSfx: 'hitHeavy', telegraph: true, shockwave: { radius: 420, damage: 10 } }),
+  b_charge: A({ id: 'b_charge', pose: 'lunge', startup: 48, active: 60, recovery: 20, damage: 18, hitbox: { fx: 40, w: 120, y: 0, h: 120, d: 40 }, kbX: 10, kbY: 8, hitstun: 30, reaction: 'launch', lunge: 11, armor: true, hitstop: 7, shake: 6, sfx: 'roar', hitSfx: 'hitHeavy', telegraph: true }),
+  b_beam: A({ id: 'b_beam', pose: 'throw', startup: 46, active: 30, recovery: 30, damage: 6, hitbox: { fx: 520, w: 1000, y: 30, h: 50, d: 22 }, kbX: 3, kbY: 0, hitstun: 14, reaction: 'stagger', multiHit: 10, hitstop: 2, sfx: 'shoot', hitSfx: 'hitLight', telegraph: true, unblockable: false, fxColor: '#f9f871' }),
+  b_slash: A({ id: 'b_slash', pose: 'lunge', startup: 26, active: 10, recovery: 28, damage: 14, hitbox: { fx: 70, w: 110, y: 20, h: 100, d: 30 }, kbX: 7, kbY: 4, hitstun: 24, reaction: 'knockdown', lunge: 10, hitstop: 6, sfx: 'swingHeavy', hitSfx: 'hitHeavy', telegraph: true }),
+  b_volley: A({ id: 'b_volley', pose: 'throw', startup: 34, active: 2, recovery: 40, damage: 0, hitbox: { fx: 0, w: 0, y: 0, h: 0, d: 0 }, kbX: 0, kbY: 0, hitstun: 0, reaction: 'stagger', projectile: 'staple', sfx: 'shoot', telegraph: true }),
+  b_quills: A({ id: 'b_quills', pose: 'throw', startup: 30, active: 2, recovery: 36, damage: 0, hitbox: { fx: 0, w: 0, y: 0, h: 0, d: 0 }, kbX: 0, kbY: 0, hitstun: 0, reaction: 'stagger', projectile: 'quill', sfx: 'shoot', telegraph: true }),
+  b_chomp: A({ id: 'b_chomp', pose: 'lunge', startup: 36, active: 12, recovery: 20, damage: 20, hitbox: { fx: 90, w: 130, y: 0, h: 110, d: 40 }, kbX: 8, kbY: 6, hitstun: 30, reaction: 'knockdown', lunge: 7, armor: true, hitstop: 8, shake: 6, sfx: 'clang', hitSfx: 'hitHeavy', telegraph: true }),
+  b_wave: A({ id: 'b_wave', pose: 'slam', startup: 44, active: 4, recovery: 40, damage: 0, hitbox: { fx: 0, w: 0, y: 0, h: 0, d: 0 }, kbX: 0, kbY: 0, hitstun: 0, reaction: 'stagger', projectile: 'shockwave', sfx: 'roar', telegraph: true, armor: true }),
+  b_handslam: A({ id: 'b_handslam', pose: 'slam', startup: 50, active: 6, recovery: 30, damage: 20, hitbox: { fx: 0, w: 140, y: 0, h: 120, d: 60 }, kbX: 6, kbY: 9, hitstun: 30, reaction: 'knockdown', armor: true, hitstop: 8, shake: 9, sfx: 'stomp', hitSfx: 'hitHeavy', telegraph: true, unblockable: true }),
+};
+
+export const PROJECTILES: Record<string, ProjectileDef> = {
+  banana: { id: 'banana', speed: 9, gravity: 0, damage: 12, kbX: 2, kbY: 0, reaction: 'stagger', hitstun: 22, life: 140, w: 40, h: 34, d: 26, boomerang: 300, pierce: true, art: 'banana' },
+  inkblob: { id: 'inkblob', speed: 6, gravity: 0.32, arc: true, damage: 7, kbX: 3, kbY: 2, reaction: 'stagger', hitstun: 20, life: 180, w: 30, h: 30, d: 24, art: 'inkblob', reflectable: true },
+  staple: { id: 'staple', speed: 7.5, gravity: 0, damage: 9, kbX: 3, kbY: 0, reaction: 'stagger', hitstun: 18, life: 160, w: 34, h: 18, d: 18, art: 'staple', reflectable: true },
+  quill: { id: 'quill', speed: 7, gravity: 0, damage: 7, kbX: 2, kbY: 0, reaction: 'stagger', hitstun: 16, life: 150, w: 30, h: 14, d: 16, art: 'quill', reflectable: true },
+  shockwave: { id: 'shockwave', speed: 6.5, gravity: 0, damage: 11, kbX: 5, kbY: 8, reaction: 'launch', hitstun: 26, life: 260, w: 40, h: 46, d: 400, art: 'shockwave', pierce: true },
+  inkdrop: { id: 'inkdrop', speed: 0, gravity: 0.5, damage: 7, kbX: 0, kbY: 4, reaction: 'stagger', hitstun: 20, life: 200, w: 40, h: 30, d: 26, art: 'inkdrop' },
+};

@@ -1,0 +1,20 @@
+{
+  "name": "drawn-heroes",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Momo & Scout: Ink Rush, a 2.5D co-op beat-'em-up starring two hand-drawn heroes.",
+  "scripts": {
+    "dev": "node build.mjs --serve",
+    "build": "node build.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "check": "npm run typecheck && npm run test && npm run build"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.2",
+    "playwright": "^1.56.1",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.9"
+  }
+}
