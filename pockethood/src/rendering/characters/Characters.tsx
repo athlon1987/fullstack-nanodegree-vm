@@ -1,0 +1,406 @@
+// Residents and pets: autonomous daily routines on the navigation grid.
+import { Html } from '@react-three/drei';
+import { useFrame, type ThreeEvent } from '@react-three/fiber';
+import { useEffect, useMemo, useRef } from 'react';
+import * as THREE from 'three';
+import { BUILDINGS } from '../../data/buildings';
+import { RESIDENTS } from '../../data/residents';
+import { activeChapter, eligibleChapter } from '../../game/characters/relationships';
+import { hashString, rng } from '../../game/core/rng';
+import type { BuildingInstance, DayPhase, GameState, ResidentState } from '../../game/core/types';
+import { buildNavGrid, findPath, nearestWalkable, walkable, type NavGrid } from '../../game/navigation/pathfinding';
+import { doorCell } from '../../game/world/grid';
+import { phaseOf } from '../../services/clock';
+import { useGame } from '../../state/store';
+import { audio } from '../../audio/AudioManager';
+import { cameraState } from '../camera/CameraRig';
+import { HALF, htmlPortal, worldClock } from '../scene/coords';
+import { Actor, type AnimState } from './Actor';
+
+const CHAR_HEIGHT = 0.62;
+const WALK_SPEED = 0.95;
+
+type Activity = { anim: AnimState; hidden?: boolean; face?: number; duration: number };
+
+interface Brain {
+  id: string;
+  actor: Actor;
+  pos: THREE.Vector2;
+  path: THREE.Vector2[];
+  heading: number;
+  mode: 'idle' | 'walk' | 'activity' | 'inside' | 'chat' | 'greet';
+  timer: number;
+  activity: Activity | null;
+  chatWith: string | null;
+  r: () => number;
+  hiddenAmount: number;
+}
+
+const cellToWorld = (x: number, z: number) => new THREE.Vector2(x - HALF + 0.5, z - HALF + 0.5);
+const worldToCell = (v: THREE.Vector2): [number, number] => [Math.floor(v.x + HALF), Math.floor(v.y + HALF)];
+
+function operational(s: GameState, type: string) {
+  return s.buildings.filter((b) => b.type === type && b.busyKind !== 'build');
+}
+
+/** Choose the next destination + activity from the resident's schedule. */
+function plan(s: GameState, b: Brain, phase: DayPhase, nav: NavGrid): { cell: [number, number]; act: Activity } | null {
+  const def = RESIDENTS[b.id];
+  const work = def.workplace ? operational(s, def.workplace)[0] : undefined;
+  const homes = [...operational(s, 'cottage'), ...operational(s, 'townhouse'), ...operational(s, 'starter_house')];
+  const home = homes[hashString(b.id) % homes.length];
+  const door = (x?: BuildingInstance) => (x ? (nearestWalkable(nav, ...doorCell(x)) ?? null) : null);
+  const benches = s.buildings.filter((x) => x.type === 'bench');
+  const spots: { cell: [number, number] | null; act: Activity; w: number }[] = [];
+  const favorite = def.favoritePlace === 'pond' ? s.buildings.find((x) => x.type === 'pond') : def.favoritePlace === 'park' ? operational(s, 'park')[0] : operational(s, def.favoritePlace)[0];
+  const randomCell = (): [number, number] | null => {
+    for (let i = 0; i < 20; i++) {
+      const x = 6 + Math.floor(b.r() * 12);
+      const z = 6 + Math.floor(b.r() * 12);
+      if (walkable(nav, x, z)) return [x, z];
+    }
+    return null;
+  };
+  const plaza = nearestWalkable(nav, 12, 12);
+  if (phase === 'night') spots.push({ cell: home ? door(home) : nearestWalkable(nav, 0, 18), act: { anim: 'idle', hidden: true, duration: 40 }, w: 10 });
+  if (work && phase !== 'night') spots.push({ cell: door(work), act: { anim: 'work', duration: 9 + b.r() * 8 }, w: phase === 'morning' ? 6 : phase === 'day' ? 4 : 1 });
+  if (favorite) spots.push({ cell: door(favorite), act: { anim: 'idle', duration: 6 + b.r() * 6 }, w: phase === 'evening' ? 4 : 2 });
+  if (benches.length) {
+    const bench = benches[Math.floor(b.r() * benches.length)];
+    spots.push({ cell: [bench.x, bench.z + (bench.rot === 2 ? -1 : 1)], act: { anim: 'sit', duration: 8 + b.r() * 6, face: bench.rot === 2 ? Math.PI : 0 }, w: 2 });
+  }
+  spots.push({ cell: plaza, act: { anim: 'idle', duration: 4 + b.r() * 4 }, w: phase === 'evening' ? 3 : 1.5 });
+  spots.push({ cell: randomCell(), act: { anim: b.r() < 0.5 ? 'idle' : 'happy', duration: 3 + b.r() * 4 }, w: 2 });
+  const valid = spots.filter((x) => x.cell && walkable(nav, x.cell[0], x.cell[1]));
+  if (!valid.length) return null;
+  const total = valid.reduce((a, x) => a + x.w, 0);
+  let pick = b.r() * total;
+  for (const v of valid) {
+    pick -= v.w;
+    if (pick <= 0) return { cell: v.cell!, act: v.act };
+  }
+  return { cell: valid[0].cell!, act: valid[0].act };
+}
+
+export function Residents() {
+  const residents = useGame((s) => s.game!.residents);
+  const buildings = useGame((s) => s.game!.buildings);
+  const plots = useGame((s) => s.game!.plots);
+  const nav = useMemo(() => buildNavGrid({ buildings, plots }), [buildings, plots]);
+  const navRef = useRef(nav);
+  navRef.current = nav;
+  const brains = useRef(new Map<string, Brain>());
+  const group = useMemo(() => new THREE.Group(), []);
+
+  // Create brains for arrived residents (new arrivals walk in from the street).
+  useEffect(() => {
+    for (const r of residents) {
+      if (brains.current.has(r.id)) continue;
+      const def = RESIDENTS[r.id];
+      const actor = new Actor(def.model, CHAR_HEIGHT, 'humanoid');
+      actor.root.userData.resident = r.id;
+      const fresh = Date.now() - r.arrivedAt < 60_000;
+      const s = useGame.getState().game!;
+      const work = def.workplace ? operational(s, def.workplace)[0] : undefined;
+      const start = fresh ? ([0, 18] as [number, number]) : work ? (nearestWalkable(nav, ...doorCell(work)) ?? [12, 13]) : (nearestWalkable(nav, 12 + (hashString(r.id) % 4), 13) ?? [12, 13]);
+      const pos = cellToWorld(...(walkable(nav, ...start) ? start : (nearestWalkable(nav, ...start) ?? [12, 13])));
+      const brain: Brain = { id: r.id, actor, pos, path: [], heading: 0, mode: 'idle', timer: 0.5 + Math.random(), activity: null, chatWith: null, r: rng(hashString(r.id) ^ Date.now()), hiddenAmount: 0 };
+      brains.current.set(r.id, brain);
+      residentIndex.set(r.id, actor.root);
+      group.add(actor.root);
+    }
+  }, [residents, nav, group]);
+
+  // Re-path anyone whose route got blocked by a new building.
+  useEffect(() => {
+    for (const b of brains.current.values()) {
+      if (b.path.some((p) => !walkable(nav, ...worldToCell(p)))) {
+        b.path = [];
+        b.mode = 'idle';
+        b.timer = 0.2;
+      }
+      const c = worldToCell(b.pos);
+      if (!walkable(nav, ...c)) {
+        const n = nearestWalkable(nav, ...c);
+        if (n) b.pos.copy(cellToWorld(...n));
+      }
+    }
+  }, [nav]);
+
+  useFrame((_, rawDt) => {
+    // Movement is capped per frame (no teleporting after a stall); timers use real time.
+    const dt = Math.min(rawDt, 0.25);
+    const s = useGame.getState().game!;
+    const phase = phaseOf(worldClock.hour);
+    const all = [...brains.current.values()];
+    for (const b of all) {
+      b.timer -= Math.min(rawDt, 2);
+      if (b.mode === 'walk') {
+        const target = b.path[0];
+        if (!target) {
+          arrive(b);
+        } else {
+          const d = target.clone().sub(b.pos);
+          const len = d.length();
+          const step = WALK_SPEED * dt;
+          if (len <= step) {
+            b.pos.copy(target);
+            b.path.shift();
+          } else b.pos.addScaledVector(d.normalize(), step);
+          if (len > 0.001) b.heading = turn(b.heading, Math.atan2(d.x, d.y), dt * 10);
+          b.actor.play('walk', 0.2, 1.1);
+          // Neighbours stop to chat now and then
+          if (phase !== 'night' && b.r() < dt * 0.15) {
+            const other = all.find((o) => o !== b && o.mode === 'walk' && o.pos.distanceTo(b.pos) < 0.9);
+            if (other) startChat(b, other);
+          }
+        }
+      } else if (b.mode === 'activity' || b.mode === 'chat' || b.mode === 'greet') {
+        if (b.activity) b.actor.play(b.activity.anim, 0.3, b.activity.anim === 'talk' ? 0.6 : 1);
+        if (b.chatWith) {
+          const o = brains.current.get(b.chatWith);
+          if (o) b.heading = turn(b.heading, Math.atan2(o.pos.x - b.pos.x, o.pos.y - b.pos.y), dt * 6);
+        } else if (b.activity?.face !== undefined) b.heading = turn(b.heading, b.activity.face, dt * 6);
+        if (b.timer <= 0) {
+          b.mode = 'idle';
+          b.chatWith = null;
+          b.timer = 0.4 + b.r() * 1.2;
+        }
+      } else if (b.mode === 'inside') {
+        if (b.timer <= 0 && phase !== 'night') {
+          b.mode = 'idle';
+          b.timer = 0.1;
+        }
+      } else if (b.mode === 'idle') {
+        if (!b.actor.busyOneShot) b.actor.play('idle');
+        if (b.timer <= 0) {
+          const p = plan(s, b, phase, navRef.current);
+          const from = worldToCell(b.pos);
+          const path = p ? findPath(navRef.current, from[0], from[1], p.cell[0], p.cell[1]) : null;
+          if (p && path && path.length > 1) {
+            b.path = path.slice(1).map(([x, z]) => cellToWorld(x, z).add(new THREE.Vector2((b.r() - 0.5) * 0.3, (b.r() - 0.5) * 0.3)));
+            b.activity = p.act;
+            b.mode = 'walk';
+          } else if (p) {
+            b.activity = p.act;
+            arrive(b);
+          } else b.timer = 2;
+        }
+      }
+      // Fade in/out when entering buildings at night
+      const hidden = b.mode === 'inside';
+      b.hiddenAmount = THREE.MathUtils.clamp(b.hiddenAmount + (hidden ? dt * 2 : -dt * 2), 0, 1);
+      b.actor.root.visible = b.hiddenAmount < 0.99;
+      b.actor.root.scale.setScalar(1 - b.hiddenAmount * 0.6);
+      b.actor.root.position.set(b.pos.x, 0.04, b.pos.y);
+      b.actor.root.rotation.y = b.heading;
+      b.actor.update(dt);
+    }
+  });
+
+  function arrive(b: Brain) {
+    const act = b.activity ?? { anim: 'idle' as AnimState, duration: 3 };
+    b.timer = act.duration;
+    b.mode = act.hidden ? 'inside' : 'activity';
+    if (act.anim === 'work') b.activity = { ...act, anim: RESIDENTS[b.id].workAction === 'interact' ? 'work' : RESIDENTS[b.id].workAction === 'pick-up' ? 'eat' : RESIDENTS[b.id].workAction === 'crouch' ? 'crouch' : 'talk', face: Math.PI };
+  }
+
+  function startChat(a: Brain, o: Brain) {
+    for (const [x, y] of [
+      [a, o],
+      [o, a],
+    ] as const) {
+      x.mode = 'chat';
+      x.chatWith = y.id;
+      x.timer = 3 + a.r() * 2;
+      x.path = [];
+      x.activity = { anim: 'talk', duration: x.timer };
+    }
+  }
+
+  const onClick = (e: ThreeEvent<MouseEvent>) => {
+    if (e.delta > 8 || cameraState.dragging) return;
+    let o: THREE.Object3D | null = e.object;
+    while (o && !o.userData.resident) o = o.parent;
+    if (!o) return;
+    e.stopPropagation();
+    const id = o.userData.resident as string;
+    const b = brains.current.get(id);
+    if (b) {
+      b.mode = 'greet';
+      b.path = [];
+      b.timer = 4;
+      b.activity = { anim: 'wave', duration: 4, face: Math.PI / 4 };
+      b.actor.play('wave');
+    }
+    audio.play('pop');
+    useGame.getState().setUI({ resident: id, selected: null });
+  };
+
+  return (
+    <group>
+      <primitive object={group} onClick={onClick} />
+      {residents.map((r) => (
+        <StoryMarker key={r.id} r={r} brains={brains} />
+      ))}
+    </group>
+  );
+}
+
+function turn(cur: number, target: number, k: number) {
+  let d = target - cur;
+  while (d > Math.PI) d -= Math.PI * 2;
+  while (d < -Math.PI) d += Math.PI * 2;
+  return cur + d * Math.min(1, k);
+}
+
+/** "!" when a resident has a new story chapter; "…" when you can hand items over. */
+function StoryMarker({ r, brains }: { r: ResidentState; brains: React.MutableRefObject<Map<string, Brain>> }) {
+  const game = useGame((s) => s.game!);
+  const ref = useRef<THREE.Group>(null);
+  const eligible = eligibleChapter(game, r);
+  const active = activeChapter(r);
+  useFrame(() => {
+    const b = brains.current.get(r.id);
+    if (ref.current && b) {
+      ref.current.position.set(b.pos.x, 0.95 + Math.sin(worldClock.t * 3) * 0.04, b.pos.y);
+      ref.current.visible = b.mode !== 'inside';
+    }
+  });
+  if (!eligible && !active) return null;
+  return (
+    <group ref={ref}>
+      <Html portal={htmlPortal} center zIndexRange={[19, 0]}>
+        <button
+          className={`story-marker ${eligible ? 'story-marker--new' : ''}`}
+          aria-label={`${RESIDENTS[r.id].name} has a story`}
+          onClick={() => useGame.getState().setUI({ resident: r.id })}
+        >
+          {eligible ? '!' : '…'}
+        </button>
+      </Html>
+    </group>
+  );
+}
+
+// ─── Pets ────────────────────────────────────────────────────────────────────
+
+interface PetDef {
+  id: string;
+  name: string;
+  model: string;
+  height: number;
+  /** Anchor building type to wander around, or a resident to follow. */
+  home?: string;
+  follow?: string;
+  requires?: string;
+}
+
+export const PETS: PetDef[] = [
+  { id: 'mochi', name: 'Mochi', model: 'cat', height: 0.3, home: 'starter_house' },
+  { id: 'biscuit', name: 'Biscuit', model: 'shiba', height: 0.34, follow: 'felix', requires: 'bakery' },
+  { id: 'pudding', name: 'Pudding', model: 'pug', height: 0.28, home: 'cafe', requires: 'cafe' },
+];
+
+export function Pets() {
+  const buildings = useGame((s) => s.game!.buildings);
+  const plots = useGame((s) => s.game!.plots);
+  const nav = useMemo(() => buildNavGrid({ buildings, plots }), [buildings, plots]);
+  const pets = PETS.filter((p) => !p.requires || buildings.some((b) => b.type === p.requires && b.busyKind !== 'build'));
+  return (
+    <group>
+      {pets.map((p) => (
+        <Pet key={p.id} def={p} nav={nav} />
+      ))}
+    </group>
+  );
+}
+
+function Pet({ def, nav }: { def: PetDef; nav: NavGrid }) {
+  const actor = useMemo(() => new Actor(def.model, def.height, 'animal'), [def]);
+  const st = useRef({ pos: new THREE.Vector2(0, 2), path: [] as THREE.Vector2[], heading: 0, timer: 1, mode: 'idle' as 'idle' | 'walk' | 'rest' | 'play', r: rng(hashString(def.id)) });
+  const navRef = useRef(nav);
+  navRef.current = nav;
+  useEffect(() => {
+    const s = useGame.getState().game!;
+    const anchor = s.buildings.find((b) => b.type === (def.home ?? 'starter_house'));
+    const c = anchor ? nearestWalkable(nav, ...doorCell(anchor)) : null;
+    if (c) st.current.pos.copy(cellToWorld(...c)).add(new THREE.Vector2(0.3, 0.2));
+    actor.root.userData.pet = def.id;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useFrame((_, rawDt) => {
+    const dt = Math.min(rawDt, 0.25);
+    const p = st.current;
+    p.timer -= Math.min(rawDt, 2);
+    if (p.mode === 'walk') {
+      const t = p.path[0];
+      if (!t) {
+        p.mode = p.r() < 0.4 ? 'rest' : 'idle';
+        p.timer = 3 + p.r() * 5;
+      } else {
+        const d = t.clone().sub(p.pos);
+        const len = d.length();
+        const speed = def.follow ? 1.0 : 0.6;
+        if (len <= speed * dt) {
+          p.pos.copy(t);
+          p.path.shift();
+        } else p.pos.addScaledVector(d.normalize(), speed * dt);
+        p.heading = turn(p.heading, Math.atan2(d.x, d.y), dt * 8);
+        actor.play(def.follow && len > 0.5 ? 'run' : 'walk');
+      }
+    } else {
+      if (p.mode !== 'play') actor.play(p.mode === 'rest' ? 'sit' : 'idle');
+      if (p.timer <= 0) {
+        const s = useGame.getState().game!;
+        let goal: [number, number] | null = null;
+        if (def.follow) {
+          const owner = s.residents.find((r) => r.id === def.follow);
+          const ownerObj = owner && findResidentWorld(def.follow);
+          if (ownerObj) goal = nearestWalkable(navRef.current, ...worldToCell(new THREE.Vector2(ownerObj.x + 0.4, ownerObj.z + 0.3)));
+        }
+        if (!goal) {
+          const anchor = s.buildings.find((b) => b.type === (def.home ?? 'starter_house'));
+          const [ax, az] = anchor ? doorCell(anchor) : [12, 13];
+          goal = nearestWalkable(navRef.current, ax + Math.floor((p.r() - 0.5) * 6), az + Math.floor((p.r() - 0.5) * 4));
+        }
+        const from = worldToCell(p.pos);
+        const path = goal ? findPath(navRef.current, from[0], from[1], goal[0], goal[1], 1500) : null;
+        if (path && path.length > 1) {
+          p.path = path.slice(1).map(([x, z]) => cellToWorld(x, z).add(new THREE.Vector2((p.r() - 0.5) * 0.4, (p.r() - 0.5) * 0.4)));
+          p.mode = 'walk';
+        } else p.timer = def.follow ? 1 : 3;
+      }
+    }
+    actor.root.position.set(p.pos.x, 0.03, p.pos.y);
+    actor.root.rotation.y = p.heading;
+    actor.update(dt);
+  });
+  return (
+    <primitive
+      object={actor.root}
+      onClick={(e: ThreeEvent<MouseEvent>) => {
+        if (e.delta > 8 || cameraState.dragging) return;
+        e.stopPropagation();
+        st.current.mode = 'play';
+        st.current.timer = 2.5;
+        st.current.path = [];
+        actor.play('celebrate');
+        audio.play('pop');
+        useGame.getState().toast({ icon: 'heart', title: `${def.name} loves the attention!`, tone: 'story' });
+      }}
+    />
+  );
+}
+
+/** Lookup for pets that follow residents (shared through the scene graph). */
+function findResidentWorld(id: string): { x: number; z: number } | null {
+  let found: { x: number; z: number } | null = null;
+  residentIndex.forEach((obj, key) => {
+    if (key === id) found = { x: obj.position.x, z: obj.position.z };
+  });
+  return found;
+}
+export const residentIndex = new Map<string, THREE.Object3D>();
+
+export const isFixedBuilding = (t: string) => BUILDINGS[t]?.category === 'landmark';

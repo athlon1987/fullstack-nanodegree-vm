@@ -1,0 +1,7 @@
+node_modules/
+dist/
+test-results/
+playwright-report/
+*.tsbuildinfo
+asset-import/*
+!asset-import/README.md
