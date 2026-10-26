@@ -11,7 +11,7 @@ The browser build is a functioning game end-to-end: a guided first session, the 
 | `npm test` (Vitest) | **31 / 31 passed** — engine, economy, grid, orders, flywheel E2E (simulation level), relationships & stories, Pulse, community idempotency, expansion, persistence & recovery, pathfinding |
 | `npm run test:e2e` (Playwright, Chromium/SwiftShader) | **6 / 6 passed** — load, full guided tutorial through the café upgrade, reload persistence, panels, placement validation, mobile layout |
 | `npm run typecheck` / `npm run build` | Pass |
-| `npm run assets:validate` | Pass — 69 models, 2.76 MiB, required clips present |
+| `npm run assets:validate` | Pass — 69 models, 3.7 MiB, required clips present |
 | `npm run economy:sim` | Runs; findings in ECONOMY_SIMULATION.md (one open content-depth issue, below) |
 
 ### Feature status

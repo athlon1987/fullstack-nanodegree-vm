@@ -137,6 +137,12 @@ export const useGame = create<Store>((set, get) => ({
     saves = new SaveService(await browserAdapter());
     const now = clock.now();
     const { state, fresh, recovered } = await saves.load(now);
+    // Phones start on the Medium preset (lower pixel ratio, cheaper shadows).
+    try {
+      if (fresh && window.matchMedia('(pointer: coarse)').matches) state.settings = { ...state.settings, graphics: 'medium' };
+    } catch {
+      /* matchMedia unavailable */
+    }
     const welcome = fresh ? null : welcomeSummary(state, now);
     const r = engineDispatch(state, { type: 'sessionStart' }, now);
     set({ game: r.state, loaded: true, ui: { ...get().ui, welcome } });
@@ -227,7 +233,7 @@ export const useGame = create<Store>((set, get) => ({
   async saveNow() {
     if (resetting) return;
     const g = get().game;
-    if (g && saves) await saves.save({ ...g, lastSeen: clock.now() });
+    if (g && saves) await saves.save({ ...g, lastSeen: clock.now() }).catch(() => {});
   },
 }));
 

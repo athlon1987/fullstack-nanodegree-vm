@@ -13,6 +13,7 @@ import { rewardText, useGame } from '../../state/store';
 import { Icon } from '../components/Icon';
 import { CostChips, Panel, Portrait, Progress, Tabs } from '../components/Panel';
 import { cameraState } from '../../rendering/camera/CameraRig';
+import { safeRemove } from '../../utils/safeStorage';
 
 export function ProfilePanel() {
   const g = useGame((s) => s.game!);
@@ -214,7 +215,7 @@ export function SettingsPanel() {
             dispatch({ type: 'tutorial', step: 0 });
             useGame.getState().setUI({ panel: null });
             useGame.getState().toast({ icon: 'help', title: 'Tutorial hints are back on', tone: 'info' });
-            localStorage.removeItem('pockethood.hideHints');
+            safeRemove('pockethood.hideHints');
           }}
         >
           Show tutorial hints again

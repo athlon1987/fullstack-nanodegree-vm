@@ -10,7 +10,7 @@ Measured with `renderer.info` on the starting neighborhood (desktop, High preset
 | Draw calls per frame (incl. shadow pass) | 737 | ~430 |
 | Triangles | 149k | ~111k |
 | Meshes in scene | 493 | ~334 |
-| Runtime model payload | — | 2.76 MiB (69 GLBs, meshopt) |
+| Runtime model payload | — | 3.7 MiB (69 GLBs, quantised; no WASM decoder needed) |
 
 Optimisations applied: baked archetypes (merge per material, dequantised CC0 geometry merges too), shared/tinted material cache, per-plot baked wilderness, merged road markings, instanced grass/flowers/path tiles, lower bevel segment counts on small parts, small decorations don't cast shadows, throttled shadow-map updates on Medium/Low, idle engine ticks return the same state object (no React re-render storms).
 

@@ -10,7 +10,7 @@
 | Persistence | IndexedDB (idb-keyval) → localStorage fallback | Local-first, survives restarts |
 | Build | Vite 7 | Fast dev server, code-split production build |
 | Tests | Vitest 3 (simulation), Playwright 1.63 (browser) | Deterministic logic tests + real-browser flows |
-| Asset tooling | glTF Transform 4, meshoptimizer | Provenance-checked import, palette harmonisation, budgets |
+| Asset tooling | glTF Transform 4, meshoptimizer (source decoding only) | Provenance-checked import, palette harmonisation, budgets |
 
 ## Layering
 ```

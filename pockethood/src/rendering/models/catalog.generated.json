@@ -8,7 +8,7 @@
   "pack": "kenney_mini_characters",
   "sourcePath": "Models/GLB format/character-male-a.glb",
   "sha256": "d3ddd36feb5b27ceec4117cc264bd52343632b965298cd14d195c9cee11c430b",
-  "bytes": 76676,
+  "bytes": 96168,
   "tris": 723,
   "bounds": {
    "min": [
@@ -67,7 +67,7 @@
   "pack": "kenney_mini_characters",
   "sourcePath": "Models/GLB format/character-female-a.glb",
   "sha256": "20624d1b19423ac8ab03ac8f91bbaf02b1da8e1907dfe0972736d1e77cf14c8c",
-  "bytes": 79300,
+  "bytes": 102040,
   "tris": 876,
   "bounds": {
    "min": [
@@ -126,7 +126,7 @@
   "pack": "kenney_mini_characters",
   "sourcePath": "Models/GLB format/character-male-b.glb",
   "sha256": "ca4c27f8e08038179ab991e9be115d1ce0f5a71a78ab45341b57c6199fcdb595",
-  "bytes": 76704,
+  "bytes": 95944,
   "tris": 690,
   "bounds": {
    "min": [
@@ -185,7 +185,7 @@
   "pack": "kenney_mini_characters",
   "sourcePath": "Models/GLB format/character-female-b.glb",
   "sha256": "d116f74b076892e10e5375a2eaf0a9bb92e0392f88071e25b6a62ccb387b830c",
-  "bytes": 76944,
+  "bytes": 95868,
   "tris": 742,
   "bounds": {
    "min": [
@@ -244,7 +244,7 @@
   "pack": "kenney_mini_characters",
   "sourcePath": "Models/GLB format/character-male-c.glb",
   "sha256": "1c2877e852de73300f0da1e5f15615fc71f7506bb37baabd4ffa00403c6e3b94",
-  "bytes": 78416,
+  "bytes": 99448,
   "tris": 793,
   "bounds": {
    "min": [
@@ -303,7 +303,7 @@
   "pack": "kenney_mini_characters",
   "sourcePath": "Models/GLB format/character-female-c.glb",
   "sha256": "0bc906e4b8e93afd331a4d95758113f01a2b9a024a5c57b85b99fce1082ee71d",
-  "bytes": 77216,
+  "bytes": 96304,
   "tris": 732,
   "bounds": {
    "min": [
@@ -362,7 +362,7 @@
   "pack": "kenney_mini_characters",
   "sourcePath": "Models/GLB format/character-male-d.glb",
   "sha256": "eb75827cc40dc13d46c26115d27da9542ef28c8f4492821f1bd09dcccdb242c0",
-  "bytes": 76776,
+  "bytes": 95700,
   "tris": 711,
   "bounds": {
    "min": [
@@ -421,7 +421,7 @@
   "pack": "kenney_mini_characters",
   "sourcePath": "Models/GLB format/character-female-d.glb",
   "sha256": "fb8369718489dc09c55b081cd7303c02dac30bd314a5fe8c89204ba056a5de07",
-  "bytes": 77932,
+  "bytes": 98240,
   "tris": 797,
   "bounds": {
    "min": [
@@ -480,7 +480,7 @@
   "pack": "kenney_mini_characters",
   "sourcePath": "Models/GLB format/character-male-e.glb",
   "sha256": "ebdb0bc18b47b4e0407a486b0320b442c1f511ec3f98d3052749c471ef507548",
-  "bytes": 76896,
+  "bytes": 96400,
   "tris": 710,
   "bounds": {
    "min": [
@@ -539,7 +539,7 @@
   "pack": "kenney_mini_characters",
   "sourcePath": "Models/GLB format/character-female-e.glb",
   "sha256": "cd079f105adf221f9359ebd7a568568d7c9e1d0526c9dc294648a2630ab4b76e",
-  "bytes": 77256,
+  "bytes": 96844,
   "tris": 756,
   "bounds": {
    "min": [
@@ -598,7 +598,7 @@
   "pack": "kenney_mini_characters",
   "sourcePath": "Models/GLB format/character-male-f.glb",
   "sha256": "4e637719529130260bf11414a4cb7eaab12feebf78bd26820acecfe77e6c0841",
-  "bytes": 76984,
+  "bytes": 96376,
   "tris": 701,
   "bounds": {
    "min": [
@@ -657,7 +657,7 @@
   "pack": "kenney_mini_characters",
   "sourcePath": "Models/GLB format/character-female-f.glb",
   "sha256": "304be80045a74d713a69936da4fe1f77e299df483ab63a99a554b14cbac683c6",
-  "bytes": 78000,
+  "bytes": 98996,
   "tris": 788,
   "bounds": {
    "min": [
@@ -716,7 +716,7 @@
   "pack": "quaternius_poly_pizza",
   "sourcePath": "https://poly.pizza/m/qKICY6xla2",
   "sha256": "a7bf890ddb81b945404e396375a4c5dc7c1fbd5f846eedf5f4b7ed2b5c0dda0f",
-  "bytes": 66584,
+  "bytes": 127592,
   "tris": 2448,
   "bounds": {
    "min": [
@@ -751,7 +751,7 @@
   "pack": "quaternius_poly_pizza",
   "sourcePath": "https://poly.pizza/m/1gXKv15ik8",
   "sha256": "732050e340752eee150a9bd3bfd4d4a801f3277f1e4a5d44c28fc28fb02b849a",
-  "bytes": 57508,
+  "bytes": 75036,
   "tris": 644,
   "bounds": {
    "min": [
@@ -780,7 +780,7 @@
   "pack": "quaternius_poly_pizza",
   "sourcePath": "https://poly.pizza/m/y4wdQpg767",
   "sha256": "4c528f41f5a8adf53ee4e80fb2786a4d2fc2b1330535e685e421b570e5c83575",
-  "bytes": 378632,
+  "bytes": 449584,
   "tris": 1950,
   "bounds": {
    "min": [
@@ -831,7 +831,7 @@
   "pack": "quaternius_poly_pizza",
   "sourcePath": "https://poly.pizza/m/Bc97C66HKi",
   "sha256": "bdc65987437d5dbb33b33685a5aad9a9f42ca9b9cd3aed460d63a0e6f4ed1ffb",
-  "bytes": 421652,
+  "bytes": 500700,
   "tris": 1848,
   "bounds": {
    "min": [
@@ -882,7 +882,7 @@
   "pack": "quaternius_poly_pizza",
   "sourcePath": "https://poly.pizza/m/9Z2V8fpazF",
   "sha256": "20d156405a379ee38d2c2cd856ca2f50151d2f7193bf4d8640cd48cb0aa24fa1",
-  "bytes": 169864,
+  "bytes": 325336,
   "tris": 4920,
   "bounds": {
    "min": [
@@ -913,7 +913,7 @@
   "pack": "kenney_nature_kit",
   "sourcePath": "Models/GLTF format/tree_oak.glb",
   "sha256": "874b530b24d92f9cb8ee04ac0883d52bc6269582b14f268b8324296cb54c53d5",
-  "bytes": 5864,
+  "bytes": 8176,
   "tris": 196,
   "bounds": {
    "min": [
@@ -939,7 +939,7 @@
   "pack": "kenney_nature_kit",
   "sourcePath": "Models/GLTF format/tree_fat.glb",
   "sha256": "f360b11e4ca93fef09c167a56bf5d14909490c68c75a1ebbe139bacfd850ded3",
-  "bytes": 3868,
+  "bytes": 3624,
   "tris": 50,
   "bounds": {
    "min": [
@@ -965,7 +965,7 @@
   "pack": "kenney_nature_kit",
   "sourcePath": "Models/GLTF format/tree_default_fall.glb",
   "sha256": "0b788f62040b71c22ed61f072f1c9ddbc1b367bec097b5b8b555629c4937a75a",
-  "bytes": 6400,
+  "bytes": 9324,
   "tris": 228,
   "bounds": {
    "min": [
@@ -991,7 +991,7 @@
   "pack": "kenney_nature_kit",
   "sourcePath": "Models/GLTF format/tree_pineDefaultA.glb",
   "sha256": "29abd5450f000b0e7b2580f9b3a32d8ab2f74dc1b2c8ec2d2fcaa5942d61e19a",
-  "bytes": 6200,
+  "bytes": 8444,
   "tris": 230,
   "bounds": {
    "min": [
@@ -1017,7 +1017,7 @@
   "pack": "kenney_nature_kit",
   "sourcePath": "Models/GLTF format/tree_pineTallA_detailed.glb",
   "sha256": "af4a0ea29ad3463c82b973698febb4d686de0dbd7a55b45cdf727d1d9ea215fd",
-  "bytes": 5032,
+  "bytes": 6248,
   "tris": 134,
   "bounds": {
    "min": [
@@ -1043,7 +1043,7 @@
   "pack": "kenney_nature_kit",
   "sourcePath": "Models/GLTF format/tree_default_dark.glb",
   "sha256": "4e7cf3d344724190bc81dc459fffcd5e15c291825980a744c4de4f4a40502a1b",
-  "bytes": 4744,
+  "bytes": 5568,
   "tris": 114,
   "bounds": {
    "min": [
@@ -1069,7 +1069,7 @@
   "pack": "kenney_nature_kit",
   "sourcePath": "Models/GLTF format/tree_palmTall.glb",
   "sha256": "2b2efb937beed9d4a1309e0fda505c36ddfb56f5b36581823bb280bdd8688042",
-  "bytes": 6240,
+  "bytes": 8680,
   "tris": 190,
   "bounds": {
    "min": [
@@ -1095,7 +1095,7 @@
   "pack": "kenney_nature_kit",
   "sourcePath": "Models/GLTF format/plant_bush.glb",
   "sha256": "682a79f4df51bbf91879c0824b1eb6b059780eb16df6e8bca43207902724884a",
-  "bytes": 2608,
+  "bytes": 2652,
   "tris": 32,
   "bounds": {
    "min": [
@@ -1121,7 +1121,7 @@
   "pack": "kenney_nature_kit",
   "sourcePath": "Models/GLTF format/plant_bushLarge.glb",
   "sha256": "3866b5d14340c37865e38d5f648f7e77da6a64d92cb0802d357f8f1441b01dff",
-  "bytes": 3204,
+  "bytes": 3668,
   "tris": 60,
   "bounds": {
    "min": [
@@ -1147,7 +1147,7 @@
   "pack": "kenney_nature_kit",
   "sourcePath": "Models/GLTF format/flower_redA.glb",
   "sha256": "ca591d7f367c205b67a9cbccaecb1e6d7bfd63d40c8f7e2e22290a3ea0e42a28",
-  "bytes": 4144,
+  "bytes": 4408,
   "tris": 76,
   "bounds": {
    "min": [
@@ -1173,7 +1173,7 @@
   "pack": "kenney_nature_kit",
   "sourcePath": "Models/GLTF format/rock_largeA.glb",
   "sha256": "2c9d61bc3d1f491938f40d77feec60cae889eaefdc1490e27deae999ec4668db",
-  "bytes": 4304,
+  "bytes": 4540,
   "tris": 80,
   "bounds": {
    "min": [
@@ -1199,7 +1199,7 @@
   "pack": "kenney_nature_kit",
   "sourcePath": "Models/GLTF format/rock_smallA.glb",
   "sha256": "44d67e6ae2dd8d46b66e4fb3ee0fb78678c3b1639aab4f53f0227e26c74bb644",
-  "bytes": 3216,
+  "bytes": 2360,
   "tris": 16,
   "bounds": {
    "min": [
@@ -1225,7 +1225,7 @@
   "pack": "kenney_nature_kit",
   "sourcePath": "Models/GLTF format/rock_tallA.glb",
   "sha256": "1b7c06187c64ccbd5dfee1e020dd0f3943401c0f1a6f31098d76e59bcd737d45",
-  "bytes": 5928,
+  "bytes": 6788,
   "tris": 136,
   "bounds": {
    "min": [
@@ -1251,7 +1251,7 @@
   "pack": "kenney_nature_kit",
   "sourcePath": "Models/GLTF format/stump_round.glb",
   "sha256": "578837811cd269a4728b6dc6717c61e42111f3b33657e2ea4748748f7c2fe05c",
-  "bytes": 3784,
+  "bytes": 3648,
   "tris": 56,
   "bounds": {
    "min": [
@@ -1277,7 +1277,7 @@
   "pack": "kenney_nature_kit",
   "sourcePath": "Models/GLTF format/log_large.glb",
   "sha256": "9fe589fdeb55383aea1441017ab878e1dcac73b5d11abf31b65b7bec018321d6",
-  "bytes": 4276,
+  "bytes": 4748,
   "tris": 96,
   "bounds": {
    "min": [
@@ -1303,7 +1303,7 @@
   "pack": "kenney_nature_kit",
   "sourcePath": "Models/GLTF format/mushroom_redTall.glb",
   "sha256": "9a02bde6eb5aecb2e33de51af4ddacd1473a3c580c5cc55b3546c1d579d5b443",
-  "bytes": 3652,
+  "bytes": 3396,
   "tris": 48,
   "bounds": {
    "min": [
@@ -1329,7 +1329,7 @@
   "pack": "kenney_nature_kit",
   "sourcePath": "Models/GLTF format/campfire_stones.glb",
   "sha256": "d5e2868856f2f96a678b7f512235eaec9a9fe77904b24b8b20f38368c31ed148",
-  "bytes": 5404,
+  "bytes": 9108,
   "tris": 264,
   "bounds": {
    "min": [
@@ -1355,7 +1355,7 @@
   "pack": "kenney_nature_kit",
   "sourcePath": "Models/GLTF format/tent_detailedOpen.glb",
   "sha256": "6645843458414744e0e130d83ff8ef3c1a8a20e1b1f93420d594b8a34f7d78e3",
-  "bytes": 5528,
+  "bytes": 8504,
   "tris": 232,
   "bounds": {
    "min": [
@@ -1381,7 +1381,7 @@
   "pack": "kenney_nature_kit",
   "sourcePath": "Models/GLTF format/statue_column.glb",
   "sha256": "ffce96e3ed0cdc74910537ce77e4a435694ad21fae02c9558d041d8020f05a39",
-  "bytes": 5508,
+  "bytes": 6268,
   "tris": 122,
   "bounds": {
    "min": [
@@ -1407,7 +1407,7 @@
   "pack": "kenney_nature_kit",
   "sourcePath": "Models/GLTF format/fence_simple.glb",
   "sha256": "3ceb7f51e1f38431f10b489685a7b0e6f5618b31786a000f4cfd9e9b9c387f43",
-  "bytes": 3588,
+  "bytes": 3680,
   "tris": 64,
   "bounds": {
    "min": [
@@ -1433,7 +1433,7 @@
   "pack": "kenney_space_kit",
   "sourcePath": "Models/GLTF format/barrel.glb",
   "sha256": "98dc9342b229763a076021bdf69bd2caa51e5acb47d066624c24546b72103bd1",
-  "bytes": 3644,
+  "bytes": 3544,
   "tris": 56,
   "bounds": {
    "min": [
@@ -1459,7 +1459,7 @@
   "pack": "kenney_space_kit",
   "sourcePath": "Models/GLTF format/barrels.glb",
   "sha256": "8d79e2200088abdaf8282c61db69abec1d566fe9191e117def0906c0b01c87cb",
-  "bytes": 6692,
+  "bytes": 6672,
   "tris": 100,
   "bounds": {
    "min": [
@@ -1485,7 +1485,7 @@
   "pack": "kenney_blaster_kit",
   "sourcePath": "Models/GLB format/crate-medium.glb",
   "sha256": "65ccc2829b6da1ca6b16155ad0558cb4391e1a8db9e6d4eb7f87113164ca57e2",
-  "bytes": 23728,
+  "bytes": 33956,
   "tris": 628,
   "bounds": {
    "min": [
@@ -1515,7 +1515,7 @@
   "pack": "quaternius_poly_pizza",
   "sourcePath": "https://poly.pizza/m/O72u4Drp8k",
   "sha256": "6aa463131c39f6b3de830895bc01a1ab2b0e7e21fd6bb4ec2f176f40d61183ec",
-  "bytes": 35080,
+  "bytes": 67656,
   "tris": 1676,
   "bounds": {
    "min": [
@@ -1541,7 +1541,7 @@
   "pack": "quaternius_poly_pizza",
   "sourcePath": "https://poly.pizza/m/7IrL01B97W",
   "sha256": "445deaefd7ef2b4a5f603344f7d8affbea8a080e586ef548ad742c6c04226883",
-  "bytes": 8808,
+  "bytes": 15884,
   "tris": 396,
   "bounds": {
    "min": [
@@ -1567,7 +1567,7 @@
   "pack": "kenney_food_kit",
   "sourcePath": "Models/GLB format/apple.glb",
   "sha256": "fbd43394b36d3601069e9c191dc6bb8ac0cfa5d6ccbdaea1725f64a931cb0c9e",
-  "bytes": 14588,
+  "bytes": 14996,
   "tris": 136,
   "bounds": {
    "min": [
@@ -1593,7 +1593,7 @@
   "pack": "kenney_food_kit",
   "sourcePath": "Models/GLB format/banana.glb",
   "sha256": "464a4ab2316c859eed25860df966fcee8e3eb968e67f8206c228e27eee716b9d",
-  "bytes": 14448,
+  "bytes": 14480,
   "tris": 104,
   "bounds": {
    "min": [
@@ -1619,7 +1619,7 @@
   "pack": "kenney_food_kit",
   "sourcePath": "Models/GLB format/burger.glb",
   "sha256": "6cad21df94f168240db45d8c8c0257f8b3bedcf739d84bda0217bfdc6dd01ca3",
-  "bytes": 23956,
+  "bytes": 24072,
   "tris": 294,
   "bounds": {
    "min": [
@@ -1645,7 +1645,7 @@
   "pack": "kenney_food_kit",
   "sourcePath": "Models/GLB format/cake-birthday.glb",
   "sha256": "8774df7e0a98f0ea215b8031cdaf966e82d2927004262a1492cbefc51371e8df",
-  "bytes": 35756,
+  "bytes": 48252,
   "tris": 1146,
   "bounds": {
    "min": [
@@ -1671,7 +1671,7 @@
   "pack": "kenney_food_kit",
   "sourcePath": "Models/GLB format/carrot.glb",
   "sha256": "91793c1bc5ed2296ea2329b16cba05a5e0d65545fac0bc7b36a17b6fb765f240",
-  "bytes": 15204,
+  "bytes": 16388,
   "tris": 148,
   "bounds": {
    "min": [
@@ -1697,7 +1697,7 @@
   "pack": "kenney_food_kit",
   "sourcePath": "Models/GLB format/cheese.glb",
   "sha256": "dbfbfa4588f3089d4c6f34eb100043e552b084397642c66222bd62cba2a856c1",
-  "bytes": 35624,
+  "bytes": 36328,
   "tris": 576,
   "bounds": {
    "min": [
@@ -1723,7 +1723,7 @@
   "pack": "kenney_food_kit",
   "sourcePath": "Models/GLB format/cookie-chocolate.glb",
   "sha256": "d3770c8ede7cb7f6aee851359deac5a6d1559f3fbe20cc4646dddf96d2d1d7c5",
-  "bytes": 14744,
+  "bytes": 15432,
   "tris": 136,
   "bounds": {
    "min": [
@@ -1749,7 +1749,7 @@
   "pack": "kenney_food_kit",
   "sourcePath": "Models/GLB format/cupcake.glb",
   "sha256": "d7dcb40f5fdbd8f02cc7206d0adec117fa89ca8e13e15835dca08db8786caa04",
-  "bytes": 18740,
+  "bytes": 19416,
   "tris": 204,
   "bounds": {
    "min": [
@@ -1775,7 +1775,7 @@
   "pack": "kenney_food_kit",
   "sourcePath": "Models/GLB format/donut-sprinkles.glb",
   "sha256": "a38d531beb524011c952c04adebd6bf42c70a2d71539f85f9e07a026b79f560f",
-  "bytes": 16044,
+  "bytes": 17372,
   "tris": 180,
   "bounds": {
    "min": [
@@ -1801,7 +1801,7 @@
   "pack": "kenney_food_kit",
   "sourcePath": "Models/GLB format/fries.glb",
   "sha256": "2c3fbf19ecfc2bf043c9c80079b19981e7ff62e14d221ce2dfb4dc2778dd0779",
-  "bytes": 26340,
+  "bytes": 38100,
   "tris": 564,
   "bounds": {
    "min": [
@@ -1827,7 +1827,7 @@
   "pack": "kenney_food_kit",
   "sourcePath": "Models/GLB format/hot-dog.glb",
   "sha256": "c2e1d68eab2962da737fdcd53cea822c56076625fb594f5ce075e1abb8bac1b4",
-  "bytes": 19416,
+  "bytes": 20584,
   "tris": 272,
   "bounds": {
    "min": [
@@ -1853,7 +1853,7 @@
   "pack": "kenney_food_kit",
   "sourcePath": "Models/GLB format/ice-cream.glb",
   "sha256": "91c220ccbfbb8b580e3081482d299637b872cc0230da1cbb3f611da3387ef8a6",
-  "bytes": 15500,
+  "bytes": 14688,
   "tris": 80,
   "bounds": {
    "min": [
@@ -1879,7 +1879,7 @@
   "pack": "kenney_food_kit",
   "sourcePath": "Models/GLB format/pizza.glb",
   "sha256": "f67be736be5b95cc58d401c9648e5641b6ff070623d97f4796ba0cb209298534",
-  "bytes": 37980,
+  "bytes": 52968,
   "tris": 1208,
   "bounds": {
    "min": [
@@ -1905,7 +1905,7 @@
   "pack": "kenney_food_kit",
   "sourcePath": "Models/GLB format/pumpkin.glb",
   "sha256": "eb30478ba66696b6168aed29fa8256c80f9695a76fc84d2e39ca31daa884a394",
-  "bytes": 15728,
+  "bytes": 16796,
   "tris": 188,
   "bounds": {
    "min": [
@@ -1931,7 +1931,7 @@
   "pack": "kenney_food_kit",
   "sourcePath": "Models/GLB format/sushi-salmon.glb",
   "sha256": "3d4b4d791c43288c67008d2e80d792dfa1bda54f07ea57d92e05ef6ecfebfd67",
-  "bytes": 14460,
+  "bytes": 14980,
   "tris": 96,
   "bounds": {
    "min": [
@@ -1957,7 +1957,7 @@
   "pack": "kenney_food_kit",
   "sourcePath": "Models/GLB format/taco.glb",
   "sha256": "9f791991b0dd36d391c53e8b03f3b25dd4e19e098e293e6c870d0271a37ec69a",
-  "bytes": 16236,
+  "bytes": 18536,
   "tris": 174,
   "bounds": {
    "min": [
@@ -1983,7 +1983,7 @@
   "pack": "kenney_food_kit",
   "sourcePath": "Models/GLB format/watermelon.glb",
   "sha256": "7612bb5294127b36753ea56f3daab03d2af12b0a5c653483558ebea387f9db44",
-  "bytes": 38776,
+  "bytes": 56992,
   "tris": 1376,
   "bounds": {
    "min": [
@@ -2009,7 +2009,7 @@
   "pack": "kenney_food_kit",
   "sourcePath": "Models/GLB format/fish.glb",
   "sha256": "47c9fc34244a6abeb015337279f932118c9a0de2201a00994102ed9c437b1147",
-  "bytes": 16596,
+  "bytes": 18496,
   "tris": 233,
   "bounds": {
    "min": [
@@ -2035,7 +2035,7 @@
   "pack": "kenney_car_kit",
   "sourcePath": "Models/GLB format/sedan.glb",
   "sha256": "68276daf41b3a8d32e5417aac8095c1abbfea1d3857b69e6863a6c5210fb5783",
-  "bytes": 32048,
+  "bytes": 51680,
   "tris": 1368,
   "bounds": {
    "min": [
@@ -2061,7 +2061,7 @@
   "pack": "kenney_car_kit",
   "sourcePath": "Models/GLB format/van.glb",
   "sha256": "cd1d826741d76c56294d556bd296f03952367874b343b9c0d6d3d092d56d0056",
-  "bytes": 32692,
+  "bytes": 53248,
   "tris": 1418,
   "bounds": {
    "min": [
@@ -2087,7 +2087,7 @@
   "pack": "kenney_car_kit",
   "sourcePath": "Models/GLB format/delivery.glb",
   "sha256": "1a98a2c08bcad24dd2230ce04680d5b4c01ca41119731856fe56e117ac1850b1",
-  "bytes": 35288,
+  "bytes": 57460,
   "tris": 1620,
   "bounds": {
    "min": [
@@ -2113,7 +2113,7 @@
   "pack": "kenney_car_kit",
   "sourcePath": "Models/GLB format/taxi.glb",
   "sha256": "55f06e0c767cf936d77232fbb98089480c9b7022ce74b42f066f242299ef4a1b",
-  "bytes": 31324,
+  "bytes": 49892,
   "tris": 1408,
   "bounds": {
    "min": [
@@ -2139,7 +2139,7 @@
   "pack": "kenney_car_kit",
   "sourcePath": "Models/GLB format/truck.glb",
   "sha256": "cdf209ba55d80e528b47d64a2833d24cfe0c98b085fbcac890c5e809a785bc43",
-  "bytes": 32704,
+  "bytes": 53196,
   "tris": 1418,
   "bounds": {
    "min": [
@@ -2165,7 +2165,7 @@
   "pack": "kenney_car_kit",
   "sourcePath": "Models/GLB format/suv.glb",
   "sha256": "6a6506ffe63ee10dffb71735f268467a3a14bda9b12c33f7dbacef25a33b1ccc",
-  "bytes": 36232,
+  "bytes": 60408,
   "tris": 1810,
   "bounds": {
    "min": [
@@ -2191,7 +2191,7 @@
   "pack": "kenney_car_kit",
   "sourcePath": "Models/GLB format/hatchback-sports.glb",
   "sha256": "12ce01f69cf16d1eef2f3eb494c9208856d07473b3b89e7674535de293df278d",
-  "bytes": 33012,
+  "bytes": 53876,
   "tris": 1424,
   "bounds": {
    "min": [
@@ -2217,7 +2217,7 @@
   "pack": "kenney_car_kit",
   "sourcePath": "Models/GLB format/tractor.glb",
   "sha256": "9f2949b20b81a1580f7893ceb799dd2dd42ba872d7b14161231fe364fc5dfbe4",
-  "bytes": 41856,
+  "bytes": 69720,
   "tris": 2044,
   "bounds": {
    "min": [
@@ -2243,7 +2243,7 @@
   "pack": "kenney_car_kit",
   "sourcePath": "Models/GLB format/delivery-flat.glb",
   "sha256": "d3ec72fdba12a7fb37a906f0bccdfffbf0f00f554043fe2cfb07a8a1e297c4f5",
-  "bytes": 34236,
+  "bytes": 57564,
   "tris": 1718,
   "bounds": {
    "min": [

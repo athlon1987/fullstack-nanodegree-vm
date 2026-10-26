@@ -9,6 +9,7 @@ import { buildingCenter } from '../../rendering/scene/coords';
 import { clock } from '../../services/clock';
 import { useGame } from '../../state/store';
 import { Portrait } from '../components/Panel';
+import { safeGet, safeSet } from '../../utils/safeStorage';
 
 interface Hint {
   text: string;
@@ -88,7 +89,7 @@ export function Coach() {
   const g = useGame((s) => s.game!);
   const blocked = useGame((s) => !!(s.ui.dialogue || s.ui.levelUp || s.ui.welcome || s.ui.photoMode));
   const [rect, setRect] = useState<DOMRect | null>(null);
-  const [hidden, setHidden] = useState(() => localStorage.getItem('pockethood.hideHints') === '1');
+  const [hidden, setHidden] = useState(() => safeGet('pockethood.hideHints') === '1');
 
   useEffect(() => {
     useGame.getState().setUI({ hintUid: hint?.uid ?? null });
@@ -142,7 +143,7 @@ export function Coach() {
           <button
             className="btn btn--plain btn--sm"
             onClick={() => {
-              localStorage.setItem('pockethood.hideHints', '1');
+              safeSet('pockethood.hideHints', '1');
               setHidden(true);
               setUI({ hintUid: null });
             }}

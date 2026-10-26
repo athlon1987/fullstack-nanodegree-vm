@@ -3,6 +3,7 @@
 import { createNewGame, DEFAULT_SETTINGS, SAVE_VERSION } from '../game/core/newGame';
 import type { GameState } from '../game/core/types';
 import { BUILDINGS } from '../data/buildings';
+import { safeGet, safeRemove, safeSet } from '../utils/safeStorage';
 
 export interface StorageAdapter {
   get(key: string): Promise<string | undefined>;
@@ -146,9 +147,9 @@ export async function browserAdapter(): Promise<StorageAdapter> {
     return { get: (k) => idb.get(k), set: (k, v) => idb.set(k, v), del: (k) => idb.del(k) };
   } catch {
     return {
-      get: async (k) => localStorage.getItem(k) ?? undefined,
-      set: async (k, v) => localStorage.setItem(k, v),
-      del: async (k) => localStorage.removeItem(k),
+      get: async (k) => safeGet(k) ?? undefined,
+      set: async (k, v) => safeSet(k, v),
+      del: async (k) => safeRemove(k),
     };
   }
 }

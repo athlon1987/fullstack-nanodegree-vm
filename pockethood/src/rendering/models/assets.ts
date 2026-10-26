@@ -1,25 +1,27 @@
-// Runtime model registry: preloads the imported CC0 GLBs (see scripts/asset-pipeline),
+// Runtime model registry: preloads the imported CC0 GLBs (see scripts/asset-pipeline;
+// they are quantised but not meshopt-compressed, so no WebAssembly decoder is needed),
 // then hands out normalised clones (consistent scale, ground at y=0, centred).
 import * as THREE from 'three';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
 import { clone as skeletonClone } from 'three/examples/jsm/utils/SkeletonUtils.js';
 import catalog from './catalog.generated.json';
 
 export type ModelName = keyof typeof catalog;
 export const CATALOG = catalog as Record<string, { url: string; category: string; clips: string[]; tris: number; bytes: number }>;
 
+/** Builds for text-only hosts ship models as embedded JSON glTF (see export-embedded.mjs). */
+const MODEL_EXT: string = import.meta.env.VITE_MODEL_EXT || '.glb';
+
 const loaded = new Map<string, GLTF>();
 const scaleCache = new Map<string, { s: number; offset: THREE.Vector3 }>();
 
 export async function preloadModels(names: string[], base: string, onProgress: (done: number, total: number) => void) {
   const loader = new GLTFLoader();
-  loader.setMeshoptDecoder(MeshoptDecoder);
   let done = 0;
   await Promise.all(
     names.map(async (n) => {
       try {
-        const gltf = await loader.loadAsync(base + CATALOG[n].url);
+        const gltf = await loader.loadAsync(base + CATALOG[n].url.replace(/\.glb$/, MODEL_EXT));
         gltf.scene.traverse((o) => {
           const m = o as THREE.Mesh;
           if (m.isMesh) {

@@ -2,7 +2,7 @@
 //  1. verify every source file against the mirror's sha256 index (provenance check)
 //  2. read with glTF Transform (meshopt aware), prune + dedup
 //  3. harmonise palette: override base colours by material name (see selection.mjs)
-//  4. write runtime GLB (meshopt re-encoded), record bounds/tris/clips/bytes
+//  4. write runtime GLB (quantised, no meshopt so no WASM is needed), record bounds/tris/clips/bytes
 //  5. emit src/rendering/models/catalog.generated.json for the runtime loader
 // Originals in asset-sources/ are never modified.
 import { createHash } from 'node:crypto';
@@ -53,6 +53,9 @@ for (const sel of SELECTION) {
     if (hex) mat.setBaseColorFactor([...hexToLinear(hex), 1]);
   }
   await doc.transform(prune({ keepLeaves: false }), dedup());
+  // Ship without EXT_meshopt_compression: decoding it needs WebAssembly, which
+  // strict hosting sandboxes may block. Quantised geometry is kept (no WASM needed).
+  for (const ext of root.listExtensionsUsed()) if (ext.extensionName === 'EXT_meshopt_compression') ext.dispose();
   const outPath = join(OUT, sel.category, `${sel.id}.glb`);
   mkdirSync(dirname(outPath), { recursive: true });
   const outBytes = await io.writeBinary(doc);

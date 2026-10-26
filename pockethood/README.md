@@ -20,6 +20,7 @@ npm run dev          # http://localhost:5173
 |---|---|
 | `npm run dev` | Dev server with hot reload |
 | `npm run build` | Typecheck + production build to `dist/` |
+| `npm run build:artifact` | Build for text-only hosts (models exported as embedded `.gltf.json`) |
 | `npm run preview` | Serve the production build |
 | `npm test` | Simulation tests (Vitest) |
 | `npm run test:e2e` | Browser tests (Playwright; starts its own dev server on :5199) |

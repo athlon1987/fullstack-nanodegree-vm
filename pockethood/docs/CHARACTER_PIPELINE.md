@@ -9,7 +9,7 @@
 Humanoid clips are never applied to animals; each family has its own state→clip table.
 
 ## Runtime flow
-1. `rendering/models/assets.ts` preloads every catalogued GLB (meshopt-compressed) behind the loading screen.
+1. `rendering/models/assets.ts` preloads every catalogued GLB (quantised glTF; no WebAssembly decoder) behind the loading screen.
 2. `model(name, height)` returns a **normalised clone** (`SkeletonUtils.clone` for skinned models): scaled so its height equals the requested world height, centred in XZ, feet at y = 0. Normalisation is measured once per model with a precise bounding box and cached. Quaternius animals are authored in centimetres — normalisation handles that automatically.
 3. `rendering/characters/Actor.ts` wraps a clone with an `AnimationMixer` and a small **state machine**:
 
