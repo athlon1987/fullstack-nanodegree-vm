@@ -27,6 +27,12 @@ export const CORE_OVERLAY_MS: Overlay = {
     grocery: { name: 'Kedai Runcit', description: 'Gerai pasar dengan bakul, jem dan hasil tempatan.', perks: [['Bungkus bakul & jem', 'Pendapatan kedai: 10 syiling / minit'], ['Pendapatan kedai: 16 syiling / minit', 'Gerai buah di luar']] },
     showroom: { name: 'Bilik Pameran Kereta', description: 'Bilik pameran kaca yang terang. Susun kereta pameran; pelawat datang melihat.', perks: [['Susun 2 ruang pameran', 'Pelawat: 9 syiling / minit'], ['3 ruang pameran', 'Pelawat: 14 syiling / minit', 'Panji-panji & tiang bendera']] },
     learning_centre: { name: 'Pusat Pembelajaran', description: 'Pusat pembelajaran mesra dengan kuiz harian untuk minda yang ingin tahu.', perks: [['Kuiz harian: 3 soalan', '+6 seri'], ['Kuiz harian: 5 soalan', 'Sudut bacaan & rak buku']] },
+    mamak: { name: 'Restoran Simpang', description: 'Buka awal pagi hingga lewat malam: roti panas dari kuali leper dan hidangan untuk dikongsi.', perks: [['Masak roti leper', '2 slot pengeluaran'], ['Resipi baharu: Nasi Lemak', '3 slot pengeluaran', 'Meja luar di bawah kanopi']] },
+    coworking: { name: 'Studio Kerja Bersama', description: 'Meja yang terang, kopi yang sedap dan jiran yang mengusahakan idea mereka. Ahli membayar yuran meja yang kecil.', perks: [['Yuran meja: 11 syiling / minit'], ['Yuran meja: 16 syiling / minit', 'Teres atas bumbung']] },
+    mall: { name: 'Pusat Beli-belah', description: 'Pusat gaya hidup yang terang dengan medan selera, pawagam dan taman atas bumbung.' },
+    school: { name: 'Sekolah Rendah', description: 'Sekolah kejiranan dengan tempat menurunkan murid berbumbung dan padang hijau.' },
+    clinic_row: { name: 'Deretan Kedai', description: 'Deretan rumah kedai: klinik keluarga, kedai serbaneka dan pejabat di tingkat atas.' },
+    petrol_station: { name: 'Stesen Minyak & EV', description: 'Pam minyak, pengecas EV pantas dan kedai serbaneka kecil.' },
     park: { name: 'Taman Mini', description: 'Dataran rimbun tempat penduduk berehat dan pelawat memberi tip.', perks: [['Penduduk berehat di sini', 'Tip: 7 syiling / minit', '+10 seri'], ['Tip: 11 syiling / minit', 'Gazebo untuk acara']] },
     town_hall: { name: 'Dewan Bandaran', description: 'Nadi kejiranan. Menambah satu slot pesanan.', perks: [['+1 slot pesanan kejiranan', 'Pendapatan sivik: 20 syiling / minit'], ['Menara jam & panji-panji', 'Pendapatan sivik: 30 syiling / minit']] },
     request_board: { name: 'Papan Pesanan', description: 'Jiran menampal permintaan mereka di sini.' },
@@ -65,6 +71,8 @@ export const CORE_OVERLAY_MS: Overlay = {
   },
   items: {
     coffee: { name: 'Kopi', description: 'Segar dari mesin kopi.' },
+    roti_canai: { name: 'Roti Leper', description: 'Rangup, berlapis dan dibuat ikut pesanan.' },
+    nasi_lemak: { name: 'Nasi Lemak', description: 'Nasi wangi dengan semua lauk sampingannya.' },
     bread: { name: 'Roti', description: 'Sebuku roti yang hangat.' },
     flowers: { name: 'Bunga', description: 'Bunga kebun yang ceria.' },
     berries: { name: 'Beri', description: 'Beri manis yang masak.' },
@@ -81,7 +89,7 @@ export const CORE_OVERLAY_MS: Overlay = {
   },
   recipes: {
     coffee: 'Kopi', breakfast: 'Set Sarapan', bread: 'Roti', berry_pie: 'Pai Beri', flowers: 'Bunga', berries: 'Beri', vegetables: 'Sayur',
-    bouquet: 'Jambangan', flower_crown: 'Mahkota Bunga', planks: 'Papan', bricks: 'Bata', furniture: 'Perabot', veggie_basket: 'Bakul Sayur', jam: 'Jem Beri',
+    roti_canai: 'Roti Leper', nasi_lemak: 'Nasi Lemak', bouquet: 'Jambangan', flower_crown: 'Mahkota Bunga', planks: 'Papan', bricks: 'Bata', furniture: 'Perabot', veggie_basket: 'Bakul Sayur', jam: 'Jem Beri',
   },
   achievements: {
     first_build: { name: 'Pecah Tanah', description: 'Siapkan bangunan pertama anda.' },

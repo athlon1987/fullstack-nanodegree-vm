@@ -12,14 +12,15 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
-test('loads into Kampung Seri with Uncle Lim’s introduction', async ({ page }) => {
+test('loads into Seri Bayu, the modern Klang Valley world, with Uncle Lim’s introduction', async ({ page }) => {
   await boot(page);
   await expect(page.locator('.dialogue')).toContainText('Uncle Lim');
   await expect(page.locator('#hud-coins')).toContainText('150');
   await expect(page.locator('canvas')).toBeVisible();
   const g = await game(page);
   expect(g.buildings.some((b: { type: string }) => b.type === 'starter_house')).toBe(true);
-  expect(g.world.id).toBe('my.kampung_seri');
+  expect(g.world.id).toBe('my.seri_bayu');
+  expect(g.buildings.some((b: { type: string }) => b.type === 'mall')).toBe(true);
 });
 
 test('guided tutorial: collect → open kopitiam → brew → deliver → upgrade', async ({ page }) => {
@@ -184,7 +185,9 @@ test('switching a module off falls back to the neutral shop without losing anyth
   await page.locator('.card', { hasText: 'my.food.kopitiam_lim' }).getByRole('button', { name: /Switch off/ }).click();
   await page.keyboard.press('Escape');
   await selectType(page, 'cafe');
-  await expect(page.locator('.sheet h2')).toHaveText('Coffee Shop');
+  // The world's own (unbranded) shop takes over: in Seri Bayu that's the Corner Kopitiam.
+  await expect(page.locator('.sheet h2')).toHaveText('Corner Kopitiam');
+  await expect(page.locator('.sheet')).not.toContainText('Kopitiam Lim');
   const g = await game(page);
   expect(g.buildings.find((b: { type: string }) => b.type === 'cafe').queue[0].out.item).toBe('my.food.kopitiam_lim/kopi_o');
 });
@@ -236,7 +239,7 @@ test('giving to the pocket park changes it for everyone', async ({ page }) => {
   await dismiss(page);
   await page.locator('[data-tutorial="nav-community"]').click({ force: true });
   const park = page.locator('.spot-card[data-spot="park"]');
-  await expect(park).toContainText('Taman Poket');
+  await expect(park).toContainText('Pocket Park');
   await park.getByRole('button', { name: 'Give all I can' }).click();
   await expect.poll(async () => (await game(page)).spots.park.stage).toBe(1);
   expect((await game(page)).coins).toBe(340);
@@ -251,7 +254,7 @@ test('neighbourhood names outside the content policy are politely refused', asyn
   await field.fill('Vote Street');
   await field.press('Enter');
   await expect(page.locator('.toast')).toContainText('pick a different name');
-  expect((await game(page)).profile.hoodName).toBe('Kampung Seri');
+  expect((await game(page)).profile.hoodName).toBe('Seri Bayu');
   await field.fill('Taman Ceria');
   await field.press('Enter');
   await expect.poll(async () => (await game(page)).profile.hoodName).toBe('Taman Ceria');

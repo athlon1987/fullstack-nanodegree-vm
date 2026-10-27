@@ -1,0 +1,5121 @@
+{
+ "schemaVersion": 1,
+ "id": "my.seri_bayu",
+ "version": "1.0.0",
+ "country": "MY",
+ "locales": [
+  "en-MY",
+  "ms-MY"
+ ],
+ "name": {
+  "en-MY": "Seri Bayu",
+  "ms-MY": "Seri Bayu"
+ },
+ "tagline": {
+  "en-MY": "A fictional modern neighbourhood in the Klang Valley: condos, shoplots, an LRT station and a lake park.",
+  "ms-MY": "Kejiranan moden rekaan di Lembah Klang: kondominium, rumah kedai, stesen LRT dan taman tasik."
+ },
+ "hoodName": {
+  "en-MY": "Seri Bayu",
+  "ms-MY": "Seri Bayu"
+ },
+ "avatar": "mini_female_d",
+ "environment": {
+  "biome": "tropical",
+  "style": "urban",
+  "rainChance": 0.18
+ },
+ "buildings": {
+  "starter_house": {
+   "name": {
+    "en-MY": "Terrace House",
+    "ms-MY": "Rumah Teres"
+   },
+   "description": {
+    "en-MY": "Your terrace house in a gated row, with a car porch and a little front gate. Collect rent from the letterbox.",
+    "ms-MY": "Rumah teres anda di deretan berpagar, dengan anjung kereta dan pintu pagar kecil. Kutip sewa dari peti surat."
+   },
+   "perks": [
+    [
+     {
+      "en-MY": "Rent: 6 coins / min",
+      "ms-MY": "Sewa: 6 syiling / minit"
+     }
+    ],
+    [
+     {
+      "en-MY": "Rent: 9 coins / min",
+      "ms-MY": "Sewa: 9 syiling / minit"
+     },
+     {
+      "en-MY": "Potted plants by the gate",
+      "ms-MY": "Pasu bunga di tepi pagar"
+     }
+    ],
+    [
+     {
+      "en-MY": "Rent: 14 coins / min",
+      "ms-MY": "Sewa: 14 syiling / minit"
+     },
+     {
+      "en-MY": "Covered car porch & garden lights",
+      "ms-MY": "Anjung kereta berbumbung & lampu taman"
+     }
+    ]
+   ],
+   "archetype": "kl:terrace"
+  },
+  "cottage": {
+   "name": {
+    "en-MY": "Semi-D Home",
+    "ms-MY": "Rumah Berkembar"
+   },
+   "description": {
+    "en-MY": "A roomy semi-detached home with a side garden, for a growing neighbourhood.",
+    "ms-MY": "Rumah berkembar yang luas dengan taman tepi, untuk kejiranan yang semakin berkembang."
+   },
+   "perks": [
+    [
+     {
+      "en-MY": "Rent: 8 coins / min",
+      "ms-MY": "Sewa: 8 syiling / minit"
+     }
+    ],
+    [
+     {
+      "en-MY": "Rent: 12 coins / min",
+      "ms-MY": "Sewa: 12 syiling / minit"
+     },
+     {
+      "en-MY": "Side garden with a swing",
+      "ms-MY": "Taman tepi dengan buaian"
+     }
+    ]
+   ],
+   "archetype": "kl:semid"
+  },
+  "townhouse": {
+   "name": {
+    "en-MY": "Condominium",
+    "ms-MY": "Kondominium"
+   },
+   "description": {
+    "en-MY": "A slim condo tower with balconies full of plants and a pool deck for residents.",
+    "ms-MY": "Menara kondominium dengan balkoni penuh pokok dan dek kolam renang untuk penghuni."
+   },
+   "perks": [
+    [
+     {
+      "en-MY": "Rent: 15 coins / min",
+      "ms-MY": "Sewa: 15 syiling / minit"
+     }
+    ],
+    [
+     {
+      "en-MY": "Rent: 22 coins / min",
+      "ms-MY": "Sewa: 22 syiling / minit"
+     },
+     {
+      "en-MY": "Sky garden on the roof",
+      "ms-MY": "Taman langit di atas bumbung"
+     }
+    ]
+   ],
+   "archetype": "kl:condo",
+   "resident": "joanna"
+  },
+  "cafe": {
+   "name": {
+    "en-MY": "Corner Kopitiam",
+    "ms-MY": "Kopitiam Simpang"
+   },
+   "description": {
+    "en-MY": "Uncle Lim’s kopitiam in a brand-new shoplot row by the LRT, with marble tables on the covered walkway.",
+    "ms-MY": "Kopitiam Pak Cik Lim di deretan rumah kedai baharu berhampiran LRT, dengan meja marmar di kaki lima berbumbung."
+   },
+   "perks": [
+    [
+     {
+      "en-MY": "Brew Kopi",
+      "ms-MY": "Bancuh Kopi"
+     },
+     {
+      "en-MY": "2 production slots",
+      "ms-MY": "2 slot pengeluaran"
+     }
+    ],
+    [
+     {
+      "en-MY": "New recipe: Kaya Toast Set",
+      "ms-MY": "Resipi baharu: Set Roti Bakar Kaya"
+     },
+     {
+      "en-MY": "3 production slots",
+      "ms-MY": "3 slot pengeluaran"
+     },
+     {
+      "en-MY": "Marble tables on the walkway",
+      "ms-MY": "Meja marmar di kaki lima"
+     }
+    ],
+    [
+     {
+      "en-MY": "25% faster brewing",
+      "ms-MY": "Bancuh 25% lebih pantas"
+     },
+     {
+      "en-MY": "4 production slots",
+      "ms-MY": "4 slot pengeluaran"
+     },
+     {
+      "en-MY": "Striped awning & pendant lights",
+      "ms-MY": "Awning berjalur & lampu gantung"
+     }
+    ]
+   ],
+   "archetype": "kl:shoplot_cafe",
+   "resident": "lim"
+  },
+  "bakery": {
+   "name": {
+    "en-MY": "Dessert Café & Bakery",
+    "ms-MY": "Kafe Pencuci Mulut & Bakeri"
+   },
+   "description": {
+    "en-MY": "Mei’s bright dessert café: soft loaves in the morning, mango cake in the afternoon.",
+    "ms-MY": "Kafe pencuci mulut Mei yang ceria: roti lembut waktu pagi, kek mangga waktu petang."
+   },
+   "perks": [
+    [
+     {
+      "en-MY": "Bake Roti",
+      "ms-MY": "Bakar Roti"
+     },
+     {
+      "en-MY": "2 production slots",
+      "ms-MY": "2 slot pengeluaran"
+     }
+    ],
+    [
+     {
+      "en-MY": "New recipe: Mango Cake",
+      "ms-MY": "Resipi baharu: Kek Mangga"
+     },
+     {
+      "en-MY": "3 production slots",
+      "ms-MY": "3 slot pengeluaran"
+     },
+     {
+      "en-MY": "Glass dessert counter",
+      "ms-MY": "Kaunter pencuci mulut berkaca"
+     }
+    ],
+    [
+     {
+      "en-MY": "25% faster baking",
+      "ms-MY": "Bakar 25% lebih pantas"
+     },
+     {
+      "en-MY": "Pastel terrace seating",
+      "ms-MY": "Tempat duduk teres berwarna pastel"
+     }
+    ]
+   ],
+   "archetype": "kl:dessert",
+   "resident": "mei"
+  },
+  "garden": {
+   "name": {
+    "en-MY": "Community Garden",
+    "ms-MY": "Kebun Komuniti"
+   },
+   "description": {
+    "en-MY": "Raised beds between the condos: orchids, mango trees and vegetables, tended by the whole neighbourhood.",
+    "ms-MY": "Batas tanaman di antara kondominium: orkid, pokok mangga dan sayur-sayuran, dijaga oleh seluruh kejiranan."
+   },
+   "perks": [
+    [
+     {
+      "en-MY": "Grow Orchids & Mango",
+      "ms-MY": "Tanam Orkid & Mangga"
+     },
+     {
+      "en-MY": "2 production slots",
+      "ms-MY": "2 slot pengeluaran"
+     }
+    ],
+    [
+     {
+      "en-MY": "New crop: Vegetables",
+      "ms-MY": "Tanaman baharu: Sayur"
+     },
+     {
+      "en-MY": "3 production slots",
+      "ms-MY": "3 slot pengeluaran"
+     },
+     {
+      "en-MY": "Shade net frame",
+      "ms-MY": "Rangka jaring teduh"
+     }
+    ],
+    [
+     {
+      "en-MY": "30% faster growing",
+      "ms-MY": "Tumbuh 30% lebih pantas"
+     },
+     {
+      "en-MY": "Rainwater tank & trellis",
+      "ms-MY": "Tangki air hujan & para-para"
+     }
+    ]
+   ],
+   "archetype": "kl:urban_garden",
+   "resident": "zainab"
+  },
+  "flower_shop": {
+   "name": {
+    "en-MY": "Florist",
+    "ms-MY": "Kedai Bunga"
+   },
+   "description": {
+    "en-MY": "A little glass-fronted florist that turns garden orchids into bouquets and arrangements.",
+    "ms-MY": "Kedai bunga kecil berdinding kaca yang menggubah orkid kebun menjadi jambangan dan gubahan."
+   },
+   "perks": [
+    [
+     {
+      "en-MY": "Tie Bouquets",
+      "ms-MY": "Ikat Jambangan"
+     },
+     {
+      "en-MY": "2 production slots",
+      "ms-MY": "2 slot pengeluaran"
+     }
+    ],
+    [
+     {
+      "en-MY": "New recipe: Orchid Arrangement",
+      "ms-MY": "Resipi baharu: Gubahan Orkid"
+     },
+     {
+      "en-MY": "Flower bike out front",
+      "ms-MY": "Basikal bunga di hadapan"
+     }
+    ]
+   ],
+   "archetype": "kl:florist"
+  },
+  "workshop": {
+   "name": {
+    "en-MY": "Makerspace",
+    "ms-MY": "Ruang Kreatif"
+   },
+   "description": {
+    "en-MY": "Arjun’s makerspace: he cuts timber, presses bricks and designs furniture — the materials for every upgrade.",
+    "ms-MY": "Ruang kreatif Arjun: dia memotong kayu, membuat bata dan mereka perabot — bahan untuk setiap naik taraf."
+   },
+   "perks": [
+    [
+     {
+      "en-MY": "Cut Timber, make designer chairs",
+      "ms-MY": "Potong Kayu, buat kerusi rekaan"
+     },
+     {
+      "en-MY": "2 production slots",
+      "ms-MY": "2 slot pengeluaran"
+     }
+    ],
+    [
+     {
+      "en-MY": "New recipe: Bricks",
+      "ms-MY": "Resipi baharu: Bata"
+     },
+     {
+      "en-MY": "3 production slots",
+      "ms-MY": "3 slot pengeluaran"
+     },
+     {
+      "en-MY": "Timber rack",
+      "ms-MY": "Rak kayu"
+     }
+    ],
+    [
+     {
+      "en-MY": "30% faster crafting",
+      "ms-MY": "Kraf 30% lebih pantas"
+     },
+     {
+      "en-MY": "Laser cutter & tool wall",
+      "ms-MY": "Pemotong laser & dinding alatan"
+     }
+    ]
+   ],
+   "archetype": "kl:makerspace",
+   "resident": "arjun"
+  },
+  "grocery": {
+   "name": {
+    "en-MY": "24/7 Mini Mart",
+    "ms-MY": "Kedai Serbaneka 24 Jam"
+   },
+   "description": {
+    "en-MY": "Always open, always bright: grocery boxes, jars of kaya and late-night snacks.",
+    "ms-MY": "Sentiasa buka, sentiasa terang: kotak barang dapur, balang kaya dan snek lewat malam."
+   },
+   "perks": [
+    [
+     {
+      "en-MY": "Pack grocery boxes & kaya",
+      "ms-MY": "Bungkus kotak barang dapur & kaya"
+     },
+     {
+      "en-MY": "Shop income: 10 coins / min",
+      "ms-MY": "Pendapatan kedai: 10 syiling / minit"
+     }
+    ],
+    [
+     {
+      "en-MY": "Shop income: 16 coins / min",
+      "ms-MY": "Pendapatan kedai: 16 syiling / minit"
+     },
+     {
+      "en-MY": "Fruit stands outside",
+      "ms-MY": "Gerai buah di luar"
+     }
+    ]
+   ],
+   "archetype": "kl:minimart"
+  },
+  "showroom": {
+   "name": {
+    "en-MY": "EV Showroom",
+    "ms-MY": "Bilik Pameran EV"
+   },
+   "description": {
+    "en-MY": "A bright glass showroom for electric cars. Arrange the display; neighbours drop by to look, chat and ask about charging.",
+    "ms-MY": "Bilik pameran kaca yang terang untuk kereta elektrik. Susun pameran; jiran singgah untuk melihat, bersembang dan bertanya tentang pengecasan."
+   },
+   "perks": [
+    [
+     {
+      "en-MY": "Arrange 2 display bays",
+      "ms-MY": "Susun 2 ruang pameran"
+     },
+     {
+      "en-MY": "Visitors: 9 coins / min",
+      "ms-MY": "Pelawat: 9 syiling / minit"
+     }
+    ],
+    [
+     {
+      "en-MY": "3 display bays",
+      "ms-MY": "3 ruang pameran"
+     },
+     {
+      "en-MY": "Visitors: 14 coins / min",
+      "ms-MY": "Pelawat: 14 syiling / minit"
+     },
+     {
+      "en-MY": "Charging bays & bunting",
+      "ms-MY": "Petak pengecasan & panji-panji"
+     }
+    ]
+   ],
+   "archetype": "kl:ev_showroom",
+   "resident": "farid"
+  },
+  "learning_centre": {
+   "name": {
+    "en-MY": "Learning Centre",
+    "ms-MY": "Pusat Tuisyen"
+   },
+   "description": {
+    "en-MY": "A friendly tuition centre above the shoplots, with a daily quiz for curious minds.",
+    "ms-MY": "Pusat tuisyen yang mesra di atas rumah kedai, dengan kuiz harian untuk minda yang ingin tahu."
+   },
+   "perks": [
+    [
+     {
+      "en-MY": "Daily quiz: 3 questions",
+      "ms-MY": "Kuiz harian: 3 soalan"
+     },
+     {
+      "en-MY": "+6 charm",
+      "ms-MY": "+6 seri"
+     }
+    ],
+    [
+     {
+      "en-MY": "Daily quiz: 5 questions",
+      "ms-MY": "Kuiz harian: 5 soalan"
+     },
+     {
+      "en-MY": "Reading corner & bookshelf",
+      "ms-MY": "Sudut bacaan & rak buku"
+     }
+    ]
+   ],
+   "archetype": "kl:learning",
+   "resident": "kavitha"
+  },
+  "park": {
+   "name": {
+    "en-MY": "Neighbourhood Park",
+    "ms-MY": "Taman Kejiranan"
+   },
+   "description": {
+    "en-MY": "A leafy park with a jogging track and an exercise station, where neighbours unwind under the rain trees.",
+    "ms-MY": "Taman rimbun dengan trek joging dan stesen senaman, tempat jiran berehat di bawah pokok hujan-hujan."
+   },
+   "perks": [
+    [
+     {
+      "en-MY": "Neighbours relax here",
+      "ms-MY": "Jiran berehat di sini"
+     },
+     {
+      "en-MY": "Tips: 7 coins / min",
+      "ms-MY": "Tip: 7 syiling / minit"
+     },
+     {
+      "en-MY": "+10 charm",
+      "ms-MY": "+10 seri"
+     }
+    ],
+    [
+     {
+      "en-MY": "Tips: 11 coins / min",
+      "ms-MY": "Tip: 11 syiling / minit"
+     },
+     {
+      "en-MY": "Gazebo for gatherings",
+      "ms-MY": "Gazebo untuk berkumpul"
+     }
+    ]
+   ],
+   "archetype": "kl:park",
+   "resident": "aisyah"
+  },
+  "town_hall": {
+   "name": {
+    "en-MY": "Community Centre",
+    "ms-MY": "Pusat Komuniti"
+   },
+   "description": {
+    "en-MY": "The neighbourhood’s community centre, for community dinners, residents’ meetings and rainy-day badminton. Adds an order slot.",
+    "ms-MY": "Pusat komuniti kejiranan, untuk makan malam bersama, mesyuarat penduduk dan badminton hari hujan. Menambah satu slot pesanan."
+   },
+   "perks": [
+    [
+     {
+      "en-MY": "+1 neighbourhood order slot",
+      "ms-MY": "+1 slot pesanan kejiranan"
+     },
+     {
+      "en-MY": "Community income: 20 coins / min",
+      "ms-MY": "Pendapatan komuniti: 20 syiling / minit"
+     }
+    ],
+    [
+     {
+      "en-MY": "Clock & bunting",
+      "ms-MY": "Jam & panji-panji"
+     },
+     {
+      "en-MY": "Community income: 30 coins / min",
+      "ms-MY": "Pendapatan komuniti: 30 syiling / minit"
+     }
+    ]
+   ],
+   "archetype": "kl:community_centre"
+  },
+  "request_board": {
+   "name": {
+    "en-MY": "Community Board",
+    "ms-MY": "Papan Komuniti"
+   },
+   "description": {
+    "en-MY": "Neighbours pin their requests here, right next to the futsal schedule.",
+    "ms-MY": "Jiran menampal permintaan mereka di sini, betul-betul di sebelah jadual futsal."
+   },
+   "archetype": "kl:notice"
+  },
+  "welcome_sign": {
+   "name": {
+    "en-MY": "Seri Bayu Gateway",
+    "ms-MY": "Gerbang Seri Bayu"
+   },
+   "description": {
+    "en-MY": "Welcome to Bandar Seri Bayu!",
+    "ms-MY": "Selamat datang ke Bandar Seri Bayu!"
+   },
+   "archetype": "kl:gateway"
+  },
+  "pond": {
+   "name": {
+    "en-MY": "Tasik Seri Bayu",
+    "ms-MY": "Tasik Seri Bayu"
+   },
+   "description": {
+    "en-MY": "A lake park with a timber boardwalk and a little jetty. Good for fishing — catch and release.",
+    "ms-MY": "Taman tasik dengan laluan papan kayu dan jeti kecil. Sesuai untuk memancing — tangkap dan lepas."
+   },
+   "archetype": "kl:lake"
+  },
+  "fountain": {
+   "name": {
+    "en-MY": "Fountain Plaza",
+    "ms-MY": "Plaza Air Pancut"
+   },
+   "description": {
+    "en-MY": "A fountain plaza with shade trees and seating, built together as a community project.",
+    "ms-MY": "Plaza air pancut dengan pokok teduhan dan tempat duduk, dibina bersama sebagai projek komuniti."
+   },
+   "archetype": "kl:fountain"
+  },
+  "mamak": {
+   "name": {
+    "en-MY": "Mamak Corner",
+    "ms-MY": "Restoran Mamak Simpang"
+   },
+   "description": {
+    "en-MY": "Shah’s 24-hour mamak: roti canai off the griddle, nasi lemak to share and tables out front until late.",
+    "ms-MY": "Restoran mamak 24 jam milik Shah: roti canai panas, nasi lemak untuk dikongsi dan meja di luar sampai lewat malam."
+   },
+   "perks": [
+    [
+     {
+      "en-MY": "Flip roti canai",
+      "ms-MY": "Tebar roti canai"
+     },
+     {
+      "en-MY": "2 production slots",
+      "ms-MY": "2 slot pengeluaran"
+     }
+    ],
+    [
+     {
+      "en-MY": "New recipe: Nasi Lemak",
+      "ms-MY": "Resipi baharu: Nasi Lemak"
+     },
+     {
+      "en-MY": "3 production slots",
+      "ms-MY": "3 slot pengeluaran"
+     },
+     {
+      "en-MY": "Outdoor tables under a canopy",
+      "ms-MY": "Meja luar di bawah kanopi"
+     }
+    ]
+   ],
+   "archetype": "kl:mamak",
+   "resident": "shah"
+  },
+  "coworking": {
+   "name": {
+    "en-MY": "Co-working Hub",
+    "ms-MY": "Hab Kerja Bersama"
+   },
+   "description": {
+    "en-MY": "Bright desks, good kopi and neighbours working on their ideas. Members pay a small desk fee.",
+    "ms-MY": "Meja yang terang, kopi yang sedap dan jiran yang mengusahakan idea mereka. Ahli membayar yuran meja yang kecil."
+   },
+   "perks": [
+    [
+     {
+      "en-MY": "Desk fees: 11 coins / min",
+      "ms-MY": "Yuran meja: 11 syiling / minit"
+     }
+    ],
+    [
+     {
+      "en-MY": "Desk fees: 16 coins / min",
+      "ms-MY": "Yuran meja: 16 syiling / minit"
+     },
+     {
+      "en-MY": "Rooftop terrace",
+      "ms-MY": "Teres atas bumbung"
+     }
+    ]
+   ],
+   "archetype": "kl:coworking"
+  },
+  "mall": {
+   "name": {
+    "en-MY": "Seri Bayu Mall",
+    "ms-MY": "Pusat Beli-belah Seri Bayu"
+   },
+   "description": {
+    "en-MY": "A bright lifestyle mall with a food court, a cinema and a rooftop garden.",
+    "ms-MY": "Pusat beli-belah gaya hidup yang terang dengan medan selera, panggung wayang dan taman atas bumbung."
+   }
+  },
+  "school": {
+   "name": {
+    "en-MY": "Seri Bayu Primary School",
+    "ms-MY": "Sekolah Rendah Seri Bayu"
+   },
+   "description": {
+    "en-MY": "The neighbourhood school, with a covered drop-off, a green field and a very busy school bus.",
+    "ms-MY": "Sekolah kejiranan, dengan tempat turun murid berbumbung, padang hijau dan bas sekolah yang sangat sibuk."
+   }
+  },
+  "clinic_row": {
+   "name": {
+    "en-MY": "Jalan Bayu Shoplots",
+    "ms-MY": "Rumah Kedai Jalan Bayu"
+   },
+   "description": {
+    "en-MY": "A row of shoplots with a family clinic, a pharmacy corner and offices upstairs.",
+    "ms-MY": "Sederet rumah kedai dengan klinik keluarga, sudut farmasi dan pejabat di tingkat atas."
+   }
+  },
+  "petrol_station": {
+   "name": {
+    "en-MY": "Fuel & EV Station",
+    "ms-MY": "Stesen Minyak & EV"
+   },
+   "description": {
+    "en-MY": "Fuel pumps, fast EV chargers and a little convenience shop by the main road.",
+    "ms-MY": "Pam minyak, pengecas EV pantas dan kedai serbaneka kecil di tepi jalan besar."
+   }
+  },
+  "spot_park": {
+   "name": {
+    "en-MY": "Pocket Park",
+    "ms-MY": "Taman Poket"
+   },
+   "description": {
+    "en-MY": "A weedy corner between the condos. Neighbours want a pocket park with a picnic lawn.",
+    "ms-MY": "Sudut semak di antara kondominium. Jiran-jiran mahu taman poket dengan laman berkelah."
+   }
+  },
+  "spot_plaza": {
+   "name": {
+    "en-MY": "Bayu Plaza",
+    "ms-MY": "Dataran Bayu"
+   },
+   "description": {
+    "en-MY": "An empty square by the LRT that could host the neighbourhood’s night market.",
+    "ms-MY": "Dataran kosong berhampiran LRT yang boleh menjadi tapak pasar malam kejiranan."
+   }
+  },
+  "spot_playground": {
+   "name": {
+    "en-MY": "Playground",
+    "ms-MY": "Taman Permainan"
+   },
+   "description": {
+    "en-MY": "A bare lot where the neighbourhood kids dream of swings and a slide.",
+    "ms-MY": "Tanah lapang tempat kanak-kanak kejiranan mengimpikan buaian dan gelongsor."
+   }
+  },
+  "spot_lookout": {
+   "name": {
+    "en-MY": "Skyline Deck",
+    "ms-MY": "Dek Langit"
+   },
+   "description": {
+    "en-MY": "A viewing deck with the city skyline glowing on the horizon.",
+    "ms-MY": "Dek tinjau dengan latar bandar raya yang bergemerlapan di kaki langit."
+   }
+  },
+  "tree_round": {
+   "name": {
+    "en-MY": "Rain Tree",
+    "ms-MY": "Pokok Hujan-hujan"
+   },
+   "description": {
+    "en-MY": "A wide, shady canopy over the street.",
+    "ms-MY": "Kanopi luas dan redup di tepi jalan."
+   }
+  },
+  "tree_pine": {
+   "name": {
+    "en-MY": "Royal Palm",
+    "ms-MY": "Palma Raja"
+   },
+   "description": {
+    "en-MY": "Tall, straight and very neat.",
+    "ms-MY": "Tinggi, lurus dan sangat kemas."
+   }
+  },
+  "tree_autumn": {
+   "name": {
+    "en-MY": "Bougainvillea",
+    "ms-MY": "Bunga Kertas"
+   },
+   "description": {
+    "en-MY": "Bursts of pink paper petals all year.",
+    "ms-MY": "Kelopak kertas merah jambu sepanjang tahun."
+   }
+  },
+  "bush": {
+   "name": {
+    "en-MY": "Ixora Bush",
+    "ms-MY": "Pokok Bunga Jejarum"
+   },
+   "description": {
+    "en-MY": "Clusters of bright orange-red flowers.",
+    "ms-MY": "Gugusan bunga jingga kemerahan yang terang."
+   }
+  },
+  "flower_bed": {
+   "name": {
+    "en-MY": "Flower Bed",
+    "ms-MY": "Batas Bunga"
+   },
+   "description": {
+    "en-MY": "A patch of orchids and periwinkles.",
+    "ms-MY": "Sepetak orkid dan kemunting cina."
+   }
+  },
+  "bench": {
+   "name": {
+    "en-MY": "Park Bench",
+    "ms-MY": "Bangku Taman"
+   },
+   "description": {
+    "en-MY": "Neighbours sit and chat here.",
+    "ms-MY": "Jiran duduk dan bersembang di sini."
+   }
+  },
+  "lamp": {
+   "name": {
+    "en-MY": "LED Street Lamp",
+    "ms-MY": "Lampu Jalan LED"
+   },
+   "description": {
+    "en-MY": "Bright, efficient and warm at night.",
+    "ms-MY": "Terang, jimat tenaga dan hangat pada waktu malam."
+   }
+  },
+  "fence": {
+   "name": {
+    "en-MY": "Metal Railing",
+    "ms-MY": "Pagar Besi"
+   },
+   "description": {
+    "en-MY": "A smart, modern railing.",
+    "ms-MY": "Pagar besi yang kemas dan moden."
+   }
+  },
+  "planter": {
+   "name": {
+    "en-MY": "Concrete Planter",
+    "ms-MY": "Pasu Konkrit"
+   },
+   "description": {
+    "en-MY": "Lemongrass, pandan and chilli in a modern pot.",
+    "ms-MY": "Serai, pandan dan cili dalam pasu moden."
+   }
+  },
+  "rock": {
+   "name": {
+    "en-MY": "Feature Stone",
+    "ms-MY": "Batu Hiasan"
+   },
+   "description": {
+    "en-MY": "A smooth landscaping stone.",
+    "ms-MY": "Batu landskap yang licin."
+   }
+  },
+  "mushroom": {
+   "name": {
+    "en-MY": "Traveller’s Palm",
+    "ms-MY": "Pokok Pisang Kipas"
+   },
+   "description": {
+    "en-MY": "A fan of big leaves. Very photogenic.",
+    "ms-MY": "Daun besar berbentuk kipas. Sangat fotogenik."
+   }
+  },
+  "barrels": {
+   "name": {
+    "en-MY": "Recycling Bins",
+    "ms-MY": "Tong Kitar Semula"
+   },
+   "description": {
+    "en-MY": "Paper, plastic and cans — all sorted.",
+    "ms-MY": "Kertas, plastik dan tin — semuanya diasingkan."
+   }
+  },
+  "crate": {
+   "name": {
+    "en-MY": "Parcel Locker",
+    "ms-MY": "Loker Bungkusan"
+   },
+   "description": {
+    "en-MY": "Deliveries wait here until you get home.",
+    "ms-MY": "Bungkusan menunggu di sini sehingga anda pulang."
+   }
+  },
+  "mailbox": {
+   "name": {
+    "en-MY": "Letterbox",
+    "ms-MY": "Peti Surat"
+   },
+   "description": {
+    "en-MY": "The postman stops here.",
+    "ms-MY": "Posmen singgah di sini."
+   }
+  },
+  "parasol": {
+   "name": {
+    "en-MY": "Café Umbrella",
+    "ms-MY": "Payung Kafe"
+   },
+   "description": {
+    "en-MY": "Uncle Lim’s thank-you gift.",
+    "ms-MY": "Hadiah terima kasih Pak Cik Lim."
+   }
+  },
+  "birdbath": {
+   "name": {
+    "en-MY": "Bird Bath",
+    "ms-MY": "Kolam Burung"
+   },
+   "description": {
+    "en-MY": "Mak Cik Zainab’s keepsake: the sunbirds love it.",
+    "ms-MY": "Kenangan Mak Cik Zainab: burung kelicap sangat suka."
+   }
+  },
+  "pie_stand": {
+   "name": {
+    "en-MY": "Dessert Cart",
+    "ms-MY": "Troli Pencuci Mulut"
+   },
+   "description": {
+    "en-MY": "Mei’s dessert-sale cart.",
+    "ms-MY": "Troli jualan pencuci mulut Mei."
+   }
+  },
+  "festival_arch": {
+   "name": {
+    "en-MY": "Festival Arch",
+    "ms-MY": "Gerbang Pesta"
+   },
+   "description": {
+    "en-MY": "Orchid Festival reward.",
+    "ms-MY": "Ganjaran Pesta Orkid."
+   }
+  },
+  "lantern_string": {
+   "name": {
+    "en-MY": "Lantern Post",
+    "ms-MY": "Tiang Lampu Taman"
+   },
+   "description": {
+    "en-MY": "A post hung with warm garden lanterns.",
+    "ms-MY": "Tiang dengan lampu taman yang hangat."
+   }
+  },
+  "statue": {
+   "name": {
+    "en-MY": "Neighbourhood Plaque",
+    "ms-MY": "Plak Kejiranan"
+   },
+   "description": {
+    "en-MY": "Marks the year the Fountain Plaza was built together.",
+    "ms-MY": "Menandakan tahun Plaza Air Pancut dibina bersama."
+   }
+  },
+  "picnic_set": {
+   "name": {
+    "en-MY": "Picnic Set",
+    "ms-MY": "Set Berkelah"
+   },
+   "description": {
+    "en-MY": "From the pocket park’s opening picnic.",
+    "ms-MY": "Dari kelah pembukaan taman poket."
+   }
+  },
+  "market_stall": {
+   "name": {
+    "en-MY": "Market Stall",
+    "ms-MY": "Gerai Pasar"
+   },
+   "description": {
+    "en-MY": "A little stall like the ones at the Bayu Plaza night market.",
+    "ms-MY": "Gerai kecil seperti di pasar malam Dataran Bayu."
+   }
+  },
+  "kite_post": {
+   "name": {
+    "en-MY": "Wau Post",
+    "ms-MY": "Tiang Wau"
+   },
+   "description": {
+    "en-MY": "A wau kite from the playground’s opening day.",
+    "ms-MY": "Wau dari hari pembukaan taman permainan."
+   }
+  },
+  "telescope": {
+   "name": {
+    "en-MY": "Telescope",
+    "ms-MY": "Teleskop"
+   },
+   "description": {
+    "en-MY": "For stargazing, like up on the Skyline Deck.",
+    "ms-MY": "Untuk melihat bintang, seperti di Dek Langit."
+   }
+  }
+ },
+ "items": {
+  "coffee": {
+   "name": {
+    "en-MY": "Kopi",
+    "ms-MY": "Kopi"
+   },
+   "description": {
+    "en-MY": "Strong, sweet and brewed through a cloth sock, old-town style.",
+    "ms-MY": "Pekat, manis dan dibancuh melalui kain saring, cara pekan lama."
+   },
+   "icon": "kopi"
+  },
+  "bread": {
+   "name": {
+    "en-MY": "Roti",
+    "ms-MY": "Roti"
+   },
+   "description": {
+    "en-MY": "A soft white loaf, still warm.",
+    "ms-MY": "Sebuku roti putih yang lembut, masih panas."
+   },
+   "icon": "bread"
+  },
+  "flowers": {
+   "name": {
+    "en-MY": "Orchids",
+    "ms-MY": "Orkid"
+   },
+   "description": {
+    "en-MY": "Purple and white orchids from the community garden.",
+    "ms-MY": "Orkid ungu dan putih dari kebun komuniti."
+   },
+   "icon": "flowers"
+  },
+  "berries": {
+   "name": {
+    "en-MY": "Mango",
+    "ms-MY": "Mangga"
+   },
+   "description": {
+    "en-MY": "A ripe, golden mango from the garden tree.",
+    "ms-MY": "Sebiji mangga masak keemasan dari pokok di kebun."
+   }
+  },
+  "vegetables": {
+   "name": {
+    "en-MY": "Vegetables",
+    "ms-MY": "Sayur"
+   },
+   "description": {
+    "en-MY": "Kangkung, long beans and chillies.",
+    "ms-MY": "Kangkung, kacang panjang dan cili."
+   },
+   "icon": "vegetables"
+  },
+  "breakfast": {
+   "name": {
+    "en-MY": "Kaya Toast Set",
+    "ms-MY": "Set Roti Bakar Kaya"
+   },
+   "description": {
+    "en-MY": "Kopi, kaya toast and soft-boiled eggs — the perfect start.",
+    "ms-MY": "Kopi, roti bakar kaya dan telur separuh masak — permulaan yang sempurna."
+   },
+   "icon": "roti_bakar"
+  },
+  "berry_pie": {
+   "name": {
+    "en-MY": "Mango Cake",
+    "ms-MY": "Kek Mangga"
+   },
+   "description": {
+    "en-MY": "Mei’s mango cake, light as a cloud.",
+    "ms-MY": "Kek mangga Mei, ringan seperti awan."
+   },
+   "icon": "pie"
+  },
+  "bouquet": {
+   "name": {
+    "en-MY": "Bouquet",
+    "ms-MY": "Jambangan"
+   },
+   "description": {
+    "en-MY": "A hand-tied bouquet wrapped in kraft paper.",
+    "ms-MY": "Jambangan bunga yang diikat tangan dan dibalut kertas kraf."
+   },
+   "icon": "bouquet"
+  },
+  "flower_crown": {
+   "name": {
+    "en-MY": "Orchid Arrangement",
+    "ms-MY": "Gubahan Orkid"
+   },
+   "description": {
+    "en-MY": "Orchids arranged in a ceramic pot, for a special table.",
+    "ms-MY": "Orkid digubah dalam pasu seramik, untuk meja yang istimewa."
+   },
+   "icon": "garland"
+  },
+  "planks": {
+   "name": {
+    "en-MY": "Timber",
+    "ms-MY": "Kayu"
+   },
+   "description": {
+    "en-MY": "Sustainably sourced timber for upgrades.",
+    "ms-MY": "Kayu daripada sumber lestari untuk naik taraf."
+   },
+   "icon": "planks"
+  },
+  "bricks": {
+   "name": {
+    "en-MY": "Bricks",
+    "ms-MY": "Bata"
+   },
+   "description": {
+    "en-MY": "Sturdy bricks pressed at the makerspace.",
+    "ms-MY": "Bata kukuh yang dibuat di ruang kreatif."
+   },
+   "icon": "bricks"
+  },
+  "furniture": {
+   "name": {
+    "en-MY": "Designer Chair",
+    "ms-MY": "Kerusi Rekaan"
+   },
+   "description": {
+    "en-MY": "A curvy timber chair designed by Arjun.",
+    "ms-MY": "Kerusi kayu melengkung rekaan Arjun."
+   },
+   "icon": "chair"
+  },
+  "veggie_basket": {
+   "name": {
+    "en-MY": "Grocery Box",
+    "ms-MY": "Kotak Barang Dapur"
+   },
+   "description": {
+    "en-MY": "A generous box of fresh groceries.",
+    "ms-MY": "Kotak barang dapur segar yang penuh."
+   },
+   "icon": "basket"
+  },
+  "jam": {
+   "name": {
+    "en-MY": "Kaya",
+    "ms-MY": "Kaya"
+   },
+   "description": {
+    "en-MY": "Coconut jam, slow-stirred for hours.",
+    "ms-MY": "Seri kaya, dikacau perlahan berjam-jam."
+   },
+   "icon": "kaya"
+  },
+  "roti_canai": {
+   "name": {
+    "en-MY": "Roti Canai",
+    "ms-MY": "Roti Canai"
+   },
+   "description": {
+    "en-MY": "Flaky, buttery and flipped to order.",
+    "ms-MY": "Rangup, lembut dan ditebar ikut pesanan."
+   }
+  },
+  "nasi_lemak": {
+   "name": {
+    "en-MY": "Nasi Lemak",
+    "ms-MY": "Nasi Lemak"
+   },
+   "description": {
+    "en-MY": "Fragrant coconut rice with sambal, egg and peanuts.",
+    "ms-MY": "Nasi santan yang wangi dengan sambal, telur dan kacang."
+   }
+  }
+ },
+ "recipes": {
+  "coffee": {
+   "name": {
+    "en-MY": "Kopi",
+    "ms-MY": "Kopi"
+   }
+  },
+  "bread": {
+   "name": {
+    "en-MY": "Roti",
+    "ms-MY": "Roti"
+   }
+  },
+  "flowers": {
+   "name": {
+    "en-MY": "Orchids",
+    "ms-MY": "Orkid"
+   }
+  },
+  "berries": {
+   "name": {
+    "en-MY": "Mango",
+    "ms-MY": "Mangga"
+   }
+  },
+  "vegetables": {
+   "name": {
+    "en-MY": "Vegetables",
+    "ms-MY": "Sayur"
+   }
+  },
+  "breakfast": {
+   "name": {
+    "en-MY": "Kaya Toast Set",
+    "ms-MY": "Set Roti Bakar Kaya"
+   }
+  },
+  "berry_pie": {
+   "name": {
+    "en-MY": "Mango Cake",
+    "ms-MY": "Kek Mangga"
+   }
+  },
+  "bouquet": {
+   "name": {
+    "en-MY": "Bouquet",
+    "ms-MY": "Jambangan"
+   }
+  },
+  "flower_crown": {
+   "name": {
+    "en-MY": "Orchid Arrangement",
+    "ms-MY": "Gubahan Orkid"
+   }
+  },
+  "planks": {
+   "name": {
+    "en-MY": "Timber",
+    "ms-MY": "Kayu"
+   }
+  },
+  "bricks": {
+   "name": {
+    "en-MY": "Bricks",
+    "ms-MY": "Bata"
+   }
+  },
+  "furniture": {
+   "name": {
+    "en-MY": "Designer Chair",
+    "ms-MY": "Kerusi Rekaan"
+   }
+  },
+  "veggie_basket": {
+   "name": {
+    "en-MY": "Grocery Box",
+    "ms-MY": "Kotak Barang Dapur"
+   }
+  },
+  "jam": {
+   "name": {
+    "en-MY": "Kaya",
+    "ms-MY": "Kaya"
+   }
+  },
+  "roti_canai": {
+   "name": {
+    "en-MY": "Roti Canai",
+    "ms-MY": "Roti Canai"
+   }
+  },
+  "nasi_lemak": {
+   "name": {
+    "en-MY": "Nasi Lemak",
+    "ms-MY": "Nasi Lemak"
+   }
+  }
+ },
+ "residents": [
+  {
+   "id": "lim",
+   "name": {
+    "en-MY": "Uncle Lim",
+    "ms-MY": "Pak Cik Lim"
+   },
+   "profession": {
+    "en-MY": "Kopitiam owner",
+    "ms-MY": "Pemilik kopitiam"
+   },
+   "bio": {
+    "en-MY": "His late father ran an old-town kopitiam for forty years. Now Uncle Lim has reopened it in a brand-new shoplot by the LRT — same recipes, same marble tables, new air-conditioning.",
+    "ms-MY": "Ayahnya dahulu mengusahakan kopitiam di pekan lama selama empat puluh tahun. Kini Pak Cik Lim membukanya semula di rumah kedai baharu berhampiran LRT — resipi sama, meja marmar sama, penghawa dingin baharu."
+   },
+   "traits": [
+    "warm",
+    "sociable",
+    "organised"
+   ],
+   "model": "mini_male_e",
+   "color": "#d9673f",
+   "workplace": "cafe",
+   "favorites": [
+    "jam",
+    "berry_pie",
+    "breakfast"
+   ],
+   "favoritePlace": "cafe",
+   "arrival": {
+    "type": "start"
+   },
+   "workAction": "interact",
+   "greetings": [
+    {
+     "text": {
+      "en-MY": "Ah, you’re here! Come, sit — the kettle is always on.",
+      "ms-MY": "Ha, sampai pun! Mari duduk — cerek sentiasa panas."
+     }
+    },
+    {
+     "text": {
+      "en-MY": "Morning! The first train just passed. That means the first kopi is ready.",
+      "ms-MY": "Selamat pagi! Tren pertama baru lalu. Maksudnya kopi pertama dah siap."
+     },
+     "phase": "morning"
+    },
+    {
+     "text": {
+      "en-MY": "Evening already? The shutters are half down, but for you, still open.",
+      "ms-MY": "Dah petang? Pintu besi separuh tutup, tapi untuk awak, masih buka."
+     },
+     "phase": "evening"
+    },
+    {
+     "text": {
+      "en-MY": "Can’t sleep either? Shah’s mamak is still busy. I’m soaking tomorrow’s coffee beans.",
+      "ms-MY": "Tak boleh tidur juga? Mamak Shah masih sibuk. Saya sedang rendam biji kopi untuk esok."
+     },
+     "phase": "night"
+    }
+   ],
+   "smallTalk": [
+    {
+     "text": {
+      "en-MY": "A good kopi is like a good neighbour — strong, warm and always there in the morning.",
+      "ms-MY": "Kopi yang baik macam jiran yang baik — pekat, hangat dan sentiasa ada waktu pagi."
+     }
+    },
+    {
+     "text": {
+      "en-MY": "My father roasted his beans with a little butter and sugar. New shop, same way.",
+      "ms-MY": "Ayah saya goreng biji kopi dengan sedikit mentega dan gula. Kedai baharu, cara yang sama."
+     }
+    },
+    {
+     "text": {
+      "en-MY": "The office crowd from the LRT orders “kopi ais, less sweet, takeaway”. My smile still comes free.",
+      "ms-MY": "Orang pejabat dari LRT pesan “kopi ais, kurang manis, bungkus”. Senyuman saya tetap percuma."
+     },
+     "minLevel": 1
+    },
+    {
+     "text": {
+      "en-MY": "Shah opens his mamak when I close. Between the two of us, this corner never sleeps.",
+      "ms-MY": "Shah buka mamak bila saya tutup. Antara kami berdua, simpang ini tak pernah tidur."
+     },
+     "minLevel": 2
+    },
+    {
+     "text": {
+      "en-MY": "Mei says I should add a matcha menu. Maybe. Don’t tell her I said maybe.",
+      "ms-MY": "Mei kata saya patut tambah menu matcha. Mungkin. Jangan beritahu dia saya kata mungkin."
+     },
+     "minLevel": 2
+    },
+    {
+     "text": {
+      "en-MY": "I thought a new shoplot would feel strange. You and the neighbours made it feel like Father’s old shop.",
+      "ms-MY": "Saya ingat rumah kedai baharu akan terasa asing. Awak dan jiran-jiran buat ia terasa macam kedai lama ayah."
+     },
+     "minLevel": 3
+    }
+   ],
+   "memoryLines": [
+    {
+     "text": {
+      "en-MY": "Every time I pull the shutters up, I remember the day you helped me reopen.",
+      "ms-MY": "Setiap kali saya angkat pintu besi, saya ingat hari awak bantu saya buka semula kedai."
+     },
+     "memory": "opened_cafe"
+    },
+    {
+     "text": {
+      "en-MY": "The marble tables on the walkway — people stay for a second cup now, even the office crowd.",
+      "ms-MY": "Meja marmar di kaki lima — orang duduk lama untuk cawan kedua sekarang, orang pejabat pun sama."
+     },
+     "memory": "upgraded_cafe_2"
+    },
+    {
+     "text": {
+      "en-MY": "The Fountain Plaza — my afternoon kopi tastes better with that splashing sound.",
+      "ms-MY": "Plaza Air Pancut — kopi petang saya lebih sedap dengan bunyi air itu."
+     },
+     "memory": "landmark_built"
+    },
+    {
+     "text": {
+      "en-MY": "A night market by the LRT! Father would have opened a stall there.",
+      "ms-MY": "Pasar malam tepi LRT! Kalau ayah masih ada, mesti dia buka gerai di situ."
+     },
+     "memory": "spot_plaza"
+    }
+   ],
+   "giftReactions": {
+    "love": {
+     "en-MY": "Wah, my favourite! You remember better than my regulars.",
+     "ms-MY": "Wah, kegemaran saya! Awak lebih ingat daripada pelanggan tetap saya."
+    },
+    "like": {
+     "en-MY": "So thoughtful. Come, your next kopi is on me.",
+     "ms-MY": "Baiknya awak. Mari, kopi seterusnya saya belanja."
+    },
+    "neutral": {
+     "en-MY": "Thank you, ah! I’ll find a good use for it.",
+     "ms-MY": "Terima kasih! Saya akan guna dengan baik."
+    }
+   }
+  },
+  {
+   "id": "mei",
+   "name": {
+    "en-MY": "Mei",
+    "ms-MY": "Mei"
+   },
+   "profession": {
+    "en-MY": "Pastry chef",
+    "ms-MY": "Cef pastri"
+   },
+   "bio": {
+    "en-MY": "Trained in a big hotel pastry kitchen in the city, then opened her own dessert café so she could see people’s faces at the first bite. Experiments with pandan, gula melaka and mango.",
+    "ms-MY": "Pernah bekerja di dapur pastri hotel besar di bandar, kemudian membuka kafe pencuci mulut sendiri supaya dapat melihat wajah orang pada suapan pertama. Suka mencuba pandan, gula melaka dan mangga."
+   },
+   "traits": [
+    "creative",
+    "energetic",
+    "warm"
+   ],
+   "model": "mini_female_b",
+   "color": "#e9b44c",
+   "workplace": "bakery",
+   "favorites": [
+    "berries",
+    "coffee",
+    "jam"
+   ],
+   "favoritePlace": "bakery",
+   "arrival": {
+    "type": "building",
+    "building": "bakery"
+   },
+   "workAction": "pick-up",
+   "greetings": [
+    {
+     "text": {
+      "en-MY": "Hi! Mind the tray — it’s still hot.",
+      "ms-MY": "Hai! Hati-hati dulang tu — masih panas."
+     }
+    },
+    {
+     "text": {
+      "en-MY": "Morning! The first loaves just came out, and the queue has already started.",
+      "ms-MY": "Selamat pagi! Roti pertama baru keluar, dan barisan dah pun bermula."
+     },
+     "phase": "morning"
+    },
+    {
+     "text": {
+      "en-MY": "Evening! Only a few slices of mango cake left — I saved you one.",
+      "ms-MY": "Selamat petang! Kek mangga tinggal beberapa potong — saya simpan satu untuk awak."
+     },
+     "phase": "evening"
+    },
+    {
+     "text": {
+      "en-MY": "Shh, Biscuit is asleep under the counter. I’m proofing dough for tomorrow.",
+      "ms-MY": "Shh, Biskut tidur bawah kaunter. Saya sedang naikkan doh untuk esok."
+     },
+     "phase": "night"
+    }
+   ],
+   "smallTalk": [
+    {
+     "text": {
+      "en-MY": "Bread is patient. You can’t rush it, only love it.",
+      "ms-MY": "Roti perlukan sabar. Tak boleh gopoh, cuma sayang."
+     }
+    },
+    {
+     "text": {
+      "en-MY": "Uncle Lim pretends he doesn’t like my kaya. He’s had three slices today.",
+      "ms-MY": "Pak Cik Lim buat-buat tak suka kaya saya. Dah tiga keping hari ini."
+     },
+     "minLevel": 1
+    },
+    {
+     "text": {
+      "en-MY": "I’m working on a mango cake that doesn’t sink in the middle. Version eleven.",
+      "ms-MY": "Saya sedang cuba kek mangga yang tak mendap di tengah. Versi kesebelas."
+     },
+     "minLevel": 2
+    },
+    {
+     "text": {
+      "en-MY": "Biscuit knows the sound of the cake tin opening. She can hear it from the condo.",
+      "ms-MY": "Biskut dah kenal bunyi tin kek dibuka. Dia boleh dengar dari kondo."
+     },
+     "minLevel": 2
+    },
+    {
+     "text": {
+      "en-MY": "Baking for neighbours feels different from a hotel. Here, I see you smile.",
+      "ms-MY": "Membakar untuk jiran rasa lain daripada di hotel. Di sini, saya nampak awak senyum."
+     },
+     "minLevel": 3
+    }
+   ],
+   "memoryLines": [
+    {
+     "text": {
+      "en-MY": "The day the café opened, I baked until midnight out of pure happiness.",
+      "ms-MY": "Hari kafe dibuka, saya bakar sampai tengah malam sebab terlalu gembira."
+     },
+     "memory": "opened_bakery"
+    },
+    {
+     "text": {
+      "en-MY": "Remember the dessert sale? Sold out before the LRT crowd even arrived!",
+      "ms-MY": "Ingat jualan pencuci mulut itu? Habis sebelum orang dari LRT pun sampai!"
+     },
+     "memory": "mei_sale"
+    },
+    {
+     "text": {
+      "en-MY": "Uncle Lim still keeps his birthday card on the counter. He says it’s “for decoration”.",
+      "ms-MY": "Pak Cik Lim masih letak kad hari jadinya di kaunter. Katanya “untuk hiasan”."
+     },
+     "memory": "lim_birthday"
+    }
+   ],
+   "giftReactions": {
+    "love": {
+     "en-MY": "Oh! This is exactly what I needed for a new recipe!",
+     "ms-MY": "Oh! Ini betul-betul yang saya perlukan untuk resipi baharu!"
+    },
+    "like": {
+     "en-MY": "Lovely, thank you! Biscuit approves too.",
+     "ms-MY": "Cantiknya, terima kasih! Biskut pun setuju."
+    },
+    "neutral": {
+     "en-MY": "Thanks! I’ll put it to good use.",
+     "ms-MY": "Terima kasih! Saya akan gunakannya."
+    }
+   }
+  },
+  {
+   "id": "zainab",
+   "name": {
+    "en-MY": "Mak Cik Zainab",
+    "ms-MY": "Mak Cik Zainab"
+   },
+   "profession": {
+    "en-MY": "Retired teacher & gardener",
+    "ms-MY": "Guru bersara & pekebun"
+   },
+   "bio": {
+    "en-MY": "Taught primary science for thirty-four years. When she retired, she turned the empty lot between the condos into a community garden. Now she knows every plant, bird and neighbour by name.",
+    "ms-MY": "Mengajar Sains sekolah rendah selama tiga puluh empat tahun. Selepas bersara, dia menjadikan tanah kosong di antara kondominium sebuah kebun komuniti. Kini dia kenal setiap pokok, burung dan jiran."
+   },
+   "traits": [
+    "calm",
+    "curious",
+    "warm"
+   ],
+   "model": "mini_female_c",
+   "color": "#7dbb6a",
+   "workplace": "garden",
+   "favorites": [
+    "flowers",
+    "bouquet",
+    "vegetables"
+   ],
+   "favoritePlace": "garden",
+   "arrival": {
+    "type": "building",
+    "building": "garden"
+   },
+   "workAction": "crouch",
+   "greetings": [
+    {
+     "text": {
+      "en-MY": "Ah, come in! Look at the orchids today.",
+      "ms-MY": "Ha, masuklah! Tengok orkid hari ini."
+     }
+    },
+    {
+     "text": {
+      "en-MY": "Good morning. The dew is still on the leaves — best time to water.",
+      "ms-MY": "Selamat pagi. Embun masih di daun — masa terbaik untuk menyiram."
+     },
+     "phase": "morning"
+    },
+    {
+     "text": {
+      "en-MY": "The sun is going down behind the condos. Listen — the birds are saying goodnight.",
+      "ms-MY": "Matahari terbenam di sebalik kondominium. Dengar — burung sedang ucap selamat malam."
+     },
+     "phase": "evening"
+    }
+   ],
+   "smallTalk": [
+    {
+     "text": {
+      "en-MY": "A garden teaches patience better than any classroom.",
+      "ms-MY": "Kebun mengajar sabar lebih baik daripada mana-mana bilik darjah."
+     }
+    },
+    {
+     "text": {
+      "en-MY": "Lemongrass by the gate, pandan by the drain. My mother’s rule, even in the city.",
+      "ms-MY": "Serai di tepi pagar, pandan di tepi longkang. Petua emak saya, di bandar pun sama."
+     },
+     "minLevel": 1
+    },
+    {
+     "text": {
+      "en-MY": "The condo children help me plant every Saturday. They ask a hundred questions. I answer every one.",
+      "ms-MY": "Budak-budak kondo tolong saya menanam setiap Sabtu. Mereka tanya seratus soalan. Saya jawab semuanya."
+     },
+     "minLevel": 2
+    },
+    {
+     "text": {
+      "en-MY": "We compost the coffee grounds from Uncle Lim’s shop. The mango tree has never been happier.",
+      "ms-MY": "Kami jadikan ampas kopi dari kedai Pak Cik Lim sebagai kompos. Pokok mangga tak pernah segembira ini."
+     },
+     "minLevel": 2
+    },
+    {
+     "text": {
+      "en-MY": "You have good hands for growing things. I can tell.",
+      "ms-MY": "Tangan awak sejuk, sesuai untuk bercucuk tanam. Saya boleh nampak."
+     },
+     "minLevel": 3
+    }
+   ],
+   "memoryLines": [
+    {
+     "text": {
+      "en-MY": "The first sprout in our community garden — I still have the photo.",
+      "ms-MY": "Tunas pertama di kebun komuniti kita — gambarnya masih saya simpan."
+     },
+     "memory": "opened_garden"
+    },
+    {
+     "text": {
+      "en-MY": "Our Fountain Plaza — built by everyone. The sunbirds come to drink there now.",
+      "ms-MY": "Plaza Air Pancut kita — dibina bersama. Burung kelicap datang minum di situ sekarang."
+     },
+     "memory": "landmark_built"
+    },
+    {
+     "text": {
+      "en-MY": "The pocket park was a weedy corner once. Now the children have a lawn.",
+      "ms-MY": "Taman poket itu dulu sudut semak. Sekarang budak-budak ada padang rumput."
+     },
+     "memory": "spot_park"
+    },
+    {
+     "text": {
+      "en-MY": "Every time I see Biscuit near the condo garden, I hide the roti.",
+      "ms-MY": "Setiap kali nampak Biskut dekat taman kondo, saya sorokkan roti."
+     },
+     "memory": "zainab_biscuit"
+    }
+   ],
+   "giftReactions": {
+    "love": {
+     "en-MY": "Wah, cantiknya! You know me so well.",
+     "ms-MY": "Wah, cantiknya! Awak memang kenal saya."
+    },
+    "like": {
+     "en-MY": "Thank you, dear. It will brighten my kitchen.",
+     "ms-MY": "Terima kasih, nak. Dapur saya pun jadi ceria."
+    },
+    "neutral": {
+     "en-MY": "How kind of you, thank you.",
+     "ms-MY": "Baik hati awak, terima kasih."
+    }
+   }
+  },
+  {
+   "id": "arjun",
+   "name": {
+    "en-MY": "Arjun",
+    "ms-MY": "Arjun"
+   },
+   "profession": {
+    "en-MY": "Furniture designer",
+    "ms-MY": "Pereka perabot"
+   },
+   "bio": {
+    "en-MY": "Designs furniture at the makerspace, from curvy timber chairs to bricks for the next upgrade. Coaches the neighbourhood kids’ futsal on Saturdays and is very loud about it.",
+    "ms-MY": "Mereka perabot di ruang kreatif, daripada kerusi kayu melengkung hingga bata untuk naik taraf seterusnya. Melatih futsal budak-budak kejiranan setiap Sabtu dan sangat bersemangat tentangnya."
+   },
+   "traits": [
+    "energetic",
+    "organised",
+    "adventurous"
+   ],
+   "model": "mini_male_c",
+   "color": "#c98a4b",
+   "workplace": "workshop",
+   "favorites": [
+    "coffee",
+    "furniture",
+    "roti_canai"
+   ],
+   "favoritePlace": "workshop",
+   "arrival": {
+    "type": "building",
+    "building": "workshop"
+   },
+   "workAction": "interact",
+   "greetings": [
+    {
+     "text": {
+      "en-MY": "Yo! Careful, sawdust everywhere.",
+      "ms-MY": "Hai! Hati-hati, habuk kayu di mana-mana."
+     }
+    },
+    {
+     "text": {
+      "en-MY": "Morning! Machines on, music on, kopi on.",
+      "ms-MY": "Pagi! Mesin hidup, muzik hidup, kopi pun ada."
+     },
+     "phase": "morning"
+    },
+    {
+     "text": {
+      "en-MY": "Evening! Futsal at eight — you’re on my team.",
+      "ms-MY": "Petang! Futsal pukul lapan — awak masuk pasukan saya."
+     },
+     "phase": "evening"
+    }
+   ],
+   "smallTalk": [
+    {
+     "text": {
+      "en-MY": "Measure twice, cut once. Same with friendships, actually.",
+      "ms-MY": "Ukur dua kali, potong sekali. Persahabatan pun sama, sebenarnya."
+     }
+    },
+    {
+     "text": {
+      "en-MY": "The futsal kids want a proper bench for the sidelines. I’m on it.",
+      "ms-MY": "Budak-budak futsal nak bangku yang betul di tepi gelanggang. Saya sedang buat."
+     },
+     "minLevel": 1
+    },
+    {
+     "text": {
+      "en-MY": "A good chair is like a good friend: it always has your back.",
+      "ms-MY": "Kerusi yang baik macam kawan yang baik: sentiasa menyokong awak."
+     },
+     "minLevel": 2
+    },
+    {
+     "text": {
+      "en-MY": "After futsal we all end up at Shah’s. Win or lose, the roti canai tastes just as good.",
+      "ms-MY": "Lepas futsal, kami semua ke kedai Shah. Menang atau kalah, roti canai tetap sedap."
+     },
+     "minLevel": 2
+    }
+   ],
+   "memoryLines": [
+    {
+     "text": {
+      "en-MY": "This makerspace is the best thing that happened to me. Thank you, really.",
+      "ms-MY": "Ruang kreatif ini perkara terbaik yang pernah berlaku pada saya. Terima kasih, betul."
+     },
+     "memory": "opened_workshop"
+    },
+    {
+     "text": {
+      "en-MY": "Forty-seven slide tests. I counted. The kids counted louder.",
+      "ms-MY": "Empat puluh tujuh kali uji gelongsor. Saya kira. Budak-budak kira lebih kuat."
+     },
+     "memory": "arjun_playground"
+    }
+   ],
+   "giftReactions": {
+    "love": {
+     "en-MY": "No way — this is perfect!",
+     "ms-MY": "Biar betul — ini sempurna!"
+    },
+    "like": {
+     "en-MY": "Nice one, thanks! Team spirit!",
+     "ms-MY": "Bagus, terima kasih! Semangat berpasukan!"
+    },
+    "neutral": {
+     "en-MY": "Thanks, appreciate it.",
+     "ms-MY": "Terima kasih, saya hargai."
+    }
+   }
+  },
+  {
+   "id": "kavitha",
+   "name": {
+    "en-MY": "Cikgu Kavitha",
+    "ms-MY": "Cikgu Kavitha"
+   },
+   "profession": {
+    "en-MY": "Tuition centre teacher",
+    "ms-MY": "Guru pusat tuisyen"
+   },
+   "bio": {
+    "en-MY": "Runs the tuition centre above the shoplots with endless patience and a cupboard full of puzzle books. Believes every question is a good one, even “Cikgu, can we go home now?”",
+    "ms-MY": "Mengendalikan pusat tuisyen di atas rumah kedai dengan penuh sabar dan almari penuh buku teka-teki. Percaya setiap soalan ialah soalan yang baik, walaupun “Cikgu, boleh balik sekarang?”"
+   },
+   "traits": [
+    "curious",
+    "calm",
+    "organised"
+   ],
+   "model": "mini_female_e",
+   "color": "#8a6fd1",
+   "workplace": "learning_centre",
+   "favorites": [
+    "bouquet",
+    "berry_pie",
+    "coffee"
+   ],
+   "favoritePlace": "learning_centre",
+   "arrival": {
+    "type": "building",
+    "building": "learning_centre"
+   },
+   "workAction": "emote-yes",
+   "greetings": [
+    {
+     "text": {
+      "en-MY": "Hello! Ready for today’s question?",
+      "ms-MY": "Hai! Sedia untuk soalan hari ini?"
+     }
+    },
+    {
+     "text": {
+      "en-MY": "Good morning! Fresh minds learn fastest.",
+      "ms-MY": "Selamat pagi! Minda yang segar cepat belajar."
+     },
+     "phase": "morning"
+    },
+    {
+     "text": {
+      "en-MY": "Evening! The after-school crowd just left. My whiteboard needs a holiday.",
+      "ms-MY": "Petang! Budak-budak lepas sekolah baru balik. Papan putih saya perlukan cuti."
+     },
+     "phase": "evening"
+    }
+   ],
+   "smallTalk": [
+    {
+     "text": {
+      "en-MY": "Getting an answer wrong is just learning in progress.",
+      "ms-MY": "Tersalah jawab cuma tanda sedang belajar."
+     }
+    },
+    {
+     "text": {
+      "en-MY": "I keep a jar of jasmine on my desk. It keeps the room calm, even in exam week.",
+      "ms-MY": "Saya simpan sebalang melur di atas meja. Bilik terasa tenang, walaupun minggu peperiksaan."
+     },
+     "minLevel": 1
+    },
+    {
+     "text": {
+      "en-MY": "Mak Cik Zainab taught me science when I was nine. Now we swap books at the community garden.",
+      "ms-MY": "Mak Cik Zainab ajar saya Sains masa saya sembilan tahun. Sekarang kami bertukar buku di kebun komuniti."
+     },
+     "minLevel": 2
+    },
+    {
+     "text": {
+      "en-MY": "Parents ask me the secret to good results. Sleep, breakfast and curiosity. Mostly breakfast.",
+      "ms-MY": "Ibu bapa tanya rahsia keputusan cemerlang. Tidur, sarapan dan rasa ingin tahu. Terutamanya sarapan."
+     },
+     "minLevel": 2
+    }
+   ],
+   "memoryLines": [
+    {
+     "text": {
+      "en-MY": "Our tuition centre — every chair filled after school. Because of you.",
+      "ms-MY": "Pusat tuisyen kita — setiap kerusi penuh selepas sekolah. Kerana awak."
+     },
+     "memory": "opened_learning_centre"
+    },
+    {
+     "text": {
+      "en-MY": "You were my very first student here. I still keep your quiz sheet.",
+      "ms-MY": "Awak murid pertama saya di sini. Kertas kuiz awak masih saya simpan."
+     },
+     "memory": "kavitha_student"
+    }
+   ],
+   "giftReactions": {
+    "love": {
+     "en-MY": "For me? How lovely — thank you!",
+     "ms-MY": "Untuk saya? Indahnya — terima kasih!"
+    },
+    "like": {
+     "en-MY": "That’s very kind of you.",
+     "ms-MY": "Baiknya awak."
+    },
+    "neutral": {
+     "en-MY": "Thank you! Gold star for you.",
+     "ms-MY": "Terima kasih! Bintang emas untuk awak."
+    }
+   }
+  },
+  {
+   "id": "aisyah",
+   "name": {
+    "en-MY": "Aisyah",
+    "ms-MY": "Aisyah"
+   },
+   "profession": {
+    "en-MY": "Residents’ association volunteer",
+    "ms-MY": "Sukarelawan persatuan penduduk"
+   },
+   "bio": {
+    "en-MY": "The residents’ association volunteer with a clipboard for every occasion and a group chat for every street. Organises the gotong-royong, the night market and the futsal schedule.",
+    "ms-MY": "Sukarelawan persatuan penduduk yang ada papan klip untuk setiap majlis dan kumpulan sembang untuk setiap jalan. Menggerakkan gotong-royong, pasar malam dan jadual futsal."
+   },
+   "traits": [
+    "sociable",
+    "organised",
+    "energetic"
+   ],
+   "model": "mini_female_a",
+   "color": "#e05a8a",
+   "workplace": "park",
+   "favorites": [
+    "bouquet",
+    "flower_crown",
+    "jam"
+   ],
+   "favoritePlace": "park",
+   "arrival": {
+    "type": "building",
+    "building": "park"
+   },
+   "workAction": "emote-yes",
+   "greetings": [
+    {
+     "text": {
+      "en-MY": "There you are! I have ideas. Many ideas.",
+      "ms-MY": "Ha, jumpa pun! Saya ada idea. Banyak idea."
+     }
+    },
+    {
+     "text": {
+      "en-MY": "Morning! I’ve already jogged two laps and sent four reminders.",
+      "ms-MY": "Pagi! Saya dah joging dua pusingan dan hantar empat peringatan."
+     },
+     "phase": "morning"
+    },
+    {
+     "text": {
+      "en-MY": "Evening! Perfect weather for a gathering.",
+      "ms-MY": "Petang! Cuaca sesuai untuk berkumpul."
+     },
+     "phase": "evening"
+    }
+   ],
+   "smallTalk": [
+    {
+     "text": {
+      "en-MY": "Gotong-royong works because nobody is too important to sweep.",
+      "ms-MY": "Gotong-royong berjaya sebab tiada siapa terlalu penting untuk menyapu."
+     }
+    },
+    {
+     "text": {
+      "en-MY": "Next on my list: lights along the lake boardwalk.",
+      "ms-MY": "Seterusnya dalam senarai saya: lampu di sepanjang laluan papan tasik."
+     },
+     "minLevel": 1
+    },
+    {
+     "text": {
+      "en-MY": "The residents’ group chat has 312 members and about 4,000 sticker replies. I read every one.",
+      "ms-MY": "Kumpulan sembang penduduk ada 312 ahli dan kira-kira 4,000 balasan pelekat. Saya baca semuanya."
+     },
+     "minLevel": 2
+    },
+    {
+     "text": {
+      "en-MY": "You never say no when the neighbourhood needs help. People notice.",
+      "ms-MY": "Awak tak pernah menolak bila kejiranan perlukan bantuan. Orang perasan."
+     },
+     "minLevel": 2
+    }
+   ],
+   "memoryLines": [
+    {
+     "text": {
+      "en-MY": "The park opening — the whole neighbourhood came, even the early-morning joggers!",
+      "ms-MY": "Perasmian taman — satu kejiranan datang, pelari pagi pun ada!"
+     },
+     "memory": "opened_park"
+    },
+    {
+     "text": {
+      "en-MY": "The pocket park picnic went exactly to plan. Okay, ninety percent. Okay, it was perfect.",
+      "ms-MY": "Kelah di taman poket ikut rancangan sepenuhnya. Okey, sembilan puluh peratus. Okey, memang sempurna."
+     },
+     "memory": "aisyah_picnic"
+    },
+    {
+     "text": {
+      "en-MY": "Our night market at Bayu Plaza — I drew the stall map myself.",
+      "ms-MY": "Pasar malam kita di Dataran Bayu — saya lukis peta gerai sendiri."
+     },
+     "memory": "spot_plaza"
+    }
+   ],
+   "giftReactions": {
+    "love": {
+     "en-MY": "Oh, I love this! Perfect for the next event!",
+     "ms-MY": "Oh, saya suka! Sesuai untuk acara seterusnya!"
+    },
+    "like": {
+     "en-MY": "Thank you so much! Adding you to my thank-you list.",
+     "ms-MY": "Terima kasih banyak! Saya masukkan awak dalam senarai terima kasih."
+    },
+    "neutral": {
+     "en-MY": "Thanks! I’ll find a use for it.",
+     "ms-MY": "Terima kasih! Akan saya gunakan."
+    }
+   }
+  },
+  {
+   "id": "farid",
+   "name": {
+    "en-MY": "Farid",
+    "ms-MY": "Farid"
+   },
+   "profession": {
+    "en-MY": "EV showroom manager",
+    "ms-MY": "Pengurus bilik pameran EV"
+   },
+   "bio": {
+    "en-MY": "Runs the EV showroom and explains charging so patiently that even Uncle Lim now says “kilowatt” with confidence. Honest to a fault, and a little too excited about regenerative braking.",
+    "ms-MY": "Mengurus bilik pameran EV dan menerangkan cara mengecas dengan begitu sabar sehingga Pak Cik Lim pun kini sebut “kilowatt” dengan yakin. Jujur orangnya, dan agak terlalu teruja tentang brek regeneratif."
+   },
+   "traits": [
+    "curious",
+    "calm",
+    "warm"
+   ],
+   "model": "mini_male_d",
+   "color": "#4f9de0",
+   "workplace": "showroom",
+   "favorites": [
+    "coffee",
+    "breakfast",
+    "furniture"
+   ],
+   "favoritePlace": "showroom",
+   "arrival": {
+    "type": "building",
+    "building": "showroom"
+   },
+   "workAction": "interact",
+   "greetings": [
+    {
+     "text": {
+      "en-MY": "Hey! Come see how the light hits the paint today.",
+      "ms-MY": "Hai! Mari tengok cahaya pada cat kereta hari ini."
+     }
+    },
+    {
+     "text": {
+      "en-MY": "Morning! Chargers checked, cars polished, kopi in hand.",
+      "ms-MY": "Pagi! Pengecas dah diperiksa, kereta dah digilap, kopi di tangan."
+     },
+     "phase": "morning"
+    },
+    {
+     "text": {
+      "en-MY": "Evening! Quiet hour — best time to ask me anything about charging.",
+      "ms-MY": "Petang! Waktu tenang — masa terbaik untuk tanya apa-apa tentang pengecasan."
+     },
+     "phase": "evening"
+    }
+   ],
+   "smallTalk": [
+    {
+     "text": {
+      "en-MY": "A good showroom is about the story, not the shine.",
+      "ms-MY": "Bilik pameran yang baik tentang ceritanya, bukan kilatnya."
+     }
+    },
+    {
+     "text": {
+      "en-MY": "Try arranging the cars by colour. It feels like a garden.",
+      "ms-MY": "Cuba susun kereta ikut warna. Rasa macam taman."
+     },
+     "minLevel": 1
+    },
+    {
+     "text": {
+      "en-MY": "Charging is like topping up your phone. Plug in, have a kopi, done.",
+      "ms-MY": "Mengecas macam cas telefon. Pasang, minum kopi, siap."
+     },
+     "minLevel": 2
+    },
+    {
+     "text": {
+      "en-MY": "I like that people here just come to look and chat. No pressure.",
+      "ms-MY": "Saya suka orang di sini datang tengok dan bersembang sahaja. Tiada tekanan."
+     },
+     "minLevel": 2
+    }
+   ],
+   "memoryLines": [
+    {
+     "text": {
+      "en-MY": "The showroom’s first morning — I polished every car twice.",
+      "ms-MY": "Pagi pertama bilik pameran — saya gilap setiap kereta dua kali."
+     },
+     "memory": "opened_showroom"
+    },
+    {
+     "text": {
+      "en-MY": "People still stop to smile at the colour display. Best idea we ever had.",
+      "ms-MY": "Orang masih berhenti tersenyum melihat susunan warna itu. Idea terbaik kita."
+     },
+     "memory": "farid_colours"
+    }
+   ],
+   "giftReactions": {
+    "love": {
+     "en-MY": "Seriously? This is great, thank you!",
+     "ms-MY": "Betul ke? Hebatnya, terima kasih!"
+    },
+    "like": {
+     "en-MY": "Thanks — my happiness battery is at 100%.",
+     "ms-MY": "Terima kasih — bateri gembira saya penuh 100%."
+    },
+    "neutral": {
+     "en-MY": "Thank you!",
+     "ms-MY": "Terima kasih!"
+    }
+   }
+  },
+  {
+   "id": "joanna",
+   "name": {
+    "en-MY": "Joanna",
+    "ms-MY": "Joanna"
+   },
+   "profession": {
+    "en-MY": "Photographer",
+    "ms-MY": "Jurugambar"
+   },
+   "bio": {
+    "en-MY": "Grew up in Sabah with Mount Kinabalu outside her window; now it’s the city skyline from her condo balcony. Photographs sunsets, shopfronts and the people who make a place feel like home.",
+    "ms-MY": "Membesar di Sabah dengan Gunung Kinabalu di luar tingkap; kini latar bandar raya dari balkoni kondonya. Merakam matahari terbenam, deretan kedai dan orang yang menjadikan sesuatu tempat terasa seperti rumah."
+   },
+   "traits": [
+    "creative",
+    "adventurous",
+    "calm"
+   ],
+   "model": "mini_female_f",
+   "color": "#2fa59b",
+   "workplace": "townhouse",
+   "favorites": [
+    "bouquet",
+    "coffee",
+    "berry_pie"
+   ],
+   "favoritePlace": "pond",
+   "arrival": {
+    "type": "building",
+    "building": "townhouse"
+   },
+   "workAction": "emote-yes",
+   "greetings": [
+    {
+     "text": {
+      "en-MY": "Hold still — the light is perfect! …Okay, hi!",
+      "ms-MY": "Jangan bergerak — cahayanya sempurna! …Okey, hai!"
+     }
+    },
+    {
+     "text": {
+      "en-MY": "Morning! Golden hour on the lake. I’ve been up since six.",
+      "ms-MY": "Pagi! Cahaya keemasan di tasik. Saya dah bangun sejak pukul enam."
+     },
+     "phase": "morning"
+    },
+    {
+     "text": {
+      "en-MY": "The skyline is glowing tonight. Want to see the photos?",
+      "ms-MY": "Latar bandar bersinar malam ini. Nak tengok gambar-gambarnya?"
+     },
+     "phase": "night"
+    }
+   ],
+   "smallTalk": [
+    {
+     "text": {
+      "en-MY": "Try photo mode on the lake boardwalk at sunset. Trust me.",
+      "ms-MY": "Cuba mod foto di laluan papan tasik waktu senja. Percayalah."
+     }
+    },
+    {
+     "text": {
+      "en-MY": "Seri Bayu has real character. After the rain, the shoplots glow.",
+      "ms-MY": "Seri Bayu ada jiwa. Selepas hujan, deretan kedai bersinar."
+     },
+     "minLevel": 1
+    },
+    {
+     "text": {
+      "en-MY": "Back home in Sabah we wave at everyone. I’m bringing that here, one neighbour at a time.",
+      "ms-MY": "Di kampung saya di Sabah, kami melambai kepada semua orang. Saya bawa tabiat itu ke sini, seorang jiran demi seorang."
+     },
+     "minLevel": 2
+    }
+   ],
+   "memoryLines": [
+    {
+     "text": {
+      "en-MY": "My condo has the best window light I’ve ever had.",
+      "ms-MY": "Kondo saya ada cahaya tingkap paling cantik pernah saya dapat."
+     },
+     "memory": "moved_in"
+    },
+    {
+     "text": {
+      "en-MY": "Aisyah added me to three group chats on my first day. I’ve photographed everyone in them.",
+      "ms-MY": "Aisyah masukkan saya dalam tiga kumpulan sembang pada hari pertama. Saya dah ambil gambar semua ahlinya."
+     },
+     "memory": "joanna_friends"
+    },
+    {
+     "text": {
+      "en-MY": "The Skyline Deck at night… I could stay up there until the last train.",
+      "ms-MY": "Dek Langit pada waktu malam… Saya boleh duduk di situ sampai tren terakhir."
+     },
+     "memory": "spot_lookout"
+    }
+   ],
+   "giftReactions": {
+    "love": {
+     "en-MY": "I need a photo of this first!",
+     "ms-MY": "Saya nak ambil gambar ini dulu!"
+    },
+    "like": {
+     "en-MY": "Lovely — this is going on my balcony!",
+     "ms-MY": "Cantik — ini untuk balkoni saya!"
+    },
+    "neutral": {
+     "en-MY": "Thanks, that’s sweet!",
+     "ms-MY": "Terima kasih, baiknya!"
+    }
+   }
+  },
+  {
+   "id": "shah",
+   "name": {
+    "en-MY": "Shah",
+    "ms-MY": "Shah"
+   },
+   "profession": {
+    "en-MY": "Mamak restaurant owner",
+    "ms-MY": "Pemilik restoran mamak"
+   },
+   "bio": {
+    "en-MY": "Runs the 24-hour mamak on the corner, where everyone ends up after futsal. Can flip a roti canai, take six orders and remember your usual, all at the same time.",
+    "ms-MY": "Mengusahakan restoran mamak 24 jam di simpang, tempat semua orang singgah selepas futsal. Boleh tebar roti canai, ambil enam pesanan dan ingat pesanan biasa awak, semuanya serentak."
+   },
+   "traits": [
+    "sociable",
+    "energetic",
+    "warm"
+   ],
+   "model": "mini_male_b",
+   "color": "#f0a23b",
+   "workplace": "mamak",
+   "favorites": [
+    "vegetables",
+    "coffee",
+    "berry_pie"
+   ],
+   "favoritePlace": "mamak",
+   "arrival": {
+    "type": "building",
+    "building": "mamak"
+   },
+   "workAction": "interact",
+   "greetings": [
+    {
+     "text": {
+      "en-MY": "Eh, boss! The usual? Sit, sit.",
+      "ms-MY": "Eh, bos! Macam biasa? Duduk, duduk."
+     }
+    },
+    {
+     "text": {
+      "en-MY": "Morning! First batch of roti canai, still crispy.",
+      "ms-MY": "Pagi! Roti canai yang pertama, masih rangup."
+     },
+     "phase": "morning"
+    },
+    {
+     "text": {
+      "en-MY": "Evening! The futsal team booked the long table again.",
+      "ms-MY": "Petang! Pasukan futsal dah tempah meja panjang lagi."
+     },
+     "phase": "evening"
+    },
+    {
+     "text": {
+      "en-MY": "Midnight? Perfect time for teh tarik and a chat. We never close.",
+      "ms-MY": "Tengah malam? Masa sesuai untuk teh tarik dan bersembang. Kami tak pernah tutup."
+     },
+     "phase": "night"
+    }
+   ],
+   "smallTalk": [
+    {
+     "text": {
+      "en-MY": "A mamak is a living room with better food. Everyone’s welcome.",
+      "ms-MY": "Mamak ni macam ruang tamu, cuma makanannya lebih sedap. Semua orang dialu-alukan."
+     }
+    },
+    {
+     "text": {
+      "en-MY": "Uncle Lim closes, I open. We wave across the shoplots like a relay race.",
+      "ms-MY": "Pak Cik Lim tutup, saya buka. Kami melambai merentasi deretan kedai macam lari berganti-ganti."
+     },
+     "minLevel": 1
+    },
+    {
+     "text": {
+      "en-MY": "Arjun says his team lost because of the referee. Every week. Same referee: his own nephew.",
+      "ms-MY": "Arjun kata pasukannya kalah sebab pengadil. Setiap minggu. Pengadil yang sama: anak saudaranya sendiri."
+     },
+     "minLevel": 2
+    },
+    {
+     "text": {
+      "en-MY": "The secret to good roti canai? Patience, a hot griddle and a little showing off.",
+      "ms-MY": "Rahsia roti canai yang sedap? Sabar, kuali leper yang panas dan sedikit gaya."
+     },
+     "minLevel": 2
+    },
+    {
+     "text": {
+      "en-MY": "You’re a regular now. Here, regulars get their name called out the moment they walk in.",
+      "ms-MY": "Awak dah jadi pelanggan tetap. Di sini, nama pelanggan tetap dipanggil sebaik sahaja mereka masuk."
+     },
+     "minLevel": 3
+    }
+   ],
+   "memoryLines": [
+    {
+     "text": {
+      "en-MY": "Opening night, the whole street came. We ran out of chairs by ten.",
+      "ms-MY": "Malam pembukaan, satu jalan datang. Kerusi habis sebelum pukul sepuluh."
+     },
+     "memory": "opened_mamak"
+    },
+    {
+     "text": {
+      "en-MY": "The new canopy tables — now the after-futsal crowd stays till midnight.",
+      "ms-MY": "Meja bawah kanopi yang baharu — sekarang geng lepas futsal duduk sampai tengah malam."
+     },
+     "memory": "upgraded_mamak_2"
+    },
+    {
+     "text": {
+      "en-MY": "Night market at Bayu Plaza! I brought the griddle. People queued for an hour.",
+      "ms-MY": "Pasar malam di Dataran Bayu! Saya bawa kuali leper. Orang beratur sejam."
+     },
+     "memory": "spot_plaza"
+    }
+   ],
+   "giftReactions": {
+    "love": {
+     "en-MY": "Wah, boss! This one I’ll remember forever.",
+     "ms-MY": "Wah, bos! Yang ini saya ingat sampai bila-bila."
+    },
+    "like": {
+     "en-MY": "Thank you! Your next teh tarik is on the house.",
+     "ms-MY": "Terima kasih! Teh tarik seterusnya saya belanja."
+    },
+    "neutral": {
+     "en-MY": "Thanks, boss! Very kind.",
+     "ms-MY": "Terima kasih, bos! Baik betul."
+    }
+   }
+  }
+ ],
+ "quests": [
+  {
+   "id": "welcome",
+   "title": {
+    "en-MY": "Welcome to Seri Bayu",
+    "ms-MY": "Selamat Datang ke Seri Bayu"
+   },
+   "giver": "lim",
+   "intro": {
+    "en-MY": "Welcome to Seri Bayu! I’m Uncle Lim, from the new shoplots by the LRT. Your terrace house has been collecting rent while you unpacked — tap the coins above it!",
+    "ms-MY": "Selamat datang ke Seri Bayu! Saya Pak Cik Lim, dari rumah kedai baharu berhampiran LRT. Rumah teres awak dah kumpul sewa semasa awak berkemas — ketik syiling di atasnya!"
+   },
+   "outro": {
+    "en-MY": "See? This neighbourhood already looks after you.",
+    "ms-MY": "Nampak? Kejiranan ini dah jaga awak."
+   },
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "collect:any",
+     "n": 1,
+     "label": {
+      "en-MY": "Collect rent from your house",
+      "ms-MY": "Kutip sewa dari rumah anda"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 20,
+    "xp": 5
+   },
+   "tutorial": true,
+   "focus": {
+    "building": "starter_house"
+   },
+   "why": {
+    "en-MY": "Houses earn coins over time — even while you’re away.",
+    "ms-MY": "Rumah menjana syiling dari masa ke masa — walaupun anda tiada."
+   }
+  },
+  {
+   "id": "reopen_kopitiam",
+   "title": {
+    "en-MY": "Open the Shutters",
+    "ms-MY": "Buka Pintu Besi"
+   },
+   "giver": "lim",
+   "intro": {
+    "en-MY": "My late father ran a kopitiam in the old town for forty years. I’ve rented a brand-new shoplot by the LRT to bring it back… Will you help me open it?",
+    "ms-MY": "Ayah saya dahulu mengusahakan kopitiam di pekan lama selama empat puluh tahun. Saya dah sewa rumah kedai baharu berhampiran LRT untuk menghidupkannya semula… Sudikah awak bantu saya membukanya?"
+   },
+   "outro": {
+    "en-MY": "The shutters are up! I can already hear the cups clinking.",
+    "ms-MY": "Pintu besi dah naik! Saya dah boleh dengar bunyi cawan berlaga."
+   },
+   "objectives": [
+    {
+     "type": "build",
+     "building": "cafe",
+     "n": 1,
+     "label": {
+      "en-MY": "Open Uncle Lim’s kopitiam",
+      "ms-MY": "Buka kopitiam Pak Cik Lim"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 20,
+    "xp": 10
+   },
+   "after": [
+    "welcome"
+   ],
+   "tutorial": true,
+   "focus": {
+    "building": "cafe",
+    "panel": "build"
+   },
+   "why": {
+    "en-MY": "Uncle Lim has dreamed of reopening his father’s kopitiam for years.",
+    "ms-MY": "Pak Cik Lim sudah lama bermimpi untuk membuka semula kopitiam ayahnya."
+   }
+  },
+  {
+   "id": "first_brew",
+   "title": {
+    "en-MY": "First Kopi",
+    "ms-MY": "Kopi Pertama"
+   },
+   "giver": "lim",
+   "intro": {
+    "en-MY": "Let’s brew! Tap the kopitiam and make some kopi.",
+    "ms-MY": "Jom bancuh! Ketik kopitiam dan buat kopi."
+   },
+   "outro": {
+    "en-MY": "Smell that? That’s Seri Bayu waking up.",
+    "ms-MY": "Bau tu? Itulah bau Seri Bayu yang baru bangun."
+   },
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "produce:coffee",
+     "n": 3,
+     "label": {
+      "en-MY": "Brew and collect 3 Kopi",
+      "ms-MY": "Bancuh dan kutip 3 Kopi"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 15,
+    "xp": 8
+   },
+   "after": [
+    "reopen_kopitiam"
+   ],
+   "tutorial": true,
+   "focus": {
+    "building": "cafe"
+   },
+   "why": {
+    "en-MY": "Shops turn time into goods your neighbours want.",
+    "ms-MY": "Kedai menukar masa menjadi barangan yang jiran mahukan."
+   }
+  },
+  {
+   "id": "first_order",
+   "title": {
+    "en-MY": "Our First Regular",
+    "ms-MY": "Pelanggan Tetap Pertama"
+   },
+   "giver": "lim",
+   "intro": {
+    "en-MY": "Someone pinned a note on the Community Board! Open Orders and deliver it.",
+    "ms-MY": "Ada nota di Papan Komuniti! Buka Pesanan dan hantarkannya."
+   },
+   "outro": {
+    "en-MY": "Our first happy customer. You’re a natural!",
+    "ms-MY": "Pelanggan pertama yang gembira. Awak memang berbakat!"
+   },
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "orders",
+     "n": 1,
+     "label": {
+      "en-MY": "Complete a neighbourhood order",
+      "ms-MY": "Siapkan satu pesanan kejiranan"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 25,
+    "xp": 10
+   },
+   "after": [
+    "first_brew"
+   ],
+   "tutorial": true,
+   "focus": {
+    "panel": "orders"
+   }
+  },
+  {
+   "id": "kopitiam_upgrade",
+   "title": {
+    "en-MY": "Tables on the Walkway",
+    "ms-MY": "Meja di Kaki Lima"
+   },
+   "giver": "lim",
+   "intro": {
+    "en-MY": "The office crowd from the LRT wants to sit outside on the covered walkway… What if we upgraded the kopitiam with more tables?",
+    "ms-MY": "Orang pejabat dari LRT mahu duduk di luar, di kaki lima berbumbung… Apa kata kita naik taraf kopitiam dengan lebih banyak meja?"
+   },
+   "outro": {
+    "en-MY": "Marble tables and round stools — just like my father had!",
+    "ms-MY": "Meja marmar dan bangku bulat — sama macam zaman ayah saya!"
+   },
+   "objectives": [
+    {
+     "type": "upgrade",
+     "building": "cafe",
+     "level": 2,
+     "label": {
+      "en-MY": "Upgrade the kopitiam to level 2",
+      "ms-MY": "Naik taraf kopitiam ke tahap 2"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 60,
+    "xp": 15
+   },
+   "after": [
+    "first_order"
+   ],
+   "tutorial": true,
+   "focus": {
+    "building": "cafe"
+   },
+   "why": {
+    "en-MY": "Upgrades add recipes and slots — and you’ll see the shop change.",
+    "ms-MY": "Naik taraf menambah resipi dan slot — dan anda akan nampak kedai berubah."
+   }
+  },
+  {
+   "id": "meet_zainab",
+   "title": {
+    "en-MY": "Something Green",
+    "ms-MY": "Sesuatu yang Hijau"
+   },
+   "giver": "lim",
+   "intro": {
+    "en-MY": "Mak Cik Zainab, a retired science teacher from the condo, wants to turn the empty lot between the towers into a garden. A Community Garden would bring her right here!",
+    "ms-MY": "Mak Cik Zainab, guru Sains bersara dari kondominium, mahu jadikan tanah kosong di antara menara itu sebuah kebun. Kebun Komuniti pasti bawa dia ke sini!"
+   },
+   "outro": {
+    "en-MY": "Zainab is here — Seri Bayu is growing greener!",
+    "ms-MY": "Zainab dah sampai — Seri Bayu semakin hijau!"
+   },
+   "objectives": [
+    {
+     "type": "build",
+     "building": "garden",
+     "n": 1,
+     "label": {
+      "en-MY": "Build the Community Garden",
+      "ms-MY": "Bina Kebun Komuniti"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 40,
+    "xp": 10
+   },
+   "after": [
+    "kopitiam_upgrade"
+   ],
+   "minLevel": 2,
+   "tutorial": true,
+   "focus": {
+    "building": "garden",
+    "panel": "build"
+   },
+   "why": {
+    "en-MY": "Mak Cik Zainab will join the neighbourhood once there’s a garden.",
+    "ms-MY": "Mak Cik Zainab akan menyertai kejiranan bila ada kebun."
+   }
+  },
+  {
+   "id": "bakery",
+   "title": {
+    "en-MY": "Something Sweet",
+    "ms-MY": "Sesuatu yang Manis"
+   },
+   "giver": "lim",
+   "intro": {
+    "en-MY": "Kaya toast needs good bread. A pastry chef called Mei is looking for a shoplot for her dessert café.",
+    "ms-MY": "Roti bakar kaya perlukan roti yang sedap. Seorang cef pastri bernama Mei sedang mencari rumah kedai untuk kafe pencuci mulutnya."
+   },
+   "outro": {
+    "en-MY": "Mei is already kneading. What a smell!",
+    "ms-MY": "Mei dah mula menguli. Wanginya!"
+   },
+   "objectives": [
+    {
+     "type": "build",
+     "building": "bakery",
+     "n": 1,
+     "label": {
+      "en-MY": "Build Mei’s Dessert Café",
+      "ms-MY": "Bina Kafe Pencuci Mulut Mei"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 50,
+    "xp": 12
+   },
+   "after": [
+    "meet_zainab"
+   ]
+  },
+  {
+   "id": "decorate",
+   "title": {
+    "en-MY": "Make It Ours",
+    "ms-MY": "Jadikan Milik Kita"
+   },
+   "giver": "zainab",
+   "intro": {
+    "en-MY": "A neighbourhood should look like the people who live in it. Plant some trees, flowers or paths!",
+    "ms-MY": "Kejiranan patut mencerminkan penduduknya. Tanamlah pokok, bunga atau buat laluan!"
+   },
+   "outro": {
+    "en-MY": "Now it feels like home, not just an address.",
+    "ms-MY": "Sekarang terasa seperti rumah, bukan sekadar alamat."
+   },
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "decor",
+     "n": 5,
+     "label": {
+      "en-MY": "Place 5 decorations",
+      "ms-MY": "Letakkan 5 hiasan"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 40,
+    "xp": 12
+   },
+   "after": [
+    "meet_zainab"
+   ]
+  },
+  {
+   "id": "spruce_park",
+   "title": {
+    "en-MY": "The Weedy Corner",
+    "ms-MY": "Sudut Semak"
+   },
+   "giver": "zainab",
+   "intro": {
+    "en-MY": "See that weedy corner between the condos? The whole neighbourhood wants to turn it into a little park — gotong-royong style. Shall we help clear it?",
+    "ms-MY": "Nampak sudut semak di antara kondominium itu? Seluruh kejiranan mahu jadikannya taman kecil — cara gotong-royong. Jom kita bantu bersihkan?"
+   },
+   "outro": {
+    "en-MY": "Look at it already! Everyone noticed — that’s what neighbours do.",
+    "ms-MY": "Tengoklah! Semua orang perasan — itulah gunanya jiran."
+   },
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "spruce_stage:park",
+     "n": 1,
+     "label": {
+      "en-MY": "Help clear the Pocket Park",
+      "ms-MY": "Bantu bersihkan Taman Poket"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 20,
+    "xp": 15
+   },
+   "after": [
+    "decorate"
+   ],
+   "minLevel": 2,
+   "focus": {
+    "panel": "community"
+   }
+  },
+  {
+   "id": "park_done",
+   "title": {
+    "en-MY": "A Park for Everyone",
+    "ms-MY": "Taman untuk Semua"
+   },
+   "giver": "zainab",
+   "intro": {
+    "en-MY": "Flowers, benches, and then a picnic to open it. One step at a time — give whenever you have something spare.",
+    "ms-MY": "Bunga, bangku, kemudian kelah untuk membukanya. Selangkah demi selangkah — beri bila ada lebihan."
+   },
+   "outro": {
+    "en-MY": "A picnic in our own pocket park! Thank you for making this happen together.",
+    "ms-MY": "Berkelah di taman poket kita sendiri! Terima kasih kerana menjayakannya bersama."
+   },
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "spot_done:park",
+     "n": 1,
+     "label": {
+      "en-MY": "Finish the Pocket Park",
+      "ms-MY": "Siapkan Taman Poket"
+     }
+    }
+   ],
+   "reward": {
+    "xp": 40
+   },
+   "after": [
+    "spruce_park"
+   ],
+   "minLevel": 2
+  },
+  {
+   "id": "orders_5",
+   "title": {
+    "en-MY": "Good Neighbours",
+    "ms-MY": "Jiran yang Baik"
+   },
+   "giver": "mei",
+   "intro": {
+    "en-MY": "The Community Board is full of notes! Let’s help everyone out.",
+    "ms-MY": "Papan Komuniti penuh dengan nota! Jom bantu semua orang."
+   },
+   "outro": {
+    "en-MY": "Word is spreading — even the residents’ group chat is talking about us.",
+    "ms-MY": "Berita tersebar — kumpulan sembang penduduk pun bercakap tentang kita."
+   },
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "orders",
+     "n": 5,
+     "label": {
+      "en-MY": "Complete 5 orders",
+      "ms-MY": "Siapkan 5 pesanan"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 60,
+    "xp": 15
+   },
+   "after": [
+    "bakery"
+   ]
+  },
+  {
+   "id": "mamak",
+   "title": {
+    "en-MY": "Open All Night",
+    "ms-MY": "Buka Sampai Pagi"
+   },
+   "giver": "lim",
+   "intro": {
+    "en-MY": "My kopitiam closes at three. But this corner needs somewhere for late-night teh tarik and roti canai… My friend Shah has been dreaming of a 24-hour mamak.",
+    "ms-MY": "Kopitiam saya tutup pukul tiga. Tapi simpang ini perlukan tempat untuk teh tarik dan roti canai lewat malam… Kawan saya Shah dah lama impikan restoran mamak 24 jam."
+   },
+   "outro": {
+    "en-MY": "Shah is flipping roti already. The futsal boys found it in five minutes.",
+    "ms-MY": "Shah dah mula tebar roti. Budak-budak futsal jumpa dalam lima minit."
+   },
+   "objectives": [
+    {
+     "type": "build",
+     "building": "mamak",
+     "n": 1,
+     "label": {
+      "en-MY": "Build Mamak Corner",
+      "ms-MY": "Bina Restoran Mamak Simpang"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 40,
+    "xp": 12
+   },
+   "after": [
+    "bakery"
+   ],
+   "minLevel": 2
+  },
+  {
+   "id": "workshop",
+   "title": {
+    "en-MY": "Made in Seri Bayu",
+    "ms-MY": "Buatan Seri Bayu"
+   },
+   "giver": "mei",
+   "intro": {
+    "en-MY": "Upgrades need timber and bricks. My friend Arjun designs furniture — he could run a makerspace!",
+    "ms-MY": "Naik taraf perlukan kayu dan bata. Kawan saya Arjun mereka perabot — dia boleh uruskan ruang kreatif!"
+   },
+   "outro": {
+    "en-MY": "Arjun is cutting timber already. Upgrades, here we come!",
+    "ms-MY": "Arjun dah mula memotong kayu. Naik taraf, kami datang!"
+   },
+   "objectives": [
+    {
+     "type": "build",
+     "building": "workshop",
+     "n": 1,
+     "label": {
+      "en-MY": "Build the Makerspace",
+      "ms-MY": "Bina Ruang Kreatif"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 60,
+    "xp": 15
+   },
+   "after": [
+    "bakery"
+   ],
+   "minLevel": 3
+  },
+  {
+   "id": "learning",
+   "title": {
+    "en-MY": "A Place for Questions",
+    "ms-MY": "Tempat untuk Bertanya"
+   },
+   "giver": "zainab",
+   "intro": {
+    "en-MY": "The children have nowhere quiet to study after school. My former student Kavitha could run a tuition centre above the shoplots.",
+    "ms-MY": "Budak-budak tiada tempat yang tenang untuk belajar selepas sekolah. Bekas murid saya, Kavitha, boleh uruskan pusat tuisyen di atas rumah kedai."
+   },
+   "outro": {
+    "en-MY": "Listen to them laughing over the quiz! That’s the sound of learning.",
+    "ms-MY": "Dengar mereka ketawa semasa kuiz! Itulah bunyi orang belajar."
+   },
+   "objectives": [
+    {
+     "type": "build",
+     "building": "learning_centre",
+     "n": 1,
+     "label": {
+      "en-MY": "Build the Learning Centre",
+      "ms-MY": "Bina Pusat Tuisyen"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 60,
+    "xp": 15
+   },
+   "after": [
+    "meet_zainab"
+   ],
+   "minLevel": 3
+  },
+  {
+   "id": "flower_shop",
+   "title": {
+    "en-MY": "Say It With Flowers",
+    "ms-MY": "Ucapkan dengan Bunga"
+   },
+   "giver": "zainab",
+   "intro": {
+    "en-MY": "With a florist we could make orchid bouquets for every celebration.",
+    "ms-MY": "Dengan kedai bunga kita boleh buat jambangan orkid untuk setiap keraian."
+   },
+   "outro": {
+    "en-MY": "Flowers for every doorstep — and every condo lift lobby!",
+    "ms-MY": "Bunga untuk setiap pintu — dan setiap lobi lif kondo!"
+   },
+   "objectives": [
+    {
+     "type": "build",
+     "building": "flower_shop",
+     "n": 1,
+     "label": {
+      "en-MY": "Build the Florist",
+      "ms-MY": "Bina Kedai Bunga"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 70,
+    "xp": 15
+   },
+   "after": [
+    "meet_zainab"
+   ],
+   "minLevel": 3
+  },
+  {
+   "id": "pavilion",
+   "title": {
+    "en-MY": "A Fountain for Everyone",
+    "ms-MY": "Air Pancut untuk Semua"
+   },
+   "giver": "zainab",
+   "intro": {
+    "en-MY": "Every good neighbourhood needs a cool place to sit by the water. Shall we build a Fountain Plaza with shade trees and benches — together?",
+    "ms-MY": "Setiap kejiranan yang baik perlukan tempat yang nyaman untuk duduk tepi air. Jom kita bina Plaza Air Pancut dengan pokok teduhan dan bangku — bersama-sama?"
+   },
+   "outro": {
+    "en-MY": "Our Fountain Plaza — built by everyone, for everyone.",
+    "ms-MY": "Plaza Air Pancut kita — dibina oleh semua, untuk semua."
+   },
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "contribute",
+     "n": 3,
+     "label": {
+      "en-MY": "Contribute to the Fountain Plaza 3 times",
+      "ms-MY": "Sumbang kepada Plaza Air Pancut 3 kali"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 60,
+    "xp": 20
+   },
+   "after": [
+    "workshop"
+   ],
+   "minLevel": 3
+  },
+  {
+   "id": "park",
+   "title": {
+    "en-MY": "A Place to Gather",
+    "ms-MY": "Tempat Berkumpul"
+   },
+   "giver": "zainab",
+   "intro": {
+    "en-MY": "A neighbourhood park with a jogging track would give everyone a place to slow down. And Aisyah has plans…",
+    "ms-MY": "Taman kejiranan dengan trek joging beri semua orang tempat untuk berehat. Dan Aisyah ada rancangan…"
+   },
+   "outro": {
+    "en-MY": "Aisyah has already started a jogging-club group chat!",
+    "ms-MY": "Aisyah dah pun buka kumpulan sembang kelab joging!"
+   },
+   "objectives": [
+    {
+     "type": "build",
+     "building": "park",
+     "n": 1,
+     "label": {
+      "en-MY": "Build the Neighbourhood Park",
+      "ms-MY": "Bina Taman Kejiranan"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 90,
+    "xp": 25
+   },
+   "after": [
+    "pavilion"
+   ],
+   "minLevel": 4
+  },
+  {
+   "id": "expand",
+   "title": {
+    "en-MY": "Beyond Jalan Bayu",
+    "ms-MY": "Di Luar Jalan Bayu"
+   },
+   "giver": "arjun",
+   "intro": {
+    "en-MY": "We’re running out of room! Let’s open up a new lot.",
+    "ms-MY": "Ruang dah tak cukup! Jom buka lot baharu."
+   },
+   "outro": {
+    "en-MY": "So much space! The possibilities…",
+    "ms-MY": "Luasnya! Banyak yang boleh dibuat…"
+   },
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "expand",
+     "n": 1,
+     "label": {
+      "en-MY": "Unlock a new plot of land",
+      "ms-MY": "Buka sebidang tanah baharu"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 100,
+    "xp": 25
+   },
+   "after": [
+    "park"
+   ],
+   "minLevel": 4
+  },
+  {
+   "id": "showroom",
+   "title": {
+    "en-MY": "Plugged In",
+    "ms-MY": "Sedia Dicas"
+   },
+   "giver": "arjun",
+   "intro": {
+    "en-MY": "My futsal teammate Farid knows everything about electric cars. He’d love a showroom where people can come, look and ask questions.",
+    "ms-MY": "Rakan sepasukan futsal saya, Farid, tahu segala-galanya tentang kereta elektrik. Dia mahu bilik pameran tempat orang datang melihat dan bertanya."
+   },
+   "outro": {
+    "en-MY": "Farid has polished every car twice and explained charging to three aunties already.",
+    "ms-MY": "Farid dah gilap setiap kereta dua kali dan terangkan cara mengecas kepada tiga orang mak cik."
+   },
+   "objectives": [
+    {
+     "type": "build",
+     "building": "showroom",
+     "n": 1,
+     "label": {
+      "en-MY": "Build the EV Showroom",
+      "ms-MY": "Bina Bilik Pameran EV"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 90,
+    "xp": 25
+   },
+   "after": [
+    "park"
+   ],
+   "minLevel": 4
+  },
+  {
+   "id": "coworking",
+   "title": {
+    "en-MY": "Desk With a View",
+    "ms-MY": "Meja Berpemandangan"
+   },
+   "giver": "joanna",
+   "intro": {
+    "en-MY": "Hi, I’m Joanna — a photographer thinking of moving to Seri Bayu. I need somewhere bright to edit photos, and half the neighbourhood works from home. A co-working hub, maybe?",
+    "ms-MY": "Hai, saya Joanna — jurugambar yang bercadang berpindah ke Seri Bayu. Saya perlukan tempat yang terang untuk menyunting gambar, dan separuh kejiranan bekerja dari rumah. Hab kerja bersama, mungkin?"
+   },
+   "outro": {
+    "en-MY": "Good kopi, fast Wi-Fi and a view of the lake. I think I’m staying!",
+    "ms-MY": "Kopi sedap, Wi-Fi laju dan pemandangan tasik. Rasanya saya nak tinggal di sini!"
+   },
+   "objectives": [
+    {
+     "type": "build",
+     "building": "coworking",
+     "n": 1,
+     "label": {
+      "en-MY": "Build the Co-working Hub",
+      "ms-MY": "Bina Hab Kerja Bersama"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 80,
+    "xp": 20
+   },
+   "after": [
+    "park"
+   ],
+   "minLevel": 4
+  },
+  {
+   "id": "grocery",
+   "title": {
+    "en-MY": "Late-Night Cravings",
+    "ms-MY": "Lapar Tengah Malam"
+   },
+   "giver": "mei",
+   "intro": {
+    "en-MY": "With all this produce, we need a mini mart that never closes.",
+    "ms-MY": "Dengan semua hasil ini, kita perlukan kedai serbaneka yang tak pernah tutup."
+   },
+   "outro": {
+    "en-MY": "The 24/7 Mini Mart is open — and the lights stay on all night!",
+    "ms-MY": "Kedai Serbaneka 24 Jam dah dibuka — dan lampunya menyala sepanjang malam!"
+   },
+   "objectives": [
+    {
+     "type": "build",
+     "building": "grocery",
+     "n": 1,
+     "label": {
+      "en-MY": "Build the 24/7 Mini Mart",
+      "ms-MY": "Bina Kedai Serbaneka 24 Jam"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 120,
+    "xp": 30
+   },
+   "after": [
+    "expand"
+   ],
+   "minLevel": 5
+  },
+  {
+   "id": "townhouse",
+   "title": {
+    "en-MY": "Room With a View",
+    "ms-MY": "Bilik Berpemandangan"
+   },
+   "giver": "aisyah",
+   "intro": {
+    "en-MY": "Joanna, the photographer from Sabah, wants to move here for good. She needs good light — a condo with a lake view!",
+    "ms-MY": "Joanna, jurugambar dari Sabah, mahu berpindah ke sini terus. Dia perlukan cahaya yang baik — kondominium dengan pemandangan tasik!"
+   },
+   "outro": {
+    "en-MY": "Joanna is already photographing the sunset from her balcony.",
+    "ms-MY": "Joanna dah mula merakam matahari terbenam dari balkoninya."
+   },
+   "objectives": [
+    {
+     "type": "build",
+     "building": "townhouse",
+     "n": 1,
+     "label": {
+      "en-MY": "Build a Condominium",
+      "ms-MY": "Bina sebuah Kondominium"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 150,
+    "xp": 35
+   },
+   "after": [
+    "grocery"
+   ],
+   "minLevel": 6
+  },
+  {
+   "id": "town_hall",
+   "title": {
+    "en-MY": "Heart of Seri Bayu",
+    "ms-MY": "Nadi Seri Bayu"
+   },
+   "giver": "aisyah",
+   "intro": {
+    "en-MY": "Every neighbourhood needs a community centre — for community dinners, residents’ meetings and rainy-day badminton. I’ve drawn up plans. Colour-coded.",
+    "ms-MY": "Setiap kejiranan perlukan pusat komuniti — untuk makan malam bersama, mesyuarat penduduk dan badminton hari hujan. Saya dah lukis pelannya. Berkod warna."
+   },
+   "outro": {
+    "en-MY": "A community centre! Now we’re a real neighbourhood.",
+    "ms-MY": "Pusat komuniti! Sekarang kita kejiranan yang sebenar."
+   },
+   "objectives": [
+    {
+     "type": "build",
+     "building": "town_hall",
+     "n": 1,
+     "label": {
+      "en-MY": "Build the Community Centre",
+      "ms-MY": "Bina Pusat Komuniti"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 300,
+    "gems": 5,
+    "xp": 60
+   },
+   "after": [
+    "townhouse"
+   ],
+   "minLevel": 7
+  }
+ ],
+ "stories": [
+  {
+   "id": "lim_1",
+   "resident": "lim",
+   "title": {
+    "en-MY": "A Cup for Everyone",
+    "ms-MY": "Secawan untuk Semua"
+   },
+   "minFriendship": 0,
+   "intro": {
+    "en-MY": "I want every neighbour to taste my father’s kopi. Bring me 4 cups to hand out at the LRT exit?",
+    "ms-MY": "Saya mahu setiap jiran rasa kopi resipi ayah saya. Bawakan 4 cawan untuk diedarkan di pintu keluar LRT?"
+   },
+   "outro": {
+    "en-MY": "They all came back for more! I’m putting up a chalkboard menu so the commuters know we’re open.",
+    "ms-MY": "Semua datang semula! Saya akan letak papan menu supaya penumpang tren tahu kita dah buka."
+   },
+   "objectives": [
+    {
+     "type": "deliver",
+     "items": {
+      "coffee": 4
+     },
+     "to": "lim",
+     "label": {
+      "en-MY": "Bring Uncle Lim 4 Kopi",
+      "ms-MY": "Bawa 4 Kopi kepada Pak Cik Lim"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 40,
+    "xp": 10,
+    "friendship": {
+     "resident": "lim",
+     "points": 6
+    }
+   },
+   "memory": "lim_regulars",
+   "requires": {
+    "quest": "kopitiam_upgrade"
+   },
+   "worldChange": {
+    "en-MY": "A chalkboard menu appears outside the kopitiam.",
+    "ms-MY": "Papan menu muncul di luar kopitiam."
+   },
+   "flag": "cafe_chalkboard"
+  },
+  {
+   "id": "lim_2",
+   "resident": "lim",
+   "title": {
+    "en-MY": "Breakfast Like Before",
+    "ms-MY": "Sarapan Macam Dulu"
+   },
+   "minFriendship": 2,
+   "intro": {
+    "en-MY": "Mei and I want to bring back my father’s weekend breakfast: kaya toast, soft-boiled eggs and kopi. We need 2 sets to test it.",
+    "ms-MY": "Saya dan Mei mahu hidupkan semula sarapan hujung minggu ayah saya: roti bakar kaya, telur separuh masak dan kopi. Kami perlukan 2 set untuk mencuba."
+   },
+   "outro": {
+    "en-MY": "Just like my father’s Sundays. Here — a café umbrella for your own garden.",
+    "ms-MY": "Sama macam hari Ahad zaman ayah saya. Nah — payung kafe untuk laman awak."
+   },
+   "objectives": [
+    {
+     "type": "deliver",
+     "items": {
+      "breakfast": 2
+     },
+     "to": "lim",
+     "label": {
+      "en-MY": "Bring Uncle Lim 2 Kaya Toast Sets",
+      "ms-MY": "Bawa 2 Set Roti Bakar Kaya kepada Pak Cik Lim"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 80,
+    "xp": 20,
+    "unlocks": [
+     "parasol"
+    ],
+    "friendship": {
+     "resident": "lim",
+     "points": 8
+    }
+   },
+   "memory": "lim_breakfast",
+   "requires": {
+    "chapter": "lim_1"
+   },
+   "worldChange": {
+    "en-MY": "Breakfast tables now line the covered walkway.",
+    "ms-MY": "Meja sarapan kini tersusun di kaki lima berbumbung."
+   },
+   "flag": "cafe_brunch"
+  },
+  {
+   "id": "lim_3",
+   "resident": "lim",
+   "title": {
+    "en-MY": "Thank You, Seri Bayu",
+    "ms-MY": "Terima Kasih, Seri Bayu"
+   },
+   "minFriendship": 3,
+   "intro": {
+    "en-MY": "I want to thank everyone who helped bring Father’s kopitiam back. Mango cake and flowers on every table…",
+    "ms-MY": "Saya mahu berterima kasih kepada semua yang membantu menghidupkan semula kopitiam ayah. Kek mangga dan bunga di setiap meja…"
+   },
+   "outro": {
+    "en-MY": "You made this new neighbourhood feel like home — for me and for everyone.",
+    "ms-MY": "Awak jadikan kejiranan baharu ini terasa seperti rumah — untuk saya dan untuk semua."
+   },
+   "objectives": [
+    {
+     "type": "deliver",
+     "items": {
+      "berry_pie": 1,
+      "bouquet": 1
+     },
+     "to": "lim",
+     "label": {
+      "en-MY": "Bring Uncle Lim a Mango Cake and a Bouquet",
+      "ms-MY": "Bawa Kek Mangga dan Jambangan kepada Pak Cik Lim"
+     }
+    }
+   ],
+   "reward": {
+    "gems": 5,
+    "xp": 30,
+    "unlocks": [
+     "lantern_string"
+    ],
+    "friendship": {
+     "resident": "lim",
+     "points": 10
+    }
+   },
+   "memory": "lim_heart",
+   "requires": {
+    "chapter": "lim_2"
+   },
+   "worldChange": {
+    "en-MY": "Lantern posts are now available to light your streets.",
+    "ms-MY": "Tiang lampu taman kini boleh menerangi jalan anda."
+   }
+  },
+  {
+   "id": "mei_1",
+   "resident": "mei",
+   "title": {
+    "en-MY": "Version Twelve",
+    "ms-MY": "Versi Kedua Belas"
+   },
+   "minFriendship": 0,
+   "intro": {
+    "en-MY": "My mango cake keeps sinking in the middle. Riper mangoes might fix it — bring me 2?",
+    "ms-MY": "Kek mangga saya asyik mendap di tengah. Mangga yang lebih masak mungkin boleh bantu — bawakan 2?"
+   },
+   "outro": {
+    "en-MY": "It stands tall! Version twelve is the one. I’m painting it on the sign.",
+    "ms-MY": "Tak mendap lagi! Versi kedua belas inilah dia. Saya akan lukis di papan tanda."
+   },
+   "objectives": [
+    {
+     "type": "deliver",
+     "items": {
+      "berries": 2
+     },
+     "to": "mei",
+     "label": {
+      "en-MY": "Bring Mei 2 Mangoes",
+      "ms-MY": "Bawa 2 Mangga kepada Mei"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 50,
+    "xp": 12,
+    "friendship": {
+     "resident": "mei",
+     "points": 6
+    }
+   },
+   "memory": "mei_kuih",
+   "requires": {
+    "building": "bakery"
+   },
+   "worldChange": {
+    "en-MY": "The café sign now shows Mei’s mango cake.",
+    "ms-MY": "Papan tanda kafe kini menunjukkan kek mangga Mei."
+   },
+   "flag": "bakery_pie_sign"
+  },
+  {
+   "id": "mei_2",
+   "resident": "mei",
+   "title": {
+    "en-MY": "Dessert Sale",
+    "ms-MY": "Jualan Pencuci Mulut"
+   },
+   "minFriendship": 2,
+   "intro": {
+    "en-MY": "Let’s hold a dessert sale for the school library fund! I need 5 Roti and 3 Kopi for the cart.",
+    "ms-MY": "Jom buat jualan pencuci mulut untuk tabung perpustakaan sekolah! Saya perlukan 5 Roti dan 3 Kopi untuk troli."
+   },
+   "outro": {
+    "en-MY": "Sold out before the evening train! Take the dessert cart — park it wherever you like.",
+    "ms-MY": "Habis sebelum tren petang! Ambil troli pencuci mulut ini — letak di mana-mana awak suka."
+   },
+   "objectives": [
+    {
+     "type": "deliver",
+     "items": {
+      "bread": 5,
+      "coffee": 3
+     },
+     "to": "mei",
+     "label": {
+      "en-MY": "Bring Mei 5 Roti and 3 Kopi",
+      "ms-MY": "Bawa 5 Roti dan 3 Kopi kepada Mei"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 100,
+    "xp": 20,
+    "unlocks": [
+     "pie_stand"
+    ],
+    "friendship": {
+     "resident": "mei",
+     "points": 8
+    }
+   },
+   "memory": "mei_sale",
+   "requires": {
+    "chapter": "mei_1"
+   }
+  },
+  {
+   "id": "zainab_1",
+   "resident": "zainab",
+   "title": {
+    "en-MY": "First Shoots",
+    "ms-MY": "Pucuk Pertama"
+   },
+   "minFriendship": 0,
+   "intro": {
+    "en-MY": "Even between the condos, this soil is wonderful. Will you help me harvest the first orchids?",
+    "ms-MY": "Walaupun di antara kondominium, tanah di sini sangat subur. Boleh bantu saya tuai orkid pertama?"
+   },
+   "outro": {
+    "en-MY": "Look at them! The community garden is truly alive.",
+    "ms-MY": "Tengok! Kebun komuniti ini benar-benar hidup."
+   },
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "produce:flowers",
+     "n": 6,
+     "label": {
+      "en-MY": "Harvest 6 Orchids",
+      "ms-MY": "Tuai 6 Orkid"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 40,
+    "xp": 10,
+    "friendship": {
+     "resident": "zainab",
+     "points": 6
+    }
+   },
+   "memory": "zainab_shoots",
+   "requires": {
+    "building": "garden"
+   }
+  },
+  {
+   "id": "zainab_2",
+   "resident": "zainab",
+   "title": {
+    "en-MY": "A Blooming Street",
+    "ms-MY": "Jalan Berbunga"
+   },
+   "minFriendship": 1,
+   "intro": {
+    "en-MY": "Imagine flowers along every jalan… Could you plant 3 flower beds?",
+    "ms-MY": "Bayangkan bunga di sepanjang setiap jalan… Boleh tanam 3 batas bunga?"
+   },
+   "outro": {
+    "en-MY": "The butterflies found them already! Here, a bird bath — the sunbirds deserve a treat too.",
+    "ms-MY": "Rama-rama dah jumpa! Nah, kolam burung — burung kelicap pun patut dapat hadiah."
+   },
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "decor:flower_bed",
+     "n": 3,
+     "label": {
+      "en-MY": "Place 3 Flower Beds",
+      "ms-MY": "Letakkan 3 Batas Bunga"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 60,
+    "xp": 15,
+    "unlocks": [
+     "birdbath"
+    ],
+    "friendship": {
+     "resident": "zainab",
+     "points": 8
+    }
+   },
+   "memory": "zainab_lane",
+   "requires": {
+    "chapter": "zainab_1"
+   },
+   "worldChange": {
+    "en-MY": "Butterflies now gather around your flower beds.",
+    "ms-MY": "Rama-rama kini berkumpul di batas bunga anda."
+   },
+   "flag": "butterflies"
+  },
+  {
+   "id": "zainab_3",
+   "resident": "zainab",
+   "title": {
+    "en-MY": "For Uncle Lim",
+    "ms-MY": "Untuk Pak Cik Lim"
+   },
+   "minFriendship": 2,
+   "intro": {
+    "en-MY": "Lim works so hard, from the first train to the last. Let’s surprise him — bring me 2 bouquets?",
+    "ms-MY": "Lim bekerja keras, dari tren pertama hingga tren terakhir. Jom kejutkan dia — bawakan 2 jambangan?"
+   },
+   "outro": {
+    "en-MY": "He pretended the kopi steam got in his eyes. You’re a good friend.",
+    "ms-MY": "Dia buat-buat wap kopi masuk mata. Awak kawan yang baik."
+   },
+   "objectives": [
+    {
+     "type": "deliver",
+     "items": {
+      "bouquet": 2
+     },
+     "to": "zainab",
+     "label": {
+      "en-MY": "Bring Mak Cik Zainab 2 Bouquets",
+      "ms-MY": "Bawa 2 Jambangan kepada Mak Cik Zainab"
+     }
+    }
+   ],
+   "reward": {
+    "gems": 3,
+    "xp": 20,
+    "friendship": {
+     "resident": "zainab",
+     "points": 10
+    }
+   },
+   "memory": "zainab_bouquet",
+   "requires": {
+    "chapter": "zainab_2",
+    "building": "flower_shop"
+   }
+  },
+  {
+   "id": "arjun_1",
+   "resident": "arjun",
+   "title": {
+    "en-MY": "Sawdust & Sunshine",
+    "ms-MY": "Habuk Kayu & Cahaya"
+   },
+   "minFriendship": 0,
+   "intro": {
+    "en-MY": "Let’s get this makerspace humming. Cut 4 timber with me?",
+    "ms-MY": "Jom hidupkan ruang kreatif ini. Potong 4 kayu dengan saya?"
+   },
+   "outro": {
+    "en-MY": "Now that’s a stack to be proud of!",
+    "ms-MY": "Itu timbunan yang membanggakan!"
+   },
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "produce:planks",
+     "n": 4,
+     "label": {
+      "en-MY": "Produce 4 Timber",
+      "ms-MY": "Hasilkan 4 Kayu"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 60,
+    "xp": 12,
+    "friendship": {
+     "resident": "arjun",
+     "points": 6
+    }
+   },
+   "memory": "arjun_stack",
+   "requires": {
+    "building": "workshop"
+   }
+  },
+  {
+   "id": "aisyah_1",
+   "resident": "aisyah",
+   "title": {
+    "en-MY": "Park Opening",
+    "ms-MY": "Perasmian Taman"
+   },
+   "minFriendship": 0,
+   "intro": {
+    "en-MY": "Opening day! I need a bouquet for the stage and 3 kopi for the volunteers. And the jogging club. And the morning aerobics aunties.",
+    "ms-MY": "Hari perasmian! Saya perlukan jambangan untuk pentas dan 3 kopi untuk sukarelawan. Dan kelab joging. Dan mak cik aerobik pagi."
+   },
+   "outro": {
+    "en-MY": "Best. Opening. Ever. The park is officially open!",
+    "ms-MY": "Perasmian. Paling. Hebat. Taman dah dibuka secara rasmi!"
+   },
+   "objectives": [
+    {
+     "type": "deliver",
+     "items": {
+      "bouquet": 1,
+      "coffee": 3
+     },
+     "to": "aisyah",
+     "label": {
+      "en-MY": "Bring Aisyah a Bouquet and 3 Kopi",
+      "ms-MY": "Bawa Jambangan dan 3 Kopi kepada Aisyah"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 90,
+    "xp": 20,
+    "friendship": {
+     "resident": "aisyah",
+     "points": 8
+    }
+   },
+   "memory": "aisyah_opening",
+   "requires": {
+    "building": "park"
+   },
+   "worldChange": {
+    "en-MY": "Bunting is strung across the park.",
+    "ms-MY": "Panji-panji digantung merentasi taman."
+   },
+   "flag": "park_bunting"
+  },
+  {
+   "id": "kavitha_1",
+   "resident": "kavitha",
+   "title": {
+    "en-MY": "Ten Good Questions",
+    "ms-MY": "Sepuluh Soalan Bagus"
+   },
+   "minFriendship": 0,
+   "intro": {
+    "en-MY": "Will you be my first student at the centre? Answer 3 quiz questions — right or wrong, it all counts.",
+    "ms-MY": "Sudikah awak jadi murid pertama di pusat ini? Jawab 3 soalan kuiz — betul atau salah, semuanya dikira."
+   },
+   "outro": {
+    "en-MY": "Wonderful! You asked better questions than you answered — that’s the best kind of student.",
+    "ms-MY": "Hebat! Soalan awak lebih bagus daripada jawapan — itulah murid yang terbaik."
+   },
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "quiz",
+     "n": 3,
+     "label": {
+      "en-MY": "Answer 3 quiz questions",
+      "ms-MY": "Jawab 3 soalan kuiz"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 50,
+    "xp": 15,
+    "friendship": {
+     "resident": "kavitha",
+     "points": 8
+    }
+   },
+   "memory": "kavitha_student",
+   "requires": {
+    "building": "learning_centre"
+   }
+  },
+  {
+   "id": "farid_1",
+   "resident": "farid",
+   "title": {
+    "en-MY": "Colour Garden",
+    "ms-MY": "Taman Warna"
+   },
+   "minFriendship": 0,
+   "intro": {
+    "en-MY": "Help me arrange the display? Try a few colours — let’s make the EVs look like a garden.",
+    "ms-MY": "Bantu saya susun pameran? Cuba beberapa warna — jom buat kereta EV nampak macam taman."
+   },
+   "outro": {
+    "en-MY": "Look — people are stopping just to smile at it. And to ask about charging, of course.",
+    "ms-MY": "Tengok — orang berhenti semata-mata untuk tersenyum. Dan bertanya tentang pengecasan, sudah tentu."
+   },
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "arrange",
+     "n": 3,
+     "label": {
+      "en-MY": "Arrange the showroom 3 times",
+      "ms-MY": "Susun bilik pameran 3 kali"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 50,
+    "xp": 12,
+    "friendship": {
+     "resident": "farid",
+     "points": 8
+    }
+   },
+   "memory": "farid_colours",
+   "requires": {
+    "building": "showroom"
+   }
+  },
+  {
+   "id": "mei_3",
+   "resident": "mei",
+   "title": {
+    "en-MY": "Happy Birthday, Uncle Lim",
+    "ms-MY": "Selamat Hari Jadi, Pak Cik Lim"
+   },
+   "minFriendship": 2,
+   "requires": {
+    "chapter": "mei_2"
+   },
+   "intro": {
+    "en-MY": "Uncle Lim’s birthday is on Saturday and he keeps pretending he forgot. Shh — help me throw a surprise party at the kopitiam? I need 2 Mango Cakes and a Bouquet.",
+    "ms-MY": "Hari jadi Pak Cik Lim hari Sabtu dan dia buat-buat lupa. Shh — tolong saya buat parti kejutan di kopitiam? Saya perlukan 2 Kek Mangga dan sejambak Jambangan."
+   },
+   "outro": {
+    "en-MY": "His face! He laughed so hard he nearly dropped his cup. Then he made everyone kopi “because it’s my party”.",
+    "ms-MY": "Muka dia! Dia ketawa sampai hampir terjatuh cawan. Lepas itu dia bancuh kopi untuk semua “sebab ini parti saya”."
+   },
+   "objectives": [
+    {
+     "type": "deliver",
+     "items": {
+      "berry_pie": 2,
+      "bouquet": 1
+     },
+     "to": "mei",
+     "label": {
+      "en-MY": "Bring Mei 2 Mango Cakes and a Bouquet",
+      "ms-MY": "Bawa 2 Kek Mangga dan Jambangan kepada Mei"
+     }
+    }
+   ],
+   "reward": {
+    "xp": 25,
+    "friendship": {
+     "resident": "lim",
+     "points": 8
+    }
+   },
+   "memory": "lim_birthday"
+  },
+  {
+   "id": "mei_4",
+   "resident": "mei",
+   "title": {
+    "en-MY": "Version Thirteen",
+    "ms-MY": "Versi Tiga Belas"
+   },
+   "minFriendship": 3,
+   "requires": {
+    "chapter": "mei_3"
+   },
+   "intro": {
+    "en-MY": "New idea: mango cake with a kaya swirl. Uncle Lim says “no need to change perfection”. I say… taste test! 2 Kaya and 2 Mangoes, please.",
+    "ms-MY": "Idea baharu: kek mangga dengan pusaran kaya. Pak Cik Lim kata “tak perlu ubah yang sempurna”. Saya kata… uji rasa! 2 Kaya dan 2 Mangga, ya."
+   },
+   "outro": {
+    "en-MY": "Verdict: Uncle Lim had four slices “for science”. Version thirteen is now a secret menu item.",
+    "ms-MY": "Keputusan: Pak Cik Lim makan empat potong “untuk sains”. Versi tiga belas kini menu rahsia."
+   },
+   "objectives": [
+    {
+     "type": "deliver",
+     "items": {
+      "jam": 2,
+      "berries": 2
+     },
+     "to": "mei",
+     "label": {
+      "en-MY": "Bring Mei 2 Kaya and 2 Mangoes",
+      "ms-MY": "Bawa 2 Kaya dan 2 Mangga kepada Mei"
+     }
+    }
+   ],
+   "reward": {
+    "xp": 30,
+    "gems": 2,
+    "friendship": {
+     "resident": "mei",
+     "points": 8
+    }
+   },
+   "memory": "mei_v13"
+  },
+  {
+   "id": "zainab_4",
+   "resident": "zainab",
+   "title": {
+    "en-MY": "The Great Escape",
+    "ms-MY": "Pelarian Hebat"
+   },
+   "minFriendship": 2,
+   "requires": {
+    "chapter": "zainab_3"
+   },
+   "intro": {
+    "en-MY": "Mei’s shiba, Biscuit, has escaped into the condo garden again! She only comes out for roti. Could you bring 2 Roti — quickly, before she reaches the orchids?",
+    "ms-MY": "Biskut, anjing shiba Mei, terlepas ke taman kondo lagi! Dia cuma keluar kalau ada roti. Boleh bawa 2 Roti — cepat, sebelum dia sampai ke orkid?"
+   },
+   "outro": {
+    "en-MY": "Found her asleep under the ixora with a petal on her nose. Unforgivable. And completely adorable.",
+    "ms-MY": "Jumpa dia tidur di bawah pokok jejarum dengan kelopak di hidungnya. Tak boleh dimaafkan. Dan sangat comel."
+   },
+   "objectives": [
+    {
+     "type": "deliver",
+     "items": {
+      "bread": 2
+     },
+     "to": "zainab",
+     "label": {
+      "en-MY": "Bring Mak Cik Zainab 2 Roti",
+      "ms-MY": "Bawa 2 Roti kepada Mak Cik Zainab"
+     }
+    }
+   ],
+   "reward": {
+    "xp": 20,
+    "friendship": {
+     "resident": "zainab",
+     "points": 8
+    }
+   },
+   "memory": "zainab_biscuit"
+  },
+  {
+   "id": "joanna_1",
+   "resident": "joanna",
+   "title": {
+    "en-MY": "New in Seri Bayu",
+    "ms-MY": "Orang Baharu di Seri Bayu"
+   },
+   "minFriendship": 0,
+   "requires": {
+    "building": "townhouse"
+   },
+   "intro": {
+    "en-MY": "I know the light here better than the people! Would you introduce me around? Say hello to a few neighbours with me.",
+    "ms-MY": "Saya lebih kenal cahaya di sini daripada orangnya! Boleh kenalkan saya? Jom tegur beberapa jiran bersama saya."
+   },
+   "outro": {
+    "en-MY": "Everyone said hi! Mak Cik Zainab gave me cuttings for my balcony and Aisyah already added me to three group chats.",
+    "ms-MY": "Semua orang tegur! Mak Cik Zainab beri keratan pokok untuk balkoni saya dan Aisyah dah masukkan saya dalam tiga kumpulan sembang."
+   },
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "talk",
+     "n": 4,
+     "label": {
+      "en-MY": "Chat with 4 neighbours",
+      "ms-MY": "Berbual dengan 4 jiran"
+     }
+    }
+   ],
+   "reward": {
+    "xp": 20,
+    "friendship": {
+     "resident": "joanna",
+     "points": 8
+    }
+   },
+   "memory": "joanna_friends"
+  },
+  {
+   "id": "arjun_2",
+   "resident": "arjun",
+   "title": {
+    "en-MY": "Playground Dreams",
+    "ms-MY": "Impian Taman Permainan"
+   },
+   "minFriendship": 1,
+   "requires": {
+    "chapter": "arjun_1",
+    "level": 5
+   },
+   "intro": {
+    "en-MY": "My futsal kids keep asking for a playground. If we all chip in at the bare lot, I’ll build the slide myself. Help it along twice?",
+    "ms-MY": "Budak-budak futsal saya asyik minta taman permainan. Kalau kita semua menyumbang di tanah lapang itu, saya bina gelongsor sendiri. Bantu dua kali?"
+   },
+   "outro": {
+    "en-MY": "They tested the slide forty-seven times. Officially approved.",
+    "ms-MY": "Mereka uji gelongsor itu empat puluh tujuh kali. Lulus secara rasmi."
+   },
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "spruce:playground",
+     "n": 2,
+     "label": {
+      "en-MY": "Help at the playground twice",
+      "ms-MY": "Bantu di taman permainan dua kali"
+     }
+    }
+   ],
+   "reward": {
+    "xp": 30,
+    "friendship": {
+     "resident": "arjun",
+     "points": 8
+    }
+   },
+   "memory": "arjun_playground"
+  },
+  {
+   "id": "aisyah_2",
+   "resident": "aisyah",
+   "title": {
+    "en-MY": "Picnic Planning",
+    "ms-MY": "Rancang Berkelah"
+   },
+   "minFriendship": 1,
+   "requires": {
+    "chapter": "aisyah_1"
+   },
+   "intro": {
+    "en-MY": "The pocket park needs an opening picnic and I have a list. A long list. In a spreadsheet. First item: you! Help finish the Pocket Park?",
+    "ms-MY": "Taman poket perlukan kelah pembukaan dan saya ada senarai. Senarai panjang. Dalam hamparan. Perkara pertama: awak! Bantu siapkan Taman Poket?"
+   },
+   "outro": {
+    "en-MY": "Mats, kuih, kites and the whole neighbourhood on the grass. I didn’t even need the clipboard. (I used it anyway.)",
+    "ms-MY": "Tikar, kuih, wau dan seluruh kejiranan di atas rumput. Saya tak perlukan papan klip pun. (Tapi saya guna juga.)"
+   },
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "spot_done:park",
+     "n": 1,
+     "label": {
+      "en-MY": "Finish the Pocket Park",
+      "ms-MY": "Siapkan Taman Poket"
+     }
+    }
+   ],
+   "reward": {
+    "xp": 30,
+    "gems": 2,
+    "friendship": {
+     "resident": "aisyah",
+     "points": 8
+    }
+   },
+   "memory": "aisyah_picnic"
+  }
+ ],
+ "events": [
+  {
+   "id": "pesta_bunga",
+   "name": {
+    "en-MY": "Orchid Festival",
+    "ms-MY": "Pesta Orkid"
+   },
+   "description": {
+    "en-MY": "Aisyah and Mak Cik Zainab are filling the streets and condo lobbies with orchids! Join in at your own pace — every goal you reach adds festival rewards.",
+    "ms-MY": "Aisyah dan Mak Cik Zainab memenuhi jalan dan lobi kondo dengan orkid! Sertai mengikut rentak sendiri — setiap matlamat menambah ganjaran pesta."
+   },
+   "minLevel": 4,
+   "durationDays": 4,
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "produce:flowers",
+     "n": 20,
+     "label": {
+      "en-MY": "Harvest 20 Orchids",
+      "ms-MY": "Tuai 20 Orkid"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "decor:flower_bed",
+     "n": 4,
+     "label": {
+      "en-MY": "Plant 4 Flower Beds",
+      "ms-MY": "Tanam 4 Batas Bunga"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "produce:bouquet",
+     "n": 3,
+     "label": {
+      "en-MY": "Tie 3 Bouquets",
+      "ms-MY": "Ikat 3 Jambangan"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "orders",
+     "n": 8,
+     "label": {
+      "en-MY": "Complete 8 Orders",
+      "ms-MY": "Siapkan 8 Pesanan"
+     }
+    }
+   ],
+   "tiers": [
+    {
+     "at": 1,
+     "reward": {
+      "coins": 60,
+      "xp": 10
+     },
+     "label": {
+      "en-MY": "Petal Prize",
+      "ms-MY": "Hadiah Kelopak"
+     }
+    },
+    {
+     "at": 2,
+     "reward": {
+      "coins": 100,
+      "unlocks": [
+       "lantern_string"
+      ]
+     },
+     "label": {
+      "en-MY": "Lantern Post",
+      "ms-MY": "Tiang Lampu Taman"
+     }
+    },
+    {
+     "at": 3,
+     "reward": {
+      "gems": 5,
+      "xp": 25
+     },
+     "label": {
+      "en-MY": "Gem Bouquet",
+      "ms-MY": "Jambangan Permata"
+     }
+    },
+    {
+     "at": 4,
+     "reward": {
+      "unlocks": [
+       "festival_arch"
+      ],
+      "xp": 40
+     },
+     "label": {
+      "en-MY": "Festival Arch",
+      "ms-MY": "Gerbang Pesta"
+     }
+    }
+   ]
+  },
+  {
+   "id": "street_food_day",
+   "name": {
+    "en-MY": "Street Food Night",
+    "ms-MY": "Malam Makanan Jalanan"
+   },
+   "description": {
+    "en-MY": "The shoplot walkway turns into one long table and everyone brings something to share — kopi, roti and Shah’s roti canai. Cook, serve and taste your way through the night.",
+    "ms-MY": "Kaki lima rumah kedai menjadi satu meja panjang dan semua orang membawa sesuatu untuk dikongsi — kopi, roti dan roti canai Shah. Masak, hidang dan rasa sepanjang malam."
+   },
+   "minLevel": 3,
+   "durationDays": 3,
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "produce:coffee",
+     "n": 10,
+     "label": {
+      "en-MY": "Brew 10 Kopi",
+      "ms-MY": "Bancuh 10 Kopi"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "produce:bread",
+     "n": 8,
+     "label": {
+      "en-MY": "Bake 8 Roti",
+      "ms-MY": "Bakar 8 Roti"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "orders",
+     "n": 6,
+     "label": {
+      "en-MY": "Serve 6 Orders",
+      "ms-MY": "Hidang 6 Pesanan"
+     }
+    }
+   ],
+   "tiers": [
+    {
+     "at": 1,
+     "reward": {
+      "xp": 15,
+      "coins": 40
+     },
+     "label": {
+      "en-MY": "First Bite",
+      "ms-MY": "Suapan Pertama"
+     }
+    },
+    {
+     "at": 2,
+     "reward": {
+      "xp": 25,
+      "gems": 2
+     },
+     "label": {
+      "en-MY": "Full Table",
+      "ms-MY": "Meja Penuh"
+     }
+    },
+    {
+     "at": 3,
+     "reward": {
+      "xp": 40,
+      "gems": 3
+     },
+     "label": {
+      "en-MY": "Feast for Everyone",
+      "ms-MY": "Jamuan untuk Semua"
+     }
+    }
+   ]
+  },
+  {
+   "id": "music_night",
+   "name": {
+    "en-MY": "Neighbourhood Music Night",
+    "ms-MY": "Malam Muzik Kejiranan"
+   },
+   "description": {
+    "en-MY": "Arjun brought his guitar, Joanna a cajón and Shah a very loud tambourine… Light up the streets, chat with neighbours and enjoy the music.",
+    "ms-MY": "Arjun bawa gitar, Joanna bawa cajón dan Shah bawa tamborin yang sangat kuat… Terangi jalan, berbual dengan jiran dan nikmati muzik."
+   },
+   "minLevel": 4,
+   "durationDays": 2,
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "talk",
+     "n": 5,
+     "label": {
+      "en-MY": "Chat with neighbours 5 times",
+      "ms-MY": "Berbual dengan jiran 5 kali"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "decor:lamp",
+     "n": 2,
+     "label": {
+      "en-MY": "Place 2 LED Street Lamps",
+      "ms-MY": "Letak 2 Lampu Jalan LED"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "orders",
+     "n": 4,
+     "label": {
+      "en-MY": "Complete 4 Orders",
+      "ms-MY": "Siapkan 4 Pesanan"
+     }
+    }
+   ],
+   "tiers": [
+    {
+     "at": 1,
+     "reward": {
+      "xp": 15
+     },
+     "label": {
+      "en-MY": "Warm-Up",
+      "ms-MY": "Pemanasan"
+     }
+    },
+    {
+     "at": 2,
+     "reward": {
+      "xp": 25,
+      "gems": 2
+     },
+     "label": {
+      "en-MY": "Encore",
+      "ms-MY": "Lagi!"
+     }
+    },
+    {
+     "at": 3,
+     "reward": {
+      "xp": 40,
+      "gems": 3
+     },
+     "label": {
+      "en-MY": "Standing Ovation",
+      "ms-MY": "Tepukan Gemuruh"
+     }
+    }
+   ]
+  },
+  {
+   "id": "garden_party",
+   "name": {
+    "en-MY": "Garden Party at the Pocket Park",
+    "ms-MY": "Parti Taman di Taman Poket"
+   },
+   "description": {
+    "en-MY": "The new pocket park between the condos is ready for its first party: orchids on every table, little gifts and a lot of laughter.",
+    "ms-MY": "Taman poket baharu di antara kondominium sedia untuk parti pertamanya: orkid di setiap meja, hadiah kecil dan banyak gelak tawa."
+   },
+   "minLevel": 2,
+   "durationDays": 2,
+   "requires": "spot_park",
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "produce:flowers",
+     "n": 12,
+     "label": {
+      "en-MY": "Grow 12 Orchids",
+      "ms-MY": "Tanam 12 Orkid"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "gift",
+     "n": 3,
+     "label": {
+      "en-MY": "Give 3 gifts",
+      "ms-MY": "Beri 3 hadiah"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "photo",
+     "n": 1,
+     "label": {
+      "en-MY": "Take a party photo",
+      "ms-MY": "Ambil gambar parti"
+     }
+    }
+   ],
+   "tiers": [
+    {
+     "at": 1,
+     "reward": {
+      "xp": 15
+     },
+     "label": {
+      "en-MY": "Party Hats",
+      "ms-MY": "Topi Parti"
+     }
+    },
+    {
+     "at": 2,
+     "reward": {
+      "xp": 25,
+      "gems": 2
+     },
+     "label": {
+      "en-MY": "Garden Games",
+      "ms-MY": "Permainan Taman"
+     }
+    },
+    {
+     "at": 3,
+     "reward": {
+      "xp": 40,
+      "gems": 3
+     },
+     "label": {
+      "en-MY": "Best Party Ever",
+      "ms-MY": "Parti Terbaik"
+     }
+    }
+   ]
+  },
+  {
+   "id": "community_market",
+   "name": {
+    "en-MY": "Night Market at Bayu Plaza",
+    "ms-MY": "Pasar Malam Dataran Bayu"
+   },
+   "description": {
+    "en-MY": "Stalls light up the new plaza by the LRT: kaya, roti, grocery boxes and neighbours swapping stories. Bring your best goods!",
+    "ms-MY": "Gerai-gerai menerangi dataran baharu berhampiran LRT: kaya, roti, kotak barang dapur dan jiran bertukar cerita. Bawa barangan terbaik anda!"
+   },
+   "minLevel": 3,
+   "durationDays": 3,
+   "requires": "spot_plaza",
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "orders",
+     "n": 8,
+     "label": {
+      "en-MY": "Complete 8 Orders",
+      "ms-MY": "Siapkan 8 Pesanan"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "produce:jam",
+     "n": 3,
+     "label": {
+      "en-MY": "Make 3 Kaya",
+      "ms-MY": "Buat 3 Kaya"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "spruce",
+     "n": 3,
+     "label": {
+      "en-MY": "Help a shared spot 3 times",
+      "ms-MY": "Bantu tempat bersama 3 kali"
+     }
+    }
+   ],
+   "tiers": [
+    {
+     "at": 1,
+     "reward": {
+      "xp": 20
+     },
+     "label": {
+      "en-MY": "Open for Business",
+      "ms-MY": "Mula Berniaga"
+     }
+    },
+    {
+     "at": 2,
+     "reward": {
+      "xp": 30,
+      "gems": 2
+     },
+     "label": {
+      "en-MY": "Busy Stalls",
+      "ms-MY": "Gerai Sibuk"
+     }
+    },
+    {
+     "at": 3,
+     "reward": {
+      "xp": 50,
+      "gems": 4
+     },
+     "label": {
+      "en-MY": "Market Favourite",
+      "ms-MY": "Kegemaran Pasar"
+     }
+    }
+   ]
+  },
+  {
+   "id": "pet_parade",
+   "name": {
+    "en-MY": "Pet Parade at the Playground",
+    "ms-MY": "Perarakan Haiwan di Taman Permainan"
+   },
+   "description": {
+    "en-MY": "Bows, bandanas and a very proud parade around the playground, led by Biscuit. Treat the pets and cheer them on!",
+    "ms-MY": "Reben, selendang dan perarakan yang sangat bangga di sekitar taman permainan, diketuai Biskut. Beri haiwan peliharaan habuan dan sorak untuk mereka!"
+   },
+   "minLevel": 5,
+   "durationDays": 2,
+   "requires": "spot_playground",
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "pet",
+     "n": 3,
+     "label": {
+      "en-MY": "Treat the pets 3 times",
+      "ms-MY": "Beri habuan kepada haiwan 3 kali"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "photo",
+     "n": 2,
+     "label": {
+      "en-MY": "Take 2 parade photos",
+      "ms-MY": "Ambil 2 gambar perarakan"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "talk",
+     "n": 4,
+     "label": {
+      "en-MY": "Cheer with 4 neighbours",
+      "ms-MY": "Bersorak dengan 4 jiran"
+     }
+    }
+   ],
+   "tiers": [
+    {
+     "at": 1,
+     "reward": {
+      "xp": 20
+     },
+     "label": {
+      "en-MY": "Wagging Tails",
+      "ms-MY": "Ekor Bergoyang"
+     }
+    },
+    {
+     "at": 2,
+     "reward": {
+      "xp": 30,
+      "gems": 2
+     },
+     "label": {
+      "en-MY": "Best in Show",
+      "ms-MY": "Terbaik Pertunjukan"
+     }
+    },
+    {
+     "at": 3,
+     "reward": {
+      "xp": 50,
+      "gems": 4
+     },
+     "label": {
+      "en-MY": "Parade Champions",
+      "ms-MY": "Juara Perarakan"
+     }
+    }
+   ]
+  },
+  {
+   "id": "movie_night",
+   "name": {
+    "en-MY": "Outdoor Movie Night",
+    "ms-MY": "Malam Wayang Terbuka"
+   },
+   "description": {
+    "en-MY": "A big screen goes up on the Skyline Deck for an outdoor film. Kopi, mango cake, cushions everywhere and a funny old movie with the city lights behind it.",
+    "ms-MY": "Skrin besar dipasang di Dek Langit untuk tayangan filem terbuka. Kopi, kek mangga, kusyen di mana-mana dan filem lama yang lucu berlatarkan lampu bandar."
+   },
+   "minLevel": 7,
+   "durationDays": 2,
+   "requires": "spot_lookout",
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "produce:coffee",
+     "n": 6,
+     "label": {
+      "en-MY": "Brew 6 Kopi for the crowd",
+      "ms-MY": "Bancuh 6 Kopi untuk penonton"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "produce:berry_pie",
+     "n": 2,
+     "label": {
+      "en-MY": "Make 2 Mango Cakes",
+      "ms-MY": "Buat 2 Kek Mangga"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "talk",
+     "n": 5,
+     "label": {
+      "en-MY": "Invite 5 neighbours",
+      "ms-MY": "Jemput 5 jiran"
+     }
+    }
+   ],
+   "tiers": [
+    {
+     "at": 1,
+     "reward": {
+      "xp": 25
+     },
+     "label": {
+      "en-MY": "Popcorn",
+      "ms-MY": "Bertih Jagung"
+     }
+    },
+    {
+     "at": 2,
+     "reward": {
+      "xp": 40,
+      "gems": 2
+     },
+     "label": {
+      "en-MY": "Front Row",
+      "ms-MY": "Barisan Depan"
+     }
+    },
+    {
+     "at": 3,
+     "reward": {
+      "xp": 60,
+      "gems": 4
+     },
+     "label": {
+      "en-MY": "Under the City Lights",
+      "ms-MY": "Di Bawah Lampu Kota"
+     }
+    }
+   ]
+  },
+  {
+   "id": "anniversary",
+   "name": {
+    "en-MY": "Seri Bayu Day",
+    "ms-MY": "Hari Seri Bayu"
+   },
+   "description": {
+    "en-MY": "Another year of Seri Bayu! Everyone pitches in to make the neighbourhood look its very best for the big day.",
+    "ms-MY": "Setahun lagi untuk Seri Bayu! Semua orang bergotong-royong supaya kejiranan kelihatan paling cantik untuk hari besar."
+   },
+   "minLevel": 6,
+   "durationDays": 3,
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "orders",
+     "n": 10,
+     "label": {
+      "en-MY": "Complete 10 Orders",
+      "ms-MY": "Siapkan 10 Pesanan"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "spruce",
+     "n": 5,
+     "label": {
+      "en-MY": "Help shared spots 5 times",
+      "ms-MY": "Bantu tempat bersama 5 kali"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "gift",
+     "n": 4,
+     "label": {
+      "en-MY": "Give 4 gifts",
+      "ms-MY": "Beri 4 hadiah"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "upgrade",
+     "n": 1,
+     "label": {
+      "en-MY": "Upgrade a building",
+      "ms-MY": "Naik taraf satu bangunan"
+     }
+    }
+   ],
+   "tiers": [
+    {
+     "at": 1,
+     "reward": {
+      "xp": 25
+     },
+     "label": {
+      "en-MY": "Bunting Up",
+      "ms-MY": "Panji Dinaikkan"
+     }
+    },
+    {
+     "at": 2,
+     "reward": {
+      "xp": 40,
+      "gems": 2
+     },
+     "label": {
+      "en-MY": "Cake Cut",
+      "ms-MY": "Kek Dipotong"
+     }
+    },
+    {
+     "at": 4,
+     "reward": {
+      "xp": 80,
+      "gems": 5
+     },
+     "label": {
+      "en-MY": "Best Year Yet",
+      "ms-MY": "Tahun Terbaik"
+     }
+    }
+   ]
+  }
+ ],
+ "project": {
+  "id": "pavilion",
+  "name": {
+   "en-MY": "Fountain Plaza",
+   "ms-MY": "Plaza Air Pancut"
+  },
+  "description": {
+   "en-MY": "Help the neighbourhood build a Fountain Plaza with shade trees and seating, so everyone has a cool place to sit and meet. Every contribution brings it a step closer.",
+   "ms-MY": "Bantu kejiranan membina Plaza Air Pancut dengan pokok teduhan dan tempat duduk, supaya semua orang ada tempat yang redup untuk duduk dan bertemu. Setiap sumbangan membawanya selangkah lebih dekat."
+  },
+  "requirements": {
+   "coins": 300,
+   "planks": 5,
+   "flowers": 8,
+   "bread": 6
+  },
+  "stages": [
+   {
+    "at": 0.25,
+    "label": {
+     "en-MY": "Foundations laid",
+     "ms-MY": "Asas siap"
+    }
+   },
+   {
+    "at": 0.5,
+    "label": {
+     "en-MY": "Basin built",
+     "ms-MY": "Kolam dibina"
+    }
+   },
+   {
+    "at": 0.75,
+    "label": {
+     "en-MY": "Water feature fitted",
+     "ms-MY": "Ciri air dipasang"
+    }
+   },
+   {
+    "at": 1,
+    "label": {
+     "en-MY": "Fountain on!",
+     "ms-MY": "Air pancut dihidupkan!"
+    }
+   }
+  ],
+  "reward": {
+   "coins": 150,
+   "gems": 5,
+   "xp": 40,
+   "unlocks": [
+    "statue"
+   ]
+  },
+  "minLevel": 3,
+  "flag": "fountain_complete"
+ },
+ "expansionNames": [
+  "Jalan Bayu 3",
+  "Persiaran Seri",
+  "Lorong Mutiara",
+  "Jalan Bayu 7",
+  "Persiaran Tasik",
+  "Lorong Kenanga",
+  "Jalan Cempaka",
+  "Taman Bayu Indah",
+  "Lorong Angsana",
+  "Persiaran Bayu Utama",
+  "Jalan Teratai",
+  "Lorong Seroja"
+ ],
+ "levelUnlocks": {
+  "1": [
+   {
+    "en-MY": "Terrace House",
+    "ms-MY": "Rumah Teres"
+   },
+   {
+    "en-MY": "Corner Kopitiam",
+    "ms-MY": "Kopitiam Simpang"
+   },
+   {
+    "en-MY": "Paths, rain trees & flower beds",
+    "ms-MY": "Laluan, pokok hujan-hujan & batas bunga"
+   }
+  ],
+  "2": [
+   {
+    "en-MY": "Dessert Café & Bakery",
+    "ms-MY": "Kafe Pencuci Mulut & Bakeri"
+   },
+   {
+    "en-MY": "Community Garden",
+    "ms-MY": "Kebun Komuniti"
+   },
+   {
+    "en-MY": "Mamak Corner",
+    "ms-MY": "Restoran Mamak Simpang"
+   },
+   {
+    "en-MY": "Benches & LED street lamps",
+    "ms-MY": "Bangku & lampu jalan LED"
+   }
+  ],
+  "3": [
+   {
+    "en-MY": "Makerspace",
+    "ms-MY": "Ruang Kreatif"
+   },
+   {
+    "en-MY": "Florist",
+    "ms-MY": "Kedai Bunga"
+   },
+   {
+    "en-MY": "Semi-D Home",
+    "ms-MY": "Rumah Berkembar"
+   },
+   {
+    "en-MY": "Learning Centre",
+    "ms-MY": "Pusat Tuisyen"
+   },
+   {
+    "en-MY": "Fountain Plaza community project",
+    "ms-MY": "Projek komuniti Plaza Air Pancut"
+   }
+  ],
+  "4": [
+   {
+    "en-MY": "Neighbourhood Park",
+    "ms-MY": "Taman Kejiranan"
+   },
+   {
+    "en-MY": "EV Showroom",
+    "ms-MY": "Bilik Pameran EV"
+   },
+   {
+    "en-MY": "Co-working Hub",
+    "ms-MY": "Hab Kerja Bersama"
+   },
+   {
+    "en-MY": "New land",
+    "ms-MY": "Tanah baharu"
+   },
+   {
+    "en-MY": "Orchid Festival",
+    "ms-MY": "Pesta Orkid"
+   }
+  ],
+  "5": [
+   {
+    "en-MY": "24/7 Mini Mart",
+    "ms-MY": "Kedai Serbaneka 24 Jam"
+   }
+  ],
+  "6": [
+   {
+    "en-MY": "Condominium",
+    "ms-MY": "Kondominium"
+   }
+  ],
+  "7": [
+   {
+    "en-MY": "Community Centre",
+    "ms-MY": "Pusat Komuniti"
+   }
+  ],
+  "8": [
+   {
+    "en-MY": "A second Community Garden",
+    "ms-MY": "Kebun Komuniti kedua"
+   }
+  ],
+  "9": [
+   {
+    "en-MY": "More land",
+    "ms-MY": "Lebih banyak tanah"
+   }
+  ],
+  "10": [
+   {
+    "en-MY": "Community Centre upgrade",
+    "ms-MY": "Naik taraf Pusat Komuniti"
+   }
+  ]
+ },
+ "achievements": {
+  "landmark": {
+   "name": {
+    "en-MY": "Built Together",
+    "ms-MY": "Dibina Bersama"
+   },
+   "description": {
+    "en-MY": "Complete a community landmark.",
+    "ms-MY": "Siapkan mercu tanda komuniti."
+   }
+  }
+ },
+ "layout": [
+  {
+   "type": "starter_house",
+   "x": 12,
+   "z": 15
+  },
+  {
+   "type": "pond",
+   "x": 6,
+   "z": 6
+  },
+  {
+   "type": "fountain",
+   "x": 11,
+   "z": 10
+  },
+  {
+   "type": "request_board",
+   "x": 10,
+   "z": 17
+  },
+  {
+   "type": "welcome_sign",
+   "x": 6,
+   "z": 17
+  },
+  {
+   "type": "lamp",
+   "x": 9,
+   "z": 17
+  },
+  {
+   "type": "lamp",
+   "x": 17,
+   "z": 17
+  },
+  {
+   "type": "path",
+   "x": 11,
+   "z": 17
+  },
+  {
+   "type": "path",
+   "x": 12,
+   "z": 17
+  },
+  {
+   "type": "path",
+   "x": 13,
+   "z": 17
+  },
+  {
+   "type": "path",
+   "x": 14,
+   "z": 17
+  },
+  {
+   "type": "path",
+   "x": 15,
+   "z": 17
+  },
+  {
+   "type": "path",
+   "x": 16,
+   "z": 17
+  },
+  {
+   "type": "path",
+   "x": 10,
+   "z": 9
+  },
+  {
+   "type": "path",
+   "x": 11,
+   "z": 9
+  },
+  {
+   "type": "path",
+   "x": 12,
+   "z": 9
+  },
+  {
+   "type": "path",
+   "x": 13,
+   "z": 9
+  },
+  {
+   "type": "path",
+   "x": 10,
+   "z": 12
+  },
+  {
+   "type": "path",
+   "x": 11,
+   "z": 12
+  },
+  {
+   "type": "path",
+   "x": 12,
+   "z": 12
+  },
+  {
+   "type": "path",
+   "x": 13,
+   "z": 12
+  },
+  {
+   "type": "path",
+   "x": 10,
+   "z": 10
+  },
+  {
+   "type": "path",
+   "x": 10,
+   "z": 11
+  },
+  {
+   "type": "path",
+   "x": 13,
+   "z": 10
+  },
+  {
+   "type": "path",
+   "x": 13,
+   "z": 11
+  },
+  {
+   "type": "path",
+   "x": 11,
+   "z": 13
+  },
+  {
+   "type": "path",
+   "x": 11,
+   "z": 14
+  },
+  {
+   "type": "path",
+   "x": 11,
+   "z": 15
+  },
+  {
+   "type": "path",
+   "x": 11,
+   "z": 16
+  },
+  {
+   "type": "flower_bed",
+   "x": 9,
+   "z": 15
+  },
+  {
+   "type": "flower_bed",
+   "x": 10,
+   "z": 15
+  },
+  {
+   "type": "flower_bed",
+   "x": 9,
+   "z": 16
+  },
+  {
+   "type": "bush",
+   "x": 10,
+   "z": 16
+  },
+  {
+   "type": "tree_round",
+   "x": 6,
+   "z": 12
+  },
+  {
+   "type": "tree_pine",
+   "x": 7,
+   "z": 13
+  },
+  {
+   "type": "tree_round",
+   "x": 16,
+   "z": 7
+  },
+  {
+   "type": "tree_pine",
+   "x": 15,
+   "z": 6
+  },
+  {
+   "type": "tree_round",
+   "x": 8,
+   "z": 11
+  },
+  {
+   "type": "tree_autumn",
+   "x": 10,
+   "z": 6
+  },
+  {
+   "type": "tree_pine",
+   "x": 13,
+   "z": 6
+  },
+  {
+   "type": "tree_round",
+   "x": 17,
+   "z": 6
+  },
+  {
+   "type": "planter",
+   "x": 6,
+   "z": 15
+  },
+  {
+   "type": "bush",
+   "x": 9,
+   "z": 10
+  },
+  {
+   "type": "bush",
+   "x": 6,
+   "z": 14
+  },
+  {
+   "type": "bush",
+   "x": 17,
+   "z": 14
+  },
+  {
+   "type": "planter",
+   "x": 14,
+   "z": 8
+  },
+  {
+   "type": "bench",
+   "x": 7,
+   "z": 10,
+   "rot": 2
+  },
+  {
+   "type": "lamp",
+   "x": 9,
+   "z": 9
+  },
+  {
+   "type": "mall",
+   "x": 18,
+   "z": 1
+  },
+  {
+   "type": "school",
+   "x": 1,
+   "z": 6
+  },
+  {
+   "type": "clinic_row",
+   "x": 6,
+   "z": 1
+  },
+  {
+   "type": "petrol_station",
+   "x": 18,
+   "z": 20
+  }
+ ],
+ "history": {
+  "en-MY": "You moved into your terrace house in Seri Bayu.",
+  "ms-MY": "Anda berpindah ke rumah teres anda di Seri Bayu."
+ }
+}

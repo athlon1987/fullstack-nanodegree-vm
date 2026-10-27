@@ -22,7 +22,8 @@
  "avatar": "mini_female_d",
  "environment": {
   "biome": "tropical",
-  "rainChance": 0.3
+  "rainChance": 0.3,
+  "style": "kampung"
  },
  "buildings": {
   "starter_house": {
@@ -737,6 +738,19 @@
     "en-MY": "A wau kite from the playground’s opening day.",
     "ms-MY": "Wau dari hari pembukaan taman permainan."
    }
+  },
+  "coworking": {
+   "hidden": true
+  },
+  "mamak": {
+   "name": {
+    "en-MY": "Restoran Mamak",
+    "ms-MY": "Restoran Mamak"
+   },
+   "description": {
+    "en-MY": "Open early, open late: roti canai off the griddle and nasi lemak to share.",
+    "ms-MY": "Buka awal pagi hingga lewat malam: roti canai panas dan nasi lemak untuk dikongsi."
+   }
   }
  },
  "items": {
@@ -893,6 +907,18 @@
     "ms-MY": "Seri kaya, dikacau perlahan berjam-jam."
    },
    "icon": "kaya"
+  },
+  "roti_canai": {
+   "name": {
+    "en-MY": "Roti Canai",
+    "ms-MY": "Roti Canai"
+   }
+  },
+  "nasi_lemak": {
+   "name": {
+    "en-MY": "Nasi Lemak",
+    "ms-MY": "Nasi Lemak"
+   }
   }
  },
  "recipes": {
@@ -978,6 +1004,18 @@
    "name": {
     "en-MY": "Kaya",
     "ms-MY": "Kaya"
+   }
+  },
+  "roti_canai": {
+   "name": {
+    "en-MY": "Roti Canai",
+    "ms-MY": "Roti Canai"
+   }
+  },
+  "nasi_lemak": {
+   "name": {
+    "en-MY": "Nasi Lemak",
+    "ms-MY": "Nasi Lemak"
    }
   }
  },

@@ -29,6 +29,7 @@ import {
 import { FLOWERS, ROCK, body, face, prop, shopWindow, type ArchCtx } from './common';
 import { malaysianArchetype, tropicalDecoration } from './malaysia';
 import { communityDecoration, spotArchetype } from './community';
+import { urbanArchetype, urbanDecoration, urbanPrefab } from './urban';
 export type { ArchCtx } from './common';
 export { prop } from './common';
 
@@ -716,15 +717,18 @@ export function archetype(arch: string, ctx: ArchCtx): THREE.Group {
   const flagKey = Object.keys(ctx.flags).filter((k) => ctx.flags[k]).sort().join(',');
   const m = ctx.module;
   const modKey = m ? `${m.id}:${m.prefab}:${m.sign}:${m.palette.primary}${m.palette.secondary}${m.palette.accent}` : '';
-  const key = `${arch}|${ctx.level}|${flagKey}|${ctx.hoodName}|${ctx.stage ?? ''}|${ctx.biome ?? ''}|${ctx.name ?? ''}|${modKey}|${JSON.stringify(ctx.text ?? {})}`;
+  const key = `${arch}|${ctx.level}|${flagKey}|${ctx.hoodName}|${ctx.stage ?? ''}|${ctx.biome ?? ''}|${ctx.style ?? ''}|${ctx.name ?? ''}|${modKey}|${JSON.stringify(ctx.text ?? {})}`;
   const hit = templateCache.get(key);
   if (hit) return hit.clone();
   let g: THREE.Group;
+  const urban = ctx.style === 'urban';
   const regional = arch.startsWith('spot:')
     ? spotArchetype(arch, ctx)
-    : arch.startsWith('deco:')
-      ? (communityDecoration(arch.slice(5)) ?? (ctx.biome === 'tropical' ? tropicalDecoration(arch.slice(5)) : null))
-      : malaysianArchetype(arch, ctx);
+    : arch.startsWith('kl:')
+      ? urbanArchetype(arch, ctx)
+      : arch.startsWith('deco:')
+        ? (communityDecoration(arch.slice(5)) ?? (urban ? urbanDecoration(arch.slice(5)) : null) ?? (ctx.biome === 'tropical' ? tropicalDecoration(arch.slice(5)) : null))
+        : ((urban && arch.startsWith('prefab:') ? urbanPrefab(arch, ctx) : null) ?? malaysianArchetype(arch, ctx));
   if (regional) g = regional;
   else if (arch.startsWith('deco:')) g = decoration(arch.slice(5));
   else
@@ -748,6 +752,17 @@ export function archetype(arch: string, ctx: ArchCtx): THREE.Group {
     }
   // Trees keep their random rotation per instance, so don't cache them (the rain tree is symmetric).
   const baked = bake(g);
+  // Shadow pass budget: tiny details and flat pieces (plates, paving, markings) don't cast
+  // visible shadows at this zoom, so they skip the shadow map (a draw call each).
+  const box = new THREE.Box3();
+  const size = new THREE.Vector3();
+  baked.traverse((o) => {
+    const m = o as THREE.Mesh;
+    if (!m.isMesh) return;
+    m.geometry.computeBoundingBox();
+    box.copy(m.geometry.boundingBox!).getSize(size);
+    if (Math.max(size.x, size.y, size.z) < 0.35 || size.y < 0.05) m.castShadow = false;
+  });
   if (!arch.startsWith('deco:tree') || (ctx.biome === 'tropical' && arch === 'deco:tree_round')) templateCache.set(key, baked);
   return baked.clone();
 }

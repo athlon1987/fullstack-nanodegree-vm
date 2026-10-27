@@ -15,14 +15,19 @@ import { HALF, worldClock } from './coords';
 import { WORLD } from '../../data/world';
 import { getLang, t as tr } from '../../platform/i18n';
 
-/** Regional ground palette: temperate meadow or tropical kampung (laterite earth, lush grass). */
+/** Regional ground palette: temperate meadow, tropical kampung (laterite earth, lush grass) or
+ *  a modern Klang Valley township (manicured lawns, stone podium, bright paving, teal lake). */
 const ground = () =>
-  WORLD.biome === 'tropical'
+  WORLD.style === 'urban'
+    ? { grass: '#6cc157', grassDark: '#4fa547', locked: '#9fd088', lip: '#f1ede4', water: '#2ec4cf', path: '#efe9dd', bands: ['#f4f0e8', '#d9d3c6', '#e3ddd1', '#cfc8ba', '#ddd7cb', '#c9c2b4', '#bdb5a7'], flowers: ['#ff4f9a', '#ffd34d', '#ffffff', '#ff8a3d', '#c86bff'] }
+    : WORLD.biome === 'tropical'
     ? { grass: '#7ccb4c', grassDark: '#55a83a', locked: '#a8bf78', lip: '#4f9a36', water: '#3cbfc4', path: '#dcb894', bands: ['#5fa83e', '#c0643c', '#a9532f', '#c8724a', '#8f4426', '#b45f38', '#7e3a20'], flowers: ['#ffffff', '#ffd34d', '#e0413a', '#ff8fb1'] }
     : { grass: P.grass, grassDark: P.grassDark, locked: P.grassLocked, lip: P.grassDark, water: P.water, path: P.stone, bands: ['#7fbf5a', '#b98559', '#a8774f', '#c19066', '#8f6143', '#9d7050', '#7e573c'], flowers: ['#ffffff', '#ffd34d', '#ff8fb1', '#b9a2ff'] };
+const urban = () => WORLD.style === 'urban';
 import { plotUnlockable } from '../../game/core/actions';
 import { SPOTS, SPOT_PLACES } from '../../data/spots';
-import { BUILDINGS } from '../../data/buildings';
+import { BUILDINGS, isFixed } from '../../data/buildings';
+import { Lrt, Median, RING, RingRoad, Skyline } from './City';
 
 const ISLAND_DEPTH = 1.6;
 
@@ -40,7 +45,8 @@ function Island() {
       ctx.fillRect(0, y, 64, hs[i]);
       y += hs[i];
     });
-    for (let i = 0; i < 90; i++) {
+    // Earth gets pebbles; the urban podium gets clean stone courses instead.
+    for (let i = 0; i < (urban() ? 0 : 90); i++) {
       ctx.fillStyle = `rgba(60,40,25,${0.15 + Math.random() * 0.2})`;
       ctx.beginPath();
       ctx.arc(Math.random() * 64, 20 + Math.random() * 230, 1 + Math.random() * 3, 0, Math.PI * 2);
@@ -52,14 +58,16 @@ function Island() {
     t.repeat.set(12, 1);
     return new THREE.MeshStandardMaterial({ map: t, roughness: 0.95 });
   }, []);
+  // The township block is wider: a ring road runs round the neighbourhood on the podium.
+  const size = WORLD_CELLS + (urban() ? 2 * RING : 0);
   return (
     <group>
       <mesh position={[0, -ISLAND_DEPTH / 2 - 0.02, 0]} material={sideMat} receiveShadow>
-        <boxGeometry args={[WORLD_CELLS + 0.6, ISLAND_DEPTH, WORLD_CELLS + 0.6]} />
+        <boxGeometry args={[size + 0.6, ISLAND_DEPTH, size + 0.6]} />
       </mesh>
       {/* Grass lip overhanging the earth, like a hand-built diorama */}
       <mesh position={[0, -0.06, 0]} receiveShadow>
-        <boxGeometry args={[WORLD_CELLS + 0.8, 0.1, WORLD_CELLS + 0.8]} />
+        <boxGeometry args={[size + 0.8, 0.1, size + 0.8]} />
         <meshStandardMaterial color={ground().lip} roughness={0.95} />
       </mesh>
     </group>
@@ -84,7 +92,7 @@ function Sea() {
         <meshStandardMaterial ref={water} color={ground().water} roughness={0.25} metalness={0.05} />
       </mesh>
       <mesh ref={foam} rotation={[-Math.PI / 2, 0, Math.PI / 4]} position={[0, 0.02, 0]}>
-        <ringGeometry args={[17.3, 18.6, 4, 1]} />
+        <ringGeometry args={urban() ? [20.6, 21.9, 4, 1] : [17.3, 18.6, 4, 1]} />
         <meshBasicMaterial color="#eafcff" transparent opacity={0.55} />
       </mesh>
     </group>
@@ -197,9 +205,13 @@ function Wilderness() {
   const items = useMemo(() => {
     const out: { name: string; x: number; z: number; h: number; ry: number }[] = [];
     const r = rng(1234);
+    // Landmarks placed by the world (mall, school, station…) keep their lots clear.
+    const fixed = occupancy(useGame.getState().game!.buildings.filter((b) => isFixed(b.type)));
+    const city = urban();
     for (const e of EXPANSIONS) {
       const [x0, z0, w, d] = e.rect;
-      const n = 7;
+      // In town, unbought land is a tidy lot with a few shade trees, not a forest.
+      const n = city ? 3 : 7;
       for (let i = 0; i < n; i++) {
         const x = x0 + 0.5 + r() * (w - 1);
         const z = z0 + 0.5 + r() * (d - 1);
@@ -210,9 +222,10 @@ function Wilderness() {
           const [w, d] = BUILDINGS[p.building].footprint;
           return x > sx - 1.3 && x < sx + w + 1.3 && z > sz - 1.3 && z < sz + d + 1.3;
         })) continue;
+        if (fixed.has(key(Math.floor(x), Math.floor(z)))) continue;
         const kind = r();
         const tropical = WORLD.biome === 'tropical';
-        out.push({ name: tropical ? (kind < 0.45 ? 'tree_palm' : kind < 0.8 ? 'tree_fat' : 'tree_oak') : kind < 0.45 ? 'tree_pine' : kind < 0.8 ? 'tree_fat' : 'tree_dark', x: x - HALF, z: z - HALF, h: 1.1 + r() * 0.6, ry: r() * 6, plot: e.id } as never);
+        out.push({ name: city ? (kind < 0.4 ? 'tree_palm' : 'tree_fat') : tropical ? (kind < 0.45 ? 'tree_palm' : kind < 0.8 ? 'tree_fat' : 'tree_oak') : kind < 0.45 ? 'tree_pine' : kind < 0.8 ? 'tree_fat' : 'tree_dark', x: x - HALF, z: z - HALF, h: 1.1 + r() * 0.6, ry: r() * 6, plot: e.id } as never);
       }
     }
     return out as ({ name: string; x: number; z: number; h: number; ry: number; plot: string })[];
@@ -241,25 +254,26 @@ function Wilderness() {
 /** Main street running across the island with curbs, markings and a crosswalk. */
 function Road() {
   const z0 = ROAD_ROWS[0] - HALF;
-  const asphalt = useMemo(() => mat(P.asphalt, { map: TEX.asphalt(), repeat: [24, 2], roughness: 0.9 }), []);
-  const curb = useMemo(() => mat(P.stone), []);
+  const city = urban();
+  const asphalt = useMemo(() => mat(city ? '#565d68' : P.asphalt, { map: TEX.asphalt(), repeat: [24, 2], roughness: 0.9 }), [city]);
+  const curb = useMemo(() => (city ? mat('#e9e4da', { map: TEX.paving(), repeat: [24, 1] }) : mat(P.stone)), [city]);
   // Lane dashes + crosswalk merged into a single mesh.
   const dashes = useMemo(() => {
     const parts: THREE.BufferGeometry[] = [];
     for (let x = -HALF + 0.4; x < HALF; x += 1) parts.push(new THREE.BoxGeometry(0.45, 0.012, 0.06).translate(x, 0.035, z0 + 1));
     for (let i = 0; i < 6; i++) parts.push(new THREE.BoxGeometry(0.12, 0.012, 1.5).translate(0.95 + i * 0.22, 0.035, z0 + 1));
-    const mesh = new THREE.Mesh(mergeGeometries(parts)!, new THREE.MeshStandardMaterial({ color: '#fff6d8', roughness: 0.8 }));
+    const mesh = new THREE.Mesh(mergeGeometries(parts)!, new THREE.MeshStandardMaterial({ color: urban() ? '#ffffff' : '#fff6d8', roughness: 0.8 }));
     mesh.receiveShadow = true;
     return mesh;
   }, [z0]);
   return (
     <group>
       <mesh position={[0, 0.015, z0 + 1]} receiveShadow material={asphalt}>
-        <boxGeometry args={[WORLD_CELLS + 0.6, 0.03, 1.6]} />
+        <boxGeometry args={[WORLD_CELLS + (city ? 2 * RING - 0.6 : 0.6), 0.03, 1.6]} />
       </mesh>
       {[z0 + 0.12, z0 + 1.88].map((z) => (
         <mesh key={z} position={[0, 0.04, z]} receiveShadow castShadow material={curb}>
-          <boxGeometry args={[WORLD_CELLS + 0.6, 0.08, 0.24]} />
+          <boxGeometry args={[WORLD_CELLS + (city ? 0.5 : 0.6), 0.08, 0.24]} />
         </mesh>
       ))}
       <primitive object={dashes} />
@@ -312,7 +326,7 @@ function Paths() {
   const paths = buildings.filter((b) => b.type === 'path');
   const mesh = useMemo(() => {
     const geo = new THREE.BoxGeometry(0.96, 0.04, 0.96);
-    const m = mat(ground().path, { map: TEX.cobbles(), repeat: [2, 2], roughness: 0.9 });
+    const m = urban() ? mat(ground().path, { map: TEX.paving(), roughness: 0.85 }) : mat(ground().path, { map: TEX.cobbles(), repeat: [2, 2], roughness: 0.9 });
     const im = new THREE.InstancedMesh(geo, m, 600);
     im.receiveShadow = true;
     im.count = 0;
@@ -337,7 +351,7 @@ function Scatter() {
   const { tufts, flowers } = useMemo(() => {
     const tuftGeo = new THREE.ConeGeometry(0.035, 0.14, 4);
     tuftGeo.translate(0, 0.07, 0);
-    const t = new THREE.InstancedMesh(tuftGeo, new THREE.MeshStandardMaterial({ color: '#6fbf4a', roughness: 1 }), 2400);
+    const t = new THREE.InstancedMesh(tuftGeo, new THREE.MeshStandardMaterial({ color: urban() ? '#5cc23e' : '#6fbf4a', roughness: 1 }), 2400);
     const fGeo = new THREE.SphereGeometry(0.035, 6, 4);
     fGeo.translate(0, 0.06, 0);
     const f = new THREE.InstancedMesh(fGeo, new THREE.MeshStandardMaterial({ roughness: 0.8 }), 500);
@@ -352,7 +366,9 @@ function Scatter() {
     const palette = ground().flowers;
     let ti = 0;
     let fi = 0;
-    const density = graphics === 'low' ? 2 : graphics === 'medium' ? 3 : 5;
+    // Mown lawns in town: fewer tufts, flowers mostly in beds rather than everywhere.
+    const density = Math.max(1, (graphics === 'low' ? 2 : graphics === 'medium' ? 3 : 5) - (urban() ? 2 : 0));
+    const flowerChance = urban() ? 0.18 : 0.35;
     for (let z = 0; z < WORLD_CELLS; z++)
       for (let x = 0; x < WORLD_CELLS; x++) {
         if (occ.has(key(x, z)) || ROAD_ROWS.includes(z)) continue;
@@ -363,7 +379,7 @@ function Scatter() {
           d.updateMatrix();
           tufts.setMatrixAt(ti++, d.matrix);
         }
-        if (r() < 0.35 && fi < 500) {
+        if (r() < flowerChance && fi < 500) {
           d.position.set(x - HALF + r(), 0, z - HALF + r());
           d.rotation.set(0, 0, 0);
           d.scale.setScalar(0.8 + r() * 0.5);
@@ -398,6 +414,14 @@ export function Terrain() {
       <Road />
       <Paths />
       <Scatter />
+      {urban() && (
+        <>
+          <Median />
+          <RingRoad />
+          <Lrt />
+          <Skyline />
+        </>
+      )}
     </group>
   );
 }

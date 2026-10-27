@@ -21,6 +21,23 @@ A module dresses one template slot (café, restaurant, retail, learning, showroo
 
 Partners **cannot**: ship code, HTML, scripts, trackers or remote resources; change prices of other things, the economy or progression; grant premium currency; insert themselves into the tutorial; message players; collect personal data; appear in Zen Mode with promotional labels; or change anything about other businesses.
 
+## Where businesses appear in Seri Bayu
+
+The modern Klang Valley world gives businesses natural, everyday places to be, all using existing templates:
+
+| Place in the world | Template | Natural fit |
+|---|---|---|
+| Corner kopitiam shoplot | `cafe` | coffee chains and kopitiams: menu items, a hand-prepared drink |
+| Dessert café & bakery | `restaurant` | dessert and bakery brands: menu items |
+| Mamak corner | `restaurant` | restaurant groups: a menu of goods, a cooking moment |
+| 24/7 mini mart, florist | `retail` | convenience stores, florists: product goods |
+| EV showroom (with chargers) | `showroom` | car and EV makers: models and paints to arrange |
+| Learning centre | `learning` | tuition and education brands: a daily quiz |
+| Co-working hub | `retail` | workspace operators: decor, sign and palette |
+| Community garden | `farm` | garden, food and sustainability brands: plants to grow |
+
+A partner's **store layout** is expressed through the approved urban prefab for its slot plus its palette, sign and props. Its **menu or products** become goods within the template's value ceiling, and its **experience** is one of the approved behaviours. The mall and the shoplot row are fixed scenery with fictional names; a contracted partner can be featured there only through a reviewed module, never by editing the world. Businesses blend in; they don't take over.
+
 ## Branded content must preserve the mood
 
 POCKETHOOD is a peaceful, welcoming world (CONTENT_POLICY.md). Every module is held to the same creative standard as our own content.

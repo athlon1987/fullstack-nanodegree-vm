@@ -39,6 +39,7 @@ export function buildingThumb(type: string): string {
       flags: {},
       hoodName: WORLD.hoodName,
       biome: WORLD.biome,
+      style: WORLD.style,
       name: def.name,
       module: m ? { id: `${m.id}@${m.version}`, prefab: m.prefab, palette: m.brand.palette, sign: m.brand.signText, props: m.props } : undefined,
     });

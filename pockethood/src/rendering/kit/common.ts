@@ -13,6 +13,8 @@ export interface ArchCtx {
   /** Module dressing for template buildings: palette + sign + props. */
   module?: { id: string; prefab: string; palette: { primary: string; secondary: string; accent: string }; sign: string; props: string[] };
   biome?: 'temperate' | 'tropical';
+  /** World style: 'urban' switches module prefabs and street furniture to the modern KL kit. */
+  style?: 'classic' | 'kampung' | 'urban';
   /** Localised short texts painted in the world (signs). */
   text?: Record<string, string>;
   /** The building's display name (for shop signs). */

@@ -245,6 +245,7 @@ function applyWorld(w: WorldPack, lang: Lang) {
     hoodName: L(w.hoodName, lang),
     avatar: w.avatar,
     biome: w.environment.biome,
+    style: w.environment.style ?? (w.environment.biome === 'tropical' ? 'kampung' : 'classic'),
     rainChance: w.environment.rainChance,
     layout: w.layout.map((p) => [p.type, p.x, p.z, p.rot ?? 0]),
     history: L(w.history, lang),

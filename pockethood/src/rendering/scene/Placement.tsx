@@ -10,6 +10,7 @@ import { useGame } from '../../state/store';
 import { archetype } from '../kit/archetypes';
 import { cameraState } from '../camera/CameraRig';
 import { HALF, placementDrag, worldClock } from './coords';
+import { WORLD } from '../../data/world';
 
 
 function GridOverlay() {
@@ -40,7 +41,7 @@ function Ghost() {
   const def = BUILDINGS[placing.type];
   const existing = placing.uid ? game.buildings.find((b) => b.uid === placing.uid) : undefined;
   const obj = useMemo(
-    () => archetype(def.archetype, { level: existing?.level ?? 1, flags: game.flags, hoodName: game.profile.hoodName }),
+    () => archetype(def.archetype, { level: existing?.level ?? 1, flags: game.flags, hoodName: game.profile.hoodName, biome: WORLD.biome, style: WORLD.style, name: def.name }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [def.archetype, existing?.level, game.profile.hoodName],
   );

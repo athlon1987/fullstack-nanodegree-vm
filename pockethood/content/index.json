@@ -26,8 +26,8 @@
   {
    "code": "MY",
    "path": "countries/my.json",
-   "sha256": "525b2aea534d9848cf310cf1bcbbfaf11b13ebeb14f49a49ae753ab0c4efbe13",
-   "bytes": 842
+   "sha256": "b7efbebdc06fcf8f091e74fafdc816708422fe60d75e336bb65796cea3c3b418",
+   "bytes": 862
   },
   {
    "code": "SG",
@@ -47,8 +47,15 @@
    "id": "my.kampung_seri",
    "country": "MY",
    "path": "worlds/my.kampung_seri.json",
-   "sha256": "ad4c0ea7b63486244510e00183075e38c3dd623e05467f4460b6532410b889f8",
-   "bytes": 102274
+   "sha256": "aae2f1bb94a619f3a6acf779b4070cf45e7de8932771d7cf83b3f334c548f6bd",
+   "bytes": 103024
+  },
+  {
+   "id": "my.seri_bayu",
+   "country": "MY",
+   "path": "worlds/my.seri_bayu.json",
+   "sha256": "3ba60ac54ec5aa083324d28456fa165b8c647daedcf1912a3ffe53f248aa9719",
+   "bytes": 127811
   }
  ],
  "modules": [

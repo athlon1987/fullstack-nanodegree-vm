@@ -18,6 +18,7 @@
   },
   "timezone": "Asia/Kuala_Lumpur",
   "worlds": [
+    "my.seri_bayu",
     "my.kampung_seri"
   ],
   "compliance": {

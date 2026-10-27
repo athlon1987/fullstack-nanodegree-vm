@@ -16,6 +16,10 @@ export const ARCHETYPES = [
   'my:rumah_kampung', 'my:rumah_papan', 'my:rumah_teres', 'my:shoplot', 'my:kedai_roti', 'my:kedai_bunga', 'my:bengkel',
   'my:kedai_runcit', 'my:taman', 'my:balai_raya', 'my:papan_kenyataan', 'my:gerbang', 'my:tasik', 'my:pondok',
   'my:showroom', 'my:pusat_belajar', 'my:kebun',
+  // Modern Klang Valley kit (src/rendering/kit/urban.ts)
+  'kl:terrace', 'kl:semid', 'kl:condo', 'kl:shoplot_cafe', 'kl:dessert', 'kl:urban_garden', 'kl:florist', 'kl:makerspace',
+  'kl:minimart', 'kl:ev_showroom', 'kl:learning', 'kl:park', 'kl:community_centre', 'kl:notice', 'kl:gateway', 'kl:lake',
+  'kl:fountain', 'kl:mamak', 'kl:coworking', 'kl:mall', 'kl:school', 'kl:clinic_row', 'kl:petrol',
 ] as const;
 
 /** Prefabs a module may dress its building with (each takes the module's palette and sign). */

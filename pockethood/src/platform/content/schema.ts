@@ -177,6 +177,8 @@ export const worldSchema = obj({
   avatar: lit(...CHARACTER_MODELS),
   environment: obj({
     biome: lit('temperate', 'tropical'),
+    /** Architectural style (terrain, street furniture, background city, module prefabs). */
+    style: opt(lit('classic', 'kampung', 'urban')),
     rainChance: num({ min: 0, max: 1 }),
   }),
   buildings: rec(ID, buildingOverride, { max: 80 }),

@@ -23,7 +23,7 @@ const TARGETS = {
   nextObjective: 300,
 } as const;
 
-describe.each(['my.kampung_seri', 'core.maple_hollow'])('first session in %s', (world) => {
+describe.each(['my.seri_bayu', 'my.kampung_seri', 'core.maple_hollow'])('first session in %s', (world) => {
   it('reaches every first-five-minute milestone on time, with no waiting walls', () => {
     activate(world, 'en', T0);
     const r = simulateFirstSession(T0, 900);

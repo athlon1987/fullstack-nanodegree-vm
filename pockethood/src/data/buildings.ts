@@ -235,6 +235,40 @@ export const BUILDINGS: Record<string, BuildingDef> = {
       lv({ upgradeCost: { coins: 700, items: { planks: 3 } }, passive: { coins: 8, seconds: 60, cycles: 12 }, xp: 22, perks: ['Daily quiz: 5 questions', 'Reading corner & bookshelf'] }),
     ],
   },
+  mamak: {
+    id: 'mamak',
+    name: 'Corner Diner',
+    category: 'commercial',
+    description: 'Open early, open late: flatbread off the griddle and plates to share.',
+    footprint: [2, 2],
+    unlockLevel: 2,
+    cost: { coins: 160 },
+    xp: 12,
+    maxCount: 1,
+    archetype: 'kl:mamak',
+    template: 'restaurant',
+    levels: [
+      lv({ slots: 2, perks: ['Griddle flatbread', '2 production slots'] }),
+      lv({ upgradeCost: { coins: 300 }, slots: 3, xp: 14, perks: ['New recipe: Coconut Rice Plate', '3 production slots', 'Outdoor tables under a canopy'] }),
+    ],
+  },
+  coworking: {
+    id: 'coworking',
+    name: 'Co-working Studio',
+    category: 'commercial',
+    description: 'Bright desks, good coffee and neighbours working on their ideas. Members pay a small desk fee.',
+    footprint: [2, 2],
+    unlockLevel: 4,
+    cost: { coins: 700 },
+    xp: 20,
+    maxCount: 1,
+    archetype: 'kl:coworking',
+    template: 'retail',
+    levels: [
+      lv({ passive: { coins: 11, seconds: 60, cycles: 10 }, perks: ['Desk fees: 11 coins / min'] }),
+      lv({ upgradeCost: { coins: 1100, items: { furniture: 2 } }, passive: { coins: 16, seconds: 60, cycles: 12 }, xp: 25, perks: ['Desk fees: 16 coins / min', 'Rooftop terrace'] }),
+    ],
+  },
   // ── Community ──────────────────────────────────────────────────────────
   park: {
     id: 'park',
@@ -383,6 +417,27 @@ BUILDINGS.spot_plaza = spot('plaza', 'Community Plaza', [3, 3], 'An empty square
 BUILDINGS.spot_playground = spot('playground', 'Playground', [3, 2], 'A bare lot with room for swings, a slide and a sandpit.');
 BUILDINGS.spot_lookout = spot('lookout', 'Sunset Lookout', [3, 2], 'A quiet rise with the best view of the evening sky.');
 
+/** City landmarks a modern world places around the neighbourhood (scenery: fixed, not built by the player). */
+const landmark = (id: string, name: string, footprint: [number, number], description: string): BuildingDef => ({
+  id,
+  name,
+  category: 'landmark',
+  description,
+  footprint,
+  unlockLevel: 99,
+  cost: {},
+  xp: 0,
+  maxCount: 1,
+  charm: 4,
+  hidden: true,
+  levels: [lv({ perks: [] })],
+  archetype: `kl:${id === 'petrol_station' ? 'petrol' : id}`,
+});
+BUILDINGS.mall = landmark('mall', 'Lifestyle Mall', [4, 3], 'A bright lifestyle mall with a food court, a cinema and a rooftop garden.');
+BUILDINGS.school = landmark('school', 'Primary School', [3, 3], 'The neighbourhood school, with a covered drop-off and a green field.');
+BUILDINGS.clinic_row = landmark('clinic_row', 'Shoplot Row', [3, 2], 'A row of shoplots: a family clinic, a pharmacy-style convenience corner and an office upstairs.');
+BUILDINGS.petrol_station = landmark('petrol_station', 'Fuel & EV Station', [3, 2], 'Fuel pumps, fast EV chargers and a little convenience shop.');
+
 /** Stand-in definition for a building whose content is unavailable (kept, shown closed). */
 const DORMANT: BuildingDef = {
   id: 'dormant',
@@ -402,7 +457,8 @@ const DORMANT: BuildingDef = {
 export const bdef = (type: string): BuildingDef => BUILDINGS[type] ?? { ...DORMANT, id: type, name: t('common.unknownBuilding') };
 export const isDormant = (type: string) => !BUILDINGS[type];
 
-export const isFixed = (type: string) => ['request_board', 'welcome_sign', 'pond', 'fountain', 'starter_house'].includes(type) || type.startsWith('spot_');
+export const isFixed = (type: string) =>
+  ['request_board', 'welcome_sign', 'pond', 'fountain', 'starter_house', 'mall', 'school', 'clinic_row', 'petrol_station'].includes(type) || type.startsWith('spot_');
 export const isDecoration = (type: string) => {
   const c = BUILDINGS[type]?.category;
   return c === 'decoration' || c === 'path';

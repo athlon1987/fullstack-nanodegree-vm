@@ -71,8 +71,8 @@ describe('content policy screen', () => {
     for (const text of fine) expect(screenText(text), text).toBeNull();
   });
 
-  it('all authored content passes: Kampung Seri, the core world and every module, in both languages', async () => {
-    expect(scanDocument(await raw('worlds/my.kampung_seri.json'))).toEqual([]);
+  it('all authored content passes: Seri Bayu, Kampung Seri, the core world and every module, in both languages', async () => {
+    for (const w of ['my.seri_bayu', 'my.kampung_seri']) expect(scanDocument(await raw(`worlds/${w}.json`)), w).toEqual([]);
     for (const id of MODULES) expect(scanDocument(await raw(`modules/${id}.json`), (p) => p.startsWith('realWorld.halal') || /^(approval|licensing)/.test(p)), id).toEqual([]);
     for (const lang of ['en', 'ms'] as const) {
       activate('core.maple_hollow', lang, T0);

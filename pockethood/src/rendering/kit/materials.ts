@@ -192,6 +192,30 @@ export const TEX = {
           c.fillRect((i * s) / 4, (j * s) / 4, s / 4, s / 4);
         }
     }),
+  /** Clean square concrete pavers (modern pavements and plazas). */
+  paving: () =>
+    canvasTex('paving', 128, (c, s) => {
+      c.fillStyle = shade(242);
+      c.fillRect(0, 0, s, s);
+      const n = 4;
+      const q = s / n;
+      for (let i = 0; i < n; i++)
+        for (let j = 0; j < n; j++) {
+          c.fillStyle = shade(236 + ((i * 7 + j * 3) % 4) * 4);
+          c.fillRect(i * q + 2, j * q + 2, q - 4, q - 4);
+        }
+    }),
+  /** Subtle facade panel joints for modern render/cladding. */
+  panels: () =>
+    canvasTex('panels', 128, (c, s) => {
+      c.fillStyle = shade(248);
+      c.fillRect(0, 0, s, s);
+      c.fillStyle = shade(228);
+      c.fillRect(0, s / 2 - 1, s, 2);
+      c.fillRect(s / 2 - 1, 0, 2, s);
+      c.fillRect(0, 0, s, 1);
+      c.fillRect(0, 0, 1, s);
+    }),
   asphalt: () =>
     canvasTex('asphalt', 128, (c, s) => {
       c.fillStyle = shade(235);

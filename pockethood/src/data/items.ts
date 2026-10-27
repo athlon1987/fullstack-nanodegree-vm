@@ -15,10 +15,14 @@ export const ITEMS: Record<string, ItemDef> = {
   bricks: { id: 'bricks', name: 'Bricks', value: 14, icon: 'bricks', kind: 'material', description: 'Sturdy building material.' },
   furniture: { id: 'furniture', name: 'Furniture', value: 45, icon: 'chair', kind: 'good', description: 'A handmade chair.' },
   veggie_basket: { id: 'veggie_basket', name: 'Veggie Basket', value: 52, icon: 'basket', kind: 'good', description: 'A generous market basket.' },
+  roti_canai: { id: 'roti_canai', name: 'Flatbread', value: 7, icon: 'roti_bakar', kind: 'good', description: 'Flaky, buttery and made to order.' },
+  nasi_lemak: { id: 'nasi_lemak', name: 'Coconut Rice Plate', value: 26, icon: 'nasi_lemak', kind: 'good', description: 'Fragrant rice with all the trimmings.' },
   jam: { id: 'jam', name: 'Berry Jam', value: 28, icon: 'jam', kind: 'good', description: 'Spread it on everything.' },
 };
 
 export const RECIPES: Record<string, RecipeDef> = {
+  roti_canai: { id: 'roti_canai', name: 'Flatbread', building: 'mamak', level: 1, inputs: {}, coins: 2, output: 'roti_canai', qty: 1, seconds: 20, xp: 1 },
+  nasi_lemak: { id: 'nasi_lemak', name: 'Coconut Rice Plate', building: 'mamak', level: 2, inputs: { vegetables: 1 }, output: 'nasi_lemak', qty: 1, seconds: 75, xp: 4 },
   coffee: { id: 'coffee', name: 'Coffee', building: 'cafe', level: 1, inputs: {}, coins: 2, output: 'coffee', qty: 1, seconds: 15, xp: 1 },
   breakfast: { id: 'breakfast', name: 'Breakfast Set', building: 'cafe', level: 2, inputs: { coffee: 1, bread: 1 }, output: 'breakfast', qty: 1, seconds: 90, xp: 4 },
   bread: { id: 'bread', name: 'Bread', building: 'bakery', level: 1, inputs: {}, coins: 3, output: 'bread', qty: 1, seconds: 30, xp: 1 },

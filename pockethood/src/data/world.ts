@@ -14,6 +14,8 @@ export interface WorldInfo {
   hoodName: string;
   avatar: string;
   biome: 'temperate' | 'tropical';
+  /** Architectural style: drives terrain, street furniture, background city and module prefabs. */
+  style: 'classic' | 'kampung' | 'urban';
   rainChance: number;
   layout: Placement[];
   /** First history entry for a new save. */
@@ -54,6 +56,7 @@ export const WORLD: WorldInfo = {
   hoodName: 'Maple Hollow',
   avatar: 'mini_female_d',
   biome: 'temperate',
+  style: 'classic',
   rainChance: 0,
   layout: CORE_LAYOUT,
   history: 'You moved into your Starter House.',

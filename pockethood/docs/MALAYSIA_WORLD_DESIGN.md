@@ -2,7 +2,9 @@
 
 > *A fictional Malaysian kampung of shoplots, timber houses and a quiet lake.* (world tagline)
 
-Kampung Seri is POCKETHOOD's default world: the first country world pack (`content/worlds/my.kampung_seri.json`, id `my.kampung_seri`, v1.0.0) plus four demo modules (`content/modules/*.json`). It reuses the core rules and economy. Only names, dialogue, art, layout, environment and module behaviours change. Everything in this document can be checked against those files and the code paths named.
+> **Since the urban release, the default Malaysian world is Seri Bayu** (URBAN_WORLD_DESIGN.md). Kampung Seri remains complete and playable as an optional cultural world (Settings → World).
+
+Kampung Seri was POCKETHOOD's first default world: the first country world pack (`content/worlds/my.kampung_seri.json`, id `my.kampung_seri`, v1.0.0) plus four demo modules (`content/modules/*.json`). It reuses the core rules and economy. Only names, dialogue, art, layout, environment and module behaviours change. Everything in this document can be checked against those files and the code paths named.
 
 ## 1. Premise
 

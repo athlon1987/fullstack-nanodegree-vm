@@ -9,7 +9,7 @@ The style was chosen to be *achievable with assets we can legally obtain and ext
 - The richest CC0 character set reachable from this environment is **Kenney Mini Characters** — chunky, big-headed, readable at small sizes, with 32 animation clips. Their proportions (≈2.5 heads tall) set the scale and "softness" of everything else.
 - Kenney's **Car, Nature and Food kits** share the same flat-colour palette-texture approach, so they sit naturally beside the characters.
 - No cozy residential/shop building pack was reachable (Kenney City Kit Commercial is modern grey blocks — evaluated and rejected; see ASSET_GAPS.md). Buildings are therefore authored as an **original parametric architecture kit** that matches the Kenney silhouette language: rounded boxes, chunky trim, exaggerated roofs.
-- The kit has two regional families. The **core kit** (`src/rendering/kit/archetypes.ts`) is the temperate cottage village of Maple Hollow. The **Malaysian kit** (`src/rendering/kit/malaysia.ts`) draws Kampung Seri, the default world. A world pack picks the family per building through its `archetype` field. Both share the same parts, materials and scale.
+- The kit has three regional families. The **core kit** (`src/rendering/kit/archetypes.ts`) is the temperate cottage village of Maple Hollow. The **Malaysian kit** (`src/rendering/kit/malaysia.ts`) draws Kampung Seri. The **modern KL kit** (`src/rendering/kit/urban.ts`) draws Seri Bayu, the default world (see *Modern KL kit* below). A world pack picks the family per building through its `archetype` field. Both share the same parts, materials and scale.
 
 ## Shape language
 - Rounded, bevelled volumes (`RoundedBoxGeometry`, 1–2 segment bevels) — nothing razor-sharp.
@@ -74,6 +74,17 @@ Time of day and weather are **atmosphere only**: they never slow production, blo
 | Post-rain sunshine | Brighter, warmer sun and a soft rainbow overlay for a short while after a shower (daytime only) | `Lighting.tsx`, `GameCanvas.tsx` `Rainbow` |
 
 The **Battery saver** setting caps rendering at 30 fps (`GameCanvas.tsx`).
+
+## Modern KL kit (Seri Bayu)
+The default world is a bright, premium, contemporary Klang Valley township: **not** rural, wooden or weathered.
+
+- **Palette (`U` in `urban.ts`):** clean whites and warm off-whites for walls (`#f8f7f2`, `#fbf3e6`), pale paving (`#eee8dc`), cool slate roofs (`#75818f`) and warm tiles for semi-Ds, timber fins (`#c48a57`) for warmth. Colour comes from **accents**: teal `#22b3a6`, coral `#ff7b67`, sky `#4fb0f0`, butter `#ffd166`, pink, lilac and mint, on awnings, pilasters, sign bands, furniture and play equipment. Lawns are vivid but not neon (`#6cc157`), and the lake is teal (`#2ec4cf`).
+- **Shapes:** crisp, lightly bevelled boxes; flat roofs with parapets, or slim hip and gable roofs; big glazing with mullions; vertical timber fins; slim charcoal columns. Every shoplot unit has a glass shopfront, a **coloured awning over the five-foot way**, a sign band above it (readable from the camera), coloured corner pilasters and upper floors with fins (`shopUnit`).
+- **Streets:** asphalt with white markings, paved kerbs and pavements, LED lamps (warm light pools after dark), palms and rain trees, parking bays with cars, a planted median under the LRT viaduct, and a covered walkway.
+- **Untouched land** is a tidy vacant lot behind painted hoarding (white panels, a teal band and bright dots), never mud or weeds. Locked plots carry a few shade trees.
+- **Lighting:** neutral tone mapping (exposure 0.98) keeps paint and signage true; a soft `RoomEnvironment` reflection (intensity 0.32, dimmed at night) gives glass, metal and glossy facades their polish; the sky gradient is a touch clearer and bluer. Night: lit windows across the skyline, glowing station, and lamp pools.
+- **Avoid:** kampung houses or timber stilts as the main environment, muddy roads, rustic props, dull or washed-out colours, real landmarks (the skyline's spire is invented), and real brand identities without a licence.
+- **Dev tool:** `tools/kit/sheet.html?a=kl:terrace,kl:condo&level=2` (dev server) renders any archetypes side by side under game lighting.
 
 ## Life & motion
 Trees sway gently (per-instance phase), chimneys puff, cars drive the main street, birds cross the sky, butterflies circle flower beds, residents walk their routines and stop to chat, and pets wander and react when tapped. The community landmark grows in visible stages: the fountain sprays once built in Maple Hollow, and the lakeside pavilion (*pondok*) gains posts, floor and roof in Kampung Seri. Shared spots change at every finished step (see *Shared spots*). Residents wave when they pass each other and show small emote bubbles (♥ ♪ ☺ ★ …), hidden in Zen Mode. Showroom cars turn slowly on their turntables. All of this honours the **Reduced motion** setting; rain also falls more slowly under it.

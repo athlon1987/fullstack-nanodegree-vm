@@ -20,11 +20,22 @@ The enhancement brief's priorities, in its order:
 | 5 · Content standards | Content policy, automatic screen in every language, content tags, scrubbed Kampung Seri, name screening, save migration | `policy.test.ts`; CONTENT_POLICY.md |
 | 6 · Audio & visual QA | Offline audio analysis, spot and atmosphere contact sheets, 14 browser tests | DEVELOPMENT_STATUS.md |
 
+## Stage 1.6 — Modern Klang Valley world (done in this build)
+The revised brief moves the default setting from a rural kampung to modern KL / Klang Valley.
+
+| What was done | Evidence |
+|---|---|
+| **Seri Bayu** world pack (default for Malaysia): 51 building overrides, 9 residents, 23 quests (incl. new mamak and co-working quests), 18 stories, 8 celebrations, Fountain Plaza project; all text in English and Malay | `urban.test.ts` (valid, default, bilingual, policy-clean, same tutorial and rewards as Kampung Seri); `pacing.test.ts` now covers three worlds |
+| Modern KL architecture kit (23 `kl:*` archetypes) and urban prefabs for the four demo modules | kit contact sheets; screenshots |
+| New buildings: Mamak Corner (`restaurant` template: roti canai, nasi lemak) and Co-working Hub (`retail`, passive income); four fixed city landmarks | unit tests; content build |
+| Cityscape: LRT viaduct, station and trains, covered walkway, ring road with lamps, trees and traffic, skyline and flyover; urban terrain; neutral tone mapping and environment reflections | screenshots (day, golden hour, night) |
+| Kampung Seri kept as an optional cultural world | world list; e2e still runs its module flows |
+
 ## Stage 2 — Hardening, real devices and real ears (next)
 1. **Listening tests** for the soundtrack (team + 10–20 players; phone speakers and headphones): is the theme catchy and pleasant on repeat? Iterate the theme and instruments; brief a composer (AUDIO_ASSET_MANIFEST.md §6).
 2. **Playtests** of the first session (5 + 5 players per language): confirm the pacing model, watch for confusion and waiting.
 3. **Real-device performance pass** (mid-range Android, older iPhones): draw calls, shadows, instancing of repeated kit parts, texture budget, audio synthesis CPU, battery saver; target 60 fps mid-range, 30 fps floor.
-4. **Native-speaker and cultural review** of all Malay text and the Kampung Seri content, against CONTENT_POLICY.md.
+4. **Native-speaker and cultural review** of all Malay text and the Seri Bayu and Kampung Seri content, against CONTENT_POLICY.md; a place-name/trademark search for "Seri Bayu" and its fictional landmarks.
 5. **Economy:** engaged players still bank too many coins by day 30 (ECONOMY_SIMULATION.md). Add more creative sinks (a second district, more shared spots, decoration sets), and revisit passive income at high levels.
 6. Accessibility audit (screen reader labels in 3D overlays, contrast, reduced-motion coverage), larger touch targets on small phones; visual regression baselines in CI.
 

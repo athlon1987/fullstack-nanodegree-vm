@@ -436,7 +436,7 @@ function bengkel(c: ArchCtx) {
 }
 
 /** Wide-canopied rain tree (procedural so it reads tropical at a glance). */
-function rainTree(g: THREE.Object3D, x: number, z: number, s = 1) {
+export function rainTree(g: THREE.Object3D, x: number, z: number, s = 1) {
   const bark = mat('#6b5440');
   cyl(g, 0.05 * s, 0.08 * s, 0.6 * s, bark, x, 0, z, 7);
   for (const a of [0.6, 2.4, 4.2]) box(g, 0.03 * s, 0.3 * s, 0.03 * s, bark, x + Math.cos(a) * 0.1 * s, 0.45 * s, z + Math.sin(a) * 0.1 * s, 0.01, [Math.sin(a) * 0.6, 0, Math.cos(a) * 0.6]);
@@ -604,7 +604,7 @@ function tasik() {
 
 // ─── Templates dressed by modules ───────────────────────────────────────────
 
-function showroomGlass(c: ArchCtx, pal = { primary: '#2f6fb3', secondary: '#eef3f7', accent: '#e9b23c' }, sign?: string) {
+export function showroomGlass(c: ArchCtx, pal = { primary: '#2f6fb3', secondary: '#eef3f7', accent: '#e9b23c' }, sign?: string) {
   const g = new THREE.Group();
   const w = 2.6;
   const d = 0.85;
@@ -680,7 +680,7 @@ function learningHouse(c: ArchCtx, pal = { primary: '#8a6fd1', secondary: '#fbf3
   return g;
 }
 
-function communityGarden(c: ArchCtx, pal = { primary: '#4f9a52', secondary: '#f3e6c8', accent: '#e05a3a' }, sign?: string) {
+export function communityGarden(c: ArchCtx, pal = { primary: '#4f9a52', secondary: '#f3e6c8', accent: '#e05a3a' }, sign?: string) {
   const g = new THREE.Group();
   box(g, 1.9, 0.03, 1.9, mat('#8a6a48', { roughness: 1 }), 0, 0, 0, 0.01);
   const plank = mat(C.timberLight, { map: TEX.planks(), repeat: [2, 1] });

@@ -2,6 +2,54 @@
 
 _Last updated 2026-10-27. Status keys: **Completed and tested** · **Implemented** (verified by hand/screenshot/measurement, no automated test) · **Partially implemented** · **Designed, not built** · **Not started**._
 
+## Milestone: Modern Klang Valley world — Seri Bayu
+
+The revised brief moves the default setting from a rural kampung to **modern Kuala Lumpur and the Klang Valley**: bright, polished, contemporary and welcoming. Built on the previous milestones (platform, soundtrack, community, Zen Mode). This is still a playable single-player build, **not a production release** (no backend, accounts, signed content enforcement or real partners; SECURITY_ARCHITECTURE.md §10).
+
+### Test results (this build)
+| Suite | Result |
+|---|---|
+| `npm test` (Vitest) | **98 / 98 passed**. New: `urban.test.ts` checks that Seri Bayu is valid and the Malaysian default; installs with the urban style; every dressed building uses a registered `kl:*` archetype; no kampung houses; city landmarks are placed; every text is in English and Malay; it passes the content policy; and its tutorial, quest order and rewards match Kampung Seri. First-session pacing passes in **all three worlds**, and the policy scan covers both Malaysian worlds |
+| `npm run test:e2e` (Playwright, Chromium/SwiftShader) | **14 / 14 passed**. Updated for the new default world: the game loads into Seri Bayu with Uncle Lim's introduction and the city landmarks placed; switching the kopitiam module off falls back to the world's own unbranded Corner Kopitiam with nothing lost; the Pocket Park and the neighbourhood-name flows run in Seri Bayu. The kopitiam, quiz, Zen, music, sharing and Malay flows run unchanged |
+| `npm run content:build` | Pass: 6 countries, **2 worlds**, 4 modules |
+| `npm run typecheck` / `npm run build` | Pass |
+
+### Brief → status (honest)
+| Brief item | Status |
+|---|---|
+| Modern KL/Klang Valley as the main environment (not a rural kampung) | **Implemented**: Seri Bayu is the default; Kampung Seri is kept as an optional cultural world |
+| Bright, vibrant, premium look: richer colours, better lighting, cleaner textures | Implemented (neutral tone mapping, environment reflections, vivid accent palette, paving/panel textures); judged from screenshots, not yet by players |
+| Condos, terrace and semi-D homes, gated feel | Implemented (terrace with porch and gate, semi-D, 9-storey condo with rooftop pool; guard-house gateway) |
+| Shoplots, cafés, kopitiam, mamak, dessert shop, convenience store | Implemented (modern shoplot unit; Mamak Corner is a new building with roti canai and nasi lemak) |
+| Malls, schools, clinics, offices / co-working | Mall, primary school and a shoplot row with a family clinic are **fixed scenery**; Co-working Hub is a new player building |
+| Playgrounds, parks, jogging tracks | Implemented (park with jogging track and exercise bars; playground spot) |
+| Petrol station and EV chargers | Implemented (fuel & EV station landmark; chargers at the EV showroom) |
+| LRT/MRT, covered walkways, elevated roads, highways, flyovers | Implemented as animated scenery (viaduct, station, two trains, covered walkway, ring road with traffic, flyover with traffic). Not rideable |
+| Clean streetscapes, urban trees, signage, lamps, parking | Implemented (pavements, kerbs, markings, LED lamps with night light pools, palms and rain trees, sign bands, parking bays) |
+| Peaceful, no religion or politics | Completed and tested (policy screen over the new world in both languages) |
+| Modular, expandable; businesses blend in | Implemented: new buildings use existing templates (mamak → `restaurant`, co-working → `retail`); demo modules dress the city through urban prefabs; SPONSOR_PLATFORM.md maps each business type to its place in the city |
+| Catchy, calming lo-fi music | Unchanged from the previous milestone: original and measured, **not yet listened to by people** |
+
+### Feature status (new in this milestone)
+| Area | Status | Where |
+|---|---|---|
+| Seri Bayu world pack: 51 building overrides, 9 residents, 23 quests, 18 stories, 8 celebrations, Fountain Plaza project, en + ms | Completed and tested | `content/worlds/my.seri_bayu.json`, `urban.test.ts` |
+| World `style` (`classic` / `kampung` / `urban`) in the schema and world info | Completed and tested | `schema.ts`, `install.ts`, `world.ts` |
+| Modern KL kit: 23 `kl:*` archetypes, urban module prefabs, urban decorations | Implemented (contact sheets and screenshots) | `src/rendering/kit/urban.ts` |
+| Mamak Corner, Co-working Hub, 4 fixed landmarks (hidden in other worlds) | Completed and tested | `buildings.ts`, `items.ts` |
+| Cityscape: LRT and trains, station, covered walkway, median, ring road with lamps, trees and cars, skyline with night windows, flyover | Implemented (screenshots day, golden hour, night) | `src/rendering/scene/City.tsx` |
+| Urban terrain: podium island, lawns, paving paths, tidy lots, hoarded vacant spots | Implemented | `Terrain.tsx`, `community.ts` |
+| City lighting: neutral tone mapping, studio environment map, clearer sky | Implemented (other worlds keep ACES) | `GameCanvas.tsx`, `Lighting.tsx` |
+| Kit contact-sheet dev tool | Implemented | `tools/kit/sheet.html` |
+
+### Known limits (this milestone)
+1. **Taste is unverified.** "Vibrant, premium, welcoming" is judged from screenshots by the developer; it needs player feedback (and an art pass by a human artist before launch).
+2. **City performance is unmeasured on real devices.** On the starting scene (High preset) the city draws ~505 calls and ~181k triangles, against ~410 calls and ~113k triangles for Kampung Seri: about 5 % over the ≤ 500 desktop draw-call target (PERFORMANCE_BUDGET.md). Frame-time measurements on mid-range Android are still needed.
+3. City landmarks, the LRT and the mall are scenery: they can't be entered or ridden, residents don't commute, and traffic doesn't stop at junctions.
+4. Names ("Seri Bayu", "Jalan Bayu", the mall and school) are fictional and still need a place-name and trademark search. The Malay text has had no native-speaker review.
+5. Some items use stand-in icons (mango → berries, orchid arrangement → garland, mango cake → pie).
+6. In Kampung Seri, the new Mamak Corner uses the modern kit look.
+
 ## Milestone: Brand identity enhancement — peaceful world, signature soundtrack, fast play, community
 
 Built on top of the Living World milestone (Kampung Seri, modular platform, four demo modules, English + Bahasa Melayu, Zen Mode, sharing, PWA). This is a playable single-player build. **It is not a production release**: there is no backend, no accounts, no signed content enforcement and no real partners; passing tests does not make it secure or ready for launch (SECURITY_ARCHITECTURE.md §10).
@@ -68,4 +116,4 @@ Everything listed in the previous milestone remains as described there (platform
 See DEVELOPMENT_ROADMAP.md Stage 2: listening tests and composer brief → first-session playtests → real-device performance → native-speaker and cultural review → economy sinks → accessibility.
 
 ## Screenshots
-`docs/screenshots/35–39`: the four shared spots at stages 0, 2 and 4; atmosphere states (sunrise mist, morning, afternoon clouds, golden hour, evening, rain, after rain); the whole neighbourhood after rain with its rainbow; the Together screen. `20–34` show the Living World milestone, `01–13` the first-playable classic world.
+`docs/screenshots/40–46`: Seri Bayu overview, shoplots and LRT, golden hour, night, and kit contact sheets (shoplots; homes and civic), first launch on a phone (46). `35–39`: the four shared spots at stages 0, 2 and 4; atmosphere states (sunrise mist, morning, afternoon clouds, golden hour, evening, rain, after rain); the whole neighbourhood after rain with its rainbow; the Together screen. `20–34` show the Living World milestone, `01–13` the first-playable classic world.

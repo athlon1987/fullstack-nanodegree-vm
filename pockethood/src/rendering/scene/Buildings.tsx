@@ -76,6 +76,7 @@ const BuildingView = memo(function BuildingView({ b }: { b: BuildingInstance }) 
       hoodName: hood,
       stage,
       biome: WORLD.biome,
+      style: WORLD.style,
       name: def.name,
       module: m ? { id: `${m.id}@${m.version}`, prefab: m.prefab, palette: m.brand.palette, sign: m.brand.signText, props: m.props } : undefined,
       text:
@@ -186,7 +187,7 @@ const BuildingView = memo(function BuildingView({ b }: { b: BuildingInstance }) 
       {selected && <SelectionRing w={fw} d={fd} />}
       {!isDeco && <ContactShadow w={fw} d={fd} />}
       {smoke.length > 0 && !building && <Smoke anchors={smoke} rot={b.rot} />}
-      {def.archetype === 'fountain' && stage === 4 && <FountainSpray />}
+      {(def.archetype === 'fountain' || def.archetype === 'kl:fountain') && stage === 4 && <FountainSpray />}
       {!isDeco && !zen && b.type !== 'pond' && b.type !== 'welcome_sign' && <StatusBubble b={b} height={buildingHeight(b.type)} />}
       {hinted && (
         <Html portal={htmlPortal} position={[0, buildingHeight(b.type) + 0.9, 0]} center zIndexRange={[21, 0]}>

@@ -11,6 +11,39 @@ import { Buildings } from './Buildings';
 import { GroundInteraction, Placement } from './Placement';
 import { Terrain } from './Terrain';
 import { htmlPortal, weatherState, worldClock } from './coords';
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
+import { useFrame } from '@react-three/fiber';
+import { WORLD } from '../../data/world';
+
+/** City look: neutral tone mapping keeps saturated paint and signage true, and a soft studio
+ *  reflection gives glass, metal and glossy facades their polish. Other worlds keep ACES. */
+function CityLook() {
+  const gl = useThree((s) => s.gl);
+  const scene = useThree((s) => s.scene);
+  const rev = useGame((s) => s.contentRev);
+  useEffect(() => {
+    if (WORLD.style !== 'urban') {
+      gl.toneMapping = THREE.ACESFilmicToneMapping;
+      gl.toneMappingExposure = 1.05;
+      scene.environment = null;
+      return;
+    }
+    gl.toneMapping = THREE.NeutralToneMapping;
+    gl.toneMappingExposure = 0.98;
+    const pmrem = new THREE.PMREMGenerator(gl);
+    const env = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+    scene.environment = env;
+    return () => {
+      scene.environment = null;
+      env.dispose();
+      pmrem.dispose();
+    };
+  }, [gl, scene, rev]);
+  useFrame(() => {
+    if (scene.environment) scene.environmentIntensity = 0.32 * (1 - worldClock.night * 0.75);
+  });
+  return null;
+}
 
 /** Battery saver: render on demand at a steady 30 fps instead of every display frame. */
 function FrameCap({ fps }: { fps: number }) {
@@ -79,6 +112,7 @@ export function GameCanvas() {
       >
         {saver && <FrameCap fps={30} />}
         <CameraRig />
+        <CityLook />
         <Lighting onSky={onSky} />
         <Terrain />
         <GroundInteraction />

@@ -7,6 +7,7 @@ import { clock } from '../../services/clock';
 import { useGame } from '../../state/store';
 import { setNightAmount } from '../kit/materials';
 import { weatherState, worldClock } from '../scene/coords';
+import { WORLD } from '../../data/world';
 
 const KEYS: { h: number; sun: string; sunI: number; sky: string; ground: string; hemiI: number; bgTop: string; bgBottom: string }[] = [
   { h: 0, sun: '#7f8fcf', sunI: 0.45, sky: '#6676b4', ground: '#343e5c', hemiI: 0.72, bgTop: '#1f2a52', bgBottom: '#44558a' },
@@ -95,6 +96,11 @@ export function Lighting({ onSky }: { onSky: (top: string, bottom: string) => vo
     const night = hour < 6 || hour > 20 ? 1 : hour < 7.5 ? (7.5 - hour) / 1.5 : hour > 18.5 ? (hour - 18.5) / 1.5 : 0;
     worldClock.night = night;
     setNightAmount(night);
+    // The city sky is a touch clearer and bluer than the countryside haze.
+    if (WORLD.style === 'urban') {
+      s.bgTop.offsetHSL(0, 0.1, -0.02);
+      s.bgBottom.offsetHSL(0, 0.06, 0);
+    }
     const key = `${s.bgTop.getHexString()}${s.bgBottom.getHexString()}`;
     if (key !== lastSky.current) {
       lastSky.current = key;

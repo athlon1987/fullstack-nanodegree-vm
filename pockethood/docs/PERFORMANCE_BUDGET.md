@@ -14,6 +14,17 @@ Measured with `renderer.info` on the starting neighborhood (desktop, High preset
 
 Optimisations applied: baked archetypes (merge per material, dequantised CC0 geometry merges too), shared/tinted material cache, per-plot baked wilderness, merged road markings, instanced grass/flowers/path tiles, lower bevel segment counts on small parts, small decorations don't cast shadows, throttled shadow-map updates on Medium/Low, idle engine ticks return the same state object (no React re-render storms).
 
+### Seri Bayu, the city world (this build)
+Same method (starting neighbourhood, High preset, `renderer.info`, SwiftShader):
+
+| Metric | First city build | After city optimisation | Kampung Seri (same build) |
+|---|---|---|---|
+| Draw calls (incl. shadow pass) | 609 | **~505** | ~410 |
+| Triangles | 193k | ~181k | ~113k |
+| Geometries | 381 | 335 | 244 |
+
+City optimisations: trains, the station and every city car are baked to one mesh per material; median shrubs and street props are merged; far traffic and skyline cast no shadows; lamp light pools are a single instanced mesh; and (for every world) baked pieces that are tiny (< 0.35 units) or flat (< 0.05 tall) no longer draw into the shadow map. **The city is at the edge of the desktop draw-call target (≤ 500), and about 5 % over it.** Next steps if real devices need it: merge static city layers (LRT deck, walkway, ring road) into one baked group, use an instanced car fleet, and drop the skyline flyover traffic on Medium/Low.
+
 ## Targets
 | | Desktop (High) | Mid-range mobile (Medium/Low) |
 |---|---|---|

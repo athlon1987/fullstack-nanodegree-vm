@@ -11,6 +11,9 @@ const SOIL = '#b08a5e';
 /** Seasonal refreshes of a finished spot rotate its colour scheme (bunting, flowers, canopies). */
 const SEASONS = [FLOWERS, ['#ffd34d', '#ff8a5b', '#e0413a', '#fffaf0', '#f2a93b'], ['#7fd0e6', '#c084fc', '#ffffff', '#9be38b', '#3f8fd1'], ['#ff6f91', '#ffffff', '#e85d75', '#ffd9e0', '#c084fc']];
 let palette = FLOWERS;
+/** Modern township look (set per build): paving instead of cobbles, tidy hoarded lots instead of weeds. */
+let city = false;
+const pave = () => (city ? TEX.paving() : TEX.cobbles());
 const LAWN = '#79c25a';
 const WEED = ['#5f8f3a', '#6fa043', '#7aa84a'];
 
@@ -31,7 +34,7 @@ function overgrown(g: THREE.Group, w: number, d: number, seed: number) {
 }
 
 function soonSign(g: THREE.Group, text: string, x: number, z: number) {
-  for (const sx of [-1, 1]) cyl(g, 0.015, 0.015, 0.36, mat(P.wood), x + sx * 0.24, 0, z, 5);
+  for (const sx of [-1, 1]) cyl(g, 0.015, 0.015, 0.36, mat(city ? '#3a4049' : P.wood, city ? { metalness: 0.4, roughness: 0.4 } : {}), x + sx * 0.24, 0, z, 5);
   signBoard(g, text, x, 0.32, z, { w: 0.62, h: 0.16, bg: '#fffaf0', fg: '#2f6b45' });
 }
 
@@ -83,7 +86,7 @@ function park(ctx: ArchCtx, stage: number) {
     return g;
   }
   // Stepping-stone path from the front
-  for (let i = 0; i < 5; i++) cyl(g, 0.12, 0.13, 0.03, mat('#d9cdb8', { map: TEX.cobbles() }), Math.sin(i * 0.9) * 0.15, 0.04, 1.2 - i * 0.45, 9);
+  for (let i = 0; i < 5; i++) cyl(g, 0.12, 0.13, 0.03, mat('#d9cdb8', { map: pave() }), Math.sin(i * 0.9) * 0.15, 0.04, 1.2 - i * 0.45, 9);
   if (stage === 1) {
     for (const [x, z] of [[-0.9, -0.8], [0.9, -0.8], [-0.9, 0.6]]) cyl(g, 0.012, 0.015, 0.3, mat(P.wood), x, 0.04, z, 5), sphere(g, 0.09, mat('#7fbf5a'), x, 0.32, z, 7);
     box(g, 0.5, 0.08, 0.3, mat(SOIL), 0.8, 0.04, 0.5, 0.02);
@@ -124,7 +127,7 @@ function plaza(ctx: ArchCtx, stage: number) {
     soonSign(g, ctx.text?.soon ?? '', 0, 1.25);
     return g;
   }
-  ground(g, 3, 3, '#e6d8bd', TEX.cobbles(), [5, 5]);
+  ground(g, 3, 3, city ? '#efe9dd' : '#e6d8bd', pave(), [5, 5]);
   if (stage === 1) {
     prop(g, 'barrels', 0.3, -1.05, 0.04, -1.05);
     for (const x of [-0.6, 0, 0.6]) box(g, 0.4, 0.05, 0.4, mat('#c4553e', { map: TEX.tiles() }), x, 0.04, 1.0, 0.01);
@@ -214,7 +217,7 @@ function lookout(ctx: ArchCtx, stage: number) {
     soonSign(g, ctx.text?.soon ?? '', 0.6, 0.8);
     return g;
   }
-  ground(g, 3, 2, '#d9c3a0', TEX.cobbles(), [5, 3]);
+  ground(g, 3, 2, city ? '#ece5d6' : '#d9c3a0', pave(), [5, 3]);
   if (stage >= 2) {
     // Timber deck with a rail
     box(g, 2.4, 0.12, 1.2, mat(P.wood, { map: TEX.planks(), repeat: [6, 2] }), 0, 0.04, -0.2, 0.02);
@@ -237,10 +240,38 @@ function lookout(ctx: ArchCtx, stage: number) {
   return g;
 }
 
+/** In town, an untouched spot is a tidy vacant lot behind cheerful hoarding, not a muddy patch. */
+function vacantLot(ctx: ArchCtx, w: number, d: number, seed: number) {
+  const g = new THREE.Group();
+  ground(g, w, d, '#e4dfd4', TEX.paving(), [w * 2, d * 2]);
+  // Painted hoarding along the back and sides: white panels, a teal band and bright dots
+  const panel = mat('#fbfaf6', { roughness: 0.7 });
+  const band = mat('#22b3a6');
+  const runs: [number, number, number, number][] = [[0, -d / 2 + 0.06, w - 0.12, 0], [-w / 2 + 0.06, 0, d - 0.12, Math.PI / 2], [w / 2 - 0.06, 0, d - 0.12, Math.PI / 2]];
+  for (const [x, z, len, ry] of runs) {
+    box(g, len, 0.42, 0.03, panel, x, 0.04, z, 0.004, [0, ry, 0]);
+    box(g, len, 0.06, 0.035, band, x, 0.36, z, 0.004, [0, ry, 0]);
+  }
+  const dots = ['#ff7b67', '#ffd166', '#4fb0f0', '#a6e8cf', '#ff9ec4'];
+  for (let i = 0; i < Math.round(w * 2.5); i++) sphere(g, 0.05 + ((i * 7 + seed) % 3) * 0.015, mat(dots[(i + seed) % 5]), -w / 2 + 0.25 + (i * (w - 0.5)) / Math.max(1, Math.round(w * 2.5) - 1), 0.2 + ((i * 5 + seed) % 3) * 0.04, -d / 2 + 0.08, 12, [1, 1, 0.3]);
+  // A couple of potted shrubs and the sign
+  for (const x of [-w / 2 + 0.35, w / 2 - 0.35]) {
+    cyl(g, 0.12, 0.1, 0.16, mat('#d6d1c6'), x, 0.04, d / 2 - 0.3, 12);
+    sphere(g, 0.14, mat('#4caf50'), x, 0.28, d / 2 - 0.3, 8);
+  }
+  soonSign(g, ctx.text?.soon ?? '', 0, d / 2 - 0.25);
+  return g;
+}
+
 export function spotArchetype(id: string, ctx: ArchCtx): THREE.Group | null {
   const raw = Math.max(0, ctx.stage ?? 0);
   const stage = Math.min(4, raw);
   palette = SEASONS[Math.max(0, raw - 4) % SEASONS.length];
+  city = ctx.style === 'urban';
+  if (city && stage === 0) {
+    const size: Record<string, [number, number]> = { 'spot:park': [3, 3], 'spot:plaza': [3, 3], 'spot:playground': [3, 2], 'spot:lookout': [3, 2] };
+    if (size[id]) return vacantLot(ctx, size[id][0], size[id][1], id.length);
+  }
   switch (id) {
     case 'spot:park':
       return park(ctx, stage);
