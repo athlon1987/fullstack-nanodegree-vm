@@ -8,8 +8,62 @@ A cozy social neighbourhood-building game. You start with one little house on a 
 
 **Worlds.** The default world is **Kampung Seri**, a fictional Malaysian kampung (see MALAYSIA_WORLD_DESIGN.md). **Maple Hollow** is the built-in classic, neutral core world. It always works offline and can be chosen in **Settings → Neighbourhoods**. Both run the same rules and economy. They differ in names, residents, dialogue, art, layout and environment.
 
+## Brand identity
+
+> *A happy little world, full of life, where there's always something wonderful to create.*
+> *Life is better when we build something beautiful together.*
+
+Four things define POCKETHOOD and apply everywhere — authored content, partner modules, audio and UI:
+
+1. **A peaceful world.** Warm, cheerful, welcoming. Themes: friendship, kindness, cooperation, creativity, nature, everyday accomplishments, helping others. No religion, politics, conflict or divisive messaging in any language or country; cultural diversity shows through food, architecture, art, music, landscapes and everyday community life (CONTENT_POLICY.md). Characters have personalities and gentle humour; disagreements are light and end happily.
+2. **Calm atmosphere, fast feedback.** The world is relaxing; the play is responsive and full of small, meaningful choices (§Pacing). Engagement comes from fun and mastery, never pressure.
+3. **Community first.** Helping the neighbourhood is the most rewarding thing you can do, and it visibly changes the world (§Community).
+4. **A signature soundtrack.** An original, catchy lo-fi theme that adapts to what you're doing (§Music, AUDIO_ASSET_MANIFEST.md).
+
+**Play styles.** *Standard* is the default: upbeat music, fairly fast progression, quick rewards, construction, production, quests, social activities. *Zen Mode* is the meditative alternative on the same world and save (§Zen Mode). Switching never loses progress or resources.
+
+**Wording rule.** Describe the game as cosy, relaxing, cheerful, calm. Never claim it treats or reduces stress, anxiety or any medical condition.
+
 ## Core loop
 `COLLECT → PRODUCE → BUILD → UPGRADE → UNLOCK → CONNECT → REPEAT`
+
+The **social happiness flywheel** wraps it: *Play → Improve your world → Help others → Build community → Unlock shared experiences → Discover new goals → Play.* A good action should pay off beyond coins: a park attracts residents, a café becomes a meeting place, finishing a shared spot unlocks a celebration, helping a neighbour deepens a friendship.
+
+**Action chain example (Kampung Seri):** brew kopi → serve the first request → earn coins → upgrade the kopitiam (marble tables appear) → unlock the breakfast set → fulfil Uncle Lim's story → earn the kopitiam parasol keepsake → help clear Taman Poket → open it with a picnic → the Garden Party celebration begins there.
+
+## Pacing
+
+Targets from the design brief, validated by the first-session model (`src/game/sim/firstSession.ts`, `src/game/pacing.test.ts`): a human-paced new player (1.5 s per tap, 4 s per placement, 2.5 s per dialogue line) following the guide, on the real engine and content.
+
+| Milestone | Target | Kampung Seri (model) | Maple Hollow (model) |
+|---|---|---|---|
+| Meet a resident | at once | 0 s | 0 s |
+| First resources collected | ≤ 20 s | 5 s | 5 s |
+| First reward | ≤ 60 s | 5 s | 5 s |
+| A business constructed | ≤ 60 s | 20 s | 20 s |
+| First product made | ≤ 90 s | 47 s | 44 s |
+| First customer request completed | ≤ 150 s | 65 s | 64 s |
+| First upgrade / decoration | ≤ 5 min | ≈ 2.5 min | ≈ 2.3 min |
+| Next objective visible | always | ✓ | ✓ |
+| Longest stretch with nothing useful to do (first 15 min) | ≤ 20 s | ≤ 15 s | ≤ 20 s |
+
+These are model results, not playtests; they show the design allows the pace. Real playtests must confirm the feel.
+
+What keeps it moving without timers walls: early requests arrive every 30 s (levels 1–2) and 60 s (3–4) before settling at 2 minutes; basic recipes take 15–40 s; small buildings construct in 5–20 s; and there is always something else to do — hand-made specials, garden plots, fishing, pets, chatting, decorating, giving to a shared spot. Longer chains (pies, furniture, the lookout) are optional and never block the rest of the world.
+
+## Community
+
+**Shared spots** (`src/data/spots.ts`): four places just beyond your land that the whole neighbourhood transforms together — an overgrown corner → **pocket park** (L2), an empty square → **community plaza** (L3), a bare lot → **playground** (L5), a dusty rise → **sunset lookout** (L7). Each has four steps with visible changes (cleared → planted → furnished → finished with bunting, lights and residents gathering). Give coins and goods in any amounts; each finished step brings XP and friendship with *every* neighbour, never coins. A finished spot unlocks a keepsake and a celebration, and can optionally be refreshed each season for a fresh colour scheme (needs grow each time). Spots are the economy's main coin sink and the clearest link between generosity and a more beautiful world.
+
+**Celebrations** rotate with a day's rest in between: Flower Festival, Street Food Day, Music Night, Garden Party (needs the park), Community Market (plaza), Pet Parade (playground), Outdoor Movie Night (lookout), Town Anniversary. Small, optional, about togetherness; never tied to a religious or political date.
+
+**Residents' social life:** neighbours wave when they pass, stop to chat, gather at the café, visit shops, relax in finished spots, lend a hand at spots in progress, come to admire a new decoration, and gather to cheer when a step is finished or a celebration starts — with small emote bubbles (hidden in Zen Mode). The neighbourhood is alive even when you're just watching.
+
+**Solo by design.** Everything works with NPC neighbours; online social play is optional and never a progression gate.
+
+## Music
+
+An original adaptive score (AUDIO_ASSET_MANIFEST.md): one 8-bar theme in F major arranged eight ways — town (piano, 92 BPM), building (marimba, 104), café (jazzy Rhodes and walking bass, 96), garden (plucked guitar, 95), night (mellow keys, 84), celebration (brighter, claps, 112), mini-games (marimba, 108) and Zen (the hook alone on vibraphone, 72, no drums). The music changes at bar lines without restarting; milestones get short, in-key flourishes; every feedback sound is tuned to the same key.
 
 | Verb | What the player does | Feedback |
 |---|---|---|
@@ -64,7 +118,8 @@ Completing chapters changes the world through flags: chalkboard menu, brunch tab
 - **Levels:** 10 designed levels of unlocks (30 total). XP from building, upgrading, production, orders, quests, stories and small amounts from activities.
 - **Quests:** Maple Hollow 18 main quests; Kampung Seri 19, plus 4 module quests. In both worlds the first six are the guided tutorial.
 - **Pulse:** three daily goals (see ENGAGEMENT_FLYWHEEL.md).
-- **Achievements:** 12. **Event:** Spring Blossom Festival / Pesta Bunga Kampung (optional, 7 days, 4 objectives, 4 tiers). **Expansion:** 12 plots.
+- **Achievements:** 12. **Celebrations:** 8 rotating, optional (2–4 days each, 3–4 objectives, reward tiers); four need a finished shared spot. **Shared spots:** 4 × 4 steps + seasonal refreshes. **Expansion:** 12 plots.
+- **Beyond the tutorial:** progression adds creative freedom and choice, not just bigger numbers — new places to build together, new celebrations, new stories, keepsakes, seasonal looks.
 
 ## Tutorial (first 3–5 minutes)
 Shown here for Kampung Seri; Maple Hollow follows the same beats with Mia and Luna.
@@ -129,7 +184,7 @@ A calmer way to spend time in the neighbourhood. Turn it on in **Settings** or t
 - Coin and gem counters (replaced by a "Zen" button), navigation badges, building status bubbles, story "!" markers, and the quest tracker and Pulse.
 - Toasts (errors still show), coin and item fly-ups, the level-up card, and dialogue the player didn't start.
 - Sponsor labels, real-world menus and outbound links.
-- Music turns quieter, slower and sparser. Rain is lighter (half the drops). The camera eases more slowly and, after 20 s idle, drifts gently (unless Reduced motion is on).
+- Music switches to the Zen arrangement (the theme's hook on vibraphone at 72 BPM, pads, no drums). Rain is lighter (half the drops). Resident emote bubbles are hidden. The camera eases more slowly and, after 20 s idle, drifts gently (unless Reduced motion is on).
 
 **What it offers:** a hub for the lake (fishing, lake moment, sunset), tending the garden, flower arranging, decorating, feeding pets, and a journal of quiet moments.
 

@@ -36,6 +36,8 @@ const ms: Translation<typeof en> = {
   'meta.settings.dayNight.cycle': 'Kitaran',
   'meta.settings.dayNight.local': 'Jam saya',
   'meta.settings.dayNight.day': 'Sentiasa siang',
+  'meta.settings.batterySaver': 'Penjimat bateri',
+  'meta.settings.batterySaverHint': 'Lancar pada 30 fps dan bukan maksimum. Telefon lebih sejuk, main lebih lama.',
   'meta.settings.reducedMotion': 'Kurangkan gerakan',
   'meta.settings.textSize': 'Saiz teks',
   'meta.settings.grid': 'Sentiasa tunjuk grid',

@@ -7,6 +7,7 @@ import { createNewGame } from '../game/core/newGame';
 import type { BuildingInstance, GameState, Rotation } from '../game/core/types';
 import { safeParse } from '../platform/content/loader';
 import { arr, ID, lit, num, obj, opt, run, str } from '../platform/validate';
+import { isAcceptableName } from '../platform/content/policy';
 
 export const VISIT_PARAM = 'visit';
 const MAX_CODE = 12_000;
@@ -88,7 +89,7 @@ export function visitState(v: VisitSnapshot, now: number): GameState {
     level: v.l,
     buildings,
     plots: [...plots],
-    profile: { ...base.profile, hoodName: v.n, name: '' },
+    profile: { ...base.profile, hoodName: isAcceptableName(v.n) ? v.n : base.profile.hoodName, name: '' },
     residents: (v.r ?? []).map((id) => ({ id, arrivedAt: now, friendship: 0, memories: {}, lastTalkDay: null, lastGiftDay: null, storyDone: [], storyActive: null })),
     tutorial: { step: 0, done: true, skipped: true },
     world: { id: v.w, country: base.world.country },

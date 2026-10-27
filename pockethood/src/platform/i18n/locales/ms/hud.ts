@@ -17,6 +17,7 @@ const ms: Translation<typeof en> = {
   'hud.nav.orders': 'Pesanan',
   'hud.nav.residents': 'Jiran',
   'hud.nav.inventory': 'Barang',
+  'hud.nav.community': 'Bersama',
   'hud.nav.friends': 'Kawan',
   'hud.nav.soon': 'segera',
   'hud.rail.zoomIn': 'Zum masuk',

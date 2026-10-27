@@ -20,6 +20,8 @@ import { CostChips, Panel, Portrait, Progress, Tabs } from '../components/Panel'
 import { cameraState } from '../../rendering/camera/CameraRig';
 import { safeRemove } from '../../utils/safeStorage';
 import { tc, tokenText } from '../../platform/i18n/content';
+import { eventEligible } from '../../game/engagement/events';
+import { SpotsSection } from './SpotsPanel';
 
 export function ProfilePanel() {
   const g = useGame((s) => s.game!);
@@ -52,11 +54,11 @@ export function ProfilePanel() {
               <label className="small muted" htmlFor="pname">
                 {t('meta.profile.yourName')}
               </label>
-              <input id="pname" className="card" style={{ padding: 8, font: 'inherit', fontWeight: 800 }} maxLength={18} value={g.profile.name} onChange={(e) => dispatch({ type: 'profile', patch: { name: e.target.value } })} />
+              <NameField id="pname" max={18} value={g.profile.name} onCommit={(v) => dispatch({ type: 'profile', patch: { name: v } })} />
               <label className="small muted" htmlFor="hname">
                 {t('meta.profile.hoodName')}
               </label>
-              <input id="hname" className="card" style={{ padding: 8, font: 'inherit', fontWeight: 800 }} maxLength={22} value={g.profile.hoodName} onChange={(e) => dispatch({ type: 'profile', patch: { hoodName: e.target.value || 'Maple Hollow' } })} />
+              <NameField id="hname" max={22} value={g.profile.hoodName} onCommit={(v) => dispatch({ type: 'profile', patch: { hoodName: v.trim() || g.profile.hoodName } })} />
             </div>
           </div>
           <div className="section-title">{t('meta.profile.avatar')}</div>
@@ -225,6 +227,15 @@ export function SettingsPanel() {
       <div className="setting-row">
         <span>{t('meta.settings.reducedMotion')}</span>
         <Toggle on={st.reducedMotion} onChange={(v) => set({ reducedMotion: v })} label={t('meta.settings.reducedMotion')} />
+      </div>
+      <div className="setting-row">
+        <span>
+          {t('meta.settings.batterySaver')}
+          <span className="small muted" style={{ display: 'block' }}>
+            {t('meta.settings.batterySaverHint')}
+          </span>
+        </span>
+        <Toggle on={!!st.batterySaver} onChange={(v) => set({ batterySaver: v })} label={t('meta.settings.batterySaver')} />
       </div>
       <div className="setting-row">
         <span>{t('meta.settings.textSize')}</span>
@@ -398,8 +409,8 @@ export function FriendsPanel() {
 export function EventsPanel() {
   const g = useGame((s) => s.game!);
   const t = useT();
-  const def = EVENTS[0];
   const ev = g.event;
+  const def = EVENTS.find((e) => e.id === ev?.id) ?? EVENTS.find((e) => eventEligible(g, e)) ?? EVENTS[0];
   const end = ev ? ev.startedAt + def.durationDays * 86_400_000 : 0;
   const live = ev && clock.now() < end;
   return (
@@ -458,8 +469,15 @@ export function CommunityPanel() {
   const stage = communityStage(g);
   const locked = g.level < p.minLevel;
   return (
-    <Panel title={p.name} icon="landmark">
+    <Panel title={t('spots.title')} icon="landmark">
       <p className="muted" style={{ marginTop: 0 }}>
+        {t('spots.intro')}
+      </p>
+      <SpotsSection />
+      <div className="section-title">
+        {t('spots.landmark')}: {p.name}
+      </div>
+      <p className="muted small" style={{ marginTop: 0 }}>
         {p.description}
       </p>
       {locked && <div className="card">{t('meta.community.startsAt', { level: p.minLevel })}</div>}
@@ -509,6 +527,9 @@ export function CommunityPanel() {
           {t('meta.community.celebrate', { reward: rewardText(p.reward) })}
         </button>
       )}
+      <button className="btn btn--ghost btn--block" style={{ marginTop: 12 }} onClick={() => useGame.getState().openPanel('friends')}>
+        <Icon name="friends" size={20} /> {t('hud.nav.friends')}
+      </button>
       {g.community.log.length > 0 && (
         <>
           <div className="section-title">{t('meta.community.contributions')}</div>
@@ -626,5 +647,28 @@ export function DevToolsPanel() {
         ))}
       </div>
     </Panel>
+  );
+}
+
+/** A name input that commits on blur / Enter, so the content policy checks whole names (not each keystroke). */
+function NameField({ id, max, value, onCommit }: { id: string; max: number; value: string; onCommit: (v: string) => unknown }) {
+  const [draft, setDraft] = useState(value);
+  useEffect(() => setDraft(value), [value]);
+  const commit = () => {
+    if (draft === value) return;
+    const r = onCommit(draft) as { error?: string } | null;
+    if (!r || r.error) setDraft(value);
+  };
+  return (
+    <input
+      id={id}
+      className="card"
+      style={{ padding: 8, font: 'inherit', fontWeight: 800 }}
+      maxLength={max}
+      value={draft}
+      onChange={(e) => setDraft(e.target.value)}
+      onBlur={commit}
+      onKeyDown={(e) => e.key === 'Enter' && (e.target as HTMLInputElement).blur()}
+    />
   );
 }

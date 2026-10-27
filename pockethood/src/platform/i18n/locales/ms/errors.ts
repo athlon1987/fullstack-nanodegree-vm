@@ -2,6 +2,7 @@ import type en from '../en/errors';
 import type { Translation } from '../../types';
 
 const ms: Translation<typeof en> = {
+  'errors.nameNotAllowed': 'Jom pilih nama lain — nama dalam POCKETHOOD kekal mesra dan santai',
   'errors.unknownBuilding': 'Bangunan tidak dikenali',
   'errors.notUnlocked': 'Belum dibuka lagi',
   'errors.unlocksAt': 'Dibuka pada tahap {level}',

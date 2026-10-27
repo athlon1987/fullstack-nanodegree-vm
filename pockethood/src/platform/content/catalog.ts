@@ -14,7 +14,7 @@ export const ARCHETYPES = [
   'starter_house', 'cottage', 'townhouse', 'cafe', 'bakery', 'garden', 'flower_shop', 'workshop', 'grocery', 'park', 'town_hall',
   'request_board', 'welcome_sign', 'pond', 'fountain', 'showroom', 'learning_centre',
   'my:rumah_kampung', 'my:rumah_papan', 'my:rumah_teres', 'my:shoplot', 'my:kedai_roti', 'my:kedai_bunga', 'my:bengkel',
-  'my:kedai_runcit', 'my:taman', 'my:balai_raya', 'my:papan_kenyataan', 'my:gerbang', 'my:tasik', 'my:wakaf',
+  'my:kedai_runcit', 'my:taman', 'my:balai_raya', 'my:papan_kenyataan', 'my:gerbang', 'my:tasik', 'my:pondok',
   'my:showroom', 'my:pusat_belajar', 'my:kebun',
 ] as const;
 

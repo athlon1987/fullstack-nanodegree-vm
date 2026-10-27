@@ -13,6 +13,8 @@ import { Icon } from '../components/Icon';
 import { EVENTS } from '../../data/progression';
 import { clock } from '../../services/clock';
 import { useT } from '../../platform/i18n';
+import { SPOTS } from '../../data/spots';
+import type { GameState } from '../../game/core/types';
 
 const fmtNum = (n: number) => (n >= 100000 ? `${Math.floor(n / 1000)}k` : n.toLocaleString());
 
@@ -138,6 +140,15 @@ export function Tracker() {
   );
 }
 
+/** Something the player could give to a shared spot right now. */
+function canSpruce(g: GameState) {
+  return SPOTS.some((p) => {
+    const st = g.spots?.[p.id];
+    if (!st || g.level < p.minLevel || st.stage >= p.stages.length) return false;
+    return Object.entries(p.stages[st.stage].needs as Record<string, number>).some(([res, need]) => ((st.given as Record<string, number>)[res] ?? 0) < need && (res === 'coins' ? g.coins >= Math.min(50, need) : (g.inventory[res] ?? 0) > 0));
+  });
+}
+
 export function BottomBar() {
   const t = useT();
   const g = useGame((s) => s.game!);
@@ -152,7 +163,7 @@ export function BottomBar() {
     { id: 'orders', label: t('hud.nav.orders'), icon: 'orders', badge: deliverable || undefined },
     { id: 'residents', label: t('hud.nav.residents'), icon: 'residents', badge: stories ? '!' : undefined },
     { id: 'inventory', label: t('hud.nav.inventory'), icon: 'inventory', badge: invCount ? undefined : undefined },
-    { id: 'friends', label: t('hud.nav.friends'), icon: 'friends', badge: 'soon' },
+    { id: 'community', label: t('hud.nav.community'), icon: 'friends', badge: canSpruce(g) ? '!' : undefined },
   ];
   return (
     <nav className="bottombar" aria-label={t('hud.nav.aria')}>

@@ -21,6 +21,45 @@ A module dresses one template slot (café, restaurant, retail, learning, showroo
 
 Partners **cannot**: ship code, HTML, scripts, trackers or remote resources; change prices of other things, the economy or progression; grant premium currency; insert themselves into the tutorial; message players; collect personal data; appear in Zen Mode with promotional labels; or change anything about other businesses.
 
+## Branded content must preserve the mood
+
+POCKETHOOD is a peaceful, welcoming world (CONTENT_POLICY.md). Every module is held to the same creative standard as our own content.
+
+**Rejected — automatically where possible, always at review:**
+
+| Content | How it is enforced |
+|---|---|
+| Religious or political promotion, divisive messaging | content-policy screen on every text field in every language (`compileModule`) → module quarantined; human review |
+| Aggressive or hostile themes | screen (hostile/violent vocabulary) + review |
+| Alcohol, tobacco/vaping, gambling | screen + blocked content tags (`alcohol`, `tobacco`, `gambling`) |
+| Self-declared "halal", "sponsored", "official partner" claims in free text | screen (`claim` topic): only verified records may make these claims |
+| Overriding or interrupting the soundtrack, autoplaying audio or ads | impossible by construction: modules have no audio, video or media fields; only an approved ambient bed can be chosen |
+| Intrusive pop-ups, interstitials, timers, push messages | impossible by construction: modules can't add UI or notifications |
+| Forced purchases | modules can't sell anything in-game (MONETIZATION_COMPLIANCE.md) |
+| Excessive repetitive activities ("grind") | partner quest objectives are capped at 10 repetitions (`MODULE_MAX_REPEATS`) |
+| Misleading commercial relationships | labels are computed from verified records; a module can't label itself |
+
+Every module declares **content tags** from the approved vocabulary (food, drink, cafe, bakery, retail, vehicles, learning, nature, gardening, music, arts, crafts, sport, community, pets, celebration, travel, family, technology, wellbeing_activity). Unknown or blocked tags fail compilation.
+
+## Positive brand integration
+
+Businesses contribute to the living world; they don't control the player's experience.
+
+| Partner | Contributes | Through |
+|---|---|---|
+| Restaurant / café | a delightful cooking moment | `hand_prepare` (e.g. pulling teh tarik), recipes within the value ceiling |
+| Car company | beautiful vehicles and playful arranging | `showroom` (approved models, paints, display bays) |
+| School / learning centre | a light, friendly quiz | `quiz` (questions screened, no wrong-answer penalties) |
+| Hotel | a peaceful destination | `hotel` template (defined; no building yet) |
+| Retailer | interesting goods and a small shop activity | retail template, goods and quests within limits |
+| Community organisation | a shared place to grow things | `garden_plots`, community kind (no sponsor label) |
+
+## Sponsor audio rules
+
+- The game's soundtrack always plays as composed (AUDIO_ASSET_MANIFEST.md). No module can replace, pause, duck or overlay it.
+- A module may choose one **approved ambient bed** (café chatter, birds, showroom hum, classroom murmur) from the catalog; it plays quietly on the ambience channel, which the player controls, and only while the player has that building selected.
+- No jingles, voice-overs, commercials or branded sounds. Future branded audio, if ever allowed, must be approved per release, user-controllable, and consistent with the atmosphere.
+
 ## Labels
 
 | Label | Shown when | Notes |
@@ -65,7 +104,8 @@ Every step is a row in `module_versions` with an audit record (`backend/schema.s
 
 - [ ] Brand rights: licence on file for licensed brands; fictional names checked against obvious collisions.
 - [ ] Text: accurate, respectful, en + ms reviewed by a native speaker, no claims about health or wellbeing.
-- [ ] Culture: no stereotypes or caricature; religious references only where natural and respectful.
+- [ ] Culture: no stereotypes or caricature; no religious or political references, symbols or campaigns (CONTENT_POLICY.md).
+- [ ] Mood: warm, peaceful, non-intrusive; no audio, no pop-ups, no grind; content tags accurate.
 - [ ] Food: menu items real for that business; no invented prices; halal evidence verified or omitted.
 - [ ] Economy: Studio economy table within the template ceiling; quests within limits.
 - [ ] Children: nothing that targets or profiles young players; no outbound links for kid-facing content.

@@ -25,8 +25,16 @@ export const buildingHeight = (type: string) => {
   return 2.0;
 };
 
-/** Live weather for rendering and audio (0..1 rain), updated by the Rain effect. */
-export const weatherState: { rain: number; force: number | null } = { rain: 0, force: null };
+/** Live weather for rendering and audio (all 0..1), updated by the Rain effect. `force` pins rain (tests, Studio). */
+export const weatherState: { rain: number; cloud: number; wind: number; mist: number; afterglow: number; force: number | null; forceAll: Partial<Record<'cloud' | 'wind' | 'mist' | 'afterglow', number>> | null } = {
+  rain: 0,
+  cloud: 0.2,
+  wind: 0.3,
+  mist: 0,
+  afterglow: 0,
+  force: null,
+  forceAll: null,
+};
 
 /** Shared, mutable world clock for rendering (updated each frame). */
 export const worldClock = { hour: 9, night: 0, t: 0 };

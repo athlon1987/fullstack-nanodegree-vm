@@ -32,6 +32,7 @@
  "id": "my.food.kopitiam_lim",
  "kind": "business",
  "category": "food_beverage",
+ "contentTags": ["food", "drink", "cafe"],
  "template": "cafe",
  "slot": "cafe",
  "name": {

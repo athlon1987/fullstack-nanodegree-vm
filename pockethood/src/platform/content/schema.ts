@@ -114,6 +114,8 @@ export const eventSchema = obj({
   description: text(320),
   minLevel: int(1, 60),
   durationDays: int(1, 30),
+  /** World flag that must be set first (e.g. a finished community spot). */
+  requires: opt(ID),
   objectives: arr(objectiveSchema, { min: 1, max: 6 }),
   tiers: arr(obj({ at: int(1, 6), reward: rewardSchema, label: text(40) }), { min: 1, max: 6 }),
 });
@@ -183,7 +185,7 @@ export const worldSchema = obj({
   residents: arr(residentSchema, { min: 1, max: 16, unique: (r) => r.id }),
   quests: arr(questSchema, { min: 1, max: 80, unique: (q) => q.id }),
   stories: arr(storySchema, { max: 80, unique: (s) => s.id }),
-  events: arr(eventSchema, { max: 6, unique: (e) => e.id }),
+  events: arr(eventSchema, { max: 12, unique: (e) => e.id }),
   project: projectSchema,
   expansionNames: arr(text(24), { min: 12, max: 12 }),
   levelUnlocks: rec(str({ max: 2, pattern: /^\d{1,2}$/ }), arr(text(60), { max: 6 }), { max: 30 }),
@@ -276,6 +278,8 @@ export const moduleSchema = obj({
   version: SEMVER,
   kind: lit('business', 'community'),
   category: lit(...CATEGORIES),
+  /** What the module is about, from the approved vocabulary (CONTENT_POLICY.md). */
+  contentTags: arr(ID, { min: 1, max: 6 }),
   template: lit(...TEMPLATE_IDS),
   /** The core building this module dresses (must run the same template). */
   slot: ID,

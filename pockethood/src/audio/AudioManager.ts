@@ -1,31 +1,18 @@
-// Audio: Kenney CC0 interface SFX + an original, procedurally generated soundtrack and
-// soundscape (WebAudio). Four independent channels — music, ambience, interface, character —
-// each with its own volume. Ambience follows the world: rain, birds by day, insects at dusk,
-// water by the lake, and a gentle bed for the building you're looking at.
+// Audio: an original, adaptive lo-fi soundtrack (src/audio/music), synthesised feedback sounds
+// in the same key (sfx.ts) and a procedural soundscape. Four independent channels — music,
+// ambience, interface, character voices — each with its own volume. Ambience follows the
+// world: rain, birds by day, insects at dusk, water by the lake, a bed for the building you're
+// looking at. Nothing is downloaded and nothing needs a licence: every sound is generated.
+import { MusicEngine } from './music/MusicEngine';
+import type { MoodId, StingerId } from './music/score';
+import { SfxPlayer, type Sfx } from './sfx';
 
-export type Sfx = 'click' | 'collect' | 'place' | 'complete' | 'levelup' | 'reward' | 'error' | 'pop' | 'whoosh';
+export type { Sfx } from './sfx';
+export type { MoodId } from './music/score';
 export type Bed = 'kopitiam_chatter' | 'garden_birds' | 'showroom_hum' | 'classroom_murmur' | 'lake' | 'none';
 
-const FILES: Record<Sfx, { file: string; gain: number; rate?: number }> = {
-  click: { file: 'ui', gain: 0.5 },
-  collect: { file: 'coin', gain: 0.55 },
-  place: { file: 'land', gain: 0.8 },
-  complete: { file: 'confirm', gain: 0.6 },
-  levelup: { file: 'level_up', gain: 0.6 },
-  reward: { file: 'gem', gain: 0.5 },
-  error: { file: 'hit', gain: 0.25, rate: 1.4 },
-  pop: { file: 'ui', gain: 0.35, rate: 1.5 },
-  whoosh: { file: 'dash', gain: 0.25 },
-};
-
-// C major pentatonic across two octaves; chord roots for a gentle I–vi–IV–V loop.
-const SCALE = [261.63, 293.66, 329.63, 392.0, 440.0, 523.25, 587.33, 659.25, 783.99, 880.0];
-const CHORDS = [
-  [130.81, 196.0, 261.63, 329.63],
-  [110.0, 164.81, 220.0, 261.63],
-  [87.31, 174.61, 220.0, 261.63],
-  [98.0, 146.83, 196.0, 246.94],
-];
+/** Channel calibration: full music volume sits about 6 dB under the feedback sounds. */
+const MUSIC_GAIN = 0.5;
 
 export interface AudioLevels {
   music: number;
@@ -39,9 +26,13 @@ export interface AudioLevels {
 export interface SoundscapeState {
   hour: number;
   rain: number;
+  /** Breeze 0..1. */
+  wind?: number;
   zen: boolean;
   tropical: boolean;
   bed: Bed;
+  /** What the music should reflect (see musicMood in App). */
+  mood: MoodId;
 }
 
 interface NoiseVoice {
@@ -51,20 +42,18 @@ interface NoiseVoice {
 
 class AudioManager {
   private ctx: AudioContext | null = null;
-  private buffers = new Map<string, AudioBuffer>();
   private ch!: { music: GainNode; ambience: GainNode; sfx: GainNode; character: GainNode };
+  private music: MusicEngine | null = null;
+  private sfx: SfxPlayer | null = null;
   private musicTimer: number | null = null;
   private ambienceTimer: number | null = null;
-  private step = 0;
   private levels: AudioLevels = { music: 0.5, ambience: 0.6, sfx: 0.8, character: 0.7, muted: false };
-  private scape: SoundscapeState = { hour: 9, rain: 0, zen: false, tropical: false, bed: 'none' };
+  private scape: SoundscapeState = { hour: 9, rain: 0, zen: false, tropical: false, bed: 'none', mood: 'town' };
   private voices: Record<'rain' | 'insects' | 'water' | 'wind' | 'bed', NoiseVoice> | null = null;
   private insectLfo: GainNode | null = null;
-  private base = './';
 
-  setBase(base: string) {
-    this.base = base;
-  }
+  /** Kept for API compatibility (sounds used to be files); nothing is fetched any more. */
+  setBase(_base: string) {}
 
   /** Must be called from a user gesture (browser autoplay policy). */
   async unlock() {
@@ -76,7 +65,14 @@ class AudioManager {
     if (!Ctx) return;
     this.ctx = new Ctx();
     const master = this.ctx.createGain();
-    master.connect(this.ctx.destination);
+    // Safety limiter: however many sounds coincide, the output never clips.
+    const limiter = this.ctx.createDynamicsCompressor();
+    limiter.threshold.value = -6;
+    limiter.knee.value = 4;
+    limiter.ratio.value = 12;
+    limiter.attack.value = 0.003;
+    limiter.release.value = 0.2;
+    master.connect(limiter).connect(this.ctx.destination);
     const mk = () => {
       const g = this.ctx!.createGain();
       g.connect(master);
@@ -84,19 +80,17 @@ class AudioManager {
     };
     this.ch = { music: mk(), ambience: mk(), sfx: mk(), character: mk() };
     this.apply();
+    this.music = new MusicEngine(this.ctx, this.ch.music, this.ch.sfx);
+    this.sfx = new SfxPlayer(this.ctx, this.ch.sfx, this.music.kit);
     this.buildNoise();
-    await Promise.all(
-      [...new Set(Object.values(FILES).map((f) => f.file))].map(async (f) => {
-        try {
-          const res = await fetch(`${this.base}assets/audio/sfx/${f}.ogg`);
-          this.buffers.set(f, await this.ctx!.decodeAudioData(await res.arrayBuffer()));
-        } catch {
-          /* missing/undecodable sound (e.g. Ogg on older iOS): play silently */
-        }
-      }),
-    );
     this.startMusic();
     this.startAmbience();
+    // Battery: nothing plays (or schedules) while the game is in the background.
+    document.addEventListener('visibilitychange', () => {
+      if (!this.ctx) return;
+      if (document.visibilityState === 'hidden') void this.ctx.suspend();
+      else void this.ctx.resume();
+    });
   }
 
   configure(levels: AudioLevels) {
@@ -105,9 +99,26 @@ class AudioManager {
   }
 
   /** Update the world the soundscape reflects (cheap; call often). */
+  /** Studio / QA: pin the music to one arrangement (null = follow the game). */
+  forceMood: MoodId | null = null;
+
   setScape(s: Partial<SoundscapeState>) {
+    const zenChanged = s.zen !== undefined && s.zen !== this.scape.zen;
     this.scape = { ...this.scape, ...s };
+    this.music?.setMood(this.forceMood ?? this.scape.mood);
     this.updateBeds();
+    if (zenChanged) this.apply();
+  }
+
+  /** The music's current arrangement (for Studio and tests). */
+  get musicState() {
+    return this.music ? { mood: this.music.currentMood, bpm: this.music.tempo, ...this.music.position } : null;
+  }
+
+  /** A short melodic flourish on the beat (quest done, level up, unlock, construction). */
+  stinger(id: StingerId) {
+    if (!this.ctx || !this.music || this.levels.muted) return;
+    this.music.stinger(id);
   }
 
   private apply() {
@@ -115,23 +126,14 @@ class AudioManager {
     const m = this.levels.muted ? 0 : 1;
     const t = this.ctx.currentTime;
     this.ch.sfx.gain.setTargetAtTime(this.levels.sfx * m, t, 0.05);
-    this.ch.music.gain.setTargetAtTime(this.levels.music * 0.22 * m * (this.scape.zen ? 0.7 : 1), t, 0.4);
+    this.ch.music.gain.setTargetAtTime(this.levels.music * MUSIC_GAIN * m * (this.scape.zen ? 0.8 : 1), t, 0.4);
     this.ch.ambience.gain.setTargetAtTime(this.levels.ambience * 0.5 * m, t, 0.4);
     this.ch.character.gain.setTargetAtTime(this.levels.character * 0.5 * m, t, 0.05);
   }
 
   play(name: Sfx) {
-    if (!this.ctx || this.levels.muted) return;
-    const def = FILES[name];
-    const buf = this.buffers.get(def.file);
-    if (!buf) return;
-    const src = this.ctx.createBufferSource();
-    src.buffer = buf;
-    src.playbackRate.value = (def.rate ?? 1) * (0.95 + Math.random() * 0.1);
-    const g = this.ctx.createGain();
-    g.gain.value = def.gain;
-    src.connect(g).connect(this.ch.sfx);
-    src.start();
+    if (!this.ctx || this.levels.muted || !this.sfx) return;
+    this.sfx.play(name);
   }
 
   /**
@@ -165,30 +167,13 @@ class AudioManager {
     o.stop(when + dur + 0.05);
   }
 
-  /** A soft marimba-and-pad loop at ~84 bpm; Zen Mode slows it to a sparse, airy pad. */
+  /** The soundtrack runs on a lookahead scheduler; the engine follows `scape.mood` at bar lines. */
   private startMusic() {
-    if (!this.ctx || this.musicTimer !== null) return;
-    let next = this.ctx.currentTime + 0.2;
-    let melody = 4;
-    const schedule = () => {
-      const ctx = this.ctx!;
-      const zen = this.scape.zen;
-      const beat = 60 / (zen ? 58 : 84);
-      while (next < ctx.currentTime + 1.5) {
-        const bar = Math.floor(this.step / 8) % CHORDS.length;
-        const inBar = this.step % 8;
-        if (inBar === 0) for (const f of CHORDS[bar]) this.tone(f, next, beat * 7.5, zen ? 0.04 : 0.05, zen ? 'sine' : 'triangle', this.ch.music);
-        const chance = zen ? 0.18 : inBar % 2 === 0 ? 1 : 0.3;
-        if (Math.random() < chance) {
-          melody = Math.max(0, Math.min(SCALE.length - 1, melody + Math.floor(Math.random() * 5) - 2));
-          if (Math.random() < 0.8) this.tone(SCALE[melody], next, beat * (zen ? 3 : 1.6), zen ? 0.05 : 0.09, 'sine', this.ch.music);
-        }
-        next += beat / 2;
-        this.step++;
-      }
-    };
-    schedule();
-    this.musicTimer = window.setInterval(schedule, 400);
+    if (!this.ctx || !this.music || this.musicTimer !== null) return;
+    this.music.start(this.ctx.currentTime + 0.15, this.scape.mood);
+    const tick = () => this.ctx && this.ctx.state === 'running' && this.music!.schedule(this.ctx.currentTime + 0.4);
+    tick();
+    this.musicTimer = window.setInterval(tick, 100);
   }
 
   private buildNoise() {
@@ -213,7 +198,8 @@ class AudioManager {
       return { gain, filter };
     };
     this.voices = {
-      rain: voice('highpass', 900, 0.5),
+      // Soft, steady tropical rain: a rounded patter rather than hiss.
+      rain: voice('bandpass', 1600, 0.35),
       insects: voice('bandpass', 4800, 9),
       water: voice('lowpass', 420, 0.6),
       wind: voice('bandpass', 600, 0.4),
@@ -236,12 +222,12 @@ class AudioManager {
     const { hour, rain, tropical, bed, zen } = this.scape;
     const dusk = hour > 18 || hour < 6 ? 1 : hour > 17 ? hour - 17 : 0;
     const set = (v: NoiseVoice, g: number) => v.gain.gain.setTargetAtTime(g, t, 1.2);
-    set(this.voices.rain, rain * 0.22);
+    set(this.voices.rain, rain * 0.16);
     const insects = (tropical ? 0.05 : 0.025) * dusk * (1 - rain * 0.7);
     set(this.voices.insects, insects);
     this.insectLfo?.gain.setTargetAtTime(insects * 0.8, t, 1.2);
     set(this.voices.water, bed === 'lake' ? 0.14 : 0.025);
-    set(this.voices.wind, 0.02 + rain * 0.05 + (zen ? 0.015 : 0));
+    set(this.voices.wind, 0.015 + (this.scape.wind ?? 0.3) * 0.03 + rain * 0.04 + (zen ? 0.015 : 0));
     const bedGain: Record<Bed, [number, number]> = {
       kopitiam_chatter: [0.06, 520],
       classroom_murmur: [0.045, 900],
@@ -304,3 +290,5 @@ class AudioManager {
 }
 
 export const audio = new AudioManager();
+
+if (typeof window !== 'undefined') (window as unknown as { __pockethoodAudio: AudioManager }).__pockethoodAudio = audio;

@@ -16,22 +16,32 @@
 ```
 src/
   data/            content as data: buildings, items/recipes, residents, quests, stories, levels, events, achievements
+    spots.ts       shared neighbourhood spots: steps, needs, keepsakes, celebrations, seasonal refreshes
   game/            ── no React, no three.js; pure & deterministic ──
     core/          types, engine (dispatch), actions (rules), new-game layout, rng/day keys
     economy/       costs, rewards, XP/levels, production timing, passive income
-    world/         grid placement, collision, door cells
+    world/         grid placement, collision, door cells, deterministic weather (weatherAt)
     navigation/    A* pathfinding, nav grid
     quests/        request-board generation
     characters/    relationships, dialogue selection, story eligibility
     engagement/    Engagement Director, Neighborhood Pulse, objectives, welcome-back / next goal
+      events.ts    rotating community celebrations (one at a time, a day's rest between)
     social/        SocialService contract (+ honest local implementation)
+    sim/
+      firstSession.ts  first-session pacing model (a guided bot playing the real engine)
+  platform/
+    content/       world packs & partner modules: schema, loader, install, templates, catalog
+      policy.ts    content-policy screen (topic terms, CONTENT_TAGS, MODULE_MAX_REPEATS)
+    i18n/          locales (en, ms) and content-text lookup
+    security/      content integrity (SHA-256, signed index) and a local audit log
   services/        persistence (versioned + migrations), clock (dev time offset, day/night), analytics (local)
   state/           zustand store: engine wrapper, event → feedback routing, autosave
   rendering/       R3F scene: camera, lighting, terrain, buildings, characters, effects, placement
     kit/           original parametric architecture kit (parts, materials, archetypes, bake)
+      community.ts shared spots at every stage (0–4), seasonal colour schemes, spot keepsakes
     models/        GLB registry + normalisation (catalog.generated.json is produced by the pipeline)
   ui/              HUD, panels, modals, tutorial coach, icon family, design tokens
-  audio/           SFX + procedural music/ambience
+  audio/           adaptive music engine (music/), synthesised SFX (sfx.ts), procedural ambience
   app/             boot, loading screen
 scripts/
   asset-pipeline/  import (sha256-verified), inspect, extract textures, write manifest
@@ -48,7 +58,7 @@ scripts/
 - All time-based systems (construction, production queues, passive income, order cooldowns) use absolute timestamps. Offline progression is simply catching up on load. Passive income is capped by storage.
 
 ## Persistence
-`SaveService` (services/persistence.ts): JSON in IndexedDB under `pockethood.save`, schema-versioned (`SAVE_VERSION = 3`) with ordered migrations. On load: migrate → `sanitize` (repairs NaN/negative balances, unknown building types, clamps timers far in the future as a clock-skew guard). Corrupt saves are backed up and a fresh game starts with a visible notice. Autosave is debounced (600 ms) after every state-changing action and on `visibilitychange`/`pagehide`.
+`SaveService` (services/persistence.ts): JSON in IndexedDB under `pockethood.save`, schema-versioned (`SAVE_VERSION = 5`) with ordered migrations. On load: migrate → `sanitize` (repairs NaN/negative balances, unknown building types, clamps timers far in the future as a clock-skew guard). Corrupt saves are backed up and a fresh game starts with a visible notice. Autosave is debounced (600 ms) after every state-changing action and on `visibilitychange`/`pagehide`.
 
 ## Rendering
 - Orthographic isometric camera (custom rig: pan with inertia, wheel/pinch zoom, bounds = owned land, eased focus).

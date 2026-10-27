@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { audio, type Bed } from '../audio/AudioManager';
+import { musicMood } from '../audio/mood';
 import { WORLD } from '../data/world';
 import { behaviorOf } from '../platform/content/install';
 import { weatherState } from '../rendering/scene/coords';
@@ -55,7 +56,19 @@ export function App() {
       const sel = st.ui.selected ? g.buildings.find((b) => b.uid === st.ui.selected) : undefined;
       const lake = st.ui.activity?.kind === 'lake' || sel?.type === 'pond';
       const bed = lake ? 'lake' : sel ? (behaviorOf(sel.type, 'ambient_sound')?.sound ?? 'none') : 'none';
-      audio.setScape({ hour: st.ui.hour, rain: weatherState.rain, zen: g.settings.zen, tropical: WORLD.biome === 'tropical', bed: bed as Bed });
+      const now = Date.now();
+      const mood = musicMood({
+        zen: g.settings.zen,
+        hour: st.ui.hour,
+        activity: st.ui.activity?.kind ?? null,
+        placing: !!st.ui.placing,
+        panel: st.ui.panel,
+        selectedType: sel?.type ?? null,
+        selectedBed: bed,
+        celebrating: st.ui.cue.party > now,
+        building: st.ui.cue.build > now,
+      });
+      audio.setScape({ hour: st.ui.hour, rain: weatherState.rain, wind: weatherState.wind, zen: g.settings.zen, tropical: WORLD.biome === 'tropical', bed: bed as Bed, mood });
     }, 600);
     const unlock = () => void audio.unlock();
     window.addEventListener('pointerdown', unlock, { once: true });

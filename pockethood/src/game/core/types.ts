@@ -223,9 +223,50 @@ export interface EventDef {
   description: string;
   minLevel: number;
   durationDays: number;
+  /** Only runs once this world flag is set (e.g. the plaza has been finished). */
+  requires?: string;
   objectives: Objective[];
   /** Reward tiers by number of objectives completed. */
   tiers: { at: number; reward: Reward; label: string }[];
+}
+
+// ─── Neighbourhood beautification ────────────────────────────────────────────
+
+/** One step of a shared spot's transformation (neglected corner → lively park). */
+export interface SpotStageDef {
+  /** What the neighbours need for this step; coins are a contribution, not a price. */
+  needs: ItemBag & { coins?: number };
+  /** Experience for the step (spots never pay coins back: they are something you give). */
+  xp: number;
+  /** Friendship with every neighbour when the step is done. */
+  friendship: number;
+}
+
+export interface SpotDef {
+  id: string;
+  /** The fixed building that shows this spot in the world. */
+  building: BuildingTypeId;
+  minLevel: number;
+  stages: SpotStageDef[];
+  /** World flag set when the last stage is done (stories, events and decorations key off it). */
+  flag: string;
+  /** Keepsake decoration unlocked on completion. */
+  unlocks?: BuildingTypeId;
+  /** Group celebration this spot makes possible (an event id). */
+  celebration?: string;
+  /** Optional seasonal refresh once finished: a fresh look each time (needs grow each season). */
+  refresh: { coins: number; items: ItemBag };
+}
+
+export interface SpotState {
+  /** Steps completed (0 = untouched). */
+  stage: number;
+  /** Given towards the current step. */
+  given: ItemBag & { coins?: number };
+  ops: string[];
+  doneAt: number | null;
+  /** Seasonal refreshes completed after finishing. */
+  refreshes?: number;
 }
 
 export interface AchievementDef {
@@ -363,6 +404,8 @@ export interface Settings {
   weather: boolean;
   muted: boolean;
   reducedMotion: boolean;
+  /** Cap rendering at 30 fps to save battery and keep phones cool. */
+  batterySaver: boolean;
   graphics: 'low' | 'medium' | 'high';
   dayNight: 'cycle' | 'local' | 'day';
   showGrid: boolean;
@@ -403,6 +446,8 @@ export interface GameState {
   flags: Record<string, boolean>;
   pulse: PulseState | null;
   community: CommunityState;
+  /** Shared neighbourhood spots the community is transforming together. */
+  spots: Record<string, SpotState>;
   event: EventState | null;
   history: HistoryEntry[];
   uidCounter: number;
@@ -473,6 +518,10 @@ export type GameEvent =
   | { type: 'DISTRICT_UNLOCKED'; plot: string }
   | { type: 'COMMUNITY_PROJECT_CONTRIBUTED'; project: string; what: string; stage: number }
   | { type: 'LANDMARK_COMPLETED'; project: string }
+  | { type: 'SPOT_CONTRIBUTED'; spot: string; what: string }
+  | { type: 'EVENT_STARTED'; event: string }
+  | { type: 'SPOT_STAGE'; spot: string; stage: number; final: boolean }
+  | { type: 'SPOT_REFRESHED'; spot: string; season: number }
   | { type: 'PULSE_TASK_DONE'; task: string }
   | { type: 'PULSE_COMPLETE' }
   | { type: 'ACHIEVEMENT'; id: string }

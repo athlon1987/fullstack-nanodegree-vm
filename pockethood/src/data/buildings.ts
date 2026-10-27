@@ -296,6 +296,11 @@ export const BUILDINGS: Record<string, BuildingDef> = {
   festival_arch: deco('festival_arch', 'Blossom Arch', 60, 1, 8, 'Spring Blossom Festival reward.', { keepsake: true }),
   lantern_string: deco('lantern_string', 'Lantern Post', 45, 1, 5, 'A post hung with warm lanterns.', { keepsake: true }),
   statue: deco('statue', 'Founder Statue', 80, 1, 10, 'Celebrates your first landmark.', { keepsake: true }),
+  // Keepsakes from finished community spots
+  picnic_set: deco('picnic_set', 'Picnic Set', 40, 1, 6, 'From the pocket park’s opening picnic.', { keepsake: true }),
+  market_stall: deco('market_stall', 'Market Stall', 60, 1, 8, 'A little stall like the ones at the plaza market.', { keepsake: true }),
+  kite_post: deco('kite_post', 'Kite Post', 40, 1, 6, 'A kite from the playground opening.', { keepsake: true }),
+  telescope: deco('telescope', 'Telescope', 70, 1, 8, 'For stargazing, like at the lookout.', { keepsake: true }),
 };
 
 /** Fixed, non-catalog scenery the world starts with. */
@@ -356,6 +361,28 @@ BUILDINGS.fountain = {
   archetype: 'fountain',
 };
 
+/** Shared neighbourhood spots (see data/spots.ts): fixed, walkable, transformed together. */
+const spot = (id: string, name: string, footprint: [number, number], description: string): BuildingDef => ({
+  id: `spot_${id}`,
+  name,
+  category: 'community',
+  description,
+  footprint,
+  unlockLevel: 99,
+  cost: {},
+  xp: 0,
+  maxCount: 1,
+  charm: 8,
+  walkable: true,
+  hidden: true,
+  levels: [lv({ perks: [] })],
+  archetype: `spot:${id}`,
+});
+BUILDINGS.spot_park = spot('park', 'Pocket Park', [3, 3], 'An overgrown corner the neighbours want to turn into a little park.');
+BUILDINGS.spot_plaza = spot('plaza', 'Community Plaza', [3, 3], 'An empty square that could become everyone’s meeting place.');
+BUILDINGS.spot_playground = spot('playground', 'Playground', [3, 2], 'A bare lot with room for swings, a slide and a sandpit.');
+BUILDINGS.spot_lookout = spot('lookout', 'Sunset Lookout', [3, 2], 'A quiet rise with the best view of the evening sky.');
+
 /** Stand-in definition for a building whose content is unavailable (kept, shown closed). */
 const DORMANT: BuildingDef = {
   id: 'dormant',
@@ -375,7 +402,7 @@ const DORMANT: BuildingDef = {
 export const bdef = (type: string): BuildingDef => BUILDINGS[type] ?? { ...DORMANT, id: type, name: t('common.unknownBuilding') };
 export const isDormant = (type: string) => !BUILDINGS[type];
 
-export const isFixed = (type: string) => ['request_board', 'welcome_sign', 'pond', 'fountain', 'starter_house'].includes(type);
+export const isFixed = (type: string) => ['request_board', 'welcome_sign', 'pond', 'fountain', 'starter_house'].includes(type) || type.startsWith('spot_');
 export const isDecoration = (type: string) => {
   const c = BUILDINGS[type]?.category;
   return c === 'decoration' || c === 'path';

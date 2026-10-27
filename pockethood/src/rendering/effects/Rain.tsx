@@ -4,10 +4,10 @@ import { useFrame } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { WORLD } from '../../data/world';
-import { rainAt } from '../../game/world/weather';
+import { weatherAt } from '../../game/world/weather';
 import { clock } from '../../services/clock';
 import { useGame } from '../../state/store';
-import { weatherState } from '../scene/coords';
+import { weatherState, worldClock } from '../scene/coords';
 import { flag } from '../../platform/content/flags';
 
 const AREA = 26;
@@ -39,10 +39,18 @@ export function Rain() {
   const intensity = useRef(0);
 
   useFrame((_, dt) => {
-    const target = weatherState.force ?? (enabled && flag('weather') ? rainAt(clock.now(), WORLD.rainChance) : 0);
+    const on = enabled && flag('weather');
+    const w = on ? weatherAt(clock.now(), WORLD.rainChance, worldClock.hour) : { rain: 0, cloud: 0.15, wind: 0.25, mist: 0, afterglow: 0 };
+    const target = weatherState.force ?? w.rain;
     intensity.current += (target - intensity.current) * Math.min(1, dt * 0.8);
     const k = intensity.current;
     weatherState.rain = k;
+    // Everything else eases too, so the sky never jumps.
+    const ease = Math.min(1, dt * 0.5);
+    for (const key of ['cloud', 'wind', 'mist', 'afterglow'] as const) {
+      const v = weatherState.forceAll?.[key] ?? (key === 'cloud' ? Math.max(w.cloud, k * 0.8) : w[key]);
+      weatherState[key] += (v - weatherState[key]) * ease;
+    }
     const m = lines.material as THREE.LineBasicMaterial;
     m.opacity = k * 0.55;
     lines.visible = k > 0.02;
@@ -67,6 +75,8 @@ export function Rain() {
       }
       arr[o + 1] = y;
       arr[o + 4] = y - 0.32;
+      // A breeze slants the rain a little.
+      arr[o + 3] = arr[o] + 0.03 + weatherState.wind * 0.12;
     }
     pos.needsUpdate = true;
   });

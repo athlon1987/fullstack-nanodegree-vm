@@ -57,8 +57,8 @@
       "ms-MY": "Sewa: 14 syiling / minit"
      },
      {
-      "en-MY": "Extended serambi & pelita",
-      "ms-MY": "Serambi lebih luas & pelita"
+      "en-MY": "Extended serambi & lanterns",
+      "ms-MY": "Serambi lebih luas & lampu"
      }
     ]
    ],
@@ -417,8 +417,8 @@
     "ms-MY": "Balai Raya"
    },
    "description": {
-    "en-MY": "The kampung community hall, for kenduri, meetings and rainy-day badminton. Adds an order slot.",
-    "ms-MY": "Dewan komuniti kampung untuk kenduri, mesyuarat dan badminton waktu hujan. Menambah satu slot pesanan."
+    "en-MY": "The kampung community hall, for community dinners, meetings and rainy-day badminton. Adds an order slot.",
+    "ms-MY": "Dewan komuniti kampung, untuk makan malam bersama, mesyuarat dan badminton hari hujan. Menambah satu slot pesanan."
    },
    "perks": [
     [
@@ -479,14 +479,14 @@
   },
   "fountain": {
    "name": {
-    "en-MY": "Lakeside Wakaf",
-    "ms-MY": "Wakaf Tepi Tasik"
+    "en-MY": "Lakeside Pavilion",
+    "ms-MY": "Pondok Tepi Tasik"
    },
    "description": {
-    "en-MY": "An open shelter built together through gotong-royong.",
-    "ms-MY": "Pondok rehat terbuka yang dibina bersama secara gotong-royong."
+    "en-MY": "An open-sided pavilion by the lake, built together through gotong-royong.",
+    "ms-MY": "Pondok terbuka di tepi tasik, dibina bersama secara gotong-royong."
    },
-   "archetype": "my:wakaf"
+   "archetype": "my:pondok"
   },
   "tree_round": {
    "name": {
@@ -670,12 +670,12 @@
   },
   "lantern_string": {
    "name": {
-    "en-MY": "Pelita Post",
-    "ms-MY": "Tiang Pelita"
+    "en-MY": "Lantern Post",
+    "ms-MY": "Tiang Lampu Taman"
    },
    "description": {
-    "en-MY": "A post hung with warm pelita lanterns.",
-    "ms-MY": "Tiang dengan pelita yang hangat."
+    "en-MY": "A post hung with warm garden lanterns.",
+    "ms-MY": "Tiang dengan lampu taman yang hangat."
    }
   },
   "statue": {
@@ -684,8 +684,58 @@
     "ms-MY": "Batu Tanda Kampung"
    },
    "description": {
-    "en-MY": "Marks the year the wakaf was built together.",
-    "ms-MY": "Menandakan tahun wakaf dibina bersama."
+    "en-MY": "Marks the year the lakeside pavilion was built together.",
+    "ms-MY": "Menandakan tahun pondok tepi tasik dibina bersama."
+   }
+  },
+  "spot_park": {
+   "name": {
+    "en-MY": "Taman Poket",
+    "ms-MY": "Taman Poket"
+   },
+   "description": {
+    "en-MY": "An overgrown corner by the rain trees. Neighbours want a pocket park with a picnic lawn.",
+    "ms-MY": "Sudut semak di tepi pokok hujan. Jiran-jiran mahu taman poket dengan laman berkelah."
+   }
+  },
+  "spot_plaza": {
+   "name": {
+    "en-MY": "Dataran Seri",
+    "ms-MY": "Dataran Seri"
+   },
+   "description": {
+    "en-MY": "An empty square that could host the kampung’s night market.",
+    "ms-MY": "Dataran kosong yang boleh menjadi tapak pasar malam kampung."
+   }
+  },
+  "spot_playground": {
+   "name": {
+    "en-MY": "Taman Permainan",
+    "ms-MY": "Taman Permainan"
+   },
+   "description": {
+    "en-MY": "A bare lot where the kampung kids dream of swings and a slide.",
+    "ms-MY": "Tanah lapang tempat kanak-kanak kampung mengimpikan buaian dan gelongsor."
+   }
+  },
+  "spot_lookout": {
+   "name": {
+    "en-MY": "Bukit Senja",
+    "ms-MY": "Bukit Senja"
+   },
+   "description": {
+    "en-MY": "A gentle rise with the best sunset view in Kampung Seri.",
+    "ms-MY": "Bukit landai dengan pemandangan matahari terbenam terbaik di Kampung Seri."
+   }
+  },
+  "kite_post": {
+   "name": {
+    "en-MY": "Wau Post",
+    "ms-MY": "Tiang Wau"
+   },
+   "description": {
+    "en-MY": "A wau kite from the playground’s opening day.",
+    "ms-MY": "Wau dari hari pembukaan taman permainan."
    }
   }
  },
@@ -1045,8 +1095,8 @@
     },
     {
      "text": {
-      "en-MY": "Mak Cik Zainab’s wakaf by the lake — my afternoon kopi tastes better there.",
-      "ms-MY": "Wakaf Mak Cik Zainab tepi tasik — kopi petang saya lebih sedap di situ."
+      "en-MY": "Mak Cik Zainab’s pavilion by the lake — my afternoon kopi tastes better there.",
+      "ms-MY": "Pondok Mak Cik Zainab tepi tasik — kopi petang saya lebih sedap di situ."
      },
      "memory": "landmark_built"
     }
@@ -1217,8 +1267,8 @@
    "greetings": [
     {
      "text": {
-      "en-MY": "Assalamualaikum! Come, look at the bunga raya today.",
-      "ms-MY": "Assalamualaikum! Mari, tengok bunga raya hari ini."
+      "en-MY": "Selamat pagi! Come, look at the bunga raya today.",
+      "ms-MY": "Selamat pagi! Mari, tengok bunga raya hari ini."
      }
     },
     {
@@ -1275,16 +1325,16 @@
     },
     {
      "text": {
-      "en-MY": "Our wakaf by the lake — built by everyone. Just like the old days.",
-      "ms-MY": "Wakaf kita tepi tasik — dibina bersama. Macam zaman dulu."
+      "en-MY": "Our pavilion by the lake — built by everyone. Just like the old days.",
+      "ms-MY": "Pondok kita tepi tasik — dibina bersama. Macam zaman dulu."
      },
      "memory": "landmark_built"
     }
    ],
    "giftReactions": {
     "love": {
-     "en-MY": "MasyaAllah, cantiknya! You know me so well.",
-     "ms-MY": "MasyaAllah, cantiknya! Awak memang kenal saya."
+     "en-MY": "Wah, cantiknya! You know me so well.",
+     "ms-MY": "Wah, cantiknya! Awak memang kenal saya."
     },
     "like": {
      "en-MY": "Terima kasih, my dear.",
@@ -1542,7 +1592,7 @@
     {
      "text": {
       "en-MY": "Next on my list: lanterns along the lake path.",
-      "ms-MY": "Seterusnya dalam senarai saya: pelita di sepanjang laluan tasik."
+      "ms-MY": "Seterusnya dalam senarai saya: lampu di sepanjang laluan tasik."
      },
      "minLevel": 1
     },
@@ -2071,6 +2121,78 @@
    ]
   },
   {
+   "id": "spruce_park",
+   "title": {
+    "en-MY": "The Overgrown Corner",
+    "ms-MY": "Sudut Semak"
+   },
+   "giver": "zainab",
+   "intro": {
+    "en-MY": "See that overgrown corner past the rain trees? The whole kampung wants to turn it into a little park — gotong-royong style. Shall we help clear it?",
+    "ms-MY": "Nampak sudut semak di sebalik pokok hujan itu? Seluruh kampung mahu jadikannya taman kecil — cara gotong-royong. Jom kita bantu bersihkan?"
+   },
+   "outro": {
+    "en-MY": "Look at it already! Everyone noticed — that’s what neighbours do.",
+    "ms-MY": "Tengoklah! Semua orang perasan — itulah gunanya jiran."
+   },
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "spruce_stage:park",
+     "n": 1,
+     "label": {
+      "en-MY": "Help clear Taman Poket",
+      "ms-MY": "Bantu bersihkan Taman Poket"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 20,
+    "xp": 15
+   },
+   "after": [
+    "decorate"
+   ],
+   "minLevel": 2,
+   "focus": {
+    "panel": "community"
+   }
+  },
+  {
+   "id": "park_done",
+   "title": {
+    "en-MY": "A Park for Everyone",
+    "ms-MY": "Taman untuk Semua"
+   },
+   "giver": "zainab",
+   "intro": {
+    "en-MY": "Flowers, benches, and then a picnic to open it. One step at a time — give whenever you have something spare.",
+    "ms-MY": "Bunga, bangku, kemudian kelah untuk membukanya. Selangkah demi selangkah — beri bila ada lebihan."
+   },
+   "outro": {
+    "en-MY": "A picnic in our own park! Terima kasih for making this happen together.",
+    "ms-MY": "Berkelah di taman kita sendiri! Terima kasih kerana menjayakannya bersama."
+   },
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "spot_done:park",
+     "n": 1,
+     "label": {
+      "en-MY": "Finish Taman Poket",
+      "ms-MY": "Siapkan Taman Poket"
+     }
+    }
+   ],
+   "reward": {
+    "xp": 40
+   },
+   "after": [
+    "spruce_park"
+   ],
+   "minLevel": 2
+  },
+  {
    "id": "orders_5",
    "title": {
     "en-MY": "Good Neighbours",
@@ -2210,19 +2332,19 @@
    "minLevel": 3
   },
   {
-   "id": "wakaf",
+   "id": "pavilion",
    "title": {
     "en-MY": "Gotong-Royong",
     "ms-MY": "Gotong-Royong"
    },
    "giver": "zainab",
    "intro": {
-    "en-MY": "In my kampung, we built a wakaf by the water together, so anyone could rest. Shall we start one by our tasik?",
-    "ms-MY": "Di kampung saya dulu, kami bina wakaf tepi air bersama-sama, supaya sesiapa boleh berehat. Jom kita mulakan satu tepi tasik kita?"
+    "en-MY": "In my old kampung, we built a little pavilion by the water together, so anyone could rest. Shall we start one by our tasik?",
+    "ms-MY": "Di kampung saya dulu, kami bina pondok kecil tepi air bersama-sama, supaya sesiapa boleh berehat. Jom kita mulakan satu tepi tasik kita?"
    },
    "outro": {
-    "en-MY": "Our wakaf — built by everyone, for everyone.",
-    "ms-MY": "Wakaf kita — dibina oleh semua, untuk semua."
+    "en-MY": "Our pavilion — built by everyone, for everyone.",
+    "ms-MY": "Pondok kita — dibina oleh semua, untuk semua."
    },
    "objectives": [
     {
@@ -2230,8 +2352,8 @@
      "counter": "contribute",
      "n": 3,
      "label": {
-      "en-MY": "Contribute to the wakaf project 3 times",
-      "ms-MY": "Sumbang kepada projek wakaf 3 kali"
+      "en-MY": "Contribute to the pavilion project 3 times",
+      "ms-MY": "Sumbang kepada projek pondok 3 kali"
      }
     }
    ],
@@ -2275,7 +2397,7 @@
     "xp": 25
    },
    "after": [
-    "wakaf"
+    "pavilion"
    ],
    "minLevel": 4
   },
@@ -2427,8 +2549,8 @@
    },
    "giver": "aisyah",
    "intro": {
-    "en-MY": "Every kampung needs a balai raya — for kenduri, meetings and rainy-day badminton. I’ve drawn up plans.",
-    "ms-MY": "Setiap kampung perlukan balai raya — untuk kenduri, mesyuarat dan badminton waktu hujan. Saya dah lukis pelannya."
+    "en-MY": "Every kampung needs a balai raya — for community dinners, meetings and rainy-day badminton. I’ve drawn up plans.",
+    "ms-MY": "Setiap kampung perlukan balai raya — untuk makan malam bersama, mesyuarat dan badminton hari hujan. Saya dah lukis pelannya."
    },
    "outro": {
     "en-MY": "A balai raya! Now we’re a real kampung.",
@@ -2600,8 +2722,8 @@
     "chapter": "lim_2"
    },
    "worldChange": {
-    "en-MY": "Pelita posts are now available to light your lanes.",
-    "ms-MY": "Tiang pelita kini tersedia untuk menerangi lorong anda."
+    "en-MY": "Lantern posts are now available to light your lanes.",
+    "ms-MY": "Tiang lampu taman kini boleh menerangi lorong anda."
    }
   },
   {
@@ -2995,6 +3117,251 @@
    "requires": {
     "building": "showroom"
    }
+  },
+  {
+   "id": "mei_3",
+   "resident": "mei",
+   "title": {
+    "en-MY": "Happy Birthday, Uncle Lim",
+    "ms-MY": "Selamat Hari Jadi, Pak Cik Lim"
+   },
+   "minFriendship": 2,
+   "requires": {
+    "chapter": "mei_2"
+   },
+   "intro": {
+    "en-MY": "Uncle Lim’s birthday is on Saturday and he keeps pretending he forgot. Shh — help me with a surprise? I need 2 Kuih Kelapa and a Jambangan.",
+    "ms-MY": "Hari jadi Pak Cik Lim hari Sabtu dan dia buat-buat lupa. Shh — tolong saya buat kejutan? Saya perlukan 2 Kuih Kelapa dan sejambak Jambangan."
+   },
+   "outro": {
+    "en-MY": "His face! He laughed so hard he nearly dropped his cup. Then he made everyone kopi “because it’s my party”.",
+    "ms-MY": "Muka dia! Dia ketawa sampai hampir terjatuh cawan. Lepas itu dia bancuh kopi untuk semua “sebab ini parti saya”."
+   },
+   "objectives": [
+    {
+     "type": "deliver",
+     "items": {
+      "berry_pie": 2,
+      "bouquet": 1
+     },
+     "to": "mei",
+     "label": {
+      "en-MY": "Bring Mei 2 Kuih Kelapa and a Jambangan",
+      "ms-MY": "Bawa 2 Kuih Kelapa dan Jambangan kepada Mei"
+     }
+    }
+   ],
+   "reward": {
+    "xp": 25,
+    "friendship": {
+     "resident": "lim",
+     "points": 8
+    }
+   },
+   "memory": "lim_birthday"
+  },
+  {
+   "id": "mei_4",
+   "resident": "mei",
+   "title": {
+    "en-MY": "Version Thirteen",
+    "ms-MY": "Versi Tiga Belas"
+   },
+   "minFriendship": 3,
+   "requires": {
+    "chapter": "mei_3"
+   },
+   "intro": {
+    "en-MY": "New idea: kaya with a little gula melaka swirl. Uncle Lim says “no need to change perfection”. I say… taste test! 2 Kaya and 2 Kelapa, please.",
+    "ms-MY": "Idea baharu: kaya dengan sedikit pusaran gula melaka. Pak Cik Lim kata “tak perlu ubah yang sempurna”. Saya kata… uji rasa! 2 Kaya dan 2 Kelapa, ya."
+   },
+   "outro": {
+    "en-MY": "Verdict: Uncle Lim had four slices “for science”. Version thirteen is now a secret menu item.",
+    "ms-MY": "Keputusan: Pak Cik Lim makan empat keping “untuk sains”. Versi tiga belas kini menu rahsia."
+   },
+   "objectives": [
+    {
+     "type": "deliver",
+     "items": {
+      "jam": 2,
+      "berries": 2
+     },
+     "to": "mei",
+     "label": {
+      "en-MY": "Bring Mei 2 Kaya and 2 Kelapa",
+      "ms-MY": "Bawa 2 Kaya dan 2 Kelapa kepada Mei"
+     }
+    }
+   ],
+   "reward": {
+    "xp": 30,
+    "gems": 2,
+    "friendship": {
+     "resident": "mei",
+     "points": 8
+    }
+   },
+   "memory": "mei_v13"
+  },
+  {
+   "id": "zainab_4",
+   "resident": "zainab",
+   "title": {
+    "en-MY": "The Great Escape",
+    "ms-MY": "Pelarian Hebat"
+   },
+   "minFriendship": 2,
+   "requires": {
+    "chapter": "zainab_3"
+   },
+   "intro": {
+    "en-MY": "Biscuit has escaped into my flower beds again! She only comes out for roti. Could you bring 2 Roti — quickly, before she reaches the orchids?",
+    "ms-MY": "Biskut terlepas ke batas bunga saya lagi! Dia cuma keluar kalau ada roti. Boleh bawa 2 Roti — cepat, sebelum dia sampai ke orkid?"
+   },
+   "outro": {
+    "en-MY": "Found her asleep under the hibiscus with a petal on her nose. Unforgivable. And completely adorable.",
+    "ms-MY": "Jumpa dia tidur di bawah bunga raya dengan kelopak di hidungnya. Tak boleh dimaafkan. Dan sangat comel."
+   },
+   "objectives": [
+    {
+     "type": "deliver",
+     "items": {
+      "bread": 2
+     },
+     "to": "zainab",
+     "label": {
+      "en-MY": "Bring Mak Cik Zainab 2 Roti",
+      "ms-MY": "Bawa 2 Roti kepada Mak Cik Zainab"
+     }
+    }
+   ],
+   "reward": {
+    "xp": 20,
+    "friendship": {
+     "resident": "zainab",
+     "points": 8
+    }
+   },
+   "memory": "zainab_biscuit"
+  },
+  {
+   "id": "joanna_1",
+   "resident": "joanna",
+   "title": {
+    "en-MY": "New in the Kampung",
+    "ms-MY": "Orang Baharu di Kampung"
+   },
+   "minFriendship": 0,
+   "requires": {
+    "building": "townhouse"
+   },
+   "intro": {
+    "en-MY": "I know the light here better than the people! Would you introduce me around? Say hello to a few neighbours with me.",
+    "ms-MY": "Saya lebih kenal cahaya di sini daripada orangnya! Boleh kenalkan saya? Jom tegur beberapa jiran bersama saya."
+   },
+   "outro": {
+    "en-MY": "Everyone said hi! Mak Cik Zainab gave me cuttings and Aisyah already put me on three committees.",
+    "ms-MY": "Semua orang tegur! Mak Cik Zainab beri keratan pokok dan Aisyah dah masukkan saya dalam tiga jawatankuasa."
+   },
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "talk",
+     "n": 4,
+     "label": {
+      "en-MY": "Chat with 4 neighbours",
+      "ms-MY": "Berbual dengan 4 jiran"
+     }
+    }
+   ],
+   "reward": {
+    "xp": 20,
+    "friendship": {
+     "resident": "joanna",
+     "points": 8
+    }
+   },
+   "memory": "joanna_friends"
+  },
+  {
+   "id": "arjun_2",
+   "resident": "arjun",
+   "title": {
+    "en-MY": "Playground Dreams",
+    "ms-MY": "Impian Taman Permainan"
+   },
+   "minFriendship": 1,
+   "requires": {
+    "chapter": "arjun_1",
+    "level": 5
+   },
+   "intro": {
+    "en-MY": "The football kids keep asking for a playground. If we all chip in at the bare lot, I’ll build the slide myself. Help it along twice?",
+    "ms-MY": "Budak-budak bola sepak asyik minta taman permainan. Kalau kita semua menyumbang di tanah lapang itu, saya bina gelongsor sendiri. Bantu dua kali?"
+   },
+   "outro": {
+    "en-MY": "They tested the slide forty-seven times. Officially approved.",
+    "ms-MY": "Mereka uji gelongsor itu empat puluh tujuh kali. Lulus secara rasmi."
+   },
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "spruce:playground",
+     "n": 2,
+     "label": {
+      "en-MY": "Help at the playground twice",
+      "ms-MY": "Bantu di taman permainan dua kali"
+     }
+    }
+   ],
+   "reward": {
+    "xp": 30,
+    "friendship": {
+     "resident": "arjun",
+     "points": 8
+    }
+   },
+   "memory": "arjun_playground"
+  },
+  {
+   "id": "aisyah_2",
+   "resident": "aisyah",
+   "title": {
+    "en-MY": "Picnic Planning",
+    "ms-MY": "Rancang Berkelah"
+   },
+   "minFriendship": 1,
+   "requires": {
+    "chapter": "aisyah_1"
+   },
+   "intro": {
+    "en-MY": "The pocket park needs an opening picnic and I have a list. A long list. First item: you! Help finish Taman Poket?",
+    "ms-MY": "Taman poket perlukan kelah pembukaan dan saya ada senarai. Senarai panjang. Perkara pertama: awak! Bantu siapkan Taman Poket?"
+   },
+   "outro": {
+    "en-MY": "Mats, kuih, kites and the whole kampung on the grass. I didn’t even need the clipboard. (I used it anyway.)",
+    "ms-MY": "Tikar, kuih, wau dan seluruh kampung di atas rumput. Saya tak perlukan papan klip pun. (Tapi saya guna juga.)"
+   },
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "spot_done:park",
+     "n": 1,
+     "label": {
+      "en-MY": "Finish Taman Poket",
+      "ms-MY": "Siapkan Taman Poket"
+     }
+    }
+   ],
+   "reward": {
+    "xp": 30,
+    "gems": 2,
+    "friendship": {
+     "resident": "aisyah",
+     "points": 8
+    }
+   },
+   "memory": "aisyah_picnic"
   }
  ],
  "events": [
@@ -3009,7 +3376,7 @@
     "ms-MY": "Aisyah dan Mak Cik Zainab memenuhi lorong dengan bunga! Sertai mengikut rentak sendiri — setiap matlamat menambah ganjaran pesta."
    },
    "minLevel": 4,
-   "durationDays": 7,
+   "durationDays": 4,
    "objectives": [
     {
      "type": "counter",
@@ -3069,8 +3436,8 @@
       ]
      },
      "label": {
-      "en-MY": "Pelita Post",
-      "ms-MY": "Tiang Pelita"
+      "en-MY": "Lantern Post",
+      "ms-MY": "Tiang Lampu Taman"
      }
     },
     {
@@ -3098,17 +3465,563 @@
      }
     }
    ]
+  },
+  {
+   "id": "street_food_day",
+   "name": {
+    "en-MY": "Street Food Day",
+    "ms-MY": "Hari Makanan Jalanan"
+   },
+   "description": {
+    "en-MY": "Tables line the lorong and everyone brings something to share — kopi, roti and kuih. Cook, serve and taste your way through the day.",
+    "ms-MY": "Meja-meja memenuhi lorong dan semua orang membawa sesuatu untuk dikongsi — kopi, roti dan kuih. Masak, hidang dan rasa sepanjang hari."
+   },
+   "minLevel": 3,
+   "durationDays": 3,
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "produce:coffee",
+     "n": 10,
+     "label": {
+      "en-MY": "Brew 10 Kopi",
+      "ms-MY": "Bancuh 10 Kopi"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "produce:bread",
+     "n": 8,
+     "label": {
+      "en-MY": "Bake 8 Roti",
+      "ms-MY": "Bakar 8 Roti"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "orders",
+     "n": 6,
+     "label": {
+      "en-MY": "Serve 6 Orders",
+      "ms-MY": "Hidang 6 Pesanan"
+     }
+    }
+   ],
+   "tiers": [
+    {
+     "at": 1,
+     "reward": {
+      "xp": 15,
+      "coins": 40
+     },
+     "label": {
+      "en-MY": "First Bite",
+      "ms-MY": "Suapan Pertama"
+     }
+    },
+    {
+     "at": 2,
+     "reward": {
+      "xp": 25,
+      "gems": 2
+     },
+     "label": {
+      "en-MY": "Full Table",
+      "ms-MY": "Meja Penuh"
+     }
+    },
+    {
+     "at": 3,
+     "reward": {
+      "xp": 40,
+      "gems": 3
+     },
+     "label": {
+      "en-MY": "Feast for Everyone",
+      "ms-MY": "Jamuan untuk Semua"
+     }
+    }
+   ]
+  },
+  {
+   "id": "music_night",
+   "name": {
+    "en-MY": "Kampung Music Night",
+    "ms-MY": "Malam Muzik Kampung"
+   },
+   "description": {
+    "en-MY": "Arjun brought his guitar, Aisyah a kompang… Light up the lanes, chat with neighbours and enjoy the music.",
+    "ms-MY": "Arjun bawa gitar, Aisyah bawa kompang… Terangi lorong, berbual dengan jiran dan nikmati muzik."
+   },
+   "minLevel": 4,
+   "durationDays": 2,
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "talk",
+     "n": 5,
+     "label": {
+      "en-MY": "Chat with neighbours 5 times",
+      "ms-MY": "Berbual dengan jiran 5 kali"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "decor:lamp",
+     "n": 2,
+     "label": {
+      "en-MY": "Place 2 Street Lamps",
+      "ms-MY": "Letak 2 Lampu Jalan"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "orders",
+     "n": 4,
+     "label": {
+      "en-MY": "Complete 4 Orders",
+      "ms-MY": "Siapkan 4 Pesanan"
+     }
+    }
+   ],
+   "tiers": [
+    {
+     "at": 1,
+     "reward": {
+      "xp": 15
+     },
+     "label": {
+      "en-MY": "Warm-Up",
+      "ms-MY": "Pemanasan"
+     }
+    },
+    {
+     "at": 2,
+     "reward": {
+      "xp": 25,
+      "gems": 2
+     },
+     "label": {
+      "en-MY": "Encore",
+      "ms-MY": "Lagi!"
+     }
+    },
+    {
+     "at": 3,
+     "reward": {
+      "xp": 40,
+      "gems": 3
+     },
+     "label": {
+      "en-MY": "Standing Ovation",
+      "ms-MY": "Tepukan Gemuruh"
+     }
+    }
+   ]
+  },
+  {
+   "id": "garden_party",
+   "name": {
+    "en-MY": "Garden Party at Taman Poket",
+    "ms-MY": "Parti Taman di Taman Poket"
+   },
+   "description": {
+    "en-MY": "The new pocket park is ready for its first party: bunga raya on every table, little gifts and a lot of laughter.",
+    "ms-MY": "Taman poket baharu sedia untuk parti pertamanya: bunga raya di setiap meja, hadiah kecil dan banyak gelak tawa."
+   },
+   "minLevel": 2,
+   "durationDays": 2,
+   "requires": "spot_park",
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "produce:flowers",
+     "n": 12,
+     "label": {
+      "en-MY": "Grow 12 Bunga Raya",
+      "ms-MY": "Tanam 12 Bunga Raya"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "gift",
+     "n": 3,
+     "label": {
+      "en-MY": "Give 3 gifts",
+      "ms-MY": "Beri 3 hadiah"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "photo",
+     "n": 1,
+     "label": {
+      "en-MY": "Take a party photo",
+      "ms-MY": "Ambil gambar parti"
+     }
+    }
+   ],
+   "tiers": [
+    {
+     "at": 1,
+     "reward": {
+      "xp": 15
+     },
+     "label": {
+      "en-MY": "Party Hats",
+      "ms-MY": "Topi Parti"
+     }
+    },
+    {
+     "at": 2,
+     "reward": {
+      "xp": 25,
+      "gems": 2
+     },
+     "label": {
+      "en-MY": "Garden Games",
+      "ms-MY": "Permainan Taman"
+     }
+    },
+    {
+     "at": 3,
+     "reward": {
+      "xp": 40,
+      "gems": 3
+     },
+     "label": {
+      "en-MY": "Best Party Ever",
+      "ms-MY": "Parti Terbaik"
+     }
+    }
+   ]
+  },
+  {
+   "id": "community_market",
+   "name": {
+    "en-MY": "Pasar Malam at Dataran Seri",
+    "ms-MY": "Pasar Malam Dataran Seri"
+   },
+   "description": {
+    "en-MY": "Stalls light up the new plaza: kaya, roti, produce baskets and neighbours swapping stories. Bring your best goods!",
+    "ms-MY": "Gerai-gerai menerangi dataran baharu: kaya, roti, bakul hasil tani dan jiran bertukar cerita. Bawa barangan terbaik anda!"
+   },
+   "minLevel": 3,
+   "durationDays": 3,
+   "requires": "spot_plaza",
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "orders",
+     "n": 8,
+     "label": {
+      "en-MY": "Complete 8 Orders",
+      "ms-MY": "Siapkan 8 Pesanan"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "produce:jam",
+     "n": 3,
+     "label": {
+      "en-MY": "Make 3 Kaya",
+      "ms-MY": "Buat 3 Kaya"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "spruce",
+     "n": 3,
+     "label": {
+      "en-MY": "Help a shared spot 3 times",
+      "ms-MY": "Bantu tempat bersama 3 kali"
+     }
+    }
+   ],
+   "tiers": [
+    {
+     "at": 1,
+     "reward": {
+      "xp": 20
+     },
+     "label": {
+      "en-MY": "Open for Business",
+      "ms-MY": "Mula Berniaga"
+     }
+    },
+    {
+     "at": 2,
+     "reward": {
+      "xp": 30,
+      "gems": 2
+     },
+     "label": {
+      "en-MY": "Busy Stalls",
+      "ms-MY": "Gerai Sibuk"
+     }
+    },
+    {
+     "at": 3,
+     "reward": {
+      "xp": 50,
+      "gems": 4
+     },
+     "label": {
+      "en-MY": "Market Favourite",
+      "ms-MY": "Kegemaran Pasar"
+     }
+    }
+   ]
+  },
+  {
+   "id": "pet_parade",
+   "name": {
+    "en-MY": "Pet Parade",
+    "ms-MY": "Perarakan Haiwan Peliharaan"
+   },
+   "description": {
+    "en-MY": "Bows, bandanas and a very proud parade around the playground. Treat the pets and cheer them on!",
+    "ms-MY": "Reben, selendang dan perarakan yang sangat bangga di sekitar taman permainan. Beri haiwan peliharaan habuan dan sorak untuk mereka!"
+   },
+   "minLevel": 5,
+   "durationDays": 2,
+   "requires": "spot_playground",
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "pet",
+     "n": 3,
+     "label": {
+      "en-MY": "Treat the pets 3 times",
+      "ms-MY": "Beri habuan kepada haiwan 3 kali"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "photo",
+     "n": 2,
+     "label": {
+      "en-MY": "Take 2 parade photos",
+      "ms-MY": "Ambil 2 gambar perarakan"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "talk",
+     "n": 4,
+     "label": {
+      "en-MY": "Cheer with 4 neighbours",
+      "ms-MY": "Bersorak dengan 4 jiran"
+     }
+    }
+   ],
+   "tiers": [
+    {
+     "at": 1,
+     "reward": {
+      "xp": 20
+     },
+     "label": {
+      "en-MY": "Wagging Tails",
+      "ms-MY": "Ekor Bergoyang"
+     }
+    },
+    {
+     "at": 2,
+     "reward": {
+      "xp": 30,
+      "gems": 2
+     },
+     "label": {
+      "en-MY": "Best in Show",
+      "ms-MY": "Terbaik Pertunjukan"
+     }
+    },
+    {
+     "at": 3,
+     "reward": {
+      "xp": 50,
+      "gems": 4
+     },
+     "label": {
+      "en-MY": "Parade Champions",
+      "ms-MY": "Juara Perarakan"
+     }
+    }
+   ]
+  },
+  {
+   "id": "movie_night",
+   "name": {
+    "en-MY": "Wayang Pacak Night",
+    "ms-MY": "Malam Wayang Pacak"
+   },
+   "description": {
+    "en-MY": "A screen goes up at Bukit Senja for an outdoor film. Kopi, kuih, mats on the grass and a funny old movie under the stars.",
+    "ms-MY": "Skrin dipasang di Bukit Senja untuk wayang pacak. Kopi, kuih, tikar di atas rumput dan filem lama yang lucu di bawah bintang."
+   },
+   "minLevel": 7,
+   "durationDays": 2,
+   "requires": "spot_lookout",
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "produce:coffee",
+     "n": 6,
+     "label": {
+      "en-MY": "Brew 6 Kopi for the crowd",
+      "ms-MY": "Bancuh 6 Kopi untuk penonton"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "produce:berry_pie",
+     "n": 2,
+     "label": {
+      "en-MY": "Make 2 Kuih Kelapa",
+      "ms-MY": "Buat 2 Kuih Kelapa"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "talk",
+     "n": 5,
+     "label": {
+      "en-MY": "Invite 5 neighbours",
+      "ms-MY": "Jemput 5 jiran"
+     }
+    }
+   ],
+   "tiers": [
+    {
+     "at": 1,
+     "reward": {
+      "xp": 25
+     },
+     "label": {
+      "en-MY": "Kacang Puteh",
+      "ms-MY": "Kacang Puteh"
+     }
+    },
+    {
+     "at": 2,
+     "reward": {
+      "xp": 40,
+      "gems": 2
+     },
+     "label": {
+      "en-MY": "Front Row",
+      "ms-MY": "Barisan Depan"
+     }
+    },
+    {
+     "at": 3,
+     "reward": {
+      "xp": 60,
+      "gems": 4
+     },
+     "label": {
+      "en-MY": "Under the Stars",
+      "ms-MY": "Di Bawah Bintang"
+     }
+    }
+   ]
+  },
+  {
+   "id": "anniversary",
+   "name": {
+    "en-MY": "Kampung Seri Day",
+    "ms-MY": "Hari Kampung Seri"
+   },
+   "description": {
+    "en-MY": "Another year of Kampung Seri! Everyone pitches in to make the kampung look its very best for the big day.",
+    "ms-MY": "Setahun lagi untuk Kampung Seri! Semua orang bergotong-royong supaya kampung kelihatan paling cantik untuk hari besar."
+   },
+   "minLevel": 6,
+   "durationDays": 3,
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "orders",
+     "n": 10,
+     "label": {
+      "en-MY": "Complete 10 Orders",
+      "ms-MY": "Siapkan 10 Pesanan"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "spruce",
+     "n": 5,
+     "label": {
+      "en-MY": "Help shared spots 5 times",
+      "ms-MY": "Bantu tempat bersama 5 kali"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "gift",
+     "n": 4,
+     "label": {
+      "en-MY": "Give 4 gifts",
+      "ms-MY": "Beri 4 hadiah"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "upgrade",
+     "n": 1,
+     "label": {
+      "en-MY": "Upgrade a building",
+      "ms-MY": "Naik taraf satu bangunan"
+     }
+    }
+   ],
+   "tiers": [
+    {
+     "at": 1,
+     "reward": {
+      "xp": 25
+     },
+     "label": {
+      "en-MY": "Bunting Up",
+      "ms-MY": "Panji Dinaikkan"
+     }
+    },
+    {
+     "at": 2,
+     "reward": {
+      "xp": 40,
+      "gems": 2
+     },
+     "label": {
+      "en-MY": "Cake Cut",
+      "ms-MY": "Kek Dipotong"
+     }
+    },
+    {
+     "at": 4,
+     "reward": {
+      "xp": 80,
+      "gems": 5
+     },
+     "label": {
+      "en-MY": "Best Year Yet",
+      "ms-MY": "Tahun Terbaik"
+     }
+    }
+   ]
   }
  ],
  "project": {
-  "id": "wakaf",
+  "id": "pavilion",
   "name": {
-   "en-MY": "Lakeside Wakaf",
-   "ms-MY": "Wakaf Tepi Tasik"
+   "en-MY": "Lakeside Pavilion",
+   "ms-MY": "Pondok Tepi Tasik"
   },
   "description": {
-   "en-MY": "Help the kampung build a wakaf — an open shelter — by the tasik, so anyone can rest there. Every contribution you make brings it a step closer.",
-   "ms-MY": "Bantu kampung membina wakaf — pondok rehat terbuka — di tepi tasik, supaya sesiapa boleh berehat. Setiap sumbangan anda membawanya selangkah lebih dekat."
+   "en-MY": "Help the kampung build an open-sided pavilion by the tasik, so anyone can sit and rest there. Every contribution brings it a step closer.",
+   "ms-MY": "Bantu kampung membina pondok terbuka di tepi tasik, supaya sesiapa boleh duduk berehat. Setiap sumbangan membawanya selangkah lebih dekat."
   },
   "requirements": {
    "coins": 300,
@@ -3166,7 +4079,7 @@
   "Simpang Tiga",
   "Pokok Ara",
   "Tepi Sungai",
-  "Lorong Pelita",
+  "Lorong Lampu",
   "Padang Bola",
   "Kebun Pisang",
   "Tanjung Teduh"
@@ -3218,8 +4131,8 @@
     "ms-MY": "Pusat Belajar"
    },
    {
-    "en-MY": "Wakaf community project",
-    "ms-MY": "Projek komuniti wakaf"
+    "en-MY": "Lakeside pavilion community project",
+    "ms-MY": "Projek komuniti pondok tepi tasik"
    }
   ],
   "4": [

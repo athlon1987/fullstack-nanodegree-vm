@@ -28,6 +28,7 @@ import {
 
 import { FLOWERS, ROCK, body, face, prop, shopWindow, type ArchCtx } from './common';
 import { malaysianArchetype, tropicalDecoration } from './malaysia';
+import { communityDecoration, spotArchetype } from './community';
 export type { ArchCtx } from './common';
 export { prop } from './common';
 
@@ -481,7 +482,7 @@ function fountain(c: ArchCtx) {
       const len = Math.hypot(x1 - x0, z1 - z0);
       box(g, len, 0.006, 0.006, mat('#ffffff'), (x0 + x1) / 2, 0.22, (z0 + z1) / 2, 0.002, [0, -Math.atan2(z1 - z0, x1 - x0), 0]);
     }
-    signBoard(g, c.text?.wakafProject ?? '', 0, 0.28, 0.75, { w: 0.6, h: 0.14, bg: P.ivory, fg: '#2f6fa8' });
+    signBoard(g, c.text?.projectSign ?? '', 0, 0.28, 0.75, { w: 0.6, h: 0.14, bg: P.ivory, fg: '#2f6fa8' });
     cyl(g, 0.015, 0.015, 0.28, mat(P.woodDark), -0.25, 0, 0.73, 5);
     cyl(g, 0.015, 0.015, 0.28, mat(P.woodDark), 0.25, 0, 0.73, 5);
     return g;
@@ -719,7 +720,11 @@ export function archetype(arch: string, ctx: ArchCtx): THREE.Group {
   const hit = templateCache.get(key);
   if (hit) return hit.clone();
   let g: THREE.Group;
-  const regional = arch.startsWith('deco:') ? (ctx.biome === 'tropical' ? tropicalDecoration(arch.slice(5)) : null) : malaysianArchetype(arch, ctx);
+  const regional = arch.startsWith('spot:')
+    ? spotArchetype(arch, ctx)
+    : arch.startsWith('deco:')
+      ? (communityDecoration(arch.slice(5)) ?? (ctx.biome === 'tropical' ? tropicalDecoration(arch.slice(5)) : null))
+      : malaysianArchetype(arch, ctx);
   if (regional) g = regional;
   else if (arch.startsWith('deco:')) g = decoration(arch.slice(5));
   else

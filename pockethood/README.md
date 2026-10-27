@@ -4,6 +4,8 @@
 
 A cozy, social neighborhood-building game for the browser: a miniature diorama town you grow from one little house into a street of shops, gardens and friends — whose stories change the world around them.
 
+*A happy little world, full of life, where there's always something wonderful to create.* A peaceful, welcoming place — no religion, politics or conflict, just neighbours, food, gardens and building something beautiful together — with an original adaptive lo-fi soundtrack, quick satisfying play, and a calmer Zen Mode on the same world.
+
 **The Living World:** POCKETHOOD is a modular platform. Countries, districts and businesses arrive as validated, data-only content on top of reviewed gameplay templates. The default world is **Kampung Seri**, a fictional Malaysian kampung (in English and Bahasa Melayu), with four demo modules — a kopitiam, a car showroom, a learning centre and a community garden. The classic world, Maple Hollow, is still available in Settings.
 
 Built with TypeScript, React, three.js (React Three Fiber), zustand and Vite. Local-first (IndexedDB saves), installable as a PWA, architected for a future server-authoritative online mode (backend designed, not deployed).
@@ -28,6 +30,7 @@ npm run dev          # http://localhost:5173
 | `npm run test:e2e` | Browser tests (Playwright; starts its own dev server on :5199) |
 | `npm run typecheck` | TypeScript, no emit |
 | `npm run economy:sim` | 30-day bot-player simulation → `docs/ECONOMY_SIMULATION.md` |
+| `node scripts/audio/render-previews.mjs <dir>` | Render the soundtrack (each arrangement, an adaptive tour, the effects) to WAV/MP3; `python3 scripts/audio/analyze.py <dir>` measures them |
 | `npm run content:build` | Validate all content (schemas, references, economy, en + ms) and write the hashed content index |
 | `npm run assets:import` | Verify (sha256) + harmonise + write runtime models from `asset-sources/` |
 | `npm run assets:validate` | Model budgets, required animation clips, references |
@@ -38,12 +41,16 @@ Dev extras: **Settings → Studio** (module registry, module & menu editors, spo
 ## How to play
 Switch language (English / Bahasa Melayu) and turn on **Zen Mode** in Settings. In Kampung Seri you can also pull teh tarik by hand at Kopitiam Lim, take the daily quiz at the learning centre, arrange the showroom, grow plants in the community garden, fish (catch and release) at the lake, and share your kampung by link.
 
+Help the neighbourhood transform its **shared spots** (pocket park, plaza, playground, sunset lookout) from the **Together** screen, and join rotating **celebrations** — a street food day, a pasar malam, a pet parade, an outdoor movie night.
+
 Tap bubbles to collect · **Build** to place shops, homes and decorations (drag, rotate with ↻ or `R`, confirm ✓) · tap a shop to produce goods · deliver neighbors' requests on the **Request Board** · upgrade buildings to unlock recipes and see them change · tap residents to chat, gift and help with their stories · check the **Neighborhood Pulse** for three optional ideas a day · capture your town in **photo mode**. A guided tutorial covers the first 3–5 minutes.
 
 ## What's inside (Living World)
 - **Platform:** strict data-only content (`content/`), template library, module lifecycle (approval, dates, versions, flags, staged rollout, kill switch), sha256 integrity with last-known-good and bundled fallback, quarantine with neutral fallback, country registry (MY active; SG/ID/TH/JP/KR planned).
-- **Kampung Seri:** 8 residents, a 6-step tutorial + 13 quests, 12 story chapters, Pesta Bunga Kampung, the Lakeside Wakaf project, a Malaysian architecture kit, tropical planting and rain showers.
-- **Zen Mode**, four audio channels with a procedural tropical soundscape, sharing and read-only visit links, PWA.
+- **Kampung Seri:** 8 residents, a 6-step tutorial + 15 quests, 18 story chapters, 8 rotating celebrations, 4 shared spots, the Lakeside Pavilion project, a Malaysian architecture kit, tropical planting, clouds, breeze, rain, morning mist and post-rain rainbows.
+- **Signature soundtrack:** one original theme in eight adaptive arrangements (town, café, garden, building, night, celebration, mini-game, Zen), synthesised live; in-key feedback sounds — no audio files at all ([AUDIO_ASSET_MANIFEST](docs/AUDIO_ASSET_MANIFEST.md)).
+- **Content policy** enforced in every language for authored content, partner modules and player names ([CONTENT_POLICY](docs/CONTENT_POLICY.md)).
+- **Zen Mode**, four audio channels, battery saver, sharing and read-only visit links, PWA.
 
 ## What's inside (core)
 - **14 functional buildings**, 14 recipes with production chains, upgrades that visibly transform buildings, 21 decorations & keepsakes, land expansion.
@@ -60,8 +67,9 @@ Tap bubbles to collect · **Build** to place shops, homes and decorations (drag,
 | [ART_DIRECTION](docs/ART_DIRECTION.md) · [ASSET_MANIFEST](docs/ASSET_MANIFEST.md) · [ASSET_GAPS](docs/ASSET_GAPS.md) · [ASSET_LICENSES](docs/ASSET_LICENSES.md) · [CHARACTER_PIPELINE](docs/CHARACTER_PIPELINE.md) | Art & assets |
 | [MODULAR_ARCHITECTURE](docs/MODULAR_ARCHITECTURE.md) · [CONTENT_SCHEMA](docs/CONTENT_SCHEMA.md) · [SPONSOR_PLATFORM](docs/SPONSOR_PLATFORM.md) | The Living World platform |
 | [MALAYSIA_WORLD_DESIGN](docs/MALAYSIA_WORLD_DESIGN.md) | Kampung Seri |
+| [CONTENT_POLICY](docs/CONTENT_POLICY.md) · [AUDIO_ASSET_MANIFEST](docs/AUDIO_ASSET_MANIFEST.md) | A peaceful world · the soundtrack |
 | [SECURITY_ARCHITECTURE](docs/SECURITY_ARCHITECTURE.md) · [MONETIZATION_COMPLIANCE](docs/MONETIZATION_COMPLIANCE.md) · [backend/](backend/README.md) | Security, compliance, server design (not deployed) |
 | [DEVELOPMENT_ROADMAP](docs/DEVELOPMENT_ROADMAP.md) · [BUILD_ROADMAP](docs/BUILD_ROADMAP.md) | The road to launch (current) · first-playable phases (historical) |
 
 ## Credits
-3D models and sound effects by **Kenney** (kenney.nl) and **Quaternius** (quaternius.com), CC0. Fonts: Fredoka & Nunito (SIL OFL). Everything else is original to this project.
+3D models by **Kenney** (kenney.nl) and **Quaternius** (quaternius.com), CC0. Fonts: Fredoka & Nunito (SIL OFL). Music, sound effects and everything else are original to this project.

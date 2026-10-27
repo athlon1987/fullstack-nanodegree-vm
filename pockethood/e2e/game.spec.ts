@@ -88,7 +88,7 @@ test('every main panel opens and closes', async ({ page }) => {
     ['nav-orders', 'Request Board'],
     ['nav-residents', 'Neighbors'],
     ['nav-inventory', 'Storage'],
-    ['nav-friends', 'Friends & Hoods'],
+    ['nav-community', 'Our Neighbourhood'],
   ]) {
     await page.locator(`[data-tutorial="${nav}"]`).click({ force: true });
     await expect(page.getByRole('dialog', { name: title })).toBeVisible();
@@ -207,4 +207,52 @@ test('a shared snapshot link opens read-only and never touches the visitor’s s
   await page.goto('/');
   await page.waitForSelector('.hud', { timeout: 120_000 });
   expect((await game(page)).coins).toBe(188);
+});
+
+test('the soundtrack starts on the first tap and follows what you do', async ({ page }) => {
+  await boot(page);
+  await dismiss(page);
+  await page.mouse.click(560, 380);
+  await expect.poll(async () => page.evaluate(() => (window as any).__pockethoodAudio.musicState?.mood), { timeout: 15_000 }).toBe('town');
+  // Opening the build menu moves the music to its construction arrangement at the next bar line.
+  await page.locator('[data-tutorial="nav-build"]').click({ force: true });
+  await expect.poll(async () => page.evaluate(() => (window as any).__pockethoodAudio.musicState?.mood), { timeout: 15_000 }).toBe('build');
+  const bar = await page.evaluate(() => (window as any).__pockethoodAudio.musicState.bar);
+  expect(bar).toBeGreaterThan(0); // the song kept going rather than restarting
+  // Zen Mode switches to the calm arrangement.
+  await page.keyboard.press('Escape');
+  await page.evaluate(() => (window as any).__pockethood.getState().dispatch({ type: 'settings', patch: { zen: true } }));
+  await expect.poll(async () => page.evaluate(() => (window as any).__pockethoodAudio.musicState?.mood), { timeout: 15_000 }).toBe('zen');
+});
+
+test('giving to the pocket park changes it for everyone', async ({ page }) => {
+  await boot(page);
+  await dismiss(page);
+  await page.evaluate(() => {
+    const S = (window as any).__pockethood;
+    S.getState().dispatch({ type: 'tutorial', skip: true });
+    S.setState({ game: { ...S.getState().game, coins: 400, level: 2, xp: 120 } });
+  });
+  await dismiss(page);
+  await page.locator('[data-tutorial="nav-community"]').click({ force: true });
+  const park = page.locator('.spot-card[data-spot="park"]');
+  await expect(park).toContainText('Taman Poket');
+  await park.getByRole('button', { name: 'Give all I can' }).click();
+  await expect.poll(async () => (await game(page)).spots.park.stage).toBe(1);
+  expect((await game(page)).coins).toBe(340);
+  await expect(park).toContainText('Step 2 of 4');
+});
+
+test('neighbourhood names outside the content policy are politely refused', async ({ page }) => {
+  await boot(page);
+  await dismiss(page);
+  await page.locator('.profile-chip').click({ force: true });
+  const field = page.locator('#hname');
+  await field.fill('Vote Street');
+  await field.press('Enter');
+  await expect(page.locator('.toast')).toContainText('pick a different name');
+  expect((await game(page)).profile.hoodName).toBe('Kampung Seri');
+  await field.fill('Taman Ceria');
+  await field.press('Enter');
+  await expect.poll(async () => (await game(page)).profile.hoodName).toBe('Taman Ceria');
 });

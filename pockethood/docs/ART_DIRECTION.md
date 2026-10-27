@@ -46,8 +46,57 @@ The tables above are the core (temperate) palette. The tropical biome swaps the 
 - Cheap fake ambient occlusion: a soft radial contact-shadow blob under every building. No bloom, no SSAO — the default scene must look good without post-processing.
 - **Rain** (tropical worlds) lerps the sun towards grey and dims it by up to 55%, and greys the sky gradient and hemisphere fill in proportion to rain intensity (`src/rendering/lighting/Lighting.tsx`).
 
+## Atmosphere
+Time of day and weather are **atmosphere only**: they never slow production, block actions or cost the player anything.
+
+**Time-of-day keys** (`KEYS` in `src/rendering/lighting/Lighting.tsx`). Sun colour and intensity, sky gradient and hemisphere fill are interpolated between these keys:
+
+| Key | Hour | Look |
+|---|---|---|
+| Night | 0:00 / 24:00 | Cool blue-violet, kept bright enough that the scene stays readable |
+| Dawn | 5:30 | Lavender light, peach horizon |
+| Morning | 7:30 | Warm apricot sun, pale blue sky |
+| Noon | 12:00 | Brightest, near-white sun |
+| Afternoon | 16:30 | Soft, warm daylight |
+| Golden hour | 18:00 | Amber sun, peach horizon |
+| Sunset | 19:00 | Orange sun, rose sky |
+| Dusk | 21:00 | Deep blue; windows and lamps glowing |
+
+**Weather states** come from the deterministic model `weatherAt()` in `src/game/world/weather.ts` (every player sees the same sky at the same moment; nothing is saved or synced). Each value is 0..1 and they blend:
+
+| State | Visual | Where |
+|---|---|---|
+| Clear | Light, varying cloud cover over the far sea | `Ambient.tsx` `Clouds` |
+| Clouds | Fuller, greyer clouds build before a shower and linger after it | `Ambient.tsx`, `Lighting.tsx` |
+| Breeze | Trees sway more, clouds drift faster, rain slants | `Buildings.tsx`, `Ambient.tsx`, `Rain.tsx` |
+| Light tropical rain | Falling streaks, greyer and dimmer sun and sky (tropical worlds only) | `Rain.tsx`, `Lighting.tsx` |
+| Morning mist | A soft, light haze on about 2 mornings in 5, burning off by mid-morning; never dark, never hides anything | `Lighting.tsx` (fog) |
+| Post-rain sunshine | Brighter, warmer sun and a soft rainbow overlay for a short while after a shower (daytime only) | `Lighting.tsx`, `GameCanvas.tsx` `Rainbow` |
+
+The **Battery saver** setting caps rendering at 30 fps (`GameCanvas.tsx`).
+
 ## Life & motion
-Trees sway gently (per-instance phase), chimneys puff, cars drive the main street, birds cross the sky, butterflies circle flower beds, residents walk their routines and stop to chat, and pets wander and react when tapped. The community landmark grows in visible stages: the fountain sprays once built in Maple Hollow, and the wakaf gains posts, floor and roof in Kampung Seri. Showroom cars turn slowly on their turntables. All of this honours the **Reduced motion** setting; rain also falls more slowly under it.
+Trees sway gently (per-instance phase), chimneys puff, cars drive the main street, birds cross the sky, butterflies circle flower beds, residents walk their routines and stop to chat, and pets wander and react when tapped. The community landmark grows in visible stages: the fountain sprays once built in Maple Hollow, and the lakeside pavilion (*pondok*) gains posts, floor and roof in Kampung Seri. Shared spots change at every finished step (see *Shared spots*). Residents wave when they pass each other and show small emote bubbles (♥ ♪ ☺ ★ …), hidden in Zen Mode. Showroom cars turn slowly on their turntables. All of this honours the **Reduced motion** setting; rain also falls more slowly under it.
+
+## Shared spots
+Four places on shared land just past the starting area (`src/rendering/kit/community.ts`; data in `src/data/spots.ts`). Each is drawn at **5 stages**, one per finished step, so every contribution changes the place visibly:
+
+| Stage | Look |
+|---|---|
+| 0 Untouched | Overgrown or bare ground with weeds, a log or crate, and a hopeful "Coming soon!" sign |
+| 1 Cleared | Clean ground, a first path, paving or sandpit, materials waiting |
+| 2 Built / planted | The main structure: flower beds and young trees, tiles and a central planter, slide and swings, a timber deck |
+| 3 Furnished | Benches, lamps and the details: a bird bath, striped market stalls, a seesaw and climbing dome, flowers along the deck |
+| 4 Finished and lively | Bunting, string lights, a picnic blanket, balloons, lanterns and a small outdoor-movie screen |
+
+| Spot (core / Kampung Seri) | Footprint | Finished look | Keepsake |
+|---|---|---|---|
+| Pocket Park / Taman Poket | 3×3 | Lawn, flower patches, two trees, benches, bird bath, picnic | Picnic Set |
+| Community Plaza / Dataran Seri | 3×3 | Cobbled square, planter tree, three striped market stalls | Market Stall |
+| Playground / Taman Permainan | 3×2 | Safety surface, sandpit, slide, swings, seesaw, climbing dome | Kite Post (Wau Post) |
+| Sunset Lookout / Bukit Senja | 3×2 | Timber deck with rail, benches, lamps, lanterns, movie screen | Telescope |
+
+**Seasonal colour variants.** A finished spot can be refreshed each season ("Keep it lovely"). Every refresh rotates the colours of its bunting and flower patches through four palettes (`SEASONS`): the default flower colours, sunny yellows and oranges, cool blues and lilacs, and pinks with white. The structure stays the same. The keepsakes use the same art in both biomes.
 
 ## Malaysian kit (Kampung Seri)
 An original, parametric kit in `src/rendering/kit/malaysia.ts`. It uses the same rounded parts, procedural textures (planks, plaster, zinc, tiles, cobbles, floor tiles, brick) and anchors as the core kit. Nothing in it depicts a real business, brand or building.
@@ -56,7 +105,7 @@ An original, parametric kit in `src/rendering/kit/malaysia.ts`. It uses the same
 
 | Archetype | What it is | Level / story detail |
 |---|---|---|
-| `my:rumah_kampung` | Timber house on **stilts** with stone footings, steep zinc gable facing the street, gable fretwork and crossed ridge boards, louvred windows, **serambi** verandah with railing and lean-to roof, stairs, red letterbox | L2 potted plants + tempayan; L3 bamboo pelita posts + timber deck |
+| `my:rumah_kampung` | Timber house on **stilts** with stone footings, steep zinc gable facing the street, gable fretwork and crossed ridge boards, louvred windows, **serambi** verandah with railing and lean-to roof, stairs, red letterbox | L2 potted plants + tempayan; L3 bamboo lamp posts + timber deck |
 | `my:rumah_papan` | Smaller, lower variant of the stilt house (blue-grey walls, grey zinc) | — |
 | `my:rumah_teres` | Two-storey terrace: plaster, tiled hip roof, grille door, louvred windows, balcony, **car porch** | L2 hedges and pots |
 | `my:shoplot` (and module prefab `kopitiam`) | Two-storey **shoplot**: arcaded **five-foot way** with floor tiles and columns, louvred upper windows, parapet with a raised centre, folding shutters, sign over the walkway; marble tables and a drinks counter with kettle | L2 tables spill onto the street; L3 striped awning + bulb string; `cafe_chalkboard` A-board; `cafe_brunch` extra table |
@@ -64,9 +113,9 @@ An original, parametric kit in `src/rendering/kit/malaysia.ts`. It uses the same
 | `my:kedai_bunga` | Lilac shoplot with flower buckets | L2 flower cart |
 | `my:kedai_runcit` | Wide butter-yellow shoplot, blue awning, fruit crates, hanging goods | L2 fruit stands |
 | `my:bengkel` | Open-fronted timber **bengkel** with zinc roof, workbench, planks, rattan chairs in progress, logs | L2 timber stack; L3 rattan drying rack |
-| `my:taman` | Park: two **rain trees**, a coconut palm, benches, outdoor exercise bars, flower ring | L2 wakaf-style shelter; `park_bunting` |
-| `my:balai_raya` | **Balai raya**: raised floor, half walls, steep green zinc roof, entrance steps, badminton court lines, flag pole, sign "Balai Raya {neighbourhood}" | L2 clock + bunting |
-| `my:wakaf` | **Wakaf** built in stages: staked site with a "Projek Wakaf" sign → posts → floor & steps → pyramid zinc roof → finished with potted hibiscus and a lamp | Stage = community-project progress |
+| `my:taman` | Park: two **rain trees**, a coconut palm, benches, outdoor exercise bars, flower ring | L2 pavilion-style shelter; `park_bunting` |
+| `my:balai_raya` | **Balai raya**: raised floor, half walls, steep green zinc roof, entrance steps, badminton court lines, pole with a two-tone festival pennant (not a flag), sign "Balai Raya {neighbourhood}" | L2 clock + bunting |
+| `my:pondok` | **Lakeside pavilion** (*pondok*) built in stages: staked site with a "Projek Pondok" sign → posts → floor & steps → pyramid zinc roof → finished with potted hibiscus and a lamp | Stage = community-project progress |
 | `my:tasik` | **Tasik** with laterite-brown banks, lotus pads and blooms, reeds, a **jetty** and a moored **sampan**, a frog; a `fishing` anchor marks the spot | — |
 | `my:gerbang` | **Kampung gateway**: two plaster pillars with tiled caps, "Selamat Datang ke {neighbourhood}" sign, hedge with red flowers | — |
 | `my:papan_kenyataan` | Notice board with pastel notes under a small zinc gable | — |
@@ -128,8 +177,8 @@ What a module may supply:
 | Prefab | primary | secondary | accent |
 |---|---|---|---|
 | kopitiam (also shoplot, hawker_stall, cafe_cottage) | Shutters, sign text and frame, L3 awning | Facade plaster, sign background | — |
-| showroom_glass | Mullions, sofa, fascia band, sign background, L2 flag and bunting | Back wall, turntables | Turntable rings, flag, bunting |
-| learning_house | Window frames, door, sign text and frame | Walls | Bicycle, flag |
+| showroom_glass | Mullions, sofa, fascia band, sign background, L2 pennant and bunting | Back wall, turntables | Turntable rings, pennant, bunting |
+| learning_house | Window frames, door, sign text and frame | Walls | Bicycle, pennant |
 | community_garden | Sign text | Sign background | — |
 
 - **Sign text:** up to 22 characters. It is painted at runtime onto the prefab's sign board in the game font.
@@ -153,6 +202,14 @@ Some buildings show the player's own choices. Prefabs bake named **anchors** (`a
 
 - **Showroom cars:** one car per unlocked bay (2 at showroom level 1, 3 at level 2). The model and paint are the ones the player picked. Paint is tinted 35% towards white so tyres and glass keep their own colour. Cars cast shadows and sway gently on their turntables, unless Reduced motion is on.
 - **Garden crops:** each planted plot shows three plants. They grow through four stages computed from planting time and watering: a soil mound, a small sprout (45% scale), a growing plant (75%), then a full-size plant with coloured fruit when ready to harvest. Saplings and herbs are drawn tall and leafy; other crops are round bushes. The fruit colour comes from the module's plant `color`. Stages refresh every 4 seconds.
+
+## No flags, no symbols
+Art follows CONTENT_POLICY.md as strictly as text:
+
+- **No flags of any kind.** Where a pole needs something on top, it carries a small two-tone triangular festival **pennant** (`flagPole()` in `malaysia.ts` now draws a pennant; the Balai Raya, showroom and learning centre use it). Bunting is fine.
+- **No religious buildings or symbols**, and no props that read as religious (e.g. festival lamps tied to one faith).
+- **No campaign colours, party symbols or slogans** on signs, bunting, pennants or palettes. Module palettes are reviewed with this in mind.
+- `flag` is still an approved module prop *name* in `PROPS`, but props are not placed today; if props are ever placed, it must render as a pennant.
 
 ## UI
 Warm ivory panels, chunky rounded buttons with a pressed-down state, a 3-px white outline and soft warm shadows. Display type: **Fredoka**; body: **Nunito** (both bundled locally via Fontsource — OFL). Icons are an original "sticker" family (`src/ui/components/Icon.tsx`): filled shapes, warm ink outline, soft highlight. Catalog cards and dialogue portraits are **real renders of the game's own models**, not separate illustrations.

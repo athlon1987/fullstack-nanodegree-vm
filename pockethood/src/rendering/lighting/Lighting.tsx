@@ -9,14 +9,15 @@ import { setNightAmount } from '../kit/materials';
 import { weatherState, worldClock } from '../scene/coords';
 
 const KEYS: { h: number; sun: string; sunI: number; sky: string; ground: string; hemiI: number; bgTop: string; bgBottom: string }[] = [
-  { h: 0, sun: '#6f7fbf', sunI: 0.25, sky: '#5b6aa8', ground: '#2c3550', hemiI: 0.55, bgTop: '#1b2547', bgBottom: '#3c4c7a' },
+  { h: 0, sun: '#7f8fcf', sunI: 0.45, sky: '#6676b4', ground: '#343e5c', hemiI: 0.72, bgTop: '#1f2a52', bgBottom: '#44558a' },
   { h: 5.5, sun: '#9a8fd0', sunI: 0.35, sky: '#8090c8', ground: '#4a4a60', hemiI: 0.7, bgTop: '#3d4f86', bgBottom: '#f0b8a0' },
   { h: 7.5, sun: '#ffd2a1', sunI: 1.9, sky: '#cfe6ff', ground: '#8c9a70', hemiI: 1.05, bgTop: '#8fcbe8', bgBottom: '#ffe3c4' },
   { h: 12, sun: '#fff3dc', sunI: 2.6, sky: '#d7ecff', ground: '#9ab07a', hemiI: 1.15, bgTop: '#76c3e6', bgBottom: '#d9f2ef' },
   { h: 16.5, sun: '#ffe2b8', sunI: 2.3, sky: '#d9e8ff', ground: '#a3a878', hemiI: 1.1, bgTop: '#7cc0e2', bgBottom: '#f3ecd6' },
+  { h: 18, sun: '#ffc27a', sunI: 2.0, sky: '#ffe2c2', ground: '#a8946a', hemiI: 1.0, bgTop: '#7fb2dd', bgBottom: '#ffcf96' },
   { h: 19, sun: '#ff9f6b', sunI: 1.3, sky: '#f0b9a0', ground: '#7a6458', hemiI: 0.85, bgTop: '#5d7fc0', bgBottom: '#ffb38a' },
-  { h: 21, sun: '#7a7fc0', sunI: 0.35, sky: '#6a74b0', ground: '#33384f', hemiI: 0.6, bgTop: '#263361', bgBottom: '#5b5f95' },
-  { h: 24, sun: '#6f7fbf', sunI: 0.25, sky: '#5b6aa8', ground: '#2c3550', hemiI: 0.55, bgTop: '#1b2547', bgBottom: '#3c4c7a' },
+  { h: 21, sun: '#8a8fd0', sunI: 0.55, sky: '#7480bc', ground: '#3a4058', hemiI: 0.78, bgTop: '#2a3768', bgBottom: '#62679f' },
+  { h: 24, sun: '#7f8fcf', sunI: 0.45, sky: '#6676b4', ground: '#343e5c', hemiI: 0.72, bgTop: '#1f2a52', bgBottom: '#44558a' },
 ];
 
 const tmpA = new THREE.Color();
@@ -57,7 +58,7 @@ export function Lighting({ onSky }: { onSky: (top: string, bottom: string) => vo
   }, [graphics]);
 
   const frame = useRef(0);
-  useFrame(({ gl }, dt) => {
+  useFrame(({ gl, scene }, dt) => {
     const g = useGame.getState().game;
     if (!g || !sun.current || !hemi.current) return;
     // Shadow maps: every frame on high; every 2nd/3rd frame on lower presets.
@@ -75,13 +76,22 @@ export function Lighting({ onSky }: { onSky: (top: string, bottom: string) => vo
     sun.current.position.set(Math.cos(az) * 14, 10 + el * 8, Math.sin(az) * 10 + 6);
     // Rain dims and cools the light and greys the sky.
     const rain = weatherState.rain;
-    sun.current.color.copy(s.sun).lerp(tmpB.set('#b8c4cc'), rain * 0.5);
-    sun.current.intensity = s.sunI * (1 - rain * 0.55);
+    const cloud = weatherState.cloud;
+    const glow = weatherState.afterglow;
+    sun.current.color.copy(s.sun).lerp(tmpB.set('#b8c4cc'), rain * 0.5).lerp(tmpB.set('#fff1c9'), glow * 0.3);
+    sun.current.intensity = s.sunI * (1 - rain * 0.55) * (1 - Math.max(0, cloud - 0.4) * 0.25) * (1 + glow * 0.15);
     hemi.current.color.copy(s.sky).lerp(tmpB.set('#aab6bf'), rain * 0.5);
     hemi.current.groundColor.copy(s.ground);
     hemi.current.intensity = s.hemiI * (1 - rain * 0.2);
     s.bgTop.lerp(tmpB.set('#8e9aa6'), rain * 0.6);
-    s.bgBottom.lerp(tmpB.set('#c3cbd1'), rain * 0.6);
+    s.bgBottom.lerp(tmpB.set('#c3cbd1'), rain * 0.6).lerp(tmpB.set('#eef3f2'), weatherState.mist * 0.5);
+    // Morning mist: a soft, light haze over the whole scene (never dark, never hiding anything).
+    const mist = weatherState.mist;
+    if (mist > 0.02) {
+      if (!(scene.fog instanceof THREE.FogExp2)) scene.fog = new THREE.FogExp2('#eef3f2', 0);
+      (scene.fog as THREE.FogExp2).density = 0.0075 * mist;
+      (scene.fog as THREE.FogExp2).color.set('#eef3f2').lerp(s.sky, 0.3);
+    } else if (scene.fog) scene.fog = null;
     const night = hour < 6 || hour > 20 ? 1 : hour < 7.5 ? (7.5 - hour) / 1.5 : hour > 18.5 ? (hour - 18.5) / 1.5 : 0;
     worldClock.night = night;
     setNightAmount(night);

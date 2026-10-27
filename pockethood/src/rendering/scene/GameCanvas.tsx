@@ -1,5 +1,5 @@
-import { Canvas } from '@react-three/fiber';
-import { useCallback, useRef } from 'react';
+import { Canvas, useThree } from '@react-three/fiber';
+import { useCallback, useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { useGame } from '../../state/store';
 import { CameraRig } from '../camera/CameraRig';
@@ -10,10 +10,42 @@ import { Lighting } from '../lighting/Lighting';
 import { Buildings } from './Buildings';
 import { GroundInteraction, Placement } from './Placement';
 import { Terrain } from './Terrain';
-import { htmlPortal } from './coords';
+import { htmlPortal, weatherState, worldClock } from './coords';
+
+/** Battery saver: render on demand at a steady 30 fps instead of every display frame. */
+function FrameCap({ fps }: { fps: number }) {
+  const invalidate = useThree((s) => s.invalidate);
+  useEffect(() => {
+    let raf = 0;
+    let last = 0;
+    const loop = (t: number) => {
+      if (t - last >= 1000 / fps - 2) {
+        last = t;
+        invalidate();
+      }
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(raf);
+  }, [fps, invalidate]);
+  return null;
+}
+
+/** After a shower the sun comes out with a rainbow: a soft arc of light across the sky. */
+function Rainbow() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      if (ref.current) ref.current.style.opacity = String(Math.max(0, weatherState.afterglow * (1 - worldClock.night)) * 0.7);
+    }, 500);
+    return () => window.clearInterval(id);
+  }, []);
+  return <div className="rainbow" ref={ref} aria-hidden="true" />;
+}
 
 export function GameCanvas() {
   const graphics = useGame((s) => s.game!.settings.graphics);
+  const saver = useGame((s) => !!s.game!.settings.batterySaver);
   const sky = useRef<HTMLDivElement>(null);
   const onSky = useCallback((top: string, bottom: string) => {
     if (sky.current) sky.current.style.background = `linear-gradient(180deg, ${top} 0%, ${bottom} 75%)`;
@@ -27,8 +59,10 @@ export function GameCanvas() {
           if (el) htmlPortal.current = el;
         }}
       />
+      <Rainbow />
       <Canvas
         shadows={graphics !== 'low'}
+        frameloop={saver ? 'demand' : 'always'}
         orthographic
         dpr={dpr}
         camera={{ position: [40, 45, 40], zoom: 48, near: 0.1, far: 300 }}
@@ -43,6 +77,7 @@ export function GameCanvas() {
         }}
         data-testid="game-canvas"
       >
+        {saver && <FrameCap fps={30} />}
         <CameraRig />
         <Lighting onSky={onSky} />
         <Terrain />

@@ -55,6 +55,30 @@ function recordStats(s: GameState, e: GameEvent) {
     case 'COMMUNITY_PROJECT_CONTRIBUTED':
       bump(s, 'contribute');
       break;
+    case 'PET_FED':
+      bump(s, 'pet');
+      break;
+    case 'FISH_SEEN':
+      bump(s, 'fish');
+      break;
+    case 'PLANTED':
+      bump(s, 'plant');
+      break;
+    case 'SPOT_CONTRIBUTED':
+      bump(s, 'spruce');
+      bump(s, `spruce:${e.spot}`);
+      break;
+    case 'SPOT_REFRESHED':
+      bump(s, 'spot_refresh');
+      break;
+    case 'SPOT_STAGE':
+      bump(s, 'spruce_stage');
+      bump(s, `spruce_stage:${e.spot}`);
+      if (e.final) {
+        bump(s, 'spot_done');
+        bump(s, `spot_done:${e.spot}`);
+      }
+      break;
     case 'DISTRICT_UNLOCKED':
       bump(s, 'expand');
       break;
@@ -156,6 +180,12 @@ function narrate(s: GameState, e: GameEvent, now: number) {
     case 'ACHIEVEMENT':
       log(s, now, 'trophy', 'achievement', { achievement: e.id });
       break;
+    case 'SPOT_STAGE': {
+      const building = `spot_${e.spot}`;
+      log(s, now, e.final ? 'landmark' : 'flower', e.final ? 'spotDone' : 'spotStep', { building, stage: e.stage });
+      if (e.final) for (const r of s.residents) remember(s, r.id, `spot_${e.spot}`, now);
+      break;
+    }
     case 'ORDER_COMPLETED':
       if ((s.stats['orders'] ?? 0) % 10 === 0) log(s, now, 'orders', 'orders', { n: s.stats['orders'] });
       break;

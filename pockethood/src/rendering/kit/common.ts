@@ -8,7 +8,7 @@ export interface ArchCtx {
   level: number;
   flags: Record<string, boolean>;
   hoodName: string;
-  /** Community project stage (fountain / wakaf). */
+  /** Community project stage (fountain / pavilion). */
   stage?: number;
   /** Module dressing for template buildings: palette + sign + props. */
   module?: { id: string; prefab: string; palette: { primary: string; secondary: string; accent: string }; sign: string; props: string[] };

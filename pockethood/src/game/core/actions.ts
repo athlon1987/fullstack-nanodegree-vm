@@ -6,7 +6,7 @@ import { FISH, PETS } from '../../data/pets';
 import { behaviorOf } from '../../platform/content/install';
 import { MAX_WATER, canWater, readyAt } from '../behaviors/garden';
 import { ITEMS, RECIPES } from '../../data/items';
-import { COMMUNITY_PROJECTS, EVENTS, EXPANSIONS, START_PLOTS, expansionCost } from '../../data/progression';
+import { COMMUNITY_PROJECTS, EXPANSIONS, START_PLOTS, expansionCost } from '../../data/progression';
 import { RESIDENTS, rdef } from '../../data/residents';
 import { activeChapter, chooseLine, eligibleChapter, giftReaction } from '../characters/relationships';
 import {
@@ -34,6 +34,9 @@ import { generateOrder } from '../quests/orders';
 import { placementProblem } from '../world/grid';
 import { dayKey, hashString, rng } from './rng';
 import type { ActionResult, BuildingInstance, DayPhase, GameEvent, GameState, Rotation, Settings, PlayerProfile, TextParams } from './types';
+import { isAcceptableName } from '../../platform/content/policy';
+import { spotDef, spotNeeds } from '../../data/spots';
+import { nextEvent } from '../engagement/events';
 
 export type Action =
   | { type: 'tick' }
@@ -51,6 +54,7 @@ export type Action =
   | { type: 'startStory'; resident: string }
   | { type: 'deliverStory'; resident: string }
   | { type: 'contribute'; resource: string; qty: number; opId: string }
+  | { type: 'spruce'; spot: string; resource: string; qty: number; opId: string }
   | { type: 'unlockPlot'; plot: string }
   | { type: 'sellItem'; item: string; qty: number }
   | { type: 'photo' }
@@ -72,8 +76,9 @@ export type Action =
   | { type: 'feedPet'; pet: string }
   | { type: 'zenMoment'; kind: 'sunset' | 'lake' | 'arrange' };
 
-// New requests arrive at a neighborly pace (the main coin faucet is throttled here).
-const ORDER_COOLDOWN_MS = 120_000;
+// New requests arrive at a neighborly pace (the main coin faucet is throttled here). Early on
+// they come quickly so a new player always has something to do; later they settle down.
+export const orderCooldownMs = (level: number) => (level <= 2 ? 30_000 : level <= 4 ? 60_000 : 120_000);
 const SKIP_COOLDOWN_MS = 180_000;
 
 export const FISH_REST_MS = 40_000;
@@ -94,8 +99,7 @@ export function tickNeeded(s: GameState, now: number): boolean {
   if (s.orderCooldowns.some((t) => t <= now)) return true;
   if (s.orders.some((o) => Object.keys(o.items).some((i) => !ITEMS[i]))) return true;
   if (s.orders.length + s.orderCooldowns.length < orderSlots(s) && generateOrder(s, now)) return true;
-  const evDef = EVENTS[0];
-  if (evDef && s.level >= evDef.minLevel && (!s.event || now > s.event.startedAt + (evDef.durationDays + 3) * 86_400_000)) return true;
+  if (nextEvent(s, now)) return true;
   return false;
 }
 
@@ -155,14 +159,11 @@ export function applyAction(prev: GameState, action: Action, now: number): Actio
         s.orders.push(o);
         s.orderCounter++;
       }
-      // Optional seasonal event: starts once eligible, reruns after a short break
-      const evDef = EVENTS[0];
-      if (evDef && s.level >= evDef.minLevel) {
-        const ended = s.event && now > s.event.startedAt + evDef.durationDays * 86_400_000;
-        const restReady = !s.event || now > s.event.startedAt + (evDef.durationDays + 3) * 86_400_000;
-        if (!s.event || (ended && restReady)) {
-          s.event = { id: evDef.id, startedAt: now, baseline: baselineFor(s, evDef.objectives), claimedTiers: [] };
-        }
+      // Community celebrations take turns, with a day's rest in between.
+      const evDef = nextEvent(s, now);
+      if (evDef) {
+        s.event = { id: evDef.id, startedAt: now, baseline: baselineFor(s, evDef.objectives), claimedTiers: [] };
+        ev.push({ type: 'EVENT_STARTED', event: evDef.id });
       }
       return ok();
     }
@@ -307,7 +308,7 @@ export function applyAction(prev: GameState, action: Action, now: number): Actio
       if (!hasItems(s.inventory, o.items)) return fail(s, 'missingItems');
       removeItems(s.inventory, o.items);
       s.orders = s.orders.filter((x) => x.id !== o.id);
-      s.orderCooldowns.push(now + ORDER_COOLDOWN_MS);
+      s.orderCooldowns.push(now + orderCooldownMs(s.level));
       grantReward(s, o.reward, ev);
       addFriendship(s, o.resident, 3, ev);
       ev.push({ type: 'ORDER_COMPLETED', order: o });
@@ -405,6 +406,54 @@ export function applyAction(prev: GameState, action: Action, now: number): Actio
       return ok();
     }
 
+    case 'spruce': {
+      // Give towards a shared spot's next step. Partial gifts are welcome; when the step's
+      // needs are all met the spot visibly changes and every neighbour feels it. A finished
+      // spot can be refreshed each season (optional, a fresh look, needs grow over time).
+      const def = spotDef(action.spot);
+      if (!def) return fail(s, 'unavailable');
+      if (s.level < def.minLevel) return fail(s, 'unlocksAt', { level: def.minLevel });
+      const st = s.spots[def.id] ?? (s.spots[def.id] = { stage: 0, given: {}, ops: [], doneAt: null });
+      if (st.ops.includes(action.opId)) return { state: prev, events: [] };
+      const needs = spotNeeds(def, st);
+      const req = needs[action.resource];
+      if (!req) return fail(s, 'notNeeded');
+      const given = (st.given as Record<string, number>)[action.resource] ?? 0;
+      const have = action.resource === 'coins' ? s.coins : s.inventory[action.resource] ?? 0;
+      const qty = Math.min(Math.max(0, Math.floor(action.qty)), req - given, have);
+      if (qty <= 0) return fail(s, have <= 0 ? 'noneToGive' : 'partDone');
+      if (action.resource === 'coins') s.coins -= qty;
+      else removeItems(s.inventory, { [action.resource]: qty });
+      (st.given as Record<string, number>)[action.resource] = given + qty;
+      st.ops.push(action.opId);
+      if (st.ops.length > 200) st.ops.splice(0, st.ops.length - 200);
+      ev.push({ type: 'SPOT_CONTRIBUTED', spot: def.id, what: action.resource === 'coins' ? `coins:${qty}` : `item:${action.resource}:${qty}` });
+      if (!Object.entries(needs).every(([k, n]) => ((st.given as Record<string, number>)[k] ?? 0) >= n)) return ok();
+      st.given = {};
+      if (st.stage >= def.stages.length) {
+        st.refreshes = (st.refreshes ?? 0) + 1;
+        grantXp(s, 30 + st.refreshes * 10, ev);
+        for (const r of s.residents) addFriendship(s, r.id, 2, ev);
+        ev.push({ type: 'SPOT_REFRESHED', spot: def.id, season: st.refreshes });
+        return ok();
+      }
+      const step = def.stages[st.stage];
+      st.stage += 1;
+      const final = st.stage >= def.stages.length;
+      grantXp(s, step.xp, ev);
+      for (const r of s.residents) addFriendship(s, r.id, step.friendship, ev);
+      ev.push({ type: 'SPOT_STAGE', spot: def.id, stage: st.stage, final });
+      if (final) {
+        st.doneAt = now;
+        s.flags[def.flag] = true;
+        if (def.unlocks && !s.unlocked.includes(def.unlocks)) {
+          s.unlocked.push(def.unlocks);
+          ev.push({ type: 'UNLOCKED', what: def.unlocks });
+        }
+      }
+      return ok();
+    }
+
     case 'claimCommunityReward': {
       const project = COMMUNITY_PROJECTS.find((p) => p.id === s.community.projectId);
       if (!project || !s.community.completedAt || s.community.rewardClaimed) return fail(s, 'nothingToClaim');
@@ -454,9 +503,14 @@ export function applyAction(prev: GameState, action: Action, now: number): Actio
       s.settings = { ...s.settings, ...action.patch };
       return ok();
 
-    case 'profile':
+    case 'profile': {
+      // Player-entered names follow the same content policy as authored text.
+      const { name, hoodName } = action.patch;
+      if (name !== undefined && name.trim() && !isAcceptableName(name)) return fail(s, 'nameNotAllowed');
+      if (hoodName !== undefined && !isAcceptableName(hoodName)) return fail(s, 'nameNotAllowed');
       s.profile = { ...s.profile, ...action.patch };
       return ok();
+    }
 
     case 'claimPulseBonus': {
       if (!s.pulse || s.pulse.bonusClaimed || !s.pulse.tasks.every((t) => t.claimed)) return fail(s, 'pulseUnfinished');

@@ -21,6 +21,7 @@ import { useGame } from '../../state/store';
 import { Icon } from '../../ui/components/Icon';
 import { archetype, constructionSite } from '../kit/archetypes';
 import { dormant } from '../kit/malaysia';
+import { weatherState } from './coords';
 import { buildingCenter, buildingHeight, htmlPortal, rotY, worldClock } from './coords';
 import { cameraState } from '../camera/CameraRig';
 import { audio } from '../../audio/AudioManager';
@@ -41,10 +42,13 @@ export function Buildings() {
   );
 }
 
+/** Stages 0–4, then 5+ for each seasonal refresh of a finished spot (a fresh colour scheme). */
+const spotVisualStage = (st?: { stage: number; refreshes?: number }) => (st ? st.stage + (st.stage >= 4 ? st.refreshes ?? 0 : 0) : 0);
+
 const BuildingView = memo(function BuildingView({ b }: { b: BuildingInstance }) {
   const flagKey = useGame((s) => Object.keys(s.game!.flags).filter((k) => s.game!.flags[k]).sort().join(','));
   const hood = useGame((s) => s.game!.profile.hoodName);
-  const stage = useGame((s) => (b.type === 'fountain' ? communityStage(s.game!) : undefined));
+  const stage = useGame((s) => (b.type === 'fountain' ? communityStage(s.game!) : b.type.startsWith('spot_') ? spotVisualStage(s.game!.spots?.[b.type.slice(5)]) : undefined));
   // Content can change underneath (language switch, module switched on/off): rebuild on revision.
   const rev = useGame((s) => s.contentRev);
   const zen = useGame((s) => s.game!.settings.zen);
@@ -74,7 +78,14 @@ const BuildingView = memo(function BuildingView({ b }: { b: BuildingInstance }) 
       biome: WORLD.biome,
       name: def.name,
       module: m ? { id: `${m.id}@${m.version}`, prefab: m.prefab, palette: m.brand.palette, sign: m.brand.signText, props: m.props } : undefined,
-      text: b.type === 'fountain' ? { wakafProject: COMMUNITY_PROJECTS[0]?.name ?? '' } : b.type === 'welcome_sign' ? { welcome: t('world.welcome', { hood }) } : undefined,
+      text:
+        b.type === 'fountain'
+          ? { projectSign: COMMUNITY_PROJECTS[0]?.name ?? '' }
+          : b.type === 'welcome_sign'
+            ? { welcome: t('world.welcome', { hood }) }
+            : b.type.startsWith('spot_')
+              ? { soon: t('spots.soonSign') }
+              : undefined,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [building, def, b.level, flagKey, hood, stage, rev]);
@@ -108,8 +119,9 @@ const BuildingView = memo(function BuildingView({ b }: { b: BuildingInstance }) 
       g.scale.set(1 / Math.sqrt(s), s, 1 / Math.sqrt(s));
       g.position.y = (1 - t) * 0.25 * Math.max(0, Math.cos(t * Math.PI * 1.5));
     } else if (isTree) {
-      g.rotation.z = Math.sin(worldClock.t * 1.2 + phase) * 0.025;
-      g.rotation.x = Math.cos(worldClock.t * 0.9 + phase) * 0.015;
+      const breeze = 0.5 + weatherState.wind * 1.4;
+      g.rotation.z = Math.sin(worldClock.t * (1 + weatherState.wind) + phase) * 0.025 * breeze;
+      g.rotation.x = Math.cos(worldClock.t * 0.9 + phase) * 0.015 * breeze;
     } else if (hover) {
       g.scale.setScalar(1 + Math.sin(worldClock.t * 6) * 0.004 + 0.012);
     } else g.scale.setScalar(1);
@@ -134,6 +146,11 @@ const BuildingView = memo(function BuildingView({ b }: { b: BuildingInstance }) 
       return;
     }
     if (b.type === 'fountain') {
+      st.openPanel('community');
+      return;
+    }
+    if (b.type.startsWith('spot_')) {
+      st.setUI({ selected: b.uid });
       st.openPanel('community');
       return;
     }

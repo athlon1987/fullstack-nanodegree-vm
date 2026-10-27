@@ -83,14 +83,8 @@ for (const sel of SELECTION) {
   console.log(`✓ ${sel.id.padEnd(18)} ${sel.category.padEnd(12)} ${String(outBytes.byteLength).padStart(7)} B  ${Math.round(tris)} tris  ${catalog[sel.id].clips.length} clips`);
 }
 
-// Audio: Kenney interface/impact SFX (CC0)
-mkdirSync('public/assets/audio/sfx', { recursive: true });
-for (const f of readdirSync(join(SRC, 'sfx'))) {
-  const key = `audio.sfx.${f.replace('.ogg', '')}`;
-  const sha = createHash('sha256').update(readFileSync(join(SRC, 'sfx', f))).digest('hex');
-  if (index[key]?.sha256 !== sha) { console.error(`✗ sfx ${f}: sha mismatch`); failures++; continue; }
-  copyFileSync(join(SRC, 'sfx', f), join('public/assets/audio/sfx', f));
-}
+// Audio: the Kenney SFX are no longer imported — every sound is now synthesised in
+// src/audio (see docs/AUDIO_ASSET_MANIFEST.md).
 
 writeFileSync('src/rendering/models/catalog.generated.json', JSON.stringify(catalog, null, 1) + '\n');
 const total = Object.values(catalog).reduce((s, c) => s + c.bytes, 0);

@@ -47,8 +47,8 @@
    "id": "my.kampung_seri",
    "country": "MY",
    "path": "worlds/my.kampung_seri.json",
-   "sha256": "0a2694b8a4d0eb7e05e336544aef1a7ad936d1fe2fdda1e6d97b78e015af2607",
-   "bytes": 80868
+   "sha256": "ad4c0ea7b63486244510e00183075e38c3dd623e05467f4460b6532410b889f8",
+   "bytes": 102274
   }
  ],
  "modules": [
@@ -57,32 +57,32 @@
    "version": "1.0.0",
    "enabled": true,
    "path": "modules/my.auto.galeri_seri.json",
-   "sha256": "41a44b08f60329cd10e0040874a841cff7b9970f93399ffa9409e4b936533e0f",
-   "bytes": 4078
+   "sha256": "9f791ebd8b9599ee7dbdec9db5c1d9f019349f287f449da73c7fe551055a02c8",
+   "bytes": 4121
   },
   {
    "id": "my.community.kebun_seri",
    "version": "1.0.0",
    "enabled": true,
    "path": "modules/my.community.kebun_seri.json",
-   "sha256": "60fefa1aa7cd79ff4fdbcc70746a1a1c5ddec01bdf970ed19dc1c4f186dd302e",
-   "bytes": 5134
+   "sha256": "14ca50ef341cc2a0eb0e1cb7219922752e0fc6a8f99628cc6b1a16a2105bf8f8",
+   "bytes": 5188
   },
   {
    "id": "my.edu.pusat_cahaya",
    "version": "1.0.0",
    "enabled": true,
    "path": "modules/my.edu.pusat_cahaya.json",
-   "sha256": "08948cdcba9ae1fc06d359049b583876f0a418f4b8d89dd8dac84ff0c7b89dae",
-   "bytes": 12941
+   "sha256": "804a28e64daa24f1cd9653759e72a949b3b92c71b90e9536e82bbbad3c8b9c10",
+   "bytes": 12981
   },
   {
    "id": "my.food.kopitiam_lim",
    "version": "1.0.0",
    "enabled": true,
    "path": "modules/my.food.kopitiam_lim.json",
-   "sha256": "1f400f48221d6486e4b918ce9e092be4e4e99ce13fa7dff6bfbb6f6c0d08daae",
-   "bytes": 6005
+   "sha256": "1b71c0dd4299b5108d7787e14f1967ecb71cd95aaf7ea66f1a58cfb2b2e6996f",
+   "bytes": 6048
   }
  ],
  "killSwitch": {

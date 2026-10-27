@@ -405,7 +405,7 @@ describe('persistence & recovery', () => {
     delete old.flags;
     delete old.community;
     const migrated = migrate(old);
-    expect(migrated.version).toBe(4);
+    expect(migrated.version).toBe(5);
     expect(migrated.world.id).toBe('core.maple_hollow');
     expect(migrated.community.projectId).toBe('fountain');
     const broken = sanitize({ ...migrated, coins: NaN, inventory: { coffee: -3 }, buildings: [...migrated.buildings, { type: 'nope' } as never] }, T0);

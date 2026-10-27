@@ -1,6 +1,6 @@
 // Versioned local-first persistence. IndexedDB (via idb-keyval) with a
 // localStorage fallback; saves are schema-versioned and migrated on load.
-import { createNewGame, DEFAULT_SETTINGS, SAVE_VERSION, emptyExt, emptyZen } from '../game/core/newGame';
+import { createNewGame, DEFAULT_SETTINGS, SAVE_VERSION, emptyExt, emptySpots, emptyZen, spotBuildings } from '../game/core/newGame';
 import type { GameState } from '../game/core/types';
 import { BUILDINGS } from '../data/buildings';
 import { safeGet, safeRemove, safeSet } from '../utils/safeStorage';
@@ -41,6 +41,18 @@ const MIGRATIONS: Record<number, (s: AnySave) => AnySave> = {
       ext: s.ext ?? emptyExt(),
       zen: s.zen ?? emptyZen(),
       version: 4,
+    };
+  },
+  // v5: content policy renames (Kampung Seri's lakeside "wakaf" is now a pavilion).
+  4: (s) => {
+    const rename = (id: string) => (id === 'wakaf' ? 'pavilion' : id);
+    const quests = s.quests as { active?: { id: string }[]; done?: string[] } | undefined;
+    const community = s.community as { projectId?: string } | undefined;
+    return {
+      ...s,
+      quests: quests ? { ...quests, active: (quests.active ?? []).map((q) => ({ ...q, id: rename(q.id) })), done: (quests.done ?? []).map(rename) } : quests,
+      community: community ? { ...community, projectId: rename(community.projectId ?? '') } : community,
+      version: 5,
     };
   },
 };
@@ -89,6 +101,11 @@ export function sanitize(s: GameState, now: number): GameState {
     if (b.passiveSince > now) b.passiveSince = now;
   }
   if (!out.buildings.some((b) => b.type === 'starter_house')) out.buildings.push(...fresh.buildings.filter((b) => b.type === 'starter_house'));
+  // Shared community spots (added in save v5): state for each, and their place in the world.
+  out.spots = { ...emptySpots(), ...(s.spots ?? {}) };
+  let uid = out.uidCounter ?? out.buildings.length;
+  out.buildings.push(...spotBuildings(out.buildings, now, () => `b${++uid}`));
+  out.uidCounter = uid;
   return out;
 }
 

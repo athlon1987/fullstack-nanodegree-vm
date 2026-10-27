@@ -34,6 +34,8 @@ export default {
   'meta.settings.dayNight.cycle': 'Cycle',
   'meta.settings.dayNight.local': 'My clock',
   'meta.settings.dayNight.day': 'Always day',
+  'meta.settings.batterySaver': 'Battery saver',
+  'meta.settings.batterySaverHint': 'Smooth 30 fps instead of the maximum. Cooler phone, longer play.',
   'meta.settings.reducedMotion': 'Reduced motion',
   'meta.settings.textSize': 'Text size',
   'meta.settings.grid': 'Always show grid',

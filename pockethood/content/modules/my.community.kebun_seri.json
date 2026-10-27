@@ -32,6 +32,7 @@
  "id": "my.community.kebun_seri",
  "kind": "community",
  "category": "agriculture",
+ "contentTags": ["gardening", "nature", "community"],
  "template": "farm",
  "slot": "garden",
  "name": {

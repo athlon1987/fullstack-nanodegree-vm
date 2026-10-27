@@ -1,70 +1,71 @@
 # Development Status
 
-_Last updated 2026-10-27. Status keys: **Completed and tested** · **Implemented** (verified by hand/screenshot, no automated test) · **Partially implemented** · **Designed, not built** · **Not started**._
+_Last updated 2026-10-27. Status keys: **Completed and tested** · **Implemented** (verified by hand/screenshot/measurement, no automated test) · **Partially implemented** · **Designed, not built** · **Not started**._
 
-## Milestone: The Living World — first milestone reached
-A Malaysia-first district (Kampung Seri) running on a modular content platform, with four demo modules loaded through the same pipeline, English + Bahasa Melayu, Zen Mode, sharing and a PWA. This is a playable single-player build. **It is not a production release**: there is no backend, no accounts, no signed content enforcement and no real partners; automated tests passing does not make it secure for launch (see SECURITY_ARCHITECTURE.md §10).
+## Milestone: Brand identity enhancement — peaceful world, signature soundtrack, fast play, community
+
+Built on top of the Living World milestone (Kampung Seri, modular platform, four demo modules, English + Bahasa Melayu, Zen Mode, sharing, PWA). This is a playable single-player build. **It is not a production release**: there is no backend, no accounts, no signed content enforcement and no real partners; passing tests does not make it secure or ready for launch (SECURITY_ARCHITECTURE.md §10).
 
 ### Test results (this build)
 | Suite | Result |
 |---|---|
-| `npm test` (Vitest) | **64 / 64 passed** — engine & core loop, flywheel E2E (classic world), persistence & migration v3→v4, pathfinding; **platform**: hostile-content rejection (markup, script URLs, unknown fields/behaviours, prototype pollution, path traversal, oversize), integrity (tampered bytes, signed/tampered/missing-signature index), lifecycle (kill switch, disabled, quarantine, unapproved, country, version, scheduled, expired, flags, rollout), template & economic limits, sponsor-label and halal/price/link policies, slot conflicts, Malaysian world install, language switch, MY tutorial end to end, hand-prepare, quiz, showroom, garden, Zen activities, module isolation (kill → neutral → back, nothing lost), unavailable-world fallback, en/ms key and placeholder parity, literal-key coverage scan, weather model, visit-link privacy and hostile codes, bundled-content hashes, icon catalogue |
-| `npm run test:e2e` (Playwright, Chromium/SwiftShader) | **11 / 11 passed** — boot into Kampung Seri, full guided tutorial, reload persistence, panels, placement validation, mobile layout, switch to Bahasa Melayu, hand-prepare teh tarik in the UI, Zen Mode hides currencies/objectives, switching a module off in Studio falls back to the neutral shop with the queued job intact, shared snapshot link is read-only and leaves the visitor's save untouched |
-| `npm run content:build` | Pass — 6 countries, 1 world, 4 modules; schema + semantic + economic checks in en and ms |
+| `npm test` (Vitest) | **91 / 91 passed** — engine and core loop, persistence and migrations (v3→v4→v5), pathfinding, platform security and lifecycle (see previous milestone), plus new: **content policy** (religion/politics/hostility/restricted-product/claim screen in English and Malay, no false positives on everyday words, names or any identity; all authored content and all interface text pass; hostile modules refused; content tags; grinding quests refused; player names; visit links; save rename migration), **shared spots** (placement, partial gifts, step completion, friendship with every resident, no coins back, idempotency, level gates, flags, keepsakes, seasonal refresh, old saves gain spots), **celebration rotation**, **first-session pacing** in both worlds, **soundtrack score** (key, theme shape, tempo ranges, Zen rules) and **adaptive mood selection** |
+| `npm run test:e2e` (Playwright, Chromium/SwiftShader) | **14 / 14 passed** — the previous 11 plus: the soundtrack starts on the first tap, moves to the construction arrangement at a bar line without restarting, and to the Zen arrangement; giving to the pocket park through the Together screen completes a step; a neighbourhood name outside the policy is refused politely and an everyday name is accepted |
+| Soundtrack offline renders (`scripts/audio/render-previews.mjs` + `analyze.py`) | 8 arrangements + 150 s adaptive tour + effects sheet: no clipping, arrangements within ±1.5 dB (Zen ≈ 3 dB quieter by design), all tour transitions on bar lines (AUDIO_ASSET_MANIFEST.md §4) |
+| `npm run content:build` | Pass — 6 countries, 1 world, 4 modules; schema, semantic, economic **and content-policy** checks in en and ms |
 | `npm run typecheck` / `npm run build` | Pass |
-| `npm run economy:sim` | Runs on Kampung Seri with modules; findings below |
+| `npm run economy:sim` | Runs on Kampung Seri; findings below |
 
-### Feature status
+### Enhancement acceptance criteria (honest)
+| # | Criterion | Status |
+|---|---|---|
+| 1 | Warm, cheerful, welcoming environment | Implemented (screenshots); taste needs playtests |
+| 2 | No authored political or religious content | **Completed and tested** (automatic screen over all content and UI text in both languages; Kampung Seri scrubbed). Human review still required for art and subtext |
+| 3 | Memorable, catchy, original soundtrack | **Original and integrated, measured — not yet listened to by people.** Catchiness is unverified |
+| 4 | Responsive, rewarding active play | Implemented; pacing model tested |
+| 5 | Meaningful short sessions | Tested in the pacing model (8 goals in the first ~6 minutes); needs playtests |
+| 6 | World feels alive | Implemented (resident social life, ambient life, weather); not unit-tested |
+| 7 | Community actions visibly change the world | **Completed and tested** (spots engine) + screenshot-reviewed visuals |
+| 8 | Zen Mode genuinely calmer | Implemented (Zen arrangement, hidden UI/emotes, slower camera); e2e covers hiding and music |
+| 9 | Enjoyable without spending money | Yes — nothing is sold |
+| 10 | Sponsored content doesn't break immersion | Completed and tested (policy screen, no audio/UI fields, tags, repetition cap) |
+| 11 | Accessible to casual players | Partially — casual bots progress steadily; no accessibility audit yet |
+| 12 | Mobile performance on representative devices | **Not verified** — no real-device testing in this sandbox |
+| 13 | Progression meaningful beyond the tutorial | Implemented (spots, celebrations, stories, refreshes); economy still inflates for enthusiasts |
+| 14 | Art, music and gameplay cohesive | Implemented; subjective — needs playtests |
+
+### Feature status (new and changed in this milestone)
 | Area | Status | Where |
 |---|---|---|
-| Strict content validator (no eval), text screening, safe JSON parsing | Completed and tested | `src/platform/validate.ts`, `loader.ts` |
-| Content schemas: index, country, world pack, module | Completed and tested | `src/platform/content/schema.ts`, CONTENT_SCHEMA.md |
-| Gameplay template library (10 templates; hotel is template-only) with economic ceilings | Completed and tested | `templates.ts` |
-| Approved behaviours: hand_prepare, quiz, showroom, garden_plots | Completed and tested | `actions.ts`, `install.ts` |
-| Behaviours `visitors`, module `presentation.props` | **Partially implemented** — validated and stored, not yet rendered (no visitor NPCs, props not placed) | — |
-| Module greeting line in the building card | Implemented | `BuildPanels.tsx` |
-| Ambient sound beds per module | Implemented (procedural; not audible in headless tests) | `AudioManager.ts` |
-| Module lifecycle, kill switch, staged rollout, feature flags | Completed and tested | `registry.ts`, `flags.ts` |
-| sha256 integrity, remote → last-known-good → bundled fallback | Completed and tested | `loader.ts`, `service.ts` |
-| Signed content index (ECDSA P-256) | Implemented and tested; **not enforced** (no production key) | `security/integrity.ts` |
-| Module isolation & neutral fallback, dormant buildings, job output snapshots | Completed and tested | `install.ts`, `actions.ts`, `buildings.ts` |
-| UI error boundaries (world / HUD / panels) | Implemented | `ErrorBoundary.tsx` |
-| Country registry (MY active; SG, ID, TH, JP, KR planned) | Completed and tested | `content/countries/` |
-| Kampung Seri world pack (8 residents, 6-step tutorial + 13 quests, 12 stories, event, wakaf project) | Completed and tested (tutorial path, install); later chapters covered by the shared engine path | `content/worlds/my.kampung_seri.json` |
-| Four demo modules (kopitiam, showroom, learning centre, community garden) | Completed and tested | `content/modules/` |
-| Malaysian architecture kit (17 archetypes + 4 module prefabs), tropical planting, laterite terrain | Implemented (screenshot-reviewed) | `kit/malaysia.ts`, `Terrain.tsx` |
-| Live showroom cars and garden crops | Implemented (screenshot-reviewed) | `BehaviorOverlay.tsx` |
-| Deterministic rain showers, rainy lighting | Weather model tested; visuals screenshot-reviewed | `weather.ts`, `Rain.tsx`, `Lighting.tsx` |
-| Localisation en + ms: UI, engine errors, history, Pulse, goals, content | Completed and tested (key parity, coverage scan, e2e switch) — **Malay needs native-speaker review** | `src/platform/i18n/` |
-| Data-driven tutorial guide (works for any world) | Completed and tested (e2e) | `Coach.tsx` |
-| Zen Mode (hides currencies, objectives, notifications, promotions, world bubbles; calmer music, slower camera, fewer rain particles) | Implemented; hiding covered by e2e | `ModulePanels.tsx`, `Hud.tsx`, `CameraRig.tsx` |
-| Gentle activities: fishing journal, pets, sunset & lake moments, flower arranging, gardening | Engine completed and tested; UI implemented | `actions.ts`, `ModulePanels.tsx` |
-| Four audio channels (music, ambience, interface, character voices) + procedural soundscape | Implemented; not audible in headless tests | `AudioManager.ts` |
-| Sharing: WhatsApp, system share, copy link, photo | Implemented (WhatsApp/share need a real device to verify) | `SharePanel.tsx` |
-| Read-only visit snapshot links | Completed and tested (unit + e2e) | `services/visit.ts` |
-| PWA: manifest, icons, offline service worker, update notice | Implemented; service worker not exercised in tests (skipped in iframes and dev) | `public/sw.js`, `services/pwa.ts` |
-| Studio (12 internal tools) | Implemented; module switch-off covered by e2e | `src/ui/studio/Studio.tsx` |
-| Save v4 (world, module state, Zen journal) with migration from v3 | Completed and tested | `persistence.ts` |
-| Backend (auth, cloud saves, server-side engine, partner workflow, RLS) | **Designed, not built** | `backend/` |
-| Monetisation | Not started (rules documented) | MONETIZATION_COMPLIANCE.md |
-| Native apps (Capacitor) | Not started (readiness documented) | DEVELOPMENT_ROADMAP.md |
+| Content policy + automatic screen (en/ms), content tags, claim protection, name screening, visit-link screening | Completed and tested | `src/platform/content/policy.ts`, CONTENT_POLICY.md |
+| Kampung Seri scrub (pavilion, greetings, lanterns, community dinners; pennants instead of flags) + save v5 migration | Completed and tested | world pack, `persistence.ts`, `malaysia.ts` |
+| Adaptive soundtrack: theme, 8 arrangements, bar-synced transitions, tempo easing, stingers | Completed and tested (score + mood rules unit-tested, transitions e2e, mix measured) | `src/audio/music/`, `src/audio/mood.ts` |
+| Synthesised feedback sounds with voice limit, spacing, coin combo, master limiter; Kenney Oggs retired | Implemented (levels measured) | `src/audio/sfx.ts` |
+| Audio previews & analysis tools; Studio → Audio tab | Implemented | `scripts/audio/`, `tools/audio/`, `Studio.tsx` |
+| First-session pacing model and faster early requests | Completed and tested | `src/game/sim/firstSession.ts`, `pacing.test.ts` |
+| Shared spots (4 × 4 steps, seasonal refresh), Together screen, quests | Completed and tested (engine, UI e2e); visuals screenshot-reviewed | `src/data/spots.ts`, `kit/community.ts`, `SpotsPanel.tsx` |
+| Rotating celebrations (8, some need a finished spot) | Completed and tested | `game/engagement/events.ts` |
+| Six new light-hearted Kampung Seri stories | Implemented (content validated; not individually play-tested) | world pack |
+| Resident social life: waving, café gatherings, shops, relaxing in spots, helping at spots, admiring decorations, celebrating; emote bubbles | Implemented (screenshot-reviewed) | `Characters.tsx` |
+| Atmosphere: golden hour, brighter nights, clouds, breeze, morning mist, post-rain sunshine with rainbow | Implemented (contact sheets reviewed); weather model pure and deterministic | `weather.ts`, `Lighting.tsx`, `Ambient.tsx`, `GameCanvas.tsx` |
+| Battery saver (30 fps), audio suspended in background | Implemented | `GameCanvas.tsx`, `AudioManager.ts` |
+
+Everything listed in the previous milestone remains as described there (platform, modules, i18n, Zen activities, sharing, PWA, Studio, backend design).
 
 ## Known defects & limitations
-1. **Coin inflation for engaged players.** The economy sim (Kampung Seri, 30 days) shows Regular players banking ~48k and Enthusiasts ~117k coins by day 30; the showroom and learning centre add passive income. Needs coin sinks (more upgrade tiers, decorations, a second district). Casual and returning players progress steadily and never stall.
-2. **Performance unmeasured on real GPUs** (this sandbox renders WebGL in software). Real-device profiling is the first next step.
-3. **Malay translations and cultural content are unreviewed** by native speakers / a cultural panel (see MALAYSIA_WORLD_DESIGN.md open items).
-4. `visitors` behaviour and module props aren't rendered yet; residents don't react to rain.
-5. Some keepsakes (kuih table, festival arch, pelita post, bird bath, parasol) use the core art in the tropical world.
-6. The kopitiam story flag that "changes the sign" adds a display item rather than repainting the sign.
-7. Ogg sound effects don't play on older iOS Safari; character "talk"/"wave" use substitute clips.
-8. Studio is English-only staff tooling and is reachable from Settings in this prototype (switch off with the `studio` flag for production).
-9. Visit links are long URLs (layout encoded in the link); short server codes need the backend.
+1. **Soundtrack not yet heard by people.** It is original, integrated and measured clean; whether it is *catchy* needs listening tests, and a composer pass is recommended (AUDIO_ASSET_MANIFEST.md §5–6).
+2. **Coin inflation is reduced, not solved.** 30-day simulation: Regular players bank ~13.6k coins (was ~48k), Enthusiasts ~62k (was ~117k). Shared spots and seasonal refreshes absorb coins, but late spots are gated by goods and passive income keeps growing. Next: more creative sinks (second district, more spots, decoration sets) and a look at high-level passive income.
+3. **Performance and battery unmeasured on real devices** (software WebGL here). The synthesised audio's CPU cost on low-end Android is unknown.
+4. **Malay text and cultural content are unreviewed** by native speakers / a cultural panel, including the new stories, celebrations (kompang, wau, wayang pacak, pasar malam) and greetings.
+5. The pacing figures come from a bot model, not playtests.
+6. Resident social behaviours and emotes have no automated tests; the core world's celebrations and spot names have no Malay translation of event text (core world is the fallback; Kampung Seri is fully bilingual).
+7. Module `visitors` behaviour and props still aren't rendered; residents don't react to rain.
+8. Some keepsakes use core art in the tropical world; the rainbow is a screen-space overlay, not a 3D object.
+9. Studio is English-only staff tooling and reachable from Settings in this prototype.
+10. Visit links are long URLs; short codes need the backend.
 
 ## Remaining tasks (prioritised)
-1. Real-device performance pass; add coin sinks; native-speaker and cultural review.
-2. Render module visitors and props; tropical keepsake art; rain-aware residents.
-3. Backend (Stage 3 in DEVELOPMENT_ROADMAP.md), then enforce signed content.
-4. Capacitor wrappers and store compliance review.
+See DEVELOPMENT_ROADMAP.md Stage 2: listening tests and composer brief → first-session playtests → real-device performance → native-speaker and cultural review → economy sinks → accessibility.
 
 ## Screenshots
-`docs/screenshots/20–34` (Playwright, software rendering): Kampung Seri overview, showroom forecourt, rain, mobile in Bahasa Melayu, kopitiam card, hand-prepare, About this place (illustrative menu), quiz, garden plots, lake, Zen, share, Studio, Malay settings and kopitiam card. `01–13` show the classic world from the first-playable milestone.
+`docs/screenshots/35–39`: the four shared spots at stages 0, 2 and 4; atmosphere states (sunrise mist, morning, afternoon clouds, golden hour, evening, rain, after rain); the whole neighbourhood after rain with its rainbow; the Together screen. `20–34` show the Living World milestone, `01–13` the first-playable classic world.

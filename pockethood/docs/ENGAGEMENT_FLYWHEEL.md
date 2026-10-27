@@ -47,6 +47,7 @@ The Director runs to a fixed point after every action, so a single delivery can 
 | **Persistent memories** that change dialogue (e.g. Mia remembers you opened her café) | `ResidentState.memories`, `chooseLine()` | Completed and tested |
 | 10 story chapters across 5 residents; each sets a memory, most change the world (chalkboard, brunch tables, pie sign, butterflies, bunting) | `data/progression.ts` (`STORIES`) | Implemented; Mia/Felix chapters tested |
 | Arrivals: residents move in when their workplace is built and walk in from the street | `actions.ts` tick, `Characters.tsx` | Implemented |
+| Resident social life: neighbours wave when they pass, gather at the café, visit shops, relax in finished spots, lend a hand at spots in progress, admire freshly placed decorations, and gather to cheer when a spot step finishes or a celebration starts; small emote bubbles (♥ ♪ ☺ ★ …) are hidden in Zen Mode | `rendering/characters/Characters.tsx` | Implemented, not unit-tested (rendering-side behaviour; no gameplay effect) |
 
 Characters never claim to be conscious or to depend on the player; dialogue is warm but not needy.
 
@@ -55,11 +56,12 @@ Characters never claim to be conscious or to depend on the player; dialogue is w
 
 | Piece | Where | Status |
 |---|---|---|
-| Community project (Neighborhood Fountain in Maple Hollow, Lakeside Wakaf in Kampung Seri) with 4 visible build stages | `actions.ts` (`contribute`), `archetypes.ts` (`fountain`) | Completed and tested (local) |
+| Community project (Neighborhood Fountain in Maple Hollow, Lakeside Pavilion in Kampung Seri) with 4 visible build stages | `actions.ts` (`contribute`), `archetypes.ts` (`fountain`) | Completed and tested (local) |
 | Idempotent contributions (op ids) — the same contract a server must enforce | `contribute` | Completed and tested |
 | Contribution log & landmark history entry; all residents remember it | `CommunityState.log`, Director | Implemented |
+| **Shared neighbourhood spots** (community beautification): Pocket Park (L2), Community Plaza (L3), Playground (L5), Sunset Lookout (L7) on shared land just past the starting area. Each has 4 steps (5 visible stages) needing coins + goods; partial gifts count. Steps give XP and friendship with **every** resident, never coins (a coin sink). Finishing sets a world flag, unlocks a keepsake and lets that spot's celebration join the rotation. Finished spots offer an optional, repeating "Keep it lovely" seasonal refresh (growing needs, rotating colour scheme). Bottom-nav **Together** screen; quests `spruce_park` / `park_done` introduce the park | `data/spots.ts`, `actions.ts` (`spruce`), `rendering/kit/community.ts`, `ui/panels/SpotsPanel.tsx` | Engine completed and tested (`src/game/community.test.ts`: steps, idempotency, level gates, flag/keepsake, save upgrade); stage visuals reviewed in screenshots. Local only: other players don't contribute yet |
 | Social service contract (friends, visits, gifts, Hoods) with server-authoritative notes | `game/social/SocialService.ts` | Interface only |
-| Online play | — | **Not started** (no backend in this environment). The Friends panel says so plainly; no simulated players are shown as real. |
+| Online play | — | **Not started** (no backend in this environment). The Friends panel (reached from the Together screen) says so plainly; no simulated players are shown as real. |
 
 ## Flywheel D — Creative identity
 `Customize → Create → Share → Inspire → Customize`
@@ -79,7 +81,7 @@ Characters never claim to be conscious or to depend on the player; dialogue is w
 |---|---|---|
 | Level unlocks (10 designed levels, 30 total) | `LEVELS` | Implemented |
 | Residents locked as "???" with arrival hints | `ResidentsPanel` | Implemented |
-| Spring Blossom Festival: optional, 7 days, 4 objectives, 4 reward tiers, reruns | `EVENTS`, Director `eventStep` | Implemented |
+| **Rotating community celebrations**: one at a time, 2–4 days each, then a day's rest before the next eligible one. Core: Flower Festival, Street Food Day, Music Night, Garden Party (needs the park), Community Market (needs the plaza), Pet Parade (needs the playground), Outdoor Movie Night (needs the lookout), Town Anniversary. Kampung Seri renames them (Pesta Bunga Kampung, Pasar Malam at Dataran Seri, Wayang Pacak Night, Kampung Seri Day …). Joining is optional; tier rewards are kept | `EVENTS` (`data/progression.ts`), `game/engagement/events.ts`, Director `eventStep` | Implemented; rotation, rest day and spot-gated skipping tested in `src/game/community.test.ts` |
 | 12 achievements | `ACHIEVEMENTS` | Implemented |
 | Neighborhood history log | `history`, `ProfilePanel → History` | Implemented |
 | Districts beyond the first island | `EXPANSIONS` structure only | Not started |
@@ -89,8 +91,8 @@ Characters never claim to be conscious or to depend on the player; dialogue is w
 | Layer | Target | What the player can do | Status |
 |---|---|---|---|
 | Quick satisfaction | 1–3 min | Collect rent & goods, deliver a waiting order, chat with a neighbor | Implemented |
-| Meaningful progression | 5–15 min | Upgrade, chain production, a story chapter, contribute to the fountain | Implemented |
-| Deep engagement | 20+ min | Redesign & decorate, expand land, festival goals, photo mode | Implemented (smaller scope) |
+| Meaningful progression | 5–15 min | Upgrade, chain production, a story chapter, contribute to the fountain / pavilion or a shared spot | Implemented |
+| Deep engagement | 20+ min | Redesign & decorate, expand land, celebration goals, photo mode | Implemented (smaller scope) |
 
 **The Neighborhood Pulse** (`engagement/NeighborhoodPulse.ts`) generates three goals per local day — one practical, one resident-related, one creative/social — from the player's *actual* capabilities, seeded by (seed, date) so it's deterministic. Each pays a small reward on completion; finishing all three unlocks a 2-gem bonus. Missing a day costs nothing. Property-tested against 200 seeds/days to never produce impossible goals.
 

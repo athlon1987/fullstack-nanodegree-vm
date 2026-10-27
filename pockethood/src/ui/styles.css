@@ -44,6 +44,14 @@ body {
 }
 button { font: inherit; color: inherit; }
 .world { position: fixed; inset: 0; background: linear-gradient(180deg, #76c3e6 0%, #d9f2ef 75%); transition: background 2s linear; }
+.rainbow {
+  position: absolute; left: 50%; top: 2vh; width: 170vmin; height: 170vmin; transform: translateX(-50%);
+  pointer-events: none; opacity: 0; transition: opacity 2.5s ease; z-index: 1; mix-blend-mode: screen;
+  background: radial-gradient(closest-side, transparent 80%, rgba(151, 117, 250, 0.55) 81%, rgba(116, 192, 252, 0.6) 83%, rgba(140, 233, 154, 0.6) 85%, rgba(255, 224, 102, 0.6) 87%, rgba(255, 169, 77, 0.55) 89%, rgba(255, 107, 107, 0.5) 91%, transparent 93%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 22%, transparent 42%);
+  mask-image: linear-gradient(to bottom, #000 22%, transparent 42%);
+}
+.reduced-motion .rainbow { transition: none; }
 .world canvas { touch-action: none; }
 .world-html { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
 .world-html > div { pointer-events: none; }

@@ -14,6 +14,7 @@ import { WORLD, type WorldInfo } from '../../data/world';
 import type { BuildingDef, ItemDef, Objective, QuestDef, RecipeDef, ResidentDef, Reward, StoryChapterDef } from '../../game/core/types';
 import type { Lang } from '../i18n';
 import { LINK_HOST_ALLOWLIST } from './catalog';
+import { BLOCKED_TAGS, CONTENT_TAGS, describeIssue, scanDocument } from './policy';
 import { CORE_OVERLAY_MS } from './coreOverlay.ms';
 import type { LText, ModuleManifest, WorldPack } from './schema';
 import { TEMPLATES, type TemplateId } from './templates';
@@ -207,6 +208,8 @@ export function checkWorld(w: WorldPack): string[] {
   for (const p of w.layout) if (!buildings.has(p.type)) errors.push(`layout: unknown building ${p.type}`);
   if (!w.layout.some((p) => p.type === 'starter_house')) errors.push('layout: needs a starter_house');
   for (const a of Object.keys(w.achievements)) if (!CORE.achievements.some((x) => x.id === a)) errors.push(`achievements.${a}: unknown achievement`);
+  // Content policy (every language): no religious or political topics, hostility, restricted products or unverified claims.
+  for (const i of scanDocument(w)) errors.push(describeIssue(i));
   return errors;
 }
 
@@ -345,6 +348,9 @@ export interface CompileResult {
   defs?: { items: ItemDef[]; recipes: RecipeDef[]; quests: QuestDef[] };
 }
 
+/** Most repetitions a partner quest objective may ask for. */
+export const MODULE_MAX_REPEATS = 10;
+
 const isPast = (iso: string | undefined, now: number) => !!iso && Date.parse(iso) <= now;
 
 /**
@@ -457,9 +463,19 @@ export function compileModule(m: ModuleManifest, lang: Lang, now: number, worldC
     }
   }
 
+  // Content policy: the same screen in every language. Staff-only records (approval notes,
+  // licences, contracts) and the verified halal record are not player-facing prose.
+  for (const i of scanDocument(m, (p) => /^(realWorld\.halal|approval|licensing|sponsor|brand\.licence|activation)\b/.test(p))) errors.push(describeIssue(i));
+  for (const tag of m.contentTags) {
+    if ((BLOCKED_TAGS as readonly string[]).includes(tag)) errors.push(`contentTags: "${tag}" is outside POCKETHOOD's content policy`);
+    else if (!(CONTENT_TAGS as readonly string[]).includes(tag)) errors.push(`contentTags: unknown tag ${tag}`);
+  }
+
   const quests: QuestDef[] = [];
   for (const q of m.quests ?? []) {
     const where = `quests.${q.id}`;
+    // Partner quests stay light: no grinding through long repetitive objectives.
+    for (const o of q.objectives) if (o.type === 'counter' && o.n > MODULE_MAX_REPEATS) errors.push(`${where}.objectives: ${o.n} repetitions is above the partner limit of ${MODULE_MAX_REPEATS}`);
     if (!RESIDENTS[q.giver]) errors.push(`${where}.giver: unknown resident ${q.giver}`);
     if ((q.reward.gems ?? 0) > 0) errors.push(`${where}.reward: modules may not grant gems`);
     if ((q.reward.coins ?? 0) > tpl.limits.questCoins) errors.push(`${where}.reward.coins must be ≤ ${tpl.limits.questCoins}`);

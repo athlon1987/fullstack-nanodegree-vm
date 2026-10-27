@@ -1,5 +1,6 @@
 // Reasons an action was refused (engine error keys).
 export default {
+  'errors.nameNotAllowed': 'Let’s pick a different name — names in POCKETHOOD stay friendly and everyday',
   'errors.unknownBuilding': 'Unknown building',
   'errors.notUnlocked': 'Not unlocked yet',
   'errors.unlocksAt': 'Unlocks at level {level}',

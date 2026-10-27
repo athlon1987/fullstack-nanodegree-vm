@@ -5,7 +5,7 @@ import { useFrame } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { useGame } from '../../state/store';
-import { HALF, worldClock } from '../scene/coords';
+import { HALF, weatherState, worldClock } from '../scene/coords';
 
 const wingGeo = (() => {
   const g = new THREE.BufferGeometry();
@@ -87,6 +87,8 @@ function Butterflies() {
   return <primitive object={data.g} />;
 }
 
+const tmpGrey = new THREE.Color();
+
 function Clouds() {
   const clouds = useMemo(() => {
     const m = new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 1, transparent: true, opacity: 0.92 });
@@ -106,12 +108,19 @@ function Clouds() {
     });
     return { g, list, m };
   }, []);
+  const grey = useMemo(() => new THREE.Color(), []);
   useFrame((_, dt) => {
-    clouds.m.color.set(worldClock.night > 0.5 ? '#8c93b8' : '#ffffff');
-    for (const c of clouds.list) {
-      c.position.x += dt * 0.25;
+    // Cloud cover: more (and fuller, greyer) clouds around showers; they drift with the breeze.
+    const cover = weatherState.cloud;
+    grey.set(worldClock.night > 0.5 ? '#8c93b8' : '#ffffff').lerp(tmpGrey.set('#aab3bb'), weatherState.rain * 0.7);
+    clouds.m.color.copy(grey);
+    clouds.m.opacity = 0.75 + cover * 0.2;
+    clouds.list.forEach((c, i) => {
+      c.visible = i < 2 + Math.round(cover * 3);
+      c.scale.setScalar(0.9 + cover * 0.5);
+      c.position.x += dt * (0.15 + weatherState.wind * 0.35);
       if (c.position.x > 34) c.position.x = -34;
-    }
+    });
   });
   return <primitive object={clouds.g} />;
 }

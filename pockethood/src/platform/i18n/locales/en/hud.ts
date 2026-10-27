@@ -15,6 +15,7 @@ export default {
   'hud.nav.orders': 'Orders',
   'hud.nav.residents': 'Neighbors',
   'hud.nav.inventory': 'Storage',
+  'hud.nav.community': 'Together',
   'hud.nav.friends': 'Friends',
   'hud.nav.soon': 'soon',
   'hud.rail.zoomIn': 'Zoom in',

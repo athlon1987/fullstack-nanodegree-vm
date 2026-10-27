@@ -4,6 +4,7 @@ import { create } from 'zustand';
 import { BUILDINGS } from '../data/buildings';
 import { ITEMS } from '../data/items';
 import { ACHIEVEMENTS, EVENTS, QUESTS, STORIES } from '../data/progression';
+import { PETS } from '../data/pets';
 import { RESIDENTS } from '../data/residents';
 import { activate, defaultWorldId, initContent } from '../platform/content/service';
 import { flag } from '../platform/content/flags';
@@ -89,6 +90,10 @@ interface UI {
   hintUid: string | null;
   /** Full-screen activity card (module mini-games, lake, Zen, sharing). */
   activity: Activity | null;
+  /** Music cues: until when (ms) the soundtrack plays its construction / celebration arrangement. */
+  cue: { build: number; party: number };
+  /** Neighbours gather here to celebrate (cell coords) until the given time (ms). */
+  gather: { x: number; z: number; until: number } | null;
 }
 
 export type Activity =
@@ -174,6 +179,8 @@ export const useGame = create<Store>((set, get) => ({
     bumps: {},
     hintUid: null,
     activity: null,
+    cue: { build: 0, party: 0 },
+    gather: null,
   },
 
   async init() {
@@ -347,7 +354,10 @@ function routeEvents(events: GameEvent[], s: GameState, origin?: [number, number
   analytics?.fromGameEvents(events);
   const fx: FlyFx[] = [];
   const play = (n: Sfx) => !silent && audio.play(n);
+  const stinger = (id: Parameters<typeof audio.stinger>[0]) => !silent && audio.stinger(id);
   const bumps = { ...st.ui.bumps };
+  const cue = { ...st.ui.cue };
+  const now = Date.now();
   for (const e of events) {
     switch (e.type) {
       case 'RESOURCE_COLLECTED': {
@@ -361,6 +371,7 @@ function routeEvents(events: GameEvent[], s: GameState, origin?: [number, number
       }
       case 'BUILDING_PLACED':
         play('place');
+        cue.build = now + 25_000;
         break;
       case 'BUILDING_CONSTRUCTED':
         if (BUILDINGS[e.building] && BUILDINGS[e.building].category !== 'decoration' && BUILDINGS[e.building].category !== 'path') {
@@ -369,7 +380,8 @@ function routeEvents(events: GameEvent[], s: GameState, origin?: [number, number
         }
         break;
       case 'BUILDING_UPGRADED':
-        play('complete');
+        stinger('unlock');
+        cue.build = now + 15_000;
         st.toast({ icon: 'upgrade', title: tc('toast.upgraded', { building: e.building }), body: BUILDINGS[e.building]?.levels[e.level - 1]?.perks.join(' · '), tone: 'success' });
         break;
       case 'ORDER_COMPLETED':
@@ -386,7 +398,7 @@ function routeEvents(events: GameEvent[], s: GameState, origin?: [number, number
         break;
       case 'FRIENDSHIP_UP':
         st.toast({ icon: 'heart', title: tc('toast.friendship', { resident: e.resident, friend: e.level }), body: t('toast.friendshipBody'), tone: 'story' });
-        play('reward');
+        play('friendship');
         break;
       case 'QUEST_STARTED': {
         const q = QUESTS.find((x) => x.id === e.quest);
@@ -397,19 +409,20 @@ function routeEvents(events: GameEvent[], s: GameState, origin?: [number, number
         const q = QUESTS.find((x) => x.id === e.quest);
         st.toast({ icon: 'check', title: t('toast.questDone', { title: q?.title ?? '' }), body: rewardText(e.reward), tone: 'success' });
         if (e.reward.coins) fx.push({ id: seq++, kind: 'coins', amount: e.reward.coins, from: origin ?? [0, 2, 0] });
-        play('complete');
+        stinger('quest');
         break;
       }
       case 'STORY_MILESTONE_COMPLETED': {
         const ch = STORIES.find((c) => c.id === e.chapter);
         if (ch) queueDialogue({ resident: e.resident, text: ch.outro, mode: 'story-outro', chapter: ch.id }, true);
-        play('levelup');
+        stinger('quest');
         break;
       }
       case 'LEVEL_UP':
         if (!silent && !zen(s)) {
           st.setUI({ levelUp: { level: e.level, unlocks: e.unlocks } });
           play('levelup');
+          cue.party = now + 30_000;
         }
         break;
       case 'ACHIEVEMENT': {
@@ -425,20 +438,58 @@ function routeEvents(events: GameEvent[], s: GameState, origin?: [number, number
         const ev = EVENTS.find((x) => x.id === e.event);
         if (ev) st.toast({ icon: 'flower', title: `${ev.name}: ${ev.tiers[e.tier].label}!`, body: rewardText(ev.tiers[e.tier].reward), tone: 'success' });
         play('reward');
+        cue.party = now + 30_000;
         break;
       }
       case 'COMMUNITY_PROJECT_CONTRIBUTED':
         play('reward');
         break;
-      case 'LANDMARK_COMPLETED':
+      case 'SPOT_CONTRIBUTED':
+        play('collect');
+        break;
+      case 'SPOT_STAGE': {
+        const name = BUILDINGS[`spot_${e.spot}`]?.name ?? '';
+        st.toast({ icon: e.final ? 'landmark' : 'flower', title: t(e.final ? 'toast.spotDone' : 'toast.spotStep', { name }), body: t('toast.spotBody'), tone: 'story' });
+        stinger(e.final ? 'level' : 'quest');
+        cue.party = now + (e.final ? 45_000 : 20_000);
+        const b = s.buildings.find((x) => x.type === `spot_${e.spot}`);
+        if (b && !silent) {
+          st.focusOn(b.x + 1.5 - 12, b.z + 1.2 - 12, 1.5);
+          st.setUI({ gather: { x: b.x + 1, z: b.z + 1, until: now + (e.final ? 60_000 : 25_000) } });
+        }
+        break;
+      }
+      case 'SPOT_REFRESHED': {
+        const name = BUILDINGS[`spot_${e.spot}`]?.name ?? '';
+        st.toast({ icon: 'flower', title: t('toast.spotRefreshed', { name }), body: t('toast.spotBody'), tone: 'story' });
+        stinger('quest');
+        cue.party = now + 20_000;
+        const b = s.buildings.find((x) => x.type === `spot_${e.spot}`);
+        if (b && !silent) st.setUI({ gather: { x: b.x + 1, z: b.z + 1, until: now + 30_000 } });
+        break;
+      }
+      case 'EVENT_STARTED': {
+        const def = EVENTS.find((x) => x.id === e.event);
+        if (def && !silent) st.toast({ icon: 'events', title: t('toast.eventStarted', { name: def.name }), body: def.description, tone: 'story' });
+        // Neighbours meet where the celebration happens (a finished spot, or the middle of the neighbourhood).
+        const host = def?.requires ? s.buildings.find((x) => x.type === `spot_${def.requires!.replace('spot_', '')}`) : undefined;
+        if (!silent) st.setUI({ gather: host ? { x: host.x + 1, z: host.z + 1, until: now + 90_000 } : { x: 12, z: 12, until: now + 60_000 } });
+        break;
+      }
+      case 'LANDMARK_COMPLETED': {
+        const lm = s.buildings.find((x) => x.type === 'fountain');
+        if (lm && !silent) st.setUI({ gather: { x: lm.x, z: lm.z + 2, until: now + 60_000 } });
         st.toast({ icon: 'landmark', title: tc('toast.landmark', { project: e.project }), body: t('toast.landmarkBody'), tone: 'story' });
         play('levelup');
+        cue.party = now + 45_000;
         break;
+      }
       case 'DISTRICT_UNLOCKED':
         play('levelup');
         break;
       case 'UNLOCKED':
         if (BUILDINGS[e.what]) st.toast({ icon: 'gift', title: tc('toast.keepsake', { building: e.what }), body: t('toast.keepsakeBody'), tone: 'story' });
+        play('unlock');
         break;
       case 'ITEM_SOLD':
         fx.push({ id: seq++, kind: 'coins', amount: e.coins, from: [0, 2, 4] });
@@ -453,26 +504,37 @@ function routeEvents(events: GameEvent[], s: GameState, origin?: [number, number
         break;
       }
       case 'QUIZ_ANSWERED':
-        play(e.correct ? 'reward' : 'click');
+        play(e.correct ? 'reward' : 'pop');
         break;
       case 'SHOWROOM_ARRANGED':
-      case 'PLANTED':
-      case 'WATERED':
         play('place');
         break;
+      case 'PLANTED':
+        play('plant');
+        break;
+      case 'WATERED':
+        play('water');
+        break;
       case 'FISH_SEEN':
-      case 'PET_FED':
+        play(e.first ? 'reward' : 'water');
+        break;
+      case 'PET_FED': {
+        const model = PETS.find((p) => p.id === e.pet)?.model;
+        play(model === 'cat' ? 'pet_cat' : model === 'fox' ? 'pet_fox' : model === 'frog' ? 'pet_frog' : 'pet_dog');
+        break;
+      }
       case 'ZEN_MOMENT':
-        play('click');
+        play('chime');
         break;
       case 'GIFT_GIVEN':
         queueDialogue({ resident: e.resident, text: e.line, mode: 'gift' }, true);
         fx.push({ id: seq++, kind: 'heart', amount: e.reaction === 'love' ? 8 : e.reaction === 'like' ? 4 : 2, from: [0, 2, 0] });
-        play('reward');
+        play('friendship');
         break;
     }
   }
   if (fx.length && !zen(s)) st.setUI({ fx: [...useGame.getState().ui.fx, ...fx].slice(-30), bumps });
+  if (cue.build !== st.ui.cue.build || cue.party !== st.ui.cue.party) useGame.getState().setUI({ cue });
 }
 
 export function rewardText(r: { coins?: number; gems?: number; xp?: number; items?: Record<string, number>; unlocks?: string[] }) {

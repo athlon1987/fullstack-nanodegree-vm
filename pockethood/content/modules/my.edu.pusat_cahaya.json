@@ -32,6 +32,7 @@
  "id": "my.edu.pusat_cahaya",
  "kind": "community",
  "category": "education",
+ "contentTags": ["learning", "family"],
  "template": "learning",
  "slot": "learning_centre",
  "name": {

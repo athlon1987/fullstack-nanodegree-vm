@@ -32,6 +32,7 @@
  "id": "my.auto.galeri_seri",
  "kind": "business",
  "category": "automotive",
+ "contentTags": ["vehicles", "community"],
  "template": "showroom",
  "slot": "showroom",
  "name": {

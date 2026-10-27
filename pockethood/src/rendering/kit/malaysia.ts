@@ -1,6 +1,6 @@
 // Malaysian architecture kit (original, parametric): rumah kampung on stilts, pre-war style
 // shoplots with a five-foot way, kopitiam, glass showroom, learning centre, community garden,
-// balai raya, wakaf, lake & jetty, kampung gateway and tropical planting. Module prefabs take
+// balai raya, lakeside pavilion, lake & jetty, kampung gateway and tropical planting. Module prefabs take
 // the module's palette and sign; nothing here depicts a real business or brand.
 import * as THREE from 'three';
 import { FLOWERS, ROCK, face, prop, type ArchCtx } from './common';
@@ -112,9 +112,25 @@ function bicycle(g: THREE.Object3D, x: number, z: number, color: string, ry = 0)
   box(h, 0.012, 0.012, 0.1, fm, 0.11, 0.24, 0, 0.004);
 }
 
+/** A pole with a little two-tone festival pennant (deliberately not a flag: no flags of any kind). */
+const PENNANT = (() => {
+  const sh = new THREE.Shape();
+  sh.moveTo(0, 0);
+  sh.lineTo(0.26, -0.065);
+  sh.lineTo(0, -0.13);
+  sh.closePath();
+  return new THREE.ShapeGeometry(sh);
+})();
 function flagPole(g: THREE.Object3D, x: number, z: number, color: string, h = 1.2) {
   cyl(g, 0.012, 0.016, h, mat('#d9d6cf', { metalness: 0.5, roughness: 0.4 }), x, 0, z, 6);
-  box(g, 0.24, 0.14, 0.008, mat(color, { side: THREE.DoubleSide }), x + 0.12, h - 0.18, z, 0.004);
+  const p = new THREE.Mesh(PENNANT, mat(color, { side: THREE.DoubleSide }));
+  p.position.set(x + 0.01, h - 0.04, z);
+  p.castShadow = true;
+  g.add(p);
+  const q = new THREE.Mesh(PENNANT, mat('#fffaf0', { side: THREE.DoubleSide }));
+  q.scale.set(0.55, 0.45, 1);
+  q.position.set(x + 0.012, h - 0.075, z + 0.002);
+  g.add(q);
 }
 
 // ─── Homes ───────────────────────────────────────────────────────────────────
@@ -459,7 +475,7 @@ function taman(c: ArchCtx) {
     sphere(g, 0.05, mat(i % 2 ? '#e0413a' : '#ffd34d'), Math.cos(a) * 0.55, 0.09, Math.sin(a) * 0.55, 6);
   }
   bush(g, 0, 0, 0.9, C.leaf);
-  if (c.level >= 2) wakafShelter(at(g, 0.05, 0.04, -0.1), 0.62, 4, C.zincGreen);
+  if (c.level >= 2) pavilionShelter(at(g, 0.05, 0.04, -0.1), 0.62, 4, C.zincGreen);
   if (c.flags.park_bunting) {
     for (let i = 0; i < 12; i++) {
       const t = i / 11;
@@ -495,7 +511,7 @@ function balaiRaya(c: ArchCtx) {
   box(g, 1.6, 0.005, 0.02, line, 0, 0.2, z0 - 0.5, 0.002);
   box(g, 1.6, 0.005, 0.02, line, 0, 0.2, z0 + 0.4, 0.002);
   box(g, 0.02, 0.005, 0.9, line, 0, 0.2, z0 - 0.05, 0.002);
-  flagPole(g, 1.35, 0.95, '#2f6b45', 1.3);
+  flagPole(g, 1.35, 0.95, '#f2a93b', 1.3);
   if (c.level >= 2) {
     cyl(g, 0.16, 0.16, 0.04, mat('#fffaf0'), 0, 1.45, z0 + d / 2 + 0.12, 16, [Math.PI / 2, 0, 0]);
     box(g, 0.012, 0.1, 0.01, mat('#3d3226'), 0, 1.42, z0 + d / 2 + 0.15, 0.002);
@@ -507,8 +523,8 @@ function balaiRaya(c: ArchCtx) {
   return g;
 }
 
-/** A wakaf: open-sided rest shelter with a pyramid roof. */
-function wakafShelter(g: THREE.Object3D, s: number, stage: number, roof: string) {
+/** A pondok: open-sided rest pavilion with a pyramid roof. */
+function pavilionShelter(g: THREE.Object3D, s: number, stage: number, roof: string) {
   const timber = mat(C.timber);
   if (stage >= 1) for (const sx of [-1, 1]) for (const sz of [-1, 1]) box(g, 0.07 * s, 0.95 * s, 0.07 * s, timber, sx * 0.55 * s, 0, sz * 0.55 * s, 0.01);
   if (stage >= 2) {
@@ -518,7 +534,7 @@ function wakafShelter(g: THREE.Object3D, s: number, stage: number, roof: string)
   if (stage >= 3) hipRoof(at(g, 0, 0, 0), { w: 1.3 * s, d: 1.3 * s, y: 0.95 * s, rise: 0.5 * s, color: roof, map: 'zinc', overhang: 0.12 * s });
 }
 
-function wakaf(c: ArchCtx) {
+function pondok(c: ArchCtx) {
   const g = new THREE.Group();
   const stage = c.stage ?? 0;
   box(g, 1.8, 0.03, 1.8, mat('#d9c3a0', { map: TEX.cobbles(), repeat: [4, 4] }), 0, 0, 0, 0.02);
@@ -527,11 +543,11 @@ function wakaf(c: ArchCtx) {
       cyl(g, 0.015, 0.015, 0.3, mat(C.timberLight), x, 0, z, 5);
       box(g, 0.05, 0.03, 0.01, mat('#d64f3a'), x, 0.26, z, 0.003);
     }
-    signBoard(g, c.text?.wakafProject ?? 'Projek Wakaf', 0, 0.28, 0.75, { w: 0.6, h: 0.14, bg: '#fffaf0', fg: '#2f6b45' });
+    signBoard(g, c.text?.projectSign ?? 'Projek Pondok', 0, 0.28, 0.75, { w: 0.6, h: 0.14, bg: '#fffaf0', fg: '#2f6b45' });
     for (const sx of [-1, 1]) cyl(g, 0.015, 0.015, 0.28, mat(C.timber), sx * 0.25, 0, 0.73, 5);
     return g;
   }
-  wakafShelter(at(g, 0, 0.03, 0), 1, stage, C.zincRed);
+  pavilionShelter(at(g, 0, 0.03, 0), 1, stage, C.zincRed);
   if (stage <= 2) {
     for (let i = 0; i < 3; i++) box(g, 0.3, 0.035, 0.1, mat(C.timberLight, { map: TEX.planks() }), 0.72, 0.03 + i * 0.036, -0.75, 0.008);
   }
@@ -842,8 +858,8 @@ export function malaysianArchetype(arch: string, c: ArchCtx): THREE.Group | null
     }
     case 'my:tasik':
       return tasik();
-    case 'my:wakaf':
-      return wakaf(c);
+    case 'my:pondok':
+      return pondok(c);
     case 'my:showroom':
     case 'showroom':
       return showroomGlass(c, mod?.palette, mod?.sign);

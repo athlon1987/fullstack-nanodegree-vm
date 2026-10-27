@@ -21,6 +21,8 @@ const ground = () =>
     ? { grass: '#7ccb4c', grassDark: '#55a83a', locked: '#a8bf78', lip: '#4f9a36', water: '#3cbfc4', path: '#dcb894', bands: ['#5fa83e', '#c0643c', '#a9532f', '#c8724a', '#8f4426', '#b45f38', '#7e3a20'], flowers: ['#ffffff', '#ffd34d', '#e0413a', '#ff8fb1'] }
     : { grass: P.grass, grassDark: P.grassDark, locked: P.grassLocked, lip: P.grassDark, water: P.water, path: P.stone, bands: ['#7fbf5a', '#b98559', '#a8774f', '#c19066', '#8f6143', '#9d7050', '#7e573c'], flowers: ['#ffffff', '#ffd34d', '#ff8fb1', '#b9a2ff'] };
 import { plotUnlockable } from '../../game/core/actions';
+import { SPOTS, SPOT_PLACES } from '../../data/spots';
+import { BUILDINGS } from '../../data/buildings';
 
 const ISLAND_DEPTH = 1.6;
 
@@ -202,6 +204,12 @@ function Wilderness() {
         const x = x0 + 0.5 + r() * (w - 1);
         const z = z0 + 0.5 + r() * (d - 1);
         if (ROAD_ROWS.includes(Math.floor(z)) || ROAD_ROWS.includes(Math.floor(z + 0.6)) || ROAD_ROWS.includes(Math.floor(z - 0.6))) continue;
+        // Keep the shared community spots clear.
+        if (SPOTS.some((p) => {
+          const [sx, sz] = SPOT_PLACES[p.id];
+          const [w, d] = BUILDINGS[p.building].footprint;
+          return x > sx - 1.3 && x < sx + w + 1.3 && z > sz - 1.3 && z < sz + d + 1.3;
+        })) continue;
         const kind = r();
         const tropical = WORLD.biome === 'tropical';
         out.push({ name: tropical ? (kind < 0.45 ? 'tree_palm' : kind < 0.8 ? 'tree_fat' : 'tree_oak') : kind < 0.45 ? 'tree_pine' : kind < 0.8 ? 'tree_fat' : 'tree_dark', x: x - HALF, z: z - HALF, h: 1.1 + r() * 0.6, ry: r() * 6, plot: e.id } as never);

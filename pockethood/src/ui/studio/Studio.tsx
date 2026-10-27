@@ -23,8 +23,10 @@ import { buildingThumb } from '../../rendering/thumbnails';
 import { useGame } from '../../state/store';
 import { Icon } from '../components/Icon';
 import { Panel, Tabs } from '../components/Panel';
+import { audio, type MoodId, type Sfx } from '../../audio/AudioManager';
+import { ARRANGEMENTS, STINGERS } from '../../audio/music/score';
 
-type Tab = 'status' | 'modules' | 'editor' | 'menu' | 'sponsor' | 'approvals' | 'countries' | 'npcs' | 'economy' | 'assets' | 'flags' | 'audit';
+type Tab = 'status' | 'modules' | 'editor' | 'menu' | 'sponsor' | 'approvals' | 'countries' | 'npcs' | 'economy' | 'assets' | 'audio' | 'flags' | 'audit';
 const TABS: { id: Tab; label: string }[] = [
   { id: 'status', label: 'Status' },
   { id: 'modules', label: 'Modules' },
@@ -36,6 +38,7 @@ const TABS: { id: Tab; label: string }[] = [
   { id: 'npcs', label: 'NPCs' },
   { id: 'economy', label: 'Economy' },
   { id: 'assets', label: 'Assets' },
+  { id: 'audio', label: 'Audio' },
   { id: 'flags', label: 'Flags' },
   { id: 'audit', label: 'Audit log' },
 ];
@@ -61,6 +64,7 @@ export function StudioPanel() {
       {tab === 'npcs' && <NpcTab />}
       {tab === 'economy' && <EconomyTab />}
       {tab === 'assets' && <AssetsTab />}
+      {tab === 'audio' && <AudioTab />}
       {tab === 'flags' && <FlagsTab />}
       {tab === 'audit' && <AuditTab />}
     </Panel>
@@ -537,6 +541,49 @@ function AssetsTab() {
       <a className="btn btn--plain btn--sm" href="./viewer.html?base=assets/models/characters/&m=mini_female_b,mini_male_e" target="_blank" rel="noopener">
         Open the 3D model viewer
       </a>
+    </div>
+  );
+}
+
+/** Audio QA: pin an arrangement, fire stingers and feedback sounds, watch the transport. */
+function AudioTab() {
+  const [, tick] = useState(0);
+  useEffect(() => {
+    const id = window.setInterval(() => tick((n) => n + 1), 500);
+    return () => window.clearInterval(id);
+  }, []);
+  const st = audio.musicState;
+  const moods = Object.keys(ARRANGEMENTS) as MoodId[];
+  const sfx: Sfx[] = ['click', 'collect', 'place', 'complete', 'unlock', 'reward', 'friendship', 'water', 'plant', 'levelup', 'error', 'chime', 'pet_cat', 'pet_dog'];
+  return (
+    <div className="stack">
+      <Kv rows={[['Music', st ? `${st.mood} · ${st.bpm.toFixed(0)} BPM · bar ${st.bar} · cycle ${st.cycle}` : 'not started (tap the world first)'], ['Pinned', audio.forceMood ?? 'follows the game']]} />
+      <div className="section-title">Arrangement</div>
+      <div className="row" style={{ gap: 6, flexWrap: 'wrap' }}>
+        <button className="btn btn--sm" onClick={() => (audio.forceMood = null)}>Follow game</button>
+        {moods.map((m) => (
+          <button key={m} className={`btn btn--sm ${audio.forceMood === m ? 'btn--teal' : ''}`} onClick={() => (audio.forceMood = m)}>
+            {m} · {ARRANGEMENTS[m].bpm}
+          </button>
+        ))}
+      </div>
+      <div className="section-title">Stingers</div>
+      <div className="row" style={{ gap: 6, flexWrap: 'wrap' }}>
+        {(Object.keys(STINGERS) as (keyof typeof STINGERS)[]).map((k) => (
+          <button key={k} className="btn btn--sm" onClick={() => audio.stinger(k)}>
+            {k}
+          </button>
+        ))}
+      </div>
+      <div className="section-title">Feedback sounds</div>
+      <div className="row" style={{ gap: 6, flexWrap: 'wrap' }}>
+        {sfx.map((k) => (
+          <button key={k} className="btn btn--sm" onClick={() => audio.play(k)}>
+            {k}
+          </button>
+        ))}
+      </div>
+      <p className="small muted">Everything is synthesised live; see docs/AUDIO_ASSET_MANIFEST.md. Changes take effect at the next bar line.</p>
     </div>
   );
 }
