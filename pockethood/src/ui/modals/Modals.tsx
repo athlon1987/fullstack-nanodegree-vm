@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { ITEMS } from '../../data/items';
 import { QUESTS, STORIES } from '../../data/progression';
-import { FRIENDSHIP_LEVELS, RESIDENTS } from '../../data/residents';
+import { RESIDENTS } from '../../data/residents';
 import { activeChapter, eligibleChapter } from '../../game/characters/relationships';
 import { dayKey } from '../../game/core/rng';
 import { friendshipLevel, hasItems } from '../../game/economy/economy';
 import { objectiveProgress } from '../../game/engagement/objectives';
 import { phaseOf, clock } from '../../services/clock';
 import { useGame, type Dialogue } from '../../state/store';
+import { t, useT } from '../../platform/i18n';
 import { audio } from '../../audio/AudioManager';
 import { Icon } from '../components/Icon';
 import { Hearts, Portrait } from '../components/Panel';
@@ -33,6 +34,7 @@ export function DialogueBox({ d }: { d: Dialogue }) {
   const dispatch = useGame((s) => s.dispatch);
   const next = useGame((s) => s.nextDialogue);
   const setUI = useGame((s) => s.setUI);
+  const t = useT();
   const [mode, setMode] = useState<'main' | 'gift' | 'about'>('main');
   const def = RESIDENTS[d.resident];
   const r = g.residents.find((x) => x.id === d.resident);
@@ -52,7 +54,7 @@ export function DialogueBox({ d }: { d: Dialogue }) {
   const canDeliver = active && Object.keys(deliverNeed).length > 0 && hasItems(g.inventory, deliverNeed);
   const quest = d.questId ? QUESTS.find((q) => q.id === d.questId) : undefined;
   return (
-    <div className="dialogue" role="dialog" aria-label={`${def.name} says`} onClick={() => !tw.done && tw.skip()}>
+    <div className="dialogue" role="dialog" aria-label={t('modals.says', { name: def.name })} onClick={() => !tw.done && tw.skip()}>
       <Portrait resident={d.resident} size="lg" />
       <div className="dialogue__name">
         {def.name}
@@ -60,14 +62,14 @@ export function DialogueBox({ d }: { d: Dialogue }) {
         {r && (
           <span className="row" style={{ gap: 4 }}>
             <Hearts level={lvl} />
-            <small>{FRIENDSHIP_LEVELS[lvl].name}</small>
+            <small>{t(`common.friend.${lvl}`)}</small>
           </span>
         )}
       </div>
       {mode === 'main' && (
         <p className="dialogue__text" aria-live="polite">
           {quest && <b style={{ display: 'block', color: 'var(--terracotta)', fontFamily: 'var(--font-display)' }}>{quest.title}</b>}
-          {d.mode === 'story-intro' && d.chapter && <b style={{ display: 'block', color: 'var(--sky)', fontFamily: 'var(--font-display)' }}>Story: {STORIES.find((s) => s.id === d.chapter)?.title}</b>}
+          {d.mode === 'story-intro' && d.chapter && <b style={{ display: 'block', color: 'var(--sky)', fontFamily: 'var(--font-display)' }}>{t('modals.storyTitle', { title: STORIES.find((s) => s.id === d.chapter)?.title ?? '' })}</b>}
           {tw.shown}
         </p>
       )}
@@ -79,7 +81,7 @@ export function DialogueBox({ d }: { d: Dialogue }) {
       {mode === 'gift' && (
         <div className="dialogue__text">
           <div className="small muted" style={{ marginBottom: 6 }}>
-            Pick a gift — {def.name} loves {def.favorites.map((f) => ITEMS[f].name).join(', ')}.
+            {t('modals.pickGift', { name: def.name, items: def.favorites.map((f) => ITEMS[f].name).join(', ') })}
           </div>
           <div className="row" style={{ flexWrap: 'wrap', gap: 6 }}>
             {goods.map(([id, n]) => (
@@ -96,7 +98,7 @@ export function DialogueBox({ d }: { d: Dialogue }) {
                 <Icon name={id} size={22} /> {ITEMS[id].name} ×{n}
               </button>
             ))}
-            {!goods.length && <span className="muted">Your storage is empty — make something first!</span>}
+            {!goods.length && <span className="muted">{t('modals.storageEmpty')}</span>}
           </div>
         </div>
       )}
@@ -104,10 +106,10 @@ export function DialogueBox({ d }: { d: Dialogue }) {
         {d.mode === 'talk' && r && mode === 'main' && (
           <>
             <button className="btn btn--plain btn--sm" onClick={() => setMode('about')}>
-              About
+              {t('modals.about')}
             </button>
-            <button className="btn btn--plain btn--sm" disabled={giftedToday} onClick={() => setMode('gift')} title={giftedToday ? 'One gift per day' : undefined}>
-              <Icon name="gift" size={18} /> {giftedToday ? 'Gifted today' : 'Gift'}
+            <button className="btn btn--plain btn--sm" disabled={giftedToday} onClick={() => setMode('gift')} title={giftedToday ? t('modals.oneGiftPerDay') : undefined}>
+              <Icon name="gift" size={18} /> {giftedToday ? t('modals.giftedToday') : t('modals.gift')}
             </button>
             {story && (
               <button
@@ -116,7 +118,7 @@ export function DialogueBox({ d }: { d: Dialogue }) {
                   useGame.getState().setUI({ dialogue: { resident: d.resident, text: story.intro, mode: 'story-intro', chapter: story.id } });
                 }}
               >
-                <Icon name="story" size={18} /> New story
+                <Icon name="story" size={18} /> {t('modals.newStory')}
               </button>
             )}
             {active && canDeliver && (
@@ -127,20 +129,20 @@ export function DialogueBox({ d }: { d: Dialogue }) {
                   if (res && !res.error) next();
                 }}
               >
-                Hand over <Icon name="gift" size={18} />
+                {t('modals.handOver')} <Icon name="gift" size={18} />
               </button>
             )}
           </>
         )}
         {mode !== 'main' && (
           <button className="btn btn--plain btn--sm" onClick={() => setMode('main')}>
-            Back
+            {t('common.back')}
           </button>
         )}
         {d.mode === 'story-intro' ? (
           <>
             <button className="btn btn--plain btn--sm" onClick={close}>
-              Maybe later
+              {t('modals.maybeLater')}
             </button>
             <button
               className="btn btn--sm"
@@ -149,22 +151,22 @@ export function DialogueBox({ d }: { d: Dialogue }) {
                 next();
               }}
             >
-              I’ll help!
+              {t('modals.illHelp')}
             </button>
           </>
         ) : (
           <button className="btn btn--sm" onClick={close}>
-            {d.mode === 'arrival' ? 'Welcome!' : d.mode === 'quest' ? 'Okay!' : 'Bye!'}
+            {d.mode === 'arrival' ? t('modals.welcome') : d.mode === 'quest' ? t('modals.okay') : t('modals.bye')}
           </button>
         )}
       </div>
       {active && d.mode === 'talk' && mode === 'main' && (
         <div className="small muted" style={{ marginTop: 6 }}>
-          Story “{active.title}”: {active.objectives.map((o) => `${o.label} (${objectiveProgress(g, o, r!.storyActive!.baseline).cur}/${objectiveProgress(g, o, r!.storyActive!.baseline).n})`).join(' · ')}
+          {t('modals.storyProgress', { title: active.title, objectives: active.objectives.map((o) => `${o.label} (${objectiveProgress(g, o, r!.storyActive!.baseline).cur}/${objectiveProgress(g, o, r!.storyActive!.baseline).n})`).join(' · ') })}
         </div>
       )}
       {d.mode === 'quest' && quest?.focus && (
-        <button className="btn btn--plain btn--sm" style={{ position: 'absolute', top: 12, right: 12 }} onClick={() => setUI({ panel: 'quests' })} aria-label="Open quests">
+        <button className="btn btn--plain btn--sm" style={{ position: 'absolute', top: 12, right: 12 }} onClick={() => setUI({ panel: 'quests' })} aria-label={t('modals.openQuests')}>
           <Icon name="quests" size={18} />
         </button>
       )}
@@ -180,19 +182,20 @@ export function useResidentTalk() {
     const st = useGame.getState();
     const res = st.dispatch({ type: 'talk', resident, phase: phaseOf(st.ui.hour) });
     const line = res?.events.find((e) => e.type === 'RESIDENT_INTERACTED');
-    const text = line && line.type === 'RESIDENT_INTERACTED' ? line.line : 'Hello!';
+    const text = line && line.type === 'RESIDENT_INTERACTED' ? line.line : t('modals.hello');
     st.setUI({ resident: null, dialogue: { resident, text, mode: 'talk' }, selected: null, panel: null });
   }, [resident]);
 }
 
 export function LevelUpModal({ level, unlocks }: { level: number; unlocks: string[] }) {
   const setUI = useGame((s) => s.setUI);
+  const t = useT();
   return (
     <div className="modal-wrap" onClick={() => setUI({ levelUp: null })}>
-      <div className="modal" role="dialog" aria-label={`Level ${level} reached`} onClick={(e) => e.stopPropagation()} style={{ marginTop: 60 }}>
+      <div className="modal" role="dialog" aria-label={t('modals.levelUp.aria', { level })} onClick={(e) => e.stopPropagation()} style={{ marginTop: 60 }}>
         <div className="burst">{level}</div>
-        <h2>Level up!</h2>
-        <p className="muted">Your neighborhood is growing. New things to discover:</p>
+        <h2>{t('modals.levelUp.title')}</h2>
+        <p className="muted">{t('modals.levelUp.body')}</p>
         <div className="unlock-list">
           {unlocks.map((u) => (
             <span key={u} className="chip" style={{ padding: '6px 12px' }}>
@@ -201,7 +204,7 @@ export function LevelUpModal({ level, unlocks }: { level: number; unlocks: strin
           ))}
         </div>
         <button className="btn btn--gold btn--block" onClick={() => setUI({ levelUp: null })} autoFocus>
-          Wonderful!
+          {t('modals.levelUp.ok')}
         </button>
       </div>
     </div>
@@ -212,45 +215,46 @@ export function WelcomeBack() {
   const w = useGame((s) => s.ui.welcome)!;
   const setUI = useGame((s) => s.setUI);
   const g = useGame((s) => s.game!);
+  const t = useT();
   const hrs = w.awayMs / 3_600_000;
-  const away = hrs >= 48 ? `${Math.floor(hrs / 24)} days` : hrs >= 1 ? `${Math.floor(hrs)} hours` : `${Math.round(w.awayMs / 60000)} minutes`;
+  const away = hrs >= 48 ? t('modals.welcomeBack.days', { n: Math.floor(hrs / 24) }) : hrs >= 1 ? t('modals.welcomeBack.hours', { n: Math.floor(hrs) }) : t('modals.welcomeBack.minutes', { n: Math.round(w.awayMs / 60000) });
   return (
     <div className="modal-wrap">
-      <div className="modal modal--scroll" role="dialog" aria-label="Welcome back">
+      <div className="modal modal--scroll" role="dialog" aria-label={t('modals.welcomeBack.aria')}>
         <Icon name="home" size={64} style={{ margin: '0 auto' }} />
-        <h2>Welcome back!</h2>
+        <h2>{t('modals.welcomeBack.title')}</h2>
         <p className="muted">
-          You were away for {away}. {g.profile.hoodName} kept itself cosy while you were gone.
+          {t('modals.welcomeBack.away', { away, hood: g.profile.hoodName })}
         </p>
         <div className="stack" style={{ textAlign: 'left', margin: '12px 0' }}>
           {w.coinsWaiting > 0 && (
             <div className="list-item">
-              <Icon name="coin" size={30} /> {w.coinsWaiting} coins are waiting to be collected
+              <Icon name="coin" size={30} /> {t('modals.welcomeBack.coins', { n: w.coinsWaiting })}
             </div>
           )}
           {w.readyGoods > 0 && (
             <div className="list-item">
-              <Icon name="inventory" size={30} /> {w.readyGoods} batches of goods are ready
+              <Icon name="inventory" size={30} /> {t('modals.welcomeBack.goods', { n: w.readyGoods })}
             </div>
           )}
           {w.buildingsFinished.length > 0 && (
             <div className="list-item">
-              <Icon name="build" size={30} /> Finished: {w.buildingsFinished.join(', ')}
+              <Icon name="build" size={30} /> {t('modals.welcomeBack.finished', { list: w.buildingsFinished.join(', ') })}
             </div>
           )}
           {w.storiesWaiting.length > 0 && (
             <div className="list-item">
-              <Icon name="story" size={30} /> {w.storiesWaiting.join(' & ')} {w.storiesWaiting.length > 1 ? 'have' : 'has'} something to tell you
+              <Icon name="story" size={30} /> {t('modals.welcomeBack.stories', { n: w.storiesWaiting.length, names: w.storiesWaiting.join(' & ') })}
             </div>
           )}
           {w.nextGoal && (
             <div className="list-item" style={{ background: '#fff4d6' }}>
-              <Icon name="star" size={30} /> <b>Next: {w.nextGoal.text}</b>
+              <Icon name="star" size={30} /> <b>{t('modals.welcomeBack.next', { goal: w.nextGoal.text })}</b>
             </div>
           )}
         </div>
         <button className="btn btn--gold btn--block" onClick={() => setUI({ welcome: null })} autoFocus>
-          Let’s go!
+          {t('modals.welcomeBack.go')}
         </button>
       </div>
     </div>
@@ -262,6 +266,7 @@ export function PhotoMode() {
   const setUI = useGame((s) => s.setUI);
   const dispatch = useGame((s) => s.dispatch);
   const hood = useGame((s) => s.game!.profile.hoodName);
+  const t = useT();
   const [shot, setShot] = useState<string | null>(null);
   const [flash, setFlash] = useState(false);
   const [showName, setShowName] = useState(true);
@@ -301,7 +306,7 @@ export function PhotoMode() {
     const nav = navigator as Navigator & { canShare?: (d: unknown) => boolean };
     if (blob && nav.canShare?.({ files: [new File([blob], 'pockethood.png', { type: 'image/png' })] })) {
       try {
-        await navigator.share({ files: [new File([blob], 'pockethood.png', { type: 'image/png' })], title: 'My POCKETHOOD neighborhood' });
+        await navigator.share({ files: [new File([blob], 'pockethood.png', { type: 'image/png' })], title: t('modals.photo.shareTitle') });
       } catch {
         /* user cancelled */
       }
@@ -320,32 +325,32 @@ export function PhotoMode() {
       {flash && <div className="flash" />}
       <div style={{ position: 'fixed', top: 16, right: 16, display: 'flex', gap: 8 }}>
         <button className="btn btn--plain btn--sm" onClick={() => setShowName((v) => !v)} aria-pressed={showName}>
-          {showName ? 'Name: on' : 'Name: off'}
+          {showName ? t('modals.photo.nameOn') : t('modals.photo.nameOff')}
         </button>
         <button className="btn btn--plain btn--sm" onClick={() => setUI({ photoMode: false })}>
-          <Icon name="close" size={18} /> Exit
+          <Icon name="close" size={18} /> {t('modals.photo.exit')}
         </button>
       </div>
       <div style={{ position: 'fixed', top: 16, left: 16 }} className="chip">
-        <Icon name="camera" size={20} /> Photo mode · drag & zoom to frame
+        <Icon name="camera" size={20} /> {t('modals.photo.hint')}
       </div>
-      <button className="shutter" aria-label="Take photo" onClick={capture} />
+      <button className="shutter" aria-label={t('modals.photo.take')} onClick={capture} />
       {shot && (
         <div className="modal-wrap" onClick={() => setShot(null)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()} role="dialog" aria-label="Your photo">
-            <img src={shot} alt="Your neighborhood" style={{ width: '100%', borderRadius: 14, border: '3px solid #fff' }} />
+          <div className="modal" onClick={(e) => e.stopPropagation()} role="dialog" aria-label={t('modals.photo.yourPhoto')}>
+            <img src={shot} alt={t('modals.photo.alt')} style={{ width: '100%', borderRadius: 14, border: '3px solid #fff' }} />
             <div className="row" style={{ marginTop: 12, justifyContent: 'center' }}>
               <button className="btn btn--plain" onClick={() => setShot(null)}>
-                Retake
+                {t('modals.photo.retake')}
               </button>
               <button className="btn btn--sky" onClick={download}>
-                Save
+                {t('common.save')}
               </button>
               <button className="btn btn--gold" onClick={() => void share()}>
-                Share
+                {t('common.share')}
               </button>
             </div>
-            <p className="small muted">Photos include only your neighborhood and its name (toggle above).</p>
+            <p className="small muted">{t('modals.photo.note')}</p>
           </div>
         </div>
       )}

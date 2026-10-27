@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "code": "JP",
+  "name": {
+    "en": "Japan",
+    "ms": "Jepun"
+  },
+  "status": "planned",
+  "locales": [
+    "ja-JP",
+    "en"
+  ],
+  "defaultLocale": "ja-JP",
+  "currency": {
+    "code": "JPY",
+    "symbol": "¥",
+    "minorUnits": 0
+  },
+  "timezone": "Asia/Tokyo",
+  "worlds": [],
+  "compliance": {
+    "certifiedClaimsRequireVerification": true,
+    "pricesRequireVerification": true
+  }
+}

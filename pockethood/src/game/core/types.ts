@@ -41,6 +41,8 @@ export interface ItemDef {
   icon: string;
   kind: 'good' | 'material';
   description: string;
+  /** Module that supplied this item (absent for core/world items). */
+  module?: string;
 }
 
 export interface RecipeDef {
@@ -56,6 +58,7 @@ export interface RecipeDef {
   qty: number;
   seconds: number;
   xp: number;
+  module?: string;
 }
 
 export interface BuildingLevelDef {
@@ -86,10 +89,14 @@ export interface BuildingDef {
   levels: BuildingLevelDef[];
   /** Render archetype key for the architecture kit / model registry. */
   archetype: string;
+  /** Gameplay template (Layer B) this building runs; modules dress buildings by template. */
+  template?: import('../../platform/content/templates').TemplateId;
   /** Resident who moves in / starts working when this building first exists. */
   resident?: ResidentId;
   /** Hidden from the catalog until unlocked by a reward (keepsakes). */
   keepsake?: boolean;
+  /** Not offered in this world's build catalog (existing instances keep working). */
+  hidden?: boolean;
   /** Can be walked over (paths). */
   walkable?: boolean;
   /** Neighborhood charm added when placed. */
@@ -158,6 +165,9 @@ export interface QuestDef {
   tutorial?: boolean;
   /** Buildings or recipes highlighted for guidance. */
   focus?: { building?: BuildingTypeId; panel?: string };
+  /** Short reason shown by the tutorial guide. */
+  why?: string;
+  module?: string;
 }
 
 export interface StoryChapterDef {
@@ -203,6 +213,8 @@ export interface CommunityProjectDef {
   stages: { at: number; label: string }[];
   reward: Reward;
   minLevel: number;
+  /** World flag set on completion (the renderer shows the finished landmark). */
+  flag: string;
 }
 
 export interface EventDef {
@@ -234,6 +246,8 @@ export interface ProductionJob {
   /** Absolute start time (ms). Jobs run sequentially; start = previous end. */
   start: number;
   end: number;
+  /** Output snapshot taken when production started, so a job still pays out if its content is later withdrawn. */
+  out?: { item: ItemId; qty: number; xp: number };
 }
 
 export interface BuildingInstance {
@@ -253,6 +267,8 @@ export interface BuildingInstance {
   /** Passive income accounting. */
   passiveSince: number;
   placedAt: number;
+  /** Footprint snapshot, so the grid stays correct even if the building's content is unavailable. */
+  fp?: [number, number];
 }
 
 export interface Order {
@@ -288,7 +304,11 @@ export interface ResidentState {
 export interface PulseTask {
   id: string;
   kind: 'practical' | 'resident' | 'creative';
-  label: string;
+  /** i18n key + params (resolved at display time, so a language switch applies). */
+  key: string;
+  params?: TextParams;
+  /** Legacy English label from saves before v4. */
+  label?: string;
   counter: string;
   n: number;
   baseline: number;
@@ -302,10 +322,16 @@ export interface PulseState {
   bonusClaimed: boolean;
 }
 
+/** Placeholder values; ids named building/resident/item/… are resolved to names at display time. */
+export type TextParams = Record<string, string | number>;
+
 export interface HistoryEntry {
   t: number;
   icon: string;
-  text: string;
+  key?: string;
+  params?: TextParams;
+  /** Legacy English text from saves before v4. */
+  text?: string;
 }
 
 export interface CommunityState {
@@ -327,7 +353,14 @@ export interface EventState {
 
 export interface Settings {
   musicVolume: number;
+  /** Interface sounds (taps, coins, confirmations). */
   sfxVolume: number;
+  ambienceVolume: number;
+  characterVolume: number;
+  locale: 'en' | 'ms';
+  /** Zen Mode: no currencies, objectives, notifications or promotions on screen. */
+  zen: boolean;
+  weather: boolean;
   muted: boolean;
   reducedMotion: boolean;
   graphics: 'low' | 'medium' | 'high';
@@ -377,6 +410,40 @@ export interface GameState {
   lastSessionStart: number;
   sessions: number;
   settings: Settings;
+  /** Which world pack (district) this save belongs to. */
+  world: { id: string; country: string };
+  /** Per-building behaviour state, keyed by building uid (kept even if a module is switched off). */
+  ext: {
+    prep: Record<string, number>;
+    gardens: Record<string, GardenPlot[]>;
+    showrooms: Record<string, ShowroomSlot[]>;
+    learning: { day: string; today: number; correct: number; answered: number; seen: Record<string, number> };
+  };
+  zen: ZenState;
+}
+
+export interface GardenPlot {
+  plant: string | null;
+  plantedAt: number;
+  /** Each watering (max 3) brings the harvest closer. */
+  water: number;
+  lastWater: number;
+}
+
+export interface ShowroomSlot {
+  model: string;
+  paint: string;
+}
+
+export interface ZenState {
+  /** Fish journal: species -> times seen (catch-and-release, no currency). */
+  fish: Record<string, number>;
+  lastFish: number;
+  /** Pet -> last day fed. */
+  pets: Record<string, string>;
+  /** Calm moments by kind (sunset watched, sat by the lake, flowers arranged). */
+  moments: Record<string, number>;
+  lastMoment: number;
 }
 
 // ─── Events emitted by the simulation (consumed by engagement, audio, FX, analytics) ─
@@ -412,10 +479,21 @@ export type GameEvent =
   | { type: 'EVENT_TIER'; event: string; tier: number }
   | { type: 'PHOTO_TAKEN' }
   | { type: 'ITEM_SOLD'; item: ItemId; qty: number; coins: number }
-  | { type: 'UNLOCKED'; what: string };
+  | { type: 'UNLOCKED'; what: string }
+  | { type: 'HAND_PREPARED'; uid: string; recipe: RecipeId; item: ItemId }
+  | { type: 'QUIZ_ANSWERED'; uid: string; question: string; correct: boolean }
+  | { type: 'SHOWROOM_ARRANGED'; uid: string; slot: number }
+  | { type: 'PLANTED'; uid: string; plot: number; plant: string }
+  | { type: 'WATERED'; uid: string; plot: number }
+  | { type: 'HARVESTED'; uid: string; plot: number; items: ItemBag }
+  | { type: 'FISH_SEEN'; species: string; first: boolean }
+  | { type: 'PET_FED'; pet: string }
+  | { type: 'ZEN_MOMENT'; kind: string };
 
 export interface ActionResult {
   state: GameState;
   events: GameEvent[];
+  /** i18n key (errors.*) describing why the action was refused. */
   error?: string;
+  errorParams?: TextParams;
 }

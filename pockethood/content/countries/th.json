@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "code": "TH",
+  "name": {
+    "en": "Thailand",
+    "ms": "Thailand"
+  },
+  "status": "planned",
+  "locales": [
+    "th-TH",
+    "en"
+  ],
+  "defaultLocale": "th-TH",
+  "currency": {
+    "code": "THB",
+    "symbol": "฿",
+    "minorUnits": 2
+  },
+  "timezone": "Asia/Bangkok",
+  "worlds": [],
+  "compliance": {
+    "certifiedClaimsRequireVerification": true,
+    "pricesRequireVerification": true
+  }
+}

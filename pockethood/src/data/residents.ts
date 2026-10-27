@@ -38,9 +38,9 @@ export const RESIDENTS: Record<string, ResidentDef> = {
     ],
     memoryLines: [
       { text: 'I still can’t believe you helped me open the café. Every cup I pour, I remember that.', memory: 'opened_cafe' },
-      { text: 'The terrace was the best idea. People stay for hours now!', memory: 'cafe_terrace' },
+      { text: 'The terrace was the best idea. People stay for hours now!', memory: 'upgraded_cafe_2' },
       { text: 'Remember the first brunch? Felix burned the toast and nobody even minded.', memory: 'mia_brunch' },
-      { text: 'The fountain’s splashing makes the best background music for the café.', memory: 'fountain_built' },
+      { text: 'The fountain’s splashing makes the best background music for the café.', memory: 'landmark_built' },
     ],
     giftReactions: {
       love: 'For me?! Oh, these are my absolute favorite. You remembered!',

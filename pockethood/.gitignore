@@ -5,3 +5,4 @@ playwright-report/
 *.tsbuildinfo
 asset-import/*
 !asset-import/README.md
+public/content/

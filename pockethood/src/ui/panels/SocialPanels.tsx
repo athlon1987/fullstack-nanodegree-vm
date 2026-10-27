@@ -10,6 +10,7 @@ import { objectiveProgress } from '../../game/engagement/objectives';
 import { PULSE_BONUS, pulseTaskProgress } from '../../game/engagement/NeighborhoodPulse';
 import { producerOf } from '../../game/quests/orders';
 import { clock } from '../../services/clock';
+import { t, useT } from '../../platform/i18n';
 import { rewardText, useGame } from '../../state/store';
 import { Icon } from '../components/Icon';
 import { Hearts, ItemChips, Panel, Portrait, Progress, Tabs } from '../components/Panel';
@@ -17,15 +18,16 @@ import { Hearts, ItemChips, Panel, Portrait, Progress, Tabs } from '../component
 export function OrdersPanel() {
   const g = useGame((s) => s.game!);
   const dispatch = useGame((s) => s.dispatch);
+  const t = useT();
   const [now, setNow] = useState(clock.now());
   useEffect(() => {
     const id = window.setInterval(() => setNow(clock.now()), 1000);
     return () => window.clearInterval(id);
   }, []);
   return (
-    <Panel title="Request Board" icon="orders">
+    <Panel title={t('social.orders.title')} icon="orders">
       <p className="muted small" style={{ marginTop: 0 }}>
-        Neighbors pin requests here. Requests only ask for things you can already make.
+        {t('social.orders.intro')}
       </p>
       <div className="stack">
         {g.orders.map((o) => {
@@ -36,13 +38,12 @@ export function OrdersPanel() {
               <div style={{ flex: 1, minWidth: 0 }} className="stack">
                 <div>
                   <b style={{ fontFamily: 'var(--font-display)' }}>{RESIDENTS[o.resident].name}</b>
-                  <span className="small muted"> needs</span>
+                  <span className="small muted"> {t('social.orders.needs')}</span>
                 </div>
                 <ItemChips items={o.items} game={g} />
                 {!ready && (
                   <span className="small muted">
-                    Make at:{' '}
-                    {[...new Set(Object.keys(o.items).filter((i) => (g.inventory[i] ?? 0) < o.items[i]).map((i) => producerOf(i)?.name))].join(', ')}
+                    {t('social.orders.makeAt', { places: [...new Set(Object.keys(o.items).filter((i) => (g.inventory[i] ?? 0) < o.items[i]).map((i) => producerOf(i)?.name))].join(', ') })}
                   </span>
                 )}
                 <div className="row row--between" style={{ flexWrap: 'wrap', gap: 6 }}>
@@ -52,11 +53,11 @@ export function OrdersPanel() {
                     </span>
                   </span>
                   <span className="row" style={{ gap: 6 }}>
-                    <button className="btn btn--plain btn--sm" onClick={() => dispatch({ type: 'skipOrder', id: o.id })} aria-label="Skip this request">
-                      Skip
+                    <button className="btn btn--plain btn--sm" onClick={() => dispatch({ type: 'skipOrder', id: o.id })} aria-label={t('social.orders.skipAria')}>
+                      {t('social.orders.skip')}
                     </button>
                     <button className="btn btn--sm" disabled={!ready} data-tutorial="deliver" onClick={() => dispatch({ type: 'deliverOrder', id: o.id }, [0, 1, 6])}>
-                      Deliver
+                      {t('social.orders.deliver')}
                     </button>
                   </span>
                 </div>
@@ -64,14 +65,14 @@ export function OrdersPanel() {
             </div>
           );
         })}
-        {g.orderCooldowns.map((t, i) => (
+        {g.orderCooldowns.map((at, i) => (
           <div key={i} className="list-item muted" style={{ borderStyle: 'dashed' }}>
             <Icon name="timer" size={30} />
-            <span>A new request arrives in {Math.max(0, Math.ceil((t - now) / 1000))}s</span>
+            <span>{t('social.orders.nextIn', { secs: String(Math.max(0, Math.ceil((at - now) / 1000))) })}</span>
           </div>
         ))}
         {!g.orders.length && !g.orderCooldowns.length && (
-          <div className="card muted">No requests yet. Build a shop that makes goods and your neighbors will start asking!</div>
+          <div className="card muted">{t('social.orders.empty')}</div>
         )}
       </div>
     </Panel>
@@ -81,10 +82,11 @@ export function OrdersPanel() {
 export function InventoryPanel() {
   const g = useGame((s) => s.game!);
   const dispatch = useGame((s) => s.dispatch);
+  const t = useT();
   const items = Object.entries(g.inventory).filter(([, n]) => n > 0);
   return (
-    <Panel title="Storage" icon="inventory">
-      {items.length === 0 && <div className="card muted">Your storage is empty. Collect goods from your shops and garden.</div>}
+    <Panel title={t('social.inventory.title')} icon="inventory">
+      {items.length === 0 && <div className="card muted">{t('social.inventory.empty')}</div>}
       <div className="stack">
         {items.map(([id, n]) => (
           <div key={id} className="list-item">
@@ -97,8 +99,8 @@ export function InventoryPanel() {
               </b>
               <div className="small muted">{ITEMS[id].description}</div>
             </div>
-            <button className="btn btn--plain btn--sm" onClick={() => dispatch({ type: 'sellItem', item: id, qty: 1 })} aria-label={`Sell one ${ITEMS[id].name}`}>
-              Sell <Icon name="coin" size={16} /> {Math.floor(ITEMS[id].value * 0.6)}
+            <button className="btn btn--plain btn--sm" onClick={() => dispatch({ type: 'sellItem', item: id, qty: 1 })} aria-label={t('social.inventory.sellAria', { item: ITEMS[id].name })}>
+              {t('social.inventory.sell')} <Icon name="coin" size={16} /> {Math.floor(ITEMS[id].value * 0.6)}
             </button>
           </div>
         ))}
@@ -109,16 +111,17 @@ export function InventoryPanel() {
 
 const ARRIVAL_HINT = (id: string) => {
   const a = RESIDENTS[id].arrival;
-  if (a.type === 'building') return `Moves in when you build the ${BUILDINGS[a.building].name}`;
-  if (a.type === 'level') return `Arrives at neighborhood level ${a.level}`;
+  if (a.type === 'building') return t('social.residents.arrivalBuilding', { building: BUILDINGS[a.building].name });
+  if (a.type === 'level') return t('social.residents.arrivalLevel', { level: a.level });
   return '';
 };
 
 export function ResidentsPanel() {
   const g = useGame((s) => s.game!);
   const setUI = useGame((s) => s.setUI);
+  const t = useT();
   return (
-    <Panel title="Neighbors" icon="residents">
+    <Panel title={t('social.residents.title')} icon="residents">
       <div className="stack">
         {RESIDENT_IDS.map((id) => {
           const def = RESIDENTS[id];
@@ -148,10 +151,10 @@ export function ResidentsPanel() {
                 </div>
                 <div className="row" style={{ gap: 6 }}>
                   <Hearts level={lvl} />
-                  <span className="small muted">{FRIENDSHIP_LEVELS[lvl].name}</span>
+                  <span className="small muted">{t(`common.friend.${lvl}`)}</span>
                 </div>
-                {story && <span className="chip" style={{ background: '#ffe9b8', marginTop: 4 }}>! New story: {story.title}</span>}
-                {active && <span className="chip" style={{ background: '#dcefff', marginTop: 4 }}>Story: {active.title}</span>}
+                {story && <span className="chip" style={{ background: '#ffe9b8', marginTop: 4 }}>{t('social.residents.newStory', { title: story.title })}</span>}
+                {active && <span className="chip" style={{ background: '#dcefff', marginTop: 4 }}>{t('social.residents.story', { title: active.title })}</span>}
               </div>
               <Icon name="arrow" size={22} />
             </button>
@@ -167,6 +170,7 @@ export function ResidentDetails({ id }: { id: string }) {
   const g = useGame((s) => s.game!);
   const r = g.residents.find((x) => x.id === id)!;
   const def = RESIDENTS[id];
+  const t = useT();
   const lvl = friendshipLevel(r.friendship);
   const next = FRIENDSHIP_LEVELS[lvl + 1];
   const memories = Object.keys(r.memories)
@@ -177,14 +181,14 @@ export function ResidentDetails({ id }: { id: string }) {
     <div className="stack small">
       <div>{def.bio}</div>
       <div className="row" style={{ gap: 6, flexWrap: 'wrap' }}>
-        {def.traits.map((t) => (
-          <span key={t} className="chip">
-            {t}
+        {def.traits.map((trait) => (
+          <span key={trait} className="chip">
+            {trait}
           </span>
         ))}
       </div>
       <div className="row" style={{ gap: 6, flexWrap: 'wrap' }}>
-        <b>Loves:</b>
+        <b>{t('social.details.loves')}</b>
         {def.favorites.map((f) => (
           <span key={f} className="chip">
             <Icon name={f} size={18} /> {ITEMS[f].name}
@@ -193,13 +197,13 @@ export function ResidentDetails({ id }: { id: string }) {
       </div>
       {next && (
         <div>
-          <b>Friendship:</b> {r.friendship - FRIENDSHIP_LEVELS[lvl].at}/{next.at - FRIENDSHIP_LEVELS[lvl].at} to {next.name}
+          <b>{t('social.details.friendship')}</b> {t('social.details.toNext', { cur: r.friendship - FRIENDSHIP_LEVELS[lvl].at, max: next.at - FRIENDSHIP_LEVELS[lvl].at, level: t(`common.friend.${lvl + 1}`) })}
           <Progress value={r.friendship - FRIENDSHIP_LEVELS[lvl].at} max={next.at - FRIENDSHIP_LEVELS[lvl].at} />
         </div>
       )}
       {memories.length > 0 && (
         <div>
-          <b>Shared memories</b>
+          <b>{t('social.details.memories')}</b>
           <ul style={{ margin: '4px 0 0', paddingLeft: 18 }}>
             {memories.slice(0, 5).map((m) => (
               <li key={m.k}>{m.text}</li>
@@ -211,32 +215,24 @@ export function ResidentDetails({ id }: { id: string }) {
   );
 }
 
+const MEMORY_KEYS = ['moved_in', 'opened_cafe', 'opened_bakery', 'opened_garden', 'opened_workshop', 'opened_park', 'upgraded_cafe_2', 'landmark_built', 'expanded'];
+
 function memoryText(resident: string, key: string): string | null {
   const name = RESIDENTS[resident].name;
-  const map: Record<string, string> = {
-    moved_in: `${name} moved into the neighborhood.`,
-    opened_cafe: 'You helped open the café together.',
-    opened_bakery: 'You built the bakery together.',
-    opened_garden: 'The first sprouts in the community garden.',
-    opened_workshop: 'The workshop’s first day.',
-    opened_park: 'The park opening party.',
-    cafe_terrace: 'The café terrace opened.',
-    fountain_built: 'The neighborhood fountain was finished.',
-    expanded: 'You opened new land together.',
-  };
-  if (map[key]) return map[key];
-  if (key.startsWith('gift_')) return `You gave ${name} their favorite: ${ITEMS[key.slice(5)]?.name ?? key}.`;
+  if (MEMORY_KEYS.includes(key)) return t(`social.memory.${key}`, { name });
+  if (key.startsWith('gift_')) return t('social.memory.gift', { name, item: ITEMS[key.slice(5)]?.name ?? key });
   const ch = STORIES.find((c) => c.memory === key);
-  return ch ? `Story: “${ch.title}”` : null;
+  return ch ? t('social.memory.story', { title: ch.title }) : null;
 }
 
 export function QuestsPanel() {
   const g = useGame((s) => s.game!);
   const setUI = useGame((s) => s.setUI);
+  const t = useT();
   return (
-    <Panel title="Quests & Stories" icon="quests">
+    <Panel title={t('social.quests.title')} icon="quests">
       <div className="section-title" style={{ marginTop: 0 }}>
-        <Icon name="quests" size={22} /> Neighborhood quests
+        <Icon name="quests" size={22} /> {t('social.quests.hoodQuests')}
       </div>
       <div className="stack">
         {g.quests.active.map((aq) => {
@@ -268,15 +264,15 @@ export function QuestsPanel() {
                 );
               })}
               <span className="small" style={{ fontWeight: 800 }}>
-                Reward: {rewardText(def.reward)}
+                {t('social.quests.reward', { reward: rewardText(def.reward) })}
               </span>
             </div>
           );
         })}
-        {!g.quests.active.length && <div className="card muted">All caught up! New quests unlock as your neighborhood grows.</div>}
+        {!g.quests.active.length && <div className="card muted">{t('social.quests.empty')}</div>}
       </div>
       <div className="section-title">
-        <Icon name="story" size={22} /> Resident stories
+        <Icon name="story" size={22} /> {t('social.quests.residentStories')}
       </div>
       <div className="stack">
         {g.residents.map((r) => {
@@ -289,7 +285,7 @@ export function QuestsPanel() {
               <div style={{ flex: 1 }}>
                 <b>{ch.title}</b>
                 <div className="small muted">
-                  {RESIDENTS[r.id].name} · {active ? ch.objectives.map((o) => o.label).join(', ') : 'Talk to start this chapter'}
+                  {RESIDENTS[r.id].name} · {active ? ch.objectives.map((o) => o.label).join(', ') : t('social.quests.talkToStart')}
                 </div>
               </div>
               <Icon name="arrow" size={22} />
@@ -297,7 +293,7 @@ export function QuestsPanel() {
           );
         })}
         <div className="small muted">
-          Chapters completed: {g.residents.reduce((a, r) => a + r.storyDone.length, 0)} / {STORIES.length}
+          {t('social.quests.chaptersDone', { done: g.residents.reduce((a, r) => a + r.storyDone.length, 0), total: STORIES.length })}
         </div>
       </div>
     </Panel>
@@ -307,38 +303,39 @@ export function QuestsPanel() {
 export function PulsePanel() {
   const g = useGame((s) => s.game!);
   const dispatch = useGame((s) => s.dispatch);
+  const t = useT();
   const pulse = g.pulse;
   return (
-    <Panel title="Neighborhood Pulse" icon="pulse">
+    <Panel title={t('social.pulse.title')} icon="pulse">
       <p className="muted" style={{ marginTop: 0 }}>
-        Three ideas for today — no pressure. They refresh tomorrow, and nothing is lost if you skip a day.
+        {t('social.pulse.intro')}
       </p>
-      {!pulse && <div className="card muted">The Pulse starts once you’ve finished settling in.</div>}
+      {!pulse && <div className="card muted">{t('social.pulse.notYet')}</div>}
       {pulse && (
         <div className="stack">
-          {pulse.tasks.map((t) => {
-            const p = pulseTaskProgress(g, t);
-            const kind = t.kind === 'practical' ? 'Improve' : t.kind === 'resident' ? 'Connect' : 'Create';
+          {pulse.tasks.map((task) => {
+            const p = pulseTaskProgress(g, task);
+            const kind = task.kind === 'practical' ? t('social.pulse.kind.practical') : task.kind === 'resident' ? t('social.pulse.kind.resident') : t('social.pulse.kind.creative');
             return (
-              <div key={t.id} className="card stack" style={{ background: t.claimed ? '#eef9e6' : undefined }}>
+              <div key={task.id} className="card stack" style={{ background: task.claimed ? '#eef9e6' : undefined }}>
                 <div className="row row--between">
                   <span className="chip">{kind}</span>
                   <span className="small" style={{ fontWeight: 800 }}>
-                    {rewardText(t.reward)}
+                    {rewardText(task.reward)}
                   </span>
                 </div>
                 <b style={{ fontFamily: 'var(--font-display)', fontSize: '1.1em' }}>
-                  {t.claimed ? '✓ ' : ''}
-                  {t.label}
+                  {task.claimed ? '✓ ' : ''}
+                  {task.label}
                 </b>
-                <Progress value={Math.max(0, p)} max={t.n} />
+                <Progress value={Math.max(0, p)} max={task.n} />
               </div>
             );
           })}
-          <button className="btn btn--gold btn--block" disabled={!pulse.tasks.every((t) => t.claimed) || pulse.bonusClaimed} onClick={() => dispatch({ type: 'claimPulseBonus' })}>
-            {pulse.bonusClaimed ? 'Bonus claimed — see you tomorrow!' : <>Daily bonus: {rewardText(PULSE_BONUS)}</>}
+          <button className="btn btn--gold btn--block" disabled={!pulse.tasks.every((task) => task.claimed) || pulse.bonusClaimed} onClick={() => dispatch({ type: 'claimPulseBonus' })}>
+            {pulse.bonusClaimed ? t('social.pulse.bonusClaimed') : <>{t('social.pulse.bonus', { reward: rewardText(PULSE_BONUS) })}</>}
           </button>
-          <span className="small muted">Today: {dayKey(clock.now())}</span>
+          <span className="small muted">{t('social.pulse.today', { day: dayKey(clock.now()) })}</span>
         </div>
       )}
     </Panel>

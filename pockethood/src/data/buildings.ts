@@ -46,6 +46,7 @@ export const BUILDINGS: Record<string, BuildingDef> = {
     xp: 0,
     maxCount: 1,
     archetype: 'starter_house',
+    template: 'residential',
     levels: [
       lv({ passive: { coins: 6, seconds: 60, cycles: 10 }, perks: ['Rent: 6 coins / min'] }),
       lv({ upgradeCost: { coins: 260, items: { planks: 3 } }, passive: { coins: 9, seconds: 60, cycles: 12 }, xp: 15, perks: ['Rent: 9 coins / min', 'Front porch with flower boxes'] }),
@@ -63,6 +64,7 @@ export const BUILDINGS: Record<string, BuildingDef> = {
     xp: 12,
     maxCount: 3,
     archetype: 'cottage',
+    template: 'residential',
     resident: 'noah',
     levels: [
       lv({ passive: { coins: 8, seconds: 60, cycles: 10 }, perks: ['Rent: 8 coins / min'] }),
@@ -80,6 +82,7 @@ export const BUILDINGS: Record<string, BuildingDef> = {
     xp: 25,
     maxCount: 2,
     archetype: 'townhouse',
+    template: 'residential',
     resident: 'zara',
     levels: [
       lv({ passive: { coins: 15, seconds: 60, cycles: 12 }, perks: ['Rent: 15 coins / min'] }),
@@ -98,6 +101,7 @@ export const BUILDINGS: Record<string, BuildingDef> = {
     xp: 10,
     maxCount: 1,
     archetype: 'cafe',
+    template: 'cafe',
     resident: 'mia',
     levels: [
       lv({ slots: 2, perks: ['Brew Coffee', '2 production slots'] }),
@@ -116,6 +120,7 @@ export const BUILDINGS: Record<string, BuildingDef> = {
     xp: 15,
     maxCount: 1,
     archetype: 'bakery',
+    template: 'restaurant',
     resident: 'felix',
     levels: [
       lv({ slots: 2, perks: ['Bake Bread', '2 production slots'] }),
@@ -134,6 +139,7 @@ export const BUILDINGS: Record<string, BuildingDef> = {
     xp: 12,
     maxCount: 2,
     archetype: 'garden',
+    template: 'farm',
     resident: 'luna',
     levels: [
       lv({ slots: 2, perks: ['Grow Flowers & Berries', '2 production slots'] }),
@@ -152,6 +158,7 @@ export const BUILDINGS: Record<string, BuildingDef> = {
     xp: 18,
     maxCount: 1,
     archetype: 'flower_shop',
+    template: 'retail',
     levels: [
       lv({ slots: 2, perks: ['Tie Bouquets', '2 production slots'] }),
       lv({ upgradeCost: { coins: 450, items: { planks: 3 } }, slots: 3, xp: 22, perks: ['New recipe: Flower Crown', 'Flower cart out front'] }),
@@ -186,9 +193,45 @@ export const BUILDINGS: Record<string, BuildingDef> = {
     xp: 25,
     maxCount: 1,
     archetype: 'grocery',
+    template: 'retail',
     levels: [
       lv({ slots: 2, passive: { coins: 10, seconds: 60, cycles: 10 }, perks: ['Pack baskets & jam', 'Shop income: 10 coins / min'] }),
       lv({ upgradeCost: { coins: 1800, items: { planks: 6, bricks: 4 } }, slots: 3, passive: { coins: 16, seconds: 60, cycles: 12 }, xp: 30, perks: ['Shop income: 16 coins / min', 'Fruit stands outside'] }),
+    ],
+  },
+  showroom: {
+    id: 'showroom',
+    name: 'Car Showroom',
+    category: 'commercial',
+    description: 'A bright glass showroom. Arrange the cars on display; visitors come to browse.',
+    footprint: [3, 2],
+    unlockLevel: 4,
+    cost: { coins: 900 },
+    xp: 22,
+    maxCount: 1,
+    archetype: 'showroom',
+    template: 'showroom',
+    levels: [
+      lv({ passive: { coins: 9, seconds: 60, cycles: 10 }, perks: ['Arrange 2 display bays', 'Visitors: 9 coins / min'] }),
+      lv({ upgradeCost: { coins: 1300, items: { planks: 4, bricks: 2 } }, passive: { coins: 14, seconds: 60, cycles: 12 }, xp: 30, perks: ['3 display bays', 'Visitors: 14 coins / min', 'Bunting & flag poles'] }),
+    ],
+  },
+  learning_centre: {
+    id: 'learning_centre',
+    name: 'Learning Centre',
+    category: 'community',
+    description: 'A friendly little learning centre with a daily quiz for curious minds.',
+    footprint: [2, 2],
+    unlockLevel: 3,
+    cost: { coins: 520 },
+    xp: 18,
+    maxCount: 1,
+    archetype: 'learning_centre',
+    template: 'learning',
+    charm: 6,
+    levels: [
+      lv({ passive: { coins: 5, seconds: 60, cycles: 10 }, perks: ['Daily quiz: 3 questions', '+6 charm'] }),
+      lv({ upgradeCost: { coins: 700, items: { planks: 3 } }, passive: { coins: 8, seconds: 60, cycles: 12 }, xp: 22, perks: ['Daily quiz: 5 questions', 'Reading corner & bookshelf'] }),
     ],
   },
   // ── Community ──────────────────────────────────────────────────────────
@@ -203,6 +246,7 @@ export const BUILDINGS: Record<string, BuildingDef> = {
     xp: 25,
     maxCount: 1,
     archetype: 'park',
+    template: 'park',
     resident: 'ruby',
     charm: 10,
     levels: [
@@ -221,6 +265,7 @@ export const BUILDINGS: Record<string, BuildingDef> = {
     xp: 60,
     maxCount: 1,
     archetype: 'town_hall',
+    template: 'community',
     charm: 20,
     levels: [
       lv({ passive: { coins: 20, seconds: 60, cycles: 12 }, perks: ['+1 neighborhood order slot', 'Civic income: 20 coins / min'] }),
@@ -309,6 +354,25 @@ BUILDINGS.fountain = {
   levels: [lv({ perks: [] })],
   archetype: 'fountain',
 };
+
+/** Stand-in definition for a building whose content is unavailable (kept, shown closed). */
+const DORMANT: BuildingDef = {
+  id: 'dormant',
+  name: '',
+  category: 'landmark',
+  description: '',
+  footprint: [1, 1],
+  unlockLevel: 99,
+  cost: {},
+  xp: 0,
+  levels: [lv({ perks: [] })],
+  archetype: 'dormant',
+  hidden: true,
+};
+
+/** Building definition, or a closed stand-in if this content isn't installed right now. */
+export const bdef = (type: string): BuildingDef => BUILDINGS[type] ?? { ...DORMANT, id: type };
+export const isDormant = (type: string) => !BUILDINGS[type];
 
 export const isFixed = (type: string) => ['request_board', 'welcome_sign', 'pond', 'fountain', 'starter_house'].includes(type);
 export const isDecoration = (type: string) => {

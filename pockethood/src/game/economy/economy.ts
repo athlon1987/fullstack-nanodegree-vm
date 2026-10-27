@@ -1,8 +1,9 @@
 // Pure economy helpers: wallet checks, rewards, XP/levels, production and passive income.
 import { BUILDINGS } from '../../data/buildings';
-import { RECIPES } from '../../data/items';
+import { ITEMS, RECIPES } from '../../data/items';
+import { t } from '../../platform/i18n';
 import { LEVELS, MAX_LEVEL } from '../../data/progression';
-import { FRIENDSHIP_LEVELS } from '../../data/residents';
+import { FRIENDSHIP_LEVELS, RESIDENTS } from '../../data/residents';
 import type { BuildingInstance, Cost, GameEvent, GameState, ItemBag, Reward } from '../core/types';
 
 export function canAfford(state: GameState, cost: Cost): boolean {
@@ -14,11 +15,11 @@ export function canAfford(state: GameState, cost: Cost): boolean {
 
 export function missingFor(state: GameState, cost: Cost): string[] {
   const out: string[] = [];
-  if ((cost.coins ?? 0) > state.coins) out.push(`${(cost.coins ?? 0) - state.coins} coins`);
-  if ((cost.gems ?? 0) > state.gems) out.push(`${(cost.gems ?? 0) - state.gems} gems`);
+  if ((cost.coins ?? 0) > state.coins) out.push(t('common.coinsN', { n: (cost.coins ?? 0) - state.coins }));
+  if ((cost.gems ?? 0) > state.gems) out.push(t('common.gemsN', { n: (cost.gems ?? 0) - state.gems }));
   for (const [id, n] of Object.entries(cost.items ?? {})) {
     const have = state.inventory[id] ?? 0;
-    if (have < n) out.push(`${n - have} ${id}`);
+    if (have < n) out.push(t('common.itemN', { n: n - have, item: ITEMS[id]?.name ?? id }));
   }
   return out;
 }
@@ -104,17 +105,18 @@ export function addFriendship(state: GameState, resident: string, points: number
 
 // ─── Buildings ───────────────────────────────────────────────────────────────
 
-export const levelDef = (b: Pick<BuildingInstance, 'type' | 'level'>) => BUILDINGS[b.type].levels[b.level - 1];
+/** The building's current level definition (undefined if its content isn't installed). */
+export const levelDef = (b: Pick<BuildingInstance, 'type' | 'level'>) => BUILDINGS[b.type]?.levels[Math.min(b.level, BUILDINGS[b.type].levels.length) - 1];
 export const isOperational = (b: BuildingInstance) => b.busyKind !== 'build';
 
 export function buildSeconds(type: string): number {
   const def = BUILDINGS[type];
-  if (def.category === 'decoration' || def.category === 'path') return 0;
+  if (!def || def.category === 'decoration' || def.category === 'path') return 0;
   return Math.max(5, Math.round((def.cost.coins ?? 0) / 20));
 }
 
 export function upgradeSeconds(type: string, toLevel: number): number {
-  const cost = BUILDINGS[type].levels[toLevel - 1]?.upgradeCost.coins ?? 0;
+  const cost = BUILDINGS[type]?.levels[toLevel - 1]?.upgradeCost.coins ?? 0;
   return Math.max(8, Math.round(cost / 10));
 }
 
@@ -126,7 +128,7 @@ export function recipesFor(b: Pick<BuildingInstance, 'type' | 'level'>) {
 }
 
 export const recipeDurationMs = (recipeId: string, b: Pick<BuildingInstance, 'type' | 'level'>) =>
-  Math.round((RECIPES[recipeId].seconds * 1000) / (levelDef(b)?.speed ?? 1));
+  Math.round(((RECIPES[recipeId]?.seconds ?? 60) * 1000) / (levelDef(b)?.speed ?? 1));
 
 export function finishedJobs(b: BuildingInstance, now: number) {
   return b.queue.filter((j) => j.end <= now);
@@ -148,5 +150,6 @@ export function hasCollectable(b: BuildingInstance, now: number) {
 export function orderSlots(state: GameState) {
   const hall = state.buildings.some((b) => b.type === 'town_hall' && isOperational(b));
   // A tiny town has fewer neighbors asking for things; the board grows with the hood.
-  return Math.min(3, 1 + state.residents.length) + (hall ? 1 : 0);
+  const here = state.residents.filter((r) => RESIDENTS[r.id]).length;
+  return Math.min(3, 1 + here) + (hall ? 1 : 0);
 }

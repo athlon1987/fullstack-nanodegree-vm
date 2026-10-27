@@ -1,19 +1,13 @@
 import { useEffect, useState } from 'react';
+import { useT } from '../platform/i18n';
 
-const TIPS = [
-  'Tap a building with a bubble above it to collect.',
-  'Residents remember what you do together.',
-  'Paths make residents’ walks faster — and look lovely.',
-  'The Neighborhood Pulse suggests three things to do today.',
-  'Nothing is lost while you’re away. Your neighbors wait for you.',
-  'Upgrades change how buildings look, not just what they make.',
-  'Try photo mode at sunset.',
-];
+const TIPS = ['ui.tip.collect', 'ui.tip.remember', 'ui.tip.paths', 'ui.tip.pulse', 'ui.tip.away', 'ui.tip.upgrades', 'ui.tip.photo'];
 
 export function LoadingScreen({ progress, done, error }: { progress: number; done: boolean; error?: string }) {
+  const t = useT();
   const [tip, setTip] = useState(0);
   useEffect(() => {
-    const id = window.setInterval(() => setTip((t) => (t + 1) % TIPS.length), 2600);
+    const id = window.setInterval(() => setTip((i) => (i + 1) % TIPS.length), 2600);
     return () => window.clearInterval(id);
   }, []);
   return (
@@ -23,11 +17,11 @@ export function LoadingScreen({ progress, done, error }: { progress: number; don
         <div className="logo">
           POCKET<span>HOOD</span>
         </div>
-        <div className="tagline">Build your little world. Watch it come alive.</div>
+        <div className="tagline">{t('ui.loading.tagline')}</div>
         <div className="loadbar" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progress * 100)}>
           <i style={{ width: `${Math.round(progress * 100)}%` }} />
         </div>
-        <div className="tip">{error ?? TIPS[tip]}</div>
+        <div className="tip">{error ?? t(TIPS[tip])}</div>
       </div>
     </div>
   );

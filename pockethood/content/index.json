@@ -1,0 +1,92 @@
+{
+ "schemaVersion": 1,
+ "contentVersion": "1.0.0",
+ "generatedAt": "2026-10-27",
+ "minGameVersion": "0.3.0",
+ "defaultCountry": "MY",
+ "countries": [
+  {
+   "code": "ID",
+   "path": "countries/id.json",
+   "sha256": "dc6c05ca4cd08dd14d1e778b9eb7a4ef98b53aba961776d52beed78866eb769c",
+   "bytes": 431
+  },
+  {
+   "code": "JP",
+   "path": "countries/jp.json",
+   "sha256": "d7165b2af06d117c7c9a845a5e988d27cd3e35e3a1eeec8c3349930a258b6d29",
+   "bytes": 421
+  },
+  {
+   "code": "KR",
+   "path": "countries/kr.json",
+   "sha256": "0244afed63daa76b23bfdab9f622b3b6ca07803ed5d4aad5f6c91c9dfc186e4d",
+   "bytes": 436
+  },
+  {
+   "code": "MY",
+   "path": "countries/my.json",
+   "sha256": "525b2aea534d9848cf310cf1bcbbfaf11b13ebeb14f49a49ae753ab0c4efbe13",
+   "bytes": 842
+  },
+  {
+   "code": "SG",
+   "path": "countries/sg.json",
+   "sha256": "2a99fc26e5f773214501ec5efa02313dd7b166971e18a0c9ef51c2467a85320c",
+   "bytes": 436
+  },
+  {
+   "code": "TH",
+   "path": "countries/th.json",
+   "sha256": "5e429fabc84ec6502aa1046cb7ab4379cfd8768c94890182e1c01c6de7566feb",
+   "bytes": 430
+  }
+ ],
+ "worlds": [
+  {
+   "id": "my.kampung_seri",
+   "country": "MY",
+   "path": "worlds/my.kampung_seri.json",
+   "sha256": "77539a534ae8211a0d1b3139afa4efa2926bc8c7cabe546cd89f5253b0053df6",
+   "bytes": 80868
+  }
+ ],
+ "modules": [
+  {
+   "id": "my.auto.galeri_seri",
+   "version": "1.0.0",
+   "enabled": true,
+   "path": "modules/my.auto.galeri_seri.json",
+   "sha256": "41a44b08f60329cd10e0040874a841cff7b9970f93399ffa9409e4b936533e0f",
+   "bytes": 4078
+  },
+  {
+   "id": "my.community.kebun_seri",
+   "version": "1.0.0",
+   "enabled": true,
+   "path": "modules/my.community.kebun_seri.json",
+   "sha256": "60fefa1aa7cd79ff4fdbcc70746a1a1c5ddec01bdf970ed19dc1c4f186dd302e",
+   "bytes": 5134
+  },
+  {
+   "id": "my.edu.pusat_cahaya",
+   "version": "1.0.0",
+   "enabled": true,
+   "path": "modules/my.edu.pusat_cahaya.json",
+   "sha256": "08948cdcba9ae1fc06d359049b583876f0a418f4b8d89dd8dac84ff0c7b89dae",
+   "bytes": 12941
+  },
+  {
+   "id": "my.food.kopitiam_lim",
+   "version": "1.0.0",
+   "enabled": true,
+   "path": "modules/my.food.kopitiam_lim.json",
+   "sha256": "1f400f48221d6486e4b918ce9e092be4e4e99ce13fa7dff6bfbb6f6c0d08daae",
+   "bytes": 6005
+  }
+ ],
+ "killSwitch": {
+  "modules": []
+ },
+ "flags": {}
+}

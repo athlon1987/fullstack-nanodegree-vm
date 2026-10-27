@@ -12,6 +12,7 @@ import { ITEMS, RECIPES } from '../../data/items';
 import { BUILDINGS } from '../../data/buildings';
 import { dayKey } from './rng';
 import { LocalSocialService } from '../social/SocialService';
+import { tc } from '../../platform/i18n/content';
 
 const T0 = new Date('2026-10-26T09:00:00').getTime();
 
@@ -32,14 +33,15 @@ function game(seed = 42) {
     },
     act(a: Action) {
       const r = dispatch(state, a, now);
-      if (r.error) throw new Error(`${a.type}: ${r.error}`);
+      if (r.error) throw new Error(`${a.type}: ${tc(r.error, r.errorParams)}`);
       state = r.state;
       return r;
     },
     try(a: Action) {
       const r = dispatch(state, a, now);
       if (!r.error) state = r.state;
-      return r;
+      // Errors are i18n keys; tests read them in English.
+      return { ...r, error: r.error ? tc(r.error, r.errorParams) : undefined };
     },
     wait(ms: number) {
       now += ms;
@@ -239,7 +241,7 @@ describe('the first engagement flywheel (end to end)', () => {
     expect(g.s.quests.active.map((q) => q.id)).toContain('meet_luna');
     expect(g.s.coins).toBeGreaterThanOrEqual(BUILDINGS.garden.cost.coins!);
     // 6. the improvement triggers a resident interaction: Mia remembers & has a new story
-    expect(g.s.residents.find((r) => r.id === 'mia')!.memories.cafe_terrace).toBeTruthy();
+    expect(g.s.residents.find((r) => r.id === 'mia')!.memories.upgraded_cafe_2).toBeTruthy();
     const talk = g.act({ type: 'talk', resident: 'mia', phase: 'day' });
     expect(talk.events.some((e) => e.type === 'RESIDENT_INTERACTED')).toBe(true);
     g.act({ type: 'startStory', resident: 'mia' });
@@ -256,7 +258,7 @@ describe('the first engagement flywheel (end to end)', () => {
     await saves.save(g.s);
     const loaded = await saves.load(g.now + 3 * 3_600_000);
     expect(loaded.fresh).toBe(false);
-    expect(loaded.state.residents.find((r) => r.id === 'mia')!.memories.cafe_terrace).toBeTruthy();
+    expect(loaded.state.residents.find((r) => r.id === 'mia')!.memories.upgraded_cafe_2).toBeTruthy();
     expect(loaded.state.quests.done).toEqual(g.s.quests.done);
     // 10. returning later presents a useful next objective without penalties
     const later = g.now + 3 * 3_600_000;
@@ -316,7 +318,7 @@ describe('residents & stories', () => {
     expect(g.s.residents.some((r) => r.id === 'felix')).toBe(false);
     g.finish('bakery');
     expect(g.s.residents.some((r) => r.id === 'felix')).toBe(true);
-    expect(g.s.history.some((h) => h.text.includes('Felix'))).toBe(true);
+    expect(g.s.history.some((h) => h.key === 'history.arrived' && h.params?.resident === 'felix')).toBe(true);
   });
 });
 
@@ -377,7 +379,7 @@ describe('community project', () => {
       g.act({ type: 'contribute', resource: res, qty: q, opId: `op-${res}` });
     expect(g.s.community.completedAt).toBeTruthy();
     expect(g.s.flags.fountain_complete).toBe(true);
-    expect(g.s.residents[0].memories.fountain_built).toBeTruthy();
+    expect(g.s.residents[0].memories.landmark_built).toBeTruthy();
     g.act({ type: 'claimCommunityReward' });
     expect(g.s.unlocked).toContain('statue');
     expect(g.try({ type: 'claimCommunityReward' }).error).toBeTruthy();
@@ -403,7 +405,8 @@ describe('persistence & recovery', () => {
     delete old.flags;
     delete old.community;
     const migrated = migrate(old);
-    expect(migrated.version).toBe(3);
+    expect(migrated.version).toBe(4);
+    expect(migrated.world.id).toBe('core.maple_hollow');
     expect(migrated.community.projectId).toBe('fountain');
     const broken = sanitize({ ...migrated, coins: NaN, inventory: { coffee: -3 }, buildings: [...migrated.buildings, { type: 'nope' } as never] }, T0);
     expect(broken.coins).toBe(150);

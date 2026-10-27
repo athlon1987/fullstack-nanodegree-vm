@@ -5,6 +5,7 @@ import { useGame } from '../state/store';
 import { BottomBar, FlyLayer, SideRail, Toasts, TopBar, Tracker } from '../ui/hud/Hud';
 import { LoadingScreen } from './LoadingScreen';
 import { Overlays } from '../ui/Overlays';
+import { t } from '../platform/i18n';
 
 const GameCanvas = lazy(() => import('../rendering/scene/GameCanvas').then((m) => ({ default: m.GameCanvas })));
 
@@ -27,13 +28,13 @@ export function App() {
         const base = import.meta.env.BASE_URL;
         audio.setBase(base);
         await Promise.race([document.fonts.load('600 32px "Fredoka Variable"'), new Promise((r) => setTimeout(r, 1500))]);
-        await preloadModels(ALL_MODELS, base, (d, t) => setProgress((d / t) * 0.9));
+        await preloadModels(ALL_MODELS, base, (d, total) => setProgress((d / total) * 0.9));
         await useGame.getState().init();
         setProgress(1);
         window.setTimeout(() => setReady(true), 350);
       } catch (e) {
         console.error(e);
-        setError('Something went wrong while loading. Please refresh.');
+        setError(t('ui.loadError'));
       }
     })();
     const unlock = () => void audio.unlock();

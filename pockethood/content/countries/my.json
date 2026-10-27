@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "code": "MY",
+  "name": {
+    "en-MY": "Malaysia",
+    "ms-MY": "Malaysia"
+  },
+  "status": "active",
+  "locales": [
+    "en-MY",
+    "ms-MY"
+  ],
+  "defaultLocale": "en-MY",
+  "currency": {
+    "code": "MYR",
+    "symbol": "RM",
+    "minorUnits": 2
+  },
+  "timezone": "Asia/Kuala_Lumpur",
+  "worlds": [
+    "my.kampung_seri"
+  ],
+  "compliance": {
+    "certifiedClaimsRequireVerification": true,
+    "pricesRequireVerification": true,
+    "notes": {
+      "en-MY": "Halal claims only with a verified certificate record (issuing body, reference, expiry). Real-world prices only when supplied and verified by the partner.",
+      "ms-MY": "Tuntutan halal hanya dengan rekod sijil yang disahkan (badan pengeluar, rujukan, tarikh luput). Harga sebenar hanya jika dibekalkan dan disahkan oleh rakan kongsi."
+    }
+  }
+}

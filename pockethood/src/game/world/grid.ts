@@ -11,13 +11,13 @@ export const plotOf = (x: number, z: number) => `p${Math.floor(x / PLOT_SIZE)}${
 export const key = (x: number, z: number) => `${x},${z}`;
 
 /** Footprint dimensions after rotation (odd quarter turns swap width/depth). */
-export function footprint(type: string, rot: Rotation): [number, number] {
-  const [w, d] = BUILDINGS[type].footprint;
+export function footprint(type: string, rot: Rotation, fp?: [number, number]): [number, number] {
+  const [w, d] = BUILDINGS[type]?.footprint ?? fp ?? [1, 1];
   return rot % 2 === 1 ? [d, w] : [w, d];
 }
 
-export function cellsOf(type: string, x: number, z: number, rot: Rotation): [number, number][] {
-  const [w, d] = footprint(type, rot);
+export function cellsOf(type: string, x: number, z: number, rot: Rotation, fp?: [number, number]): [number, number][] {
+  const [w, d] = footprint(type, rot, fp);
   const out: [number, number][] = [];
   for (let i = 0; i < w; i++) for (let j = 0; j < d; j++) out.push([x + i, z + j]);
   return out;
@@ -27,7 +27,7 @@ export function occupancy(buildings: BuildingInstance[], ignoreUid?: string): Ma
   const occ = new Map<string, string>();
   for (const b of buildings) {
     if (b.uid === ignoreUid) continue;
-    for (const [cx, cz] of cellsOf(b.type, b.x, b.z, b.rot)) occ.set(key(cx, cz), b.uid);
+    for (const [cx, cz] of cellsOf(b.type, b.x, b.z, b.rot, b.fp)) occ.set(key(cx, cz), b.uid);
   }
   return occ;
 }
@@ -43,7 +43,8 @@ export function placementProblem(
   ignoreUid?: string,
   occ: Map<string, string> = occupancy(state.buildings, ignoreUid),
 ): PlacementProblem {
-  for (const [cx, cz] of cellsOf(type, x, z, rot)) {
+  const fp = ignoreUid ? state.buildings.find((b) => b.uid === ignoreUid)?.fp : undefined;
+  for (const [cx, cz] of cellsOf(type, x, z, rot, fp)) {
     if (!inBounds(cx, cz)) return 'out_of_bounds';
     if (isRoad(cx, cz)) return 'road';
     if (!state.plots.includes(plotOf(cx, cz))) return 'locked_land';
@@ -55,8 +56,8 @@ export function placementProblem(
 export const canPlace = (...args: Parameters<typeof placementProblem>) => placementProblem(...args) === null;
 
 /** The cell directly in front of a building's door (where residents stand). */
-export function doorCell(b: Pick<BuildingInstance, 'type' | 'x' | 'z' | 'rot'>): [number, number] {
-  const [w, d] = footprint(b.type, b.rot);
+export function doorCell(b: Pick<BuildingInstance, 'type' | 'x' | 'z' | 'rot'> & { fp?: [number, number] }): [number, number] {
+  const [w, d] = footprint(b.type, b.rot, b.fp);
   switch (b.rot) {
     case 0:
       return [b.x + Math.floor(w / 2), b.z + d];

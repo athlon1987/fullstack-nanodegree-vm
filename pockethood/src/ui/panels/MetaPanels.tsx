@@ -9,6 +9,7 @@ import { canAfford, levelForXp } from '../../game/economy/economy';
 import { objectiveProgress } from '../../game/engagement/objectives';
 import { analytics } from '../../services/analytics';
 import { clock } from '../../services/clock';
+import { bcp47, useT } from '../../platform/i18n';
 import { rewardText, useGame } from '../../state/store';
 import { Icon } from '../components/Icon';
 import { CostChips, Panel, Portrait, Progress, Tabs } from '../components/Panel';
@@ -18,21 +19,22 @@ import { safeRemove } from '../../utils/safeStorage';
 export function ProfilePanel() {
   const g = useGame((s) => s.game!);
   const dispatch = useGame((s) => s.dispatch);
+  const t = useT();
   const [tab, setTab] = useState<'me' | 'history' | 'achievements'>('me');
   const charm = g.buildings.reduce((a, b) => a + (BUILDINGS[b.type].charm ?? 0), 0);
   const buildings = g.buildings.filter((b) => !['decoration', 'path', 'landmark'].includes(BUILDINGS[b.type].category)).length;
   return (
     <Panel
-      title="My Neighborhood"
+      title={t('meta.profile.title')}
       icon="home"
       tabs={
         <Tabs
           value={tab}
           onChange={setTab}
           options={[
-            { id: 'me', label: 'Profile' },
-            { id: 'history', label: 'History' },
-            { id: 'achievements', label: 'Achievements' },
+            { id: 'me', label: t('meta.profile.tab.me') },
+            { id: 'history', label: t('meta.profile.tab.history') },
+            { id: 'achievements', label: t('meta.profile.tab.achievements') },
           ]}
         />
       }
@@ -43,19 +45,19 @@ export function ProfilePanel() {
             <Portrait model={g.profile.avatar} size="lg" />
             <div className="stack" style={{ flex: 1, gap: 6 }}>
               <label className="small muted" htmlFor="pname">
-                Your name
+                {t('meta.profile.yourName')}
               </label>
               <input id="pname" className="card" style={{ padding: 8, font: 'inherit', fontWeight: 800 }} maxLength={18} value={g.profile.name} onChange={(e) => dispatch({ type: 'profile', patch: { name: e.target.value } })} />
               <label className="small muted" htmlFor="hname">
-                Neighborhood name
+                {t('meta.profile.hoodName')}
               </label>
               <input id="hname" className="card" style={{ padding: 8, font: 'inherit', fontWeight: 800 }} maxLength={22} value={g.profile.hoodName} onChange={(e) => dispatch({ type: 'profile', patch: { hoodName: e.target.value || 'Maple Hollow' } })} />
             </div>
           </div>
-          <div className="section-title">Avatar</div>
+          <div className="section-title">{t('meta.profile.avatar')}</div>
           <div className="row" style={{ gap: 10, flexWrap: 'wrap' }}>
             {AVATARS.map((a) => (
-              <button key={a.id} className="card" style={{ cursor: 'pointer', borderColor: g.profile.avatar === a.id ? 'var(--teal)' : '#fff', padding: 6 }} onClick={() => dispatch({ type: 'profile', patch: { avatar: a.id } })} aria-pressed={g.profile.avatar === a.id} aria-label={`Avatar ${a.label}`}>
+              <button key={a.id} className="card" style={{ cursor: 'pointer', borderColor: g.profile.avatar === a.id ? 'var(--teal)' : '#fff', padding: 6 }} onClick={() => dispatch({ type: 'profile', patch: { avatar: a.id } })} aria-pressed={g.profile.avatar === a.id} aria-label={t('meta.profile.avatarAria', { label: a.label })}>
                 <Portrait model={a.id} />
                 <div className="small" style={{ fontWeight: 800 }}>
                   {a.label}
@@ -63,16 +65,16 @@ export function ProfilePanel() {
               </button>
             ))}
           </div>
-          <p className="small muted">More outfits and hairstyles will come with future character packs; only variants backed by real models are offered.</p>
-          <div className="section-title">Neighborhood stats</div>
+          <p className="small muted">{t('meta.profile.moreOutfits')}</p>
+          <div className="section-title">{t('meta.profile.stats')}</div>
           <div className="grid-cards">
             {[
-              ['star', 'Level', g.level],
-              ['build', 'Buildings', buildings],
-              ['residents', 'Neighbors', g.residents.length],
-              ['orders', 'Orders done', g.stats.orders ?? 0],
-              ['flower', 'Charm', charm],
-              ['map', 'Land plots', g.plots.length],
+              ['star', t('meta.stat.level'), g.level],
+              ['build', t('meta.stat.buildings'), buildings],
+              ['residents', t('meta.stat.neighbors'), g.residents.length],
+              ['orders', t('meta.stat.orders'), g.stats.orders ?? 0],
+              ['flower', t('meta.stat.charm'), charm],
+              ['map', t('meta.stat.plots'), g.plots.length],
             ].map(([icon, label, v]) => (
               <div key={label as string} className="card" style={{ textAlign: 'center' }}>
                 <Icon name={icon as string} size={30} style={{ margin: '0 auto' }} />
@@ -86,14 +88,14 @@ export function ProfilePanel() {
       {tab === 'history' && (
         <div>
           <p className="muted small" style={{ marginTop: 0 }}>
-            Your neighborhood’s story, written by everything you’ve done.
+            {t('meta.history.intro')}
           </p>
           {g.history.map((h, i) => (
             <div key={i} className="history-item">
               <Icon name={h.icon === 'order' ? 'orders' : h.icon} size={26} />
               <div>
                 <div style={{ fontWeight: 700 }}>{h.text}</div>
-                <div className="small muted">{new Date(h.t).toLocaleString()}</div>
+                <div className="small muted">{new Date(h.t).toLocaleString(bcp47())}</div>
               </div>
             </div>
           ))}
@@ -132,43 +134,44 @@ export function SettingsPanel() {
   const [confirmReset, setConfirmReset] = useState(false);
   const set = (patch: Partial<Settings>) => dispatch({ type: 'settings', patch });
   const st = g.settings;
+  const t = useT();
   return (
-    <Panel title="Settings" icon="settings">
+    <Panel title={t('meta.settings.title')} icon="settings">
       <div className="setting-row">
         <span className="row">
-          <Icon name="sound" size={24} /> Music & ambience
+          <Icon name="sound" size={24} /> {t('meta.settings.music')}
         </span>
-        <input className="slider" style={{ maxWidth: 160 }} type="range" min={0} max={1} step={0.05} value={st.musicVolume} onChange={(e) => set({ musicVolume: +e.target.value })} aria-label="Music volume" />
+        <input className="slider" style={{ maxWidth: 160 }} type="range" min={0} max={1} step={0.05} value={st.musicVolume} onChange={(e) => set({ musicVolume: +e.target.value })} aria-label={t('meta.settings.musicAria')} />
       </div>
       <div className="setting-row">
         <span className="row">
-          <Icon name="sound" size={24} /> Sound effects
+          <Icon name="sound" size={24} /> {t('meta.settings.sfx')}
         </span>
-        <input className="slider" style={{ maxWidth: 160 }} type="range" min={0} max={1} step={0.05} value={st.sfxVolume} onChange={(e) => set({ sfxVolume: +e.target.value })} aria-label="Sound effects volume" />
+        <input className="slider" style={{ maxWidth: 160 }} type="range" min={0} max={1} step={0.05} value={st.sfxVolume} onChange={(e) => set({ sfxVolume: +e.target.value })} aria-label={t('meta.settings.sfxAria')} />
       </div>
       <div className="setting-row">
         <span className="row">
-          <Icon name="mute" size={24} /> Mute all
+          <Icon name="mute" size={24} /> {t('meta.settings.mute')}
         </span>
-        <Toggle on={st.muted} onChange={(v) => set({ muted: v })} label="Mute all audio" />
+        <Toggle on={st.muted} onChange={(v) => set({ muted: v })} label={t('meta.settings.muteAria')} />
       </div>
       <div className="setting-row">
-        <span>Graphics</span>
-        <span className="seg" role="group" aria-label="Graphics quality">
+        <span>{t('meta.settings.graphics')}</span>
+        <span className="seg" role="group" aria-label={t('meta.settings.graphicsAria')}>
           {(['low', 'medium', 'high'] as const).map((q) => (
             <button key={q} aria-pressed={st.graphics === q} onClick={() => set({ graphics: q })}>
-              {q[0].toUpperCase() + q.slice(1)}
+              {t(`meta.settings.graphics.${q}`)}
             </button>
           ))}
         </span>
       </div>
       <div className="setting-row">
-        <span>Day & night</span>
-        <span className="seg" role="group" aria-label="Day and night cycle">
+        <span>{t('meta.settings.dayNight')}</span>
+        <span className="seg" role="group" aria-label={t('meta.settings.dayNightAria')}>
           {([
-            ['cycle', 'Cycle'],
-            ['local', 'My clock'],
-            ['day', 'Always day'],
+            ['cycle', t('meta.settings.dayNight.cycle')],
+            ['local', t('meta.settings.dayNight.local')],
+            ['day', t('meta.settings.dayNight.day')],
           ] as const).map(([v, l]) => (
             <button key={v} aria-pressed={st.dayNight === v} onClick={() => set({ dayNight: v })}>
               {l}
@@ -177,12 +180,12 @@ export function SettingsPanel() {
         </span>
       </div>
       <div className="setting-row">
-        <span>Reduced motion</span>
-        <Toggle on={st.reducedMotion} onChange={(v) => set({ reducedMotion: v })} label="Reduced motion" />
+        <span>{t('meta.settings.reducedMotion')}</span>
+        <Toggle on={st.reducedMotion} onChange={(v) => set({ reducedMotion: v })} label={t('meta.settings.reducedMotion')} />
       </div>
       <div className="setting-row">
-        <span>Text size</span>
-        <span className="seg" role="group" aria-label="Text size">
+        <span>{t('meta.settings.textSize')}</span>
+        <span className="seg" role="group" aria-label={t('meta.settings.textSize')}>
           {[1, 1.15, 1.3].map((v) => (
             <button key={v} aria-pressed={st.textScale === v} onClick={() => set({ textScale: v })}>
               {v === 1 ? 'A' : v === 1.15 ? 'A+' : 'A++'}
@@ -191,13 +194,13 @@ export function SettingsPanel() {
         </span>
       </div>
       <div className="setting-row">
-        <span>Always show grid</span>
-        <Toggle on={st.showGrid} onChange={(v) => set({ showGrid: v })} label="Always show grid" />
+        <span>{t('meta.settings.grid')}</span>
+        <Toggle on={st.showGrid} onChange={(v) => set({ showGrid: v })} label={t('meta.settings.grid')} />
       </div>
       <div className="setting-row">
         <span>
-          Local analytics
-          <div className="small muted">Kept on this device only, used to improve the game. Nothing is sent anywhere.</div>
+          {t('meta.settings.analytics')}
+          <div className="small muted">{t('meta.settings.analyticsNote')}</div>
         </span>
         <Toggle
           on={st.analyticsConsent}
@@ -205,7 +208,7 @@ export function SettingsPanel() {
             set({ analyticsConsent: v });
             if (analytics) analytics.enabled = v;
           }}
-          label="Local analytics"
+          label={t('meta.settings.analytics')}
         />
       </div>
       <div className="stack" style={{ marginTop: 16 }}>
@@ -214,34 +217,34 @@ export function SettingsPanel() {
           onClick={() => {
             dispatch({ type: 'tutorial', step: 0 });
             useGame.getState().setUI({ panel: null });
-            useGame.getState().toast({ icon: 'help', title: 'Tutorial hints are back on', tone: 'info' });
+            useGame.getState().toast({ icon: 'help', title: t('meta.settings.hintsToast'), tone: 'info' });
             safeRemove('pockethood.hideHints');
           }}
         >
-          Show tutorial hints again
+          {t('meta.settings.hintsAgain')}
         </button>
         <button className="btn btn--plain" onClick={() => openPanel('devtools')}>
-          <Icon name="dev" size={20} /> Developer tools
+          <Icon name="dev" size={20} /> {t('meta.settings.devtools')}
         </button>
         {!confirmReset ? (
           <button className="btn btn--coral" onClick={() => setConfirmReset(true)}>
-            Start a new neighborhood…
+            {t('meta.settings.newHood')}
           </button>
         ) : (
           <div className="card stack">
-            <b>This erases your neighborhood on this device. Are you sure?</b>
+            <b>{t('meta.settings.resetConfirm')}</b>
             <div className="row">
               <button className="btn btn--plain" onClick={() => setConfirmReset(false)}>
-                Keep playing
+                {t('meta.settings.keepPlaying')}
               </button>
               <button className="btn btn--coral" onClick={() => void resetGame()}>
-                Erase & restart
+                {t('meta.settings.eraseRestart')}
               </button>
             </div>
           </div>
         )}
         <p className="small muted">
-          POCKETHOOD v0.1 · Art: original POCKETHOOD architecture kit + CC0 models by Kenney & Quaternius. See docs/ASSET_LICENSES.md.
+          {t('meta.settings.credits')}
         </p>
       </div>
     </Panel>
@@ -249,32 +252,33 @@ export function SettingsPanel() {
 }
 
 export function HelpPanel() {
+  const t = useT();
   return (
-    <Panel title="How to play" icon="help">
+    <Panel title={t('meta.help.title')} icon="help">
       <div className="stack">
         {[
-          ['coin', 'Collect', 'Tap a building when a bubble floats above it. Houses pay rent; shops and gardens make goods.'],
-          ['build', 'Build', 'Open Build, pick something, drag it into place and tap ✓. Rotate with the arrow (or R).'],
-          ['timer', 'Produce', 'Tap a shop to start production. Goods wait for you — even when you’re away.'],
-          ['orders', 'Deliver', 'Neighbors pin requests on the Request Board. Deliver goods for coins, XP and friendship.'],
-          ['upgrade', 'Upgrade', 'Upgrades add recipes, slots and visible changes. Planks and bricks come from the Workshop.'],
-          ['residents', 'Befriend', 'Tap residents to chat. Gifts they love and helping with their stories deepen friendships — and they remember.'],
-          ['pulse', 'Neighborhood Pulse', 'Three optional ideas each day. Skipping a day never costs you anything.'],
-          ['camera', 'Photo mode', 'Hide the interface and capture your neighborhood.'],
-        ].map(([icon, title, body]) => (
-          <div key={title} className="list-item" style={{ alignItems: 'flex-start' }}>
+          ['coin', 'collect'],
+          ['build', 'build'],
+          ['timer', 'produce'],
+          ['orders', 'deliver'],
+          ['upgrade', 'upgrade'],
+          ['residents', 'befriend'],
+          ['pulse', 'pulse'],
+          ['camera', 'photo'],
+        ].map(([icon, id]) => (
+          <div key={id} className="list-item" style={{ alignItems: 'flex-start' }}>
             <Icon name={icon} size={34} />
             <div>
-              <b style={{ fontFamily: 'var(--font-display)' }}>{title}</b>
-              <div className="small">{body}</div>
+              <b style={{ fontFamily: 'var(--font-display)' }}>{t(`meta.help.${id}.title`)}</b>
+              <div className="small">{t(`meta.help.${id}.body`)}</div>
             </div>
           </div>
         ))}
         <div className="card small">
-          <b>Controls</b>
-          <div>Drag to pan · Scroll or pinch to zoom · Tap to select</div>
+          <b>{t('meta.help.controls')}</b>
+          <div>{t('meta.help.controlsLine')}</div>
           <div>
-            While placing: <span className="kbd">R</span> rotate · <span className="kbd">Enter</span> confirm · <span className="kbd">Esc</span> cancel
+            {t('meta.help.whilePlacing')} <span className="kbd">R</span> {t('meta.help.rotate')} · <span className="kbd">Enter</span> {t('meta.help.confirm')} · <span className="kbd">Esc</span> {t('meta.help.cancel')}
           </div>
         </div>
       </div>
@@ -284,32 +288,33 @@ export function HelpPanel() {
 
 export function FriendsPanel() {
   const g = useGame((s) => s.game!);
+  const t = useT();
   return (
-    <Panel title="Friends & Hoods" icon="friends">
+    <Panel title={t('meta.friends.title')} icon="friends">
       <div className="stack">
         <div className="coming-soon stack">
-          <b style={{ fontFamily: 'var(--font-display)', fontSize: '1.2em' }}>Online play is coming in a later update</b>
+          <b style={{ fontFamily: 'var(--font-display)', fontSize: '1.2em' }}>{t('meta.friends.comingSoon')}</b>
           <span>
-            This version is single-player and stores everything on this device. There are no other players here yet — and we won’t pretend otherwise.
+            {t('meta.friends.singlePlayer')}
           </span>
         </div>
         <div className="card stack">
-          <b>What’s planned</b>
+          <b>{t('meta.friends.planned')}</b>
           <ul style={{ margin: 0, paddingLeft: 18 }}>
-            <li>Visit friends’ neighborhoods and leave a kind note</li>
-            <li>Join a Hood of 5–20 players and build shared landmarks together</li>
-            <li>Send optional gifts (no obligation to reciprocate)</li>
-            <li>Share layouts as blueprints, with credit to the creator</li>
+            <li>{t('meta.friends.plan.visit')}</li>
+            <li>{t('meta.friends.plan.hood')}</li>
+            <li>{t('meta.friends.plan.gifts')}</li>
+            <li>{t('meta.friends.plan.blueprints')}</li>
           </ul>
         </div>
         <div className="card row">
           <Portrait model={g.profile.avatar} />
           <div>
             <b>{g.profile.name}</b>
-            <div className="small muted">Local profile · {g.profile.hoodName}</div>
+            <div className="small muted">{t('meta.friends.localProfile', { hood: g.profile.hoodName })}</div>
           </div>
         </div>
-        <p className="small muted">Meanwhile, your residents are building the fountain with you — see the Community Project at the plaza.</p>
+        <p className="small muted">{t('meta.friends.meanwhile')}</p>
       </div>
     </Panel>
   );
@@ -317,6 +322,7 @@ export function FriendsPanel() {
 
 export function EventsPanel() {
   const g = useGame((s) => s.game!);
+  const t = useT();
   const def = EVENTS[0];
   const ev = g.event;
   const end = ev ? ev.startedAt + def.durationDays * 86_400_000 : 0;
@@ -326,12 +332,12 @@ export function EventsPanel() {
       <p className="muted" style={{ marginTop: 0 }}>
         {def.description}
       </p>
-      {!ev && <div className="card muted">Unlocks at level {def.minLevel}.</div>}
-      {ev && !live && <div className="card muted">The festival has wrapped up. It will return soon — rewards you earned are yours to keep.</div>}
+      {!ev && <div className="card muted">{t('meta.events.unlocksAt', { level: def.minLevel })}</div>}
+      {ev && !live && <div className="card muted">{t('meta.events.wrapped')}</div>}
       {ev && live && (
         <div className="stack">
           <div className="chip" style={{ alignSelf: 'flex-start' }}>
-            <Icon name="timer" size={18} /> {Math.ceil((end - clock.now()) / 86_400_000)} days left · optional
+            <Icon name="timer" size={18} /> {t('meta.events.daysLeft', { n: Math.ceil((end - clock.now()) / 86_400_000) })}
           </div>
           {def.objectives.map((o, i) => {
             const p = objectiveProgress(g, o, ev.baseline);
@@ -350,14 +356,14 @@ export function EventsPanel() {
               </div>
             );
           })}
-          <div className="section-title">Rewards</div>
-          {def.tiers.map((t, i) => (
+          <div className="section-title">{t('meta.events.rewards')}</div>
+          {def.tiers.map((tier, i) => (
             <div key={i} className="list-item" style={{ opacity: ev.claimedTiers.includes(i) ? 0.7 : 1 }}>
               <Icon name={ev.claimedTiers.includes(i) ? 'check' : 'gift'} size={30} />
               <div style={{ flex: 1 }}>
-                <b>{t.label}</b>
+                <b>{tier.label}</b>
                 <div className="small muted">
-                  Complete {t.at} goal{t.at > 1 ? 's' : ''} · {rewardText(t.reward)}
+                  {t('meta.events.tierGoal', { n: tier.at, reward: rewardText(tier.reward) })}
                 </div>
               </div>
             </div>
@@ -371,6 +377,7 @@ export function EventsPanel() {
 export function CommunityPanel() {
   const g = useGame((s) => s.game!);
   const dispatch = useGame((s) => s.dispatch);
+  const t = useT();
   const p = COMMUNITY_PROJECTS[0];
   const ratio = communityRatio(g);
   const stage = communityStage(g);
@@ -380,10 +387,10 @@ export function CommunityPanel() {
       <p className="muted" style={{ marginTop: 0 }}>
         {p.description}
       </p>
-      {locked && <div className="card">The project starts at level {p.minLevel}. The surveyors’ stakes are already in the plaza!</div>}
+      {locked && <div className="card">{t('meta.community.startsAt', { level: p.minLevel })}</div>}
       <div className="card stack">
         <div className="row row--between">
-          <b>{stage > 0 ? p.stages[stage - 1].label : 'Not started'}</b>
+          <b>{stage > 0 ? p.stages[stage - 1].label : t('meta.community.notStarted')}</b>
           <span style={{ fontWeight: 800 }}>{Math.round(ratio * 100)}%</span>
         </div>
         <Progress value={ratio * 100} max={100} />
@@ -406,17 +413,17 @@ export function CommunityPanel() {
               <Icon name={res === 'coins' ? 'coin' : res} size={34} />
               <div style={{ flex: 1 }}>
                 <b>
-                  {res === 'coins' ? 'Coins' : ITEMS[res].name} {given}/{need}
+                  {res === 'coins' ? t('common.coins') : ITEMS[res].name} {given}/{need}
                 </b>
                 <Progress value={given} max={need} />
-                <div className="small muted">You have {have}</div>
+                <div className="small muted">{t('meta.community.youHave', { n: have })}</div>
               </div>
               <button
                 className="btn btn--teal btn--sm"
                 disabled={locked || complete || have <= 0 || !!g.community.completedAt}
                 onClick={() => dispatch({ type: 'contribute', resource: res, qty: Math.min(step * (res === 'coins' ? 1 : 3), need - given), opId: `${res}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}` })}
               >
-                {complete ? 'Done' : `Give ${res === 'coins' ? 50 : 'up to 3'}`}
+                {complete ? t('common.done') : res === 'coins' ? t('meta.community.give', { n: 50 }) : t('meta.community.giveUpTo', { n: 3 })}
               </button>
             </div>
           );
@@ -424,17 +431,17 @@ export function CommunityPanel() {
       </div>
       {g.community.completedAt && !g.community.rewardClaimed && (
         <button className="btn btn--gold btn--block" style={{ marginTop: 12 }} onClick={() => dispatch({ type: 'claimCommunityReward' })}>
-          Celebrate! {rewardText(p.reward)}
+          {t('meta.community.celebrate', { reward: rewardText(p.reward) })}
         </button>
       )}
       {g.community.log.length > 0 && (
         <>
-          <div className="section-title">Contributions</div>
+          <div className="section-title">{t('meta.community.contributions')}</div>
           {g.community.log.slice(0, 12).map((l, i) => (
             <div key={i} className="history-item small">
               <Icon name="heart" size={20} />
               <span>
-                <b>{l.who}</b> gave {l.what}
+                <b>{l.who}</b> {t('meta.community.gave', { what: l.what })}
               </span>
             </div>
           ))}
@@ -448,12 +455,13 @@ export function ExpandPanel() {
   const g = useGame((s) => s.game!);
   const dispatch = useGame((s) => s.dispatch);
   const focusOn = useGame((s) => s.focusOn);
+  const t = useT();
   return (
-    <Panel title="Expand your land" icon="map">
+    <Panel title={t('meta.expand.title')} icon="map">
       <p className="muted" style={{ marginTop: 0 }}>
-        Buy plots that border your land. Each new plot clears the woods and opens space to build.
+        {t('meta.expand.intro')}
       </p>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 6, marginBottom: 14 }} aria-label="Land map">
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 6, marginBottom: 14 }} aria-label={t('meta.expand.mapAria')}>
         {[0, 1, 2, 3].flatMap((pz) =>
           [0, 1, 2, 3].map((px) => {
             const id = `p${px}${pz}`;
@@ -476,7 +484,7 @@ export function ExpandPanel() {
               <Icon name="map" size={34} />
               <div style={{ flex: 1 }}>
                 <b style={{ fontFamily: 'var(--font-display)' }}>{e.name}</b>
-                <div className="small">{levelOk ? <CostChips cost={cost} game={g} /> : <span className="muted">Unlocks at level {e.minLevel}</span>}</div>
+                <div className="small">{levelOk ? <CostChips cost={cost} game={g} /> : <span className="muted">{t('meta.expand.unlocksAt', { level: e.minLevel })}</span>}</div>
               </div>
               <button
                 className="btn btn--sm"
@@ -489,13 +497,13 @@ export function ExpandPanel() {
                   }
                 }}
               >
-                Buy
+                {t('meta.expand.buy')}
               </button>
             </div>
           );
         })}
       </div>
-      <p className="small muted">You own {g.plots.length - START_PLOTS.length + 4} plots.</p>
+      <p className="small muted">{t('meta.expand.youOwn', { n: g.plots.length - START_PLOTS.length + 4 })}</p>
     </Panel>
   );
 }
@@ -503,6 +511,7 @@ export function ExpandPanel() {
 export function DevToolsPanel() {
   const g = useGame((s) => s.game!);
   const dispatch = useGame((s) => s.dispatch);
+  const t = useT();
   const [, force] = useState(0);
   const [events, setEvents] = useState(analytics?.list() ?? []);
   useEffect(() => {
@@ -515,25 +524,25 @@ export function DevToolsPanel() {
     force((x) => x + 1);
   };
   return (
-    <Panel title="Developer tools" icon="dev">
+    <Panel title={t('meta.dev.title')} icon="dev">
       <p className="small muted" style={{ marginTop: 0 }}>
-        For testing only. Time offset: {Math.round(clock.offset / 60000)} min.
+        {t('meta.dev.offset', { min: String(Math.round(clock.offset / 60000)) })}
       </p>
       <div className="row" style={{ flexWrap: 'wrap', gap: 6 }}>
-        <button className="btn btn--sm btn--sky" onClick={() => skip(60_000)}>+1 min</button>
-        <button className="btn btn--sm btn--sky" onClick={() => skip(10 * 60_000)}>+10 min</button>
-        <button className="btn btn--sm btn--sky" onClick={() => skip(3_600_000)}>+1 hour</button>
-        <button className="btn btn--sm btn--sky" onClick={() => skip(86_400_000)}>+1 day</button>
-        <button className="btn btn--sm btn--plain" onClick={() => { clock.reset(); force((x) => x + 1); }}>Reset time</button>
+        <button className="btn btn--sm btn--sky" onClick={() => skip(60_000)}>{t('meta.dev.plus1min')}</button>
+        <button className="btn btn--sm btn--sky" onClick={() => skip(10 * 60_000)}>{t('meta.dev.plus10min')}</button>
+        <button className="btn btn--sm btn--sky" onClick={() => skip(3_600_000)}>{t('meta.dev.plus1h')}</button>
+        <button className="btn btn--sm btn--sky" onClick={() => skip(86_400_000)}>{t('meta.dev.plus1d')}</button>
+        <button className="btn btn--sm btn--plain" onClick={() => { clock.reset(); force((x) => x + 1); }}>{t('meta.dev.resetTime')}</button>
       </div>
       <div className="row" style={{ flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
-        <button className="btn btn--sm btn--gold" onClick={() => useGame.setState({ game: { ...g, coins: g.coins + 1000 } })}>+1000 coins</button>
-        <button className="btn btn--sm btn--gem" onClick={() => useGame.setState({ game: { ...g, gems: g.gems + 20 } })}>+20 gems</button>
-        <button className="btn btn--sm btn--teal" onClick={() => useGame.setState({ game: { ...g, inventory: Object.fromEntries(Object.keys(ITEMS).map((k) => [k, (g.inventory[k] ?? 0) + 10])) } })}>+10 of every item</button>
-        <button className="btn btn--sm btn--coral" onClick={() => useGame.setState({ game: { ...g, xp: g.xp + 200, level: levelForXp(g.xp + 200) } })}>+200 XP</button>
+        <button className="btn btn--sm btn--gold" onClick={() => useGame.setState({ game: { ...g, coins: g.coins + 1000 } })}>{t('meta.dev.coins')}</button>
+        <button className="btn btn--sm btn--gem" onClick={() => useGame.setState({ game: { ...g, gems: g.gems + 20 } })}>{t('meta.dev.gems')}</button>
+        <button className="btn btn--sm btn--teal" onClick={() => useGame.setState({ game: { ...g, inventory: Object.fromEntries(Object.keys(ITEMS).map((k) => [k, (g.inventory[k] ?? 0) + 10])) } })}>{t('meta.dev.items')}</button>
+        <button className="btn btn--sm btn--coral" onClick={() => useGame.setState({ game: { ...g, xp: g.xp + 200, level: levelForXp(g.xp + 200) } })}>{t('meta.dev.xp')}</button>
       </div>
-      <p className="small muted">Camera: zoom {cameraState.zoom.toFixed(2)}</p>
-      <div className="section-title">Analytics events (local only)</div>
+      <p className="small muted">{t('meta.dev.camera', { zoom: cameraState.zoom.toFixed(2) })}</p>
+      <div className="section-title">{t('meta.dev.analytics')}</div>
       <div className="small" style={{ fontFamily: 'ui-monospace, monospace', maxHeight: 260, overflow: 'auto' }}>
         {events.slice(0, 80).map((e, i) => (
           <div key={i}>

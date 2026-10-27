@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "code": "ID",
+  "name": {
+    "en": "Indonesia",
+    "ms": "Indonesia"
+  },
+  "status": "planned",
+  "locales": [
+    "id-ID",
+    "en"
+  ],
+  "defaultLocale": "id-ID",
+  "currency": {
+    "code": "IDR",
+    "symbol": "Rp",
+    "minorUnits": 0
+  },
+  "timezone": "Asia/Jakarta",
+  "worlds": [],
+  "compliance": {
+    "certifiedClaimsRequireVerification": true,
+    "pricesRequireVerification": true
+  }
+}

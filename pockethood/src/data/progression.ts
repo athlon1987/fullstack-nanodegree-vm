@@ -434,6 +434,7 @@ export const COMMUNITY_PROJECTS: CommunityProjectDef[] = [
     ],
     reward: { coins: 150, gems: 5, xp: 40, unlocks: ['statue'] },
     minLevel: 3,
+    flag: 'fountain_complete',
   },
 ];
 

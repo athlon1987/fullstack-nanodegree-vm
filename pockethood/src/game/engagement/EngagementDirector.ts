@@ -3,11 +3,10 @@
 // seasonal event tiers → neighborhood history. Pure and deterministic.
 import { BUILDINGS, isDecoration } from '../../data/buildings';
 import { ITEMS } from '../../data/items';
-import { ACHIEVEMENTS, COMMUNITY_PROJECTS, EVENTS, EXPANSIONS, QUESTS, STORIES } from '../../data/progression';
-import { FRIENDSHIP_LEVELS, RESIDENTS } from '../../data/residents';
-import { OPENED_MEMORY } from '../characters/relationships';
+import { ACHIEVEMENTS, EVENTS, QUESTS, STORIES } from '../../data/progression';
+import { RESIDENTS } from '../../data/residents';
 import { dayKey } from '../core/rng';
-import type { GameEvent, GameState } from '../core/types';
+import type { GameEvent, GameState, TextParams } from '../core/types';
 import { friendshipLevel, grantReward } from '../economy/economy';
 import { generatePulse, pulseTaskProgress } from './NeighborhoodPulse';
 import { allDone, baselineFor, objectiveProgress } from './objectives';
@@ -65,6 +64,41 @@ function recordStats(s: GameState, e: GameEvent) {
     case 'ITEM_SOLD':
       bump(s, 'sell', e.qty);
       break;
+    case 'HAND_PREPARED':
+      bump(s, 'handmade');
+      bump(s, `produce:${e.item}`);
+      bump(s, 'produce:any');
+      break;
+    case 'QUIZ_ANSWERED':
+      bump(s, 'quiz');
+      if (e.correct) bump(s, 'quiz_correct');
+      break;
+    case 'SHOWROOM_ARRANGED':
+      bump(s, 'arrange');
+      break;
+    case 'PLANTED':
+      bump(s, 'plant');
+      break;
+    case 'WATERED':
+      bump(s, 'water');
+      break;
+    case 'HARVESTED':
+      bump(s, 'harvest');
+      for (const [id, n] of Object.entries(e.items)) {
+        bump(s, `produce:${id}`, n);
+        bump(s, 'produce:any', n);
+      }
+      break;
+    case 'FISH_SEEN':
+      bump(s, 'fish');
+      break;
+    case 'PET_FED':
+      bump(s, 'pet');
+      break;
+    case 'ZEN_MOMENT':
+      bump(s, 'zen');
+      bump(s, `zen:${e.kind}`);
+      break;
   }
 }
 
@@ -73,60 +107,63 @@ function remember(s: GameState, resident: string, memory: string, now: number) {
   if (r && !r.memories[memory]) r.memories[memory] = now;
 }
 
-function log(s: GameState, now: number, icon: string, text: string) {
-  s.history.unshift({ t: now, icon, text });
+/** History is stored as i18n keys + content ids, so it reads in the viewer's language. */
+function log(s: GameState, now: number, icon: string, key: string, params?: TextParams) {
+  s.history.unshift({ t: now, icon, key: `history.${key}`, params });
   if (s.history.length > 200) s.history.length = 200;
 }
+
+/** Resident who works at a building type (its workplace), if any. */
+const workerOf = (type: string) => BUILDINGS[type]?.resident ?? Object.values(RESIDENTS).find((r) => r.workplace === type)?.id;
 
 function narrate(s: GameState, e: GameEvent, now: number) {
   switch (e.type) {
     case 'BUILDING_CONSTRUCTED': {
-      const def = BUILDINGS[e.building];
-      if (!isDecoration(e.building)) log(s, now, 'build', `${def.name} opened its doors.`);
-      const resident = Object.values(RESIDENTS).find((r) => r.workplace === e.building);
-      const mem = OPENED_MEMORY[e.building];
-      if (resident && mem) remember(s, resident.id, mem, now);
+      if (!isDecoration(e.building)) log(s, now, 'build', 'opened', { building: e.building });
+      // The worker remembers the day their place opened ("opened_<type>"), which unlocks lines.
+      const worker = workerOf(e.building);
+      if (worker) remember(s, worker, `opened_${e.building}`, now);
       break;
     }
-    case 'BUILDING_UPGRADED':
-      log(s, now, 'upgrade', `${BUILDINGS[e.building].name} upgraded to level ${e.level}.`);
-      if (e.building === 'cafe' && e.level === 2) remember(s, 'mia', 'cafe_terrace', now);
+    case 'BUILDING_UPGRADED': {
+      log(s, now, 'upgrade', 'upgraded', { building: e.building, level: e.level });
+      const worker = workerOf(e.building);
+      if (worker) remember(s, worker, `upgraded_${e.building}_${e.level}`, now);
       break;
+    }
     case 'RESIDENT_ARRIVED':
-      log(s, now, 'resident', `${RESIDENTS[e.resident].name} the ${RESIDENTS[e.resident].profession.toLowerCase()} moved in.`);
+      log(s, now, 'resident', 'arrived', { resident: e.resident });
       break;
     case 'FRIENDSHIP_UP':
-      log(s, now, 'heart', `You and ${RESIDENTS[e.resident].name} are now ${FRIENDSHIP_LEVELS[e.level].name}s.`);
+      log(s, now, 'heart', 'friendship', { resident: e.resident, friend: e.level });
       break;
     case 'STORY_MILESTONE_COMPLETED': {
-      const ch = STORIES.find((c) => c.id === e.chapter)!;
-      log(s, now, 'story', `${RESIDENTS[e.resident].name}: “${ch.title}” — ${ch.worldChange ?? 'a new memory together.'}`);
+      const ch = STORIES.find((c) => c.id === e.chapter);
+      log(s, now, 'story', ch?.worldChange ? 'storyChange' : 'story', { resident: e.resident, chapter: e.chapter });
       break;
     }
     case 'LEVEL_UP':
-      log(s, now, 'star', `Neighborhood reached level ${e.level}.`);
+      log(s, now, 'star', 'level', { level: e.level });
       break;
-    case 'DISTRICT_UNLOCKED': {
-      const def = EXPANSIONS.find((x) => x.id === e.plot);
-      log(s, now, 'map', `New land opened: ${def?.name ?? e.plot}.`);
-      remember(s, 'theo', 'expanded', now);
+    case 'DISTRICT_UNLOCKED':
+      log(s, now, 'map', 'land', { plot: e.plot });
+      for (const r of s.residents) remember(s, r.id, 'expanded', now);
       break;
-    }
-    case 'LANDMARK_COMPLETED': {
-      const p = COMMUNITY_PROJECTS.find((x) => x.id === e.project)!;
-      log(s, now, 'landmark', `${p.name} completed — built together by the neighborhood.`);
-      for (const r of s.residents) remember(s, r.id, 'fountain_built', now);
+    case 'LANDMARK_COMPLETED':
+      log(s, now, 'landmark', 'landmark', { project: e.project });
+      for (const r of s.residents) remember(s, r.id, 'landmark_built', now);
       break;
-    }
-    case 'COMMUNITY_PROJECT_CONTRIBUTED':
+    case 'ACHIEVEMENT':
+      log(s, now, 'trophy', 'achievement', { achievement: e.id });
       break;
-    case 'ACHIEVEMENT': {
-      const a = ACHIEVEMENTS.find((x) => x.id === e.id)!;
-      log(s, now, 'trophy', `Achievement: ${a.name}.`);
-      break;
-    }
     case 'ORDER_COMPLETED':
-      if ((s.stats['orders'] ?? 0) % 10 === 0) log(s, now, 'order', `${s.stats['orders']} orders delivered to neighbors.`);
+      if ((s.stats['orders'] ?? 0) % 10 === 0) log(s, now, 'orders', 'orders', { n: s.stats['orders'] });
+      break;
+    case 'FISH_SEEN':
+      if (e.first) log(s, now, 'fish', 'fish', { fish: e.species });
+      break;
+    case 'HARVESTED':
+      if ((s.stats['harvest'] ?? 0) === 1) log(s, now, 'sapling', 'harvest');
       break;
   }
 }
@@ -134,7 +171,8 @@ function narrate(s: GameState, e: GameEvent, now: number) {
 function questStep(s: GameState, now: number, out: GameEvent[]) {
   // Complete
   for (const aq of [...s.quests.active]) {
-    const def = QUESTS.find((q) => q.id === aq.id)!;
+    const def = QUESTS.find((q) => q.id === aq.id);
+    if (!def) continue; // quest content withdrawn: keep it, paused
     if (allDone(s, def.objectives, aq.baseline)) {
       s.quests.active = s.quests.active.filter((q) => q.id !== aq.id);
       s.quests.done.push(aq.id);
@@ -158,14 +196,16 @@ function questStep(s: GameState, now: number, out: GameEvent[]) {
     out.push({ type: 'QUEST_STARTED', quest: def.id });
     if (!def.tutorial) break; // one new main quest per pass keeps the log readable
   }
-  // The guided tutorial ends after the last tutorial quest.
-  if (!s.tutorial.done && s.quests.done.includes('meet_luna')) s.tutorial.done = true;
+  // The guided tutorial ends once every tutorial quest of this world is done.
+  const tutorialQuests = QUESTS.filter((q) => q.tutorial);
+  if (!s.tutorial.done && tutorialQuests.length && tutorialQuests.every((q) => s.quests.done.includes(q.id))) s.tutorial.done = true;
 }
 
 function storyStep(s: GameState, now: number, out: GameEvent[]) {
   for (const r of s.residents) {
     if (!r.storyActive) continue;
-    const ch = STORIES.find((c) => c.id === r.storyActive!.id)!;
+    const ch = STORIES.find((c) => c.id === r.storyActive!.id);
+    if (!ch) continue;
     if (!allDone(s, ch.objectives, r.storyActive.baseline, r.storyActive.delivered)) continue;
     r.storyActive = null;
     r.storyDone.push(ch.id);
@@ -204,7 +244,8 @@ function achievementStep(s: GameState, out: GameEvent[]) {
 
 function eventStep(s: GameState, now: number, out: GameEvent[]) {
   if (!s.event) return;
-  const def = EVENTS.find((e) => e.id === s.event!.id)!;
+  const def = EVENTS.find((e) => e.id === s.event!.id);
+  if (!def) return;
   if (now > s.event.startedAt + def.durationDays * 86_400_000) return;
   const done = def.objectives.filter((o) => objectiveProgress(s, o, s.event!.baseline).done).length;
   def.tiers.forEach((tier, i) => {

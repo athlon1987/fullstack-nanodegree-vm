@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "code": "KR",
+  "name": {
+    "en": "South Korea",
+    "ms": "Korea Selatan"
+  },
+  "status": "planned",
+  "locales": [
+    "ko-KR",
+    "en"
+  ],
+  "defaultLocale": "ko-KR",
+  "currency": {
+    "code": "KRW",
+    "symbol": "₩",
+    "minorUnits": 0
+  },
+  "timezone": "Asia/Seoul",
+  "worlds": [],
+  "compliance": {
+    "certifiedClaimsRequireVerification": true,
+    "pricesRequireVerification": true
+  }
+}

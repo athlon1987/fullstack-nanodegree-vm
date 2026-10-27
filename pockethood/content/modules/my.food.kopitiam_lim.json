@@ -1,0 +1,281 @@
+{
+ "schemaVersion": 1,
+ "version": "1.0.0",
+ "country": "MY",
+ "locales": [
+  "en-MY",
+  "ms-MY"
+ ],
+ "approval": {
+  "state": "approved",
+  "reviewedBy": "POCKETHOOD content review (demo)",
+  "reviewedAt": "2026-10-27"
+ },
+ "activation": {
+  "minGameVersion": "0.3.0"
+ },
+ "licensing": {
+  "content": "original",
+  "assets": [
+   {
+    "id": "pockethood-architecture-kit",
+    "licence": "original",
+    "source": "POCKETHOOD"
+   },
+   {
+    "id": "kenney-mini-characters",
+    "licence": "CC0-1.0",
+    "source": "kenney.nl"
+   }
+  ]
+ },
+ "id": "my.food.kopitiam_lim",
+ "kind": "business",
+ "category": "food_beverage",
+ "template": "cafe",
+ "slot": "cafe",
+ "name": {
+  "en-MY": "Kopitiam Lim",
+  "ms-MY": "Kopitiam Lim"
+ },
+ "tagline": {
+  "en-MY": "Uncle Lim’s corner kopitiam: kopi-o, teh tarik and roti bakar under the five-foot way.",
+  "ms-MY": "Kopitiam simpang Pak Cik Lim: kopi-o, teh tarik dan roti bakar di kaki lima."
+ },
+ "description": {
+  "en-MY": "A fictional family kopitiam reopened by Uncle Lim. Brew kopi, pull teh tarik by hand and serve kampung breakfasts.",
+  "ms-MY": "Kopitiam keluarga rekaan yang dibuka semula oleh Pak Cik Lim. Bancuh kopi, tarik teh dengan tangan dan hidangkan sarapan kampung."
+ },
+ "brand": {
+  "kind": "fictional",
+  "signText": {
+   "en-MY": "Kopitiam Lim",
+   "ms-MY": "Kopitiam Lim"
+  },
+  "palette": {
+   "primary": "#2f7d6b",
+   "secondary": "#f3e6c8",
+   "accent": "#d9673f"
+  }
+ },
+ "presentation": {
+  "prefab": "kopitiam",
+  "props": [
+   "marble_table",
+   "round_stool",
+   "menu_stand",
+   "potted_plant"
+  ],
+  "staff": "lim",
+  "greeting": {
+   "en-MY": "Kopi-o or teh tarik today? Sit anywhere — the fan works, mostly.",
+   "ms-MY": "Kopi-o atau teh tarik hari ini? Duduklah mana-mana — kipas berfungsi, kebanyakannya."
+  }
+ },
+ "items": [
+  {
+   "id": "kopi_o",
+   "name": {
+    "en-MY": "Kopi-O",
+    "ms-MY": "Kopi-O"
+   },
+   "description": {
+    "en-MY": "Black coffee with sugar, kopitiam style.",
+    "ms-MY": "Kopi hitam bergula, cara kopitiam."
+   },
+   "icon": "kopi",
+   "value": 6
+  },
+  {
+   "id": "teh_tarik",
+   "name": {
+    "en-MY": "Teh Tarik",
+    "ms-MY": "Teh Tarik"
+   },
+   "description": {
+    "en-MY": "Milky tea ‘pulled’ between two cups until it foams.",
+    "ms-MY": "Teh susu yang ‘ditarik’ antara dua cawan sehingga berbuih."
+   },
+   "icon": "teh",
+   "value": 7
+  },
+  {
+   "id": "roti_bakar",
+   "name": {
+    "en-MY": "Roti Bakar",
+    "ms-MY": "Roti Bakar"
+   },
+   "description": {
+    "en-MY": "Charcoal-toasted bread with butter.",
+    "ms-MY": "Roti dibakar atas arang dengan mentega."
+   },
+   "icon": "roti_bakar",
+   "value": 18
+  },
+  {
+   "id": "nasi_lemak",
+   "name": {
+    "en-MY": "Nasi Lemak",
+    "ms-MY": "Nasi Lemak"
+   },
+   "description": {
+    "en-MY": "Coconut rice with sambal, peanuts, egg and cucumber, wrapped in banana leaf.",
+    "ms-MY": "Nasi santan dengan sambal, kacang, telur dan timun, dibungkus daun pisang."
+   },
+   "icon": "nasi_lemak",
+   "value": 26
+  }
+ ],
+ "recipes": [
+  {
+   "id": "kopi_o",
+   "item": "kopi_o",
+   "level": 1,
+   "coins": 2,
+   "seconds": 18,
+   "qty": 1,
+   "xp": 1
+  },
+  {
+   "id": "teh_tarik",
+   "item": "teh_tarik",
+   "level": 1,
+   "coins": 2,
+   "seconds": 20,
+   "qty": 1,
+   "xp": 1
+  },
+  {
+   "id": "roti_bakar",
+   "item": "roti_bakar",
+   "level": 2,
+   "inputs": {
+    "bread": 1
+   },
+   "coins": 2,
+   "seconds": 60,
+   "qty": 1,
+   "xp": 3
+  },
+  {
+   "id": "nasi_lemak",
+   "item": "nasi_lemak",
+   "level": 3,
+   "inputs": {
+    "berries": 1
+   },
+   "coins": 4,
+   "seconds": 120,
+   "qty": 1,
+   "xp": 5
+  }
+ ],
+ "behaviors": [
+  {
+   "type": "hand_prepare",
+   "recipe": "teh_tarik",
+   "steps": [
+    "pour",
+    "pull",
+    "pull",
+    "serve"
+   ],
+   "cooldownSeconds": 90,
+   "tip": {
+    "en-MY": "Pour, then pull the tea high between the cups — twice — for a good foam.",
+    "ms-MY": "Tuang, kemudian tarik teh tinggi-tinggi antara cawan — dua kali — untuk buih yang cantik."
+   }
+  },
+  {
+   "type": "visitors",
+   "perHour": 6
+  },
+  {
+   "type": "ambient_sound",
+   "sound": "kopitiam_chatter"
+  }
+ ],
+ "quests": [
+  {
+   "id": "teh_tarik_master",
+   "title": {
+    "en-MY": "Pull It High",
+    "ms-MY": "Tarik Tinggi-tinggi"
+   },
+   "giver": "lim",
+   "intro": {
+    "en-MY": "Anyone can brew tea. Pulling it — that takes practice. Make 3 teh tarik by hand with me?",
+    "ms-MY": "Sesiapa boleh bancuh teh. Menariknya — itu perlukan latihan. Buat 3 teh tarik dengan tangan bersama saya?"
+   },
+   "outro": {
+    "en-MY": "Look at that foam! My father would be proud of you.",
+    "ms-MY": "Tengok buih tu! Ayah saya pasti bangga dengan awak."
+   },
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "handmade",
+     "n": 3,
+     "label": {
+      "en-MY": "Make 3 teh tarik by hand",
+      "ms-MY": "Buat 3 teh tarik dengan tangan"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 60,
+    "xp": 15
+   },
+   "after": [
+    "kopitiam_upgrade"
+   ],
+   "minLevel": 2
+  }
+ ],
+ "realWorld": {
+  "menu": {
+   "currency": "MYR",
+   "version": "1.0.0",
+   "source": "illustrative",
+   "items": [
+    {
+     "name": {
+      "en-MY": "Kopi-O",
+      "ms-MY": "Kopi-O"
+     }
+    },
+    {
+     "name": {
+      "en-MY": "Teh Tarik",
+      "ms-MY": "Teh Tarik"
+     }
+    },
+    {
+     "name": {
+      "en-MY": "Roti Bakar with kaya & butter",
+      "ms-MY": "Roti Bakar kaya mentega"
+     }
+    },
+    {
+     "name": {
+      "en-MY": "Nasi Lemak",
+      "ms-MY": "Nasi Lemak"
+     }
+    },
+    {
+     "name": {
+      "en-MY": "Half-boiled eggs",
+      "ms-MY": "Telur separuh masak"
+     }
+    }
+   ]
+  },
+  "halal": {
+   "status": "not_stated"
+  },
+  "notice": {
+   "en-MY": "Kopitiam Lim is a fictional business made for this game. This menu is illustrative: no real prices, offers or certification are shown.",
+   "ms-MY": "Kopitiam Lim ialah perniagaan rekaan untuk permainan ini. Menu ini sekadar ilustrasi: tiada harga, tawaran atau pensijilan sebenar dipaparkan."
+  }
+ }
+}

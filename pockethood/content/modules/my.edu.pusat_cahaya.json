@@ -1,0 +1,518 @@
+{
+ "schemaVersion": 1,
+ "version": "1.0.0",
+ "country": "MY",
+ "locales": [
+  "en-MY",
+  "ms-MY"
+ ],
+ "approval": {
+  "state": "approved",
+  "reviewedBy": "POCKETHOOD content review (demo)",
+  "reviewedAt": "2026-10-27"
+ },
+ "activation": {
+  "minGameVersion": "0.3.0"
+ },
+ "licensing": {
+  "content": "original",
+  "assets": [
+   {
+    "id": "pockethood-architecture-kit",
+    "licence": "original",
+    "source": "POCKETHOOD"
+   },
+   {
+    "id": "kenney-mini-characters",
+    "licence": "CC0-1.0",
+    "source": "kenney.nl"
+   }
+  ]
+ },
+ "id": "my.edu.pusat_cahaya",
+ "kind": "community",
+ "category": "education",
+ "template": "learning",
+ "slot": "learning_centre",
+ "name": {
+  "en-MY": "Pusat Belajar Cahaya",
+  "ms-MY": "Pusat Belajar Cahaya"
+ },
+ "tagline": {
+  "en-MY": "Cikgu Kavitha’s after-school centre: one friendly quiz a day about Malaysia and nature.",
+  "ms-MY": "Pusat selepas sekolah Cikgu Kavitha: kuiz mesra setiap hari tentang Malaysia dan alam semula jadi."
+ },
+ "description": {
+  "en-MY": "A fictional learning centre. General-knowledge questions for all ages; every answer, right or wrong, comes with an explanation. No personal data is collected.",
+  "ms-MY": "Pusat belajar rekaan. Soalan pengetahuan am untuk semua peringkat umur; setiap jawapan, betul atau salah, disertakan penerangan. Tiada data peribadi dikumpul."
+ },
+ "brand": {
+  "kind": "fictional",
+  "signText": {
+   "en-MY": "Pusat Cahaya",
+   "ms-MY": "Pusat Cahaya"
+  },
+  "palette": {
+   "primary": "#8a6fd1",
+   "secondary": "#fbf3e4",
+   "accent": "#f6c343"
+  }
+ },
+ "presentation": {
+  "prefab": "learning_house",
+  "props": [
+   "bookshelf",
+   "bicycle",
+   "potted_plant"
+  ],
+  "staff": "kavitha",
+  "greeting": {
+   "en-MY": "Every question is a good question. Ready?",
+   "ms-MY": "Setiap soalan ialah soalan yang baik. Sedia?"
+  }
+ },
+ "items": [],
+ "recipes": [],
+ "behaviors": [
+  {
+   "type": "quiz",
+   "topic": {
+    "en-MY": "Malaysia & Nature",
+    "ms-MY": "Malaysia & Alam"
+   },
+   "dailyLimit": 3,
+   "questions": [
+    {
+     "id": "national_flower",
+     "prompt": {
+      "en-MY": "What is Malaysia’s national flower?",
+      "ms-MY": "Apakah bunga kebangsaan Malaysia?"
+     },
+     "choices": [
+      {
+       "en-MY": "Orchid",
+       "ms-MY": "Orkid"
+      },
+      {
+       "en-MY": "Hibiscus (bunga raya)",
+       "ms-MY": "Bunga raya"
+      },
+      {
+       "en-MY": "Jasmine",
+       "ms-MY": "Melur"
+      }
+     ],
+     "answer": 1,
+     "explain": {
+      "en-MY": "The bunga raya was declared the national flower in 1960.",
+      "ms-MY": "Bunga raya diisytiharkan sebagai bunga kebangsaan pada tahun 1960."
+     }
+    },
+    {
+     "id": "capital",
+     "prompt": {
+      "en-MY": "What is the capital city of Malaysia?",
+      "ms-MY": "Apakah ibu negara Malaysia?"
+     },
+     "choices": [
+      "Kuala Lumpur",
+      "Johor Bahru",
+      "Kuching"
+     ],
+     "answer": 0,
+     "explain": {
+      "en-MY": "Kuala Lumpur is the capital; Putrajaya is the federal administrative centre.",
+      "ms-MY": "Kuala Lumpur ialah ibu negara; Putrajaya ialah pusat pentadbiran persekutuan."
+     }
+    },
+    {
+     "id": "states",
+     "prompt": {
+      "en-MY": "How many states does Malaysia have?",
+      "ms-MY": "Berapakah bilangan negeri di Malaysia?"
+     },
+     "choices": [
+      "11",
+      "13",
+      "15"
+     ],
+     "answer": 1,
+     "explain": {
+      "en-MY": "13 states, plus 3 federal territories.",
+      "ms-MY": "13 negeri, ditambah 3 wilayah persekutuan."
+     }
+    },
+    {
+     "id": "kinabalu",
+     "prompt": {
+      "en-MY": "What is the highest mountain in Malaysia?",
+      "ms-MY": "Apakah gunung tertinggi di Malaysia?"
+     },
+     "choices": [
+      {
+       "en-MY": "Mount Kinabalu",
+       "ms-MY": "Gunung Kinabalu"
+      },
+      {
+       "en-MY": "Mount Tahan",
+       "ms-MY": "Gunung Tahan"
+      },
+      {
+       "en-MY": "Mount Ophir",
+       "ms-MY": "Gunung Ledang"
+      }
+     ],
+     "answer": 0,
+     "explain": {
+      "en-MY": "Mount Kinabalu in Sabah rises about 4,095 metres.",
+      "ms-MY": "Gunung Kinabalu di Sabah setinggi kira-kira 4,095 meter."
+     }
+    },
+    {
+     "id": "currency",
+     "prompt": {
+      "en-MY": "What is Malaysia’s currency called?",
+      "ms-MY": "Apakah nama mata wang Malaysia?"
+     },
+     "choices": [
+      "Rupiah",
+      "Ringgit",
+      "Baht"
+     ],
+     "answer": 1,
+     "explain": {
+      "en-MY": "The ringgit (RM) is divided into 100 sen.",
+      "ms-MY": "Ringgit (RM) dibahagikan kepada 100 sen."
+     }
+    },
+    {
+     "id": "rajang",
+     "prompt": {
+      "en-MY": "Which is the longest river in Malaysia?",
+      "ms-MY": "Sungai manakah yang terpanjang di Malaysia?"
+     },
+     "choices": [
+      {
+       "en-MY": "Pahang River",
+       "ms-MY": "Sungai Pahang"
+      },
+      {
+       "en-MY": "Rajang River",
+       "ms-MY": "Sungai Rajang"
+      },
+      {
+       "en-MY": "Kinabatangan River",
+       "ms-MY": "Sungai Kinabatangan"
+      }
+     ],
+     "answer": 1,
+     "explain": {
+      "en-MY": "The Rajang in Sarawak is the longest, at roughly 560 km.",
+      "ms-MY": "Sungai Rajang di Sarawak ialah yang terpanjang, kira-kira 560 km."
+     }
+    },
+    {
+     "id": "tiger",
+     "prompt": {
+      "en-MY": "Which animal is Malaysia’s national animal?",
+      "ms-MY": "Apakah haiwan kebangsaan Malaysia?"
+     },
+     "choices": [
+      {
+       "en-MY": "Malayan tiger",
+       "ms-MY": "Harimau Malaya"
+      },
+      {
+       "en-MY": "Hornbill",
+       "ms-MY": "Burung enggang"
+      },
+      {
+       "en-MY": "Mouse-deer",
+       "ms-MY": "Kancil"
+      }
+     ],
+     "answer": 0,
+     "explain": {
+      "en-MY": "The Malayan tiger appears on the national coat of arms.",
+      "ms-MY": "Harimau Malaya terdapat pada jata negara."
+     }
+    },
+    {
+     "id": "orangutan",
+     "prompt": {
+      "en-MY": "Where in Malaysia do orangutans live in the wild?",
+      "ms-MY": "Di manakah orang utan hidup secara liar di Malaysia?"
+     },
+     "choices": [
+      {
+       "en-MY": "Sabah and Sarawak",
+       "ms-MY": "Sabah dan Sarawak"
+      },
+      {
+       "en-MY": "Penang",
+       "ms-MY": "Pulau Pinang"
+      },
+      {
+       "en-MY": "Melaka",
+       "ms-MY": "Melaka"
+      }
+     ],
+     "answer": 0,
+     "explain": {
+      "en-MY": "Wild orangutans live only on Borneo and Sumatra.",
+      "ms-MY": "Orang utan liar hanya terdapat di Borneo dan Sumatera."
+     }
+    },
+    {
+     "id": "rafflesia",
+     "prompt": {
+      "en-MY": "The Rafflesia is famous for being…",
+      "ms-MY": "Rafflesia terkenal kerana…"
+     },
+     "choices": [
+      {
+       "en-MY": "one of the largest flowers in the world",
+       "ms-MY": "antara bunga terbesar di dunia"
+      },
+      {
+       "en-MY": "the smallest flower in the world",
+       "ms-MY": "bunga terkecil di dunia"
+      },
+      {
+       "en-MY": "a tree that grows underwater",
+       "ms-MY": "pokok yang tumbuh di dalam air"
+      }
+     ],
+     "answer": 0,
+     "explain": {
+      "en-MY": "Some Rafflesia blooms grow wider than a metre.",
+      "ms-MY": "Sesetengah bunga Rafflesia boleh melebihi satu meter lebar."
+     }
+    },
+    {
+     "id": "merdeka",
+     "prompt": {
+      "en-MY": "On which date is Hari Merdeka (Independence Day) celebrated?",
+      "ms-MY": "Pada tarikh apakah Hari Merdeka disambut?"
+     },
+     "choices": [
+      {
+       "en-MY": "31 August",
+       "ms-MY": "31 Ogos"
+      },
+      {
+       "en-MY": "16 September",
+       "ms-MY": "16 September"
+      },
+      {
+       "en-MY": "1 January",
+       "ms-MY": "1 Januari"
+      }
+     ],
+     "answer": 0,
+     "explain": {
+      "en-MY": "Malaya gained independence on 31 August 1957. Malaysia Day, 16 September, marks the formation of Malaysia in 1963.",
+      "ms-MY": "Tanah Melayu merdeka pada 31 Ogos 1957. Hari Malaysia, 16 September, menandakan penubuhan Malaysia pada tahun 1963."
+     }
+    },
+    {
+     "id": "durian",
+     "prompt": {
+      "en-MY": "Which fruit is often called the ‘king of fruits’?",
+      "ms-MY": "Buah manakah sering digelar ‘raja buah’?"
+     },
+     "choices": [
+      {
+       "en-MY": "Durian",
+       "ms-MY": "Durian"
+      },
+      {
+       "en-MY": "Rambutan",
+       "ms-MY": "Rambutan"
+      },
+      {
+       "en-MY": "Mangosteen",
+       "ms-MY": "Manggis"
+      }
+     ],
+     "answer": 0,
+     "explain": {
+      "en-MY": "The durian — famous for its spiky shell and strong smell. (Mangosteen is sometimes called the queen!)",
+      "ms-MY": "Durian — terkenal dengan kulit berduri dan bau yang kuat. (Manggis pula kadangkala digelar ratu!)"
+     }
+    },
+    {
+     "id": "south_china_sea",
+     "prompt": {
+      "en-MY": "Which sea lies between Peninsular Malaysia and Malaysian Borneo?",
+      "ms-MY": "Laut manakah terletak antara Semenanjung Malaysia dan Borneo Malaysia?"
+     },
+     "choices": [
+      {
+       "en-MY": "Andaman Sea",
+       "ms-MY": "Laut Andaman"
+      },
+      {
+       "en-MY": "South China Sea",
+       "ms-MY": "Laut China Selatan"
+      },
+      {
+       "en-MY": "Java Sea",
+       "ms-MY": "Laut Jawa"
+      }
+     ],
+     "answer": 1,
+     "explain": {
+      "en-MY": "The South China Sea separates the peninsula from Sabah and Sarawak.",
+      "ms-MY": "Laut China Selatan memisahkan semenanjung daripada Sabah dan Sarawak."
+     }
+    },
+    {
+     "id": "terima_kasih",
+     "prompt": {
+      "en-MY": "What does ‘terima kasih’ mean?",
+      "ms-MY": "Apakah maksud ‘thank you’ dalam Bahasa Melayu?"
+     },
+     "choices": [
+      {
+       "en-MY": "Good morning",
+       "ms-MY": "Selamat pagi"
+      },
+      {
+       "en-MY": "Thank you",
+       "ms-MY": "Terima kasih"
+      },
+      {
+       "en-MY": "See you later",
+       "ms-MY": "Jumpa lagi"
+      }
+     ],
+     "answer": 1,
+     "explain": {
+      "en-MY": "Terima kasih = thank you. The usual reply is ‘sama-sama’.",
+      "ms-MY": "‘Thank you’ = terima kasih. Jawapan biasa ialah ‘sama-sama’."
+     }
+    },
+    {
+     "id": "photosynthesis",
+     "prompt": {
+      "en-MY": "Which gas do plants take in to make their food?",
+      "ms-MY": "Gas apakah yang diambil oleh tumbuhan untuk membuat makanan?"
+     },
+     "choices": [
+      {
+       "en-MY": "Oxygen",
+       "ms-MY": "Oksigen"
+      },
+      {
+       "en-MY": "Carbon dioxide",
+       "ms-MY": "Karbon dioksida"
+      },
+      {
+       "en-MY": "Nitrogen",
+       "ms-MY": "Nitrogen"
+      }
+     ],
+     "answer": 1,
+     "explain": {
+      "en-MY": "Plants use sunlight, water and carbon dioxide, and release oxygen.",
+      "ms-MY": "Tumbuhan menggunakan cahaya matahari, air dan karbon dioksida, lalu membebaskan oksigen."
+     }
+    },
+    {
+     "id": "nine_eights",
+     "prompt": {
+      "en-MY": "What is 9 × 8?",
+      "ms-MY": "Berapakah 9 × 8?"
+     },
+     "choices": [
+      "63",
+      "72",
+      "81"
+     ],
+     "answer": 1,
+     "explain": {
+      "en-MY": "9 × 8 = 72.",
+      "ms-MY": "9 × 8 = 72."
+     }
+    },
+    {
+     "id": "hornbill",
+     "prompt": {
+      "en-MY": "Sarawak is known as the ‘Land of the…’",
+      "ms-MY": "Sarawak dikenali sebagai ‘Bumi…’"
+     },
+     "choices": [
+      {
+       "en-MY": "Hornbills",
+       "ms-MY": "Kenyalang"
+      },
+      {
+       "en-MY": "Tigers",
+       "ms-MY": "Harimau"
+      },
+      {
+       "en-MY": "Turtles",
+       "ms-MY": "Penyu"
+      }
+     ],
+     "answer": 0,
+     "explain": {
+      "en-MY": "Sarawak is the ‘Land of the Hornbills’ — Bumi Kenyalang.",
+      "ms-MY": "Sarawak ialah Bumi Kenyalang — tanah burung enggang."
+     }
+    }
+   ]
+  },
+  {
+   "type": "visitors",
+   "perHour": 5
+  },
+  {
+   "type": "ambient_sound",
+   "sound": "classroom_murmur"
+  }
+ ],
+ "quests": [
+  {
+   "id": "curious_minds",
+   "title": {
+    "en-MY": "Curious Minds",
+    "ms-MY": "Minda Ingin Tahu"
+   },
+   "giver": "kavitha",
+   "intro": {
+    "en-MY": "Shall we see how much you know about our country? Get 3 answers right — take your time.",
+    "ms-MY": "Jom lihat berapa banyak awak tahu tentang negara kita? Jawab 3 soalan dengan betul — perlahan-lahan."
+   },
+   "outro": {
+    "en-MY": "Wonderful! Come back tomorrow — there are always new questions.",
+    "ms-MY": "Hebat! Datang lagi esok — sentiasa ada soalan baharu."
+   },
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "quiz_correct",
+     "n": 3,
+     "label": {
+      "en-MY": "Answer 3 questions correctly",
+      "ms-MY": "Jawab 3 soalan dengan betul"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 40,
+    "xp": 15
+   },
+   "after": [
+    "learning"
+   ]
+  }
+ ],
+ "realWorld": {
+  "notice": {
+   "en-MY": "Pusat Belajar Cahaya is fictional. Questions are reviewed general knowledge; tell us if you spot a mistake.",
+   "ms-MY": "Pusat Belajar Cahaya ialah rekaan. Soalan ialah pengetahuan am yang telah disemak; maklumkan jika anda jumpa kesilapan."
+  }
+ }
+}

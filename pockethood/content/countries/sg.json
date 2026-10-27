@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "code": "SG",
+  "name": {
+    "en": "Singapore",
+    "ms": "Singapura"
+  },
+  "status": "planned",
+  "locales": [
+    "en-SG",
+    "ms-SG"
+  ],
+  "defaultLocale": "en-SG",
+  "currency": {
+    "code": "SGD",
+    "symbol": "S$",
+    "minorUnits": 2
+  },
+  "timezone": "Asia/Singapore",
+  "worlds": [],
+  "compliance": {
+    "certifiedClaimsRequireVerification": true,
+    "pricesRequireVerification": true
+  }
+}

@@ -1,6 +1,6 @@
 // Versioned local-first persistence. IndexedDB (via idb-keyval) with a
 // localStorage fallback; saves are schema-versioned and migrated on load.
-import { createNewGame, DEFAULT_SETTINGS, SAVE_VERSION } from '../game/core/newGame';
+import { createNewGame, DEFAULT_SETTINGS, SAVE_VERSION, emptyExt, emptyZen } from '../game/core/newGame';
 import type { GameState } from '../game/core/types';
 import { BUILDINGS } from '../data/buildings';
 import { safeGet, safeRemove, safeSet } from '../utils/safeStorage';
@@ -25,7 +25,31 @@ const MIGRATIONS: Record<number, (s: AnySave) => AnySave> = {
     community: s.community ?? { projectId: 'fountain', contributed: {}, ops: [], log: [], completedAt: null, rewardClaimed: false },
     version: 3,
   }),
+  // v4: worlds & modules. Saves from before belong to the neutral core world.
+  3: (s) => {
+    const rename: Record<string, string> = { cafe_terrace: 'upgraded_cafe_2', fountain_built: 'landmark_built' };
+    const residents = ((s.residents as { memories?: Record<string, number> }[]) ?? []).map((r) => ({
+      ...r,
+      memories: Object.fromEntries(Object.entries(r.memories ?? {}).map(([k, v]) => [rename[k] ?? k, v])),
+    }));
+    const pulse = s.pulse as { tasks?: { key?: string }[] } | null;
+    return {
+      ...s,
+      residents,
+      pulse: pulse ? { ...pulse, tasks: (pulse.tasks ?? []).map((t) => ({ ...t, key: t.key ?? '' })) } : null,
+      world: s.world ?? { id: 'core.maple_hollow', country: 'ZZ' },
+      ext: s.ext ?? emptyExt(),
+      zen: s.zen ?? emptyZen(),
+      version: 4,
+    };
+  },
 };
+
+/** The world a raw save belongs to (before migration), so the right content is installed first. */
+export function worldOf(raw: AnySave): string {
+  const w = raw.world as { id?: unknown } | undefined;
+  return typeof w?.id === 'string' ? w.id : 'core.maple_hollow';
+}
 
 export function migrate(raw: AnySave): GameState {
   let s = { ...raw };
@@ -43,13 +67,22 @@ export function migrate(raw: AnySave): GameState {
 export function sanitize(s: GameState, now: number): GameState {
   const fresh = createNewGame(now, s.seed);
   const out: GameState = { ...fresh, ...s, settings: { ...DEFAULT_SETTINGS, ...(s.settings ?? {}) } };
+  out.ext = { ...emptyExt(), ...(s.ext ?? {}) };
+  out.ext.learning = { ...emptyExt().learning, ...(s.ext?.learning ?? {}) };
+  out.zen = { ...emptyZen(), ...(s.zen ?? {}) };
+  if (!['en', 'ms'].includes(out.settings.locale)) out.settings.locale = 'en';
   out.coins = Number.isFinite(out.coins) ? Math.max(0, Math.floor(out.coins)) : fresh.coins;
   out.gems = Number.isFinite(out.gems) ? Math.max(0, Math.floor(out.gems)) : fresh.gems;
   out.xp = Number.isFinite(out.xp) ? Math.max(0, out.xp) : 0;
   out.inventory = Object.fromEntries(Object.entries(out.inventory ?? {}).filter(([, n]) => Number.isFinite(n) && n > 0));
-  out.buildings = (out.buildings ?? []).filter((b) => b && BUILDINGS[b.type]);
+  // Buildings whose content isn't installed are KEPT (shown closed) so nothing is lost if a
+  // module or world pack is temporarily unavailable. Only malformed entries are dropped.
+  out.buildings = (out.buildings ?? []).filter((b) => b && typeof b.type === 'string' && Number.isInteger(b.x) && Number.isInteger(b.z) && typeof b.uid === 'string');
   for (const b of out.buildings) {
-    b.level = Math.min(Math.max(1, b.level | 0), BUILDINGS[b.type].levels.length);
+    const def = BUILDINGS[b.type];
+    if (def && !b.fp) b.fp = [...def.footprint];
+    b.level = Math.max(1, b.level | 0);
+    if (def) b.level = Math.min(b.level, def.levels.length);
     b.queue = Array.isArray(b.queue) ? b.queue : [];
     // Clock-skew protection: timers far in the future are clamped.
     if (b.busyUntil !== null && b.busyUntil > now + 7 * 86_400_000) b.busyUntil = now;
@@ -80,7 +113,11 @@ export class SaveService {
     private sync: SyncStore | null = typeof localStorage !== 'undefined' ? localStorage : null,
   ) {}
 
-  async load(now: number): Promise<{ state: GameState; fresh: boolean; recovered: boolean }> {
+  /**
+   * @param prepare called with the save's world id (or null for a new game) before the save is
+   *   repaired, so the caller can install that world's content first.
+   */
+  async load(now: number, prepare: (worldId: string | null) => void = () => {}): Promise<{ state: GameState; fresh: boolean; recovered: boolean }> {
     let raw: string | undefined;
     try {
       raw = await this.store.get(SAVE_KEY);
@@ -95,13 +132,18 @@ export class SaveService {
       backup = null;
     }
     if (backup && lastSeenOf(backup) > lastSeenOf(raw)) raw = backup;
-    if (!raw) return { state: createNewGame(now), fresh: true, recovered: false };
+    if (!raw) {
+      prepare(null);
+      return { state: createNewGame(now), fresh: true, recovered: false };
+    }
     try {
       const parsed = JSON.parse(raw) as AnySave;
+      prepare(worldOf(parsed));
       return { state: sanitize(migrate(parsed), now), fresh: false, recovered: false };
     } catch (e) {
       console.warn('Save could not be read; starting fresh and keeping a backup.', e);
       await this.store.set(`${SAVE_KEY}.corrupt.${now}`, raw).catch(() => {});
+      prepare(null);
       return { state: createNewGame(now), fresh: true, recovered: true };
     }
   }

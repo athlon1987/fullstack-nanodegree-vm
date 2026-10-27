@@ -6,12 +6,12 @@ import type { BuildingCategory, Rotation } from '../../game/core/types';
 import { canAfford, missingFor, finishedJobs, levelDef, passiveReady, recipesFor, speedUpGems, upgradeSeconds } from '../../game/economy/economy';
 import { findSpot, placementProblem } from '../../game/world/grid';
 import { buildingThumb } from '../../rendering/thumbnails';
-import { fmt } from '../../rendering/scene/Buildings';
 import { clock } from '../../services/clock';
 import { useGame } from '../../state/store';
 import { Icon } from '../components/Icon';
 import { CostChips, ItemChips, Panel, Tabs } from '../components/Panel';
 import { audio } from '../../audio/AudioManager';
+import { fmtDuration as fmt, useT } from '../../platform/i18n';
 
 type Tab = 'homes' | 'shops' | 'community' | 'decor' | 'keepsakes';
 const TAB_CATS: Record<Tab, BuildingCategory[]> = {
@@ -32,6 +32,7 @@ function Thumb({ type }: { type: string }) {
 }
 
 export function BuildPanel() {
+  const t = useT();
   const g = useGame((s) => s.game!);
   const startPlacing = useGame((s) => s.startPlacing);
   const [tab, setTab] = useState<Tab>('shops');
@@ -45,23 +46,23 @@ export function BuildPanel() {
   );
   return (
     <Panel
-      title="Build"
+      title={t('build.title')}
       icon="build"
       tabs={
         <Tabs<Tab>
           value={tab}
           onChange={setTab}
           options={[
-            { id: 'shops', label: 'Shops' },
-            { id: 'homes', label: 'Homes' },
-            { id: 'community', label: 'Community' },
-            { id: 'decor', label: 'Decor' },
-            { id: 'keepsakes', label: 'Keepsakes' },
+            { id: 'shops', label: t('common.cat.commercial') },
+            { id: 'homes', label: t('common.cat.residential') },
+            { id: 'community', label: t('common.cat.community') },
+            { id: 'decor', label: t('common.cat.decoration') },
+            { id: 'keepsakes', label: t('build.tab.keepsakes') },
           ]}
         />
       }
     >
-      {tab === 'keepsakes' && <p className="muted small">Keepsakes are gifts from resident stories, events and community projects.</p>}
+      {tab === 'keepsakes' && <p className="muted small">{t('build.keepsakesHint')}</p>}
       <div className="grid-cards">
         {list.map((d) => {
           const count = g.buildings.filter((b) => b.type === d.id).length;
@@ -75,14 +76,14 @@ export function BuildPanel() {
               className={`catalog-card ${disabled ? 'locked' : ''}`}
               data-tutorial={`card-${d.id}`}
               aria-disabled={disabled}
-              aria-label={`${d.name}. ${disabled ? (unlocked ? 'Maximum built' : d.keepsake ? 'Not yet earned' : `Unlocks at level ${d.unlockLevel}`) : ''}`}
+              aria-label={`${d.name}. ${disabled ? (unlocked ? t('build.maxBuilt') : d.keepsake ? t('build.notEarned') : t('build.unlocksAt', { level: d.unlockLevel })) : ''}`}
               onClick={() => {
                 if (!unlocked) {
-                  useGame.getState().toast({ icon: 'lock', title: d.keepsake ? 'Earn this keepsake through stories & events' : `Unlocks at level ${d.unlockLevel}`, tone: 'info' });
+                  useGame.getState().toast({ icon: 'lock', title: d.keepsake ? t('build.earnKeepsake') : t('build.unlocksAt', { level: d.unlockLevel }), tone: 'info' });
                   return;
                 }
                 if (maxed) {
-                  useGame.getState().toast({ icon: 'alert', title: `You can build ${d.maxCount} ${d.name}${d.maxCount! > 1 ? 's' : ''}`, tone: 'info' });
+                  useGame.getState().toast({ icon: 'alert', title: t('build.maxCount', { n: d.maxCount!, name: d.name }), tone: 'info' });
                   return;
                 }
                 if (!afford) audio.play('error');
@@ -96,7 +97,7 @@ export function BuildPanel() {
               {!unlocked && (
                 <span className="lock-tag">
                   <Icon name="lock" size={14} />
-                  {d.keepsake ? 'Keepsake' : `Lv ${d.unlockLevel}`}
+                  {d.keepsake ? t('build.keepsake') : t('common.levelShort', { level: d.unlockLevel })}
                 </span>
               )}
               {unlocked && d.resident && count === 0 && <span className="new-tag">+ {RESIDENTS[d.resident].name}</span>}
@@ -118,6 +119,7 @@ export function BuildPanel() {
 
 /** The bottom bar shown while placing or moving a building. */
 export function PlaceBar() {
+  const t = useT();
   const placing = useGame((s) => s.ui.placing)!;
   const g = useGame((s) => s.game!);
   const setUI = useGame((s) => s.setUI);
@@ -150,28 +152,28 @@ export function PlaceBar() {
     return () => window.removeEventListener('keydown', onKey);
   });
   const reason: Record<string, string> = {
-    occupied: 'Something is in the way',
-    road: 'Can’t build on the road',
-    locked_land: 'You don’t own this land yet',
-    out_of_bounds: 'Too close to the edge',
-    cost: `Need ${short.join(', ')}`,
+    occupied: t('build.place.occupied'),
+    road: t('build.place.road'),
+    locked_land: t('build.place.lockedLand'),
+    out_of_bounds: t('build.place.outOfBounds'),
+    cost: t('build.place.need', { list: short.join(', ') }),
   };
   return (
-    <div className="placebar" role="toolbar" aria-label="Placement">
-      <button className="btn btn--plain btn--icon" onClick={cancel} aria-label="Cancel placement">
+    <div className="placebar" role="toolbar" aria-label={t('build.place.aria')}>
+      <button className="btn btn--plain btn--icon" onClick={cancel} aria-label={t('build.place.cancel')}>
         <Icon name="close" size={22} />
       </button>
       <div className="placebar__info">
-        <b>{placing.uid ? `Move ${def.name}` : def.name}</b>
+        <b>{placing.uid ? t('build.place.move', { name: def.name }) : def.name}</b>
         <span className="small" style={{ color: problem ? '#c0392b' : '#3f8a33', fontWeight: 800 }}>
-          {problem ? `✕ ${reason[problem]}` : '✓ Looks good here'}
+          {problem ? `✕ ${reason[problem]}` : `✓ ${t('build.place.ok')}`}
         </span>
         {!placing.uid && <CostChips cost={def.cost} game={g} />}
       </div>
-      <button className="btn btn--plain btn--icon" onClick={rotate} aria-label="Rotate (R)">
+      <button className="btn btn--plain btn--icon" onClick={rotate} aria-label={t('build.place.rotate')}>
         <Icon name="rotate" size={24} />
       </button>
-      <button className="btn btn--icon" onClick={confirm} disabled={!!problem} aria-label="Confirm placement" data-tutorial="place-confirm">
+      <button className="btn btn--icon" onClick={confirm} disabled={!!problem} aria-label={t('build.place.confirm')} data-tutorial="place-confirm">
         <Icon name="check" size={30} />
       </button>
     </div>
@@ -180,6 +182,7 @@ export function PlaceBar() {
 
 /** Info sheet for the selected building: production, collection, upgrades, move/sell. */
 export function BuildingSheet() {
+  const t = useT();
   const uid = useGame((s) => s.ui.selected)!;
   const g = useGame((s) => s.game!);
   const setUI = useGame((s) => s.setUI);
@@ -213,16 +216,16 @@ export function BuildingSheet() {
           <h2 style={{ margin: 0 }}>{def.name}</h2>
           <div className="row small muted" style={{ gap: 6, fontWeight: 800 }}>
             {!deco && def.levels.length > 1 && (
-              <span className="row" style={{ gap: 2 }} aria-label={`Level ${b.level} of ${def.levels.length}`}>
+              <span className="row" style={{ gap: 2 }} aria-label={t('build.sheet.levelOf', { level: b.level, max: def.levels.length })}>
                 {def.levels.map((_, i) => (
                   <Icon key={i} name="star" size={16} style={{ opacity: i < b.level ? 1 : 0.25 }} />
                 ))}
               </span>
             )}
-            {worker && <span>· run by {worker.name}</span>}
+            {worker && <span>{t('build.sheet.runBy', { name: worker.name })}</span>}
           </div>
         </div>
-        <button className="round-btn" onClick={close} aria-label="Close">
+        <button className="round-btn" onClick={close} aria-label={t('common.close')}>
           <Icon name="close" size={22} />
         </button>
       </header>
@@ -236,19 +239,19 @@ export function BuildingSheet() {
             <div className="row">
               <Icon name={b.busyKind === 'build' ? 'build' : 'upgrade'} size={30} />
               <div>
-                <b>{b.busyKind === 'build' ? 'Under construction' : `Upgrading to level ${b.level + 1}`}</b>
-                <div className="small muted">{fmt(b.busyUntil - now)} left</div>
+                <b>{b.busyKind === 'build' ? t('build.sheet.underConstruction') : t('build.sheet.upgradingTo', { level: b.level + 1 })}</b>
+                <div className="small muted">{t('build.sheet.timeLeft', { time: fmt(b.busyUntil - now) })}</div>
               </div>
             </div>
-            <button className="btn btn--gem btn--sm" onClick={() => dispatch({ type: 'speedUp', uid: b.uid })} aria-label="Finish now with gems">
-              Finish <Icon name="gem" size={18} /> {speedUpGems(b.busyUntil - now)}
+            <button className="btn btn--gem btn--sm" onClick={() => dispatch({ type: 'speedUp', uid: b.uid })} aria-label={t('build.sheet.finishAria')}>
+              {t('build.sheet.finish')} <Icon name="gem" size={18} /> {speedUpGems(b.busyUntil - now)}
             </button>
           </div>
         )}
 
         {(done.length > 0 || passive.cycles > 0) && (
           <button className="btn btn--gold btn--block" style={{ marginBottom: 10 }} onClick={() => dispatch({ type: 'collect', uid: b.uid })}>
-            Collect {passive.coins > 0 && <><Icon name="coin" size={20} /> {passive.coins}</>}
+            {t('common.collect')} {passive.coins > 0 && <><Icon name="coin" size={20} /> {passive.coins}</>}
             {done.length > 0 && <><Icon name={RECIPES[done[0].recipe].output} size={20} /> ×{done.length}</>}
           </button>
         )}
@@ -258,10 +261,13 @@ export function BuildingSheet() {
             <Icon name="coin" size={30} />
             <div style={{ flex: 1 }}>
               <b>
-                {lvl.passive.coins} coins every {lvl.passive.seconds >= 60 ? `${lvl.passive.seconds / 60} min` : `${lvl.passive.seconds}s`}
+                {t('build.sheet.passive', {
+                  coins: lvl.passive.coins,
+                  interval: lvl.passive.seconds >= 60 ? t('build.sheet.intervalMin', { n: String(lvl.passive.seconds / 60) }) : t('build.sheet.intervalSec', { n: lvl.passive.seconds }),
+                })}
               </b>
               <div className="small muted">
-                Holds up to {lvl.passive.coins * lvl.passive.cycles} coins — {passive.coins} waiting
+                {t('build.sheet.holds', { max: lvl.passive.coins * lvl.passive.cycles, waiting: passive.coins })}
               </div>
             </div>
           </div>
@@ -270,19 +276,19 @@ export function BuildingSheet() {
         {recipes.length > 0 && b.busyKind !== 'build' && (
           <>
             <div className="section-title">
-              <Icon name="timer" size={22} /> Production ({b.queue.length}/{lvl.slots})
+              <Icon name="timer" size={22} /> {t('build.sheet.production', { used: b.queue.length, slots: lvl.slots })}
             </div>
-            <div className="slots" aria-label="Production queue">
+            <div className="slots" aria-label={t('build.sheet.queueAria')}>
               {Array.from({ length: lvl.slots }, (_, i) => {
                 const j = b.queue[i];
-                if (!j) return <div key={i} className="slot" aria-label="Empty slot" />;
+                if (!j) return <div key={i} className="slot" aria-label={t('build.sheet.emptySlot')} />;
                 const finished = j.end <= now;
                 const pct = Math.max(0, Math.min(1, (now - j.start) / (j.end - j.start)));
                 return (
-                  <div key={i} className={`slot filled ${finished ? 'done' : ''}`} aria-label={`${RECIPES[j.recipe].name} ${finished ? 'ready' : fmt(j.end - now)}`}>
+                  <div key={i} className={`slot filled ${finished ? 'done' : ''}`} aria-label={`${RECIPES[j.recipe].name} ${finished ? t('build.sheet.ready') : fmt(j.end - now)}`}>
                     <Icon name={RECIPES[j.recipe].output} size={30} />
                     {!finished && j.start <= now && <i style={{ width: `${pct * 100}%` }} />}
-                    {!finished && j.start > now && <small>queued</small>}
+                    {!finished && j.start > now && <small>{t('build.sheet.queued')}</small>}
                   </div>
                 );
               })}
@@ -306,11 +312,11 @@ export function BuildingSheet() {
                         <span className="row" style={{ gap: 3 }}>
                           <Icon name="timer" size={16} /> {fmt((r.seconds * 1000) / lvl.speed)}
                         </span>
-                        <span className="row" style={{ gap: 3 }} title="Value">
-                          worth <Icon name="coin" size={16} /> {ITEMS[r.output].value * r.qty}
+                        <span className="row" style={{ gap: 3 }} title={t('build.sheet.value')}>
+                          {t('build.sheet.worth')} <Icon name="coin" size={16} /> {ITEMS[r.output].value * r.qty}
                         </span>
                         {(r.coins ?? 0) > 0 && (
-                          <span className={`chip ${g.coins < (r.coins ?? 0) ? 'short' : ''}`} title="Ingredients">
+                          <span className={`chip ${g.coins < (r.coins ?? 0) ? 'short' : ''}`} title={t('build.sheet.ingredients')}>
                             <Icon name="coin" size={16} /> −{r.coins}
                           </span>
                         )}
@@ -319,7 +325,7 @@ export function BuildingSheet() {
                     </div>
                     {locked ? (
                       <span className="chip">
-                        <Icon name="lock" size={16} /> Lv {r.level}
+                        <Icon name="lock" size={16} /> {t('common.levelShort', { level: r.level })}
                       </span>
                     ) : (
                       <button
@@ -327,9 +333,9 @@ export function BuildingSheet() {
                         disabled={full || !hasInputs || b.busyKind === 'upgrade'}
                         data-tutorial={`recipe-${r.id}`}
                         onClick={() => dispatch({ type: 'produce', uid: b.uid, recipe: r.id })}
-                        aria-label={`Make ${r.name}`}
+                        aria-label={t('build.sheet.makeAria', { name: r.name })}
                       >
-                        {full ? 'Full' : !hasInputs ? 'Need items' : 'Make'}
+                        {full ? t('build.sheet.full') : !hasInputs ? t('build.sheet.needItems') : t('build.sheet.make')}
                       </button>
                     )}
                   </div>
@@ -342,7 +348,7 @@ export function BuildingSheet() {
         {next && b.busyKind === null && !deco && (
           <>
             <div className="section-title">
-              <Icon name="upgrade" size={22} /> Upgrade to level {b.level + 1}
+              <Icon name="upgrade" size={22} /> {t('build.sheet.upgradeTo', { level: b.level + 1 })}
             </div>
             <div className="card stack">
               <ul style={{ margin: 0, paddingLeft: 18 }}>
@@ -360,18 +366,18 @@ export function BuildingSheet() {
                   </span>
                 </span>
                 <button className="btn btn--gold" data-tutorial="upgrade" disabled={!canAfford(g, next.upgradeCost)} onClick={() => dispatch({ type: 'upgrade', uid: b.uid })}>
-                  <Icon name="upgrade" size={22} /> Upgrade
+                  <Icon name="upgrade" size={22} /> {t('build.sheet.upgrade')}
                 </button>
               </div>
             </div>
           </>
         )}
-        {!next && !deco && def.levels.length > 1 && <p className="small muted">Fully upgraded — wonderful work!</p>}
+        {!next && !deco && def.levels.length > 1 && <p className="small muted">{t('build.sheet.maxed')}</p>}
       </div>
       <footer className="panel__foot row" style={{ gap: 8, justifyContent: 'flex-end' }}>
         {!['pond', 'fountain'].includes(b.type) && (
           <button className="btn btn--plain btn--sm" onClick={() => startPlacing(b.type, b.uid)}>
-            <Icon name="move" size={18} /> Move
+            <Icon name="move" size={18} /> {t('build.sheet.move')}
           </button>
         )}
         {deco && !isFixed(b.type) && (
@@ -382,7 +388,7 @@ export function BuildingSheet() {
               close();
             }}
           >
-            <Icon name="sell" size={18} /> Sell for {Math.floor((def.cost.coins ?? 0) * (def.sellRefund ?? 0.5))}
+            <Icon name="sell" size={18} /> {t('build.sheet.sellFor', { n: Math.floor((def.cost.coins ?? 0) * (def.sellRefund ?? 0.5)) })}
           </button>
         )}
       </footer>

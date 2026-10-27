@@ -1,0 +1,242 @@
+{
+ "schemaVersion": 1,
+ "version": "1.0.0",
+ "country": "MY",
+ "locales": [
+  "en-MY",
+  "ms-MY"
+ ],
+ "approval": {
+  "state": "approved",
+  "reviewedBy": "POCKETHOOD content review (demo)",
+  "reviewedAt": "2026-10-27"
+ },
+ "activation": {
+  "minGameVersion": "0.3.0"
+ },
+ "licensing": {
+  "content": "original",
+  "assets": [
+   {
+    "id": "pockethood-architecture-kit",
+    "licence": "original",
+    "source": "POCKETHOOD"
+   },
+   {
+    "id": "kenney-mini-characters",
+    "licence": "CC0-1.0",
+    "source": "kenney.nl"
+   }
+  ]
+ },
+ "id": "my.community.kebun_seri",
+ "kind": "community",
+ "category": "agriculture",
+ "template": "farm",
+ "slot": "garden",
+ "name": {
+  "en-MY": "Kebun Komuniti Seri",
+  "ms-MY": "Kebun Komuniti Seri"
+ },
+ "tagline": {
+  "en-MY": "Mak Cik Zainab’s shared garden: plant saplings, water them and watch them grow.",
+  "ms-MY": "Kebun bersama Mak Cik Zainab: tanam anak pokok, siram dan lihat ia membesar."
+ },
+ "description": {
+  "en-MY": "A community garden module. Plant coconut saplings, lemongrass, pandan, chillies and bunga raya in shared plots; watering helps them grow faster.",
+  "ms-MY": "Modul kebun komuniti. Tanam anak kelapa, serai, pandan, cili dan bunga raya di petak bersama; siraman membantu ia membesar lebih cepat."
+ },
+ "brand": {
+  "kind": "fictional",
+  "signText": {
+   "en-MY": "Kebun Seri",
+   "ms-MY": "Kebun Seri"
+  },
+  "palette": {
+   "primary": "#4f9a52",
+   "secondary": "#f3e6c8",
+   "accent": "#e05a3a"
+  }
+ },
+ "presentation": {
+  "prefab": "community_garden",
+  "props": [
+   "trellis",
+   "water_tank"
+  ],
+  "staff": "zainab",
+  "greeting": {
+   "en-MY": "Slowly, slowly. Plants grow at their own pace — and so do we.",
+   "ms-MY": "Perlahan-lahan. Pokok membesar mengikut rentaknya — kita pun begitu."
+  }
+ },
+ "items": [
+  {
+   "id": "pandan",
+   "name": {
+    "en-MY": "Pandan",
+    "ms-MY": "Daun Pandan"
+   },
+   "description": {
+    "en-MY": "Fragrant leaves for kuih and rice.",
+    "ms-MY": "Daun wangi untuk kuih dan nasi."
+   },
+   "icon": "leaf",
+   "value": 8
+  },
+  {
+   "id": "cili",
+   "name": {
+    "en-MY": "Chillies",
+    "ms-MY": "Cili"
+   },
+   "description": {
+    "en-MY": "Small, bright and spicy.",
+    "ms-MY": "Kecil, terang dan pedas."
+   },
+   "icon": "chili",
+   "value": 10
+  },
+  {
+   "id": "serai",
+   "name": {
+    "en-MY": "Lemongrass",
+    "ms-MY": "Serai"
+   },
+   "description": {
+    "en-MY": "For soups, sambal and tea.",
+    "ms-MY": "Untuk sup, sambal dan teh."
+   },
+   "icon": "herbs",
+   "value": 7
+  }
+ ],
+ "recipes": [],
+ "behaviors": [
+  {
+   "type": "garden_plots",
+   "plots": 4,
+   "plants": [
+    {
+     "id": "bunga_raya",
+     "name": {
+      "en-MY": "Bunga Raya",
+      "ms-MY": "Bunga Raya"
+     },
+     "icon": "hibiscus",
+     "growSeconds": 240,
+     "yields": "flowers",
+     "qty": 2,
+     "color": "#e0413a"
+    },
+    {
+     "id": "serai",
+     "name": {
+      "en-MY": "Lemongrass",
+      "ms-MY": "Serai"
+     },
+     "icon": "herbs",
+     "growSeconds": 300,
+     "yields": "serai",
+     "qty": 2,
+     "color": "#9fcf5a"
+    },
+    {
+     "id": "pandan",
+     "name": {
+      "en-MY": "Pandan",
+      "ms-MY": "Pandan"
+     },
+     "icon": "leaf",
+     "growSeconds": 600,
+     "yields": "pandan",
+     "qty": 2,
+     "color": "#3f9a4a"
+    },
+    {
+     "id": "cili",
+     "name": {
+      "en-MY": "Chilli",
+      "ms-MY": "Cili"
+     },
+     "icon": "chili",
+     "growSeconds": 420,
+     "yields": "cili",
+     "qty": 2,
+     "color": "#d8432f"
+    },
+    {
+     "id": "anak_kelapa",
+     "name": {
+      "en-MY": "Coconut sapling",
+      "ms-MY": "Anak kelapa"
+     },
+     "icon": "sapling",
+     "growSeconds": 900,
+     "yields": "berries",
+     "qty": 3,
+     "color": "#6aa84f"
+    }
+   ]
+  },
+  {
+   "type": "visitors",
+   "perHour": 3
+  },
+  {
+   "type": "ambient_sound",
+   "sound": "garden_birds"
+  }
+ ],
+ "quests": [
+  {
+   "id": "first_sapling",
+   "title": {
+    "en-MY": "Put Down Roots",
+    "ms-MY": "Menanam Akar"
+   },
+   "giver": "zainab",
+   "intro": {
+    "en-MY": "Every kampung needs something growing. Plant two plots in the kebun with me — any plants you like.",
+    "ms-MY": "Setiap kampung perlukan sesuatu yang tumbuh. Tanam dua petak di kebun bersama saya — apa-apa pokok yang awak suka."
+   },
+   "outro": {
+    "en-MY": "There. In a few days, no one will remember this was bare soil.",
+    "ms-MY": "Siap. Beberapa hari lagi, tiada siapa ingat ini tanah kosong."
+   },
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "plant",
+     "n": 2,
+     "label": {
+      "en-MY": "Plant 2 garden plots",
+      "ms-MY": "Tanam 2 petak kebun"
+     }
+    },
+    {
+     "type": "counter",
+     "counter": "harvest",
+     "n": 1,
+     "label": {
+      "en-MY": "Harvest a plot",
+      "ms-MY": "Tuai satu petak"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 40,
+    "xp": 15
+   },
+   "after": [
+    "meet_zainab"
+   ]
+  }
+ ],
+ "realWorld": {
+  "notice": {
+   "en-MY": "A community module with no sponsor. Growing times are shortened for play.",
+   "ms-MY": "Modul komuniti tanpa penaja. Tempoh tumbesaran dipendekkan untuk permainan."
+  }
+ }
+}

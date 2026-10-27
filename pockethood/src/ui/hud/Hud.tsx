@@ -12,6 +12,7 @@ import { useGame, type FlyFx, type PanelId } from '../../state/store';
 import { Icon } from '../components/Icon';
 import { EVENTS } from '../../data/progression';
 import { clock } from '../../services/clock';
+import { useT } from '../../platform/i18n';
 
 const fmtNum = (n: number) => (n >= 100000 ? `${Math.floor(n / 1000)}k` : n.toLocaleString());
 
@@ -34,6 +35,7 @@ function Counter({ value }: { value: number }) {
 }
 
 export function TopBar() {
+  const t = useT();
   const g = useGame((s) => s.game!);
   const openPanel = useGame((s) => s.openPanel);
   const bump = useGame((s) => s.ui.bumps.coins ?? 0);
@@ -47,25 +49,25 @@ export function TopBar() {
   const xp = xpProgress(g);
   return (
     <div className="topbar">
-      <button className="profile-chip" onClick={() => openPanel('profile')} aria-label={`Level ${g.level}, open profile`} data-tutorial="profile">
+      <button className="profile-chip" onClick={() => openPanel('profile')} aria-label={t('hud.profileAria', { level: g.level })} data-tutorial="profile">
         <div className="level-badge">{g.level}</div>
         <div className="profile-chip__text">
           <span className="profile-chip__name">{g.profile.hoodName}</span>
-          <div className="xpbar" title={`${xp.cur} / ${xp.need} XP`}>
+          <div className="xpbar" title={t('hud.xpTitle', { cur: xp.cur, need: xp.need })}>
             <i style={{ width: `${Math.round(xp.ratio * 100)}%` }} />
           </div>
         </div>
       </button>
       <div className="spacer" />
-      <div className={`pill ${bumping ? 'bump' : ''}`} id="hud-coins" aria-label={`${g.coins} coins`}>
+      <div className={`pill ${bumping ? 'bump' : ''}`} id="hud-coins" aria-label={t('common.coinsN', { n: g.coins })}>
         <Icon name="coin" size={34} />
         <Counter value={g.coins} />
       </div>
-      <div className="pill" id="hud-gems" aria-label={`${g.gems} gems`} style={{ minWidth: 0 }}>
+      <div className="pill" id="hud-gems" aria-label={t('common.gemsN', { n: g.gems })} style={{ minWidth: 0 }}>
         <Icon name="gem" size={30} />
         <Counter value={g.gems} />
       </div>
-      <button className="round-btn" onClick={() => openPanel('settings')} aria-label="Settings">
+      <button className="round-btn" onClick={() => openPanel('settings')} aria-label={t('hud.settings')}>
         <Icon name="settings" size={28} />
       </button>
     </div>
@@ -73,6 +75,7 @@ export function TopBar() {
 }
 
 export function Tracker() {
+  const t = useT();
   const g = useGame((s) => s.game!);
   const openPanel = useGame((s) => s.openPanel);
   const quest = g.quests.active.find((q) => QUESTS.find((d) => d.id === q.id)?.tutorial) ?? g.quests.active[0];
@@ -85,10 +88,10 @@ export function Tracker() {
   return (
     <div className="tracker">
       {def && obj && prog && (
-        <button className="tracker__card" onClick={() => openPanel('quests')} aria-label={`Quest: ${def.title}. ${obj.label}`}>
+        <button className="tracker__card" onClick={() => openPanel('quests')} aria-label={t('hud.tracker.questAria', { title: def.title, objective: obj.label })}>
           <Icon name="quests" size={34} />
           <div style={{ flex: 1, minWidth: 0 }}>
-            <small>{def.tutorial ? 'Getting started' : 'Quest'} · {def.title}</small>
+            <small>{def.tutorial ? t('hud.tracker.gettingStarted') : t('hud.tracker.quest')} · {def.title}</small>
             <b>{obj.label}</b>
             <div className="progress">
               <i style={{ width: `${(prog.cur / prog.n) * 100}%` }} />
@@ -100,15 +103,15 @@ export function Tracker() {
         </button>
       )}
       {pulse && (
-        <button className="tracker__card" onClick={() => openPanel('pulse')} aria-label="Today's Neighborhood Pulse">
+        <button className="tracker__card" onClick={() => openPanel('pulse')} aria-label={t('hud.tracker.pulseAria')}>
           <Icon name="pulse" size={34} />
           <div style={{ flex: 1 }}>
-            <small>Today in your neighborhood</small>
-            <b>Neighborhood Pulse</b>
+            <small>{t('hud.tracker.pulseSub')}</small>
+            <b>{t('hud.tracker.pulse')}</b>
           </div>
           <div className="pulse-dots" aria-hidden>
-            {pulse.tasks.map((t) => (
-              <i key={t.id} className={t.claimed || pulseTaskProgress(g, t) >= t.n ? 'on' : ''} />
+            {pulse.tasks.map((task) => (
+              <i key={task.id} className={task.claimed || pulseTaskProgress(g, task) >= task.n ? 'on' : ''} />
             ))}
           </div>
         </button>
@@ -117,7 +120,7 @@ export function Tracker() {
         <button className="tracker__card" onClick={() => openPanel('events')}>
           <Icon name="events" size={34} />
           <div style={{ flex: 1 }}>
-            <small>Seasonal event</small>
+            <small>{t('hud.tracker.event')}</small>
             <b>{eventDef!.name}</b>
           </div>
         </button>
@@ -127,6 +130,7 @@ export function Tracker() {
 }
 
 export function BottomBar() {
+  const t = useT();
   const g = useGame((s) => s.game!);
   const panel = useGame((s) => s.ui.panel);
   const openPanel = useGame((s) => s.openPanel);
@@ -134,14 +138,14 @@ export function BottomBar() {
   const stories = g.residents.filter((r) => eligibleChapter(g, r)).length;
   const invCount = Object.values(g.inventory).reduce((a, b) => a + b, 0);
   const items: { id: PanelId; label: string; icon: string; badge?: number | string; primary?: boolean }[] = [
-    { id: 'build', label: 'Build', icon: 'build', primary: true },
-    { id: 'orders', label: 'Orders', icon: 'orders', badge: deliverable || undefined },
-    { id: 'residents', label: 'Neighbors', icon: 'residents', badge: stories ? '!' : undefined },
-    { id: 'inventory', label: 'Storage', icon: 'inventory', badge: invCount ? undefined : undefined },
-    { id: 'friends', label: 'Friends', icon: 'friends', badge: 'soon' },
+    { id: 'build', label: t('hud.nav.build'), icon: 'build', primary: true },
+    { id: 'orders', label: t('hud.nav.orders'), icon: 'orders', badge: deliverable || undefined },
+    { id: 'residents', label: t('hud.nav.residents'), icon: 'residents', badge: stories ? '!' : undefined },
+    { id: 'inventory', label: t('hud.nav.inventory'), icon: 'inventory', badge: invCount ? undefined : undefined },
+    { id: 'friends', label: t('hud.nav.friends'), icon: 'friends', badge: 'soon' },
   ];
   return (
-    <nav className="bottombar" aria-label="Main">
+    <nav className="bottombar" aria-label={t('hud.nav.aria')}>
       {items.map((it) => (
         <button
           key={it.id}
@@ -154,7 +158,7 @@ export function BottomBar() {
             <Icon name={it.icon} size={30} />
           </span>
           {it.label}
-          {it.badge !== undefined && <span className={`badge ${it.badge === 'soon' ? 'badge--soon' : ''}`}>{it.badge}</span>}
+          {it.badge !== undefined && <span className={`badge ${it.badge === 'soon' ? 'badge--soon' : ''}`}>{it.badge === 'soon' ? t('hud.nav.soon') : it.badge}</span>}
         </button>
       ))}
     </nav>
@@ -162,20 +166,21 @@ export function BottomBar() {
 }
 
 export function SideRail() {
+  const t = useT();
   const setUI = useGame((s) => s.setUI);
   const openPanel = useGame((s) => s.openPanel);
   return (
     <div className="siderail">
-      <button className="round-btn" aria-label="Zoom in" onClick={() => zoomBy(1.25)}>
+      <button className="round-btn" aria-label={t('hud.rail.zoomIn')} onClick={() => zoomBy(1.25)}>
         <Icon name="zoomIn" size={26} />
       </button>
-      <button className="round-btn" aria-label="Zoom out" onClick={() => zoomBy(0.8)}>
+      <button className="round-btn" aria-label={t('hud.rail.zoomOut')} onClick={() => zoomBy(0.8)}>
         <Icon name="zoomOut" size={26} />
       </button>
-      <button className="round-btn" aria-label="Photo mode" onClick={() => setUI({ photoMode: true, panel: null, selected: null })} data-tutorial="photo">
+      <button className="round-btn" aria-label={t('hud.rail.photo')} onClick={() => setUI({ photoMode: true, panel: null, selected: null })} data-tutorial="photo">
         <Icon name="camera" size={28} />
       </button>
-      <button className="round-btn" aria-label="Help" onClick={() => openPanel('help')}>
+      <button className="round-btn" aria-label={t('hud.rail.help')} onClick={() => openPanel('help')}>
         <Icon name="help" size={28} />
       </button>
     </div>

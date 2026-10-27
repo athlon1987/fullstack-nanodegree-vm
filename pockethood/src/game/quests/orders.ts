@@ -33,19 +33,19 @@ export function producibleItems(state: Pick<GameState, 'buildings'>): string[] {
 const recipeFor = (item: string) => Object.values(RECIPES).find((r) => r.output === item)!;
 
 export function orderReward(items: ItemBag, level: number) {
-  const value = Object.entries(items).reduce((s, [id, n]) => s + ITEMS[id].value * n, 0);
+  const value = Object.entries(items).reduce((s, [id, n]) => s + (ITEMS[id]?.value ?? 0) * n, 0);
   return { coins: Math.round(value * 1.3 + 3 + level * 0.5), xp: Math.max(2, Math.round(value / 6)) + 1 };
 }
 
 export function generateOrder(state: GameState, now: number): Order | null {
-  const items = producibleItems(state).filter((i) => ITEMS[i].kind === 'good' || state.level >= 4);
-  const arrived = state.residents.map((r) => r.id);
+  const items = producibleItems(state).filter((i) => ITEMS[i] && (ITEMS[i].kind === 'good' || state.level >= 4));
+  const arrived = state.residents.map((r) => r.id).filter((id) => RESIDENTS[id]);
   if (!items.length || !arrived.length) return null;
   const counter = state.orderCounter;
   // The very first order is scripted for the tutorial.
   if (counter === 0 && items.includes('coffee')) {
     const bag = { coffee: 2 };
-    return { id: `o${counter + 1}`, resident: 'mia', items: bag, reward: orderReward(bag, state.level), createdAt: now };
+    return { id: `o${counter + 1}`, resident: arrived[0], items: bag, reward: orderReward(bag, state.level), createdAt: now };
   }
   const r = rng(state.seed ^ hashString(`order:${counter}`));
   const busy = new Set(state.orders.map((o) => o.resident));

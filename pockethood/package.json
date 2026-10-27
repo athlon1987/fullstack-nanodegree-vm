@@ -5,9 +5,9 @@
   "type": "module",
   "description": "POCKETHOOD — a cozy social neighborhood-building game.",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "build:artifact": "VITE_MODEL_EXT=.gltf.json vite build && node scripts/asset-pipeline/export-embedded.mjs dist/assets/models",
+    "dev": "npm run content:build && vite",
+    "build": "npm run content:build && tsc -b && vite build",
+    "build:artifact": "npm run content:build && VITE_MODEL_EXT=.gltf.json vite build && node scripts/asset-pipeline/export-embedded.mjs dist/assets/models",
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit",
     "test": "vitest run",
@@ -16,7 +16,8 @@
     "assets:import": "node scripts/asset-pipeline/import-netforge.mjs",
     "assets:manifest": "node scripts/asset-pipeline/write-manifest.mjs",
     "assets:validate": "node scripts/validation/validate-assets.mjs",
-    "economy:sim": "vite-node scripts/economy/simulate.ts"
+    "economy:sim": "vite-node scripts/economy/simulate.ts",
+    "content:build": "vite-node scripts/content/build-index.ts"
   },
   "dependencies": {
     "@fontsource-variable/fredoka": "5.3.0",

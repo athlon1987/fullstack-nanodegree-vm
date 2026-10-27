@@ -1,0 +1,189 @@
+{
+ "schemaVersion": 1,
+ "version": "1.0.0",
+ "country": "MY",
+ "locales": [
+  "en-MY",
+  "ms-MY"
+ ],
+ "approval": {
+  "state": "approved",
+  "reviewedBy": "POCKETHOOD content review (demo)",
+  "reviewedAt": "2026-10-27"
+ },
+ "activation": {
+  "minGameVersion": "0.3.0"
+ },
+ "licensing": {
+  "content": "original",
+  "assets": [
+   {
+    "id": "pockethood-architecture-kit",
+    "licence": "original",
+    "source": "POCKETHOOD"
+   },
+   {
+    "id": "kenney-mini-characters",
+    "licence": "CC0-1.0",
+    "source": "kenney.nl"
+   }
+  ]
+ },
+ "id": "my.auto.galeri_seri",
+ "kind": "business",
+ "category": "automotive",
+ "template": "showroom",
+ "slot": "showroom",
+ "name": {
+  "en-MY": "Galeri Seri Auto",
+  "ms-MY": "Galeri Seri Auto"
+ },
+ "tagline": {
+  "en-MY": "Farid’s little glass showroom. Arrange the display — visitors come to look, not to be sold to.",
+  "ms-MY": "Bilik pameran kaca kecil Farid. Susun pameran — pelawat datang melihat, bukan untuk dipujuk membeli."
+ },
+ "description": {
+  "en-MY": "A fictional showroom with generic, unbranded cars. Choose models and paint colours for each display bay.",
+  "ms-MY": "Bilik pameran rekaan dengan kereta generik tanpa jenama. Pilih model dan warna cat untuk setiap ruang pameran."
+ },
+ "brand": {
+  "kind": "fictional",
+  "signText": {
+   "en-MY": "Galeri Seri Auto",
+   "ms-MY": "Galeri Seri Auto"
+  },
+  "palette": {
+   "primary": "#2f6fb3",
+   "secondary": "#eef3f7",
+   "accent": "#e9b23c"
+  }
+ },
+ "presentation": {
+  "prefab": "showroom_glass",
+  "props": [
+   "flag",
+   "potted_plant",
+   "tyre_stack"
+  ],
+  "staff": "farid",
+  "greeting": {
+   "en-MY": "Have a look around! Pick a colour you like — I’ll polish it.",
+   "ms-MY": "Lihat-lihatlah! Pilih warna yang awak suka — saya gilapkan."
+  }
+ },
+ "items": [],
+ "recipes": [],
+ "behaviors": [
+  {
+   "type": "showroom",
+   "slots": 3,
+   "models": [
+    "sedan",
+    "suv",
+    "hatchback_sports",
+    "van",
+    "taxi"
+   ],
+   "paints": [
+    {
+     "id": "mutiara",
+     "name": {
+      "en-MY": "Pearl White",
+      "ms-MY": "Putih Mutiara"
+     },
+     "hex": "#f3efe6"
+    },
+    {
+     "id": "saga",
+     "name": {
+      "en-MY": "Saga Red",
+      "ms-MY": "Merah Saga"
+     },
+     "hex": "#c4412f"
+    },
+    {
+     "id": "laut",
+     "name": {
+      "en-MY": "Sea Blue",
+      "ms-MY": "Biru Laut"
+     },
+     "hex": "#2f6fb3"
+    },
+    {
+     "id": "pandan",
+     "name": {
+      "en-MY": "Pandan Green",
+      "ms-MY": "Hijau Pandan"
+     },
+     "hex": "#4f9a52"
+    },
+    {
+     "id": "kunyit",
+     "name": {
+      "en-MY": "Turmeric Yellow",
+      "ms-MY": "Kuning Kunyit"
+     },
+     "hex": "#e9b23c"
+    },
+    {
+     "id": "malam",
+     "name": {
+      "en-MY": "Night Black",
+      "ms-MY": "Hitam Malam"
+     },
+     "hex": "#2b2b33"
+    }
+   ]
+  },
+  {
+   "type": "visitors",
+   "perHour": 4
+  },
+  {
+   "type": "ambient_sound",
+   "sound": "showroom_hum"
+  }
+ ],
+ "quests": [
+  {
+   "id": "open_house",
+   "title": {
+    "en-MY": "Open House",
+    "ms-MY": "Rumah Terbuka"
+   },
+   "giver": "farid",
+   "intro": {
+    "en-MY": "Let’s set up the display for the open house — fill two bays with your favourite colours.",
+    "ms-MY": "Jom susun pameran untuk rumah terbuka — isi dua ruang dengan warna kegemaran awak."
+   },
+   "outro": {
+    "en-MY": "Perfect. Even Uncle Lim came over with his kopi to have a look.",
+    "ms-MY": "Sempurna. Pak Cik Lim pun datang dengan kopinya untuk melihat."
+   },
+   "objectives": [
+    {
+     "type": "counter",
+     "counter": "arrange",
+     "n": 2,
+     "label": {
+      "en-MY": "Arrange 2 display bays",
+      "ms-MY": "Susun 2 ruang pameran"
+     }
+    }
+   ],
+   "reward": {
+    "coins": 50,
+    "xp": 12
+   },
+   "after": [
+    "showroom"
+   ]
+  }
+ ],
+ "realWorld": {
+  "notice": {
+   "en-MY": "Galeri Seri Auto is a fictional showroom. Vehicles are generic models; no real brands, prices or offers are shown.",
+   "ms-MY": "Galeri Seri Auto ialah bilik pameran rekaan. Kenderaan ialah model generik; tiada jenama, harga atau tawaran sebenar dipaparkan."
+  }
+ }
+}

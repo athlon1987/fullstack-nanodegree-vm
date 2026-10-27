@@ -30,6 +30,7 @@ export const activeChapter = (r: ResidentState) => (r.storyActive ? STORIES.find
  */
 export function chooseLine(state: GameState, r: ResidentState, phase: DayPhase, now: number): string {
   const def = RESIDENTS[r.id];
+  if (!def) return '';
   const lvl = friendshipLevel(r.friendship);
   const roll = rng(state.seed ^ hashString(`${r.id}:${Math.floor(now / 60_000)}`));
   const memories = def.memoryLines.filter((l) => l.memory && r.memories[l.memory]);
@@ -49,11 +50,3 @@ export function giftReaction(residentId: string, item: string): { reaction: 'lov
   if (ITEMS[item]?.kind === 'good' && ITEMS[item].value >= 20) return { reaction: 'like', points: 4 };
   return { reaction: 'neutral', points: 2 };
 }
-
-export const OPENED_MEMORY: Record<string, string> = {
-  cafe: 'opened_cafe',
-  bakery: 'opened_bakery',
-  garden: 'opened_garden',
-  workshop: 'opened_workshop',
-  park: 'opened_park',
-};

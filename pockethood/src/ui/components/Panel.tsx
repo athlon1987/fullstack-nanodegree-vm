@@ -5,8 +5,10 @@ import type { Cost, GameState, ItemBag } from '../../game/core/types';
 import { portrait } from '../../rendering/thumbnails';
 import { useGame } from '../../state/store';
 import { Icon } from './Icon';
+import { useT } from '../../platform/i18n';
 
 export function Panel({ title, icon, onClose, children, foot, tabs }: { title: string; icon: string; onClose?: () => void; children: ReactNode; foot?: ReactNode; tabs?: ReactNode }) {
+  const t = useT();
   const openPanel = useGame((s) => s.openPanel);
   const close = onClose ?? (() => openPanel(null));
   useEffect(() => {
@@ -21,7 +23,7 @@ export function Panel({ title, icon, onClose, children, foot, tabs }: { title: s
         <header className="panel__head">
           <Icon name={icon} size={34} />
           <h2>{title}</h2>
-          <button className="round-btn" onClick={close} aria-label="Close">
+          <button className="round-btn" onClick={close} aria-label={t('common.close')}>
             <Icon name="close" size={22} />
           </button>
         </header>
@@ -47,11 +49,12 @@ export function Tabs<T extends string>({ value, options, onChange }: { value: T;
 
 /** Cost chips that show what's affordable (never colour-only: shortfalls get a label). */
 export function CostChips({ cost, game }: { cost: Cost; game: GameState }) {
+  const t = useT();
   const chips: ReactNode[] = [];
   if (cost.coins) {
     const short = game.coins < cost.coins;
     chips.push(
-      <span key="c" className={`chip ${short ? 'short' : 'ok'}`} aria-label={`${cost.coins} coins${short ? ', not enough' : ''}`}>
+      <span key="c" className={`chip ${short ? 'short' : 'ok'}`} aria-label={short ? t('ui.cost.coinsShort', { n: cost.coins }) : t('common.coinsN', { n: cost.coins })}>
         <Icon name="coin" size={20} />
         {cost.coins}
       </span>,
@@ -69,13 +72,13 @@ export function CostChips({ cost, game }: { cost: Cost; game: GameState }) {
   for (const [id, n] of Object.entries(cost.items ?? {})) {
     const have = game.inventory[id] ?? 0;
     chips.push(
-      <span key={id} className={`chip ${have < n ? 'short' : 'ok'}`} title={ITEMS[id].name} aria-label={`${n} ${ITEMS[id].name}, you have ${have}`}>
+      <span key={id} className={`chip ${have < n ? 'short' : 'ok'}`} title={ITEMS[id].name} aria-label={t('ui.cost.item', { n, item: ITEMS[id].name, have })}>
         <Icon name={id} size={20} />
         {have}/{n}
       </span>,
     );
   }
-  if (!chips.length) chips.push(<span key="free" className="chip ok">Free</span>);
+  if (!chips.length) chips.push(<span key="free" className="chip ok">{t('common.free')}</span>);
   return <span className="row" style={{ gap: 6, flexWrap: 'wrap' }}>{chips}</span>;
 }
 
@@ -98,6 +101,7 @@ export function ItemChips({ items, game, showHave = true }: { items: ItemBag; ga
 
 /** Lazily rendered 3D portrait of a resident's real character model. */
 export function Portrait({ resident, model, size = 'md' }: { resident?: string; model?: string; size?: 'md' | 'lg' }) {
+  const t = useT();
   const name = model ?? RESIDENTS[resident!]?.model;
   const [src, setSrc] = useState<string>('');
   useEffect(() => {
@@ -106,15 +110,16 @@ export function Portrait({ resident, model, size = 'md' }: { resident?: string; 
   }, [name]);
   const color = resident ? RESIDENTS[resident]?.color : '#f2b632';
   return src ? (
-    <img className={`portrait ${size === 'lg' ? 'portrait--lg' : ''}`} src={src} alt={resident ? RESIDENTS[resident].name : 'Avatar'} style={{ borderColor: '#fff', background: `radial-gradient(circle at 50% 30%, #fff, ${color}55)` }} />
+    <img className={`portrait ${size === 'lg' ? 'portrait--lg' : ''}`} src={src} alt={resident ? RESIDENTS[resident].name : t('ui.avatar')} style={{ borderColor: '#fff', background: `radial-gradient(circle at 50% 30%, #fff, ${color}55)` }} />
   ) : (
     <div className={`portrait ${size === 'lg' ? 'portrait--lg' : ''}`} />
   );
 }
 
 export function Hearts({ level, max = 5 }: { level: number; max?: number }) {
+  const t = useT();
   return (
-    <span className="hearts" aria-label={`Friendship level ${level} of ${max}`}>
+    <span className="hearts" aria-label={t('ui.hearts', { level, max })}>
       {Array.from({ length: max }, (_, i) => (
         <Icon key={i} name="heart" size={16} style={{ opacity: i < level ? 1 : 0.22, filter: i < level ? undefined : 'grayscale(1)' }} />
       ))}
