@@ -13,6 +13,11 @@ export type Schema<T> = {
   /** Human-readable type description for docs. */
   describe(): string;
   optional?: boolean;
+  /** Structure, for generated documentation. */
+  shape?: Record<string, Schema<unknown>>;
+  item?: Schema<unknown>;
+  value?: Schema<unknown>;
+  variants?: Record<string, Schema<unknown>>;
 };
 
 const UNSAFE = [
@@ -101,7 +106,8 @@ export function arr<T>(item: Schema<T>, o: { min?: number; max?: number; unique?
       });
       return bad ? undefined : out;
     },
-    describe: () => `list of (${item.describe()}), ≤ ${max}`,
+    describe: () => `list (≤ ${max})`,
+    item: item as Schema<unknown>,
   };
 }
 
@@ -148,7 +154,8 @@ export function obj<S extends Shape>(shape: S): Schema<Out<S>> {
       }
       return bad ? undefined : (out as Out<S>);
     },
-    describe: () => `{ ${Object.entries(shape).map(([k, s]) => `${k}${s.optional ? '?' : ''}: ${s.describe()}`).join('; ')} }`,
+    describe: () => 'object',
+    shape,
   };
 }
 
@@ -170,7 +177,8 @@ export function rec<T>(key: Schema<string>, value: Schema<T>, o: { max?: number 
       }
       return bad ? undefined : out;
     },
-    describe: () => `map ${key.describe()} → ${value.describe()}`,
+    describe: () => `map (keys: ${key.describe()}, ≤ ${max})`,
+    value: value as Schema<unknown>,
   };
 }
 
@@ -184,7 +192,8 @@ export function tagged<V extends Record<string, Schema<any>>>(field: string, var
       if (!s) return void issues.push({ path: `${path}.${field}`, message: `must be one of: ${Object.keys(variants).join(', ')}` });
       return s.check(v, path, issues) as Inner<V[keyof V]> | undefined;
     },
-    describe: () => Object.keys(variants).join(' | '),
+    describe: () => `one of: ${Object.keys(variants).join(', ')} (by "${field}")`,
+    variants: variants as Record<string, Schema<unknown>>,
   };
 }
 

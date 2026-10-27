@@ -2,8 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { BUILDINGS, bdef, isDecoration, isFixed } from '../../data/buildings';
 import { ACTIVE_MODULES } from '../../platform/content/install';
 import { BehaviorCards, ModuleBadges } from './ModulePanels';
-import { ITEMS, RECIPES } from '../../data/items';
-import { RESIDENTS } from '../../data/residents';
+import { ITEMS, RECIPES, idef } from '../../data/items';
+import { RESIDENTS, rdef } from '../../data/residents';
 import type { BuildingCategory, Rotation } from '../../game/core/types';
 import { canAfford, missingFor, finishedJobs, levelDef, passiveReady, recipesFor, speedUpGems, upgradeSeconds } from '../../game/economy/economy';
 import { findSpot, placementProblem } from '../../game/world/grid';
@@ -102,7 +102,7 @@ export function BuildPanel() {
                   {d.keepsake ? t('build.keepsake') : t('common.levelShort', { level: d.unlockLevel })}
                 </span>
               )}
-              {unlocked && d.resident && count === 0 && <span className="new-tag">+ {RESIDENTS[d.resident].name}</span>}
+              {unlocked && d.resident && count === 0 && <span className="new-tag">+ {rdef(d.resident).name}</span>}
               <Thumb type={d.id} />
               <b>{d.name}</b>
               {d.maxCount !== undefined && unlocked && (
@@ -238,6 +238,11 @@ export function BuildingSheet() {
           {def.description}
         </p>
         {mod && <ModuleBadges m={mod} />}
+        {mod?.greeting && worker && b.busyKind !== 'build' && (
+          <p className="small" style={{ marginTop: 0 }}>
+            <b>{worker.name}:</b> “{mod.greeting}”
+          </p>
+        )}
 
         {b.busyUntil !== null && (
           <div className="card row row--between" style={{ marginBottom: 10 }}>
@@ -320,7 +325,7 @@ export function BuildingSheet() {
                           <Icon name="timer" size={16} /> {fmt((r.seconds * 1000) / lvl.speed)}
                         </span>
                         <span className="row" style={{ gap: 3 }} title={t('build.sheet.value')}>
-                          {t('build.sheet.worth')} <Icon name="coin" size={16} /> {ITEMS[r.output].value * r.qty}
+                          {t('build.sheet.worth')} <Icon name="coin" size={16} /> {idef(r.output).value * r.qty}
                         </span>
                         {(r.coins ?? 0) > 0 && (
                           <span className={`chip ${g.coins < (r.coins ?? 0) ? 'short' : ''}`} title={t('build.sheet.ingredients')}>

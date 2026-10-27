@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { BUILDINGS } from '../../data/buildings';
-import { ITEMS } from '../../data/items';
+import { bdef } from '../../data/buildings';
+import { ITEMS, idef } from '../../data/items';
 import { QUESTS, STORIES } from '../../data/progression';
-import { FRIENDSHIP_LEVELS, RESIDENTS, RESIDENT_IDS } from '../../data/residents';
+import { FRIENDSHIP_LEVELS, residentIds, rdef } from '../../data/residents';
 import { activeChapter, eligibleChapter } from '../../game/characters/relationships';
 import { dayKey } from '../../game/core/rng';
 import { friendshipLevel, hasItems } from '../../game/economy/economy';
@@ -38,7 +38,7 @@ export function OrdersPanel() {
               <Portrait resident={o.resident} />
               <div style={{ flex: 1, minWidth: 0 }} className="stack">
                 <div>
-                  <b style={{ fontFamily: 'var(--font-display)' }}>{RESIDENTS[o.resident].name}</b>
+                  <b style={{ fontFamily: 'var(--font-display)' }}>{rdef(o.resident).name}</b>
                   <span className="small muted"> {t('social.orders.needs')}</span>
                 </div>
                 <ItemChips items={o.items} game={g} />
@@ -96,12 +96,12 @@ export function InventoryPanel() {
             </div>
             <div style={{ flex: 1 }}>
               <b>
-                {ITEMS[id].name} ×{n}
+                {idef(id).name} ×{n}
               </b>
-              <div className="small muted">{ITEMS[id].description}</div>
+              <div className="small muted">{idef(id).description}</div>
             </div>
-            <button className="btn btn--plain btn--sm" onClick={() => dispatch({ type: 'sellItem', item: id, qty: 1 })} aria-label={t('social.inventory.sellAria', { item: ITEMS[id].name })}>
-              {t('social.inventory.sell')} <Icon name="coin" size={16} /> {Math.floor(ITEMS[id].value * 0.6)}
+            <button className="btn btn--plain btn--sm" onClick={() => dispatch({ type: 'sellItem', item: id, qty: 1 })} aria-label={t('social.inventory.sellAria', { item: idef(id).name })}>
+              {t('social.inventory.sell')} <Icon name="coin" size={16} /> {Math.floor(idef(id).value * 0.6)}
             </button>
           </div>
         ))}
@@ -111,8 +111,8 @@ export function InventoryPanel() {
 }
 
 const ARRIVAL_HINT = (id: string) => {
-  const a = RESIDENTS[id].arrival;
-  if (a.type === 'building') return t('social.residents.arrivalBuilding', { building: BUILDINGS[a.building].name });
+  const a = rdef(id).arrival;
+  if (a.type === 'building') return t('social.residents.arrivalBuilding', { building: bdef(a.building).name });
   if (a.type === 'level') return t('social.residents.arrivalLevel', { level: a.level });
   return '';
 };
@@ -124,8 +124,8 @@ export function ResidentsPanel() {
   return (
     <Panel title={t('social.residents.title')} icon="residents">
       <div className="stack">
-        {RESIDENT_IDS.map((id) => {
-          const def = RESIDENTS[id];
+        {residentIds().map((id) => {
+          const def = rdef(id);
           const r = g.residents.find((x) => x.id === id);
           if (!r)
             return (
@@ -170,7 +170,7 @@ export function ResidentsPanel() {
 export function ResidentDetails({ id }: { id: string }) {
   const g = useGame((s) => s.game!);
   const r = g.residents.find((x) => x.id === id)!;
-  const def = RESIDENTS[id];
+  const def = rdef(id);
   const t = useT();
   const lvl = friendshipLevel(r.friendship);
   const next = FRIENDSHIP_LEVELS[lvl + 1];
@@ -192,7 +192,7 @@ export function ResidentDetails({ id }: { id: string }) {
         <b>{t('social.details.loves')}</b>
         {def.favorites.map((f) => (
           <span key={f} className="chip">
-            <Icon name={f} size={18} /> {ITEMS[f].name}
+            <Icon name={f} size={18} /> {idef(f).name}
           </span>
         ))}
       </div>
@@ -219,7 +219,7 @@ export function ResidentDetails({ id }: { id: string }) {
 const MEMORY_KEYS = ['moved_in', 'opened_cafe', 'opened_bakery', 'opened_garden', 'opened_workshop', 'opened_park', 'upgraded_cafe_2', 'landmark_built', 'expanded'];
 
 function memoryText(resident: string, key: string): string | null {
-  const name = RESIDENTS[resident].name;
+  const name = rdef(resident).name;
   if (MEMORY_KEYS.includes(key)) return t(`social.memory.${key}`, { name });
   if (key.startsWith('gift_')) return t('social.memory.gift', { name, item: ITEMS[key.slice(5)]?.name ?? key });
   const ch = STORIES.find((c) => c.memory === key);
@@ -286,7 +286,7 @@ export function QuestsPanel() {
               <div style={{ flex: 1 }}>
                 <b>{ch.title}</b>
                 <div className="small muted">
-                  {RESIDENTS[r.id].name} · {active ? ch.objectives.map((o) => o.label).join(', ') : t('social.quests.talkToStart')}
+                  {rdef(r.id).name} · {active ? ch.objectives.map((o) => o.label).join(', ') : t('social.quests.talkToStart')}
                 </div>
               </div>
               <Icon name="arrow" size={22} />

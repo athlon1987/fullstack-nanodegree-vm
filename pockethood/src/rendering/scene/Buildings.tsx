@@ -308,7 +308,7 @@ function StatusBubble({ b, height }: { b: BuildingInstance; height: number }) {
     const pct = Math.min(1, (now - job.start) / (job.end - job.start));
     content = (
       <div className="bubble bubble--work">
-        <Icon name={RECIPES[job.recipe].output} size={16} />
+        <Icon name={job.out?.item ?? RECIPES[job.recipe]?.output ?? 'star'} size={16} />
         <i style={{ width: `${Math.max(0, pct) * 100}%` }} />
       </div>
     );

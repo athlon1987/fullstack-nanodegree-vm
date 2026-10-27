@@ -13,7 +13,7 @@ export default {
   'share.copyManual': 'Copy this link:',
   'share.photo': 'Take a photo to share',
   'share.privacy': 'The link opens the game. It doesn’t contain anything from your save.',
-  'share.snapshotPrivacy': 'The snapshot contains only your neighbourhood’s name, level and building layout — never your coins, items, name or progress.',
+  'share.snapshotPrivacy': 'The snapshot contains only your neighbourhood’s name, level, district, building layout and which neighbours live there — never your coins, items, your name or your progress.',
   'share.visiting': 'Visiting {hood}',
   'share.visitingHint': 'A read-only snapshot someone shared. Nothing here changes your own game.',
   'share.goHome': 'My neighbourhood',

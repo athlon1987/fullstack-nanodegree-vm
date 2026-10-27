@@ -1,4 +1,5 @@
 import type { ItemDef, RecipeDef } from '../game/core/types';
+import { t } from '../platform/i18n';
 
 export const ITEMS: Record<string, ItemDef> = {
   coffee: { id: 'coffee', name: 'Coffee', value: 5, icon: 'coffee', kind: 'good', description: 'Fresh from Mia’s espresso machine.' },
@@ -35,3 +36,6 @@ export const RECIPES: Record<string, RecipeDef> = {
 };
 
 export const itemName = (id: string) => ITEMS[id]?.name ?? id;
+
+/** Item definition, or a neutral stand-in when its content (e.g. a module) isn't installed. */
+export const idef = (id: string): ItemDef => ITEMS[id] ?? { id, name: t('common.unknownItem'), value: 0, icon: 'star', kind: 'good', description: '' };

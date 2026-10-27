@@ -17,5 +17,6 @@ const ms: Translation<typeof en> = {
   'ui.tip.photo': 'Cuba Mod Foto waktu senja.',
   'ui.updateReady': 'Versi baharu POCKETHOOD sudah sedia.',
   'ui.updateNow': 'Kemas kini',
+  'ui.panelError': 'Ada masalah pada bahagian skrin ini. Permainan anda selamat.',
 };
 export default ms;

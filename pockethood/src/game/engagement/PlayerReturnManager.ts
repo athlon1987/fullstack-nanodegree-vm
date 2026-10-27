@@ -1,9 +1,9 @@
 // Welcome-back summaries and "what can I do next?" guidance.
 // Returning players are never penalised: production simply waits (capped), and
 // relationships, memories and achievements are never lost.
-import { BUILDINGS } from '../../data/buildings';
+import { BUILDINGS, bdef } from '../../data/buildings';
 import { QUESTS } from '../../data/progression';
-import { RESIDENTS } from '../../data/residents';
+import { RESIDENTS, rdef } from '../../data/residents';
 import { eligibleChapter, activeChapter } from '../characters/relationships';
 import type { GameState, TextParams } from '../core/types';
 import { canAfford, finishedJobs, hasItems, passiveReady } from '../economy/economy';
@@ -39,9 +39,9 @@ export function welcomeSummary(prev: GameState, now: number): WelcomeSummary | n
   for (const b of prev.buildings) {
     readyGoods += finishedJobs(b, now).length;
     coinsWaiting += passiveReady(b, now).coins;
-    if (b.busyUntil !== null && b.busyUntil <= now && BUILDINGS[b.type]) buildingsFinished.push(BUILDINGS[b.type].name);
+    if (b.busyUntil !== null && b.busyUntil <= now && BUILDINGS[b.type]) buildingsFinished.push(bdef(b.type).name);
   }
-  const storiesWaiting = prev.residents.filter((r) => RESIDENTS[r.id] && eligibleChapter(prev, r)).map((r) => RESIDENTS[r.id].name);
+  const storiesWaiting = prev.residents.filter((r) => RESIDENTS[r.id] && eligibleChapter(prev, r)).map((r) => rdef(r.id).name);
   return { awayMs, readyGoods, coinsWaiting, buildingsFinished, ordersOpen: prev.orders.length, storiesWaiting, nextGoal: nextGoal(prev, now) };
 }
 
@@ -69,7 +69,7 @@ export function nextGoal(s: GameState, now: number): NextGoal | null {
   }
   const upgradable = s.buildings.find((b) => {
     const next = BUILDINGS[b.type]?.levels[b.level];
-    return next && !b.busyKind && BUILDINGS[b.type].category !== 'decoration' && canAfford(s, next.upgradeCost);
+    return next && !b.busyKind && bdef(b.type).category !== 'decoration' && canAfford(s, next.upgradeCost);
   });
   if (upgradable) return { key: 'goal.upgrade', params: { building: upgradable.type }, target: { uid: upgradable.uid } };
   const quest = s.quests.active.find((q) => QUESTS.some((d) => d.id === q.id));

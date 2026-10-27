@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react';
-import { ITEMS } from '../../data/items';
-import { RESIDENTS } from '../../data/residents';
+import { ITEMS, idef } from '../../data/items';
+import { RESIDENTS, rdef } from '../../data/residents';
 import type { Cost, GameState, ItemBag } from '../../game/core/types';
 import { portrait } from '../../rendering/thumbnails';
 import { useGame } from '../../state/store';
@@ -72,7 +72,7 @@ export function CostChips({ cost, game }: { cost: Cost; game: GameState }) {
   for (const [id, n] of Object.entries(cost.items ?? {})) {
     const have = game.inventory[id] ?? 0;
     chips.push(
-      <span key={id} className={`chip ${have < n ? 'short' : 'ok'}`} title={ITEMS[id].name} aria-label={t('ui.cost.item', { n, item: ITEMS[id].name, have })}>
+      <span key={id} className={`chip ${have < n ? 'short' : 'ok'}`} title={idef(id).name} aria-label={t('ui.cost.item', { n, item: idef(id).name, have })}>
         <Icon name={id} size={20} />
         {have}/{n}
       </span>,
@@ -110,7 +110,7 @@ export function Portrait({ resident, model, size = 'md' }: { resident?: string; 
   }, [name]);
   const color = resident ? RESIDENTS[resident]?.color : '#f2b632';
   return src ? (
-    <img className={`portrait ${size === 'lg' ? 'portrait--lg' : ''}`} src={src} alt={resident ? RESIDENTS[resident].name : t('ui.avatar')} style={{ borderColor: '#fff', background: `radial-gradient(circle at 50% 30%, #fff, ${color}55)` }} />
+    <img className={`portrait ${size === 'lg' ? 'portrait--lg' : ''}`} src={src} alt={resident ? rdef(resident).name : t('ui.avatar')} style={{ borderColor: '#fff', background: `radial-gradient(circle at 50% 30%, #fff, ${color}55)` }} />
   ) : (
     <div className={`portrait ${size === 'lg' ? 'portrait--lg' : ''}`} />
   );

@@ -7,7 +7,7 @@ import { useFrame, type ThreeEvent } from '@react-three/fiber';
 import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { BUILDINGS } from '../../data/buildings';
-import { RESIDENTS } from '../../data/residents';
+import { RESIDENTS, rdef } from '../../data/residents';
 import { activeChapter, eligibleChapter } from '../../game/characters/relationships';
 import { hashString, rng } from '../../game/core/rng';
 import type { BuildingInstance, DayPhase, GameState, ResidentState } from '../../game/core/types';
@@ -48,7 +48,7 @@ function operational(s: GameState, type: string) {
 
 /** Choose the next destination + activity from the resident's schedule. */
 function plan(s: GameState, b: Brain, phase: DayPhase, nav: NavGrid): { cell: [number, number]; act: Activity } | null {
-  const def = RESIDENTS[b.id];
+  const def = rdef(b.id);
   const work = def.workplace ? operational(s, def.workplace)[0] : undefined;
   const homes = [...operational(s, 'cottage'), ...operational(s, 'townhouse'), ...operational(s, 'starter_house')];
   const home = homes[hashString(b.id) % homes.length];
@@ -102,7 +102,7 @@ export function Residents() {
   useEffect(() => {
     for (const r of residents) {
       if (brains.current.has(r.id)) continue;
-      const def = RESIDENTS[r.id];
+      const def = rdef(r.id);
       const actor = new Actor(def.model, CHAR_HEIGHT, 'humanoid');
       actor.root.userData.resident = r.id;
       const fresh = Date.now() - r.arrivedAt < 60_000;
@@ -208,7 +208,7 @@ export function Residents() {
     const act = b.activity ?? { anim: 'idle' as AnimState, duration: 3 };
     b.timer = act.duration;
     b.mode = act.hidden ? 'inside' : 'activity';
-    if (act.anim === 'work') b.activity = { ...act, anim: RESIDENTS[b.id].workAction === 'interact' ? 'work' : RESIDENTS[b.id].workAction === 'pick-up' ? 'eat' : RESIDENTS[b.id].workAction === 'crouch' ? 'crouch' : 'talk', face: Math.PI };
+    if (act.anim === 'work') b.activity = { ...act, anim: rdef(b.id).workAction === 'interact' ? 'work' : rdef(b.id).workAction === 'pick-up' ? 'eat' : rdef(b.id).workAction === 'crouch' ? 'crouch' : 'talk', face: Math.PI };
   }
 
   function startChat(a: Brain, o: Brain) {
@@ -280,7 +280,7 @@ function StoryMarker({ r, brains }: { r: ResidentState; brains: React.MutableRef
       <Html portal={htmlPortal} center zIndexRange={[19, 0]}>
         <button
           className={`story-marker ${eligible ? 'story-marker--new' : ''}`}
-          aria-label={t('world.hasStory', { name: RESIDENTS[r.id].name })}
+          aria-label={t('world.hasStory', { name: rdef(r.id).name })}
           onClick={() => useGame.getState().setUI({ resident: r.id })}
         >
           {eligible ? '!' : '…'}

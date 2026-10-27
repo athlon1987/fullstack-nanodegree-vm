@@ -14,7 +14,10 @@ Every third-party asset shipped in this repository, its licence, and the evidenc
 \* City Kit Commercial models were evaluated but are not used in the shipped scene.
 
 ## Project-owned (original) assets
-The POCKETHOOD architecture kit, procedural textures, icon family, logo, loading illustration, favicon, the procedural soundtrack, all writing (dialogue, quests, stories) and code are original work for this project.
+The POCKETHOOD architecture kit (core and the Malaysian kit in `src/rendering/kit/malaysia.ts`), procedural textures (including zinc, clay tile, louvre and floor-tile maps), the icon family (including the kampung goods, Zen and sharing icons), logo, app icons (`public/icons/`, rendered from `icon.svg` by `scripts/pwa/make-icons.mjs`), loading illustration, favicon, the procedural soundtrack and soundscape, all writing (dialogue, quests, stories, quiz questions, module texts — English and Bahasa Melayu) and code are original work for this project.
+
+## Content modules
+The four demo modules (`content/modules/*.json`) are **fictional** businesses and places written for this game; any resemblance to real businesses is unintended. Each module declares its own `licensing` block (content: original; assets: the original architecture kit and CC0 Kenney characters). Real partner modules must carry a `brand.licence` record and are refused once it expires.
 
 ## Rules
 1. No asset enters `public/` without passing `npm run assets:import` (sha256 provenance check) and `npm run assets:validate`.

@@ -47,7 +47,7 @@ export function StudioPanel() {
   const [tab, setTab] = useState<Tab>('status');
   useContent((c) => c.rev);
   return (
-    <Panel title="Studio" icon="studio" tabs={<div style={{ overflowX: 'auto' }}><Tabs value={tab} onChange={setTab} options={TABS} /></div>}>
+    <Panel title="Studio" icon="studio" onClose={() => useGame.getState().setUI({ activity: null })} tabs={<div style={{ overflowX: 'auto' }}><Tabs value={tab} onChange={setTab} options={TABS} /></div>}>
       <p className="small muted" style={{ marginTop: 0 }}>
         Internal prototype tools. Changes apply to this device only and are never published.
       </p>

@@ -1,6 +1,6 @@
 // Deterministic weather: tropical showers come and go in short spells, the same for every
 // player at the same moment (no randomness to save, nothing to sync). Pure; used by the
-// renderer, the soundscape and resident behaviour.
+// renderer (rain, lighting) and the soundscape. Residents don't react to rain yet.
 
 const SPELL_MS = 6 * 60_000; // one weather "spell" (real time)
 const RAMP = 0.12; // fraction of a spell spent fading in/out

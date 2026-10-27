@@ -7,7 +7,7 @@ import { behaviorOf } from '../../platform/content/install';
 import { MAX_WATER, canWater, readyAt } from '../behaviors/garden';
 import { ITEMS, RECIPES } from '../../data/items';
 import { COMMUNITY_PROJECTS, EVENTS, EXPANSIONS, START_PLOTS, expansionCost } from '../../data/progression';
-import { RESIDENTS } from '../../data/residents';
+import { RESIDENTS, rdef } from '../../data/residents';
 import { activeChapter, chooseLine, eligibleChapter, giftReaction } from '../characters/relationships';
 import {
   addFriendship,
@@ -347,7 +347,7 @@ export function applyAction(prev: GameState, action: Action, now: number): Actio
       const { reaction, points } = giftReaction(r.id, action.item);
       if (reaction === 'love') r.memories[`gift_${action.item}`] = now;
       addFriendship(s, r.id, points, ev);
-      ev.push({ type: 'GIFT_GIVEN', resident: r.id, item: action.item, reaction, line: RESIDENTS[r.id].giftReactions[reaction] });
+      ev.push({ type: 'GIFT_GIVEN', resident: r.id, item: action.item, reaction, line: rdef(r.id).giftReactions[reaction] });
       return ok();
     }
 

@@ -1,4 +1,5 @@
 import type { BuildingDef, BuildingLevelDef } from '../game/core/types';
+import { t } from '../platform/i18n';
 
 const lv = (l: Partial<BuildingLevelDef> & Pick<BuildingLevelDef, 'perks'>): BuildingLevelDef => ({
   upgradeCost: {},
@@ -371,7 +372,7 @@ const DORMANT: BuildingDef = {
 };
 
 /** Building definition, or a closed stand-in if this content isn't installed right now. */
-export const bdef = (type: string): BuildingDef => BUILDINGS[type] ?? { ...DORMANT, id: type };
+export const bdef = (type: string): BuildingDef => BUILDINGS[type] ?? { ...DORMANT, id: type, name: t('common.unknownBuilding') };
 export const isDormant = (type: string) => !BUILDINGS[type];
 
 export const isFixed = (type: string) => ['request_board', 'welcome_sign', 'pond', 'fountain', 'starter_house'].includes(type);

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { ITEMS } from '../../data/items';
+import { idef } from '../../data/items';
 import { QUESTS, STORIES } from '../../data/progression';
-import { RESIDENTS } from '../../data/residents';
+import { rdef } from '../../data/residents';
 import { activeChapter, eligibleChapter } from '../../game/characters/relationships';
 import { dayKey } from '../../game/core/rng';
 import { friendshipLevel, hasItems } from '../../game/economy/economy';
@@ -37,7 +37,7 @@ export function DialogueBox({ d }: { d: Dialogue }) {
   const setUI = useGame((s) => s.setUI);
   const t = useT();
   const [mode, setMode] = useState<'main' | 'gift' | 'about'>('main');
-  const def = RESIDENTS[d.resident];
+  const def = rdef(d.resident);
   const r = g.residents.find((x) => x.id === d.resident);
   const tw = useTypewriter(d.text, g.settings.reducedMotion);
   // Each neighbour has a gentle, wordless voice (character audio channel).
@@ -86,7 +86,7 @@ export function DialogueBox({ d }: { d: Dialogue }) {
       {mode === 'gift' && (
         <div className="dialogue__text">
           <div className="small muted" style={{ marginBottom: 6 }}>
-            {t('modals.pickGift', { name: def.name, items: def.favorites.map((f) => ITEMS[f].name).join(', ') })}
+            {t('modals.pickGift', { name: def.name, items: def.favorites.map((f) => idef(f).name).join(', ') })}
           </div>
           <div className="row" style={{ flexWrap: 'wrap', gap: 6 }}>
             {goods.map(([id, n]) => (
@@ -100,7 +100,7 @@ export function DialogueBox({ d }: { d: Dialogue }) {
                   next();
                 }}
               >
-                <Icon name={id} size={22} /> {ITEMS[id].name} ×{n}
+                <Icon name={id} size={22} /> {idef(id).name} ×{n}
               </button>
             ))}
             {!goods.length && <span className="muted">{t('modals.storageEmpty')}</span>}

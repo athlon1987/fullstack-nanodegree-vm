@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { BUILDINGS } from '../../data/buildings';
-import { ITEMS } from '../../data/items';
+import { bdef } from '../../data/buildings';
+import { ITEMS, idef } from '../../data/items';
 import { ACHIEVEMENTS, COMMUNITY_PROJECTS, EVENTS, EXPANSIONS, expansionCost, START_PLOTS } from '../../data/progression';
 import { AVATARS } from '../../data/residents';
 import { communityRatio, communityStage, plotUnlockable } from '../../game/core/actions';
@@ -26,8 +26,8 @@ export function ProfilePanel() {
   const dispatch = useGame((s) => s.dispatch);
   const t = useT();
   const [tab, setTab] = useState<'me' | 'history' | 'achievements'>('me');
-  const charm = g.buildings.reduce((a, b) => a + (BUILDINGS[b.type].charm ?? 0), 0);
-  const buildings = g.buildings.filter((b) => !['decoration', 'path', 'landmark'].includes(BUILDINGS[b.type].category)).length;
+  const charm = g.buildings.reduce((a, b) => a + (bdef(b.type).charm ?? 0), 0);
+  const buildings = g.buildings.filter((b) => !['decoration', 'path', 'landmark'].includes(bdef(b.type).category)).length;
   return (
     <Panel
       title={t('meta.profile.title')}
@@ -488,7 +488,7 @@ export function CommunityPanel() {
               <Icon name={res === 'coins' ? 'coin' : res} size={34} />
               <div style={{ flex: 1 }}>
                 <b>
-                  {res === 'coins' ? t('common.coins') : ITEMS[res].name} {given}/{need}
+                  {res === 'coins' ? t('common.coins') : idef(res).name} {given}/{need}
                 </b>
                 <Progress value={given} max={need} />
                 <div className="small muted">{t('meta.community.youHave', { n: have })}</div>

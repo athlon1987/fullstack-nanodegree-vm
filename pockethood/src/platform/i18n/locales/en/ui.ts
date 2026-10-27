@@ -15,4 +15,5 @@ export default {
   'ui.tip.photo': 'Try photo mode at sunset.',
   'ui.updateReady': 'A new version of POCKETHOOD is ready.',
   'ui.updateNow': 'Update',
+  'ui.panelError': 'Something went wrong in this part of the screen. Your game is safe.',
 } as const;

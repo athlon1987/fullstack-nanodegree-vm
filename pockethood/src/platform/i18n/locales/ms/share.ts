@@ -15,7 +15,7 @@ const ms: Translation<typeof en> = {
   'share.copyManual': 'Salin pautan ini:',
   'share.photo': 'Ambil gambar untuk dikongsi',
   'share.privacy': 'Pautan ini membuka permainan. Ia tidak mengandungi apa-apa daripada simpanan anda.',
-  'share.snapshotPrivacy': 'Gambaran ini hanya mengandungi nama, tahap dan susun atur bangunan kejiranan anda — bukan syiling, barang, nama atau kemajuan anda.',
+  'share.snapshotPrivacy': 'Gambaran ini hanya mengandungi nama, tahap, daerah, susun atur bangunan kejiranan anda dan jiran yang tinggal di situ — bukan syiling, barang, nama atau kemajuan anda.',
   'share.visiting': 'Melawat {hood}',
   'share.visitingHint': 'Gambaran baca sahaja yang dikongsi seseorang. Tiada apa di sini mengubah permainan anda.',
   'share.goHome': 'Kejiranan saya',

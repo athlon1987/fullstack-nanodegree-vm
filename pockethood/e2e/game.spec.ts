@@ -12,16 +12,17 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
-test('loads into a playable neighborhood with Mia’s introduction', async ({ page }) => {
+test('loads into Kampung Seri with Uncle Lim’s introduction', async ({ page }) => {
   await boot(page);
-  await expect(page.locator('.dialogue')).toContainText('Mia');
+  await expect(page.locator('.dialogue')).toContainText('Uncle Lim');
   await expect(page.locator('#hud-coins')).toContainText('150');
   await expect(page.locator('canvas')).toBeVisible();
   const g = await game(page);
   expect(g.buildings.some((b: { type: string }) => b.type === 'starter_house')).toBe(true);
+  expect(g.world.id).toBe('my.kampung_seri');
 });
 
-test('guided tutorial: collect → build café → brew → deliver → upgrade', async ({ page }) => {
+test('guided tutorial: collect → open kopitiam → brew → deliver → upgrade', async ({ page }) => {
   await boot(page);
   await dismiss(page);
   await page.locator('.bubble--ready[data-building="starter_house"]').click({ force: true });
@@ -32,7 +33,7 @@ test('guided tutorial: collect → build café → brew → deliver → upgrade'
   await page.locator('[data-tutorial="card-cafe"]').click({ force: true });
   await page.locator('[data-tutorial="place-confirm"]').click({ force: true });
   await skipTime(page, 6_000);
-  await expect.poll(async () => (await game(page)).quests.done).toContain('open_cafe');
+  await expect.poll(async () => (await game(page)).quests.done).toContain('reopen_kopitiam');
   await dismiss(page);
 
   for (let i = 0; i < 3; i++) {
@@ -63,7 +64,7 @@ test('guided tutorial: collect → build café → brew → deliver → upgrade'
   await page.locator('[data-tutorial="upgrade"]').click({ force: true });
   await skipTime(page, 15_000);
   await expect.poll(async () => (await game(page)).buildings.find((b: { type: string }) => b.type === 'cafe').level).toBe(2);
-  await expect.poll(async () => (await game(page)).quests.done).toContain('cafe_upgrade');
+  await expect.poll(async () => (await game(page)).quests.done).toContain('kopitiam_upgrade');
 });
 
 test('progress persists across a reload', async ({ page }) => {
@@ -120,4 +121,90 @@ test('mobile layout fits the screen', async ({ page }) => {
   const bar = await page.locator('.bottombar').boundingBox();
   expect(bar!.x).toBeGreaterThanOrEqual(0);
   expect(bar!.x + bar!.width).toBeLessThanOrEqual(390);
+});
+
+const selectType = (page: import('@playwright/test').Page, type: string) =>
+  page.evaluate((t) => {
+    const st = (window as any).__pockethood.getState();
+    st.setUI({ selected: st.game.buildings.find((b: { type: string }) => b.type === t).uid, panel: null });
+  }, type);
+
+async function richGame(page: import('@playwright/test').Page) {
+  await page.evaluate(() => {
+    const S = (window as any).__pockethood;
+    S.getState().dispatch({ type: 'tutorial', skip: true });
+    S.setState({ game: { ...S.getState().game, coins: 5000, level: 4, xp: 700 } });
+    S.getState().dispatch({ type: 'place', building: 'cafe', x: 14, z: 15, rot: 0 });
+  });
+  await skipTime(page, 6_000);
+  await dismiss(page);
+}
+
+test('switching to Bahasa Melayu translates the interface and the world', async ({ page }) => {
+  await boot(page);
+  await dismiss(page);
+  await page.getByRole('button', { name: 'Settings' }).click();
+  await page.getByRole('button', { name: 'Bahasa Melayu' }).click();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('[data-tutorial="nav-build"]')).toContainText('Bina');
+  await expect.poll(async () => (await game(page)).settings.locale).toBe('ms');
+  await page.locator('[data-tutorial="nav-orders"]').click({ force: true });
+  await expect(page.getByRole('dialog', { name: 'Papan Pesanan' })).toBeVisible();
+});
+
+test('hand-preparing teh tarik at the kopitiam module', async ({ page }) => {
+  await boot(page);
+  await dismiss(page);
+  await richGame(page);
+  await selectType(page, 'cafe');
+  await expect(page.locator('.sheet')).toContainText('Kopitiam Lim');
+  await expect(page.locator('.sheet')).toContainText('Fictional business');
+  await page.locator('.sheet').getByRole('button', { name: 'Start' }).click({ force: true });
+  for (const step of ['Pour', 'Pull', 'Pull', 'Serve']) await page.locator('.prep-pads').getByRole('button', { name: step }).click({ force: true });
+  await expect.poll(async () => (await game(page)).inventory['my.food.kopitiam_lim/teh_tarik']).toBe(1);
+});
+
+test('Zen Mode hides currencies and objectives', async ({ page }) => {
+  await boot(page);
+  await dismiss(page);
+  await expect(page.locator('#hud-coins')).toBeVisible();
+  await page.evaluate(() => (window as any).__pockethood.getState().dispatch({ type: 'settings', patch: { zen: true } }));
+  await expect(page.locator('#hud-coins')).toHaveCount(0);
+  await expect(page.locator('.tracker')).toHaveCount(0);
+  await expect(page.locator('.zen-pill')).toBeVisible();
+});
+
+test('switching a module off falls back to the neutral shop without losing anything', async ({ page }) => {
+  await boot(page);
+  await dismiss(page);
+  await richGame(page);
+  await page.evaluate(() => (window as any).__pockethood.getState().dispatch({ type: 'produce', uid: (window as any).__pockethood.getState().game.buildings.find((b: { type: string }) => b.type === 'cafe').uid, recipe: 'my.food.kopitiam_lim/kopi_o' }));
+  await page.evaluate(() => (window as any).__pockethood.getState().setUI({ activity: { kind: 'studio' } }));
+  await page.getByRole('tab', { name: 'Modules' }).click();
+  await page.locator('.card', { hasText: 'my.food.kopitiam_lim' }).getByRole('button', { name: /Switch off/ }).click();
+  await page.keyboard.press('Escape');
+  await selectType(page, 'cafe');
+  await expect(page.locator('.sheet h2')).toHaveText('Coffee Shop');
+  const g = await game(page);
+  expect(g.buildings.find((b: { type: string }) => b.type === 'cafe').queue[0].out.item).toBe('my.food.kopitiam_lim/kopi_o');
+});
+
+test('a shared snapshot link opens read-only and never touches the visitor’s save', async ({ page }) => {
+  await boot(page);
+  await dismiss(page);
+  await page.locator('.bubble--ready[data-building="starter_house"]').click({ force: true });
+  await expect.poll(async () => (await game(page)).coins).toBe(188);
+  const link = await page.evaluate(async () => {
+    const { encodeVisit, visitLink } = await import('/src/services/visit.ts');
+    const g = (window as any).__pockethood.getState().game;
+    return visitLink(encodeVisit({ ...g, profile: { ...g.profile, hoodName: 'Kampung Kawan' } }));
+  });
+  expect(link).not.toContain('coins');
+  await page.waitForTimeout(1500);
+  await page.goto(link);
+  await page.waitForSelector('.hud', { timeout: 120_000 });
+  await expect(page.locator('.visit-banner')).toContainText('Kampung Kawan');
+  await page.goto('/');
+  await page.waitForSelector('.hud', { timeout: 120_000 });
+  expect((await game(page)).coins).toBe(188);
 });

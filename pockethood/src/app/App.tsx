@@ -8,6 +8,7 @@ import { useGame } from '../state/store';
 import { BottomBar, FlyLayer, SideRail, Toasts, TopBar, Tracker } from '../ui/hud/Hud';
 import { LoadingScreen } from './LoadingScreen';
 import { Overlays } from '../ui/Overlays';
+import { ErrorBoundary } from '../ui/components/ErrorBoundary';
 import { VisitBanner } from '../ui/panels/SharePanel';
 import { t, useT } from '../platform/i18n';
 import { usePwa } from '../services/pwa';
@@ -72,11 +73,14 @@ export function App() {
   return (
     <>
       {loaded && (
-        <Suspense fallback={null}>
-          <GameCanvas />
-        </Suspense>
+        <ErrorBoundary area="world" onReset={() => useGame.getState().setUI({ selected: null })}>
+          <Suspense fallback={null}>
+            <GameCanvas />
+          </Suspense>
+        </ErrorBoundary>
       )}
       {loaded && !photo && (
+        <ErrorBoundary area="hud">
         <div className="hud">
           <TopBar />
           {visiting && <VisitBanner />}
@@ -84,8 +88,13 @@ export function App() {
           {!placing && !visiting && <BottomBar />}
           {!placing && <SideRail />}
         </div>
+        </ErrorBoundary>
       )}
-      {loaded && <Overlays />}
+      {loaded && (
+        <ErrorBoundary area="panels" onReset={() => useGame.getState().setUI({ selected: null, panel: null, activity: null, dialogue: null, dialogueQueue: [] })}>
+          <Overlays />
+        </ErrorBoundary>
+      )}
       {loaded && <Toasts />}
       {loaded && <FlyLayer />}
       {updateReady && (

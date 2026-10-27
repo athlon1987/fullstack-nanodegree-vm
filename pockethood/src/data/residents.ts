@@ -1,4 +1,5 @@
 import type { ResidentDef } from '../game/core/types';
+import { t } from '../platform/i18n';
 
 export const FRIENDSHIP_LEVELS = [
   { at: 0, name: 'Newcomer' },
@@ -224,7 +225,28 @@ export const RESIDENTS: Record<string, ResidentDef> = {
   },
 };
 
-export const RESIDENT_IDS = Object.keys(RESIDENTS);
+/** Ids of the residents in the installed world (computed live: worlds replace residents). */
+export const residentIds = () => Object.keys(RESIDENTS);
+
+/** Resident definition, or a quiet stand-in when this world doesn't include them. */
+export const rdef = (id: string): ResidentDef =>
+  RESIDENTS[id] ?? {
+    id,
+    name: t('common.unknownResident'),
+    profession: '',
+    bio: '',
+    traits: [],
+    model: 'mini_male_a',
+    color: '#b4aa98',
+    favorites: [],
+    favoritePlace: 'park',
+    arrival: { type: 'level', level: 999 },
+    workAction: 'interact',
+    greetings: [],
+    smallTalk: [],
+    memoryLines: [],
+    giftReactions: { love: '', like: '', neutral: '' },
+  };
 
 /** Player avatar options backed by real rigged character variants. */
 export const AVATARS = [

@@ -14,8 +14,8 @@ const LEVEL_XP = [0, 30, 120, 300, 600, 1000, 1550, 2250, 3150, 4250];
 const LEVEL_UNLOCKS: Record<number, string[]> = {
   1: ['Starter House', 'Mia’s Café', 'Paths, trees & flower beds'],
   2: ['Bakery', 'Community Garden', 'Benches & street lamps'],
-  3: ['Workshop', 'Flower Shop', 'Cottage', 'Fountain community project'],
-  4: ['Pocket Park', 'Land expansion', 'Maple trees', 'Spring Blossom Festival'],
+  3: ['Workshop', 'Flower Shop', 'Cottage', 'Learning Centre', 'Fountain community project'],
+  4: ['Pocket Park', 'Car Showroom', 'Land expansion', 'Maple trees', 'Spring Blossom Festival'],
   5: ['Grocery Shop', 'Theo the architect arrives'],
   6: ['Townhouse'],
   7: ['Town Hall'],

@@ -2925,8 +2925,8 @@
    },
    "minFriendship": 0,
    "intro": {
-    "en-MY": "Will you be my first student? Answer 5 quiz questions — right or wrong, it all counts.",
-    "ms-MY": "Sudikah awak jadi murid pertama saya? Jawab 5 soalan kuiz — betul atau salah, semuanya dikira."
+    "en-MY": "Will you be my first student? Answer 3 quiz questions — right or wrong, it all counts.",
+    "ms-MY": "Sudikah awak jadi murid pertama saya? Jawab 3 soalan kuiz — betul atau salah, semuanya dikira."
    },
    "outro": {
     "en-MY": "Wonderful! You asked better questions than you answered — that’s the best kind of student.",
@@ -2936,10 +2936,10 @@
     {
      "type": "counter",
      "counter": "quiz",
-     "n": 5,
+     "n": 3,
      "label": {
-      "en-MY": "Answer 5 quiz questions",
-      "ms-MY": "Jawab 5 soalan kuiz"
+      "en-MY": "Answer 3 quiz questions",
+      "ms-MY": "Jawab 3 soalan kuiz"
      }
     }
    ],
@@ -3107,8 +3107,8 @@
    "ms-MY": "Wakaf Tepi Tasik"
   },
   "description": {
-   "en-MY": "The whole kampung is chipping in to build a wakaf — an open shelter — by the tasik, so anyone can rest there. Neighbours add what they can; your contributions make the difference.",
-   "ms-MY": "Seluruh kampung bergotong-royong membina wakaf — pondok rehat terbuka — di tepi tasik, supaya sesiapa boleh berehat. Jiran menyumbang apa yang mampu; sumbangan anda membawa perubahan."
+   "en-MY": "Help the kampung build a wakaf — an open shelter — by the tasik, so anyone can rest there. Every contribution you make brings it a step closer.",
+   "ms-MY": "Bantu kampung membina wakaf — pondok rehat terbuka — di tepi tasik, supaya sesiapa boleh berehat. Setiap sumbangan anda membawanya selangkah lebih dekat."
   },
   "requirements": {
    "coins": 300,
@@ -3208,6 +3208,10 @@
    {
     "en-MY": "Kedai Bunga",
     "ms-MY": "Kedai Bunga"
+   },
+   {
+    "en-MY": "Rumah Papan",
+    "ms-MY": "Rumah Papan"
    },
    {
     "en-MY": "Learning Centre",

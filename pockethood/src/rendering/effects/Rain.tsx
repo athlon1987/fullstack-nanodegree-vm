@@ -8,6 +8,7 @@ import { rainAt } from '../../game/world/weather';
 import { clock } from '../../services/clock';
 import { useGame } from '../../state/store';
 import { weatherState } from '../scene/coords';
+import { flag } from '../../platform/content/flags';
 
 const AREA = 26;
 const TOP = 9;
@@ -38,7 +39,7 @@ export function Rain() {
   const intensity = useRef(0);
 
   useFrame((_, dt) => {
-    const target = weatherState.force ?? (enabled ? rainAt(clock.now(), WORLD.rainChance) : 0);
+    const target = weatherState.force ?? (enabled && flag('weather') ? rainAt(clock.now(), WORLD.rainChance) : 0);
     intensity.current += (target - intensity.current) * Math.min(1, dt * 0.8);
     const k = intensity.current;
     weatherState.rain = k;

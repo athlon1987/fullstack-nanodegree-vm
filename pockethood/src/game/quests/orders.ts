@@ -2,7 +2,7 @@
 // Orders only ever ask for goods the player can currently produce.
 import { BUILDINGS } from '../../data/buildings';
 import { ITEMS, RECIPES } from '../../data/items';
-import { RESIDENTS } from '../../data/residents';
+import { RESIDENTS, rdef } from '../../data/residents';
 import { hashString, pick, rng } from '../core/rng';
 import type { GameState, ItemBag, Order } from '../core/types';
 import { isOperational } from '../economy/economy';
@@ -51,7 +51,7 @@ export function generateOrder(state: GameState, now: number): Order | null {
   const busy = new Set(state.orders.map((o) => o.resident));
   const free = arrived.filter((id) => !busy.has(id));
   const resident = pick(r, free.length ? free : arrived);
-  const favorites = RESIDENTS[resident].favorites.filter((f) => items.includes(f));
+  const favorites = rdef(resident).favorites.filter((f) => items.includes(f));
   const maxDistinct = state.level < 3 ? 1 : state.level < 6 ? 2 : 3;
   const distinct = Math.min(items.length, 1 + Math.floor(r() * maxDistinct));
   const bag: ItemBag = {};
