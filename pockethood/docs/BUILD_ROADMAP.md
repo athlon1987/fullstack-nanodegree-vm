@@ -1,4 +1,6 @@
-# Build Roadmap
+# Build Roadmap (first playable — historical)
+
+> Superseded by [DEVELOPMENT_ROADMAP.md](DEVELOPMENT_ROADMAP.md) for everything from the Living World milestone on. Kept as the record of the first-playable phases.
 
 Status keys: ✅ completed & tested · 🟢 implemented (visually/manually verified) · 🟡 partial · ⛔ blocked · ⬜ not started
 

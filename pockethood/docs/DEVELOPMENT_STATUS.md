@@ -1,71 +1,70 @@
 # Development Status
 
-_Last updated 2026-10-26. Status keys: **Completed and tested** · **Implemented but not tested** (verified by hand/screenshot only) · **Partially implemented** · **Blocked** · **Not started**._
+_Last updated 2026-10-27. Status keys: **Completed and tested** · **Implemented** (verified by hand/screenshot, no automated test) · **Partially implemented** · **Designed, not built** · **Not started**._
 
-## Milestone: First Playable — reached
-The browser build is a functioning game end-to-end: a guided first session, the full core loop, a living neighborhood, persistence and one complete engagement flywheel. It is **not** the complete long-term vision (online social, districts, monetisation, mobile store builds are future phases).
+## Milestone: The Living World — first milestone reached
+A Malaysia-first district (Kampung Seri) running on a modular content platform, with four demo modules loaded through the same pipeline, English + Bahasa Melayu, Zen Mode, sharing and a PWA. This is a playable single-player build. **It is not a production release**: there is no backend, no accounts, no signed content enforcement and no real partners; automated tests passing does not make it secure for launch (see SECURITY_ARCHITECTURE.md §10).
 
 ### Test results (this build)
 | Suite | Result |
 |---|---|
-| `npm test` (Vitest) | **31 / 31 passed** — engine, economy, grid, orders, flywheel E2E (simulation level), relationships & stories, Pulse, community idempotency, expansion, persistence & recovery, pathfinding |
-| `npm run test:e2e` (Playwright, Chromium/SwiftShader) | **6 / 6 passed** — load, full guided tutorial through the café upgrade, reload persistence, panels, placement validation, mobile layout |
+| `npm test` (Vitest) | **64 / 64 passed** — engine & core loop, flywheel E2E (classic world), persistence & migration v3→v4, pathfinding; **platform**: hostile-content rejection (markup, script URLs, unknown fields/behaviours, prototype pollution, path traversal, oversize), integrity (tampered bytes, signed/tampered/missing-signature index), lifecycle (kill switch, disabled, quarantine, unapproved, country, version, scheduled, expired, flags, rollout), template & economic limits, sponsor-label and halal/price/link policies, slot conflicts, Malaysian world install, language switch, MY tutorial end to end, hand-prepare, quiz, showroom, garden, Zen activities, module isolation (kill → neutral → back, nothing lost), unavailable-world fallback, en/ms key and placeholder parity, literal-key coverage scan, weather model, visit-link privacy and hostile codes, bundled-content hashes, icon catalogue |
+| `npm run test:e2e` (Playwright, Chromium/SwiftShader) | **11 / 11 passed** — boot into Kampung Seri, full guided tutorial, reload persistence, panels, placement validation, mobile layout, switch to Bahasa Melayu, hand-prepare teh tarik in the UI, Zen Mode hides currencies/objectives, switching a module off in Studio falls back to the neutral shop with the queued job intact, shared snapshot link is read-only and leaves the visitor's save untouched |
+| `npm run content:build` | Pass — 6 countries, 1 world, 4 modules; schema + semantic + economic checks in en and ms |
 | `npm run typecheck` / `npm run build` | Pass |
-| `npm run assets:validate` | Pass — 69 models, 3.7 MiB, required clips present |
-| `npm run economy:sim` | Runs; findings in ECONOMY_SIMULATION.md (one open content-depth issue, below) |
+| `npm run economy:sim` | Runs on Kampung Seri with modules; findings below |
 
 ### Feature status
-| Area | Status | Files |
+| Area | Status | Where |
 |---|---|---|
-| CC0 asset acquisition with sha256 provenance, palette harmonisation, budgets | Completed and tested | `scripts/asset-pipeline/*`, `scripts/validation/validate-assets.mjs`, `asset-sources/` |
-| Diorama terrain, sea, road + traffic, paths, grass/flowers, wooded locked plots | Implemented but not tested (screenshot-reviewed) | `src/rendering/scene/Terrain.tsx` |
-| Architecture kit: 12 buildings + landmarks + 21 decorations, per-level & story-flag variations | Implemented (screenshot-reviewed) | `src/rendering/kit/*` |
-| Lighting, day/night, night glow, contact shadows | Implemented (screenshot-reviewed) | `src/rendering/lighting/Lighting.tsx` |
-| Camera: pan + inertia, wheel & pinch zoom, bounds, focus | Implemented; pinch untested on a real device | `src/rendering/camera/CameraRig.tsx` |
-| Placement: grid, ghost, validity with reasons, rotate, move, sell, paint-mode decor | Completed and tested | `Placement.tsx`, `BuildPanels.tsx`, `grid.ts` |
-| Production queues, recipe chains, ingredient costs, passive income caps | Completed and tested | `actions.ts`, `economy.ts`, `data/items.ts` |
-| Upgrades with functional + visible changes | Completed and tested (function); visuals screenshot-reviewed | |
-| Request board (state-aware, never impossible) | Completed and tested | `game/quests/orders.ts` |
-| Levels, XP, 18 quests, guided 6-step tutorial | Completed and tested | `data/progression.ts`, `ui/tutorial/Coach.tsx` |
-| Residents: 8 with schedules, A*, animation state machine, chats, arrivals | Implemented (pathfinding tested) | `rendering/characters/*`, `game/navigation/*` |
-| Relationships, memories, gifts, 10 story chapters with world changes | Completed and tested (Mia, Felix, Luna paths) | `relationships.ts`, `EngagementDirector.ts` |
-| Pets (cat, shiba follows Felix, pug) | Implemented | `Characters.tsx` |
-| Ambient life (birds, butterflies, clouds, smoke, sway, fireflies, fountain spray) | Implemented | `effects/Ambient.tsx`, `Buildings.tsx` |
-| Neighborhood Pulse, next goal, welcome-back | Completed and tested | `engagement/*` |
-| Community fountain project (local, idempotent) | Completed and tested | `actions.ts` (`contribute`) |
-| Spring Blossom Festival, achievements, history, keepsakes, expansion | Completed and tested (logic) | |
-| Photo mode (capture, save, native share) | Implemented; share depends on browser | `ui/modals/Modals.tsx` |
-| HUD, 14 panels, dialogue with 3D portraits, toasts, fly-ups, level-up | Implemented; key flows covered by e2e | `src/ui/*` |
-| Audio (Kenney SFX + original procedural music) with volumes/mute | Implemented; not audible in headless tests | `src/audio/AudioManager.ts` |
-| Persistence (IndexedDB, versioned, migrations, repair, synchronous unload snapshot) | Completed and tested | `services/persistence.ts` |
-| Local analytics + dev inspector | Implemented | `services/analytics.ts`, Dev tools panel |
-| Accessibility: reduced motion, text size, keyboard, non-colour cues | Implemented; no screen-reader audit yet | |
-| Social online (friends, visits, Hoods, trading) | **Blocked** — no backend/credentials in this environment. Contract defined; UI says "coming later" | `game/social/SocialService.ts` |
-| Monetisation | Not started (architecture notes only) | GAME_DESIGN.md |
-| Native mobile builds | Not started | BUILD_ROADMAP.md |
-
-### Models actually integrated
-12 Kenney Mini Characters (8 residents + 4 avatars), 5 Quaternius animals (3 pets + pond frog; fox unused), 19 Kenney Nature Kit models, 6 Kenney props, 18 Kenney Food Kit items, 9 Kenney Car Kit vehicles — see ASSET_MANIFEST.md. Plus the original architecture kit.
-
-### Pending / missing assets
-Cozy professional building pack (Kenney Suburban / Quaternius / Synty), road kit, bespoke talk/wave clips, rabbit/duck pets, modular avatar parts, soundtrack. See ASSET_GAPS.md.
+| Strict content validator (no eval), text screening, safe JSON parsing | Completed and tested | `src/platform/validate.ts`, `loader.ts` |
+| Content schemas: index, country, world pack, module | Completed and tested | `src/platform/content/schema.ts`, CONTENT_SCHEMA.md |
+| Gameplay template library (10 templates; hotel is template-only) with economic ceilings | Completed and tested | `templates.ts` |
+| Approved behaviours: hand_prepare, quiz, showroom, garden_plots | Completed and tested | `actions.ts`, `install.ts` |
+| Behaviours `visitors`, module `presentation.props` | **Partially implemented** — validated and stored, not yet rendered (no visitor NPCs, props not placed) | — |
+| Module greeting line in the building card | Implemented | `BuildPanels.tsx` |
+| Ambient sound beds per module | Implemented (procedural; not audible in headless tests) | `AudioManager.ts` |
+| Module lifecycle, kill switch, staged rollout, feature flags | Completed and tested | `registry.ts`, `flags.ts` |
+| sha256 integrity, remote → last-known-good → bundled fallback | Completed and tested | `loader.ts`, `service.ts` |
+| Signed content index (ECDSA P-256) | Implemented and tested; **not enforced** (no production key) | `security/integrity.ts` |
+| Module isolation & neutral fallback, dormant buildings, job output snapshots | Completed and tested | `install.ts`, `actions.ts`, `buildings.ts` |
+| UI error boundaries (world / HUD / panels) | Implemented | `ErrorBoundary.tsx` |
+| Country registry (MY active; SG, ID, TH, JP, KR planned) | Completed and tested | `content/countries/` |
+| Kampung Seri world pack (8 residents, 6-step tutorial + 13 quests, 12 stories, event, wakaf project) | Completed and tested (tutorial path, install); later chapters covered by the shared engine path | `content/worlds/my.kampung_seri.json` |
+| Four demo modules (kopitiam, showroom, learning centre, community garden) | Completed and tested | `content/modules/` |
+| Malaysian architecture kit (17 archetypes + 4 module prefabs), tropical planting, laterite terrain | Implemented (screenshot-reviewed) | `kit/malaysia.ts`, `Terrain.tsx` |
+| Live showroom cars and garden crops | Implemented (screenshot-reviewed) | `BehaviorOverlay.tsx` |
+| Deterministic rain showers, rainy lighting | Weather model tested; visuals screenshot-reviewed | `weather.ts`, `Rain.tsx`, `Lighting.tsx` |
+| Localisation en + ms: UI, engine errors, history, Pulse, goals, content | Completed and tested (key parity, coverage scan, e2e switch) — **Malay needs native-speaker review** | `src/platform/i18n/` |
+| Data-driven tutorial guide (works for any world) | Completed and tested (e2e) | `Coach.tsx` |
+| Zen Mode (hides currencies, objectives, notifications, promotions, world bubbles; calmer music, slower camera, fewer rain particles) | Implemented; hiding covered by e2e | `ModulePanels.tsx`, `Hud.tsx`, `CameraRig.tsx` |
+| Gentle activities: fishing journal, pets, sunset & lake moments, flower arranging, gardening | Engine completed and tested; UI implemented | `actions.ts`, `ModulePanels.tsx` |
+| Four audio channels (music, ambience, interface, character voices) + procedural soundscape | Implemented; not audible in headless tests | `AudioManager.ts` |
+| Sharing: WhatsApp, system share, copy link, photo | Implemented (WhatsApp/share need a real device to verify) | `SharePanel.tsx` |
+| Read-only visit snapshot links | Completed and tested (unit + e2e) | `services/visit.ts` |
+| PWA: manifest, icons, offline service worker, update notice | Implemented; service worker not exercised in tests (skipped in iframes and dev) | `public/sw.js`, `services/pwa.ts` |
+| Studio (12 internal tools) | Implemented; module switch-off covered by e2e | `src/ui/studio/Studio.tsx` |
+| Save v4 (world, module state, Zen journal) with migration from v3 | Completed and tested | `persistence.ts` |
+| Backend (auth, cloud saves, server-side engine, partner workflow, RLS) | **Designed, not built** | `backend/` |
+| Monetisation | Not started (rules documented) | MONETIZATION_COMPLIANCE.md |
+| Native apps (Capacitor) | Not started (readiness documented) | DEVELOPMENT_ROADMAP.md |
 
 ## Known defects & limitations
-1. **Performance unmeasured on real GPUs.** This sandbox renders WebGL in software (well under 1 FPS); budgets were enforced by counting draw calls (737 → ~430) and triangles. Real-device profiling is the first next step.
-2. **Late-game coin accumulation** for engaged players once all buildings exist (~day 10–15). Content-depth issue; see ECONOMY_DESIGN.md.
-3. Resident walking uses grid paths with slight jitter; residents may briefly overlap each other (no local avoidance).
-4. Character "talk"/"wave" use substitute clips; no facial animation.
-5. Pinch-zoom and touch-drag placement are implemented but untested on physical devices.
-6. One early screenshot showed a duplicated bottom bar during capture; the DOM contains a single instance and it hasn't reproduced in later captures — likely a software-renderer capture artifact, still worth watching.
-7. Story chapters for Oliver/Ruby and later chapters aren't individually unit-tested (shared engine path is).
-8. Analytics are local-only; no consent banner is needed until a transport exists.
+1. **Coin inflation for engaged players.** The economy sim (Kampung Seri, 30 days) shows Regular players banking ~48k and Enthusiasts ~117k coins by day 30; the showroom and learning centre add passive income. Needs coin sinks (more upgrade tiers, decorations, a second district). Casual and returning players progress steadily and never stall.
+2. **Performance unmeasured on real GPUs** (this sandbox renders WebGL in software). Real-device profiling is the first next step.
+3. **Malay translations and cultural content are unreviewed** by native speakers / a cultural panel (see MALAYSIA_WORLD_DESIGN.md open items).
+4. `visitors` behaviour and module props aren't rendered yet; residents don't react to rain.
+5. Some keepsakes (kuih table, festival arch, pelita post, bird bath, parasol) use the core art in the tropical world.
+6. The kopitiam story flag that "changes the sign" adds a display item rather than repainting the sign.
+7. Ogg sound effects don't play on older iOS Safari; character "talk"/"wave" use substitute clips.
+8. Studio is English-only staff tooling and is reachable from Settings in this prototype (switch off with the `studio` flag for production).
+9. Visit links are long URLs (layout encoded in the link); short server codes need the backend.
 
 ## Remaining tasks (prioritised)
-1. Real-device performance pass + static decoration batching.
-2. Acquire a professional cozy building pack and swap residential/shop shells.
-3. Backend: auth, cloud save, server-side `applyAction`.
-4. Content: second district, more residents & chapters, more upgrade tiers (fixes inflation).
-5. Visual regression baselines in CI; screen-reader audit.
+1. Real-device performance pass; add coin sinks; native-speaker and cultural review.
+2. Render module visitors and props; tropical keepsake art; rain-aware residents.
+3. Backend (Stage 3 in DEVELOPMENT_ROADMAP.md), then enforce signed content.
+4. Capacitor wrappers and store compliance review.
 
 ## Screenshots
-See `docs/screenshots/` (captured with Playwright under software rendering): a mid-game town staged through engine actions with dev resources (01–02), mobile (05–06), and the real first-session flow (10–13). Night lighting was reviewed during QA but no clean night capture is included.
+`docs/screenshots/20–34` (Playwright, software rendering): Kampung Seri overview, showroom forecourt, rain, mobile in Bahasa Melayu, kopitiam card, hand-prepare, About this place (illustrative menu), quiz, garden plots, lake, Zen, share, Studio, Malay settings and kopitiam card. `01–13` show the classic world from the first-playable milestone.

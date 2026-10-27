@@ -31,7 +31,7 @@ The Director runs to a fixed point after every action, so a single delivery can 
 | Piece | Where | Status |
 |---|---|---|
 | Timestamp production queues, passive income with storage caps | `actions.ts` (`produce`, `collect`), `economy.ts` | Completed and tested |
-| 12 buildings, 14 recipes incl. 2-step chains (bread+berries → pie) | `src/data/buildings.ts`, `src/data/items.ts` | Completed and tested |
+| 14 buildings (incl. showroom & learning centre), 14 core recipes + 4 kopitiam module recipes, 2-step chains (bread+berries → pie / roti + kelapa → kuih) | `src/data/buildings.ts`, `src/data/items.ts` | Completed and tested |
 | Upgrades that add recipes, slots, speed **and visible changes** | `BuildingLevelDef.perks`, `rendering/kit/archetypes.ts` | Implemented; visuals verified in screenshots |
 | Request board that only asks for producible goods | `game/quests/orders.ts` | Completed and tested (200-seed property test) |
 | Land expansion with escalating cost; wooded plots clear on purchase | `data/progression.ts` (`EXPANSIONS`), `Terrain.tsx` | Implemented and tested |
@@ -55,7 +55,7 @@ Characters never claim to be conscious or to depend on the player; dialogue is w
 
 | Piece | Where | Status |
 |---|---|---|
-| Community project (Neighborhood Fountain) with 4 visible build stages | `actions.ts` (`contribute`), `archetypes.ts` (`fountain`) | Completed and tested (local) |
+| Community project (Neighborhood Fountain in Maple Hollow, Lakeside Wakaf in Kampung Seri) with 4 visible build stages | `actions.ts` (`contribute`), `archetypes.ts` (`fountain`) | Completed and tested (local) |
 | Idempotent contributions (op ids) — the same contract a server must enforce | `contribute` | Completed and tested |
 | Contribution log & landmark history entry; all residents remember it | `CommunityState.log`, Director | Implemented |
 | Social service contract (friends, visits, gifts, Hoods) with server-authoritative notes | `game/social/SocialService.ts` | Interface only |
@@ -70,7 +70,7 @@ Characters never claim to be conscious or to depend on the player; dialogue is w
 | 21 decorations incl. 6 keepsakes earned from stories/events/projects | `data/buildings.ts` | Implemented |
 | Rename your neighborhood (shown on the welcome sign) & choose an avatar | `ProfilePanel` | Implemented |
 | Photo mode: HUD hidden, framed capture, save or native share, optional name watermark | `PhotoMode` | Implemented (share depends on browser support) |
-| Showcases & shareable blueprints | — | Not started (needs backend + moderation) |
+| Showcases & shareable blueprints | `src/services/visit.ts`, `src/ui/panels/SharePanel.tsx` | Read-only **visit snapshot links** built (layout only, tested); server-backed showcases & blueprints not started (need backend + moderation) |
 
 ## Flywheel E — Content & discovery
 `Explore → Discover → Complete → Unlock → New content`
@@ -129,3 +129,12 @@ Analytics today are **local-only** (`services/analytics.ts`, inspectable in Sett
 2. **Moderation** (reporting, name filters) before public showcases or shared blueprints.
 3. **Push notifications** only with explicit opt-in, frequency caps and no guilt copy.
 4. **More resident content** (writer time) — the story system is data-driven; each chapter is ~15 lines of data.
+
+## Living World additions (Kampung Seri)
+| Loop | What feeds it | Status |
+|---|---|---|
+| Creative / calm | Zen Mode, fishing journal, flower arranging, sunsets, pets, garden plots | Implemented & tested (engine); UI verified by screenshots |
+| Learning | Daily quiz with explanations (3/day, +2 per upgrade) | Completed and tested |
+| Craft | Hand-preparing teh tarik (sequence, rest time) | Completed and tested |
+| Display | Showroom arranging (models, paints, bays by level) | Completed and tested |
+| Discovery | Language switch (en/ms), new district, modules with their own quests | Completed and tested |
