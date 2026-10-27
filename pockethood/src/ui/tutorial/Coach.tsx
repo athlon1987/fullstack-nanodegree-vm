@@ -2,8 +2,11 @@
 // the live UI state, so it always points at the exact next action — and waits
 // for the player to actually do it.
 import { useEffect, useState } from 'react';
+import { BUILDINGS } from '../../data/buildings';
+import { ITEMS, RECIPES } from '../../data/items';
 import { QUESTS } from '../../data/progression';
 import { finishedJobs, hasItems, passiveReady } from '../../game/economy/economy';
+import { useT } from '../../platform/i18n';
 import { objectiveProgress } from '../../game/engagement/objectives';
 import { buildingCenter } from '../../rendering/scene/coords';
 import { clock } from '../../services/clock';
@@ -19,7 +22,8 @@ interface Hint {
   uid?: string;
 }
 
-function useHint(): Hint | null {
+function useHint(): (Hint & { giver?: string }) | null {
+  const t = useT();
   const g = useGame((s) => s.game!);
   const ui = useGame((s) => s.ui);
   const [, setT] = useState(0);
@@ -29,59 +33,75 @@ function useHint(): Hint | null {
   }, []);
   if (g.tutorial.done) return null;
   const aq = g.quests.active.find((q) => QUESTS.find((d) => d.id === q.id)?.tutorial);
-  if (!aq) return null;
-  const now = clock.now();
-  const byType = (t: string) => g.buildings.find((b) => b.type === t);
-  const cafe = byType('cafe');
-  // A building sheet covers the bottom bar: ask to close it before pointing at navigation.
-  const closeSheet: Hint | null = ui.selected ? { text: 'Close this card to continue.', target: '.sheet .round-btn' } : null;
-  const placingHint = (name: string): Hint => ({ text: `Drag the ${name} to a green spot, then tap ✓ to build it.`, why: 'Green tiles mean the spot is free.', target: '[data-tutorial="place-confirm"]' });
-  switch (aq.id) {
-    case 'welcome': {
-      const house = byType('starter_house')!;
-      return { text: 'Tap the coin bubble above your house to collect rent.', why: 'Houses earn coins over time — even while you’re away.', target: '[data-building="starter_house"]', uid: passiveReady(house, now).cycles ? undefined : house.uid };
-    }
-    case 'open_cafe':
-    case 'meet_luna': {
-      const type = aq.id === 'open_cafe' ? 'cafe' : 'garden';
-      const name = aq.id === 'open_cafe' ? 'café' : 'Community Garden';
-      const b = byType(type);
-      if (b?.busyKind === 'build') return { text: 'Construction takes just a few seconds. Watch the builders work!', uid: b.uid };
-      if (ui.placing?.type === type) return placingHint(name);
-      if (ui.panel === 'build') return { text: `Choose the ${name}.`, target: `[data-tutorial="card-${type}"]` };
-      if (closeSheet) return closeSheet;
-      return { text: 'Open the Build menu.', why: aq.id === 'open_cafe' ? 'Mia has dreamed of this café for years.' : 'Luna will move in once there’s a garden.', target: '[data-tutorial="nav-build"]' };
-    }
-    case 'first_brew': {
-      if (!cafe) return null;
-      if (finishedJobs(cafe, now).length) return { text: 'Coffee’s ready! Tap the bubble to collect it.', target: '[data-building="cafe"]' };
-      if (ui.selected === cafe.uid) {
-        if (cafe.queue.length >= 2) return { text: 'Brewing… close this and wait for the bubble.', target: '.sheet .round-btn' };
-        return { text: 'Tap Make to brew coffee.', why: 'Shops turn time into goods your neighbors want.', target: '[data-tutorial="recipe-coffee"]' };
-      }
-      if (cafe.queue.length) return { text: 'Coffee is brewing. Tap the café to queue another, or wait for the bubble.', uid: cafe.uid };
-      return { text: 'Tap Mia’s Café to start brewing.', uid: cafe.uid };
-    }
-    case 'first_order': {
-      const order = g.orders[0];
-      if (order && !hasItems(g.inventory, order.items)) return { text: 'You need a little more coffee for this order — brew some at the café.', uid: cafe?.uid, target: cafe && finishedJobs(cafe, now).length ? '[data-building="cafe"]' : undefined };
-      if (ui.panel === 'orders') return { text: 'Tap Deliver to hand over the coffee.', target: '[data-tutorial="deliver"]' };
-      if (closeSheet) return closeSheet;
-      return { text: 'Open Orders to see what your neighbors need.', target: '[data-tutorial="nav-orders"]' };
-    }
-    case 'cafe_upgrade': {
-      if (!cafe) return null;
-      if (cafe.busyKind === 'upgrade') return { text: 'Upgrading… the terrace is on its way!', uid: cafe.uid };
-      if (ui.selected === cafe.uid) return { text: 'Tap Upgrade.', why: 'Upgrades add recipes, slots — and you’ll see the café change.', target: '[data-tutorial="upgrade"]' };
-      return { text: 'Tap the café to upgrade it.', uid: cafe.uid };
-    }
-  }
-  const def = QUESTS.find((d) => d.id === aq.id)!;
+  const def = aq && QUESTS.find((d) => d.id === aq.id);
+  if (!aq || !def) return null;
   const o = def.objectives.find((x) => !objectiveProgress(g, x, aq.baseline).done);
-  return o ? { text: o.label } : null;
+  if (!o) return null;
+  const now = clock.now();
+  const giver = def.giver;
+  const why = def.why;
+  const byType = (type: string) => g.buildings.find((b) => b.type === type);
+  const name = (type: string) => BUILDINGS[type]?.name ?? type;
+  // A building sheet covers the bottom bar: ask to close it before pointing at navigation.
+  const closeSheet: Hint | null = ui.selected ? { text: t('coach.closeCard'), target: '.sheet .round-btn' } : null;
+  const hint = (h: Hint) => ({ giver, ...h });
+
+  // Collect income from a building (the first quest).
+  if (o.type === 'counter' && o.counter === 'collect:any') {
+    const b = byType(def.focus?.building ?? 'starter_house');
+    if (!b) return hint({ text: o.label });
+    return hint({ text: t('coach.collect', { building: name(b.type) }), why, target: `[data-building="${b.type}"]`, uid: passiveReady(b, now).cycles ? undefined : b.uid });
+  }
+  // Build something: open Build → pick the card → place it → watch construction.
+  if (o.type === 'build') {
+    const type = o.building;
+    const b = byType(type);
+    if (b?.busyKind === 'build') return hint({ text: t('coach.constructing'), uid: b.uid });
+    if (ui.placing?.type === type) return hint({ text: t('coach.place', { building: name(type) }), why: t('coach.placeWhy'), target: '[data-tutorial="place-confirm"]' });
+    if (ui.panel === 'build') return hint({ text: t('coach.chooseCard', { building: name(type) }), target: `[data-tutorial="card-${type}"]` });
+    if (closeSheet) return hint(closeSheet);
+    return hint({ text: t('coach.openBuild'), why, target: '[data-tutorial="nav-build"]' });
+  }
+  // Produce goods at the building that makes them.
+  if (o.type === 'counter' && o.counter.startsWith('produce:')) {
+    const item = o.counter.slice('produce:'.length);
+    const recipe = Object.values(RECIPES).find((r) => r.output === item && byType(r.building));
+    const b = recipe && byType(recipe.building);
+    if (!recipe || !b) return hint({ text: o.label });
+    if (finishedJobs(b, now).length) return hint({ text: t('coach.ready', { item: ITEMS[item]?.name ?? item }), target: `[data-building="${b.type}"]` });
+    if (ui.selected === b.uid) {
+      if (b.queue.length >= 2) return hint({ text: t('coach.waiting'), target: '.sheet .round-btn' });
+      return hint({ text: t('coach.tapMake', { item: ITEMS[item]?.name ?? item }), why: why ?? t('coach.makeWhy'), target: `[data-tutorial="recipe-${recipe.id}"]` });
+    }
+    if (b.queue.length) return hint({ text: t('coach.queued', { building: name(b.type) }), uid: b.uid });
+    return hint({ text: t('coach.tapBuilding', { building: name(b.type) }), uid: b.uid });
+  }
+  // Deliver an order from the board.
+  if (o.type === 'counter' && o.counter === 'orders') {
+    const order = g.orders[0];
+    if (order && !hasItems(g.inventory, order.items)) {
+      const item = Object.keys(order.items).find((i) => (g.inventory[i] ?? 0) < order.items[i])!;
+      const recipe = Object.values(RECIPES).find((r) => r.output === item);
+      const b = recipe && byType(recipe.building);
+      return hint({ text: t('coach.needMore', { item: ITEMS[item]?.name ?? item, building: b ? name(b.type) : '' }), uid: b?.uid, target: b && finishedJobs(b, now).length ? `[data-building="${b.type}"]` : undefined });
+    }
+    if (ui.panel === 'orders') return hint({ text: t('coach.tapDeliver'), target: '[data-tutorial="deliver"]' });
+    if (closeSheet) return hint(closeSheet);
+    return hint({ text: t('coach.openOrders'), why, target: '[data-tutorial="nav-orders"]' });
+  }
+  // Upgrade a building.
+  if (o.type === 'upgrade') {
+    const b = byType(o.building);
+    if (!b) return hint({ text: o.label });
+    if (b.busyKind === 'upgrade') return hint({ text: t('coach.upgrading'), uid: b.uid });
+    if (ui.selected === b.uid) return hint({ text: t('coach.tapUpgrade'), why, target: '[data-tutorial="upgrade"]' });
+    return hint({ text: t('coach.tapToUpgrade', { building: name(b.type) }), uid: b.uid });
+  }
+  return hint({ text: o.label, why });
 }
 
 export function Coach() {
+  const t = useT();
   const hint = useHint();
   const setUI = useGame((s) => s.setUI);
   const dispatch = useGame((s) => s.dispatch);
@@ -134,7 +154,7 @@ export function Coach() {
         </>
       )}
       <div className="coach__card" style={cardTop ? { top: 'calc(80px + var(--safe-top))' } : { bottom: 'calc(110px + var(--safe-bottom))' }}>
-        <Portrait resident="mia" />
+        <Portrait resident={hint.giver} />
         <div style={{ flex: 1 }}>
           <p>{hint.text}</p>
           {hint.why && <small>{hint.why}</small>}
@@ -147,16 +167,16 @@ export function Coach() {
               setHidden(true);
               setUI({ hintUid: null });
             }}
-            aria-label="Hide hints"
+            aria-label={t('coach.hideAria')}
           >
-            Hide
+            {t('coach.hide')}
           </button>
-          <button className="btn btn--plain btn--sm" onClick={() => dispatch({ type: 'tutorial', skip: true })} aria-label="Skip tutorial">
-            Skip
+          <button className="btn btn--plain btn--sm" onClick={() => dispatch({ type: 'tutorial', skip: true })} aria-label={t('coach.skipAria')}>
+            {t('coach.skip')}
           </button>
         </div>
       </div>
-      {!rect && hint.uid && <span className="sr-only">Look for the arrow in the neighborhood.</span>}
+      {!rect && hint.uid && <span className="sr-only">{t('coach.arrowSr')}</span>}
     </div>
   );
 }

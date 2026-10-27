@@ -4,7 +4,12 @@ import { create } from 'zustand';
 import { BUILDINGS } from '../data/buildings';
 import { ITEMS } from '../data/items';
 import { ACHIEVEMENTS, EVENTS, QUESTS, STORIES } from '../data/progression';
-import { RESIDENTS, FRIENDSHIP_LEVELS } from '../data/residents';
+import { RESIDENTS } from '../data/residents';
+import { activate, defaultWorldId, initContent } from '../platform/content/service';
+import { flag } from '../platform/content/flags';
+import { setLang, t, toLang, type Lang } from '../platform/i18n';
+import { tc } from '../platform/i18n/content';
+import { safeGet, safeRemove, safeSet } from '../utils/safeStorage';
 import { dispatch as engineDispatch, type Action } from '../game/core/engine';
 import type { ActionResult, GameEvent, GameState, Rotation } from '../game/core/types';
 import { welcomeSummary, type WelcomeSummary } from '../game/engagement/PlayerReturnManager';
@@ -86,6 +91,8 @@ interface Store {
   game: GameState | null;
   ui: UI;
   loaded: boolean;
+  /** Bumped whenever content is (re)installed (language switch, module change). */
+  contentRev: number;
   init(): Promise<void>;
   dispatch(action: Action, origin?: [number, number, number]): ActionResult | null;
   setUI(patch: Partial<UI>): void;
@@ -95,9 +102,28 @@ interface Store {
   nextDialogue(): void;
   startPlacing(type: string, uid?: string): void;
   focusOn(x: number, z: number, zoom?: number): void;
-  resetGame(): Promise<void>;
+  resetGame(worldId?: string): Promise<void>;
   saveNow(): Promise<void>;
+  /** Re-install content for the current world (after a language, flag or module change). */
+  reloadContent(): void;
 }
+
+const NEXT_WORLD_KEY = 'pockethood.nextWorld';
+const LANG_KEY = 'pockethood.lang';
+
+/** Device language guess for a brand-new player (never personal data, just the UI language). */
+function initialLang(): Lang {
+  const saved = safeGet(LANG_KEY);
+  if (saved === 'en' || saved === 'ms') return saved;
+  try {
+    return toLang(navigator.language);
+  } catch {
+    return 'en';
+  }
+}
+
+/** Zen Mode hides notifications and anything promotional. */
+const zen = (s: GameState | null) => !!s?.settings.zen && flag('zen_mode');
 
 let saves: SaveService | null = null;
 let saveTimer: number | null = null;
@@ -107,13 +133,14 @@ let resetting = false;
 const worldOf = (s: GameState, uid: string): [number, number, number] => {
   const b = s.buildings.find((x) => x.uid === uid);
   if (!b) return [0, 1, 0];
-  const [w, d] = BUILDINGS[b.type].footprint;
+  const [w, d] = BUILDINGS[b.type]?.footprint ?? b.fp ?? [1, 1];
   return [b.x + (b.rot % 2 ? d : w) / 2 - 12, 1.6, b.z + (b.rot % 2 ? w : d) / 2 - 12];
 };
 
 export const useGame = create<Store>((set, get) => ({
   game: null,
   loaded: false,
+  contentRev: 0,
   ui: {
     panel: null,
     selected: null,
@@ -136,7 +163,20 @@ export const useGame = create<Store>((set, get) => ({
     if (get().loaded) return;
     saves = new SaveService(await browserAdapter());
     const now = clock.now();
-    const { state, fresh, recovered } = await saves.load(now);
+    // Content first (remote → cache → bundled), then the save's world is installed before the
+    // save is repaired, so its buildings, residents and quests resolve against the right content.
+    await initContent();
+    let lang = initialLang();
+    setLang(lang);
+    const nextWorld = safeGet(NEXT_WORLD_KEY);
+    safeRemove(NEXT_WORLD_KEY);
+    const { state, fresh, recovered } = await saves.load(now, (worldId) => activate(worldId ?? nextWorld ?? defaultWorldId(), lang, now));
+    if (fresh) state.settings = { ...state.settings, locale: lang };
+    else if (state.settings.locale !== lang) {
+      lang = state.settings.locale;
+      setLang(lang);
+      activate(state.world.id, lang, now);
+    }
     // Phones start on the Medium preset (lower pixel ratio, cheaper shadows).
     try {
       if (fresh && window.matchMedia('(pointer: coarse)').matches) state.settings = { ...state.settings, graphics: 'medium' };
@@ -147,7 +187,7 @@ export const useGame = create<Store>((set, get) => ({
     const r = engineDispatch(state, { type: 'sessionStart' }, now);
     set({ game: r.state, loaded: true, ui: { ...get().ui, welcome } });
     analytics?.track(fresh ? 'first_session' : 'session_start', { sessions: r.state.sessions });
-    if (recovered) get().toast({ icon: 'alert', title: 'Save repaired', body: 'Your previous save could not be read, so a fresh game was started. A backup was kept.', tone: 'error' });
+    if (recovered) get().toast({ icon: 'alert', title: t('toast.saveRepaired'), body: t('toast.saveRepairedBody'), tone: 'error' });
     routeEvents(r.events, r.state, undefined, true);
     scheduleSave();
     // Heartbeat: timers, arrivals and orders advance even while idle.
@@ -170,12 +210,17 @@ export const useGame = create<Store>((set, get) => ({
     const r = engineDispatch(game, action, clock.now());
     if (r.error) {
       if (action.type !== 'tick') {
-        get().toast({ icon: 'alert', title: r.error, tone: 'error' });
+        get().toast({ icon: 'alert', title: tc(r.error, r.errorParams), tone: 'error' });
         audio.play('error');
       }
       return r;
     }
     set({ game: r.state });
+    if (action.type === 'settings' && action.patch.locale && action.patch.locale !== game.settings.locale) {
+      safeSet(LANG_KEY, action.patch.locale);
+      setLang(action.patch.locale);
+      get().reloadContent();
+    }
     routeEvents(r.events, r.state, origin ?? ('uid' in action ? worldOf(r.state, (action as { uid: string }).uid) : undefined));
     if (action.type !== 'tick' || r.events.length) scheduleSave();
     return r;
@@ -191,6 +236,7 @@ export const useGame = create<Store>((set, get) => ({
   },
 
   toast(t) {
+    if (t.tone !== 'error' && zen(get().game)) return;
     const id = seq++;
     set({ ui: { ...get().ui, toasts: [...get().ui.toasts.slice(-3), { ...t, id }] } });
     window.setTimeout(() => get().dismissToast(id), t.tone === 'error' ? 2600 : 3800);
@@ -223,11 +269,19 @@ export const useGame = create<Store>((set, get) => ({
     set({ ui: { ...get().ui, focus: { x, z, zoom, t: Date.now() } } });
   },
 
-  async resetGame() {
+  async resetGame(worldId) {
     resetting = true;
+    if (worldId) safeSet(NEXT_WORLD_KEY, worldId);
     await saves?.reset();
     clock.reset();
     location.reload();
+  },
+
+  reloadContent() {
+    const g = get().game;
+    if (!g) return;
+    activate(g.world.id, g.settings.locale, clock.now());
+    set({ contentRev: get().contentRev + 1 });
   },
 
   async saveNow() {
@@ -245,8 +299,10 @@ function scheduleSave() {
   }, 600);
 }
 
-function queueDialogue(d: Dialogue) {
+function queueDialogue(d: Dialogue, important = false) {
   const st = useGame.getState();
+  // Zen Mode: only conversations the player starts appear.
+  if (!important && zen(st.game)) return;
   if (!st.ui.dialogue) st.setUI({ dialogue: d });
   else st.setUI({ dialogueQueue: [...st.ui.dialogueQueue, d] });
 }
@@ -273,66 +329,67 @@ function routeEvents(events: GameEvent[], s: GameState, origin?: [number, number
         play('place');
         break;
       case 'BUILDING_CONSTRUCTED':
-        if (BUILDINGS[e.building].category !== 'decoration' && BUILDINGS[e.building].category !== 'path') {
+        if (BUILDINGS[e.building] && BUILDINGS[e.building].category !== 'decoration' && BUILDINGS[e.building].category !== 'path') {
           play('complete');
-          st.toast({ icon: 'build', title: `${BUILDINGS[e.building].name} is open!`, tone: 'success' });
+          st.toast({ icon: 'build', title: tc('toast.opened', { building: e.building }), tone: 'success' });
         }
         break;
       case 'BUILDING_UPGRADED':
         play('complete');
-        st.toast({ icon: 'upgrade', title: `${BUILDINGS[e.building].name} upgraded!`, body: BUILDINGS[e.building].levels[e.level - 1].perks.join(' · '), tone: 'success' });
+        st.toast({ icon: 'upgrade', title: tc('toast.upgraded', { building: e.building }), body: BUILDINGS[e.building]?.levels[e.level - 1]?.perks.join(' · '), tone: 'success' });
         break;
       case 'ORDER_COMPLETED':
         fx.push({ id: seq++, kind: 'coins', amount: e.order.reward.coins ?? 0, from: origin ?? [0, 2, 4] });
         fx.push({ id: seq++, kind: 'xp', amount: e.order.reward.xp ?? 0, from: origin ?? [0, 2, 4] });
         play('reward');
-        queueDialogue({ resident: e.order.resident, text: thanksLine(e.order.resident), mode: 'talk' });
+        queueDialogue({ resident: e.order.resident, text: t(`dialogue.thanks.${seq % 4}`), mode: 'talk' });
         break;
       case 'RESIDENT_ARRIVED':
-        if (!silent && e.resident !== 'mia') {
-          queueDialogue({ resident: e.resident, text: `Hi! I’m ${RESIDENTS[e.resident].name}, the new ${RESIDENTS[e.resident].profession.toLowerCase()}. ${RESIDENTS[e.resident].bio}`, mode: 'arrival' });
+        if (!silent && RESIDENTS[e.resident] && RESIDENTS[e.resident].arrival.type !== 'start') {
+          const r = RESIDENTS[e.resident];
+          queueDialogue({ resident: e.resident, text: t('dialogue.arrival', { name: r.name, profession: r.profession, bio: r.bio }), mode: 'arrival' });
         }
         break;
       case 'FRIENDSHIP_UP':
-        st.toast({ icon: 'heart', title: `${RESIDENTS[e.resident].name}: ${FRIENDSHIP_LEVELS[e.level].name}`, body: 'New conversations unlocked.', tone: 'story' });
+        st.toast({ icon: 'heart', title: tc('toast.friendship', { resident: e.resident, friend: e.level }), body: t('toast.friendshipBody'), tone: 'story' });
         play('reward');
         break;
       case 'QUEST_STARTED': {
-        const q = QUESTS.find((x) => x.id === e.quest)!;
-        if (!silent || q.id === 'welcome') queueDialogue({ resident: q.giver, text: q.intro, mode: 'quest', questId: q.id });
+        const q = QUESTS.find((x) => x.id === e.quest);
+        if (q && (!silent || q.id === 'welcome')) queueDialogue({ resident: q.giver, text: q.intro, mode: 'quest', questId: q.id }, !!q.tutorial);
         break;
       }
       case 'QUEST_COMPLETED': {
-        const q = QUESTS.find((x) => x.id === e.quest)!;
-        st.toast({ icon: 'check', title: `Quest complete: ${q.title}`, body: rewardText(e.reward), tone: 'success' });
+        const q = QUESTS.find((x) => x.id === e.quest);
+        st.toast({ icon: 'check', title: t('toast.questDone', { title: q?.title ?? '' }), body: rewardText(e.reward), tone: 'success' });
         if (e.reward.coins) fx.push({ id: seq++, kind: 'coins', amount: e.reward.coins, from: origin ?? [0, 2, 0] });
         play('complete');
         break;
       }
       case 'STORY_MILESTONE_COMPLETED': {
-        const ch = STORIES.find((c) => c.id === e.chapter)!;
-        queueDialogue({ resident: e.resident, text: ch.outro, mode: 'story-outro', chapter: ch.id });
+        const ch = STORIES.find((c) => c.id === e.chapter);
+        if (ch) queueDialogue({ resident: e.resident, text: ch.outro, mode: 'story-outro', chapter: ch.id }, true);
         play('levelup');
         break;
       }
       case 'LEVEL_UP':
-        if (!silent) {
+        if (!silent && !zen(s)) {
           st.setUI({ levelUp: { level: e.level, unlocks: e.unlocks } });
           play('levelup');
         }
         break;
       case 'ACHIEVEMENT': {
-        const a = ACHIEVEMENTS.find((x) => x.id === e.id)!;
-        st.toast({ icon: 'trophy', title: `Achievement: ${a.name}`, body: rewardText(a.reward), tone: 'success' });
+        const a = ACHIEVEMENTS.find((x) => x.id === e.id);
+        if (a) st.toast({ icon: 'trophy', title: t('toast.achievement', { name: a.name }), body: rewardText(a.reward), tone: 'success' });
         break;
       }
       case 'PULSE_TASK_DONE':
-        st.toast({ icon: 'pulse', title: 'Neighborhood Pulse goal done!', tone: 'success' });
+        st.toast({ icon: 'pulse', title: t('toast.pulseDone'), tone: 'success' });
         play('reward');
         break;
       case 'EVENT_TIER': {
-        const ev = EVENTS.find((x) => x.id === e.event)!;
-        st.toast({ icon: 'flower', title: `${ev.name}: ${ev.tiers[e.tier].label}!`, body: rewardText(ev.tiers[e.tier].reward), tone: 'success' });
+        const ev = EVENTS.find((x) => x.id === e.event);
+        if (ev) st.toast({ icon: 'flower', title: `${ev.name}: ${ev.tiers[e.tier].label}!`, body: rewardText(ev.tiers[e.tier].reward), tone: 'success' });
         play('reward');
         break;
       }
@@ -340,50 +397,59 @@ function routeEvents(events: GameEvent[], s: GameState, origin?: [number, number
         play('reward');
         break;
       case 'LANDMARK_COMPLETED':
-        st.toast({ icon: 'landmark', title: 'The fountain is complete!', body: 'Built together by the whole neighborhood.', tone: 'story' });
+        st.toast({ icon: 'landmark', title: tc('toast.landmark', { project: e.project }), body: t('toast.landmarkBody'), tone: 'story' });
         play('levelup');
         break;
       case 'DISTRICT_UNLOCKED':
         play('levelup');
         break;
       case 'UNLOCKED':
-        if (BUILDINGS[e.what]) st.toast({ icon: 'gift', title: `New keepsake: ${BUILDINGS[e.what].name}`, body: 'Find it in the Build menu.', tone: 'story' });
+        if (BUILDINGS[e.what]) st.toast({ icon: 'gift', title: tc('toast.keepsake', { building: e.what }), body: t('toast.keepsakeBody'), tone: 'story' });
         break;
       case 'ITEM_SOLD':
         fx.push({ id: seq++, kind: 'coins', amount: e.coins, from: [0, 2, 4] });
         play('collect');
         break;
+      case 'HAND_PREPARED':
+      case 'HARVESTED': {
+        const from = worldOf(s, e.uid);
+        const items = e.type === 'HARVESTED' ? e.items : { [e.item]: 1 };
+        for (const [item, n] of Object.entries(items)) fx.push({ id: seq++, kind: 'item', item, amount: n, from });
+        play('collect');
+        break;
+      }
+      case 'QUIZ_ANSWERED':
+        play(e.correct ? 'reward' : 'click');
+        break;
+      case 'SHOWROOM_ARRANGED':
+      case 'PLANTED':
+      case 'WATERED':
+        play('place');
+        break;
+      case 'FISH_SEEN':
+      case 'PET_FED':
+      case 'ZEN_MOMENT':
+        play('click');
+        break;
       case 'GIFT_GIVEN':
-        queueDialogue({ resident: e.resident, text: e.line, mode: 'gift' });
+        queueDialogue({ resident: e.resident, text: e.line, mode: 'gift' }, true);
         fx.push({ id: seq++, kind: 'heart', amount: e.reaction === 'love' ? 8 : e.reaction === 'like' ? 4 : 2, from: [0, 2, 0] });
         play('reward');
         break;
     }
   }
-  if (fx.length) st.setUI({ fx: [...useGame.getState().ui.fx, ...fx].slice(-30), bumps });
+  if (fx.length && !zen(s)) st.setUI({ fx: [...useGame.getState().ui.fx, ...fx].slice(-30), bumps });
 }
 
 export function rewardText(r: { coins?: number; gems?: number; xp?: number; items?: Record<string, number>; unlocks?: string[] }) {
   const parts: string[] = [];
-  if (r.coins) parts.push(`+${r.coins} coins`);
-  if (r.gems) parts.push(`+${r.gems} gems`);
-  if (r.xp) parts.push(`+${r.xp} XP`);
-  for (const [id, n] of Object.entries(r.items ?? {})) parts.push(`+${n} ${ITEMS[id]?.name ?? id}`);
+  if (r.coins) parts.push(`+${t('common.coinsN', { n: r.coins })}`);
+  if (r.gems) parts.push(`+${t('common.gemsN', { n: r.gems })}`);
+  if (r.xp) parts.push(`+${t('common.xpN', { n: r.xp })}`);
+  for (const [id, n] of Object.entries(r.items ?? {})) parts.push(`+${t('common.itemN', { n, item: ITEMS[id]?.name ?? t('common.unknownItem') })}`);
   for (const u of r.unlocks ?? []) parts.push(BUILDINGS[u]?.name ?? u);
   return parts.join(' · ');
 }
-
-const THANKS: Record<string, string[]> = {
-  mia: ['Perfect! You’re a lifesaver.', 'Mmm, exactly what I needed. Thank you!'],
-  felix: ['Splendid! Here — for your trouble.', 'Ha! Just in time. Thank you, friend!'],
-  luna: ['Oh, wonderful. Thank you kindly.', 'You’re always so thoughtful.'],
-  oliver: ['Cheers, boss! Back to work.', 'Top notch. Thanks!'],
-  noah: ['Delivered! Wait — that’s my line.', 'Awesome, thank you!'],
-  ruby: ['Yes! Party saved!', 'You’re the best!'],
-  theo: ['Excellent. Much appreciated.', 'Thank you — precisely what I needed.'],
-  zara: ['Gorgeous! Thank you!', 'Perfect — and very photogenic.'],
-};
-const thanksLine = (r: string) => THANKS[r][Math.floor(Math.random() * THANKS[r].length)];
 
 // Test/dev handle (used by Playwright e2e tests and the dev inspector).
 if (typeof window !== 'undefined') {

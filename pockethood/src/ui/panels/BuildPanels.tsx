@@ -40,7 +40,7 @@ export function BuildPanel() {
     () =>
       Object.values(BUILDINGS)
         .filter((d) => (tab === 'keepsakes' ? d.keepsake : TAB_CATS[tab].includes(d.category) && !d.keepsake))
-        .filter((d) => d.unlockLevel < 99 || d.keepsake)
+        .filter((d) => (d.unlockLevel < 99 || d.keepsake) && !d.hidden)
         .sort((a, b) => a.unlockLevel - b.unlockLevel || (a.cost.coins ?? 0) - (b.cost.coins ?? 0)),
     [tab],
   );

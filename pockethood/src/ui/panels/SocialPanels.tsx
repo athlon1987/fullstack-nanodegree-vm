@@ -14,6 +14,7 @@ import { t, useT } from '../../platform/i18n';
 import { rewardText, useGame } from '../../state/store';
 import { Icon } from '../components/Icon';
 import { Hearts, ItemChips, Panel, Portrait, Progress, Tabs } from '../components/Panel';
+import { tc } from '../../platform/i18n/content';
 
 export function OrdersPanel() {
   const g = useGame((s) => s.game!);
@@ -326,7 +327,7 @@ export function PulsePanel() {
                 </div>
                 <b style={{ fontFamily: 'var(--font-display)', fontSize: '1.1em' }}>
                   {task.claimed ? '✓ ' : ''}
-                  {task.label}
+                  {task.key ? tc(task.key, task.params) : task.label}
                 </b>
                 <Progress value={Math.max(0, p)} max={task.n} />
               </div>

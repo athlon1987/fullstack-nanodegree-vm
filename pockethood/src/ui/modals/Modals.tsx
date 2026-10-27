@@ -13,6 +13,7 @@ import { audio } from '../../audio/AudioManager';
 import { Icon } from '../components/Icon';
 import { Hearts, Portrait } from '../components/Panel';
 import { ResidentDetails } from '../panels/SocialPanels';
+import { tc } from '../../platform/i18n/content';
 
 function useTypewriter(text: string, reduced: boolean) {
   const [n, setN] = useState(reduced ? text.length : 0);
@@ -249,7 +250,7 @@ export function WelcomeBack() {
           )}
           {w.nextGoal && (
             <div className="list-item" style={{ background: '#fff4d6' }}>
-              <Icon name="star" size={30} /> <b>{t('modals.welcomeBack.next', { goal: w.nextGoal.text })}</b>
+              <Icon name="star" size={30} /> <b>{t('modals.welcomeBack.next', { goal: w.nextGoal.key ? tc(w.nextGoal.key, w.nextGoal.params) : w.nextGoal.text ?? '' })}</b>
             </div>
           )}
         </div>

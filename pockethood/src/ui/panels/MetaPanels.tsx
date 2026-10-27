@@ -15,6 +15,7 @@ import { Icon } from '../components/Icon';
 import { CostChips, Panel, Portrait, Progress, Tabs } from '../components/Panel';
 import { cameraState } from '../../rendering/camera/CameraRig';
 import { safeRemove } from '../../utils/safeStorage';
+import { tc, tokenText } from '../../platform/i18n/content';
 
 export function ProfilePanel() {
   const g = useGame((s) => s.game!);
@@ -94,7 +95,7 @@ export function ProfilePanel() {
             <div key={i} className="history-item">
               <Icon name={h.icon === 'order' ? 'orders' : h.icon} size={26} />
               <div>
-                <div style={{ fontWeight: 700 }}>{h.text}</div>
+                <div style={{ fontWeight: 700 }}>{h.key ? tc(h.key, h.params) : h.text}</div>
                 <div className="small muted">{new Date(h.t).toLocaleString(bcp47())}</div>
               </div>
             </div>
@@ -441,7 +442,7 @@ export function CommunityPanel() {
             <div key={i} className="history-item small">
               <Icon name="heart" size={20} />
               <span>
-                <b>{l.who}</b> {t('meta.community.gave', { what: l.what })}
+                <b>{l.who}</b> {t('meta.community.gave', { what: tokenText(l.what) })}
               </span>
             </div>
           ))}

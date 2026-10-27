@@ -15,7 +15,7 @@ export default defineConfig({
     screenshot: 'only-on-failure',
   },
   webServer: {
-    command: 'npx vite --port 5199 --strictPort',
+    command: 'npm run content:build && npx vite --port 5199 --strictPort',
     port: 5199,
     reuseExistingServer: true,
     timeout: 60_000,
