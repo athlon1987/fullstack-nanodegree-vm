@@ -1,6 +1,8 @@
 // Offscreen renders of real game models for UI: build-catalog thumbnails and
 // resident portraits. Rendered once on demand, cached as data URLs.
 import * as THREE from 'three';
+import { WORLD } from '../data/world';
+import { ACTIVE_MODULES } from '../platform/content/install';
 import { BUILDINGS } from '../data/buildings';
 import { archetype } from './kit/archetypes';
 import { clipsOf, model } from './models/assets';
@@ -25,12 +27,21 @@ function setup(size: number) {
 }
 
 export function buildingThumb(type: string): string {
-  const hit = cache.get(`b:${type}`);
+  const key = `b:${type}:${WORLD.id}:${BUILDINGS[type]?.name}:${ACTIVE_MODULES[type]?.id ?? ''}`;
+  const hit = cache.get(key);
   if (hit) return hit;
   try {
     const scene = setup(256);
     const def = BUILDINGS[type];
-    const obj = archetype(def.archetype, { level: 1, flags: {}, hoodName: 'Maple Hollow' });
+    const m = ACTIVE_MODULES[type];
+    const obj = archetype(m ? `prefab:${m.prefab}` : def.archetype, {
+      level: 1,
+      flags: {},
+      hoodName: WORLD.hoodName,
+      biome: WORLD.biome,
+      name: def.name,
+      module: m ? { id: `${m.id}@${m.version}`, prefab: m.prefab, palette: m.brand.palette, sign: m.brand.signText, props: m.props } : undefined,
+    });
     scene.add(obj);
     const box = new THREE.Box3().setFromObject(obj);
     const size = box.getSize(new THREE.Vector3());
@@ -41,7 +52,7 @@ export function buildingThumb(type: string): string {
     cam.lookAt(center);
     renderer!.render(scene, cam);
     const url = renderer!.domElement.toDataURL('image/png');
-    cache.set(`b:${type}`, url);
+    cache.set(key, url);
     return url;
   } catch {
     return '';

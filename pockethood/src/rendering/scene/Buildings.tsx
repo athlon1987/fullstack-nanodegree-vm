@@ -5,7 +5,12 @@ import { Html } from '@react-three/drei';
 import { useFrame, type ThreeEvent } from '@react-three/fiber';
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { BUILDINGS } from '../../data/buildings';
+import { bdef } from '../../data/buildings';
+import { WORLD } from '../../data/world';
+import { COMMUNITY_PROJECTS } from '../../data/progression';
+import { ACTIVE_MODULES } from '../../platform/content/install';
+import { t } from '../../platform/i18n';
+import { BehaviorOverlay } from './BehaviorOverlay';
 import { RECIPES } from '../../data/items';
 import { communityStage } from '../../game/core/actions';
 import type { BuildingInstance } from '../../game/core/types';
@@ -15,6 +20,7 @@ import { clock } from '../../services/clock';
 import { useGame } from '../../state/store';
 import { Icon } from '../../ui/components/Icon';
 import { archetype, constructionSite } from '../kit/archetypes';
+import { dormant } from '../kit/malaysia';
 import { buildingCenter, buildingHeight, htmlPortal, rotY, worldClock } from './coords';
 import { cameraState } from '../camera/CameraRig';
 import { audio } from '../../audio/AudioManager';
@@ -39,6 +45,8 @@ const BuildingView = memo(function BuildingView({ b }: { b: BuildingInstance }) 
   const flagKey = useGame((s) => Object.keys(s.game!.flags).filter((k) => s.game!.flags[k]).sort().join(','));
   const hood = useGame((s) => s.game!.profile.hoodName);
   const stage = useGame((s) => (b.type === 'fountain' ? communityStage(s.game!) : undefined));
+  // Content can change underneath (language switch, module switched on/off): rebuild on revision.
+  const rev = useGame((s) => s.contentRev);
   const selected = useGame((s) => s.ui.selected === b.uid);
   const hinted = useGame((s) => s.ui.hintUid === b.uid);
   const reduced = useGame((s) => s.game!.settings.reducedMotion);
@@ -46,18 +54,29 @@ const BuildingView = memo(function BuildingView({ b }: { b: BuildingInstance }) 
   const bounce = useRef(1);
   const [hover, setHover] = useState(false);
   const building = b.busyKind === 'build';
-  const def = BUILDINGS[b.type];
+  const def = bdef(b.type);
   const isTree = def.archetype.startsWith('deco:tree') && !reduced;
   const phase = b.x * 1.7 + b.z * 2.3;
 
   const obj = useMemo(() => {
-    if (building) {
-      const [w, d] = def.footprint;
-      return constructionSite(w, d);
-    }
+    const [fw0, fd0] = b.fp ?? def.footprint;
+    if (def.archetype === 'dormant') return dormant(fw0, fd0, t('common.unknownBuilding'));
+    if (building) return constructionSite(fw0, fd0);
     const flags = Object.fromEntries(flagKey.split(',').filter(Boolean).map((k) => [k, true]));
-    return archetype(def.archetype, { level: b.level, flags, hoodName: hood, stage });
-  }, [building, def, b.level, flagKey, hood, stage]);
+    const m = ACTIVE_MODULES[b.type];
+    const arch = m ? `prefab:${m.prefab}` : def.archetype;
+    return archetype(arch, {
+      level: b.level,
+      flags,
+      hoodName: hood,
+      stage,
+      biome: WORLD.biome,
+      name: def.name,
+      module: m ? { id: `${m.id}@${m.version}`, prefab: m.prefab, palette: m.brand.palette, sign: m.brand.signText, props: m.props } : undefined,
+      text: b.type === 'fountain' ? { wakafProject: COMMUNITY_PROJECTS[0]?.name ?? '' } : b.type === 'welcome_sign' ? { welcome: t('world.welcome', { hood }) } : undefined,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [building, def, b.level, flagKey, hood, stage, rev]);
 
   // Small decorations receive but don't cast shadows (cheaper shadow pass).
   useEffect(() => {
@@ -96,7 +115,7 @@ const BuildingView = memo(function BuildingView({ b }: { b: BuildingInstance }) 
   });
 
   const center = buildingCenter(b);
-  const [fw, fd] = footprint(b.type, b.rot);
+  const [fw, fd] = footprint(b.type, b.rot, b.fp);
   const isDeco = def.category === 'decoration';
 
   const onClick = (e: ThreeEvent<MouseEvent>) => {
@@ -139,11 +158,12 @@ const BuildingView = memo(function BuildingView({ b }: { b: BuildingInstance }) 
         >
           <primitive object={obj} />
         </group>
+        {!building && <BehaviorOverlay b={b} obj={obj} />}
       </group>
       {selected && <SelectionRing w={fw} d={fd} />}
       {!isDeco && <ContactShadow w={fw} d={fd} />}
       {smoke.length > 0 && !building && <Smoke anchors={smoke} rot={b.rot} />}
-      {b.type === 'fountain' && stage === 4 && <FountainSpray />}
+      {def.archetype === 'fountain' && stage === 4 && <FountainSpray />}
       {!isDeco && b.type !== 'pond' && b.type !== 'welcome_sign' && <StatusBubble b={b} height={buildingHeight(b.type)} />}
       {hinted && (
         <Html portal={htmlPortal} position={[0, buildingHeight(b.type) + 0.9, 0]} center zIndexRange={[21, 0]}>

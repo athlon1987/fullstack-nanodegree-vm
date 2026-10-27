@@ -17,6 +17,7 @@ import { audio, type Sfx } from '../audio/AudioManager';
 import { analytics } from '../services/analytics';
 import { clock } from '../services/clock';
 import { browserAdapter, SaveService } from '../services/persistence';
+import { weatherState } from '../rendering/scene/coords';
 
 export type PanelId =
   | 'build'
@@ -453,7 +454,8 @@ export function rewardText(r: { coins?: number; gems?: number; xp?: number; item
 
 // Test/dev handle (used by Playwright e2e tests and the dev inspector).
 if (typeof window !== 'undefined') {
-  const w = window as unknown as { __pockethood: typeof useGame; __pockethoodClock: typeof clock };
+  const w = window as unknown as { __pockethood: typeof useGame; __pockethoodClock: typeof clock; __pockethoodWeather: typeof weatherState };
   w.__pockethood = useGame;
   w.__pockethoodClock = clock;
+  w.__pockethoodWeather = weatherState;
 }

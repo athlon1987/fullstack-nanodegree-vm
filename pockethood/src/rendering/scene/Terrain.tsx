@@ -12,6 +12,14 @@ import { mat, P, TEX } from '../kit/materials';
 import { model } from '../models/assets';
 import { bake } from '../kit/parts';
 import { HALF, worldClock } from './coords';
+import { WORLD } from '../../data/world';
+import { getLang, t as tr } from '../../platform/i18n';
+
+/** Regional ground palette: temperate meadow or tropical kampung (laterite earth, lush grass). */
+const ground = () =>
+  WORLD.biome === 'tropical'
+    ? { grass: '#7ccb4c', grassDark: '#55a83a', locked: '#a8bf78', lip: '#4f9a36', water: '#3cbfc4', path: '#dcb894', bands: ['#5fa83e', '#c0643c', '#a9532f', '#c8724a', '#8f4426', '#b45f38', '#7e3a20'], flowers: ['#ffffff', '#ffd34d', '#e0413a', '#ff8fb1'] }
+    : { grass: P.grass, grassDark: P.grassDark, locked: P.grassLocked, lip: P.grassDark, water: P.water, path: P.stone, bands: ['#7fbf5a', '#b98559', '#a8774f', '#c19066', '#8f6143', '#9d7050', '#7e573c'], flowers: ['#ffffff', '#ffd34d', '#ff8fb1', '#b9a2ff'] };
 import { plotUnlockable } from '../../game/core/actions';
 
 const ISLAND_DEPTH = 1.6;
@@ -22,7 +30,7 @@ function Island() {
     c.width = 64;
     c.height = 256;
     const ctx = c.getContext('2d')!;
-    const bands = ['#7fbf5a', '#b98559', '#a8774f', '#c19066', '#8f6143', '#9d7050', '#7e573c'];
+    const bands = ground().bands;
     const hs = [14, 40, 34, 46, 40, 44, 38];
     let y = 0;
     bands.forEach((b, i) => {
@@ -50,7 +58,7 @@ function Island() {
       {/* Grass lip overhanging the earth, like a hand-built diorama */}
       <mesh position={[0, -0.06, 0]} receiveShadow>
         <boxGeometry args={[WORLD_CELLS + 0.8, 0.1, WORLD_CELLS + 0.8]} />
-        <meshStandardMaterial color={P.grassDark} roughness={0.95} />
+        <meshStandardMaterial color={ground().lip} roughness={0.95} />
       </mesh>
     </group>
   );
@@ -65,13 +73,13 @@ function Sea() {
       const s = 1 + Math.sin(t * 0.8) * 0.006;
       foam.current.scale.set(s, s, 1);
     }
-    if (water.current) water.current.color.set(worldClock.night > 0.5 ? '#2c5a7a' : P.water);
+    if (water.current) water.current.color.set(worldClock.night > 0.5 ? '#2c5a7a' : ground().water);
   });
   return (
     <group position={[0, -1.15, 0]}>
       <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
         <circleGeometry args={[90, 64]} />
-        <meshStandardMaterial ref={water} color={P.water} roughness={0.25} metalness={0.05} />
+        <meshStandardMaterial ref={water} color={ground().water} roughness={0.25} metalness={0.05} />
       </mesh>
       <mesh ref={foam} rotation={[-Math.PI / 2, 0, Math.PI / 4]} position={[0, 0.02, 0]}>
         <ringGeometry args={[17.3, 18.6, 4, 1]} />
@@ -90,9 +98,10 @@ function Ground() {
     g.rotateX(-Math.PI / 2);
     const pos = g.attributes.position;
     const colors = new Float32Array(pos.count * 3);
-    const grass = new THREE.Color(P.grass);
-    const grassDark = new THREE.Color(P.grassDark);
-    const locked = new THREE.Color(P.grassLocked);
+    const pal = ground();
+    const grass = new THREE.Color(pal.grass);
+    const grassDark = new THREE.Color(pal.grassDark);
+    const locked = new THREE.Color(pal.locked);
     const c = new THREE.Color();
     const r = rng(99);
     for (let i = 0; i < pos.count; i++) {
@@ -119,6 +128,7 @@ function PlotEdges() {
   const level = useGame((s) => s.game!.level);
   const game = useGame((s) => s.game!);
   const openPanel = useGame((s) => s.openPanel);
+  useGame((s) => s.contentRev); // re-paint signs after a language switch
   const signs = EXPANSIONS.filter((e) => plotUnlockable(game, e.id) && level >= e.minLevel);
   const hint = EXPANSIONS.filter((e) => plotUnlockable(game, e.id) && level < e.minLevel);
   return (
@@ -160,7 +170,7 @@ function PlotEdges() {
 
 const saleTex: Record<string, THREE.CanvasTexture> = {};
 function saleTexture(active: boolean) {
-  const k = String(active);
+  const k = `${active}:${getLang()}`;
   if (saleTex[k]) return saleTex[k];
   const c = document.createElement('canvas');
   c.width = 256;
@@ -170,9 +180,9 @@ function saleTexture(active: boolean) {
   ctx.font = '700 46px "Fredoka Variable", system-ui';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText(active ? 'FOR SALE' : 'COMING', 128, 40);
+  ctx.fillText(tr(active ? 'world.forSale' : 'world.coming'), 128, 40);
   ctx.font = '600 28px "Fredoka Variable", system-ui';
-  ctx.fillText(active ? 'tap to expand' : 'at higher level', 128, 84);
+  ctx.fillText(tr(active ? 'world.tapToExpand' : 'world.higherLevel'), 128, 84);
   const t = new THREE.CanvasTexture(c);
   t.colorSpace = THREE.SRGBColorSpace;
   saleTex[k] = t;
@@ -193,7 +203,8 @@ function Wilderness() {
         const z = z0 + 0.5 + r() * (d - 1);
         if (ROAD_ROWS.includes(Math.floor(z)) || ROAD_ROWS.includes(Math.floor(z + 0.6)) || ROAD_ROWS.includes(Math.floor(z - 0.6))) continue;
         const kind = r();
-        out.push({ name: kind < 0.45 ? 'tree_pine' : kind < 0.8 ? 'tree_fat' : 'tree_dark', x: x - HALF, z: z - HALF, h: 1.1 + r() * 0.6, ry: r() * 6, plot: e.id } as never);
+        const tropical = WORLD.biome === 'tropical';
+        out.push({ name: tropical ? (kind < 0.45 ? 'tree_palm' : kind < 0.8 ? 'tree_fat' : 'tree_oak') : kind < 0.45 ? 'tree_pine' : kind < 0.8 ? 'tree_fat' : 'tree_dark', x: x - HALF, z: z - HALF, h: 1.1 + r() * 0.6, ry: r() * 6, plot: e.id } as never);
       }
     }
     return out as ({ name: string; x: number; z: number; h: number; ry: number; plot: string })[];
@@ -293,7 +304,7 @@ function Paths() {
   const paths = buildings.filter((b) => b.type === 'path');
   const mesh = useMemo(() => {
     const geo = new THREE.BoxGeometry(0.96, 0.04, 0.96);
-    const m = mat(P.stone, { map: TEX.cobbles(), repeat: [2, 2], roughness: 0.9 });
+    const m = mat(ground().path, { map: TEX.cobbles(), repeat: [2, 2], roughness: 0.9 });
     const im = new THREE.InstancedMesh(geo, m, 600);
     im.receiveShadow = true;
     im.count = 0;
@@ -330,7 +341,7 @@ function Scatter() {
     const r = rng(777);
     const d = new THREE.Object3D();
     const col = new THREE.Color();
-    const palette = ['#ffffff', '#ffd34d', '#ff8fb1', '#b9a2ff'];
+    const palette = ground().flowers;
     let ti = 0;
     let fi = 0;
     const density = graphics === 'low' ? 2 : graphics === 'medium' ? 3 : 5;

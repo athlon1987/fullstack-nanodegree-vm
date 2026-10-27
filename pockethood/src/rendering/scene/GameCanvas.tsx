@@ -5,6 +5,7 @@ import { useGame } from '../../state/store';
 import { CameraRig } from '../camera/CameraRig';
 import { Pets, Residents } from '../characters/Characters';
 import { Ambient } from '../effects/Ambient';
+import { Rain } from '../effects/Rain';
 import { Lighting } from '../lighting/Lighting';
 import { Buildings } from './Buildings';
 import { GroundInteraction, Placement } from './Placement';
@@ -51,6 +52,7 @@ export function GameCanvas() {
         <Residents />
         <Pets />
         <Ambient />
+        <Rain />
       </Canvas>
     </div>
   );

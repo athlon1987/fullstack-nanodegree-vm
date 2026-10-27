@@ -135,6 +135,63 @@ export const TEX = {
         c.fillRect((i * s) / n, 0, s / n, s);
       }
     }),
+  /** Corrugated zinc roofing (vertical ribs). */
+  zinc: () =>
+    canvasTex('zinc', 128, (c, s) => {
+      const n = 8;
+      for (let i = 0; i < n; i++) {
+        const g = c.createLinearGradient((i * s) / n, 0, ((i + 1) * s) / n, 0);
+        g.addColorStop(0, shade(196));
+        g.addColorStop(0.5, shade(255));
+        g.addColorStop(1, shade(186));
+        c.fillStyle = g;
+        c.fillRect((i * s) / n, 0, s / n, s);
+      }
+      for (let k = 0; k < 6; k++) {
+        c.fillStyle = 'rgba(0,0,0,0.06)';
+        c.fillRect(0, Math.random() * s, s, 1.5);
+      }
+    }),
+  /** Interlocking clay roof tiles. */
+  tiles: () =>
+    canvasTex('tiles', 128, (c, s) => {
+      c.fillStyle = shade(200);
+      c.fillRect(0, 0, s, s);
+      const rows = 6;
+      const cols = 6;
+      for (let r = 0; r < rows; r++)
+        for (let i = 0; i < cols; i++) {
+          const x = (i * s) / cols;
+          const y = (r * s) / rows;
+          const g = c.createLinearGradient(x, 0, x + s / cols, 0);
+          g.addColorStop(0, shade(215));
+          g.addColorStop(0.5, shade(255));
+          g.addColorStop(1, shade(205));
+          c.fillStyle = g;
+          c.fillRect(x + 1, y + 1, s / cols - 2, s / rows - 3);
+        }
+    }),
+  /** Timber louvres / jalousie windows. */
+  louvre: () =>
+    canvasTex('louvre', 64, (c, s) => {
+      const n = 8;
+      for (let i = 0; i < n; i++) {
+        const g = c.createLinearGradient(0, (i * s) / n, 0, ((i + 1) * s) / n);
+        g.addColorStop(0, shade(255));
+        g.addColorStop(1, shade(170));
+        c.fillStyle = g;
+        c.fillRect(0, (i * s) / n, s, s / n);
+      }
+    }),
+  /** Glazed floor / wall tiles in a simple chequer. */
+  floorTiles: () =>
+    canvasTex('floorTiles', 64, (c, s) => {
+      for (let i = 0; i < 4; i++)
+        for (let j = 0; j < 4; j++) {
+          c.fillStyle = shade((i + j) % 2 ? 255 : 222);
+          c.fillRect((i * s) / 4, (j * s) / 4, s / 4, s / 4);
+        }
+    }),
   asphalt: () =>
     canvasTex('asphalt', 128, (c, s) => {
       c.fillStyle = shade(235);

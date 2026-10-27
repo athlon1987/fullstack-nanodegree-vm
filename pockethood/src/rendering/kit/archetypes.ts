@@ -1,8 +1,7 @@
 // POCKETHOOD signature architecture. Each archetype is an original, parametric
 // building dressed with CC0 props; higher levels and story flags add visible detail.
 import * as THREE from 'three';
-import { model, tint } from '../models/assets';
-import { bulb, glass, mat, P, TEX } from './materials';
+import { bulb, mat, P, TEX } from './materials';
 import {
   awning,
   bake,
@@ -27,64 +26,10 @@ import {
   windowAt,
 } from './parts';
 
-export interface ArchCtx {
-  level: number;
-  flags: Record<string, boolean>;
-  hoodName: string;
-  /** Community project stage (fountain). */
-  stage?: number;
-}
-
-const FLOWERS = ['#ff6f91', '#ffd34d', '#ffffff', '#c084fc', '#ff8a5b'];
-const ROCK = { dirt: '#a9a49a', grass: '#7fae5a', _defaultMat: '#8f8a80' };
-
-/** A wall face group: local +Z is the outward normal, origin at the wall's base centre. */
-function face(g: THREE.Object3D, side: 'front' | 'back' | 'left' | 'right', w: number, d: number, z0 = 0) {
-  const f = new THREE.Group();
-  if (side === 'front') f.position.set(0, 0, z0 + d / 2);
-  if (side === 'back') {
-    f.position.set(0, 0, z0 - d / 2);
-    f.rotation.y = Math.PI;
-  }
-  if (side === 'right') {
-    f.position.set(w / 2, 0, z0);
-    f.rotation.y = Math.PI / 2;
-  }
-  if (side === 'left') {
-    f.position.set(-w / 2, 0, z0);
-    f.rotation.y = -Math.PI / 2;
-  }
-  g.add(f);
-  return f;
-}
-
-/** Place a CC0 model; it is merged into the building's baked meshes by material. */
-export function prop(g: THREE.Object3D, name: string, h: number, x: number, y: number, z: number, ry = 0, colors?: Record<string, string>) {
-  const m = model(name, h);
-  if (colors) tint(m, colors);
-  m.position.set(x, y, z);
-  m.rotation.y = ry;
-  g.add(m);
-  return m;
-}
-
-function body(g: THREE.Object3D, w: number, h: number, d: number, z0: number, wall: THREE.Material, base = P.stoneDark) {
-  box(g, w + 0.08, 0.09, d + 0.08, mat(base, { map: TEX.cobbles(), repeat: [3, 1] }), 0, 0, z0, 0.025);
-  box(g, w, h, d, wall, 0, 0.06, z0, 0.03);
-  // Corner trim boards make the volume read crisply.
-  const trim = mat(P.trim);
-  for (const sx of [-1, 1]) for (const sz of [-1, 1]) box(g, 0.06, h, 0.06, trim, (sx * w) / 2, 0.06, z0 + (sz * d) / 2, 0.02);
-}
-
-function shopWindow(f: THREE.Object3D, x: number, w: number, h: number, displays: string[] = []) {
-  const trim = mat(P.trim);
-  box(f, w + 0.1, h + 0.1, 0.06, trim, x, 0.2, 0, 0.02);
-  put(f, rboxGeo(w, h, 0.03, 0.01), glass, [x, 0.25 + h / 2, 0.025]);
-  box(f, 0.025, h, 0.02, trim, x, 0.25, 0.05, 0.005);
-  box(f, w + 0.18, 0.05, 0.12, trim, x, 0.17, 0.05, 0.015);
-  // Display shelf inside the window with real food-kit props
-  displays.forEach((name, i) => prop(f, name, 0.1, x - w / 2 + 0.12 + (i * (w - 0.24)) / Math.max(1, displays.length - 1), 0.25, 0.08));
-}
+import { FLOWERS, ROCK, body, face, prop, shopWindow, type ArchCtx } from './common';
+import { malaysianArchetype, tropicalDecoration } from './malaysia';
+export type { ArchCtx } from './common';
+export { prop } from './common';
 
 // ─── Residential ──────────────────────────────────────────────────────────────
 
@@ -211,7 +156,7 @@ function cafe(c: ArchCtx) {
   shopWindow(f, 0.25, 0.68, 0.4, ['cupcake', 'donut', 'cookie', 'cake']);
   const awn = c.level >= 3 ? [P.teal, P.trim] : [P.coral, P.trim];
   awning(f, 0, 0.78, 0.03, 1.36, awn[0], awn[1]);
-  signBoard(f, 'Mia’s Café', 0, 0.8, 0.04, { w: 0.9, h: 0.17, bg: P.ivory, fg: '#c4553e', glyph: 'cup' });
+  signBoard(f, c.name ?? '', 0, 0.8, 0.04, { w: 0.9, h: 0.17, bg: P.ivory, fg: '#c4553e', glyph: 'cup' });
   windowAt(face(g, 'right', w, d, z0), 0, 0.45, 0, { w: 0.3, flowerBox: FLOWERS });
   windowAt(face(g, 'left', w, d, z0), 0, 0.45, 0, { w: 0.3 });
   chimney(g, -0.45, h + 0.15, z0 - 0.25, 0.45, P.stoneDark);
@@ -257,7 +202,7 @@ function bakery(c: ArchCtx) {
   doorAt(f, 0.45, 0, { color: P.woodDark, glassTop: true, lamp: false });
   shopWindow(f, -0.22, 0.7, 0.4, ['cake', 'cupcake', 'donut', 'cookie']);
   awning(f, 0, 0.78, 0.03, 1.36, P.burgundy, P.cream);
-  signBoard(f, c.flags.bakery_pie_sign ? 'Felix’s Pies' : 'Bakery', 0, 0.8, 0.04, { w: 0.8, h: 0.17, bg: P.cream, fg: '#8a3b2f', glyph: c.flags.bakery_pie_sign ? 'pie' : 'bread' });
+  signBoard(f, c.name ?? '', 0, 0.8, 0.04, { w: 0.8, h: 0.17, bg: P.cream, fg: '#8a3b2f', glyph: c.flags.bakery_pie_sign ? 'pie' : 'bread' });
   windowAt(face(g, 'right', w, d, z0), 0, 0.45, 0, { w: 0.3, shutters: P.burgundy });
   windowAt(face(g, 'left', w, d, z0), 0, 0.45, 0, { w: 0.3, shutters: P.burgundy });
   chimney(g, 0.45, h + 0.15, z0 - 0.25, c.level >= 3 ? 0.8 : 0.45);
@@ -286,7 +231,7 @@ function flowerShop(c: ArchCtx) {
   doorAt(f, -0.42, 0, { color: P.trim, glassTop: true, lamp: false });
   shopWindow(f, 0.25, 0.66, 0.4);
   awning(f, 0, 0.78, 0.03, 1.32, '#5f9e5a', P.trim);
-  signBoard(f, 'Luna’s Blooms', 0, 0.8, 0.04, { w: 0.9, h: 0.17, bg: P.ivory, fg: '#b0477a', glyph: 'flower' });
+  signBoard(f, c.name ?? '', 0, 0.8, 0.04, { w: 0.9, h: 0.17, bg: P.ivory, fg: '#b0477a', glyph: 'flower' });
   windowAt(face(g, 'right', w, d, z0), 0, 0.45, 0, { w: 0.3, flowerBox: FLOWERS });
   // Stepped flower stand with real nature-kit blooms
   box(g, 0.6, 0.1, 0.22, mat(P.wood, { map: TEX.planks() }), 0.3, 0, 0.66, 0.015);
@@ -314,7 +259,7 @@ function grocery(c: ArchCtx) {
   shopWindow(f, -0.72, 0.7, 0.4, ['apple', 'banana', 'cheese']);
   shopWindow(f, 0.72, 0.7, 0.4, ['carrot', 'pumpkin', 'watermelon']);
   awning(f, 0, 0.78, 0.03, 2.3, P.sky, P.trim, 0.36);
-  signBoard(f, 'Market', 0, 0.8, 0.04, { w: 0.8, h: 0.17, bg: P.ivory, fg: '#2f6fa8', glyph: 'basket' });
+  signBoard(f, c.name ?? '', 0, 0.8, 0.04, { w: 0.8, h: 0.17, bg: P.ivory, fg: '#2f6fa8', glyph: 'basket' });
   windowAt(face(g, 'right', w, d, z0), 0, 0.45, 0, { w: 0.3 });
   const crate = mat(P.wood, { map: TEX.planks() });
   const crates: [number, string][] = [[-0.9, 'apple'], [-0.55, 'carrot'], [0.55, 'pumpkin'], [0.9, 'watermelon']];
@@ -403,7 +348,7 @@ function workshop(c: ArchCtx) {
   box(f, 0.56, 0.6, 0.04, mat(shadeHex(P.barn, -0.1), { map: TEX.planks(), repeat: [2, 1] }), -0.2, 0.08, 0.02, 0.015);
   for (const a of [0.82, -0.82]) box(f, 0.05, 0.78, 0.02, mat(P.trim), -0.2, 0.0, 0.05, 0.005, [0, 0, a]);
   windowAt(f, 0.6, 0.44, 0, { w: 0.32, shutters: P.trim });
-  signBoard(f, 'Oliver’s Workshop', -0.1, 0.84, 0.04, { w: 1.0, h: 0.15, bg: P.cream, fg: '#7a3b2a', glyph: 'hammer' });
+  signBoard(f, c.name ?? '', -0.1, 0.84, 0.04, { w: 1.0, h: 0.15, bg: P.cream, fg: '#7a3b2a', glyph: 'hammer' });
   windowAt(face(g, 'right', w, d, z0), 0, 0.44, 0, { w: 0.3 });
   chimney(g, 0.7, h + 0.15, z0 - 0.2, 0.5, P.stoneDark);
   // Log pile and plank stack
@@ -497,7 +442,7 @@ function townHall(c: ArchCtx) {
     windowAt(f, x, 0.3, 0, { w: 0.28, h: 0.4, shutters: P.slate });
     windowAt(f, x, 0.85, 0, { w: 0.28, h: 0.26 });
   }
-  signBoard(g, 'Town Hall', 0, 1.18, z0 + d / 2 + 0.4, { w: 0.6, h: 0.13, bg: P.ivory, fg: P.ink, glyph: 'star' });
+  signBoard(g, c.name ?? '', 0, 1.18, z0 + d / 2 + 0.4, { w: 0.6, h: 0.13, bg: P.ivory, fg: P.ink, glyph: 'star' });
   // Clock tower
   const towerH = c.level >= 2 ? 0.95 : 0.65;
   box(g, 0.5, towerH, 0.5, wall, 0, h + 0.2, z0, 0.02);
@@ -536,7 +481,7 @@ function fountain(c: ArchCtx) {
       const len = Math.hypot(x1 - x0, z1 - z0);
       box(g, len, 0.006, 0.006, mat('#ffffff'), (x0 + x1) / 2, 0.22, (z0 + z1) / 2, 0.002, [0, -Math.atan2(z1 - z0, x1 - x0), 0]);
     }
-    signBoard(g, 'Fountain Project', 0, 0.28, 0.75, { w: 0.6, h: 0.14, bg: P.ivory, fg: '#2f6fa8' });
+    signBoard(g, c.text?.wakafProject ?? '', 0, 0.28, 0.75, { w: 0.6, h: 0.14, bg: P.ivory, fg: '#2f6fa8' });
     cyl(g, 0.015, 0.015, 0.28, mat(P.woodDark), -0.25, 0, 0.73, 5);
     cyl(g, 0.015, 0.015, 0.28, mat(P.woodDark), 0.25, 0, 0.73, 5);
     return g;
@@ -623,7 +568,7 @@ function welcomeSign(c: ArchCtx) {
   const g = new THREE.Group();
   const wood = mat(P.woodDark);
   for (const sx of [-1, 1]) cyl(g, 0.04, 0.05, 0.72, wood, sx * 0.62, 0, 0, 6);
-  signBoard(g, `Welcome to ${c.hoodName}`, 0, 0.34, 0, { w: 1.2, h: 0.26, bg: P.ivory, fg: '#3f7d4f', frame: P.woodDark });
+  signBoard(g, c.text?.welcome ?? c.hoodName, 0, 0.34, 0, { w: 1.2, h: 0.26, bg: P.ivory, fg: '#3f7d4f', frame: P.woodDark });
   box(g, 1.5, 0.06, 0.06, wood, 0, 0.68, 0, 0.015);
   for (let i = 0; i < 9; i++) {
     bush(g, -0.7 + i * 0.175, 0.12, 0.42, i % 2 ? '#6cc04a' : '#5aa548');
@@ -768,11 +713,15 @@ const templateCache = new Map<string, THREE.Group>();
 /** Build (and cache) a baked template; callers clone it for each instance. */
 export function archetype(arch: string, ctx: ArchCtx): THREE.Group {
   const flagKey = Object.keys(ctx.flags).filter((k) => ctx.flags[k]).sort().join(',');
-  const key = `${arch}|${ctx.level}|${flagKey}|${ctx.hoodName}|${ctx.stage ?? ''}`;
+  const m = ctx.module;
+  const modKey = m ? `${m.id}:${m.prefab}:${m.sign}:${m.palette.primary}${m.palette.secondary}${m.palette.accent}` : '';
+  const key = `${arch}|${ctx.level}|${flagKey}|${ctx.hoodName}|${ctx.stage ?? ''}|${ctx.biome ?? ''}|${ctx.name ?? ''}|${modKey}|${JSON.stringify(ctx.text ?? {})}`;
   const hit = templateCache.get(key);
   if (hit) return hit.clone();
   let g: THREE.Group;
-  if (arch.startsWith('deco:')) g = decoration(arch.slice(5));
+  const regional = arch.startsWith('deco:') ? (ctx.biome === 'tropical' ? tropicalDecoration(arch.slice(5)) : null) : malaysianArchetype(arch, ctx);
+  if (regional) g = regional;
+  else if (arch.startsWith('deco:')) g = decoration(arch.slice(5));
   else
     switch (arch) {
       case 'starter_house': g = starterHouse(ctx); break;
@@ -792,9 +741,9 @@ export function archetype(arch: string, ctx: ArchCtx): THREE.Group {
       case 'welcome_sign': g = welcomeSign(ctx); break;
       default: g = decoration('bush');
     }
-  // Trees keep their random rotation per instance, so don't cache them.
+  // Trees keep their random rotation per instance, so don't cache them (the rain tree is symmetric).
   const baked = bake(g);
-  if (!arch.startsWith('deco:tree')) templateCache.set(key, baked);
+  if (!arch.startsWith('deco:tree') || (ctx.biome === 'tropical' && arch === 'deco:tree_round')) templateCache.set(key, baked);
   return baked.clone();
 }
 

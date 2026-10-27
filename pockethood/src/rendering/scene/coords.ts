@@ -8,8 +8,8 @@ export const HALF = 12;
 /** World position of a cell centre. */
 export const cellCenter = (x: number, z: number): [number, number, number] => [x - HALF + 0.5, 0, z - HALF + 0.5];
 
-export function buildingCenter(b: Pick<BuildingInstance, 'type' | 'x' | 'z' | 'rot'>): [number, number, number] {
-  const [w, d] = footprint(b.type, b.rot);
+export function buildingCenter(b: Pick<BuildingInstance, 'type' | 'x' | 'z' | 'rot'> & { fp?: [number, number] }): [number, number, number] {
+  const [w, d] = footprint(b.type, b.rot, b.fp);
   return [b.x - HALF + w / 2, 0, b.z - HALF + d / 2];
 }
 
@@ -24,6 +24,9 @@ export const buildingHeight = (type: string) => {
   if (type === 'townhouse') return 2.5;
   return 2.0;
 };
+
+/** Live weather for rendering and audio (0..1 rain), updated by the Rain effect. */
+export const weatherState: { rain: number; force: number | null } = { rain: 0, force: null };
 
 /** Shared, mutable world clock for rendering (updated each frame). */
 export const worldClock = { hour: 9, night: 0, t: 0 };

@@ -52,7 +52,7 @@ export const cone = (g: THREE.Object3D, r: number, h: number, m: THREE.Material,
 /** Gable roof with shingle texture; ridge runs along X (or Z). Returns the ridge height. */
 export function gableRoof(
   g: THREE.Object3D,
-  o: { w: number; d: number; y: number; rise: number; overhang?: number; color: string; wall: THREE.Material; ridgeAlongZ?: boolean },
+  o: { w: number; d: number; y: number; rise: number; overhang?: number; color: string; wall: THREE.Material; ridgeAlongZ?: boolean; map?: 'shingles' | 'zinc' | 'tiles' },
 ) {
   const ov = o.overhang ?? 0.12;
   const holder = new THREE.Group();
@@ -65,7 +65,7 @@ export function gableRoof(
   const run = D / 2 + ov;
   const len = run / Math.cos(theta) + 0.04;
   const t = 0.07;
-  const roofMat = mat(o.color, { map: TEX.shingles(), repeat: [Math.max(1, Math.round(W * 1.6)), Math.max(1, Math.round(len * 2))], roughness: 0.75 });
+  const roofMat = mat(o.color, { map: TEX[o.map ?? 'shingles'](), repeat: [Math.max(1, Math.round(W * 1.6)), Math.max(1, Math.round(len * 2))], roughness: 0.75 });
   for (const side of [1, -1]) {
     const nx = Math.sin(theta) * (t / 2);
     put(
@@ -91,7 +91,7 @@ export function gableRoof(
 }
 
 /** Simple hip roof: a 4-sided pyramid frustum with shingles. */
-export function hipRoof(g: THREE.Object3D, o: { w: number; d: number; y: number; rise: number; color: string; overhang?: number; top?: number }) {
+export function hipRoof(g: THREE.Object3D, o: { w: number; d: number; y: number; rise: number; color: string; overhang?: number; top?: number; map?: 'shingles' | 'zinc' | 'tiles' }) {
   const ov = o.overhang ?? 0.12;
   const geo = cached(`hip:${o.w}:${o.d}:${o.rise}:${ov}:${o.top ?? 0}`, () => {
     const gg = new THREE.CylinderGeometry(Math.SQRT1_2 * (o.top ?? 0.05), Math.SQRT1_2, o.rise, 4, 1);
@@ -99,7 +99,7 @@ export function hipRoof(g: THREE.Object3D, o: { w: number; d: number; y: number;
     gg.scale(o.w + ov * 2, 1, o.d + ov * 2);
     return gg;
   });
-  put(g, geo, mat(o.color, { map: TEX.shingles(), repeat: [3, 2], roughness: 0.75 }), [0, o.y + o.rise / 2, 0]);
+  put(g, geo, mat(o.color, { map: TEX[o.map ?? 'shingles'](), repeat: [3, 2], roughness: 0.75 }), [0, o.y + o.rise / 2, 0]);
   return o.y + o.rise;
 }
 
@@ -414,7 +414,7 @@ export function bake(src: THREE.Group): THREE.Group {
       const list = byMat.get(m.material) ?? [];
       list.push(geo);
       byMat.set(m.material, list);
-    } else if (o.name === 'smoke' || o.name === 'light' || o.name === 'bubble') {
+    } else if (o.name === 'smoke' || o.name === 'light' || o.name === 'bubble' || o.name.startsWith('anchor:')) {
       const a = new THREE.Object3D();
       a.name = o.name;
       a.position.setFromMatrixPosition(o.matrixWorld);

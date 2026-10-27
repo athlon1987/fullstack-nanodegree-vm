@@ -6,7 +6,7 @@ import { hourOfDay } from '../../services/clock';
 import { clock } from '../../services/clock';
 import { useGame } from '../../state/store';
 import { setNightAmount } from '../kit/materials';
-import { worldClock } from '../scene/coords';
+import { weatherState, worldClock } from '../scene/coords';
 
 const KEYS: { h: number; sun: string; sunI: number; sky: string; ground: string; hemiI: number; bgTop: string; bgBottom: string }[] = [
   { h: 0, sun: '#6f7fbf', sunI: 0.25, sky: '#5b6aa8', ground: '#2c3550', hemiI: 0.55, bgTop: '#1b2547', bgBottom: '#3c4c7a' },
@@ -73,11 +73,15 @@ export function Lighting({ onSky }: { onSky: (top: string, bottom: string) => vo
     const az = -0.6 + dayT * 1.9;
     const el = 0.55 + Math.sin(dayT * Math.PI) * 0.5;
     sun.current.position.set(Math.cos(az) * 14, 10 + el * 8, Math.sin(az) * 10 + 6);
-    sun.current.color.copy(s.sun);
-    sun.current.intensity = s.sunI;
-    hemi.current.color.copy(s.sky);
+    // Rain dims and cools the light and greys the sky.
+    const rain = weatherState.rain;
+    sun.current.color.copy(s.sun).lerp(tmpB.set('#b8c4cc'), rain * 0.5);
+    sun.current.intensity = s.sunI * (1 - rain * 0.55);
+    hemi.current.color.copy(s.sky).lerp(tmpB.set('#aab6bf'), rain * 0.5);
     hemi.current.groundColor.copy(s.ground);
-    hemi.current.intensity = s.hemiI;
+    hemi.current.intensity = s.hemiI * (1 - rain * 0.2);
+    s.bgTop.lerp(tmpB.set('#8e9aa6'), rain * 0.6);
+    s.bgBottom.lerp(tmpB.set('#c3cbd1'), rain * 0.6);
     const night = hour < 6 || hour > 20 ? 1 : hour < 7.5 ? (7.5 - hour) / 1.5 : hour > 18.5 ? (hour - 18.5) / 1.5 : 0;
     worldClock.night = night;
     setNightAmount(night);
