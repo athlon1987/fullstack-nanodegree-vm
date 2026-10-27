@@ -19,6 +19,8 @@ export const cameraState = {
   /** Base pixels-per-unit for this viewport; zoom multiplies it. */
   base: 48,
   dragging: false,
+  /** Last time the player touched the camera (Zen Mode drifts gently when idle). */
+  lastInput: 0,
 };
 
 const ground = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
@@ -64,6 +66,7 @@ export function CameraRig() {
     };
 
     const down = (e: PointerEvent) => {
+      cameraState.lastInput = performance.now();
       pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
       if (pointers.size === 1) {
         last = groundAt(e.clientX, e.clientY);
@@ -111,6 +114,7 @@ export function CameraRig() {
       if (pointers.size < 2) pinchDist = 0;
     };
     const wheel = (e: WheelEvent) => {
+      cameraState.lastInput = performance.now();
       e.preventDefault();
       focusAnim.current = null;
       setZoom(cameraState.zoom * Math.exp(-e.deltaY * 0.0015));
@@ -132,16 +136,24 @@ export function CameraRig() {
   useFrame((_, dt) => {
     const cam = camera as THREE.OrthographicCamera;
     const f = focusAnim.current;
+    const settings = useGame.getState().game?.settings;
+    const zen = !!settings?.zen;
     if (f) {
-      f.t = Math.min(1, f.t + dt * (useGame.getState().game?.settings.reducedMotion ? 4 : 1.6));
+      f.t = Math.min(1, f.t + dt * (settings?.reducedMotion ? 4 : zen ? 0.8 : 1.6));
       const e = 1 - Math.pow(1 - f.t, 3);
       cameraState.target.lerpVectors(f.from, f.to, e);
       cameraState.zoom = f.z0 + (f.z1 - f.z0) * e;
       if (f.t >= 1) focusAnim.current = null;
     } else if (!cameraState.dragging && cameraState.vel.lengthSq() > 1e-6) {
-      cameraState.target.x += cameraState.vel.x * dt * 3.5;
-      cameraState.target.z += cameraState.vel.y * dt * 3.5;
-      cameraState.vel.multiplyScalar(Math.pow(0.02, dt));
+      const k = zen ? 2.2 : 3.5;
+      cameraState.target.x += cameraState.vel.x * dt * k;
+      cameraState.target.z += cameraState.vel.y * dt * k;
+      cameraState.vel.multiplyScalar(Math.pow(zen ? 0.05 : 0.02, dt));
+    } else if (zen && !settings?.reducedMotion && !cameraState.dragging && performance.now() - cameraState.lastInput > 20_000) {
+      // A slow, wandering drift — like letting your eyes rest on the scene.
+      const t = performance.now() / 1000;
+      cameraState.target.x += Math.sin(t * 0.07) * dt * 0.12;
+      cameraState.target.z += Math.cos(t * 0.05) * dt * 0.1;
     }
     // Bounds: owned land plus a margin
     const owned = plots.map((p) => EXPANSIONS.find((e) => e.id === p)?.rect ?? startRect(p));

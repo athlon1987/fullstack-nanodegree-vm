@@ -5,4 +5,8 @@ export default {
   'world.coming': 'COMING',
   'world.tapToExpand': 'tap to expand',
   'world.higherLevel': 'at higher level',
+  'world.tap': 'Tap {name}',
+  'world.upgrading': 'Upgrading',
+  'world.hasStory': '{name} has a story',
+  'world.petLoves': '{name} loves the attention!',
 } as const;

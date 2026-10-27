@@ -17,6 +17,7 @@ import { audio, type Sfx } from '../audio/AudioManager';
 import { analytics } from '../services/analytics';
 import { clock } from '../services/clock';
 import { browserAdapter, SaveService } from '../services/persistence';
+import { decodeVisit, VISIT_PARAM, visitState } from '../services/visit';
 import { weatherState } from '../rendering/scene/coords';
 
 export type PanelId =
@@ -86,7 +87,18 @@ interface UI {
   bumps: Record<string, number>;
   /** Building the tutorial is pointing at (renders a world arrow). */
   hintUid: string | null;
+  /** Full-screen activity card (module mini-games, lake, Zen, sharing). */
+  activity: Activity | null;
 }
+
+export type Activity =
+  | { kind: 'prep'; uid: string }
+  | { kind: 'quiz'; uid: string }
+  | { kind: 'about'; uid: string }
+  | { kind: 'lake' }
+  | { kind: 'zen' }
+  | { kind: 'share' }
+  | { kind: 'studio' };
 
 interface Store {
   game: GameState | null;
@@ -94,6 +106,8 @@ interface Store {
   loaded: boolean;
   /** Bumped whenever content is (re)installed (language switch, module change). */
   contentRev: number;
+  /** Set while viewing someone's shared snapshot: read-only, never saved. */
+  visiting: boolean;
   init(): Promise<void>;
   dispatch(action: Action, origin?: [number, number, number]): ActionResult | null;
   setUI(patch: Partial<UI>): void;
@@ -142,6 +156,7 @@ export const useGame = create<Store>((set, get) => ({
   game: null,
   loaded: false,
   contentRev: 0,
+  visiting: false,
   ui: {
     panel: null,
     selected: null,
@@ -158,12 +173,26 @@ export const useGame = create<Store>((set, get) => ({
     hour: 9,
     bumps: {},
     hintUid: null,
+    activity: null,
   },
 
   async init() {
     if (get().loaded) return;
-    saves = new SaveService(await browserAdapter());
     const now = clock.now();
+    // A shared visit snapshot opens read-only and never touches the visitor's own save.
+    const visit = decodeVisit(new URLSearchParams(location.search).get(VISIT_PARAM));
+    if (visit) {
+      await initContent();
+      const lang = initialLang();
+      setLang(lang);
+      activate(visit.w, lang, now);
+      const game = visitState(visit, now);
+      game.settings = { ...game.settings, locale: lang, graphics: window.matchMedia?.('(pointer: coarse)').matches ? 'medium' : 'high' };
+      set({ game, loaded: true, visiting: true });
+      window.setInterval(() => get().dispatch({ type: 'tick' }), 1000);
+      return;
+    }
+    saves = new SaveService(await browserAdapter());
     // Content first (remote → cache → bundled), then the save's world is installed before the
     // save is repaired, so its buildings, residents and quests resolve against the right content.
     await initContent();
@@ -208,6 +237,10 @@ export const useGame = create<Store>((set, get) => ({
   dispatch(action, origin) {
     const game = get().game;
     if (!game) return null;
+    if (get().visiting && !['tick', 'settings', 'photo', 'talk'].includes(action.type)) {
+      get().toast({ icon: 'map', title: t('share.readOnly'), tone: 'info' });
+      return null;
+    }
     const r = engineDispatch(game, action, clock.now());
     if (r.error) {
       if (action.type !== 'tick') {
@@ -286,7 +319,7 @@ export const useGame = create<Store>((set, get) => ({
   },
 
   async saveNow() {
-    if (resetting) return;
+    if (resetting || get().visiting) return;
     const g = get().game;
     if (g && saves) await saves.save({ ...g, lastSeen: clock.now() }).catch(() => {});
   },

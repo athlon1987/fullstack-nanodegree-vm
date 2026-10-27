@@ -26,7 +26,7 @@ export interface ModuleEntry {
   manifest?: ModuleManifest;
   issues: string[];
   warnings: string[];
-  source: 'remote' | 'cache' | 'bundled';
+  source: 'remote' | 'cache' | 'bundled' | 'studio';
 }
 
 /** Compare semver strings: -1, 0, 1. */

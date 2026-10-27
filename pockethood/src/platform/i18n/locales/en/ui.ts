@@ -13,4 +13,6 @@ export default {
   'ui.tip.away': 'Nothing is lost while you’re away. Your neighbors wait for you.',
   'ui.tip.upgrades': 'Upgrades change how buildings look, not just what they make.',
   'ui.tip.photo': 'Try photo mode at sunset.',
+  'ui.updateReady': 'A new version of POCKETHOOD is ready.',
+  'ui.updateNow': 'Update',
 } as const;

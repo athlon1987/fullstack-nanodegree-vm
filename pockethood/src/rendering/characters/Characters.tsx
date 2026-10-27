@@ -1,5 +1,8 @@
 // Residents and pets: autonomous daily routines on the navigation grid.
 import { Html } from '@react-three/drei';
+import { PETS, type PetDef } from '../../data/pets';
+import { L } from '../../platform/content/install';
+import { getLang, t } from '../../platform/i18n';
 import { useFrame, type ThreeEvent } from '@react-three/fiber';
 import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
@@ -83,7 +86,10 @@ function plan(s: GameState, b: Brain, phase: DayPhase, nav: NavGrid): { cell: [n
 }
 
 export function Residents() {
-  const residents = useGame((s) => s.game!.residents);
+  // Residents whose content isn't installed (e.g. a world pack is unavailable) stay in the save but aren't drawn.
+  const allResidents = useGame((s) => s.game!.residents);
+  const rev = useGame((s) => s.contentRev);
+  const residents = useMemo(() => allResidents.filter((r) => RESIDENTS[r.id]), [allResidents, rev]);
   const buildings = useGame((s) => s.game!.buildings);
   const plots = useGame((s) => s.game!.plots);
   const nav = useMemo(() => buildNavGrid({ buildings, plots }), [buildings, plots]);
@@ -260,6 +266,7 @@ function StoryMarker({ r, brains }: { r: ResidentState; brains: React.MutableRef
   const ref = useRef<THREE.Group>(null);
   const eligible = eligibleChapter(game, r);
   const active = activeChapter(r);
+  const zen = game.settings.zen;
   useFrame(() => {
     const b = brains.current.get(r.id);
     if (ref.current && b) {
@@ -267,13 +274,13 @@ function StoryMarker({ r, brains }: { r: ResidentState; brains: React.MutableRef
       ref.current.visible = b.mode !== 'inside';
     }
   });
-  if (!eligible && !active) return null;
+  if ((!eligible && !active) || zen || !RESIDENTS[r.id]) return null;
   return (
     <group ref={ref}>
       <Html portal={htmlPortal} center zIndexRange={[19, 0]}>
         <button
           className={`story-marker ${eligible ? 'story-marker--new' : ''}`}
-          aria-label={`${RESIDENTS[r.id].name} has a story`}
+          aria-label={t('world.hasStory', { name: RESIDENTS[r.id].name })}
           onClick={() => useGame.getState().setUI({ resident: r.id })}
         >
           {eligible ? '!' : '…'}
@@ -285,28 +292,16 @@ function StoryMarker({ r, brains }: { r: ResidentState; brains: React.MutableRef
 
 // ─── Pets ────────────────────────────────────────────────────────────────────
 
-interface PetDef {
-  id: string;
-  name: string;
-  model: string;
-  height: number;
-  /** Anchor building type to wander around, or a resident to follow. */
-  home?: string;
-  follow?: string;
-  requires?: string;
-}
-
-export const PETS: PetDef[] = [
-  { id: 'mochi', name: 'Mochi', model: 'cat', height: 0.3, home: 'starter_house' },
-  { id: 'biscuit', name: 'Biscuit', model: 'shiba', height: 0.34, follow: 'felix', requires: 'bakery' },
-  { id: 'pudding', name: 'Pudding', model: 'pug', height: 0.28, home: 'cafe', requires: 'cafe' },
-];
+/** Renderer view of a pet: the data definition plus who it follows in this world. */
+type PetView = PetDef & { follow?: string; label: string };
+const petView = (p: PetDef): PetView => ({ ...p, follow: p.followWorkerOf ? BUILDINGS[p.followWorkerOf]?.resident : undefined, label: L(p.name, getLang()) });
 
 export function Pets() {
   const buildings = useGame((s) => s.game!.buildings);
   const plots = useGame((s) => s.game!.plots);
   const nav = useMemo(() => buildNavGrid({ buildings, plots }), [buildings, plots]);
-  const pets = PETS.filter((p) => !p.requires || buildings.some((b) => b.type === p.requires && b.busyKind !== 'build'));
+  const rev = useGame((s) => s.contentRev);
+  const pets = useMemo(() => PETS.filter((p) => !p.requires || buildings.some((b) => b.type === p.requires && b.busyKind !== 'build')).map(petView), [buildings, rev]);
   return (
     <group>
       {pets.map((p) => (
@@ -316,7 +311,7 @@ export function Pets() {
   );
 }
 
-function Pet({ def, nav }: { def: PetDef; nav: NavGrid }) {
+function Pet({ def, nav }: { def: PetView; nav: NavGrid }) {
   const actor = useMemo(() => new Actor(def.model, def.height, 'animal'), [def]);
   const st = useRef({ pos: new THREE.Vector2(0, 2), path: [] as THREE.Vector2[], heading: 0, timer: 1, mode: 'idle' as 'idle' | 'walk' | 'rest' | 'play', r: rng(hashString(def.id)) });
   const navRef = useRef(nav);
@@ -387,7 +382,7 @@ function Pet({ def, nav }: { def: PetDef; nav: NavGrid }) {
         st.current.path = [];
         actor.play('celebrate');
         audio.play('pop');
-        useGame.getState().toast({ icon: 'heart', title: `${def.name} loves the attention!`, tone: 'story' });
+        useGame.getState().toast({ icon: 'heart', title: t('world.petLoves', { name: def.label }), tone: 'story' });
       }}
     />
   );

@@ -1,6 +1,7 @@
 // POCKETHOOD icon family: original vector "sticker" icons — chunky fills,
 // a warm ink outline and a soft highlight — so currencies, goods and UI share one style.
 import type { CSSProperties, ReactNode } from 'react';
+import { ITEMS } from '../../data/items';
 
 const INK = '#3d3226';
 const S = { stroke: INK, strokeWidth: 1.6, strokeLinejoin: 'round' as const, strokeLinecap: 'round' as const };
@@ -264,6 +265,212 @@ const ICONS: Record<string, ReactNode> = {
       <path d="M7 10l2.5 2L7 14M11.5 14.5h5" stroke="#8fd16a" strokeWidth={1.8} fill="none" strokeLinecap="round" />
     </>
   ),
+  // ── Kampung goods & activities ──────────────────────────────────────
+  kopi: (
+    <>
+      <path d="M6 9h10l-1 9.5a2 2 0 0 1-2 1.5H9a2 2 0 0 1-2-1.5z" fill="#fffaf0" {...S} />
+      <path d="M16 11h1.4a2.2 2.2 0 0 1 0 4.4H15.4" fill="none" {...S} />
+      <ellipse cx="11" cy="9.3" rx="5" ry="1.3" fill="#5a3a22" {...S} />
+      <path d="M7.5 13h7" stroke="#2f7d9b" strokeWidth={1.6} strokeLinecap="round" />
+      <path d="M9 6.5c0-1.4 1.4-1.4 1.4-2.8M12.5 6.5c0-1.4 1.4-1.4 1.4-2.8" stroke="#b4aa98" strokeWidth={1.3} fill="none" strokeLinecap="round" />
+    </>
+  ),
+  teh: (
+    <>
+      <path d="M7 7h10l-1.2 13a1.5 1.5 0 0 1-1.5 1.3H9.7a1.5 1.5 0 0 1-1.5-1.3z" fill="#e9c08f" {...S} />
+      <path d="M7.3 7h9.4l-.3 3.5H7.6z" fill="#fff6e6" {...S} />
+      <path d="M12 2.5v3.5" stroke="#c98a4b" strokeWidth={1.6} strokeLinecap="round" />
+      <ellipse cx="10" cy="14" rx="1.4" ry="3" {...HL} />
+    </>
+  ),
+  nasi_lemak: (
+    <>
+      <path d="M3 14l9-9 9 9-9 7z" fill="#5aa23e" {...S} />
+      <circle cx="12" cy="12.5" r="4.2" fill="#fffaf0" {...S} />
+      <circle cx="10.5" cy="11" r="1.4" fill="#d8432f" />
+      <circle cx="13.6" cy="13" r="1.3" fill="#ffd34d" stroke="#fff" strokeWidth={0.8} />
+      <path d="M10 14.5h1.5M12.5 10.5l1 .5" stroke="#8a5a37" strokeWidth={1.2} strokeLinecap="round" />
+    </>
+  ),
+  roti_bakar: (
+    <>
+      <path d="M5 8.5a3.5 3.5 0 0 1 3.5-3.5h7A3.5 3.5 0 0 1 19 8.5V19H5z" fill="#e8b46a" {...S} />
+      <rect x="7.2" y="9" width="9.6" height="7.6" rx="1" fill="#f6d894" />
+      <path d="M8 12.5h8" stroke="#3f9a4a" strokeWidth={2.2} strokeLinecap="round" />
+      <path d="M7.5 18.5l2-2M11 18.5l2-2M14.5 18.5l2-2" stroke="#8a5a37" strokeWidth={1.2} strokeLinecap="round" />
+    </>
+  ),
+  kelapa: (
+    <>
+      <circle cx="12" cy="13" r="7.5" fill="#8a5a37" {...S} />
+      <circle cx="9.5" cy="11" r="1" fill="#3d3226" />
+      <circle cx="12.5" cy="10" r="1" fill="#3d3226" />
+      <circle cx="11.5" cy="13" r="1" fill="#3d3226" />
+      <path d="M8 17c1.5 1 4 1.5 6.5.5" stroke="#b67b4c" strokeWidth={1.2} fill="none" strokeLinecap="round" />
+    </>
+  ),
+  kaya: (
+    <>
+      <rect x="6" y="8" width="12" height="13" rx="3" fill="#c9a043" {...S} />
+      <rect x="5.5" y="4.5" width="13" height="4" rx="1.2" fill="#4f9a52" {...S} />
+      <rect x="8.5" y="12" width="7" height="5" rx="1" fill="#fffaf0" {...S} />
+      <path d="M8 9.5v3" stroke="#fff" strokeWidth={1.4} opacity={0.5} strokeLinecap="round" />
+    </>
+  ),
+  pisang: (
+    <>
+      <path d="M5 8c2 8 9 12 15 9-6 0-10-4-12-10z" fill="#ffd34d" {...S} />
+      <path d="M8 7l-1.5-2" stroke="#5e3a22" strokeWidth={1.8} strokeLinecap="round" />
+    </>
+  ),
+  hibiscus: (
+    <>
+      {[0, 72, 144, 216, 288].map((a) => (
+        <ellipse key={a} cx="12" cy="7" rx="3.4" ry="4.6" fill="#e0413a" {...S} transform={`rotate(${a} 12 12)`} />
+      ))}
+      <circle cx="12" cy="12" r="2" fill="#a8232a" {...S} />
+      <path d="M12 12l4.5-5" stroke="#ffd34d" strokeWidth={1.4} strokeLinecap="round" />
+    </>
+  ),
+  kuih: (
+    <>
+      <rect x="4" y="11" width="16" height="8" rx="2" fill="#4f9a52" {...S} />
+      <rect x="4" y="7" width="16" height="5" rx="2" fill="#fff6e6" {...S} />
+      <path d="M6 9.5h1M9 9h1M12 9.8h1M15 9.2h1" stroke="#c9a063" strokeWidth={1.4} strokeLinecap="round" />
+    </>
+  ),
+  herbs: (
+    <>
+      <path d="M9 21c0-6-2-10-4-13M12 21c0-7 0-11 1-15M15 21c0-6 2-9 4-11" stroke="#6aa84f" strokeWidth={2.4} fill="none" strokeLinecap="round" />
+      <path d="M7 20h10" stroke="#c9a063" strokeWidth={2.6} strokeLinecap="round" />
+    </>
+  ),
+  chili: (
+    <>
+      <path d="M8 7c-2 6 1 11 9 13-4-4-5-8-4-12z" fill="#d8432f" {...S} />
+      <path d="M8.5 7.5c1-2 3-2.5 4.5-1.5M10.5 6l-.5-3" stroke="#3f9a4a" strokeWidth={1.8} fill="none" strokeLinecap="round" />
+    </>
+  ),
+  sapling: (
+    <>
+      <path d="M5 20h14l-1.5-4h-11z" fill="#a65a35" {...S} />
+      <path d="M12 16V8" stroke="#3f9a4a" strokeWidth={2} strokeLinecap="round" />
+      <path d="M12 10c-4 0-6-2-6-5 4 0 6 2 6 5zM12 9c3 0 5-2 5-4.5-3.5 0-5 2-5 4.5z" fill="#6aa84f" {...S} />
+    </>
+  ),
+  leaf: (
+    <>
+      <path d="M4 20C4 10 10 4 20 4c0 10-6 16-16 16z" fill="#4f9a52" {...S} />
+      <path d="M5 19L15 9" stroke="#2f6b45" strokeWidth={1.4} strokeLinecap="round" />
+    </>
+  ),
+  garland: (
+    <>
+      <path d="M4 6c2 9 14 9 16 0" fill="none" stroke="#3e9a55" strokeWidth={1.4} />
+      {[4.8, 7, 9.5, 12, 14.5, 17, 19.2].map((x, i) => (
+        <circle key={x} cx={x} cy={6 + Math.sin(((x - 4) / 16) * Math.PI) * 6.8} r="2" fill={i % 2 ? '#ffffff' : '#f59f2e'} {...S} />
+      ))}
+    </>
+  ),
+  fish: (
+    <>
+      <path d="M3 12c3-5 9-6 13-2l4-3v10l-4-3c-4 4-10 3-13-2z" fill="#5fb0d9" {...S} />
+      <circle cx="7.5" cy="11" r="1" fill={INK} />
+      <path d="M10 9.5c1 1.5 1 3.5 0 5" stroke="#2f6fa8" strokeWidth={1.2} fill="none" />
+    </>
+  ),
+  book: (
+    <>
+      <path d="M4 5.5C7 4.5 9.5 5 12 6.5c2.5-1.5 5-2 8-1V19c-3-1-5.5-.5-8 1-2.5-1.5-5-2-8-1z" fill="#fffaf0" {...S} />
+      <path d="M12 6.5V20" stroke={INK} strokeWidth={1.4} />
+      <path d="M6.5 9h3M6.5 12h3M14.5 9h3M14.5 12h3" stroke="#8a6fd1" strokeWidth={1.3} strokeLinecap="round" />
+    </>
+  ),
+  car: (
+    <>
+      <path d="M3 15v-3l2.5-4.5h10L19 12h2v3z" fill="#4f9de0" {...S} />
+      <path d="M7 8.5l-1.5 3.5h6V8.5zM12.5 8.5V12H18l-2.5-3.5z" fill="#d9f1ff" {...S} />
+      <circle cx="7.5" cy="16" r="2.2" fill="#3d3226" {...S} />
+      <circle cx="16.5" cy="16" r="2.2" fill="#3d3226" {...S} />
+    </>
+  ),
+  egg: <ellipse cx="12" cy="13" rx="6" ry="7.5" fill="#fff6e6" {...S} />,
+  rice: (
+    <>
+      <path d="M4 12h16a8 8 0 0 1-16 0z" fill="#f6cfae" {...S} />
+      <path d="M5 12c1-4 13-4 14 0z" fill="#fffaf0" {...S} />
+    </>
+  ),
+  cup: (
+    <>
+      <path d="M6 7h12l-1.5 12a2 2 0 0 1-2 1.8h-5a2 2 0 0 1-2-1.8z" fill="#fffaf0" {...S} />
+      <path d="M6.3 10h11.4" stroke="#4f9de0" strokeWidth={1.4} />
+    </>
+  ),
+  zen: (
+    <>
+      <path d="M12 19c-4 0-8-2-9-5 3-1 6 0 9 5 3-5 6-6 9-5-1 3-5 5-9 5z" fill="#8fd16a" {...S} />
+      <path d="M12 18c-2-3-2-8 0-12 2 4 2 9 0 12z" fill="#f6a5c0" {...S} />
+      <path d="M12 18c-3-2-5-6-4-9 2 1 4 4 4 9zM12 18c3-2 5-6 4-9-2 1-4 4-4 9z" fill="#ff8fb1" {...S} />
+    </>
+  ),
+  share: (
+    <>
+      <circle cx="17" cy="6" r="2.8" fill="#4f9de0" {...S} />
+      <circle cx="7" cy="12" r="2.8" fill="#2fa59b" {...S} />
+      <circle cx="17" cy="18" r="2.8" fill="#f2b632" {...S} />
+      <path d="M9.4 10.8l5.2-3.4M9.4 13.2l5.2 3.4" stroke={INK} strokeWidth={1.6} />
+    </>
+  ),
+  link: (
+    <>
+      <path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1" fill="none" stroke={INK} strokeWidth={2} strokeLinecap="round" />
+      <path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" fill="none" stroke="#4f9de0" strokeWidth={2} strokeLinecap="round" />
+    </>
+  ),
+  rain: (
+    <>
+      <path d="M6 14a4 4 0 0 1 .5-8A5.5 5.5 0 0 1 17 7a3.5 3.5 0 0 1 1 7z" fill="#cfe3ef" {...S} />
+      <path d="M8 17l-1 2.5M12 17l-1 2.5M16 17l-1 2.5" stroke="#4f9de0" strokeWidth={1.8} strokeLinecap="round" />
+    </>
+  ),
+  globe: (
+    <>
+      <circle cx="12" cy="12" r="8.5" fill="#cfe3ef" {...S} />
+      <path d="M3.5 12h17M12 3.5c3 3 3 14 0 17M12 3.5c-3 3-3 14 0 17" stroke={INK} strokeWidth={1.3} fill="none" />
+    </>
+  ),
+  water: <path d="M12 3c3 5 6 8 6 11.5A6 6 0 0 1 6 14.5C6 11 9 8 12 3z" fill="#5fb0d9" {...S} />,
+  sun: (
+    <>
+      <circle cx="12" cy="12" r="4.5" fill="#f6c343" {...S} />
+      <path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8" stroke="#f59f2e" strokeWidth={1.8} strokeLinecap="round" />
+    </>
+  ),
+  paw: (
+    <>
+      <ellipse cx="12" cy="15.5" rx="4.5" ry="3.8" fill="#c98a4b" {...S} />
+      {[[6.5, 10], [9.5, 6.8], [14.5, 6.8], [17.5, 10]].map(([x, y]) => (
+        <circle key={x} cx={x} cy={y} r="1.9" fill="#c98a4b" {...S} />
+      ))}
+    </>
+  ),
+  vase: (
+    <>
+      <path d="M9 11h6c2 3 2 7 0 10H9c-2-3-2-7 0-10z" fill="#4f9de0" {...S} />
+      <circle cx="9" cy="7" r="2.3" fill="#e0413a" {...S} />
+      <circle cx="15" cy="7" r="2.3" fill="#ffd34d" {...S} />
+      <circle cx="12" cy="5" r="2.3" fill="#ff8fb1" {...S} />
+    </>
+  ),
+  studio: (
+    <>
+      <rect x="3" y="4" width="18" height="14" rx="2" fill="#fbf3e4" {...S} />
+      <path d="M3 8h18" stroke={INK} strokeWidth={1.4} />
+      <path d="M7 12l2 2-2 2M11 16h5" stroke="#2fa59b" strokeWidth={1.6} fill="none" strokeLinecap="round" />
+      <path d="M8 21h8" stroke={INK} strokeWidth={1.8} strokeLinecap="round" />
+    </>
+  ),
   // ── Goods ─────────────────────────────────────────────────────────────
   coffee: (
     <>
@@ -391,8 +598,11 @@ const ICONS: Record<string, ReactNode> = {
 /** Map item ids to icon names. */
 const ALIAS: Record<string, string> = { furniture: 'chair', veggie_basket: 'basket', berry_pie: 'pie', flower_crown: 'crown', coins: 'coin', gems: 'gem' };
 
+/** Icon key for a name that may be an item id (items carry their own icon, set by content). */
+export const iconKey = (name: string) => ITEMS[name]?.icon ?? ALIAS[name] ?? name;
+
 export function Icon({ name, size = 24, style, title }: { name: string; size?: number; style?: CSSProperties; title?: string }) {
-  const icon = ICONS[ALIAS[name] ?? name] ?? ICONS.star;
+  const icon = ICONS[iconKey(name)] ?? ICONS[ALIAS[name] ?? name] ?? ICONS.star;
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" style={{ flex: 'none', display: 'block', ...style }} role={title ? 'img' : undefined} aria-hidden={title ? undefined : true} aria-label={title}>
       {icon}
@@ -400,4 +610,4 @@ export function Icon({ name, size = 24, style, title }: { name: string; size?: n
   );
 }
 
-export const hasIcon = (n: string) => !!ICONS[ALIAS[n] ?? n];
+export const hasIcon = (n: string) => !!ICONS[iconKey(n)];

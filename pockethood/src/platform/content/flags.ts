@@ -10,7 +10,8 @@ export const DEFAULT_FLAGS: Record<string, boolean> = {
   visit_links: true,
   weather: true,
   pwa: true,
-  studio: import.meta.env?.DEV ?? false,
+  /** Developer & content Studio. On in this prototype; production builds switch it off via the index. */
+  studio: true,
 };
 
 const OVERRIDE_KEY = 'pockethood.flags';

@@ -115,4 +115,13 @@ export default {
   'meta.dev.xp': '+200 XP',
   'meta.dev.camera': 'Camera: zoom {zoom}',
   'meta.dev.analytics': 'Analytics events (local only)',
+  'meta.settings.ambience': 'Ambience',
+  'meta.settings.voices': 'Character voices',
+  'meta.settings.weather': 'Weather (rain showers)',
+  'meta.settings.world.title': 'Neighbourhoods',
+  'meta.settings.world.current': 'You’re living in {world}.',
+  'meta.settings.world.core': 'Maple Hollow (classic)',
+  'meta.settings.world.confirm': 'Start a brand-new game in {world}? Your current neighbourhood will be erased on this device.',
+  'meta.settings.world.start': 'Start fresh there',
+  'meta.settings.studio': 'Studio (content & developer tools)',
 } as const;

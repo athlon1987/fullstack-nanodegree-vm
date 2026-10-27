@@ -1,0 +1,21 @@
+// Sharing and visit snapshots.
+export default {
+  'share.open': 'Share',
+  'share.title': 'Share',
+  'share.intro': 'Invite a friend to build their own neighbourhood, or show them yours.',
+  'share.message': 'I’m building a cosy neighbourhood in POCKETHOOD — come and try it!',
+  'share.snapshotMessage': 'Come and see {hood}, my neighbourhood in POCKETHOOD!',
+  'share.snapshot': 'Share a snapshot of my neighbourhood',
+  'share.snapshotHint': 'Friends see your layout read-only. It’s a picture in time, not a live visit.',
+  'share.whatsapp': 'Share on WhatsApp',
+  'share.system': 'Share…',
+  'share.copy': 'Copy link',
+  'share.copyManual': 'Copy this link:',
+  'share.photo': 'Take a photo to share',
+  'share.privacy': 'The link opens the game. It doesn’t contain anything from your save.',
+  'share.snapshotPrivacy': 'The snapshot contains only your neighbourhood’s name, level and building layout — never your coins, items, name or progress.',
+  'share.visiting': 'Visiting {hood}',
+  'share.visitingHint': 'A read-only snapshot someone shared. Nothing here changes your own game.',
+  'share.goHome': 'My neighbourhood',
+  'share.readOnly': 'This is a snapshot — look around, nothing can be changed here.',
+} as const;

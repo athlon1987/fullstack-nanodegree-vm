@@ -1,11 +1,16 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
-import { audio } from '../audio/AudioManager';
+import { audio, type Bed } from '../audio/AudioManager';
+import { WORLD } from '../data/world';
+import { behaviorOf } from '../platform/content/install';
+import { weatherState } from '../rendering/scene/coords';
 import { ALL_MODELS, preloadModels } from '../rendering/models/assets';
 import { useGame } from '../state/store';
 import { BottomBar, FlyLayer, SideRail, Toasts, TopBar, Tracker } from '../ui/hud/Hud';
 import { LoadingScreen } from './LoadingScreen';
 import { Overlays } from '../ui/Overlays';
-import { t } from '../platform/i18n';
+import { VisitBanner } from '../ui/panels/SharePanel';
+import { t, useT } from '../platform/i18n';
+import { usePwa } from '../services/pwa';
 
 const GameCanvas = lazy(() => import('../rendering/scene/GameCanvas').then((m) => ({ default: m.GameCanvas })));
 
@@ -19,6 +24,10 @@ export function App() {
   const photo = useGame((s) => s.ui.photoMode);
   const placing = useGame((s) => !!s.ui.placing);
   const settings = useGame((s) => s.game?.settings);
+  const visiting = useGame((s) => s.visiting);
+  const updateReady = usePwa((s) => s.updateReady);
+  const applyUpdate = usePwa((s) => s.apply);
+  useT();
 
   useEffect(() => {
     if (booted) return;
@@ -37,6 +46,16 @@ export function App() {
         setError(t('ui.loadError'));
       }
     })();
+    // Keep the soundscape in step with the world: time of day, rain, Zen Mode and what you're looking at.
+    window.setInterval(() => {
+      const st = useGame.getState();
+      const g = st.game;
+      if (!g) return;
+      const sel = st.ui.selected ? g.buildings.find((b) => b.uid === st.ui.selected) : undefined;
+      const lake = st.ui.activity?.kind === 'lake' || sel?.type === 'pond';
+      const bed = lake ? 'lake' : sel ? (behaviorOf(sel.type, 'ambient_sound')?.sound ?? 'none') : 'none';
+      audio.setScape({ hour: st.ui.hour, rain: weatherState.rain, zen: g.settings.zen, tropical: WORLD.biome === 'tropical', bed: bed as Bed });
+    }, 600);
     const unlock = () => void audio.unlock();
     window.addEventListener('pointerdown', unlock, { once: true });
     window.addEventListener('keydown', unlock, { once: true });
@@ -44,7 +63,8 @@ export function App() {
 
   useEffect(() => {
     if (!settings) return;
-    audio.configure(settings.musicVolume, settings.sfxVolume, settings.muted);
+    audio.configure({ music: settings.musicVolume, ambience: settings.ambienceVolume, sfx: settings.sfxVolume, character: settings.characterVolume, muted: settings.muted });
+    document.documentElement.classList.toggle('zen', settings.zen);
     document.documentElement.style.setProperty('--text-scale', String(settings.textScale));
     document.documentElement.classList.toggle('reduced-motion', settings.reducedMotion);
   }, [settings]);
@@ -59,14 +79,23 @@ export function App() {
       {loaded && !photo && (
         <div className="hud">
           <TopBar />
-          {!placing && <Tracker />}
-          {!placing && <BottomBar />}
+          {visiting && <VisitBanner />}
+          {!placing && !settings?.zen && !visiting && <Tracker />}
+          {!placing && !visiting && <BottomBar />}
           {!placing && <SideRail />}
         </div>
       )}
       {loaded && <Overlays />}
       {loaded && <Toasts />}
       {loaded && <FlyLayer />}
+      {updateReady && (
+        <div className="update-toast" role="status">
+          <span>{t('ui.updateReady')}</span>
+          <button className="btn btn--teal btn--sm" onClick={applyUpdate}>
+            {t('ui.updateNow')}
+          </button>
+        </div>
+      )}
       <LoadingScreen progress={progress} done={ready} error={error} />
     </>
   );

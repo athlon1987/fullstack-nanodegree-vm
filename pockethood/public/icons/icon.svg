@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7ec8e3"/><stop offset="1" stop-color="#d6f0ef"/></linearGradient>
+    <linearGradient id="hill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7ccb4c"/><stop offset="1" stop-color="#55a83a"/></linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#sky)"/>
+  <circle cx="372" cy="150" r="54" fill="#f6c343"/>
+  <path d="M0 370 Q128 300 256 340 T512 330 V512 H0Z" fill="url(#hill)"/>
+  <path d="M0 430 Q140 395 300 420 T512 410 V512 H0Z" fill="#c0643c"/>
+  <!-- palm -->
+  <path d="M118 360 C126 300 128 250 140 200" stroke="#8a5a37" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <path d="M140 200 C110 170 80 175 60 195 M140 200 C120 160 130 140 150 125 M140 200 C175 170 200 175 214 196 M140 200 C160 168 190 160 205 165" stroke="#3f9a4a" stroke-width="16" fill="none" stroke-linecap="round"/>
+  <!-- rumah kampung -->
+  <g stroke="#3d3226" stroke-width="9" stroke-linejoin="round">
+    <path d="M232 300 V372 M392 300 V372 M312 300 V372" stroke="#6b4a30"/>
+    <rect x="222" y="232" width="180" height="78" rx="8" fill="#c08a57"/>
+    <path d="M206 244 L312 150 L418 244 Z" fill="#b5523b"/>
+    <path d="M280 218 L312 190 L344 218 Z" fill="#f3e2c0"/>
+    <rect x="252" y="252" width="40" height="40" rx="5" fill="#2f7d6b"/>
+    <rect x="332" y="252" width="40" height="40" rx="5" fill="#2f7d6b"/>
+  </g>
+</svg>

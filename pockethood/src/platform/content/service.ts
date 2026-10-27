@@ -9,6 +9,7 @@ import { flags, setRemoteFlags } from './flags';
 import { installContent, type InstallReport } from './install';
 import { loadContent, type ContentBundle, type ContentCache, type Fetcher } from './loader';
 import { evaluate, type ModuleEntry } from './registry';
+import type { ModuleManifest } from './schema';
 
 export interface ContentState {
   bundle: ContentBundle | null;
@@ -21,6 +22,15 @@ export interface ContentState {
 }
 
 export const useContent = create<ContentState>(() => ({ bundle: null, log: [], modules: [], report: null, worldId: CORE_WORLD_ID, rev: 0 }));
+
+/**
+ * Studio (developer) overrides for this session/device only: preview edited module data
+ * without publishing, and switch modules off locally. Never shipped to other players.
+ */
+export const studio = {
+  previews: new Map<string, ModuleManifest>(),
+  disabled: new Set<string>(),
+};
 
 /** Anonymous per-install id used only for staged-rollout buckets (never sent anywhere). */
 export function installId(): string {
@@ -94,10 +104,18 @@ export function activate(worldId: string, lang: Lang, now = Date.now()): Install
   const country = pack?.country ?? 'ZZ';
   const f = flags();
   const entries: ModuleEntry[] = [];
-  for (const m of bundle?.modules ?? []) {
-    const decision = bundle ? evaluate(m.entry, m.manifest, { now, country, flags: f, index: bundle.index, installId: installId() }) : { status: 'missing' as const, reason: '' };
+  const listed = (bundle?.modules ?? []).map((m) => {
+    const preview = studio.previews.get(m.entry.id);
+    return preview ? { entry: { ...m.entry, version: preview.version }, manifest: preview, issues: [] as string[] } : m;
+  });
+  for (const m of listed) {
+    const decision = studio.disabled.has(m.entry.id)
+      ? { status: 'disabled' as const, reason: 'Switched off in Studio (this device only)' }
+      : bundle
+        ? evaluate(m.entry, m.manifest, { now, country, flags: f, index: bundle.index, installId: installId() })
+        : { status: 'missing' as const, reason: '' };
     const status = !f.modules && decision.status === 'active' ? 'flag_off' : decision.status;
-    entries.push({ id: m.entry.id, version: m.entry.version, status, reason: status === 'flag_off' && decision.status === 'active' ? 'Modules are switched off' : decision.reason, manifest: m.manifest, issues: [...m.issues], warnings: [], source: bundle!.source });
+    entries.push({ id: m.entry.id, version: m.entry.version, status, reason: status === 'flag_off' && decision.status === 'active' ? 'Modules are switched off' : decision.reason, manifest: m.manifest, issues: [...m.issues], warnings: [], source: studio.previews.has(m.entry.id) ? 'studio' : bundle!.source });
   }
   const report = installContent({ world: pack, modules: entries.filter((e) => e.status === 'active').map((e) => e.manifest!), lang, now });
   if (!report.world.ok) audit({ actor: 'system', action: 'world.reject', target: worldId, detail: report.world.errors.slice(0, 5).join('; '), level: 'error' });

@@ -16,7 +16,8 @@ export function Rain() {
   const graphics = useGame((s) => s.game!.settings.graphics);
   const enabled = useGame((s) => s.game!.settings.weather);
   const reduced = useGame((s) => s.game!.settings.reducedMotion);
-  const count = graphics === 'low' ? 250 : graphics === 'medium' ? 500 : 900;
+  const zen = useGame((s) => s.game!.settings.zen);
+  const count = Math.round((graphics === 'low' ? 250 : graphics === 'medium' ? 500 : 900) * (zen ? 0.5 : 1));
   const { lines, speeds } = useMemo(() => {
     const pos = new Float32Array(count * 6);
     const speeds = new Float32Array(count);

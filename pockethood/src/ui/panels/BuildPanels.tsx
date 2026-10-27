@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
-import { BUILDINGS, isDecoration, isFixed } from '../../data/buildings';
+import { BUILDINGS, bdef, isDecoration, isFixed } from '../../data/buildings';
+import { ACTIVE_MODULES } from '../../platform/content/install';
+import { BehaviorCards, ModuleBadges } from './ModulePanels';
 import { ITEMS, RECIPES } from '../../data/items';
 import { RESIDENTS } from '../../data/residents';
 import type { BuildingCategory, Rotation } from '../../game/core/types';
@@ -200,14 +202,16 @@ export function BuildingSheet() {
     return () => window.removeEventListener('keydown', onKey);
   }, [setUI]);
   if (!b) return null;
-  const def = BUILDINGS[b.type];
-  const lvl = levelDef(b);
+  const def = bdef(b.type);
+  if (def.archetype === 'dormant') return <DormantSheet onClose={() => setUI({ selected: null })} />;
+  const mod = ACTIVE_MODULES[b.type];
+  const lvl = levelDef(b)!;
   const next = def.levels[b.level];
   const recipes = recipesFor(b);
   const done = finishedJobs(b, now);
   const passive = passiveReady(b, now);
   const deco = isDecoration(b.type);
-  const worker = Object.values(RESIDENTS).find((r) => r.workplace === b.type);
+  const worker = (def.resident && RESIDENTS[def.resident]) || Object.values(RESIDENTS).find((r) => r.workplace === b.type);
   const close = () => setUI({ selected: null });
   return (
     <section className="sheet" role="dialog" aria-label={def.name}>
@@ -233,6 +237,7 @@ export function BuildingSheet() {
         <p className="muted" style={{ marginTop: 0 }}>
           {def.description}
         </p>
+        {mod && <ModuleBadges m={mod} />}
 
         {b.busyUntil !== null && (
           <div className="card row row--between" style={{ marginBottom: 10 }}>
@@ -252,9 +257,11 @@ export function BuildingSheet() {
         {(done.length > 0 || passive.cycles > 0) && (
           <button className="btn btn--gold btn--block" style={{ marginBottom: 10 }} onClick={() => dispatch({ type: 'collect', uid: b.uid })}>
             {t('common.collect')} {passive.coins > 0 && <><Icon name="coin" size={20} /> {passive.coins}</>}
-            {done.length > 0 && <><Icon name={RECIPES[done[0].recipe].output} size={20} /> ×{done.length}</>}
+            {done.length > 0 && <><Icon name={done[0].out?.item ?? RECIPES[done[0].recipe]?.output ?? 'star'} size={20} /> ×{done.length}</>}
           </button>
         )}
+
+        <BehaviorCards b={b} />
 
         {lvl.passive && b.busyKind !== 'build' && (
           <div className="card row" style={{ marginBottom: 10 }}>
@@ -285,8 +292,8 @@ export function BuildingSheet() {
                 const finished = j.end <= now;
                 const pct = Math.max(0, Math.min(1, (now - j.start) / (j.end - j.start)));
                 return (
-                  <div key={i} className={`slot filled ${finished ? 'done' : ''}`} aria-label={`${RECIPES[j.recipe].name} ${finished ? t('build.sheet.ready') : fmt(j.end - now)}`}>
-                    <Icon name={RECIPES[j.recipe].output} size={30} />
+                  <div key={i} className={`slot filled ${finished ? 'done' : ''}`} aria-label={`${RECIPES[j.recipe]?.name ?? ITEMS[j.out?.item ?? '']?.name ?? ''} ${finished ? t('build.sheet.ready') : fmt(j.end - now)}`}>
+                    <Icon name={j.out?.item ?? RECIPES[j.recipe]?.output ?? 'star'} size={30} />
                     {!finished && j.start <= now && <i style={{ width: `${pct * 100}%` }} />}
                     {!finished && j.start > now && <small>{t('build.sheet.queued')}</small>}
                   </div>
@@ -392,6 +399,24 @@ export function BuildingSheet() {
           </button>
         )}
       </footer>
+    </section>
+  );
+}
+
+/** A building whose content is temporarily unavailable: kept safe, shown closed. */
+function DormantSheet({ onClose }: { onClose: () => void }) {
+  const t = useT();
+  return (
+    <section className="sheet" role="dialog" aria-label={t('common.unknownBuilding')}>
+      <header className="panel__head">
+        <h2 style={{ margin: 0, flex: 1 }}>{t('common.unknownBuilding')}</h2>
+        <button className="round-btn" onClick={onClose} aria-label={t('common.close')}>
+          <Icon name="close" size={22} />
+        </button>
+      </header>
+      <div className="panel__body">
+        <p className="muted">{t('build.dormant')}</p>
+      </div>
     </section>
   );
 }

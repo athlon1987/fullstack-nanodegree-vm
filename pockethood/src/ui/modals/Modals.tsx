@@ -40,6 +40,10 @@ export function DialogueBox({ d }: { d: Dialogue }) {
   const def = RESIDENTS[d.resident];
   const r = g.residents.find((x) => x.id === d.resident);
   const tw = useTypewriter(d.text, g.settings.reducedMotion);
+  // Each neighbour has a gentle, wordless voice (character audio channel).
+  useEffect(() => {
+    audio.voice(d.resident, d.text.length);
+  }, [d.resident, d.text]);
   const story = r && eligibleChapter(g, r);
   const active = r && activeChapter(r);
   const lvl = r ? friendshipLevel(r.friendship) : 0;

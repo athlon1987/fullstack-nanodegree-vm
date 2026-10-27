@@ -49,4 +49,5 @@ export default {
   'build.sheet.maxed': 'Fully upgraded — wonderful work!',
   'build.sheet.move': 'Move',
   'build.sheet.sellFor': 'Sell for {n}',
+  'build.dormant': 'This building’s content isn’t available right now. It’s kept safe exactly as it was and will reopen when the content returns.',
 } as const;

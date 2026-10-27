@@ -117,5 +117,14 @@ const ms: Translation<typeof en> = {
   'meta.dev.xp': '+200 XP',
   'meta.dev.camera': 'Kamera: zum {zoom}',
   'meta.dev.analytics': 'Peristiwa analitik (setempat sahaja)',
+  'meta.settings.ambience': 'Bunyi persekitaran',
+  'meta.settings.voices': 'Suara watak',
+  'meta.settings.weather': 'Cuaca (hujan)',
+  'meta.settings.world.title': 'Kejiranan',
+  'meta.settings.world.current': 'Anda tinggal di {world}.',
+  'meta.settings.world.core': 'Maple Hollow (klasik)',
+  'meta.settings.world.confirm': 'Mulakan permainan baharu di {world}? Kejiranan semasa anda akan dipadam pada peranti ini.',
+  'meta.settings.world.start': 'Mula baharu di sana',
+  'meta.settings.studio': 'Studio (alat kandungan & pembangun)',
 };
 export default ms;

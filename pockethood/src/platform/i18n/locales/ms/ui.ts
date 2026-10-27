@@ -15,5 +15,7 @@ const ms: Translation<typeof en> = {
   'ui.tip.away': 'Tiada apa yang hilang semasa anda tiada. Jiran-jiran setia menunggu anda.',
   'ui.tip.upgrades': 'Naik taraf mengubah rupa bangunan, bukan sekadar apa yang dihasilkan.',
   'ui.tip.photo': 'Cuba Mod Foto waktu senja.',
+  'ui.updateReady': 'Versi baharu POCKETHOOD sudah sedia.',
+  'ui.updateNow': 'Kemas kini',
 };
 export default ms;

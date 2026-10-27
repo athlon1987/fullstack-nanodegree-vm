@@ -51,5 +51,6 @@ const ms: Translation<typeof en> = {
   'build.sheet.maxed': 'Sudah naik taraf sepenuhnya — syabas!',
   'build.sheet.move': 'Alih',
   'build.sheet.sellFor': 'Jual untuk {n}',
+  'build.dormant': 'Kandungan bangunan ini tidak tersedia buat masa ini. Ia disimpan dengan selamat seperti asal dan akan dibuka semula apabila kandungannya kembali.',
 };
 export default ms;

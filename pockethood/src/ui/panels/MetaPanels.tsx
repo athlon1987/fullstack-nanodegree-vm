@@ -9,7 +9,11 @@ import { canAfford, levelForXp } from '../../game/economy/economy';
 import { objectiveProgress } from '../../game/engagement/objectives';
 import { analytics } from '../../services/analytics';
 import { clock } from '../../services/clock';
-import { bcp47, useT } from '../../platform/i18n';
+import { bcp47, LANGS, useT } from '../../platform/i18n';
+import { useContent } from '../../platform/content/service';
+import { flag } from '../../platform/content/flags';
+import { L } from '../../platform/content/install';
+import { CORE_WORLD_ID } from '../../data/world';
 import { rewardText, useGame } from '../../state/store';
 import { Icon } from '../components/Icon';
 import { CostChips, Panel, Portrait, Progress, Tabs } from '../components/Panel';
@@ -133,11 +137,33 @@ export function SettingsPanel() {
   const resetGame = useGame((s) => s.resetGame);
   const openPanel = useGame((s) => s.openPanel);
   const [confirmReset, setConfirmReset] = useState(false);
+  const [newWorld, setNewWorld] = useState<string | null>(null);
   const set = (patch: Partial<Settings>) => dispatch({ type: 'settings', patch });
   const st = g.settings;
   const t = useT();
+  const bundle = useContent((c) => c.bundle);
+  const worlds = [{ id: CORE_WORLD_ID, name: t('meta.settings.world.core') }, ...Object.values(bundle?.worlds ?? {}).map((w) => ({ id: w.id, name: L(w.name, st.locale) }))];
   return (
     <Panel title={t('meta.settings.title')} icon="settings">
+      <div className="setting-row">
+        <span className="row">
+          <Icon name="globe" size={24} /> {t('common.language')}
+        </span>
+        <span className="seg" role="group" aria-label={t('common.language')}>
+          {LANGS.map((l) => (
+            <button key={l.id} aria-pressed={st.locale === l.id} lang={l.bcp47} onClick={() => set({ locale: l.id })}>
+              {l.label}
+            </button>
+          ))}
+        </span>
+      </div>
+      <div className="setting-row">
+        <span className="row">
+          <Icon name="zen" size={24} /> {t('zen.toggle')}
+          <div className="small muted">{t('zen.toggleHint')}</div>
+        </span>
+        <Toggle on={st.zen} onChange={(v) => set({ zen: v })} label={t('zen.toggle')} />
+      </div>
       <div className="setting-row">
         <span className="row">
           <Icon name="sound" size={24} /> {t('meta.settings.music')}
@@ -149,6 +175,18 @@ export function SettingsPanel() {
           <Icon name="sound" size={24} /> {t('meta.settings.sfx')}
         </span>
         <input className="slider" style={{ maxWidth: 160 }} type="range" min={0} max={1} step={0.05} value={st.sfxVolume} onChange={(e) => set({ sfxVolume: +e.target.value })} aria-label={t('meta.settings.sfxAria')} />
+      </div>
+      <div className="setting-row">
+        <span className="row">
+          <Icon name="rain" size={24} /> {t('meta.settings.ambience')}
+        </span>
+        <input className="slider" style={{ maxWidth: 160 }} type="range" min={0} max={1} step={0.05} value={st.ambienceVolume} onChange={(e) => set({ ambienceVolume: +e.target.value })} aria-label={t('meta.settings.ambience')} />
+      </div>
+      <div className="setting-row">
+        <span className="row">
+          <Icon name="chat" size={24} /> {t('meta.settings.voices')}
+        </span>
+        <input className="slider" style={{ maxWidth: 160 }} type="range" min={0} max={1} step={0.05} value={st.characterVolume} onChange={(e) => set({ characterVolume: +e.target.value })} aria-label={t('meta.settings.voices')} />
       </div>
       <div className="setting-row">
         <span className="row">
@@ -179,6 +217,10 @@ export function SettingsPanel() {
             </button>
           ))}
         </span>
+      </div>
+      <div className="setting-row">
+        <span>{t('meta.settings.weather')}</span>
+        <Toggle on={st.weather} onChange={(v) => set({ weather: v })} label={t('meta.settings.weather')} />
       </div>
       <div className="setting-row">
         <span>{t('meta.settings.reducedMotion')}</span>
@@ -227,6 +269,38 @@ export function SettingsPanel() {
         <button className="btn btn--plain" onClick={() => openPanel('devtools')}>
           <Icon name="dev" size={20} /> {t('meta.settings.devtools')}
         </button>
+        {flag('studio') && (
+          <button className="btn btn--plain" onClick={() => useGame.getState().setUI({ panel: null, activity: { kind: 'studio' } })}>
+            <Icon name="studio" size={20} /> {t('meta.settings.studio')}
+          </button>
+        )}
+        <div className="card stack">
+          <b>{t('meta.settings.world.title')}</b>
+          <div className="small muted">{t('meta.settings.world.current', { world: worlds.find((w) => w.id === g.world.id)?.name ?? g.world.id })}</div>
+          {newWorld ? (
+            <>
+              <div className="small">{t('meta.settings.world.confirm', { world: worlds.find((w) => w.id === newWorld)?.name ?? '' })}</div>
+              <div className="row">
+                <button className="btn btn--plain btn--sm" onClick={() => setNewWorld(null)}>
+                  {t('meta.settings.keepPlaying')}
+                </button>
+                <button className="btn btn--coral btn--sm" onClick={() => void resetGame(newWorld)}>
+                  {t('meta.settings.world.start')}
+                </button>
+              </div>
+            </>
+          ) : (
+            <div className="row" style={{ flexWrap: 'wrap', gap: 6 }}>
+              {worlds
+                .filter((w) => w.id !== g.world.id)
+                .map((w) => (
+                  <button key={w.id} className="btn btn--plain btn--sm" onClick={() => setNewWorld(w.id)}>
+                    <Icon name="map" size={18} /> {w.name}
+                  </button>
+                ))}
+            </div>
+          )}
+        </div>
         {!confirmReset ? (
           <button className="btn btn--coral" onClick={() => setConfirmReset(true)}>
             {t('meta.settings.newHood')}

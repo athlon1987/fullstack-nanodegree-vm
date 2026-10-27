@@ -7,5 +7,9 @@ const ms: Translation<typeof en> = {
   'world.coming': 'AKAN DATANG',
   'world.tapToExpand': 'ketik untuk buka',
   'world.higherLevel': 'pada tahap lebih tinggi',
+  'world.tap': 'Ketik {name}',
+  'world.upgrading': 'Sedang dinaik taraf',
+  'world.hasStory': '{name} ada cerita',
+  'world.petLoves': '{name} suka dimanja!',
 };
 export default ms;

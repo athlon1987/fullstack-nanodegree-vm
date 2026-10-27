@@ -47,6 +47,7 @@ export function TopBar() {
     return () => window.clearTimeout(id);
   }, [bump]);
   const xp = xpProgress(g);
+  const zen = g.settings.zen;
   return (
     <div className="topbar">
       <button className="profile-chip" onClick={() => openPanel('profile')} aria-label={t('hud.profileAria', { level: g.level })} data-tutorial="profile">
@@ -59,14 +60,22 @@ export function TopBar() {
         </div>
       </button>
       <div className="spacer" />
-      <div className={`pill ${bumping ? 'bump' : ''}`} id="hud-coins" aria-label={t('common.coinsN', { n: g.coins })}>
-        <Icon name="coin" size={34} />
-        <Counter value={g.coins} />
-      </div>
-      <div className="pill" id="hud-gems" aria-label={t('common.gemsN', { n: g.gems })} style={{ minWidth: 0 }}>
-        <Icon name="gem" size={30} />
-        <Counter value={g.gems} />
-      </div>
+      {zen ? (
+        <button className="pill zen-pill" onClick={() => useGame.getState().setUI({ activity: { kind: 'zen' } })} aria-label={t('zen.hudAria')}>
+          <Icon name="zen" size={30} /> {t('zen.hud')}
+        </button>
+      ) : (
+        <>
+          <div className={`pill ${bumping ? 'bump' : ''}`} id="hud-coins" aria-label={t('common.coinsN', { n: g.coins })}>
+            <Icon name="coin" size={34} />
+            <Counter value={g.coins} />
+          </div>
+          <div className="pill" id="hud-gems" aria-label={t('common.gemsN', { n: g.gems })} style={{ minWidth: 0 }}>
+            <Icon name="gem" size={30} />
+            <Counter value={g.gems} />
+          </div>
+        </>
+      )}
       <button className="round-btn" onClick={() => openPanel('settings')} aria-label={t('hud.settings')}>
         <Icon name="settings" size={28} />
       </button>
@@ -137,6 +146,7 @@ export function BottomBar() {
   const deliverable = g.orders.filter((o) => hasItems(g.inventory, o.items)).length;
   const stories = g.residents.filter((r) => eligibleChapter(g, r)).length;
   const invCount = Object.values(g.inventory).reduce((a, b) => a + b, 0);
+  const zen = g.settings.zen;
   const items: { id: PanelId; label: string; icon: string; badge?: number | string; primary?: boolean }[] = [
     { id: 'build', label: t('hud.nav.build'), icon: 'build', primary: true },
     { id: 'orders', label: t('hud.nav.orders'), icon: 'orders', badge: deliverable || undefined },
@@ -158,7 +168,7 @@ export function BottomBar() {
             <Icon name={it.icon} size={30} />
           </span>
           {it.label}
-          {it.badge !== undefined && <span className={`badge ${it.badge === 'soon' ? 'badge--soon' : ''}`}>{it.badge === 'soon' ? t('hud.nav.soon') : it.badge}</span>}
+          {it.badge !== undefined && !zen && <span className={`badge ${it.badge === 'soon' ? 'badge--soon' : ''}`}>{it.badge === 'soon' ? t('hud.nav.soon') : it.badge}</span>}
         </button>
       ))}
     </nav>
@@ -179,6 +189,12 @@ export function SideRail() {
       </button>
       <button className="round-btn" aria-label={t('hud.rail.photo')} onClick={() => setUI({ photoMode: true, panel: null, selected: null })} data-tutorial="photo">
         <Icon name="camera" size={28} />
+      </button>
+      <button className="round-btn" aria-label={t('zen.hudAria')} onClick={() => setUI({ activity: { kind: 'zen' } })}>
+        <Icon name="zen" size={28} />
+      </button>
+      <button className="round-btn" aria-label={t('share.open')} onClick={() => setUI({ activity: { kind: 'share' }, panel: null })}>
+        <Icon name="share" size={26} />
       </button>
       <button className="round-btn" aria-label={t('hud.rail.help')} onClick={() => openPanel('help')}>
         <Icon name="help" size={28} />

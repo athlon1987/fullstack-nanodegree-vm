@@ -47,6 +47,7 @@ const BuildingView = memo(function BuildingView({ b }: { b: BuildingInstance }) 
   const stage = useGame((s) => (b.type === 'fountain' ? communityStage(s.game!) : undefined));
   // Content can change underneath (language switch, module switched on/off): rebuild on revision.
   const rev = useGame((s) => s.contentRev);
+  const zen = useGame((s) => s.game!.settings.zen);
   const selected = useGame((s) => s.ui.selected === b.uid);
   const hinted = useGame((s) => s.ui.hintUid === b.uid);
   const reduced = useGame((s) => s.game!.settings.reducedMotion);
@@ -136,6 +137,11 @@ const BuildingView = memo(function BuildingView({ b }: { b: BuildingInstance }) 
       st.openPanel('community');
       return;
     }
+    if (b.type === 'pond') {
+      audio.play('click');
+      st.setUI({ activity: { kind: 'lake' }, selected: null, panel: null });
+      return;
+    }
     audio.play('click');
     st.setUI({ selected: b.uid, panel: null });
   };
@@ -164,10 +170,10 @@ const BuildingView = memo(function BuildingView({ b }: { b: BuildingInstance }) 
       {!isDeco && <ContactShadow w={fw} d={fd} />}
       {smoke.length > 0 && !building && <Smoke anchors={smoke} rot={b.rot} />}
       {def.archetype === 'fountain' && stage === 4 && <FountainSpray />}
-      {!isDeco && b.type !== 'pond' && b.type !== 'welcome_sign' && <StatusBubble b={b} height={buildingHeight(b.type)} />}
+      {!isDeco && !zen && b.type !== 'pond' && b.type !== 'welcome_sign' && <StatusBubble b={b} height={buildingHeight(b.type)} />}
       {hinted && (
         <Html portal={htmlPortal} position={[0, buildingHeight(b.type) + 0.9, 0]} center zIndexRange={[21, 0]}>
-          <button className="hint-arrow" aria-label={`Tap ${def.name}`} onClick={() => useGame.getState().setUI({ selected: b.uid, panel: null })}>
+          <button className="hint-arrow" aria-label={t('world.tap', { name: def.name })} onClick={() => useGame.getState().setUI({ selected: b.uid, panel: null })}>
             <Icon name="arrow" size={30} style={{ transform: 'rotate(90deg)' }} />
           </button>
         </Html>
@@ -274,7 +280,7 @@ function StatusBubble({ b, height }: { b: BuildingInstance; height: number }) {
     const remain = Math.max(0, b.busyUntil - now);
     const pct = 1 - remain / total;
     content = (
-      <div className="bubble bubble--timer" aria-label="Under construction">
+      <div className="bubble bubble--timer" aria-label={t(b.busyKind === 'build' ? 'build.sheet.underConstruction' : 'world.upgrading')}>
         <Icon name={b.busyKind === 'build' ? 'build' : 'upgrade'} size={18} />
         <span>{fmt(remain)}</span>
         <i style={{ width: `${pct * 100}%` }} />
@@ -282,12 +288,12 @@ function StatusBubble({ b, height }: { b: BuildingInstance; height: number }) {
     );
   } else if (done.length || passive.cycles) {
     ready = true;
-    const item = done[0] ? RECIPES[done[0].recipe].output : null;
+    const item = done[0] ? done[0].out?.item ?? RECIPES[done[0].recipe]?.output ?? null : null;
     content = (
       <button
         className="bubble bubble--ready"
         data-building={b.type}
-        aria-label="Collect"
+        aria-label={t('common.collect')}
         onClick={(e) => {
           e.stopPropagation();
           dispatch({ type: 'collect', uid: b.uid });

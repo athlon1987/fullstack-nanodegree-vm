@@ -39,9 +39,11 @@ export function audit(e: Omit<AuditEntry, 't' | 'level'> & { level?: AuditEntry[
 }
 
 export const auditLog = () => load();
-export function onAudit(fn: () => void) {
+export function onAudit(fn: () => void): () => void {
   listeners.add(fn);
-  return () => listeners.delete(fn);
+  return () => {
+    listeners.delete(fn);
+  };
 }
 export function clearAudit() {
   entries = [];

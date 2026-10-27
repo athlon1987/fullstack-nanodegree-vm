@@ -5,6 +5,7 @@ import { resolve } from 'node:path';
 export default defineConfig({
   base: process.env.BASE_PATH ?? './',
   plugins: [react()],
+  define: { __BUILD_ID__: JSON.stringify(process.env.BUILD_ID ?? Date.now().toString(36)) },
   build: {
     target: 'es2022',
     chunkSizeWarningLimit: 1600,
