@@ -1,0 +1,15 @@
+{
+  "name": "billswipe",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Upload a bill. A patron swipes right. The biller gets paid.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning server/index.js",
+    "dev": "node --disable-warning=ExperimentalWarning --watch server/index.js",
+    "test": "node --disable-warning=ExperimentalWarning --test test/*.test.js"
+  }
+}
