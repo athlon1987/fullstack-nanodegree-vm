@@ -6,7 +6,7 @@
 //   node tools/render.mjs --act 3 --scale 0.5 --out /tmp/act3.mp4
 //
 // Options: --workers 3  --crf 18  --preset slow  --jpegq 0.95  --audio path.wav|none  --strict (fail on shot errors)
-//          --keep (keep intermediate segments)  --subs 0
+//          --keep (keep intermediate segments)  --subs 0  --master build/master.mkv (also keep the MJPEG picture master)
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -76,6 +76,15 @@ if (shotErrors.size) {
 const list = path.join(tmp, 'list.txt');
 fs.writeFileSync(list, segs.map((s) => `file '${s}'`).join('\n'));
 fs.mkdirSync(path.dirname(out), { recursive: true });
+
+// Optional lossless-ish picture master (the MJPEG frames, stream-copied) so later re-encodes need no re-render.
+if (a.master) {
+  const master = path.resolve(String(a.master));
+  fs.mkdirSync(path.dirname(master), { recursive: true });
+  const m = spawnSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', '-f', 'concat', '-safe', '0', '-i', list, '-c', 'copy', master], { stdio: 'inherit' });
+  if (m.status !== 0) { console.error('writing master failed'); process.exit(1); }
+  console.log(`picture master → ${master}  ${(fs.statSync(master).size / 1e6).toFixed(0)} MB`);
+}
 
 let audio = a.audio === 'none' ? null : a.audio ? path.resolve(a.audio) : path.join(ROOT, 'audio/out/mix.wav');
 if (audio && !fs.existsSync(audio)) audio = null;
