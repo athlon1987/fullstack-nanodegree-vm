@@ -1,0 +1,6 @@
+# model weights and intermediate renders are rebuilt, not committed
+.cache/
+build/
+audio/out/
+__pycache__/
+*.pyc

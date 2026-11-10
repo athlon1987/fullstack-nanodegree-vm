@@ -1,0 +1,70 @@
+{
+  "cast": {
+    "ADAM":      { "voice": "am_michael", "speed": 0.92, "pitch": 1.0 },
+    "V1":        { "voice": "am_michael", "speed": 1.0,  "pitch": 1.0 },
+    "ORIGINAL":  { "voice": "am_michael", "speed": 0.84, "pitch": 1.0 },
+    "DAUGHTER":  { "voice": "af_jessica", "speed": 0.96, "pitch": 1.25 },
+    "WIFE":      { "voice": "af_heart",   "speed": 1.0,  "pitch": 1.0 },
+    "MANAGER":   { "voice": "bm_george",  "speed": 1.0,  "pitch": 1.0 },
+    "GUARD":     { "voice": "am_puck",    "speed": 1.0,  "pitch": 1.0 },
+    "CLERK":     { "voice": "bm_lewis",   "speed": 0.96, "pitch": 1.0 },
+    "REP":       { "voice": "bf_emma",    "speed": 0.95, "pitch": 1.0 },
+    "SYSTEM":    { "voice": "af_alloy",   "speed": 0.95, "pitch": 1.0 },
+    "ANNOUNCER": { "voice": "af_bella",   "speed": 1.0,  "pitch": 1.0 }
+  },
+  "lines": [
+    { "id": "a1_ask",     "who": "DAUGHTER", "text": "Daddy? Can you come to my school performance?" },
+    { "id": "a1_try",     "who": "ADAM",     "text": "I'll try. I promise." },
+    { "id": "a1_bill",    "who": "WIFE",     "text": "The electricity bill is overdue. Again." },
+    { "id": "a1_boss",    "who": "MANAGER",  "text": "Your performance is below expectations, Adam." },
+    { "id": "a1_sorry1",  "who": "ADAM",     "text": "I'm sorry." },
+    { "id": "a1_said",    "who": "DAUGHTER", "text": "You said you'd come." },
+    { "id": "a1_sorry2",  "who": "ADAM",     "text": "I'm sorry, sweetheart." },
+    { "id": "a1_always",  "who": "DAUGHTER", "text": "You always say that." },
+
+    { "id": "a2_guard",   "who": "GUARD",    "text": "You've already checked in, sir." },
+    { "id": "a2_early",   "who": "V1",       "text": "You're early." },
+    { "id": "a2_who",     "who": "ADAM",     "text": "Who the hell are you?" },
+    { "id": "a2_please",  "who": "WIFE",     "text": "Adam, please. Don't make this difficult." },
+    { "id": "a2_iam",     "who": "V1",       "text": "I'm you. Without the limitations." },
+
+    { "id": "a3_scan",    "who": "SYSTEM",   "text": "Identity status: deprecated." },
+    { "id": "a3_clerk1",  "who": "CLERK",    "text": "Your taxes are filed. Your debts are paid. Your licence was renewed this morning." },
+    { "id": "a3_clerk2",  "who": "CLERK",    "text": "Legally, sir, he is Adam." },
+    { "id": "a3_clerk3",  "who": "CLERK",    "text": "You are classified as a redundant biological instance." },
+    { "id": "a3_noanswer","who": "SYSTEM",   "text": "The person you are calling is not available." },
+    { "id": "a3_award",   "who": "ANNOUNCER","text": "And this year's Star Pupil award goes to... Maya!" },
+
+    { "id": "a4_rep1",    "who": "REP",      "text": "Adam. I'm from the Life Optimisation Program." },
+    { "id": "a4_rep2",    "who": "REP",      "text": "We can offer you a comfortable apartment. A monthly allowance. A new identity." },
+    { "id": "a4_rep3",    "who": "REP",      "text": "All you have to do is sign away your rights to your former life." },
+    { "id": "a4_know",    "who": "ADAM",     "text": "Does she know?" },
+    { "id": "a4_who",     "who": "REP",      "text": "Who?" },
+    { "id": "a4_daughter","who": "ADAM",     "text": "My daughter. Does she know he's not me?" },
+    { "id": "a4_better",  "who": "REP",      "text": "She knows he's better." },
+    { "id": "a4_last",    "who": "ADAM",     "text": "Can I see her, one last time?" },
+
+    { "id": "a5_love",    "who": "ADAM",     "text": "Do you love her?" },
+    { "id": "a5_ofcourse","who": "V1",       "text": "Of course." },
+    { "id": "a5_howmuch", "who": "ADAM",     "text": "How much?" },
+    { "id": "a5_more",    "who": "V1",       "text": "More than anything." },
+    { "id": "a5_why",     "who": "ADAM",     "text": "Then tell me why she keeps this." },
+    { "id": "a5_remember","who": "ADAM",     "text": "You remember everything about her." },
+    { "id": "a5_letdown", "who": "ADAM",     "text": "But you don't remember what it feels like, to let her down." },
+    { "id": "a5_never",   "who": "V1",       "text": "That's because I never have." },
+
+    { "id": "a6_daddy",   "who": "DAUGHTER", "text": "Daddy?" },
+    { "id": "a6_knew",    "who": "DAUGHTER", "text": "I knew you'd come back." },
+    { "id": "a6_how",     "who": "ADAM",     "text": "How?" },
+    { "id": "a6_because", "who": "DAUGHTER", "text": "Because you always come back. Even when you're late." },
+    { "id": "a6_right",   "who": "V1",       "text": "You're right. I can't replace you." },
+    { "id": "a6_wait",    "who": "ADAM",     "text": "Wait. What happens to you?" },
+    { "id": "a6_done",    "who": "V1",       "text": "I've done what I was designed to do." },
+
+    { "id": "a7_video1",  "who": "ORIGINAL", "text": "I don't think I'm a very good father." },
+    { "id": "a7_video2",  "who": "ORIGINAL", "text": "But I want to be." },
+    { "id": "a7_lunch",   "who": "DAUGHTER", "text": "Daddy! You forgot your lunch!" },
+    { "id": "a7_love",    "who": "ADAM",     "text": "I love you." },
+    { "id": "a7_know",    "who": "DAUGHTER", "text": "I know." }
+  ]
+}
