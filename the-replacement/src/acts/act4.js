@@ -121,17 +121,17 @@ function card(ctx, x, y, k, fold, spec) {
 }
 
 function contract(ctx, x, y, k) {
-  const w = 196, h = 262;
+  const w = 188, h = 224;
   holoPanel(ctx, x, y, w, h, k, 0, (c) => {
     emblem(c, 0, -h / 2 + 22, 8, { lw: 0.9, ticks: true, glow: 0.5 });
-    text(c, 'RELINQUISHMENT', 0, -h / 2 + 62, { size: 19, family: FONT.mono, weight: 600, color: C.ice, align: 'center', tracking: 0.8 });
-    text(c, 'OF PRIOR LIFE', 0, -h / 2 + 84, { size: 19, family: FONT.mono, weight: 600, color: C.ice, align: 'center', tracking: 0.8 });
-    c.fillStyle = rgba(C.cyan, 0.55); c.fillRect(-w / 2 + 18, -h / 2 + 96, w - 36, 0.8);
+    text(c, 'RELINQUISHMENT', 0, -h / 2 + 58, { size: 18.5, family: FONT.mono, weight: 600, color: C.ice, align: 'center', tracking: 0.8 });
+    text(c, 'OF PRIOR LIFE', 0, -h / 2 + 80, { size: 18.5, family: FONT.mono, weight: 600, color: C.ice, align: 'center', tracking: 0.8 });
+    c.fillStyle = rgba(C.cyan, 0.55); c.fillRect(-w / 2 + 18, -h / 2 + 92, w - 36, 0.8);
     c.fillStyle = rgba('#8b9aa6', 0.55);
-    const lens = [0.92, 0.84, 0.95, 0.7, 0.9, 0.88, 0.55];
-    lens.forEach((L, i) => c.fillRect(-w / 2 + 18, -h / 2 + 110 + i * 11, (w - 36) * L, 2.4));
+    const lens = [0.92, 0.84, 0.95, 0.7, 0.9, 0.5];
+    lens.forEach((L, i) => c.fillRect(-w / 2 + 18, -h / 2 + 105 + i * 10, (w - 36) * L, 2.4));
     // the glowing signature line
-    const sy = h / 2 - 34;
+    const sy = h / 2 - 30;
     c.save(); c.globalCompositeOperation = 'lighter';
     glow(c, 0, sy, 70, C.cyan, 0.22, 0.25);
     c.fillStyle = rgba(C.cyan, 0.35); c.fillRect(-w / 2 + 20, sy - 2, w - 40, 4);
@@ -210,7 +210,7 @@ export const shots = {
   // ── a4_02 ── the offer: three holographic cards rise from her tablet; they fold away; the contract rises.
   a4_02_offer(ctx, F) {
     const { t } = F, look = LOOKID, ink = LOOK[look].ink;
-    const cam = drift(F, { x: 801, y: 400, zoom: 1.62 }, { x: 801, y: 410, zoom: 1.76 });
+    const cam = drift(F, { x: 801, y: 386, zoom: 1.62 }, { x: 801, y: 394, zoom: 1.76 });
     const o = { look, cam, carX: B.carStop.x };
     const rep3 = F.cue('a4_rep3'), tCon = F.ev('contract');
     bench.back(ctx, F, o);
@@ -237,7 +237,7 @@ export const shots = {
       tabletSpill(ctx, tab.x, tab.y, 1 + 0.4 * Math.max(...kC) * (1 - fold) + 0.4 * kDoc);
 
       // the cards: rise one at a time from the tablet into a row above and between them
-      const slots = [{ x: 666, y: 268 }, { x: 801, y: 254 }, { x: 936, y: 268 }];
+      const slots = [{ x: 670, y: 262 }, { x: 806, y: 250 }, { x: 942, y: 262 }];
       CARDS.forEach((cd, i) => {
         const k = kC[i];
         if (k <= 0) return;
@@ -255,10 +255,10 @@ export const shots = {
       });
       // the contract: one taller panel rising between them
       if (kDoc > 0) {
-        const x = lerp(tab.x, 801, kDoc), y = lerp(tab.y - 30, 300, kDoc) + Math.sin(t * 0.9) * 2 * kDoc;
+        const x = lerp(tab.x, 806, kDoc), y = lerp(tab.y - 30, 268, kDoc) + Math.sin(t * 0.9) * 2 * kDoc;
         ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = 0.06 * kDoc;
         ctx.fillStyle = C.cyan; ctx.beginPath(); ctx.moveTo(tab.x - 6, tab.y - 4); ctx.lineTo(tab.x + 6, tab.y - 4);
-        ctx.lineTo(x + 80, y + 131); ctx.lineTo(x - 80, y + 131); ctx.closePath(); ctx.fill(); ctx.restore();
+        ctx.lineTo(x + 76, y + 112); ctx.lineTo(x - 76, y + 112); ctx.closePath(); ctx.fill(); ctx.restore();
         ctx.save(); ctx.translate(x, y); ctx.scale(lerp(0.3, 1, kDoc), lerp(0.3, 1, kDoc));
         contract(ctx, 0, 0, clamp(kDoc * 1.4));
         ctx.restore();

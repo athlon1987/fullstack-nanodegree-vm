@@ -155,7 +155,7 @@ export const shots = {
       let hF = { x: lerp(restF.x, a.clasp.x - 6, toClasp), y: lerp(restF.y, a.clasp.y + 4, toClasp) };
       hF = { x: lerp(hF.x, a.lidEdge.x - 8, onLid), y: lerp(hF.y, a.lidEdge.y + 4, onLid) };
       hF = { x: lerp(hF.x, slot.x - 10, toNote), y: lerp(hF.y, slot.y + 6, toNote) };
-      hF = { x: lerp(hF.x, 640, away), y: lerp(hF.y, 380, away) };
+      hF = { x: lerp(hF.x, 742, away), y: lerp(hF.y, 476, away) };   // under the note: his arm holds it up to us
       drawFigure(ctx, 'adam', { x: K.seatL.x, y: 700, facing: 1, ...POSE.sitForward, hipX: 0.07, lean: 33, head: 22, handF: hF, handB: { x: 690, y: 511 } }, {
         ink, light: rim(kitchen.lightAt(look, K.seatL.x, o)), breath: breath(t),
       });
@@ -166,7 +166,7 @@ export const shots = {
     kitchen.front(ctx, F, o);
     if (take <= 0) return;
     // everything behind the note sinks a little so the paper is the only bright thing
-    ctx.save(); ctx.fillStyle = `rgba(4,3,2,${0.42 * take})`; ctx.fillRect(0, 0, 1920, 804); ctx.restore();
+    ctx.save(); ctx.fillStyle = `rgba(4,3,2,${0.6 * take})`; ctx.fillRect(0, 0, 1920, 804); ctx.restore();
     camera(ctx, cam, 1, () => {
       const still = clamp((t - tRead) / 0.6);
       const by = Math.sin(t * 1.1) * 0.35 * still;                     // ~1 px breath of the hands, nothing else
@@ -175,12 +175,12 @@ export const shots = {
       const n = note(ctx, { x: nx, y: ny, size, unfold: take, rot: lerp(slot.rot, 0, take), squash: lerp(slot.squash, 1, take),
         lum: 1, tint: LOOK[look].fill, light: { color: C.cream, from: 'above', amount: 0.5, wash: 0.15 } });
       // two fingertips pinch the bottom corners; the hands come up from below the frame
-      const hs = size * 0.62;
+      const hs = size * 0.4;
       const pinch = (corner, side) => {
-        const rot = side < 0 ? -62 : -118;
-        const r = (rot * Math.PI) / 180, tip = [hs * 0.66, -hs * 0.1 * (side < 0 ? 1 : -1)];
-        const wx = corner.x - (tip[0] * Math.cos(r) - tip[1] * Math.sin(r));
-        const wy = corner.y - (tip[0] * Math.sin(r) + tip[1] * Math.cos(r));
+        const rot = side < 0 ? -28 : 208;                               // left hand from lower left, right hand from lower right
+        const r = (rot * Math.PI) / 180, tip = [hs * 0.78, -hs * 0.05];
+        const wx = corner.x - (tip[0] * Math.cos(r) - tip[1] * (side > 0 ? -1 : 1) * Math.sin(r));
+        const wy = corner.y - (tip[0] * Math.sin(r) + tip[1] * (side > 0 ? -1 : 1) * Math.cos(r));
         drawHand(ctx, { x: wx, y: wy, size: hs, rot, flip: side > 0, pose: 'pinch', ink, cuff: '#1a140e' });
       };
       ctx.save(); ctx.globalAlpha = clamp(take * 3);
