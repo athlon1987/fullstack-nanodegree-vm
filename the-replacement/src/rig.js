@@ -189,7 +189,9 @@ export const POSE = {
       return { p: [lerp(-stride, stride, v * v * (3 - 2 * v)) + 0.005, -Math.sin(v * Math.PI) * lift], r: lerp(34, -14, v) };
     };
     const f = foot(phase), b = foot(phase + 0.5), a = Math.sin(phase * TAU);
-    return { ...P0, hip: 0.975 + 0.012 * Math.cos(phase * TAU * 2), lean: 4, armF: [a * swing, 14 + Math.max(0, a) * 16], armB: [-a * swing, 14 + Math.max(0, -a) * 16],
+    // hips are lowest when both feet are down (legs spread) and highest as the body passes over the standing leg
+    const hLow = Math.min(0.975, (Math.sqrt(Math.max(0.01, 0.244 - stride * stride)) + 0.06) / 0.553 - 0.006), hHigh = 0.985;
+    return { ...P0, hip: hHigh - (hHigh - hLow) * (0.5 + 0.5 * Math.cos(phase * TAU * 2)), lean: 4, armF: [a * swing, 14 + Math.max(0, a) * 16], armB: [-a * swing, 14 + Math.max(0, -a) * 16],
       footF: f.p, footB: b.p, footRotF: f.r, footRotB: b.r, head: 2 };
   },
   /** Run cycle. phase 0..1. */

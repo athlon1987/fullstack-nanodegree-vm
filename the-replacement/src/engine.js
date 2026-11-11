@@ -486,9 +486,9 @@ export class Film {
       ctx.translate(-ox, -oy);
       const pat = ctx.createPattern(tile, 'repeat');
       ctx.fillStyle = pat;
-      ctx.globalCompositeOperation = 'overlay'; ctx.globalAlpha = 0.11 * gAmt;
+      ctx.globalCompositeOperation = 'overlay'; ctx.globalAlpha = 0.05 * gAmt;
       ctx.fillRect(0, 0, PW + 512, PH + 512);
-      ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = 0.022 * gAmt; // dithers near-black gradients
+      ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = 0.014 * gAmt; // dithers near-black gradients
       ctx.fillRect(0, 0, PW + 512, PH + 512);
       ctx.restore();
     }
