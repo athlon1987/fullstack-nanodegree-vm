@@ -64,7 +64,7 @@ and stays on screen for at least 1.5 s plus 0.25 s per word.
   the picture; the engine adds the letterbox bars, vignette, grain and subtitles). Centre is
   (960, 402).
 - World scale: **1 cm = 2.46 px** at camera zoom 1. An adult stands **430 px** tall; Maya (8)
-  stands **265 px**. Chair seat 110 px above the floor, table top 185 px, kitchen counter
+  stands **285 px**. Chair seat 110 px above the floor, table top 185 px, kitchen counter
   220 px, door 490 px tall, ceiling ~615 px above the floor.
 - In a wide master the floor line sits near **y = 700**.
 - Use `camera(ctx, cam, depth, fn)` for framing and parallax. Draw sets and characters in world

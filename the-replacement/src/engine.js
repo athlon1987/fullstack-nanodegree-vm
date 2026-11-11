@@ -274,7 +274,7 @@ export function cached(keyStr, w, h, draw) {
   if (!cv) {
     cv = document.createElement('canvas');
     cv.width = Math.max(1, Math.ceil(w)); cv.height = Math.max(1, Math.ceil(h));
-    const c = cv.getContext('2d');
+    const c = cv.getContext('2d', { willReadFrequently: true });
     draw(c, cv.width, cv.height);
     _cache.set(keyStr, cv);
     if (_cache.size > 400) _cache.delete(_cache.keys().next().value);
@@ -289,7 +289,7 @@ export function scratch(name, w, h) {
     cv = document.createElement('canvas'); cv.width = Math.ceil(w); cv.height = Math.ceil(h);
     _scratch.set(name, cv);
   }
-  const c = cv.getContext('2d');
+  const c = cv.getContext('2d', { willReadFrequently: true });
   c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = 1; c.globalCompositeOperation = 'source-over'; c.filter = 'none';
   c.clearRect(0, 0, cv.width, cv.height);
   return { cv, ctx: c };
@@ -343,7 +343,7 @@ function makeGrain() {
   const tiles = [];
   for (let n = 0; n < 6; n++) {
     const cv = document.createElement('canvas'); cv.width = cv.height = 512;
-    const c = cv.getContext('2d'); const img = c.createImageData(512, 512); const r = rng(1000 + n);
+    const c = cv.getContext('2d', { willReadFrequently: true }); const img = c.createImageData(512, 512); const r = rng(1000 + n);
     for (let i = 0; i < img.data.length; i += 4) {
       const g = (r() + r() + r()) / 3; // roughly gaussian around .5
       const v = Math.round(g * 255);

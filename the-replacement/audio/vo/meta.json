@@ -1,0 +1,331 @@
+{
+ "a1_ask": {
+  "who": "DAUGHTER",
+  "text": "Daddy? Can you come to my school performance?",
+  "dur": 2.447,
+  "f0": 272.0,
+  "voice": "af_jessica"
+ },
+ "a1_try": {
+  "who": "ADAM",
+  "text": "I'll try. I promise.",
+  "dur": 1.512,
+  "f0": 119.4,
+  "voice": "am_michael"
+ },
+ "a1_bill": {
+  "who": "WIFE",
+  "text": "The electricity bill is overdue. Again.",
+  "dur": 2.418,
+  "f0": 200.4,
+  "voice": "af_heart"
+ },
+ "a1_boss": {
+  "who": "MANAGER",
+  "text": "Your performance is below expectations, Adam.",
+  "dur": 3.356,
+  "f0": 146.3,
+  "voice": "bm_george"
+ },
+ "a1_sorry1": {
+  "who": "ADAM",
+  "text": "I'm sorry.",
+  "dur": 0.905,
+  "f0": 130.1,
+  "voice": "am_michael"
+ },
+ "a1_said": {
+  "who": "DAUGHTER",
+  "text": "You said you'd come.",
+  "dur": 1.361,
+  "f0": 250.0,
+  "voice": "af_jessica"
+ },
+ "a1_sorry2": {
+  "who": "ADAM",
+  "text": "I'm sorry, sweetheart.",
+  "dur": 1.489,
+  "f0": 124.4,
+  "voice": "am_michael"
+ },
+ "a1_always": {
+  "who": "DAUGHTER",
+  "text": "You always say that.",
+  "dur": 1.514,
+  "f0": 269.7,
+  "voice": "af_jessica"
+ },
+ "a2_guard": {
+  "who": "GUARD",
+  "text": "You've already checked in, sir.",
+  "dur": 1.316,
+  "f0": 130.8,
+  "voice": "am_puck"
+ },
+ "a2_early": {
+  "who": "V1",
+  "text": "You're early.",
+  "dur": 0.782,
+  "f0": 122.9,
+  "voice": "am_michael"
+ },
+ "a2_who": {
+  "who": "ADAM",
+  "text": "Who the hell are you?",
+  "dur": 1.234,
+  "f0": 112.7,
+  "voice": "am_michael"
+ },
+ "a2_please": {
+  "who": "WIFE",
+  "text": "Adam, please. Don't make this difficult.",
+  "dur": 2.226,
+  "f0": 211.0,
+  "voice": "af_heart"
+ },
+ "a2_iam": {
+  "who": "V1",
+  "text": "I'm you. Without the limitations.",
+  "dur": 1.894,
+  "f0": 122.1,
+  "voice": "am_michael"
+ },
+ "a3_scan": {
+  "who": "SYSTEM",
+  "text": "Identity status: deprecated.",
+  "dur": 2.265,
+  "f0": 149.5,
+  "voice": "af_alloy"
+ },
+ "a3_clerk1": {
+  "who": "CLERK",
+  "text": "Your taxes are filed. Your debts are paid. Your licence was renewed this morning.",
+  "dur": 5.552,
+  "f0": 102.9,
+  "voice": "bm_lewis"
+ },
+ "a3_clerk2": {
+  "who": "CLERK",
+  "text": "Legally, sir, he is Adam.",
+  "dur": 1.826,
+  "f0": 121.4,
+  "voice": "bm_lewis"
+ },
+ "a3_clerk3": {
+  "who": "CLERK",
+  "text": "You are classified as a redundant biological instance.",
+  "dur": 3.879,
+  "f0": 108.6,
+  "voice": "bm_lewis"
+ },
+ "a3_noanswer": {
+  "who": "SYSTEM",
+  "text": "The person you are calling is not available.",
+  "dur": 2.635,
+  "f0": 142.0,
+  "voice": "af_alloy"
+ },
+ "a3_award": {
+  "who": "ANNOUNCER",
+  "text": "And this year's Star Pupil award goes to... Maya!",
+  "dur": 3.083,
+  "f0": 201.3,
+  "voice": "af_bella"
+ },
+ "a4_rep1": {
+  "who": "REP",
+  "text": "Adam. I'm from the Life Optimisation Program.",
+  "dur": 2.812,
+  "f0": 183.9,
+  "voice": "bf_emma"
+ },
+ "a4_rep2": {
+  "who": "REP",
+  "text": "We can offer you a comfortable apartment. A monthly allowance. A new identity.",
+  "dur": 4.506,
+  "f0": 183.6,
+  "voice": "bf_emma"
+ },
+ "a4_rep3": {
+  "who": "REP",
+  "text": "All you have to do is sign away your rights to your former life.",
+  "dur": 3.264,
+  "f0": 179.1,
+  "voice": "bf_emma"
+ },
+ "a4_know": {
+  "who": "ADAM",
+  "text": "Does she know?",
+  "dur": 0.981,
+  "f0": 126.2,
+  "voice": "am_michael"
+ },
+ "a4_who": {
+  "who": "REP",
+  "text": "Who?",
+  "dur": 0.683,
+  "f0": 171.4,
+  "voice": "bf_emma"
+ },
+ "a4_daughter": {
+  "who": "ADAM",
+  "text": "My daughter. Does she know he's not me?",
+  "dur": 2.254,
+  "f0": 123.1,
+  "voice": "am_michael"
+ },
+ "a4_better": {
+  "who": "REP",
+  "text": "She knows he's better.",
+  "dur": 1.401,
+  "f0": 185.3,
+  "voice": "bf_emma"
+ },
+ "a4_last": {
+  "who": "ADAM",
+  "text": "Can I see her, one last time?",
+  "dur": 1.971,
+  "f0": 124.0,
+  "voice": "am_michael"
+ },
+ "a5_love": {
+  "who": "ADAM",
+  "text": "Do you love her?",
+  "dur": 0.988,
+  "f0": 131.0,
+  "voice": "am_michael"
+ },
+ "a5_ofcourse": {
+  "who": "V1",
+  "text": "Of course.",
+  "dur": 0.818,
+  "f0": 126.5,
+  "voice": "am_michael"
+ },
+ "a5_howmuch": {
+  "who": "ADAM",
+  "text": "How much?",
+  "dur": 0.858,
+  "f0": 126.3,
+  "voice": "am_michael"
+ },
+ "a5_more": {
+  "who": "V1",
+  "text": "More than anything.",
+  "dur": 1.214,
+  "f0": 129.4,
+  "voice": "am_michael"
+ },
+ "a5_why": {
+  "who": "ADAM",
+  "text": "Then tell me why she keeps this.",
+  "dur": 2.069,
+  "f0": 122.4,
+  "voice": "am_michael"
+ },
+ "a5_remember": {
+  "who": "ADAM",
+  "text": "You remember everything about her.",
+  "dur": 1.986,
+  "f0": 123.1,
+  "voice": "am_michael"
+ },
+ "a5_letdown": {
+  "who": "ADAM",
+  "text": "But you don't remember what it feels like, to let her down.",
+  "dur": 3.342,
+  "f0": 120.0,
+  "voice": "am_michael"
+ },
+ "a5_never": {
+  "who": "V1",
+  "text": "That's because I never have.",
+  "dur": 1.698,
+  "f0": 120.6,
+  "voice": "am_michael"
+ },
+ "a6_daddy": {
+  "who": "DAUGHTER",
+  "text": "Daddy?",
+  "dur": 0.712,
+  "f0": 269.7,
+  "voice": "af_jessica"
+ },
+ "a6_knew": {
+  "who": "DAUGHTER",
+  "text": "I knew you'd come back.",
+  "dur": 1.588,
+  "f0": 263.7,
+  "voice": "af_jessica"
+ },
+ "a6_how": {
+  "who": "ADAM",
+  "text": "How?",
+  "dur": 0.592,
+  "f0": 117.9,
+  "voice": "am_michael"
+ },
+ "a6_because": {
+  "who": "DAUGHTER",
+  "text": "Because you always come back. Even when you're late.",
+  "dur": 2.757,
+  "f0": 263.7,
+  "voice": "af_jessica"
+ },
+ "a6_right": {
+  "who": "V1",
+  "text": "You're right. I can't replace you.",
+  "dur": 1.835,
+  "f0": 122.1,
+  "voice": "am_michael"
+ },
+ "a6_wait": {
+  "who": "ADAM",
+  "text": "Wait. What happens to you?",
+  "dur": 1.597,
+  "f0": 121.8,
+  "voice": "am_michael"
+ },
+ "a6_done": {
+  "who": "V1",
+  "text": "I've done what I was designed to do.",
+  "dur": 2.128,
+  "f0": 117.6,
+  "voice": "am_michael"
+ },
+ "a7_video1": {
+  "who": "ORIGINAL",
+  "text": "I don't think I'm a very good father.",
+  "dur": 2.343,
+  "f0": 124.7,
+  "voice": "am_michael"
+ },
+ "a7_video2": {
+  "who": "ORIGINAL",
+  "text": "But I want to be.",
+  "dur": 1.356,
+  "f0": 126.0,
+  "voice": "am_michael"
+ },
+ "a7_lunch": {
+  "who": "DAUGHTER",
+  "text": "Daddy! You forgot your lunch!",
+  "dur": 1.791,
+  "f0": 263.7,
+  "voice": "af_jessica"
+ },
+ "a7_love": {
+  "who": "ADAM",
+  "text": "I love you.",
+  "dur": 0.909,
+  "f0": 126.8,
+  "voice": "am_michael"
+ },
+ "a7_know": {
+  "who": "DAUGHTER",
+  "text": "I know.",
+  "dur": 0.764,
+  "f0": 277.5,
+  "voice": "af_jessica"
+ }
+}

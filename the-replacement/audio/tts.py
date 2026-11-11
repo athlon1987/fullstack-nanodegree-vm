@@ -2,7 +2,8 @@
 """Synthesize every dialogue line with Kokoro (Apache-2.0 neural TTS, runs locally on CPU).
 
 Reads   audio/dialogue.json
-Writes  audio/out/vo/<id>.wav          48 kHz mono float, trimmed, dry (no room/FX — the mixer adds those)
+Writes  audio/vo/<id>.flac             48 kHz mono, trimmed, dry (no room/FX — the mixer adds those); committed
+        audio/out/vo/<id>.wav          the same as float WAV (scratch)
         src/dialogue.gen.js            {id: {who, text, dur}} consumed by src/timeline.js
         assets/voice_env.json          loudness envelope per line at 24 fps (drives mouth/head animation)
 
@@ -80,6 +81,8 @@ def main():
         y = trim(y, SR_OUT)
         y = y / (np.abs(y).max() + 1e-9) * 0.7
         sf.write(out_dir / f"{ln['id']}.wav", y, SR_OUT, subtype='FLOAT')
+        (ROOT / 'audio/vo').mkdir(exist_ok=True)
+        sf.write(ROOT / 'audio/vo' / f"{ln['id']}.flac", y, SR_OUT, subtype='PCM_16')   # committed copy the mixer reads
         meta[ln['id']] = {'who': ln['who'], 'text': ln['text'], 'dur': round(len(y) / SR_OUT, 3), 'f0': round(f0_median(y, SR_OUT), 1), 'voice': cast['voice']}
         envs[ln['id']] = envelope(y, SR_OUT)
         print(f"{ln['id']:13s} {ln['who']:9s} {meta[ln['id']]['dur']:5.2f}s  f0={meta[ln['id']]['f0']:5.1f}Hz  {ln['text']}")

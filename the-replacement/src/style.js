@@ -48,5 +48,5 @@ export const LOOK = {
 /** World scale: pixels per centimetre at zoom 1. */
 export const PX_PER_CM = 2.46;
 export const ADULT_H = 430;
-export const CHILD_H = 265;
+export const CHILD_H = 285;
 export const FLOOR_Y = 700;
