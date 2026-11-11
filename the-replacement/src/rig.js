@@ -132,11 +132,11 @@ let _style = 'silhouette';
 export const setRigStyle = (v) => { _style = v; };
 const styleNow = (o) => o.style || globalThis.__RIG_STYLE || _style;
 const PALS = {
-  adam: { skin: '#c58a5f', skinShade: '#8f5c3a', hair: '#1c1512', top: '#c2ccd8', tie: '#44546e', legs: '#2c3342', shoe: '#17181c', line: '#2a1a12' },
-  v1: { skin: '#c58a5f', skinShade: '#8f5c3a', hair: '#15100e', top: '#e8edf4', tie: '#2e4a78', legs: '#232a38', shoe: '#111216', line: '#2a1a12' },
+  adam: { skin: '#c58a5f', skinShade: '#8f5c3a', hair: '#1c1512', top: '#bcc7d4', collar: '#d3dbe5', tie: '#44546e', legs: '#2c3342', shoe: '#17181c', line: '#2a1a12' },
+  v1: { skin: '#c58a5f', skinShade: '#8f5c3a', hair: '#15100e', top: '#e6ebf2', collar: '#f6f8fb', tie: '#2e4a78', legs: '#232a38', shoe: '#111216', line: '#2a1a12' },
   wife: { skin: '#cf976c', skinShade: '#986846', hair: '#1a1210', top: '#a9b4c2', skirt: '#47505f', legs: '#b98560', shoe: '#1c1a1c', line: '#2a1a12' },
-  maya: { skin: '#d39c72', skinShade: '#9e6d4a', hair: '#1a1210', top: '#e9edf2', dress: '#33456e', legs: '#d39c72', shoe: '#17181c', pack: '#b7964a', gold: '#e6bd4f', line: '#2a1a12', pyj: '#93a9cc' },
-  manager: { skin: '#b97f56', skinShade: '#835636', hair: '#3b3734', top: '#2a303c', legs: '#252a35', shoe: '#121317', line: '#24160f' },
+  maya: { skin: '#d39c72', skinShade: '#9e6d4a', hair: '#1a1210', top: '#33456e', sleeve: '#e9edf2', collar: '#e9edf2', dress: '#33456e', legs: '#d39c72', shoe: '#17181c', pack: '#b7964a', gold: '#e6bd4f', line: '#2a1a12', pyj: '#93a9cc' },
+  manager: { skin: '#b97f56', skinShade: '#835636', hair: '#3b3734', top: '#2a303c', collar: '#dfe5ec', legs: '#252a35', shoe: '#121317', line: '#24160f' },
   guard: { skin: '#b97f56', skinShade: '#835636', hair: '#17110f', top: '#2a3b54', cap: '#1e2a3d', legs: '#1f2a3b', shoe: '#101114', line: '#24160f' },
   clerk: { skin: '#cf976c', skinShade: '#986846', hair: '#2a2420', top: '#737a69', legs: '#3a3e3b', shoe: '#18181a', line: '#2a1a12' },
   rep: { skin: '#dcaa84', skinShade: '#a47551', hair: '#0f0c0b', top: '#1d2129', coat: '#1d2129', legs: '#1a1d24', shoe: '#0d0e10', line: '#2a1a12' },
@@ -328,6 +328,15 @@ function paintTorsoHead(ctx, g, o) {
   tone(ctx, 'top');
   blob(ctx, pts, 0.5);
   if (_col && c.tie === 'straight') { const k = add(add(S, up2, 0.012 * H), n2, c.chestF * H * 0.62), e2 = add(M, n1, (c.waistF + bel) * H * 0.7); tone(ctx, 'tie'); poly(ctx, [[k[0] - 0.006 * H, k[1]], [k[0] + 0.007 * H, k[1]], [e2[0] + 0.012 * H, e2[1] - 0.02 * H], [e2[0], e2[1]], [e2[0] - 0.01 * H, e2[1] - 0.02 * H]]); }
+  if (_col && !c.skirt && !c.dress && !c.coat && !(o.wear && o.wear.pyjamas)) {
+    // trousers come up to the waist (Adam's untucked shirt hangs lower at the back: his shirt-tail is drawn later)
+    const top = c.tail ? 0.012 : 0.05, w = 1.04;
+    tone(ctx, 'legs');
+    blob(ctx, [add(add(P, n1, -c.pelvB * H * w), up1, top * H), add(add(P, n1, -c.pelvB * H * 1.06), up1, -0.02 * H), add(add(P, n1, -c.pelvB * H * 0.98), up1, -0.05 * H), add(P, up1, -0.066 * H),
+      add(add(P, n1, c.pelvF * H * 0.94), up1, -0.026 * H), add(add(P, n1, (c.pelvF + bel * 0.9) * H * w), up1, top * H)], 0.4);
+    if (!c.tail) { tone(ctx, 'shoe'); poly(ctx, [add(add(P, n1, -c.pelvB * H * w), up1, (top + 0.014) * H), add(add(P, n1, (c.pelvF + bel * 0.9) * H * w), up1, (top + 0.014) * H), add(add(P, n1, (c.pelvF + bel * 0.9) * H * w), up1, top * H), add(add(P, n1, -c.pelvB * H * w), up1, top * H)]); }
+  }
+  if (_col && _col.collar) { tone(ctx, 'collar'); poly(ctx, [add(add(S, up2, 0.058 * H), n2, -0.01 * H), add(add(S, up2, 0.062 * H), n2, c.chestF * H * 0.42), add(add(S, up2, 0.012 * H), n2, c.chestF * H * 0.8), add(add(S, up2, 0.03 * H), n2, c.chestF * H * 0.3)]); }
   tone(ctx, 'skin');
   // neck
   limb(ctx, add(S, up2, 0.03 * H), hpt(-0.1, -0.22), c.neckW * H * 1.25, c.neckW * H * 0.98);
@@ -340,6 +349,10 @@ function paintTorsoHead(ctx, g, o) {
   const hp = (list) => list.map(([u, v]) => hpt(u, v));
   const pyj = o.wear && o.wear.pyjamas;
   if (c.face !== 'c') blob(ctx, hp([[0.34, -0.86], [0.2, -0.985], [0.02, -1.04], [-0.22, -1.02], [-0.42, -0.9], [-0.5, -0.68], [-0.49, -0.46], [-0.4, -0.3], [-0.3, -0.42], [-0.1, -0.6], [0.2, -0.78]]), 0.5); // hair mass
+  if (_col && !c.cap) {   // lit style: bring the hairline down over the temple so the hair does not read as a cap
+    if (c.face === 'm') blob(ctx, hp([[-0.12, -0.6], [0.2, -0.78], [0.31, -0.85], [0.275, -0.72], [0.13, -0.64], [0.065, -0.5], [0.005, -0.44], [-0.02, -0.56]]), 0.5);
+    else blob(ctx, hp([[-0.3, -0.42], [-0.1, -0.6], [0.2, -0.78], [0.31, -0.85], [0.265, -0.7], [0.1, -0.6], [0.02, -0.44], [-0.06, -0.33], [-0.22, -0.29]]), 0.5);
+  }
   if (c.tuft) poly(ctx, hp([[-0.2, -1.0], [-0.21, -1.1], [-0.12, -1.035], [-0.07, -1.125], [-0.02, -1.03], [0.06, -1.085], [0.08, -1.0]]));
   if (c.bun) { const b = hpt(-0.5, -0.36); ctx.beginPath(); ctx.arc(b[0], b[1], hh * 0.17, 0, TAU); ctx.fill(); }
   if (c.bob) blob(ctx, hp([[0.3, -0.9], [0.05, -1.05], [-0.3, -1.0], [-0.52, -0.75], [-0.55, -0.4], [-0.5, -0.06], [-0.2, -0.02], [0.04, -0.1], [-0.02, -0.4], [0.16, -0.7]]), 0.42);
@@ -378,12 +391,23 @@ function paintFace(ctx, g, o, c) {
   if (c.stubble) { ctx.save(); ctx.globalAlpha = 0.17; ctx.fillStyle = P.hair; blob(ctx, [[0.335, -0.02], [0.372, -0.12], [0.355, -0.3], [0.2, -0.33], [0.03, -0.24], [-0.02, -0.04], [0.2, 0.03]].map(([u, v]) => hpt(u, v)), 0.5); ctx.restore(); }
   if (!c.bob && !(o.wear && o.wear.pyjamas)) { oval(-0.075, -0.5, 0.062, 0.1, P.skinShade); line([[-0.095, -0.555], [-0.05, -0.505], [-0.085, -0.45]], 0.018, P.line); }
   const sad = o.sad || 0, closed = o.eyeClosed || 0, tk = o.talk || 0;
-  line([[0.235, -0.607 - 0.016 * sad], [0.305, -0.628], [0.378, -0.61 + 0.014 * sad]], c.face === 'm' ? 0.03 : 0.02, P.hair);
-  if (closed > 0.55) line([[0.268, -0.532], [0.35, -0.528]], 0.017, P.line);
-  else { oval(0.312, -0.536, 0.04, 0.021, '#efe8df'); oval(0.326, -0.536, 0.019, 0.02, '#1b130f'); line([[0.262, -0.546], [0.31, -0.561], [0.356, -0.546]], 0.016, P.line); }
-  oval(0.428, -0.349, 0.011, 0.008, P.line);
-  if (tk > 0.14) oval(0.342, -0.226 + 0.012 * tk, 0.034, 0.01 + 0.03 * tk, '#3a1512');
-  else line([[0.384, -0.24 - 0.006 * sad], [0.335, -0.232], [0.297, -0.238 + 0.008 * sad]], 0.013, P.line);
+  // soft shadow under the jaw and in the eye socket gives the head some form
+  ctx.save(); ctx.globalAlpha = 0.22; ctx.fillStyle = P.skinShade;
+  blob(ctx, [[0.26, 0.02], [0.34, -0.03], [0.2, -0.1], [0.02, -0.16], [-0.12, -0.2], [-0.2, -0.06], [0.0, 0.08]].map(([u, v]) => hpt(u, v)), 0.5);
+  blob(ctx, [[0.25, -0.6], [0.38, -0.59], [0.37, -0.5], [0.3, -0.47], [0.24, -0.51]].map(([u, v]) => hpt(u, v)), 0.5);
+  ctx.restore();
+  line([[0.238, -0.606 - 0.016 * sad], [0.305, -0.626], [0.378, -0.609 + 0.014 * sad]], c.face === 'm' ? 0.027 : 0.018, P.hair);
+  if (closed > 0.55) line([[0.27, -0.534], [0.348, -0.53]], 0.016, P.line);
+  else {
+    const open = 1 - closed;
+    oval(0.314, -0.537, 0.037, 0.017 * open + 0.004, '#e9e1d8'); oval(0.33, -0.537, 0.017, 0.017 * open + 0.003, '#20150f');
+    line([[0.266, -0.545], [0.312, -0.558 - 0.004 * open], [0.354, -0.546]], 0.015, P.line);
+  }
+  oval(0.426, -0.349, 0.011, 0.008, P.line);
+  // lips: a touch of colour, then the line between them (or the open mouth)
+  ctx.save(); ctx.globalAlpha = 0.3; oval(0.372, -0.24, 0.03, 0.03, '#8a3f37'); ctx.restore();
+  if (tk > 0.14) oval(0.346, -0.228 + 0.012 * tk, 0.03, 0.008 + 0.028 * tk, '#35120f');
+  else line([[0.388, -0.24 - 0.006 * sad], [0.338, -0.233], [0.3, -0.239 + 0.008 * sad]], 0.012, P.line);
   ctx.fillStyle = P.skin;
 }
 function paintSkirt(ctx, g, len, flare) {
@@ -431,7 +455,7 @@ export function drawFigure(ctx, who, pose, opts = {}) {
   if (bw <= 2 || bh <= 2) return anchors;
   const held = (fn, a) => { if (!fn) return; ctx.save(); ctx.translate(p.x, p.y); ctx.scale(s * fx, s); ctx.translate(a.Hd[0], a.Hd[1]); ctx.rotate(a.ang * D); fn(ctx, s); ctx.restore(); };
   const rimW = clamp(0.0036 * H * s * zs, 1, 6.5);
-  const cvA = privateCanvas('A', cw, ch), cvB = privateCanvas('B', cw, ch);
+  const cvA = privateCanvas('A', cw, ch), cvB = privateCanvas('B', cw, ch), cvC = privateCanvas('C', cw, ch);
 
   const litStyle = styleNow(o) === 'lit' && !!c.pal;
   const pal = litStyle ? (() => { const q = { ...c.pal }; q.sleeve = q.sleeve || q.top; if (o.wear && o.wear.pyjamas && q.pyj) { q.top = q.sleeve = q.legs = q.pyj; } return q; })() : null;
@@ -462,16 +486,29 @@ export function drawFigure(ctx, who, pose, opts = {}) {
       for (const [k, al] of steps) { a.globalAlpha = clamp(al); a.drawImage(B, bx, by, bw, bh, bx + dx * k, by + dy * k, bw, bh); }
       a.globalCompositeOperation = 'source-over'; a.globalAlpha = 1;
     };
-    const wS = clamp(0.012 * H * s * zs, 2, 30);
+    // keep the figure's own alpha so blend modes that paint outside it can be trimmed back
+    const Cc = cvC.cv, cc = cvC.ctx;
+    cc.setTransform(1, 0, 0, 1, 0, 0); cc.globalCompositeOperation = 'source-over'; cc.globalAlpha = 1; cc.clearRect(bx, by, bw, bh); cc.drawImage(A, bx, by, bw, bh, bx, by, bw, bh);
+    const trim = () => { a.globalCompositeOperation = 'destination-in'; a.globalAlpha = 1; a.drawImage(Cc, bx, by, bw, bh, bx, by, bw, bh); a.globalCompositeOperation = 'source-over'; };
+    const wS = clamp(0.011 * H * s * zs, 2, 28);
     // the key light tints the whole figure a little
-    a.globalCompositeOperation = 'source-atop'; a.globalAlpha = 0.14; a.fillStyle = L.color; a.fillRect(bx, by, bw, bh);
-    // form shadow on the side away from the light
-    slide('#070a12', [[1, 0.5], [2.1, 0.3], [3.5, 0.17]], from * wS, -wS * 0.28);
+    a.globalCompositeOperation = 'source-atop'; a.globalAlpha = 0.12; a.fillStyle = L.color; a.fillRect(bx, by, bw, bh);
+    // form shadow on the side away from the light: several soft steps so it reads as a gradient, not a band
+    slide('#06080f', [[0.5, 0.2], [1.1, 0.2], [1.9, 0.18], [2.9, 0.15], [4.2, 0.11], [6, 0.07]], from * wS, -wS * 0.3);
     // the room's darkness swallows the figure
     a.globalCompositeOperation = 'source-atop'; a.globalAlpha = amb[0]; a.fillStyle = amb[1]; a.fillRect(bx, by, bw, bh);
     a.globalCompositeOperation = 'source-over'; a.globalAlpha = 1;
-    // light wrapping the side that faces the key: a hard rim plus a soft wedge
-    slide(L.color, [[1, 0.8 * amt], [2.4, 0.42 * amt], [5.5, 0.22 * amt], [11, 0.12 * amt * (0.4 + amb[0])]], -from * rimW, rimW * 0.32);
+    // light on the side that faces the key. 'overlay' brightens skin and cloth but leaves black hair and dark fabric dark.
+    b.setTransform(1, 0, 0, 1, 0, 0); b.globalCompositeOperation = 'source-over'; b.globalAlpha = 1;
+    b.fillStyle = L.color; b.clearRect(bx, by, bw, bh); b.fillRect(bx, by, bw, bh);
+    b.globalCompositeOperation = 'destination-out'; b.drawImage(Cc, bx, by, bw, bh, bx, by, bw, bh);
+    a.globalCompositeOperation = 'overlay';
+    for (const [k, al] of [[1.2, 0.5], [2.6, 0.42], [5, 0.34], [9, 0.26], [15, 0.18]]) { a.globalAlpha = clamp(al * (0.45 + 0.75 * amt) * (0.35 + 1.1 * amb[0])); a.drawImage(B, bx, by, bw, bh, bx - from * rimW * k, by + rimW * k * 0.32, bw, bh); }   // bright rooms need far less added light
+    trim();
+    // a thin hard rim where the light grazes the edge
+    a.globalCompositeOperation = 'source-atop'; a.globalAlpha = clamp(0.5 * amt + 0.25 * amb[0]);
+    a.drawImage(B, bx, by, bw, bh, bx - from * rimW * 0.8, by + rimW * 0.26, bw, bh);
+    a.globalCompositeOperation = 'source-over'; a.globalAlpha = 1;
     ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha *= alpha;
     if (withAura && aura > 0) { ctx.shadowColor = rgba(C.cyan, 0.5 * aura); ctx.shadowBlur = clamp(0.03 * H * s * zs, 4, 30); }
     ctx.drawImage(A, bx, by, bw, bh, bx, by, bw, bh);
@@ -525,7 +562,7 @@ export function drawFigure(ctx, who, pose, opts = {}) {
   // eye lights and tear (world space)
   const eye = anchors.eye, er = Math.max(1.2, g.hh * s * 0.028);
   // cyan glint: a hard bright core with a bloom (only ever the Program's light). catch: a tiny warm speck, no bloom.
-  if (o.glint > 0) { const k = clamp(o.glint); glow(ctx, eye.x, eye.y, er * 6, C.cyan, 0.85 * k); ctx.save(); ctx.globalAlpha *= k; ctx.fillStyle = C.cyan; ctx.beginPath(); ctx.arc(eye.x, eye.y, er * 1.5, 0, TAU); ctx.fill(); ctx.fillStyle = '#f2ffff'; ctx.beginPath(); ctx.arc(eye.x, eye.y, er * 0.9, 0, TAU); ctx.fill(); ctx.restore(); }
+  if (o.glint > 0) { const k = clamp(o.glint); glow(ctx, eye.x, eye.y, er * (litStyle ? 4 : 6), C.cyan, (litStyle ? 0.6 : 0.85) * k); ctx.save(); ctx.globalAlpha *= k; ctx.fillStyle = C.cyan; ctx.beginPath(); ctx.arc(eye.x, eye.y, er * 1.5, 0, TAU); ctx.fill(); ctx.fillStyle = '#f2ffff'; ctx.beginPath(); ctx.arc(eye.x, eye.y, er * 0.9, 0, TAU); ctx.fill(); ctx.restore(); }
   if (o.catch > 0) { ctx.save(); ctx.globalAlpha *= clamp(o.catch) * 0.75; ctx.fillStyle = (o.light && (o.light.color || o.light.key)) || C.honey; ctx.beginPath(); ctx.arc(eye.x, eye.y, er * 0.62, 0, TAU); ctx.fill(); ctx.restore(); }
   if (c.glasses && o.light && o.light.amount > 0.2) { const q = toWorld(g.hpt(0.4, -0.56)), q2 = toWorld(g.hpt(0.36, -0.47)); ctx.save(); ctx.strokeStyle = rgba(o.light.color || o.light.key || C.cream, 0.7 * o.light.amount); ctx.lineWidth = er * 0.9; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(q.x, q.y); ctx.lineTo(q2.x, q2.y); ctx.stroke(); ctx.restore(); }
   if (o.tear > 0) {

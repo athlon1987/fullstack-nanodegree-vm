@@ -49,6 +49,7 @@ async function boot() {
   film.errors.push(...loadErrors);
   if (params.get('subs') === '0') film.opts.subtitles = false;
   if (params.get('grain') === '0') film.opts.grain = false;
+  if (params.get('style') === 'lit') film.opts.cine = true;   // the lit look also gets lens bloom and a gentle grade
 
   window.FILM = {
     film, W, H, FPS,

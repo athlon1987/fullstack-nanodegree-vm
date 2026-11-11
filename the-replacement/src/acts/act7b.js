@@ -105,7 +105,8 @@ export const shots = {
         held: { front: (c) => phoneSmall(c, { x: 0, y: 0, size: 37, rot: -80, glow: '#dfefff', turn: 0.3, bloom: 0.5 * phoneOn }) },
       });
       // the twist: a wider soft cyan bloom round the glint so it is unmistakable even at a glance
-      if (glint > 0.001) { glow(ctx, A.eye.x, A.eye.y, 34, C.cyan, 0.32 * glint); glow(ctx, A.eye.x, A.eye.y, 12, C.cyan, 0.5 * glint); }
+      const haloK = globalThis.__RIG_STYLE === 'lit' ? 0.4 : 1;   // on a lit face a big halo blows out; keep it a precise cyan point
+      if (glint > 0.001) { glow(ctx, A.eye.x, A.eye.y, 34 * (haloK < 1 ? 0.6 : 1), C.cyan, 0.32 * glint * haloK); glow(ctx, A.eye.x, A.eye.y, 12, C.cyan, 0.5 * glint * haloK); }
     });
     homeStreet.front(ctx, F, o);
   },

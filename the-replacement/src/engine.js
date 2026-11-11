@@ -365,7 +365,7 @@ export class Film {
     this.tl = timeline; this.shots = shots; this.voiceEnv = voiceEnv;
     this.grain = makeGrain();
     this.errors = [];
-    this.opts = { subtitles: true, grain: true, strict: false };
+    this.opts = { subtitles: true, grain: true, strict: false, cine: false };
   }
   get duration() { return this.tl.duration; }
 
@@ -470,6 +470,20 @@ export class Film {
     if (fout > 0) { ctx.globalAlpha = ease.inOutSine(fout); ctx.fillStyle = shot.out.color || '#000'; ctx.fillRect(0, 0, PW, PH); }
     ctx.globalAlpha = 1;
 
+    if (this.opts.cine) {
+      // lens bloom: the brightest parts of the picture bleed softly; then a gentle contrast curve
+      const bw = PW / 4, bh = PH / 4;
+      const s1 = scratch('bloom1', bw, bh), s2 = scratch('bloom2', bw, bh);
+      s1.ctx.drawImage(this.canvas, 0, BAR, PW, PH, 0, 0, bw, bh);
+      s2.ctx.drawImage(s1.cv, 0, 0);
+      s2.ctx.globalCompositeOperation = 'multiply'; s2.ctx.drawImage(s1.cv, 0, 0); s2.ctx.drawImage(s1.cv, 0, 0);   // keep only highlights
+      s1.ctx.clearRect(0, 0, bw, bh); s1.ctx.filter = 'blur(7px)'; s1.ctx.drawImage(s2.cv, 0, 0); s1.ctx.filter = 'none';
+      ctx.save(); ctx.globalCompositeOperation = 'screen'; ctx.globalAlpha = 0.3; ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(s1.cv, 0, 0, bw, bh, 0, 0, PW, PH); ctx.restore();
+      const s3 = scratch('grade', PW / 2, PH / 2);
+      s3.ctx.drawImage(this.canvas, 0, BAR, PW, PH, 0, 0, PW / 2, PH / 2);
+      ctx.save(); ctx.globalCompositeOperation = 'soft-light'; ctx.globalAlpha = 0.22; ctx.drawImage(s3.cv, 0, 0, PW / 2, PH / 2, 0, 0, PW, PH); ctx.restore();
+    }
     // vignette + grain (picture only)
     const vig = shot.vig ?? 0.55;
     if (vig > 0) {

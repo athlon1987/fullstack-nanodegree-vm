@@ -311,7 +311,9 @@ function farFingerPath(ctx, ex, f, fr, u, inset = 0) {
  *   o.rim     { color, amt, dx, dy }  key-light rim (thin offset copy toward the light)
  */
 export function hand(ctx, o) {
-  const { layer = 'back', glow: glowCol = '#aebfd8', glowAmt = 1, ink = '#05070b', rim = null } = o;
+  const lit = globalThis.__RIG_STYLE === 'lit';   // coloured characters: the hand is skin, dim because the screen back-lights it
+  const { layer = 'back', glow: glowCol = '#aebfd8', glowAmt = 1, rim = null } = o;
+  const ink = lit ? '#6f4830' : (o.ink ?? '#05070b');
   const P = handPose(o), { u, G, mir, B, K, T, press, fingers, fr } = P;
   const edge = -0.5 * u;
   ctx.save();
