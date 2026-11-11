@@ -122,17 +122,17 @@ def process_cue(cue):
         x = filt(x, 'bandpass', [250, 6000])
         t = np.arange(len(x)) / R
         x = 0.7 * x + 0.3 * x * np.sin(2 * np.pi * 140 * t)
-        x *= db(-4 + extra); out = np.stack([x, x]); P = 0
+        x *= db(0 + extra); out = np.stack([x, x]); P = 0
         return out
     if who == 'SYSTEM':  # a3_noanswer
         x = filt(x, 'bandpass', [300, 3400], 3)
         x = np.tanh(2.2 * x) / 2.2 * 1.3
-        x *= db(-8); return np.stack([x, x])
+        x *= db(-3); return np.stack([x, x])
     if who == 'ANNOUNCER':
         st = room(x, 1.8, -6, 5000, 0.015, seed=3)
         m = st.mean(0)
         m = filt(m, 'bandpass', [350, 5000], 3)
-        m *= db(-9); return np.stack([m, m])
+        m *= db(-3); return np.stack([m, m])
     if who == 'ORIGINAL':
         x = peak_eq(x, 280, 4, 0.9); x = peak_eq(x, 1800, -2, 1)
         st = room(x, 0.12, -14, 3000, 0.003, seed=5); m = st.mean(0)
@@ -207,8 +207,8 @@ def main():
     for c in TL['cues']:
         a, b = int(c['t0'] * R), int(c['t1'] * R)
         ds = rm(dia[:, a:b])
-        dm = float(np.clip(rm(music[a:b]) - (ds - 13), 7, 17))   # want music >= 13 dB under speech
-        dsf = float(np.clip(rm(sfx[a:b]) - (ds - 15), 3, 10))
+        dm = float(np.clip(rm(music[a:b]) - (ds - 13), 7, 20))   # want music >= 13 dB under speech
+        dsf = float(np.clip(rm(sfx[a:b]) - (ds - 15), 3, 14))
         lo, hi = max(0, a - int(0.1 * R)), min(N, b + int(0.15 * R))
         dep_m[lo:hi] = np.maximum(dep_m[lo:hi], dm); dep_s[lo:hi] = np.maximum(dep_s[lo:hi], dsf)
         c['_duck'] = (round(dm, 1), round(dsf, 1))
