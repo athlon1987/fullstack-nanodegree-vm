@@ -4,6 +4,7 @@ import { PW, PH, CX, CY, glow, text, linGrad, radGrad, rgba, mixHex, FONT, light
 import { C, LOOK } from '../src/style.js';
 import * as PR from '../src/props.js';
 import { dummy } from './_dummy.js';
+import { drawHand } from '../src/rig.js';
 
 export const duration = 8;
 export const vig = 0.3;
@@ -70,7 +71,90 @@ function panel1(ctx) {
     }, 'size 46 · in the hand / on the floor');
 }
 
-const PANELS = [panel0, panel1];
+function panel2(ctx) {
+  const ty = 640; lampTable(ctx, ty);
+  title(ctx, 'NOTE — unfold 0 · 0.33 · 0.66 · 1');
+  const light = { color: C.honey, angle: -70, amount: 0.5 }, tint = LOOK.lampNight.haze;
+  [0, 0.33, 0.66, 1].forEach((u, i) => {
+    const x = 250 + i * 470;
+    PR.note(ctx, { x, y: 430, size: 360, unfold: u, lum: 0.92, tint, light, rot: [-4, 3, -2, 1][i] });
+    label(ctx, 'unfold ' + u, x, 700);
+  });
+}
+function panel3(ctx) {
+  lampTable(ctx, 760, CX);
+  ctx.fillStyle = '#120c08'; ctx.fillRect(0, 0, PW, PH);
+  glow(ctx, CX, 380, 1100, C.amber, 0.42); glow(ctx, CX, 400, 520, C.honey, 0.25);
+  PR.note(ctx, { x: CX, y: 395, size: 900, unfold: 1, lum: 0.95, tint: LOOK.lampNight.haze, light: { color: C.honey, angle: -80, amount: 0.4 }, rot: -1 });
+  drawHand(ctx, { x: 545, y: 215, size: 42, rot: 35, pose: 'pinch', ink: '#0a0604', arm: 1.4 });
+  drawHand(ctx, { x: 1385, y: 640, size: 42, rot: -145, pose: 'pinch', ink: '#0a0604', arm: 1.4 });
+}
+const GROUND = (ctx) => { ctx.fillStyle = linGrad(ctx, 0, 0, 0, PH, [[0, '#5d6f88'], [1, '#46566e']]); ctx.fillRect(0, 0, PW, PH); };
+function grid(ctx, items, cols, y0, rowH) {
+  GROUND(ctx);
+  const cw = PW / cols;
+  items.forEach(([name, fn], i) => { const cx = (i % cols + 0.5) * cw, cy = y0 + Math.floor(i / cols) * rowH; fn(cx, cy); label(ctx, name, cx, cy + 128, { size: 17 }); });
+}
+const key = { color: '#e9f0fa', from: -1, amount: 0.5 };
+const base = { lum: 0.95, light: key, shadow: 0.5 };
+function panel4(ctx) {
+  title(ctx, 'SUPPORTING PROPS 1');
+  grid(ctx, [
+    ['phoneSmall glow', (x, y) => PR.phoneSmall(ctx, { ...base, x, y: y + 40, size: 190, glow: C.cyan, turn: 0.5 })],
+    ['phoneSmall dark', (x, y) => PR.phoneSmall(ctx, { ...base, x, y: y + 40, size: 190, turn: 0.5 })],
+    ['tablet', (x, y) => PR.tablet(ctx, { ...base, x, y, size: 220, turn: 0.4 })],
+    ['envelope', (x, y) => PR.envelope(ctx, { ...base, x, y, size: 300 })],
+    ['toast 0 · 0.5 · 1', (x, y) => { [0, 0.5, 1].forEach((b, i) => PR.toast(ctx, { ...base, x: x - 120 + i * 120, y: y + 80, size: 100, burnt: b })); }],
+    ['trophy', (x, y) => PR.trophy(ctx, { ...base, x, y: y + 90, size: 200, sparkle: 1, t: 1 })],
+    ['wrench', (x, y) => PR.wrench(ctx, { ...base, x, y, size: 330, rot: -20 })],
+    ['cloth', (x, y) => PR.cloth(ctx, { ...base, x, y: y - 90, size: 190, sway: 0.3 })],
+    ['accessCard', (x, y) => PR.accessCard(ctx, { ...base, x, y: y + 20, size: 170, strap: 0.6 })],
+    ['stylus', (x, y) => PR.stylus(ctx, { ...base, x, y, size: 330 })],
+    ['scanner beam .6', (x, y) => PR.scanner(ctx, { ...base, x: x - 100, y, size: 230, beam: 0.6, beamLen: 200 })],
+    ['paperStar', (x, y) => { PR.paperStar(ctx, { ...base, x: x - 50, y, size: 130, seed: 1 }); PR.paperStar(ctx, { ...base, x: x + 70, y: y + 20, size: 90, seed: 2 }); }],
+  ], 4, 155, 235);
+}
+function panel5(ctx) {
+  title(ctx, 'SUPPORTING PROPS 2');
+  grid(ctx, [
+    ['backpack', (x, y) => PR.backpack(ctx, { ...base, x, y: y + 100, size: 250 })],
+    ['backpack slump .8', (x, y) => PR.backpack(ctx, { ...base, x, y: y + 100, size: 250, slump: 0.8 })],
+    ['softToy', (x, y) => PR.softToy(ctx, { ...base, x, y: y - 100, size: 280, sway: 0.4 })],
+    ['cerealBowl', (x, y) => PR.cerealBowl(ctx, { ...base, x, y: y + 70, size: 260 })],
+    ['mug (steam)', (x, y) => PR.mug(ctx, { ...base, x, y: y + 80, size: 170, steam: 1, t: 2 })],
+    ['satchel', (x, y) => PR.satchel(ctx, { ...base, x, y: y + 90, size: 280 })],
+    ['stepStool', (x, y) => PR.stepStool(ctx, { ...base, x, y: y + 110, size: 250 })],
+    ['crayonFamily', (x, y) => PR.crayonFamily(ctx, { ...base, x, y, size: 330 })],
+  ], 4, 170, 300);
+}
+function panel6(ctx) {
+  ctx.fillStyle = linGrad(ctx, 0, 0, 0, PH, [[0, '#8a9bb3'], [0.86, '#c3cedd'], [0.862, '#3a4658'], [1, '#2b3648']]); ctx.fillRect(0, 0, PW, PH);
+  title(ctx, 'PROPS IN THE HAND (real sizes) beside a 430 px figure');
+  const floor = 690, u = 430 / 7, lt = { color: C.paleSky, from: 1, amount: 0.6 }, b = { lum: 0.9, light: lt, tint: LOOK.greyMorning.fill };
+  const hy = floor - u * 3.9;
+  const figs = [
+    (x) => PR.phoneSmall(ctx, { ...b, x: x + u * 0.12, y: hy + 6, size: 37, glow: C.cyan, turn: 0.3 }),
+    (x) => PR.tablet(ctx, { ...b, x: x + u * 0.14, y: hy - 6, size: 62, turn: 0.3 }),
+    (x) => PR.envelope(ctx, { ...b, x: x + u * 0.2, y: hy + 12, size: 54, rot: -10 }),
+    (x) => PR.toast(ctx, { ...b, x: x + u * 0.2, y: hy + 22, size: 27 }),
+    (x) => PR.satchel(ctx, { ...b, x: x + u * 0.05, y: hy + 4, size: 98, anchor: 'handle' }),
+    (x) => PR.softToy(ctx, { ...b, x: x + u * 0.05, y: hy, size: 72, sway: 0.3 }),
+    (x) => PR.scanner(ctx, { ...b, x: x + u * 0.18, y: hy + 4, size: 50, beam: 0.6 }),
+    (x) => PR.cloth(ctx, { ...b, x: x + u * 0.05, y: hy, size: 70, sway: 0.4 }),
+  ];
+  figs.forEach((f, i) => { const x = 110 + i * 235; dummy(ctx, x, floor, { h: 430, facing: 1 }); f(x); });
+  const smalls = [(x) => PR.mug(ctx, { ...b, x, y: floor, size: 23, shadow: 0.4 }), (x) => PR.wrench(ctx, { ...b, x, y: floor - 6, size: 58, rot: -8 }), (x) => PR.accessCard(ctx, { ...b, x, y: floor - 11, size: 21 }), (x) => PR.trophy(ctx, { ...b, x, y: floor, size: 56, shadow: 0.4 }), (x) => PR.cerealBowl(ctx, { ...b, x, y: floor, size: 38, shadow: 0.4 }), (x) => PR.stepStool(ctx, { ...b, x, y: floor, size: 62, shadow: 0.4 }), (x) => PR.backpack(ctx, { ...b, x, y: floor, size: 80, shadow: 0.4 }), (x) => { PR.note(ctx, { ...b, x: x - 22, y: floor - 12, size: 34 }); PR.paperStar(ctx, { ...b, x: x + 20, y: floor - 15, size: 30 }); }];
+  smalls.forEach((f, i) => f(110 + i * 235 + 117));
+  [0, 1, 2, 3, 4, 5, 6, 7].forEach((i) => label(ctx, ['phone', 'tablet', 'envelope', 'toast', 'satchel', 'softToy', 'scanner', 'cloth'][i], 110 + i * 235, floor + 40, { size: 15 }));
+  [0, 1, 2, 3, 4, 5, 6, 7].forEach((i) => label(ctx, ['mug', 'wrench', 'card', 'trophy', 'bowl', 'stool', 'backpack', 'note+star'][i], 110 + i * 235 + 117, floor + 70, { size: 15 }));
+}
+function panel7(ctx) {
+  ctx.fillStyle = '#3b2f26'; ctx.fillRect(0, 0, PW, PH); glow(ctx, CX, CY, 1100, C.honey, 0.25);
+  title(ctx, 'crayonFamily — large');
+  PR.crayonFamily(ctx, { x: CX, y: CY + 10, size: 1000, lum: 0.95, light: { color: C.honey, angle: -60, amount: 0.3 } });
+}
+
+const PANELS = [panel0, panel1, panel2, panel3, panel4, panel5, panel6, panel7];
 
 export default function draw(ctx, F) {
   const p = Math.min(PANELS.length - 1, Math.floor(F.t));

@@ -87,7 +87,7 @@ export const UI = {
   text: '#eceef2', text2: '#a2a8b3', text3: '#69707b',
   bubbleIn: '#2b2f37', bubbleOut: '#3b4a60',
   red: C.alert, redDeep: '#c4272c',
-  pBg: '#03070b', pPanel: '#07111a', pLine: C.cyan, pText: C.ice, pCyan: C.cyan, pDim: '#5d98ad', pLegal: '#56626d',
+  pBg: '#03070b', pPanel: '#07111a', pLine: C.cyan, pText: C.ice, pCyan: C.cyan, pDim: '#5d98ad', pLegal: '#6b7783',
 };
 
 // ───────────────────────────── the device ─────────────────────────────

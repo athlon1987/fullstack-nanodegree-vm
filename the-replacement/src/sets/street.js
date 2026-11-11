@@ -62,14 +62,85 @@
 //
 // ─────────────────────────────────────────────────────────────────────────────────────────────
 // 3. homeStreet — shots a7_04, a7_06, a7_09 (background), a7_10, a7_12, a7_13 — look: 'golden'
-//    (filled in below, see the homeStreet section of this header)
+//    The street outside the family's apartment block in low golden morning sun, side-on. The camera stands in
+//    the road and looks across OUR pavement (the floor line y = 700). Left → right along the world:
+//      x −1100…700   a sunlit terrace (two houses with a café between: green-striped awning, blank fascia board,
+//                    bistro tables) set back at depth 0.86; street tree at x 380
+//      x 700…1700    a little park behind low railings: lawn, two backlit trees (x 860, 1490), and through them the
+//                    cross road (depth 0.5: traffic, the bus, parked cars at 0.56) and the far terrace in gold haze.
+//                    Two wooden poles (x 640, 1660) carry wires with eight sparrows on them.
+//      x 1700…2260   a side street runs away from camera; the ZEBRA CROSSING lies on our walking line, with a
+//                    striped beacon (amber globe, blinking) at each kerb (x 1688, 2272)
+//      x 2300…3820   the APARTMENT BLOCK (facade at depth 0.9): ground-floor windows, the ENTRANCE at x 3130 (two
+//                    steps, door open, a sunlit glass door at the back of the lobby), planters, street tree x 3560,
+//                    a bicycle against the wall at x 3730
+//      x 3820…4320   a garden gap (low wall, open gate, hedge): the LOW SUN shines through here, at screen right
+//      x 4320…       the next building
+//    Sun: low at screen right (it moves only with depth 0.06). Shadows of everything rake toward camera-left.
+//    W 3600 (painted from x −1100 to 5600: pan anywhere along it).
+//    state   busX    world x | null (default null)  centre of a bus on the cross road (depth 0.5); sweep it e.g. 4200 → −1200 over 3 s
+//            busDir  −1 | 1     (default −1)  the bus faces/moves left (−1) or right (+1)
+//            flare   0..1       (default 1)   sun flare (glow, warm anamorphic streak, ghosts) — only where the sun is visible
+//            blur    0..1       (default 0)   1 = the whole background becomes a soft, bright, out-of-focus plate with leaf bokeh
+//                                             (a 1/4-res render blurred each frame; cheap). Use 1 for a7_09 / a7_13 close-ups.
+//            traffic 0..1       (default 1)   the few cars moving on the cross road (from o.t)
+//            fgLeaves 0..1      (default 1)   out-of-focus leaves hanging into the top of frame (depth 1.45; auto-off at blur 1)
+//            part   'all' | 'far' | 'near'  back() only: 'far' = sky … cross road/bus/parked cars; 'near' = park, facades, our
+//                                             pavement. Put people on the far pavement between the two calls. (Ignored with blur.)
+//    ambient (from o.t): drifting pollen in the light, crowns swaying with sparkles of sun, birds bobbing/hopping, beacons blinking.
+//    anchors (WORLD, on the floor line unless they carry {depth, scale}):
+//            line      {x0: −1100, x1: 4600, y: 700}  the walking line
+//            walkFrom  (1620, 700)   a7_04: Adam has just crossed and walks LEFT from here (sunlit park + far haze behind)
+//            stop      (1150, 700)   a7_04/a7_06/a7_09: where Adam stops dead (bright lawn, cross road and bus behind him)
+//            crossing  (1980, 700)   middle of the zebra crossing;  crossL (1700, 700) / crossR (2260, 700) its two kerbs
+//            meet      (2600, 700)   a7_12/a7_13: where father and daughter meet (Adam kneels here; Maya ≈ meet.x + 120)
+//            doorStep  (3130, 700)   on the pavement at the foot of the entrance steps
+//            maya      (3330, 700)   a7_10: Maya waving the lunchbox, a little right of the door, flare behind her
+//            wife      {x: 2913, y: 608.2, depth: 0.9, scale: 0.9}   LAYER point (feet) in the open doorway: draw her inside
+//                                    camera(ctx, cam, 0.9, …) at (x, y) with s 0.9, after back() and before mid()
+//            ped1 (260, 700) · ped2 (1480, 700) · ped3 (2850, 700) · ped4 (3700, 700)   passer-by marks on our pavement
+//            farPedL {x: 976.8, y: 543.4, depth: 0.42, scale: 0.42} · farPedR {x: 1417.8, …}   far pavement (between part far/near)
+//            sun {x: 1810, y: 352, depth: 0.06}  (use homeStreet.sunAt(o) → {x, y, vis} for its picture position)
+//    helpers homeStreet.castShadow(ctx, o, x, h = 430, k = 1): the long golden-hour shadow of a figure standing at world x —
+//            call it after back(), before drawing the figure (h = figure height; ~250 for a kneeling adult, 285 Maya).
+//            homeStreet.sunAt(o) → {x, y, vis}: picture position of the sun and 0..1 visibility (for a matching glint).
+//    light   golden: key '#ffd08a' from the right (+1), amount 0.85 (the low sun behind-right of everyone)
+//    framing a7_04  walk: {x: adamX − 100, y: 402, zoom: 1.0 → 1.05} as he goes 1620 → 1150 (bright park behind)
+//            a7_06  wide: {x: 1150, y: 402, zoom: 1.0 → 1.04}, busX sweeping 4000 → −800, peds at ped1/ped2
+//            a7_09  ECU: {x: stop.x − 30, y: 300, zoom: 3}, blur: 1, fgLeaves 0 (soft gold plate + bokeh)
+//            a7_10  POV: {x: 3260, y: 400, zoom: 1.15 → 1.2}, flare 1 (sun in the garden gap at screen right)
+//            a7_12  track: {x: midpoint of the two runners, y: 380, zoom: 0.85}, busX optional
+//            a7_13  close: {x: meet.x + 40, y: 480, zoom: 2.4}, blur 0.6–1 (bright windows of the block behind them)
 //
-// 4. carInterior — the video in a7_07 — look: 'rainNight'
-//    (filled in below, see the carInterior section of this header)
+// ─────────────────────────────────────────────────────────────────────────────────────────────
+// 4. carInterior — the video inside the phone in a7_07 — look: 'rainNight'
+//    Inside a parked car at night, side-on: the driver in profile facing RIGHT, his seat and headrest behind him, the
+//    rain-beaded driver's window (wet street bokeh outside) behind his head, the A-pillar, the windscreen at the right
+//    with a sodium streetlight blooming through it and rain crawling down, the rear-view mirror, the steering wheel in
+//    front of him and the dashboard with a dim green-white instrument glow below. Drawn at true scale (driver s = 1).
+//    W 1920 (cabin painted x −600…2600; everything outside the glass is dark trim).
+//    state   rain  0..1  (default 1)    beads + rivulets on all glass, rain falling outside
+//            lamp  0..1  (default 1)    the sodium streetlight (bloom, rim on pillar/mirror/wheel, wash on his face)
+//            dash  0..1  (default 1)    instrument glow (dim green-white) and its up-light on the driver
+//            sweep 0..1  (default 1)    a passing car's headlights sweep the cabin right → left every 13 s (at t ≈ 9, 22, …)
+//            mist  0..1  (default 0.4)  condensation along the bottom of the side glass
+//    anchors driver   {x: 860, y: 700, seat: 110}   pose for drawFigure: {x, y, seat, facing: 1, ...POSE.sit}
+//            hips     (860, 568)    where his pelvis sits (top of the seat cushion)
+//            head     (927, 411)    his head centre with POSE.sit + {curl: 10, neck: 6} (a tired slump); r ≈ 27
+//            wheelGrip (997, 462) · wheelTop (994, 449) · wheelHub (1012, 500)   IK targets for hands on the wheel
+//            eyeLine  (1160, 400)   looking out of the windscreen toward the light
+//            lens     (1180, 470)   the phone propped on the dashboard = the camera he looks into
+//            lamp     (1094, 404)   the streetlight · mirror (1068, 354)
+//    crop    the video is shown in a phone-shaped clip. Recommended (PICTURE space, with its camera):
+//            crop45  {x: 660, y: 27, w: 600, h: 750, cam: {x: 935, y: 452, zoom: 1.65}}   4:5
+//            crop916 {x: 734, y: 0, w: 452, h: 804, cam: {x: 935, y: 448, zoom: 1.4}}    9:16
+//            i.e. clip to the rect, then call back/figure/front with that cam. Head upper third, wheel at right,
+//            light top-right. Push in toward zoom 2.2–2.6 on the head for the long pause (stays crisp).
+//    light   rainNight: key '#ffa64d' from the right (+1), amount 0.6 (the sodium light through the windscreen)
 // ════════════════════════════════════════════════════════════════════════════════════════════
 import {
   PW, PH, CX, CY, TAU, clamp, lerp, invlerp, ease, hash, rng, noise1, wobble, rgba, mixHex, rr, fillRR,
-  linGrad, radGrad, glow, lightCone, fog, cached, camera,
+  linGrad, radGrad, glow, lightCone, fog, cached, scratch, camera,
 } from '../engine.js';
 import { LOOK } from '../style.js';
 
@@ -1206,6 +1277,916 @@ export const cityRun = {
         }
       });
     }
+  },
+};
+
+// ════════════════════════════════════════════════════════════════════════════════════════════
+// 3. HOME STREET
+// ════════════════════════════════════════════════════════════════════════════════════════════
+const HS = {
+  dFar: 0.12, dRow: 0.3, dRoad: 0.5, dParked: 0.56, dPark: 0.7, dTer: 0.86, dNb: 0.88, dBlock: 0.9, dPole: 0.93, dRail: 0.95, dTree: 0.965, dBeacon: 0.975, dKerb: 1.22, dFg: 1.45,
+  ter0: -1100, ter1: 700, cross0: 1700, cross1: 2260, block0: 2300, block1: 3820, door: 3130, nb0: 4320, nb1: 5600,
+  sun: { x: 1810, y: 352, d: 0.06 },
+  poles: [640, 1660],
+  parkTrees: [[860, 0], [1490, 1]],
+  streetTrees: [[380, 2], [3560, 3]],
+  // birds on the upper wire between the poles: [position 0..1 along the span, facing]
+  birds: [[0.22, 1], [0.27, -1], [0.315, 1], [0.46, 1], [0.5, 1], [0.545, -1], [0.67, 1], [0.72, -1]],
+  terrace: [[-1100, -460, 'house', 0], [-460, 160, 'cafe', 1], [160, 700, 'house', 2]],
+  stepH: 36,
+};
+const HS_INK = '#160c05';
+const yD = (cam, d) => proj(cam, 0, gy(d), d)[1];
+
+function hsSky() {
+  return cached('hs-sky', PW, PH, (c) => {
+    c.fillStyle = linGrad(c, 0, 0, 0, 470, [[0, '#d48f4c'], [0.28, '#eba862'], [0.6, '#ffcf88'], [0.84, '#ffe6b8'], [1, '#fff2d4']]);
+    c.fillRect(0, 0, PW, PH);
+    const r = rng(83);
+    c.filter = 'blur(12px)';
+    for (let i = 0; i < 20; i++) {
+      const x = r() * PW, y = 30 + r() * 270, w = 220 + r() * 640, h = 8 + r() * 24;
+      c.fillStyle = 'rgba(176,96,52,0.10)'; c.beginPath(); c.ellipse(x - 30, y - h * 0.5, w * 0.42, h * 0.4, -0.02, 0, TAU); c.fill();
+      c.fillStyle = `rgba(255,${226 + Math.floor(r() * 26)},${176 + Math.floor(r() * 50)},${0.22 + r() * 0.26})`;
+      c.beginPath(); c.ellipse(x, y, w / 2, h / 2, -0.02, 0, TAU); c.fill();
+    }
+  });
+}
+function hsBand(ctx, cam, d0, d1, stops) {
+  const y0 = yD(cam, d0), y1 = yD(cam, d1);
+  if (y1 <= y0 || y1 < -10 || y0 > PH + 10) return;
+  ctx.fillStyle = linGrad(ctx, 0, y0, 0, y1, stops);
+  ctx.fillRect(-200, y0, PW + 400, y1 - y0 + 1);
+}
+/** Long soft shadow of an upright thing standing at true world X, depth d, raked toward camera-left. */
+function hsCast(ctx, cam, X, d, h, w, a = 0.3) {
+  const L = 1.5 * h, dd = 0.00032 * h;
+  const b0 = gp(cam, X - w / 2, d), b1 = gp(cam, X + w / 2, d), t0 = gp(cam, X - L - w * 0.9, d + dd), t1 = gp(cam, X - L + w * 0.3, d + dd);
+  const m0 = [(b0[0] + b1[0]) / 2, (b0[1] + b1[1]) / 2], m1 = [(t0[0] + t1[0]) / 2, (t0[1] + t1[1]) / 2];
+  ctx.fillStyle = linGrad(ctx, m0[0], m0[1], m1[0], m1[1], [[0, rgba('#5a2c10', a)], [0.55, rgba('#5a2c10', a * 0.55)], [1, rgba('#5a2c10', 0)]]);
+  poly(ctx, [b1, b0, t0, t1]); ctx.fill();
+}
+/** Dappled crown shadow on the ground: soft blobs around the tip of a tree's shadow. */
+function hsDapple(ctx, cam, X, d, h, seed, a = 0.22) {
+  const L = 1.5 * h, dd = 0.00032 * h, z = 1 + (cam.zoom - 1) * (d + dd);
+  for (let i = 0; i < 6; i++) {
+    const [px, py] = gp(cam, X - L + (hash(seed * 31 + i) - 0.5) * 900, d + dd * (0.55 + hash(seed * 7 + i) * 0.7));
+    const r = (90 + hash(seed + i * 5) * 160) * z;
+    ctx.save(); ctx.translate(px, py); ctx.scale(1, 0.16);
+    ctx.fillStyle = radGrad(ctx, 0, 0, 0, r, [[0, rgba('#5a2c10', a)], [0.6, rgba('#5a2c10', a * 0.6)], [1, rgba('#5a2c10', 0)]]);
+    ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.fill(); ctx.restore();
+  }
+}
+/** A sunlit crown: dark olive inside, gold toward the light (right), with holes of sky. */
+function hsCrown(i, s = 1) {
+  const w = Math.round(1000 * s), h = Math.round(820 * s);
+  return canopy('hs-crown-' + i + '-' + w, w, h, 120 + i * 7, ['#5e4a1e', '#8a6c28', '#c39a3e', '#f2c66a', '#ffe39c'],
+    { n: 150, clump: 50 * s, gaps: 40, bx: 0.07, by: -0.05, branch: '#3e2a12' });
+}
+function hsTwinkle(ctx, x, y, w, h, t, seed, k) {
+  ctx.save(); ctx.globalCompositeOperation = 'lighter';
+  for (let i = 0; i < 14; i++) {
+    const a = noise1(t * (0.8 + hash(seed + i) * 1.2), seed * 13 + i);
+    if (a < 0.55) continue;
+    const px = x + (0.45 + hash(seed * 3 + i) * 0.5) * w, py = y + (0.15 + hash(seed * 5 + i * 2) * 0.6) * h;
+    ctx.fillStyle = rgba('#fff3cf', (a - 0.55) * 1.6 * k);
+    ctx.beginPath(); ctx.arc(px, py, 3 + hash(i + seed) * 4, 0, TAU); ctx.fill();
+  }
+  ctx.restore();
+}
+
+function hsBus(ctx, x, G, s, dir) {
+  // local frame: 0 = rear … 1240 = nose, ground 0, facing +x; flipped for dir -1
+  ctx.save(); ctx.translate(x, G); ctx.scale(dir * s, s); ctx.translate(-620, 0);
+  const L = 1240, H = 470;
+  ctx.fillStyle = 'rgba(60,30,12,0.35)'; ctx.beginPath(); ctx.ellipse(620, 2, 640, 12, 0, 0, TAU); ctx.fill();
+  ctx.fillStyle = '#20160c'; for (const wx of [220, 1000]) { ctx.beginPath(); ctx.arc(wx, -60, 74, Math.PI, TAU); ctx.fill(); }
+  ctx.fillStyle = linGrad(ctx, 0, -H, 0, -30, [[0, '#a8a07a'], [0.05, '#6f7350'], [0.55, '#59603f'], [0.62, '#e9dcb8'], [0.68, '#59603f'], [1, '#3a3f28']]);
+  rr(ctx, 0, -H, L, H - 30, 26); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(L - 40, -H); ctx.quadraticCurveTo(L + 4, -H, L + 6, -H + 70); ctx.lineTo(L + 8, -60); ctx.lineTo(L - 30, -40); ctx.fill();
+  // windows: gold reflections of the low sun, dark people-shapes inside
+  for (let i = 0; i < 6; i++) {
+    const wx = 60 + i * 168, ww = 150;
+    ctx.fillStyle = linGrad(ctx, wx, -H + 50, wx + ww, -250, [[0, '#ffe6b0'], [0.35, '#c99a5a'], [1, '#4a3a22']]);
+    rr(ctx, wx, -H + 48, ww, 190, 10); ctx.fill();
+    if (hash(i + 3) < 0.6) { ctx.fillStyle = 'rgba(40,26,12,0.6)'; ctx.beginPath(); ctx.ellipse(wx + 50 + hash(i) * 60, -300, 22, 28, 0, 0, TAU); ctx.fill(); ctx.fillRect(wx + 28 + hash(i) * 60, -290, 44, 60); }
+  }
+  ctx.fillStyle = linGrad(ctx, 0, -H + 50, 0, -60, [[0, '#ffe2a8'], [1, '#6a5a38']]); rr(ctx, L - 110, -H + 48, 100, 380, 10); ctx.fill();   // door + windscreen
+  ctx.fillStyle = 'rgba(30,22,10,0.5)'; ctx.fillRect(L - 62, -H + 48, 4, 380);
+  ctx.fillStyle = '#fff1cf'; rr(ctx, L - 100, -H + 14, 80, 26, 5); ctx.fill();                            // blank destination blind
+  for (const wx of [220, 1000]) { wheel(ctx, wx, 60, { tyre: '#1a120a', cap: '#8f8a6a', light: '#ffe6b0' }, false); }
+  ctx.fillStyle = 'rgba(255,230,180,0.5)'; ctx.fillRect(10, -H + 2, L - 40, 3);
+  ctx.restore();
+}
+
+function hsWindow(ctx, x, y, w, h, s, seed, box = true) {
+  // x,y = bottom-left of the opening (layer px); w,h = size
+  const f = 12 * s;
+  fillRR(ctx, x - f, y - h - f, w + 2 * f, h + 2 * f, 2 * s, '#f7ead2');
+  ctx.fillStyle = linGrad(ctx, x, y - h, x + w * 0.6, y, [[0, '#ffefc8'], [0.32, '#efbc78'], [0.65, '#b0743e'], [1, '#7a4a24']]);
+  ctx.fillRect(x, y - h, w, h);
+  ctx.fillStyle = 'rgba(58,32,14,0.35)'; ctx.fillRect(x + w - 26 * s, y - h, 26 * s, h);                      // reveal shadow
+  ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(255,236,190,0.22)';
+  ctx.beginPath(); ctx.moveTo(x + w * 0.15, y - h); ctx.lineTo(x + w * 0.38, y - h); ctx.lineTo(x + w * 0.08, y); ctx.lineTo(x, y); ctx.lineTo(x, y - h * 0.6); ctx.fill(); ctx.restore();
+  ctx.fillStyle = '#f2e2c4'; ctx.fillRect(x + w / 2 - 4 * s, y - h, 8 * s, h); ctx.fillRect(x, y - h * 0.62, w, 7 * s);
+  if (hash(seed) < 0.6) { ctx.fillStyle = 'rgba(240,226,200,0.55)'; ctx.fillRect(x + 6 * s, y - h, w * 0.18, h * 0.9); }   // a half-drawn curtain
+  fillRR(ctx, x - 26 * s, y + f - 2 * s, w + 52 * s, 16 * s, 2 * s, '#f9edd6');                              // sill
+  ctx.fillStyle = 'rgba(90,44,16,0.28)'; ctx.fillRect(x - 40 * s, y + f + 14 * s, w + 50 * s, 12 * s);
+  if (box) {
+    fillRR(ctx, x - 6 * s, y + f - 40 * s, w + 12 * s, 38 * s, 3 * s, '#6a4424');
+    const r = rng(seed * 11 + 5);
+    for (let i = 0; i < 18; i++) {
+      const px = x + r() * w, py = y + f - 40 * s - r() * 34 * s, rad = (8 + r() * 12) * s;
+      const leaf = r() < 0.6;
+      ctx.fillStyle = leaf ? (px > x + w * 0.5 ? '#a8933c' : '#6e6226') : ['#fff3d8', '#f6d36a', '#c8a8d8'][Math.floor(r() * 3)];
+      ctx.beginPath(); ctx.arc(px, py, rad * (leaf ? 1 : 0.55), 0, TAU); ctx.fill();
+    }
+  }
+}
+function hsDoor(ctx, x, y, w, h, s, col) {
+  fillRR(ctx, x - 16 * s, y - h - 16 * s, w + 32 * s, h + 16 * s, 2 * s, '#f7ead2');
+  ctx.fillStyle = linGrad(ctx, x, 0, x + w, 0, [[0, mixHex(col, '#000000', 0.25)], [0.8, col], [1, mixHex(col, '#ffd08a', 0.35)]]);
+  ctx.fillRect(x, y - h, w, h);
+  ctx.fillStyle = linGrad(ctx, x, y - h, x + w, y - h + 70 * s, [[0, '#fff0cc'], [1, '#c98a48']]); ctx.fillRect(x + 10 * s, y - h + 8 * s, w - 20 * s, 64 * s);  // fanlight
+  ctx.strokeStyle = rgba('#000000', 0.25); ctx.lineWidth = 3 * s;
+  for (const [px, py, pw, ph] of [[0.14, 0.2, 0.3, 0.32], [0.56, 0.2, 0.3, 0.32], [0.14, 0.6, 0.3, 0.32], [0.56, 0.6, 0.3, 0.32]]) ctx.strokeRect(x + px * w, y - h + py * h, pw * w, ph * h);
+  ctx.fillStyle = '#ffd890'; ctx.beginPath(); ctx.arc(x + w * 0.82, y - h * 0.48, 6 * s, 0, TAU); ctx.fill();
+}
+
+/** Static vector artwork of one depth layer, rendered once at `res`× into a sprite; draws it at layer rect (x0,y0,w,h). */
+function hsSprite(ctx, key, x0, y0, w, h, res, draw, cam) {
+  // wide shots use the cached sprite (cheap); close shots draw the vectors so they stay crisp
+  if (cam && cam.zoom > 1.3) { draw(ctx); return; }
+  const cv = cached(key, w, h, (c) => { c.translate(-x0, -y0); draw(c); });
+  ctx.drawImage(cv, x0, y0);
+}
+function hsTerrace(ctx, cam) {
+  const s = HS.dTer, G = gy(s), x0 = lx(HS.ter0, s) - 20, x1 = lx(HS.ter1, s) + 20;
+  ctx.fillStyle = '#f6d6a6'; ctx.fillRect(x0 + 20, -4000, x1 - x0 - 40, 3200 + 2);
+  hsSprite(ctx, 'hs-terrace', x0, -800, x1 - x0, G + 806, 1, (c) => hsTerraceArt(c), cam);
+}
+function hsTerraceArt(ctx) {
+  const s = HS.dTer, G = gy(s);
+  const tints = ['#f0c287', '#f4cf9b', '#e9b479'];
+  for (const [X0, X1, kind, i] of HS.terrace) {
+    const x0 = lx(X0, s), x1 = lx(X1, s), col = tints[i];
+    ctx.fillStyle = linGrad(ctx, 0, G - 1500 * s, 0, G, [[0, mixHex(col, '#ffe6b8', 0.3)], [0.7, col], [1, mixHex(col, '#b0703a', 0.3)]]);
+    ctx.fillRect(x0, G - 3000 * s, x1 - x0 + 1, 3000 * s);
+    ctx.fillStyle = 'rgba(120,64,24,0.22)'; ctx.fillRect(x0, G - 3000 * s, 6 * s, 3000 * s);                   // party-wall line
+    ctx.fillStyle = mixHex(col, '#fff2d4', 0.4); ctx.fillRect(x0, G - 880 * s, x1 - x0, 26 * s);              // string course
+    ctx.fillStyle = 'rgba(110,56,20,0.25)'; ctx.fillRect(x0, G - 854 * s, x1 - x0, 8 * s);
+    ctx.fillStyle = '#c08b5c'; ctx.fillRect(x0, G - 60 * s, x1 - x0, 60 * s);                                  // plinth
+    ctx.fillStyle = 'rgba(255,230,180,0.4)'; ctx.fillRect(x0, G - 62 * s, x1 - x0, 3 * s);
+    // first-floor window bottoms (seen when the camera tilts up or zooms out)
+    for (let wx = x0 + 90 * s; wx < x1 - 260 * s; wx += 300 * s) hsWindow(ctx, wx, G - 1000 * s, 220 * s, 420 * s, s, i * 5 + wx, false);
+    if (kind === 'house') {
+      hsDoor(ctx, x0 + 80 * s, G - 20 * s, 200 * s, 500 * s, s, ['#3f4a2a', '#5a2f1c', '#2e3a44'][i % 3]);
+      fillRR(ctx, x0 + 50 * s, G - 22 * s, 260 * s, 22 * s, 2 * s, '#d8b088');                                // step
+      hsWindow(ctx, x0 + 360 * s, G - 180 * s, 250 * s, 360 * s, s, i * 3 + 1);
+    } else {
+      // café: wide glass, blank fascia board, awning, two bistro tables
+      const gx0 = x0 + 40 * s, gx1 = x1 - 40 * s;
+      fillRR(ctx, x0 + 20 * s, G - 700 * s, x1 - x0 - 40 * s, 110 * s, 4 * s, '#3c3a20');
+      ctx.strokeStyle = 'rgba(255,214,140,0.6)'; ctx.lineWidth = 3 * s; ctx.strokeRect(x0 + 34 * s, G - 688 * s, x1 - x0 - 68 * s, 86 * s);
+      ctx.fillStyle = '#2a2414'; ctx.fillRect(gx0, G - 560 * s, gx1 - gx0, 500 * s);
+      ctx.fillStyle = linGrad(ctx, gx0, G - 560 * s, gx0 + 300 * s, G - 60 * s, [[0, '#ffe2a8'], [0.35, '#a8743e'], [1, '#2e1c0e']]);
+      ctx.fillRect(gx0 + 8 * s, G - 552 * s, gx1 - gx0 - 16 * s, 484 * s);
+      for (const [lx2, ly2] of [[0.25, 0.4], [0.62, 0.35], [0.8, 0.5]]) glow(ctx, gx0 + lx2 * (gx1 - gx0), G - 560 * s + ly2 * 500 * s, 40 * s, '#ffcf88', 0.5);
+      ctx.fillStyle = '#efe0c2'; for (const f of [0.33, 0.66]) ctx.fillRect(gx0 + f * (gx1 - gx0) - 5 * s, G - 560 * s, 10 * s, 500 * s);
+      // awning: the valance seen from the front, stripes, scalloped hem, its shadow on the glass
+      ctx.fillStyle = 'rgba(70,36,12,0.35)'; ctx.fillRect(gx0, G - 560 * s, gx1 - gx0, 90 * s);
+      const ay = G - 600 * s;
+      for (let k = 0, ax = x0 + 10 * s; ax < x1 - 10 * s; ax += 50 * s, k++) {
+        ctx.fillStyle = k % 2 ? '#efe2c0' : '#56582c';
+        ctx.beginPath(); ctx.moveTo(ax, ay - 90 * s); ctx.lineTo(ax + 50 * s, ay - 90 * s); ctx.lineTo(ax + 50 * s, ay); ctx.quadraticCurveTo(ax + 25 * s, ay + 24 * s, ax, ay); ctx.closePath(); ctx.fill();
+      }
+      ctx.fillStyle = 'rgba(255,236,190,0.5)'; ctx.fillRect(x0 + 10 * s, ay - 92 * s, x1 - x0 - 20 * s, 4 * s);
+      // bistro tables (silhouettes on the forecourt)
+      ctx.fillStyle = '#2a1a0c';
+      for (const tx of [gx0 + 120 * s, gx1 - 200 * s]) {
+        ctx.fillRect(tx - 4 * s, G - 175 * s, 8 * s, 175 * s); ctx.beginPath(); ctx.ellipse(tx, G - 178 * s, 60 * s, 8 * s, 0, 0, TAU); ctx.fill();
+        for (const cx2 of [-90, 90]) { ctx.fillRect(tx + cx2 * s - 22 * s, G - 110 * s, 44 * s, 6 * s); ctx.fillRect(tx + cx2 * s + (cx2 < 0 ? -22 : 18) * s, G - 230 * s, 5 * s, 230 * s); ctx.fillRect(tx + cx2 * s - 20 * s, G - 110 * s, 4 * s, 110 * s); ctx.fillRect(tx + cx2 * s + 16 * s, G - 110 * s, 4 * s, 110 * s); }
+      }
+    }
+    // soft leaf-shadow dapples on the wall
+    for (let k = 0; k < 5; k++) {
+      const dx = x0 + hash(i * 17 + k) * (x1 - x0), dy = G - (300 + hash(i * 9 + k) * 700) * s, r = (80 + hash(k + i) * 120) * s;
+      ctx.fillStyle = radGrad(ctx, dx, dy, 0, r, [[0, 'rgba(110,52,16,0.14)'], [1, 'rgba(110,52,16,0)']]);
+      ctx.beginPath(); ctx.arc(dx, dy, r, 0, TAU); ctx.fill();
+    }
+  }
+  // drainpipe between the houses
+  ctx.fillStyle = '#5a3a20'; for (const X of [-460, 160]) { const x = lx(X, s); ctx.fillRect(x - 6 * s, G - 3000 * s, 12 * s, 3000 * s); ctx.fillStyle = 'rgba(255,220,160,0.45)'; ctx.fillRect(x + 3 * s, G - 3000 * s, 3 * s, 3000 * s); ctx.fillStyle = '#5a3a20'; }
+}
+
+function hsBlock(ctx, cam, t) {
+  const s = HS.dBlock, G = gy(s), x0 = lx(HS.block0, s) - 10, x1 = lx(HS.block1, s) + 10;
+  ctx.fillStyle = '#fbe0b4'; ctx.fillRect(x0 + 10, -4000, x1 - x0 - 20, 3200 + 2);
+  hsSprite(ctx, 'hs-block', x0, -800, x1 - x0, G + 806, 1, (c) => hsBlockArt(c), cam);
+}
+function hsBlockArt(ctx) {
+  const s = HS.dBlock, G = gy(s), x0 = lx(HS.block0, s), x1 = lx(HS.block1, s), st = HS.stepH * s;
+  ctx.fillStyle = linGrad(ctx, 0, G - 1600 * s, 0, G, [[0, '#fbe0b4'], [0.6, '#f5d09c'], [1, '#d9a56c']]);
+  ctx.fillRect(x0, G - 3000 * s, x1 - x0, 3000 * s);
+  // raking light: brighter toward the sun (right), cooler shade at the left corner
+  ctx.fillStyle = linGrad(ctx, x0, 0, x1, 0, [[0, 'rgba(140,70,30,0.2)'], [0.3, 'rgba(140,70,30,0)'], [1, 'rgba(255,240,200,0.18)']]);
+  ctx.fillRect(x0, G - 3000 * s, x1 - x0, 3000 * s);
+  // rusticated ground floor
+  ctx.fillStyle = 'rgba(130,72,30,0.16)'; for (let y = G - 70 * s; y > G - 880 * s; y -= 64 * s) ctx.fillRect(x0, y, x1 - x0, 3 * s);
+  ctx.fillStyle = '#f9e6c4'; ctx.fillRect(x0, G - 900 * s, x1 - x0, 30 * s); ctx.fillStyle = 'rgba(110,56,20,0.3)'; ctx.fillRect(x0, G - 870 * s, x1 - x0, 9 * s);
+  ctx.fillStyle = '#c4946a'; ctx.fillRect(x0, G - 70 * s, x1 - x0, 70 * s); ctx.fillStyle = 'rgba(255,232,190,0.45)'; ctx.fillRect(x0, G - 72 * s, x1 - x0, 3 * s);
+  // windows, first floor balconies (bottoms only)
+  for (const X of [2440, 2760, 3500]) hsWindow(ctx, lx(X, s), G - 190 * s, 250 * s, 400 * s, s, X);
+  for (const X of [2440, 2760, 3130, 3500]) {
+    const bx = lx(X, s);
+    hsWindow(ctx, bx, G - 1060 * s, 250 * s, 460 * s, s, X + 7, false);
+    fillRR(ctx, bx - 50 * s, G - 1000 * s, 350 * s, 24 * s, 2 * s, '#efd6ae');
+    ctx.fillStyle = '#3a2412'; for (let k = 0; k <= 14; k++) ctx.fillRect(bx - 44 * s + k * 24 * s, G - 1180 * s, 4 * s, 180 * s);
+    ctx.fillRect(bx - 50 * s, G - 1186 * s, 350 * s, 7 * s);
+  }
+  // the entrance: two steps, open door, sunlit lobby behind, porch canopy
+  const dx = lx(HS.door, s), dw = 270 * s, dh = 560 * s, dy = G - 2 * st;
+  fillRR(ctx, dx - dw / 2 - 40 * s, dy - dh - 40 * s, dw + 80 * s, dh + 40 * s, 3 * s, '#f8ead0');
+  ctx.fillStyle = '#3b2212'; ctx.fillRect(dx - dw / 2, dy - dh, dw, dh);
+  ctx.fillStyle = linGrad(ctx, 0, dy - dh, 0, dy, [[0, '#2a170a'], [0.5, '#4a2c16'], [1, '#6a4020']]); ctx.fillRect(dx - dw / 2, dy - dh, dw, dh);
+  // back door of the lobby: glass full of sun (what the wife is seen against)
+  const bw = 150 * s, bh = 420 * s;
+  ctx.fillStyle = linGrad(ctx, 0, dy - bh - 20 * s, 0, dy, [[0, '#fff6dc'], [0.7, '#ffe0a0'], [1, '#e8a860']]);
+  ctx.fillRect(dx - bw / 2 + 10 * s, dy - bh - 30 * s, bw, bh);
+  glow(ctx, dx + 10 * s, dy - bh * 0.5, 230 * s, '#ffd890', 0.55);
+  ctx.save(); ctx.globalCompositeOperation = 'lighter';
+  ctx.fillStyle = linGrad(ctx, 0, dy - 40 * s, 0, dy, [[0, 'rgba(255,214,150,0)'], [1, 'rgba(255,214,150,0.5)']]); ctx.fillRect(dx - dw / 2, dy - 40 * s, dw, 40 * s);
+  ctx.restore();
+  ctx.fillStyle = '#2a1a0c'; ctx.fillRect(dx - bw / 2 + 10 * s + bw / 2 - 3 * s, dy - bh - 30 * s, 6 * s, bh);   // its glazing bar
+  ctx.fillStyle = 'rgba(30,18,8,0.7)'; for (let k = 0; k < 3; k++) ctx.fillRect(dx - dw / 2 + 8 * s, dy - 330 * s + k * 34 * s, 54 * s, 24 * s);   // post boxes
+  // the open door leaf, folded against the left reveal
+  ctx.fillStyle = '#4a2a18'; ctx.beginPath(); ctx.moveTo(dx - dw / 2, dy - dh); ctx.lineTo(dx - dw / 2 + 46 * s, dy - dh + 30 * s); ctx.lineTo(dx - dw / 2 + 46 * s, dy - 20 * s); ctx.lineTo(dx - dw / 2, dy); ctx.fill();
+  ctx.fillStyle = 'rgba(255,220,160,0.35)'; ctx.fillRect(dx - dw / 2 + 42 * s, dy - dh + 32 * s, 3 * s, dh - 50 * s);
+  // steps
+  fillRR(ctx, dx - dw / 2 - 70 * s, G - st, dw + 140 * s, st, 2 * s, '#d9b48a'); fillRR(ctx, dx - dw / 2 - 30 * s, G - 2 * st, dw + 60 * s, st, 2 * s, '#e6c49a');
+  ctx.fillStyle = 'rgba(255,240,206,0.6)'; ctx.fillRect(dx - dw / 2 - 30 * s, G - 2 * st, dw + 60 * s, 2.5 * s); ctx.fillRect(dx - dw / 2 - 70 * s, G - st, dw + 140 * s, 2.5 * s);
+  // canopy and its shadow (falls down-left)
+  const cy = dy - dh - 70 * s;
+  ctx.fillStyle = 'rgba(110,52,16,0.22)'; ctx.beginPath(); ctx.moveTo(dx - 210 * s, cy + 26 * s); ctx.lineTo(dx + 210 * s, cy + 26 * s); ctx.lineTo(dx + 120 * s, cy + 120 * s); ctx.lineTo(dx - 300 * s, cy + 120 * s); ctx.fill();
+  fillRR(ctx, dx - 230 * s, cy, 460 * s, 26 * s, 3 * s, '#5a3a20'); ctx.fillStyle = 'rgba(255,226,170,0.7)'; ctx.fillRect(dx - 228 * s, cy, 456 * s, 3 * s);
+  fillRR(ctx, dx - 50 * s, cy - 54 * s, 100 * s, 40 * s, 18 * s, '#f9efdc'); ctx.strokeStyle = 'rgba(90,58,32,0.6)'; ctx.lineWidth = 2 * s; ctx.strokeRect(dx - 38 * s, cy - 46 * s, 76 * s, 24 * s);   // blank number plaque
+  // buzzer panel, wall lantern, drainpipes
+  fillRR(ctx, dx + dw / 2 + 40 * s, dy - 330 * s, 46 * s, 90 * s, 4 * s, '#c9a87e'); ctx.fillStyle = '#5a3a20'; for (let k = 0; k < 5; k++) ctx.fillRect(dx + dw / 2 + 50 * s, dy - 318 * s + k * 16 * s, 26 * s, 8 * s);
+  ctx.fillStyle = '#2a1a0c'; ctx.fillRect(dx - dw / 2 - 86 * s, dy - 440 * s, 30 * s, 64 * s); ctx.fillStyle = 'rgba(255,240,200,0.45)'; ctx.fillRect(dx - dw / 2 - 82 * s, dy - 434 * s, 22 * s, 50 * s);
+  for (const X of [2330, 3790]) { const x = lx(X, s); ctx.fillStyle = '#6a4424'; ctx.fillRect(x - 7 * s, G - 3000 * s, 14 * s, 3000 * s); ctx.fillStyle = 'rgba(255,226,170,0.5)'; ctx.fillRect(x + 3 * s, G - 3000 * s, 3 * s, 3000 * s); }
+  // planters either side of the door
+  for (const X of [2900, 3370]) {
+    const px = lx(X, s);
+    fillRR(ctx, px - 70 * s, G - 120 * s, 140 * s, 120 * s, 4 * s, '#7a5030'); ctx.fillStyle = 'rgba(255,220,160,0.4)'; ctx.fillRect(px + 60 * s, G - 118 * s, 6 * s, 116 * s);
+    const r = rng(X);
+    for (let k = 0; k < 26; k++) { const a = r() * Math.PI, rad = r(); ctx.fillStyle = Math.cos(a) > 0.2 ? '#d6b04c' : r() < 0.5 ? '#7e6a26' : '#a08a34'; ctx.beginPath(); ctx.arc(px + Math.cos(a) * rad * 80 * s, G - 130 * s - Math.sin(a) * rad * 110 * s, (14 + r() * 14) * s, 0, TAU); ctx.fill(); }
+  }
+  // a bicycle against the wall
+  const bx = lx(3730, s);
+  ctx.strokeStyle = '#2e1c0e'; ctx.lineWidth = 5 * s; ctx.lineCap = 'round';
+  for (const wx of [bx - 110 * s, bx + 110 * s]) { ctx.beginPath(); ctx.arc(wx, G - 70 * s, 68 * s, 0, TAU); ctx.stroke(); }
+  ctx.beginPath(); ctx.moveTo(bx - 110 * s, G - 70 * s); ctx.lineTo(bx - 20 * s, G - 70 * s); ctx.lineTo(bx - 50 * s, G - 190 * s); ctx.lineTo(bx - 110 * s, G - 70 * s);
+  ctx.moveTo(bx - 20 * s, G - 70 * s); ctx.lineTo(bx + 70 * s, G - 180 * s); ctx.lineTo(bx - 50 * s, G - 190 * s); ctx.moveTo(bx + 70 * s, G - 180 * s); ctx.lineTo(bx + 110 * s, G - 70 * s);
+  ctx.moveTo(bx + 70 * s, G - 180 * s); ctx.lineTo(bx + 60 * s, G - 215 * s); ctx.lineTo(bx + 30 * s, G - 222 * s); ctx.moveTo(bx - 50 * s, G - 190 * s); ctx.lineTo(bx - 56 * s, G - 212 * s); ctx.stroke();
+  ctx.lineWidth = 9 * s; ctx.beginPath(); ctx.moveTo(bx - 78 * s, G - 214 * s); ctx.lineTo(bx - 34 * s, G - 214 * s); ctx.stroke();
+  // leaf dapples on the facade
+  for (let k = 0; k < 9; k++) {
+    const ddx = x0 + hash(k * 13 + 1) * (x1 - x0), ddy = G - (250 + hash(k * 7) * 800) * s, r = (90 + hash(k) * 140) * s;
+    ctx.fillStyle = radGrad(ctx, ddx, ddy, 0, r, [[0, 'rgba(120,56,18,0.13)'], [1, 'rgba(120,56,18,0)']]);
+    ctx.beginPath(); ctx.arc(ddx, ddy, r, 0, TAU); ctx.fill();
+  }
+  // the sunlit right end wall of the block (faces the sun) is drawn as a bright edge
+  ctx.fillStyle = 'rgba(255,244,214,0.8)'; ctx.fillRect(x1 - 5 * s, G - 3000 * s, 5 * s, 3000 * s);
+}
+
+function hsGap(ctx, cam, t) {
+  // garden between the block and the next building: hedge, a backlit tree, low wall and an open gate
+  camera(ctx, cam, 0.8, () => {
+    const s = 0.8, G = gy(s), x0 = lx(HS.block1 - 60, s), x1 = lx(HS.nb0 + 60, s);
+    ctx.fillStyle = '#6e5a22'; ctx.beginPath(); ctx.moveTo(x0, G);
+    for (let x = x0; x <= x1; x += 20 * s) ctx.lineTo(x, G - 170 * s - noise1(x * 0.03, 9) * 40 * s);
+    ctx.lineTo(x1, G); ctx.fill();
+    ctx.fillStyle = 'rgba(255,214,120,0.6)'; for (let x = x0; x <= x1; x += 20 * s) { ctx.beginPath(); ctx.arc(x + 6 * s, G - 172 * s - noise1(x * 0.03, 9) * 40 * s, 9 * s, 0, TAU); ctx.fill(); }
+  });
+  camera(ctx, cam, 0.92, () => {
+    const s = 0.92, G = gy(s), x0 = lx(HS.block1, s), x1 = lx(HS.nb0, s);
+    ctx.fillStyle = linGrad(ctx, 0, G - 130 * s, 0, G, [[0, '#d69a64'], [1, '#a8683a']]); ctx.fillRect(x0, G - 120 * s, x1 - x0, 120 * s);
+    ctx.fillStyle = '#f2d2a2'; ctx.fillRect(x0, G - 132 * s, x1 - x0, 14 * s);
+    ctx.fillStyle = 'rgba(110,52,16,0.18)'; for (let y = G - 100 * s; y < G; y += 24 * s) ctx.fillRect(x0, y, x1 - x0, 2 * s);
+    const gx0 = lx(3980, s), gx1 = lx(4160, s);
+    ctx.fillStyle = '#c99a64'; ctx.fillRect(gx0, G - 120 * s, gx1 - gx0, 120 * s);   // the gate opening shows the garden path
+    ctx.fillStyle = linGrad(ctx, 0, G - 120 * s, 0, G, [[0, '#a88a3a'], [1, '#d8b070']]); ctx.fillRect(gx0, G - 120 * s, gx1 - gx0, 120 * s);
+    for (const px of [gx0 - 30 * s, gx1]) { fillRR(ctx, px, G - 220 * s, 30 * s, 220 * s, 2 * s, '#e6bd88'); fillRR(ctx, px - 6 * s, G - 232 * s, 42 * s, 16 * s, 2 * s, '#f6dcb0'); }
+    ctx.strokeStyle = '#2a1a0c'; ctx.lineWidth = 3 * s;   // open gate, swung back
+    ctx.beginPath(); for (let k = 0; k < 6; k++) { const xx = gx1 - 4 * s - k * 9 * s; ctx.moveTo(xx, G - 4 * s); ctx.lineTo(xx, G - 160 * s); } ctx.moveTo(gx1 - 52 * s, G - 150 * s); ctx.lineTo(gx1 - 4 * s, G - 150 * s); ctx.stroke();
+  });
+}
+
+function hsNeighbour(ctx, cam) {
+  camera(ctx, cam, HS.dNb, () => {
+    const s = HS.dNb, G = gy(s), x0 = lx(HS.nb0, s), x1 = lx(HS.nb1, s);
+    ctx.fillStyle = '#f2c992'; ctx.fillRect(x0, -4000, x1 - x0, 3200 + 2);
+    hsSprite(ctx, 'hs-nb', x0 - 4, -800, x1 - x0 + 8, G + 806, 1, (ctx) => {
+    ctx.fillStyle = linGrad(ctx, 0, G - 1600 * s, 0, G, [[0, '#f2c992'], [1, '#d09a62']]); ctx.fillRect(x0, G - 3000 * s, x1 - x0, 3000 * s);
+    ctx.fillStyle = 'rgba(255,246,220,0.75)'; ctx.fillRect(x0, G - 3000 * s, 4 * s, 3000 * s);
+    ctx.fillStyle = '#b8845a'; ctx.fillRect(x0, G - 60 * s, x1 - x0, 60 * s);
+    for (let X = HS.nb0 + 140; X < HS.nb1 - 300; X += 380) { hsWindow(ctx, lx(X, s), G - 190 * s, 240 * s, 400 * s, s, X); hsWindow(ctx, lx(X, s), G - 1060 * s, 240 * s, 460 * s, s, X + 3, false); }
+    }, cam);
+  });
+}
+
+function hsPoles(ctx, cam, t) {
+  camera(ctx, cam, HS.dPole, () => {
+    const s = HS.dPole, G = gy(s), v = view(cam, s);
+    const [pa, pb] = HS.poles.map((X) => lx(X, s));
+    const ya = G - 690 * s, ya2 = G - 650 * s, sag = 92 * s;
+    // wires: left off into the terrace, the span with the birds, right onto the corner of the block
+    const wire = (x0, y0, x1, y1, sg, w, a) => {
+      ctx.strokeStyle = rgba('#2e1a0a', a); ctx.lineWidth = w; ctx.beginPath(); ctx.moveTo(x0, y0); ctx.quadraticCurveTo((x0 + x1) / 2, (y0 + y1) / 2 + sg * 2, x1, y1); ctx.stroke();
+      ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.strokeStyle = 'rgba(255,214,140,0.28)'; ctx.lineWidth = w * 0.5; ctx.beginPath(); ctx.moveTo(x0, y0 - w * 0.5); ctx.quadraticCurveTo((x0 + x1) / 2, (y0 + y1) / 2 + sg * 2 - w * 0.5, x1, y1 - w * 0.5); ctx.stroke(); ctx.restore();
+    };
+    const xT = lx(-500, s), xB = lx(HS.block0 + 20, s);
+    for (const [dy, w] of [[0, 2.6], [40 * s, 2]]) {
+      wire(xT, G - 980 * s + dy, pa, ya + dy, 50 * s, w, 0.9);
+      wire(pa, ya + dy, pb, ya + dy, sag, w, 0.9);
+      wire(pb, ya + dy, xB, G - 760 * s + dy, 30 * s, w, 0.9);
+    }
+    for (const x of [pa, pb]) {
+      ctx.fillStyle = linGrad(ctx, x - 12 * s, 0, x + 12 * s, 0, [[0, '#3a2210'], [0.65, '#5a3a1c'], [0.85, '#b07a42'], [1, '#ffd08a']]);
+      ctx.fillRect(x - 11 * s, G - 780 * s, 22 * s, 780 * s);
+      fillRR(ctx, x - 70 * s, G - 712 * s, 140 * s, 14 * s, 2 * s, '#3a2210');
+      for (const ix of [-56, -20, 20, 56]) fillRR(ctx, x + ix * s - 4 * s, G - 726 * s, 8 * s, 16 * s, 3 * s, '#5a4430');
+    }
+    // birds
+    for (let i = 0; i < HS.birds.length; i++) {
+      const [u0, f] = HS.birds[i];
+      const hop = Math.floor(t / 4.3 + hash(i * 3) * 4), hk = clamp((t / 4.3 + hash(i * 3) * 4 - hop) * 4.3 / 0.3);
+      const du = (hash(i * 7 + hop) - 0.5) * 0.02 * (i % 3 === 1 ? 1 : 0);
+      const u = u0 + du, x = lerp(pa, pb, u), y = (1 - u) * (1 - u) * ya + 2 * u * (1 - u) * (ya + sag * 2) + u * u * ya;
+      const lift = i % 3 === 1 ? Math.sin(hk * Math.PI) * 8 * s : 0;
+      const bob = Math.max(0, noise1(t * 1.3, i + 50) - 0.6) * 10 * s;
+      ctx.save(); ctx.translate(x, y - lift); ctx.scale(f * s, s);
+      ctx.fillStyle = '#2a1708';
+      ctx.beginPath(); ctx.ellipse(0, -9, 10, 7, -0.15, 0, TAU); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(-6, -7); ctx.lineTo(-19, -2 + noise1(t * 2, i) * 3); ctx.lineTo(-16, 0); ctx.lineTo(-4, -4); ctx.fill();
+      ctx.beginPath(); ctx.arc(7, -17 + bob, 5.4, 0, TAU); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(11.5, -18 + bob); ctx.lineTo(16, -16.5 + bob); ctx.lineTo(11.5, -15 + bob); ctx.fill();
+      ctx.strokeStyle = '#2a1708'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(-1, -3); ctx.lineTo(-1, 1); ctx.moveTo(3, -3); ctx.lineTo(3, 1); ctx.stroke();
+      ctx.globalCompositeOperation = 'lighter'; ctx.strokeStyle = 'rgba(255,214,140,0.6)'; ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.arc(0, -9, 10, -1.2, 0.3); ctx.stroke(); ctx.beginPath(); ctx.arc(7, -17 + bob, 5.4, -1.4, 0.5); ctx.stroke();
+      ctx.restore();
+    }
+  });
+}
+
+function hsRailings(ctx, cam) {
+  camera(ctx, cam, HS.dRail, () => { const s = HS.dRail, G = gy(s), x0 = lx(HS.ter1, s), x1 = lx(HS.cross0, s); hsSprite(ctx, 'hs-rail', x0 - 40, G - 260, x1 - x0 + 80, 264, 1, (ctx) => {
+    ctx.fillStyle = linGrad(ctx, 0, G - 70 * s, 0, G, [[0, '#d9ad78'], [1, '#a66e40']]); ctx.fillRect(x0, G - 66 * s, x1 - x0, 66 * s);
+    ctx.fillStyle = '#f6dcae'; ctx.fillRect(x0, G - 72 * s, x1 - x0, 10 * s);
+    ctx.fillStyle = '#24160a';
+    for (let x = x0 + 10 * s; x < x1 - 4 * s; x += 24 * s) { ctx.fillRect(x - 2.2 * s, G - 200 * s, 4.4 * s, 130 * s); ctx.beginPath(); ctx.moveTo(x - 5 * s, G - 198 * s); ctx.lineTo(x, G - 212 * s); ctx.lineTo(x + 5 * s, G - 198 * s); ctx.fill(); }
+    ctx.fillRect(x0, G - 186 * s, x1 - x0, 5 * s); ctx.fillRect(x0, G - 96 * s, x1 - x0, 5 * s);
+    ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = 'rgba(255,206,130,0.35)';
+    for (let x = x0 + 10 * s; x < x1 - 4 * s; x += 24 * s) ctx.fillRect(x + 1.2 * s, G - 198 * s, 1.2 * s, 126 * s);
+    ctx.restore();
+    for (const x of [x0, x1]) { fillRR(ctx, x - 22 * s, G - 230 * s, 44 * s, 230 * s, 2 * s, '#e2b680'); fillRR(ctx, x - 28 * s, G - 244 * s, 56 * s, 18 * s, 2 * s, '#f6dcae'); }
+  }, cam); });
+  // the railing returns along the side street (corners at two depths)
+  const X = HS.cross0, n = 9;
+  for (let k = 0; k < n; k++) {
+    const d = lerp(HS.dRail, 0.66, k / (n - 1));
+    const a = gp(cam, X, d), b = gp(cam, X, d, 200);
+    ctx.strokeStyle = '#24160a'; ctx.lineWidth = Math.max(1, 4.4 * d * (1 + (cam.zoom - 1) * d)); ctx.beginPath(); ctx.moveTo(a[0], a[1] - 70 * d); ctx.lineTo(b[0], b[1]); ctx.stroke();
+  }
+  ctx.fillStyle = '#d9ad78'; poly(ctx, [gp(cam, X, HS.dRail), gp(cam, X, HS.dRail, 66), gp(cam, X, 0.66, 66), gp(cam, X, 0.66)]); ctx.fill();
+  ctx.strokeStyle = '#24160a'; ctx.lineWidth = 3; ctx.beginPath(); const p0 = gp(cam, X, HS.dRail, 186), p1 = gp(cam, X, 0.66, 186); ctx.moveTo(p0[0], p0[1]); ctx.lineTo(p1[0], p1[1]); ctx.stroke();
+}
+
+function hsTree(ctx, cam, X, d, idx, t, crownH = 560) {
+  camera(ctx, cam, d, () => {
+    const s = d, G = gy(d), x = lx(X, d);
+    ctx.fillStyle = 'rgba(70,34,10,0.3)'; ctx.beginPath(); ctx.ellipse(x, G + 2, 60 * s, 6 * s, 0, 0, TAU); ctx.fill();
+    ctx.fillStyle = linGrad(ctx, x - 22 * s, 0, x + 22 * s, 0, [[0, '#2e1c0c'], [0.6, '#4a2e16'], [0.85, '#a8743e'], [1, '#ffd08a']]);
+    ctx.beginPath(); ctx.moveTo(x - 24 * s, G); ctx.quadraticCurveTo(x - 14 * s, G - 260 * s, x - 18 * s, G - crownH * s); ctx.lineTo(x + 14 * s, G - crownH * s); ctx.quadraticCurveTo(x + 12 * s, G - 260 * s, x + 26 * s, G); ctx.fill();
+    ctx.strokeStyle = '#3a2410'; ctx.lineWidth = 12 * s; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x - 4 * s, G - (crownH - 20) * s); ctx.quadraticCurveTo(x - 50 * s, G - (crownH + 80) * s, x - 170 * s, G - (crownH + 170) * s);
+    ctx.moveTo(x + 2 * s, G - (crownH - 20) * s); ctx.quadraticCurveTo(x + 60 * s, G - (crownH + 100) * s, x + 190 * s, G - (crownH + 200) * s); ctx.stroke();
+    const sway = wobble(t, 0.25, idx) * 4 * s, cv = hsCrown(idx % 2, s), cw = cv.width, ch = cv.height;
+    ctx.save(); ctx.translate(x + sway, G - crownH * s);
+    ctx.drawImage(cv, -cw / 2, -ch + 120 * s);
+    hsTwinkle(ctx, -cw / 2, -ch + 120 * s, cw, ch, t, idx + 3, 0.9);
+    ctx.restore();
+  });
+}
+
+function hsBeacon(ctx, cam, X, t, i) {
+  camera(ctx, cam, HS.dBeacon, () => {
+    const s = HS.dBeacon, G = gy(s), x = lx(X, s), top = G - 600 * s;
+    for (let k = 0; k < 9; k++) { ctx.fillStyle = k % 2 ? '#f4e6cc' : '#1e1208'; ctx.fillRect(x - 7 * s, G - (k + 1) * 60 * s, 14 * s, 60 * s + 1); }
+    ctx.fillStyle = '#1e1208'; ctx.fillRect(x - 7 * s, top, 14 * s, G - 540 * s - top);
+    ctx.fillStyle = 'rgba(255,220,160,0.5)'; ctx.fillRect(x + 4 * s, top, 3 * s, 600 * s);
+    const k = 0.35 + 0.65 * clamp(Math.sin((t * 1.1 + i * 0.5) * TAU) * 3 + 0.5);
+    ctx.fillStyle = mixHex('#c87a2e', '#ffc070', k); ctx.beginPath(); ctx.arc(x, top - 22 * s, 26 * s, 0, TAU); ctx.fill();
+    ctx.fillStyle = 'rgba(255,246,220,0.7)'; ctx.beginPath(); ctx.arc(x + 8 * s, top - 30 * s, 7 * s, 0, TAU); ctx.fill();
+    glow(ctx, x, top - 22 * s, 70 * s, '#ffb050', 0.35 * k);
+  });
+}
+
+function hsBack(ctx, F, o) {
+  const cam = camOf(o), t = o.t ?? F.t, part = o.part || 'all';
+  const traffic = clamp(o.traffic ?? 1), busX = o.busX ?? null, busDir = o.busDir ?? -1;
+  if (part !== 'near') {
+    if (o._lo) ctx.drawImage(hsSky(), -100, -60, PW + 200, PH + 120); else ctx.drawImage(hsSky(), 0, 0);
+    // the sun (behind everything solid), then the far town in gold haze
+    camera(ctx, cam, HS.sun.d, () => {
+      glow(ctx, HS.sun.x, HS.sun.y, 150, '#fff3d0', 0.95);
+      ctx.fillStyle = '#fffaf0'; ctx.beginPath(); ctx.arc(HS.sun.x, HS.sun.y, 30, 0, TAU); ctx.fill();
+    });
+    camera(ctx, cam, HS.dFar, () => {
+      const far = cityStrip('hs-far', 3800, 300, { seed: 51, minW: 40, maxW: 130, minH: 30, maxH: 210, pow: 2, color: '#e9b77c', color2: '#e0aa72', haze: '#fff0cf', hazeK: 0.85, gapP: 0.3, gap: 60,
+        win: { w: 3, h: 4, gx: 10, gy: 12, lit: 0, dark: 0.3, darkColor: '#c48a55', darkAlpha: 0.18 } });
+      ctx.drawImage(far, -1300, gy(HS.dFar) - 296);
+    });
+    camera(ctx, cam, HS.dRow, () => {
+      const row = cityStrip('hs-row', 5600, 420, { seed: 63, minW: 150, maxW: 320, minH: 120, maxH: 360, pow: 1.3, color: '#dca368', color2: '#d29660', haze: '#ffe6b6', hazeK: 0.6, gapP: 0.45, gap: 120, gables: 1,
+        win: { w: 10, h: 15, gx: 24, gy: 34, lit: 0.02, color: '#fff2d0', alpha: 0.7, dark: 0.5, darkColor: '#8a5a30', darkAlpha: 0.22 } });
+      ctx.drawImage(row, -2000, gy(HS.dRow) - 414);
+      // trees along the far road
+      for (let i = -6; i < 14; i++) {
+        const x = i * 330 + hash(i + 70) * 120, G = gy(HS.dRow) + 6;
+        ctx.fillStyle = 'rgba(180,120,60,0.7)'; ctx.fillRect(x - 3, G - 70, 6, 70);
+        ctx.fillStyle = 'rgba(196,140,70,0.75)'; ctx.beginPath(); ctx.ellipse(x, G - 100, 46 + hash(i) * 20, 50, 0, 0, TAU); ctx.fill();
+        ctx.fillStyle = 'rgba(255,224,150,0.5)'; ctx.beginPath(); ctx.ellipse(x + 14, G - 112, 26, 30, 0, 0, TAU); ctx.fill();
+      }
+    });
+    // the sun bleeds over the rooftops
+    { const [sx, sy] = proj(cam, HS.sun.x, HS.sun.y, HS.sun.d); glow(ctx, sx, sy, 460, '#ffcf80', 0.42); }
+    // ground: far pavement, cross road, verge, our pavement, near road
+    hsBand(ctx, cam, HS.dRow, 0.45, [[0, '#f6d2a0'], [1, '#e8b47c']]);
+    hsBand(ctx, cam, 0.45, 0.47, [[0, '#fbe2b8'], [1, '#c8925e']]);
+    hsBand(ctx, cam, 0.47, 0.62, [[0, '#c69a6c'], [0.5, '#a8805a'], [1, '#93704e']]);
+    hsBand(ctx, cam, 0.62, 0.64, [[0, '#f0cc98'], [1, '#c09060']]);
+    hsBand(ctx, cam, 0.64, HS.dRail, [[0, '#c8a752'], [0.5, '#b0923e'], [1, '#8a7430']]);
+    // side street (runs away from camera between the park and the block)
+    {
+      const X0 = HS.cross0, X1 = HS.cross1;
+      ctx.fillStyle = linGrad(ctx, 0, yD(cam, 0.62), 0, yD(cam, 1.6), [[0, '#c69a6c'], [0.4, '#a27a54'], [1, '#7a5638']]);
+      poly(ctx, [gp(cam, X0, 0.62), gp(cam, X1, 0.62), gp(cam, X1, 3), gp(cam, X0, 3)]); ctx.fill();
+      ctx.save(); ctx.globalCompositeOperation = 'lighter';   // sheen of low sun down the street
+      ctx.fillStyle = linGrad(ctx, 0, yD(cam, 0.62), 0, yD(cam, 1.1), [[0, 'rgba(255,214,150,0.45)'], [1, 'rgba(255,214,150,0)']]);
+      poly(ctx, [gp(cam, X0 + 80, 0.62), gp(cam, X1 - 40, 0.62), gp(cam, X1 - 80, 1.1), gp(cam, X0 + 160, 1.1)]); ctx.fill();
+      ctx.restore();
+      ctx.fillStyle = 'rgba(255,240,206,0.5)';
+      for (let k = 0; k < 7; k++) { const da = lerp(0.64, 0.92, k / 7), db = da + 0.02; poly(ctx, [gp(cam, (X0 + X1) / 2 - 5, da), gp(cam, (X0 + X1) / 2 + 5, da), gp(cam, (X0 + X1) / 2 + 5, db), gp(cam, (X0 + X1) / 2 - 5, db)]); ctx.fill(); }
+    }
+    // traffic on the cross road, the bus, parked cars
+    const vehicles = [];
+    if (traffic > 0) for (const [X0, dir, vel, kind, pi, d] of [[600, -1, 520, 'sedan', 0, 0.5], [5200, -1, 480, 'hatch', 2, 0.5], [-2600, 1, 560, 'van', 1, 0.535], [1900, 1, 500, 'suv', 3, 0.535]]) vehicles.push({ X: mod(X0 + dir * vel * t + 2500, 9000) - 2500, dir, kind, pi, d, a: traffic });
+    const gold = ['#cdb38a', '#8f8a6a', '#a98266', '#6f7a72', '#d8c4a0'];
+    const palG = (i) => ({ body: gold[mod(i, gold.length)], dark: '#3a2412', light: '#fff0c8', glass: '#ffe0a8', glassA: 0.35, tyre: '#1e140a', cap: '#c9b08a', trim: '#4a3018', rim: '#ffd890', rimA: 0.5, inside: '#3a2412', tail: '#7a5a40', lens: '#fff0d0' });
+    for (const vh of vehicles) {
+      camera(ctx, cam, vh.d, () => {
+        const P = CAR[vh.kind], x = lx(vh.X, vh.d), G = gy(vh.d), v = view(cam, vh.d);
+        if (x < v.x0 - 700 || x > v.x1 + 700) return;
+        ctx.save(); ctx.globalAlpha = vh.a;
+        ctx.fillStyle = 'rgba(70,34,10,0.3)'; ctx.beginPath(); ctx.ellipse(x - 120 * vh.d, G + 2, P.L * vh.d * 0.6, 6, 0, 0, TAU); ctx.fill();
+        ctx.translate(x - vh.dir * P.L * vh.d / 2, G); ctx.scale(vh.dir * vh.d, vh.d); drawCar(ctx, P, palG(vh.pi), { detail: 1 }); ctx.restore();
+      });
+    }
+    if (busX !== null && busX !== undefined) camera(ctx, cam, HS.dRoad, () => hsBus(ctx, lx(busX, HS.dRoad), gy(HS.dRoad), HS.dRoad, busDir < 0 ? -1 : 1));
+    camera(ctx, cam, HS.dParked, () => { const s = HS.dParked, G = gy(s); hsSprite(ctx, 'hs-parked', lx(-200, s), G - 230, lx(2200, s) - lx(-200, s), 240, 1, (ctx) => {
+      for (const [X, kind, pi] of [[420, 'hatch', 4], [1180, 'sedan', 2], [1560, 'hatch', 0]]) {
+        const P = CAR[kind], x = lx(X, s);
+        ctx.fillStyle = 'rgba(70,34,10,0.35)'; ctx.beginPath(); ctx.ellipse(x - 80 * s, G + 2, P.L * s * 0.62, 6, 0, 0, TAU); ctx.fill();
+        ctx.save(); ctx.translate(x + P.L * s / 2, G); ctx.scale(-s, s); drawCar(ctx, P, palG(pi), { detail: 1 }); ctx.restore();
+      }
+    }, cam); });
+  }
+  if (part === 'far') return;
+
+  // park trees and the light coming through them
+  for (const [X, i] of HS.parkTrees) hsTree(ctx, cam, X, HS.dPark, i, t, 470);
+  camera(ctx, cam, 0.75, () => {
+    for (let i = 0; i < 3; i++) { const x = lx(760 + i * 380 + hash(i + 4) * 90, 0.75); lightCone(ctx, x + 420, -220, 2.05 + hash(i) * 0.08, 0.1 + hash(i + 9) * 0.08, 1100, '#ffd890', 0.05 + 0.03 * noise1(t * 0.2, i)); }
+  });
+  // return walls (seen in perspective), then the facades
+  { const X = HS.ter1, a = gp(cam, X, HS.dTer), b = gp(cam, X, HS.dTer, 3000), c = gp(cam, X, 0.72, 3000), d = gp(cam, X, 0.72);
+    ctx.fillStyle = linGrad(ctx, a[0], 0, d[0], 0, [[0, '#ffdcaa'], [1, '#f6c690']]); poly(ctx, [a, b, c, d]); ctx.fill(); }
+  { const X = HS.block0, a = gp(cam, X, HS.dBlock), b = gp(cam, X, HS.dBlock, 3000), c = gp(cam, X, 0.62, 3000), d = gp(cam, X, 0.62);
+    ctx.fillStyle = linGrad(ctx, a[0], 0, d[0], 0, [[0, '#b97c48'], [1, '#d29a62']]); poly(ctx, [a, b, c, d]); ctx.fill();
+    for (let k = 1; k < 4; k++) { const dd = lerp(HS.dBlock, 0.62, k / 4); const p = gp(cam, X, dd, 190), q = gp(cam, X, dd, 590), w = 60 * dd * (1 + (cam.zoom - 1) * dd); if (Math.abs(a[0] - d[0]) > 40) { ctx.fillStyle = 'rgba(70,36,14,0.45)'; ctx.fillRect(Math.min(p[0], p[0] + Math.sign(d[0] - a[0]) * w), q[1], w, p[1] - q[1]); } } }
+  { const X = HS.nb0, a = gp(cam, X, HS.dNb), b = gp(cam, X, HS.dNb, 3000), c = gp(cam, X, 0.7, 3000), d = gp(cam, X, 0.7);
+    ctx.fillStyle = '#b07a48'; poly(ctx, [a, b, c, d]); ctx.fill(); }
+  hsGap(ctx, cam, t);
+  camera(ctx, cam, HS.dTer, () => hsTerrace(ctx, cam));
+  hsNeighbour(ctx, cam);
+  camera(ctx, cam, HS.dBlock, () => hsBlock(ctx, cam, t));
+  // forecourt strips between the facades and our pavement
+  for (const [X0, X1, d, col] of [[HS.ter0 - 400, HS.ter1, HS.dTer, '#d9aa74'], [HS.block0, HS.block1, HS.dBlock, '#e0b07a'], [HS.block1, HS.nb0, 0.92, '#d4a46e'], [HS.nb0, HS.nb1 + 400, HS.dNb, '#d9aa74']]) {
+    ctx.fillStyle = col; poly(ctx, [gp(cam, X0, d), gp(cam, X1, d), gp(cam, X1, HS.dRail + 0.002), gp(cam, X0, HS.dRail + 0.002)]); ctx.fill();
+  }
+  hsPoles(ctx, cam, t);
+  hsRailings(ctx, cam);
+  // our pavement and the near road
+  {
+    const yP = yD(cam, HS.dRail), yK = yD(cam, HS.dKerb);
+    const cx0 = gp(cam, HS.cross0, 1)[0], cx1 = gp(cam, HS.cross1, 1)[0];
+    ctx.save();
+    ctx.beginPath(); ctx.rect(-200, yP - 1, PW + 400, PH + 400);
+    poly(ctx, [gp(cam, HS.cross0, HS.dRail - 0.01), gp(cam, HS.cross1, HS.dRail - 0.01), gp(cam, HS.cross1, 3), gp(cam, HS.cross0, 3)]);
+    ctx.clip('evenodd');
+    ctx.fillStyle = linGrad(ctx, 0, yP, 0, yK, [[0, '#e8bc84'], [0.5, '#d8a870'], [1, '#c39260']]); ctx.fillRect(-200, yP - 1, PW + 400, yK - yP + 2);
+    ctx.fillStyle = '#f2d6a8'; ctx.fillRect(-200, yK - 2, PW + 400, 5);
+    ctx.fillStyle = linGrad(ctx, 0, yK + 3, 0, PH, [[0, '#8c6444'], [1, '#6a4a30']]); ctx.fillRect(-200, yK + 3, PW + 400, PH - yK + 400);
+    // flag joints
+    ctx.strokeStyle = 'rgba(110,62,26,0.28)'; ctx.lineWidth = 1.4; ctx.beginPath();
+    const v1 = view(cam, 1);
+    for (let X = Math.floor((v1.x0 - 500) / 190) * 190; X < v1.x1 + 500; X += 190) { const a = gp(cam, X, HS.dRail), b = gp(cam, X, HS.dKerb); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); }
+    for (const d of [1.0, 1.065, 1.14]) { const yy = yD(cam, d); ctx.moveTo(-200, yy); ctx.lineTo(PW + 200, yy); }
+    ctx.stroke();
+    ctx.restore();
+    // kerbs of the side street
+    for (const X of [HS.cross0, HS.cross1]) { ctx.strokeStyle = '#f2d6a8'; ctx.lineWidth = 4; const a = gp(cam, X, 0.62), b = gp(cam, X, 2.5); ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); }
+    // zebra crossing on our walking line
+    ctx.fillStyle = 'rgba(255,244,222,0.9)';
+    for (let X = HS.cross0 + 34; X + 36 <= HS.cross1 - 20; X += 66) { poly(ctx, [gp(cam, X, 0.97), gp(cam, X + 36, 0.97), gp(cam, X + 36, 1.2), gp(cam, X, 1.2)]); ctx.fill(); }
+    ctx.fillStyle = 'rgba(255,244,222,0.6)';   // give-way dashes
+    for (let k = 0; k < 8; k++) { const X = HS.cross0 + 30 + k * 66; poly(ctx, [gp(cam, X, 0.93), gp(cam, X + 34, 0.93), gp(cam, X + 34, 0.945), gp(cam, X, 0.945)]); ctx.fill(); }
+    void cx0; void cx1;
+  }
+  // street trees, beacons, and their long shadows
+  for (const [X, i] of HS.streetTrees) { hsCast(ctx, cam, X, HS.dTree, 560, 46, 0.32); hsDapple(ctx, cam, X - 300, HS.dTree, 380, i, 0.2); }
+  for (const X of HS.poles) hsCast(ctx, cam, X, HS.dPole, 780, 22, 0.24);
+  hsCast(ctx, cam, HS.cross0 - 12, HS.dBeacon, 600, 14, 0.22); hsCast(ctx, cam, HS.cross1 + 12, HS.dBeacon, 600, 14, 0.22);
+  { // railing shadow: a long comb of thin stripes thrown onto the pavement
+    const L = 0.00032 * 200;
+    ctx.fillStyle = 'rgba(90,44,16,0.16)';
+    for (let X = HS.ter1 + 10; X < HS.cross0; X += 24) poly(ctx, [gp(cam, X, HS.dRail), gp(cam, X + 6, HS.dRail), gp(cam, X - 300 + 6, HS.dRail + L), gp(cam, X - 300, HS.dRail + L)]), ctx.fill();
+  }
+  for (const [X, i] of HS.streetTrees) hsTree(ctx, cam, X, HS.dTree, i + 2, t, 600);
+  hsBeacon(ctx, cam, HS.cross0 - 12, t, 0); hsBeacon(ctx, cam, HS.cross1 + 12, t, 1);
+  // light down the side street and warm air over the far road
+  {
+    const g = gp(cam, (HS.cross0 + HS.cross1) / 2, 0.55, 260), z = 1 + (cam.zoom - 1) * 0.55;
+    glow(ctx, g[0], g[1], 420 * z, '#ffe0a0', 0.34, 0.7);
+    for (let i = 0; i < 2; i++) lightCone(ctx, g[0] + (260 + i * 120) * z, g[1] - 600 * z, 1.95 + i * 0.06, 0.16, 1300 * z, '#ffd890', 0.06);
+  }
+}
+
+/** Bokeh discs of sun through leaves, for the blurred background. */
+function hsBokeh(ctx, cam, t, k) {
+  ctx.save(); ctx.globalCompositeOperation = 'lighter';
+  const crowns = [...HS.parkTrees.map(([X, i]) => [X, HS.dPark, 470, i]), ...HS.streetTrees.map(([X, i]) => [X, HS.dTree, 600, i + 2])];
+  for (const [X, d, h, i] of crowns) {
+    for (let j = 0; j < 12; j++) {
+      const [px, py] = gp(cam, X + (hash(i * 40 + j) - 0.2) * 420, d, h + 80 + hash(i * 9 + j) * 380);
+      if (px < -80 || px > PW + 80 || py < -80 || py > PH + 80) continue;
+      const r = 16 + hash(j + i * 3) * 30, a = (0.1 + 0.16 * hash(j * 5 + i)) * k * (0.75 + 0.25 * noise1(t * 0.5, i * 20 + j));
+      ctx.fillStyle = radGrad(ctx, px, py, 0, r, [[0, rgba('#ffe6b0', a * 0.7)], [0.82, rgba('#ffe6b0', a)], [1, rgba('#ffe6b0', 0)]]);
+      ctx.beginPath(); ctx.arc(px, py, r, 0, TAU); ctx.fill();
+    }
+  }
+  ctx.restore();
+}
+
+/** Screen position and visibility (0..1, 0 = hidden behind a building) of the sun. */
+function hsSunVis(cam) {
+  const [sx, sy] = proj(cam, HS.sun.x, HS.sun.y, HS.sun.d);
+  let occ = 0;
+  for (const [X0, X1, d] of [[HS.ter0 - 2000, HS.ter1, HS.dTer], [HS.block0, HS.block1, HS.dBlock], [HS.nb0, HS.nb1 + 3000, HS.dNb]]) {
+    const a = gp(cam, X0, d)[0], b = gp(cam, X1, d)[0];
+    occ = Math.max(occ, clamp(Math.min(sx - a, b - sx) / 50 + 0.5));
+  }
+  return { sx, sy, vis: 1 - occ };
+}
+function hsFlare(ctx, cam, amount) {
+  const { sx, sy, vis } = hsSunVis(cam), k = amount * vis;
+  if (k <= 0.01) return;
+  glow(ctx, sx, sy, 220, '#fff1d0', 0.55 * k);
+  glow(ctx, sx, sy, 80, '#ffffff', 0.7 * k);
+  ctx.save(); ctx.globalCompositeOperation = 'lighter';
+  ctx.fillStyle = linGrad(ctx, sx - 1100, 0, sx + 1100, 0, [[0, 'rgba(255,200,130,0)'], [0.5, `rgba(255,226,170,${0.2 * k})`], [1, 'rgba(255,200,130,0)']]);
+  ctx.fillRect(sx - 1100, sy - 5, 2200, 10);
+  ctx.fillStyle = linGrad(ctx, sx - 500, 0, sx + 500, 0, [[0, 'rgba(255,240,210,0)'], [0.5, `rgba(255,250,236,${0.3 * k})`], [1, 'rgba(255,240,210,0)']]);
+  ctx.fillRect(sx - 500, sy - 1, 1000, 2);
+  // ghosts along the line through the picture centre (warm only)
+  for (const [f, r, col, a] of [[0.35, 26, '#ffd890', 0.12], [0.62, 60, '#ffb878', 0.06], [1.22, 110, '#ffe0a8', 0.05], [1.5, 34, '#ffc890', 0.1], [1.85, 180, '#ffd8a0', 0.035]]) {
+    const gx = sx + (CX - sx) * f, gy2 = sy + (CY - sy) * f;
+    ctx.fillStyle = radGrad(ctx, gx, gy2, r * 0.6, r, [[0, rgba(col, a * k * 0.5)], [0.85, rgba(col, a * k)], [1, rgba(col, 0)]]);
+    ctx.beginPath(); ctx.arc(gx, gy2, r, 0, TAU); ctx.fill();
+  }
+  ctx.restore();
+}
+function hsLeaves(i) {
+  return cached('hs-fg-leaves-' + i, 1000, 520, (c) => {
+    const r = rng(300 + i);
+    c.filter = 'blur(9px)';
+    c.strokeStyle = '#2a1808'; c.lineWidth = 16; c.lineCap = 'round';
+    c.beginPath(); c.moveTo(i ? 1000 : 0, 30); c.quadraticCurveTo(500, 60, i ? 120 : 880, 210); c.stroke();
+    for (let k = 0; k < 70; k++) {
+      const u = r(), x = i ? lerp(1000, 120, u) : lerp(0, 880, u), y = 30 + u * 180 + (r() - 0.3) * 200;
+      c.fillStyle = r() < 0.7 ? '#3a2610' : '#8a6420';
+      c.beginPath(); c.ellipse(x, y, 30 + r() * 26, 14 + r() * 10, r() * 3, 0, TAU); c.fill();
+    }
+    c.globalCompositeOperation = 'lighter';
+    for (let k = 0; k < 26; k++) { c.fillStyle = 'rgba(255,214,120,0.35)'; c.beginPath(); c.ellipse(r() * 1000, 40 + r() * 300, 20 + r() * 16, 10, r() * 3, 0, TAU); c.fill(); }
+  });
+}
+
+export const homeStreet = {
+  W: 3600,
+  floorY: FY,
+  anchors: {
+    line: { x0: -1100, x1: 4600, y: 700 },
+    walkFrom: { x: 1620, y: 700 },
+    stop: { x: 1150, y: 700 },
+    crossing: { x: 1980, y: 700 },
+    crossL: { x: 1700, y: 700 },
+    crossR: { x: 2260, y: 700 },
+    meet: { x: 2600, y: 700 },
+    doorStep: { x: 3130, y: 700 },
+    maya: { x: 3330, y: 700 },
+    wife: { x: lx(3130, HS.dBlock), y: gy(HS.dBlock) - 2 * HS.stepH * HS.dBlock, depth: HS.dBlock, scale: HS.dBlock },
+    ped1: { x: 260, y: 700 },
+    ped2: { x: 1480, y: 700 },
+    ped3: { x: 2850, y: 700 },
+    ped4: { x: 3700, y: 700 },
+    farPedL: { x: lx(1000, 0.42), y: gy(0.42), depth: 0.42, scale: 0.42 },
+    farPedR: { x: lx(2050, 0.42), y: gy(0.42), depth: 0.42, scale: 0.42 },
+    sun: { x: HS.sun.x, y: HS.sun.y, depth: HS.sun.d },
+  },
+  lights: { golden: { key: '#ffd08a', from: 1, amount: 0.85 } },
+
+  /** Long golden shadow of a figure standing at world x on the floor line, raking toward camera-left. Call after back(), before the figure. */
+  castShadow(ctx, o = {}, x, h = 430, k = 1) {
+    const cam = camOf(o);
+    hsCast(ctx, cam, x, 1, h, h * 0.15, 0.34 * k);
+    hsCast(ctx, cam, x, 1, h * 0.7, h * 0.24, 0.12 * k);
+  },
+  /** Screen position of the sun for this camera and whether it is visible: {x, y, vis}. */
+  sunAt(o = {}) { const s = hsSunVis(camOf(o)); return { x: s.sx, y: s.sy, vis: s.vis }; },
+
+  back(ctx, F, o = {}) {
+    const blur = clamp(o.blur ?? 0), cam = camOf(o), t = o.t ?? F.t;
+    if (blur < 1) hsBack(ctx, F, o);
+    if (blur > 0 && o.part !== 'near') {
+      const q = 0.25, m = 16, w = Math.ceil(PW * q) + 2 * m, h = Math.ceil(PH * q) + 2 * m;
+      const A = scratch('hs-blur-a', w, h);
+      A.ctx.translate(m, m); A.ctx.scale(q, q);
+      hsBack(A.ctx, F, { ...o, part: 'all', _lo: 1 });
+      const B = scratch('hs-blur-b', w, h);
+      B.ctx.filter = 'blur(4px)'; B.ctx.drawImage(A.cv, 0, 0); B.ctx.filter = 'none';
+      ctx.save(); ctx.globalAlpha = blur; ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(B.cv, m, m, w - 2 * m, h - 2 * m, 0, 0, PW, PH);
+      ctx.restore();
+      hsBokeh(ctx, cam, t, blur);
+    }
+  },
+
+  mid() {},
+
+  front(ctx, F, o = {}) {
+    const cam = camOf(o), t = o.t ?? F.t, flare = clamp(o.flare ?? 1), leaves = clamp(o.fgLeaves ?? 1), blur = clamp(o.blur ?? 0);
+    // golden air: a band of warm haze about the horizon, breathing slowly
+    { const y0 = yD(cam, 0.35) - 260, y1 = yD(cam, 1.05), k = 0.11 + 0.02 * wobble(t, 0.1, 4);
+      ctx.save(); ctx.globalCompositeOperation = 'lighter';
+      ctx.fillStyle = linGrad(ctx, 0, y0, 0, y1, [[0, 'rgba(255,216,144,0)'], [0.45, rgba('#ffd890', k)], [1, 'rgba(255,216,144,0)']]);
+      ctx.fillRect(0, Math.max(0, y0), PW, Math.min(PH, y1) - Math.max(0, y0)); ctx.restore(); }
+    // pollen / dust drifting in the light
+    camera(ctx, cam, 1.12, () => {
+      const v = view(cam, 1.12), W2 = v.x1 - v.x0, H2 = v.y1 - v.y0;
+      ctx.save(); ctx.globalCompositeOperation = 'lighter';
+      for (let i = 0; i < 46; i++) {
+        const x = v.x0 + mod(hash(i * 3) * 4000 + t * (6 + hash(i) * 10) + Math.sin(t * 0.4 + i) * 14, W2);
+        const y = v.y0 + mod(hash(i * 5 + 1) * 2000 - t * (3 + hash(i + 7) * 5), H2);
+        const a = (0.25 + 0.6 * noise1(t * 0.7, i)) * (0.4 + 0.6 * hash(i + 11));
+        ctx.fillStyle = rgba('#fff2cf', a * 0.7); ctx.beginPath(); ctx.arc(x, y, (1.2 + hash(i + 2) * 1.8) / v.z * 1.6, 0, TAU); ctx.fill();
+      }
+      ctx.restore();
+    });
+    // out-of-focus leaves hanging into the top of frame
+    if (leaves > 0 && blur < 1) {
+      camera(ctx, cam, HS.dFg, () => {
+        const v = view(cam, HS.dFg);
+        ctx.save(); ctx.globalAlpha = leaves * (1 - blur);
+        for (const [X, i] of [[-520, 0], [1350, 1], [3000, 0], [4300, 1]]) {
+          const x = lx(X, HS.dFg); if (x < v.x0 - 1100 || x > v.x1 + 1100) continue;
+          ctx.save(); ctx.translate(x, -150); ctx.rotate(wobble(t, 0.3, i + X) * 0.015); ctx.drawImage(hsLeaves(i), -500, 0); ctx.restore();
+        }
+        ctx.restore();
+      });
+    }
+    // the sun: flare and a warm veil over everything near it
+    const { sx, sy, vis } = hsSunVis(cam);
+    glow(ctx, sx, sy + 60, 540, '#ffbf6a', 0.18 * (0.4 + 0.6 * vis) * (0.5 + 0.5 * flare));
+    hsFlare(ctx, cam, flare);
+    // ground warmth at the bottom of frame
+    ctx.fillStyle = linGrad(ctx, 0, PH * 0.82, 0, PH, [[0, 'rgba(90,40,12,0)'], [1, 'rgba(90,40,12,0.22)']]); ctx.fillRect(0, PH * 0.82, PW, PH * 0.18);
+  },
+};
+
+// ════════════════════════════════════════════════════════════════════════════════════════════
+// 4. CAR INTERIOR (the video in a7_07)
+// ════════════════════════════════════════════════════════════════════════════════════════════
+const CI = {
+  roofY: 330,
+  // driver-door window (behind him), rear-door window, windscreen (right of the A-pillar) — world px, driver at s = 1
+  win: [[716, 350], [800, 340], [920, 335], [1004, 334], [1112, 514], [716, 516]],
+  rear: [[560, 372], [610, 356], [690, 350], [690, 516], [586, 516]],
+  ws: [[1032, 330], [1640, 330], [1640, 530], [1142, 530]],
+  pillarA: [[998, 324], [1034, 324], [1148, 534], [1108, 534]],
+  lamp: { x: 1094, y: 404 },
+  wheel: { x: 1012, y: 500, rx: 9, ry: 54, rot: -0.33 },
+  mirror: { x: 1068, y: 354 },
+};
+function ciOutside() {
+  return cached('ci-out', 1200, 280, (c) => {
+    // a wet street at night, seen out of focus (canvas x 0 = world x 480, y 0 = world y 300)
+    c.fillStyle = linGrad(c, 0, 0, 0, 280, [[0, '#08101e'], [0.45, '#13213a'], [0.7, '#1b2a44'], [1, '#0b1322']]);
+    c.fillRect(0, 0, 1200, 280);
+    c.filter = 'blur(4px)';
+    const r = rng(17);
+    for (let x = -30; x < 1230;) {
+      const w = 50 + r() * 130, h = 70 + r() * 110; c.fillStyle = mixHex('#0b1424', '#16233c', r()); c.fillRect(x, 190 - h, w, h + 30);
+      for (let k = 0; k < 5; k++) if (r() < 0.45) { c.fillStyle = rgba(r() < 0.5 ? '#d8d2c0' : '#c8b088', 0.22 + r() * 0.25); c.fillRect(x + r() * (w - 12), 190 - h + 12 + r() * (h - 30), 6, 9); }
+      x += w + r() * 20;
+    }
+    c.fillStyle = '#0c1526'; c.fillRect(0, 190, 1200, 90);
+    for (const x of [90, 330, 560, 760, 1050]) { c.fillStyle = linGrad(c, 0, 190, 0, 280, [[0, 'rgba(255,166,77,0.45)'], [1, 'rgba(255,166,77,0)']]); c.fillRect(x - 9, 190, 18, 90); }
+    c.filter = 'blur(6px)';
+    // bokeh: sodium lamps down the street, a few cold white points; denser behind the driver's head
+    for (let i = 0; i < 34; i++) {
+      const x = i < 10 ? 330 + r() * 260 : r() * 1200, y = 60 + r() * 140, rad = 6 + r() * 16, sod = r() < 0.72;
+      c.fillStyle = rgba(sod ? '#ffa64d' : '#e6e8ee', 0.28 + r() * 0.38); c.beginPath(); c.arc(x, y, rad, 0, TAU); c.fill();
+    }
+    c.filter = 'blur(30px)';
+    c.fillStyle = 'rgba(255,150,70,0.16)'; c.beginPath(); c.ellipse(470, 110, 260, 90, 0, 0, TAU); c.fill();   // sodium haze behind the head
+  });
+}
+function ciGlassDrops(ctx, t, pts, seed, n, rain, lampK) {
+  if (rain <= 0) return;
+  ctx.save();
+  poly(ctx, pts); ctx.clip();
+  let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
+  for (const [x, y] of pts) { x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); }
+  const W2 = x1 - x0, H2 = y1 - y0, L = CI.lamp;
+  const tint = (x, y) => clamp(1 - Math.hypot(x - L.x, y - L.y) / 300) * lampK;
+  // rain falling beyond the glass
+  ctx.strokeStyle = 'rgba(170,190,220,0.13)'; ctx.lineWidth = 0.8; ctx.beginPath();
+  for (let i = 0; i < 40 * rain; i++) { const x = x0 + mod(hash(seed + i) * W2 + t * 40, W2), y = y0 + mod(hash(seed + i * 3) * H2 + t * 620, H2 + 40) - 20; ctx.moveTo(x, y); ctx.lineTo(x - 3, y + 17); }
+  ctx.stroke();
+  // beads that sit on the glass; each lives a while, then a new one forms elsewhere
+  for (let i = 0; i < n * rain; i++) {
+    const life = 5 + hash(seed * 7 + i) * 8, ph = t / life + hash(seed + i * 13), g = Math.floor(ph), a = ph - g;
+    const x = x0 + hash(seed * 3 + i * 17 + g * 101) * W2, y = y0 + hash(seed * 5 + i * 23 + g * 89) * H2;
+    const r = 0.9 + Math.pow(hash(seed + i * 29 + g * 7), 2) * 3, al = Math.min(1, a * 6, (1 - a) * 4), k = tint(x, y);
+    ctx.fillStyle = rgba('#02050c', 0.35 * al); ctx.beginPath(); ctx.arc(x, y + r * 0.2, r, 0, TAU); ctx.fill();
+    ctx.fillStyle = rgba(mixHex('#9fb2d0', '#ffc27a', k), (0.35 + 0.5 * k) * al); ctx.beginPath(); ctx.arc(x - r * 0.2, y + r * 0.35, r * 0.55, 0, TAU); ctx.fill();
+    ctx.fillStyle = rgba('#ffffff', 0.25 * al * (0.4 + k)); ctx.beginPath(); ctx.arc(x - r * 0.35, y - r * 0.35, r * 0.25, 0, TAU); ctx.fill();
+  }
+  // rivulets: stick, then slip, leaving a wet trail
+  const nr = Math.round((n / 9) * rain);
+  for (let i = 0; i < nr; i++) {
+    const rate = 0.25 + hash(seed + i * 41) * 0.35, u = t * rate + hash(seed * 11 + i) * 3;
+    const g = Math.floor(u / 3), uu = u - g * 3;
+    const travel = (Math.floor(uu) + Math.pow(uu - Math.floor(uu), 3)) / 3;           // stick-slip, monotone within a trip
+    const xs = x0 + hash(seed * 13 + i * 7 + g * 31) * W2, ys = y0 + hash(seed + i * 5 + g) * H2 * 0.4;
+    const yh = ys + travel * H2 * 1.1, k = tint(xs, yh);
+    const wob = (y) => xs + Math.sin(y * 0.07 + i) * 2.5 + (noise1(y * 0.03, i + seed) - 0.5) * 6;
+    ctx.strokeStyle = rgba(mixHex('#8aa0c4', '#ffb870', k), 0.16 + 0.3 * k); ctx.lineWidth = 1.3; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(wob(ys), ys); for (let y = ys + 5; y < yh; y += 5) ctx.lineTo(wob(y), y); ctx.stroke();
+    const hx = wob(yh);
+    ctx.fillStyle = rgba('#02050c', 0.4); ctx.beginPath(); ctx.ellipse(hx, yh, 2.8, 3.6, 0, 0, TAU); ctx.fill();
+    ctx.fillStyle = rgba(mixHex('#b8c6dc', '#ffcf90', k), 0.55 + 0.4 * k); ctx.beginPath(); ctx.ellipse(hx - 0.5, yh + 0.9, 1.6, 2, 0, 0, TAU); ctx.fill();
+  }
+  ctx.restore();
+}
+function ciSweep(t, amount) {
+  // a car passes outside every 13 s (first at t = 9): its headlights sweep the cabin right → left
+  const p = mod(t + 4, 13);
+  if (p > 2.6 || amount <= 0) return null;
+  const k = p / 2.6;
+  return { x: lerp(1500, 400, ease.inOutSine(k)), a: Math.sin(k * Math.PI) * amount };
+}
+
+export const carInterior = {
+  W: 1920,
+  floorY: FY,
+  anchors: {
+    driver: { x: 860, y: 700, seat: 110 },
+    hips: { x: 860, y: 590 },
+    head: { x: 927, y: 411 },
+    eyeLine: { x: 1160, y: 400 },
+    lens: { x: 1180, y: 470 },
+    wheelTop: { x: 994, y: 449 },
+    wheelGrip: { x: 997, y: 462 },
+    wheelHub: { x: CI.wheel.x, y: CI.wheel.y },
+    lamp: { x: CI.lamp.x, y: CI.lamp.y },
+    mirror: { x: CI.mirror.x, y: CI.mirror.y },
+    crop45: { x: 660, y: 27, w: 600, h: 750, cam: { x: 935, y: 452, zoom: 1.65 } },
+    crop916: { x: 734, y: 0, w: 452, h: 804, cam: { x: 935, y: 448, zoom: 1.4 } },
+  },
+  lights: { rainNight: { key: '#ffa64d', from: 1, amount: 0.6 } },
+
+  back(ctx, F, o = {}) {
+    const cam = camOf(o), t = o.t ?? F.t, rain = clamp(o.rain ?? 1), lamp = clamp(o.lamp ?? 1), dash = clamp(o.dash ?? 1), mist = clamp(o.mist ?? 0.4);
+    const sw = ciSweep(t, clamp(o.sweep ?? 1)), lampK = lamp * (0.96 + 0.04 * wobble(t, 2.2, 5));
+    ctx.fillStyle = '#04070d'; ctx.fillRect(0, 0, PW, PH);
+    camera(ctx, cam, 1, () => {
+      // the world outside, through all the glass
+      ctx.save();
+      ctx.beginPath(); for (const P of [CI.win, CI.rear, CI.ws]) { ctx.moveTo(P[0][0], P[0][1]); for (let i = 1; i < P.length; i++) ctx.lineTo(P[i][0], P[i][1]); ctx.closePath(); }
+      ctx.clip();
+      ctx.drawImage(ciOutside(), 480, 300);
+      glow(ctx, CI.lamp.x + 30, CI.lamp.y, 300, '#ff9a40', 0.5 * lampK);       // the sodium streetlight through the windscreen
+      glow(ctx, CI.lamp.x, CI.lamp.y, 80, '#ffc27a', 0.9 * lampK);
+      glow(ctx, CI.lamp.x, CI.lamp.y, 16, '#fff0d0', lampK);
+      ctx.save(); ctx.globalCompositeOperation = 'lighter';                    // rain smears it into vertical streaks
+      for (let i = 0; i < 7; i++) {
+        const x = CI.lamp.x - 40 + i * 13 + wobble(t, 0.5, i) * 2;
+        ctx.fillStyle = linGrad(ctx, 0, CI.lamp.y - 100, 0, CI.lamp.y + 150, [[0, 'rgba(255,170,90,0)'], [0.4, rgba('#ffb060', 0.15 * lampK)], [1, 'rgba(255,170,90,0)']]);
+        ctx.fillRect(x, CI.lamp.y - 100, 2.5 + hash(i) * 3.5, 250);
+      }
+      ctx.restore();
+      if (sw) glow(ctx, sw.x, 440, 240, '#f6efe2', 0.5 * sw.a, 0.5);
+      ctx.fillStyle = linGrad(ctx, 0, 450, 0, 518, [[0, 'rgba(120,140,170,0)'], [1, rgba('#7f93b4', 0.3 * mist)]]); ctx.fillRect(500, 450, 700, 70);   // condensation
+      ctx.restore();
+      ciGlassDrops(ctx, t, CI.win, 3, 110, rain, lampK);
+      ciGlassDrops(ctx, t, CI.rear, 9, 40, rain, lampK);
+      ciGlassDrops(ctx, t, CI.ws, 21, 120, rain, lampK);
+
+      // headliner, pillars, door, mirror
+      ctx.fillStyle = linGrad(ctx, 0, 100, 0, CI.roofY + 10, [[0, '#03060c'], [1, '#0d1626']]);
+      ctx.beginPath(); ctx.moveTo(-600, -600); ctx.lineTo(2600, -600); ctx.lineTo(2600, CI.roofY); ctx.lineTo(1000, CI.roofY + 1); ctx.quadraticCurveTo(760, 330, 560, 372); ctx.lineTo(-600, 430); ctx.closePath(); ctx.fill();
+      glow(ctx, 1080, 300, 260, '#ff9a40', 0.13 * lampK, 0.4);
+      if (sw) glow(ctx, sw.x, 300, 220, '#f6efe2', 0.16 * sw.a, 0.35);
+      ctx.fillStyle = '#060a13'; poly(ctx, CI.pillarA); ctx.fill();
+      ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.strokeStyle = rgba('#ffa64d', 0.45 * lampK); ctx.lineWidth = 1.6;
+      ctx.beginPath(); ctx.moveTo(CI.pillarA[1][0], CI.pillarA[1][1] + 8); ctx.lineTo(CI.pillarA[2][0], CI.pillarA[2][1]); ctx.stroke(); ctx.restore();
+      ctx.fillStyle = '#070b15'; ctx.fillRect(690, 344, 26, 600);                                     // B-pillar
+      fillRR(ctx, 692, 376, 20, 30, 5, '#0c1322');                                                    // belt anchor
+      ctx.fillStyle = '#05080f'; poly(ctx, [[-600, 440], [560, 372], [586, 516], [-600, 560]]); ctx.fill();   // C-pillar / rear
+      ctx.fillStyle = linGrad(ctx, 0, 512, 0, 804, [[0, '#0e1727'], [0.15, '#0a1220'], [1, '#05080f']]);
+      poly(ctx, [[-600, 520], [1120, 512], [1160, 1000], [-600, 1000]]); ctx.fill();                  // door panel
+      ctx.fillStyle = 'rgba(150,170,200,0.12)'; ctx.fillRect(560, 514, 548, 2);
+      fillRR(ctx, 730, 554, 230, 16, 7, '#111b2c'); ctx.fillStyle = rgba('#ffa64d', 0.18 * lampK); ctx.fillRect(738, 554, 214, 1.5);
+      fillRR(ctx, 770, 534, 30, 4, 2, rgba('#ffc27a', 0.45 * lampK));
+      const M = CI.mirror;                                                                           // rear-view mirror
+      ctx.fillStyle = '#05080f'; ctx.fillRect(M.x + 2, CI.roofY - 4, 6, M.y - CI.roofY + 2);
+      fillRR(ctx, M.x - 34, M.y - 3, 74, 26, 9, '#070b14');
+      fillRR(ctx, M.x - 28, M.y + 1, 62, 18, 6, 'rgba(120,135,160,0.18)');
+      ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.strokeStyle = rgba('#ffb060', 0.55 * lampK); ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(M.x - 26, M.y + 23); ctx.quadraticCurveTo(M.x + 32, M.y + 25, M.x + 39, M.y + 8); ctx.stroke(); ctx.restore();
+      // driver's seat: back, headrest (behind him), cushion
+      ctx.fillStyle = '#0c1424';
+      ctx.beginPath(); ctx.moveTo(826, 600); ctx.quadraticCurveTo(818, 530, 838, 470); ctx.lineTo(858, 452); ctx.lineTo(896, 458); ctx.quadraticCurveTo(900, 530, 904, 600); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = '#0a111f'; ctx.fillRect(864, 428, 4, 30); ctx.fillRect(882, 428, 4, 30);
+      fillRR(ctx, 848, 370, 50, 62, 15, '#0d1626');
+      ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.strokeStyle = rgba('#ffa64d', 0.25 * lampK); ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(858, 371); ctx.quadraticCurveTo(890, 370, 897, 392); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(858, 453); ctx.lineTo(896, 459); ctx.stroke(); ctx.restore();
+      ctx.fillStyle = '#0b1322'; poly(ctx, [[798, 594], [962, 586], [972, 602], [962, 618], [798, 624]]); ctx.fill();
+      // dashboard and the instrument cluster behind the wheel (dim green-white)
+      ctx.fillStyle = '#070b14'; poly(ctx, [[1100, 540], [1108, 516], [1700, 520], [1700, 1000], [1090, 1000]]); ctx.fill();
+      fillRR(ctx, 996, 512, 118, 50, 16, '#080d17');
+      for (const [gx2, gy3] of [[1030, 538], [1076, 536]]) {
+        ctx.fillStyle = rgba('#cfe6d4', 0.1 * dash); ctx.beginPath(); ctx.arc(gx2, gy3, 16, 0, TAU); ctx.fill();
+        ctx.strokeStyle = rgba('#d6ecd8', 0.5 * dash); ctx.lineWidth = 1.4; ctx.beginPath(); ctx.arc(gx2, gy3, 15, Math.PI * 0.75, Math.PI * 2.25); ctx.stroke();
+        ctx.strokeStyle = rgba('#e6f2e6', 0.7 * dash); ctx.beginPath(); ctx.moveTo(gx2, gy3); ctx.lineTo(gx2 - 9, gy3 + 5); ctx.stroke();
+      }
+      glow(ctx, 1054, 536, 120, '#cfe6d4', 0.22 * dash);
+      ctx.strokeStyle = rgba('#ffa64d', 0.3 * lampK); ctx.lineWidth = 1.4; ctx.beginPath(); ctx.moveTo(1112, 517); ctx.lineTo(1680, 521); ctx.stroke();
+    });
+  },
+
+  mid() {},
+
+  front(ctx, F, o = {}) {
+    const cam = camOf(o), t = o.t ?? F.t, lamp = clamp(o.lamp ?? 1), dash = clamp(o.dash ?? 1);
+    const lampK = lamp * (0.96 + 0.04 * wobble(t, 2.2, 5)), sw = ciSweep(t, clamp(o.sweep ?? 1));
+    camera(ctx, cam, 1, () => {
+      ctx.save(); ctx.globalCompositeOperation = 'lighter';
+      lightCone(ctx, 1040, 540, -2.5, 0.8, 230, '#cfe6d4', 0.05 * dash);       // dash glow from below on the driver
+      glow(ctx, 960, 400, 170, '#ff9a40', 0.06 * lampK, 0.8);                   // sodium wash from the windscreen
+      if (sw) glow(ctx, sw.x, 420, 300, '#f6efe2', 0.08 * sw.a, 0.6);
+      ctx.restore();
+      ctx.fillStyle = '#04070d';                                                  // under-dash (hides the shins)
+      ctx.beginPath(); ctx.moveTo(1022, 584); ctx.quadraticCurveTo(1046, 550, 1110, 546); ctx.lineTo(1700, 548); ctx.lineTo(1700, 1000); ctx.lineTo(950, 1000); ctx.quadraticCurveTo(990, 680, 1022, 584); ctx.fill();
+      const Wh = CI.wheel;                                                        // column + wheel (the rim stands in front of his hands)
+      ctx.strokeStyle = '#04070d'; ctx.lineWidth = 28; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(Wh.x, Wh.y); ctx.lineTo(Wh.x + 84, Wh.y + 70); ctx.stroke();
+      ctx.save(); ctx.translate(Wh.x, Wh.y); ctx.rotate(Wh.rot);
+      ctx.lineWidth = 10; ctx.beginPath(); ctx.ellipse(0, 0, Wh.rx, Wh.ry, 0, 0, TAU); ctx.stroke();
+      ctx.lineWidth = 7; ctx.beginPath(); ctx.moveTo(0, -Wh.ry + 6); ctx.lineTo(0, Wh.ry - 6); ctx.stroke();
+      fillRR(ctx, -10, -28, 20, 56, 8, '#05080f');
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.strokeStyle = rgba('#ffa64d', 0.55 * lampK); ctx.lineWidth = 1.6; ctx.beginPath(); ctx.ellipse(0, 0, Wh.rx + 5, Wh.ry + 5, 0, -1.9, -0.9); ctx.stroke();
+      ctx.strokeStyle = rgba('#cfe6d4', 0.35 * dash); ctx.beginPath(); ctx.ellipse(0, 0, Wh.rx + 4, Wh.ry + 4, 0, 0.9, 1.9); ctx.stroke();
+      ctx.restore();
+      ctx.fillStyle = '#020408';                                                  // centre console, out of focus in the foreground
+      ctx.beginPath(); ctx.moveTo(640, 1000); ctx.quadraticCurveTo(720, 700, 900, 676); ctx.lineTo(1000, 684); ctx.lineTo(1000, 1000); ctx.fill();
+      ctx.fillStyle = rgba('#cfe6d4', 0.08 * dash); ctx.fillRect(800, 679, 190, 1.5);
+    });
   },
 };
 

@@ -1379,7 +1379,7 @@ def applause(dur=6.0, people=40, swell=1.0, fade=2.5, rate=3.8, bright=0.5, widt
     w = min(n, SR)
     p2 = np.convolve(np.mean(out * out, axis=1), np.ones(w) / w, mode='valid')
     out *= db(-20.0) / (math.sqrt(float(p2.max())) + 1e-12)
-    return fade(out, 0.005, 0.03)
+    return globals()['fade'](out, 0.005, 0.03)
 
 
 def rain(dur, intensity=0.5, dark=0.4, drops=1.0, width=1.0, seed=0):
