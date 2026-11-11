@@ -21,7 +21,7 @@ const upright = (draw) => (c) => {
 /** The lamp over the table, as it lands on props on the table top. */
 const LAMP_ON_TABLE = { color: C.honey, from: 'above', amount: 0.85, wash: 0.2 };
 /** Where the lunchbox ends up on the table (tableTop, pushed ~30 px toward V1). */
-const BOX = { x: K.tableTop.x + 30, y: K.tableTop.y, size: 110 };
+const BOX = { x: K.tableTop.x + 4, y: K.tableTop.y, size: 64 };   // a child's lunchbox: ~26 cm at the film's scale
 /** V1's folded hands on the table (same as a5_02). */
 const V1_HANDS = { handF: { x: 946, y: 506 }, handB: { x: 958, y: 507 } };
 /** A wobble that dies away after a prop is set down at time t0. */
@@ -106,7 +106,7 @@ export const shots = {
       // the box: carried in low over the table from the left, set down at tableTop on `place`, then pushed ~30 px toward V1
       const carry = ramp(t, 0, tPlace, ease.outCubic);
       const push = ramp(t, tPlace + 0.55, 0.8, ease.inOutSine);
-      const bx = lerp(K.tableTop.x - 36, K.tableTop.x, carry) + 30 * push;
+      const bx = lerp(BOX.x - 66, BOX.x - 30, carry) + 30 * push;   // ends at BOX.x, within Adam's reach
       const by = K.tableTop.y - 40 * (1 - ease.inOutSine(clamp(t / tPlace)));
       const down = t >= tPlace;
       const a = lunchbox(ctx, { x: bx, y: by, size: BOX.size, lum: 1, tint: LOOK[look].fill, light: LAMP_ON_TABLE, shadow: down ? 0.8 : 0.3, wobble: settle(t, tPlace) });
@@ -221,7 +221,7 @@ export const shots = {
     kitchen.back(ctx, F, o);
     kitchen.mid(ctx, F, o);
     camera(ctx, cam, 1, () => {
-      lunchbox(ctx, { x: BOX.x, y: BOX.y, size: 78, open: 1, lum: 1, tint: LOOK[look].fill, light: LAMP_ON_TABLE, shadow: 0.8 });
+      lunchbox(ctx, { x: BOX.x + 30, y: BOX.y, size: BOX.size, open: 1, lum: 1, tint: LOOK[look].fill, light: LAMP_ON_TABLE, shadow: 0.8 });
       // Adam: looks at V1; a breath after the first line; on the last third of a5_letdown his head drops to the note and stays
       const drop = ramp(t, let_.at + let_.dur * 0.66, 0.9, ease.inOutSine);
       const gasp = Math.exp(-(((t - (rem.end + 0.6)) / 0.45) ** 2));
