@@ -34,7 +34,7 @@
 //         light: { color, from: 1|-1, amount: 0..1 }   rim light on the edges facing the key light
 //         aura: 0..1   cyan edge-glow (defaults to 0.5 for v1, 0 for everyone else)
 //         glint: 0..1  pin-point cyan light at the eye (any character)
-//         catch: 0..1  small warm catch-light at the eye (humans in close-up)
+//         catch: 0..1  tiny WARM catch-light at the eye — only in tight close-ups (zoom > 2.5); never on wide shots
 //         tear: 0..1   bright bead running from the eye down the cheek
 //         talk: 0..1   jaw drop + nod — pass F.voice(cueId)
 //         breath: -1..1 chest rise — pass Math.sin(t * 1.6)
@@ -420,9 +420,9 @@ export function drawFigure(ctx, who, pose, opts = {}) {
 
   // eye lights and tear (world space)
   const eye = anchors.eye, er = Math.max(1.2, g.hh * s * 0.028);
-  const dot = (col, k, big) => { if (k <= 0) return; glow(ctx, eye.x, eye.y, er * big, col, 0.85 * k); ctx.save(); ctx.globalAlpha *= clamp(k); ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(eye.x, eye.y, er * 0.9, 0, TAU); ctx.fill(); ctx.fillStyle = col; ctx.globalAlpha *= 0.7; ctx.beginPath(); ctx.arc(eye.x, eye.y, er * 1.5, 0, TAU); ctx.fill(); ctx.restore(); };
-  dot(C.cyan, o.glint || 0, 6);
-  dot((o.light && o.light.color) || C.cream, (o.catch || 0) * 0.8, 4);
+  // cyan glint: a hard bright core with a bloom (only ever the Program's light). catch: a tiny warm speck, no bloom.
+  if (o.glint > 0) { const k = clamp(o.glint); glow(ctx, eye.x, eye.y, er * 6, C.cyan, 0.85 * k); ctx.save(); ctx.globalAlpha *= k; ctx.fillStyle = C.cyan; ctx.beginPath(); ctx.arc(eye.x, eye.y, er * 1.5, 0, TAU); ctx.fill(); ctx.fillStyle = '#f2ffff'; ctx.beginPath(); ctx.arc(eye.x, eye.y, er * 0.9, 0, TAU); ctx.fill(); ctx.restore(); }
+  if (o.catch > 0) { ctx.save(); ctx.globalAlpha *= clamp(o.catch) * 0.75; ctx.fillStyle = (o.light && o.light.color) || C.honey; ctx.beginPath(); ctx.arc(eye.x, eye.y, er * 0.62, 0, TAU); ctx.fill(); ctx.restore(); }
   if (c.glasses && o.light && o.light.amount > 0.2) { const q = toWorld(g.hpt(0.4, -0.56)), q2 = toWorld(g.hpt(0.36, -0.47)); ctx.save(); ctx.strokeStyle = rgba(o.light.color, 0.7 * o.light.amount); ctx.lineWidth = er * 0.9; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(q.x, q.y); ctx.lineTo(q2.x, q2.y); ctx.stroke(); ctx.restore(); }
   if (o.tear > 0) {
     const t = clamp(o.tear), q = toWorld(g.hpt(lerp(0.29, 0.24, t), lerp(-0.5, -0.13, t * t * 0.6 + t * 0.4)));

@@ -27,6 +27,6 @@ if (a.t !== undefined) {
   const rows = [];
   for (const s of shots) { const ms = await timeAt(spread(s)); rows.push({ id: s.id, avg: ms.reduce((x, y) => x + y, 0) / ms.length, max: Math.max(...ms) }); }
   rows.sort((x, y) => y.avg - x.avg);
-  for (const r of rows) console.log(`${r.id.padEnd(20)} avg ${r.avg.toFixed(0).padStart(4)} ms   max ${r.max.toFixed(0).padStart(4)} ms${r.avg > 90 ? '   ← too slow (budget ~40 ms + 50 ms encode)' : ''}`);
+  for (const r of rows) console.log(`${r.id.padEnd(20)} avg ${r.avg.toFixed(0).padStart(4)} ms   max ${r.max.toFixed(0).padStart(4)} ms${r.avg > 220 ? '   ← too slow (keep shots under ~200 ms including the 50 ms encode)' : ''}`);
 }
 await stage.close();

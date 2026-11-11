@@ -87,7 +87,7 @@ and stays on screen for at least 1.5 s plus 0.25 s per word.
 - A shot must also render sensibly for `t` up to 1 s past its duration (dissolves use that).
 - Balance every `ctx.save()` with a `ctx.restore()`; never leave `globalAlpha`,
   `globalCompositeOperation`, `filter` or a clip set on exit.
-- Performance budget: about 40 ms per frame. `ctx.filter = 'blur(...)'` on large areas is
+- Performance budget: keep a shot under ~200 ms per frame as measured by `tools/bench.mjs` (that figure includes ~50 ms of image encoding). `ctx.filter = 'blur(...)'` on large areas is
   expensive — blur once into `cached()` layers instead.
 - No external assets, images or network. Everything is drawn with canvas calls.
 - Only edit the files you own. Shared modules (`engine.js`, `style.js`, `timeline.js`) are
