@@ -263,12 +263,12 @@ export const shots = {
     let whf = P(lerp(holdPt.x, laid.x + 20, k1), lerp(holdPt.y, laid.y - 2, k1));
     whf = P(lerp(whf.x, wA.shoulder.x - 4, k2), lerp(whf.y, wA.shoulder.y + 140, k2));
     const wife = { x: wx, y: 700, facing: -1, ...wp, handF: whf };
-    const envPos = t < tableT ? P(whf.x - 17, whf.y - 3 + 4 * reachW) : laid;
+    const envPos = t < tableT ? P(whf.x - 20, whf.y - 11 + 10 * reachW) : laid;
     const envSq = t < tableT ? lerp(1, 0.3, ramp(t, tableT - 0.3, 0.3)) : 0.24;
     // ── camera: begins close on the envelope (OVERDUE legible), eases out to the room by 1.4 s
     const wide = drift(F, { x: 700, y: 432, zoom: 1.12 }, { x: 690, y: 436, zoom: 1.18 });
     const out = ramp(t, 0.45, 0.95, ease.inOutCubic);
-    const env0 = P(holdPt.x - 11, holdPt.y - 2);
+    const env0 = P(holdPt.x - 12, holdPt.y - 10);
     const cam = { x: lerp(env0.x, wide.x, out), y: lerp(env0.y, wide.y, out), zoom: Math.exp(lerp(Math.log(4.4), Math.log(wide.zoom), out)), rot: 0 };
     // ── Adam: standL → one step to the table → takes the lunchbox by the handle → turns and walks out left
     const boxAt = P(668, K.tableL.y);
@@ -301,8 +301,8 @@ export const shots = {
         handle = a.handle;
       }
       if (t >= tableT) envelope(ctx, { x: laid.x, y: laid.y, size: 54, stamp: 1, squash: 0.24, lum: 0.85 });
-      if (t < tableT) envelope(ctx, { x: envPos.x, y: envPos.y, size: 54, stamp: 1, squash: envSq, rot: -3 * (1 - reachW), lum: 0.95, light: rimOf(kitchen.lights.greyMorning) });
       drawFigure(ctx, 'wife', wife, { ink, light: rimOf(kitchen.lightAt(look, wx, o)), talk: talk(F, 'a1_bill'), breath: breath(t, 1.3) });
+      if (t < tableT) envelope(ctx, { x: envPos.x, y: envPos.y, size: 54, stamp: 1, squash: envSq, rot: -3 * (1 - reachW), lum: 0.95, light: rimOf(kitchen.lights.greyMorning) });
       // Adam's front hand: at his side → to the handle → carrying (box hangs from it, swinging)
       const hf = lifted ? P(lerp(handle ? handle.x : boxAt.x, hang.x, ramp(t, grab, 0.35)), lerp(boxAt.y - 34, hang.y, ramp(t, grab, 0.35)))
         : P(lerp(aPre.shoulder.x + 8, handle.x, reachA), lerp(aPre.shoulder.y + 150, handle.y, reachA));
