@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Encode the finished film: picture master (from tools/render.mjs --master) + the two audio mixes.
-#   tools/package.sh [crf] [height] [denoise]   e.g. tools/package.sh 24 1080 hqdn3d=1.5:1:4:4   (those are the defaults)
+#   tools/package.sh [crf] [height] [denoise]   e.g. tools/package.sh 25 1080 hqdn3d=2:1.5:5:5   (those are the defaults, and what the committed film used)
 # The picture carries film grain, which H.264 can only keep at very high bitrates; the default light denoise keeps
 # the file small enough to live in a git repository. Pass 'none' as the third argument (and a lower crf) for a grainier master.
 # Output: film/the-replacement.mp4 — H.264 + AAC, two audio tracks:
@@ -8,7 +8,7 @@
 #   track 2            music and effects only (no voices) — the burned-in subtitles carry the dialogue
 set -euo pipefail
 cd "$(dirname "$0")/.."
-CRF="${1:-24}"; HEIGHT="${2:-1080}"; DN="${3:-hqdn3d=1.5:1:4:4}"; [ "$DN" = none ] && DN=null
+CRF="${1:-25}"; HEIGHT="${2:-1080}"; DN="${3:-hqdn3d=2:1.5:5:5}"; [ "$DN" = none ] && DN=null
 MASTER=build/master.mkv; MIX=audio/out/mix.wav; ME=audio/out/mix_me.wav
 OUT="film/the-replacement$([ "$HEIGHT" = 1080 ] || echo "-${HEIGHT}p").mp4"
 for f in "$MASTER" "$MIX" "$ME"; do [ -f "$f" ] || { echo "missing $f" >&2; exit 1; }; done
