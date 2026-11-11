@@ -105,7 +105,7 @@ export const SHOTS = [
   { id: 'a3_06_frozen', act: 3, mod: 'ui_phone', dur: 4.4, set: 'phone insert',
     ev: { alert: 0.8 },
     desc: 'Phone in his hand in the rain, droplets on the glass. The same banking app as before; at `alert` a red banner drops over it: "ACCOUNT FROZEN" / "Identity deprecated. This account now belongs to the verified holder." The balance greys out to "RM ——".' },
-  { id: 'a3_07_call', act: 3, mod: 'ui_phone', dur: 7.2, set: 'phone insert',
+  { id: 'a3_07_call', act: 3, mod: 'ui_phone', dur: 8.2, set: 'phone insert',
     ev: { ring1: 0.6, ring2: 1.9, end: 6.3 },
     desc: 'Call screen: "Calling… Home" with a small heart and a round avatar that is a warm silhouette of his wife. It rings (`ring1`, `ring2`) with slow pulsing rings around the avatar. Then the network voice (a3_noanswer). At `end` the screen changes to "Call ended" and, in small type, "Number no longer linked to this device."' },
   { id: 'a3_08_video', act: 3, mod: 'videos', dur: 9.0, set: 'phone insert / video: school stage',
@@ -147,7 +147,7 @@ export const SHOTS = [
   { id: 'a5_04_scan', act: 5, mod: 'ui_sys', dur: 9.4, set: 'V1 point of view / HUD over the lunchbox',
     ev: { lock: 0.8, data: 1.2, dataEnd: 5.6, query: 6.2, noresult: 7.4 },
     desc: 'V1\'s point of view: the lunchbox on the table, seen through a cool, precise HUD. At `lock` brackets snap onto the lunchbox. From `data` to `dataEnd` fields type on rapidly around it: "OBJECT: LUNCHBOX — ENAMELLED STEEL", "PURCHASED: 14 MAR 2019 · RM 12.90", "MANUFACTURER: KILANG LOGAM SEJATI SDN BHD", "MEALS PACKED: 1,186", "TOTAL: 612,840 kcal", and a fast-scrolling log of every meal ("nasi goreng · 520 kcal", "egg sandwich · 310 kcal", …). He knows everything. At `query` a final field appears: "QUERY: WHY SHE KEEPS THIS" with a spinner. At `noresult`: "NO RESULT." — and the cursor just blinks.' },
-  { id: 'a5_05_note', act: 5, mod: 'act5', dur: 10.0, set: 'apartment / kitchen at night, pendant lamp',
+  { id: 'a5_05_note', act: 5, mod: 'act5', dur: 12.0, set: 'apartment / kitchen at night, pendant lamp',
     ev: { open: 1.2, unfold: 2.8, read: 4.0 },
     desc: 'Close on the lunchbox, warm lamplight. At `open` Adam\'s fingers flip the clasp and lift the lid. Inside, tucked against the lid, a small square of paper folded in four, soft and grey at the creases from years of handling. At `unfold` he opens it. By `read` it fills the centre of frame, in a child\'s pencil handwriting: "Daddy, don\'t forget me when you\'re busy." with a small lopsided heart and two stick figures holding hands, one big, one small. Hold on it, completely still, to the end of the shot. Let the audience read it twice.' },
   { id: 'a5_06_noanswer', act: 5, mod: 'act5', dur: 5.4, set: 'apartment / kitchen at night, pendant lamp',
@@ -213,8 +213,8 @@ export const SHOTS = [
   { id: 'a7_13_hug', act: 7, mod: 'act7b', dur: 6.4, set: 'street / morning sun',
     desc: 'Close on the hug in profile, golden rim light — the same framing as the hug in a6_03, but in daylight. He holds her. a7_love. She answers into his shoulder, a7_know. Hold. There is no cyan anywhere in this image. The shot ends on a hard cut to black — no fade.' },
 
-  { id: 'end_card', act: 0, mod: 'act7b', dur: 13.0, set: 'title card', vig: 0, grain: 0.6,
-    ev: { line1: 1.6, line2: 4.0, linesOut: 7.4, title: 8.6, credits: 9.4, out: 12.0 },
+  { id: 'end_card', act: 0, mod: 'act7b', dur: 20.0, set: 'title card', vig: 0, grain: 0.6,
+    ev: { line1: 1.6, line2: 5.0, linesOut: 9.6, title: 11.0, credits: 12.0, out: 18.2 },
     desc: 'Black and silent for the first 1.4s. At `line1`, serif italic, centred: “The world found a better version of him.” At `line2`, beneath it: “But his family didn’t need a better man.” Both fade out at `linesOut`. At `title`: THE REPLACEMENT (same lettering as the opening title). At `credits`, very small beneath: "Animation, score, sound and voices generated in code · Voices: Kokoro TTS (Apache-2.0)". Everything fades to black from `out`.' },
 ];
 

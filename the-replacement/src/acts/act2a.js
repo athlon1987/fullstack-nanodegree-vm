@@ -98,7 +98,7 @@ export const shots = {
   a2_02_glass(ctx, F) {
     const { t } = F, look = 'officeDay', ink = LOOK[look].ink;
     const ap = F.ev('applause'), gl = F.ev('glance');
-    const cam = drift(F, { x: 900, y: 390, zoom: 1.0 }, { x: 1060, y: 372, zoom: 1.16 });
+    const cam = drift(F, { x: 900, y: 390, zoom: 1.0 }, { x: 1010, y: 376, zoom: 1.14 });
     const o = { look, cam, chart: ramp(t, 0.3, 4.0, ease.inOutSine), view: 'through' };
     const RL = rim(meetingGlass.roomLight);
     const S = 0.82;
@@ -121,8 +121,8 @@ export const shots = {
       const gestK = 1 - ramp(t, ap - 0.2, 0.6);
       const sw = Math.sin(t * 1.35);
       let v1 = { ...POSE.present, lean: -2 };
-      v1.armF = [-40 - 14 * sw * gestK, -40 + 18 * sw * gestK];
-      v1.armB = [lerp(30, 110 + 12 * Math.sin(t * 1.1 + 1), gestK), lerp(30, 20 + 18 * Math.sin(t * 0.8), gestK)];
+      v1.armF = [lerp(4, -40 - 14 * sw, gestK), lerp(10, -40 + 18 * sw, gestK)];
+      v1.armB = [lerp(-4, 110 + 12 * Math.sin(t * 1.1 + 1), gestK), lerp(10, 20 + 18 * Math.sin(t * 0.8), gestK)];
       v1.head = key(t, [[0, 6], [ap, 6], [ap + 0.4, 14], [ap + 0.9, 4], [gl - 0.05, 2], [gl + 0.12, -6, ease.outCubic], [gl + 0.45, -2, ease.inOutSine], [9.6, -2]]);
       if (facing === 1) { v1.armF = [lerp(-10, 8, turnScreen), 10]; v1.armB = [-6, 14]; v1.head = -4; }
       drawFigure(ctx, 'v1', { x: MG.presenter.x, y: MG.presenter.y, s: S, facing, ...v1 },
@@ -132,7 +132,7 @@ export const shots = {
     // Adam's faint reflection on the glass, overlapping the man in the room
     const adamOTS = { ...POSE.stand, curl: 10, lean: 6, neck: 6, head: 10, armF: [6, 8], armB: [-4, 8] };
     camera(ctx, cam, 1, () => {
-      drawFigure(ctx, 'adam', { x: MG.presenter.x - 40, y: 700, s: 0.95, facing: -1, ...adamOTS }, { ink: '#1a2230', alpha: 0.12, aura: 0, breath: breath(t, 0.5) });
+      drawFigure(ctx, 'adam', { x: MG.presenter.x - 40, y: 700, s: 0.95, facing: -1, ...adamOTS }, { ink: '#141b27', alpha: 0.15, aura: 0, breath: breath(t, 0.5) });
     });
     meetingGlass.mid(ctx, F, { ...o, part: 'glass' });
     // Adam in the corridor: a big dark back and shoulder at the left edge, no rim light
@@ -158,7 +158,7 @@ export const shots = {
       if (t < turnT) {
         x = A.x - 70 * back;
         const stepK = clamp((t - 2.0) / 0.55);
-        pose = { ...POSE.stand, lean: 7 - 9 * back, neck: 10 - 6 * back, head: 4 - 8 * back + Math.sin(t * rate) * 1.2,
+        pose = { ...POSE.stand, lean: 3 - 5 * back, neck: 4 - 2 * back, head: -8 + 6 * back + Math.sin(t * rate) * 1.2,
           armF: [6 + 8 * back, 14], armB: [-4 - 10 * back, 12],
           footF: [0.035 - 0.16 * Math.sin(stepK * Math.PI) * (1 - stepK) - 0.16 * stepK * 0, -0.04 * Math.sin(stepK * Math.PI)],
         };
@@ -185,12 +185,12 @@ export const shots = {
     cityRun.back(ctx, F, o);
     cityRun.mid(ctx, F, o);
     // passers-by on the pavement just behind his line, walking slowly the other way; they do not look at him
-    const d = 0.9, gy = 430 + 270 * d;
+    const d = 0.8, gy = 430 + 270 * d;
     camera(ctx, cam, d, () => {
       [['extraM', 944, 0.0], ['extraF', 1580, 0.4], ['extraM', 2274, 0.75]].forEach(([who, w0, ph], i) => {
         const pd = 110 * t, px = w0 + (i === 1 ? 0 : 0) - pd;
         drawFigure(ctx, who, { x: px, y: gy, s: d, facing: -1, ...POSE.walk(walkPhase(pd, who, d) + ph), head: 6 },
-          { ink: '#1a2130', light: rim({ key: L.color, from: 1, amount: 0.25 }), breath: breath(t, i) });
+          { ink: '#2a3446', light: rim({ key: L.color, from: 1, amount: 0.25 }), breath: breath(t, i) });
       });
     });
     camera(ctx, cam, 1, () => {
