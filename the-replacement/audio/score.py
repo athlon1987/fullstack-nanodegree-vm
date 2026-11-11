@@ -250,6 +250,37 @@ def theme(anchors, beats=(0, 24), mel='pno', mel_vel=0.38, mel_g=0.0, lh=True, l
     return bt
 
 
+# tempo maps for the theme: slow and tender (~1.8-2.0 s per bar), gentle rubato, ritardando into bars 4 and 8
+BAR_W = {1: 1.0, 2: 0.98, 3: 1.01, 4: 1.07, 5: 0.98, 6: 0.99, 7: 1.02, 8: 1.09}   # bar-level rubato
+BEAT_RIT = (0.95, 1.0, 1.09)                                                    # inside bars 3 and 7
+
+
+def tmap(keys):
+    """keys: [(beat, time), ...] fixed points → per-beat anchors; the time between two fixed points is shared
+    out by bar weight × beat weight (so the rubato and the ritardandi are shaped, the fixed points exact)."""
+    def w(b):
+        bar, k = b // 3 + 1, b % 3
+        return BAR_W.get(bar, 1.0) * (BEAT_RIT[k] if bar in (3, 7) else 1.0)
+    out = []
+    for (b0, t0), (b1, t1) in zip(keys[:-1], keys[1:]):
+        ws = np.array([w(b) for b in range(b0, b1)])
+        cs = np.concatenate([[0.0], np.cumsum(ws)]) / ws.sum()
+        out += [(b0 + i, t0 + (t1 - t0) * c) for i, c in enumerate(cs) if not (out and i == 0)]
+    return out
+
+
+BAR_TABLE = []
+
+
+def bars_of(name, anchors, last_ring=None):
+    """record the bar starts / durations of a statement for the review table"""
+    d = dict(anchors)
+    bs = sorted(b for b in d if b % 3 == 0 and b < 24)
+    for b in bs:
+        dur = d[b + 3] - d[b] if (b + 3) in d else last_ring
+        BAR_TABLE.append((name, b // 3 + 1, d[b], dur))
+
+
 # ═══════════════════════════════ THE SCORE ═══════════════════════════════
 # ── ACT 1 ────────────────────────────────────────────────────────────────
 t_door = ev('a1_09_auditorium', 'door')
@@ -449,7 +480,10 @@ def swell(t):
     return max(0.35, 1.0 - 0.6 * np.clip((t - t_lower) / 1.6, 0, 1))
 
 
-theme([(6, t_tear - 9 * 0.52), (15, t_tear), (21, t_lower + 1.9)], beats=(6, 24), mel_vel=0.47, lh_vel=0.26,
+# bars 5-8 only (a complete phrase, not rushed): bar 6's top note on 'tear', bar 8 into a3_10
+A3 = tmap([(12, t_tear - 1.8), (15, t_tear), (21, t_lower + 2.0)])
+bars_of('a3_09 minor (bars 5-8)', A3)
+theme(A3, beats=(12, 24), mel_vel=0.47, lh_vel=0.26,
       shift=-2, pad=dict(g=-13, vel=0.38, kind='warm', oct=12), vcurve=swell, rub=0.03)
 PAD(st('a3_09_watch') + 0.2, ['B1', 'F#2'], t_tear - st('a3_09_watch') + 1.5, 0.30, -17, attack=4.5, release=3.0)
 cue('a3_09 theme in minor', st('a3_09_watch'), en('a3_09_watch'), 'piano theme (B minor) + string pad, jingle loops')
@@ -528,11 +562,17 @@ while t < tn - 0.02:
 cue('a5_04 data arpeggio', td, tn, 'glass sixteenths, stops dead')
 # a5_05 the whole theme, first time
 tu = ev('a5_05_note', 'unfold')
-bt5 = theme([(0, tu), (9, tu + 9 * 0.30), (12, tu + 9 * 0.30 + 3 * 0.37), (21, en('a5_05_note'))], mel_vel=0.31,
-            lh_vel=0.16, rub=0.025)
-CH(en('a5_05_note') + 0.02, ['D2', 'A2', 'F#3'], None, 0.18, -2, roll=0.08)
-cue('a5_05 THEME complete (solo piano)', tu, en('a5_05_note'), 'solo felt piano, 8 bars')
-cue('a5_06 last chord rings', st('a5_06_noanswer'), en('a5_06_noanswer'), 'piano D chord sustain, glass stutter')
+A5 = tmap([(0, tu), (24, en('a5_06_noanswer'))])
+bars_of('a5_05-06 first statement', A5)
+bt5 = theme(A5, beats=(0, 21), mel_vel=0.31, lh_vel=0.16, rub=0.02)
+# bar 8: the D chord, rings softly into a5_07, damped well before the end of 'a5_letdown'
+t8 = bt5(21)
+t_damp5 = c1('a5_letdown') - 2.6
+P(t8, 'D4', t_damp5 - t8, 0.31 * 1.06, jit=0)
+for k, n in enumerate(['D2', 'A2', 'F#3']):
+    tb = bt5(21 + k) + 0.02
+    P(tb, n, t_damp5 - tb, 0.16 * (0.9 if k else 1.0), jit=0)
+cue('a5_05-06 THEME complete (solo piano)', tu, en('a5_06_noanswer'), 'solo felt piano, 8 bars, glass stutter')
 tf = ev('a5_06_noanswer', 'flicker')
 GL(tf, 'A6', 0.12, dur=0.08, bright=0.35)
 GL(tf + 0.11, 'A6', 0.09, dur=0.06, bright=0.35)
@@ -557,7 +597,9 @@ def bloom(t):
     return float(np.clip(0.75 + 0.25 * (t - th) / 4.0, 0.75, 1.0) * (1.0 if t < en('a6_03_hug') - 1.2 else 0.85))
 
 
-theme([(0, th + 0.1), (12, th + 0.1 + 12 * 0.52), (21, en('a6_03_hug') - 0.9)], mel_vel=0.40, lh_vel=0.22,
+A6 = tmap([(0, th + 0.1), (21, en('a6_03_hug') - 0.6)])
+bars_of('a6_02-03 full theme', A6)
+theme(A6, mel_vel=0.40, lh_vel=0.22,
       pad=dict(g=-14, vel=0.36, oct=12), vcurve=bloom, rub=0.025)
 PAD(th, ['D2', 'A2'], en('a6_03_hug') - th, 0.24, -18, attack=2.0, release=3.0, cutoff=(200, 500))
 cue('a6_03 THEME full (peak 2)', th, en('a6_03_hug'), 'piano + warm strings')
@@ -627,7 +669,12 @@ ttap = ev('a7_11_delete', 'tap')
 tcatch = ev('a7_12_run', 'catch')
 t_end7 = en('a7_13_hug')
 tres = c1('a7_know') + 0.25
-theme([(0, w), (9, w + 9 * 0.52)], beats=(0, 12), mel_vel=0.32, lh_vel=0.20, pad=dict(g=-17, vel=0.3), rub=0.025)
+# one unhurried statement: quiet from the wave, bar 3's G chord lands on 'tap' (the G-major release),
+# broadening to the peak (beat 14) on 'catch', home to D just after 'a7_know'
+A7 = tmap([(0, ttap - 8 * 0.80), (8, ttap), (14, tcatch), (21, tres)])
+bars_of('a7_10-13 statement', A7)
+theme(A7, beats=(0, 8), mel_vel=0.32, lh_vel=0.20, pad=dict(g=-17, vel=0.3), rub=0.025)
+P(ttap + 0.01, 'G4', 0.80 * 1.2, 0.36, jit=0)
 CH(ttap, ['G2', 'D3', 'B3', 'D4'], 2.6, 0.28, 0, roll=0.06)
 PAD(ttap - 0.05, ['G2', 'D3', 'G3', 'B3'], 2.4, 0.32, -16, attack=0.6, release=1.0)
 
@@ -638,7 +685,7 @@ def soar(t):
     return 1.05 - 0.35 * np.clip((t - tcatch) / 3.5, 0, 1)
 
 
-theme([(0, ttap + 0.02), (14, tcatch), (21, tres)], mel_vel=0.40, lh_vel=0.24, harm={0: 'Gmaj7'},
+theme(A7, beats=(9, 24), mel_vel=0.40, lh_vel=0.24,
       pad=dict(g=-13, vel=0.38), vcurve=soar, rub=0.025, mbox=-6, tmax=t_end7 - 0.3)
 PAD(ttap + 0.6, ['D2', 'A2'], tcatch - ttap + 2.0, 0.26, -17, attack=2.5, release=2.0, cutoff=(200, 500))
 CH(tres + 0.03, ['D2', 'A2', 'F#3', 'D4'], None, 0.24, -1, roll=0.06)
@@ -648,11 +695,18 @@ cue('a7_12 theme fullest (peak 3)', st('a7_12_run'), en('a7_12_run'), 'piano, st
 cue('a7_13 last phrase → D (hard cut)', st('a7_13_hug'), t_end7, 'piano + pad')
 # end card
 l1, l2, ttl = (ev('end_card', e) for e in ('line1', 'line2', 'title'))
-theme([(0, l1 + 0.05), (12, l2 + 1.4), (21, ttl)], mel_vel=0.30, lh_vel=0.17, rub=0.03)
-CH(ttl + 0.02, ['D2', 'A2', 'F#3', 'D4'], None, 0.22, -1, roll=0.08)
-PAD(ttl, ['D3', 'F#3', 'A3'], DUR - ttl - 1.5, 0.22, -21, attack=1.5, release=1.4)
+lout = ev('end_card', 'linesOut')
+AE1 = tmap([(0, l1), (12, lout - 0.3)])
+AE2 = tmap([(12, ttl), (24, DUR - 1.8)])
+bars_of('end_card bars 1-4', AE1)
+bars_of('end_card bars 5-8', AE2)
+theme(AE1, beats=(0, 12), mel_vel=0.30, lh_vel=0.17, rub=0.015)
+bte = theme(AE2, beats=(12, 21), mel_vel=0.30, lh_vel=0.17, rub=0.02)
+te8 = bte(21)
+P(te8, 'D4', DUR - 0.5 - te8, 0.30 * 1.06, jit=0)
+CH(te8 + 0.02, ['D2', 'A2', 'F#3'], DUR - 0.5 - te8, 0.20, -1, roll=0.08)
 for k, n in enumerate(['D5', 'A5', 'E6']):
-    GL(ttl + 0.35 + 0.45 * k, n, 0.12, bright=0.2)
+    GL(te8 + 0.35 + 0.45 * k, n, 0.12, bright=0.2)
 cue('end_card theme + reconciled chord', l1, DUR, 'solo piano, D chord + glass D-A-E')
 
 print(f'{len(EVENTS)} events rendered in {time.time() - T0:.1f}s')
@@ -764,11 +818,16 @@ for name, a_, b_ in [('silence a5_04 noresult→unfold', tn + 0.03, tu - 0.05),
                      ('silence end_card start→line1', st('end_card') + 0.03, l1 - 0.03),
                      ('after a1_13 cut→title on', en('a1_13_react') + 0.03, t_on - 0.03),
                      ('a7_lunch cut half-second', t_lunch + 0.03, tlook),
+                     ('after a7_13 cut (+0.25)→line1', t_end7 + 0.25, l1 - 0.03),
+                     ('a5_05 chord gone by a5_letdown end', c1('a5_letdown'), c1('a5_letdown') + 0.5),
                      ('a1_11 before buzz', st('a1_11_night') + 0.8, t_buzz - 0.02)]:
     x = out[S.n_of(a_):S.n_of(b_)]
     lines.append(f'{name:40s} {a_:7.2f} {b_:7.2f} peak {20 * math.log10(np.max(np.abs(x)) + 1e-12):7.1f} dBFS')
 lines.append(f'\nintegrated LUFS {S.lufs(out):.1f}  peak {20 * math.log10(np.max(np.abs(out))):.1f} dBFS  '
              f'DC {np.mean(out):.2e}  samples {len(out)} (= {NTOT})')
+lines.append('\ntheme statements (nominal bar starts; ± rubato jitter):')
+for name, bar, t_, d_ in BAR_TABLE:
+    lines.append(f'  {name:28s} bar {bar}  {t_:8.2f}  ' + (f'{d_:5.2f} s' if d_ else ' ring'))
 (RV / 'cues.txt').write_text('\n'.join(lines))
 print('\n'.join(lines))
 

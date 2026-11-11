@@ -10,6 +10,8 @@ import { auditorium, steps } from '../sets/school.js';
 import { talk, breath, drift, ramp } from '../stage.js';
 
 const RED = (lum, tint, light) => ({ lum, tint, light });
+/** Sets describe lights as {key, from, amount}; the rig wants {color, from, amount}. */
+const LT = (l) => ({ color: l.color || l.key, from: l.from, amount: l.amount });
 
 /** Inside a held() callback: rotate the local frame so that +y points straight down on screen (a prop hanging from a grip). */
 function hangDown(c, swing = 0) {
@@ -22,7 +24,7 @@ function hangDown(c, swing = 0) {
 export const shots = {
   // ── a1_07 ── the manager's verdict. Adam small and low at left, manager towering behind the desk at right.
   a1_07_boss(ctx, F) {
-    const { t } = F, look = 'officeDay', ink = LOOK[look].ink, MO = managerOffice.anchors, L = managerOffice.lights.officeDay;
+    const { t } = F, look = 'officeDay', ink = LOOK[look].ink, MO = managerOffice.anchors, L = LT(managerOffice.lights.officeDay);
     const cam = drift(F, { x: 1000, y: 402, zoom: 1.0 }, { x: 830, y: 436, zoom: 1.16 });
     const o = { look, cam, chart: ease.inOutSine(clamp(t / 1.5)) };
     const boss = F.cue('a1_boss'), sorry = F.cue('a1_sorry1');
@@ -37,7 +39,7 @@ export const shots = {
       const mHead = key(t, [[0, 6], [rap, 10], [boss.end, 8], [sorry.at + 0.2, 4], [sorry.end + 0.6, -3]]);
       drawFigure(ctx, 'manager', {
         x: MO.managerStand.x, y: 700, facing: -1, ...POSE.stand, lean: mLean, head: mHead, curl: 2,
-        handF: mHand, armB: [-14, -70], handRotB: 30,
+        handF: mHand, armB: [-4, 14],
       }, { ink, light: L, talk: talk(F, 'a1_boss'), breath: breath(t, 1.3) });
 
       // Adam (left, faces right) in the low chair, the red lunchbox on his knees, hands on it.
@@ -51,7 +53,7 @@ export const shots = {
         lean: 4 + lower * 3 - flinch * 3 + sink * 9, curl: 2 + sink * 10, head, neck: sink * 6,
         handF: { x: lap.x + 14, y: lap.y - 12 + sink * 2 }, handB: { x: lap.x - 12, y: lap.y - 14 + sink * 2 },
       }, { ink, light: L, talk: talk(F, 'a1_sorry1'), breath: breath(t, 0.4) });
-      lunchbox(ctx, { x: lap.x, y: lap.y, size: 46, ...RED(0.95, LOOK.officeDay.fill, { color: L.key, from: -1, amount: 0.45 }) });
+      lunchbox(ctx, { x: lap.x, y: lap.y, size: 46, ...RED(0.95, LOOK.officeDay.fill, { color: L.color, from: -1, amount: 0.45 }) });
       void a;
     });
     managerOffice.front(ctx, F, o);
@@ -59,7 +61,7 @@ export const shots = {
 
   // ── a1_08 ── the car dies at dusk; the reminder; he grabs the lunchbox and runs out RIGHT.
   a1_08_car(ctx, F) {
-    const { t } = F, look = 'dusk', ink = LOOK[look].ink, RA = roadside.anchors, L = roadside.lights.dusk;
+    const { t } = F, look = 'dusk', ink = LOOK[look].ink, RA = roadside.anchors, L = LT(roadside.lights.dusk);
     const cam = drift(F, { x: 990, y: 412, zoom: 1.0 }, { x: 1010, y: 420, zoom: 1.06 });
     const sp = F.ev('sputter'), rem = F.ev('reminder'), run = F.ev('run');
     const shake = key(t, [[0, 0], [sp, 1, ease.outQuad], [sp + 0.35, 0.8], [sp + 1.1, 0, ease.inOutSine]]);
@@ -67,7 +69,7 @@ export const shots = {
     roadside.back(ctx, F, o);
     roadside.mid(ctx, F, o);
     camera(ctx, cam, 1, () => {
-      const lb = { size: 46, ...RED(0.85, LOOK.dusk.fill, { color: L.key, from: 1, amount: 0.7 }) };
+      const lb = { size: 46, ...RED(0.85, LOOK.dusk.fill, { color: L.color, from: 1, amount: 0.7 }) };
       // the lunchbox on the roof, shuddering with the car; its handle lifts as he reaches for it
       let grip = { x: RA.roof.x, y: RA.roof.y - 42 };
       if (t < run) {
@@ -98,13 +100,14 @@ export const shots = {
       const kRun = ramp(t, run + 0.05, 0.3);
       if (kRun > 0) {
         const r = POSE.run(runD / 730 + 0.15);
-        pose = { ...mixPose({ ...pose, handF: undefined, armF: [-40, 20] }, r, kRun) };
-        if (kRun < 1) pose.handF = undefined;
+        const hf = pose.handF;
+        pose = mixPose({ ...pose, handF: undefined }, r, kRun);
+        if (kRun < 1 && hf) pose.handF = { x: lerp(hf.x, x + 62, kRun), y: lerp(hf.y, 440, kRun) };
       }
       const showPhone = t >= rem && t < run - 0.3;
       const held = {};
       if (showPhone) {
-        held.front = (c) => phoneSmall(c, { x: 0, y: 0, size: 37, rot: -78, glow: C.ice || '#dfe9f5', turn: 0.3, bloom: 0.5,
+        held.front = (c) => phoneSmall(c, { x: 0, y: 0, size: 37, rot: -78, glow: '#e2e8f1', turn: 0.3, bloom: 0.5,
           alpha: ramp(t, rem, 0.25) * (1 - ramp(t, run - 0.6, 0.25)) });
       } else if (t >= run) {
         held.front = (c) => { hangDown(c, Math.sin(t * 9) * 0.12 * kRun); lunchbox(c, { ...lb, x: 0, y: 0, anchor: 'handle' }); };
@@ -148,7 +151,7 @@ export const shots = {
       const heave = Math.sin(t * 4.6);
       const up = ramp(t, door + 1.2, 0.9, ease.inOutSine);         // straightens to look for her
       const drop = ramp(t, door + 2.6, 0.8, ease.inOutSine);       // nobody here
-      const L = { ...auditorium.lights.nightDark, amount: 0.55 * doorOpen };
+      const L = { ...LT(auditorium.lights.nightDark), amount: 0.55 * doorOpen };
       drawFigure(ctx, 'adam', {
         x: A.door.x, y: A.door.y, s: A.door.scale, facing: 1, ...POSE.stand,
         lean: 20 - up * 12 + drop * 6 + heave * 2.5, curl: 6 + drop * 6, head: 8 - up * 12 + drop * 16 + heave * 2,
@@ -163,8 +166,8 @@ export const shots = {
     const { t } = F, look = 'blueHour', ink = LOOK[look].ink, S = steps.anchors;
     const arrive = F.ev('arrive'), kneel = F.ev('kneel'), walk = F.ev('walk');
     const said = F.cue('a1_said'), sorry = F.cue('a1_sorry2'), always = F.cue('a1_always');
-    const cam = key(t, [[0, { x: 1150, y: 432, zoom: 1.5 }], [walk - 0.2, { x: 1128, y: 432, zoom: 1.8 }, ease.inOutSine],
-      [F.T, { x: 1040, y: 428, zoom: 2.15 }, ease.inOutSine], [F.T + 1, { x: 1030, y: 428, zoom: 2.2 }, ease.linear]]);
+    const cam = key(t, [[0, { x: 1150, y: 486, zoom: 1.5 }], [walk - 0.2, { x: 1128, y: 494, zoom: 1.78 }, ease.inOutSine],
+      [F.T, { x: 1030, y: 512, zoom: 1.95 }, ease.inOutSine], [F.T + 1, { x: 1022, y: 514, zoom: 2.0 }, ease.linear]]);
     const o = { look, cam };
     steps.back(ctx, F, o);
     steps.mid && steps.mid(ctx, F, o);
@@ -174,7 +177,7 @@ export const shots = {
       const away = ramp(t, said.at - 0.3, 0.8, ease.inOutSine);
       const lean = ramp(t, sorry.at + 0.35, 0.9, ease.inOutSine);
       const look2 = ramp(t, always.at - 0.15, 0.7, ease.inOutSine);
-      let mp = { ...MSIT, head: 10 + away * 8 + lean * 2 - look2 * 22, lean: 20 - lean * 16 + look2 * 6, curl: 12 - lean * 4, neck: away * 4 - look2 * 6 };
+      let mp = { ...MSIT, head: 10 + away * 8 + lean * 2 - look2 * 22, lean: 20 - lean * 24 + look2 * 8, curl: 12 - lean * 6, hipX: lean * 0.03, armF: [44 - lean * 30, 70 + lean * 60], armB: [40 - lean * 28, 72 + lean * 55], neck: away * 4 - look2 * 6 };
       let mx = S.mayaSit.x, my = S.mayaSit.y, wearPack = false;
       const rise = ramp(t, walk, 0.45, ease.inOutSine);
       const grab = ramp(t, walk, 0.3) * (1 - ramp(t, walk + 0.3, 0.2));
@@ -184,7 +187,7 @@ export const shots = {
         if (grab > 0) mp.handB = { x: S.backpack.x - 8, y: S.backpack.y - 66 };
         wearPack = t >= walk + 0.32;
       }
-      const u = t - (walk + 0.4), v = 430;
+      const u = t - (walk + 0.3), v = 480;
       const md = u <= 0 ? 0 : (u < 0.3 ? v * u * u / 0.6 : v * (u - 0.15));
       if (md > 0) {
         mx = S.mayaStand.x - md;
@@ -201,7 +204,7 @@ export const shots = {
         }
         if (mx > plants[0][0]) my = plants[0][1];
       }
-      const mOpts = { ink, light: steps.lightAt(look, mx, o), talk: talk(F, 'a1_said', 'a1_always'), breath: breath(t, 2.1),
+      const mOpts = { ink, light: LT(steps.lightAt(look, mx, o)), talk: talk(F, 'a1_said', 'a1_always'), breath: breath(t, 2.1),
         wear: { starHeadband: true, backpack: wearPack } };
       if (!wearPack) backpack(ctx, { x: S.backpack.x, y: S.backpack.y, size: 80, slump: 0.6, flip: -1, lum: 0.35, tint: LOOK.blueHour.fill,
         light: { color: '#ffb561', from: 1, amount: 0.6 }, shadow: 0.5 });
@@ -233,8 +236,8 @@ export const shots = {
       const backK = ramp(t, sorry.at + 1.0, 0.9, ease.inOutSine);
       const halfK = ramp(t, always.end, 1.2, ease.inOutSine);
       const sh = maya.shoulder;
-      const reachPt = { x: sh.x - 46, y: sh.y + 14 };
-      const halfPt = { x: 1086, y: 540 };
+      const reachPt = { x: sh.x - 100, y: sh.y + 10 };
+      const halfPt = { x: 1092, y: 500 };
       let hand = null;
       if (setK > 0) hand = { x: lerp(1018, boxGround.x + 2, setK), y: lerp(610, 664, setK) };
       if (letGo) hand = { x: lerp(boxGround.x + 2, restHand.x, handUp), y: lerp(664, restHand.y, handUp) };
@@ -250,7 +253,7 @@ export const shots = {
       const dropK = ramp(t, walk + 1.0, 0.9, ease.inOutSine);
       ap.head = (ap.head || 0) - 2 + setK * (1 - handUp) * 14 + look2 * 4 - follow * 12 + follow2 * 26 + dropK * 16;
       ap.curl = (ap.curl || 0) + look2 * 4 + dropK * 8;
-      const aOpts = { ink, light: steps.lightAt(look, ax, o), talk: talk(F, 'a1_sorry2'), breath: breath(t, 0.7, lerp(2.6, 1.5, kk)) };
+      const aOpts = { ink, light: LT(steps.lightAt(look, ax, o)), talk: talk(F, 'a1_sorry2'), breath: breath(t, 0.7, lerp(2.6, 1.5, kk)) };
       const lb = { size: 46, lum: 0.7, tint: LOOK.blueHour.fill, light: { color: '#ffb561', from: 1, amount: 0.65 } };
       if (!letGo) aOpts.held = { front: (c) => { hangDown(c, Math.sin(t * 7) * 0.05 * (1 - kk)); lunchbox(c, { ...lb, x: 0, y: 0, anchor: 'handle' }); } };
       drawFigure(ctx, 'adam', { x: ax, y: 700, facing: 1, ...ap }, aOpts);

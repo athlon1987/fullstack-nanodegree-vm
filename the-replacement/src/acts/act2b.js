@@ -70,15 +70,15 @@ export const shots = {
       });
 
       // V1: kneeling at the open sink cupboard working the wrench → rises, wipes his hands → turns to Adam.
-      const vx = K.sink.x - 52;
+      const vx = K.sink.x - 70;
       const up = ramp(t, tStand, 0.9);
       const wipe = clamp((t - tStand - 0.7) / 0.2) * (1 - ramp(t, tLook - 0.15, 0.3));
       const turned = t >= tLook + 0.12;
       const turnK = ramp(t, tLook, 0.4);
       const work = Math.sin(t * 4.2) * (1 - up);
-      const kneel = { ...POSE.kneelWork };
+      const kneel = { ...POSE.kneelOne, lean: 26, curl: 12, neck: 4, head: 2 };
       const standP = { ...POSE.stand, head: 4, lean: 1 };
-      let pose = mixPose(kneel, standP, up);
+      const pose = up >= 1 ? standP : mixPose(kneel, { ...standP, legB: [0, 0], footRotB: 0 }, up);
       const vf = turned ? -1 : 1;
       // hands: on the pipe while working; together at the waist rubbing the cloth once up
       const pipe = { x: K.pipe.x + 4 + work * 6, y: K.pipe.y + 6 - Math.abs(work) * 4 };
@@ -96,27 +96,28 @@ export const shots = {
         ink, light: kLight(vx, o), breath: breath(t, 2) * 0.4, aura: 0.45, glint: 0.6, held: heldV1, talk: talk(F, 'a2_early'),
       });
 
-      // Wife: leaning back on the counter, laughing (head rocks back) → the laugh dies; she turns to the door after him.
-      const wx = vx - 150;
+      // Wife: right of him, leaning back on the counter edge, laughing (head rocks back) → the laugh dies; she looks to the door after him.
+      const wx = vx + 196;
       const laugh = 1 - ramp(t, tLook - 0.2, 0.6);
-      const wTurn = t >= tLook + 0.55;
       const rock = (Math.sin(t * 7.5) * 0.5 + 0.5) * laugh;
-      const wPose = mixPose({ ...POSE.leanBack, armF: [-20, -30], armB: [-26, -34] }, { ...POSE.stand, head: 6, lean: 2, armF: [10, 40], armB: [-2, 10] }, ramp(t, tLook + 0.3, 0.6));
-      drawFigure(ctx, 'wife', { x: wx, y: 700, facing: wTurn ? -1 : 1, ...wPose, head: wPose.head - rock * 10, lean: wPose.lean - rock * 4 }, {
+      const settle = ramp(t, tLook + 0.3, 0.7);
+      const wPose = mixPose({ ...POSE.leanBack, head: -18 }, { ...POSE.stand, lean: 1, head: 4, hipX: 0 }, settle);
+      drawFigure(ctx, 'wife', { x: wx, y: 700, facing: -1, ...wPose, head: wPose.head - rock * 12, lean: wPose.lean - rock * 3,
+        handF: { x: wx + 34 - settle * 30, y: lerp(K.counterSun.y + 8, 590, settle) }, handB: { x: wx + 46 - settle * 40, y: lerp(K.counterSun.y + 6, 592, settle) } }, {
         ink, light: kLight(wx, o), breath: breath(t, 1) * (0.5 + laugh * 0.5), talk: rock * 0.5,
       });
 
-      // Maya: crouched on his other side handing a tool up → stands and looks to the door after them.
-      const mx = vx + 128;
+      // Maya: crouched on his left, handing a tool up → stands and turns to the door after them.
+      const mx = vx - 104;
       const mTurn = t >= tLook + 0.8;
       const mUp = ramp(t, tLook + 0.6, 0.7);
       const offer = 1 - ramp(t, tStand, 0.5);
       const reach = Math.sin(t * 1.3) * 3;
-      const mPose = mixPose({ ...POSE.crouch, head: -16, lean: 18 }, { ...POSE.stand, head: 2 }, mUp);
-      drawFigure(ctx, 'maya', { x: mx, y: 700, facing: mTurn ? -1 : -1, ...mPose,
-        ...(offer > 0.02 ? { handF: { x: lerp(mx - 22, mx - 58, offer), y: lerp(640, 556 + reach, offer) } } : { armF: [6, 12] }) }, {
+      const mPose = mixPose({ ...POSE.crouch, head: -18, lean: 16 }, { ...POSE.stand, head: 2 }, mUp);
+      drawFigure(ctx, 'maya', { x: mx, y: 700, facing: mTurn ? -1 : 1, ...mPose,
+        ...(offer > 0.02 ? { handF: { x: lerp(mx + 22, mx + 56, offer), y: lerp(640, 560 + reach, offer) } } : { armF: [6, 12] }) }, {
         ink, light: kLight(mx, o), breath: breath(t, 3, 2.2) * 0.6,
-        held: offer > 0.02 ? { front: (c) => wrench(c, { x: 0, y: 0, size: 40, rot: 0, lum: 0.8, light: { color: LOOK[WARM].key, from: 1, amount: 0.6 } }) } : undefined,
+        held: offer > 0.02 ? { front: (c) => wrench(c, { x: 0, y: 0, size: 40, rot: -60, lum: 0.8, light: { color: LOOK[WARM].key, from: 1, amount: 0.6 } }) } : undefined,
       });
     });
     kitchen.front(ctx, F, o);
@@ -134,7 +135,7 @@ export const shots = {
     camera(ctx, cam, 1, () => {
       const v1x = 980;
       // Wife, further right, a hand at her mouth.
-      const wx = 1210;
+      const wx = 1150;
       const mouthUp = ramp(t, who.at + 0.1, 0.6);
       drawFigure(ctx, 'wife', { x: wx, y: 700, facing: -1, ...POSE.stand, lean: -2, head: 4, curl: 4,
         handF: { x: lerp(wx - 16, wx - 30, mouthUp), y: lerp(560, 346, mouthUp) } }, { ink, light: kLight(wx, o, 0.9), breath: breath(t, 1.3) });
@@ -142,7 +143,7 @@ export const shots = {
       // Maya: runs from the right to behind V1's legs and clutches his knee (drawn before V1 → behind him).
       const run = clamp((t - tHide) / 0.95);
       const runE = ease.inOutSine(run);
-      const mx = lerp(1250, v1x + 34, runE);
+      const mx = lerp(1250, v1x + 46, runE);
       const kneeF = { x: v1x - 6, y: 594 };
       const runPose = POSE.run((1250 - mx) / (2.2 * 285));
       const clutch = { ...POSE.stand, lean: 12, curl: 6, head: -4, neck: 2, armB: [40, 70], footF: [0.04, 0], footB: [-0.05, 0] };
@@ -221,12 +222,14 @@ export const shots = {
         held: { back: box(0.95, { color: LOOK[WARM].key, from: 1, amount: 0.8 }) },
       });
       // V1 (right, facing left): calm, kind; glint rises to 1; lays his hand on Adam's shoulder.
-      const vx = 1222;
-      const handK = ramp(t, tHand, 0.85);
-      const rest = { x: vx - 22, y: 600 };
+      const stepK = ramp(t, tHand - 0.2, 0.8);
+      const vx = lerp(1222, 1080, stepK);
+      const vBase = stepK > 0 && stepK < 1 ? mixPose(POSE.walk(walkPhase(1222 - vx, 'v1') * 0.5), POSE.stand, Math.abs(stepK - 0.5) * 2) : POSE.stand;
+      const handK = ramp(t, tHand + 0.25, 0.85);
+      const rest = { x: vx - 12, y: 596 };
       const sh = { x: a.shoulder.x + 6, y: a.shoulder.y - 4 };
       const glint = lerp(0.6, 1, ramp(t, tGlint, 0.35));
-      drawFigure(ctx, 'v1', { x: vx, y: 700, facing: -1, ...POSE.stand, head: 2 + handK * 4, lean: handK * 3,
+      drawFigure(ctx, 'v1', { x: vx, y: 700, facing: -1, ...vBase, head: 2 + handK * 4, lean: handK * 3,
         handF: { x: lerp(rest.x, sh.x, handK), y: lerp(rest.y, sh.y, handK) - Math.sin(handK * Math.PI) * 18 }, armB: [-3, 6] }, {
         ink, light: kLight(vx, o), breath: breath(t, 2) * 0.35, aura: 0.45, glint, talk: talk(F, 'a2_iam'),
       });
@@ -248,7 +251,7 @@ export const shots = {
       // flat hand rises to the door after the lock, then he leans his forehead on it
       const handUp = ramp(t, tLock + 0.3, 0.7);
       const lean = ramp(t, 3.6, 1.1, ease.inOutSine);
-      const ax = lerp(CA.adam.x, CA.lean.x, lean);
+      const ax = lerp(CA.adam.x, CA.lean.x + 36, lean);
       const stepping = lean > 0 && lean < 1;
       const feet = stepping ? mixPose(POSE.walk(walkPhase(ax - CA.adam.x, 'adam') * 0.5), POSE.stand, Math.abs(lean - 0.5) * 2) : POSE.stand;
       const base = mixPose({ ...feet, head: 6, lean: 2, armB: [-3, 8] }, { ...POSE.foreheadOnDoor, armB: [2, 6] }, lean);
