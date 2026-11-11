@@ -25,6 +25,36 @@ const BOX = { x: K.tableTop.x + 4, y: K.tableTop.y, size: 64 };   // a child's l
 /** V1's folded hands on the table (same as a5_02). */
 const V1_HANDS = { handF: { x: 946, y: 506 }, handB: { x: 958, y: 507 } };
 /** A wobble that dies away after a prop is set down at time t0. */
+const DEG = 180 / Math.PI;
+let _scratch = null;
+/** A tiny off-screen context: draw a figure there once to read its anchors (pure cache). */
+const scratch = () => (_scratch ??= Object.assign(document.createElement('canvas'), { width: 4, height: 4 }).getContext('2d'));
+const wrap180 = (a) => ((((a + 180) % 360) + 360) % 360) - 180;
+/**
+ * Lay the hands of a facing-right figure along chosen world directions (degrees, 0 = right, + = down).
+ * tips: { F: {x, y, dir, k}, B: ... } — the FINGERTIP point and direction; k (0..1) blends from the natural
+ * IK hand toward the aimed one. Returns the pose with handF/handB (wrist targets) and handRotF/handRotB set.
+ */
+const FINGER = 0.052 * 430 * 0.95;                   // wrist → fingertip, adult hand
+function aimHands(who, pose, opts, tips) {
+  const p = { ...pose };
+  for (const s of ['F', 'B']) {
+    const tp = tips[s];
+    if (!tp) continue;
+    const r = tp.dir / DEG, k = tp.k ?? 1;
+    const aimed = { x: tp.x - Math.cos(r) * FINGER, y: tp.y - Math.sin(r) * FINGER };
+    p['hand' + s] = tp.from ? { x: lerp(tp.from.x, aimed.x, k), y: lerp(tp.from.y, aimed.y, k) } : aimed;
+  }
+  const a = drawFigure(scratch(), who, { ...p, handRotF: 0, handRotB: 0 }, opts);
+  for (const s of ['F', 'B']) {
+    const tp = tips[s];
+    if (!tp) continue;
+    const h = a['hand' + s], e = a['elbow' + s];
+    const nat = Math.atan2(h.y - e.y, h.x - e.x) * DEG;
+    p['handRot' + s] = wrap180(tp.dir - nat) * (tp.k ?? 1);
+  }
+  return p;
+}
 const settle = (t, t0) => (t < t0 ? 0 : Math.exp(-(t - t0) * 7) * Math.sin((t - t0) * 22) * 0.6);
 
 export const shots = {
@@ -106,22 +136,27 @@ export const shots = {
       // the box: carried in low over the table from the left, set down at tableTop on `place`, then pushed ~30 px toward V1
       const carry = ramp(t, 0, tPlace, ease.outCubic);
       const push = ramp(t, tPlace + 0.55, 0.8, ease.inOutSine);
-      const bx = lerp(BOX.x - 66, BOX.x - 30, carry) + 30 * push;   // ends at BOX.x, within Adam's reach
-      const by = K.tableTop.y - 40 * (1 - ease.inOutSine(clamp(t / tPlace)));
-      const down = t >= tPlace;
-      const a = lunchbox(ctx, { x: bx, y: by, size: BOX.size, lum: 1, tint: LOOK[look].fill, light: LAMP_ON_TABLE, shadow: down ? 0.8 : 0.3, wobble: settle(t, tPlace) });
+      const bx = lerp(BOX.x - 52, BOX.x - 30, carry) + 30 * push;   // ends at BOX.x, within Adam's reach
+      const lift = 1 - ease.inOutSine(clamp(t / tPlace));
+      const by = K.tableTop.y - 24 * lift;
+      const a = lunchbox(ctx, { x: bx, y: by, size: BOX.size, lum: 1, tint: LOOK[look].fill, light: LAMP_ON_TABLE, shadow: 0.8 - 0.5 * lift, wobble: settle(t, tPlace) });
       // V1's folded hands at the right edge of frame — they do not move
       drawFigure(ctx, 'v1', { x: K.seatR.x, y: 700, facing: -1, ...POSE.sit, lean: 3, ...V1_HANDS }, {
         ink, light: rim(kitchen.lightAt(look, K.seatR.x, o)), breath: breath(t, 2) * 0.4, glint: 0.75, aura: 0.45,
       });
-      // Adam: sitting on the front edge of his chair, both hands on the box's near side; after the push the hands stay,
-      // fingertips touching it while he asks, then slide back to rest on the table.
+      // Adam: sits up a little while he carries it in (head clear of the box), leans in as he sets it down and pushes.
+      // Both hands on the box's near end — front hand's fingers along the lid, back hand's flat against the end — and
+      // they stay there while he asks, then slide back to rest on the table.
       const leave = ramp(t, why.end + 0.5, 1.0, ease.inOutSine);
-      const L = a.base.x - BOX.size / 2;
-      const hF = { x: lerp(L + 10, 712, leave), y: lerp(a.base.y - 40, 509, leave) };
-      const hB = { x: lerp(L - 2, 690, leave), y: lerp(a.base.y - 18, 511, leave) };
-      drawFigure(ctx, 'adam', { x: K.seatL.x, y: 700, facing: 1, ...POSE.sitForward, hipX: 0.07, lean: 24 + 5 * push - 8 * leave, head: 12 - 4 * leave, handF: hF, handB: hB }, {
-        ink, light: rim(kitchen.lightAt(look, K.seatL.x, o)), talk: talk(F, 'a5_why'), breath: breath(t),
+      const L = a.base.x - BOX.size / 2, top = a.base.y - 0.61 * BOX.size;
+      const lean = lerp(12, 24, carry) + 5 * push - 8 * leave, head = lerp(6, 12, carry) - 4 * leave;
+      const fo = { breath: breath(t) };
+      const pose = aimHands('adam', { x: K.seatL.x, y: 700, facing: 1, ...POSE.sitForward, hipX: 0.07, lean, head }, fo, {
+        F: { x: L + 16, y: top - 2, dir: 8, from: { x: 712, y: 509 }, k: 1 - leave },
+        B: { x: L + 8, y: a.base.y - 13, dir: -12, from: { x: 690, y: 511 }, k: 1 - leave },
+      });
+      drawFigure(ctx, 'adam', pose, {
+        ink, light: rim(kitchen.lightAt(look, K.seatL.x, o)), talk: talk(F, 'a5_why'), ...fo,
       });
     });
     kitchen.front(ctx, F, o);
@@ -136,31 +171,43 @@ export const shots = {
     const camEnd = { x: NOTE.x, y: NOTE.y, zoom: 3.4 };
     const camK = ease.inOutSine(clamp(t / tRead));
     const cam = { x: lerp(BOX.x - 4, camEnd.x, camK), y: lerp(482, camEnd.y, camK), zoom: lerp(2.8, 3.4, camK) };
-    const o = { look, cam, lampSway: 0 };
+    // from `read` on the frame must be dead still: ambient time (dust, breathing) glides to a stop by tRead + 0.5
+    const u = clamp((t - (tRead - 0.5)) / 1.0);
+    const tb = t < tRead - 0.5 ? t : tRead - 0.5 + 0.5 * (1 - (1 - u) * (1 - u));
+    const o = { look, cam, lampSway: 0, t: tb };
     const open = ramp(t, tOpen, 0.8, ease.inOutSine);
-    const take = ramp(t, tUnf, tRead - tUnf, ease.inOutCubic);         // the note travels to the lens and unfolds
+    const take = ramp(t, tUnf, tRead - tUnf, ease.inOutSine);          // the note travels to the lens and unfolds
     const slide = ramp(t, tOpen + 0.7, tUnf - tOpen - 0.7, ease.inOutSine);
     kitchen.back(ctx, F, o);
     kitchen.mid(ctx, F, o);
     let slot = null;
+    // where the note is (world) and how big, from `unfold` on
+    const notePlace = (s) => ({ x: lerp(s.x, NOTE.x, take), y: lerp(s.y, NOTE.y, take), size: lerp(s.size, NOTE.size, take) });
     camera(ctx, cam, 1, () => {
       const a = lunchbox(ctx, { ...BOX, open, note: take > 0 ? 0 : 0.05 + 0.6 * slide, lum: 1, tint: LOOK[look].fill, light: LAMP_ON_TABLE, shadow: 0.8 });
       slot = a.noteSlot;
-      // Adam's front hand: to the clasp, flips it, rides the lid up, then reaches in for the note and lifts it toward us
+      // Adam's front hand: fingertips to the clasp, flip it, ride the lid up under its front edge, then reach in for
+      // the note and lift it toward us (the growing note hides the hand). Each stage aims the FINGERTIPS, not the wrist.
       const toClasp = ramp(t, tOpen - 0.7, 0.6);
       const onLid = ramp(t, tOpen + 0.05, 0.2);
       const toNote = ramp(t, tOpen + 1.0, 0.6);
-      const away = ramp(t, tUnf + 0.1, 0.6, ease.inOutSine);
-      const restF = { x: 712, y: 509 };
-      let hF = { x: lerp(restF.x, a.clasp.x - 6, toClasp), y: lerp(restF.y, a.clasp.y + 4, toClasp) };
-      hF = { x: lerp(hF.x, a.lidEdge.x - 8, onLid), y: lerp(hF.y, a.lidEdge.y + 4, onLid) };
-      hF = { x: lerp(hF.x, slot.x - 10, toNote), y: lerp(hF.y, slot.y + 6, toNote) };
-      hF = { x: lerp(hF.x, 742, away), y: lerp(hF.y, 476, away) };   // under the note: his arm holds it up to us
-      drawFigure(ctx, 'adam', { x: K.seatL.x, y: 700, facing: 1, ...POSE.sitForward, hipX: 0.09, lean: 30, head: 14, handF: hF, handB: { x: 690, y: 511 } }, {
-        ink, light: rim(kitchen.lightAt(look, K.seatL.x, o)), breath: breath(t),
+      const lift = ramp(t, tUnf, 0.5, ease.inOutSine);
+      const np = notePlace(slot), ns = Math.min(np.size, 90);
+      const stages = [
+        [toClasp, { x: a.clasp.x + 1, y: a.clasp.y + 2, dir: 18 }],
+        [onLid, { x: a.lidEdge.x - 4, y: a.lidEdge.y + 5, dir: -28 }],
+        [toNote, { x: slot.x + 2, y: slot.y + 4, dir: 22 }],
+        [lift, { x: np.x - ns * 0.36, y: np.y + ns * 0.3, dir: -18 }],
+      ];
+      let tip = { x: 742, y: 509, dir: 0 };                          // resting on the table
+      for (const [k, s] of stages) tip = { x: lerp(tip.x, s.x, k), y: lerp(tip.y, s.y, k), dir: lerp(tip.dir, s.dir, k) };
+      const fo = { breath: breath(tb) };
+      const pose = aimHands('adam', { x: K.seatL.x, y: 700, facing: 1, ...POSE.sitForward, hipX: 0.09, lean: 30, head: 14, handB: { x: 690, y: 511 } }, fo, {
+        F: { ...tip, k: toClasp },
       });
+      drawFigure(ctx, 'adam', pose, { ink, light: rim(kitchen.lightAt(look, K.seatL.x, o)), ...fo });
       drawFigure(ctx, 'v1', { x: K.seatR.x, y: 700, facing: -1, ...POSE.sit, lean: 3, ...V1_HANDS }, {
-        ink, light: rim(kitchen.lightAt(look, K.seatR.x, o)), breath: breath(t, 2) * 0.4, glint: 0.75, aura: 0.45,
+        ink, light: rim(kitchen.lightAt(look, K.seatR.x, o)), breath: breath(tb, 2) * 0.4, glint: 0.75, aura: 0.45,
       });
     });
     kitchen.front(ctx, F, o);
@@ -168,14 +215,11 @@ export const shots = {
     // everything behind the note sinks a little so the paper is the only bright thing
     ctx.save(); ctx.fillStyle = `rgba(4,3,2,${0.6 * take})`; ctx.fillRect(0, 0, 1920, 804); ctx.restore();
     camera(ctx, cam, 1, () => {
-      const still = clamp((t - tRead) / 0.6);
-      const by = Math.sin(t * 1.1) * 0.35 * still;                     // ~1 px breath of the hands, nothing else
-      const nx = lerp(slot.x, NOTE.x, take), ny = lerp(slot.y, NOTE.y, take) + by;
-      const size = lerp(slot.size, NOTE.size, take);
-      const n = note(ctx, { x: nx, y: ny, size, unfold: take, rot: lerp(slot.rot, 0, take), squash: lerp(slot.squash, 1, take),
+      const np = notePlace(slot);                                      // dead still from `read` on: no breath on the paper
+      const n = note(ctx, { x: np.x, y: np.y, size: np.size, unfold: take, rot: lerp(slot.rot, 0, take), squash: lerp(slot.squash, 1, take),
         lum: 1, tint: LOOK[look].fill, light: { color: C.cream, from: 'above', amount: 0.5, wash: 0.15 } });
-      // two fingertips pinch the bottom corners; the hands come up from below the frame
-      const hs = size * 0.4;
+      // close to the lens, two fingertips pinch the bottom corners; they fade in once the paper is big enough to own the frame
+      const hs = np.size * 0.4;
       const pinch = (corner, side) => {
         const rot = side < 0 ? -28 : 208;                               // left hand from lower left, right hand from lower right
         const r = (rot * Math.PI) / 180, tip = [hs * 0.78, -hs * 0.05];
@@ -183,9 +227,12 @@ export const shots = {
         const wy = corner.y - (tip[0] * Math.sin(r) + tip[1] * (side > 0 ? -1 : 1) * Math.cos(r));
         drawHand(ctx, { x: wx, y: wy, size: hs, rot, flip: side > 0, pose: 'pinch', ink, cuff: '#1a140e' });
       };
-      ctx.save(); ctx.globalAlpha = clamp(take * 3);
-      pinch(n.bl, -1); pinch(n.br, 1);
-      ctx.restore();
+      const hk = ease.inOutSine(clamp((take - 0.45) / 0.35));
+      if (hk > 0) {
+        ctx.save(); ctx.globalAlpha = hk;
+        pinch(n.bl, -1); pinch(n.br, 1);
+        ctx.restore();
+      }
     });
   },
 
@@ -198,12 +245,12 @@ export const shots = {
     kitchen.back(ctx, F, o);
     kitchen.mid(ctx, F, o);
     camera(ctx, cam, 1, () => {
-      // the glint: steady, then two cursor-like stutters, settling dimmer
+      // the glint: steady, then two cursor-like stutters (each dropout 3 frames at 24 fps, so it reads), settling dimmer
       const d = t - tFl;
       let glint = 0.8;
-      if (d >= 0) glint = d < 0.07 ? 0 : d < 0.17 ? 0.8 : d < 0.27 ? 0.1 : d < 0.38 ? 0.5 : lerp(0.5, 0.45, clamp((d - 0.38) / 0.12));
+      if (d >= 0) glint = d < 0.125 ? 0 : d < 0.25 ? 0.85 : d < 0.375 ? 0 : d < 0.5 ? 0.55 : lerp(0.55, 0.45, clamp((d - 0.5) / 0.3));
       const aura = lerp(0.45, 0.3, ramp(t, tFl, 0.8, ease.inOutSine));
-      const twitch = (d > 0 && d < 0.07 ? 1.2 : 0) + (d > 0.17 && d < 0.27 ? -0.8 : 0);
+      const twitch = (d > 0 && d < 0.125 ? 1.2 : 0) + (d > 0.25 && d < 0.375 ? -0.8 : 0);
       const up = ramp(t, tUp, 0.7, ease.inOutSine);
       drawFigure(ctx, 'v1', { x: K.seatR.x, y: 700, facing: -1, ...POSE.sit, lean: 3, ...V1_HANDS, head: lerp(16, 2, up) + twitch }, {
         ink, light: rim(kitchen.lightAt(look, K.seatR.x, o)), breath: breath(t, 2) * 0.4, glint, aura,
@@ -221,17 +268,17 @@ export const shots = {
     kitchen.back(ctx, F, o);
     kitchen.mid(ctx, F, o);
     camera(ctx, cam, 1, () => {
-      lunchbox(ctx, { x: BOX.x + 30, y: BOX.y, size: BOX.size, open: 1, lum: 1, tint: LOOK[look].fill, light: LAMP_ON_TABLE, shadow: 0.8 });
+      lunchbox(ctx, { x: BOX.x, y: BOX.y, size: BOX.size, open: 1, lum: 1, tint: LOOK[look].fill, light: LAMP_ON_TABLE, shadow: 0.8 });
       // Adam: looks at V1; a breath after the first line; on the last third of a5_letdown his head drops to the note and stays
       const drop = ramp(t, let_.at + let_.dur * 0.66, 0.9, ease.inOutSine);
       const gasp = Math.exp(-(((t - (rem.end + 0.6)) / 0.45) ** 2));
-      const hand = { x: 712, y: 488 + drop * 4 };
+      const hand = { x: 694, y: 490 + drop * 4 };                    // the note stays clear of the open box (box starts at BOX.x - 32)
       drawFigure(ctx, 'adam', { x: K.seatL.x, y: 700, facing: 1, ...POSE.sitForward, lean: 14 + drop * 5, curl: 8 + drop * 6, head: -9 + drop * 30,
         handF: hand, handB: { x: 668, y: 508 } }, {
         ink, light: rim(kitchen.lightAt(look, K.seatL.x, o)), talk: talk(F, 'a5_remember', 'a5_letdown'), breath: breath(t) + gasp * 1.4,
       });
       // the open note in his hand, tilted up toward him
-      note(ctx, { x: hand.x + 26, y: hand.y - 14, size: 62, unfold: 1, rot: -14, squash: 0.62, lum: 0.95, tint: LOOK[look].fill, light: { color: C.honey, from: 'above', amount: 0.6 } });
+      note(ctx, { x: hand.x + 22, y: hand.y - 12, size: 52, unfold: 1, rot: -14, squash: 0.62, lum: 0.95, tint: LOOK[look].fill, light: { color: C.honey, from: 'above', amount: 0.6 } });
       // V1: upright, hands folded; a very quiet line and the tiniest nod, then nothing
       const nod = Math.sin(clamp((t - nev.at - 0.2) / 0.9) * Math.PI) * 4;
       drawFigure(ctx, 'v1', { x: K.seatR.x, y: 700, facing: -1, ...POSE.sit, lean: 3, ...V1_HANDS, head: 1 + nod }, {

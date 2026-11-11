@@ -1,6 +1,6 @@
 // Shots: a1_07_boss, a1_08_car, a1_09_auditorium, a1_10_outside
 // Each entry is (ctx, F) => void — see STYLE.md and src/engine.js.
-import { camera, key, ease, clamp, lerp, rgba, rr, text, measure, FONT, glow } from '../engine.js';
+import { camera, key, ease, clamp, lerp, rgba, rr, text, measure, FONT, glow, scratch } from '../engine.js';
 import { LOOK, C } from '../style.js';
 import { drawFigure, POSE, mixPose, walkPhase } from '../rig.js';
 import { lunchbox, phoneSmall, backpack } from '../props.js';
@@ -9,6 +9,8 @@ import { roadside } from '../sets/street.js';
 import { auditorium, steps } from '../sets/school.js';
 import { talk, breath, drift, ramp } from '../stage.js';
 
+/** Anchors of a figure without drawing it anywhere visible (2×2 scratch canvas). */
+const probe = (who, pose) => drawFigure(scratch('act1b_probe', 2, 2).ctx, who, pose, {});
 const RED = (lum, tint, light) => ({ lum, tint, light });
 /** Sets describe lights as {key, from, amount}; the rig wants {color, from, amount}. */
 const LT = (l) => ({ color: l.color || l.key, from: l.from, amount: l.amount });
@@ -25,7 +27,8 @@ export const shots = {
   // ── a1_07 ── the manager's verdict. Adam small and low at left, manager towering behind the desk at right.
   a1_07_boss(ctx, F) {
     const { t } = F, look = 'officeDay', ink = LOOK[look].ink, MO = managerOffice.anchors, L = LT(managerOffice.lights.officeDay);
-    const cam = drift(F, { x: 1000, y: 402, zoom: 1.0 }, { x: 830, y: 436, zoom: 1.16 });
+    // (ends with the chart title still whole in frame — it was being cropped at frame right from ~4.6 s)
+    const cam = drift(F, { x: 1000, y: 402, zoom: 1.0 }, { x: 900, y: 430, zoom: 1.12 });
     const o = { look, cam, chart: ease.inOutSine(clamp(t / 1.5)) };
     const boss = F.cue('a1_boss'), sorry = F.cue('a1_sorry1');
     const rap = boss.at + 1.4;                                   // on "below"
@@ -81,8 +84,9 @@ export const shots = {
         if (an && an.handle) grip = an.handle;
       }
       // Adam: hands on head → phone → reads → looks up → reaches back for the box → runs.
-      const u = t - run - 0.05;
-      const runD = u <= 0 ? 0 : (u < 0.4 ? 1500 * u * u : 240 + 1200 * (u - 0.4));
+      // accelerates hard off the mark (0 → 1500 px/s in 0.35 s) so he is clear of frame right by ~5.3 s, a beat before the cut
+      const u = t - run;
+      const runD = u <= 0 ? 0 : (u < 0.35 ? 2143 * u * u : 262.5 + 1500 * (u - 0.35));
       const x = key(t, [[0, RA.adam.x], [run - 0.4, RA.adam.x], [run, RA.adam.x - 36, ease.inOutCubic]]) + runD;
       const rub = Math.sin(t * 1.3) * 3;
       const onHead = { ...POSE.handsOnHead, head: -8 + rub + 6 * ramp(t, sp, 0.3) * (1 - ramp(t, sp + 0.4, 0.8)) };
@@ -94,10 +98,12 @@ export const shots = {
       const kReach = ramp(t, run - 0.38, 0.38);
       if (kReach > 0) {
         const base = { ...pose, handF: undefined };
-        const fromHand = { x: x + 40, y: 470 };
+        // start the reach from where the phone hand actually is (no pop on the first frame of the reach)
+        const fh = probe('adam', { x, y: 700, facing: 1, ...base }).handF;
+        const fromHand = { x: fh.x, y: fh.y };
         pose = { ...mixPose(base, reach, kReach), handF: { x: lerp(fromHand.x, grip.x, kReach), y: lerp(fromHand.y, grip.y, kReach) } };
       }
-      const kRun = ramp(t, run + 0.05, 0.3);
+      const kRun = ramp(t, run, 0.3);
       if (kRun > 0) {
         const r = POSE.run(runD / 730 + 0.15);
         const hf = pose.handF;
@@ -117,7 +123,7 @@ export const shots = {
     });
     roadside.front(ctx, F, o);
     // the notification chip, beside him in the calm sky, held to the end
-    const k = ramp(t, rem + 0.05, 0.4, ease.outCubic);
+    const k = ramp(t, rem + 0.05, 0.3, ease.outCubic);
     if (k > 0) {
       camera(ctx, cam, 1, () => {
         const l1 = 'REMINDER — Maya\'s school performance · 5:30 PM', l2 = 'Now 6:12 PM';
@@ -156,7 +162,7 @@ export const shots = {
         x: A.door.x, y: A.door.y, s: A.door.scale, facing: 1, ...POSE.stand,
         lean: 20 - up * 12 + drop * 6 + heave * 2.5, curl: 6 + drop * 6, head: 8 - up * 12 + drop * 16 + heave * 2,
         armF: [8 - up * 4, 10], armB: [26 - up * 16, 18], footF: [0.06, 0], footB: [-0.05, 0],
-      }, { ink, light: L, breath: heave * 3, held: { front: (c) => { hangDown(c); lunchbox(c, { x: 0, y: 0, size: 46, anchor: 'handle', lum: 0.55, tint: LOOK.nightDark.fill, light: { color: '#d8cfbe', from: -1, amount: 0.6 * doorOpen } }); } } });
+      }, { ink, light: L, breath: heave * 3, alpha: clamp(doorOpen * 2), held: { front: (c) => { hangDown(c); lunchbox(c, { x: 0, y: 0, size: 46, anchor: 'handle', lum: 0.55, tint: LOOK.nightDark.fill, light: { color: '#d8cfbe', from: -1, amount: 0.6 * doorOpen } }); } } });
     });
     auditorium.front(ctx, F, o);
   },
@@ -166,8 +172,10 @@ export const shots = {
     const { t } = F, look = 'blueHour', ink = LOOK[look].ink, S = steps.anchors;
     const arrive = F.ev('arrive'), kneel = F.ev('kneel'), walk = F.ev('walk');
     const said = F.cue('a1_said'), sorry = F.cue('a1_sorry2'), always = F.cue('a1_always');
-    const cam = key(t, [[0, { x: 1150, y: 486, zoom: 1.5 }], [walk - 0.2, { x: 1128, y: 494, zoom: 1.78 }, ease.inOutSine],
-      [F.T, { x: 1030, y: 512, zoom: 1.95 }, ease.inOutSine], [F.T + 1, { x: 1022, y: 514, zoom: 2.0 }, ease.linear]]);
+    const cam = key(t, [[0, { x: 1150, y: 486, zoom: 1.5 }], [walk - 0.2, { x: 1128, y: 514, zoom: 1.78 }, ease.inOutSine],
+      [F.T, { x: 1090, y: 536, zoom: 1.95 }, ease.inOutSine], [F.T + 1, { x: 1086, y: 538, zoom: 1.99 }, ease.linear]]);
+    // (the end framing stays on Adam — it does not follow her left — so she is out of frame by ~10.6 s and he holds alone;
+    //  it also lifts the floor and the set-down lunchbox out of the bottom 60 px)
     const o = { look, cam };
     steps.back(ctx, F, o);
     steps.mid && steps.mid(ctx, F, o);
@@ -187,12 +195,15 @@ export const shots = {
         if (grab > 0) mp.handB = { x: S.backpack.x - 8, y: S.backpack.y - 66 };
         wearPack = t >= walk + 0.32;
       }
-      const u = t - (walk + 0.3), v = 480;
-      const md = u <= 0 ? 0 : (u < 0.3 ? v * u * u / 0.6 : v * (u - 0.15));
+      // a quick, hurt walk: off the step at walk+0.25, 560 px/s after 0.25 s — out of frame left by ~10.6 s
+      const u = t - (walk + 0.25), v = 560;
+      const md = u <= 0 ? 0 : (u < 0.25 ? v * u * u / 0.5 : v * (u - 0.125));
       if (md > 0) {
-        mx = S.mayaStand.x - md;
-        mp = mixPose(mp, POSE.walk(walkPhase(md, 'maya')), clamp(md / 40));
-        mp.head = 6;
+        mx -= md;                                                   // continues from the rise shift (no pop)
+        const wk = clamp(md / 40);
+        const h0 = mp.head;
+        mp = mixPose(mp, POSE.walk(walkPhase(md, 'maya')), wk);
+        mp.head = lerp(h0, 6, wk);
       }
       // y follows the step plants as she comes down
       const plants = [[S.mayaStand.x, S.mayaStand.y], ...S.mayaDown.map((p) => [p.x, p.y])];
@@ -220,7 +231,7 @@ export const shots = {
       // ── Adam ──
       const ax = key(t, [[0, S.adamEnter.x + 240], [arrive, S.adamEnter.x + 690, ease.linear], [kneel + 0.45, S.adamKneel.x, ease.outQuad]]);
       const wd = ax - (S.adamEnter.x + 240);
-      const KNEEL = { ...POSE.kneelOne, legB: undefined, footRotB: 60, footB: [-0.3, -0.012], footF: [0.205, -0.1023], lean: 8, head: -2 };
+      const KNEEL = { ...POSE.kneelOne, legB: undefined, footRotB: 60, footB: [-0.3, -0.045], footF: [0.205, -0.1023], lean: 8, head: -2 };
       const kk = ramp(t, kneel, 1.1, ease.inOutSine);
       const stop = ramp(t, kneel - 0.4, 0.8);
       let ap = mixPose(POSE.walk(walkPhase(wd, 'adam'), { stride: 0.17 }), { ...POSE.stand, head: 0 }, stop);
@@ -235,6 +246,9 @@ export const shots = {
       const reachK = ramp(t, sorry.at + 0.1, 1.0, ease.inOutSine);
       const backK = ramp(t, sorry.at + 1.0, 0.9, ease.inOutSine);
       const halfK = ramp(t, always.end, 1.2, ease.inOutSine);
+      // once she is gone the half-raised hand sinks, slowly, toward his knee (still moving at the cut)
+      const lowerK = ramp(t, walk + 1.5, 2.6, ease.inOutSine);
+      const lowPt = { x: 1050, y: 590 };
       const sh = maya.shoulder;
       const reachPt = { x: sh.x - 100, y: sh.y + 10 };
       const halfPt = { x: 1092, y: 500 };
@@ -245,12 +259,13 @@ export const shots = {
         const pr = { x: lerp(restHand.x, reachPt.x, reachK), y: lerp(restHand.y, reachPt.y, reachK) };
         const pb = { x: lerp(pr.x, reachPt.x - 22, backK), y: lerp(pr.y, reachPt.y + 6, backK) };
         hand = { x: lerp(pb.x, halfPt.x, halfK), y: lerp(pb.y, halfPt.y, halfK) };
+        hand = { x: lerp(hand.x, lowPt.x, lowerK), y: lerp(hand.y, lowPt.y, lowerK) };
       }
       if (hand) ap.handF = hand;
-      ap.lean += setK * (1 - handUp) * 16 + reachK * 6 - halfK * 3;
+      ap.lean += setK * (1 - handUp) * 16 + reachK * 6 - halfK * 3 + lowerK * 3;
       // head: level with hers; small recoil when she looks at him; follows her as she rises and goes, then drops
       const follow = ramp(t, walk + 0.1, 0.5, ease.inOutSine), follow2 = ramp(t, walk + 0.6, 0.6, ease.inOutSine);
-      const dropK = ramp(t, walk + 1.0, 0.9, ease.inOutSine);
+      const dropK = ramp(t, walk + 1.2, 2.0, ease.inOutSine);       // head drops after she has gone, slowly
       ap.head = (ap.head || 0) - 2 + setK * (1 - handUp) * 14 + look2 * 4 - follow * 12 + follow2 * 26 + dropK * 16;
       ap.curl = (ap.curl || 0) + look2 * 4 + dropK * 8;
       const aOpts = { ink, light: LT(steps.lightAt(look, ax, o)), talk: talk(F, 'a1_sorry2'), breath: breath(t, 0.7, lerp(2.6, 1.5, kk)) };

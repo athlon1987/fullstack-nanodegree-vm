@@ -8,7 +8,7 @@
 //                in, they lift it together, she jumps with her free arm up to the end. Likes tick up from 214.
 //   a7_07_video  message thread in golden light; tap the video bubble; play 0.6 it opens full screen (0.3 s).
 //                The original Adam in his car at night: wipe 1.4 heel of hand to the eyes; a7_video1; long pause,
-//                head down, a tear; a7_video2; reaches toward the lens; end 9.8 freeze, dim, replay + "0:09".
+//                looking away out of the windscreen, a tear; a7_video2; reaches toward the lens; end 9.8 freeze, dim, replay + "0:09".
 import { TAU, clamp, lerp, ease, key, wobble, rgba, mixHex, rr, fillRR, linGrad, radGrad, text, measure, FONT, PW, PH } from '../engine.js';
 import { LOOK, C } from '../style.js';
 import { drawFigure, POSE, mixPose, walkPhase } from '../rig.js';
@@ -83,7 +83,8 @@ function stageScene(ctx, F, t) {
 
   // ── Maya: walks on from the right to the lectern (facing left), takes the trophy, turns to face V1 (right)
   const mx = key(t, [[0.15, 1480], [2.6, 842, ease.inOutSine], [3.8, 842], [4.5, 888, ease.inOutSine]]);
-  const fx = key(t, [[3.85, -1], [4.15, 1]]), mf = fx < 0 ? -1 : 1;
+  // a 7-frame fractional-facing turn (the rig squashes her through the profile flip) instead of a 1-frame flip
+  const fx = key(t, [[3.85, -1], [4.15, 1, ease.inOutSine]]), mf = fx;
   const walkW = 1 - ramp(t, 2.3, 0.4, ease.inOutSine);
   const stepW = Math.min(ramp(t, 3.8, 0.15), 1 - ramp(t, 4.35, 0.2));
   const mWalk = t < 3.3 ? POSE.walk(walkPhase(1480 - mx, 'maya', 1, 0.22), { stride: 0.22, swing: 30 }) : POSE.walk(walkPhase(mx - 842, 'maya', 1, 0.14), { stride: 0.14, swing: 8 });
@@ -133,19 +134,20 @@ function stageScene(ctx, F, t) {
     const grabW = key(t, [[2.55, 0], [2.88, 1]]);
     const mPose = mixPose(mixPose(POSE.stand, mWalk, Math.max(walkW, stepW)), POSE.stand, 0);
     const restF = P(mx + mf * 8, 640 - 112);
-    const handF = grabW > 0 ? lerpP(restF, P(T.x - mf * 2 + (lift > 0 ? -4 : 0), T.y - 12), grabW) : undefined;
+    const handF = grabW > 0 ? lerpP(restF, P(T.x - mf * 2 - 4 * lift, T.y - 12), grabW) : undefined;
     drawFigure(ctx, 'maya', {
       x: mx, y: 640 - bounce, facing: mf, ...mPose,
       head: key(t, [[0, -4], [2.4, -8], [3.4, 2], [tr + 0.4, -6], [tr + 1.1, -22], [9, -18]]),
       lean: (mPose.lean || 0) * Math.max(walkW, stepW) + key(t, [[2.5, 0], [2.9, 6], [3.5, 0]]) - jumpOn * 3,
       armB: key(t, [[tr + 1.0, [-6, 10]], [tr + 1.4, [166, 14]]]),
-      ...(bounce > 0.5 ? { footF: [0.04, 0.02 * hop * jumpOn], footB: [-0.03, 0.02 * hop * jumpOn], footRotF: 18 * hop, footRotB: 18 * hop } : {}),
+      // continuous with the standing feet (P0: 0.035 / -0.03) so the jump never pops on its first frame
+      ...(jumpOn > 0 ? { footF: [0.035 + 0.005 * jumpOn, 0.02 * hop * jumpOn], footB: [-0.03, 0.02 * hop * jumpOn], footRotF: 18 * hop * jumpOn, footRotB: 18 * hop * jumpOn } : {}),
       handF,
     }, { ink: ST_INK, light: ST_L, breath: breath(t, 0.6, 2.4), wear: { starHeadband: true } });
     // V1
     if (vx < 1290) {
       const gripW = key(t, [[tr + 0.3, 0], [tr + 0.58, 1]]);
-      const restV = P(vx - 4, 432);
+      const restV = P(vx - 6, 470);            // ≈ where his hanging hand already is, so the IK grab starts without a jump
       drawFigure(ctx, 'v1', {
         x: vx, y: 640, facing: -1, ...vPose,
         head: key(t, [[tr, 2], [tr + 0.5, -4], [tr + 1.1, -16]]), lean: (vPose.lean || 0) * vWalkW - 2,
@@ -269,8 +271,9 @@ function carScene(ctx, F, tt) {
     // head: low and exhausted → wipe → up to the lens → a7_video1 → down and away (pause) → up → a7_video2 → reach
     const down = c1.end + 0.35, up2 = c2.at - 0.55;
     const head = key(tt, [[0, 27], [wipe, 27], [wipe + 0.3, 20], [wipe + 0.95, 20], [c1.at - 0.05, 5, ease.inOutSine],
-      [down, 5], [down + 0.9, 33, ease.inOutSine], [up2, 31], [up2 + 0.5, 5, ease.inOutSine], [reachT, 6], [reachT + 0.8, 1]]);
-    const neck = key(tt, [[0, 8], [c1.at - 0.05, 2], [down, 2], [down + 0.9, 9], [up2, 9], [up2 + 0.5, 2]]);
+      [down, 5], [down + 0.9, -11, ease.inOutSine], [up2, -9], [up2 + 0.5, 5, ease.inOutSine], [reachT, 6], [reachT + 0.8, 1]]);
+    // the pause: he looks away, up and out through the windscreen, then back to the lens
+    const neck = key(tt, [[0, 8], [c1.at - 0.05, 2], [down, 2], [down + 0.9, -1], [up2, -1], [up2 + 0.5, 2]]);
     const lean = key(tt, [[0, 4], [c1.at, 2], [down + 0.9, 7], [up2 + 0.5, 3], [reachT, 3], [reachT + 0.8, 15]]);
     // front hand: lap → heel of the hand across the eyes → lap → reach toward the lens
     const lap = P(938, 556), eye = P(957 + Math.sin(Math.max(0, tt - wipe - 0.3) * 8) * 5, 431);
@@ -282,7 +285,7 @@ function carScene(ctx, F, tt) {
       handF, handRotF: toEye * -40, handB: P(CA.wheelGrip.x, CA.wheelGrip.y + 8),
     }, {
       ink: CAR_INK, light: CAR_L, talk: talk(F, 'a7_video1', 'a7_video2'), breath: breath(tt, 0, 1.3) * 1.3,
-      tear: key(tt, [[down + 0.3, 0], [up2 - 0.1, 0.5]]),
+      tear: key(tt, [[down + 0.3, 0], [down + 0.6, 0.15], [up2 + 0.9, 0.95, ease.inOutSine]]),   // runs down the cheek (parked at the eye it read as a glint)
     });
   }
   ctx.restore();

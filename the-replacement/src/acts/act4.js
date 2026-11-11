@@ -108,7 +108,7 @@ const CARDS = [
   { ev: 'card2', icon: 'coins', label: ['MONTHLY', 'ALLOWANCE'] },
   { ev: 'card3', icon: 'id', label: ['NEW', 'IDENTITY'] },
 ];
-const CARD_W = 122, CARD_H = 156, LABEL = 17;    // world px (≈ 200 × 260 and ≥ 27 px type at zoom ~1.65)
+const CARD_W = 136, CARD_H = 156, LABEL = 18.6;  // world px (≈ 225 × 260 and ≥ 30 px type at zoom ~1.65)
 
 function card(ctx, x, y, k, fold, spec) {
   holoPanel(ctx, x, y, CARD_W, CARD_H, k, fold, (c, w, h) => {
@@ -116,7 +116,7 @@ function card(ctx, x, y, k, fold, spec) {
     c.fillStyle = rgba(C.cyan, 0.5); c.fillRect(-w / 2 + 26, -h / 2 + 13.5, w - 40, 0.7);
     c.save(); c.translate(0, -h * 0.14); ICON[spec.icon](c); c.restore();
     const n = spec.label.length, y0 = h * 0.22 - (n - 1) * LABEL * 0.6;
-    spec.label.forEach((s, i) => text(c, s, 0, y0 + i * LABEL * 1.2, { size: LABEL, family: FONT.mono, weight: 500, color: C.ice, align: 'center', tracking: 1.2 }));
+    spec.label.forEach((s, i) => text(c, s, 0, y0 + i * LABEL * 1.2, { size: LABEL, family: FONT.mono, weight: 600, color: C.ice, align: 'center', tracking: 1.2 }));
   });
 }
 
@@ -184,25 +184,28 @@ export const shots = {
     // she stands in front of the bench: draw her after the seat's front edge
     bench.front(ctx, F, o);
     camera(ctx, cam, 1, () => {
-      // The representative: out of the car's kerbside door at `steps`, walks toward him (perspective: small at the car, full size on the pavement), stops over him.
+      // The representative: out of the car's kerbside door at `steps`, walks to him at full size on the pavement
+      // (y 700) at a brisk, even pace, decelerates over her last half-step and stops over him.
       if (t >= tSteps - 0.05) {
-        const dur = 1.15, u = clamp((t - tSteps) / dur);
-        const path = (v) => { const p = 1 - Math.pow(1 - v, 1.6); return { x: lerp(1420, 868, p), d: ease.outCubic(clamp(v * 1.15)) }; };
-        const P = path(u), s = lerp(0.68, 1, P.d), y = lerp(612, 700, P.d);
-        // walk phase: distance travelled measured in her own stride (integrated so the feet do not slide)
-        let ph = 0; const N = 24;
-        for (let i = 0; i < N; i++) { const a = path((u * i) / N), b = path((u * (i + 1)) / N); ph += Math.abs(b.x - a.x) / (0.8 * REP_H * lerp(0.68, 1, (a.d + b.d) / 2)); }
-        const stop = ramp(t, tSteps + dur - 0.3, 0.45, ease.inOutSine);
-        const w = POSE.walk(ph, { stride: 0.17, swing: 14 });
-        const pose = { x: P.x, y, s, facing: -1, ...mixPose(w, POSE.stand, stop) };
+        const STRIDE = 0.22, CYC = 4 * STRIDE * REP_H;             // one walk cycle covers CYC px
+        const L = 1.25 * CYC;                                       // ends on phase .25: both feet under her
+        const TW = 1.3, DEC = 0.45, v0 = L / (TW - DEC / 2);        // ≈ 430 px/s ≈ 1.75 m/s
+        const tw = clamp(t - tSteps, 0, TW);
+        const tc = TW - DEC;
+        const dist = tw <= tc ? v0 * tw : v0 * tc + v0 * (DEC - Math.pow(TW - tw, 2) / DEC) / 2;
+        const x = 868 + L - dist;
+        const ph = Math.max(0, dist) / CYC;                          // phase from distance: the feet do not slide
+        const stop = ramp(t, tSteps + TW - 0.2, 0.35, ease.inOutSine);
+        const w = POSE.walk(ph, { stride: STRIDE, swing: 14 });
+        const pose = { x, y: 700, s: 1, facing: -1, ...mixPose(w, POSE.stand, stop) };
         pose.armF = POSE.holdToChest.armF; pose.armB = [w.armB[0] * (1 - stop) * 0.6 + stop * 4, 14 * (1 - stop) + 8 * stop];
-        pose.lean = lerp(3, -1, stop); pose.head = lerp(2, 16, ramp(t, tSteps + dur - 0.2, 0.8)) + 0;
+        pose.lean = lerp(3, -1, stop); pose.head = lerp(2, 16, ramp(t, tSteps + TW - 0.2, 0.8));
         pose.curl = -1;
         const R = probe('rep', pose);
-        const alpha = clamp((t - tSteps) / 0.3);
-        figure(ctx, 'rep', pose, { ink, light: bench.lightAt(look, P.x, o), talk: talk(F, 'a4_rep1'), breath: breath(t, 1.7) * stop, alpha }, (c) => {
+        const alpha = clamp((t - tSteps) / 0.25);
+        figure(ctx, 'rep', pose, { ink, light: bench.lightAt(look, x, o), talk: talk(F, 'a4_rep1'), breath: breath(t, 1.7) * stop, alpha }, (c) => {
           c.save(); c.globalAlpha *= alpha;
-          tablet(c, { x: R.handF.x - 4 * s, y: R.handF.y + 16 * s, size: 62 * s, rot: -6, face: -1, turn: 0.22, bloom: 0.6, lum: 0.7, tint: LOOK[look].fill });
+          tablet(c, { x: R.handF.x - 4, y: R.handF.y + 16, size: 62, rot: -6, face: -1, turn: 0.22, bloom: 0.6, lum: 0.7, tint: LOOK[look].fill });
           c.restore();
         });
       }
@@ -240,7 +243,7 @@ export const shots = {
       tabletSpill(ctx, tab.x, tab.y, 1 + 0.4 * Math.max(...kC) * (1 - fold) + 0.4 * kDoc);
 
       // the cards: rise one at a time from the tablet into a row above and between them
-      const slots = [{ x: 670, y: 262 }, { x: 806, y: 250 }, { x: 942, y: 262 }];
+      const slots = [{ x: 658, y: 266 }, { x: 806, y: 254 }, { x: 954, y: 266 }];
       CARDS.forEach((cd, i) => {
         const k = kC[i];
         if (k <= 0) return;
@@ -258,7 +261,7 @@ export const shots = {
       });
       // the contract: one taller panel rising between them
       if (kDoc > 0) {
-        const x = lerp(tab.x, 815, kDoc), y = lerp(tab.y - 30, 276, kDoc) + Math.sin(t * 0.9) * 2 * kDoc;
+        const x = lerp(tab.x, 815, kDoc), y = lerp(tab.y - 30, 288, kDoc) + Math.sin(t * 0.9) * 2 * kDoc;
         ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = 0.06 * kDoc;
         ctx.fillStyle = C.cyan; ctx.beginPath(); ctx.moveTo(tab.x - 6, tab.y - 4); ctx.lineTo(tab.x + 6, tab.y - 4);
         ctx.lineTo(x + 76, y + 112); ctx.lineTo(x - 76, y + 112); ctx.closePath(); ctx.fill(); ctx.restore();
@@ -364,8 +367,12 @@ export const shots = {
         rPose.handB = { x: lerp(sitB.x, sideB.x, k), y: lerp(sitB.y, sideB.y, k) };
       }
       void handRest;
-      const drawRep = () => figure(ctx, 'rep', rPose, { ink, light: bench.lightAt(look, rPose.x, o), breath: breath(t, 2.1) * 0.6 });
-      if (up < 0.3) drawRep(); else repLater = drawRep;
+      const drawRep = (alpha = 1) => figure(ctx, 'rep', rPose, { ink, light: bench.lightAt(look, rPose.x, o), breath: breath(t, 2.1) * 0.6, alpha });
+      // As she rises her legs come out from behind the seat's front edge: draw her behind it, then fade in a copy
+      // in front of it over ~0.4 s (instead of switching layers in one frame, which popped the seat-edge line).
+      const front = clamp((up - 0.12) / 0.3);
+      if (front < 1) drawRep();
+      if (front > 0) repLater = () => drawRep(front);
     });
     bench.front(ctx, F, o);
     if (repLater) camera(ctx, cam, 1, repLater);      // risen: she now stands in front of the seat's front edge

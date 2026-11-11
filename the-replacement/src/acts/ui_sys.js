@@ -157,38 +157,54 @@ function a3_04_class(ctx, F) {
 }
 
 // ═════════════════════════════════════════════ a4_04_sign ═════════════════════════════════════════════
-// Signature "Adam": authored control points (x, y) in a 335 x 125 box, baseline y ~ 95; Catmull-Rom smoothed.
-const SIG_PTS = [
-  [0, 94], [14, 62], [30, 24], [44, 3], [53, 22], [61, 58], [68, 91], [66, 100], [58, 78], [46, 66], [30, 62], [44, 66], [66, 70], [82, 78], [96, 66],
-  [112, 54], [100, 49], [86, 61], [84, 80], [96, 93], [112, 85], [121, 60], [127, 20], [131, -18], [136, -30], [138, -8], [135, 38], [133, 80], [141, 93], [153, 87],
-  [160, 70], [150, 59], [138, 70], [138, 87], [150, 95], [164, 83], [171, 64], [173, 90], [181, 94], [189, 70], [193, 58], [201, 62], [201, 91], [206, 66], [215, 58],
-  [225, 64], [225, 92], [230, 68], [241, 58], [251, 66], [253, 93], [264, 96], [292, 90], [334, 83],
+// Signature "Adam": authored control points (x, y) in a ~295 x 100 box, baseline y ~ 95, x-height ~ 58,
+// ascenders ~ 3; Catmull-Rom smoothed per stroke. Stroke 1: A (two legs) a d a m, short exit flick.
+// Pen lift, then stroke 2 crosses the A. No trailing loop. The pen-up travel is counted at LIFT_W of its
+// length so the stylus hops back quickly; the ink is never drawn along it.
+const SIG_STROKES = [
+  [
+    [0, 96], [9, 76], [20, 46], [31, 18], [39, 3], [46, 18], [54, 48], [61, 78], [66, 94], [76, 97],                          // A
+    [92, 97], [106, 93], [112, 78], [113, 60], [102, 54], [89, 58], [82, 74], [86, 90], [97, 96], [108, 90], [113, 74], [115, 58],
+    [115, 78], [118, 92], [128, 96],                                                                                            // a
+    [142, 97], [150, 90], [154, 74], [153, 60], [141, 54], [128, 60], [123, 77], [128, 92], [140, 96], [150, 89], [154, 72], [157, 40],
+    [160, 4], [159, 32], [157, 62], [158, 84], [164, 95], [176, 97],                                                            // d
+    [190, 97], [198, 88], [200, 72], [199, 60], [187, 54], [174, 60], [168, 76], [172, 91], [184, 96], [194, 90], [199, 74], [201, 58],
+    [201, 80], [204, 93], [213, 95],                                                                                            // a
+    [217, 80], [220, 62], [228, 56], [235, 63], [236, 80], [236, 95], [237, 78], [241, 63], [248, 56], [255, 62], [257, 80], [257, 95],
+    [258, 78], [262, 63], [269, 56], [276, 62], [278, 78], [279, 91], [285, 96], [293, 92],                                       // m
+  ],
+  [[9, 66], [22, 63], [38, 61], [52, 60], [56, 60]],                                                                            // A crossbar
 ];
+const LIFT_W = 0.7;
 const SIG = { x: 590, y: 400, s: 1.62 };
 let _sig = null;
 function sigPath() {
   if (_sig) return _sig;
-  const P = SIG_PTS, out = [];
-  for (let i = 0; i < P.length - 1; i++) {
-    const p0 = P[Math.max(0, i - 1)], p1 = P[i], p2 = P[i + 1], p3 = P[Math.min(P.length - 1, i + 2)];
-    for (let j = 0; j < 10; j++) {
-      const u = j / 10, u2 = u * u, u3 = u2 * u;
-      const f = (a, b, c, d) => 0.5 * (2 * b + (-a + c) * u + (2 * a - 5 * b + 4 * c - d) * u2 + (-a + 3 * b - 3 * c + d) * u3);
-      const n = out.length;
-      out.push([SIG.x + (f(p0[0], p1[0], p2[0], p3[0]) + (noise1(n * 0.35, 4) - 0.5) * 3.2) * SIG.s,
-                SIG.y + (f(p0[1], p1[1], p2[1], p3[1]) + (noise1(n * 0.31, 9) - 0.5) * 3.6) * SIG.s]);
+  const out = [], ink = [];          // ink[i]: is the segment ending at point i drawn?
+  SIG_STROKES.forEach((P, si) => {
+    for (let i = 0; i < P.length - 1; i++) {
+      const p0 = P[Math.max(0, i - 1)], p1 = P[i], p2 = P[i + 1], p3 = P[Math.min(P.length - 1, i + 2)];
+      for (let j = 0; j < 10; j++) {
+        const u = j / 10, u2 = u * u, u3 = u2 * u;
+        const f = (a, b, c, d) => 0.5 * (2 * b + (-a + c) * u + (2 * a - 5 * b + 4 * c - d) * u2 + (-a + 3 * b - 3 * c + d) * u3);
+        const n = out.length;
+        out.push([SIG.x + (f(p0[0], p1[0], p2[0], p3[0]) + (noise1(n * 0.35, 4) - 0.5) * 2.4) * SIG.s,
+                  SIG.y + (f(p0[1], p1[1], p2[1], p3[1]) + (noise1(n * 0.31, 9) - 0.5) * 2.6) * SIG.s]);
+        ink.push(!(si > 0 && i === 0 && j === 0));
+      }
     }
-  }
-  out.push([SIG.x + P[P.length - 1][0] * SIG.s, SIG.y + P[P.length - 1][1] * SIG.s]);
+    out.push([SIG.x + P[P.length - 1][0] * SIG.s, SIG.y + P[P.length - 1][1] * SIG.s]); ink.push(true);
+  });
+  ink[0] = false;
   const len = [0];
-  for (let i = 1; i < out.length; i++) len.push(len[i - 1] + Math.hypot(out[i][0] - out[i - 1][0], out[i][1] - out[i - 1][1]));
-  return (_sig = { pts: out, len, total: len[len.length - 1] });
+  for (let i = 1; i < out.length; i++) len.push(len[i - 1] + Math.hypot(out[i][0] - out[i - 1][0], out[i][1] - out[i - 1][1]) * (ink[i] ? 1 : LIFT_W));
+  return (_sig = { pts: out, ink, len, total: len[len.length - 1] });
 }
 function sigAt(p) {
   const S = sigPath(), d = clamp(p) * S.total;
   let i = 1; while (i < S.len.length - 1 && S.len[i] < d) i++;
   const a = S.len[i - 1], b = S.len[i], u = b > a ? (d - a) / (b - a) : 0;
-  return { i, x: lerp(S.pts[i - 1][0], S.pts[i][0], u), y: lerp(S.pts[i - 1][1], S.pts[i][1], u) };
+  return { i, up: !S.ink[i], x: lerp(S.pts[i - 1][0], S.pts[i][0], u), y: lerp(S.pts[i - 1][1], S.pts[i][1], u) };
 }
 
 function contractPage(c, t, p, conf, confirm) {
@@ -210,8 +226,9 @@ function contractPage(c, t, p, conf, confirm) {
     for (let pass = 0; pass < 2; pass++) {
       c.lineWidth = pass ? 3.4 : 6.5; c.globalAlpha = pass ? 0.95 : 0.16;
       c.beginPath(); c.moveTo(S.pts[0][0], S.pts[0][1]);
-      for (let i = 1; i < n; i++) c.lineTo(S.pts[i][0], S.pts[i][1]);
-      c.lineTo(e.x, e.y); c.stroke();
+      for (let i = 1; i < n; i++) (S.ink[i] ? c.lineTo(S.pts[i][0], S.pts[i][1]) : c.moveTo(S.pts[i][0], S.pts[i][1]));
+      if (e.up) c.moveTo(e.x, e.y); else c.lineTo(e.x, e.y);
+      c.stroke();
     }
     c.restore();
   }
@@ -247,7 +264,7 @@ function a4_04_sign(ctx, F) {
     ctx.save(); rr(ctx, 190, 20, 1540, 850, 18); ctx.clip();
     const page = (c) => contractPage(c, t, p, conf, confirm);
     page(ctx);
-    const dt = t - drop, DX = 1040, DY = 500, R = 54;
+    const dt = t - drop, DX = 1215, DY = 462, R = 54;   // on the glass beside (right of) the signature, clear of the ink
     if (dt > -0.12) {
       if (dt < 0) {
         const u = (dt + 0.12) / 0.12;
@@ -282,7 +299,9 @@ function a4_04_sign(ctx, F) {
     // stylus + hand
     const S0 = sigAt(0), cur = sigAt(p), fin = sigAt(1);
     const lift = sm(t, signEnd, 0.4, ease.inOutSine);
-    const hover = (1 - sm(t, sign - 0.35, 0.35, ease.inOutSine)) * 26 + lift * 34;
+    const SP = sigPath(), li = SP.ink.indexOf(false, 1);                // the pen lift before the A's crossbar
+    const upU = li > 0 && t > sign && t < signEnd ? clamp((p * SP.total - SP.len[li - 1]) / (SP.len[li] - SP.len[li - 1])) : 0;
+    const hover = (1 - sm(t, sign - 0.35, 0.35, ease.inOutSine)) * 26 + lift * 34 + Math.sin(upU * Math.PI) * 24;
     let tx, ty;
     const enter = seg(t, 0.2, sign - 0.3, ease.inOutCubic), leave = seg(t, signEnd + 0.5, drop + 0.5, ease.inOutCubic);
     if (t < sign) { tx = lerp(-300, S0.x, enter); ty = lerp(S0.y + 110, S0.y, enter); }

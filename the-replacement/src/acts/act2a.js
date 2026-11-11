@@ -117,14 +117,16 @@ export const shots = {
       });
       // V1: plumb, presenting to the table (facing left), gesturing back at the climbing line with easy confidence.
       const turnScreen = ramp(t, ap + 0.9, 0.5);              // after the applause he turns to admire the screen…
-      const facing = t < ap + 1.15 || t >= gl ? -1 : 1;        // …and at `glance` snaps back toward the glass
+      // fractional facing: a ~5-frame turn to the screen, and a quick turn back toward the glass on `glance`
+      const fK = key(t, [[0, 0], [ap + 0.95, 0], [ap + 1.2, 1, ease.inOutSine], [gl - 0.12, 1], [gl + 0.1, 0, ease.inOutSine]]);
+      const facing = lerp(-1, 1, fK);
       const gestK = 1 - ramp(t, ap - 0.2, 0.6);
       const sw = Math.sin(t * 1.35);
       let v1 = { ...POSE.present, lean: -2 };
       v1.armF = [lerp(4, -40 - 14 * sw, gestK), lerp(10, -40 + 18 * sw, gestK)];
       v1.armB = [lerp(-4, 110 + 12 * Math.sin(t * 1.1 + 1), gestK), lerp(10, 20 + 18 * Math.sin(t * 0.8), gestK)];
       v1.head = key(t, [[0, 6], [ap, 6], [ap + 0.4, 14], [ap + 0.9, 4], [gl - 0.05, 2], [gl + 0.12, -6, ease.outCubic], [gl + 0.45, -2, ease.inOutSine], [9.6, -2]]);
-      if (facing === 1) { v1.armF = [lerp(-10, 8, turnScreen), 10]; v1.armB = [-6, 14]; v1.head = -4; }
+      if (fK > 0) { v1.armF = mixPose(v1.armF, [lerp(-10, 8, turnScreen), 10], fK); v1.armB = mixPose(v1.armB, [-6, 14], fK); v1.head = lerp(v1.head, -4, fK); }
       drawFigure(ctx, 'v1', { x: MG.presenter.x, y: MG.presenter.y, s: S, facing, ...v1 },
         { ink, light: RL, aura: 0.45, glint: ramp(t, gl, 0.45), talk: t < ap ? 0.12 * Math.max(0, Math.sin(t * 5.3)) : 0, breath: breath(t, 2) * 0.4 });
     });
@@ -154,7 +156,8 @@ export const shots = {
     meetingGlass.back(ctx, F, o);
     camera(ctx, cam, 1, () => {
       const A = MG.adamGlass, back = ramp(t, 2.0, 0.55, ease.inOutCubic), turnT = 2.6;
-      let pose, x, facing = 1;
+      let pose, x;
+      const facing = lerp(1, -1, ramp(t, turnT - 0.12, 0.2, ease.inOutSine));   // a 5-frame turn, not a snap
       if (t < turnT) {
         x = A.x - 70 * back;
         const stepK = clamp((t - 2.0) / 0.55);
@@ -163,7 +166,6 @@ export const shots = {
           footF: [0.035 - 0.16 * Math.sin(stepK * Math.PI) * (1 - stepK) - 0.16 * stepK * 0, -0.04 * Math.sin(stepK * Math.PI)],
         };
       } else {
-        facing = -1;
         const rt = t - turnT, d = 0.5 * 1500 * Math.min(rt, 0.4) ** 2 + (rt > 0.4 ? 600 * (rt - 0.4) : 0);
         x = A.x - 70 - d;
         const startK = ramp(rt, 0, 0.18, ease.outQuad);
@@ -177,7 +179,7 @@ export const shots = {
   // ── a2_04 ── side tracking shot: Adam runs flat out toward home, screen RIGHT; the city streams past.
   a2_04_run(ctx, F) {
     const { t } = F, look = 'greyMorning', ink = LOOK[look].ink;
-    const v = 520, ax = CR.start.x + v * t;
+    const v = 1250, ax = CR.start.x + v * t;   // a sprint (~5 m/s): the run cycle, locked to distance, lands at ~1.3 strides/s
     const base = drift(F, { x: 0, y: 396, zoom: 1.0 }, { x: 0, y: 392, zoom: 1.05 }, { hand: 1.5, seed: 4 });
     const cam = { ...base, x: ax + 320 / base.zoom + base.x };
     const o = { look, cam, peds: 1, fg: 1, traffic: 1 };
@@ -187,8 +189,8 @@ export const shots = {
     // passers-by on the pavement just behind his line, walking slowly the other way; they do not look at him
     const d = 0.8, gy = 430 + 270 * d;
     camera(ctx, cam, d, () => {
-      [['extraM', 944, 0.0], ['extraF', 1580, 0.4], ['extraM', 2274, 0.75]].forEach(([who, w0, ph], i) => {
-        const pd = 110 * t, px = w0 + (i === 1 ? 0 : 0) - pd;
+      [['extraM', 944, 0.0], ['extraF', 1580, 0.4], ['extraM', 2274, 0.75], ['extraF', 2950, 0.2], ['extraM', 3560, 0.55], ['extraF', 4240, 0.9], ['extraM', 4900, 0.3]].forEach(([who, w0, ph], i) => {
+        const pd = 110 * t, px = w0 - pd;
         drawFigure(ctx, who, { x: px, y: gy, s: d, facing: -1, ...POSE.walk(walkPhase(pd, who, d) + ph), head: 6 },
           { ink: '#2a3446', light: rim({ key: L.color, from: 1, amount: 0.25 }), breath: breath(t, i) });
       });
@@ -202,6 +204,8 @@ export const shots = {
         held: { front: hangingLunchbox(swing, 0.9, LOOK[look].fill, { color: '#cfdcee', from: 1, amount: 0.5 }) },
       });
     });
-    cityRun.front(ctx, F, o);
+    // the out-of-focus foreground streaks past faster than parallax alone would carry it, so posts and
+    // railings only flick across him (a post used to cover him completely for ~0.5 s)
+    cityRun.front(ctx, F, { ...o, cam: { ...cam, x: cam.x + 600 * t } });
   },
 };

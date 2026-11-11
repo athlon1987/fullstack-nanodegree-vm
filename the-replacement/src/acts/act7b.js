@@ -72,13 +72,13 @@ export const shots = {
     const g0 = F.ev('glint'), g1 = F.ev('glintEnd'), lk = F.ev('look'), lunch = F.cue('a7_lunch');
     const flipT = lk + 0.08, turned = t >= flipT;
     const S = HS.stop;
-    const cam = drift(F, { x: S.x - 48, y: 296, zoom: 3.3 }, { x: S.x - 30, y: 292, zoom: 3.5 });
+    const cam = drift(F, { x: S.x - 44, y: 300, zoom: 3.9 }, { x: S.x - 22, y: 294, zoom: 4.2 });
     const o = { look, cam, blur: 1, fgLeaves: 0, flare: 1 };
     homeStreet.back(ctx, F, o);
     homeStreet.mid(ctx, F, o);
     // glint: kindles g0→g1, holds; begins to fade when her voice starts; gone within 0.2 s of the look
-    let glint = key(t, [[g0, 0], [g1, 0.9, ease.inOutSine]]);
-    glint *= 1 - 0.35 * ramp(t, lunch.at, lk - lunch.at, ease.inOutSine);
+    let glint = key(t, [[g0, 0], [g1, 1, ease.inOutSine]]);
+    glint *= 1 - 0.15 * ramp(t, lunch.at, lk - lunch.at, ease.inOutSine);
     glint *= 1 - ramp(t, lk, 0.2, ease.outCubic);
     // head: bowed over the phone; lifts a little at her voice; turns (flip) toward screen right and settles
     const hear = ramp(t, lunch.at + 0.05, 0.35, ease.outCubic);
@@ -90,7 +90,8 @@ export const shots = {
       const d = ramp(t, flipT + 0.1, 0.9, ease.inOutSine);   // the phone hand sinks to his side
       pose = { ...POSE.holdPhone, armF: [lerp(28, 6, d), lerp(96, 12, d)], head: lerp(6, -5, s), neck: lerp(1, -2, s), lean: lerp(0, -2, s) };
     }
-    const facing = turned ? 1 : -1;
+    // the turn: facing sweeps -1 → 1 over ~5 frames (the figure narrows through profile-to-profile), not a one-frame flip
+    const facing = lerp(-1, 1, ramp(t, lk - 0.06, 0.22, ease.inOutSine));
     const cold = { color: '#dfefff', from: -1, amount: 0.9 };
     const warm = { color: GOLD.key, from: 1, amount: lerp(0.55, 0.9, ramp(t, flipT, 0.5)) };
     const light = turned ? warm : cold;
@@ -99,10 +100,12 @@ export const shots = {
       // the phone's cool spill on his face from below-left (not cyan: plain screen white)
       if (!turned) glow(ctx, S.x - 70, 340, 70, '#dfefff', 0.16);
       else glow(ctx, S.x + 70, 270, 90, GOLD.key, 0.14 * ramp(t, flipT, 0.6));
-      drawFigure(ctx, 'adam', { x: S.x, y: 700, facing, ...pose }, {
+      const A = drawFigure(ctx, 'adam', { x: S.x, y: 700, facing, ...pose }, {
         ink, light, glint, breath: breath(t, 0.6, 1.4), catch: turned ? 0.4 * ramp(t, flipT + 0.2, 0.5) : 0,
         held: { front: (c) => phoneSmall(c, { x: 0, y: 0, size: 37, rot: -80, glow: '#dfefff', turn: 0.3, bloom: 0.5 * phoneOn }) },
       });
+      // the twist: a wider soft cyan bloom round the glint so it is unmistakable even at a glance
+      if (glint > 0.001) { glow(ctx, A.eye.x, A.eye.y, 34, C.cyan, 0.32 * glint); glow(ctx, A.eye.x, A.eye.y, 12, C.cyan, 0.5 * glint); }
     });
     homeStreet.front(ctx, F, o);
   },
@@ -148,29 +151,42 @@ export const shots = {
     const look = 'golden', ink = GOLD.ink;
     const ct = F.ev('catch'), meet = HS.meet.x, mEnd = meet + HUG_DX;
     // Adam: from the stop anchor, accelerating, steady, then a short knee-slide into the meeting point
-    const ax = key(t, [[0, HS.stop.x], [0.5, HS.stop.x + 100, ease.inQuad], [ct - 0.35, meet - 40, ease.linear], [ct + 0.2, meet, ease.outQuad]]);
+    // (segment lengths chosen so the speed is continuous: inQuad end speed = linear speed = outQuad start speed ≈ 443 px/s)
+    const aV = (meet - HS.stop.x) / (0.25 + (ct - 0.85) + 0.275);
+    const ax = key(t, [[0, HS.stop.x], [0.5, HS.stop.x + 0.25 * aV, ease.inQuad], [ct - 0.35, meet - 0.275 * aV, ease.linear], [ct + 0.2, meet, ease.outQuad]]);
     // Maya: still waving until she sees him coming, then runs left to him
     const m0 = 1.0;
-    const mx = key(t, [[m0, HS.maya.x], [m0 + 0.4, HS.maya.x - 70, ease.inQuad], [ct - 0.2, mEnd + 14, ease.linear], [ct + 0.15, mEnd, ease.outQuad]]);
+    const mV = (HS.maya.x - mEnd) / (0.2 + (ct - 0.2 - m0 - 0.4) + 0.175);       // same continuity for her (≈ 275 px/s)
+    const mx = key(t, [[m0, HS.maya.x], [m0 + 0.4, HS.maya.x - 0.2 * mV, ease.inQuad], [ct - 0.2, mEnd + 0.175 * mV, ease.linear], [ct + 0.15, mEnd, ease.outQuad]]);
     const camX = key(t, [[0, 2150], [ct, meet + 70, ease.inOutSine], [F.T + 1, meet + 74, ease.linear]]);
     const cz = key(t, [[0, 0.85], [ct + 0.4, 0.9, ease.inOutSine], [F.T + 1, 0.94, ease.linear]]);
     const cam = { x: camX, y: key(t, [[0, 380], [ct + 0.4, 410], [F.T + 1, 414]]), zoom: cz };
     const o = { look, cam, flare: 1 };
     homeStreet.back(ctx, F, o);
     homeStreet.mid(ctx, F, o);
-    const kK = ramp(t, ct - 0.15, 0.35, ease.inOutCubic);        // run → kneel
-    const kH = ramp(t, ct - 0.15, 0.4, ease.inOutCubic);         // her run → hug
+    const kK = ramp(t, ct - 0.4, 0.55, ease.inOutSine);          // run → kneel: one move, he sinks as he arrives
+    const kH = ramp(t, ct - 0.3, 0.5, ease.inOutCubic);          // her run → hug, arms up round his neck
     homeStreet.castShadow(ctx, o, ax, lerp(430, 250, kK));
     homeStreet.castShadow(ctx, o, mx, 285);
     camera(ctx, cam, 1, () => {
       // his satchel, abandoned where he stood
       satchel(ctx, { x: HS.stop.x - 46, y: 700, size: 98, rot: -6, light: { color: GOLD.key, from: 1, amount: 0.6 }, tint: GOLD.fill, shadow: 0.6 });
-      const aRun = POSE.run((ax - HS.stop.x) / 730 + 0.1);
+      // run cadence: ~1.3 strides/s for him, ~1.6 for her (a little foot slide is accepted; locked-to-distance read as slow motion)
+      // in the last strides his arms stop pumping and open toward her (no arm flung overhead into the catch)
+      const aRun = mixPose(POSE.run((ax - HS.stop.x) / 340 + 0.1), { armF: [70, 30], armB: [62, 36] }, ramp(t, ct - 0.75, 0.4, ease.inOutSine));
       const mStand = { ...POSE.childArmsUp, head: -12 };
-      const mRunning = POSE.run((HS.maya.x - mx) / 484 + 0.6);
+      const mRunning = POSE.run((HS.maya.x - mx) / 172 + 0.6);
       const mRunK = ramp(t, m0, 0.35);
       let mPose = mixPose(mStand, { ...mRunning, armF: [mRunning.armF[0] * 0.5 + 30, 40] }, mRunK);
-      const aPose = mixPose(aRun, HUG_ADAM, kK);
+      // The kneel as IK foot targets: HUG_ADAM's FK legs would otherwise leak into the run through mixPose (a run pose has
+      // no legF/legB, so mix() kept the kneeling legs for the whole run and he floated along in a kneel).
+      const KN = probe(ctx, 'adam', { x: 0, y: 700, facing: 1, ...HUG_ADAM });
+      // (feet lifted a touch and toes less pointed so the toes rest on the pavement instead of sinking into it)
+      const kneelIK = { ...HUG_ADAM, footRotF: 38, footRotB: 38,
+        footF: [KN.footF.x / KN.h, Math.min(0, (KN.footF.y - 700) / KN.h) - 0.035], footB: [KN.footB.x / KN.h, Math.min(0, (KN.footB.y - 700) / KN.h) - 0.035] };
+      delete kneelIK.legF; delete kneelIK.legB;
+      const aPose = mixPose(aRun, kneelIK, kK);
+      const mPoseRun = mPose;                                       // (her carrying hand, without the reach for his neck)
       if (kH > 0) mPose = mixPose(mPose, HUG_MAYA, kH);
       const A0 = probe(ctx, 'adam', { x: ax, y: 700, facing: 1, ...aPose });
       const M0 = probe(ctx, 'maya', { x: mx, y: 700, facing: -1, ...mPose });
@@ -179,7 +195,7 @@ export const shots = {
         mPose.handF = { x: lerp(M0.handF.x, nf.x, kH), y: lerp(M0.handF.y, nf.y, kH) };
         mPose.handB = { x: lerp(M0.handB.x, nb.x, kH), y: lerp(M0.handB.y, nb.y, kH) };
       }
-      const kArms = ramp(t, ct, 0.4, ease.inOutCubic);
+      const kArms = ramp(t, ct - 0.25, 0.5, ease.inOutCubic);
       if (kArms > 0) {
         aPose.handF = { x: lerp(A0.handF.x, M0.chest.x + 24, kArms), y: lerp(A0.handF.y, M0.chest.y + 4, kArms) };
         aPose.handB = { x: lerp(A0.handB.x, M0.chest.x + 18, kArms), y: lerp(A0.handB.y, M0.chest.y - 14, kArms) };
@@ -190,11 +206,12 @@ export const shots = {
       const runK = mRunK * (1 - kH);
       const hand = { x: (M.handF.x + M.handB.x) / 2, y: Math.min(M.handF.y, M.handB.y) };
       const wedge = wedgeAt(A, M);
-      const kW = ramp(t, ct - 0.1, 0.35);
+      const kW = ramp(t, ct - 0.3, 0.5, ease.inOutCubic);           // in step with her arms going up round his neck
+      const carry = kW > 0 ? probe(ctx, 'maya', { x: mx, y: 700, facing: -1, ...mPoseRun }).handF : M.handF;
       if (mRunK < 1 && kW <= 0) {
         lunchbox(ctx, { x: lerp(hand.x, M.handF.x, mRunK), y: lerp(hand.y + 14, M.handF.y, mRunK), size: 46, anchor: mRunK > 0.5 ? 'handle' : undefined, handleUp: mRunK, lum: 1, light: BOX_LIGHT, tint: GOLD.fill });
       } else {
-        const p = { x: lerp(M.handF.x, wedge.x, kW), y: lerp(M.handF.y, wedge.y, kW) };
+        const p = { x: lerp(carry.x, wedge.x, kW), y: lerp(carry.y, wedge.y, kW) };
         lunchbox(ctx, { x: p.x, y: p.y, size: 46, anchor: 'handle', handleUp: 1, wobble: Math.sin(t * 7) * 0.5 * runK, lum: 1, light: BOX_LIGHT, tint: GOLD.fill });
       }
     });

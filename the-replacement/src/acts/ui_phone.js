@@ -409,13 +409,16 @@ function a7_11_delete(ctx, F) {
   const hold = F.ev('hold'), dialog = F.ev('dialog'), tap = F.ev('tap'), gone = F.ev('gone'), pocket = F.ev('pocket');
   const ids = ['m1', 'm2', 'm3', 'vid', 'm4', 'm5', 'm6'];
   // --- thumb path (screen units) and press
-  const rest = [352, 800], onMsg = [270, 668], overDel = [336, 776], overCancel = [292, 772];
+  const rest = [352, 800], onMsg = [270, 668], overDel = [336, 776], hoverCancel = [298, 840];
   let th, press;
   if (t < hold) { th = key(t, [[0, rest], [hold - 0.05, onMsg, ease.inOutCubic]]); press = 0; }
   else if (t < dialog) { th = onMsg; press = ease.outCubic(seg(t, hold, hold + 0.25)); }
   else {
-    th = key(t, [[dialog, onMsg], [dialog + 0.6, [350, 790], ease.inOutCubic], [2.4, overDel, ease.inOutCubic], [2.8, [322, 774], ease.inOutSine],
-      [3.05, overCancel, ease.inOutSine], [3.25, [316, 773], ease.inOutSine], [tap - 0.1, overDel, ease.inOutCubic], [tap, overDel], [tap + 0.5, overDel], [gone + 1.0, rest, ease.inOutCubic]]);
+    // the thumb lifts off the thread, comes round from below and hangs JUST UNDER the buttons (so "Delete" stays
+    // readable), drifts a little toward Cancel, then commits and presses at `tap`.
+    th = key(t, [[dialog, onMsg], [dialog + 0.15, [368, 690], ease.outSine], [dialog + 0.42, [398, 884], ease.inOutSine], [dialog + 0.95, [348, 842], ease.inOutCubic], [2.4, [336, 834], ease.inOutSine],
+      [2.8, [318, 838], ease.inOutSine], [3.02, hoverCancel, ease.inOutSine], [3.16, [322, 836], ease.inOutSine], [tap - 0.1, overDel, ease.inOutCubic],
+      [tap, overDel], [tap + 0.5, overDel], [gone + 1.0, rest, ease.inOutCubic]]);
     const lift = 1 - seg(t, dialog, dialog + 0.3);
     const dn = ease.inCubic(seg(t, tap - 0.12, tap)) * (1 - ease.outCubic(seg(t, tap + 0.2, tap + 0.45)));
     press = Math.max(hold + 0.25 <= t && t < dialog + 0.3 ? lift : 0, dn);

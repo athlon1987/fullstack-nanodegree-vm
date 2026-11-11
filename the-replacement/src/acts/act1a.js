@@ -20,7 +20,8 @@ const P = (x, y) => ({ x, y });
 // ── the alarm clock ECU, shared by a1_01 (broken, slapped) and a7_02 (golden, touched gently) ──
 function alarmShot(ctx, F, look, hitEv, gentle) {
   const { t } = F, ink = LOOK[look].ink;
-  const cam = drift(F, { x: 892, y: 384, zoom: 1.38 }, { x: 884, y: 394, zoom: 1.46 });
+  // framed with headroom above the snooze bar so the hand that comes down onto it is not cut by the top of frame
+  const cam = drift(F, { x: 892, y: 350, zoom: 1.24 }, { x: 886, y: 356, zoom: 1.3 });
   const o = { look, cam };
   const flip = F.ev('flip'), hit = F.ev(hitEv);
   // the snooze bar: slapped down hard in 0.12 s / pressed gently over 0.45 s and held
@@ -80,9 +81,10 @@ function adamNightPose(t, F, react) {
     base.neck = 6 + 3 * ramp(t, b + 0.25, 0.7);
   } else {
     // the last of a laugh: two small shakes of the shoulders, then it drains away and stills
-    const env = 1 - ramp(t, 0.15, 0.85, ease.inOutSine);
-    const shake = Math.max(0, Math.sin(clamp(t / 0.9) * Math.PI * 2)) * env;
-    base.curl += -3 * shake; base.lean += -2 * shake; base.head = 18 - 3 * shake;
+    // two distinct humps (0–0.42 s and 0.42–0.84 s), the second a little smaller, then nothing
+    const env = 1 - 0.35 * ramp(t, 0.3, 0.3, ease.inOutSine);
+    const shake = Math.abs(Math.sin(clamp(t / 0.84) * Math.PI * 2)) * env;
+    base.curl += -6 * shake; base.lean += -4 * shake; base.head = 18 - 6 * shake; base.neck -= 2 * shake;
     base.head += 6 * ramp(t, 0.7, 1.1, ease.inOutSine);
     base.neck += 2 * ramp(t, 0.7, 1.1, ease.inOutSine);
   }
@@ -95,7 +97,8 @@ function nightShot(ctx, F, react) {
   const lit = react ? 1 : ramp(t, F.ev('buzz'), 0.35, ease.outCubic);
   let cam;
   if (react) {
-    const a = probe('adam', pose), h = a.head;
+    // frame on his SETTLED head (pose at 2.0 s), not the live one — a camera locked to the head cancels the shakes
+    const a = probe('adam', adamNightPose(2.0, F, true)), h = a.head;
     cam = drift(F, { x: h.x + 22, y: h.y + 26, zoom: 3.2 }, { x: h.x + 20, y: h.y + 30, zoom: 3.36 });
   } else {
     cam = drift(F, { x: 712, y: 452, zoom: 1.75 }, { x: 716, y: 458, zoom: 1.86 });
@@ -188,7 +191,7 @@ export const shots = {
     const h = 30, tr = (tilt * Math.PI) / 180;
     kitchen.back(ctx, F, o);
     camera(ctx, cam, 1, () => {
-      if (t >= grab) toast(ctx, { x: grip.x - h * Math.sin(tr), y: grip.y + h * Math.cos(tr), size: 30, burnt: 1, rot: tilt, lum: 0.8, light: rimOf(kitchen.lights.greyMorning) });
+      if (t >= grab) toast(ctx, { x: grip.x - h * Math.sin(tr), y: grip.y + h * Math.cos(tr), size: 30, burnt: 1, rot: tilt, lum: 0.4, light: rimOf(kitchen.lights.greyMorning) });
       if (t >= 1.4) drawHand(ctx, { x: wrist.x, y: wrist.y, size: S, rot, pose: 'pinch', ink, cuff: '#2a3344' });
     });
     kitchen.front(ctx, F, o);
@@ -210,7 +213,7 @@ export const shots = {
       handF: P(943 + 4 * sink, 497 + 3 * sink), armB: [10, 40],
     };
     // ── Adam: walks in from standL with the burnt toast, stops at her side behind the table
-    const x0 = K.standL.x, x1 = 905;
+    const x0 = K.standL.x, x1 = 920;   // close enough to reach her crown without a straight, over-long arm
     const leave = ramp(t, tr.end + 0.1, 0.9, ease.inOutSine);
     const ax = key(t, [[0.15, x0], [1.75, x1, ease.inOutSine]]) - 34 * leave;
     const moving = Math.min(ramp(t, 0.05, 0.3), 1 - ramp(t, 1.45, 0.35)) + 0.7 * Math.min(ramp(t, tr.end, 0.2), 1 - ramp(t, tr.end + 0.75, 0.3));
@@ -218,7 +221,8 @@ export const shots = {
     let ap = mixPose(POSE.stand, POSE.walk(walkPhase(Math.abs(stride), 'adam')), clamp(moving));
     const glance = ramp(t, ask.end - 0.1, 0.35) * (1 - ramp(t, tr.at - 0.3, 0.3));
     const away = ramp(t, tr.at + 0.1, 0.6); // the lean away — his weight already on the way out
-    ap = { ...ap, head: ap.head + 6 + 22 * glance - 4 * lookUp * (1 - glance) - 8 * away, neck: ap.neck + 4 * glance, lean: ap.lean - 6 * away + 2 * glance, hipX: -0.025 * away, armB: [26, 74] };
+    const bendTo = ramp(t, tr.at - 0.25, 0.45) * (1 - ramp(t, tr.end - 0.15, 0.45)); // leans in a little to touch her head
+    ap = { ...ap, head: ap.head + 6 + 22 * glance - 4 * lookUp * (1 - glance) - 8 * away + 6 * bendTo, neck: ap.neck + 4 * glance, lean: ap.lean - 6 * away + 2 * glance + 9 * bendTo, hipX: -0.025 * away, armB: [-30, 26] };   // toast held low at his side, clear of her face
     // probe Maya + Adam (no front hand) to aim the front hand: side → wristwatch → her crown → side
     const mA = probe('maya', maya), aA = probe('adam', { x: ax, y: 700, facing: 1, ...ap });
     const side = P(aA.shoulder.x + 6, aA.shoulder.y + 150), watch = P(aA.chest.x + 34, aA.chest.y + 18);
@@ -267,12 +271,18 @@ export const shots = {
     const envSq = t < tableT ? lerp(1, 0.3, ramp(t, tableT - 0.3, 0.3)) : 0.24;
     // ── camera: begins close on the envelope (OVERDUE legible), eases out to the room by 1.4 s
     const wide = drift(F, { x: 700, y: 432, zoom: 1.12 }, { x: 690, y: 436, zoom: 1.18 });
-    const out = ramp(t, 0.45, 0.95, ease.inOutCubic);
+    // one ease: the view half-width is interpolated in log space and the centre follows the half-width (not k), so the
+    // move is a single smooth zoom-out about a fixed point — no whip at the tight end. OVERDUE held legible ~1 s.
+    const out = ramp(t, 0.6, 1.25, ease.inOutSine);
     const env0 = P(holdPt.x - 12, holdPt.y - 10);
-    const cam = { x: lerp(env0.x, wide.x, out), y: lerp(env0.y, wide.y, out), zoom: Math.exp(lerp(Math.log(4.4), Math.log(wide.zoom), out)), rot: 0 };
+    const h0 = 1 / 4.4, h1 = 1 / wide.zoom, hk = Math.exp(lerp(Math.log(h0), Math.log(h1), out));
+    const pk = (hk - h0) / (h1 - h0);
+    const cam = { x: lerp(env0.x, wide.x, pk), y: lerp(env0.y, wide.y, pk), zoom: 1 / hk, rot: 0 };
     // ── Adam: standL → one step to the table → takes the lunchbox by the handle → turns and walks out left
     const boxAt = P(668, K.tableL.y);
     const stepA = ramp(t, grab - 0.65, 0.5, ease.inOutSine);
+    // the turn to leave: facing 1 → -1 over 0.2 s (≈5 frames), not a one-frame flip
+    const turnK = ramp(t, grab + 0.25, 0.2, ease.inOutSine), facingA = 1 - 2 * turnK;
     const turn = t >= grab + 0.35;
     const walkD = Math.max(0, t - (grab + 0.35));
     const wdist = walkD < 0.4 ? 0.5 * 760 * walkD * walkD : 0.5 * 760 * 0.16 + 304 * (walkD - 0.4);
@@ -285,11 +295,11 @@ export const shots = {
       ap = { ...ap, lean: ap.lean + 22 * reachA, curl: 6 * reachA, head: 6 + 10 * glance + 10 * reachA, armB: [-6, 10] };
     } else {
       ap = mixPose(POSE.stand, POSE.walk(walkPhase(wdist, 'adam')), ramp(t, grab + 0.35, 0.25));
-      ap = { ...ap, head: ap.head + 10 * (1 - ramp(t, grab + 0.4, 0.5)) };
+      ap = { ...ap, head: ap.head + 16 * (1 - ramp(t, grab + 0.4, 0.5)) };
     }
     const lifted = t >= grab;
-    const aPre = probe('adam', { x: ax, y: 700, facing: turn ? -1 : 1, ...ap });
-    const hang = P(aPre.shoulder.x + (turn ? -10 : 18), aPre.shoulder.y + 150);
+    const aPre = probe('adam', { x: ax, y: 700, facing: facingA, ...ap });
+    const hang = P(aPre.shoulder.x + lerp(18, -10, turnK), aPre.shoulder.y + 150);
     const o = { look, cam, doorOpen: ramp(t, grab + 0.5, 1.0, ease.inOutSine) };
     kitchen.back(ctx, F, o);
     kitchen.mid(ctx, F, o);
@@ -306,9 +316,9 @@ export const shots = {
       // Adam's front hand: at his side → to the handle → carrying (box hangs from it, swinging)
       const hf = lifted ? P(lerp(handle ? handle.x : boxAt.x, hang.x, ramp(t, grab, 0.35)), lerp(boxAt.y - 34, hang.y, ramp(t, grab, 0.35)))
         : P(lerp(aPre.shoulder.x + 8, handle.x, reachA), lerp(aPre.shoulder.y + 150, handle.y, reachA));
-      const A = drawFigure(ctx, 'adam', { x: ax, y: 700, facing: turn ? -1 : 1, ...ap, handF: hf }, { ink, light: rimOf(kitchen.lightAt(look, ax, o)), breath: breath(t, 0.4) });
+      const A = drawFigure(ctx, 'adam', { x: ax, y: 700, facing: facingA, ...ap, handF: hf }, { ink, light: rimOf(kitchen.lightAt(look, ax, o)), breath: breath(t, 0.4) });
       if (lifted) {
-        const sw = Math.sin((t - grab) * 7) * 0.6 * (1 - ramp(t, grab + 1.4, 0.8)) + (turn ? 0.25 : 0);
+        const sw = Math.sin((t - grab) * 7) * 0.6 * (1 - ramp(t, grab + 1.4, 0.8)) + 0.25 * turnK;
         lunchbox(ctx, { x: A.handF.x, y: A.handF.y + 2, size: 46, anchor: 'handle', handleUp: 1, wobble: sw, light: rimOf(kitchen.lights.greyMorning) });
       }
     });
