@@ -275,7 +275,8 @@ BAR_TABLE = []
 def bars_of(name, anchors, last_ring=None):
     """record the bar starts / durations of a statement for the review table"""
     d = dict(anchors)
-    bs = sorted(b for b in d if b % 3 == 0 and b < 24)
+    last = max(d)
+    bs = sorted(b for b in d if b % 3 == 0 and b < 24 and (b < last or b == 21))
     for b in bs:
         dur = d[b + 3] - d[b] if (b + 3) in d else last_ring
         BAR_TABLE.append((name, b // 3 + 1, d[b], dur))

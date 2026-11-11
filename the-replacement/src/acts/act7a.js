@@ -56,7 +56,7 @@ export const shots = {
     const grab = exit;                               // hand closes on the satchel handle
     const BAG = { x: 862, y: K.tableTop.y };         // satchel standing on the table
     const bagHandle = { x: BAG.x, y: BAG.y - 70 };
-    const ax = key(t, [[0, 1195], [turnT + 0.1, 1195], [grab, 905, ease.inCubic], [grab + 3, 905 - 3 * 400, ease.linear]]);
+    const ax = key(t, [[0, 1185], [turnT + 0.1, 1185], [grab, 905, ease.inCubic], [grab + 3, 905 - 3 * 400, ease.linear]]);
     const walking = t > turnT;
     const highMeet = { x: 1346, y: 346 };            // where the two palms meet
     camera(ctx, cam, 1, () => {
@@ -85,7 +85,7 @@ export const shots = {
       const aBase = { ...POSE.stand, lean: 6, head: 14, armB: [4, 10] };
       const aPop = { ...POSE.stand, lean: -3, head: 2, armB: [4, 10] };
       const aFive = { ...POSE.stand, lean: 4, head: 4, armB: [2, 10] };
-      const aKiss = { ...POSE.stand, lean: 13, neck: 4, head: 16, armB: [4, 10] };
+      const aKiss = { ...POSE.stand, lean: 9, neck: 2, head: 8, armB: [4, 10] };
       let ap = key(t, [[0, aBase], [pop, aBase], [pop + 0.5, aPop], [five - 0.5, aPop], [five, aFive], [kiss - 0.7, aFive], [kiss - 0.05, aKiss], [kiss + 0.3, aKiss], [kiss + 0.75, aFive], [20, aFive]]);
       // his front hand: resting on the worktop → up to the high-five → down at his side
       const aFiveK = ramp(t, five - 0.55, 0.5) * (1 - ramp(t, five + 0.3, 0.6));
@@ -96,7 +96,7 @@ export const shots = {
       let facing = 1, x = ax;
       if (walking) {
         facing = -1;
-        const d = 1195 - ax;
+        const d = 1185 - ax;
         const w = lightWalk(d + 40);
         const into = ramp(t, turnT, 0.35);
         ap = { ...mixPose({ ...aFive, head: 0 }, w, into), head: 2 };
@@ -114,12 +114,12 @@ export const shots = {
       });
 
       // ---- His wife: in from the bedrooms doorway, reaches them by `kiss`, touches his arm.
-      const wStart = K.hallDoor.x + 40, wEnd = 1292, wGo = 1.9, wArrive = kiss - 0.35;
+      const wStart = K.hallDoor.x + 40, wEnd = 1302, wGo = 1.9, wArrive = kiss - 0.35;
       const wx = key(t, [[0, wStart], [wGo, wStart], [wArrive, wEnd, ease.inOutSine]]);
       const wd = wStart - wx;
       const wWalk = POSE.walk(walkPhase(wd, 'wife'), { swing: 20 });
       const settle = ramp(t, wArrive - 0.35, 0.4);
-      const wKiss = { ...POSE.stand, lean: 7, head: -10, neck: -2, armB: [4, 8] };
+      const wKiss = { ...POSE.stand, lean: 9, head: -16, neck: 2, armB: [4, 8] };
       let wp = mixPose(mixPose(POSE.stand, wWalk, ramp(t, wGo - 0.1, 0.3) * (1 - settle)), wKiss, ramp(t, kiss - 0.6, 0.5) * (1 - ramp(t, kiss + 1.2, 0.6)));
       const touch = ramp(t, kiss - 0.1, 0.4) * (1 - ramp(t, turnT - 0.25, 0.35));
       if (touch > 0.001 && !walking) wp = { ...wp, handF: { x: lerp(wx - 28, a.elbowF.x + 4, touch), y: lerp(510, a.elbowF.y + 8, touch) } };
