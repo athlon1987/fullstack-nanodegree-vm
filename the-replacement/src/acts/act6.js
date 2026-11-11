@@ -43,8 +43,8 @@ export const shots = {
     const cam = key(t, [
       [0, { x: 1730, y: 488, zoom: 2.6 }],
       [1.0, { x: 1724, y: 486, zoom: 2.64 }],
-      [turn, { x: 1080, y: 432, zoom: 1.25 }, ease.inOutCubic],
-      [F.T + 1, { x: 1060, y: 434, zoom: 1.3 }, ease.inOutSine],
+      [turn, { x: 1100, y: 432, zoom: 1.25 }, ease.inOutCubic],
+      [F.T + 1, { x: 1100, y: 434, zoom: 1.3 }, ease.inOutSine],
     ]);
     const o = { look: LOOKN, cam, hallGlow: 1, lampSway: Math.sin(t * 0.5) * 0.05 };
     const kT = ramp(t, turn, 0.75, ease.inOutCubic);           // the shared turn — same curve for both men
@@ -83,7 +83,7 @@ export const shots = {
     const { t } = F, start = F.ev('start'), pass = F.ev('pass'), hug = F.ev('hug');
     const cam = drift(F, { x: 1240, y: 430, zoom: 1.15 }, { x: 880, y: 436, zoom: 1.2 });
     const o = { look: LOOKN, cam, hallGlow: 1, lampSway: Math.sin(t * 0.5) * 0.05 };
-    const STOP = 668;                                          // where she stops, in front of Adam
+    const STOP = 684;                                          // where she stops, in front of Adam
     const w = walkX(t, start, hug, K.hallDoor.x, STOP);
     const stopK = ramp(t, hug - 0.35, 0.6, ease.inOutCubic);
     kitchen.back(ctx, F, o);
@@ -133,27 +133,27 @@ export const shots = {
   // Close on the hug in profile: her face in his shoulder; his arms come up; a6_how; she looks at him; he pulls her in; a tear.
   a6_03_hug(ctx, F) {
     const { t } = F, arms = F.ev('arms'), tight = F.ev('tight');
-    const cam = drift(F, { x: 622, y: 440, zoom: 2.55 }, { x: 618, y: 432, zoom: 2.75 });
+    const cam = drift(F, { x: 640, y: 432, zoom: 2.5 }, { x: 636, y: 424, zoom: 2.7 });
     const o = { look: LOOKN, cam, hallGlow: 1, lampSway: Math.sin(t * 0.5) * 0.05 };
     const how = F.cue('a6_how'), bec = F.cue('a6_because');
     const back = ramp(t, bec.at - 0.2, 0.9, ease.inOutSine) * (1 - ramp(t, tight - 0.3, 0.9, ease.inOutSine));
     const armsK = ramp(t, arms, 1.2, ease.inOutCubic), tightK = ramp(t, tight, 1.0, ease.inOutCubic);
     const lift = ramp(t, how.at - 0.15, 0.6, ease.inOutSine);
-    const MX = 668 + back * 14;                                   // Maya's floor x (she leans back toward +x)
+    const MX = 664 + back * 14;                                   // Maya's floor x (she leans back toward +x)
     kitchen.back(ctx, F, o);
     kitchen.mid(ctx, F, o);
     let adamA;
     camera(ctx, cam, 1, () => {
       tableLunchbox(ctx, o);
       // the toy hangs from her far hand, behind his neck
-      toyWorld(ctx, 586 + back * 6, 444 + back * 2, Math.sin(t * 0.7) * 0.15, 0.3);
+      toyWorld(ctx, 574 + back * 6, 448 + back * 2, Math.sin(t * 0.7) * 0.15, 0.3);
       // Adam (seated, faces right): arms hang, then close round her back; head lifts on a6_how; tightens at `tight`.
-      const bx = MX + 18 - tightK * 8;
+      const bx = MX + 3 - tightK * 5;
       adamA = drawFigure(ctx, 'adam', {
         x: K.seatL.x, y: 700, facing: 1, ...POSE.hugSeated,
-        head: 16 - lift * 8 - back * 6 + tightK * 14, lean: 14 - back * 3 + tightK * 3, neck: -lift * 3 + tightK * 3,
-        handF: { x: lerp(600, bx, armsK), y: lerp(612, 520 + tightK * 4, armsK) },
-        handB: { x: lerp(590, bx + 6, armsK), y: lerp(612, 500, armsK) },
+        head: -2 - lift * 6 + back * 4 + tightK * 8, lean: -2 + back * 2 + tightK * 3, curl: 0, neck: -8 - lift * 2 + tightK * 3,
+        handF: { x: lerp(600, bx, armsK), y: lerp(612, 498 + tightK * 4, armsK) },
+        handB: { x: lerp(590, bx + 4, armsK), y: lerp(612, 480, armsK) },
       }, { ink: INK, light: lamp(K.seatL.x, o, 1.15), talk: talk(F, 'a6_how'), breath: breath(t), catch: 0.4,
         tear: ramp(t, tight, 1.5, ease.inOutSine) });
     });
@@ -162,7 +162,7 @@ export const shots = {
       // Maya (faces left), standing between his knees, arms round his neck.
       const neck = adamA.neck;
       drawFigure(ctx, 'maya', {
-        x: MX, y: 700, facing: -1, ...POSE.childHug, lean: 10 - back * 12 + tightK * 2, head: lerp(-6, -10, back) + tightK * 4,
+        x: MX, y: 700, facing: -1, ...POSE.childHug, lean: lerp(18, 4, back) + tightK * 2, head: lerp(16, -10, back) + tightK * 4,
         handF: { x: neck.x - 8 + back * 4, y: neck.y + 2 }, handB: { x: neck.x - 20 + back * 6, y: neck.y - 4 + back * 2 },
       }, { ink: INK, light: lamp(MX, o, 1.1), talk: talk(F, 'a6_knew', 'a6_because'), breath: breath(t, 1, 2.0), catch: 0.4, wear: { pyjamas: 1 } });
     });
@@ -172,11 +172,11 @@ export const shots = {
   // Medium on V1 alone at the edge of the lamplight: he softens, a6_right, then the phone lights him cyan from below.
   a6_04_v1(ctx, F) {
     const { t } = F, soften = F.ev('soften'), phone = F.ev('phone');
-    const cam = drift(F, { x: 1120, y: 432, zoom: 2.0 }, { x: 1126, y: 424, zoom: 2.14 });
+    const cam = drift(F, { x: 1150, y: 432, zoom: 2.1 }, { x: 1156, y: 424, zoom: 2.22 });
     const o = { look: LOOKN, cam, hallGlow: 1, lampSway: Math.sin(t * 0.5) * 0.05 };
     const sl = ramp(t, soften, 1.2, ease.inOutSine);
-    const reach = ramp(t, phone, 0.5, ease.inOutCubic), lift = ramp(t, phone + 0.6, 0.8, ease.inOutCubic);
-    const lit = ramp(t, phone + 0.75, 0.6, ease.inOutSine);
+    const reach = ramp(t, phone, 0.4, ease.inOutCubic), lift = ramp(t, phone + 0.45, 0.65, ease.inOutCubic);
+    const lit = ramp(t, phone + 0.55, 0.5, ease.inOutSine);
     const X = 1180;
     kitchen.back(ctx, F, o);
     kitchen.mid(ctx, F, o);
@@ -197,7 +197,7 @@ export const shots = {
       const look = mixPose({ ...POSE.stand, head: 6 }, POSE.holdPhone, lift);
       const pose = { x: X, y: 700, facing: -1, ...look, head: look.head + sl * 9 * (1 - lift), armB: [-2, 10] };
       if (reach > 0) pose.handF = hand;
-      const showPhone = t >= phone + 0.45;
+      const showPhone = t >= phone + 0.38;
       const v = drawFigure(ctx, 'v1', pose, {
         ink: INK, light, breath: breath(t, 2) * 0.5, glint: 0.5, aura: 0.45, slouch: sl * 0.7, talk: talk(F, 'a6_right'),
         held: showPhone ? { front: (c) => phoneSmall(c, { x: 0, y: 0, size: 37, rot: lerp(70, 10, lift), glow: lit > 0.02 ? C.cyan : null,
@@ -261,7 +261,7 @@ export const shots = {
         { ink: INK, light: lamp(MX, o, 0.9), breath: breath(t, 1, 2.0), wear: { pyjamas: 1 } });
       drawFigure(ctx, 'adam', {
         x: AX, y: 700, facing: 1, ...ap, lean: lerp(ap.lean, 8, out), head: -2 + out * 2,
-        armF: [lerp(4, 62, out), lerp(8, 14, out)], handB: grip,
+        armF: [lerp(4, 82, out), lerp(8, 12, out)], handB: grip,
       }, { ink: INK, light: lamp(AX, o), breath: breath(t), talk: talk(F, 'a6_wait') });
     });
     kitchen.front(ctx, F, { ...o, part: 'air' });

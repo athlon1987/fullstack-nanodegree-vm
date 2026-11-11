@@ -31,7 +31,7 @@
 //       Each character has a built-in POSTURE added to lean/curl/neck (Adam slouches, V1 is plumb) so the same pose
 //       reads differently on each. Pass posture: 0..1 in opts to scale it (V1 "softening" = posture borrowed from Adam: opts.slouch 0..1).
 // opts  { ink: '#07090e',  silhouette colour (use LOOK[look].ink)
-//         light: { color, from: 1|-1, amount: 0..1 }   rim light on the edges facing the key light
+//         light: { color (or key), from: 1|-1, amount: 0..1 }   rim light on the edges facing the key light — a set's lights[look] object can be passed as is
 //         aura: 0..1   cyan edge-glow (defaults to 0.5 for v1, 0 for everyone else)
 //         glint: 0..1  pin-point cyan light at the eye (any character)
 //         catch: 0..1  tiny WARM catch-light at the eye — only in tight close-ups (zoom > 2.5); never on wide shots
@@ -377,7 +377,7 @@ export function drawFigure(ctx, who, pose, opts = {}) {
   const pass = (paint, box, withAura) => {
     const { bx, by, bw, bh } = box;
     if (bw <= 2 || bh <= 2) return;
-    const L = o.light, lit = L && L.amount > 0, alpha = o.alpha ?? 1;
+    const L0 = o.light, L = L0 && { ...L0, color: L0.color || L0.key || C.cream }, lit = L && L.amount > 0, alpha = o.alpha ?? 1;   // sets describe lights as {key, from, amount}; both spellings work
     if (!lit && !(withAura && aura > 0) && alpha >= 1) {            // fast path: plain silhouette straight onto the frame
       ctx.save(); ctx.translate(p.x, p.y); ctx.scale(s * fx, s); ctx.fillStyle = ink; ctx.strokeStyle = ink; paint(ctx); ctx.restore();
       return;
@@ -422,11 +422,11 @@ export function drawFigure(ctx, who, pose, opts = {}) {
   const eye = anchors.eye, er = Math.max(1.2, g.hh * s * 0.028);
   // cyan glint: a hard bright core with a bloom (only ever the Program's light). catch: a tiny warm speck, no bloom.
   if (o.glint > 0) { const k = clamp(o.glint); glow(ctx, eye.x, eye.y, er * 6, C.cyan, 0.85 * k); ctx.save(); ctx.globalAlpha *= k; ctx.fillStyle = C.cyan; ctx.beginPath(); ctx.arc(eye.x, eye.y, er * 1.5, 0, TAU); ctx.fill(); ctx.fillStyle = '#f2ffff'; ctx.beginPath(); ctx.arc(eye.x, eye.y, er * 0.9, 0, TAU); ctx.fill(); ctx.restore(); }
-  if (o.catch > 0) { ctx.save(); ctx.globalAlpha *= clamp(o.catch) * 0.75; ctx.fillStyle = (o.light && o.light.color) || C.honey; ctx.beginPath(); ctx.arc(eye.x, eye.y, er * 0.62, 0, TAU); ctx.fill(); ctx.restore(); }
-  if (c.glasses && o.light && o.light.amount > 0.2) { const q = toWorld(g.hpt(0.4, -0.56)), q2 = toWorld(g.hpt(0.36, -0.47)); ctx.save(); ctx.strokeStyle = rgba(o.light.color, 0.7 * o.light.amount); ctx.lineWidth = er * 0.9; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(q.x, q.y); ctx.lineTo(q2.x, q2.y); ctx.stroke(); ctx.restore(); }
+  if (o.catch > 0) { ctx.save(); ctx.globalAlpha *= clamp(o.catch) * 0.75; ctx.fillStyle = (o.light && (o.light.color || o.light.key)) || C.honey; ctx.beginPath(); ctx.arc(eye.x, eye.y, er * 0.62, 0, TAU); ctx.fill(); ctx.restore(); }
+  if (c.glasses && o.light && o.light.amount > 0.2) { const q = toWorld(g.hpt(0.4, -0.56)), q2 = toWorld(g.hpt(0.36, -0.47)); ctx.save(); ctx.strokeStyle = rgba(o.light.color || o.light.key || C.cream, 0.7 * o.light.amount); ctx.lineWidth = er * 0.9; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(q.x, q.y); ctx.lineTo(q2.x, q2.y); ctx.stroke(); ctx.restore(); }
   if (o.tear > 0) {
     const t = clamp(o.tear), q = toWorld(g.hpt(lerp(0.29, 0.24, t), lerp(-0.5, -0.13, t * t * 0.6 + t * 0.4)));
-    const col = (o.light && o.light.color) || C.cream, tr = er * 1.25;
+    const col = (o.light && (o.light.color || o.light.key)) || C.cream, tr = er * 1.25;
     glow(ctx, q.x, q.y, tr * 3.2, col, 0.5); ctx.save(); ctx.fillStyle = '#fff'; ctx.globalAlpha *= 0.95; ctx.beginPath(); ctx.ellipse(q.x, q.y, tr * 0.8, tr * 1.15, 0, 0, TAU); ctx.fill(); ctx.restore();
   }
   return anchors;
