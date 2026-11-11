@@ -20,6 +20,7 @@ const a = parseArgs(process.argv.slice(2));
 const query = {};
 if (a.sketch) query.sketch = a.sketch;
 if (a.subs !== undefined) query.subs = String(a.subs);
+if (a.style) query.style = String(a.style);            // --style lit
 if (a.grain !== undefined) query.grain = String(a.grain);
 
 const stage = await openStage(query);

@@ -2,6 +2,7 @@
 import { Film, buildTimeline, W, H, FPS } from './engine.js';
 
 const params = new URLSearchParams(location.search);
+if (params.get('style')) globalThis.__RIG_STYLE = params.get('style');   // ?style=lit → coloured, shaded characters instead of silhouettes
 const ACT_MODULES = ['act1a', 'act1b', 'act2a', 'act2b', 'act3', 'act4', 'act5', 'act6', 'act7a', 'act7b', 'ui_phone', 'ui_sys', 'videos'];
 const FONT_SPECS = [
   '300 20px "Inter"', '400 20px "Inter"', 'italic 400 20px "Inter"', '500 20px "Inter"', '600 20px "Inter"', '700 20px "Inter"',

@@ -20,6 +20,7 @@ const scale = +(a.scale || 1);
 const jpegq = +(a.jpegq || 0.95);
 const query = {};
 if (a.subs !== undefined) query.subs = String(a.subs);
+if (a.style) query.style = String(a.style);            // --style lit
 
 const probe = await openStage(query, { quiet: true });
 const info = probe.info;

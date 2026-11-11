@@ -60,7 +60,7 @@
 // A close-up hand + forearm for inserts. (x, y) is the wrist, the fingers point along +x before `rot` (degrees);
 // size = hand length in px; flip mirrors vertically (thumb side); pose: 'flat' | 'open' | 'point' | 'grip' | 'pinch'; cuff: shirt-cuff colour or null.
 import { clamp, lerp, TAU, mix, glow, rgba } from './engine.js';
-import { C } from './style.js';
+import { C, LOOK } from './style.js';
 
 const D = Math.PI / 180;
 const dirUp = (a) => [Math.sin(a * D), -Math.cos(a * D)];
@@ -124,6 +124,34 @@ export const CAST = {
   extraF: { ...BASE, h: 400, face: 'f', armW: 0.025, legW: 0.034, neckW: 0.024, bun: 1, coat: 0.5, posture: { lean: 1, curl: 4, neck: 3 } },
 };
 CAST.original = CAST.adam;
+
+// ── "lit" style: coloured, shaded characters with faces (the default style is pure silhouette) ──────────────
+// Switch globally with setRigStyle('lit') or film.html?style=lit, or per figure with opts.style = 'lit'.
+// In lit style `ink` is used only to recognise the scene's lighting state (pass LOOK[look].ink as usual).
+let _style = 'silhouette';
+export const setRigStyle = (v) => { _style = v; };
+const styleNow = (o) => o.style || globalThis.__RIG_STYLE || _style;
+const PALS = {
+  adam: { skin: '#c58a5f', skinShade: '#8f5c3a', hair: '#1c1512', top: '#c2ccd8', tie: '#44546e', legs: '#2c3342', shoe: '#17181c', line: '#2a1a12' },
+  v1: { skin: '#c58a5f', skinShade: '#8f5c3a', hair: '#15100e', top: '#e8edf4', tie: '#2e4a78', legs: '#232a38', shoe: '#111216', line: '#2a1a12' },
+  wife: { skin: '#cf976c', skinShade: '#986846', hair: '#1a1210', top: '#a9b4c2', skirt: '#47505f', legs: '#b98560', shoe: '#1c1a1c', line: '#2a1a12' },
+  maya: { skin: '#d39c72', skinShade: '#9e6d4a', hair: '#1a1210', top: '#e9edf2', dress: '#33456e', legs: '#d39c72', shoe: '#17181c', pack: '#b7964a', gold: '#e6bd4f', line: '#2a1a12', pyj: '#93a9cc' },
+  manager: { skin: '#b97f56', skinShade: '#835636', hair: '#3b3734', top: '#2a303c', legs: '#252a35', shoe: '#121317', line: '#24160f' },
+  guard: { skin: '#b97f56', skinShade: '#835636', hair: '#17110f', top: '#2a3b54', cap: '#1e2a3d', legs: '#1f2a3b', shoe: '#101114', line: '#24160f' },
+  clerk: { skin: '#cf976c', skinShade: '#986846', hair: '#2a2420', top: '#737a69', legs: '#3a3e3b', shoe: '#18181a', line: '#2a1a12' },
+  rep: { skin: '#dcaa84', skinShade: '#a47551', hair: '#0f0c0b', top: '#1d2129', coat: '#1d2129', legs: '#1a1d24', shoe: '#0d0e10', line: '#2a1a12' },
+  officer: { skin: '#b97f56', skinShade: '#835636', hair: '#14100e', top: '#1d2535', cap: '#151b28', legs: '#1b2231', shoe: '#0e0f12', line: '#24160f' },
+  extraM: { skin: '#c58a5f', skinShade: '#8f5c3a', hair: '#1c1512', top: '#4a5466', legs: '#2d3340', shoe: '#17181c', line: '#2a1a12' },
+  extraF: { skin: '#cf976c', skinShade: '#986846', hair: '#1a1210', top: '#7d8796', coat: '#59616e', legs: '#b98560', shoe: '#1c1a1c', line: '#2a1a12' },
+};
+for (const [k, v] of Object.entries(PALS)) CAST[k].pal = v;
+CAST.adam.stubble = 1;
+// how much each lighting state swallows a figure: [ambient amount, ambient colour]
+const AMB = { predawn: [0.5, '#0b1630'], greyMorning: [0.2, '#4a5a72'], officeDay: [0.08, '#7f90a6'], dusk: [0.4, '#1c1838'], blueHour: [0.48, '#0c183a'], nightDark: [0.64, '#050914'],
+  warmDay: [0.1, '#9a5a28'], corridor: [0.4, '#0f1a20'], policeNight: [0.52, '#060a18'], gov: [0.18, '#4f6a56'], rainNight: [0.56, '#060b16'], greyDawn: [0.24, '#4c5868'], lampNight: [0.48, '#100904'], golden: [0.12, '#a05e22'] };
+const INK2LOOK = Object.fromEntries(Object.entries(LOOK).map(([k, v]) => [v.ink.toLowerCase(), k]));
+let _col = null;                                   // the palette being painted with (null = silhouette)
+const tone = (ctx, name) => { if (_col) { const v = _col[name] ?? _col.top; ctx.fillStyle = v; ctx.strokeStyle = v; } };
 
 // profile outline in head units (head height = 1): origin under the chin, +x = face forward, -y = up
 const FACE = [
@@ -262,8 +290,10 @@ function build(c, p0, o) {
 
 function paintLeg(ctx, g, l, rot) {
   const { c, H } = g, w = c.legW * H;
+  tone(ctx, 'legs');
   limb(ctx, l.R, l.K, w * 1.08, w * 0.8);
   limb(ctx, l.K, l.A, w * 0.8, w * (c.boots ? 0.7 : 0.52));
+  tone(ctx, 'shoe');
   ctx.save(); ctx.translate(l.A[0], l.A[1]); ctx.rotate((rot || 0) * D);
   const f = H * 0.001;
   ctx.beginPath();
@@ -273,8 +303,10 @@ function paintLeg(ctx, g, l, rot) {
 }
 function paintArm(ctx, g, a) {
   const { c, H } = g, w = c.armW * H;
+  tone(ctx, 'sleeve');
   limb(ctx, a.R, a.E, w * 1.12, w * 0.86);
   limb(ctx, a.E, a.W, w * 0.86, w * 0.56);
+  tone(ctx, 'skin');
   ctx.save(); ctx.translate(a.W[0], a.W[1]); ctx.rotate(a.ang * D);
   const hl = g.L.hand;
   ctx.beginPath(); ctx.ellipse(hl * 0.46, 0, hl * 0.56, hl * 0.3, 0, 0, TAU); ctx.fill();
@@ -293,13 +325,18 @@ function paintTorsoHead(ctx, g, o) {
     add(add(S, up2, -0.035 * H), n2, c.chestF * H + br), add(add(M, up2, 0.06 * H), n2, (c.chestF * 0.98 + bel * 0.3) * H + br * 0.6),
     add(M, n1, (c.waistF + bel) * H), add(add(P, up1, 0.045 * H), n1, (c.pelvF + bel * 0.9) * H), add(add(P, n1, c.pelvF * H * 0.92), up1, -0.02 * H), add(P, up1, -0.06 * H),
   ];
+  tone(ctx, 'top');
   blob(ctx, pts, 0.5);
+  if (_col && c.tie === 'straight') { const k = add(add(S, up2, 0.012 * H), n2, c.chestF * H * 0.62), e2 = add(M, n1, (c.waistF + bel) * H * 0.7); tone(ctx, 'tie'); poly(ctx, [[k[0] - 0.006 * H, k[1]], [k[0] + 0.007 * H, k[1]], [e2[0] + 0.012 * H, e2[1] - 0.02 * H], [e2[0], e2[1]], [e2[0] - 0.01 * H, e2[1] - 0.02 * H]]); }
+  tone(ctx, 'skin');
   // neck
   limb(ctx, add(S, up2, 0.03 * H), hpt(-0.1, -0.22), c.neckW * H * 1.25, c.neckW * H * 0.98);
   // head
   ctx.save();
   const face = facePts(c.face, o.talk || 0).map(([u, v]) => hpt(u, v));
   blob(ctx, face, 0.42);
+  if (_col) paintFace(ctx, g, o, c);
+  tone(ctx, 'hair');
   const hp = (list) => list.map(([u, v]) => hpt(u, v));
   const pyj = o.wear && o.wear.pyjamas;
   if (c.face !== 'c') blob(ctx, hp([[0.34, -0.86], [0.2, -0.985], [0.02, -1.04], [-0.22, -1.02], [-0.42, -0.9], [-0.5, -0.68], [-0.49, -0.46], [-0.4, -0.3], [-0.3, -0.42], [-0.1, -0.6], [0.2, -0.78]]), 0.5); // hair mass
@@ -311,23 +348,43 @@ function paintTorsoHead(ctx, g, o) {
     if (pyj) blob(ctx, hp([[-0.3, -0.9], [-0.56, -0.6], [-0.6, -0.2], [-0.52, 0.14], [-0.3, 0.2], [-0.24, -0.1], [-0.3, -0.4]]), 0.5); // loose hair
     else { blob(ctx, hp([[-0.44, -0.7], [-0.62, -0.74], [-0.78, -0.6], [-0.84, -0.36], [-0.76, -0.2], [-0.66, -0.34], [-0.6, -0.5], [-0.48, -0.52]]), 0.5); } // bunch
     if (o.wear && o.wear.starHeadband) {
+      tone(ctx, 'gold');
       const sc = hpt(0.1, -1.2); ctx.beginPath();
       for (let i = 0; i < 10; i++) { const r = (i % 2 ? 0.11 : 0.25) * hh, a = -Math.PI / 2 + (i * Math.PI) / 5 + g.headAng * D; ctx[i ? 'lineTo' : 'moveTo'](sc[0] + Math.cos(a) * r, sc[1] + Math.sin(a) * r); }
       ctx.closePath(); ctx.fill(); poly(ctx, hp([[0.08, -1.02], [0.14, -1.02], [0.14, -1.14], [0.08, -1.14]]));
     }
   }
-  if (c.cap) { poly(ctx, hp([[0.42, -0.74], [0.68, -0.69], [0.68, -0.655], [0.4, -0.68], [-0.5, -0.66], [-0.5, -0.8], [-0.4, -1.03], [0.0, -1.12], [0.36, -1.04]])); }
+  if (c.cap) { tone(ctx, 'cap'); poly(ctx, hp([[0.42, -0.74], [0.68, -0.69], [0.68, -0.655], [0.4, -0.68], [-0.5, -0.66], [-0.5, -0.8], [-0.4, -1.03], [0.0, -1.12], [0.36, -1.04]])); }
   ctx.restore();
   // clothing that changes the outline
+  tone(ctx, 'top');
   if (c.tail) poly(ctx, [add(P, n1, -c.pelvB * H * 0.9), add(add(P, n1, -c.pelvB * H * 1.32), up1, -0.075 * H), add(add(P, n1, -c.pelvB * H * 0.5), up1, -0.085 * H), add(P, up1, -0.05 * H)]);
   if (c.jacket) poly(ctx, [add(add(P, n1, -c.pelvB * H * 1.08), up1, 0.02 * H), add(add(P, n1, -c.pelvB * H * 1.1), up1, -0.085 * H), add(add(P, n1, (c.pelvF + bel) * H * 1.05), up1, -0.085 * H), add(add(P, n1, (c.pelvF + bel) * H * 1.02), up1, 0.03 * H)]);
-  if (c.belt) { const b = add(add(P, n1, -c.pelvB * H * 1.15), up1, 0.03 * H); ctx.fillRect(b[0] - 0.012 * H, b[1] - 0.03 * H, 0.03 * H, 0.06 * H); }
+  if (c.belt) { tone(ctx, 'shoe'); const b = add(add(P, n1, -c.pelvB * H * 1.15), up1, 0.03 * H); ctx.fillRect(b[0] - 0.012 * H, b[1] - 0.03 * H, 0.03 * H, 0.06 * H); }
   if (c.tie === 'loose' && !(o.wear && o.wear.noTie)) {
+    tone(ctx, 'tie');
     const k = add(add(S, up2, 0.012 * H), n2, c.chestF * H * 0.78), sw = (o.tieSwing || 0) * D;
     const tip = [k[0] + Math.sin(sw) * 0.15 * H + 0.008 * H, k[1] + Math.cos(sw) * 0.15 * H];
     poly(ctx, [[k[0] - 0.005 * H, k[1]], [k[0] + 0.006 * H, k[1]], [tip[0] + 0.01 * H, tip[1] - 0.026 * H], [tip[0], tip[1]], [tip[0] - 0.01 * H, tip[1] - 0.026 * H]]);
   }
+  if (o.wear && o.wear.backpack) tone(ctx, 'pack');
   if (o.wear && o.wear.backpack) blob(ctx, [add(add(S, up2, 0.0), n2, -c.chestB * H * 0.9), add(add(S, up2, -0.02 * H), n2, -c.chestB * H * 2.5), add(add(M, up2, 0.0), n2, -c.chestB * H * 2.7), add(add(P, up1, 0.06 * H), n1, -c.pelvB * H * 2.1), add(add(P, up1, 0.05 * H), n1, -c.pelvB * H * 0.9)], 0.5);
+}
+/** Lit style only: ear, brow, eye, nostril, mouth, stubble — small, restrained, in profile. */
+function paintFace(ctx, g, o, c) {
+  const { hpt, hh } = g, P = _col;
+  const line = (pts, w, col) => { ctx.save(); ctx.strokeStyle = col; ctx.lineWidth = w * hh; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.beginPath(); pts.forEach(([u, v], i) => { const q = hpt(u, v); if (i) ctx.lineTo(q[0], q[1]); else ctx.moveTo(q[0], q[1]); }); ctx.stroke(); ctx.restore(); };
+  const oval = (u, v, rx, ry, col) => { const q = hpt(u, v); ctx.fillStyle = col; ctx.beginPath(); ctx.ellipse(q[0], q[1], rx * hh, ry * hh, g.headAng * D, 0, TAU); ctx.fill(); };
+  if (c.stubble) { ctx.save(); ctx.globalAlpha = 0.17; ctx.fillStyle = P.hair; blob(ctx, [[0.335, -0.02], [0.372, -0.12], [0.355, -0.3], [0.2, -0.33], [0.03, -0.24], [-0.02, -0.04], [0.2, 0.03]].map(([u, v]) => hpt(u, v)), 0.5); ctx.restore(); }
+  if (!c.bob && !(o.wear && o.wear.pyjamas)) { oval(-0.075, -0.5, 0.062, 0.1, P.skinShade); line([[-0.095, -0.555], [-0.05, -0.505], [-0.085, -0.45]], 0.018, P.line); }
+  const sad = o.sad || 0, closed = o.eyeClosed || 0, tk = o.talk || 0;
+  line([[0.235, -0.607 - 0.016 * sad], [0.305, -0.628], [0.378, -0.61 + 0.014 * sad]], c.face === 'm' ? 0.03 : 0.02, P.hair);
+  if (closed > 0.55) line([[0.268, -0.532], [0.35, -0.528]], 0.017, P.line);
+  else { oval(0.312, -0.536, 0.04, 0.021, '#efe8df'); oval(0.326, -0.536, 0.019, 0.02, '#1b130f'); line([[0.262, -0.546], [0.31, -0.561], [0.356, -0.546]], 0.016, P.line); }
+  oval(0.428, -0.349, 0.011, 0.008, P.line);
+  if (tk > 0.14) oval(0.342, -0.226 + 0.012 * tk, 0.034, 0.01 + 0.03 * tk, '#3a1512');
+  else line([[0.384, -0.24 - 0.006 * sad], [0.335, -0.232], [0.297, -0.238 + 0.008 * sad]], 0.013, P.line);
+  ctx.fillStyle = P.skin;
 }
 function paintSkirt(ctx, g, len, flare) {
   const { H, P, lF, lB, c } = g;
@@ -376,7 +433,52 @@ export function drawFigure(ctx, who, pose, opts = {}) {
   const rimW = clamp(0.0036 * H * s * zs, 1, 6.5);
   const cvA = privateCanvas('A', cw, ch), cvB = privateCanvas('B', cw, ch);
 
+  const litStyle = styleNow(o) === 'lit' && !!c.pal;
+  const pal = litStyle ? (() => { const q = { ...c.pal }; q.sleeve = q.sleeve || q.top; if (o.wear && o.wear.pyjamas && q.pyj) { q.top = q.sleeve = q.legs = q.pyj; } return q; })() : null;
+  const lookName = INK2LOOK[String(ink).toLowerCase()], amb = AMB[lookName] || [0.3, '#101622'];
+  const lookKey = (lookName && LOOK[lookName].key) || C.cream;
+  if (litStyle) {                                   // soft contact shadow on the floor
+    const r = 0.2 * H * s; ctx.save(); ctx.translate(p.x, p.y); ctx.scale(1, 0.16);
+    const sg = ctx.createRadialGradient(0, 0, 0, 0, 0, r); sg.addColorStop(0, 'rgba(0,0,0,0.34)'); sg.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.fill(); ctx.restore();
+  }
+  const passLit = (paint, box, withAura) => {
+    const { bx, by, bw, bh } = box;
+    if (bw <= 2 || bh <= 2) return;
+    const L0 = o.light, L = { from: 1, amount: 0.5, ...(L0 || {}) }; L.color = L.color || L.key || lookKey;
+    const alpha = o.alpha ?? 1, from = L.from || 1, amt = clamp(L.amount ?? 0.5);
+    const A = cvA.cv, a = cvA.ctx, B = cvB.cv, b = cvB.ctx;
+    a.setTransform(1, 0, 0, 1, 0, 0); a.globalCompositeOperation = 'source-over'; a.globalAlpha = 1; a.clearRect(bx, by, bw, bh);
+    a.setTransform(m); a.translate(p.x, p.y); a.scale(s * fx, s);
+    _col = pal; a.fillStyle = pal.top; a.strokeStyle = pal.top;
+    try { paint(a); } finally { _col = null; }
+    a.setTransform(1, 0, 0, 1, 0, 0);
+    // B = everything EXCEPT the figure, in a flat colour; slid back over the figure it paints the edges on one side
+    const slide = (color, steps, dx, dy) => {
+      b.setTransform(1, 0, 0, 1, 0, 0); b.globalCompositeOperation = 'source-over'; b.globalAlpha = 1;
+      b.fillStyle = color; b.clearRect(bx, by, bw, bh); b.fillRect(bx, by, bw, bh);
+      b.globalCompositeOperation = 'destination-out'; b.drawImage(A, bx, by, bw, bh, bx, by, bw, bh);
+      a.globalCompositeOperation = 'source-atop';
+      for (const [k, al] of steps) { a.globalAlpha = clamp(al); a.drawImage(B, bx, by, bw, bh, bx + dx * k, by + dy * k, bw, bh); }
+      a.globalCompositeOperation = 'source-over'; a.globalAlpha = 1;
+    };
+    const wS = clamp(0.012 * H * s * zs, 2, 30);
+    // the key light tints the whole figure a little
+    a.globalCompositeOperation = 'source-atop'; a.globalAlpha = 0.14; a.fillStyle = L.color; a.fillRect(bx, by, bw, bh);
+    // form shadow on the side away from the light
+    slide('#070a12', [[1, 0.5], [2.1, 0.3], [3.5, 0.17]], from * wS, -wS * 0.28);
+    // the room's darkness swallows the figure
+    a.globalCompositeOperation = 'source-atop'; a.globalAlpha = amb[0]; a.fillStyle = amb[1]; a.fillRect(bx, by, bw, bh);
+    a.globalCompositeOperation = 'source-over'; a.globalAlpha = 1;
+    // light wrapping the side that faces the key: a hard rim plus a soft wedge
+    slide(L.color, [[1, 0.8 * amt], [2.4, 0.42 * amt], [5.5, 0.22 * amt], [11, 0.12 * amt * (0.4 + amb[0])]], -from * rimW, rimW * 0.32);
+    ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha *= alpha;
+    if (withAura && aura > 0) { ctx.shadowColor = rgba(C.cyan, 0.5 * aura); ctx.shadowBlur = clamp(0.03 * H * s * zs, 4, 30); }
+    ctx.drawImage(A, bx, by, bw, bh, bx, by, bw, bh);
+    ctx.restore();
+  };
   const pass = (paint, box, withAura) => {
+    if (litStyle) return passLit(paint, box, withAura);
     const { bx, by, bw, bh } = box;
     if (bw <= 2 || bh <= 2) return;
     const L0 = o.light, L = L0 && { ...L0, color: L0.color || L0.key || C.cream }, lit = L && L.amount > 0, alpha = o.alpha ?? 1;   // sets describe lights as {key, from, amount}; both spellings work
@@ -413,9 +515,9 @@ export function drawFigure(ctx, who, pose, opts = {}) {
     paintTorsoHead(a, g, o);
     paintLeg(a, g, g.lF, p.footRotF);
     const pyj = o.wear && o.wear.pyjamas;
-    if (c.skirt) paintSkirt(a, g, c.skirt, 0.115);
-    if (c.dress && !pyj) paintSkirt(a, g, c.dress, 0.16);
-    if (c.coat) paintSkirt(a, g, c.coat, 0.1);
+    if (c.skirt) { tone(a, 'skirt'); paintSkirt(a, g, c.skirt, 0.115); }
+    if (c.dress && !pyj) { tone(a, 'dress'); paintSkirt(a, g, c.dress, 0.16); }
+    if (c.coat) { tone(a, 'coat'); paintSkirt(a, g, c.coat, 0.1); }
   }, bodyBox, true);
   held(o.held && o.held.front, g.aF);
   pass((a) => paintArm(a, g, g.aF), armBox, false);
@@ -441,11 +543,15 @@ export function drawHand(ctx, o = {}) {
   const S = size;
   const CURL = { flat: [4, 2, 2, 4], open: [10, 4, 2, 8], point: [0, 105, 112, 118], grip: [62, 68, 72, 78], pinch: [48, 30, 22, 18] }[pose] || [4, 2, 2, 4];
   const SPREAD = pose === 'open' ? 9 : 3;
+  const lit = styleNow(o) === 'lit';
+  const skinG = () => { const gq = ctx.createLinearGradient(0, -S * 0.32, 0, S * 0.32); gq.addColorStop(0, o.skin || '#cf9468'); gq.addColorStop(1, '#8f5c3a'); return gq; };
+  const sleeveG = () => { const gq = ctx.createLinearGradient(0, -S * 0.3, 0, S * 0.3); gq.addColorStop(0, o.sleeve || '#c9d2dd'); gq.addColorStop(1, '#7f8997'); return gq; };
   ctx.save(); ctx.translate(x, y); ctx.rotate(rot * D); if (flip) ctx.scale(1, -1);
-  ctx.fillStyle = ink;
+  ctx.fillStyle = lit ? sleeveG() : ink;
   // forearm + cuff
   ctx.beginPath(); ctx.moveTo(-S * arm, -S * 0.24); ctx.lineTo(-S * 0.12, -S * 0.2); ctx.lineTo(-S * 0.12, S * 0.2); ctx.lineTo(-S * arm, S * 0.27); ctx.closePath(); ctx.fill();
-  if (cuff) { ctx.fillStyle = cuff; ctx.beginPath(); ctx.roundRect(-S * 0.3, -S * 0.235, S * 0.2, S * 0.47, S * 0.03); ctx.fill(); ctx.fillStyle = ink; }
+  if (cuff) { ctx.fillStyle = lit ? '#e3e9f0' : cuff; ctx.beginPath(); ctx.roundRect(-S * 0.3, -S * 0.235, S * 0.2, S * 0.47, S * 0.03); ctx.fill(); }
+  ctx.fillStyle = lit ? skinG() : ink;
   // palm
   blob(ctx, [[-S * 0.14, -S * 0.19], [S * 0.1, -S * 0.24], [S * 0.42, -S * 0.235], [S * 0.5, -S * 0.1], [S * 0.5, S * 0.14], [S * 0.42, S * 0.24], [S * 0.1, S * 0.23], [-S * 0.14, S * 0.19]], 0.5);
   // fingers (index at -y ... little at +y)

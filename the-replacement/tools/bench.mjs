@@ -5,7 +5,7 @@
 //   node tools/bench.mjs --all                       every implemented shot, slowest first
 import { openStage, parseArgs } from './lib.mjs';
 const a = parseArgs(process.argv.slice(2));
-const stage = await openStage(a.sketch ? { sketch: a.sketch } : {}, { quiet: true });
+const stage = await openStage({ ...(a.sketch ? { sketch: a.sketch } : {}), ...(a.style ? { style: String(a.style) } : {}) }, { quiet: true });
 const { page, info } = stage;
 async function timeAt(times) {
   return page.evaluate((times) => {
