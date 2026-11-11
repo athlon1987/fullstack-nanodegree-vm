@@ -106,8 +106,8 @@ export const shots = {
       // the box: carried in low over the table from the left, set down at tableTop on `place`, then pushed ~30 px toward V1
       const carry = ramp(t, 0, tPlace, ease.outCubic);
       const push = ramp(t, tPlace + 0.55, 0.8, ease.inOutSine);
-      const bx = lerp(K.tableTop.x - 150, K.tableTop.x, carry) + 30 * push;
-      const by = K.tableTop.y - 46 * (1 - ease.inOutSine(clamp(t / tPlace)));
+      const bx = lerp(K.tableTop.x - 36, K.tableTop.x, carry) + 30 * push;
+      const by = K.tableTop.y - 40 * (1 - ease.inOutSine(clamp(t / tPlace)));
       const down = t >= tPlace;
       const a = lunchbox(ctx, { x: bx, y: by, size: BOX.size, lum: 1, tint: LOOK[look].fill, light: LAMP_ON_TABLE, shadow: down ? 0.8 : 0.3, wobble: settle(t, tPlace) });
       // V1's folded hands at the right edge of frame — they do not move
@@ -120,7 +120,7 @@ export const shots = {
       const L = a.base.x - BOX.size / 2;
       const hF = { x: lerp(L + 10, 712, leave), y: lerp(a.base.y - 40, 509, leave) };
       const hB = { x: lerp(L - 2, 690, leave), y: lerp(a.base.y - 18, 511, leave) };
-      drawFigure(ctx, 'adam', { x: K.seatL.x, y: 700, facing: 1, ...POSE.sitForward, hipX: 0.07, lean: 33 - 8 * leave, head: 22, handF: hF, handB: hB }, {
+      drawFigure(ctx, 'adam', { x: K.seatL.x, y: 700, facing: 1, ...POSE.sitForward, hipX: 0.07, lean: 24 + 5 * push - 8 * leave, head: 12 - 4 * leave, handF: hF, handB: hB }, {
         ink, light: rim(kitchen.lightAt(look, K.seatL.x, o)), talk: talk(F, 'a5_why'), breath: breath(t),
       });
     });
@@ -156,7 +156,7 @@ export const shots = {
       hF = { x: lerp(hF.x, a.lidEdge.x - 8, onLid), y: lerp(hF.y, a.lidEdge.y + 4, onLid) };
       hF = { x: lerp(hF.x, slot.x - 10, toNote), y: lerp(hF.y, slot.y + 6, toNote) };
       hF = { x: lerp(hF.x, 742, away), y: lerp(hF.y, 476, away) };   // under the note: his arm holds it up to us
-      drawFigure(ctx, 'adam', { x: K.seatL.x, y: 700, facing: 1, ...POSE.sitForward, hipX: 0.07, lean: 33, head: 22, handF: hF, handB: { x: 690, y: 511 } }, {
+      drawFigure(ctx, 'adam', { x: K.seatL.x, y: 700, facing: 1, ...POSE.sitForward, hipX: 0.09, lean: 30, head: 14, handF: hF, handB: { x: 690, y: 511 } }, {
         ink, light: rim(kitchen.lightAt(look, K.seatL.x, o)), breath: breath(t),
       });
       drawFigure(ctx, 'v1', { x: K.seatR.x, y: 700, facing: -1, ...POSE.sit, lean: 3, ...V1_HANDS }, {
@@ -193,7 +193,7 @@ export const shots = {
   a5_06_noanswer(ctx, F) {
     const { t } = F, look = 'lampNight', ink = LOOK[look].ink;
     const tUp = F.ev('up'), tFl = F.ev('flicker');
-    const cam = drift(F, { x: 990, y: 404, zoom: 2.95 }, { x: 994, y: 404, zoom: 3.08 });
+    const cam = drift(F, { x: 1000, y: 402, zoom: 3.05 }, { x: 1004, y: 402, zoom: 3.2 });
     const o = { look, cam, lampSway: Math.sin(t * 0.5) * 0.04 };
     kitchen.back(ctx, F, o);
     kitchen.mid(ctx, F, o);
@@ -226,7 +226,7 @@ export const shots = {
       const drop = ramp(t, let_.at + let_.dur * 0.66, 0.9, ease.inOutSine);
       const gasp = Math.exp(-(((t - (rem.end + 0.6)) / 0.45) ** 2));
       const hand = { x: 712, y: 488 + drop * 4 };
-      drawFigure(ctx, 'adam', { x: K.seatL.x, y: 700, facing: 1, ...POSE.sitForward, lean: 18 + drop * 3, curl: 8 + drop * 6, head: 2 + drop * 26,
+      drawFigure(ctx, 'adam', { x: K.seatL.x, y: 700, facing: 1, ...POSE.sitForward, lean: 14 + drop * 5, curl: 8 + drop * 6, head: -9 + drop * 30,
         handF: hand, handB: { x: 668, y: 508 } }, {
         ink, light: rim(kitchen.lightAt(look, K.seatL.x, o)), talk: talk(F, 'a5_remember', 'a5_letdown'), breath: breath(t) + gasp * 1.4,
       });

@@ -180,6 +180,10 @@ export const shots = {
       Object.assign(aPose, handsOnBox(lap, (1 - wake) * 2));
       figure(ctx, 'adam', aPose, { ink, light: bench.lightAt(look, B.seatL.x, o), breath: breath(t, 0.3, lerp(1.1, 1.6, wake)) }, (c) => lapBox(c, lap));
 
+    });
+    // she stands in front of the bench: draw her after the seat's front edge
+    bench.front(ctx, F, o);
+    camera(ctx, cam, 1, () => {
       // The representative: out of the car's kerbside door at `steps`, walks toward him (perspective: small at the car, full size on the pavement), stops over him.
       if (t >= tSteps - 0.05) {
         const dur = 1.15, u = clamp((t - tSteps) / dur);
@@ -204,13 +208,12 @@ export const shots = {
       }
       void rep1;
     });
-    bench.front(ctx, F, o);
   },
 
   // ── a4_02 ── the offer: three holographic cards rise from her tablet; they fold away; the contract rises.
   a4_02_offer(ctx, F) {
     const { t } = F, look = LOOKID, ink = LOOK[look].ink;
-    const cam = drift(F, { x: 801, y: 386, zoom: 1.62 }, { x: 801, y: 394, zoom: 1.76 });
+    const cam = drift(F, { x: 801, y: 386, zoom: 1.62 }, { x: 801, y: 390, zoom: 1.72 });
     const o = { look, cam, carX: B.carStop.x };
     const rep3 = F.cue('a4_rep3'), tCon = F.ev('contract');
     bench.back(ctx, F, o);
@@ -255,7 +258,7 @@ export const shots = {
       });
       // the contract: one taller panel rising between them
       if (kDoc > 0) {
-        const x = lerp(tab.x, 806, kDoc), y = lerp(tab.y - 30, 268, kDoc) + Math.sin(t * 0.9) * 2 * kDoc;
+        const x = lerp(tab.x, 815, kDoc), y = lerp(tab.y - 30, 276, kDoc) + Math.sin(t * 0.9) * 2 * kDoc;
         ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = 0.06 * kDoc;
         ctx.fillStyle = C.cyan; ctx.beginPath(); ctx.moveTo(tab.x - 6, tab.y - 4); ctx.lineTo(tab.x + 6, tab.y - 4);
         ctx.lineTo(x + 76, y + 112); ctx.lineTo(x - 76, y + 112); ctx.closePath(); ctx.fill(); ctx.restore();
@@ -307,6 +310,7 @@ export const shots = {
     const cam = drift(F, { x: 800, y: 422, zoom: 1.7 }, { x: 788, y: 430, zoom: 1.84 });
     const o = { look, cam, carX: B.carStop.x };
     const tHold = F.ev('hold'), tNod = F.ev('nod'), tRise = F.ev('rise'), last = F.cue('a4_last');
+    let repLater = null;
     bench.back(ctx, F, o);
     bench.mid(ctx, F, o);
     camera(ctx, cam, 1, () => {
@@ -320,17 +324,17 @@ export const shots = {
         head: 16 + pull * 6 - lift * 26 + down * 30 };
       const A0 = probe('adam', aPose), lap = A0.lap;
       // the tablet: held out over his knees → clutched flat against his chest
-      const tabOut = { x: lap.x + 52, y: lap.y - 46, rot: 60 }, tabIn = { x: A0.chest.x + 22, y: A0.chest.y + 6, rot: -8 };
+      const tabOut = { x: lap.x + 52, y: lap.y - 46, rot: 60 }, tabIn = { x: A0.chest.x + 30, y: A0.chest.y - 4, rot: 12 };
       const tb = { x: lerp(tabOut.x, tabIn.x, pull), y: lerp(tabOut.y, tabIn.y, pull), rot: lerp(tabOut.rot, tabIn.rot, pull) };
       const boxHand = { x: lap.x + 16, y: lap.y - 25 };
-      aPose.handB = { x: tb.x - 2, y: tb.y + 10 };
+      aPose.handB = { x: tb.x + 2, y: tb.y + 16 };
       const fOnTab = { x: tb.x + 3, y: tb.y - 4 };
       aPose.handF = { x: lerp(fOnTab.x, boxHand.x, close), y: lerp(fOnTab.y, boxHand.y, close) - Math.sin(close * Math.PI) * 10 };
       figure(ctx, 'adam', aPose, { ink, light: bench.lightAt(look, B.seatL.x, o), talk: talk(F, 'a4_last'), breath: breath(t, 0.3, 1.3) }, (c) => {
         lapBox(c, lap);
-        tablet(c, { x: tb.x, y: tb.y, size: 62, rot: tb.rot, face: -1, turn: lerp(0.3, 0.12, pull), bloom: lerp(0.7, 0.25, pull), lum: 0.7, tint: LOOK[look].fill });
+        tablet(c, { x: tb.x, y: tb.y, size: 62, rot: tb.rot, face: -1, turn: lerp(0.3, 0.04, pull), bloom: lerp(0.7, 0.08, pull), lum: lerp(0.7, 0.35, pull), tint: LOOK[look].fill });
       });
-      glow(ctx, tb.x, tb.y, 50, C.ice, lerp(0.14, 0.05, pull));
+      glow(ctx, tb.x, tb.y, 50, C.ice, lerp(0.14, 0.02, pull));
 
       // ── the representative: hand out for the tablet; waits; withdraws; studies him; the nod; rises.
       const reach = key(t, [[0, 0.15], [0.9, 1, ease.inOutSine], [tHold + 0.3, 1], [last.end + 0.6, 1], [last.end + 1.6, 0, ease.inOutSine]]);
@@ -360,8 +364,10 @@ export const shots = {
         rPose.handB = { x: lerp(sitB.x, sideB.x, k), y: lerp(sitB.y, sideB.y, k) };
       }
       void handRest;
-      figure(ctx, 'rep', rPose, { ink, light: bench.lightAt(look, rPose.x, o), breath: breath(t, 2.1) * 0.6 });
+      const drawRep = () => figure(ctx, 'rep', rPose, { ink, light: bench.lightAt(look, rPose.x, o), breath: breath(t, 2.1) * 0.6 });
+      if (up < 0.3) drawRep(); else repLater = drawRep;
     });
     bench.front(ctx, F, o);
+    if (repLater) camera(ctx, cam, 1, repLater);      // risen: she now stands in front of the seat's front edge
   },
 };
