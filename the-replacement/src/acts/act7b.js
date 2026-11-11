@@ -10,6 +10,12 @@ import { talk, breath, drift, ramp } from '../stage.js';
 const HS = homeStreet.anchors;
 const GOLD = LOOK.golden;
 const SUN = { color: GOLD.key, from: 1, amount: 0.85 };
+/** The hug, shared by a7_12 (end) and a7_13: Adam kneels upright-ish, Maya leans into him; heads side by side. */
+const HUG_DX = 78;
+const HUG_ADAM = { ...POSE.hugKneel, lean: 2, curl: 6, head: 22 };
+const HUG_MAYA = { ...POSE.childHug, lean: 14, head: 20 };
+/** Where the lunchbox's handle sits, pressed between their bodies (low, below the chests). */
+const wedgeAt = (A, M) => ({ x: (A.chest.x + M.chest.x) / 2 + 4, y: Math.max(A.chest.y, M.chest.y) + 26 });
 const BOX_LIGHT = { color: '#ffd08a', from: 1, amount: 0.7 };
 
 /** Anchors of a figure without drawing it (degenerate transform → drawFigure returns before painting). */
@@ -78,10 +84,11 @@ export const shots = {
     const hear = ramp(t, lunch.at + 0.05, 0.35, ease.outCubic);
     let pose;
     if (!turned) {
-      pose = { ...POSE.holdPhone, head: 24 - hear * 12, neck: 6 - hear * 3 };
+      pose = { ...POSE.holdPhone, head: 14 - hear * 8, neck: 4 - hear * 3 };
     } else {
       const s = ramp(t, flipT, 0.7, ease.outCubic);
-      pose = { ...POSE.holdPhone, armF: [lerp(28, 18, s), lerp(96, 80, s)], head: lerp(8, -4, s), neck: lerp(2, -1, s), lean: lerp(0, -2, s) };
+      const d = ramp(t, flipT + 0.1, 0.9, ease.inOutSine);   // the phone hand sinks to his side
+      pose = { ...POSE.holdPhone, armF: [lerp(28, 6, d), lerp(96, 12, d)], head: lerp(6, -5, s), neck: lerp(1, -2, s), lean: lerp(0, -2, s) };
     }
     const facing = turned ? 1 : -1;
     const cold = { color: '#dfefff', from: -1, amount: 0.9 };
@@ -94,7 +101,6 @@ export const shots = {
       else glow(ctx, S.x + 70, 270, 90, GOLD.key, 0.14 * ramp(t, flipT, 0.6));
       drawFigure(ctx, 'adam', { x: S.x, y: 700, facing, ...pose }, {
         ink, light, glint, breath: breath(t, 0.6, 1.4), catch: turned ? 0.4 * ramp(t, flipT + 0.2, 0.5) : 0,
-        wear: { bag: 0 },
         held: { front: (c) => phoneSmall(c, { x: 0, y: 0, size: 37, rot: -80, glow: '#dfefff', turn: 0.3, bloom: 0.5 * phoneOn }) },
       });
     });
@@ -140,7 +146,7 @@ export const shots = {
   a7_12_run(ctx, F) {
     const { t } = F;
     const look = 'golden', ink = GOLD.ink;
-    const ct = F.ev('catch'), meet = HS.meet.x, mEnd = meet + 120;
+    const ct = F.ev('catch'), meet = HS.meet.x, mEnd = meet + HUG_DX;
     // Adam: from the stop anchor, accelerating, steady, then a short knee-slide into the meeting point
     const ax = key(t, [[0, HS.stop.x], [0.5, HS.stop.x + 100, ease.inQuad], [ct - 0.35, meet - 40, ease.linear], [ct + 0.2, meet, ease.outQuad]]);
     // Maya: still waving until she sees him coming, then runs left to him
@@ -164,8 +170,8 @@ export const shots = {
       const mRunning = POSE.run((HS.maya.x - mx) / 484 + 0.6);
       const mRunK = ramp(t, m0, 0.35);
       let mPose = mixPose(mStand, { ...mRunning, armF: [mRunning.armF[0] * 0.5 + 30, 40] }, mRunK);
-      const aPose = mixPose(aRun, POSE.hugKneel, kK);
-      if (kH > 0) mPose = mixPose(mPose, POSE.childHug, kH);
+      const aPose = mixPose(aRun, HUG_ADAM, kK);
+      if (kH > 0) mPose = mixPose(mPose, HUG_MAYA, kH);
       const A0 = probe(ctx, 'adam', { x: ax, y: 700, facing: 1, ...aPose });
       const M0 = probe(ctx, 'maya', { x: mx, y: 700, facing: -1, ...mPose });
       if (kH > 0) {
@@ -183,7 +189,7 @@ export const shots = {
       // the lunchbox: overhead in her hands, then swinging from her hand as she runs, then pressed between them
       const runK = mRunK * (1 - kH);
       const hand = { x: (M.handF.x + M.handB.x) / 2, y: Math.min(M.handF.y, M.handB.y) };
-      const wedge = { x: (A.chest.x + M.chest.x) / 2 + 6, y: Math.max(A.chest.y, M.chest.y) + 10 };
+      const wedge = wedgeAt(A, M);
       const kW = ramp(t, ct - 0.1, 0.35);
       if (mRunK < 1 && kW <= 0) {
         lunchbox(ctx, { x: lerp(hand.x, M.handF.x, mRunK), y: lerp(hand.y + 14, M.handF.y, mRunK), size: 46, anchor: mRunK > 0.5 ? 'handle' : undefined, handleUp: mRunK, lum: 1, light: BOX_LIGHT, tint: GOLD.fill });
@@ -199,13 +205,13 @@ export const shots = {
   a7_13_hug(ctx, F) {
     const { t } = F;
     const look = 'golden', ink = GOLD.ink;
-    const ax = HS.meet.x, mx = HS.meet.x + 120;
+    const ax = HS.meet.x, mx = HS.meet.x + HUG_DX;
     const love = F.cue('a7_love'), know = F.cue('a7_know');
-    const adamPose = { ...POSE.hugKneel, head: 14 + 4 * ramp(t, love.end + 0.3, 1.2, ease.inOutSine) };
-    const mayaPose = { ...POSE.childHug, lean: 16, head: 8 };
+    const adamPose = { ...HUG_ADAM, head: HUG_ADAM.head + 4 * ramp(t, love.end + 0.3, 1.2, ease.inOutSine) };
+    const mayaPose = { ...HUG_MAYA };
     const A0 = probe(ctx, 'adam', { x: ax, y: 700, facing: 1, ...adamPose });
     const M0 = probe(ctx, 'maya', { x: mx, y: 700, facing: -1, ...mayaPose });
-    const cx = (A0.head.x + M0.head.x) / 2, cy = (A0.head.y + M0.head.y) / 2 + 10;
+    const cx = (A0.head.x + M0.head.x) / 2, cy = (A0.head.y + M0.head.y) / 2 + 34;
     const cam = drift(F, { x: cx, y: cy, zoom: 2.6 }, { x: cx, y: cy + 4, zoom: 2.9 });
     const o = { look, cam, blur: 1, flare: 1 };
     homeStreet.back(ctx, F, o);
@@ -215,12 +221,12 @@ export const shots = {
       const sq = ramp(t, love.end, 0.8, ease.inOutSine);
       const { A, M } = hugPair(ctx, F, {
         ax, mx,
-        adamPose: { ...adamPose, lean: 12 + sq * 3, curl: 12 + sq * 2 },
-        mayaPose: { ...mayaPose, head: 8 - talk(F, 'a7_know') * 3 },
+        adamPose: { ...adamPose, lean: adamPose.lean + sq * 3, curl: adamPose.curl + sq * 2 },
+        mayaPose: { ...mayaPose, head: mayaPose.head - talk(F, 'a7_know') * 3 },
         adamOpts: { ink, light: SUN, talk: talk(F, 'a7_love'), breath: breath(t, 0, 1.4), catch: 0.4 },
         mayaOpts: { ink, light: { color: GOLD.key, from: 1, amount: 0.8 }, talk: talk(F, 'a7_know') * 0.6, breath: breath(t, 1.3, 1.7), wear: { backpack: 1 } },
       });
-      const wedge = { x: (A.chest.x + M.chest.x) / 2 + 6, y: Math.max(A.chest.y, M.chest.y) + 10 };
+      const wedge = wedgeAt(A, M);
       lunchbox(ctx, { x: wedge.x, y: wedge.y, size: 46, anchor: 'handle', handleUp: 1, lum: 1, light: BOX_LIGHT, tint: GOLD.fill });
     });
     homeStreet.front(ctx, F, o);

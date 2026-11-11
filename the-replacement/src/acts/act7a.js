@@ -69,14 +69,14 @@ export const shots = {
 
     camera(ctx, cam, 1, () => {
       // ---- Maya on the step stool, facing left toward her dad.
-      const mBase = { ...POSE.stand, lean: 10, head: 22, handF: { x: 1386, y: 470 }, armB: [8, 30] };
+      const mBase = { ...POSE.stand, lean: 10, head: 22, handF: { x: 1402, y: 468 }, armB: [8, 30] };
       const mPop = { ...POSE.stand, lean: -4, head: -6, armF: [40, 60], armB: [10, 30] };
       const mFive = { ...POSE.highFive, lean: 14, head: -18, armB: [6, 20] };
-      const mAfter = { ...POSE.stand, lean: 8, head: 16, armF: [30, 50], armB: [6, 24] };
+      const mAfter = { ...POSE.stand, lean: 6, head: 12, armF: [14, 112], armB: [6, 24] };
       let mp = key(t, [[0, mBase], [pop, mBase], [pop + 0.45, mPop], [five - 0.45, mPop], [five - 0.05, mFive], [five + 0.35, mFive], [five + 1.0, mAfter], [20, mAfter]]);
       const fiveK = ramp(t, five - 0.5, 0.45) * (1 - ramp(t, five + 0.3, 0.55));
-      if (fiveK > 0.001) mp = { ...mp, handF: { x: lerp(1392, highMeet.x + 6, fiveK), y: lerp(470, highMeet.y, fiveK) } };
-      else if (t < pop + 0.2) mp = { ...mp, handF: { x: 1386, y: 470 } };
+      if (fiveK > 0.001) mp = { ...mp, handF: { x: lerp(1402, highMeet.x + 6, fiveK), y: lerp(468, highMeet.y, fiveK) } };
+      else if (t < pop + 0.2) mp = { ...mp, handF: { x: 1402, y: 468 } };
       else delete mp.handF;
       drawFigure(ctx, 'maya', { x: K.stoolTop.x + 6, y: K.stoolTop.y, facing: -1, ...mp },
         { ink, light: L(1426), breath: breath(t, 1.2, 2.0) });
@@ -114,7 +114,7 @@ export const shots = {
       });
 
       // ---- His wife: in from the bedrooms doorway, reaches them by `kiss`, touches his arm.
-      const wStart = K.hallDoor.x + 40, wEnd = 1302, wGo = 1.9, wArrive = kiss - 0.35;
+      const wStart = K.hallDoor.x + 40, wEnd = 1296, wGo = 1.9, wArrive = kiss - 0.35;
       const wx = key(t, [[0, wStart], [wGo, wStart], [wArrive, wEnd, ease.inOutSine]]);
       const wd = wStart - wx;
       const wWalk = POSE.walk(walkPhase(wd, 'wife'), { swing: 20 });
