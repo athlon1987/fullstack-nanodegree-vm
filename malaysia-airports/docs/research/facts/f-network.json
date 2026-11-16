@@ -1,0 +1,2425 @@
+{
+  "topic": "MAHB airport network: inventory, classification, KLIA terminal naming, Subang, non-MAHB airports, 2024-2026 changes, overseas interests",
+  "generated": "2026-11-16",
+  "facts": [
+    {
+      "id": "network-total-39",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports operates 39 airports in Malaysia.",
+      "value": "39",
+      "as_of": "2024-04-29 (Annual Report 2023); re-stated in the full-year 2025 traffic release (early 2026)",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (single PDF)",
+          "type": "official"
+        },
+        {
+          "url": "https://mahb.listedcompany.com/newsroom/MAHB_Annual_Report_2023_-_Part_1_20240429.pdf",
+          "title": "MAHB Annual Report 2023 - Part 1 (investor-relations copy, 29 Apr 2024)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2024/03/18/anthony-loke-govt-renews-mahb-contract-to-handle-all-airports-in-malaysia-for-45-years-until-2069/124110",
+          "title": "Anthony Loke: Govt renews MAHB contract to handle all airports in Malaysia for 45 years until 2069 (Malay Mail)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.routesonline.com/airports/9835/malaysia-airports-holdings-berhad/news/299665873/malaysia-airports-strong-2025-passenger-growth-builds-momentum-for-visit-malaysia-2026/",
+          "title": "Malaysia Airports: Strong 2025 passenger growth builds momentum for Visit Malaysia 2026 (MAHB release on Routesonline)",
+          "type": "operator"
+        },
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/media-centre/news/1678",
+          "title": "Strong 2025 passenger growth builds momentum for Visit Malaysia 2026 (MAHB media release)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "The figure 39 is consistent across the Annual Report 2023, the March 2024 Operating Agreements coverage and the 2025 full-year traffic release ('within its Malaysia network of 39 airports'). Official host could not be fetched directly in this run."
+    },
+    {
+      "id": "network-split-5-17-17",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "The 39 airports Malaysia Airports operates in Malaysia comprise 5 international airports, 17 domestic airports and 17 short take-off and landing ports (STOLports).",
+      "value": "5 international / 17 domestic / 17 STOLports",
+      "as_of": "2024-04-29 (Annual Report 2023); 2024-03-18 (Malay Mail)",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (single PDF)",
+          "type": "official"
+        },
+        {
+          "url": "https://mahb.listedcompany.com/newsroom/MAHB_Annual_Report_2023_-_Part_1_20240429.pdf",
+          "title": "MAHB Annual Report 2023 - Part 1 (investor-relations copy, 29 Apr 2024)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2024/03/18/anthony-loke-govt-renews-mahb-contract-to-handle-all-airports-in-malaysia-for-45-years-until-2069/124110",
+          "title": "Anthony Loke: Govt renews MAHB contract to handle all airports in Malaysia for 45 years until 2069 (Malay Mail)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "THIS IS THE SPLIT TO PUBLISH. It is the most recent explicit official split found (Annual Report 2023, published April 2024) and is repeated in news coverage of the 18 March 2024 Operating Agreements. It is also arithmetically consistent with the national totals in network-national-42. See network-split-legacy-16-18 for the older conflicting split."
+    },
+    {
+      "id": "network-split-legacy-16-18",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Older Malaysia Airports material (Annual Report 2018 and legacy corporate web pages still indexed by search) describes the 39 airports as 5 international, 16 domestic and 18 STOLports.",
+      "value": "5 / 16 / 18 (superseded)",
+      "as_of": "2018 annual report; legacy pages undated",
+      "sources": [
+        {
+          "url": "https://corporate.malaysiaairports.com.my/document/annual-report-2018.pdf",
+          "title": "MAHB Annual Report 2018 - Creating Happy Guests",
+          "type": "official"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/?c=passenger_guide&id=1&m=airport",
+          "title": "Malaysia Airports Holdings Berhad (MAHB) Corporate Website (legacy URL pattern)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.pressreader.com/malaysia/new-straits-times/20180830/281840054535864",
+          "title": "STOLports: Gateways to local wonders (New Straits Times via PressReader, 30 Aug 2018)",
+          "type": "news"
+        },
+        {
+          "url": "https://lvyou168.cn/malaysiaairports/pdf/corporate_profile.pdf",
+          "title": "Malaysia Airports corporate profile 'Connecting You' (undated copy hosted on a third-party site)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "CONFLICT recorded: 16 domestic + 18 STOLports (pre-2021) versus 17 + 17 (Annual Report 2023 onward). The search summary also said the 'current corporate site repeats' the 16/18 figures, but which live page does so could not be confirmed because the host was blocked. Do not publish 16/18."
+    },
+    {
+      "id": "network-split-reconciliation-mukah",
+      "category": "corporate",
+      "airport": "MKM",
+      "terminal": null,
+      "claim": "The change from 16 domestic airports and 18 STOLports to 17 domestic airports and 17 STOLports is explained by Mukah: the Mukah STOLport was replaced by the new Mukah Airport on 17 June 2021, and Annual Report 2023 lists Mukah among the domestic airports.",
+      "value": "Mukah: STOLport -> domestic airport (2021)",
+      "as_of": "2021-06-17 (opening); 2024-04-29 (Annual Report 2023 list)",
+      "sources": [
+        {
+          "url": "https://www.routesonline.com/airports/6191/kuching-international-airport/news/296137/new-mukah-airport-opens-replacing-previous-mukah-stolport/",
+          "title": "New Mukah Airport Opens, Replacing Previous Mukah STOLport (MAHB release on Routesonline)",
+          "type": "operator"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/taxonomy/term/459",
+          "title": "New Mukah Airport Opens, Replacing Previous Mukah Stolport (MAHB)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.nst.com.my/amp/business/home/2021/06/699491/new-rm300mil-mukah-airport-opens-today",
+          "title": "New RM300mil Mukah Airport opens today (New Straits Times)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of AR2023 text)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "The opening date and the AR2023 domestic list are search-confirmed; that Mukah is the sole reason for the 16/18 -> 17/17 shift is an inference from those two facts (no source states it in one sentence). Total stays 39."
+    },
+    {
+      "id": "network-national-42",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia has 42 commercial airports in total - 6 international airports, 19 domestic airports and 17 STOLports - of which Malaysia Airports, through its subsidiaries, manages 39.",
+      "value": "39 of 42",
+      "as_of": "2025-11-25 (date in parliamentary paper URL); the paper is a 2024 annual report",
+      "sources": [
+        {
+          "url": "https://www.parlimen.gov.my/ipms/eps/2025-11-25/ST.172.2025%20-%20ST172.2025.pdf",
+          "title": "Statute Paper ST.172/2025 tabled in the Parliament of Malaysia (a 2024 annual report; issuing body not confirmed in this run)",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "From a 2024 annual report tabled in Parliament as Statute Paper ST.172/2025. The search summary attributed it to 'the 2024 Annual Report'; the third-person wording about MAHB suggests it may be a regulator's annual report rather than MAHB's own - issuing body not confirmed. Arithmetic check: 6+19+17 = 42; minus MAHB's 5+17+17 = 39 leaves 1 international + 2 domestic + 0 STOLports not run by MAHB."
+    },
+    {
+      "id": "network-count-unchanged-2024-2026",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "The size of Malaysia Airports' Malaysian network was stated as 39 airports both in March 2024 (new Operating Agreements) and in the full-year 2025 traffic release, indicating no net addition or removal of airports over that period.",
+      "value": "39 (Mar 2024) = 39 (FY2025 release)",
+      "as_of": "2024-03-18; FY2025 release (early 2026, exact date unknown)",
+      "sources": [
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2024/03/18/anthony-loke-govt-renews-mahb-contract-to-handle-all-airports-in-malaysia-for-45-years-until-2069/124110",
+          "title": "Anthony Loke: Govt renews MAHB contract to handle all airports in Malaysia for 45 years until 2069 (Malay Mail)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.routesonline.com/airports/9835/malaysia-airports-holdings-berhad/news/299665873/malaysia-airports-strong-2025-passenger-growth-builds-momentum-for-visit-malaysia-2026/",
+          "title": "Malaysia Airports: Strong 2025 passenger growth builds momentum for Visit Malaysia 2026 (MAHB release on Routesonline)",
+          "type": "operator"
+        },
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/media-centre/news/1678",
+          "title": "Strong 2025 passenger growth builds momentum for Visit Malaysia 2026 (MAHB media release)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "No source found in this run reports any airport being added to, transferred out of, or closed within the MAHB network in 2024-2026. Absence of evidence only; status after early 2026 not checked (search budget exhausted)."
+    },
+    {
+      "id": "network-plus-isg-40",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Including Istanbul Sabiha Gokcen International Airport in Turkiye, Malaysia Airports' portfolio totals 40 airports: 39 in Malaysia and 1 overseas.",
+      "value": "40 (39 + 1)",
+      "as_of": "2024-04-29 (Annual Report 2023)",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (single PDF)",
+          "type": "official"
+        },
+        {
+          "url": "https://mahb.listedcompany.com/newsroom/MAHB_Annual_Report_2023_-_Part_1_20240429.pdf",
+          "title": "MAHB Annual Report 2023 - Part 1 (investor-relations copy, 29 Apr 2024)",
+          "type": "official"
+        },
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/media-centre/news/273",
+          "title": "Corporate Website - Malaysia Airports (media centre item 273)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Annual Report 2023 wording per search summary: 39 airports in Malaysia 'plus one international airport in Istanbul, Turkiye'."
+    },
+    {
+      "id": "network-international-list",
+      "category": "identity",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports' five international airports are KL International Airport, Penang International Airport, Langkawi International Airport, Kota Kinabalu International Airport and Kuching International Airport.",
+      "value": "KUL, PEN, LGK, BKI, KCH",
+      "as_of": "2024-04-29 (Annual Report 2023)",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of AR2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (single PDF)",
+          "type": "official"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/",
+          "title": "KLIA Terminal 1 (airports.malaysiaairports.com.my home)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "List from the Annual Report 2023 text (search summary). The same five appear in the passenger-site navigation."
+    },
+    {
+      "id": "network-domestic-list",
+      "category": "identity",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports' 17 domestic airports are Subang, Alor Setar, Ipoh, Kota Bharu, Kuala Terengganu, Kuantan and Melaka in Peninsular Malaysia; Labuan; Lahad Datu, Sandakan and Tawau in Sabah; and Bintulu, Limbang, Miri, Mukah, Mulu and Sibu in Sarawak.",
+      "value": "17 domestic airports",
+      "as_of": "2024-04-29 (Annual Report 2023)",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of AR2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (single PDF)",
+          "type": "official"
+        },
+        {
+          "url": "https://mahb.listedcompany.com/newsroom/MAHB_Annual_Report_2023_-_Part_1_20240429.pdf",
+          "title": "MAHB Annual Report 2023 - Part 1 (investor-relations copy, 29 Apr 2024)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "All 17 names were returned in the search summary of the Annual Report 2023 list (count checks: 7 Peninsular + 1 Labuan + 3 Sabah + 6 Sarawak = 17). The grouping by region is the researcher's arrangement. Should be re-verified against the AR2024/AR2025 list once the official host is reachable."
+    },
+    {
+      "id": "network-stolport-list-borneo",
+      "category": "identity",
+      "airport": null,
+      "terminal": null,
+      "claim": "The Civil Aviation Authority of Malaysia lists STOLports at Kudat, Long Pasia and Semporna in Sabah, and at Ba'kelalan, Bario, Belaga, Kapit, Lawas, Long Akah, Long Banga, Long Lellang, Long Semado, Long Seridan and Marudi in Sarawak.",
+      "value": "3 Sabah + 11 Sarawak = 14",
+      "as_of": "unknown (CAAM web page; CAAM SI 02/2026 dated March 2026)",
+      "sources": [
+        {
+          "url": "https://www.caam.gov.my/industry/public-service-obligations/know-your-ras-destinations/?std",
+          "title": "Know your RAS destinations (Civil Aviation Authority of Malaysia)",
+          "type": "government"
+        },
+        {
+          "url": "https://www.caam.gov.my/wp-content/uploads/2026/03/SI-02_2026-Safety-Measures-and-Certification-Preparedness-for-STOLport-Operators-in-Malaysia.pdf",
+          "title": "SI 02/2026 Safety Measures and Certification Preparedness for STOLport Operators in Malaysia (CAAM)",
+          "type": "government"
+        },
+        {
+          "url": "https://www.parlimen.gov.my/ipms/eps/2025-11-25/ST.172.2025%20-%20ST172.2025.pdf",
+          "title": "Statute Paper ST.172/2025 tabled in the Parliament of Malaysia (a 2024 annual report; issuing body not confirmed in this run)",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "The CAAM list in the search summary also named Mukah (now a domestic airport, see airport-mkm) and Tanjung Manis (not MAHB, see non-mahb-tanjung-manis); both are excluded here. The parliamentary 2024 annual report independently names Bario, Ba'kelalan, Belaga, Kapit, Kudat, Lawas, Long Akah, Long Banga, Long Lellang and Long Pasia among STOLports. CONFLICT: a June 2021 MAHB release was summarised as saying MAHB operated 'eight other STOLports' in Sarawak after Mukah, versus 11 here - unresolved."
+    },
+    {
+      "id": "network-stolport-peninsular-islands",
+      "category": "identity",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports' STOLports are small airports serving rural areas of Sarawak and Sabah and three islands in Peninsular Malaysia.",
+      "value": "3 island STOLports in Peninsular Malaysia",
+      "as_of": "unknown (undated corporate profile, pre-2021)",
+      "sources": [
+        {
+          "url": "https://lvyou168.cn/malaysiaairports/pdf/corporate_profile.pdf",
+          "title": "Malaysia Airports corporate profile 'Connecting You' (undated copy hosted on a third-party site)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Source is an undated copy of the MAHB corporate profile hosted on a third-party site and predates the Mukah change (it says 18 of 39). The three islands are Pangkor, Redang and Tioman from prior knowledge (not named in any search result in this run)."
+    },
+    {
+      "id": "network-stolport-list-17-derived",
+      "category": "identity",
+      "airport": null,
+      "terminal": null,
+      "claim": "The 17 STOLports in the Malaysia Airports network are Pangkor, Redang and Tioman (Peninsular Malaysia); Kudat, Long Pasia and Semporna (Sabah); and Ba'kelalan, Bario, Belaga, Kapit, Lawas, Long Akah, Long Banga, Long Lellang, Long Semado, Long Seridan and Marudi (Sarawak).",
+      "value": "3 + 3 + 11 = 17",
+      "as_of": "as of prior knowledge c. 2025; cross-checked against 2024-2026 search results",
+      "sources": [
+        {
+          "url": "https://www.caam.gov.my/industry/public-service-obligations/know-your-ras-destinations/?std",
+          "title": "Know your RAS destinations (Civil Aviation Authority of Malaysia)",
+          "type": "government"
+        },
+        {
+          "url": "https://lvyou168.cn/malaysiaairports/pdf/corporate_profile.pdf",
+          "title": "Malaysia Airports corporate profile 'Connecting You' (undated copy hosted on a third-party site)",
+          "type": "other"
+        },
+        {
+          "url": "https://www.parlimen.gov.my/ipms/eps/2025-11-25/ST.172.2025%20-%20ST172.2025.pdf",
+          "title": "Statute Paper ST.172/2025 tabled in the Parliament of Malaysia (a 2024 annual report; issuing body not confirmed in this run)",
+          "type": "government"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Assembled list: 14 Sabah/Sarawak names are search-confirmed as STOLports (CAAM); the 3 Peninsular names are prior knowledge. The total matches the official count of 17, which supports the list, but no single official MAHB list of all 17 was retrieved in this run. Verify against the 'Airports we operate' page of the latest annual report before publishing."
+    },
+    {
+      "id": "network-operating-subsidiaries",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports Holdings Berhad manages its Malaysian airports through subsidiaries: Malaysia Airports (Sepang) Sdn Bhd operates KL International Airport and Malaysia Airports Sdn Bhd operates the other airports and STOLports.",
+      "value": null,
+      "as_of": "prior knowledge c. 2024",
+      "sources": [
+        {
+          "url": "https://www.parlimen.gov.my/ipms/eps/2025-11-25/ST.172.2025%20-%20ST172.2025.pdf",
+          "title": "Statute Paper ST.172/2025 tabled in the Parliament of Malaysia (a 2024 annual report; issuing body not confirmed in this run)",
+          "type": "government"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "'Through its subsidiaries' is search-confirmed (parliamentary paper); the subsidiary names and split are prior knowledge, not re-confirmed."
+    },
+    {
+      "id": "airport-kul",
+      "category": "identity",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "KL International Airport (Kuala Lumpur International Airport, KLIA) (KUL/WMKK), Sepang, Selangor, is operated by Malaysia Airports and classified as an international airport.",
+      "value": "KUL/WMKK",
+      "as_of": "2024-04-29 (classification, Annual Report 2023); codes as of prior knowledge c. 2025",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of AR2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/",
+          "title": "KLIA Terminal 1 (airports.malaysiaairports.com.my home)",
+          "type": "official"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Classification, MAHB operation and IATA code: search-confirmed (Annual Report 2023 list; passenger-site navigation). ICAO code and locality: prior knowledge, not re-confirmed. Passenger site: yes - it is the default/home section of airports.malaysiaairports.com.my, labelled 'KUL - Terminal 1 & Terminal 2' (search). One IATA code covers both terminals."
+    },
+    {
+      "id": "airport-pen",
+      "category": "identity",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Penang International Airport (PEN/WMKP), Bayan Lepas, Penang, is operated by Malaysia Airports and classified as an international airport.",
+      "value": "PEN/WMKP",
+      "as_of": "2024-04-29 (classification, Annual Report 2023); codes as of prior knowledge c. 2025",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of AR2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/penang",
+          "title": "Penang International Airport (PEN)",
+          "type": "official"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Classification, MAHB operation and IATA code: search-confirmed (Annual Report 2023 list; passenger-site navigation). ICAO code and locality: prior knowledge, not re-confirmed. Passenger site: yes - airports.malaysiaairports.com.my/penang (search)."
+    },
+    {
+      "id": "airport-lgk",
+      "category": "identity",
+      "airport": "LGK",
+      "terminal": null,
+      "claim": "Langkawi International Airport (LGK/WMKL), Padang Matsirat, Langkawi, Kedah, is operated by Malaysia Airports and classified as an international airport.",
+      "value": "LGK/WMKL",
+      "as_of": "2024-04-29 (classification, Annual Report 2023); codes as of prior knowledge c. 2025",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of AR2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/en/langkawi",
+          "title": "Langkawi International Airport (LGK) - KLIA",
+          "type": "official"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Classification, MAHB operation and IATA code: search-confirmed (Annual Report 2023 list; passenger-site navigation). ICAO code and locality: prior knowledge, not re-confirmed. Passenger site: yes - airports.malaysiaairports.com.my/en/langkawi (search)."
+    },
+    {
+      "id": "airport-bki",
+      "category": "identity",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "Kota Kinabalu International Airport (BKI/WBKK), Kota Kinabalu, Sabah, is operated by Malaysia Airports and classified as an international airport.",
+      "value": "BKI/WBKK",
+      "as_of": "2024-04-29 (classification, Annual Report 2023); codes as of prior knowledge c. 2025",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of AR2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/kota-kinabalu",
+          "title": "Kota Kinabalu International Airport (BKI)",
+          "type": "official"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Classification, MAHB operation and IATA code: search-confirmed (Annual Report 2023 list; passenger-site navigation). ICAO code and locality: prior knowledge, not re-confirmed. Passenger site: yes - airports.malaysiaairports.com.my/kota-kinabalu (search)."
+    },
+    {
+      "id": "airport-kch",
+      "category": "identity",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "Kuching International Airport (KCH/WBGG), Kuching, Sarawak, is operated by Malaysia Airports and classified as an international airport.",
+      "value": "KCH/WBGG",
+      "as_of": "2024-04-29 (classification, Annual Report 2023); codes as of prior knowledge c. 2025",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of AR2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/",
+          "title": "KLIA Terminal 1 (airports.malaysiaairports.com.my home)",
+          "type": "official"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Classification, MAHB operation and IATA code: search-confirmed (Annual Report 2023 list; passenger-site navigation). ICAO code and locality: prior knowledge, not re-confirmed. Passenger site: yes - listed in the site navigation as 'Kuching (KCH)' (search); the section URL itself was not returned by search."
+    },
+    {
+      "id": "airport-szb",
+      "category": "identity",
+      "airport": "SZB",
+      "terminal": null,
+      "claim": "Sultan Abdul Aziz Shah Airport (Subang Airport) (SZB/WMSA), Subang, Selangor, is operated by Malaysia Airports and classified as a domestic airport.",
+      "value": "SZB/WMSA",
+      "as_of": "2024-04-29 (classification, Annual Report 2023); codes as of prior knowledge c. 2025",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of AR2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (single PDF)",
+          "type": "official"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Classification and MAHB operation: search-confirmed via the Annual Report 2023 list. IATA/ICAO codes, full official name and locality: prior knowledge (as of c. 2025), not re-confirmed in this run - verify against the CAAM AIP before publishing. Listed as 'Subang' in the Annual Report 2023 domestic list. See the szb-* facts for current status. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-aor",
+      "category": "identity",
+      "airport": "AOR",
+      "terminal": null,
+      "claim": "Sultan Abdul Halim Airport (AOR/WMKA), Alor Setar, Kedah, is operated by Malaysia Airports and classified as a domestic airport.",
+      "value": "AOR/WMKA",
+      "as_of": "2024-04-29 (classification, Annual Report 2023); codes as of prior knowledge c. 2025",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of AR2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (single PDF)",
+          "type": "official"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Classification and MAHB operation: search-confirmed via the Annual Report 2023 list. IATA/ICAO codes, full official name and locality: prior knowledge (as of c. 2025), not re-confirmed in this run - verify against the CAAM AIP before publishing. Listed as 'Alor Setar'. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-iph",
+      "category": "identity",
+      "airport": "IPH",
+      "terminal": null,
+      "claim": "Sultan Azlan Shah Airport (IPH/WMKI), Ipoh, Perak, is operated by Malaysia Airports and classified as a domestic airport.",
+      "value": "IPH/WMKI",
+      "as_of": "2024-04-29 (classification, Annual Report 2023); codes as of prior knowledge c. 2025",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of AR2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (single PDF)",
+          "type": "official"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Classification and MAHB operation: search-confirmed via the Annual Report 2023 list. IATA/ICAO codes, full official name and locality: prior knowledge (as of c. 2025), not re-confirmed in this run - verify against the CAAM AIP before publishing. Listed as 'Ipoh'. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-kbr",
+      "category": "identity",
+      "airport": "KBR",
+      "terminal": null,
+      "claim": "Sultan Ismail Petra Airport (KBR/WMKC), Kota Bharu, Kelantan, is operated by Malaysia Airports and classified as a domestic airport.",
+      "value": "KBR/WMKC",
+      "as_of": "2024-04-29 (classification, Annual Report 2023); codes as of prior knowledge c. 2025",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of AR2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (single PDF)",
+          "type": "official"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Classification and MAHB operation: search-confirmed via the Annual Report 2023 list. IATA/ICAO codes, full official name and locality: prior knowledge (as of c. 2025), not re-confirmed in this run - verify against the CAAM AIP before publishing. Listed as 'Kota Bharu'. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-tgg",
+      "category": "identity",
+      "airport": "TGG",
+      "terminal": null,
+      "claim": "Sultan Mahmud Airport (TGG/WMKN), Kuala Terengganu, Terengganu, is operated by Malaysia Airports and classified as a domestic airport.",
+      "value": "TGG/WMKN",
+      "as_of": "2024-04-29 (classification, Annual Report 2023); codes as of prior knowledge c. 2025",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of AR2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (single PDF)",
+          "type": "official"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Classification and MAHB operation: search-confirmed via the Annual Report 2023 list. IATA/ICAO codes, full official name and locality: prior knowledge (as of c. 2025), not re-confirmed in this run - verify against the CAAM AIP before publishing. Listed as 'Kuala Terengganu'. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-kua",
+      "category": "identity",
+      "airport": "KUA",
+      "terminal": null,
+      "claim": "Sultan Haji Ahmad Shah Airport (KUA/WMKD), Kuantan, Pahang, is operated by Malaysia Airports and classified as a domestic airport.",
+      "value": "KUA/WMKD",
+      "as_of": "2024-04-29 (classification, Annual Report 2023); codes as of prior knowledge c. 2025",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of AR2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (single PDF)",
+          "type": "official"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Classification and MAHB operation: search-confirmed via the Annual Report 2023 list. IATA/ICAO codes, full official name and locality: prior knowledge (as of c. 2025), not re-confirmed in this run - verify against the CAAM AIP before publishing. Listed as 'Kuantan'. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-mkz",
+      "category": "identity",
+      "airport": "MKZ",
+      "terminal": null,
+      "claim": "Melaka Airport (commonly called Melaka International Airport) (MKZ/WMKM), Batu Berendam, Melaka, is operated by Malaysia Airports and classified as a domestic airport.",
+      "value": "MKZ/WMKM",
+      "as_of": "2024-04-29 (classification, Annual Report 2023); codes as of prior knowledge c. 2025",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of AR2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (single PDF)",
+          "type": "official"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Classification and MAHB operation: search-confirmed via the Annual Report 2023 list. IATA/ICAO codes, full official name and locality: prior knowledge (as of c. 2025), not re-confirmed in this run - verify against the CAAM AIP before publishing. Listed as 'Melaka' among DOMESTIC airports in Annual Report 2023 even though the airport is widely known as 'Melaka International Airport' (prior) - use MAHB's classification and check the official name. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-lbu",
+      "category": "identity",
+      "airport": "LBU",
+      "terminal": null,
+      "claim": "Labuan Airport (LBU/WBKL), Labuan, Federal Territory of Labuan, is operated by Malaysia Airports and classified as a domestic airport.",
+      "value": "LBU/WBKL",
+      "as_of": "2024-04-29 (classification, Annual Report 2023); codes as of prior knowledge c. 2025",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of AR2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (single PDF)",
+          "type": "official"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Classification and MAHB operation: search-confirmed via the Annual Report 2023 list. IATA/ICAO codes, full official name and locality: prior knowledge (as of c. 2025), not re-confirmed in this run - verify against the CAAM AIP before publishing. Listed as 'Labuan'. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-ldu",
+      "category": "identity",
+      "airport": "LDU",
+      "terminal": null,
+      "claim": "Lahad Datu Airport (LDU/WBKD), Lahad Datu, Sabah, is operated by Malaysia Airports and classified as a domestic airport.",
+      "value": "LDU/WBKD",
+      "as_of": "2024-04-29 (classification, Annual Report 2023); codes as of prior knowledge c. 2025",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of AR2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (single PDF)",
+          "type": "official"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Classification and MAHB operation: search-confirmed via the Annual Report 2023 list. IATA/ICAO codes, full official name and locality: prior knowledge (as of c. 2025), not re-confirmed in this run - verify against the CAAM AIP before publishing. Listed as 'Lahad Datu'. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-sdk",
+      "category": "identity",
+      "airport": "SDK",
+      "terminal": null,
+      "claim": "Sandakan Airport (SDK/WBKS), Sandakan, Sabah, is operated by Malaysia Airports and classified as a domestic airport.",
+      "value": "SDK/WBKS",
+      "as_of": "2024-04-29 (classification, Annual Report 2023); codes as of prior knowledge c. 2025",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of AR2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (single PDF)",
+          "type": "official"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Classification and MAHB operation: search-confirmed via the Annual Report 2023 list. IATA/ICAO codes, full official name and locality: prior knowledge (as of c. 2025), not re-confirmed in this run - verify against the CAAM AIP before publishing. Listed as 'Sandakan'. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-twu",
+      "category": "identity",
+      "airport": "TWU",
+      "terminal": null,
+      "claim": "Tawau Airport (TWU/WBKW), Tawau, Sabah, is operated by Malaysia Airports and classified as a domestic airport.",
+      "value": "TWU/WBKW",
+      "as_of": "2024-04-29 (classification, Annual Report 2023); codes as of prior knowledge c. 2025",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of AR2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (single PDF)",
+          "type": "official"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Classification and MAHB operation: search-confirmed via the Annual Report 2023 list. IATA/ICAO codes, full official name and locality: prior knowledge (as of c. 2025), not re-confirmed in this run - verify against the CAAM AIP before publishing. Listed as 'Tawau'. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-btu",
+      "category": "identity",
+      "airport": "BTU",
+      "terminal": null,
+      "claim": "Bintulu Airport (BTU/WBGB), Bintulu, Sarawak, is operated by Malaysia Airports and classified as a domestic airport.",
+      "value": "BTU/WBGB",
+      "as_of": "2024-04-29 (classification, Annual Report 2023); codes as of prior knowledge c. 2025",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of AR2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (single PDF)",
+          "type": "official"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Classification and MAHB operation: search-confirmed via the Annual Report 2023 list. IATA/ICAO codes, full official name and locality: prior knowledge (as of c. 2025), not re-confirmed in this run - verify against the CAAM AIP before publishing. Listed as 'Bintulu'. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-lmn",
+      "category": "identity",
+      "airport": "LMN",
+      "terminal": null,
+      "claim": "Limbang Airport (LMN/WBGJ), Limbang, Sarawak, is operated by Malaysia Airports and classified as a domestic airport.",
+      "value": "LMN/WBGJ",
+      "as_of": "2024-04-29 (classification, Annual Report 2023); codes as of prior knowledge c. 2025",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of AR2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (single PDF)",
+          "type": "official"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Classification and MAHB operation: search-confirmed via the Annual Report 2023 list. IATA/ICAO codes, full official name and locality: prior knowledge (as of c. 2025), not re-confirmed in this run - verify against the CAAM AIP before publishing. Listed as 'Limbang'. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-myy",
+      "category": "identity",
+      "airport": "MYY",
+      "terminal": null,
+      "claim": "Miri Airport (MYY/WBGR), Miri, Sarawak, is operated by Malaysia Airports and classified as a domestic airport.",
+      "value": "MYY/WBGR",
+      "as_of": "2024-04-29 (classification, Annual Report 2023); codes as of prior knowledge c. 2025",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of AR2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (single PDF)",
+          "type": "official"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Classification and MAHB operation: search-confirmed via the Annual Report 2023 list. IATA/ICAO codes, full official name and locality: prior knowledge (as of c. 2025), not re-confirmed in this run - verify against the CAAM AIP before publishing. Listed as 'Miri'. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-mkm",
+      "category": "identity",
+      "airport": "MKM",
+      "terminal": null,
+      "claim": "Mukah Airport (MKM/WBGK), Mukah, Sarawak, is operated by Malaysia Airports and classified as a domestic airport.",
+      "value": "MKM/WBGK",
+      "as_of": "2024-04-29 (classification, Annual Report 2023); codes as of prior knowledge c. 2025",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of AR2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (single PDF)",
+          "type": "official"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Classification and MAHB operation: search-confirmed via the Annual Report 2023 list. IATA/ICAO codes, full official name and locality: prior knowledge (as of c. 2025), not re-confirmed in this run - verify against the CAAM AIP before publishing. Listed as 'Mukah'. New airport opened 17 June 2021 replacing the former Mukah STOLport (search); IATA code MKM search-confirmed (NST 2021); ICAO code is prior knowledge. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-mzv",
+      "category": "identity",
+      "airport": "MZV",
+      "terminal": null,
+      "claim": "Mulu Airport (MZV/WBMU), Mulu, Sarawak, is operated by Malaysia Airports and classified as a domestic airport.",
+      "value": "MZV/WBMU",
+      "as_of": "2024-04-29 (classification, Annual Report 2023); codes as of prior knowledge c. 2025",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of AR2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (single PDF)",
+          "type": "official"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Classification and MAHB operation: search-confirmed via the Annual Report 2023 list. IATA/ICAO codes, full official name and locality: prior knowledge (as of c. 2025), not re-confirmed in this run - verify against the CAAM AIP before publishing. Listed as 'Mulu'. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-sbw",
+      "category": "identity",
+      "airport": "SBW",
+      "terminal": null,
+      "claim": "Sibu Airport (SBW/WBGS), Sibu, Sarawak, is operated by Malaysia Airports and classified as a domestic airport.",
+      "value": "SBW/WBGS",
+      "as_of": "2024-04-29 (classification, Annual Report 2023); codes as of prior knowledge c. 2025",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of AR2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (single PDF)",
+          "type": "official"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Classification and MAHB operation: search-confirmed via the Annual Report 2023 list. IATA/ICAO codes, full official name and locality: prior knowledge (as of c. 2025), not re-confirmed in this run - verify against the CAAM AIP before publishing. Listed as 'Sibu'. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-pkg",
+      "category": "identity",
+      "airport": "PKG",
+      "terminal": null,
+      "claim": "Pangkor Airport (PKG/WMPA), Pangkor Island, Perak, is operated by Malaysia Airports and classified as a STOLport (short take-off and landing port).",
+      "value": "PKG/WMPA",
+      "as_of": "prior knowledge c. 2025; STOLport lists per CAAM (undated) and 2024 annual report",
+      "sources": [
+        {
+          "url": "https://lvyou168.cn/malaysiaairports/pdf/corporate_profile.pdf",
+          "title": "Malaysia Airports corporate profile 'Connecting You' (undated copy hosted on a third-party site)",
+          "type": "other"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "Entirely prior knowledge: no search result in this run named Pangkor. The corporate profile only says 'three islands in Peninsular Malaysia'. Codes prior (c. 2025). Scheduled-service status not checked. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-rdn",
+      "category": "identity",
+      "airport": "RDN",
+      "terminal": null,
+      "claim": "Redang Airport (RDN/WMPR), Redang Island, Terengganu, is operated by Malaysia Airports and classified as a STOLport (short take-off and landing port).",
+      "value": "RDN/WMPR",
+      "as_of": "prior knowledge c. 2025; STOLport lists per CAAM (undated) and 2024 annual report",
+      "sources": [
+        {
+          "url": "https://lvyou168.cn/malaysiaairports/pdf/corporate_profile.pdf",
+          "title": "Malaysia Airports corporate profile 'Connecting You' (undated copy hosted on a third-party site)",
+          "type": "other"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "Entirely prior knowledge: no search result in this run named Redang. Codes prior (c. 2025). Scheduled-service status not checked. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-tod",
+      "category": "identity",
+      "airport": "TOD",
+      "terminal": null,
+      "claim": "Tioman Airport (TOD/WMBT), Tioman Island, Pahang, is operated by Malaysia Airports and classified as a STOLport (short take-off and landing port).",
+      "value": "TOD/WMBT",
+      "as_of": "prior knowledge c. 2025; STOLport lists per CAAM (undated) and 2024 annual report",
+      "sources": [
+        {
+          "url": "https://lvyou168.cn/malaysiaairports/pdf/corporate_profile.pdf",
+          "title": "Malaysia Airports corporate profile 'Connecting You' (undated copy hosted on a third-party site)",
+          "type": "other"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "Entirely prior knowledge: no search result in this run named Tioman. Codes prior (c. 2025). Scheduled-service status not checked. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-kud",
+      "category": "identity",
+      "airport": "KUD",
+      "terminal": null,
+      "claim": "Kudat Airport (KUD/WBKT), Kudat, Sabah, is operated by Malaysia Airports and classified as a STOLport (short take-off and landing port).",
+      "value": "KUD/WBKT",
+      "as_of": "prior knowledge c. 2025; STOLport lists per CAAM (undated) and 2024 annual report",
+      "sources": [
+        {
+          "url": "https://www.caam.gov.my/industry/public-service-obligations/know-your-ras-destinations/?std",
+          "title": "Know your RAS destinations (Civil Aviation Authority of Malaysia)",
+          "type": "government"
+        },
+        {
+          "url": "https://www.parlimen.gov.my/ipms/eps/2025-11-25/ST.172.2025%20-%20ST172.2025.pdf",
+          "title": "Statute Paper ST.172/2025 tabled in the Parliament of Malaysia (a 2024 annual report; issuing body not confirmed in this run)",
+          "type": "government"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "STOLport status in Sabah/Sarawak: search-confirmed via the CAAM STOLport list. Inclusion in MAHB's 17 rests on the derived list (network-stolport-list-17-derived). IATA/ICAO codes and locality: prior knowledge (as of c. 2025), not re-confirmed - verify against the CAAM AIP. Whether the STOLport currently has scheduled passenger flights was not checked. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-gsa",
+      "category": "identity",
+      "airport": "GSA",
+      "terminal": null,
+      "claim": "Long Pasia Airport (GSA/WBKN), Long Pasia, Sabah, is operated by Malaysia Airports and classified as a STOLport (short take-off and landing port).",
+      "value": "GSA/WBKN",
+      "as_of": "prior knowledge c. 2025; STOLport lists per CAAM (undated) and 2024 annual report",
+      "sources": [
+        {
+          "url": "https://www.caam.gov.my/industry/public-service-obligations/know-your-ras-destinations/?std",
+          "title": "Know your RAS destinations (Civil Aviation Authority of Malaysia)",
+          "type": "government"
+        },
+        {
+          "url": "https://www.parlimen.gov.my/ipms/eps/2025-11-25/ST.172.2025%20-%20ST172.2025.pdf",
+          "title": "Statute Paper ST.172/2025 tabled in the Parliament of Malaysia (a 2024 annual report; issuing body not confirmed in this run)",
+          "type": "government"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "STOLport status in Sabah/Sarawak: search-confirmed via the CAAM STOLport list. Inclusion in MAHB's 17 rests on the derived list (network-stolport-list-17-derived). IATA/ICAO codes and locality: prior knowledge (as of c. 2025), not re-confirmed - verify against the CAAM AIP. Whether the STOLport currently has scheduled passenger flights was not checked. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-smm",
+      "category": "identity",
+      "airport": "SMM",
+      "terminal": null,
+      "claim": "Semporna Airport (SMM/WBKA), Semporna, Sabah, is operated by Malaysia Airports and classified as a STOLport (short take-off and landing port).",
+      "value": "SMM/WBKA",
+      "as_of": "prior knowledge c. 2025; STOLport lists per CAAM (undated) and 2024 annual report",
+      "sources": [
+        {
+          "url": "https://www.caam.gov.my/industry/public-service-obligations/know-your-ras-destinations/?std",
+          "title": "Know your RAS destinations (Civil Aviation Authority of Malaysia)",
+          "type": "government"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "STOLport status in Sabah/Sarawak: search-confirmed via the CAAM STOLport list. Inclusion in MAHB's 17 rests on the derived list (network-stolport-list-17-derived). IATA/ICAO codes and locality: prior knowledge (as of c. 2025), not re-confirmed - verify against the CAAM AIP. Whether the STOLport currently has scheduled passenger flights was not checked. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-blg",
+      "category": "identity",
+      "airport": "BLG",
+      "terminal": null,
+      "claim": "Belaga Airport (BLG/WBGC), Belaga, Sarawak, is operated by Malaysia Airports and classified as a STOLport (short take-off and landing port).",
+      "value": "BLG/WBGC",
+      "as_of": "prior knowledge c. 2025; STOLport lists per CAAM (undated) and 2024 annual report",
+      "sources": [
+        {
+          "url": "https://www.caam.gov.my/industry/public-service-obligations/know-your-ras-destinations/?std",
+          "title": "Know your RAS destinations (Civil Aviation Authority of Malaysia)",
+          "type": "government"
+        },
+        {
+          "url": "https://www.parlimen.gov.my/ipms/eps/2025-11-25/ST.172.2025%20-%20ST172.2025.pdf",
+          "title": "Statute Paper ST.172/2025 tabled in the Parliament of Malaysia (a 2024 annual report; issuing body not confirmed in this run)",
+          "type": "government"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "STOLport status in Sabah/Sarawak: search-confirmed via the CAAM STOLport list. Inclusion in MAHB's 17 rests on the derived list (network-stolport-list-17-derived). IATA/ICAO codes and locality: prior knowledge (as of c. 2025), not re-confirmed - verify against the CAAM AIP. Whether the STOLport currently has scheduled passenger flights was not checked. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-kpi",
+      "category": "identity",
+      "airport": "KPI",
+      "terminal": null,
+      "claim": "Kapit Airport (KPI/WBGP), Kapit, Sarawak, is operated by Malaysia Airports and classified as a STOLport (short take-off and landing port).",
+      "value": "KPI/WBGP",
+      "as_of": "prior knowledge c. 2025; STOLport lists per CAAM (undated) and 2024 annual report",
+      "sources": [
+        {
+          "url": "https://www.caam.gov.my/industry/public-service-obligations/know-your-ras-destinations/?std",
+          "title": "Know your RAS destinations (Civil Aviation Authority of Malaysia)",
+          "type": "government"
+        },
+        {
+          "url": "https://www.parlimen.gov.my/ipms/eps/2025-11-25/ST.172.2025%20-%20ST172.2025.pdf",
+          "title": "Statute Paper ST.172/2025 tabled in the Parliament of Malaysia (a 2024 annual report; issuing body not confirmed in this run)",
+          "type": "government"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "STOLport status in Sabah/Sarawak: search-confirmed via the CAAM STOLport list. Inclusion in MAHB's 17 rests on the derived list (network-stolport-list-17-derived). IATA/ICAO codes and locality: prior knowledge (as of c. 2025), not re-confirmed - verify against the CAAM AIP. Whether the STOLport currently has scheduled passenger flights was not checked. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-lwy",
+      "category": "identity",
+      "airport": "LWY",
+      "terminal": null,
+      "claim": "Lawas Airport (LWY/WBGW), Lawas, Sarawak, is operated by Malaysia Airports and classified as a STOLport (short take-off and landing port).",
+      "value": "LWY/WBGW",
+      "as_of": "prior knowledge c. 2025; STOLport lists per CAAM (undated) and 2024 annual report",
+      "sources": [
+        {
+          "url": "https://www.caam.gov.my/industry/public-service-obligations/know-your-ras-destinations/?std",
+          "title": "Know your RAS destinations (Civil Aviation Authority of Malaysia)",
+          "type": "government"
+        },
+        {
+          "url": "https://www.parlimen.gov.my/ipms/eps/2025-11-25/ST.172.2025%20-%20ST172.2025.pdf",
+          "title": "Statute Paper ST.172/2025 tabled in the Parliament of Malaysia (a 2024 annual report; issuing body not confirmed in this run)",
+          "type": "government"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "STOLport status in Sabah/Sarawak: search-confirmed via the CAAM STOLport list. Inclusion in MAHB's 17 rests on the derived list (network-stolport-list-17-derived). IATA/ICAO codes and locality: prior knowledge (as of c. 2025), not re-confirmed - verify against the CAAM AIP. Whether the STOLport currently has scheduled passenger flights was not checked. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-lsm",
+      "category": "identity",
+      "airport": "LSM",
+      "terminal": null,
+      "claim": "Long Semado Airport (LSM/WBGD), Long Semado, Sarawak, is operated by Malaysia Airports and classified as a STOLport (short take-off and landing port).",
+      "value": "LSM/WBGD",
+      "as_of": "prior knowledge c. 2025; STOLport lists per CAAM (undated) and 2024 annual report",
+      "sources": [
+        {
+          "url": "https://www.caam.gov.my/industry/public-service-obligations/know-your-ras-destinations/?std",
+          "title": "Know your RAS destinations (Civil Aviation Authority of Malaysia)",
+          "type": "government"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "STOLport status in Sabah/Sarawak: search-confirmed via the CAAM STOLport list. Inclusion in MAHB's 17 rests on the derived list (network-stolport-list-17-derived). IATA/ICAO codes and locality: prior knowledge (as of c. 2025), not re-confirmed - verify against the CAAM AIP. Whether the STOLport currently has scheduled passenger flights was not checked. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-mur",
+      "category": "identity",
+      "airport": "MUR",
+      "terminal": null,
+      "claim": "Marudi Airport (MUR/WBGM), Marudi, Sarawak, is operated by Malaysia Airports and classified as a STOLport (short take-off and landing port).",
+      "value": "MUR/WBGM",
+      "as_of": "prior knowledge c. 2025; STOLport lists per CAAM (undated) and 2024 annual report",
+      "sources": [
+        {
+          "url": "https://www.caam.gov.my/industry/public-service-obligations/know-your-ras-destinations/?std",
+          "title": "Know your RAS destinations (Civil Aviation Authority of Malaysia)",
+          "type": "government"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "STOLport status in Sabah/Sarawak: search-confirmed via the CAAM STOLport list. Inclusion in MAHB's 17 rests on the derived list (network-stolport-list-17-derived). IATA/ICAO codes and locality: prior knowledge (as of c. 2025), not re-confirmed - verify against the CAAM AIP. Whether the STOLport currently has scheduled passenger flights was not checked. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-lbp",
+      "category": "identity",
+      "airport": "LBP",
+      "terminal": null,
+      "claim": "Long Banga Airport (IATA LBP), Long Banga, Sarawak, is operated by Malaysia Airports and classified as a STOLport (short take-off and landing port).",
+      "value": "LBP/ICAO not verified",
+      "as_of": "prior knowledge c. 2025; STOLport lists per CAAM (undated) and 2024 annual report",
+      "sources": [
+        {
+          "url": "https://www.caam.gov.my/industry/public-service-obligations/know-your-ras-destinations/?std",
+          "title": "Know your RAS destinations (Civil Aviation Authority of Malaysia)",
+          "type": "government"
+        },
+        {
+          "url": "https://www.parlimen.gov.my/ipms/eps/2025-11-25/ST.172.2025%20-%20ST172.2025.pdf",
+          "title": "Statute Paper ST.172/2025 tabled in the Parliament of Malaysia (a 2024 annual report; issuing body not confirmed in this run)",
+          "type": "government"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "STOLport status in Sabah/Sarawak: search-confirmed via the CAAM STOLport list. Inclusion in MAHB's 17 rests on the derived list (network-stolport-list-17-derived). IATA/ICAO codes and locality: prior knowledge (as of c. 2025), not re-confirmed - verify against the CAAM AIP. Whether the STOLport currently has scheduled passenger flights was not checked. The ICAO code for Long Banga could not be established with confidence (public listings are inconsistent) - leave blank until checked in the CAAM AIP. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-bkm",
+      "category": "identity",
+      "airport": "BKM",
+      "terminal": null,
+      "claim": "Ba'kelalan Airport (BKM/WBGQ), Ba'kelalan, Sarawak, is operated by Malaysia Airports and classified as a STOLport (short take-off and landing port).",
+      "value": "BKM/WBGQ",
+      "as_of": "unknown (CAAM list undated; Wikipedia-derived code listings accessed via search 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.caam.gov.my/industry/public-service-obligations/know-your-ras-destinations/?std",
+          "title": "Know your RAS destinations (Civil Aviation Authority of Malaysia)",
+          "type": "government"
+        },
+        {
+          "url": "https://wikwiand-revamp.pages.dev/en/List_of_airports_in_Malaysia",
+          "title": "List of airports in Malaysia (Wikipedia mirror)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.parlimen.gov.my/ipms/eps/2025-11-25/ST.172.2025%20-%20ST172.2025.pdf",
+          "title": "Statute Paper ST.172/2025 tabled in the Parliament of Malaysia (a 2024 annual report; issuing body not confirmed in this run)",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "STOLport status and Sarawak location: search-confirmed (CAAM list). IATA/ICAO codes: search-confirmed from Wikipedia-derived listings (aggregator, not official) - verify against the CAAM AIP. Inclusion in MAHB's 17 rests on the derived list (network-stolport-list-17-derived). Scheduled-service status not checked. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-bbn",
+      "category": "identity",
+      "airport": "BBN",
+      "terminal": null,
+      "claim": "Bario Airport (BBN/WBGZ), Bario, Sarawak, is operated by Malaysia Airports and classified as a STOLport (short take-off and landing port).",
+      "value": "BBN/WBGZ",
+      "as_of": "unknown (CAAM list undated; Wikipedia-derived code listings accessed via search 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.caam.gov.my/industry/public-service-obligations/know-your-ras-destinations/?std",
+          "title": "Know your RAS destinations (Civil Aviation Authority of Malaysia)",
+          "type": "government"
+        },
+        {
+          "url": "https://wikwiand-revamp.pages.dev/en/List_of_airports_in_Malaysia",
+          "title": "List of airports in Malaysia (Wikipedia mirror)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.parlimen.gov.my/ipms/eps/2025-11-25/ST.172.2025%20-%20ST172.2025.pdf",
+          "title": "Statute Paper ST.172/2025 tabled in the Parliament of Malaysia (a 2024 annual report; issuing body not confirmed in this run)",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "STOLport status and Sarawak location: search-confirmed (CAAM list). IATA/ICAO codes: search-confirmed from Wikipedia-derived listings (aggregator, not official) - verify against the CAAM AIP. Inclusion in MAHB's 17 rests on the derived list (network-stolport-list-17-derived). Scheduled-service status not checked. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-lgl",
+      "category": "identity",
+      "airport": "LGL",
+      "terminal": null,
+      "claim": "Long Lellang Airport (LGL/WBGF), Long Lellang, Sarawak, is operated by Malaysia Airports and classified as a STOLport (short take-off and landing port).",
+      "value": "LGL/WBGF",
+      "as_of": "unknown (CAAM list undated; Wikipedia-derived code listings accessed via search 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.caam.gov.my/industry/public-service-obligations/know-your-ras-destinations/?std",
+          "title": "Know your RAS destinations (Civil Aviation Authority of Malaysia)",
+          "type": "government"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Long_Lellang_Airport",
+          "title": "Long Lellang Airport (Wikipedia)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.parlimen.gov.my/ipms/eps/2025-11-25/ST.172.2025%20-%20ST172.2025.pdf",
+          "title": "Statute Paper ST.172/2025 tabled in the Parliament of Malaysia (a 2024 annual report; issuing body not confirmed in this run)",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "STOLport status and Sarawak location: search-confirmed (CAAM list). IATA/ICAO codes: search-confirmed from Wikipedia-derived listings (aggregator, not official) - verify against the CAAM AIP. Inclusion in MAHB's 17 rests on the derived list (network-stolport-list-17-derived). Scheduled-service status not checked. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-odn",
+      "category": "identity",
+      "airport": "ODN",
+      "terminal": null,
+      "claim": "Long Seridan Airport (ODN/WBGI), Long Seridan, Sarawak, is operated by Malaysia Airports and classified as a STOLport (short take-off and landing port).",
+      "value": "ODN/WBGI",
+      "as_of": "unknown (CAAM list undated; Wikipedia-derived code listings accessed via search 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.caam.gov.my/industry/public-service-obligations/know-your-ras-destinations/?std",
+          "title": "Know your RAS destinations (Civil Aviation Authority of Malaysia)",
+          "type": "government"
+        },
+        {
+          "url": "https://wikwiand-revamp.pages.dev/en/List_of_airports_in_Malaysia",
+          "title": "List of airports in Malaysia (Wikipedia mirror)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "STOLport status and Sarawak location: search-confirmed (CAAM list). IATA/ICAO codes: search-confirmed from Wikipedia-derived listings (aggregator, not official) - verify against the CAAM AIP. Inclusion in MAHB's 17 rests on the derived list (network-stolport-list-17-derived). Scheduled-service status not checked. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "airport-lkh",
+      "category": "identity",
+      "airport": "LKH",
+      "terminal": null,
+      "claim": "Long Akah Airport (IATA LKH), Long Akah, Sarawak, is operated by Malaysia Airports and classified as a STOLport (short take-off and landing port).",
+      "value": "LKH/WBGL (ICAO disputed: WBGA in one listing)",
+      "as_of": "unknown (CAAM list undated; code listings accessed via search 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.caam.gov.my/industry/public-service-obligations/know-your-ras-destinations/?std",
+          "title": "Know your RAS destinations (Civil Aviation Authority of Malaysia)",
+          "type": "government"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Long_Akah_Airport",
+          "title": "Long Akah Airport (Wikipedia)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://wikwiand-revamp.pages.dev/en/List_of_airports_in_Malaysia",
+          "title": "List of airports in Malaysia (Wikipedia mirror)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.aviation.my/airports/long-akah-airport-lkh/",
+          "title": "Long Akah Airport (LKH) (aviation.my)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.parlimen.gov.my/ipms/eps/2025-11-25/ST.172.2025%20-%20ST172.2025.pdf",
+          "title": "Statute Paper ST.172/2025 tabled in the Parliament of Malaysia (a 2024 annual report; issuing body not confirmed in this run)",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "CONFLICT on ICAO code: the Wikipedia infobox gives WBGA, while the Wikipedia airport list and other listings give WBGL for Long Akah (and WBGA for Long Atip). Prior knowledge favours WBGL. Operator named in search results as 'Malaysia Airports Berhad' in one source and 'MAHB' in another. Do not publish an ICAO code until checked in the CAAM AIP. Passenger site: no section found for this airport in a domain-restricted search of airports.malaysiaairports.com.my (absence NOT confirmed - host blocked)."
+    },
+    {
+      "id": "klia-rename-announced",
+      "category": "terminal",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "On 9 February 2023 Transport Minister Anthony Loke announced that the government had agreed in principle to rebrand KLIA and klia2 as KLIA Terminal 1 and KLIA Terminal 2.",
+      "value": "2023-02-09",
+      "as_of": "2023-02-09",
+      "sources": [
+        {
+          "url": "https://www.freemalaysiatoday.com/category/nation/2023/02/09/klia-klia2-to-be-rebranded-as-klia-terminal-1-and-2",
+          "title": "KLIA, klia2 to be rebranded as KLIA Terminal 1 and 2 (Free Malaysia Today)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2023/02/09/anthony-loke-klia-and-klia2-to-be-rebranded-to-terminals-1-and-2/54096",
+          "title": "Anthony Loke: KLIA and KLIA2 to be rebranded to Terminals 1 and 2 (Malay Mail)",
+          "type": "news"
+        },
+        {
+          "url": "https://nst.com.my/amp/news/nation/2023/02/877943/klia-klia2-be-renamed-klia-terminal-1-klia-terminal-2",
+          "title": "KLIA, klia2 to be renamed KLIA Terminal 1, KLIA Terminal 2 (New Straits Times)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Three national news outlets carried the same announcement on the same day."
+    },
+    {
+      "id": "klia-rename-linked-to-oa",
+      "category": "terminal",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "The KLIA Terminal 1 / Terminal 2 rebranding was proposed by Malaysia Airports and approved as part of the Cabinet's in-principle approval, on 2 February 2023, of the material terms of the new Operating Agreements.",
+      "value": "Cabinet decision 2023-02-02",
+      "as_of": "2023-02 (MAHB release and news)",
+      "sources": [
+        {
+          "url": "https://www.routesonline.com/airports/8/kuala-lumpur-international-airport-klia/news/299400/new-operating-agreements-ensure-commercial-sustainability-and-facilitate-growth-for-malaysia-airports/",
+          "title": "New Operating Agreements Ensure Commercial Sustainability And Facilitate Growth For Malaysia Airports (MAHB release on Routesonline)",
+          "type": "operator"
+        },
+        {
+          "url": "https://selangorjournal.my/2023/02/mahb-obtains-govts-in-principal-approval-to-manage-airports-until-2069/",
+          "title": "MAHB obtains govt's in-principal approval to manage airports until 2069 (Selangor Journal)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.freemalaysiatoday.com/category/nation/2023/02/09/klia-klia2-to-be-rebranded-as-klia-terminal-1-and-2",
+          "title": "KLIA, klia2 to be rebranded as KLIA Terminal 1 and 2 (Free Malaysia Today)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Per search summary: 'Malaysia Airports Holdings Bhd said the government had approved its rebranding proposal' and the Cabinet decision of 2 February 2023 approved the OA 2023 material terms; 'the rebrand was part of that agreement'."
+    },
+    {
+      "id": "klia-rename-reason",
+      "category": "terminal",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "The stated reason for renaming KLIA and klia2 was to improve the airport's marketability and help it compete with other international airports in the region.",
+      "value": null,
+      "as_of": "2023-02-09",
+      "sources": [
+        {
+          "url": "https://www.freemalaysiatoday.com/category/nation/2023/02/09/klia-klia2-to-be-rebranded-as-klia-terminal-1-and-2",
+          "title": "KLIA, klia2 to be rebranded as KLIA Terminal 1 and 2 (Free Malaysia Today)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2023/02/09/anthony-loke-klia-and-klia2-to-be-rebranded-to-terminals-1-and-2/54096",
+          "title": "Anthony Loke: KLIA and KLIA2 to be rebranded to Terminals 1 and 2 (Malay Mail)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.freemalaysiatoday.com/category/nation/2023/02/12/facilities-must-match-rebranding-of-klia-klia2-say-tourism-players",
+          "title": "Facilities must match rebranding of KLIA, klia2, say tourism players (Free Malaysia Today)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Tourism players quoted on 12 February 2023 added that the old klia/klia2 distinction had given klia2 a negative image as a low-cost carrier terminal."
+    },
+    {
+      "id": "klia-rename-effective",
+      "category": "terminal",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "The names KLIA Terminal 1 (formerly KLIA) and KLIA Terminal 2 (formerly klia2) came into official use in June 2023, reported as 8 June 2023.",
+      "value": "2023-06-08 (reported)",
+      "as_of": "2023-06-09",
+      "sources": [
+        {
+          "url": "https://urbanistwanderer.com/2023/06/09/klia2-rebrand-klia-terminal-2/",
+          "title": "KLIA2 is now KLIA Terminal 2 (Urbanist Wanderer blog)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "The exact effective date rests on a single travel blog (which says MAHB's website and social posts confirmed the new names around that date). No official MAHB statement of the effective date was retrieved. February 2023 reports said timing depended on administrative steps with bodies such as ICAO and IATA. Publish 'since 2023' rather than an exact day unless verified."
+    },
+    {
+      "id": "klia-terminal-1-name",
+      "category": "terminal",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "KLIA Terminal 1 is the current official name of the terminal previously known simply as KLIA (the main terminal).",
+      "value": "KLIA Terminal 1",
+      "as_of": "2023-02-09 (announcement)",
+      "sources": [
+        {
+          "url": "https://www.freemalaysiatoday.com/category/nation/2023/02/09/klia-klia2-to-be-rebranded-as-klia-terminal-1-and-2",
+          "title": "KLIA, klia2 to be rebranded as KLIA Terminal 1 and 2 (Free Malaysia Today)",
+          "type": "news"
+        },
+        {
+          "url": "https://nst.com.my/amp/news/nation/2023/02/877943/klia-klia2-be-renamed-klia-terminal-1-klia-terminal-2",
+          "title": "KLIA, klia2 to be renamed KLIA Terminal 1, KLIA Terminal 2 (New Straits Times)",
+          "type": "news"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/",
+          "title": "KLIA Terminal 1 (airports.malaysiaairports.com.my home)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "The passenger-site home page is titled 'KLIA Terminal 1' in search results."
+    },
+    {
+      "id": "klia-terminal-2-name",
+      "category": "terminal",
+      "airport": "KUL",
+      "terminal": "T2",
+      "claim": "KLIA Terminal 2 is the current official name of the terminal previously branded klia2.",
+      "value": "KLIA Terminal 2",
+      "as_of": "2023-02-09 (announcement)",
+      "sources": [
+        {
+          "url": "https://www.freemalaysiatoday.com/category/nation/2023/02/09/klia-klia2-to-be-rebranded-as-klia-terminal-1-and-2",
+          "title": "KLIA, klia2 to be rebranded as KLIA Terminal 1 and 2 (Free Malaysia Today)",
+          "type": "news"
+        },
+        {
+          "url": "https://nst.com.my/amp/news/nation/2023/02/877943/klia-klia2-be-renamed-klia-terminal-1-klia-terminal-2",
+          "title": "KLIA, klia2 to be renamed KLIA Terminal 1, KLIA Terminal 2 (New Straits Times)",
+          "type": "news"
+        },
+        {
+          "url": "https://urbanistwanderer.com/2023/06/09/klia2-rebrand-klia-terminal-2/",
+          "title": "KLIA2 is now KLIA Terminal 2 (Urbanist Wanderer blog)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "klia2 opened in 2014 as the low-cost carrier terminal (prior knowledge, not re-confirmed)."
+    },
+    {
+      "id": "klia-one-airport-two-terminals",
+      "category": "terminal",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "The Malaysia Airports passenger website treats Kuala Lumpur as a single airport with two terminals, labelled 'KUL - Terminal 1 & Terminal 2' in its airport selector.",
+      "value": "KUL - Terminal 1 & Terminal 2",
+      "as_of": "unknown (as indexed by search on 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://airports.malaysiaairports.com.my/",
+          "title": "KLIA Terminal 1 (airports.malaysiaairports.com.my home)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "From a domain-restricted search of airports.malaysiaairports.com.my; the live site could not be fetched to confirm the current selector wording or how terminal-specific content is split."
+    },
+    {
+      "id": "klia-legacy-klia2-titles-indexed",
+      "category": "other",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "Legacy passenger-site URLs still indexed by search engines carry the old page title 'KL International Airport (KUL) KLIA and klia2'.",
+      "value": null,
+      "as_of": "unknown (as indexed by search on 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://airports.malaysiaairports.com.my/?c=agencies&id=13&m=corp_info",
+          "title": "KL International Airport (KUL) KLIA and klia2 (legacy indexed URL)",
+          "type": "official"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/?c=detail&id=117&m=shop",
+          "title": "KL International Airport (KUL) KLIA and klia2 (legacy indexed URL)",
+          "type": "official"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/?id=23&option=com_content&view=article",
+          "title": "KL International Airport (KUL) KLIA and klia2 (legacy indexed URL)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Indexed URL patterns include '?c=...&m=...' and '?option=com_content&view=article' query strings and '/index.php/...' paths. Whether these URLs still resolve, redirect or 404 could not be tested (host blocked). Relevant to redirect mapping and SEO clean-up in the redesign."
+    },
+    {
+      "id": "passenger-site-five-airports",
+      "category": "other",
+      "airport": null,
+      "terminal": null,
+      "claim": "The passenger website airports.malaysiaairports.com.my lists five airports in its navigation: KUL (Terminal 1 & Terminal 2), Kota Kinabalu (BKI), Kuching (KCH), Langkawi (LGK) and Penang (PEN).",
+      "value": "5 of 39 airports",
+      "as_of": "unknown (as indexed by search on 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://airports.malaysiaairports.com.my/",
+          "title": "KLIA Terminal 1 (airports.malaysiaairports.com.my home)",
+          "type": "official"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/penang",
+          "title": "Penang International Airport (PEN)",
+          "type": "official"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/kota-kinabalu",
+          "title": "Kota Kinabalu International Airport (BKI)",
+          "type": "official"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/en/langkawi",
+          "title": "Langkawi International Airport (LGK) - KLIA",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "These are exactly the five international airports. A domain-restricted search returned no sections for any domestic airport (including Subang) or STOLport, but absence could not be confirmed by direct fetch."
+    },
+    {
+      "id": "passenger-site-section-urls",
+      "category": "other",
+      "airport": null,
+      "terminal": null,
+      "claim": "On the passenger website, airport sections use path prefixes such as /penang, /kota-kinabalu and /en/langkawi, with Kuala Lumpur as the site root.",
+      "value": "/penang, /kota-kinabalu, /en/langkawi, / (KUL)",
+      "as_of": "unknown (as indexed by search on 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://airports.malaysiaairports.com.my/penang",
+          "title": "Penang International Airport (PEN)",
+          "type": "official"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/kota-kinabalu",
+          "title": "Kota Kinabalu International Airport (BKI)",
+          "type": "official"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/en/langkawi",
+          "title": "Langkawi International Airport (LGK) - KLIA",
+          "type": "official"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/en/kota-kinabalu/air-travel/facilities",
+          "title": "Facilities - Kota Kinabalu (airports.malaysiaairports.com.my)",
+          "type": "official"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/index.php/penang",
+          "title": "PEN - Penang (legacy index.php URL)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Both '/en/...' and non-prefixed and '/index.php/...' variants of the same sections are indexed (e.g. /kota-kinabalu, /index.php/kota-kinabalu, /en/kota-kinabalu/air-travel/facilities), suggesting duplicate URL variants. The Langkawi page title is indexed as 'Langkawi International Airport (LGK) - KLIA'."
+    },
+    {
+      "id": "web-estate-hostnames",
+      "category": "other",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports content is currently spread across several hostnames, including www.malaysiaairports.com.my, corporate.malaysiaairports.com.my, airports.malaysiaairports.com.my, convergence.malaysiaairports.com.my, annualreport2023.malaysiaairports.com.my and the investor-relations host mahb.listedcompany.com.",
+      "value": "6 hostnames observed",
+      "as_of": "unknown (as indexed by search on 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/media-centre/news/1678",
+          "title": "Strong 2025 passenger growth builds momentum for Visit Malaysia 2026 (MAHB media release)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/en/media-centre/news/1650",
+          "title": "October traffic soars to 12.8 million passengers (MAHB media centre)",
+          "type": "official"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/",
+          "title": "KLIA Terminal 1 (airports.malaysiaairports.com.my home)",
+          "type": "official"
+        },
+        {
+          "url": "https://convergence.malaysiaairports.com.my/inside-story/stolport-airport",
+          "title": "From STOLport to An Airport (MAHB Convergence magazine)",
+          "type": "official"
+        },
+        {
+          "url": "https://annualreport2023.malaysiaairports.com.my/",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (microsite)",
+          "type": "official"
+        },
+        {
+          "url": "https://mahb.listedcompany.com/newsroom/MAHB_Annual_Report_2023_-_Part_1_20240429.pdf",
+          "title": "MAHB Annual Report 2023 - Part 1 (investor-relations copy, 29 Apr 2024)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Media-centre items with the same URL pattern (/en/media-centre/news/<id>) were returned on both the www and corporate hostnames. Which hostname is canonical could not be tested."
+    },
+    {
+      "id": "szb-classification-domestic",
+      "category": "identity",
+      "airport": "SZB",
+      "terminal": null,
+      "claim": "Malaysia Airports classifies Sultan Abdul Aziz Shah Airport, Subang (SZB) as a domestic airport.",
+      "value": "domestic",
+      "as_of": "2024-04-29 (Annual Report 2023)",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of AR2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (single PDF)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Subang appears in the Annual Report 2023 domestic list. Classification in the 2024/2025 annual reports was not retrieved. Media describe its positioning as a 'city airport'/'premium city airport' under the Subang Airport Regeneration Plan (SARP)."
+    },
+    {
+      "id": "szb-jets-returned-2024",
+      "category": "operations",
+      "airport": "SZB",
+      "terminal": null,
+      "claim": "Scheduled narrow-body jet services returned to Subang Airport on 1 August 2024 under the government-approved Subang Airport Regeneration Plan.",
+      "value": "2024-08-01",
+      "as_of": "unknown (The Edge Malaysia, c. 2025)",
+      "sources": [
+        {
+          "url": "https://theedgemalaysia.com/node/765313",
+          "title": "Subang's premium city airport ambition held back by structural limitations (The Edge Malaysia)",
+          "type": "news"
+        },
+        {
+          "url": "https://theedgemalaysia.com/node/720870",
+          "title": "Subang Airport doubles capacity to 3 mil passengers a year, with 10pm-6am curfew - transport minister (The Edge Malaysia)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.nst.com.my/business/corporate/2024/03/1025538/after-26-years-narrow-body-aircraft-operations-resume-subang",
+          "title": "After 26 years, narrow-body aircraft operations to resume at Subang Airport in June (New Straits Times)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "CONFLICT on the length of the gap: The Edge says jets returned 'after a gap of 22 years'; an NST headline of March 2024 says 'after 26 years' and then expected a June start. The 1 August 2024 start date is from The Edge."
+    },
+    {
+      "id": "szb-capacity-3m",
+      "category": "facilities",
+      "airport": "SZB",
+      "terminal": null,
+      "claim": "Subang Airport's terminal capacity was doubled to 3 million passengers a year through upgrading works that ran from December 2023 to 30 June 2024.",
+      "value": "3 million passengers a year",
+      "as_of": "unknown (The Edge Malaysia, c. mid-2024)",
+      "sources": [
+        {
+          "url": "https://theedgemalaysia.com/node/720870",
+          "title": "Subang Airport doubles capacity to 3 mil passengers a year, with 10pm-6am curfew - transport minister (The Edge Malaysia)",
+          "type": "news"
+        },
+        {
+          "url": "https://theedgemalaysia.com/node/705250",
+          "title": "Subang Airport ready to handle up to two jets by end-March, double passenger capacity by June - MAHB (The Edge Malaysia)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "The year of the 30 June completion is inferred as 2024 from article context (works 'started in December 2023 and concluded on June 30')."
+    },
+    {
+      "id": "szb-sarp-targets",
+      "category": "corporate",
+      "airport": "SZB",
+      "terminal": null,
+      "claim": "Under Phase 1 of the Subang Airport Regeneration Plan, capacity is planned to rise to 5 million passengers a year within four to five years and up to 8 million by 2030.",
+      "value": "5 million, then 8 million by 2030",
+      "as_of": "unknown (The Edge Malaysia, c. 2024)",
+      "sources": [
+        {
+          "url": "https://theedgemalaysia.com/node/720870",
+          "title": "Subang Airport doubles capacity to 3 mil passengers a year, with 10pm-6am curfew - transport minister (The Edge Malaysia)",
+          "type": "news"
+        },
+        {
+          "url": "https://theedgemalaysia.com/node/719787",
+          "title": "Frankly Speaking: Resumption of jet operations at Subang Airport needs to be done right (The Edge Malaysia)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.aerotime.aero/articles/malaysias-subang-airport-set-to-be-redeveloped-into-a-premium-city-hub",
+          "title": "Malaysia's Subang airport to be made regional aviation hub (AeroTime)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Targets as reported in 2024; whether they have since been revised was not checked."
+    },
+    {
+      "id": "szb-curfew",
+      "category": "operations",
+      "airport": "SZB",
+      "terminal": null,
+      "claim": "Subang Airport operates under a night curfew from 22:00 to 06:00 to limit noise for nearby residential areas.",
+      "value": "22:00-06:00",
+      "as_of": "unknown (The Edge Malaysia, c. mid-2024)",
+      "sources": [
+        {
+          "url": "https://theedgemalaysia.com/node/720870",
+          "title": "Subang Airport doubles capacity to 3 mil passengers a year, with 10pm-6am curfew - transport minister (The Edge Malaysia)",
+          "type": "news"
+        },
+        {
+          "url": "https://theedgemalaysia.com/node/765313",
+          "title": "Subang's premium city airport ambition held back by structural limitations (The Edge Malaysia)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Headline: '...with 10pm-6am curfew - transport minister'. Reported in the context of jet operations; whether it applies identically to turboprop and general aviation movements was not verified."
+    },
+    {
+      "id": "szb-jet-movement-limits",
+      "category": "operations",
+      "airport": "SZB",
+      "terminal": null,
+      "claim": "Jet operations at Subang Airport are capped by the government at 15 slot pairs a day, with one jet movement an hour and six parking bays for narrow-body aircraft.",
+      "value": "15 slot pairs/day; 1 jet movement/hour; 6 narrow-body bays",
+      "as_of": "unknown (The Edge Malaysia, c. 2025)",
+      "sources": [
+        {
+          "url": "https://theedgemalaysia.com/node/765313",
+          "title": "Subang's premium city airport ambition held back by structural limitations (The Edge Malaysia)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Operational constraints as reported by The Edge; not confirmed against a CAAM/MAHB source. Not passenger-facing content, but relevant to how Subang is positioned."
+    },
+    {
+      "id": "szb-airasia-jets-left",
+      "category": "airlines",
+      "airport": "SZB",
+      "terminal": null,
+      "claim": "AirAsia relocated all of its jet services from Subang Airport to Kuala Lumpur International Airport in April 2025.",
+      "value": "April 2025",
+      "as_of": "unknown (The Edge Malaysia, c. mid-2025)",
+      "sources": [
+        {
+          "url": "https://theedgemalaysia.com/node/764537",
+          "title": "Firefly to cease jet operations at Subang Airport from Aug ... (The Edge Malaysia)",
+          "type": "news"
+        },
+        {
+          "url": "https://theedgemalaysia.com/node/765313",
+          "title": "Subang's premium city airport ambition held back by structural limitations (The Edge Malaysia)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "The source says 'in April'; the year 2025 is inferred from article context. Verify before publishing any airline list."
+    },
+    {
+      "id": "szb-firefly-jets-left",
+      "category": "airlines",
+      "airport": "SZB",
+      "terminal": null,
+      "claim": "Firefly ceased jet flights from Subang Airport from 19 August 2025 while continuing its turboprop services there.",
+      "value": "2025-08-19",
+      "as_of": "unknown (The Edge Malaysia, c. mid-2025)",
+      "sources": [
+        {
+          "url": "https://theedgemalaysia.com/node/764537",
+          "title": "Firefly to cease jet operations at Subang Airport from Aug ... (The Edge Malaysia)",
+          "type": "news"
+        },
+        {
+          "url": "https://theedgemalaysia.com/node/765313",
+          "title": "Subang's premium city airport ambition held back by structural limitations (The Edge Malaysia)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "The source says 'starting Aug 19'; the year 2025 is inferred from article context. Firefly was the second airline to stop jet operations at Subang after AirAsia."
+    },
+    {
+      "id": "szb-traffic-2025",
+      "category": "operations",
+      "airport": "SZB",
+      "terminal": null,
+      "claim": "Subang Airport handled 1,859,173 passengers in 2025, according to a third-party airport guide.",
+      "value": "1,859,173 passengers (2025)",
+      "as_of": "unknown (2026)",
+      "sources": [
+        {
+          "url": "https://theaviationhub.co.uk/subang-airport-guide/",
+          "title": "Subang Airport Guide: Kuala Lumpur's City Airport Reborn (The Aviation Hub)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Aggregator source only; not verified against MAHB airport statistics. The same guide says Firefly uses Subang as a hub, Berjaya Air treats it as a focus city and Batik Air Malaysia operates there - none verified. Do not publish without an official source."
+    },
+    {
+      "id": "non-mahb-three-airports",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Three of Malaysia's 42 commercial airports are not managed by Malaysia Airports.",
+      "value": "3",
+      "as_of": "2025-11-25 (parliamentary paper; reports 2024)",
+      "sources": [
+        {
+          "url": "https://www.parlimen.gov.my/ipms/eps/2025-11-25/ST.172.2025%20-%20ST172.2025.pdf",
+          "title": "Statute Paper ST.172/2025 tabled in the Parliament of Malaysia (a 2024 annual report; issuing body not confirmed in this run)",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Derived from '39 out of 42 commercial airports'. By subtraction they are 1 international and 2 domestic airports. The source snippet did not name them; Senai (international), Kerteh and Tanjung Manis are the candidates supported by other search results. An older ICAO case study says only 'two' airports are not operated by MAHB."
+    },
+    {
+      "id": "non-mahb-senai",
+      "category": "identity",
+      "airport": "JHB",
+      "terminal": null,
+      "claim": "Senai International Airport in Johor is not operated by Malaysia Airports; it is operated by Senai Airport Terminal Services Sdn Bhd, which took over from Malaysia Airports in 2003 under a 50-year concession.",
+      "value": "JHB/WMKJ",
+      "as_of": "unknown (Wikipedia, accessed via search 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Senai_International_Airport",
+          "title": "Senai International Airport (Wikipedia)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www2023.icao.int/sustainability/CaseStudies/Malaysia.pdf",
+          "title": "ICAO case study: Malaysia",
+          "type": "other"
+        },
+        {
+          "url": "https://www.senaiairport.com/Corporate/Media/Press-Releases/SENAI-INTERNATIONAL-AIRPORT-TO-MANAGE-KERTIH-AIRPO",
+          "title": "Senai International Airport to manage Kertih Airport (Senai Airport press release)",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Operator and 2003 handover: search (Wikipedia, plus ICAO case study naming Senai as not operated by MAHB). IATA/ICAO codes JHB/WMKJ are prior knowledge. Wikipedia's statement that the operator is wholly owned by MMC Corporation Berhad is marked 'citation needed'. The new site must not present Senai/Johor Bahru as a Malaysia Airports airport."
+    },
+    {
+      "id": "non-mahb-kerteh",
+      "category": "identity",
+      "airport": "KTE",
+      "terminal": null,
+      "claim": "Kerteh Airport in Terengganu is not operated by Malaysia Airports; it is owned by a Petronas subsidiary, Sanzbury Stead Sdn Bhd, and managed by Senai Airport Terminal Services Sdn Bhd under a contract reported in January 2019.",
+      "value": "KTE/WMKE",
+      "as_of": "2019-01-03",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2019/01/03/senai-airport-terminal-to-manage-kertih-irport-ops/",
+          "title": "Senai Airport Terminal to manage Kertih airport ops (The Star)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.senaiairport.com/Corporate/Media/Press-Releases/SENAI-INTERNATIONAL-AIRPORT-TO-MANAGE-KERTIH-AIRPO",
+          "title": "Senai International Airport to manage Kertih Airport (Senai Airport press release)",
+          "type": "operator"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Kerteh_Airport",
+          "title": "Kerteh Airport (Wikipedia)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "IATA/ICAO codes KTE/WMKE are prior knowledge. Whether the 2019 management contract is still in force in 2026 was not verified."
+    },
+    {
+      "id": "non-mahb-tanjung-manis",
+      "category": "identity",
+      "airport": "TGC",
+      "terminal": null,
+      "claim": "Tanjung Manis Airport in Sarawak is not operated by Malaysia Airports; the Civil Aviation Authority of Malaysia lists Tanjung Manis Development Sdn Bhd as an aerodrome operator licence holder.",
+      "value": "TGC/WBGT",
+      "as_of": "unknown (CAAM web page)",
+      "sources": [
+        {
+          "url": "https://www.caam.gov.my/industry/licensing/aerodrome-operator-licence/current-aerodrome-operator-licence-aol-holders/",
+          "title": "Current Aerodrome Operator Licence (AOL) holders (CAAM)",
+          "type": "government"
+        },
+        {
+          "url": "https://www.caam.gov.my/industry/public-service-obligations/know-your-ras-destinations/?std",
+          "title": "Know your RAS destinations (Civil Aviation Authority of Malaysia)",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "The CAAM licence-holder list naming Tanjung Manis Development Sdn Bhd is search-confirmed; that it is the licence holder for Tanjung Manis Airport specifically is inferred from the name. IATA/ICAO codes TGC/WBGT are prior knowledge. CAAM's rural air services list groups Tanjung Manis with the Sarawak STOLports."
+    },
+    {
+      "id": "non-mahb-senai-ex-mahb",
+      "category": "corporate",
+      "airport": "JHB",
+      "terminal": null,
+      "claim": "Senai International Airport was operated by Malaysia Airports until 2003.",
+      "value": "until 2003",
+      "as_of": "unknown (Wikipedia, accessed via search 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Senai_International_Airport",
+          "title": "Senai International Airport (Wikipedia)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Single aggregator source. Useful context for why older material may associate Senai with MAHB."
+    },
+    {
+      "id": "oa-2024-signed",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports and the Government of Malaysia signed new Operating Agreements on 18 March 2024.",
+      "value": "2024-03-18",
+      "as_of": "2024-03-18",
+      "sources": [
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2024/03/18/anthony-loke-govt-renews-mahb-contract-to-handle-all-airports-in-malaysia-for-45-years-until-2069/124110",
+          "title": "Anthony Loke: Govt renews MAHB contract to handle all airports in Malaysia for 45 years until 2069 (Malay Mail)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/media-centre/news/favourable-operating-agreements-drive-sustainable-growth-and-elevated-services",
+          "title": "Favourable Operating Agreements Drive Sustainable Growth And Elevated Services For Nation's Airports (MAHB media release)",
+          "type": "official"
+        },
+        {
+          "url": "https://thesun.my/news/malaysia-news/govt-mahb-ink-new-operating-agreements-for-45-years-to-upgrade-malaysian-airports-loke-kd12228992/",
+          "title": "Govt, MAHB ink new operating agreements for 45 years to upgrade Malaysian airports - Loke (The Sun)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.pressreader.com/malaysia/the-borneo-post/20240319/281548000876163",
+          "title": "Govt, MAHB ink new 45-year deals to upgrade Malaysian airports (The Borneo Post via PressReader)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Consistent across MAHB's release and multiple news outlets."
+    },
+    {
+      "id": "oa-2024-term",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "The new Operating Agreements give Malaysia Airports the right to operate its Malaysian airports for 45 years, until 11 February 2069.",
+      "value": "45 years, to 2069-02-11",
+      "as_of": "2024-03-18",
+      "sources": [
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2024/03/18/anthony-loke-govt-renews-mahb-contract-to-handle-all-airports-in-malaysia-for-45-years-until-2069/124110",
+          "title": "Anthony Loke: Govt renews MAHB contract to handle all airports in Malaysia for 45 years until 2069 (Malay Mail)",
+          "type": "news"
+        },
+        {
+          "url": "https://thesun.my/news/malaysia-news/govt-mahb-ink-new-operating-agreements-for-45-years-to-upgrade-malaysian-airports-loke-kd12228992/",
+          "title": "Govt, MAHB ink new operating agreements for 45 years to upgrade Malaysian airports - Loke (The Sun)",
+          "type": "news"
+        },
+        {
+          "url": "https://southeastasiainfra.com/mahb-to-operate-malaysias-airports-till-2069/",
+          "title": "MAHB to operate Malaysia's airports till 2069 (Southeast Asia Infrastructure)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "End date 11 February 2069 per Malay Mail summary."
+    },
+    {
+      "id": "oa-2024-scope",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "The 2024 Operating Agreements cover all 39 airports and STOLports operated by Malaysia Airports in Malaysia: five international airports, 17 domestic airports and 17 STOLports.",
+      "value": "39 (5/17/17)",
+      "as_of": "2024-03-18",
+      "sources": [
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2024/03/18/anthony-loke-govt-renews-mahb-contract-to-handle-all-airports-in-malaysia-for-45-years-until-2069/124110",
+          "title": "Anthony Loke: Govt renews MAHB contract to handle all airports in Malaysia for 45 years until 2069 (Malay Mail)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/media-centre/news/favourable-operating-agreements-drive-sustainable-growth-and-elevated-services",
+          "title": "Favourable Operating Agreements Drive Sustainable Growth And Elevated Services For Nation's Airports (MAHB media release)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Istanbul Sabiha Gokcen is outside these agreements."
+    },
+    {
+      "id": "oa-2024-lease",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Land lease agreements were signed alongside the Operating Agreements in March 2024.",
+      "value": null,
+      "as_of": "2024-03-19",
+      "sources": [
+        {
+          "url": "https://www.pressreader.com/malaysia/the-borneo-post/20240319/281548000876163",
+          "title": "Govt, MAHB ink new 45-year deals to upgrade Malaysian airports (The Borneo Post via PressReader)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/media-centre/news/favourable-operating-agreements-drive-sustainable-growth-and-elevated-services",
+          "title": "Favourable Operating Agreements Drive Sustainable Growth And Elevated Services For Nation's Airports (MAHB media release)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Per Borneo Post coverage and the MAHB corporate site summary ('Operating Agreements and Lease Agreements were signed in March 2024')."
+    },
+    {
+      "id": "oa-2024-airport-development-fund",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "The 2024 Operating Agreements introduce an Airport Development Fund to help finance airport development.",
+      "value": null,
+      "as_of": "2024-03-18",
+      "sources": [
+        {
+          "url": "https://thesun.my/news/malaysia-news/govt-mahb-ink-new-operating-agreements-for-45-years-to-upgrade-malaysian-airports-loke-kd12228992/",
+          "title": "Govt, MAHB ink new operating agreements for 45 years to upgrade Malaysian airports - Loke (The Sun)",
+          "type": "news"
+        },
+        {
+          "url": "https://southeastasiainfra.com/mahb-to-operate-malaysias-airports-till-2069/",
+          "title": "MAHB to operate Malaysia's airports till 2069 (Southeast Asia Infrastructure)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2024/03/23/mahbs-new-operating-agreements-secure-returns-on-capex",
+          "title": "MAHB's new operating agreements secure returns on capex (The Star)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Detailed fund mechanics not retrieved from the official release."
+    },
+    {
+      "id": "oa-2024-psc-share",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Under the 2024 Operating Agreements, 50% of the passenger service charge component used in the user-fee calculation is channelled to the Airport Development Fund, whereas previously the Government received 100% of the user fee.",
+      "value": "50%",
+      "as_of": "2024-03-23",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2024/03/23/mahbs-new-operating-agreements-secure-returns-on-capex",
+          "title": "MAHB's new operating agreements secure returns on capex (The Star)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Single news source (The Star business commentary); check against MAHB's Bursa filing before any corporate-site use."
+    },
+    {
+      "id": "oa-2024-investment-recovery",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "The 2024 Operating Agreements allow Malaysia Airports to fund capacity expansion and upgrades through an investment recovery model.",
+      "value": null,
+      "as_of": "2024-03-18",
+      "sources": [
+        {
+          "url": "https://southeastasiainfra.com/mahb-to-operate-malaysias-airports-till-2069/",
+          "title": "MAHB to operate Malaysia's airports till 2069 (Southeast Asia Infrastructure)",
+          "type": "news"
+        },
+        {
+          "url": "https://thesun.my/news/malaysia-news/govt-mahb-ink-new-operating-agreements-for-45-years-to-upgrade-malaysian-airports-loke-kd12228992/",
+          "title": "Govt, MAHB ink new operating agreements for 45 years to upgrade Malaysian airports - Loke (The Sun)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2024/03/23/mahbs-new-operating-agreements-secure-returns-on-capex",
+          "title": "MAHB's new operating agreements secure returns on capex (The Star)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.businesstoday.com.my/2024/03/19/malaysia-airports-holdings-signs-new-oa-with-govt-kenanga-sets-market-perform-call/",
+          "title": "Malaysia Airports Holdings signs new OA with govt, Kenanga sets market perform call (Business Today)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "The Star described the agreements as allowing a guaranteed rate of return on capital expenditure; Kenanga (via Business Today) said the terms slightly ease the capex burden. Exact terms not retrieved."
+    },
+    {
+      "id": "oa-2023-cabinet-approval",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "The Cabinet gave in-principle approval to the material terms of the new Operating Agreements on 2 February 2023, extending Malaysia Airports' operating rights to 2069.",
+      "value": "2023-02-02",
+      "as_of": "2023-02",
+      "sources": [
+        {
+          "url": "https://selangorjournal.my/2023/02/mahb-obtains-govts-in-principal-approval-to-manage-airports-until-2069/",
+          "title": "MAHB obtains govt's in-principal approval to manage airports until 2069 (Selangor Journal)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.routesonline.com/airports/8/kuala-lumpur-international-airport-klia/news/299400/new-operating-agreements-ensure-commercial-sustainability-and-facilitate-growth-for-malaysia-airports/",
+          "title": "New Operating Agreements Ensure Commercial Sustainability And Facilitate Growth For Malaysia Airports (MAHB release on Routesonline)",
+          "type": "operator"
+        },
+        {
+          "url": "https://www.pressreader.com/malaysia/the-borneo-post/20240319/281548000876163",
+          "title": "Govt, MAHB ink new 45-year deals to upgrade Malaysian airports (The Borneo Post via PressReader)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "The agreements approved in principle in 2023 were signed on 18 March 2024 (see oa-2024-signed)."
+    },
+    {
+      "id": "change-mukah-airport-2021",
+      "category": "operations",
+      "airport": "MKM",
+      "terminal": null,
+      "claim": "The new Mukah Airport (MKM) opened on 17 June 2021, replacing the former Mukah STOLport, whose last day of operations was 16 June 2021.",
+      "value": "2021-06-17",
+      "as_of": "2021-06-17",
+      "sources": [
+        {
+          "url": "https://www.routesonline.com/airports/6191/kuching-international-airport/news/296137/new-mukah-airport-opens-replacing-previous-mukah-stolport/",
+          "title": "New Mukah Airport Opens, Replacing Previous Mukah STOLport (MAHB release on Routesonline)",
+          "type": "operator"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/taxonomy/term/459",
+          "title": "New Mukah Airport Opens, Replacing Previous Mukah Stolport (MAHB)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.nst.com.my/amp/business/home/2021/06/699491/new-rm300mil-mukah-airport-opens-today",
+          "title": "New RM300mil Mukah Airport opens today (New Straits Times)",
+          "type": "news"
+        },
+        {
+          "url": "https://convergence.malaysiaairports.com.my/inside-story/stolport-airport",
+          "title": "From STOLport to An Airport (MAHB Convergence magazine)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Outside the 2024-2026 window but it is the last network reclassification found and explains the 17/17 split."
+    },
+    {
+      "id": "change-mukah-airport-details",
+      "category": "facilities",
+      "airport": "MKM",
+      "terminal": null,
+      "claim": "The new Mukah Airport cost RM300 million, is about seven kilometres from Mukah town and can accommodate 200 passengers at a time, compared with 67 at the former STOLport.",
+      "value": "RM300 million; 200 passengers (was 67)",
+      "as_of": "2021-06-17",
+      "sources": [
+        {
+          "url": "https://www.nst.com.my/amp/business/home/2021/06/699491/new-rm300mil-mukah-airport-opens-today",
+          "title": "New RM300mil Mukah Airport opens today (New Straits Times)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.routesonline.com/airports/6191/kuching-international-airport/news/296137/new-mukah-airport-opens-replacing-previous-mukah-stolport/",
+          "title": "New Mukah Airport Opens, Replacing Previous Mukah STOLport (MAHB release on Routesonline)",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Construction began on 11 August 2017 per search summary."
+    },
+    {
+      "id": "change-mahb-delisted",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports Holdings Berhad was delisted from Bursa Malaysia after about 25 years as a listed company, following its privatisation.",
+      "value": "delisted (early 2025 per prior knowledge)",
+      "as_of": "unknown (Malaysiakini article, date not retrieved)",
+      "sources": [
+        {
+          "url": "https://www.malaysiakini.com/news/735493",
+          "title": "MAHB delisting after 25 years a watershed moment for its privatisation (Malaysiakini)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Search-confirmed only by a Malaysiakini headline ('MAHB delisting after 25 years a watershed moment for its privatisation'). The date (around February 2025) is prior knowledge. Corporate-site content such as 'Investor Relations', share price and 'Berhad' listing references needs checking against the current ownership status."
+    },
+    {
+      "id": "change-mahb-privatisation-consortium",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports was taken private by the Gateway Development Alliance consortium, whose members are Khazanah Nasional (through UEM Group), the Employees Provident Fund, Global Infrastructure Partners and the Abu Dhabi Investment Authority.",
+      "value": null,
+      "as_of": "prior knowledge c. early 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE, not re-confirmed in this run (search budget exhausted before a confirming search could run). Recollection: offer of RM11.00 per share announced in 2024 and completed in early 2025. Verify consortium members, stakes and dates against an official source before publishing."
+    },
+    {
+      "id": "change-caam-stolport-instruction-2026",
+      "category": "standards",
+      "airport": null,
+      "terminal": null,
+      "claim": "In March 2026 the Civil Aviation Authority of Malaysia published Safety Instruction SI 02/2026, 'Safety Measures and Certification Preparedness for STOLport Operators in Malaysia'.",
+      "value": "SI 02/2026",
+      "as_of": "2026-03 (from the document URL path)",
+      "sources": [
+        {
+          "url": "https://www.caam.gov.my/wp-content/uploads/2026/03/SI-02_2026-Safety-Measures-and-Certification-Preparedness-for-STOLport-Operators-in-Malaysia.pdf",
+          "title": "SI 02/2026 Safety Measures and Certification Preparedness for STOLport Operators in Malaysia (CAAM)",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Only the document title and URL were retrieved; its contents and any effect on MAHB's 17 STOLports (e.g. certification deadlines) were not read. Month inferred from the URL path '/2026/03/'."
+    },
+    {
+      "id": "traffic-2025-malaysia-network",
+      "category": "operations",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports' network of 39 airports in Malaysia handled 104.4 million passengers in 2025, an increase of 11.2% on 2024.",
+      "value": "104.4 million (+11.2%)",
+      "as_of": "unknown (full-year 2025 release, early 2026)",
+      "sources": [
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/media-centre/news/1678",
+          "title": "Strong 2025 passenger growth builds momentum for Visit Malaysia 2026 (MAHB media release)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.routesonline.com/airports/9835/malaysia-airports-holdings-berhad/news/299665873/malaysia-airports-strong-2025-passenger-growth-builds-momentum-for-visit-malaysia-2026/",
+          "title": "Malaysia Airports: Strong 2025 passenger growth builds momentum for Visit Malaysia 2026 (MAHB release on Routesonline)",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "From the MAHB release 'Strong 2025 passenger growth builds momentum for Visit Malaysia 2026' as summarised by search; exact publication date not retrieved."
+    },
+    {
+      "id": "traffic-2024-group",
+      "category": "operations",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports' group (Malaysia plus Istanbul Sabiha Gokcen) handled about 135 million passengers in 2024, a 96.1% recovery against pre-pandemic levels.",
+      "value": "about 135 million (2024)",
+      "as_of": "2024-12 report (file dated 2025-07 in URL)",
+      "sources": [
+        {
+          "url": "https://drmapssdev.blob.core.windows.net/corporate-cms/2025-07/12.%20December%202024.pdf",
+          "title": "Malaysia Airports Holdings Berhad (487092-W) passenger traffic snapshot, December 2024 (PDF on MAHB CMS storage)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Per search summary of MAHB's December 2024 traffic snapshot: 63.9 million domestic (86.8% of 2019) and 71.8 million international (above pre-pandemic). The PDF URL is on a storage host with 'dev' in its name; treat as needing confirmation from the corporate media centre. That the figure includes Istanbul is the researcher's reading of 'group'."
+    },
+    {
+      "id": "overseas-isg-description",
+      "category": "corporate",
+      "airport": "SAW",
+      "terminal": null,
+      "claim": "Outside Malaysia, Malaysia Airports manages one airport: Istanbul Sabiha Gokcen International Airport in Turkiye.",
+      "value": "1 overseas airport",
+      "as_of": "2024-04-29 (Annual Report 2023)",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (single PDF)",
+          "type": "official"
+        },
+        {
+          "url": "https://mahb.listedcompany.com/newsroom/MAHB_Annual_Report_2023_-_Part_1_20240429.pdf",
+          "title": "MAHB Annual Report 2023 - Part 1 (investor-relations copy, 29 Apr 2024)",
+          "type": "official"
+        },
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/media-centre/news/273",
+          "title": "Corporate Website - Malaysia Airports (media centre item 273)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Annual Report 2023 describes the portfolio as 39 airports in Malaysia 'plus one international airport in Istanbul, Turkiye'. MAHB materials use the spelling 'Turkiye' (with diacritics: Türkiye, İstanbul Sabiha Gökçen)."
+    },
+    {
+      "id": "overseas-isg-codes",
+      "category": "identity",
+      "airport": "SAW",
+      "terminal": null,
+      "claim": "Istanbul Sabiha Gokcen International Airport (SAW/LTFJ) is on the Asian side of Istanbul.",
+      "value": "SAW/LTFJ",
+      "as_of": "prior knowledge c. 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE, not re-confirmed in this run. Codes are long-standing and unlikely to have changed."
+    },
+    {
+      "id": "overseas-isg-ownership",
+      "category": "corporate",
+      "airport": "SAW",
+      "terminal": null,
+      "claim": "Malaysia Airports wholly owns the operator of Istanbul Sabiha Gokcen International Airport, having become its sole shareholder in 2014.",
+      "value": "100%",
+      "as_of": "prior knowledge c. 2024",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE, not re-confirmed in this run. Recollection: stake raised from 20% to 60% and then 100% during 2014; concession reported to run into the early 2030s (exact end date not verified). Verify before publishing."
+    }
+  ],
+  "gaps": [
+    "DIRECT ACCESS: www.malaysiaairports.com.my and airports.malaysiaairports.com.my were blocked by the network allowlist at the start and at the end of the run (ENOTFOUND / proxy 403), so no fact here is 'direct'. caam.gov.my was also unreachable.",
+    "SEARCH BUDGET: the shared WebSearch budget for this run was exhausted after 11 successful searches; planned searches on the CAAM licence-holder list, the parliamentary paper, Istanbul Sabiha Gokcen, the 2025 privatisation/delisting and per-airport codes could not be run.",
+    "No single official MAHB page or report listing all 39 airports by name with their classification was retrieved. The 5 international and 17 domestic names come from a search summary of Annual Report 2023; the 17 STOLport names are assembled from CAAM's list (14 in Sabah/Sarawak) plus three Peninsular islands from prior knowledge.",
+    "The latest official split in MAHB's own Annual Report 2024 or 2025 was not retrieved; 5/17/17 is taken from Annual Report 2023 (April 2024) and March 2024 news, and is consistent with the 2024 national totals in the parliamentary paper.",
+    "Issuing body of parliamentary Statute Paper ST.172/2025 (source of '6 international, 19 domestic, 17 STOLports; MAHB manages 39 of 42') not confirmed; the three non-MAHB airports are not named in the retrieved snippet.",
+    "IATA and ICAO codes for 34 of the 39 airports are from prior knowledge only (ICAO for all five international airports too). None was checked against the CAAM AIP. Long Akah's ICAO code is disputed (WBGL vs WBGA) and Long Banga's ICAO code is unverified.",
+    "Official full names as MAHB styles them (e.g. 'Sultan Abdul Aziz Shah Airport, Subang', 'Melaka Airport' vs 'Melaka International Airport', STOLport naming such as 'Ba'kelalan' vs 'Bakalalan') were not confirmed from an official list.",
+    "Whether any domestic airport or STOLport has its own section on airports.malaysiaairports.com.my: search surfaced only the five international airports; absence for the other 34 is unconfirmed. The Kuching section URL was not surfaced.",
+    "Exact effective date of the KLIA Terminal 1 / Terminal 2 names: 8 June 2023 rests on one blog; no official MAHB statement retrieved.",
+    "Current operational status (scheduled passenger flights or not) of each STOLport and of Melaka, Pangkor, Redang, Tioman, Kapit, Belaga, Long Semado and Semporna was not checked.",
+    "Conflict unresolved: a June 2021 MAHB release was summarised as saying MAHB operated 'eight other STOLports' in Sarawak after Mukah, whereas the assembled list has 11 Sarawak STOLports.",
+    "Subang: current (late 2026) airline line-up, international routes, whether SZB is still classified 'domestic' in the 2025 annual report, who operates the SkyPark terminal, and whether the 22:00-06:00 curfew and 15-slot-pair cap are unchanged were not verified. The 'after 22 years' vs 'after 26 years' jet-gap wording conflicts between sources.",
+    "2024-2026 network changes: no evidence found of airports added, transferred, closed or renamed, but no targeted search could be run for Sarawak or Sabah state takeover proposals, new STOLports under construction in Sarawak, a new Lawas or Tioman airport, or any 2026 developments after the full-year 2025 traffic release.",
+    "Privatisation details (Gateway Development Alliance members and stakes, offer price, delisting date, any change of company name or status) are prior knowledge only apart from one Malaysiakini headline.",
+    "Istanbul Sabiha Gokcen: ownership percentage, concession end date, 2025 traffic and how the current corporate site words the relationship were not verified. Whether MAHB retains any other overseas interests (for example a former minority stake in Hyderabad airport, or airport services work in Qatar) was not checked.",
+    "Kerteh: whether Senai Airport Terminal Services still manages the airport in 2026 was not verified. Tanjung Manis: operator identified only through the CAAM licence-holder name.",
+    "Contents of CAAM Safety Instruction SI 02/2026 for STOLport operators (and any certification deadlines affecting MAHB's STOLports) were not read.",
+    "HYPOTHESIS (needs testing): because only the five international airports have passenger-site sections, travellers using the 17 domestic airports and 17 STOLports probably have no first-party source for terminal, transport and facility information; confirm with analytics/user research.",
+    "HYPOTHESIS (needs technical access): legacy URLs titled 'KLIA and klia2' and duplicate '/index.php/' and '/en/' variants are still indexed, which suggests missing redirects/canonicals; confirm by crawling once the hosts are reachable.",
+    "HYPOTHESIS (needs testing): users may not know that 'KUL' covers both KLIA Terminal 1 and Terminal 2, or may still search for 'klia2'; the new site should test a terminal-first entry for KUL and keep 'klia2' as a search synonym."
+  ]
+}

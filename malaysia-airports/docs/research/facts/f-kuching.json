@@ -1,0 +1,1040 @@
+{
+  "topic": "Kuching International Airport (KCH), Sarawak - facts for MAHB website redesign",
+  "generated": "2026-11-16",
+  "facts": [
+    {
+      "id": "kch-official-name",
+      "category": "identity",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "The airport's official name is Kuching International Airport.",
+      "value": "Kuching International Airport",
+      "as_of": "2024-04-29 (Annual Report 2023 list); passenger-site navigation as indexed 2026-11-16",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of Annual Report 2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (single PDF)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "RELAYED SEARCH EVIDENCE: taken from a WebSearch result obtained on 2026-11-16 in this same workflow run by the sibling agent that wrote f-network.json (fact id 'network-international-list'). This agent could not re-run the query (shared search budget exhausted) and did not open the page. The name is given in MAHB's Annual Report 2023 list of international airports. The abbreviation 'KIA' and the Malay name 'Lapangan Terbang Antarabangsa Kuching' are prior knowledge only."
+    },
+    {
+      "id": "kch-iata-code",
+      "category": "identity",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "The IATA code for Kuching International Airport is KCH.",
+      "value": "KCH",
+      "as_of": "unknown (passenger-site navigation as indexed by search on 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://airports.malaysiaairports.com.my/",
+          "title": "Malaysia Airports passenger website (home, as indexed by search)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "RELAYED SEARCH EVIDENCE: taken from a WebSearch result obtained on 2026-11-16 in this same workflow run by the sibling agent that wrote f-network.json (fact id 'passenger-site-five-airports'). This agent could not re-run the query (shared search budget exhausted) and did not open the page. The official passenger site lists the airport in its navigation as 'Kuching (KCH)'."
+    },
+    {
+      "id": "kch-icao-code",
+      "category": "identity",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "The ICAO code for Kuching International Airport is WBGG.",
+      "value": "WBGG",
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against the CAAM eAIP entry for WBGG (aip.caam.gov.my) before publishing. Long-standing code; low risk of change."
+    },
+    {
+      "id": "kch-operator-mahb",
+      "category": "identity",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "Kuching International Airport is operated by Malaysia Airports and is one of the group's five international airports in Malaysia.",
+      "value": "One of 5 international airports (KUL, PEN, LGK, BKI, KCH)",
+      "as_of": "2024-04-29 (Annual Report 2023)",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of Annual Report 2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (single PDF)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "RELAYED SEARCH EVIDENCE: taken from a WebSearch result obtained on 2026-11-16 in this same workflow run by the sibling agent that wrote f-network.json (fact id 'network-international-list'). This agent could not re-run the query (shared search budget exhausted) and did not open the page."
+    },
+    {
+      "id": "kch-official-site-section",
+      "category": "other",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "Malaysia Airports' passenger website lists Kuching (KCH) as one of five airports in its navigation, alongside KUL, Kota Kinabalu, Langkawi and Penang.",
+      "value": "Listed as 'Kuching (KCH)'",
+      "as_of": "unknown (as indexed by search on 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://airports.malaysiaairports.com.my/",
+          "title": "Malaysia Airports passenger website (home, as indexed by search)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "RELAYED SEARCH EVIDENCE: taken from a WebSearch result obtained on 2026-11-16 in this same workflow run by the sibling agent that wrote f-network.json (fact id 'passenger-site-five-airports'). This agent could not re-run the query (shared search budget exhausted) and did not open the page. The exact URL of the Kuching section was not returned by search and could not be fetched; by analogy with '/en/klia1' and '/en/langkawi' it is probably '/en/kuching', but that path is an unconfirmed guess."
+    },
+    {
+      "id": "kch-location-state",
+      "category": "identity",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "Kuching International Airport serves Kuching, the capital of the Malaysian state of Sarawak on the island of Borneo.",
+      "value": "Kuching, Sarawak",
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against the official Kuching page on airports.malaysiaairports.com.my before publishing. Locality is also recorded as prior knowledge in sibling file f-network.json (fact 'airport-kch')."
+    },
+    {
+      "id": "kch-distance-to-city",
+      "category": "identity",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "The airport is about 11 km south of Kuching city centre.",
+      "value": "about 11 km",
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against the official Kuching page on airports.malaysiaairports.com.my before publishing. Commonly quoted reference figure (11 km / 6.8 mi); road distance to a specific hotel or the Waterfront will differ."
+    },
+    {
+      "id": "kch-drive-time-city",
+      "category": "transport",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "The drive between the airport and central Kuching typically takes about 20 to 30 minutes, depending on traffic.",
+      "value": "about 20-30 min",
+      "as_of": "prior knowledge, approx. 2024",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2024), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against a current journey planner or the official Kuching page before publishing. Indicative only; peak-hour traffic on Jalan Tun Jugah / Jalan Lapangan Terbang can lengthen the trip."
+    },
+    {
+      "id": "kch-coordinates",
+      "category": "identity",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "The aerodrome reference point of Kuching International Airport is approximately 01°29'05\"N 110°20'49\"E.",
+      "value": "01°29'05\"N 110°20'49\"E",
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against the CAAM eAIP entry for WBGG (aip.caam.gov.my) before publishing. This is an airfield reference point, not the terminal entrance; geocode the terminal forecourt separately for maps."
+    },
+    {
+      "id": "kch-elevation",
+      "category": "operations",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "The airport's elevation is about 27 m (89 ft) above mean sea level.",
+      "value": "27 m / 89 ft",
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against the CAAM eAIP entry for WBGG (aip.caam.gov.my) before publishing."
+    },
+    {
+      "id": "kch-runway",
+      "category": "operations",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "The airport has a single runway, designated 07/25, about 3,780 m long.",
+      "value": "Runway 07/25, about 3,780 m x 46 m",
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against the CAAM eAIP entry for WBGG (aip.caam.gov.my) before publishing. Width of 46 m and asphalt surface are also from prior knowledge."
+    },
+    {
+      "id": "kch-military-shared-airfield",
+      "category": "operations",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "The airfield is shared with a Royal Malaysian Air Force base (RMAF Kuching).",
+      "value": null,
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against CAAM or MAHB before publishing. Background context only; not passenger-facing."
+    },
+    {
+      "id": "kch-opened-1950",
+      "category": "identity",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "An airport has operated at Kuching since 26 September 1950.",
+      "value": "1950-09-26",
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against MAHB corporate history or Sarawak archives before publishing. Exact opening date recalled from encyclopaedic sources; treat the day and month as unconfirmed."
+    },
+    {
+      "id": "kch-terminal-1983",
+      "category": "terminal",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "The present terminal site, on the north side of the runway, came into use in 1983.",
+      "value": "1983",
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against MAHB corporate history before publishing. Recalled date is 24 August 1983; unconfirmed."
+    },
+    {
+      "id": "kch-terminal-expansion-2006",
+      "category": "terminal",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "The terminal was substantially rebuilt and enlarged in a redevelopment completed in 2006.",
+      "value": "2006",
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against MAHB corporate history before publishing. A runway extension to about 3,780 m followed (recalled as completed around 2008)."
+    },
+    {
+      "id": "kch-single-terminal",
+      "category": "terminal",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "Kuching International Airport has one passenger terminal, which handles both domestic and international flights.",
+      "value": "1 terminal",
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against the official Kuching page on airports.malaysiaairports.com.my before publishing. No second passenger terminal or low-cost terminal exists at Kuching as far as known."
+    },
+    {
+      "id": "kch-terminal-capacity",
+      "category": "terminal",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "The terminal was designed to handle about 5 million passengers a year.",
+      "value": "about 5 million passengers a year",
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against MAHB or Ministry of Transport statements before publishing. Widely quoted design capacity; any later optimisation works that raised it were not verified."
+    },
+    {
+      "id": "kch-terminal-floor-area",
+      "category": "terminal",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "The terminal building has a floor area of about 46,000 square metres.",
+      "value": "about 46,000 m2",
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against MAHB before publishing. Recalled from encyclopaedic sources."
+    },
+    {
+      "id": "kch-terminal-levels",
+      "category": "terminal",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "The terminal has three public levels: arrivals on the ground floor, check-in and departures on the first floor, and food outlets, shops and a viewing area on the top floor.",
+      "value": "3 levels (arrivals / departures / top-floor dining and viewing)",
+      "as_of": "prior knowledge, approx. 2024",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2024), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against the official terminal map before publishing. Do NOT write wayfinding copy from this; MAHB's own level naming (Ground/Level 1/Level 2 or Level 1/2/3) was not confirmed."
+    },
+    {
+      "id": "kch-terminal-dom-intl-sections",
+      "category": "terminal",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "Domestic and international passengers use separate departure and arrival areas within the same terminal building.",
+      "value": null,
+      "as_of": "prior knowledge, approx. 2024",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2024), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against the official terminal map before publishing. Gate numbering and the position of each section were not verified."
+    },
+    {
+      "id": "kch-traffic-exceeds-capacity",
+      "category": "operations",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "Passenger traffic at Kuching reached roughly 6 million in 2019, above the terminal's design capacity of about 5 million a year.",
+      "value": "roughly 6 million passengers (2019)",
+      "as_of": "prior knowledge of 2019 statistics",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against MAHB operating statistics before publishing. Recalled 2019 figure is about 5.96 million. Full-year 2024 and 2025 figures were NOT obtained (see gaps); do not publish a current annual figure from this fact."
+    },
+    {
+      "id": "kch-ranking-busiest",
+      "category": "operations",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "Kuching is usually ranked Malaysia's fourth-busiest airport by passengers, after KLIA, Kota Kinabalu and Penang.",
+      "value": "4th busiest (historical ranking)",
+      "as_of": "prior knowledge, approx. 2019-2024",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2024), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against MAHB operating statistics for the latest full year before publishing. Ranking can change year to year."
+    },
+    {
+      "id": "kch-carbon-accreditation-level-1",
+      "category": "standards",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "Kuching International Airport attained Level 1 Airport Carbon Accreditation in May 2026.",
+      "value": "ACA Level 1",
+      "as_of": "2026-05-13",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2026/05/13/malaysia-airports-wins-international-carbon-accreditation-recognition",
+          "title": "Malaysia Airports wins international carbon accreditation recognition (The Star, 13 May 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "RELAYED SEARCH EVIDENCE: taken from a WebSearch result obtained on 2026-11-16 in this same workflow run by the sibling agent that wrote f-corporate.json (fact id 'sust-aca-penang-kuching-level-1'). This agent could not re-run the query (shared search budget exhausted) and did not open the page. Reported together with Penang International Airport."
+    },
+    {
+      "id": "kch-sarawak-mahb-domestic-airports",
+      "category": "other",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports' other Sarawak airports with domestic-airport status are Bintulu, Limbang, Miri, Mukah, Mulu and Sibu.",
+      "value": "BTU, LMN, MYY, MKM, MZV, SBW",
+      "as_of": "2024-04-29 (Annual Report 2023)",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/",
+          "title": "Malaysia Airports: Full Annual Report (MarketScreener copy of Annual Report 2023 text)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 2023 (single PDF)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "RELAYED SEARCH EVIDENCE: taken from a WebSearch result obtained on 2026-11-16 in this same workflow run by the sibling agent that wrote f-network.json (fact id 'network-domestic-list'). This agent could not re-run the query (shared search budget exhausted) and did not open the page. Useful for an 'onward connections within Sarawak' module; it is a network classification, not a list of current routes from Kuching."
+    },
+    {
+      "id": "kch-psc-rates",
+      "category": "procedures",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "The passenger service charge for flights departing Malaysian airports other than KLIA is RM11 for domestic, RM35 for ASEAN and RM73 for other international destinations, and is collected by the airline in the ticket price.",
+      "value": "RM11 domestic; RM35 ASEAN; RM73 beyond ASEAN",
+      "as_of": "prior knowledge of rates effective 2024-06-01",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2024-2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against the Civil Aviation Authority of Malaysia (formerly MAVCOM) charges notice or the official 'Passenger Services Charges' page before publishing. Recalled as set by the regulator for 1 June 2024 to 31 December 2026; new rates may apply from 2027."
+    },
+    {
+      "id": "kch-airborneo-replaced-maswings",
+      "category": "airlines",
+      "airport": null,
+      "terminal": null,
+      "claim": "AirBorneo, the Sarawak Government-owned airline, took over MASwings' rural and regional air services in Sarawak, Sabah and Labuan on 1 January 2026.",
+      "value": "2026-01-01",
+      "as_of": "2026-01 (articles published around the handover)",
+      "sources": [
+        {
+          "url": "https://centreforaviation.com/news/malaysia-aviation-group-completes-ownership-transfer-of-maswings-to-airborneo-1343251",
+          "title": "Malaysia Aviation Group completes ownership transfer of MASwings to AirBorneo (CAPA)",
+          "type": "news"
+        },
+        {
+          "url": "https://aerospaceglobalnews.com/news/maswings-cease-airborneo-launch-new-years-day/",
+          "title": "MASwings to cease operations as AirBorneo takes off on New Year's Day (Aerospace Global News)",
+          "type": "news"
+        },
+        {
+          "url": "https://asianaviation.com/mag-transitions-maswings-to-airborneo/",
+          "title": "MAG transitions MASwings to AirBorneo (Asian Aviation)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "RELAYED SEARCH EVIDENCE: taken from a WebSearch result obtained on 2026-11-16 in this same workflow run by the sibling agent that wrote f-others.json (fact id 'airborneo-takeover-1-jan-2026'). This agent could not re-run the query (shared search budget exhausted) and did not open the page. Flights formerly shown as MASwings at Kuching should now be listed as AirBorneo. A related relayed fact notes that MASwings branding was expected to remain on some aircraft and ground facilities for about six months after the handover; completion of the rebrand was not verified."
+    },
+    {
+      "id": "kch-airborneo-mulu-route",
+      "category": "airlines",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "AirBorneo flies between Kuching and Mulu with ATR 72 turboprop aircraft.",
+      "value": "AirBorneo: KCH-MZV (ATR 72)",
+      "as_of": "2026-09 to 2026-10 (aggregator schedule snapshots)",
+      "sources": [
+        {
+          "url": "https://transit.navitime.com/en/flight/MZV",
+          "title": "Mulu Airport (MZV) flight schedule, departures and arrivals (NAVITIME)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.flightradar24.com/data/aircraft/9m-mwa",
+          "title": "9M-MWA - ATR 72-500 - AirBorneo (Flightradar24)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "RELAYED SEARCH EVIDENCE: taken from a WebSearch result obtained on 2026-11-16 in this same workflow run by the sibling agent that wrote f-others.json (fact id 'mzv-airborneo-routes'). This agent could not re-run the query (shared search budget exhausted) and did not open the page. Aggregator data only (flight MY3753 Mulu-Kuching seen in listings); confirm frequency with AirBorneo's timetable."
+    },
+    {
+      "id": "kch-airborneo-flight-prefix",
+      "category": "airlines",
+      "airport": null,
+      "terminal": null,
+      "claim": "AirBorneo flights use the MY flight-number prefix, for example MY3753 between Mulu and Kuching.",
+      "value": "MY",
+      "as_of": "2026-09 to 2026-10 (aggregator schedule snapshots)",
+      "sources": [
+        {
+          "url": "https://transit.navitime.com/en/flight/MZV",
+          "title": "Mulu Airport (MZV) flight schedule, departures and arrivals (NAVITIME)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.flightradar24.com/data/aircraft/9m-mwa",
+          "title": "9M-MWA - ATR 72-500 - AirBorneo (Flightradar24)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "RELAYED SEARCH EVIDENCE: taken from a WebSearch result obtained on 2026-11-16 in this same workflow run by the sibling agent that wrote f-others.json (fact id 'airborneo-flight-number-prefix-my'). This agent could not re-run the query (shared search budget exhausted) and did not open the page. Flight numbers change; use only as an example of the prefix for flight-search design."
+    },
+    {
+      "id": "kch-airborneo-jet-plan",
+      "category": "airlines",
+      "airport": null,
+      "terminal": null,
+      "claim": "AirBorneo planned to add regional jet services in the second half of 2026, subject to regulatory approval of a change to the air operator licence inherited from MASwings.",
+      "value": "Planned: Q3 2026 to end-2026",
+      "as_of": "2025-12-02",
+      "sources": [
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2025/12/02/airborneo-to-launch-sarawak-rural-flights-in-january-regional-jets-by-end-2026-pending-approvals/200462",
+          "title": "AirBorneo to launch Sarawak rural flights in January, regional jets by end-2026 pending approvals (Malay Mail, 2 Dec 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.klsescreener.com/v2/news/view/1630749/airborneo-inherits-maswings-routes-regional-rollout-in-q3-2026",
+          "title": "AirBorneo inherits MasWings routes, regional rollout in Q3 2026 (news syndication via KLSE Screener)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "RELAYED SEARCH EVIDENCE: taken from a WebSearch result obtained on 2026-11-16 in this same workflow run by the sibling agent that wrote f-others.json (fact id 'airborneo-jet-expansion-plan'). This agent could not re-run the query (shared search budget exhausted) and did not open the page. This is a PLAN reported in December 2025. Whether jet flights from Kuching have actually started by November 2026 was NOT verified; one unverified search result seen by the sibling agent claimed an inaugural Kuching-Kuala Lumpur jet service on 20 July 2026."
+    },
+    {
+      "id": "kch-airborneo-mukah-route",
+      "category": "airlines",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "Mukah is linked to Kuching by Twin Otter rural air services, reported at 28 flights a week when the new Mukah Airport opened in June 2021.",
+      "value": "KCH-MKM; 28 weekly (June 2021, under MASwings)",
+      "as_of": "2021-06-16",
+      "sources": [
+        {
+          "url": "https://www.mot.gov.my/en/Announcement/PRESS%20RELEASE%20YBM%20-%20NEW%20AIRPORT%20FOR%20MUKAH%20SARAWAK%20FROM%2017%20JUNE%202021%20-%2016062021.pdf",
+          "title": "Media release, Minister of Transport Malaysia: New airport for Mukah, Sarawak from 17 June 2021 (16 Jun 2021)",
+          "type": "government"
+        },
+        {
+          "url": "https://www.thestar.com.my/news/nation/2021/06/16/new-mukah-airport-to-start-operating-on-thursday-june-17-says-dr-wee",
+          "title": "New Mukah Airport to start operating on Thursday (June 17), says Dr Wee (The Star, 16 Jun 2021)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "RELAYED SEARCH EVIDENCE: taken from a WebSearch result obtained on 2026-11-16 in this same workflow run by the sibling agent that wrote f-others.json (fact id 'mkm-routes'). This agent could not re-run the query (shared search budget exhausted) and did not open the page. Frequency dates from 2021 under MASwings; the current AirBorneo schedule on this route was not confirmed."
+    },
+    {
+      "id": "kch-airasia-miri-route",
+      "category": "airlines",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "AirAsia flies between Kuching and Miri.",
+      "value": "AirAsia: KCH-MYY",
+      "as_of": "2026-11 (aggregator listings retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.klia2.info/airports/miri-international-airport/",
+          "title": "Miri Airport (MYY) - Address, Airlines & Location (klia2.info guide)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.flightconnections.com/flights-from-miri-myy",
+          "title": "Flights from Miri (MYY) - FlightConnections",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "RELAYED SEARCH EVIDENCE: taken from a WebSearch result obtained on 2026-11-16 in this same workflow run by the sibling agent that wrote f-others.json (fact id 'myy-trunk-destinations'). This agent could not re-run the query (shared search budget exhausted) and did not open the page. Stated from the Miri side ('from Miri, AirAsia flies to Kuching'); aggregator sources."
+    },
+    {
+      "id": "kch-airasia-sibu-route",
+      "category": "airlines",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "AirAsia flies between Kuching and Sibu.",
+      "value": "AirAsia: KCH-SBW",
+      "as_of": "2026-11 (aggregator listings retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.flightstats.com/v2/flight-tracker/departures/SBW",
+          "title": "(SBW Departures) Sibu Airport Departures (FlightStats)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.flightradar24.com/data/airports/sbw",
+          "title": "Sibu (SBW) (WBGS) arrivals, departures, routes (Flightradar24)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Sibu_Airport",
+          "title": "Sibu Airport (Wikipedia)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "RELAYED SEARCH EVIDENCE: taken from a WebSearch result obtained on 2026-11-16 in this same workflow run by the sibling agent that wrote f-others.json (fact id 'sbw-airlines'). This agent could not re-run the query (shared search budget exhausted) and did not open the page. Stated from the Sibu side; Flightradar24 counts Kuching among Sibu's three most frequent routes."
+    },
+    {
+      "id": "kch-bintulu-route",
+      "category": "airlines",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "Kuching is one of the two main routes from Bintulu Airport, alongside Kuala Lumpur.",
+      "value": "KCH-BTU",
+      "as_of": "2026-11 (aggregator listings retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.flightsfrom.com/BTU",
+          "title": "Direct (non-stop) flights from Bintulu (BTU) - FlightsFrom.com",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.flightradar24.com/data/airports/btu",
+          "title": "Bintulu (BTU) (WBGB) arrivals, departures, routes (Flightradar24)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "RELAYED SEARCH EVIDENCE: taken from a WebSearch result obtained on 2026-11-16 in this same workflow run by the sibling agent that wrote f-others.json (fact id 'btu-destinations'). This agent could not re-run the query (shared search budget exhausted) and did not open the page. The search summary did not name the airline(s) on the Kuching-Bintulu route; prior knowledge suggests AirAsia and AirBorneo, unconfirmed."
+    },
+    {
+      "id": "kch-airasia-hub",
+      "category": "airlines",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "AirAsia operates a base at Kuching and is the airport's largest airline by number of routes.",
+      "value": null,
+      "as_of": "prior knowledge, approx. early 2026",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of early 2026), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against the official Kuching flight-information page or the airline's current timetable before publishing."
+    },
+    {
+      "id": "kch-airasia-core-domestic",
+      "category": "airlines",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "AirAsia's core domestic routes from Kuching include Kuala Lumpur, Kota Kinabalu, Johor Bahru and Penang, in addition to Miri, Sibu and Bintulu within Sarawak.",
+      "value": "KUL, BKI, JHB, PEN, MYY, SBW, BTU",
+      "as_of": "prior knowledge, approx. early 2026",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of early 2026), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against the official Kuching flight-information page or the airline's current timetable before publishing. Miri and Sibu are separately supported by relayed search evidence (kch-airasia-miri-route, kch-airasia-sibu-route). Other AirAsia routes recalled but too uncertain to list (for example Kota Bharu, Langkawi, Kuala Terengganu) are in gaps."
+    },
+    {
+      "id": "kch-malaysia-airlines-kul",
+      "category": "airlines",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "Malaysia Airlines flies between Kuching and Kuala Lumpur (KLIA).",
+      "value": "Malaysia Airlines: KCH-KUL",
+      "as_of": "prior knowledge, approx. early 2026",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (approx. as of early 2026), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against the official Kuching flight-information page or the airline's current timetable before publishing. Long-standing trunk route. Any other Malaysia Airlines routes from Kuching (for example Kota Kinabalu or Singapore) were not verified."
+    },
+    {
+      "id": "kch-batik-air-kul",
+      "category": "airlines",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "Batik Air Malaysia flies between Kuching and Kuala Lumpur.",
+      "value": "Batik Air Malaysia: KCH-KUL",
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against the official Kuching flight-information page or the airline's current timetable before publishing."
+    },
+    {
+      "id": "kch-scoot-singapore",
+      "category": "airlines",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "Scoot flies between Kuching and Singapore.",
+      "value": "Scoot: KCH-SIN",
+      "as_of": "prior knowledge, approx. early 2026",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (approx. as of early 2026), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against the official Kuching flight-information page or the airline's current timetable before publishing."
+    },
+    {
+      "id": "kch-airasia-singapore",
+      "category": "airlines",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "AirAsia flies between Kuching and Singapore.",
+      "value": "AirAsia: KCH-SIN",
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against the official Kuching flight-information page or the airline's current timetable before publishing."
+    },
+    {
+      "id": "kch-main-destination-kul",
+      "category": "airlines",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "Kuala Lumpur is Kuching's busiest route and is served by several airlines.",
+      "value": "KCH-KUL",
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against MAHB route statistics or the official Kuching flight-information page or the airline's current timetable before publishing. Airlines recalled on the route: AirAsia, Malaysia Airlines and Batik Air Malaysia."
+    },
+    {
+      "id": "kch-sarawak-own-immigration-control",
+      "category": "procedures",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "Sarawak operates its own immigration control, so every passenger arriving at Kuching from outside Sarawak, including on domestic flights from Peninsular Malaysia and Sabah, passes through an immigration check.",
+      "value": null,
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against the Immigration Department of Malaysia (imi.gov.my) and Sarawak Immigration before publishing. Legal basis recalled: the special East Malaysia provisions of the Immigration Act 1959/63 arising from the Malaysia Agreement 1963. Related pages surfaced by the sibling agent's search for the Kota Kinabalu brief (titles cover Sabah AND Sarawak, but the Sarawak-specific wording was not confirmed): https://mysinchew.sinchew.com.my/news/20240305/mysinchew/5441350 ; https://negaraku.md/en/settling-in/sabah-sarawak-entry-requirements/ ; https://snapbackpacker.com/entering-sabah-sarawak-in-2026-documents-procedures-dos-donts/ ; https://seasia.co/2026/08/06/why-west-malaysians-need-passports-when-visiting-sarawak-and-sabah"
+    },
+    {
+      "id": "kch-mykad-entry-peninsular-sabah",
+      "category": "procedures",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "Malaysian citizens from Peninsular Malaysia and Sabah can enter Sarawak for a short visit with their MyKad; a passport is not required.",
+      "value": "MyKad accepted",
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against the Immigration Department of Malaysia (imi.gov.my) and Sarawak Immigration before publishing. The equivalent rule for Sabah is search-confirmed in f-kk.json (fact 'sabah-entry-mykad-peninsular'); a passport is also accepted. Related pages surfaced by the sibling agent's search for the Kota Kinabalu brief (titles cover Sabah AND Sarawak, but the Sarawak-specific wording was not confirmed): https://mysinchew.sinchew.com.my/news/20240305/mysinchew/5441350 ; https://negaraku.md/en/settling-in/sabah-sarawak-entry-requirements/ ; https://snapbackpacker.com/entering-sabah-sarawak-in-2026-documents-procedures-dos-donts/ ; https://seasia.co/2026/08/06/why-west-malaysians-need-passports-when-visiting-sarawak-and-sabah"
+    },
+    {
+      "id": "kch-mykad-visit-90-days",
+      "category": "procedures",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "A social visit to Sarawak on a MyKad is limited to 90 days.",
+      "value": "90 days",
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against the Immigration Department of Malaysia (imi.gov.my) and Sarawak Immigration before publishing. Consistent with the Immigration Department's 'more than 3 months' threshold for a Restricted Travel Document (see kch-long-stay-restricted-travel-document). Related pages surfaced by the sibling agent's search for the Kota Kinabalu brief (titles cover Sabah AND Sarawak, but the Sarawak-specific wording was not confirmed): https://mysinchew.sinchew.com.my/news/20240305/mysinchew/5441350 ; https://negaraku.md/en/settling-in/sabah-sarawak-entry-requirements/ ; https://snapbackpacker.com/entering-sabah-sarawak-in-2026-documents-procedures-dos-donts/ ; https://seasia.co/2026/08/06/why-west-malaysians-need-passports-when-visiting-sarawak-and-sabah"
+    },
+    {
+      "id": "kch-imm114-slip",
+      "category": "procedures",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "MyKad holders from outside Sarawak are issued a printed slip on arrival, the Document in Lieu of Internal Travel Document (IMM.114), which shows the permitted stay and should be kept until departure.",
+      "value": "IMM.114",
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against the Immigration Department of Malaysia (imi.gov.my) and Sarawak Immigration before publishing. The same slip is search-confirmed for Sabah in f-kk.json ('sabah-entry-imm114-issued'). Whether Kuching still prints the slip or has moved to a digital record was not verified. Related pages surfaced by the sibling agent's search for the Kota Kinabalu brief (titles cover Sabah AND Sarawak, but the Sarawak-specific wording was not confirmed): https://mysinchew.sinchew.com.my/news/20240305/mysinchew/5441350 ; https://negaraku.md/en/settling-in/sabah-sarawak-entry-requirements/ ; https://snapbackpacker.com/entering-sabah-sarawak-in-2026-documents-procedures-dos-donts/ ; https://seasia.co/2026/08/06/why-west-malaysians-need-passports-when-visiting-sarawak-and-sabah"
+    },
+    {
+      "id": "kch-long-stay-restricted-travel-document",
+      "category": "procedures",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysians from Peninsular Malaysia who intend to stay in Sabah or Sarawak for more than three months need a Restricted Travel Document from the Immigration Department.",
+      "value": "More than 3 months",
+      "as_of": "unknown (imi.gov.my page undated)",
+      "sources": [
+        {
+          "url": "https://www.imi.gov.my/index.php/en/main-services/travel-documents/restricted-travel-documents/",
+          "title": "Immigration Department of Malaysia - Restricted Travel Documents",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "RELAYED SEARCH EVIDENCE: taken from a WebSearch result obtained on 2026-11-16 in this same workflow run by the sibling agent that wrote f-kk.json (fact id 'sabah-long-stay-restricted-travel-document'). This agent could not re-run the query (shared search budget exhausted) and did not open the page. Per the search summary, applicants over 12 present a MyKad (or military/police/temporary identity card) and two recent photos."
+    },
+    {
+      "id": "kch-domestic-departure-id-boarding-pass",
+      "category": "procedures",
+      "airport": null,
+      "terminal": null,
+      "claim": "The Immigration Department requires travellers leaving Sabah or Sarawak on domestic flights to show an accepted identity document (such as a passport, MyKad or temporary identity card) together with their boarding pass.",
+      "value": null,
+      "as_of": "unknown (imi.gov.my page undated)",
+      "sources": [
+        {
+          "url": "https://www.imi.gov.my/index.php/en/main-services/domestic-travel-domestic/",
+          "title": "Immigration Department of Malaysia - Domestic Travel (Domestic)",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "RELAYED SEARCH EVIDENCE: taken from a WebSearch result obtained on 2026-11-16 in this same workflow run by the sibling agent that wrote f-kk.json (fact id 'sabah-domestic-departure-id-and-boarding-pass'). This agent could not re-run the query (shared search budget exhausted) and did not open the page. Page text quoted in the search summary (Malay): 'Setiap pelawat diperlukan juga untuk mengemukakan pas masuk Boarding Pass sebagai bukti penumpang tulen'."
+    },
+    {
+      "id": "kch-original-documents-only",
+      "category": "procedures",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airlines requires original identity documents for domestic flights between Peninsular Malaysia and Sabah or Sarawak; photocopies are not accepted.",
+      "value": "Originals only",
+      "as_of": "unknown (airline page undated)",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairlines.com/my/en/travel-info/visa-and-immigration-documents.html",
+          "title": "Malaysia Airlines - Visa and Immigration Document Requirement",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "RELAYED SEARCH EVIDENCE: taken from a WebSearch result obtained on 2026-11-16 in this same workflow run by the sibling agent that wrote f-kk.json (fact id 'sabah-original-documents-only'). This agent could not re-run the query (shared search budget exhausted) and did not open the page. Airline policy (Malaysia Airlines); other airlines' wording was not checked. Quoted: 'all relevant documents must be the original, copies are not accepted'."
+    },
+    {
+      "id": "kch-foreigners-passport-domestic",
+      "category": "procedures",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "Foreign nationals must carry their passport on domestic flights to and from Sarawak, because it is checked and endorsed by Sarawak immigration on arrival even when they have already entered Malaysia elsewhere.",
+      "value": "Passport required",
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against the Immigration Department of Malaysia (imi.gov.my) and Sarawak Immigration before publishing. The length of stay granted in Sarawak is decided at this check; visa conditions for specific nationalities were not researched."
+    },
+    {
+      "id": "kch-sabah-sarawak-immigration",
+      "category": "procedures",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "Travel between Sarawak and Sabah is also subject to immigration checks, although both states are in East Malaysia.",
+      "value": null,
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against the Immigration Department of Malaysia (imi.gov.my) and Sarawak Immigration before publishing. The document rules for Sabahans entering Sarawak are understood to mirror those for Peninsular Malaysians (MyKad, 90 days) but official wording was not retrieved."
+    },
+    {
+      "id": "kch-work-requires-permit",
+      "category": "procedures",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "Entry to Sarawak on a MyKad covers visits only; Malaysians from other states who intend to work in Sarawak need a work permit from Sarawak immigration.",
+      "value": null,
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against the Immigration Department of Malaysia (imi.gov.my) and Sarawak Immigration before publishing. The equivalent rule for Sabah is search-confirmed in f-kk.json ('sabah-work-requires-pass')."
+    },
+    {
+      "id": "kch-golden-lounge",
+      "category": "lounges",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "Malaysia Airlines has operated a Golden Lounge for eligible passengers in the domestic departure area at Kuching.",
+      "value": null,
+      "as_of": "prior knowledge, approx. 2024",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2024), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against Malaysia Airlines' lounge page and the official Kuching page before publishing. Current status, location, opening hours and access rules were NOT verified; do not publish as open without confirmation."
+    },
+    {
+      "id": "kch-tourism-information-centre",
+      "category": "facilities",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "The Sarawak Tourism Board has operated a Visitors' Information Centre in the arrival area of the terminal.",
+      "value": null,
+      "as_of": "prior knowledge, approx. 2024",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2024), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against Sarawak Tourism Board before publishing. Current opening hours and exact location were not verified."
+    },
+    {
+      "id": "kch-no-rail-link",
+      "category": "transport",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "The airport has no rail link; access is by road only.",
+      "value": null,
+      "as_of": "prior knowledge, approx. mid-2026",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (approx. as of mid-2026), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against Sarawak Metro and the official Kuching page before publishing. The Kuching Urban Transportation System (ART) was still under construction at the time of this knowledge; see kch-kuts-art-lines."
+    },
+    {
+      "id": "kch-taxi-coupon-system",
+      "category": "transport",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "Airport taxis at Kuching work on a prepaid coupon system: passengers buy a fixed-fare coupon at the taxi counter in the arrival hall before boarding.",
+      "value": null,
+      "as_of": "prior knowledge, approx. 2024",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2024), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against the official 'Public Transport' page for Kuching before publishing. Current coupon fares by zone, counter hours and any late-night surcharge were NOT verified (see gaps); do not publish a fare."
+    },
+    {
+      "id": "kch-ehailing-available",
+      "category": "transport",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "E-hailing services such as Grab operate in Kuching and can be used for trips to and from the airport.",
+      "value": null,
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against the official 'Public Transport' page for Kuching before publishing. The designated e-hailing pick-up point at the terminal was NOT verified."
+    },
+    {
+      "id": "kch-kuching-sentral-nearby",
+      "category": "transport",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "Kuching Sentral, the city's regional and long-distance bus terminal, is about 2 km from the airport.",
+      "value": "about 2 km",
+      "as_of": "prior knowledge, approx. 2024",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2024), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against a current map and the bus terminal operator before publishing. There is no known walkway between the two; passengers need a taxi or e-hailing car. Distance is approximate."
+    },
+    {
+      "id": "kch-kuts-art-lines",
+      "category": "transport",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "Sarawak Metro is building the Kuching Urban Transportation System, a hydrogen-powered Autonomous Rapid Transit (ART) network whose first phase comprises a Blue Line (Rembus to Hikmah Exchange), a Red Line (Kuching Sentral to Pending) and a Green Line (Pending to Damai).",
+      "value": "Phase 1: Blue, Red and Green lines",
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against Sarawak Metro (mysarawakmetro.com) before publishing. Whether any line is in passenger service by November 2026, and whether any station gives practical access to the airport terminal, was NOT verified. Do not describe ART as an airport link without confirmation."
+    },
+    {
+      "id": "kch-mahb-customer-support-line",
+      "category": "contact",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports' general customer support line is +603 8777 0000.",
+      "value": "+603 8777 0000",
+      "as_of": "unknown (official pages as indexed by search on 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairports.com.my/contact",
+          "title": "Malaysia Airports - Contact",
+          "type": "official"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/en/penang",
+          "title": "Penang International Airport (PEN) - official passenger page",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "RELAYED SEARCH EVIDENCE: taken from a WebSearch result obtained on 2026-11-16 in this same workflow run by the sibling agent that wrote f-others.json (fact id 'mahb-general-contact'). This agent could not re-run the query (shared search budget exhausted) and did not open the page. Also relayed in f-penang.json ('pen-mahb-customer-line') and f-klia-t1.json ('contact-customer-support-number'). This is a group-wide line, not a Kuching airport number; Kuching's own switchboard number was not verified (see gaps)."
+    },
+    {
+      "id": "kch-mahb-email",
+      "category": "contact",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports' general enquiry and feedback email address is info@malaysiaairports.com.my.",
+      "value": "info@malaysiaairports.com.my",
+      "as_of": "unknown (official pages as indexed by search on 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairports.com.my/contact",
+          "title": "Malaysia Airports - Contact",
+          "type": "official"
+        },
+        {
+          "url": "https://care.malaysiaairports.com.my/chat",
+          "title": "Malaysia Airports Care - live chat",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "RELAYED SEARCH EVIDENCE: taken from a WebSearch result obtained on 2026-11-16 in this same workflow run by the sibling agent that wrote f-others.json (fact id 'mahb-general-contact'). This agent could not re-run the query (shared search budget exhausted) and did not open the page. Group-wide address, not Kuching-specific."
+    },
+    {
+      "id": "kch-mahb-live-chat",
+      "category": "contact",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports offers a live chat with human agents at care.malaysiaairports.com.my/chat, which runs on a split daily schedule rather than 24 hours.",
+      "value": "care.malaysiaairports.com.my/chat",
+      "as_of": "unknown (as indexed by search in Nov 2026)",
+      "sources": [
+        {
+          "url": "https://care.malaysiaairports.com.my/chat",
+          "title": "Malaysia Airports Care - live chat",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "RELAYED SEARCH EVIDENCE: taken from a WebSearch result obtained on 2026-11-16 in this same workflow run by the sibling agent that wrote f-klia-t1.json (fact id 'contact-live-chat'). This agent could not re-run the query (shared search budget exhausted) and did not open the page. Group-wide channel; exact chat hours were not captured."
+    },
+    {
+      "id": "kch-mahb-myairports-app",
+      "category": "contact",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports directs passenger feedback to its website, its email address and the MYairports mobile app.",
+      "value": "MYairports app",
+      "as_of": "unknown (as indexed by search in Nov 2026)",
+      "sources": [
+        {
+          "url": "https://care.malaysiaairports.com.my/chat",
+          "title": "Malaysia Airports Care - live chat",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "RELAYED SEARCH EVIDENCE: taken from a WebSearch result obtained on 2026-11-16 in this same workflow run by the sibling agent that wrote f-klia-t1.json (fact id 'contact-myairports-app'). This agent could not re-run the query (shared search budget exhausted) and did not open the page. Whether the app carries Kuching flight information and services was not verified."
+    },
+    {
+      "id": "kch-new-airport-proposal",
+      "category": "corporate",
+      "airport": "KCH",
+      "terminal": null,
+      "claim": "The Sarawak Government has announced an intention to build a new international airport for Kuching, with Tanjung Embang reported as the proposed site, because the existing airport has limited room to expand.",
+      "value": "Proposed site: Tanjung Embang (reported)",
+      "as_of": "prior knowledge of announcements made in 2024-2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (approx. as of 2025), NOT re-confirmed in this run: the official MAHB host could not be fetched and the workflow's shared web-search budget was exhausted before any query for this brief ran. Verify against Sarawak Premier's Department / Sarawak Ministry of Transport statements and recent news before publishing. A state proposal, not an MAHB project. Timeline, funding, operator and current status in November 2026 were NOT verified; it has no confirmed effect on passengers using the present airport."
+    }
+  ],
+  "gaps": [
+    "ACCESS / METHOD: no fact in this file is 'direct'. The start-of-run WebFetch of airports.malaysiaairports.com.my failed with DNS 'ENOTFOUND' (WebFetch is outside the allowlist path), and a curl through the container proxy was cut mid-handshake (proxy log: 'ws_closed_mid_exchange', not a 403 policy denial). See the note at the end of this list for the end-of-run retry result.",
+    "ACCESS / METHOD: zero WebSearch queries could be run for this brief. All six queries sent in the first batch were refused because the workflow's shared web-search budget (200 calls per turn across all agents) was already used up. Every 'search' fact here is relayed from a sibling agent's search results in the same run; every other fact is prior knowledge.",
+    "Official Kuching section URL on airports.malaysiaairports.com.my (probably '/en/kuching' by analogy with '/en/klia1' and '/en/langkawi') - not confirmed.",
+    "Operating hours: whether the terminal and aerodrome operate 24 hours or close overnight (recalled, unverified: aerodrome hours of roughly 06:00 to 24:00) - not verified; check the CAAM eAIP WBGG entry and the official page.",
+    "Annual passengers: full-year 2024 and 2025 passenger totals, aircraft movements and the latest ranking for Kuching - not obtained (MAHB operating statistics not searched).",
+    "Terminal detail: official level names, number of check-in counters, gates and aerobridges, self-service kiosks/bag drop, and the terminal map - not obtained.",
+    "Current airline list and destinations (November 2026): not verified against any official or schedule source. Unverified items recalled from prior knowledge include Firefly services, Royal Brunei Airlines to Bandar Seri Begawan, AirAsia routes to Kota Bharu, Langkawi, Kuala Terengganu, Pontianak, Jakarta, Brunei and other regional points, any direct China/Hong Kong services, and seasonal/charter flights.",
+    "AirBorneo at Kuching: its current Kuching route list and frequencies (recalled ex-MASwings points: Sibu, Bintulu, Miri, Mukah, Tanjung Manis, Mulu), whether its jet services have started (an unverified result claimed a Kuching-Kuala Lumpur jet launch on 20 July 2026), its check-in location in the terminal and whether the MASwings rebrand is complete - not verified.",
+    "Immigration: official Sarawak wording for (a) Sabahans entering Sarawak, (b) children under 12 (MyKid / birth certificate), (c) the 90-day social visit limit and IMM.114 slip, (d) foreign nationals arriving on domestic flights, (e) whether autogates/e-gates or a digital arrival record are in use at Kuching, and (f) Malaysia Digital Arrival Card handling for international arrivals at Kuching - not retrieved from an official page.",
+    "Lounges: current list, location, opening hours, access rules and prices - not verified. Recalled but unverified: a Malaysia Airlines Golden Lounge and a Plaza Premium Lounge in the domestic departure area.",
+    "Facilities: prayer rooms (surau), baby-care rooms, ATMs and money changers, Wi-Fi, left luggage/baggage wrapping, charging points, medical/first-aid room, smoking areas, post/SIM counters, lost-and-found desk and their locations - not obtained.",
+    "Accessibility: wheelchair and reduced-mobility assistance arrangements, accessible toilets, lifts, reserved parking and drop-off bays, and whether MAHB's Butterfly Effect hidden-disabilities programme (search-confirmed for KLIA in f-klia-t1.json) operates at Kuching - not verified.",
+    "Buses: whether any scheduled city bus currently calls at the terminal (for example a BAS.MY Kuching stage-bus route or a Sarawak Metro feeder/electric/hydrogen bus), its route number, stops, hours, frequency, fare and payment method - not verified. Recalled but unverified: a Sarawak Metro free hydrogen bus service has run in central Kuching, and an airport-city bus link was introduced around 2024.",
+    "ART: opening date and status of Kuching Urban Transportation System lines, and whether any station serves the airport - not verified.",
+    "Taxis: current coupon fares by zone (recalled, unverified: about RM30 to the city centre), counter location and hours, midnight surcharge, and metered/executive taxi options - not verified.",
+    "E-hailing: designated pick-up and drop-off points at the terminal, and which operators (Grab, Maxim, AirAsia Ride, others) are permitted - not verified.",
+    "Car rental: which companies have counters at the terminal, their location and hours - not verified.",
+    "Parking: car park layout, hourly/daily/overnight rates, motorcycle rates, grace period, lost-ticket fee, payment methods (cash, cards, Touch 'n Go, e-wallets) and any season or valet parking - not obtained. No parking rate is given in this file.",
+    "Drop-off/pick-up kerb rules (waiting time limits, any vehicle access management fees) - not verified.",
+    "Contact: Kuching airport's own switchboard number (recalled, unverified: +60 82 454 242), postal address, airport email, lost-and-found contact, and Immigration/Customs office numbers at the airport - not verified. Only MAHB's group-wide support line and email are sourced.",
+    "Dining and retail: no outlet names could be sourced; none are listed in this file.",
+    "Hotels: airport or nearby hotels and shuttle arrangements - not researched.",
+    "Expansion: any current MAHB or federal terminal upgrade/capacity expansion project at Kuching (scope, budget, timeline, passenger impact), the status of the Sarawak Government's proposed new Kuching airport, and any proposal for Sarawak to take over airport management - not verified.",
+    "Passenger service charge: current rates and whether new rates apply from 1 January 2027 - not verified (the figure in this file is prior knowledge).",
+    "Awards and service quality (ACI ASQ, Skytrax) for Kuching - not researched."
+  ]
+}

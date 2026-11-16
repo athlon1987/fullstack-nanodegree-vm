@@ -1,0 +1,2468 @@
+{
+  "topic": "Other MAHB-operated domestic airports in Malaysia (excluding KUL, PEN, BKI, KCH, LGK, SZB) and the STOLports, including the MASwings-to-AirBorneo transition",
+  "generated": "2026-11-16",
+  "facts": [
+    {
+      "id": "mahb-network-39-airports",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports manages 39 airports in Malaysia: five international airports, 17 domestic airports and 17 short take-off and landing ports (STOLports).",
+      "value": "39 airports = 5 international + 17 domestic + 17 STOLports",
+      "as_of": "unknown (operator profile text; retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.routesonline.com/airports/9835/malaysia-airports-holdings-berhad/about/",
+          "title": "Malaysia Airports Holdings Berhad - About The Group (Routes Online profile, operator-supplied text)",
+          "type": "other"
+        },
+        {
+          "url": "https://aviationweek.com/air-transport/global-airport-group-champions-connectivity-sustainability",
+          "title": "A Global Airport Group That Champions Connectivity And Sustainability (Aviation Week)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Both sources carry Malaysia Airports' own corporate description. An older 2018 breakdown differs (see mahb-network-2018-breakdown). No source obtained in this run itemises the 39 airports by class."
+    },
+    {
+      "id": "mahb-network-2018-breakdown",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "In 2018 the same 39-airport network was described as five international airports, 16 domestic airports and 18 STOLports.",
+      "value": "5 + 16 + 18 (2018)",
+      "as_of": "2018-08-14",
+      "sources": [
+        {
+          "url": "https://www.pressreader.com/malaysia/the-star-malaysia-starbiz/20180814/281565176595098",
+          "title": "MAHB: Most airports in Malaysia not commercially viable (The Star, 14 Aug 2018, via PressReader)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Superseded by the 5/17/17 split. Researcher inference (hypothesis, not confirmed): the change corresponds to Mukah moving from STOLport to domestic airport when its new airport opened in June 2021."
+    },
+    {
+      "id": "mahb-five-international-airports",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "MAHB classifies five of its Malaysian airports as international (KLIA, Penang, Kota Kinabalu, Kuching and Langkawi); the other airports in this brief are classified as domestic airports or STOLports even where they handle some international flights.",
+      "value": "KUL, PEN, BKI, KCH, LGK",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. The count of five international airports is confirmed by search (mahb-network-39-airports); the identity of the five is from prior knowledge of MAHB annual reports. Consistent with The Vibes (2026) calling Kota Bharu a 'domestic airport'."
+    },
+    {
+      "id": "senai-not-mahb",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Senai International Airport in Johor Bahru, a destination from several MAHB domestic airports, is not part of the MAHB network.",
+      "value": null,
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Relevant because Kota Bharu, Ipoh and Alor Setar list Johor Bahru as a destination; do not link to an MAHB airport page for JHB."
+    },
+    {
+      "id": "airborneo-takeover-1-jan-2026",
+      "category": "airlines",
+      "airport": null,
+      "terminal": null,
+      "claim": "AirBorneo, the Sarawak Government-owned airline, took over MASwings' rural air services in Sabah, Sarawak and Labuan on 1 January 2026.",
+      "value": "2026-01-01",
+      "as_of": "2026-01 (articles published around the handover; exact dates not captured)",
+      "sources": [
+        {
+          "url": "https://centreforaviation.com/news/malaysia-aviation-group-completes-ownership-transfer-of-maswings-to-airborneo-1343251",
+          "title": "Malaysia Aviation Group completes ownership transfer of MASwings to AirBorneo (CAPA)",
+          "type": "news"
+        },
+        {
+          "url": "https://aerospaceglobalnews.com/news/maswings-cease-airborneo-launch-new-years-day/",
+          "title": "MASwings to cease operations as AirBorneo takes off on New Year's Day (Aerospace Global News)",
+          "type": "news"
+        },
+        {
+          "url": "https://asianaviation.com/mag-transitions-maswings-to-airborneo/",
+          "title": "MAG transitions MASwings to AirBorneo (Asian Aviation)",
+          "type": "news"
+        },
+        {
+          "url": "https://aeroxplorer.com/articles/airborneo-commences-rural-regional-flights.php",
+          "title": "AirBorneo Commences Rural & Regional Flights (AeroXplorer)",
+          "type": "news"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/2026_in_aviation",
+          "title": "2026 in aviation (Wikipedia)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Headlines of CAPA, Aerospace Global News and Asian Aviation each state the transfer. MASwings ceased operating under its own name on 31 December 2025."
+    },
+    {
+      "id": "airborneo-first-flights-2-jan-2026",
+      "category": "airlines",
+      "airport": null,
+      "terminal": null,
+      "claim": "AirBorneo's first flights under its own operation departed on 2 January 2026.",
+      "value": "2026-01-02",
+      "as_of": "2026-01",
+      "sources": [
+        {
+          "url": "https://aeroxplorer.com/articles/airborneo-commences-rural-regional-flights.php",
+          "title": "AirBorneo Commences Rural & Regional Flights (AeroXplorer)",
+          "type": "news"
+        },
+        {
+          "url": "https://aerospaceglobalnews.com/news/maswings-cease-airborneo-launch-new-years-day/",
+          "title": "MASwings to cease operations as AirBorneo takes off on New Year's Day (Aerospace Global News)",
+          "type": "news"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/AirBorneo",
+          "title": "AirBorneo (Wikipedia)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Search summary states takeover on 1 January with first flights on 2 January; Wikipedia wording says AirBorneo 'commenced operations' on 1 January 2026. Treat the exact first-flight date as unconfirmed."
+    },
+    {
+      "id": "airborneo-ownership-transfer",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Aviation Group completed the transfer of MASwings ownership to AirBorneo under a sale agreement with the Sarawak Government signed in February 2025.",
+      "value": "Sale agreement February 2025; transfer completed by 1 January 2026",
+      "as_of": "2026-01",
+      "sources": [
+        {
+          "url": "https://centreforaviation.com/news/malaysia-aviation-group-completes-ownership-transfer-of-maswings-to-airborneo-1343251",
+          "title": "Malaysia Aviation Group completes ownership transfer of MASwings to AirBorneo (CAPA)",
+          "type": "news"
+        },
+        {
+          "url": "https://asianaviation.com/mag-transitions-maswings-to-airborneo/",
+          "title": "MAG transitions MASwings to AirBorneo (Asian Aviation)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "AirBorneo holds full legal and operating responsibility for the former MASwings services. All MASwings employees were reported to have accepted transfer to AirBorneo."
+    },
+    {
+      "id": "airborneo-entity-and-inherited-fleet",
+      "category": "airlines",
+      "airport": null,
+      "terminal": null,
+      "claim": "AirBorneo operates under AirBorneo Holdings Sdn Bhd and inherited eight ATR 72-500 aircraft from MASwings.",
+      "value": "8 x ATR 72-500",
+      "as_of": "2026-01",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/AirBorneo",
+          "title": "AirBorneo (Wikipedia)",
+          "type": "other"
+        },
+        {
+          "url": "https://aeroxplorer.com/articles/airborneo-commences-rural-regional-flights.php",
+          "title": "AirBorneo Commences Rural & Regional Flights (AeroXplorer)",
+          "type": "news"
+        },
+        {
+          "url": "https://asianaviation.com/mag-transitions-maswings-to-airborneo/",
+          "title": "MAG transitions MASwings to AirBorneo (Asian Aviation)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "The search summary did not attribute this sentence to a single article. Prior knowledge (not re-confirmed): the STOLport routes are flown with DHC-6-400 Twin Otter aircraft, which were also part of the MASwings operation; a 2021 Mukah report obtained in this run refers to the MASwings Twin Otter fleet."
+    },
+    {
+      "id": "airborneo-maswings-branding-period",
+      "category": "brand",
+      "airport": null,
+      "terminal": null,
+      "claim": "MASwings branding was expected to remain on some aircraft and ground facilities for about six months after the 1 January 2026 handover while the fleet was repainted.",
+      "value": "about 6 months from 2026-01-01",
+      "as_of": "2026-01",
+      "sources": [
+        {
+          "url": "https://aerospaceglobalnews.com/news/maswings-cease-airborneo-launch-new-years-day/",
+          "title": "MASwings to cease operations as AirBorneo takes off on New Year's Day (Aerospace Global News)",
+          "type": "news"
+        },
+        {
+          "url": "https://asianaviation.com/mag-transitions-maswings-to-airborneo/",
+          "title": "MAG transitions MASwings to AirBorneo (Asian Aviation)",
+          "type": "news"
+        },
+        {
+          "url": "https://aeroxplorer.com/articles/airborneo-commences-rural-regional-flights.php",
+          "title": "AirBorneo Commences Rural & Regional Flights (AeroXplorer)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "By November 2026 this period should have elapsed, but completion of the rebrand was not verified. Website copy should say 'AirBorneo (formerly MASwings)' until confirmed."
+    },
+    {
+      "id": "airborneo-flight-number-prefix-my",
+      "category": "airlines",
+      "airport": null,
+      "terminal": null,
+      "claim": "AirBorneo flights carry the MY flight-number prefix, for example MY3631 and MY3633 between Mulu and Miri.",
+      "value": "MY",
+      "as_of": "2026-09 to 2026-10 (aggregator schedule snapshots)",
+      "sources": [
+        {
+          "url": "https://transit.navitime.com/en/flight/MZV",
+          "title": "Mulu Airport (MZV) flight schedule, departures and arrivals (NAVITIME)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.flightradar24.com/data/aircraft/9m-mwa",
+          "title": "9M-MWA - ATR 72-500 - AirBorneo (Flightradar24)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Flight numbers seen in aggregator listings: MY3631/MY3633 (Mulu-Miri), MY3753 (Mulu-Kuching), MY3252 (Mulu-Kota Kinabalu), MY3251 (Kota Kinabalu-Mulu). Flight numbers change; use only as an example of the prefix."
+    },
+    {
+      "id": "airborneo-jet-expansion-plan",
+      "category": "airlines",
+      "airport": null,
+      "terminal": null,
+      "claim": "AirBorneo planned to add regional jet services in the second half of 2026 (reports cite Q3 2026 and end-2026), subject to regulatory approval of a variation to the air operator licence inherited from MASwings.",
+      "value": "Q3 2026 to end-2026 (planned)",
+      "as_of": "2025-12-02",
+      "sources": [
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2025/12/02/airborneo-to-launch-sarawak-rural-flights-in-january-regional-jets-by-end-2026-pending-approvals/200462",
+          "title": "AirBorneo to launch Sarawak rural flights in January, regional jets by end-2026 pending approvals (Malay Mail, 2 Dec 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.klsescreener.com/v2/news/view/1630749/airborneo-inherits-maswings-routes-regional-rollout-in-q3-2026",
+          "title": "AirBorneo inherits MasWings routes, regional rollout in Q3 2026 (news syndication via KLSE Screener)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "The inherited licence permits only domestic and rural Sabah/Sarawak operations. One search result claimed an inaugural Kuching-Kuala Lumpur jet service on 20 July 2026; this was NOT verified and is listed under gaps."
+    },
+    {
+      "id": "airborneo-atr-order",
+      "category": "airlines",
+      "airport": null,
+      "terminal": null,
+      "claim": "AirBorneo has confirmed a firm order for eight new ATR turboprops (five ATR 72-600 and three ATR 42-600) with purchase rights for four more.",
+      "value": "8 firm (5 x ATR 72-600, 3 x ATR 42-600) + 4 purchase rights",
+      "as_of": "2026 (exact date not captured)",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/AirBorneo",
+          "title": "AirBorneo (Wikipedia)",
+          "type": "other"
+        },
+        {
+          "url": "https://dayakdaily.com/airborneo-rural-roots-to-jet-routes/",
+          "title": "AirBorneo: Rural roots to jet routes (Dayak Daily)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Stated in the search summary without a per-article attribution; verify against an ATR or AirBorneo release before publishing."
+    },
+    {
+      "id": "stolport-air-services-operator",
+      "category": "airlines",
+      "airport": null,
+      "terminal": null,
+      "claim": "Scheduled passenger flights to MAHB's Sabah and Sarawak STOLports are government-supported rural air services, operated by MASwings until 31 December 2025 and by AirBorneo from 1 January 2026.",
+      "value": "AirBorneo (from 2026-01-01)",
+      "as_of": "2026-01",
+      "sources": [
+        {
+          "url": "https://centreforaviation.com/news/malaysia-aviation-group-completes-ownership-transfer-of-maswings-to-airborneo-1343251",
+          "title": "Malaysia Aviation Group completes ownership transfer of MASwings to AirBorneo (CAPA)",
+          "type": "news"
+        },
+        {
+          "url": "https://aerospaceglobalnews.com/news/maswings-cease-airborneo-launch-new-years-day/",
+          "title": "MASwings to cease operations as AirBorneo takes off on New Year's Day (Aerospace Global News)",
+          "type": "news"
+        },
+        {
+          "url": "https://aeroxplorer.com/articles/airborneo-commences-rural-regional-flights.php",
+          "title": "AirBorneo Commences Rural & Regional Flights (AeroXplorer)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "AirBorneo is reported to cover rural routes in Sabah, Sarawak and Labuan. Which individual STOLports currently have scheduled flights was only partly confirmed in this run (Bario, Lawas and Mukah appear in 2026 listings)."
+    },
+    {
+      "id": "mahb-general-contact",
+      "category": "contact",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports' general customer support line is +60 3 8777 0000 and its general email is info@malaysiaairports.com.my.",
+      "value": "+60 3 8777 0000; info@malaysiaairports.com.my",
+      "as_of": "unknown (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairports.com.my/contact",
+          "title": "Contact - Malaysia Airports",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Taken from the contact-page structured data shown in the search result, not from a page fetch. This is the group line, not an airport-specific number; no airport-specific numbers for the airports in this brief could be confirmed (see gaps)."
+    },
+    {
+      "id": "mahb-site-kbr-flight-pages-mislabelled",
+      "category": "other",
+      "airport": "KBR",
+      "terminal": null,
+      "claim": "On the current MAHB airports site, the Kota Bharu flight-information pages are indexed by search engines under KLIA Terminal 1 titles and descriptions.",
+      "value": "Indexed titles: 'KLIA1 Live Departure Flights'; 'KLIA Terminal 1 Flight Information & Status'",
+      "as_of": "retrieved 2026-11-16",
+      "sources": [
+        {
+          "url": "https://airports.malaysiaairports.com.my/index.php/sultan-ismail-petra-airport-kota-bharu/flight-information/departures",
+          "title": "Sultan Ismail Petra Airport Kota Bharu - departures page (indexed title: 'KLIA1 Live Departure Flights')",
+          "type": "official"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/index.php/sultan-ismail-petra-airport-kota-bharu/flight-information",
+          "title": "Sultan Ismail Petra Airport Kota Bharu - flight information page (indexed title: 'KLIA Terminal 1 Flight Information & Status')",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Audit observation for the redesign (page metadata appears to be shared across airports). Observed in search-engine results only; the live pages could not be fetched, so the current title tags are unconfirmed."
+    },
+    {
+      "id": "kbr-identity",
+      "category": "identity",
+      "airport": "KBR",
+      "terminal": null,
+      "claim": "Sultan Ismail Petra Airport (IATA: KBR) serves Kota Bharu, the capital of Kelantan.",
+      "value": "KBR",
+      "as_of": "2026-03-15",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/news/nation/2026/03/15/sultan-ismail-petra-airport-to-start-full-operation-tomorrow-after-expansion-works",
+          "title": "Sultan Ismail Petra Airport to start full operation tomorrow after expansion works (The Star, 15 Mar 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/index.php/sultan-ismail-petra-airport-kota-bharu/flight-information",
+          "title": "Sultan Ismail Petra Airport Kota Bharu - flight information page (indexed title: 'KLIA Terminal 1 Flight Information & Status')",
+          "type": "official"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Sultan_Ismail_Petra_Airport",
+          "title": "Sultan Ismail Petra Airport (Wikipedia)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Malay name Lapangan Terbang Sultan Ismail Petra (abbreviated LTSIP in news reports). Prior knowledge, not re-confirmed: named after Sultan Ismail Petra of Kelantan; located at Pengkalan Chepa."
+    },
+    {
+      "id": "kbr-icao",
+      "category": "identity",
+      "airport": "KBR",
+      "terminal": null,
+      "claim": "The ICAO code for Sultan Ismail Petra Airport is WMKC.",
+      "value": "WMKC",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Stable identifier; verify against AIP Malaysia."
+    },
+    {
+      "id": "kbr-distance",
+      "category": "transport",
+      "airport": "KBR",
+      "terminal": null,
+      "claim": "Sultan Ismail Petra Airport is at Pengkalan Chepa, roughly 8 to 9 km from Kota Bharu town centre.",
+      "value": "about 8-9 km",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing."
+    },
+    {
+      "id": "kbr-expansion-full-operation",
+      "category": "terminal",
+      "airport": "KBR",
+      "terminal": null,
+      "claim": "The expanded terminal at Sultan Ismail Petra Airport began full operation on 16 March 2026.",
+      "value": "2026-03-16",
+      "as_of": "2026-03-15",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/news/nation/2026/03/15/sultan-ismail-petra-airport-to-start-full-operation-tomorrow-after-expansion-works",
+          "title": "Sultan Ismail Petra Airport to start full operation tomorrow after expansion works (The Star, 15 Mar 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.businesstoday.com.my/2026/03/15/sultan-ismail-petra-airport-to-begin-operation-on-march-16/",
+          "title": "Sultan Ismail Petra Airport To Begin Operation On March 16 (BusinessToday, 15 Mar 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.scoop.my/news/284255/sultan-ismail-petra-airport-expansion-fully-operational-tomorrow/",
+          "title": "Sultan Ismail Petra Airport expansion fully operational tomorrow (Scoop)",
+          "type": "news"
+        },
+        {
+          "url": "https://centreforaviation.com/news/kota-bharu-sultan-ismail-petra-airport-expansion-complete-1352122",
+          "title": "Kota Bharu Sultan Ismail Petra Airport expansion complete (CAPA)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Announced by the Transport Minister on 15 March 2026. The search did not confirm whether associated runway works are complete."
+    },
+    {
+      "id": "kbr-expansion-capacity",
+      "category": "terminal",
+      "airport": "KBR",
+      "terminal": null,
+      "claim": "The expansion raised Sultan Ismail Petra Airport's annual capacity from 1.5 million to 4 million passengers.",
+      "value": "4 million passengers a year (from 1.5 million)",
+      "as_of": "2026-05",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/news/nation/2026/03/15/sultan-ismail-petra-airport-to-start-full-operation-tomorrow-after-expansion-works",
+          "title": "Sultan Ismail Petra Airport to start full operation tomorrow after expansion works (The Star, 15 Mar 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/media-centre/news/1782",
+          "title": "New Kota Bharu Airport handled over half a million passengers in first four months of 2026 (Malaysia Airports media release)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Stated by The Star (15 Mar 2026) and by a Malaysia Airports media release (May 2026)."
+    },
+    {
+      "id": "kbr-expansion-terminal-size",
+      "category": "terminal",
+      "airport": "KBR",
+      "terminal": null,
+      "claim": "The expansion tripled the terminal floor area at Sultan Ismail Petra Airport from 12,000 to 36,000 square metres and increased aircraft parking bays from five to 11.",
+      "value": "36,000 sq m; 11 aircraft parking bays",
+      "as_of": "2026-03 (exact date not captured)",
+      "sources": [
+        {
+          "url": "https://mcigroup.my/mci-business/kota-bharus-new-look-sultan-ismail-petra-airport-ready-to-handle-four-million-passengers-annually-says-manager/",
+          "title": "Kota Bharu's New-look Sultan Ismail Petra Airport Ready to Handle Four Million Passengers Annually, Says Manager (MCI Group)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Attributed to the airport manager in the cited report."
+    },
+    {
+      "id": "kbr-expansion-cost",
+      "category": "corporate",
+      "airport": "KBR",
+      "terminal": null,
+      "claim": "The expansion and upgrade of Sultan Ismail Petra Airport cost RM440 million.",
+      "value": "RM440 million",
+      "as_of": "2026-03 (exact date not captured)",
+      "sources": [
+        {
+          "url": "https://mcigroup.my/mci-business/kota-bharus-new-look-sultan-ismail-petra-airport-ready-to-handle-four-million-passengers-annually-says-manager/",
+          "title": "Kota Bharu's New-look Sultan Ismail Petra Airport Ready to Handle Four Million Passengers Annually, Says Manager (MCI Group)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Single source in this run."
+    },
+    {
+      "id": "kbr-official-opening",
+      "category": "terminal",
+      "airport": "KBR",
+      "terminal": null,
+      "claim": "The expanded Sultan Ismail Petra Airport was officially opened on 18 April 2026.",
+      "value": "2026-04-18",
+      "as_of": "2026-04",
+      "sources": [
+        {
+          "url": "https://www.thevibes.com/articles/news/121986/sultan-ismail-petra-airport-named-malaysias-most-modern-domestic-airport-after-upgrade",
+          "title": "Sultan Ismail Petra Airport named Malaysia's most modern domestic airport after upgrade (The Vibes)",
+          "type": "news"
+        },
+        {
+          "url": "https://flightmalaysia.com/airports/sultan-ismail-petra-airport",
+          "title": "Kota Bharu Airport: Sultan Ismail Petra Airport (KBR) Guide (flightmalaysia.com)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/media-centre/news/1782",
+          "title": "New Kota Bharu Airport handled over half a million passengers in first four months of 2026 (Malaysia Airports media release)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Malaysia Airports' May 2026 release says the expanded terminal 'opened in April'. Sources differ on who officiated: flightmalaysia.com says the Prime Minister; The Vibes reports the Transport Minister speaking at the ceremony. The Vibes headline describes KBR as Malaysia's 'most modern domestic airport'."
+    },
+    {
+      "id": "kbr-phase-one-2024",
+      "category": "terminal",
+      "airport": "KBR",
+      "terminal": null,
+      "claim": "The first phase of the new terminal at Sultan Ismail Petra Airport began operating on 1 May 2024.",
+      "value": "2024-05-01",
+      "as_of": "2024-05-02",
+      "sources": [
+        {
+          "url": "https://www.malaymail.com/amp/news/malaysia/2024/05/02/pm-anwar-visits-new-terminal-at-sultan-ismail-petra-airport/132085",
+          "title": "PM Anwar visits new terminal at Sultan Ismail Petra Airport (Malay Mail, 2 May 2024)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Phase-one capacity was reported as 1.5 million passengers a year."
+    },
+    {
+      "id": "kbr-passengers-jan-apr-2026",
+      "category": "operations",
+      "airport": "KBR",
+      "terminal": null,
+      "claim": "Sultan Ismail Petra Airport handled more than half a million passengers in the first four months of 2026.",
+      "value": "over 500,000 passengers (January-April 2026)",
+      "as_of": "2026-05 (exact date not captured)",
+      "sources": [
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/media-centre/news/1782",
+          "title": "New Kota Bharu Airport handled over half a million passengers in first four months of 2026 (Malaysia Airports media release)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Headline of the Malaysia Airports media release; exact figure not captured."
+    },
+    {
+      "id": "kbr-scoot-singapore",
+      "category": "airlines",
+      "airport": "KBR",
+      "terminal": null,
+      "claim": "Scoot operates Kota Bharu's international route to Singapore.",
+      "value": "Scoot: KBR-SIN",
+      "as_of": "2026-05",
+      "sources": [
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/media-centre/news/1782",
+          "title": "New Kota Bharu Airport handled over half a million passengers in first four months of 2026 (Malaysia Airports media release)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.flightsfrom.com/KBR",
+          "title": "Direct (non-stop) flights from Kota Bharu, Sultan Ismail Petra (KBR) - FlightsFrom.com",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Confirmed by the Malaysia Airports May 2026 release; an aggregator listed nine Singapore flights 'next month' (Nov/Dec 2026). Frequency should be checked with Scoot."
+    },
+    {
+      "id": "kbr-airasia-jakarta-planned",
+      "category": "airlines",
+      "airport": "KBR",
+      "terminal": null,
+      "claim": "AirAsia was scheduled to launch a Kota Bharu-Jakarta service in June 2026 as the airport's second international route.",
+      "value": "AirAsia: KBR-CGK, planned start June 2026",
+      "as_of": "2026-05",
+      "sources": [
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/media-centre/news/1782",
+          "title": "New Kota Bharu Airport handled over half a million passengers in first four months of 2026 (Malaysia Airports media release)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Announced as upcoming in the May 2026 release. Whether the route launched and is still operating in November 2026 was NOT verified; one aggregator mentions Jakarta flights from KBR."
+    },
+    {
+      "id": "kbr-airlines",
+      "category": "airlines",
+      "airport": "KBR",
+      "terminal": null,
+      "claim": "Five airlines serve Kota Bharu: AirAsia, Batik Air, Firefly, Malaysia Airlines and Scoot.",
+      "value": "AirAsia; Batik Air; Firefly; Malaysia Airlines; Scoot",
+      "as_of": "2026-11 (aggregator snapshot, retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.flightsfrom.com/KBR",
+          "title": "Direct (non-stop) flights from Kota Bharu, Sultan Ismail Petra (KBR) - FlightsFrom.com",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.flightconnections.com/flights-from-kota-bharu-kbr",
+          "title": "Flights from Kota Bharu (KBR) - FlightConnections",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Aggregator data. FlightsFrom counts 8 destinations and 5 airlines."
+    },
+    {
+      "id": "kbr-kuala-lumpur-route",
+      "category": "airlines",
+      "airport": "KBR",
+      "terminal": null,
+      "claim": "Kuala Lumpur is Kota Bharu's busiest route, served by AirAsia, Batik Air, Firefly and Malaysia Airlines.",
+      "value": "about 78 weekly departures to KUL (58% of departures)",
+      "as_of": "2026-11 (aggregator snapshot)",
+      "sources": [
+        {
+          "url": "https://www.flightsfrom.com/KBR",
+          "title": "Direct (non-stop) flights from Kota Bharu, Sultan Ismail Petra (KBR) - FlightsFrom.com",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.flightconnections.com/flights-from-kota-bharu-kbr",
+          "title": "Flights from Kota Bharu (KBR) - FlightConnections",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Aggregator figure for flights coded KUL. Whether any Firefly or Batik Air flights use Subang (SZB) instead was not confirmed."
+    },
+    {
+      "id": "kbr-airasia-domestic",
+      "category": "airlines",
+      "airport": "KBR",
+      "terminal": null,
+      "claim": "AirAsia also links Kota Bharu with Johor Bahru and Kota Kinabalu.",
+      "value": "AirAsia: KBR-JHB, KBR-BKI",
+      "as_of": "2026-11 (aggregator snapshot)",
+      "sources": [
+        {
+          "url": "https://www.flightsfrom.com/KBR",
+          "title": "Direct (non-stop) flights from Kota Bharu, Sultan Ismail Petra (KBR) - FlightsFrom.com",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Aggregator data only; other aggregator mentions of Penang, Kuching and Miri were search suggestions, not confirmed schedules."
+    },
+    {
+      "id": "tgg-identity",
+      "category": "identity",
+      "airport": "TGG",
+      "terminal": null,
+      "claim": "Sultan Mahmud Airport (IATA: TGG) serves Kuala Terengganu, the capital of Terengganu.",
+      "value": "TGG",
+      "as_of": "unknown (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Sultan_Mahmud_Airport",
+          "title": "Sultan Mahmud Airport (Wikipedia)",
+          "type": "other"
+        },
+        {
+          "url": "https://www.flightradar24.com/data/airports/tgg",
+          "title": "Kuala Terengganu Sultan Mahmud (TGG) (WMKN) arrivals, departures, routes (Flightradar24)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Prior knowledge, not re-confirmed: named after Sultan Mahmud Al-Muktafi Billah Shah of Terengganu; located at Gong Badak in Kuala Nerus district."
+    },
+    {
+      "id": "tgg-icao",
+      "category": "identity",
+      "airport": "TGG",
+      "terminal": null,
+      "claim": "The ICAO code for Sultan Mahmud Airport is WMKN.",
+      "value": "WMKN",
+      "as_of": "unknown (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.flightradar24.com/data/airports/tgg",
+          "title": "Kuala Terengganu Sultan Mahmud (TGG) (WMKN) arrivals, departures, routes (Flightradar24)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Shown in the Flightradar24 airport page title."
+    },
+    {
+      "id": "tgg-distance",
+      "category": "transport",
+      "airport": "TGG",
+      "terminal": null,
+      "claim": "Sultan Mahmud Airport is about 8 km from Kuala Terengganu.",
+      "value": "8 km",
+      "as_of": "unknown (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Sultan_Mahmud_Airport",
+          "title": "Sultan Mahmud Airport (Wikipedia)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Wikipedia figure; not checked against the operator."
+    },
+    {
+      "id": "tgg-airlines",
+      "category": "airlines",
+      "airport": "TGG",
+      "terminal": null,
+      "claim": "AirAsia, Firefly and Malaysia Airlines fly between Kuala Terengganu and Kuala Lumpur International Airport, and Firefly also flies to Kuala Lumpur-Subang.",
+      "value": "AirAsia, Firefly, Malaysia Airlines: KUL; Firefly: SZB",
+      "as_of": "2026-11 (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Sultan_Mahmud_Airport",
+          "title": "Sultan Mahmud Airport (Wikipedia)",
+          "type": "other"
+        },
+        {
+          "url": "https://www.flightradar24.com/data/airports/tgg",
+          "title": "Kuala Terengganu Sultan Mahmud (TGG) (WMKN) arrivals, departures, routes (Flightradar24)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Wikipedia and Flightradar24 agree. Other aggregator pages mention Miri, Singapore or Langkawi routes; these were not corroborated and should not be published."
+    },
+    {
+      "id": "iph-identity",
+      "category": "identity",
+      "airport": "IPH",
+      "terminal": null,
+      "claim": "Sultan Azlan Shah Airport (IATA: IPH) serves Ipoh, the capital of Perak.",
+      "value": "IPH",
+      "as_of": "unknown (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Sultan_Azlan_Shah_Airport",
+          "title": "Sultan Azlan Shah Airport (Wikipedia)",
+          "type": "other"
+        },
+        {
+          "url": "https://www.flightradar24.com/data/airports/iph",
+          "title": "Ipoh Sultan Azlan Shah (IPH) (WMKI) arrivals, departures, routes (Flightradar24)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Prior knowledge, not re-confirmed: named after Sultan Azlan Shah of Perak."
+    },
+    {
+      "id": "iph-icao",
+      "category": "identity",
+      "airport": "IPH",
+      "terminal": null,
+      "claim": "The ICAO code for Sultan Azlan Shah Airport is WMKI.",
+      "value": "WMKI",
+      "as_of": "unknown (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.flightradar24.com/data/airports/iph",
+          "title": "Ipoh Sultan Azlan Shah (IPH) (WMKI) arrivals, departures, routes (Flightradar24)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Shown in the Flightradar24 airport page title."
+    },
+    {
+      "id": "iph-distance",
+      "category": "transport",
+      "airport": "IPH",
+      "terminal": null,
+      "claim": "Sultan Azlan Shah Airport is roughly 5 to 6 km from Ipoh city centre.",
+      "value": "about 5-6 km",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing."
+    },
+    {
+      "id": "iph-scoot-singapore",
+      "category": "airlines",
+      "airport": "IPH",
+      "terminal": null,
+      "claim": "Scoot flies between Ipoh and Singapore, the airport's most frequent route.",
+      "value": "Scoot: IPH-SIN",
+      "as_of": "2026-11 (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Sultan_Azlan_Shah_Airport",
+          "title": "Sultan Azlan Shah Airport (Wikipedia)",
+          "type": "other"
+        },
+        {
+          "url": "https://www.flightradar24.com/data/airports/iph",
+          "title": "Ipoh Sultan Azlan Shah (IPH) (WMKI) arrivals, departures, routes (Flightradar24)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Flightradar24 lists Singapore as the most frequent destination."
+    },
+    {
+      "id": "iph-airasia-singapore-suspended",
+      "category": "airlines",
+      "airport": "IPH",
+      "terminal": null,
+      "claim": "AirAsia suspended its Ipoh-Singapore route in May 2025, leaving Scoot as the only airline on that route.",
+      "value": "2025-05",
+      "as_of": "unknown (Wikipedia, retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Sultan_Azlan_Shah_Airport",
+          "title": "Sultan Azlan Shah Airport (Wikipedia)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Conflict: Flightradar24's route list still names both Scoot and AirAsia for Singapore. Prefer verification with AirAsia."
+    },
+    {
+      "id": "iph-airasia-johor-bahru",
+      "category": "airlines",
+      "airport": "IPH",
+      "terminal": null,
+      "claim": "AirAsia flies between Ipoh and Johor Bahru, the airport's only recorded domestic route.",
+      "value": "AirAsia: IPH-JHB",
+      "as_of": "2026-11 (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://flightmalaysia.com/airports/sultan-azlan-shah-airport",
+          "title": "Sultan Azlan Shah Airport (IPH), Ipoh: Published Hours, Runway, 2025 Upgrade, AirAsia and Buses (flightmalaysia.com)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.flightradar24.com/data/airports/iph",
+          "title": "Ipoh Sultan Azlan Shah (IPH) (WMKI) arrivals, departures, routes (Flightradar24)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Aggregator data. FlightConnections (updated early 2026) shows only two non-stop destinations. No Batik Air service at Ipoh was found."
+    },
+    {
+      "id": "aor-identity",
+      "category": "identity",
+      "airport": "AOR",
+      "terminal": null,
+      "claim": "Sultan Abdul Halim Airport (IATA: AOR) is at Kepala Batas and serves Alor Setar, the capital of Kedah.",
+      "value": "AOR",
+      "as_of": "unknown (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Sultan_Abdul_Halim_Airport",
+          "title": "Sultan Abdul Halim Airport (Wikipedia)",
+          "type": "other"
+        },
+        {
+          "url": "https://www.klia2.info/airports/sultan-abdul-halim-airport/",
+          "title": "Alor Setar Airport (AOR) - Sultan Abdul Halim, Kedah (klia2.info guide)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Prior knowledge, not re-confirmed: named after Sultan Abdul Halim Mu'adzam Shah of Kedah."
+    },
+    {
+      "id": "aor-icao",
+      "category": "identity",
+      "airport": "AOR",
+      "terminal": null,
+      "claim": "The ICAO code for Sultan Abdul Halim Airport is WMKA.",
+      "value": "WMKA",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Stable identifier; verify against AIP Malaysia."
+    },
+    {
+      "id": "aor-distance",
+      "category": "transport",
+      "airport": "AOR",
+      "terminal": null,
+      "claim": "Sultan Abdul Halim Airport is about 8.5 km from Alor Setar city centre.",
+      "value": "about 8.5 km",
+      "as_of": "2026-10 (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.klia2.info/airports/sultan-abdul-halim-airport/",
+          "title": "Alor Setar Airport (AOR) - Sultan Abdul Halim, Kedah (klia2.info guide)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Single third-party guide (klia2.info); other references may quote a longer road distance. Verify with the operator."
+    },
+    {
+      "id": "aor-also-serves-perlis",
+      "category": "identity",
+      "airport": "AOR",
+      "terminal": null,
+      "claim": "Sultan Abdul Halim Airport is also the nearest airport for the neighbouring state of Perlis.",
+      "value": null,
+      "as_of": "unknown (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Sultan_Abdul_Halim_Airport",
+          "title": "Sultan Abdul Halim Airport (Wikipedia)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Wikipedia lists the airport as serving Alor Setar and Perlis."
+    },
+    {
+      "id": "aor-airlines",
+      "category": "airlines",
+      "airport": "AOR",
+      "terminal": null,
+      "claim": "From Alor Setar, AirAsia and Malaysia Airlines fly to Kuala Lumpur International Airport, Firefly flies to Kuala Lumpur-Subang and AirAsia flies to Johor Bahru.",
+      "value": "AirAsia, Malaysia Airlines: KUL; Firefly: SZB; AirAsia: JHB",
+      "as_of": "2026-10-22 (aggregator snapshot)",
+      "sources": [
+        {
+          "url": "https://www.klia2.info/airports/sultan-abdul-halim-airport/",
+          "title": "Alor Setar Airport (AOR) - Sultan Abdul Halim, Kedah (klia2.info guide)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.flightsfrom.com/AOR/destinations",
+          "title": "List of destinations & airlines from Sultan Abdul Halim, Alor Setar - FlightsFrom.com",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.flightconnections.com/flights-from-alor-setar-kedah-aor",
+          "title": "Flights from Alor Setar, Kedah (AOR) - FlightConnections",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "klia2.info snapshot of 22 October 2026 showed three rotations to KLIA, two to Subang and one to Johor Bahru that day. Flight times differ between aggregators."
+    },
+    {
+      "id": "aor-no-international-flights",
+      "category": "airlines",
+      "airport": "AOR",
+      "terminal": null,
+      "claim": "Alor Setar has no scheduled international flights.",
+      "value": null,
+      "as_of": "2026-10-22 (aggregator snapshot)",
+      "sources": [
+        {
+          "url": "https://www.klia2.info/airports/sultan-abdul-halim-airport/",
+          "title": "Alor Setar Airport (AOR) - Sultan Abdul Halim, Kedah (klia2.info guide)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Trip.com and Airpaz list Singapore, Jakarta and Bali, but these are search suggestions rather than operated routes."
+    },
+    {
+      "id": "mkz-identity",
+      "category": "identity",
+      "airport": "MKZ",
+      "terminal": null,
+      "claim": "Melaka International Airport (IATA: MKZ) is at Batu Berendam and serves Melaka city; it is still widely listed as Batu Berendam Airport.",
+      "value": "MKZ",
+      "as_of": "unknown (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.skyscanner.ca/airports/mkz/malacca-airport.html",
+          "title": "Melaka International Airport (Skyscanner)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.traveloka.com/en-my/flight/airport/mkz",
+          "title": "Cheap Flights From Batu Berendam International Airport (MKZ), Malaysia (Traveloka)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.klia2.info/airports/malacca-international-airport-melaka-airport/",
+          "title": "Malacca Airport (MKZ) - Melaka Airport, Airlines & Location (klia2.info guide)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Despite its name, MAHB counts only five international airports, so Melaka falls in the domestic class (see mahb-five-international-airports, prior). Booking sites variously call it Malacca Airport, Melaka International Airport and Batu Berendam International Airport."
+    },
+    {
+      "id": "mkz-icao",
+      "category": "identity",
+      "airport": "MKZ",
+      "terminal": null,
+      "claim": "The ICAO code for Melaka International Airport is WMKM.",
+      "value": "WMKM",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Stable identifier; verify against AIP Malaysia."
+    },
+    {
+      "id": "mkz-scheduled-service-uncertain",
+      "category": "airlines",
+      "airport": "MKZ",
+      "terminal": null,
+      "claim": "Scoot's Singapore service is the only scheduled passenger route reported at Melaka in 2026, and sources conflict on whether it is currently operating.",
+      "value": "Scoot: MKZ-SIN, about 3 flights a week when operating; status unconfirmed",
+      "as_of": "2026-11 (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.klia2.info/airports/malacca-international-airport-melaka-airport/",
+          "title": "Malacca Airport (MKZ) - Melaka Airport, Airlines & Location (klia2.info guide)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.traveloka.com/en-my/flight/airport/mkz",
+          "title": "Cheap Flights From Batu Berendam International Airport (MKZ), Malaysia (Traveloka)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.skyscanner.ca/airports/mkz/malacca-airport.html",
+          "title": "Melaka International Airport (Skyscanner)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "klia2.info reports the Scoot route as roughly three times weekly but also as suspended from 14 August 2026, and reports the Wings Air Pekanbaru route as suspended in August 2026; Traveloka still shows Scoot fares for November-December 2026; Skyscanner lists carriers (Firefly, Sky Aviation, Wings Air) that appear outdated. Do NOT publish a Melaka airline list until verified with MAHB or Scoot."
+    },
+    {
+      "id": "kua-identity",
+      "category": "identity",
+      "airport": "KUA",
+      "terminal": null,
+      "claim": "Sultan Haji Ahmad Shah Airport (IATA: KUA) serves Kuantan, the capital of Pahang.",
+      "value": "KUA",
+      "as_of": "unknown (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Sultan_Haji_Ahmad_Shah_Airport",
+          "title": "Sultan Haji Ahmad Shah Airport (Wikipedia)",
+          "type": "other"
+        },
+        {
+          "url": "https://www.flightradar24.com/data/airports/kua",
+          "title": "Kuantan Sultan Haji Ahmad Shah (KUA) (WMKD) arrivals, departures, routes (Flightradar24)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Prior knowledge, not re-confirmed: named after Sultan Haji Ahmad Shah of Pahang; the airfield is shared with a Royal Malaysian Air Force base."
+    },
+    {
+      "id": "kua-icao",
+      "category": "identity",
+      "airport": "KUA",
+      "terminal": null,
+      "claim": "The ICAO code for Sultan Haji Ahmad Shah Airport is WMKD.",
+      "value": "WMKD",
+      "as_of": "unknown (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.flightradar24.com/data/airports/kua",
+          "title": "Kuantan Sultan Haji Ahmad Shah (KUA) (WMKD) arrivals, departures, routes (Flightradar24)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Shown in the Flightradar24 airport page title."
+    },
+    {
+      "id": "kua-distance",
+      "category": "transport",
+      "airport": "KUA",
+      "terminal": null,
+      "claim": "Sultan Haji Ahmad Shah Airport is about 15 km from Kuantan city.",
+      "value": "15 km",
+      "as_of": "unknown (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Sultan_Haji_Ahmad_Shah_Airport",
+          "title": "Sultan Haji Ahmad Shah Airport (Wikipedia)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Wikipedia figure; not checked against the operator."
+    },
+    {
+      "id": "kua-malaysia-airlines-kul",
+      "category": "airlines",
+      "airport": "KUA",
+      "terminal": null,
+      "claim": "Malaysia Airlines flies daily between Kuantan and Kuala Lumpur International Airport.",
+      "value": "Malaysia Airlines: KUA-KUL, daily, about 55 min",
+      "as_of": "2026-11 (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.google.com/travel/flights/flights-from-kuantan.html",
+          "title": "Find Cheap Flights from Kuantan - Google Flights",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Sultan_Haji_Ahmad_Shah_Airport",
+          "title": "Sultan Haji Ahmad Shah Airport (Wikipedia)",
+          "type": "other"
+        },
+        {
+          "url": "https://www.flightsfrom.com/KUA",
+          "title": "Direct (non-stop) flights from Kuantan (KUA) - FlightsFrom.com",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "A Traveloka snapshot showed KUL-KUA departures at 09:25 and 18:25; timings change and should come from a live feed."
+    },
+    {
+      "id": "kua-scoot-singapore",
+      "category": "airlines",
+      "airport": "KUA",
+      "terminal": null,
+      "claim": "Scoot flies between Kuantan and Singapore three times a week (Wednesday, Friday and Sunday).",
+      "value": "Scoot: KUA-SIN, Wed/Fri/Sun",
+      "as_of": "2026-11 (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.google.com/travel/flights/flights-from-kuantan.html",
+          "title": "Find Cheap Flights from Kuantan - Google Flights",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.flightconnections.com/flights-from-kuantan-kua",
+          "title": "Flights from Kuantan (KUA) - FlightConnections",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "FlightsFrom and FlightConnections (updated February 2026) show two airlines and two destinations at Kuantan; Wikipedia's table omits Scoot; Flightradar24 counts four destinations. No Firefly service was found. Days of operation are schedule-dependent."
+    },
+    {
+      "id": "myy-identity",
+      "category": "identity",
+      "airport": "MYY",
+      "terminal": null,
+      "claim": "Miri Airport (IATA: MYY) serves Miri in northern Sarawak.",
+      "value": "MYY",
+      "as_of": "unknown (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Miri_Airport",
+          "title": "Miri Airport (Wikipedia)",
+          "type": "other"
+        },
+        {
+          "url": "https://www.klia2.info/airports/miri-international-airport/",
+          "title": "Miri Airport (MYY) - Address, Airlines & Location (klia2.info guide)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Some third-party sites call it 'Miri International Airport'; MAHB's classification is domestic (prior). It is the main hub for rural air services into northern Sarawak."
+    },
+    {
+      "id": "myy-icao",
+      "category": "identity",
+      "airport": "MYY",
+      "terminal": null,
+      "claim": "The ICAO code for Miri Airport is WBGR.",
+      "value": "WBGR",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Stable identifier; verify against AIP Malaysia."
+    },
+    {
+      "id": "myy-distance",
+      "category": "transport",
+      "airport": "MYY",
+      "terminal": null,
+      "claim": "Miri Airport is about 9.5 km south-east of Miri city centre.",
+      "value": "9.5 km",
+      "as_of": "unknown (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Miri_Airport",
+          "title": "Miri Airport (Wikipedia)",
+          "type": "other"
+        },
+        {
+          "url": "https://www.klia2.info/airports/miri-international-airport/",
+          "title": "Miri Airport (MYY) - Address, Airlines & Location (klia2.info guide)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Conflict: Wikipedia says 9.5 km south-east; klia2.info says 11 km south. Use 'about 10 km' in copy until confirmed."
+    },
+    {
+      "id": "myy-airlines",
+      "category": "airlines",
+      "airport": "MYY",
+      "terminal": null,
+      "claim": "Four airlines operate at Miri: AirAsia, AirBorneo, Malaysia Airlines and Scoot.",
+      "value": "AirAsia; AirBorneo; Malaysia Airlines; Scoot",
+      "as_of": "2026-11 (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://aerocorner.com/airports/myy/",
+          "title": "Miri Airport (MYY) - 53 flights/day to 17 destinations by 4 airlines (Aerocorner)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.flightconnections.com/flights-from-miri-myy",
+          "title": "Flights from Miri (MYY) - FlightConnections",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.klia2.info/airports/miri-international-airport/",
+          "title": "Miri Airport (MYY) - Address, Airlines & Location (klia2.info guide)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Aggregator directory totals vary between 17 and 18 non-stop destinations."
+    },
+    {
+      "id": "myy-trunk-destinations",
+      "category": "airlines",
+      "airport": "MYY",
+      "terminal": null,
+      "claim": "From Miri, AirAsia and Malaysia Airlines fly to Kuala Lumpur, AirAsia flies to Kuching and Kota Kinabalu, and Scoot flies to Singapore.",
+      "value": "KUL (AirAsia, Malaysia Airlines); KCH, BKI (AirAsia); SIN (Scoot)",
+      "as_of": "2026-11 (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.klia2.info/airports/miri-international-airport/",
+          "title": "Miri Airport (MYY) - Address, Airlines & Location (klia2.info guide)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.flightconnections.com/flights-from-miri-myy",
+          "title": "Flights from Miri (MYY) - FlightConnections",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Kuala Lumpur is the busiest route (one directory counts 109 flights a month). Scoot is the only foreign airline."
+    },
+    {
+      "id": "myy-airborneo-rural-hub",
+      "category": "airlines",
+      "airport": "MYY",
+      "terminal": null,
+      "claim": "AirBorneo links Miri with interior and regional points including Sibu, Lawas, Limbang, Labuan and Bario.",
+      "value": "13 interior and regional points (per one guide)",
+      "as_of": "2026-11 (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.klia2.info/airports/miri-international-airport/",
+          "title": "Miri Airport (MYY) - Address, Airlines & Location (klia2.info guide)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.flightstats.com/v2/flight-tracker/arrivals/MYY",
+          "title": "(MYY Arrivals) Miri Airport Arrivals (FlightStats)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "The full list of 13 points was not captured in this run. Prior knowledge suggests it also includes Mulu, Marudi, Mukah, Bintulu, Ba'kelalan, Long Akah, Long Banga, Long Lellang and Long Seridan, but this was not re-confirmed."
+    },
+    {
+      "id": "myy-batik-air-subang-planned",
+      "category": "airlines",
+      "airport": "MYY",
+      "terminal": null,
+      "claim": "Batik Air announced a Subang-Miri service starting 1 December 2026.",
+      "value": "Batik Air: SZB-MYY from 2026-12-01 (announced)",
+      "as_of": "2026-10",
+      "sources": [
+        {
+          "url": "https://www.klia2.info/airports/miri-international-airport/",
+          "title": "Miri Airport (MYY) - Address, Airlines & Location (klia2.info guide)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Reported via a third-party guide in the search summary; not confirmed with Batik Air. Treat as upcoming and unverified."
+    },
+    {
+      "id": "sbw-identity",
+      "category": "identity",
+      "airport": "SBW",
+      "terminal": null,
+      "claim": "Sibu Airport (IATA: SBW) serves Sibu in central Sarawak.",
+      "value": "SBW",
+      "as_of": "unknown (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Sibu_Airport",
+          "title": "Sibu Airport (Wikipedia)",
+          "type": "other"
+        },
+        {
+          "url": "https://www.flightradar24.com/data/airports/sbw",
+          "title": "Sibu (SBW) (WBGS) arrivals, departures, routes (Flightradar24)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "id": "sbw-icao",
+      "category": "identity",
+      "airport": "SBW",
+      "terminal": null,
+      "claim": "The ICAO code for Sibu Airport is WBGS.",
+      "value": "WBGS",
+      "as_of": "unknown (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.flightradar24.com/data/airports/sbw",
+          "title": "Sibu (SBW) (WBGS) arrivals, departures, routes (Flightradar24)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Shown in the Flightradar24 airport page title."
+    },
+    {
+      "id": "sbw-distance",
+      "category": "transport",
+      "airport": "SBW",
+      "terminal": null,
+      "claim": "Sibu Airport is about 23 km from Sibu town.",
+      "value": "23 km",
+      "as_of": "unknown (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Sibu_Airport",
+          "title": "Sibu Airport (Wikipedia)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Wikipedia figure. No taxi-fare or travel-time information was found."
+    },
+    {
+      "id": "sbw-airlines",
+      "category": "airlines",
+      "airport": "SBW",
+      "terminal": null,
+      "claim": "From Sibu, AirAsia flies to Kuala Lumpur and Kuching, Malaysia Airlines and Batik Air fly to Kuala Lumpur, and AirBorneo flies to Miri.",
+      "value": "AirAsia: KUL, KCH; Malaysia Airlines, Batik Air: KUL; AirBorneo: MYY",
+      "as_of": "2026-11 (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.flightstats.com/v2/flight-tracker/departures/SBW",
+          "title": "(SBW Departures) Sibu Airport Departures (FlightStats)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Sibu_Airport",
+          "title": "Sibu Airport (Wikipedia)",
+          "type": "other"
+        },
+        {
+          "url": "https://www.flightradar24.com/data/airports/sbw",
+          "title": "Sibu (SBW) (WBGS) arrivals, departures, routes (Flightradar24)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.flightconnections.com/flights-from-sibu-sbw",
+          "title": "Flights from Sibu (SBW) - FlightConnections",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Flightradar24 counts seven destinations with Kuala Lumpur, Kuching and Miri the most frequent. FlightConnections also lists Scoot at Sibu (prior knowledge: a Singapore service), not corroborated by the other sources in this run. Wikipedia mentions a seasonal Bhutan Airlines charter to Paro, unverified."
+    },
+    {
+      "id": "btu-identity",
+      "category": "identity",
+      "airport": "BTU",
+      "terminal": null,
+      "claim": "Bintulu Airport (IATA: BTU) serves Bintulu in Sarawak.",
+      "value": "BTU",
+      "as_of": "unknown (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Bintulu_Airport",
+          "title": "Bintulu Airport (Wikipedia)",
+          "type": "other"
+        },
+        {
+          "url": "https://www.flightradar24.com/data/airports/btu",
+          "title": "Bintulu (BTU) (WBGB) arrivals, departures, routes (Flightradar24)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "id": "btu-icao",
+      "category": "identity",
+      "airport": "BTU",
+      "terminal": null,
+      "claim": "The ICAO code for Bintulu Airport is WBGB.",
+      "value": "WBGB",
+      "as_of": "unknown (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.flightradar24.com/data/airports/btu",
+          "title": "Bintulu (BTU) (WBGB) arrivals, departures, routes (Flightradar24)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Shown in the Flightradar24 airport page title."
+    },
+    {
+      "id": "btu-airlines",
+      "category": "airlines",
+      "airport": "BTU",
+      "terminal": null,
+      "claim": "Four airlines operate at Bintulu: AirAsia, AirBorneo, Batik Air Malaysia and Malaysia Airlines.",
+      "value": "AirAsia; AirBorneo; Batik Air Malaysia; Malaysia Airlines",
+      "as_of": "2026-11 (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.flightconnections.com/flights-from-bintulu-division-btu",
+          "title": "Flights from Bintulu Division (BTU) - FlightConnections",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.flightsfrom.com/BTU",
+          "title": "Direct (non-stop) flights from Bintulu (BTU) - FlightsFrom.com",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Bintulu_Airport",
+          "title": "Bintulu Airport (Wikipedia)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Aggregator counts differ (one lists 6 destinations with 4 airlines, another 7 destinations with 2 airlines)."
+    },
+    {
+      "id": "btu-destinations",
+      "category": "airlines",
+      "airport": "BTU",
+      "terminal": null,
+      "claim": "Bintulu's main routes are Kuala Lumpur and Kuching, with further flights to Miri, Sibu, Mukah and Kota Kinabalu.",
+      "value": "KUL (about 33 weekly departures, roughly 40%); KCH; MYY; SBW; MKM; BKI",
+      "as_of": "2026-11 (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.flightsfrom.com/BTU",
+          "title": "Direct (non-stop) flights from Bintulu (BTU) - FlightsFrom.com",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.flightradar24.com/data/airports/btu",
+          "title": "Bintulu (BTU) (WBGB) arrivals, departures, routes (Flightradar24)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Bintulu_Airport",
+          "title": "Bintulu Airport (Wikipedia)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Wikipedia's route table lists AirBorneo against Miri, Mukah and Sibu. An AirAsia Bintulu-Kota Kinabalu route was announced for June 2026; whether it launched was not verified."
+    },
+    {
+      "id": "mzv-identity",
+      "category": "identity",
+      "airport": "MZV",
+      "terminal": null,
+      "claim": "Mulu Airport (IATA: MZV) serves Mulu in northern Sarawak.",
+      "value": "MZV",
+      "as_of": "2026-11 (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://transit.navitime.com/en/flight/MZV",
+          "title": "Mulu Airport (MZV) flight schedule, departures and arrivals (NAVITIME)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.flightstats.com/v2/flight-tracker/arrivals/MZV",
+          "title": "(MZV Arrivals) Mulu Airport Arrivals (FlightStats)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.traveloka.com/en-my/flight/airport/mzv",
+          "title": "Cheap Flights From Mulu Airport (MZV), Malaysia (Traveloka)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Prior knowledge, not re-confirmed: the airport is the gateway to Gunung Mulu National Park (a UNESCO World Heritage Site) and Mulu has no road link to the rest of Sarawak, so most visitors arrive by air."
+    },
+    {
+      "id": "mzv-icao",
+      "category": "identity",
+      "airport": "MZV",
+      "terminal": null,
+      "claim": "The ICAO code for Mulu Airport is WBMU.",
+      "value": "WBMU",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Stable identifier; verify against AIP Malaysia."
+    },
+    {
+      "id": "mzv-airborneo-routes",
+      "category": "airlines",
+      "airport": "MZV",
+      "terminal": null,
+      "claim": "AirBorneo is the airline at Mulu, flying ATR 72 turboprops to Miri, Kuching and Kota Kinabalu.",
+      "value": "AirBorneo: MZV-MYY, MZV-KCH, MZV-BKI (ATR 72)",
+      "as_of": "2026-09 to 2026-10 (aggregator snapshots)",
+      "sources": [
+        {
+          "url": "https://transit.navitime.com/en/flight/MZV",
+          "title": "Mulu Airport (MZV) flight schedule, departures and arrivals (NAVITIME)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.flightradar24.com/data/aircraft/9m-mwa",
+          "title": "9M-MWA - ATR 72-500 - AirBorneo (Flightradar24)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.traveloka.com/en-my/flight/airport/mzv",
+          "title": "Cheap Flights From Mulu Airport (MZV), Malaysia (Traveloka)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.flightstats.com/v2/flight-tracker/arrivals/MZV",
+          "title": "(MZV Arrivals) Mulu Airport Arrivals (FlightStats)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Aggregator boards show more than one Miri flight on some days. Older pages naming Malaysia Airlines or AirAsia at Mulu are outdated."
+    },
+    {
+      "id": "lmn-identity",
+      "category": "identity",
+      "airport": "LMN",
+      "terminal": null,
+      "claim": "Limbang Airport (IATA: LMN) serves Limbang in northern Sarawak.",
+      "value": "LMN",
+      "as_of": "2026-11 (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.flightradar24.com/data/airports/lmn/arrivals",
+          "title": "Limbang (LMN) (WBGJ) live arrivals (Flightradar24)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.skyscanner.com.my/flights-to/lmn/cheap-flights-to-limbang-airport.html",
+          "title": "Cheap Flights to Limbang Airport (Skyscanner)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "id": "lmn-icao",
+      "category": "identity",
+      "airport": "LMN",
+      "terminal": null,
+      "claim": "The ICAO code for Limbang Airport is WBGJ.",
+      "value": "WBGJ",
+      "as_of": "unknown (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.flightradar24.com/data/airports/lmn/arrivals",
+          "title": "Limbang (LMN) (WBGJ) live arrivals (Flightradar24)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Shown in the Flightradar24 airport page title."
+    },
+    {
+      "id": "lmn-airborneo-miri",
+      "category": "airlines",
+      "airport": "LMN",
+      "terminal": null,
+      "claim": "AirBorneo is the only airline flying to Limbang, with non-stop flights to Miri taking about 35 minutes.",
+      "value": "AirBorneo: LMN-MYY, about 35 min",
+      "as_of": "2026-11 (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.skyscanner.com.my/flights-to/lmn/cheap-flights-to-limbang-airport.html",
+          "title": "Cheap Flights to Limbang Airport (Skyscanner)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.traveloka.com/en-my/flight/airline/airborneo.my/to/limbang.lmn",
+          "title": "Cheap AirBorneo flights to Limbang (Traveloka)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.trip.com/hot/flight-time-from-limbang-to-miri/",
+          "title": "Schedules & Flight Time from Limbang to Miri (Trip.com)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Aggregators also list Kota Kinabalu, Lawas and Kuching from Limbang, some with a stop; non-stop status of those routes was not confirmed."
+    },
+    {
+      "id": "lbu-identity",
+      "category": "identity",
+      "airport": "LBU",
+      "terminal": null,
+      "claim": "Labuan Airport (IATA: LBU) serves the Federal Territory of Labuan.",
+      "value": "LBU",
+      "as_of": "2026-11 (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Labuan_Airport",
+          "title": "Labuan Airport (Wikipedia)",
+          "type": "other"
+        },
+        {
+          "url": "https://www.flightstats.com/v2/flight-tracker/departures/LBU",
+          "title": "(LBU Departures) Labuan Airport Departures (FlightStats)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Prior knowledge, not re-confirmed: the airfield is shared with a Royal Malaysian Air Force base."
+    },
+    {
+      "id": "lbu-icao",
+      "category": "identity",
+      "airport": "LBU",
+      "terminal": null,
+      "claim": "The ICAO code for Labuan Airport is WBKL.",
+      "value": "WBKL",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Stable identifier; verify against AIP Malaysia."
+    },
+    {
+      "id": "lbu-routes",
+      "category": "airlines",
+      "airport": "LBU",
+      "terminal": null,
+      "claim": "Labuan's scheduled routes are Kuala Lumpur with Malaysia Airlines, and Kota Kinabalu and Miri with AirBorneo.",
+      "value": "Malaysia Airlines: KUL; AirBorneo: BKI, MYY",
+      "as_of": "2026-05 to 2026-09 (flight-board snapshots)",
+      "sources": [
+        {
+          "url": "https://www.flightstats.com/v2/flight-tracker/departures/LBU",
+          "title": "(LBU Departures) Labuan Airport Departures (FlightStats)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.flightstats.com/v2/flight-tracker/arrivals/LBU",
+          "title": "(LBU Arrivals) Labuan Airport Arrivals (FlightStats)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.flightconnections.com/flights-from-labuan-lbu",
+          "title": "Flights from Labuan (LBU) - FlightConnections",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.skyscanner.net/flights/arrivals-departures/lbu/labuan-arrivals-departures",
+          "title": "Labuan Airport (LBU) Arrivals and Departures (Skyscanner)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "AirAsia's presence at Labuan is uncertain: FlightConnections and Skyscanner list it, but 2026 FlightStats boards seen in this run did not show AirAsia flights. Other airline names on Kuala Lumpur flights are codeshares."
+    },
+    {
+      "id": "sdk-identity",
+      "category": "identity",
+      "airport": "SDK",
+      "terminal": null,
+      "claim": "Sandakan Airport (IATA: SDK) serves Sandakan on the east coast of Sabah.",
+      "value": "SDK",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Sandakan_Airport",
+          "title": "Sandakan Airport (Wikipedia)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Airport name confirmed by a search result title; the IATA code SDK is from prior knowledge and the assignment brief. No Sandakan-specific search could be completed in this run."
+    },
+    {
+      "id": "sdk-icao",
+      "category": "identity",
+      "airport": "SDK",
+      "terminal": null,
+      "claim": "The ICAO code for Sandakan Airport is WBKS.",
+      "value": "WBKS",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Stable identifier; verify against AIP Malaysia."
+    },
+    {
+      "id": "sdk-distance",
+      "category": "transport",
+      "airport": "SDK",
+      "terminal": null,
+      "claim": "Sandakan Airport is roughly 13 to 14 km from Sandakan town centre.",
+      "value": "about 13-14 km",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing."
+    },
+    {
+      "id": "sdk-airlines",
+      "category": "airlines",
+      "airport": "SDK",
+      "terminal": null,
+      "claim": "Sandakan is linked to Kuala Lumpur and Kota Kinabalu by AirAsia and Malaysia Airlines, with AirBorneo (formerly MASwings) turboprop services within Sabah.",
+      "value": "AirAsia, Malaysia Airlines: KUL, BKI; AirBorneo: intra-Sabah",
+      "as_of": "unknown (prior, roughly 2025)",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Airline and route list for Sandakan could not be searched in this run; do not publish without checking."
+    },
+    {
+      "id": "twu-identity",
+      "category": "identity",
+      "airport": "TWU",
+      "terminal": null,
+      "claim": "Tawau Airport (IATA: TWU) serves Tawau on the south-east coast of Sabah.",
+      "value": "TWU",
+      "as_of": "2025-09-26",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/news/nation/2025/09/26/rm1209mil-tawau-airport-upgrade-to-boost-tourism-exports-says-transport-ministry",
+          "title": "RM120.9mil Tawau Airport upgrade to boost tourism, exports, says Transport Ministry (The Star, 26 Sep 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Tawau_Airport",
+          "title": "Tawau Airport (Wikipedia)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Airport name and location confirmed by news results; the IATA code TWU is from prior knowledge and the assignment brief. Prior knowledge: the airport is the usual gateway for Semporna and the Sipadan/Mabul dive area."
+    },
+    {
+      "id": "twu-icao",
+      "category": "identity",
+      "airport": "TWU",
+      "terminal": null,
+      "claim": "The ICAO code for Tawau Airport is WBKW.",
+      "value": "WBKW",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Stable identifier; verify against AIP Malaysia."
+    },
+    {
+      "id": "twu-distance",
+      "category": "transport",
+      "airport": "TWU",
+      "terminal": null,
+      "claim": "Tawau Airport is roughly 30 km from Tawau town.",
+      "value": "about 30 km",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing."
+    },
+    {
+      "id": "twu-upgrade-contract",
+      "category": "terminal",
+      "airport": "TWU",
+      "terminal": null,
+      "claim": "A RM120.9 million design-and-build contract to upgrade Tawau Airport was awarded in August 2025 to Pembinaan Azam Jaya, with completion expected by August 2028.",
+      "value": "RM120.9 million; completion by August 2028 (36 months)",
+      "as_of": "2025-09-26",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/news/nation/2025/09/26/rm1209mil-tawau-airport-upgrade-to-boost-tourism-exports-says-transport-ministry",
+          "title": "RM120.9mil Tawau Airport upgrade to boost tourism, exports, says Transport Ministry (The Star, 26 Sep 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.theborneopost.com/2025/09/26/close-monitoring-of-tawau-airport-upgrade-for-timely-completion-loke/",
+          "title": "Close monitoring of Tawau Airport upgrade for timely completion - Loke (The Borneo Post, 26 Sep 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.businesstoday.com.my/2025/09/26/transport-ministry-puts-tawau-expansion-on-tight-watch/",
+          "title": "Transport Ministry Puts Tawau Expansion On Tight Watch (BusinessToday, 26 Sep 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://thesun.my/business-news/azam-jaya-breaks-ground-for-tawau-airport-expansion-BL14975576",
+          "title": "Azam Jaya breaks ground for Tawau Airport expansion (The Sun)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.carz.com.my/2025/09/tawau-airport-upgrade-will-be-closely-monitored-set-for-2028-completion-loke",
+          "title": "Tawau Airport Upgrade Will Be Closely Monitored, Set For 2028 Completion - Loke (Carz.com.my, Sep 2025)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Earlier 2024 reports described the project as a RM130 million upgrade starting in early 2025. A groundbreaking ceremony was held in September 2025. No construction-progress report from 2026 was found."
+    },
+    {
+      "id": "twu-upgrade-scope",
+      "category": "terminal",
+      "airport": "TWU",
+      "terminal": null,
+      "claim": "The Tawau Airport upgrade covers a larger main terminal building, more spacious check-in, immigration and emigration areas, additional aerobridges, apron enhancements and separate facilities for international and domestic passengers.",
+      "value": null,
+      "as_of": "2025-09-26",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/news/nation/2025/09/26/rm1209mil-tawau-airport-upgrade-to-boost-tourism-exports-says-transport-ministry",
+          "title": "RM120.9mil Tawau Airport upgrade to boost tourism, exports, says Transport Ministry (The Star, 26 Sep 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.bernama.com/en/general/news.php?id=2348814",
+          "title": "Tawau Airport To Undergo Major Upgrade (Bernama)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.theborneopost.com/2025/09/26/close-monitoring-of-tawau-airport-upgrade-for-timely-completion-loke/",
+          "title": "Close monitoring of Tawau Airport upgrade for timely completion - Loke (The Borneo Post, 26 Sep 2025)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "This is an expansion of the existing terminal, not a separate new terminal building."
+    },
+    {
+      "id": "twu-upgrade-capacity",
+      "category": "terminal",
+      "airport": "TWU",
+      "terminal": null,
+      "claim": "The upgrade is planned to raise Tawau Airport's capacity from 1.5 million to 2.5 million passengers a year and enlarge the terminal from 15,800 to 23,500 square metres.",
+      "value": "2.5 million passengers a year; 23,500 sq m",
+      "as_of": "2025-09-26",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/news/nation/2025/09/26/rm1209mil-tawau-airport-upgrade-to-boost-tourism-exports-says-transport-ministry",
+          "title": "RM120.9mil Tawau Airport upgrade to boost tourism, exports, says Transport Ministry (The Star, 26 Sep 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.businesstoday.com.my/2025/09/26/transport-ministry-puts-tawau-expansion-on-tight-watch/",
+          "title": "Transport Ministry Puts Tawau Expansion On Tight Watch (BusinessToday, 26 Sep 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.bernama.com/en/general/news.php?id=2348814",
+          "title": "Tawau Airport To Undergo Major Upgrade (Bernama)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Conflict: reports give the existing design capacity variously as 1.3 or 1.5 million passengers a year."
+    },
+    {
+      "id": "twu-passengers-2024",
+      "category": "operations",
+      "airport": "TWU",
+      "terminal": null,
+      "claim": "Tawau Airport handled 1.96 million passengers in 2024, making it the eighth-busiest airport in Malaysia.",
+      "value": "1.96 million passengers (2024)",
+      "as_of": "2025-09-26",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/news/nation/2025/09/26/rm1209mil-tawau-airport-upgrade-to-boost-tourism-exports-says-transport-ministry",
+          "title": "RM120.9mil Tawau Airport upgrade to boost tourism, exports, says Transport Ministry (The Star, 26 Sep 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.theborneopost.com/2025/09/26/close-monitoring-of-tawau-airport-upgrade-for-timely-completion-loke/",
+          "title": "Close monitoring of Tawau Airport upgrade for timely completion - Loke (The Borneo Post, 26 Sep 2025)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Above the terminal's stated design capacity."
+    },
+    {
+      "id": "twu-upgrade-phased-works",
+      "category": "operations",
+      "airport": "TWU",
+      "terminal": null,
+      "claim": "Construction at Tawau Airport is being carried out in phases so the airport stays open during the works, which the Ministry of Transport says it is monitoring against a 36-month schedule.",
+      "value": "36 months",
+      "as_of": "2025-09-26",
+      "sources": [
+        {
+          "url": "https://www.theborneopost.com/2025/09/26/close-monitoring-of-tawau-airport-upgrade-for-timely-completion-loke/",
+          "title": "Close monitoring of Tawau Airport upgrade for timely completion - Loke (The Borneo Post, 26 Sep 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.businesstoday.com.my/2025/09/26/transport-ministry-puts-tawau-expansion-on-tight-watch/",
+          "title": "Transport Ministry Puts Tawau Expansion On Tight Watch (BusinessToday, 26 Sep 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.carz.com.my/2025/09/tawau-airport-upgrade-will-be-closely-monitored-set-for-2028-completion-loke",
+          "title": "Tawau Airport Upgrade Will Be Closely Monitored, Set For 2028 Completion - Loke (Carz.com.my, Sep 2025)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Passengers should expect works in and around the terminal until 2028; current phasing and any temporary arrangements were not found."
+    },
+    {
+      "id": "twu-airlines",
+      "category": "airlines",
+      "airport": "TWU",
+      "terminal": null,
+      "claim": "Tawau is linked to Kuala Lumpur and Kota Kinabalu by AirAsia and Malaysia Airlines, with AirBorneo (formerly MASwings) turboprop services within Sabah.",
+      "value": "AirAsia, Malaysia Airlines: KUL, BKI; AirBorneo: intra-Sabah",
+      "as_of": "unknown (prior, roughly 2025)",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Airline and route list for Tawau (including any Batik Air, Johor Bahru or Tarakan services) could not be searched in this run; do not publish without checking."
+    },
+    {
+      "id": "ldu-identity",
+      "category": "identity",
+      "airport": "LDU",
+      "terminal": null,
+      "claim": "Lahad Datu Airport (IATA: LDU) serves Lahad Datu on the east coast of Sabah.",
+      "value": "LDU",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Name and code are stable identifiers and match the assignment brief."
+    },
+    {
+      "id": "ldu-icao",
+      "category": "identity",
+      "airport": "LDU",
+      "terminal": null,
+      "claim": "The ICAO code for Lahad Datu Airport is WBKD.",
+      "value": "WBKD",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Stable identifier; verify against AIP Malaysia."
+    },
+    {
+      "id": "ldu-distance",
+      "category": "transport",
+      "airport": "LDU",
+      "terminal": null,
+      "claim": "Lahad Datu Airport is on the edge of Lahad Datu town, roughly 1 km from the centre.",
+      "value": "about 1 km",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing."
+    },
+    {
+      "id": "ldu-airlines",
+      "category": "airlines",
+      "airport": "LDU",
+      "terminal": null,
+      "claim": "Lahad Datu's scheduled flights are turboprop services to Kota Kinabalu operated by AirBorneo (formerly MASwings).",
+      "value": "AirBorneo: LDU-BKI",
+      "as_of": "unknown (prior, roughly 2025)",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Could not be searched in this run. AirBorneo's takeover of MASwings routes in Sabah is confirmed (airborneo-takeover-1-jan-2026), but the current Lahad Datu schedule is not."
+    },
+    {
+      "id": "mkm-new-airport-2021",
+      "category": "terminal",
+      "airport": "MKM",
+      "terminal": null,
+      "claim": "The new Mukah Airport opened on 17 June 2021, replacing the old Mukah STOLport.",
+      "value": "2021-06-17",
+      "as_of": "2021-06-16",
+      "sources": [
+        {
+          "url": "https://www.mot.gov.my/en/Announcement/PRESS%20RELEASE%20YBM%20-%20NEW%20AIRPORT%20FOR%20MUKAH%20SARAWAK%20FROM%2017%20JUNE%202021%20-%2016062021.pdf",
+          "title": "Media release, Minister of Transport Malaysia: New airport for Mukah, Sarawak from 17 June 2021 (16 Jun 2021)",
+          "type": "government"
+        },
+        {
+          "url": "https://www.thestar.com.my/news/nation/2021/06/16/new-mukah-airport-to-start-operating-on-thursday-june-17-says-dr-wee",
+          "title": "New Mukah Airport to start operating on Thursday (June 17), says Dr Wee (The Star, 16 Jun 2021)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.theborneopost.com/2021/06/17/new-mukah-airport-receives-its-first-flight-with-5-passengers/",
+          "title": "New Mukah Airport receives its first flight with 5 passengers (The Borneo Post, 17 Jun 2021)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Announced by the Ministry of Transport with the Sarawak Government and MAHB. The first flight carried five passengers."
+    },
+    {
+      "id": "mkm-operator",
+      "category": "corporate",
+      "airport": "MKM",
+      "terminal": null,
+      "claim": "Mukah Airport is operated by Malaysia Airports.",
+      "value": "MAHB",
+      "as_of": "unknown (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Mukah_Airport",
+          "title": "Mukah Airport (Wikipedia)",
+          "type": "other"
+        },
+        {
+          "url": "https://www.mot.gov.my/en/Announcement/PRESS%20RELEASE%20YBM%20-%20NEW%20AIRPORT%20FOR%20MUKAH%20SARAWAK%20FROM%2017%20JUNE%202021%20-%2016062021.pdf",
+          "title": "Media release, Minister of Transport Malaysia: New airport for Mukah, Sarawak from 17 June 2021 (16 Jun 2021)",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Wikipedia lists MAHB as operator and the 2021 Ministry of Transport release was issued jointly with MAHB. Whether MAHB now classes Mukah as a domestic airport rather than a STOLport is an inference (see mahb-network-2018-breakdown)."
+    },
+    {
+      "id": "mkm-routes",
+      "category": "airlines",
+      "airport": "MKM",
+      "terminal": null,
+      "claim": "Mukah is linked by Twin Otter rural air services to Kuching, Miri, Sibu and Bintulu.",
+      "value": "MKM-KCH, MKM-MYY, MKM-SBW, MKM-BTU",
+      "as_of": "2021-06 (route list); 2026-11 (AirBorneo listing for BTU-MKM)",
+      "sources": [
+        {
+          "url": "https://www.mot.gov.my/en/Announcement/PRESS%20RELEASE%20YBM%20-%20NEW%20AIRPORT%20FOR%20MUKAH%20SARAWAK%20FROM%2017%20JUNE%202021%20-%2016062021.pdf",
+          "title": "Media release, Minister of Transport Malaysia: New airport for Mukah, Sarawak from 17 June 2021 (16 Jun 2021)",
+          "type": "government"
+        },
+        {
+          "url": "https://www.thestar.com.my/news/nation/2021/06/16/new-mukah-airport-to-start-operating-on-thursday-june-17-says-dr-wee",
+          "title": "New Mukah Airport to start operating on Thursday (June 17), says Dr Wee (The Star, 16 Jun 2021)",
+          "type": "news"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Bintulu_Airport",
+          "title": "Bintulu Airport (Wikipedia)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Route list and frequencies date from the June 2021 opening (28 weekly from Kuching, 7 from Miri, 3 from Sibu, 2 from Bintulu under MASwings). A 2026 route table lists AirBorneo between Bintulu and Mukah; the current full Mukah schedule was not confirmed."
+    },
+    {
+      "id": "mkm-codes",
+      "category": "identity",
+      "airport": "MKM",
+      "terminal": null,
+      "claim": "Mukah Airport's IATA code is MKM and its ICAO code is WBGK.",
+      "value": "MKM / WBGK",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Stable identifiers; verify against AIP Malaysia."
+    },
+    {
+      "id": "bbn-bario",
+      "category": "identity",
+      "airport": "BBN",
+      "terminal": null,
+      "claim": "Bario Airport (IATA: BBN) is a STOLport in the Kelabit Highlands of Sarawak, served by AirBorneo rural air services from Miri.",
+      "value": "BBN; Sarawak; AirBorneo",
+      "as_of": "2026-11 (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.klia2.info/airports/miri-international-airport/",
+          "title": "Miri Airport (MYY) - Address, Airlines & Location (klia2.info guide)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.flightstats.com/v2/flight-tracker/arrivals/MYY",
+          "title": "(MYY Arrivals) Miri Airport Arrivals (FlightStats)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Bario appears among AirBorneo's points from Miri in 2026 listings (search). The Kelabit Highlands location, ICAO code WBGZ and the STOLport classification are from prior knowledge, not re-confirmed."
+    },
+    {
+      "id": "lwy-lawas",
+      "category": "identity",
+      "airport": "LWY",
+      "terminal": null,
+      "claim": "Lawas Airport (IATA: LWY) is a STOLport in Limbang Division, Sarawak, served by AirBorneo rural air services from Miri.",
+      "value": "LWY; Sarawak; AirBorneo",
+      "as_of": "2026-11 (retrieved 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.klia2.info/airports/miri-international-airport/",
+          "title": "Miri Airport (MYY) - Address, Airlines & Location (klia2.info guide)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.flightstats.com/v2/flight-tracker/arrivals/MYY",
+          "title": "(MYY Arrivals) Miri Airport Arrivals (FlightStats)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.skyscanner.com.my/flights-to/lmn/cheap-flights-to-limbang-airport.html",
+          "title": "Cheap Flights to Limbang Airport (Skyscanner)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Lawas appears among AirBorneo's points from Miri in 2026 listings (search). The Limbang Division location, ICAO code WBGW and the STOLport classification are from prior knowledge, not re-confirmed. A replacement Lawas airport has been proposed; status not verified (see gaps)."
+    },
+    {
+      "id": "bkm-bakelalan",
+      "category": "identity",
+      "airport": "BKM",
+      "terminal": null,
+      "claim": "Ba'kelalan Airport (IATA: BKM) is a STOLport in the highlands of northern Sarawak on the rural air services network taken over by AirBorneo.",
+      "value": "BKM; Sarawak; AirBorneo (formerly MASwings)",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Name, code and state are stable identifiers. AirBorneo's takeover of MASwings rural air services on 1 January 2026 is confirmed by search (airborneo-takeover-1-jan-2026); this airstrip's current schedule is not. ICAO (prior): WBGQ."
+    },
+    {
+      "id": "lkh-long-akah",
+      "category": "identity",
+      "airport": "LKH",
+      "terminal": null,
+      "claim": "Long Akah Airport (IATA: LKH) is a STOLport in the Baram interior of Sarawak on the rural air services network taken over by AirBorneo.",
+      "value": "LKH; Sarawak; AirBorneo (formerly MASwings)",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Name, code and state are stable identifiers. AirBorneo's takeover of MASwings rural air services on 1 January 2026 is confirmed by search (airborneo-takeover-1-jan-2026); this airstrip's current schedule is not. ICAO (prior): WBGL."
+    },
+    {
+      "id": "lbp-long-banga",
+      "category": "identity",
+      "airport": "LBP",
+      "terminal": null,
+      "claim": "Long Banga Airport (IATA: LBP) is a STOLport in the Baram interior of Sarawak on the rural air services network taken over by AirBorneo.",
+      "value": "LBP; Sarawak; AirBorneo (formerly MASwings)",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Name, code and state are stable identifiers. AirBorneo's takeover of MASwings rural air services on 1 January 2026 is confirmed by search (airborneo-takeover-1-jan-2026); this airstrip's current schedule is not. ICAO code not recalled with confidence; see gaps."
+    },
+    {
+      "id": "lgl-long-lellang",
+      "category": "identity",
+      "airport": "LGL",
+      "terminal": null,
+      "claim": "Long Lellang Airport (IATA: LGL) is a STOLport in the Baram interior of Sarawak on the rural air services network taken over by AirBorneo.",
+      "value": "LGL; Sarawak; AirBorneo (formerly MASwings)",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Name, code and state are stable identifiers. AirBorneo's takeover of MASwings rural air services on 1 January 2026 is confirmed by search (airborneo-takeover-1-jan-2026); this airstrip's current schedule is not. ICAO (prior): WBGF."
+    },
+    {
+      "id": "odn-long-seridan",
+      "category": "identity",
+      "airport": "ODN",
+      "terminal": null,
+      "claim": "Long Seridan Airport (IATA: ODN) is a STOLport in the interior of northern Sarawak on the rural air services network taken over by AirBorneo.",
+      "value": "ODN; Sarawak; AirBorneo (formerly MASwings)",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Name, code and state are stable identifiers. AirBorneo's takeover of MASwings rural air services on 1 January 2026 is confirmed by search (airborneo-takeover-1-jan-2026); this airstrip's current schedule is not. ICAO (prior): WBGI."
+    },
+    {
+      "id": "mur-marudi",
+      "category": "identity",
+      "airport": "MUR",
+      "terminal": null,
+      "claim": "Marudi Airport (IATA: MUR) is a STOLport serving Marudi in the Baram district of Sarawak, on the rural air services network taken over by AirBorneo.",
+      "value": "MUR; Sarawak; AirBorneo (formerly MASwings)",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Name, code and state are stable identifiers. AirBorneo's takeover of MASwings rural air services on 1 January 2026 is confirmed by search (airborneo-takeover-1-jan-2026); this airstrip's current schedule is not. ICAO (prior): WBGM. Marudi is a STOLport, not a domestic airport, in MAHB's classification (prior)."
+    },
+    {
+      "id": "kpi-kapit",
+      "category": "identity",
+      "airport": "KPI",
+      "terminal": null,
+      "claim": "Kapit Airport (IATA: KPI) is a MAHB STOLport in Sarawak that has had no scheduled passenger flights in recent years.",
+      "value": "KPI; Sarawak; no scheduled service (prior)",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Name, code and state are stable identifiers. AirBorneo's takeover of MASwings rural air services on 1 January 2026 is confirmed by search (airborneo-takeover-1-jan-2026); this airstrip's current schedule is not. ICAO (prior): WBGP. Service status must be confirmed with AirBorneo/MAHB."
+    },
+    {
+      "id": "blg-belaga",
+      "category": "identity",
+      "airport": "BLG",
+      "terminal": null,
+      "claim": "Belaga Airport (IATA: BLG) is a MAHB STOLport in Sarawak that has had no scheduled passenger flights in recent years.",
+      "value": "BLG; Sarawak; no scheduled service (prior)",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Name, code and state are stable identifiers. AirBorneo's takeover of MASwings rural air services on 1 January 2026 is confirmed by search (airborneo-takeover-1-jan-2026); this airstrip's current schedule is not. ICAO (prior): WBGC. Service status must be confirmed with AirBorneo/MAHB."
+    },
+    {
+      "id": "lsm-long-semado",
+      "category": "identity",
+      "airport": "LSM",
+      "terminal": null,
+      "claim": "Long Semado Airport (IATA: LSM) is a MAHB STOLport in northern Sarawak that has had no scheduled passenger flights in recent years.",
+      "value": "LSM; Sarawak; no scheduled service (prior)",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Name, code and state are stable identifiers. AirBorneo's takeover of MASwings rural air services on 1 January 2026 is confirmed by search (airborneo-takeover-1-jan-2026); this airstrip's current schedule is not. ICAO (prior): WBGD. Not in the assignment list but part of the 18-STOLport network as previously published by MAHB (prior). Service status must be confirmed."
+    },
+    {
+      "id": "kud-kudat",
+      "category": "identity",
+      "airport": "KUD",
+      "terminal": null,
+      "claim": "Kudat Airport (IATA: KUD) is a STOLport at the northern tip of Sabah on the rural air services network taken over by AirBorneo.",
+      "value": "KUD; Sabah; AirBorneo (formerly MASwings)",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Name, code and state are stable identifiers. AirBorneo's takeover of MASwings rural air services on 1 January 2026 is confirmed by search (airborneo-takeover-1-jan-2026); this airstrip's current schedule is not. ICAO (prior): WBKT. Prior knowledge: Twin Otter flights linked Kudat with Kota Kinabalu and Sandakan under MASwings."
+    },
+    {
+      "id": "gsa-long-pasia",
+      "category": "identity",
+      "airport": "GSA",
+      "terminal": null,
+      "claim": "Long Pasia Airport (IATA: GSA) is a MAHB STOLport in the interior of Sabah that has had no scheduled passenger flights in recent years.",
+      "value": "GSA; Sabah; no scheduled service (prior)",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Name, code and state are stable identifiers. AirBorneo's takeover of MASwings rural air services on 1 January 2026 is confirmed by search (airborneo-takeover-1-jan-2026); this airstrip's current schedule is not. ICAO (prior): WBKN. Service status must be confirmed."
+    },
+    {
+      "id": "smm-semporna",
+      "category": "identity",
+      "airport": "SMM",
+      "terminal": null,
+      "claim": "Semporna Airport (IATA: SMM) is a MAHB STOLport in south-east Sabah that has had no scheduled passenger flights in recent years; travellers to Semporna normally fly to Tawau.",
+      "value": "SMM; Sabah; no scheduled service (prior)",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Name, code and state are stable identifiers. AirBorneo's takeover of MASwings rural air services on 1 January 2026 is confirmed by search (airborneo-takeover-1-jan-2026); this airstrip's current schedule is not. ICAO (prior): WBKA. Service status must be confirmed."
+    },
+    {
+      "id": "pkg-pangkor",
+      "category": "identity",
+      "airport": "PKG",
+      "terminal": null,
+      "claim": "Pangkor Airport (IATA: PKG) is a MAHB STOLport on Pangkor Island, Perak; it is not part of the MASwings/AirBorneo rural air services network.",
+      "value": "PKG; Perak; not served by AirBorneo",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Name, code and state are stable identifiers. AirBorneo's takeover of MASwings rural air services on 1 January 2026 is confirmed by search (airborneo-takeover-1-jan-2026); this airstrip's current schedule is not. ICAO (prior): WMPA. Whether any airline operates scheduled flights to Pangkor in 2026 was not verified (see gaps)."
+    },
+    {
+      "id": "rdn-redang",
+      "category": "identity",
+      "airport": "RDN",
+      "terminal": null,
+      "claim": "Redang Airport (IATA: RDN) is a MAHB STOLport on Redang Island, Terengganu; it is not part of the MASwings/AirBorneo rural air services network.",
+      "value": "RDN; Terengganu; not served by AirBorneo",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Name, code and state are stable identifiers. AirBorneo's takeover of MASwings rural air services on 1 January 2026 is confirmed by search (airborneo-takeover-1-jan-2026); this airstrip's current schedule is not. ICAO (prior): WMPR. Whether any airline operates scheduled flights to Redang in 2026 was not verified (see gaps)."
+    },
+    {
+      "id": "tod-tioman",
+      "category": "identity",
+      "airport": "TOD",
+      "terminal": null,
+      "claim": "Tioman Airport (IATA: TOD) is a MAHB STOLport on Tioman Island, Pahang; it is not part of the MASwings/AirBorneo rural air services network.",
+      "value": "TOD; Pahang; not served by AirBorneo",
+      "as_of": "unknown",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE (as of roughly early-to-mid 2026), NOT re-confirmed in this run: every official host was blocked and the shared web-search budget ran out. Verify before publishing. Name, code and state are stable identifiers. AirBorneo's takeover of MASwings rural air services on 1 January 2026 is confirmed by search (airborneo-takeover-1-jan-2026); this airstrip's current schedule is not. ICAO (prior): WMBT. Whether any airline operates scheduled flights to Tioman in 2026 was not verified (see gaps)."
+    }
+  ],
+  "gaps": [
+    "ACCESS: no official page could be fetched. www.malaysiaairports.com.my and corporate.malaysiaairports.com.my both failed DNS resolution (outside the session network allowlist), and the shared web-search budget was exhausted after 16 searches, before Sandakan, Tawau airlines, Lahad Datu, the STOLports and AirBorneo's own network could be searched. There are therefore zero 'direct' facts in this file.",
+    "CONTACT NUMBERS: no airport-specific telephone number was confirmed for any airport in this brief (KBR, TGG, IPH, AOR, MKZ, KUA, MYY, SBW, BTU, MZV, LMN, LBU, SDK, TWU, LDU or any STOLport). Only the MAHB group line +60 3 8777 0000 was found.",
+    "GROUND TRANSPORT: no verified information on taxis (coupon counters, fares in RM), e-hailing availability, buses or car rental was obtained for any of these airports. A third-party Ipoh guide title mentions buses but its content was not captured.",
+    "DISTANCES not verified: Melaka (MKZ), Bintulu (BTU), Mulu (MZV), Limbang (LMN) and Labuan (LBU) distances to town; the Kota Bharu, Ipoh, Sandakan, Tawau and Lahad Datu figures in facts are prior-knowledge approximations only; Alor Setar has a single third-party figure (8.5 km) and Miri has conflicting figures (9.5 km vs 11 km).",
+    "AIRLINES not verified from an official or airline source: every airline/destination list here comes from aggregators or Wikipedia. Sandakan, Tawau and Lahad Datu airline lists are prior knowledge only. Unresolved conflicts: whether AirAsia still serves Labuan; whether AirAsia still flies Ipoh-Singapore; whether Scoot serves Sibu; whether Scoot's Melaka-Singapore route is operating (reported suspended from 14 August 2026 by one guide but still on sale on another site); whether AirAsia's Kota Bharu-Jakarta (planned June 2026) and Bintulu-Kota Kinabalu (planned June 2026) routes launched; whether Batik Air's Subang-Miri route (announced for 1 December 2026) is confirmed.",
+    "CLASSIFICATION: no source itemising MAHB's 17 domestic airports and 17 STOLports was obtained. Hypothesis to confirm with MAHB: Mukah was reclassified from STOLport to domestic airport after its new airport opened in 2021 (explaining the change from 16/18 to 17/17), and Marudi, Tioman, Pangkor and Redang remain STOLports. The full list of 17 STOLports (assumed: Pangkor, Redang, Tioman; Kudat, Long Pasia, Semporna; Bario, Ba'kelalan, Belaga, Kapit, Lawas, Long Akah, Long Banga, Long Lellang, Long Semado, Long Seridan, Marudi) is from prior knowledge.",
+    "AIRBORNEO STATUS IN LATE 2026: not verified - whether the MASwings rebranding is complete, whether the licence variation was approved, and whether jet services have started (one search result claimed an inaugural Kuching-Kuala Lumpur jet flight on 20 July 2026; unconfirmed). AirBorneo's official route list, its Twin Otter fleet size and which STOLports currently have scheduled flights (and at what frequency) were not obtained.",
+    "PENINSULAR STOLPORTS: which airline, if any, operates scheduled flights to Pangkor, Redang and Tioman in 2026 was not verified.",
+    "ICAO CODES: KBR (WMKC), AOR (WMKA), MKZ (WMKM), MYY (WBGR), MZV (WBMU), LBU (WBKL), SDK (WBKS), TWU (WBKW), LDU (WBKD), MKM (WBGK) and all STOLport ICAO codes are from prior knowledge only; the ICAO code for Long Banga was not recalled with confidence and is omitted.",
+    "WORKS AND CHANGES 2025-2026 not verified: current construction progress at Tawau (no 2026 update found); whether Kota Bharu's runway works are finished; the Ipoh '2025 upgrade' mentioned in a third-party page title; Sandakan runway extension status; any Miri, Sibu or Lahad Datu terminal projects; the proposed new Lawas airport; exact Kota Bharu passenger figure for January-April 2026.",
+    "NAMESAKES: the rulers after whom KBR, TGG, IPH, AOR and KUA are named are given in notes from prior knowledge only and should be checked against MAHB or state sources before publication.",
+    "Tawau has no separate 'new terminal': the 2025-2028 project is an expansion of the existing terminal. The assignment's reference to 'new terminals at Tawau' could not be supported."
+  ]
+}

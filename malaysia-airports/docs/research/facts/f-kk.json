@@ -1,0 +1,1927 @@
+{
+  "topic": "Kota Kinabalu International Airport (BKI), Sabah - verified facts for MAHB website redesign",
+  "generated": "2026-11-16",
+  "facts": [
+    {
+      "id": "bki-official-name",
+      "category": "identity",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "The airport's official name is Kota Kinabalu International Airport, commonly abbreviated to KKIA.",
+      "value": "Kota Kinabalu International Airport (KKIA)",
+      "as_of": "2026-08-11 (CAAM eAIP edition); Wikipedia undated",
+      "sources": [
+        {
+          "url": "https://aip.caam.gov.my/aip/eAIP/2024-04-23/html/eAIP/WM-AD-2.WBKK-en-MS.html",
+          "title": "CAAM eAIP Malaysia - WBKK Kota Kinabalu International (AD 2, edition 2024-04-23)",
+          "type": "government"
+        },
+        {
+          "url": "https://aip.caam.gov.my/aip/eAIP/2026-08-11/html/eAIP/WM-AD-2.WBKK-en-MS.html",
+          "title": "CAAM eAIP Malaysia - Aerodrome/Heliport WBKK (edition 2026-08-11)",
+          "type": "government"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Kota_Kinabalu_International_Airport",
+          "title": "Wikipedia - Kota Kinabalu International Airport",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "CAAM eAIP entry is titled 'WBKK - KOTA KINABALU INTERNATIONAL'. Taken from a WebSearch result summary; the page itself could not be opened (network allowlist)."
+    },
+    {
+      "id": "bki-iata-code",
+      "category": "identity",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "The IATA code for Kota Kinabalu International Airport is BKI.",
+      "value": "BKI",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Kota_Kinabalu_International_Airport",
+          "title": "Wikipedia - Kota Kinabalu International Airport",
+          "type": "other"
+        },
+        {
+          "url": "https://www.klia2.info/airports/kota-kinabalu-international-airport/",
+          "title": "klia2.info - Kota Kinabalu Airport (BKI): Terminals, Airlines & Transfer",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Code appears consistently in every search result title for the airport."
+    },
+    {
+      "id": "bki-icao-code",
+      "category": "identity",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "The ICAO code for Kota Kinabalu International Airport is WBKK.",
+      "value": "WBKK",
+      "as_of": "2026-08-11 (CAAM eAIP edition)",
+      "sources": [
+        {
+          "url": "https://aip.caam.gov.my/aip/eAIP/2026-08-11/html/eAIP/WM-AD-2.WBKK-en-MS.html",
+          "title": "CAAM eAIP Malaysia - Aerodrome/Heliport WBKK (edition 2026-08-11)",
+          "type": "government"
+        },
+        {
+          "url": "https://aip.caam.gov.my/aip/eAIP/2024-04-23/html/eAIP/WM-AD-2.WBKK-en-MS.html",
+          "title": "CAAM eAIP Malaysia - WBKK Kota Kinabalu International (AD 2, edition 2024-04-23)",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Government aeronautical publication."
+    },
+    {
+      "id": "bki-operator-mahb",
+      "category": "identity",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "Kota Kinabalu International Airport is part of the Malaysia Airports Holdings Berhad (MAHB) airport network.",
+      "value": "Malaysia Airports Holdings Berhad",
+      "as_of": "2026 (MAHB traffic reporting); eAIP 2024-04-23",
+      "sources": [
+        {
+          "url": "https://thesun.my/business/local-business/mahb-passenger-traffic-hits-15-5-million-as-visit-malaysia-2026-begins/",
+          "title": "The Sun - MAHB passenger traffic hits 15.5 million as Visit Malaysia 2026 begins",
+          "type": "news"
+        },
+        {
+          "url": "https://www.routesonline.com/airports/9835/malaysia-airports-holdings-berhad/news/299665873/malaysia-airports-strong-2025-passenger-growth-builds-momentum-for-visit-malaysia-2026/",
+          "title": "Routesonline (MAHB release) - Malaysia Airports' Strong 2025 Passenger Growth Builds Momentum for Visit Malaysia 2026",
+          "type": "official"
+        },
+        {
+          "url": "https://aip.caam.gov.my/aip/eAIP/2024-04-23/html/eAIP/WM-AD-2.WBKK-en-MS.html",
+          "title": "CAAM eAIP Malaysia - WBKK Kota Kinabalu International (AD 2, edition 2024-04-23)",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "MAHB traffic reports list Kota Kinabalu; the CAAM eAIP contact e-mail is on the malaysiaairports.com.my domain."
+    },
+    {
+      "id": "bki-official-web-page",
+      "category": "identity",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "Malaysia Airports publishes the official passenger page for the airport on its airports.malaysiaairports.com.my site.",
+      "value": "https://airports.malaysiaairports.com.my/en/kota-kinabalu",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://www.worldtravelguide.net/?p=23559",
+          "title": "World Travel Guide - Kota Kinabalu International Airport guide",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "URL path as cited by World Travel Guide in the search summary. The host was blocked from this container (getaddrinfo ENOTFOUND) on both attempts, so the live path was not verified."
+    },
+    {
+      "id": "bki-distance-to-city",
+      "category": "identity",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "The airport is about 8 km south-west of Kota Kinabalu city centre.",
+      "value": "approx. 8 km",
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [
+        {
+          "url": "https://airports.malaysiaairports.com.my/kota-kinabalu",
+          "title": "NOT CONFIRMED IN THIS RUN (background knowledge) - suggested place to verify: official MAHB Kota Kinabalu page / CAAM eAIP WBKK AD 2.2",
+          "type": "other"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Not re-confirmed in this run: the CAAM AD 2.2 distance field was not returned by search. Verify before publishing."
+    },
+    {
+      "id": "bki-second-busiest-malaysia",
+      "category": "identity",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "Kota Kinabalu International Airport was Malaysia's second-busiest airport after KLIA by passengers in 2024.",
+      "value": "2nd busiest (2024)",
+      "as_of": "2024 traffic year; page dates unknown",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Kota_Kinabalu_International_Airport",
+          "title": "Wikipedia - Kota Kinabalu International Airport",
+          "type": "other"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/List_of_the_busiest_airports_in_Malaysia",
+          "title": "Wikipedia - List of the busiest airports in Malaysia",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Stated in the search summary without explicit per-sentence attribution; Wikipedia pages were in the result set. Re-check ranking when 2025 airport-level figures are available."
+    },
+    {
+      "id": "bki-arp-coordinates",
+      "category": "operations",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "The aerodrome reference point published by CAAM is 05 55 55 N, 116 03 01 E.",
+      "value": "05°55'55\"N 116°03'01\"E",
+      "as_of": "CAAM eAIP (2024-04-23 or later edition)",
+      "sources": [
+        {
+          "url": "https://aip.caam.gov.my/aip/eAIP/2024-04-23/html/eAIP/WM-AD-2.WBKK-en-MS.html",
+          "title": "CAAM eAIP Malaysia - WBKK Kota Kinabalu International (AD 2, edition 2024-04-23)",
+          "type": "government"
+        },
+        {
+          "url": "https://aip.caam.gov.my/aip/eAIP/2026-08-11/html/eAIP/WM-AD-2.WBKK-en-MS.html",
+          "title": "CAAM eAIP Malaysia - Aerodrome/Heliport WBKK (edition 2026-08-11)",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "The ARP lies on the airfield between taxiways Golf and Hotel, not at the terminal: geocode the terminal entrance separately for maps. An older 2011 AIP PDF gave 05 56 41 N 116 03 11 E (superseded)."
+    },
+    {
+      "id": "bki-elevation",
+      "category": "operations",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "The published aerodrome elevation is 4 m (13 ft) above mean sea level.",
+      "value": "4 m (13 ft)",
+      "as_of": "2024-04-23 (CAAM eAIP edition)",
+      "sources": [
+        {
+          "url": "https://aip.caam.gov.my/aip/eAIP/2024-04-23/html/eAIP/WM-AD-2.WBKK-en-MS.html",
+          "title": "CAAM eAIP Malaysia - WBKK Kota Kinabalu International (AD 2, edition 2024-04-23)",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "An older 2011 AIP PDF listed 10 ft; the 2024 eAIP figure is the more recent. Not confirmed against the 2026 edition."
+    },
+    {
+      "id": "bki-runway",
+      "category": "operations",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "The airport has a single runway, designated 02/20, about 3,780 m long.",
+      "value": "Runway 02/20, approx. 3,780 m",
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [
+        {
+          "url": "https://aip.caam.gov.my/aip/eAIP/2026-08-11/html/eAIP/WM-AD-2.WBKK-en-MS.html",
+          "title": "NOT CONFIRMED IN THIS RUN (background knowledge) - suggested place to verify: CAAM eAIP WBKK AD 2.12 runway characteristics",
+          "type": "other"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Background knowledge only; not returned by search in this run. Not passenger-critical."
+    },
+    {
+      "id": "bki-t1-only-passenger-terminal",
+      "category": "terminal",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "All scheduled passenger flights at Kota Kinabalu International Airport operate from Terminal 1.",
+      "value": "Terminal 1",
+      "as_of": "since 2015-12-01; Wikipedia undated",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Kota_Kinabalu_International_Airport",
+          "title": "Wikipedia - Kota Kinabalu International Airport",
+          "type": "other"
+        },
+        {
+          "url": "https://www.propertyhunter.com.my/news/2015/11/1926/sabah/terminal-2-is-closing-ndash-airasia-will-move-to-kkia-t1-on-1st-december",
+          "title": "PropertyHunter news - Terminal 2 is closing: AirAsia will move to KKIA T1 on 1st December (Nov 2015)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Operations were consolidated into Terminal 1 on 1 December 2015. No 2026-dated official notice was retrieved, but nothing found contradicts it."
+    },
+    {
+      "id": "bki-t2-closed-2015",
+      "category": "terminal",
+      "airport": "BKI",
+      "terminal": "T2",
+      "claim": "Terminal 2, the former low-cost terminal, closed to passenger flights at midnight on 1 December 2015 when AirAsia moved to Terminal 1.",
+      "value": "2015-12-01",
+      "as_of": "2015-11 (news report)",
+      "sources": [
+        {
+          "url": "https://www.propertyhunter.com.my/news/2015/11/1926/sabah/terminal-2-is-closing-ndash-airasia-will-move-to-kkia-t1-on-1st-december",
+          "title": "PropertyHunter news - Terminal 2 is closing: AirAsia will move to KKIA T1 on 1st December (Nov 2015)",
+          "type": "news"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Kota_Kinabalu_International_Airport",
+          "title": "Wikipedia - Kota Kinabalu International Airport",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Some third-party guides (e.g. airlineshq.com) still describe two passenger terminals; that is outdated."
+    },
+    {
+      "id": "bki-t2-current-use",
+      "category": "terminal",
+      "airport": "BKI",
+      "terminal": "T2",
+      "claim": "The former Terminal 2 is now used for cargo, charter and general aviation, not for scheduled passenger flights.",
+      "value": "Cargo / charter / general aviation",
+      "as_of": "2024-04-23 (CAAM eAIP); Wikipedia undated",
+      "sources": [
+        {
+          "url": "https://aip.caam.gov.my/aip/eAIP/2024-04-23/html/eAIP/WM-AD-2.WBKK-en-MS.html",
+          "title": "CAAM eAIP Malaysia - WBKK Kota Kinabalu International (AD 2, edition 2024-04-23)",
+          "type": "government"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Kota_Kinabalu_International_Airport",
+          "title": "Wikipedia - Kota Kinabalu International Airport",
+          "type": "other"
+        },
+        {
+          "url": "https://www.etawau.com/Geography/Sabah/2_WestCoastDivision/KotaKinabalu_District/KotaKinabalu/Transportation/Terminal2.htm",
+          "title": "eTawau - KKIA Terminal Two",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "CAAM eAIP 2024: 'apron at Terminal 02 will use only for cargo and general aviation'. A local site (eTawau) says it was converted to a cargo terminal in 2016. No 2026 official statement retrieved; tenant names not verified."
+    },
+    {
+      "id": "bki-t2-opposite-side-of-runway",
+      "category": "terminal",
+      "airport": "BKI",
+      "terminal": "T2",
+      "claim": "The former Terminal 2 is at Tanjung Aru on the opposite side of the runway from Terminal 1 and is not connected to it for passengers.",
+      "value": null,
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Kota_Kinabalu_International_Airport",
+          "title": "NOT CONFIRMED IN THIS RUN (background knowledge) - suggested place to verify: Wikipedia / MAHB airport map",
+          "type": "other"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Background knowledge; useful only to warn passengers with old directions that Terminal 2 no longer handles passenger flights."
+    },
+    {
+      "id": "bki-t1-domestic-international-sections",
+      "category": "terminal",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "Terminal 1 is a single building with separate domestic and international sections.",
+      "value": null,
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://www.worldtravelguide.net/?p=23559",
+          "title": "World Travel Guide - Kota Kinabalu International Airport guide",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Third-party guide (World Travel Guide), undated. Taken from a WebSearch result summary; the page itself could not be opened (network allowlist)."
+    },
+    {
+      "id": "bki-t1-levels-referenced",
+      "category": "terminal",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "Passenger facilities in Terminal 1 are spread over at least three levels: sources place services on Level 1, Level 2 (domestic departure area) and Level 3 (international departures).",
+      "value": "Levels 1-3",
+      "as_of": "unknown (World Travel Guide); Malaysia Airlines page undated",
+      "sources": [
+        {
+          "url": "https://www.worldtravelguide.net/?p=23559",
+          "title": "World Travel Guide - Kota Kinabalu International Airport guide",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.malaysiaairlines.com/uk/en/experience/lounge/lounge-partners.html",
+          "title": "Malaysia Airlines - Lounge Partners",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Inferred from two separate listings (left-luggage on Level 1 and Level 3; airline lounge at 'Level 2 Domestic Departure'). A full official level directory was not retrieved."
+    },
+    {
+      "id": "bki-t1-level-layout",
+      "category": "terminal",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "In Terminal 1 the arrival hall is on Level 1, departure gates are on Level 2 and the check-in/departure hall is on Level 3.",
+      "value": "L1 arrivals / L2 gates / L3 check-in",
+      "as_of": "prior knowledge, approx. 2024",
+      "sources": [
+        {
+          "url": "https://airports.malaysiaairports.com.my/kota-kinabalu",
+          "title": "NOT CONFIRMED IN THIS RUN (background knowledge) - suggested place to verify: official MAHB Kota Kinabalu terminal map",
+          "type": "other"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "Background knowledge, consistent with the level references found in search but NOT confirmed. Do not publish wayfinding copy from this without checking the official terminal map."
+    },
+    {
+      "id": "bki-t1-capacity",
+      "category": "terminal",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "Terminal 1's current design capacity is reported as about 9 million passengers a year.",
+      "value": "approx. 9 million passengers/year",
+      "as_of": "2026 (SabahGuide page updated to Oct 2026)",
+      "sources": [
+        {
+          "url": "https://sabahguide.com/development/kkia-expansion/",
+          "title": "SabahGuide - KKIA Expansion: Terminal 1 Upgrade in Kota Kinabalu",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.nst.com.my/amp/news/nation/2026/07/1483461/kkia-expansion-awaits-resolution-land-issues-says-deputy-minister",
+          "title": "New Straits Times - KKIA expansion awaits resolution of land issues, says deputy minister (July 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "CONFLICT: SabahGuide gives 9 million (with interim works to reach 10 million); the July 2026 NST report describes the expansion as lifting capacity from about 10 million to 12 million."
+    },
+    {
+      "id": "bki-passengers-2024",
+      "category": "operations",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "Kota Kinabalu International Airport handled more than 7.95 million passengers in 2024.",
+      "value": "over 7.95 million (2024)",
+      "as_of": "2024 traffic year; page dates unknown",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Kota_Kinabalu_International_Airport",
+          "title": "Wikipedia - Kota Kinabalu International Airport",
+          "type": "other"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/List_of_the_busiest_airports_in_Malaysia",
+          "title": "Wikipedia - List of the busiest airports in Malaysia",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Stated in the search summary without explicit per-sentence attribution. Verify against MAHB annual report / CAAM statistics before publishing."
+    },
+    {
+      "id": "bki-passengers-2023",
+      "category": "operations",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "The airport handled 7.04 million passenger movements in 2023.",
+      "value": "7.04 million (2023)",
+      "as_of": "2023 traffic year; SabahGuide page updated 2026",
+      "sources": [
+        {
+          "url": "https://sabahguide.com/development/kkia-expansion/",
+          "title": "SabahGuide - KKIA Expansion: Terminal 1 Upgrade in Kota Kinabalu",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Kota_Kinabalu_International_Airport",
+          "title": "Wikipedia - Kota Kinabalu International Airport",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Search summary describes 2023 as 'the last year Malaysia Airports published airport-level figures'."
+    },
+    {
+      "id": "bki-passengers-monthly-dec-2025",
+      "category": "operations",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "MAHB reported about 802,000 passengers at Kota Kinabalu in a single month around the turn of 2025/2026, a 23.5% year-on-year increase.",
+      "value": "approx. 802,000 passengers in the month; +23.5% YoY",
+      "as_of": "MAHB traffic release, published Jan-Feb 2026",
+      "sources": [
+        {
+          "url": "https://www.routesonline.com/airports/9835/malaysia-airports-holdings-berhad/news/299665873/malaysia-airports-strong-2025-passenger-growth-builds-momentum-for-visit-malaysia-2026/",
+          "title": "Routesonline (MAHB release) - Malaysia Airports' Strong 2025 Passenger Growth Builds Momentum for Visit Malaysia 2026",
+          "type": "official"
+        },
+        {
+          "url": "https://thesun.my/business/local-business/mahb-passenger-traffic-hits-15-5-million-as-visit-malaysia-2026-begins/",
+          "title": "The Sun - MAHB passenger traffic hits 15.5 million as Visit Malaysia 2026 begins",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "AMBIGUOUS: the search summary attributes the figure to December 2025, but one of the two source articles covers January 2026 traffic. Confirm the month before use. A full-year 2025 total for BKI was not found."
+    },
+    {
+      "id": "bki-runway-closure-2026-09-17",
+      "category": "operations",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "On 17 September 2026 the runway at Kota Kinabalu International Airport was closed temporarily for rectification works, initially for two hours from 14:45 and then extended by NOTAM from 17:00 to 20:00.",
+      "value": "2026-09-17; 14:45 initial closure; extension 17:00-20:00",
+      "as_of": "2026-09-17",
+      "sources": [
+        {
+          "url": "https://www.bernama.com/en/general/news.php?id=2608541",
+          "title": "Bernama - KKIA Flight Operations Disrupted By Temporary Runway Closure (Sep 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.nst.com.my/news/nation/2026/09/1534977/kkia-flight-operations-disrupted-temporary-runway-closure",
+          "title": "New Straits Times - KKIA flight operations disrupted by temporary runway closure (Sep 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.freemalaysiatoday.com/category/nation/2026/09/17/runway-closure-affects-20-flights-at-kota-kinabalu-airport",
+          "title": "Free Malaysia Today - Runway closure affects 20 flights at Kota Kinabalu airport (17 Sep 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "MAHB did not disclose the nature of the rectification works. A Bernama sub-heading reports the runway reopened at 23:30."
+    },
+    {
+      "id": "bki-runway-closure-impact",
+      "category": "operations",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "MAHB said 20 flights were affected by the 17 September 2026 runway closure, with several arrivals diverted to Labuan and Sandakan.",
+      "value": "20 flights affected",
+      "as_of": "2026-09-17",
+      "sources": [
+        {
+          "url": "https://www.nst.com.my/news/regional/2026/09/1534988/20-flights-affected-kota-kinabalu-airport-runway-closure",
+          "title": "New Straits Times - 20 flights affected by Kota Kinabalu Airport runway closure (Sep 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.freemalaysiatoday.com/category/nation/2026/09/17/runway-closure-affects-20-flights-at-kota-kinabalu-airport",
+          "title": "Free Malaysia Today - Runway closure affects 20 flights at Kota Kinabalu airport (17 Sep 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.bernama.com/en/general/news.php?id=2608541",
+          "title": "Bernama - KKIA Flight Operations Disrupted By Temporary Runway Closure (Sep 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "One-off incident; no evidence found of a planned runway resurfacing programme or of further closures up to mid-November 2026."
+    },
+    {
+      "id": "bki-international-flights-weekly",
+      "category": "airlines",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "As of March 2026, 13 airlines operated 153 scheduled international flights a week to Kota Kinabalu International Airport.",
+      "value": "13 airlines; 153 international flights/week",
+      "as_of": "2026-03",
+      "sources": [
+        {
+          "url": "https://www.bernama.com/tv/news.php?id=2532140",
+          "title": "Bernama - KKIA records 153 international flights weekly, targets two new routes this year",
+          "type": "news"
+        },
+        {
+          "url": "https://www.dailyexpress.com.my/interest/3260/153-international-flights-weekly-to-kkia-two-new-routes-expected/",
+          "title": "Daily Express - 153 international flights weekly to KKIA, two new routes expected",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Schedule snapshot from March 2026; frequencies change by season."
+    },
+    {
+      "id": "bki-international-airlines-named",
+      "category": "airlines",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "International carriers named as serving Kota Kinabalu in March 2026 were AirAsia, Batik Air, Air Busan, Jin Air, Jeju Air, T'way Air, HK Express, China Southern Airlines, Shanghai Airlines, Spring Airlines, Xiamen Airlines, Scoot and Royal Brunei Airlines.",
+      "value": "13 named carriers",
+      "as_of": "2026-03",
+      "sources": [
+        {
+          "url": "https://www.bernama.com/tv/news.php?id=2532140",
+          "title": "Bernama - KKIA records 153 international flights weekly, targets two new routes this year",
+          "type": "news"
+        },
+        {
+          "url": "https://www.dailyexpress.com.my/interest/3260/153-international-flights-weekly-to-kkia-two-new-routes-expected/",
+          "title": "Daily Express - 153 international flights weekly to KKIA, two new routes expected",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "List as given in the search summary of the Bernama/Daily Express reports. Chongqing Airlines (started March 2026) is not in this list, so the list may pre-date its launch. Airline list changes: re-verify at build time."
+    },
+    {
+      "id": "bki-international-markets",
+      "category": "airlines",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "International services at Kota Kinabalu are operated by carriers based in South Korea, mainland China, Hong Kong, Singapore and Brunei, alongside Malaysian carriers.",
+      "value": null,
+      "as_of": "2026-03",
+      "sources": [
+        {
+          "url": "https://www.bernama.com/tv/news.php?id=2532140",
+          "title": "Bernama - KKIA records 153 international flights weekly, targets two new routes this year",
+          "type": "news"
+        },
+        {
+          "url": "https://www.dailyexpress.com.my/interest/3260/153-international-flights-weekly-to-kkia-two-new-routes-expected/",
+          "title": "Daily Express - 153 international flights weekly to KKIA, two new routes expected",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Country grouping derived from the named airline list (airline home countries are background knowledge). City-level destination list was NOT verified."
+    },
+    {
+      "id": "bki-route-chongqing",
+      "category": "airlines",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "Chongqing Airlines began direct Chongqing-Kota Kinabalu flights in March 2026, operating three times a week on Tuesdays, Thursdays and Saturdays.",
+      "value": "3 weekly (Tue, Thu, Sat) from March 2026",
+      "as_of": "2026-03-21",
+      "sources": [
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2026/03/21/new-chongqingkota-kinabalu-route-expected-to-spur-sabah-tourism-during-visit-malaysia-2026/213423",
+          "title": "Malay Mail - New Chongqing-Kota Kinabalu route expected to spur Sabah tourism during Visit Malaysia 2026 (21 Mar 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Launch-schedule as reported at the time; current frequency not re-checked."
+    },
+    {
+      "id": "bki-route-shanghai-spring",
+      "category": "airlines",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "Spring Airlines resumed daily direct flights between Shanghai and Kota Kinabalu on 28 January 2026.",
+      "value": "Daily from 2026-01-28",
+      "as_of": "2026-01 (Tourism Malaysia media release)",
+      "sources": [
+        {
+          "url": "https://www.tourism.gov.my/media/view/new-shanghai-kota-kinabalu-direct-flight-boosts-china-sabah-connectivity-for-visit-malaysia-2026-vm2026",
+          "title": "Tourism Malaysia media release - New Shanghai-Kota Kinabalu direct flight boosts China-Sabah connectivity for VM2026",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Government tourism board release; current frequency not re-checked."
+    },
+    {
+      "id": "bki-route-singapore-batik",
+      "category": "airlines",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "Batik Air announced in December 2025 that it would launch direct Kota Kinabalu-Singapore flights in February 2026.",
+      "value": "Announced launch: February 2026",
+      "as_of": "2025-12",
+      "sources": [
+        {
+          "url": "https://www.gayatravel.com.my/kota-kinabalu-becomes-key-east-malaysia-hub-as-batik-air-adds-new-routes/",
+          "title": "Gaya Travel - Kota Kinabalu becomes key East Malaysia hub as Batik Air adds new routes (Dec 2025)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Announcement only; the actual start date and current operation were not verified in this run."
+    },
+    {
+      "id": "bki-route-jeddah-proposed",
+      "category": "airlines",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "A Kota Kinabalu-Jeddah route was described in March 2026 as still under consideration and expected to be realised within the year.",
+      "value": "Proposed (not confirmed)",
+      "as_of": "2026-03",
+      "sources": [
+        {
+          "url": "https://www.bernama.com/tv/news.php?id=2532140",
+          "title": "Bernama - KKIA records 153 international flights weekly, targets two new routes this year",
+          "type": "news"
+        },
+        {
+          "url": "https://www.dailyexpress.com.my/interest/3260/153-international-flights-weekly-to-kkia-two-new-routes-expected/",
+          "title": "Daily Express - 153 international flights weekly to KKIA, two new routes expected",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "No confirmation found that the route has launched. Do not publish as an operating route."
+    },
+    {
+      "id": "bki-new-routes-target-2026",
+      "category": "airlines",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "Kota Kinabalu International Airport was targeting two new international routes in 2026.",
+      "value": "2 new routes targeted",
+      "as_of": "2026-03",
+      "sources": [
+        {
+          "url": "https://www.bernama.com/tv/news.php?id=2532140",
+          "title": "Bernama - KKIA records 153 international flights weekly, targets two new routes this year",
+          "type": "news"
+        },
+        {
+          "url": "https://www.dailyexpress.com.my/interest/3260/153-international-flights-weekly-to-kkia-two-new-routes-expected/",
+          "title": "Daily Express - 153 international flights weekly to KKIA, two new routes expected",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Target reported in news headlines; outcome not verified."
+    },
+    {
+      "id": "bki-airasia-sibu-bintulu",
+      "category": "airlines",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "AirAsia was reported to be resuming Kota Kinabalu-Bintulu flights on 1 November 2026 and Kota Kinabalu-Sibu flights on 2 November 2026.",
+      "value": "Bintulu from 2026-11-01; Sibu from 2026-11-02",
+      "as_of": "2026 (undated aggregator report)",
+      "sources": [
+        {
+          "url": "https://www.archynewsy.com/airasia-resumes-kota-kinabalu-to-sibu-and-bintulu-flights-for-nw26/",
+          "title": "Archynewsy - AirAsia resumes Kota Kinabalu to Sibu and Bintulu flights for NW26",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.travelandtourworld.com/news/article/rb96fyztprdo/",
+          "title": "Travel And Tour World - AirBorneo joins AirAsia and Chongqing Airlines ... Sabah aviation (2026)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Aggregator source; another report said the Sibu route was suspended 8-30 June 2026. Confirm with AirAsia's schedule before publishing."
+    },
+    {
+      "id": "bki-domestic-carriers-kuala-lumpur",
+      "category": "airlines",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "Malaysia Airlines, AirAsia and Batik Air Malaysia operate domestic flights between Kota Kinabalu and Kuala Lumpur.",
+      "value": null,
+      "as_of": "prior knowledge, approx. early 2026",
+      "sources": [
+        {
+          "url": "https://airports.malaysiaairports.com.my/kota-kinabalu",
+          "title": "NOT CONFIRMED IN THIS RUN (background knowledge) - suggested place to verify: official MAHB airline list / airline schedules",
+          "type": "other"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Background knowledge; the full current domestic airline list (including Firefly and AirBorneo, the former MASwings) and domestic destination list were not verified in this run."
+    },
+    {
+      "id": "sabah-immigration-separate-control",
+      "category": "procedures",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "Sabah keeps its own immigration control under the Malaysia Agreement 1963, so travellers arriving from Peninsular Malaysia go through an immigration check at Kota Kinabalu even on domestic flights.",
+      "value": null,
+      "as_of": "2022 (minister's statement); 2026-08-06 (Seasia)",
+      "sources": [
+        {
+          "url": "https://www.thevibes.com/articles/news/68822/sabahans-first-masidi-says-no-to-scrapping-pass-requirements-for-peninsular-msians",
+          "title": "The Vibes - Sabahans first: Masidi says no to scrapping pass requirements for Peninsular M'sians (2022)",
+          "type": "news"
+        },
+        {
+          "url": "https://seasia.co/2026/08/06/why-west-malaysians-need-passports-when-visiting-sarawak-and-sabah",
+          "title": "Seasia.co - Why West Malaysians need passports when visiting Sarawak and Sabah (6 Aug 2026)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "In 2022 Sabah minister Masidi Manjun said the special immigration requirements, part of MA63, would not be scrapped."
+    },
+    {
+      "id": "sabah-entry-mykad-peninsular",
+      "category": "procedures",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "Malaysian citizens from Peninsular Malaysia can enter Sabah with their MyKad; a passport is not required.",
+      "value": "MyKad accepted",
+      "as_of": "2024-03-05 (Sin Chew); 2022 (The Vibes); 2026-08-06 (Seasia)",
+      "sources": [
+        {
+          "url": "https://mysinchew.sinchew.com.my/news/20240305/mysinchew/5441350",
+          "title": "MySinchew news report, 5 March 2024 (MyKad accepted at Sabah/Sarawak entry points)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.thevibes.com/articles/news/68822/sabahans-first-masidi-says-no-to-scrapping-pass-requirements-for-peninsular-msians",
+          "title": "The Vibes - Sabahans first: Masidi says no to scrapping pass requirements for Peninsular M'sians (2022)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.thestar.com.my/news/nation/2005/04/07/sabah-recognises-mykad-as-valid-travel-document",
+          "title": "The Star - Sabah recognises MyKad as valid travel document (7 Apr 2005)",
+          "type": "news"
+        },
+        {
+          "url": "https://seasia.co/2026/08/06/why-west-malaysians-need-passports-when-visiting-sarawak-and-sabah",
+          "title": "Seasia.co - Why West Malaysians need passports when visiting Sarawak and Sabah (6 Aug 2026)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Sources differ on when MyKad was first accepted (The Star headline 2005; Sin Chew says agreed in 2006). Some travel guides still advise carrying a passport, which is also accepted."
+    },
+    {
+      "id": "sabah-entry-90-day-limit",
+      "category": "procedures",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "Visitors from Peninsular Malaysia entering Sabah on a MyKad are limited to a stay of 90 days.",
+      "value": "90 days",
+      "as_of": "2022 (The Vibes); 2024-03-05 (Sin Chew)",
+      "sources": [
+        {
+          "url": "https://www.thevibes.com/articles/news/68822/sabahans-first-masidi-says-no-to-scrapping-pass-requirements-for-peninsular-msians",
+          "title": "The Vibes - Sabahans first: Masidi says no to scrapping pass requirements for Peninsular M'sians (2022)",
+          "type": "news"
+        },
+        {
+          "url": "https://mysinchew.sinchew.com.my/news/20240305/mysinchew/5441350",
+          "title": "MySinchew news report, 5 March 2024 (MyKad accepted at Sabah/Sarawak entry points)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.imi.gov.my/index.php/en/main-services/travel-documents/restricted-travel-documents/",
+          "title": "Immigration Department of Malaysia - Restricted Travel Documents",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "The Immigration Department's Restricted Travel Document page uses 'more than 3 months' as the threshold for needing a travel document."
+    },
+    {
+      "id": "sabah-entry-imm114-issued",
+      "category": "procedures",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "On arrival in Sabah, immigration issues MyKad holders from Peninsular Malaysia a printed slip, the Document in Lieu of Internal Travel Document (IMM.114), which states the permitted length of stay.",
+      "value": "IMM.114",
+      "as_of": "2024-03-05 (Sin Chew); guides dated 2026",
+      "sources": [
+        {
+          "url": "https://mysinchew.sinchew.com.my/news/20240305/mysinchew/5441350",
+          "title": "MySinchew news report, 5 March 2024 (MyKad accepted at Sabah/Sarawak entry points)",
+          "type": "news"
+        },
+        {
+          "url": "https://negaraku.md/en/settling-in/sabah-sarawak-entry-requirements/",
+          "title": "negaraku.md - Sabah & Sarawak Entry Requirements: Immigration Documents for Malaysians",
+          "type": "other"
+        },
+        {
+          "url": "https://snapbackpacker.com/entering-sabah-sarawak-in-2026-documents-procedures-dos-donts/",
+          "title": "Snapbackpacker - Entering Sabah & Sarawak in 2026: Documents, Procedures & Do's & Don'ts",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Sin Chew describes a printed 'dokumen gantian perjalanan'; the form number IMM.114 and 'issued free at arrival counters' come from third-party guides. Official imi.gov.my wording was not retrieved."
+    },
+    {
+      "id": "sabah-exit-imm114-surrender",
+      "category": "procedures",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "Travellers should keep the IMM.114 slip, as it has to be surrendered when leaving Sabah for Peninsular Malaysia.",
+      "value": null,
+      "as_of": "2026-08-06",
+      "sources": [
+        {
+          "url": "https://seasia.co/2026/08/06/why-west-malaysians-need-passports-when-visiting-sarawak-and-sabah",
+          "title": "Seasia.co - Why West Malaysians need passports when visiting Sarawak and Sabah (6 Aug 2026)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Single non-official source in this run; confirm with Sabah Immigration."
+    },
+    {
+      "id": "sabah-entry-children-under-12",
+      "category": "procedures",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "Children under 12 from Peninsular Malaysia travel to Sabah on their birth certificate (or MyKid) in place of a MyKad.",
+      "value": "Birth certificate / MyKid",
+      "as_of": "2026 (third-party guides)",
+      "sources": [
+        {
+          "url": "https://negaraku.md/en/settling-in/sabah-sarawak-entry-requirements/",
+          "title": "negaraku.md - Sabah & Sarawak Entry Requirements: Immigration Documents for Malaysians",
+          "type": "other"
+        },
+        {
+          "url": "https://snapbackpacker.com/entering-sabah-sarawak-in-2026-documents-procedures-dos-donts/",
+          "title": "Snapbackpacker - Entering Sabah & Sarawak in 2026: Documents, Procedures & Do's & Don'ts",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Third-party guides only; exact official document list for minors not retrieved. Verify with the Immigration Department before publishing."
+    },
+    {
+      "id": "sabah-passport-also-accepted",
+      "category": "procedures",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "A Malaysian passport is also accepted as an identity document at Sabah immigration control for domestic travel.",
+      "value": null,
+      "as_of": "unknown (imi.gov.my page undated)",
+      "sources": [
+        {
+          "url": "https://www.imi.gov.my/index.php/en/main-services/domestic-travel-domestic/",
+          "title": "Immigration Department of Malaysia - Domestic Travel (Domestic)",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "The Immigration Department's domestic-travel page lists passport, MyKad and temporary identity card among accepted documents. An older (2016) blog says passport holders receive a 90-day social visit stamp instead of an IMM.114; not confirmed as current."
+    },
+    {
+      "id": "sabah-domestic-departure-id-and-boarding-pass",
+      "category": "procedures",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "The Immigration Department requires travellers leaving Sabah or Sarawak on domestic flights to show an accepted identity document (such as a passport, MyKad or temporary identity card) together with their boarding pass.",
+      "value": null,
+      "as_of": "unknown (imi.gov.my page undated)",
+      "sources": [
+        {
+          "url": "https://www.imi.gov.my/index.php/en/main-services/domestic-travel-domestic/",
+          "title": "Immigration Department of Malaysia - Domestic Travel (Domestic)",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Page text quoted in the search summary (Malay): 'Setiap pelawat diperlukan juga untuk mengemukakan pas masuk Boarding Pass sebagai bukti penumpang tulen'. Page not opened directly."
+    },
+    {
+      "id": "sabah-long-stay-restricted-travel-document",
+      "category": "procedures",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "Malaysians from Peninsular Malaysia who intend to stay in Sabah or Sarawak for more than three months need a Restricted Travel Document from the Immigration Department.",
+      "value": "More than 3 months",
+      "as_of": "unknown (imi.gov.my page undated)",
+      "sources": [
+        {
+          "url": "https://www.imi.gov.my/index.php/en/main-services/travel-documents/restricted-travel-documents/",
+          "title": "Immigration Department of Malaysia - Restricted Travel Documents",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Per the search summary, applicants over 12 present a MyKad (or military/police/temporary identity card) and two recent photos."
+    },
+    {
+      "id": "sabah-work-requires-pass",
+      "category": "procedures",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "Peninsular Malaysians who want to work in Sabah must apply for a work pass; entry on a MyKad covers visits only.",
+      "value": null,
+      "as_of": "2022",
+      "sources": [
+        {
+          "url": "https://www.thevibes.com/articles/news/68822/sabahans-first-masidi-says-no-to-scrapping-pass-requirements-for-peninsular-msians",
+          "title": "The Vibes - Sabahans first: Masidi says no to scrapping pass requirements for Peninsular M'sians (2022)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "From the 2022 statement by Sabah minister Masidi Manjun; pass types and process not verified."
+    },
+    {
+      "id": "sabah-stay-extension",
+      "category": "procedures",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "Extensions beyond the 90-day visit limit are handled by the Immigration Department in Sabah, at its discretion.",
+      "value": null,
+      "as_of": "2026-08-06",
+      "sources": [
+        {
+          "url": "https://seasia.co/2026/08/06/why-west-malaysians-need-passports-when-visiting-sarawak-and-sabah",
+          "title": "Seasia.co - Why West Malaysians need passports when visiting Sarawak and Sabah (6 Aug 2026)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Single non-official source; process not verified."
+    },
+    {
+      "id": "sabah-original-documents-only",
+      "category": "procedures",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "Malaysia Airlines requires original identity documents for domestic flights between Peninsular Malaysia and Sabah or Sarawak; photocopies are not accepted.",
+      "value": "Originals only",
+      "as_of": "unknown (airline page undated)",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairlines.com/my/en/travel-info/visa-and-immigration-documents.html",
+          "title": "Malaysia Airlines - Visa and Immigration Document Requirement",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Airline policy (Malaysia Airlines); other airlines' wording not checked. Quoted: 'all relevant documents must be the original, copies are not accepted'."
+    },
+    {
+      "id": "sabah-entry-from-sarawak",
+      "category": "procedures",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "Travellers arriving in Sabah from Sarawak also pass through Sabah immigration control and should carry their MyKad or passport.",
+      "value": null,
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [
+        {
+          "url": "https://www.imi.gov.my/index.php/en/main-services/domestic-travel-domestic/",
+          "title": "NOT CONFIRMED IN THIS RUN (background knowledge) - suggested place to verify: Immigration Department domestic-travel page / Sabah Immigration",
+          "type": "other"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Not confirmed in this run: search returned the rule for entering Sarawak and for departing Sabah/Sarawak, but no explicit official statement on Sarawakians entering Sabah."
+    },
+    {
+      "id": "sabah-entry-foreign-nationals-passport",
+      "category": "procedures",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "Foreign visitors flying to Kota Kinabalu from Peninsular Malaysia or Sarawak must carry their passport, which is checked by Sabah immigration on arrival.",
+      "value": null,
+      "as_of": "prior knowledge, approx. 2025",
+      "sources": [
+        {
+          "url": "https://www.imi.gov.my/index.php/en/main-services/domestic-travel-domestic/",
+          "title": "NOT CONFIRMED IN THIS RUN (background knowledge) - suggested place to verify: Immigration Department of Malaysia / Sabah Immigration",
+          "type": "other"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "Background knowledge; one third-party guide in the search results says the same but could not be attributed precisely. Verify official wording."
+    },
+    {
+      "id": "bki-lounge-mas-partner-level2",
+      "category": "lounges",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "Malaysia Airlines lists a lounge for its eligible passengers at Level 2, Domestic Departure, Main Terminal Building, Kota Kinabalu International Airport, open 04:00 to 00:00.",
+      "value": "Level 2 Domestic Departure; 04:00-00:00",
+      "as_of": "unknown (airline page undated)",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairlines.com/uk/en/experience/lounge/lounge-partners.html",
+          "title": "Malaysia Airlines - Lounge Partners",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "From Malaysia Airlines' 'Lounge Partners' page via search summary; the lounge's brand name was not captured (LoungeReview refers to a 'Travel Club Lounge'). Hours may change."
+    },
+    {
+      "id": "bki-golden-lounge-status-conflict",
+      "category": "lounges",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "Sources conflict on whether Malaysia Airlines still runs its own Golden Lounge at Kota Kinabalu: LoungeReview lists both the domestic and international Golden Lounges as permanently closed, with eligible guests directed to the Travel Club Lounge, while Sleeping in Airports still lists a Golden Lounge airside at International Departures, Level 2, near Gate B7.",
+      "value": "Conflicting",
+      "as_of": "LoungeReview undated; Sleeping in Airports updated Nov 2026",
+      "sources": [
+        {
+          "url": "https://loungereview.com/lounges/malaysia-airlines-domestic-golden-lounge-bki/",
+          "title": "LoungeReview - Malaysia Airlines Domestic Golden Lounge Kota Kinabalu (BKI)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://loungereview.com/lounges/malaysia-airlines-international-golden-lounge-bki/",
+          "title": "LoungeReview - Malaysia Airlines International Golden Lounge Kota Kinabalu (BKI)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.sleepinginairports.net/guides/kota-kinabalu-airport-guide.htm",
+          "title": "Sleeping in Airports - Kota Kinabalu Airport Guide (BKI)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.malaysiaairlines.com/uk/en/experience/lounge/lounge-partners.html",
+          "title": "Malaysia Airlines - Lounge Partners",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "CONFLICT - do not publish a lounge name until confirmed with Malaysia Airlines/MAHB. The airline's own page placing BKI under 'Lounge Partners' supports the closure reading."
+    },
+    {
+      "id": "bki-plaza-premium-status-conflict",
+      "category": "lounges",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "Plaza Premium Lounge's Kota Kinabalu lounges are reported as permanently closed by LoungeReview, although older third-party listings still show a Plaza Premium Lounge in international departures on Level 3 open 06:00 to 00:00.",
+      "value": "Reported closed (unconfirmed)",
+      "as_of": "LoungeReview page approx. Jan 2025; Holiday Extras undated",
+      "sources": [
+        {
+          "url": "https://loungereview.com/lounges/plaza-premium-lounge-bki-domestic/",
+          "title": "LoungeReview - Plaza Premium Lounge BKI Domestic (CLOSED PERMANENTLY)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.holidayextras.com/kota-kinabalu-airport-lounges.html",
+          "title": "Holiday Extras - Kota Kinabalu Airport Lounges",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://moodiedavittreport.com/plaza-premium-lounge-opens-airport-lounge-at-kota-kinabalu/",
+          "title": "Moodie Davitt Report - Plaza Premium Lounge opens airport lounge at Kota Kinabalu",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "CONFLICT - current status unverified. Treat Plaza Premium at BKI as not confirmed."
+    },
+    {
+      "id": "bki-left-luggage",
+      "category": "facilities",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "Left-luggage storage is listed at two locations in Terminal 1: on Level 1 and at International Departures on Level 3.",
+      "value": "Level 1; Level 3 International Departures",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://www.worldtravelguide.net/?p=23559",
+          "title": "World Travel Guide - Kota Kinabalu International Airport guide",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Undated third-party guide (World Travel Guide); operator, prices and hours not verified."
+    },
+    {
+      "id": "bki-information-desk",
+      "category": "facilities",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "An airport information desk is located in the Departures area of Terminal 1.",
+      "value": null,
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://www.worldtravelguide.net/?p=23559",
+          "title": "World Travel Guide - Kota Kinabalu International Airport guide",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Undated third-party guide; exact level and hours not verified."
+    },
+    {
+      "id": "bki-shops-and-cafeterias",
+      "category": "facilities",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "Shops and cafeterias are available in the terminal building.",
+      "value": null,
+      "as_of": "2024-04-23 (CAAM eAIP edition)",
+      "sources": [
+        {
+          "url": "https://aip.caam.gov.my/aip/eAIP/2024-04-23/html/eAIP/WM-AD-2.WBKK-en-MS.html",
+          "title": "CAAM eAIP Malaysia - WBKK Kota Kinabalu International (AD 2, edition 2024-04-23)",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Generic statement from the CAAM aerodrome entry. No individual dining or retail outlet names were verified in this run."
+    },
+    {
+      "id": "bki-bus-basmy-routes",
+      "category": "transport",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "Two BAS.MY Kota Kinabalu stage-bus routes, S07 and S08, serve Kota Kinabalu International Airport and link it with the KK Sentral bus terminal.",
+      "value": "Routes S07 and S08",
+      "as_of": "2026-10-23 (SabahGuide check date)",
+      "sources": [
+        {
+          "url": "https://sabahguide.com/travel/basmy-pink-bus-kk/",
+          "title": "SabahGuide - BAS.MY Pink Bus KK (Bas Pink): Routes, Timetable & Fares 2026",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://railtravelstation.com/bas-my-kota-kinabalu/",
+          "title": "RailTravel Station - BAS.MY Kota Kinabalu",
+          "type": "other"
+        },
+        {
+          "url": "https://kuchingborneo.info/full-list-bas-my-kota-kinabalu-routes-every-stop-route-and-major-area-covered-by-sabahs-new-pink-bus-network/",
+          "title": "KuchingBorneo.info - Full list: BAS.MY Kota Kinabalu routes",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "BAS.MY ('pink bus') network of eight routes launched in Kota Kinabalu in 2026. Third-party sources only; operator's official page not retrieved."
+    },
+    {
+      "id": "bki-bus-s07-route",
+      "category": "transport",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "BAS.MY route S07 is a loop: KK Sentral - Jalan Kepayan - Aeropod (Tanjung Aru railway station) - KKIA - Jalan Lintas - KK Sentral.",
+      "value": "S07 loop",
+      "as_of": "2026 (third-party route lists)",
+      "sources": [
+        {
+          "url": "https://kuchingborneo.info/full-list-bas-my-kota-kinabalu-routes-every-stop-route-and-major-area-covered-by-sabahs-new-pink-bus-network/",
+          "title": "KuchingBorneo.info - Full list: BAS.MY Kota Kinabalu routes",
+          "type": "other"
+        },
+        {
+          "url": "https://railtravelstation.com/bas-my-kota-kinabalu/",
+          "title": "RailTravel Station - BAS.MY Kota Kinabalu",
+          "type": "other"
+        },
+        {
+          "url": "https://sabahguide.com/travel/basmy-pink-bus-kk/",
+          "title": "SabahGuide - BAS.MY Pink Bus KK (Bas Pink): Routes, Timetable & Fares 2026",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Search summary spells the road 'Jalan Kapayan'; stop-by-stop list not verified with the operator."
+    },
+    {
+      "id": "bki-bus-s08-route",
+      "category": "transport",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "BAS.MY route S08 runs KK Sentral - Jalan Tunku Abdul Rahman - Sembulan railway station - Lido Avenue - KKIA - Jalan Kepayan - KK Sentral.",
+      "value": "S08 loop",
+      "as_of": "2026 (third-party route lists)",
+      "sources": [
+        {
+          "url": "https://kuchingborneo.info/full-list-bas-my-kota-kinabalu-routes-every-stop-route-and-major-area-covered-by-sabahs-new-pink-bus-network/",
+          "title": "KuchingBorneo.info - Full list: BAS.MY Kota Kinabalu routes",
+          "type": "other"
+        },
+        {
+          "url": "https://railtravelstation.com/bas-my-kota-kinabalu/",
+          "title": "RailTravel Station - BAS.MY Kota Kinabalu",
+          "type": "other"
+        },
+        {
+          "url": "https://sabahguide.com/travel/basmy-pink-bus-kk/",
+          "title": "SabahGuide - BAS.MY Pink Bus KK (Bas Pink): Routes, Timetable & Fares 2026",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "S07 and S08 circulate in opposite directions; which is quicker depends on the passenger's destination. Stop list not verified with the operator."
+    },
+    {
+      "id": "bki-bus-s07-fare",
+      "category": "transport",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "The BAS.MY fare between KK Sentral and KKIA on route S07 is RM1.40.",
+      "value": "RM1.40",
+      "as_of": "2026-10-23 (SabahGuide check of operator fare table)",
+      "sources": [
+        {
+          "url": "https://sabahguide.com/travel/basmy-pink-bus-kk/",
+          "title": "SabahGuide - BAS.MY Pink Bus KK (Bas Pink): Routes, Timetable & Fares 2026",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Single third-party source citing the Jaguh Bayu fare table; the fare table itself was not seen."
+    },
+    {
+      "id": "bki-bus-s08-fare",
+      "category": "transport",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "The BAS.MY fare between KK Sentral and KKIA on route S08 is RM2.00.",
+      "value": "RM2.00",
+      "as_of": "2026-10-23 (SabahGuide check of operator fare table)",
+      "sources": [
+        {
+          "url": "https://sabahguide.com/travel/basmy-pink-bus-kk/",
+          "title": "SabahGuide - BAS.MY Pink Bus KK (Bas Pink): Routes, Timetable & Fares 2026",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Single third-party source citing the Jaguh Bayu fare table; the fare table itself was not seen."
+    },
+    {
+      "id": "bki-bus-operating-hours",
+      "category": "transport",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "BAS.MY airport routes run from about 05:45 (S07) and 05:50 (S08), with last departures at about 22:45 (S07) and 22:50 (S08).",
+      "value": "approx. 05:45-22:45 (S07); 05:50-22:50 (S08)",
+      "as_of": "approx. 2026-09 (RailTravel Station page)",
+      "sources": [
+        {
+          "url": "https://railtravelstation.com/bas-my-kota-kinabalu/",
+          "title": "RailTravel Station - BAS.MY Kota Kinabalu",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Times are departures as listed by a third-party site (likely from KK Sentral, not from the airport stop). Confirm against the operator timetable."
+    },
+    {
+      "id": "bki-bus-frequency",
+      "category": "transport",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "BAS.MY buses on routes S07 and S08 call at the airport roughly every 15 minutes.",
+      "value": "approx. every 15 min",
+      "as_of": "2026 (third-party guide)",
+      "sources": [
+        {
+          "url": "https://sabahguide.com/travel/kk-airport-guide/",
+          "title": "SabahGuide - Kota Kinabalu Airport (BKI): Arrivals, Transport & Tips",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://railtravelstation.com/bas-my-kota-kinabalu/",
+          "title": "RailTravel Station - BAS.MY Kota Kinabalu",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Frequency stated in the search summary without clear attribution; unclear whether it is per route or combined. Verify before publishing."
+    },
+    {
+      "id": "bki-bus-scheduled-departures",
+      "category": "transport",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "BAS.MY buses depart to a fixed timetable rather than waiting to fill up.",
+      "value": null,
+      "as_of": "2026-10 (SabahGuide)",
+      "sources": [
+        {
+          "url": "https://sabahguide.com/travel/basmy-pink-bus-kk/",
+          "title": "SabahGuide - BAS.MY Pink Bus KK (Bas Pink): Routes, Timetable & Fares 2026",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Contrasts with the older city minibuses, which leave when full."
+    },
+    {
+      "id": "bki-bus-payment-cashless",
+      "category": "transport",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "BAS.MY Kota Kinabalu buses are cashless: fares are paid with ManjaLink/ManjaPay, a concession card, a Visa or Mastercard debit or credit card, or DuitNow QR.",
+      "value": "Cashless only",
+      "as_of": "2026 (third-party guides)",
+      "sources": [
+        {
+          "url": "https://railtravelstation.com/bas-my-kota-kinabalu/",
+          "title": "RailTravel Station - BAS.MY Kota Kinabalu",
+          "type": "other"
+        },
+        {
+          "url": "https://kuchingborneo.info/full-list-bas-my-kota-kinabalu-routes-every-stop-route-and-major-area-covered-by-sabahs-new-pink-bus-network/",
+          "title": "KuchingBorneo.info - Full list: BAS.MY Kota Kinabalu routes",
+          "type": "other"
+        },
+        {
+          "url": "https://sabahguide.com/travel/basmy-pink-bus-kk/",
+          "title": "SabahGuide - BAS.MY Pink Bus KK (Bas Pink): Routes, Timetable & Fares 2026",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Important for arriving tourists: cash is not accepted on board according to these sources. Verify with operator."
+    },
+    {
+      "id": "bki-bus-fare-floor-and-pass",
+      "category": "transport",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "BAS.MY Kota Kinabalu fares start from RM0.80 per ride, and a 30-day unlimited pass costs RM30 for Malaysian citizens.",
+      "value": "from RM0.80; RM30 for 30 days (Malaysians)",
+      "as_of": "2026 (third-party guide)",
+      "sources": [
+        {
+          "url": "https://kuchingborneo.info/bas-my-kk-starts-operation-better-and-cheaper-public-bus-service-now-available-in-kota-kinabalu/",
+          "title": "KuchingBorneo.info - BAS.MY set for KK: better and cheaper public bus service",
+          "type": "other"
+        },
+        {
+          "url": "https://sabahguide.com/travel/basmy-pink-bus-kk/",
+          "title": "SabahGuide - BAS.MY Pink Bus KK (Bas Pink): Routes, Timetable & Fares 2026",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Network-wide pricing reported by a third-party site; not airport-specific and not confirmed with the operator."
+    },
+    {
+      "id": "bki-bus-operator",
+      "category": "transport",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "The BAS.MY Kota Kinabalu service is operated by Jaguh Bayu.",
+      "value": "Jaguh Bayu",
+      "as_of": "2026-10-23",
+      "sources": [
+        {
+          "url": "https://sabahguide.com/travel/basmy-pink-bus-kk/",
+          "title": "SabahGuide - BAS.MY Pink Bus KK (Bas Pink): Routes, Timetable & Fares 2026",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Inferred from the reference to the 'Jaguh Bayu fare table'; operator's full legal name not verified."
+    },
+    {
+      "id": "bki-bus-city-terminus",
+      "category": "transport",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "The city end of the airport bus routes is KK Sentral; no current source names Padang Merdeka as an airport-bus stop.",
+      "value": "KK Sentral",
+      "as_of": "2026-10 (SabahGuide)",
+      "sources": [
+        {
+          "url": "https://sabahguide.com/travel/basmy-pink-bus-kk/",
+          "title": "SabahGuide - BAS.MY Pink Bus KK (Bas Pink): Routes, Timetable & Fares 2026",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Older guides describe a separate RM5 'Airport Bus' to the city centre; see bki-legacy-airport-bus-conflict."
+    },
+    {
+      "id": "bki-legacy-airport-bus-conflict",
+      "category": "transport",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "Older travel guides describe a dedicated Airport Bus to the city for about RM5 running roughly 07:30 to 20:15, but a guide dated February 2024 said no airport bus was operating, so this service should be treated as unconfirmed.",
+      "value": "approx. RM5 (legacy, unconfirmed)",
+      "as_of": "approx. 2023-2024 (guides); conflicting",
+      "sources": [
+        {
+          "url": "https://www.themalaysianguide.com/practical/kota-kinabalu-airport-transfer/",
+          "title": "The Malaysian Guide - Kota Kinabalu Airport Transfer Guide: KKIA to KK City in 2026",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.welcomepickups.com/kota-kinabalu/airport-to-city/",
+          "title": "Welcome Pickups - Transfer Options from Kota Kinabalu Airport to Downtown",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://atobtransfer.com/malaysia/getting-from-kota-kinabalu-airpor-to-city-centre/",
+          "title": "AtoB Transfer - How to Get from Kota Kinabalu Airport to City Centre",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "CONFLICT between third-party guides; per-sentence attribution in the search summary was not explicit. Do not publish the RM5 Airport Bus as current. The BAS.MY S07/S08 routes are the best-evidenced public bus option in 2026."
+    },
+    {
+      "id": "bki-taxi-coupon-system",
+      "category": "transport",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "Airport taxis at Kota Kinabalu operate on a prepaid coupon system, with coupons bought at a taxi counter in the arrival hall.",
+      "value": null,
+      "as_of": "prior knowledge, approx. 2023-2024",
+      "sources": [
+        {
+          "url": "https://airports.malaysiaairports.com.my/kota-kinabalu",
+          "title": "NOT CONFIRMED IN THIS RUN (background knowledge) - suggested place to verify: official MAHB Kota Kinabalu ground-transport page",
+          "type": "other"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "Background knowledge only (the taxi search could not be run: search budget exhausted). A city-centre coupon fare of about RM30 is recalled but NOT verified; do not publish a fare."
+    },
+    {
+      "id": "bki-parking-rate-hours-1-3",
+      "category": "parking",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "Car parking at Kota Kinabalu International Airport costs RM3.00 per hour for the first three hours.",
+      "value": "RM3.00/hour (hours 1-3)",
+      "as_of": "unknown (third-party listings, current in 2026 search)",
+      "sources": [
+        {
+          "url": "https://parkinginmalaysia.com/kota-kinabalu-international-airport-kkia-parking-info/",
+          "title": "Parking in Malaysia - Kota Kinabalu International Airport (KKIA) Parking Info",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.klia2.info/airports/kota-kinabalu-international-airport/",
+          "title": "klia2.info - Kota Kinabalu Airport (BKI): Terminals, Airlines & Transfer",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Two third-party listings agree. An older parking.com.my listing (last updated 2020: RM2 first hour, RM1/hour after, RM24 daily cap) is outdated. Official MAHB rate table not retrieved."
+    },
+    {
+      "id": "bki-parking-rate-hours-4-12",
+      "category": "parking",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "From the fourth to the twelfth hour, airport parking costs RM2.00 per hour.",
+      "value": "RM2.00/hour (hours 4-12)",
+      "as_of": "unknown (third-party listings, current in 2026 search)",
+      "sources": [
+        {
+          "url": "https://parkinginmalaysia.com/kota-kinabalu-international-airport-kkia-parking-info/",
+          "title": "Parking in Malaysia - Kota Kinabalu International Airport (KKIA) Parking Info",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.klia2.info/airports/kota-kinabalu-international-airport/",
+          "title": "klia2.info - Kota Kinabalu Airport (BKI): Terminals, Airlines & Transfer",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Third-party listings; verify against the official rate board."
+    },
+    {
+      "id": "bki-parking-rate-hours-13-20",
+      "category": "parking",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "From the thirteenth to the twentieth hour, airport parking costs RM1.00 per hour.",
+      "value": "RM1.00/hour (hours 13-20)",
+      "as_of": "unknown (third-party listings, current in 2026 search)",
+      "sources": [
+        {
+          "url": "https://parkinginmalaysia.com/kota-kinabalu-international-airport-kkia-parking-info/",
+          "title": "Parking in Malaysia - Kota Kinabalu International Airport (KKIA) Parking Info",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.klia2.info/airports/kota-kinabalu-international-airport/",
+          "title": "klia2.info - Kota Kinabalu Airport (BKI): Terminals, Airlines & Transfer",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Third-party listings; verify against the official rate board."
+    },
+    {
+      "id": "bki-parking-daily-max",
+      "category": "parking",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "The maximum airport parking charge is RM35.00 per day.",
+      "value": "RM35.00/day",
+      "as_of": "unknown (third-party listings, current in 2026 search)",
+      "sources": [
+        {
+          "url": "https://parkinginmalaysia.com/kota-kinabalu-international-airport-kkia-parking-info/",
+          "title": "Parking in Malaysia - Kota Kinabalu International Airport (KKIA) Parking Info",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.klia2.info/airports/kota-kinabalu-international-airport/",
+          "title": "klia2.info - Kota Kinabalu Airport (BKI): Terminals, Airlines & Transfer",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "3xRM3 + 9xRM2 + 8xRM1 = RM35, consistent with the tier table. Third-party listings only."
+    },
+    {
+      "id": "bki-parking-24h-zones",
+      "category": "parking",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "The airport car park is open 24 hours and is divided into four zones, A to D.",
+      "value": "24 hours; Zones A-D",
+      "as_of": "unknown (third-party guide)",
+      "sources": [
+        {
+          "url": "https://www.klia2.info/airports/kota-kinabalu-international-airport/",
+          "title": "klia2.info - Kota Kinabalu Airport (BKI): Terminals, Airlines & Transfer",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Single third-party guide; attribution within the search summary not explicit."
+    },
+    {
+      "id": "bki-parking-bays",
+      "category": "parking",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "The open-air car park around Terminal 1 has roughly 1,300 to 1,400 parking bays.",
+      "value": "approx. 1,300-1,400 bays",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://www.klia2.info/airports/kota-kinabalu-international-airport/",
+          "title": "klia2.info - Kota Kinabalu Airport (BKI): Terminals, Airlines & Transfer",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://klia2.com.my/airports/kota_kinabalu_airport.htm",
+          "title": "klia2.com.my - Kota Kinabalu International Airport (KKIA)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "CONFLICT: one third-party page says Malaysia Airports lists 1,300 open-air bays; another says more than 1,400. Attribution approximate."
+    },
+    {
+      "id": "bki-parking-location",
+      "category": "parking",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "The public car park is an open-air lot opposite the terminal building.",
+      "value": null,
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://www.worldtravelguide.net/?p=23559",
+          "title": "World Travel Guide - Kota Kinabalu International Airport guide",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Undated third-party guide."
+    },
+    {
+      "id": "bki-parking-payment",
+      "category": "parking",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "Parking is paid at payment machines in the terminal before returning to the car, and a QR-code payment option is listed.",
+      "value": "Pay-on-foot machines; QR payment listed",
+      "as_of": "unknown (third-party listings)",
+      "sources": [
+        {
+          "url": "https://parkinginmalaysia.com/kota-kinabalu-international-airport-kkia-parking-info/",
+          "title": "Parking in Malaysia - Kota Kinabalu International Airport (KKIA) Parking Info",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.klia2.info/airports/kota-kinabalu-international-airport/",
+          "title": "klia2.info - Kota Kinabalu Airport (BKI): Terminals, Airlines & Transfer",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Third-party listings; accepted cashless methods (cards, e-wallets, Touch 'n Go) were NOT confirmed."
+    },
+    {
+      "id": "bki-contact-phone",
+      "category": "contact",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "The airport's main telephone number is +60 88 325 555.",
+      "value": "+60 88 325 555",
+      "as_of": "2024-04-23 (CAAM eAIP edition)",
+      "sources": [
+        {
+          "url": "https://aip.caam.gov.my/aip/eAIP/2024-04-23/html/eAIP/WM-AD-2.WBKK-en-MS.html",
+          "title": "CAAM eAIP Malaysia - WBKK Kota Kinabalu International (AD 2, edition 2024-04-23)",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Number published for the aerodrome operator in the CAAM eAIP (written +6088 325555). Whether this is the passenger-enquiry line shown on the MAHB site was not verified."
+    },
+    {
+      "id": "bki-contact-email",
+      "category": "contact",
+      "airport": "BKI",
+      "terminal": null,
+      "claim": "The aerodrome operator's e-mail address published by CAAM is masb_bki@malaysiaairports.com.my.",
+      "value": "masb_bki@malaysiaairports.com.my",
+      "as_of": "2024-04-23 (CAAM eAIP edition)",
+      "sources": [
+        {
+          "url": "https://aip.caam.gov.my/aip/eAIP/2024-04-23/html/eAIP/WM-AD-2.WBKK-en-MS.html",
+          "title": "CAAM eAIP Malaysia - WBKK Kota Kinabalu International (AD 2, edition 2024-04-23)",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Operational/administrative contact from the aeronautical publication; likely not the right address for passenger enquiries. Do not publish as a customer-care contact without checking."
+    },
+    {
+      "id": "bki-expansion-status-2026",
+      "category": "terminal",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "As of July 2026 the Terminal 1 expansion had not started: the Deputy Transport Minister said work would begin once land and site issues were resolved with the Sabah government.",
+      "value": "Not started (July 2026)",
+      "as_of": "2026-07",
+      "sources": [
+        {
+          "url": "https://www.nst.com.my/amp/news/nation/2026/07/1483461/kkia-expansion-awaits-resolution-land-issues-says-deputy-minister",
+          "title": "New Straits Times - KKIA expansion awaits resolution of land issues, says deputy minister (July 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://sabahguide.com/development/kkia-expansion/",
+          "title": "SabahGuide - KKIA Expansion: Terminal 1 Upgrade in Kota Kinabalu",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Deputy Transport Minister Hasbi Habibollah, reported by NST. No report of construction starting was found up to the search date (Nov 2026), so no expansion works are confirmed as affecting passengers in 2026."
+    },
+    {
+      "id": "bki-expansion-funding-approved",
+      "category": "terminal",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "Funding for the Kota Kinabalu International Airport expansion has been approved.",
+      "value": null,
+      "as_of": "2026-07",
+      "sources": [
+        {
+          "url": "https://www.nst.com.my/amp/news/nation/2026/07/1483461/kkia-expansion-awaits-resolution-land-issues-says-deputy-minister",
+          "title": "New Straits Times - KKIA expansion awaits resolution of land issues, says deputy minister (July 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Per the NST report; outstanding matters were land requirements, the expansion site and areas adjacent to the runway."
+    },
+    {
+      "id": "bki-expansion-cost",
+      "category": "terminal",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "The cost of the planned Kota Kinabalu airport expansion is reported at between about RM400 million and nearly RM500 million, depending on the source.",
+      "value": "approx. RM400-500 million (RM442.3 million per SabahGuide)",
+      "as_of": "2026-07 (NST); 2026 (The Sun, SabahGuide)",
+      "sources": [
+        {
+          "url": "https://www.nst.com.my/amp/news/nation/2026/07/1483461/kkia-expansion-awaits-resolution-land-issues-says-deputy-minister",
+          "title": "New Straits Times - KKIA expansion awaits resolution of land issues, says deputy minister (July 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://sabahguide.com/development/kkia-expansion/",
+          "title": "SabahGuide - KKIA Expansion: Terminal 1 Upgrade in Kota Kinabalu",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://thesun.my/news/malaysia-news/kota-kinabalu-airport-targets-new-routes-and-upgrades-for-tourism-boost/",
+          "title": "The Sun - Kota Kinabalu airport targets new routes and upgrades for tourism boost",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "CONFLICT: NST 'nearly RM500 million'; SabahGuide RM442.3 million; The Sun 'about RM400 million' redevelopment with a detailed study first."
+    },
+    {
+      "id": "bki-expansion-capacity-target",
+      "category": "terminal",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "The expansion is intended to raise the airport's capacity to 12 million passengers a year.",
+      "value": "12 million passengers/year",
+      "as_of": "2026-07",
+      "sources": [
+        {
+          "url": "https://www.nst.com.my/amp/news/nation/2026/07/1483461/kkia-expansion-awaits-resolution-land-issues-says-deputy-minister",
+          "title": "New Straits Times - KKIA expansion awaits resolution of land issues, says deputy minister (July 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://sabahguide.com/development/kkia-expansion/",
+          "title": "SabahGuide - KKIA Expansion: Terminal 1 Upgrade in Kota Kinabalu",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Baseline is given as 9 million (SabahGuide) or about 10 million (NST)."
+    },
+    {
+      "id": "bki-expansion-completion-target",
+      "category": "terminal",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "The Kota Kinabalu airport expansion is targeted for completion in 2028.",
+      "value": "2028",
+      "as_of": "2026 (Budget 2026 announcement as reported; SabahGuide)",
+      "sources": [
+        {
+          "url": "https://sabahguide.com/development/kkia-expansion/",
+          "title": "SabahGuide - KKIA Expansion: Terminal 1 Upgrade in Kota Kinabalu",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.nst.com.my/amp/news/nation/2026/07/1483461/kkia-expansion-awaits-resolution-land-issues-says-deputy-minister",
+          "title": "New Straits Times - KKIA expansion awaits resolution of land issues, says deputy minister (July 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Budget 2026 said airport projects in Penang, Kota Kinabalu, Tawau and Miri were expected to be completed by 2028; SabahGuide says mid-2028. With works not started by July 2026 the date is at risk."
+    },
+    {
+      "id": "bki-expansion-interim-works",
+      "category": "terminal",
+      "airport": "BKI",
+      "terminal": "T1",
+      "claim": "Malaysia Airports planned interim works to raise Terminal 1's capacity from about 9 million to 10 million passengers a year ahead of the main expansion.",
+      "value": "9 to 10 million passengers/year",
+      "as_of": "2026 (SabahGuide)",
+      "sources": [
+        {
+          "url": "https://sabahguide.com/development/kkia-expansion/",
+          "title": "SabahGuide - KKIA Expansion: Terminal 1 Upgrade in Kota Kinabalu",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Single third-party source; scope, timing and passenger impact of the interim works not verified."
+    }
+  ],
+  "gaps": [
+    "METHOD: direct access to airports.malaysiaairports.com.my and www.malaysiaairports.com.my was blocked (getaddrinfo ENOTFOUND) at the start and again just before finishing, so NO fact in this file is evidence=direct. All 'search' facts come from WebSearch result summaries; the underlying pages were not opened.",
+    "METHOD: the shared WebSearch budget for this workflow turn was exhausted after 15 queries. Planned searches for taxi coupon fares, e-hailing pick-up point, car rental, accessibility services, dining/retail outlets, the MAHB careline and terminal operating hours could not be run.",
+    "Terminal operating hours (whether Terminal 1 is open 24 hours) - not found; CAAM AD 2.3 hours text not returned.",
+    "Distance from the airport to Kota Kinabalu city centre - only background knowledge (about 8 km); not confirmed in this run.",
+    "Full-year 2025 passenger total for BKI - not found (only a monthly figure of about 802,000 and the 2024 total).",
+    "Official level-by-level terminal directory, number of check-in counters, gates and aerobridges - not verified.",
+    "Current domestic airline list (Malaysia Airlines, AirAsia, Batik Air, Firefly, AirBorneo/ex-MASwings) and city-level domestic and international destination list - not verified against an official source.",
+    "Whether Batik Air's Kota Kinabalu-Singapore route actually launched in February 2026, whether the Kota Kinabalu-Jeddah route launched, and the true status of AirAsia's Sibu/Bintulu routes (conflicting reports).",
+    "Lounges: the current lounge line-up, names (Travel Club Lounge? Golden Lounge?), exact locations, walk-in prices and access rules. Plaza Premium and Golden Lounge status conflict between sources.",
+    "Accessibility services: nothing sourced. A third-party guide in a search summary mentions ramps, lifts and accessible toilets but could not be attributed to a URL; wheelchair assistance, accessible parking/drop-off, and any MAHB sensory or hidden-disability provision at BKI are unverified.",
+    "Facilities: prayer rooms (surau), baby-care rooms, Wi-Fi, ATMs, money changers, medical clinic, showers, left-luggage prices and hours - not verified.",
+    "Dining and retail: no individual outlet names could be sourced; only the generic CAAM statement that shops and cafeterias exist.",
+    "Hotels at or near the airport - not researched (search budget).",
+    "Taxi: coupon counter location and fares (a city-centre fare of about RM30 is recalled from background knowledge only), night surcharge - not verified.",
+    "E-hailing (Grab etc.): designated pick-up point at Terminal 1 and typical fares - not verified.",
+    "Car rental: companies with counters at the arrival hall - not verified.",
+    "Airport bus: status in 2026 of the legacy RM5 'Airport Bus' to the city centre (Padang Merdeka) is unconfirmed; location of the BAS.MY stop at Terminal 1, official S07/S08 timetable from the airport stop and the official operator fare table were not seen.",
+    "Parking: official MAHB rate table, motorcycle rates, lost-ticket fee, accepted cashless payment methods, premium/covered parking and EV charging - not verified (rates come from third-party listings).",
+    "Contacts: MAHB customer-care line, lost and found, airport police, immigration and customs office numbers at KKIA - not found; only the CAAM-published operator phone and e-mail.",
+    "Immigration: official Sabah Immigration wording for Sarawakians entering Sabah, for children (MyKid/birth certificate), for foreign nationals arriving on domestic flights, and whether autogates/e-gates are available at KKIA - not retrieved from an official page.",
+    "Expansion: construction start date, any 2026 works inside Terminal 1 affecting passengers, and an RM11.8 million amenities upgrade mentioned in a search summary (source and date unclear) - not verified.",
+    "Cause of the 17 September 2026 runway rectification works - not disclosed by MAHB."
+  ]
+}

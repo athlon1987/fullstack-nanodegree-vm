@@ -1,0 +1,205 @@
+{
+  "key": "dubai",
+  "name": "Dubai International Airport (Dubai Airports)",
+  "host": "www.dubaiairports.ae",
+  "assessed": "2026-11-16",
+  "assessment_type": "expert assessment",
+  "direct_access": false,
+  "direct_access_note": "www.dubaiairports.ae became reachable mid-run but only returns HTTP 301 to the apex host dubaiairports.ae, which is blocked by the container egress proxy. No official page content, screenshots or page timings were obtained. Web-search budget for the session was exhausted after 10 successful queries; 6 further planned queries were refused.",
+  "canonical_host": "dubaiairports.ae",
+  "weighted_score": 3.2,
+  "weighted_score_pct": 64.0,
+  "overall_confidence": "low",
+  "scores": {
+    "ui": {
+      "score": 3.5,
+      "confidence": "low",
+      "evidence_level": "search",
+      "evidence": [
+        "[search, vendor claim] Design system built on atomic design principles after the DXB rebrand: https://www.prototype.ae/our-work/dxb-design-system",
+        "[search, vendor claim] Website UX redesigned for a luxury brand and global audience, mobile-first: https://koos.agency/project/dubai-airports-improved-digital-experience/",
+        "[search, vendor claim] Previous site described as cluttered, inconsistent and lacking a premium feel; one of three UI concepts chosen: https://irynaux.studio/projects/dxb",
+        "No visual inspection was possible (content host blocked); expert assessment, not an instrumented test."
+      ]
+    },
+    "ux": {
+      "score": 3.0,
+      "confidence": "low",
+      "evidence_level": "search",
+      "evidence": [
+        "[search] Task-led menu (Flights, Transport, Experiences, Information) and a flight status module with day picker on the homepage: https://dubaiairports.ae/home",
+        "[search] Shops and restaurants directories filter by terminal, location or category: https://dubaiairports.ae/experiences/shops",
+        "[search] Bookings hand off to separate platforms; Al Majlis moved to a new system on 10 April 2025 requiring re-registration: https://servicesedge.dubaiairports.ae/MajlisBooking",
+        "[search] Parking pre-booking is via third party Mawgif; taxis via Dubai Taxi Company: https://dubaiairports.ae/transport/car-parking",
+        "[search] Lounges, VIP services and hotels are filed under /experiences/shops/details/ URLs: https://dubaiairports.ae/experiences/shops/details/al-majlis"
+      ]
+    },
+    "info": {
+      "score": 3.5,
+      "confidence": "medium",
+      "evidence_level": "search",
+      "evidence": [
+        "[search] Per-terminal parking tariffs, walking times (Car Park A 2-5 min, B 7-12 min), payment by QR/pay station/Salik: https://dubaiairports.ae/transport/car-parking",
+        "[search] Taxi page with AED 25 starting fare, 24/7 ranks, accessible taxis at T3 Arrivals: https://dubaiairports.ae/transport/taxi",
+        "[search] Smart gates eligibility content: https://dubaiairports.ae/smart-gates",
+        "[search] Transfers procedures including separate-ticket and DXB-DWC guidance, but no minimum connection time: https://dubaiairports.ae/information/transfers",
+        "[search] FAQs and information hub (passport control and visas, security and customs, baggage, special assistance, maps): https://dubaiairports.ae/faqs"
+      ]
+    },
+    "flight": {
+      "score": 3.5,
+      "confidence": "low",
+      "evidence_level": "search",
+      "evidence": [
+        "[search] Official flight information page with real-time arrivals, departures and delays: https://dubaiairports.ae/flight-status",
+        "[search] Pocket Flights (dxb.pocketflights.com), DXB's live flight platform, opened by QR in terminals and at gates with no app download: https://www.khaleejtimes.com/uae/dubai-dxb-new-tool-pre-check-smart-gates",
+        "[search] DXB Express Maps opened from a QR on any flight information screen (launched about 27 March 2025): https://dubaipeople.ae/2025/03/28/dxb-express-maps-dubai-airport-launches-smart-navigation-tool/",
+        "Not verified: accepted search inputs, flight detail page, notifications/bookmarking, data freshness indicator."
+      ]
+    },
+    "mobile": {
+      "score": 3.5,
+      "confidence": "low",
+      "evidence_level": "search",
+      "evidence": [
+        "[search, vendor claim] Mobile-first redesign with clearer information architecture: https://koos.agency/project/dubai-airports-improved-digital-experience/",
+        "[search] App-less strategy: flight info, maps and Smart Gates PreCheck run in the phone browser from a QR scan: https://gulfnews.com/uae/dubai-airport-launches-instant-smart-gates-eligibility-check-for-travellers-1.500618859",
+        "[search, forum] Official myDXB app reported removed (April 2025 thread); no official retirement notice found: https://www.tripadvisor.com/ShowTopic-g1-i10702-k15312848-Dubai_Airport_App-Air_Travel.html",
+        "[search] Unofficial look-alike apps occupy the stores, one flagged by a reviewer as fake: https://play.google.com/store/apps/details?id=com.frugalflyer.airport.dxb&hl=en",
+        "No mobile performance or usability measurement was possible."
+      ]
+    },
+    "nav": {
+      "score": 3.0,
+      "confidence": "low",
+      "evidence_level": "search",
+      "evidence": [
+        "[search] Four clear primary groups with plain-language children: https://dubaiairports.ae/home",
+        "[search] Language selector offers only EN - English and AR - Arabic: https://dubaiairports.ae/",
+        "[search] Strong accessibility content hub (DXB for All): https://dubaiairports.ae/campaigns/wamtwd",
+        "[search] Legacy 404 and non-production hosts still indexed: https://dev-dxbalmajlis.dubaiairports.ae/passengers/information/transfers",
+        "Not evidenced: site search, site accessibility statement or WCAG level."
+      ]
+    },
+    "ai": {
+      "score": 2.5,
+      "confidence": "low",
+      "evidence_level": "search",
+      "evidence": [
+        "[search, vendor] DXBChat AI chatbot reported by Enterprise Bot (about January 2025); no official capability or language statement found: https://m.youtube.com/watch?v=fpmZCTSsL_Q",
+        "[search] Live chat and WhatsApp support listed on the contact page: https://dubaiairports.ae/contact-information",
+        "[search] Smart Gates Eligibility PreCheck by passport scan (July 2026) is intelligent self-service but not personalisation: https://economymiddleeast.com/news/dubai-airports-rolls-out-smart-gates-eligibility-pre-check-tool-to-ease-travel-journey/",
+        "No evidence of accounts, saved trips, profile-based notifications or recommendations on the passenger site."
+      ]
+    },
+    "commerce": {
+      "score": 3.0,
+      "confidence": "low",
+      "evidence_level": "search",
+      "evidence": [
+        "[search] Bookable marhaba meet-and-greet, fast track, lounge and chauffeur products: https://dubaiairports.ae/experiences/shops/details/marhaba-meet-greet",
+        "[search] Al Majlis VIP booking platform: https://dxbalmajlis.dubaiairports.ae/",
+        "[search, trade press] DXB&more food ordering with Servy, no app, Terminal 3 at launch: https://www.airportsinternational.com/article/dubai-airports-and-servy-launch-dxbmore",
+        "[search] Parking pre-booking through Mawgif: https://dubaiairports.ae/transport/car-parking",
+        "No airport loyalty programme or unified basket evidenced; checkouts are fragmented across operators."
+      ]
+    },
+    "perf": {
+      "score": 3.0,
+      "confidence": "low",
+      "evidence_level": "direct (redirect only) and search",
+      "evidence": [
+        "[direct] Single-run lab observation from a cloud container, not field data, redirect only: https://www.dubaiairports.ae/ returns HTTP/2 301 to https://dubaiairports.ae/ via Cloudflare (cf-cache-status HIT, s-maxage=240, alt-svc h3); redirect TTFB 0.08-0.89 s across eight requests.",
+        "[direct] No Strict-Transport-Security header on that redirect response; apex host headers could not be checked.",
+        "[search] Flight list empty in crawler snapshot of homepage, implying client-side data loading: https://dubaiairports.ae/home",
+        "[search] Legacy 404 URL and dev/authoring hosts indexed by search engines: https://corporate-auth.dubaiairports.ae/transport/bus",
+        "[search] Official channels promoted on X during a surge in enquiries (post ID decodes to 3 March 2026): https://x.com/DXB/status/2028800360798978338",
+        "No page-level timing, Core Web Vitals or uptime data obtained."
+      ]
+    }
+  },
+  "standouts": [
+    {
+      "name": "Pocket Flights: scan-to-phone live flight platform, no app",
+      "why": "QR codes in terminals and at gates open a mobile web flight tool, removing the install barrier and giving the airport a shell for adding journey services. Evidence level: search.",
+      "url": "https://gulfnews.com/uae/dubai-airport-launches-instant-smart-gates-eligibility-check-for-travellers-1.500618859"
+    },
+    {
+      "name": "Smart Gates Eligibility PreCheck (July 2026, with GDRFA)",
+      "why": "A phone-camera scan of the passport photo page returns an instant answer on biometric gate eligibility before the passenger queues, turning opaque immigration rules into a ten-second self-service. Evidence level: search.",
+      "url": "https://www.khaleejtimes.com/uae/dubai-dxb-new-tool-pre-check-smart-gates"
+    },
+    {
+      "name": "DXB Express Maps from every flight information screen",
+      "why": "The QR on the screen gives a known start point and opens wayfinding to gates, dining, shops, lounges, toilets and service desks; launched for a peak period alongside marked accessible routes. Evidence level: search.",
+      "url": "https://dubaiairports.ae/maps-home"
+    },
+    {
+      "name": "DXB for All accessibility programme",
+      "why": "Sunflower lanyards (36,040 by end of 2025), autism-friendly route, hearing loops at 520+ touchpoints, Assisted Travel Lounge, visual Travel Planner and a public pledge to be the most accessible airport by 2035. Evidence level: search (self-reported).",
+      "url": "https://dubaiairports.ae/campaigns/wamtwd"
+    },
+    {
+      "name": "Always-on omnichannel contact (phone, WhatsApp, live chat, AI chatbot)",
+      "why": "One contact page lists all channels, backed by an outsourced always-on centre and a vendor-reported AI chatbot; the same channels served as the official route during a March 2026 surge. Evidence level: search.",
+      "url": "https://dubaiairports.ae/contact-information"
+    }
+  ],
+  "weaknesses": [
+    "Website is bilingual only (English and Arabic) despite a highly international passenger base and 25-language terminal announcements [search] https://dubaiairports.ae/",
+    "Fragmented estate and identity: separate hosts and registrations for DXB, DWC, Al Majlis (forced re-registration April 2025), Pocket Flights, DXBmore.com and operator checkouts; no single account or basket evidenced [search] https://servicesedge.dubaiairports.ae/MajlisBooking",
+    "No personalisation layer and no official app: no accounts, saved flights or loyalty evidenced; myDXB reportedly removed and unofficial apps fill the stores [search, forum] https://www.tripadvisor.com/ShowTopic-g1-i10702-k15312848-Dubai_Airport_App-Air_Travel.html",
+    "Thin transit tooling: procedural transfer text, no minimum connection times or connection planner, manual DXB-DWC transfer [search] https://dubaiairports.ae/information/transfers",
+    "Opaque AI assistant and weak web hygiene: chatbot documented only by its vendor; legacy 404 and dev/authoring hosts indexed; no site accessibility statement found [search] https://m.youtube.com/watch?v=fpmZCTSsL_Q"
+  ],
+  "ideas": [
+    "One scan, one journey: a single progressive web app opened by QR from flight screens, totems and boarding-pass emails, pre-filtered to the passenger's flight with live status, walking time from the scan point, queue estimates, transfer steps and a built-in disruption mode (Dubai splits this across three tools).",
+    "Genuinely multilingual with a transparent assistant: full Bahasa Malaysia and English editions plus human-reviewed core journeys in key inbound languages, honest labelling of machine-translated pages, and one named assistant with published scope, languages and human handover (Dubai offers two site languages and no official chatbot documentation).",
+    "Immigration lane and autogate eligibility checker that needs no passport scan: nationality, pass type and age band in, correct lane and required pre-arrival forms out, usable before travel.",
+    "A real connection planner: published terminal-to-terminal times, minimum connection guidance by ticket type and a will-I-make-it answer for a pair of flights.",
+    "Single account and single basket for parking, fast track, lounge, meet-and-greet, food order-to-gate and reserve-and-collect, with guest checkout first and optional loyalty.",
+    "Accessibility as a product feature: WCAG 2.2 AA statement, step-free and low-sensory map routing, online assistance and sunflower lanyard requests, visual journey planner in every language."
+  ],
+  "gaps": [
+    "Apex host dubaiairports.ae and dxb.pocketflights.com not reachable; no direct page reads, screenshots or page timings",
+    "Flight search inputs, detail page, notifications and freshness indicator not verified",
+    "No official confirmation or date for myDXB app retirement; no official app ratings",
+    "AI assistant official name, capabilities and languages not confirmed",
+    "Site search, accounts, footer and site accessibility statement not verified",
+    "No 2024-2026 website awards or published performance data found"
+  ],
+  "sources": [
+    "https://dubaiairports.ae/home",
+    "https://dubaiairports.ae/flight-status",
+    "https://dubaiairports.ae/maps-home",
+    "https://dubaiairports.ae/smart-gates",
+    "https://dubaiairports.ae/contact-information",
+    "https://dubaiairports.ae/faqs",
+    "https://dubaiairports.ae/information/transfers",
+    "https://dubaiairports.ae/transport/car-parking",
+    "https://dubaiairports.ae/transport/taxi",
+    "https://dubaiairports.ae/experiences/shops",
+    "https://dubaiairports.ae/experiences/shops/details/marhaba-meet-greet",
+    "https://dubaiairports.ae/experiences/shops/details/al-majlis",
+    "https://dubaiairports.ae/campaigns/wamtwd",
+    "https://dxbalmajlis.dubaiairports.ae/",
+    "https://servicesedge.dubaiairports.ae/MajlisBooking",
+    "https://media.dubaiairports.ae/dxb-marks-a-milestone-in-dubais-accessibility-ambition/",
+    "https://media.dubaiairports.ae/dubai-airports-launches-next-phase-of-accessibility-strategy-pledging-to-make-dxb-the-worlds-most-accessible-airport-by-2035/",
+    "https://x.com/DXB/status/2028800360798978338",
+    "https://x.com/DubaiAirports/status/2080584593854591439",
+    "https://gulfnews.com/uae/dubai-airport-launches-instant-smart-gates-eligibility-check-for-travellers-1.500618859",
+    "https://www.khaleejtimes.com/uae/dubai-dxb-new-tool-pre-check-smart-gates",
+    "https://economymiddleeast.com/news/dubai-airports-rolls-out-smart-gates-eligibility-pre-check-tool-to-ease-travel-journey/",
+    "https://www.khaleejtimes.com/business/aviation/dubai-airports-new-always-on-customer-contact-centre-to-soon-provide-support-through-whatsapp",
+    "https://dubaipeople.ae/2025/03/28/dxb-express-maps-dubai-airport-launches-smart-navigation-tool/",
+    "https://www.newsonair.gov.in/dubai-launches-ai-powered-passenger-corridor-to-clear-immigration-in-seconds",
+    "https://moodiedavittreport.com/dubai-airports-launches-mydxb-app-for-apple-and-android-devices/",
+    "https://www.tripadvisor.com/ShowTopic-g1-i10702-k15312848-Dubai_Airport_App-Air_Travel.html",
+    "https://www.airportsinternational.com/article/dubai-airports-and-servy-launch-dxbmore",
+    "https://koos.agency/project/dubai-airports-improved-digital-experience/",
+    "https://irynaux.studio/projects/dxb",
+    "https://www.prototype.ae/our-work/dxb-design-system",
+    "https://m.youtube.com/watch?v=fpmZCTSsL_Q"
+  ]
+}

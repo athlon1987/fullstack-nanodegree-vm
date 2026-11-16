@@ -1,0 +1,2415 @@
+{
+  "topic": "Penang International Airport (PEN) - verified facts for the MAHB website redesign",
+  "generated": "2026-11-16",
+  "facts": [
+    {
+      "id": "pen-official-name",
+      "category": "identity",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The airport's official name is Penang International Airport.",
+      "value": "Penang International Airport",
+      "as_of": "2026-10-29 (eAIP AIRAC cycle)",
+      "sources": [
+        {
+          "url": "https://aip.caam.gov.my/aip/eAIP/2026-10-29-AIRAC/html/eAIP/WM-AD-2.WMKP-en-MS.html",
+          "title": "CAAM eAIP Malaysia - Aerodrome WMKP Penang International Airport (AIRAC 29 Oct 2026)",
+          "type": "government"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/en/penang",
+          "title": "PEN - Penang (Malaysia Airports airport site)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "CAAM eAIP entry is titled 'WMKP - PENANG INTERNATIONAL AIRPORT'; the Malaysia Airports airport page is titled 'PEN - Penang'. Malay name seen in the Rapid Penang listing: 'Lapangan Terbang Antarabangsa Bayan Lepas'."
+    },
+    {
+      "id": "pen-iata-code",
+      "category": "identity",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Penang International Airport's IATA code is PEN.",
+      "value": "PEN",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://airports.malaysiaairports.com.my/en/penang",
+          "title": "PEN - Penang (Malaysia Airports airport site)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.klia2.com.my/airports/penang_airport.htm",
+          "title": "klia2.com.my - Penang International Airport (PEN)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Official airport page title is 'PEN - Penang'."
+    },
+    {
+      "id": "pen-icao-code",
+      "category": "identity",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Penang International Airport's ICAO code is WMKP.",
+      "value": "WMKP",
+      "as_of": "2026-10-29 (eAIP AIRAC cycle)",
+      "sources": [
+        {
+          "url": "https://aip.caam.gov.my/aip/eAIP/2026-10-29-AIRAC/html/eAIP/WM-AD-2.WMKP-en-MS.html",
+          "title": "CAAM eAIP Malaysia - Aerodrome WMKP Penang International Airport (AIRAC 29 Oct 2026)",
+          "type": "government"
+        },
+        {
+          "url": "https://aip.caam.gov.my/aip/eAIP/2026-05-19/html/eAIP/WM-AD-2.WMKP-en-MS.html",
+          "title": "CAAM eAIP Malaysia - WMKP Penang International Airport (19 May 2026)",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Government aeronautical publication (CAAM eAIP)."
+    },
+    {
+      "id": "pen-operator-mahb",
+      "category": "corporate",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Penang International Airport is operated by Malaysia Airports (Malaysia Airports Holdings Berhad, MAHB).",
+      "value": "Malaysia Airports Holdings Berhad",
+      "as_of": "2025-07 (Bernama); official page undated",
+      "sources": [
+        {
+          "url": "https://airports.malaysiaairports.com.my/en/penang",
+          "title": "PEN - Penang (Malaysia Airports airport site)",
+          "type": "official"
+        },
+        {
+          "url": "https://bernama.com/en/news.php?id=2446593",
+          "title": "BERNAMA - Malaysia Airports Targets June 2028 For Completion Of Penang Expansion",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "The airport has pages on both malaysiaairports.com.my hosts; Bernama reports MAHB as the party delivering the expansion."
+    },
+    {
+      "id": "pen-official-web-pages",
+      "category": "other",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Malaysia Airports currently publishes Penang airport pages at airports.malaysiaairports.com.my/en/penang and www.malaysiaairports.com.my/en/penang.",
+      "value": "https://airports.malaysiaairports.com.my/en/penang",
+      "as_of": "search index age approx. 4-6 months at 2026-11-16",
+      "sources": [
+        {
+          "url": "https://airports.malaysiaairports.com.my/en/penang",
+          "title": "PEN - Penang (Malaysia Airports airport site)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/en/penang",
+          "title": "Penang - Malaysia Airports",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Both URLs were returned by the search index; neither could be opened directly from this environment (host not on the network allowlist). A mis-filed 'KLIA Terminal 1 Parking' page was also indexed under a /penang-international-airport/ path - worth checking in the content audit."
+    },
+    {
+      "id": "pen-location-bayan-lepas",
+      "category": "identity",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The airport is in Bayan Lepas on Penang Island, postcode 11900 Penang, Malaysia.",
+      "value": "Bayan Lepas, 11900 Penang",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://penang.eastin.com/local-area/penang-international-airport",
+          "title": "Eastin Hotel Penang - Local area: Penang International Airport",
+          "type": "other"
+        },
+        {
+          "url": "https://www.klia2.com.my/airports/penang_airport.htm",
+          "title": "klia2.com.my - Penang International Airport (PEN)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Address as given by third-party listings; the official Penang page shows only the MAHB corporate address in Sepang. Postal address format should be confirmed with MAHB."
+    },
+    {
+      "id": "pen-distance-george-town-16km",
+      "category": "identity",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The airport is about 16 km south of George Town city centre.",
+      "value": "16 km",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Penang_International_Airport",
+          "title": "Wikipedia - Penang International Airport",
+          "type": "other"
+        },
+        {
+          "url": "https://penang.eastin.com/local-area/penang-international-airport",
+          "title": "Eastin Hotel Penang - Local area: Penang International Airport",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Figure repeated across third-party sources; the search summary did not tie it to a single URL. Conflicts with the AIP figure of 14 km measured from KOMTAR (see pen-distance-komtar-aip) - likely road distance versus straight-line distance."
+    },
+    {
+      "id": "pen-distance-komtar-aip",
+      "category": "identity",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The Malaysian AIP places the airport 14 km (7.5 NM) from the KOMTAR building in George Town, on a bearing of 205 degrees.",
+      "value": "14 km (7.5 NM), bearing 205 degrees from KOMTAR",
+      "as_of": "unknown (older AIP PDF edition)",
+      "sources": [
+        {
+          "url": "https://aip.caam.gov.my/aip%20pdf/AD/AD2/WMKP/WMKP-Penang%20International%20Airport.pdf",
+          "title": "AIP Malaysia WMKP AD 2 (older PDF edition)",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "From an older PDF edition of the AIP; the current HTML eAIP excerpt returned by search did not show the distance line. Straight-line aeronautical distance, not a road distance."
+    },
+    {
+      "id": "pen-arp-coordinates",
+      "category": "identity",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The aerodrome reference point published in the current eAIP is 05 17 44 N, 100 16 20 E.",
+      "value": "051744N 1001620E",
+      "as_of": "2026-10-29 (eAIP AIRAC cycle)",
+      "sources": [
+        {
+          "url": "https://aip.caam.gov.my/aip/eAIP/2026-10-29-AIRAC/html/eAIP/WM-AD-2.WMKP-en-MS.html",
+          "title": "CAAM eAIP Malaysia - Aerodrome WMKP Penang International Airport (AIRAC 29 Oct 2026)",
+          "type": "government"
+        },
+        {
+          "url": "https://aip.caam.gov.my/aip%20pdf/AD/AD2/WMKP/WMKP-Penang%20International%20Airport.pdf",
+          "title": "AIP Malaysia WMKP AD 2 (older PDF edition)",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "An older AIP PDF gives a different ARP (051750N 1001636E). Use the current eAIP value; re-check before publishing map coordinates."
+    },
+    {
+      "id": "pen-elevation",
+      "category": "identity",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The airport elevation is 11 ft (3.4 m) above mean sea level.",
+      "value": "11 ft (3.4 m)",
+      "as_of": "unknown (older AIP PDF edition)",
+      "sources": [
+        {
+          "url": "https://aip.caam.gov.my/aip%20pdf/AD/AD2/WMKP/WMKP-Penang%20International%20Airport.pdf",
+          "title": "AIP Malaysia WMKP AD 2 (older PDF edition)",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "From the older AIP PDF; not re-confirmed against the current eAIP page."
+    },
+    {
+      "id": "pen-runway-designator",
+      "category": "operations",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The airport has a runway designated 04/22.",
+      "value": "RWY 04/22",
+      "as_of": "2025-12-02 (chart date cited in eAIP)",
+      "sources": [
+        {
+          "url": "https://aip.caam.gov.my/aip/eAIP/2026-10-29-AIRAC/html/eAIP/WM-AD-2.WMKP-en-MS.html",
+          "title": "CAAM eAIP Malaysia - Aerodrome WMKP Penang International Airport (AIRAC 29 Oct 2026)",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Designator taken from eAIP chart references ('RWY 04/22 PENANG RADAR ONE', chart dated 02 DEC 2025). Runway length was not returned by search (see gaps)."
+    },
+    {
+      "id": "pen-traffic-types",
+      "category": "operations",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The Malaysian AIP lists Penang International Airport as open to international and domestic traffic.",
+      "value": "INTL, DOM; IFR and VFR",
+      "as_of": "2026-10-29 (eAIP AIRAC cycle)",
+      "sources": [
+        {
+          "url": "https://aip.caam.gov.my/aip/eAIP/2026-10-29-AIRAC/html/eAIP/WM-AD-1.3-en-MS.html",
+          "title": "CAAM eAIP - AD 1.3 Index to aerodromes and heliports",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "AD 1.3 index entry: INTL, DOM with IFR and VFR traffic."
+    },
+    {
+      "id": "pen-former-name-and-opening",
+      "category": "identity",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The airport opened in 1935 and was formerly known as Bayan Lepas International Airport.",
+      "value": "Opened 1935",
+      "as_of": "prior knowledge (to early 2026)",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE - not re-confirmed in this run (official site blocked, search budget exhausted). Approximate as-of: model background knowledge to early 2026. Verify against Malaysia Airports before publishing. The Rapid Penang listing still uses the Malay name 'Lapangan Terbang Antarabangsa Bayan Lepas', which is consistent with the former name."
+    },
+    {
+      "id": "pen-operating-hours-24h",
+      "category": "operations",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "A third-party hotel listing states that the airport operates 24 hours a day; no official statement of terminal opening hours was obtained.",
+      "value": "24 hours (unofficial)",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://penang.eastin.com/local-area/penang-international-airport",
+          "title": "Eastin Hotel Penang - Local area: Penang International Airport",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Only source is a hotel 'local area' page. Check-in counters and lounges keep their own hours. The AIP AD 2.3 operational-hours table was not returned by search. A CAAM supplement covers scheduled runway closures (see pen-runway-closure-supplement), so 'open 24 hours' should not be published without MAHB confirmation."
+    },
+    {
+      "id": "pen-passengers-2025",
+      "category": "operations",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Penang International Airport handled 8.31 million passengers in 2025.",
+      "value": "8.31 million (2025)",
+      "as_of": "2026-03 (Bernama)",
+      "sources": [
+        {
+          "url": "https://www.bernama.com/en/region/news.php?id=2533015",
+          "title": "BERNAMA - Penang International Airport Expansion Phase One Achieved 98 Per Cent - Wong",
+          "type": "news"
+        },
+        {
+          "url": "https://aviationweek.com/air-transport/airports-networks/routes-asia-2026-awards-airport-finalists",
+          "title": "Aviation Week - Routes Asia 2026 Awards: The Airport Finalists",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Bernama (March 2026, citing Penang exco Wong Hon Wai) and the Routes Asia 2026 Awards finalist profile both give 8.31 million. Wikipedia's table lists 8,269,978 for 2025 - a small unexplained difference. Official MAHB statistics table not obtained."
+    },
+    {
+      "id": "pen-passengers-2024",
+      "category": "operations",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Penang International Airport handled 7.47 million passengers in 2024, according to Bernama.",
+      "value": "7.47 million (2024)",
+      "as_of": "2026-03 (Bernama)",
+      "sources": [
+        {
+          "url": "https://www.bernama.com/en/region/news.php?id=2533015",
+          "title": "BERNAMA - Penang International Airport Expansion Phase One Achieved 98 Per Cent - Wong",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Bernama puts 2025 growth at 11.25 per cent on this base. Aviation Week reports 8.4 per cent growth and Wikipedia 7.97 per cent, which imply a higher 2024 base - sources conflict, so quote the growth rate only after checking MAHB statistics."
+    },
+    {
+      "id": "pen-passengers-2025-wikipedia-variant",
+      "category": "operations",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Wikipedia's traffic table, attributed to Malaysia Airports data, lists 8,269,978 passengers for 2025 (up 7.97 per cent).",
+      "value": "8,269,978 (2025)",
+      "as_of": "2026 (Wikipedia table, edit date unknown)",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Penang_International_Airport",
+          "title": "Wikipedia - Penang International Airport",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Recorded because it conflicts with the 8.31 million figure in news sources. Wikipedia is not an authoritative source."
+    },
+    {
+      "id": "pen-design-capacity",
+      "category": "operations",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The existing terminal has a design capacity of 6.5 million passengers a year.",
+      "value": "6.5 million passengers per year",
+      "as_of": "2025-07 (Bernama)",
+      "sources": [
+        {
+          "url": "https://bernama.com/en/news.php?id=2446593",
+          "title": "BERNAMA - Malaysia Airports Targets June 2028 For Completion Of Penang Expansion",
+          "type": "news"
+        },
+        {
+          "url": "https://thesun.my/news/malaysia-news/penang-airport-expansion-set-for-completion-by-june-2028-oi14496109/",
+          "title": "The Sun - Penang airport expansion set for completion by June 2028",
+          "type": "news"
+        },
+        {
+          "url": "https://flightmalaysia.com/airports/penang-international-airport",
+          "title": "flightmalaysia.com - Penang International Airport (PEN): terminal, transport and expansion",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Stated consistently in MAHB expansion coverage."
+    },
+    {
+      "id": "pen-operating-above-capacity",
+      "category": "operations",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "In 2025 the airport handled about 8.31 million passengers against a design capacity of 6.5 million, so it is operating above its design capacity.",
+      "value": "8.31 million vs 6.5 million",
+      "as_of": "2026-03",
+      "sources": [
+        {
+          "url": "https://www.bernama.com/en/region/news.php?id=2533015",
+          "title": "BERNAMA - Penang International Airport Expansion Phase One Achieved 98 Per Cent - Wong",
+          "type": "news"
+        },
+        {
+          "url": "https://bernama.com/en/news.php?id=2446593",
+          "title": "BERNAMA - Malaysia Airports Targets June 2028 For Completion Of Penang Expansion",
+          "type": "news"
+        },
+        {
+          "url": "https://flightmalaysia.com/airports/penang-international-airport",
+          "title": "flightmalaysia.com - Penang International Airport (PEN): terminal, transport and expansion",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Derived by comparing two sourced figures; relevant to setting passenger expectations about congestion."
+    },
+    {
+      "id": "pen-terminal-single-building",
+      "category": "terminal",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Penang International Airport has a single passenger terminal building that handles both domestic and international flights.",
+      "value": "1 terminal",
+      "as_of": "prior knowledge (to early 2026)",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE - not re-confirmed in this run (official site blocked, search budget exhausted). Approximate as-of: model background knowledge to early 2026. Verify against Malaysia Airports before publishing. Consistent with search evidence: lounge listings describe 'Domestic Departures' and 'International Departures' areas of the same airport, and the official car-rental page refers to 'the terminal building'."
+    },
+    {
+      "id": "pen-terminal-arrivals-ground-level",
+      "category": "terminal",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The arrivals hall is on the ground level (Level 1) of the terminal, with departures on the level above.",
+      "value": "Arrivals Level 1; departures Level 2",
+      "as_of": "prior knowledge (to early 2026)",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE - not re-confirmed in this run (official site blocked, search budget exhausted). Approximate as-of: model background knowledge to early 2026. Verify against Malaysia Airports before publishing. Partly corroborated by search evidence: car-rental counters on Level 1 (official), domestic departures airside on the 2nd floor (Priority Pass), a link bridge from car park Level 3 to the departure terminal (Malaysia Airports via repost). Level naming must be checked on site because sources mix 'Level 2', '2nd Floor' and 'Level 3'."
+    },
+    {
+      "id": "pen-terminal-domestic-departures-level",
+      "category": "terminal",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The domestic departures airside area, after security clearance, is on the 2nd floor (Level 2) of the terminal.",
+      "value": "2nd Floor / Level 2",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://www.prioritypass.com/en-GB/lounges/malaysia/penang-international/pen-plaza-premium-lounge",
+          "title": "Priority Pass - Plaza Premium Lounge PEN Airport Penang International",
+          "type": "other"
+        },
+        {
+          "url": "https://www.taketours.com/page/experience/plaza-premium-lounge-penang-airport-domestic-departures-300-20731.html",
+          "title": "TakeTours - Plaza Premium Lounge Penang Airport - Domestic Departures",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Inferred from the lounge address published by Priority Pass ('Airside - Domestic Departures, Shop S14 & S14A, 2nd Floor, opposite Security Clearance') and a second listing giving 'Level 2, Domestic Departure'."
+    },
+    {
+      "id": "pen-terminal-international-mezzanine",
+      "category": "terminal",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The international departures area includes a mezzanine floor, reached airside near Gate A3.",
+      "value": "Mezzanine floor near Gate A3",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://www.plazapremiumlounge.com/en-uk/find/asia/malaysia/penang/penang-international-airport/international-departures",
+          "title": "Plaza Premium Lounge (International Departures) - Penang International Airport",
+          "type": "operator"
+        },
+        {
+          "url": "https://www.cathaypacific.com/cx/en_US/destinations/lounges/penang-pen/plaza-premium-lounge.html",
+          "title": "Cathay Pacific - Plaza Premium Lounge, Penang",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "From Plaza Premium Lounge's own location description. Cathay Pacific's listing calls the same lounge location 'Level 3'."
+    },
+    {
+      "id": "pen-terminal-car-park-opposite",
+      "category": "terminal",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "A multi-storey car park stands across the road from the terminal, opposite the main terminal building.",
+      "value": null,
+      "as_of": "2026-03-11 (BusinessToday)",
+      "sources": [
+        {
+          "url": "https://www.businesstoday.com.my/2026/03/11/penang-airport-expansion-phase-nears-completion/",
+          "title": "BusinessToday - Penang Airport Expansion Phase Nears Completion",
+          "type": "news"
+        },
+        {
+          "url": "https://onpenang.com/grab-in-penang/",
+          "title": "onPenang - Is there Grab in Penang? A complete guide to using Grab in 2026",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Described as 'the car park opposite the main terminal' (BusinessToday) and 'across the road from arrivals' (guides)."
+    },
+    {
+      "id": "pen-terminal-link-bridge",
+      "category": "terminal",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "A link bridge connects Level 3 of the multi-storey car park to the departure level of the terminal.",
+      "value": "Car park Level 3 to departures",
+      "as_of": "2025-10 (repost of Malaysia Airports announcement)",
+      "sources": [
+        {
+          "url": "https://www.threads.com/@penangfoodie/post/DP5y3q-k0OU/penang-international-airport-now-offers-premium-parking-the-premium-parking-is-l",
+          "title": "Threads @penangfoodie - Penang International Airport now offers Premium Parking (credits Malaysia Airports)",
+          "type": "other"
+        },
+        {
+          "url": "https://x.com/MY_Airports/status/1976208999856079058",
+          "title": "Malaysia Airports on X: Penang International Airport now offers Premium Parking",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "The link-bridge wording comes from a social-media repost crediting Malaysia Airports; the official X post confirms the Level 3 location of Premium Parking."
+    },
+    {
+      "id": "pen-airlines-count-2026",
+      "category": "airlines",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "An independent 2026 route listing counts 25 airlines operating scheduled passenger flights at Penang.",
+      "value": "25 airlines",
+      "as_of": "2026 (page undated; checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.visitpenang.com/getting-there/direct-flights",
+          "title": "visitpenang.com - Direct Flights to and from Penang: All Routes",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "visitpenang.com is an independent travel site, not an airport or airline source. Airline counts change by season; the new website should drive this from live schedule data, not static copy."
+    },
+    {
+      "id": "pen-airlines-named",
+      "category": "airlines",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Airlines listed as serving Penang in 2026 include AirAsia, Cathay Pacific, Malaysia Airlines, Scoot, Singapore Airlines and Thai Airways, alongside several Chinese and Indonesian carriers.",
+      "value": null,
+      "as_of": "2026 (page undated; checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.visitpenang.com/getting-there/direct-flights",
+          "title": "visitpenang.com - Direct Flights to and from Penang: All Routes",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Partial list only - the full 25-airline list was not captured. Not confirmed against the official airline directory."
+    },
+    {
+      "id": "pen-international-cities-2026",
+      "category": "airlines",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "An independent 2026 listing shows direct flights between Penang and 18 international cities, including Singapore, Medan, Jakarta, Bangkok, Hong Kong, Taipei, Chennai and six cities in mainland China.",
+      "value": "18 international cities",
+      "as_of": "2026 (page undated; checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.visitpenang.com/getting-there/direct-flights",
+          "title": "visitpenang.com - Direct Flights to and from Penang: All Routes",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Independent travel site. Destination counts are seasonal and should be verified against airline schedules."
+    },
+    {
+      "id": "pen-domestic-cities-2026",
+      "category": "airlines",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The same listing shows direct flights between Penang and 6 Malaysian cities.",
+      "value": "6 domestic cities",
+      "as_of": "2026 (page undated; checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.visitpenang.com/getting-there/direct-flights",
+          "title": "visitpenang.com - Direct Flights to and from Penang: All Routes",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "City names were not captured in the search summary (see gaps)."
+    },
+    {
+      "id": "pen-route-shanghai-spring",
+      "category": "airlines",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Spring Airlines was reported to have begun daily Shanghai Pudong - Penang flights in late January 2026.",
+      "value": "Daily, from late Jan 2026",
+      "as_of": "2026 (travel trade site, exact date unknown)",
+      "sources": [
+        {
+          "url": "https://www.travelandtourworld.com/news/article/spring-airlines-unites-airasia-batik-air-transnusa-and-more-unveil-new-routes-to-penang-in-2026-revolutionizing-travel-to-malaysias-premier-destination/",
+          "title": "Travel And Tour World - Spring Airlines, AirAsia, Batik Air, TransNusa and more unveil new routes to Penang in 2026",
+          "type": "other"
+        },
+        {
+          "url": "https://www.travelandtourworld.com/news/article/new-flights-to-penang-in-2026-direct-routes-from-shanghai-phuket-singapore-medan-and-jakarta-your-ultimate-travel-guide/",
+          "title": "Travel And Tour World - New Flights to Penang in 2026: Direct Routes from Shanghai, Phuket, Singapore, Medan, and Jakarta",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Source is Travel And Tour World, a low-reliability travel news aggregator. Confirm with the airline schedule."
+    },
+    {
+      "id": "pen-route-phuket-airasia",
+      "category": "airlines",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "AirAsia was reported to be resuming Penang - Phuket flights from 13 March 2026, four times weekly.",
+      "value": "4 weekly, from 2026-03-13",
+      "as_of": "2026 (travel trade site, exact date unknown)",
+      "sources": [
+        {
+          "url": "https://www.travelandtourworld.com/news/article/new-flights-to-penang-in-2026-direct-routes-from-shanghai-phuket-singapore-medan-and-jakarta-your-ultimate-travel-guide/",
+          "title": "Travel And Tour World - New Flights to Penang in 2026: Direct Routes from Shanghai, Phuket, Singapore, Medan, and Jakarta",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Low-reliability source; confirm with the airline."
+    },
+    {
+      "id": "pen-route-qingdao",
+      "category": "airlines",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "A Qingdao - Penang service was reported to start on 31 March 2026 with three weekly flights.",
+      "value": "3 weekly, from 2026-03-31",
+      "as_of": "2026 (travel trade site, exact date unknown)",
+      "sources": [
+        {
+          "url": "https://www.travelandtourworld.com/news/article/spring-airlines-joins-airasia-qingdao-airlines-chongqing-airlines-and-batik-air-launch-explosive-new-routes-to-penang-2026s-game-changing-travel-surge/",
+          "title": "Travel And Tour World - Spring Airlines, AirAsia, Qingdao Airlines, Chongqing Airlines and Batik Air launch new routes to Penang",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Operating airline not stated in the search summary (headline names Qingdao Airlines). Low-reliability source."
+    },
+    {
+      "id": "pen-route-haikou-hainan",
+      "category": "airlines",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Hainan Airlines was reported to have launched Haikou - Penang flights on 11 October 2026.",
+      "value": "From 2026-10-11",
+      "as_of": "2026-10 (travel blog)",
+      "sources": [
+        {
+          "url": "https://www.troldavacation.com/post/new-direct-flights-to-penang-in-2026-haikou-and-batam-make-penang-easier-to-reach",
+          "title": "Trolda Vacation - New Direct Flights to Penang in 2026: Haikou and Batam",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Single travel-agency blog source; not confirmed by the airline or airport."
+    },
+    {
+      "id": "pen-route-batam-batik",
+      "category": "airlines",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Batik Air was reported as scheduled to start Penang - Batam flights on 18 October 2026.",
+      "value": "From 2026-10-18",
+      "as_of": "2026-10 (travel blog)",
+      "sources": [
+        {
+          "url": "https://www.troldavacation.com/post/new-direct-flights-to-penang-in-2026-haikou-and-batam-make-penang-easier-to-reach",
+          "title": "Trolda Vacation - New Direct Flights to Penang in 2026: Haikou and Batam",
+          "type": "other"
+        },
+        {
+          "url": "https://www.travelandtourworld.com/news/article/spring-airlines-unites-airasia-batik-air-transnusa-and-more-unveil-new-routes-to-penang-in-2026-revolutionizing-travel-to-malaysias-premier-destination/",
+          "title": "Travel And Tour World - Spring Airlines, AirAsia, Batik Air, TransNusa and more unveil new routes to Penang in 2026",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Reported ahead of launch; whether the service actually started was not confirmed in this run."
+    },
+    {
+      "id": "pen-route-chongqing",
+      "category": "airlines",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Chongqing Airlines is listed as operating four weekly flights to Penang from 25 October 2026.",
+      "value": "4 weekly, from 2026-10-25",
+      "as_of": "2026 (travel trade site, exact date unknown)",
+      "sources": [
+        {
+          "url": "https://www.travelandtourworld.com/news/article/spring-airlines-joins-airasia-qingdao-airlines-chongqing-airlines-and-batik-air-launch-explosive-new-routes-to-penang-2026s-game-changing-travel-surge/",
+          "title": "Travel And Tour World - Spring Airlines, AirAsia, Qingdao Airlines, Chongqing Airlines and Batik Air launch new routes to Penang",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Low-reliability source; confirm with the airline schedule."
+    },
+    {
+      "id": "pen-routes-jeddah-busan",
+      "category": "airlines",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "FlightsFrom.com lists Malaysia Airlines flights to Jeddah and Air Busan flights to Busan among recently added routes from Penang.",
+      "value": null,
+      "as_of": "2026 (aggregator; checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.flightsfrom.com/PEN",
+          "title": "FlightsFrom.com - Direct (non-stop) flights from Penang (PEN)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Schedule aggregator. The Jeddah service may be seasonal (pilgrimage) - not confirmed."
+    },
+    {
+      "id": "pen-cambodia-airways-inactive",
+      "category": "airlines",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "An independent listing notes that Cambodia Airways has not operated at Penang since at least early July 2026.",
+      "value": null,
+      "as_of": "2026 (page undated; checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.visitpenang.com/getting-there/direct-flights",
+          "title": "visitpenang.com - Direct Flights to and from Penang: All Routes",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Shows how quickly airline lists go stale; do not list this carrier without checking."
+    },
+    {
+      "id": "pen-checkin-cathay-window",
+      "category": "procedures",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Cathay Pacific's check-in counters at Penang open 2.5 hours before and close 40 minutes before scheduled departure.",
+      "value": "Opens 2 h 30 min before; closes 40 min before departure",
+      "as_of": "unknown (airline page, checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.cathaypacific.com/cx/en_ZA/destinations/airports/penang-international-airport.html",
+          "title": "Cathay Pacific - Airport information: Penang International Airport",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Airline-specific; other airlines set their own check-in times. No airport-wide check-in guidance was obtained."
+    },
+    {
+      "id": "pen-lounge-ppl-international-location",
+      "category": "lounges",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The Plaza Premium Lounge (International Departures) is on the mezzanine floor near Gate A3.",
+      "value": "Mezzanine floor, near Gate A3",
+      "as_of": "unknown (operator page, checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.plazapremiumlounge.com/en-uk/find/asia/malaysia/penang/penang-international-airport/international-departures",
+          "title": "Plaza Premium Lounge (International Departures) - Penang International Airport",
+          "type": "operator"
+        },
+        {
+          "url": "https://www.cathaypacific.com/cx/en_US/destinations/lounges/penang-pen/plaza-premium-lounge.html",
+          "title": "Cathay Pacific - Plaza Premium Lounge, Penang",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Plaza Premium's own page. Cathay Pacific's lounge listing describes the location as 'Level 3'."
+    },
+    {
+      "id": "pen-lounge-ppl-international-access",
+      "category": "lounges",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The Plaza Premium Lounge (International Departures) can only be used by passengers departing on international flights.",
+      "value": null,
+      "as_of": "unknown (operator page, checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.plazapremiumlounge.com/en-uk/find/asia/malaysia/penang/penang-international-airport/international-departures",
+          "title": "Plaza Premium Lounge (International Departures) - Penang International Airport",
+          "type": "operator"
+        },
+        {
+          "url": "https://www.viator.com/en-MY/tours/Penang/Penang-International-Airport-Plaza-Premium-Lounge/d339-5079PENLOUNGE",
+          "title": "Viator - Penang International Airport Plaza Premium Lounge",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "It is airside: passengers must clear security and immigration first and hold a valid boarding pass."
+    },
+    {
+      "id": "pen-lounge-ppl-international-hours",
+      "category": "lounges",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Plaza Premium lists the International Departures lounge as open daily from 06:00 to 00:00.",
+      "value": "06:00-00:00 daily",
+      "as_of": "2026-04-11 (review corroborates); operator page undated",
+      "sources": [
+        {
+          "url": "https://www.plazapremiumlounge.com/en-uk/find/asia/malaysia/penang/penang-international-airport/international-departures",
+          "title": "Plaza Premium Lounge (International Departures) - Penang International Airport",
+          "type": "operator"
+        },
+        {
+          "url": "https://quietvacationer.com/2026/04/11/review-plaza-premium-lounge-pen/",
+          "title": "The Quiet Vacationer - Review: Plaza Premium Lounge (PEN), 11 Apr 2026",
+          "type": "other"
+        },
+        {
+          "url": "https://www.cathaypacific.com/cx/en_US/destinations/lounges/penang-pen/plaza-premium-lounge.html",
+          "title": "Cathay Pacific - Plaza Premium Lounge, Penang",
+          "type": "operator"
+        },
+        {
+          "url": "https://www.viator.com/en-MY/tours/Penang/Penang-International-Airport-Plaza-Premium-Lounge/d339-5079PENLOUNGE",
+          "title": "Viator - Penang International Airport Plaza Premium Lounge",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "CONFLICT: Cathay Pacific lists 06:00-22:30 and Viator lists 05:30-23:00. Prefer the operator's own figure; show hours from the operator feed rather than static copy."
+    },
+    {
+      "id": "pen-lounge-ppl-domestic-location",
+      "category": "lounges",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The Plaza Premium Lounge (Domestic Departures) is airside on the 2nd floor, at shop lots S14 and S14A, opposite security clearance.",
+      "value": "Shop S14 & S14A, 2nd Floor, airside domestic departures",
+      "as_of": "unknown (Priority Pass page, checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.prioritypass.com/en-GB/lounges/malaysia/penang-international/pen-plaza-premium-lounge",
+          "title": "Priority Pass - Plaza Premium Lounge PEN Airport Penang International",
+          "type": "other"
+        },
+        {
+          "url": "https://www.taketours.com/page/experience/plaza-premium-lounge-penang-airport-domestic-departures-300-20731.html",
+          "title": "TakeTours - Plaza Premium Lounge Penang Airport - Domestic Departures",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "A second listing describes it as 'Level 2, Domestic Departure, near Gate A1A'. Not confirmed on Plaza Premium's own page in this run."
+    },
+    {
+      "id": "pen-lounge-ppl-domestic-hours",
+      "category": "lounges",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Priority Pass lists the Plaza Premium Lounge (Domestic Departures) as open from 05:00 to 23:00.",
+      "value": "05:00-23:00 (Priority Pass)",
+      "as_of": "unknown (checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.prioritypass.com/en-GB/lounges/malaysia/penang-international/pen-plaza-premium-lounge",
+          "title": "Priority Pass - Plaza Premium Lounge PEN Airport Penang International",
+          "type": "other"
+        },
+        {
+          "url": "https://www.taketours.com/page/experience/plaza-premium-lounge-penang-airport-domestic-departures-300-20731.html",
+          "title": "TakeTours - Plaza Premium Lounge Penang Airport - Domestic Departures",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.viator.com/en-MY/tours/Penang/Penang-International-Airport-Plaza-Premium-Lounge/d339-5079PENLOUNGE",
+          "title": "Viator - Penang International Airport Plaza Premium Lounge",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "CONFLICT: TakeTours lists 05:00-23:30 and Viator lists 07:00-23:00. Operator-confirmed hours were not obtained."
+    },
+    {
+      "id": "pen-lounge-priority-pass-stay-limit",
+      "category": "lounges",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Priority Pass members are limited to a stay of up to 2 hours at the Plaza Premium Lounge in Penang.",
+      "value": "2 hours maximum",
+      "as_of": "unknown (checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.prioritypass.com/en-GB/lounges/malaysia/penang-international/pen-plaza-premium-lounge",
+          "title": "Priority Pass - Plaza Premium Lounge PEN Airport Penang International",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Programme condition; may change."
+    },
+    {
+      "id": "pen-lounge-paid-passes",
+      "category": "lounges",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Paid walk-in passes for the Plaza Premium Lounge at Penang are sold in 3-, 6- and 12-hour options and require a valid boarding pass.",
+      "value": "3 h / 6 h / 12 h",
+      "as_of": "unknown (reseller page, checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.viator.com/en-MY/tours/Penang/Penang-International-Airport-Plaza-Premium-Lounge/d339-5079PENLOUNGE",
+          "title": "Viator - Penang International Airport Plaza Premium Lounge",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "From a reseller listing; prices were not captured. Confirm packages with Plaza Premium."
+    },
+    {
+      "id": "pen-lounge-cathay-uses-ppl",
+      "category": "lounges",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Cathay Pacific lists the Plaza Premium Lounge as its lounge for eligible passengers at Penang.",
+      "value": null,
+      "as_of": "unknown (airline page, checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.cathaypacific.com/cx/en_US/destinations/lounges/penang-pen/plaza-premium-lounge.html",
+          "title": "Cathay Pacific - Plaza Premium Lounge, Penang",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Based on the airline's own lounge page for Penang (PEN)."
+    },
+    {
+      "id": "pen-lounge-amex-platinum-listing",
+      "category": "lounges",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "American Express lists the Plaza Premium Lounge (International Departures) at Penang in its Platinum Card lounge directory.",
+      "value": null,
+      "as_of": "unknown (checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.americanexpress.com/en-us/travel/lounges/the-platinum-card/PEN/plaza-premium-lounge-international-departures-international-terminal-kKIuOGAE0z/",
+          "title": "American Express - Plaza Premium Lounge (International Departures) at Penang International Airport",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "US card-programme page; eligibility varies by card and country."
+    },
+    {
+      "id": "pen-bus-routes-serving-airport",
+      "category": "transport",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Rapid Penang public buses serve the airport on routes 401E, 401, 102 and 306.",
+      "value": "401E, 401, 102, 306",
+      "as_of": "2026 (operator page undated; checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://myrapid.com.my/bus-train/rapid-penang/rapid-pg-bus/",
+          "title": "Rapid Penang - Bus - MyRapid",
+          "type": "operator"
+        },
+        {
+          "url": "https://www.visitpenang.com/getting-around/bus-routes",
+          "title": "visitpenang.com - Penang Bus Routes 2026",
+          "type": "other"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/List_of_bus_routes_in_Penang",
+          "title": "Wikipedia - List of bus routes in Penang",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "401E, 102 and 306 appear on the official MyRapid route listing; route 401 via the airport is described by visitpenang.com. Whether an 'AT' airport transit route currently runs was not confirmed (see gaps)."
+    },
+    {
+      "id": "pen-bus-401e-route",
+      "category": "transport",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Route 401E runs between Weld Quay in George Town and Balik Pulau, calling at Komtar, Queensbay Mall, Bayan Baru and the airport.",
+      "value": "Weld Quay - Balik Pulau via airport",
+      "as_of": "2026 (checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://myrapid.com.my/bus-train/rapid-penang/rapid-pg-bus/",
+          "title": "Rapid Penang - Bus - MyRapid",
+          "type": "operator"
+        },
+        {
+          "url": "https://www.visitpenang.com/getting-around/bus-routes/401",
+          "title": "visitpenang.com - Rapid Penang Bus 401 / 401E",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "End points from MyRapid ('401E Weld Quay to Balik Pulau'); intermediate stops from visitpenang.com, which calls 401E the main airport bus."
+    },
+    {
+      "id": "pen-bus-401e-frequency",
+      "category": "transport",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Route 401E runs about every 15 to 20 minutes.",
+      "value": "15-20 min headway",
+      "as_of": "2026 (operator page undated; checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://myrapid.com.my/bus-train/rapid-penang/rapid-pg-bus/",
+          "title": "Rapid Penang - Bus - MyRapid",
+          "type": "operator"
+        },
+        {
+          "url": "https://www.visitpenang.com/getting-around/bus-routes/401",
+          "title": "visitpenang.com - Rapid Penang Bus 401 / 401E",
+          "type": "other"
+        },
+        {
+          "url": "https://www.holidaygogogo.com/penang-international-airport/",
+          "title": "HolidayGoGoGo - Penang International Airport",
+          "type": "other"
+        },
+        {
+          "url": "https://www.travelswithsun.com/penang-airport-to-georgetown/",
+          "title": "Travels With Sun - How To Get From Penang Airport To Georgetown",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "CONFLICT: older third-party guides give 30-40 minutes (HolidayGoGoGo) or about 30 minutes (Travels With Sun). The MyRapid headway is the most recent official figure; actual waits can be longer in traffic."
+    },
+    {
+      "id": "pen-bus-401e-service-span",
+      "category": "transport",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Route 401E departures from Weld Quay run from roughly 05:45 to 23:30.",
+      "value": "approx. 05:45-23:30 from Weld Quay",
+      "as_of": "2026 (checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.visitpenang.com/getting-around/bus-routes/401",
+          "title": "visitpenang.com - Rapid Penang Bus 401 / 401E",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Independent site; times from the airport stop were not captured. Confirm with Rapid Penang's timetable."
+    },
+    {
+      "id": "pen-bus-401e-fare-range",
+      "category": "transport",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Fares on route 401E range from RM1.40 to RM4.70 depending on distance.",
+      "value": "RM1.40-RM4.70",
+      "as_of": "2026 (checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.visitpenang.com/getting-around/bus-routes/401",
+          "title": "visitpenang.com - Rapid Penang Bus 401 / 401E",
+          "type": "other"
+        },
+        {
+          "url": "https://myrapid.com.my/bus-train/rapid-penang/rapid-pg-bus/",
+          "title": "Rapid Penang - Bus - MyRapid",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Range from visitpenang.com, consistent with the MyRapid distance-based table. The exact airport - Komtar fare was not captured (see gaps)."
+    },
+    {
+      "id": "pen-bus-401-route",
+      "category": "transport",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Route 401 is a slower, roughly hourly service between Weld Quay and Teluk Kumbar via Jelutong, Gelugor, Sungai Nibong, the Snake Temple and the airport.",
+      "value": "Weld Quay - Teluk Kumbar; about hourly",
+      "as_of": "2026 (checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.visitpenang.com/getting-around/bus-routes/401",
+          "title": "visitpenang.com - Rapid Penang Bus 401 / 401E",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Independent site only; not seen on the MyRapid excerpt returned by search."
+    },
+    {
+      "id": "pen-bus-306-route",
+      "category": "transport",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Route 306 links the airport with Penang General Hospital (Hospital Besar Pulau Pinang) via Scotland Road and Western Road.",
+      "value": "Airport - Penang General Hospital",
+      "as_of": "2025-2026 (checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://myrapid.com.my/bus-train/rapid-penang/rapid-pg-bus/",
+          "title": "Rapid Penang - Bus - MyRapid",
+          "type": "operator"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/List_of_bus_routes_in_Penang",
+          "title": "Wikipedia - List of bus routes in Penang",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "End points from MyRapid ('306 Lapangan Terbang Antarabangsa Bayan Lepas - Hospital Besar Pulau Pinang'); intermediate roads from Wikipedia's 2025 table."
+    },
+    {
+      "id": "pen-bus-306-frequency",
+      "category": "transport",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Route 306 runs about every 45 minutes according to Rapid Penang.",
+      "value": "45 min headway",
+      "as_of": "2026 (operator page undated; checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://myrapid.com.my/bus-train/rapid-penang/rapid-pg-bus/",
+          "title": "Rapid Penang - Bus - MyRapid",
+          "type": "operator"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/List_of_bus_routes_in_Penang",
+          "title": "Wikipedia - List of bus routes in Penang",
+          "type": "other"
+        },
+        {
+          "url": "https://www.holidaygogogo.com/penang-international-airport/",
+          "title": "HolidayGoGoGo - Penang International Airport",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Wikipedia's 2025 table gives 40 minutes; an older guide gives 60-80 minutes."
+    },
+    {
+      "id": "pen-bus-306-service-span",
+      "category": "transport",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "First and last trips on route 306 are at about 05:30 and 22:35, according to Wikipedia's 2025 route table.",
+      "value": "approx. 05:30-22:35",
+      "as_of": "2025 (Wikipedia table)",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/List_of_bus_routes_in_Penang",
+          "title": "Wikipedia - List of bus routes in Penang",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Not an operator source; direction of travel not specified in the search summary."
+    },
+    {
+      "id": "pen-bus-102-route",
+      "category": "transport",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Route 102 runs between the airport and Teluk Bahang, passing Komtar, Gurney Drive and Batu Ferringhi.",
+      "value": "Airport - Teluk Bahang via Batu Ferringhi",
+      "as_of": "2026 (checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://myrapid.com.my/bus-train/rapid-penang/rapid-pg-bus/",
+          "title": "Rapid Penang - Bus - MyRapid",
+          "type": "operator"
+        },
+        {
+          "url": "https://www.visitpenang.com/getting-around/bus-routes",
+          "title": "visitpenang.com - Penang Bus Routes 2026",
+          "type": "other"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/List_of_bus_routes_in_Penang",
+          "title": "Wikipedia - List of bus routes in Penang",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "End points from MyRapid; intermediate points from visitpenang.com and Wikipedia. One third-party guide wrongly says there is no direct bus to Batu Ferringhi."
+    },
+    {
+      "id": "pen-bus-102-frequency",
+      "category": "transport",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Route 102 runs about every 75 minutes.",
+      "value": "75 min headway",
+      "as_of": "2026 (operator page undated; checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://myrapid.com.my/bus-train/rapid-penang/rapid-pg-bus/",
+          "title": "Rapid Penang - Bus - MyRapid",
+          "type": "operator"
+        },
+        {
+          "url": "https://www.visitpenang.com/getting-around/bus-routes",
+          "title": "visitpenang.com - Penang Bus Routes 2026",
+          "type": "other"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/List_of_bus_routes_in_Penang",
+          "title": "Wikipedia - List of bus routes in Penang",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Three sources agree; an older guide gives 60-80 minutes. Low frequency - passengers should check the timetable before relying on it."
+    },
+    {
+      "id": "pen-bus-fare-table",
+      "category": "transport",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Rapid Penang fares are distance-based, from RM1.40 for the first 7 km up to RM5.00 for journeys of 42 to 49 km.",
+      "value": "RM1.40 (first 7 km) to RM5.00 (42-49 km)",
+      "as_of": "2026 (operator page undated; checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://myrapid.com.my/bus-train/rapid-penang/rapid-pg-bus/",
+          "title": "Rapid Penang - Bus - MyRapid",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Official operator fare table as summarised by search; intermediate bands not captured. Older guides quoting RM2-RM3 flat fares are out of date."
+    },
+    {
+      "id": "pen-bus-exact-fare",
+      "category": "transport",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Rapid Penang bus fareboxes do not give change, so passengers paying cash need the exact fare.",
+      "value": null,
+      "as_of": "2026 (third-party guide; checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.klia2.info/airports/penang-international-airport/",
+          "title": "klia2.info - Penang Airport (PEN): Code, Bus, Taxi, Parking & Terminals",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.airportcarhub.com/airport-guide/malaysia/penang/penang-airport-pen",
+          "title": "airportcarhub.com - Penang International Airport (PEN) Guide 2026",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Appeared in a third-party airport guide summary alongside a statement that a Touch 'n Go card can be tapped instead; the summary did not tie it to a single URL (candidates listed). Consistent with prior knowledge of Rapid Penang's exact-fare policy. Cashless options on buses were not confirmed with the operator."
+    },
+    {
+      "id": "pen-taxi-coupon-counter",
+      "category": "transport",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Airport taxis run on a prepaid coupon system, with coupons bought at a counter in the arrivals hall.",
+      "value": null,
+      "as_of": "2026 (third-party guides; checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.secretflying.com/guides/penang/airports/",
+          "title": "Secret Flying - Penang Airports Guide 2026",
+          "type": "other"
+        },
+        {
+          "url": "https://www.taxibazaar.in/penang-airport-taxi-guide.php",
+          "title": "Taxi Bazaar - Penang Airport Taxi Guide 2026",
+          "type": "other"
+        },
+        {
+          "url": "https://www.themalaysianguide.com/practical/penang-airport-transfer/",
+          "title": "The Malaysian Guide - Penang Airport Transfer Guide",
+          "type": "other"
+        },
+        {
+          "url": "https://www.travel-penang-malaysia.com/penang-airport.html",
+          "title": "travel-penang-malaysia.com - Penang Airport travel options",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Consistent across several third-party guides; no official tariff or counter opening hours were obtained."
+    },
+    {
+      "id": "pen-taxi-fare-george-town-range",
+      "category": "transport",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Third-party 2026 guides quote prepaid coupon taxi fares from the airport to George Town of between about RM38 and RM55.",
+      "value": "approx. RM38-RM55 (unofficial, conflicting)",
+      "as_of": "2026 (third-party guides; checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.secretflying.com/guides/penang/airports/",
+          "title": "Secret Flying - Penang Airports Guide 2026",
+          "type": "other"
+        },
+        {
+          "url": "https://www.taxibazaar.in/penang-airport-taxi-guide.php",
+          "title": "Taxi Bazaar - Penang Airport Taxi Guide 2026",
+          "type": "other"
+        },
+        {
+          "url": "https://www.themalaysianguide.com/practical/penang-airport-transfer/",
+          "title": "The Malaysian Guide - Penang Airport Transfer Guide",
+          "type": "other"
+        },
+        {
+          "url": "https://www.traveloka.com/en-en/explore/destination/how-to-get-from-penang-airport-to-georgetown-trp/375703",
+          "title": "Traveloka - How to Get from Penang Airport to Georgetown in 2026",
+          "type": "other"
+        },
+        {
+          "url": "https://www.travel-penang-malaysia.com/penang-airport.html",
+          "title": "travel-penang-malaysia.com - Penang Airport travel options",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "CONFLICT between guides (RM38 'Zone 5', RM45 to Komtar, RM40-55). No official tariff found - do not publish a fixed fare; direct passengers to the coupon counter."
+    },
+    {
+      "id": "pen-taxi-fare-batu-ferringhi-range",
+      "category": "transport",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Third-party 2026 guides quote coupon taxi fares from the airport to Batu Ferringhi of between about RM55 and RM85.",
+      "value": "approx. RM55-RM85 (unofficial, conflicting)",
+      "as_of": "2026 (third-party guides; checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.secretflying.com/guides/penang/airports/",
+          "title": "Secret Flying - Penang Airports Guide 2026",
+          "type": "other"
+        },
+        {
+          "url": "https://www.taxibazaar.in/penang-airport-taxi-guide.php",
+          "title": "Taxi Bazaar - Penang Airport Taxi Guide 2026",
+          "type": "other"
+        },
+        {
+          "url": "https://www.themalaysianguide.com/practical/penang-airport-transfer/",
+          "title": "The Malaysian Guide - Penang Airport Transfer Guide",
+          "type": "other"
+        },
+        {
+          "url": "https://www.travel-penang-malaysia.com/penang-airport.html",
+          "title": "travel-penang-malaysia.com - Penang Airport travel options",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "CONFLICT between guides (RM55-70, RM75, about RM85 for a limousine). Not an official tariff."
+    },
+    {
+      "id": "pen-taxi-night-surcharge",
+      "category": "transport",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Third-party guides report that airport taxi fares are 50 per cent higher between midnight and 06:00.",
+      "value": "+50% 00:00-06:00 (unofficial)",
+      "as_of": "2026 (third-party guides; checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.secretflying.com/guides/penang/airports/",
+          "title": "Secret Flying - Penang Airports Guide 2026",
+          "type": "other"
+        },
+        {
+          "url": "https://www.taxibazaar.in/penang-airport-taxi-guide.php",
+          "title": "Taxi Bazaar - Penang Airport Taxi Guide 2026",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Reported, not confirmed by an official source; the summary did not tie it to a single URL."
+    },
+    {
+      "id": "pen-ehailing-pickup-zone",
+      "category": "transport",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The e-hailing (Grab) pick-up zone is on the ground floor (Level 1) of the multi-storey car park opposite the main terminal.",
+      "value": "Ground floor, multi-storey car park",
+      "as_of": "2026-03-11 (BusinessToday)",
+      "sources": [
+        {
+          "url": "https://www.businesstoday.com.my/2026/03/11/penang-airport-expansion-phase-nears-completion/",
+          "title": "BusinessToday - Penang Airport Expansion Phase Nears Completion",
+          "type": "news"
+        },
+        {
+          "url": "https://onpenang.com/grab-in-penang/",
+          "title": "onPenang - Is there Grab in Penang? A complete guide to using Grab in 2026",
+          "type": "other"
+        },
+        {
+          "url": "https://iscslp.org/2026/grab-guide",
+          "title": "ISCSLP 2026 Airport Grab Guide",
+          "type": "other"
+        },
+        {
+          "url": "https://penanglrt.com/penang_airport/public_transport.htm",
+          "title": "PenangLRT.com - Penang Airport Public Transport, GRAB and E-hailing Collection Point",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "BusinessToday (11 Mar 2026) reports a new e-hailing pick-up zone set up there; independent guides describe the same location."
+    },
+    {
+      "id": "pen-ehailing-walking-route",
+      "category": "transport",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "To reach the e-hailing zone, passengers leave the arrivals hall, cross the road to the multi-storey car park, enter the building and turn right.",
+      "value": "From arrivals Door 1 (one guide) or Gate 3 (another)",
+      "as_of": "2026 (third-party guides; checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://iscslp.org/2026/grab-guide",
+          "title": "ISCSLP 2026 Airport Grab Guide",
+          "type": "other"
+        },
+        {
+          "url": "https://onpenang.com/grab-in-penang/",
+          "title": "onPenang - Is there Grab in Penang? A complete guide to using Grab in 2026",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "CONFLICT on the starting door: one guide says exit Door 1, another starts from Gate 3. Needs an on-site check and official wayfinding wording."
+    },
+    {
+      "id": "pen-ehailing-waiting-area",
+      "category": "transport",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The e-hailing pick-up zone has an air-conditioned waiting area with a screen showing arriving cars.",
+      "value": null,
+      "as_of": "2026 (third-party guides; checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://onpenang.com/grab-in-penang/",
+          "title": "onPenang - Is there Grab in Penang? A complete guide to using Grab in 2026",
+          "type": "other"
+        },
+        {
+          "url": "https://onpenang.com/penang-international-airport/",
+          "title": "onPenang - Penang International Airport: your essential guide (2026)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "From an independent guide; not confirmed by MAHB."
+    },
+    {
+      "id": "pen-grab-fare-george-town-range",
+      "category": "transport",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Third-party 2026 guides estimate Grab fares from the airport to George Town at about RM25 to RM40, rising with surge pricing.",
+      "value": "approx. RM25-RM40 (estimate)",
+      "as_of": "2026 (third-party guides; checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.visitpenang.com/getting-around/grab-fares",
+          "title": "visitpenang.com - Penang Grab Fare Guide 2026",
+          "type": "other"
+        },
+        {
+          "url": "https://www.themalaysianguide.com/practical/penang-airport-transfer/",
+          "title": "The Malaysian Guide - Penang Airport Transfer Guide",
+          "type": "other"
+        },
+        {
+          "url": "https://www.traveloka.com/en-en/explore/destination/how-to-get-from-penang-airport-to-georgetown-trp/375703",
+          "title": "Traveloka - How to Get from Penang Airport to Georgetown in 2026",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "App-priced and variable; publish only as an indicative range with a date, or not at all."
+    },
+    {
+      "id": "pen-grab-fare-batu-ferringhi",
+      "category": "transport",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "An independent 2026 guide puts the Grab ride from the airport to Batu Ferringhi at about 30 km, 40 to 50 minutes and RM45 to RM60.",
+      "value": "approx. 30 km; 40-50 min; RM45-RM60",
+      "as_of": "2026 (checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://www.visitpenang.com/getting-around/grab-fares",
+          "title": "visitpenang.com - Penang Grab Fare Guide 2026",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Other guides give RM45-RM70. Variable app pricing."
+    },
+    {
+      "id": "pen-car-rental-counters",
+      "category": "transport",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Several car rental companies serve the airport, with rental counters on Level 1 of the terminal building.",
+      "value": "Level 1, terminal building",
+      "as_of": "unknown (official page, search-indexed; checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://airports.malaysiaairports.com.my/en/penang/air-travel/rental-services",
+          "title": "Rental Service - Malaysia Airports (Penang)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "From the official Malaysia Airports Penang 'Rental Service' page as summarised by search. Company names were not captured (see gaps)."
+    },
+    {
+      "id": "pen-bridges-context",
+      "category": "transport",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Penang Island is linked to mainland Peninsular Malaysia by two road bridges: the Penang Bridge and the Sultan Abdul Halim Muadzam Shah Bridge (Second Penang Bridge), whose island end is at Batu Maung near the airport.",
+      "value": "2 bridges",
+      "as_of": "prior knowledge (to early 2026)",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE - not re-confirmed in this run (official site blocked, search budget exhausted). Approximate as-of: model background knowledge to early 2026. Verify against Malaysia Airports before publishing. Bridge lengths, toll amounts and drive times were not checked in this run."
+    },
+    {
+      "id": "pen-ferry-context",
+      "category": "transport",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "A passenger ferry links George Town (Weld Quay) with Butterworth on the mainland, next to the Penang Sentral transport hub; the 401E airport bus terminates at Weld Quay.",
+      "value": null,
+      "as_of": "prior knowledge (to early 2026)",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE - not re-confirmed in this run (official site blocked, search budget exhausted). Approximate as-of: model background knowledge to early 2026. Verify against Malaysia Airports before publishing. The 401E end point at Weld Quay is search-confirmed (MyRapid); ferry fares, timetable and terminal names were not checked in this run."
+    },
+    {
+      "id": "pen-parking-official-statement",
+      "category": "parking",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Malaysia Airports' Penang page states that several types of parking spaces are available at the airport.",
+      "value": null,
+      "as_of": "search index age approx. 4-6 months at 2026-11-16",
+      "sources": [
+        {
+          "url": "https://airports.malaysiaairports.com.my/en/penang",
+          "title": "PEN - Penang (Malaysia Airports airport site)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/en/penang",
+          "title": "Penang - Malaysia Airports",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "The official page text returned by search gives no prices."
+    },
+    {
+      "id": "pen-parking-standard-rates",
+      "category": "parking",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Standard car parking is charged at RM4 per hour for the first 4 hours, RM2 per hour for hours 5 to 10 and RM1 per hour for hours 11 to 15, up to a maximum of RM33 per day.",
+      "value": "RM4/h (h 1-4); RM2/h (h 5-10); RM1/h (h 11-15); max RM33/day",
+      "as_of": "2025-10-01 (effective date per aggregator)",
+      "sources": [
+        {
+          "url": "https://www.klia2.info/airports/penang-international-airport/",
+          "title": "klia2.info - Penang Airport (PEN): Code, Bus, Taxi, Parking & Terminals",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://parkinginmalaysia.com/penang-international-airport-parking-info/",
+          "title": "parkinginmalaysia.com - Penang International Airport Parking Info",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://parking.com.my/item/penang-international-airport/",
+          "title": "parking.com.my - Penang Airport Parking Rate 2026 - RM4/hr, Max RM33/day",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Three parking aggregators agree; klia2.info says these are the rates Malaysia Airports publishes. Not seen on an official MAHB page in this run. Bands add up to RM33 (16 + 12 + 5), which matches the stated cap."
+    },
+    {
+      "id": "pen-parking-standard-rates-effective-date",
+      "category": "parking",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The standard parking tariff is reported to have applied from 1 October 2025.",
+      "value": "2025-10-01",
+      "as_of": "2025-10-01",
+      "sources": [
+        {
+          "url": "https://www.klia2.info/airports/penang-international-airport/",
+          "title": "klia2.info - Penang Airport (PEN): Code, Bus, Taxi, Parking & Terminals",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Single aggregator source for the date; Malaysia Airports' premium-parking post of 9 Oct 2025 is consistent with a tariff change that month but does not confirm it."
+    },
+    {
+      "id": "pen-parking-outdated-rm3-rate",
+      "category": "parking",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Older directory sites still show a superseded tariff of RM3 per hour with a RM33 daily maximum.",
+      "value": "RM3/h (superseded)",
+      "as_of": "unknown (old pages)",
+      "sources": [
+        {
+          "url": "https://penangsentral.com/penang_airport/parking.htm",
+          "title": "PenangSentral.com - Penang Airport Car Park / Parking Fees",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://penanglrt.com/penang_airport/parking.htm",
+          "title": "PenangLRT.com - Penang Airport Car Park / Parking Charges",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Recorded so that writers do not reuse the old figure."
+    },
+    {
+      "id": "pen-parking-premium-location",
+      "category": "parking",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Premium Parking is on Level 3 of the multi-storey car park.",
+      "value": "Level 3, Multi-Storey Car Park",
+      "as_of": "2025-10-09 (Malaysia Airports post on X)",
+      "sources": [
+        {
+          "url": "https://x.com/MY_Airports/status/1976208999856079058",
+          "title": "Malaysia Airports on X: Penang International Airport now offers Premium Parking",
+          "type": "official"
+        },
+        {
+          "url": "https://www.threads.com/@penangfoodie/post/DP5y3q-k0OU/penang-international-airport-now-offers-premium-parking-the-premium-parking-is-l",
+          "title": "Threads @penangfoodie - Penang International Airport now offers Premium Parking (credits Malaysia Airports)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Official Malaysia Airports social post, read via search result text."
+    },
+    {
+      "id": "pen-parking-premium-rates",
+      "category": "parking",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Premium Parking costs RM6 per hour for the first 4 hours, RM4 per hour for hours 5 to 12 and RM2 per hour for hours 13 to 22, up to a maximum of RM76 per 24 hours.",
+      "value": "RM6/h (h 1-4); RM4/h (h 5-12); RM2/h (h 13-22); max RM76/24 h",
+      "as_of": "2025-10-09 (Malaysia Airports post on X)",
+      "sources": [
+        {
+          "url": "https://x.com/MY_Airports/status/1976208999856079058",
+          "title": "Malaysia Airports on X: Penang International Airport now offers Premium Parking",
+          "type": "official"
+        },
+        {
+          "url": "https://www.threads.com/@penangfoodie/post/DP5y3q-k0OU/penang-international-airport-now-offers-premium-parking-the-premium-parking-is-l",
+          "title": "Threads @penangfoodie - Penang International Airport now offers Premium Parking (credits Malaysia Airports)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Official Malaysia Airports social post. Bands add up to RM76 (24 + 32 + 20), matching the stated cap. Re-check for any 2026 revision."
+    },
+    {
+      "id": "pen-parking-premium-link-bridge",
+      "category": "parking",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Premium Parking on Level 3 is next to the link bridge between the car park and the departure terminal.",
+      "value": null,
+      "as_of": "2025-10 (repost of Malaysia Airports announcement)",
+      "sources": [
+        {
+          "url": "https://www.threads.com/@penangfoodie/post/DP5y3q-k0OU/penang-international-airport-now-offers-premium-parking-the-premium-parking-is-l",
+          "title": "Threads @penangfoodie - Penang International Airport now offers Premium Parking (credits Malaysia Airports)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Wording from a social-media repost crediting Malaysia Airports."
+    },
+    {
+      "id": "pen-parking-expansion-bays",
+      "category": "parking",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The expansion plan includes a new multi-storey car park adding about 1,700 bays, doubling parking capacity to about 3,400 bays.",
+      "value": "+1,700 bays to about 3,400",
+      "as_of": "2024-03 (plan as reported)",
+      "sources": [
+        {
+          "url": "https://www.penangpropertytalk.com/2024/03/pia-set-to-become-second-largest-airport-in-the-country/",
+          "title": "Penang Property Talk - PIA set to become second largest airport in the country",
+          "type": "other"
+        },
+        {
+          "url": "https://www.nst.com.my/business/corporate/2025/04/1196365/penang-airport-expand-parking-bays-accommodate-12mil-annual",
+          "title": "New Straits Times - Penang airport to expand parking bays to accommodate 12mil annual passengers",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Figures from a March 2024 report of the plan; NST (April 2025) headline confirms parking bays are to be expanded for 12 million passengers. Construction timing for the new car park was not confirmed."
+    },
+    {
+      "id": "pen-phone-airport",
+      "category": "contact",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The airport's telephone number published in the Malaysian AIP is +604-252 0252.",
+      "value": "+604-252 0252",
+      "as_of": "2026 (eAIP; checked 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://aip.caam.gov.my/aip/eAIP/2026-10-29-AIRAC/html/eAIP/WM-AD-2.WMKP-en-MS.html",
+          "title": "CAAM eAIP Malaysia - Aerodrome WMKP Penang International Airport (AIRAC 29 Oct 2026)",
+          "type": "government"
+        },
+        {
+          "url": "https://penang.eastin.com/local-area/penang-international-airport",
+          "title": "Eastin Hotel Penang - Local area: Penang International Airport",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Given in the CAAM eAIP entry and repeated by a hotel listing. CONFLICT: older directories list +604-643 4411 (see pen-phone-legacy-number). Confirm the passenger-facing number with MAHB."
+    },
+    {
+      "id": "pen-phone-legacy-number",
+      "category": "contact",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Older directories list +604-643 4411 as the airport's telephone number and +604-643 5339 as its fax number.",
+      "value": "+604-643 4411; fax +604-643 5339",
+      "as_of": "unknown (older listings)",
+      "sources": [
+        {
+          "url": "https://www.klia2.com.my/airports/penang_airport.htm",
+          "title": "klia2.com.my - Penang International Airport (PEN)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.boeing.com/resources/boeingdotcom/commercial/noise/pehang.html",
+          "title": "Boeing airport noise database - Penang",
+          "type": "other"
+        },
+        {
+          "url": "https://lfs.aero/flight-support/malaysia/WMKP",
+          "title": "LFS Aero - Flight Support Malaysia WMKP",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Likely a legacy number; conflicts with the eAIP. Do not publish without confirmation."
+    },
+    {
+      "id": "pen-mahb-customer-line",
+      "category": "contact",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The official Penang airport page lists Malaysia Airports' general customer support line, +603-8777 0000, and the email address info@malaysiaairports.com.my.",
+      "value": "+603-8777 0000; info@malaysiaairports.com.my",
+      "as_of": "search index age approx. 4-6 months at 2026-11-16",
+      "sources": [
+        {
+          "url": "https://airports.malaysiaairports.com.my/en/penang",
+          "title": "PEN - Penang (Malaysia Airports airport site)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "These are group-level contacts, not an airport-specific desk."
+    },
+    {
+      "id": "pen-mahb-corporate-address",
+      "category": "contact",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The address shown on the official Penang page is Malaysia Airports' corporate office at Persiaran Korporat KLIA, Sepang, Selangor, not the airport's own address.",
+      "value": "Persiaran Korporat KLIA, Sepang, Selangor",
+      "as_of": "search index age approx. 4-6 months at 2026-11-16",
+      "sources": [
+        {
+          "url": "https://airports.malaysiaairports.com.my/en/penang",
+          "title": "PEN - Penang (Malaysia Airports airport site)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Content issue for the redesign: the airport page lacks its own street address."
+    },
+    {
+      "id": "pen-expansion-capacity-target",
+      "category": "corporate",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The terminal expansion will raise the airport's capacity from 6.5 million to 12 million passengers a year.",
+      "value": "12 million passengers per year",
+      "as_of": "2025-07 (Bernama)",
+      "sources": [
+        {
+          "url": "https://bernama.com/en/news.php?id=2446593",
+          "title": "BERNAMA - Malaysia Airports Targets June 2028 For Completion Of Penang Expansion",
+          "type": "news"
+        },
+        {
+          "url": "https://thesun.my/news/malaysia-news/penang-airport-expansion-set-for-completion-by-june-2028-oi14496109/",
+          "title": "The Sun - Penang airport expansion set for completion by June 2028",
+          "type": "news"
+        },
+        {
+          "url": "https://www.scoop.my/corporate/264587/mahb-targets-june-2028-for-rm1-55b-penang-airport-upgrade/",
+          "title": "Scoop - MAHB targets June 2028 for RM1.55b Penang airport upgrade",
+          "type": "news"
+        },
+        {
+          "url": "https://www.malaymail.com/amp/news/malaysia/2026/07/03/penang-airport-expansion-records-strong-progress-project-slated-for-2028-completion-says-exco/226229",
+          "title": "Malay Mail - Penang airport expansion records strong progress, project slated for 2028 completion, says exco",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Consistent across MAHB statements and 2026 state government updates."
+    },
+    {
+      "id": "pen-expansion-cost",
+      "category": "corporate",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Malaysia Airports estimates the cost of the Penang expansion at about RM1.55 billion.",
+      "value": "approx. RM1.55 billion",
+      "as_of": "2025-07 (Bernama, Scoop)",
+      "sources": [
+        {
+          "url": "https://bernama.com/en/news.php?id=2446593",
+          "title": "BERNAMA - Malaysia Airports Targets June 2028 For Completion Of Penang Expansion",
+          "type": "news"
+        },
+        {
+          "url": "https://www.scoop.my/corporate/264587/mahb-targets-june-2028-for-rm1-55b-penang-airport-upgrade/",
+          "title": "Scoop - MAHB targets June 2028 for RM1.55b Penang airport upgrade",
+          "type": "news"
+        },
+        {
+          "url": "https://www.thevibes.com/articles/news/114403/rm1.2b-penang-airport-expansion-on-track-with-major-progress-on-airside-works",
+          "title": "The Vibes - RM1.2B Penang Airport expansion on track, with major progress on airside works",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "CONFLICT: an October 2025 report (The Vibes) headlines the project as RM1.2 billion. Prefer the MAHB-attributed RM1.55 billion and confirm before publishing."
+    },
+    {
+      "id": "pen-expansion-completion-target",
+      "category": "corporate",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Malaysia Airports' target completion date for the expansion is June 2028.",
+      "value": "June 2028",
+      "as_of": "2025-07 (MAHB statement); reaffirmed as 2028 on 2026-07-03",
+      "sources": [
+        {
+          "url": "https://bernama.com/en/news.php?id=2446593",
+          "title": "BERNAMA - Malaysia Airports Targets June 2028 For Completion Of Penang Expansion",
+          "type": "news"
+        },
+        {
+          "url": "https://thesun.my/news/malaysia-news/penang-airport-expansion-set-for-completion-by-june-2028-oi14496109/",
+          "title": "The Sun - Penang airport expansion set for completion by June 2028",
+          "type": "news"
+        },
+        {
+          "url": "https://www.scoop.my/corporate/264587/mahb-targets-june-2028-for-rm1-55b-penang-airport-upgrade/",
+          "title": "Scoop - MAHB targets June 2028 for RM1.55b Penang airport upgrade",
+          "type": "news"
+        },
+        {
+          "url": "https://www.malaymail.com/amp/news/malaysia/2026/07/03/penang-airport-expansion-records-strong-progress-project-slated-for-2028-completion-says-exco/226229",
+          "title": "Malay Mail - Penang airport expansion records strong progress, project slated for 2028 completion, says exco",
+          "type": "news"
+        },
+        {
+          "url": "https://www.businesstoday.com.my/2026/07/03/penang-airport-expansion-on-track-set-for-2028-completion/",
+          "title": "BusinessToday - Penang Airport Expansion On Track, Set For 2028 Completion",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Stated by MAHB managing director Mohd Izani in July 2025; Penang state exco updates in July 2026 still say completion in 2028."
+    },
+    {
+      "id": "pen-expansion-construction-period",
+      "category": "corporate",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The expansion is being delivered over a four-year construction period from 2024 to 2028.",
+      "value": "2024-2028",
+      "as_of": "2025-10 (approx.)",
+      "sources": [
+        {
+          "url": "https://www.thevibes.com/articles/news/114403/rm1.2b-penang-airport-expansion-on-track-with-major-progress-on-airside-works",
+          "title": "The Vibes - RM1.2B Penang Airport expansion on track, with major progress on airside works",
+          "type": "news"
+        },
+        {
+          "url": "https://bernama.com/en/news.php?id=2446593",
+          "title": "BERNAMA - Malaysia Airports Targets June 2028 For Completion Of Penang Expansion",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "As summarised from late-2025 progress coverage; the search summary did not tie the wording to a single article (candidates listed)."
+    },
+    {
+      "id": "pen-expansion-three-packages",
+      "category": "corporate",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The expansion is split into three phases: relocation of government agency facilities such as the Civil Aviation Authority of Malaysia, expansion of the aircraft apron, and expansion of the main terminal building.",
+      "value": "3 phases / work packages",
+      "as_of": "2025-07 (Bernama)",
+      "sources": [
+        {
+          "url": "https://bernama.com/en/news.php?id=2446593",
+          "title": "BERNAMA - Malaysia Airports Targets June 2028 For Completion Of Penang Expansion",
+          "type": "news"
+        },
+        {
+          "url": "https://thesun.my/news/malaysia-news/penang-airport-expansion-set-for-completion-by-june-2028-oi14496109/",
+          "title": "The Sun - Penang airport expansion set for completion by June 2028",
+          "type": "news"
+        },
+        {
+          "url": "https://www.malaymail.com/amp/news/malaysia/2026/07/03/penang-airport-expansion-records-strong-progress-project-slated-for-2028-completion-says-exco/226229",
+          "title": "Malay Mail - Penang airport expansion records strong progress, project slated for 2028 completion, says exco",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "The terminal package is referred to as Work Package Three (WP03) in 2026 coverage."
+    },
+    {
+      "id": "pen-expansion-aircraft-stands",
+      "category": "corporate",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The expansion will increase the number of aircraft stands from 16 to 28.",
+      "value": "16 to 28 stands",
+      "as_of": "2025 (news coverage)",
+      "sources": [
+        {
+          "url": "https://thesun.my/news/malaysia-news/penang-airport-expansion-set-for-completion-by-june-2028-oi14496109/",
+          "title": "The Sun - Penang airport expansion set for completion by June 2028",
+          "type": "news"
+        },
+        {
+          "url": "https://www.thestar.com.my/metro/metro-news/2025/11/12/scale-up-airport-upgrade-to-avoid-bottleneck-at-takeoff",
+          "title": "The Star - 'Scale up airport upgrade to avoid bottleneck at takeoff'",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "As summarised from 2025 coverage of the project scope; the search summary did not tie the figure to a single article (candidates listed)."
+    },
+    {
+      "id": "pen-expansion-airport-4-0",
+      "category": "corporate",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "The enlarged terminal is to be built to Malaysia Airports' 'Airport 4.0' standard.",
+      "value": "Airport 4.0",
+      "as_of": "2025 (news coverage)",
+      "sources": [
+        {
+          "url": "https://thesun.my/news/malaysia-news/penang-airport-expansion-set-for-completion-by-june-2028-oi14496109/",
+          "title": "The Sun - Penang airport expansion set for completion by June 2028",
+          "type": "news"
+        },
+        {
+          "url": "https://bernama.com/en/news.php?id=2446593",
+          "title": "BERNAMA - Malaysia Airports Targets June 2028 For Completion Of Penang Expansion",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Programme name as reported; what it means for passenger-facing technology was not detailed in the search results."
+    },
+    {
+      "id": "pen-expansion-package-1-award",
+      "category": "corporate",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Package 1 of the expansion was awarded to Gagasan Maya in September 2024 at a contract value of RM107 million.",
+      "value": "RM107 million; Sept 2024",
+      "as_of": "2025 (news coverage)",
+      "sources": [
+        {
+          "url": "https://www.freemalaysiatoday.com/category/nation/2025/03/10/penang-airport-expansion-project-on-track-says-exco-man",
+          "title": "Free Malaysia Today - Penang airport expansion project on track, says exco man",
+          "type": "news"
+        },
+        {
+          "url": "https://thesun.my/news/malaysia-news/penang-airport-expansion-set-for-completion-by-june-2028-oi14496109/",
+          "title": "The Sun - Penang airport expansion set for completion by June 2028",
+          "type": "news"
+        },
+        {
+          "url": "https://www.scoop.my/corporate/264587/mahb-targets-june-2028-for-rm1-55b-penang-airport-upgrade/",
+          "title": "Scoop - MAHB targets June 2028 for RM1.55b Penang airport upgrade",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Reported in 2025 coverage; the search summary did not tie it to a single article (candidates listed). Verify against MAHB's Bursa Malaysia announcements."
+    },
+    {
+      "id": "pen-expansion-package-2-award",
+      "category": "corporate",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Package 2 of the expansion was awarded to Acre Works in December 2024 for RM254 million.",
+      "value": "RM254 million; Dec 2024",
+      "as_of": "2025 (news coverage)",
+      "sources": [
+        {
+          "url": "https://www.freemalaysiatoday.com/category/nation/2025/03/10/penang-airport-expansion-project-on-track-says-exco-man",
+          "title": "Free Malaysia Today - Penang airport expansion project on track, says exco man",
+          "type": "news"
+        },
+        {
+          "url": "https://thesun.my/news/malaysia-news/penang-airport-expansion-set-for-completion-by-june-2028-oi14496109/",
+          "title": "The Sun - Penang airport expansion set for completion by June 2028",
+          "type": "news"
+        },
+        {
+          "url": "https://www.scoop.my/corporate/264587/mahb-targets-june-2028-for-rm1-55b-penang-airport-upgrade/",
+          "title": "Scoop - MAHB targets June 2028 for RM1.55b Penang airport upgrade",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Reported in 2025 coverage; the search summary did not tie it to a single article (candidates listed). Verify against MAHB's Bursa Malaysia announcements."
+    },
+    {
+      "id": "pen-expansion-phase-1-progress-mar-2026",
+      "category": "corporate",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Phase 1 of the expansion was reported 98 per cent complete in March 2026.",
+      "value": "98% (March 2026)",
+      "as_of": "2026-03-11",
+      "sources": [
+        {
+          "url": "https://www.bernama.com/en/region/news.php?id=2533015",
+          "title": "BERNAMA - Penang International Airport Expansion Phase One Achieved 98 Per Cent - Wong",
+          "type": "news"
+        },
+        {
+          "url": "https://www.businesstoday.com.my/2026/03/11/penang-airport-expansion-phase-nears-completion/",
+          "title": "BusinessToday - Penang Airport Expansion Phase Nears Completion",
+          "type": "news"
+        },
+        {
+          "url": "https://www.buletinmutiara.com/phase-1-of-penang-airport-expansion-nearly-complete-tourism-stakeholders-told/",
+          "title": "Buletin Mutiara - Phase 1 of Penang airport expansion nearly complete, tourism stakeholders told",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Reported by Penang exco Wong Hon Wai to tourism stakeholders."
+    },
+    {
+      "id": "pen-expansion-terminal-works-not-started-mar-2026",
+      "category": "corporate",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "As of 11 March 2026, the third phase covering the main terminal building had not yet begun.",
+      "value": "Not started (2026-03-11)",
+      "as_of": "2026-03-11",
+      "sources": [
+        {
+          "url": "https://www.businesstoday.com.my/2026/03/11/penang-airport-expansion-phase-nears-completion/",
+          "title": "BusinessToday - Penang Airport Expansion Phase Nears Completion",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Important for passenger messaging: the main in-terminal disruption had not started by spring 2026."
+    },
+    {
+      "id": "pen-expansion-wp03-procurement-june-2026",
+      "category": "corporate",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Design of the main terminal expansion package (WP03) is complete and procurement began on 25 June 2026.",
+      "value": "Procurement from 2026-06-25",
+      "as_of": "2026-07-03 (Malay Mail)",
+      "sources": [
+        {
+          "url": "https://www.malaymail.com/amp/news/malaysia/2026/07/03/penang-airport-expansion-records-strong-progress-project-slated-for-2028-completion-says-exco/226229",
+          "title": "Malay Mail - Penang airport expansion records strong progress, project slated for 2028 completion, says exco",
+          "type": "news"
+        },
+        {
+          "url": "https://www.businesstoday.com.my/2026/07/03/penang-airport-expansion-on-track-set-for-2028-completion/",
+          "title": "BusinessToday - Penang Airport Expansion On Track, Set For 2028 Completion",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Latest status found. No contractor award or construction start date for WP03 was found in this run (see gaps)."
+    },
+    {
+      "id": "pen-expansion-wp03-earlier-target-missed",
+      "category": "corporate",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "In July 2025 Malaysia Airports said it expected board approval and a contractor appointment for the terminal package by the end of 2025, but procurement only began in June 2026.",
+      "value": null,
+      "as_of": "2025-07 and 2026-07-03",
+      "sources": [
+        {
+          "url": "https://thesun.my/news/malaysia-news/penang-airport-expansion-set-for-completion-by-june-2028-oi14496109/",
+          "title": "The Sun - Penang airport expansion set for completion by June 2028",
+          "type": "news"
+        },
+        {
+          "url": "https://bernama.com/en/news.php?id=2446593",
+          "title": "BERNAMA - Malaysia Airports Targets June 2028 For Completion Of Penang Expansion",
+          "type": "news"
+        },
+        {
+          "url": "https://www.malaymail.com/amp/news/malaysia/2026/07/03/penang-airport-expansion-records-strong-progress-project-slated-for-2028-completion-says-exco/226229",
+          "title": "Malay Mail - Penang airport expansion records strong progress, project slated for 2028 completion, says exco",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Shows schedule movement on the terminal package while the overall June 2028 target is still quoted. Treat 2028 as a target, not a guaranteed opening date."
+    },
+    {
+      "id": "pen-expansion-airside-works-supplement",
+      "category": "operations",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "A CAAM aeronautical supplement (AIP SUP 32/26) covers airside pavement works for the expansion, with temporary apron and taxiway closures and temporary aircraft stands T1 and T2, for works running from 1 March 2025 to 1 July 2027.",
+      "value": "1 Mar 2025 - 1 Jul 2027",
+      "as_of": "2026-07-09 (AIRAC publication)",
+      "sources": [
+        {
+          "url": "https://aip.caam.gov.my/aip/eAIP/32.%202026-07-09-AIRAC/html/eSUP/WM-eSUP-26-32-en-MS.html",
+          "title": "CAAM AIP SUP 32/26 - Upgrading and expansion of Penang International Airport, airside facilities - pavement works, work schedule and movement area restrictions",
+          "type": "government"
+        },
+        {
+          "url": "https://aip.caam.gov.my/aip/eAIP/2026-10-29-AIRAC/html/eAIP/WM-GEN-0.3-en-MS.html",
+          "title": "CAAM eAIP - GEN 0.3 Record of AIP supplements",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Affects aircraft movement areas rather than landside access. Whether passengers are bussed to temporary stands was not confirmed (see gaps)."
+    },
+    {
+      "id": "pen-runway-closure-supplement",
+      "category": "operations",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "A separate CAAM aeronautical supplement covers scheduled runway closures at Penang from 28 November 2024 until further notice.",
+      "value": "From 2024-11-28 until further notice",
+      "as_of": "2026-10-29 (eAIP record of supplements)",
+      "sources": [
+        {
+          "url": "https://aip.caam.gov.my/aip/eAIP/2026-10-29-AIRAC/html/eAIP/WM-GEN-0.3-en-MS.html",
+          "title": "CAAM eAIP - GEN 0.3 Record of AIP supplements",
+          "type": "government"
+        },
+        {
+          "url": "https://aip.caam.gov.my/aip/eAIP/2026-10-29-AIRAC/html/eAIP/WM-AD-2.WMKP-en-MS.html",
+          "title": "CAAM eAIP Malaysia - Aerodrome WMKP Penang International Airport (AIRAC 29 Oct 2026)",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Closure hours and days were not captured; airlines schedule around them. Relevant to any '24-hour' claim."
+    },
+    {
+      "id": "pen-expansion-capacity-debate",
+      "category": "corporate",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "A November 2025 report in The Star said traffic could reach 10 to 12 million passengers by 2028 and quoted a Penang committee chairman saying the next expansion is due in 2034.",
+      "value": "Next expansion due 2034 (as reported)",
+      "as_of": "2025-11-12",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/metro/metro-news/2025/11/12/scale-up-airport-upgrade-to-avoid-bottleneck-at-takeoff",
+          "title": "The Star - 'Scale up airport upgrade to avoid bottleneck at takeoff'",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Context only; reflects stakeholder concern that 12 million may be reached soon after opening."
+    },
+    {
+      "id": "pen-facility-prayer-rooms",
+      "category": "facilities",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Muslim prayer rooms (surau) are available in the terminal.",
+      "value": null,
+      "as_of": "prior knowledge (to early 2026)",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE - not re-confirmed in this run (official site blocked, search budget exhausted). Approximate as-of: model background knowledge to early 2026. Verify against Malaysia Airports before publishing. Locations, levels and whether separate rooms exist landside and airside were not confirmed - do not publish locations."
+    },
+    {
+      "id": "pen-facility-wifi",
+      "category": "facilities",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Free Wi-Fi is available in the terminal.",
+      "value": null,
+      "as_of": "prior knowledge (to early 2026)",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE - not re-confirmed in this run (official site blocked, search budget exhausted). Approximate as-of: model background knowledge to early 2026. Verify against Malaysia Airports before publishing. Network name, time limits and login steps were not confirmed."
+    },
+    {
+      "id": "pen-facility-atm-money-changers",
+      "category": "facilities",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "ATMs and money changers operate in the terminal.",
+      "value": null,
+      "as_of": "prior knowledge (to early 2026)",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE - not re-confirmed in this run (official site blocked, search budget exhausted). Approximate as-of: model background knowledge to early 2026. Verify against Malaysia Airports before publishing. Bank names, locations and opening hours were not confirmed."
+    }
+  ],
+  "gaps": [
+    "ACCESS: airports.malaysiaairports.com.my and www.malaysiaairports.com.my could not be fetched directly (getaddrinfo ENOTFOUND - host not on the session network allowlist) at the start of the run; aip.caam.gov.my failed the same way. No fact in this file is 'direct' evidence.",
+    "SEARCH BUDGET: the shared WebSearch budget for this run was exhausted after 14 searches, before targeted searches for facilities, accessibility, dining/retail, hotels and the MyRapid timetable could be run. Those topics are gaps, not negatives.",
+    "Official terminal opening hours (only an unofficial '24 hours' statement from a hotel listing was found; AIP AD 2.3 not captured).",
+    "Official terminal layout: level names, number of gates, check-in counter rows, self check-in kiosks, self bag-drop, immigration autogates and eligibility.",
+    "Airport-wide check-in guidance (recommended arrival time, counter closing times); only Cathay Pacific's check-in window was sourced.",
+    "Facilities - nothing sourced in this run: prayer room locations, nursing/baby-care rooms, clinic or first aid, left luggage (existence, location, hours, rates), Wi-Fi details, ATM/bank and money changer locations, SIM/telco counters, post office, smoking areas, showers, charging points, lost and found.",
+    "Accessibility services - nothing sourced: wheelchair assistance and how to book, accessible toilets, reserved parking bays, lifts, hidden-disability support (e.g. whether MAHB's Butterfly Effect programme operates at Penang), assistance for visually or hearing impaired passengers.",
+    "Dining and retail outlets - no confirmed outlet names, locations or opening hours were sourced.",
+    "Hotels at or near the airport - not researched (search budget).",
+    "Full current airline list and destination list from an official source; the names of the 6 domestic cities; status of specific carriers (e.g. Firefly, Batik Air Malaysia, flydubai, IndiGo, HK Express, Starlux) not confirmed. Route start dates from travel-trade sites are low confidence.",
+    "Ranking among Malaysian airports - sources conflict (one calls Penang third busiest by passengers, another second busiest in 2024); official MAHB statistics tables for 2024 and 2025 were not obtained. 2025 growth rate conflicts across sources (11.25%, 8.4%, 7.97%).",
+    "Runway length and width (designator 04/22 confirmed; dimensions not returned by search).",
+    "Rapid Penang: location of the airport bus stop, official first/last bus times from the airport, the exact fare airport - Komtar / Weld Quay, payment methods on board (cash exact fare vs Touch 'n Go / card), and whether an 'AT' airport transit route or any night service currently operates.",
+    "Taxi: official coupon tariff by zone, counter location and hours, night surcharge rules, number of passengers per taxi, limousine options. Third-party fares conflict.",
+    "E-hailing: official walking route and door number to the pick-up zone, drop-off rules at the departures kerb, any e-hailing surcharge.",
+    "Car rental: names of companies with counters, counter opening hours.",
+    "Parking: official confirmation of the standard tariff and its effective date; payment methods (third-party guides variously describe cashless payment by Touch 'n Go card, Visa, Mastercard and MyDebit, and pay-at-machine with ticket - source not attributable); valet parking (an aggregator lists RM10 first hour, RM5 per following hour, RM70 per day - source not attributable); grace period; motorcycle parking; lost-ticket fee; current number of bays; open-air versus multi-storey areas; EV charging; accessible bays.",
+    "Contact: airport-specific passenger enquiry number and email, lost and found contact, airport police. The eAIP number (+604-252 0252) conflicts with an older number (+604-643 4411).",
+    "Expansion: WP03 contractor and award date, terminal construction start date, final terminal floor area, phasing of in-terminal works, and specific 2026 passenger impacts and temporary arrangements (temporary check-in or gates, bussing to remote or temporary stands, kerb or lane closures, car park changes). Only the new e-hailing zone and the airside supplements were found.",
+    "Expansion cost conflict: RM1.55 billion (MAHB, July 2025) versus RM1.2 billion (The Vibes headline, October 2025).",
+    "Runway closure schedule (hours and days) under the CAAM supplement in force since 28 November 2024.",
+    "Bridge and ferry practicalities: toll amounts, ferry fares and timetable, drive times to the mainland; Penang LRT Mutiara Line plans for an airport station and timeline.",
+    "Distance to George Town: 16 km (third-party) versus 14 km from KOMTAR (AIP) - road distance and typical drive time need an agreed figure."
+  ]
+}

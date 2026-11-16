@@ -1,0 +1,2476 @@
+{
+  "topic": "Malaysia Airports Holdings Berhad (MAHB) corporate facts for the institutional section of the new website",
+  "generated": "2026-11-16",
+  "method": {
+    "direct_access": "blocked - www.malaysiaairports.com.my and corporate.malaysiaairports.com.my failed DNS resolution (outside the session network allowlist) on both attempts",
+    "search": "19 WebSearch queries completed on 2026-11-16 before the shared search budget was exhausted; several planned topics were never searched (see gaps)",
+    "evidence_levels": "search = stated in a search result or search summary obtained in this run; prior = background knowledge not re-confirmed in this run (lower confidence, verify before publishing); no fact is 'direct'"
+  },
+  "facts": [
+    {
+      "id": "hist-1991-separation-from-dca",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports traces its origin to 1991, when Parliament passed legislation separating the Department of Civil Aviation into a regulator and a newly created airport operator, Malaysia Airports Berhad.",
+      "value": "1991",
+      "as_of": "prior knowledge, approx. as of 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE - not re-confirmed in this run (official sites were blocked and the search budget ran out). Verify against the official source before publishing. Wording follows the long-standing corporate profile text; verify at the official 'Our Profile' page (https://www.malaysiaairports.com.my/about-us/corporate-profile/our-profile), which appeared in search results but could not be opened."
+    },
+    {
+      "id": "hist-1992-operator-licence",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports Berhad was licensed by the Minister of Transport as the airport operator in November 1992.",
+      "value": "November 1992",
+      "as_of": "prior knowledge, approx. as of 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE - not re-confirmed in this run (official sites were blocked and the search budget ran out). Verify against the official source before publishing. This is why both 1991 (legislation) and 1992 (licence/start of operations) appear in corporate histories. Verify at the official 'Our Profile' page."
+    },
+    {
+      "id": "hist-1998-klia-opened",
+      "category": "corporate",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "KL International Airport (KLIA) opened in 1998.",
+      "value": "1998",
+      "as_of": "2025-07-02",
+      "sources": [
+        {
+          "url": "https://paultan.org/2025/07/02/klia-aerotrain-resumes-service-faster-train-sets-travel-times-between-terminals-now-under-3-minutes",
+          "title": "KLIA aerotrain resumes service - faster train sets, travel times between terminals now under 3 minutes (paultan.org, 2 Jul 2025)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "The search result states the Aerotrain has been a feature of KLIA 'since its opening in 1998'. Exact dates (official opening 27 June 1998; first commercial flights 30 June 1998) are PRIOR knowledge and were not re-confirmed in this run."
+    },
+    {
+      "id": "hist-1999-holding-company-and-listing",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports Holdings Berhad was incorporated as the group holding company in 1999 and listed on the Main Board of the Kuala Lumpur Stock Exchange (now Bursa Malaysia) in November 1999.",
+      "value": "1999",
+      "as_of": "prior knowledge, approx. as of 2025",
+      "sources": [
+        {
+          "url": "https://www.malaysiakini.com/news/735493",
+          "title": "MAHB delisting after 25 years a watershed moment for its privatisation (Malaysiakini)",
+          "type": "news"
+        },
+        {
+          "url": "https://lib.nus.edu.sg/nus_hl/airport1999-3.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 1999, corporate profile pages (NUS Libraries copy)",
+          "type": "other"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE - not re-confirmed in this run (official sites were blocked and the search budget ran out). Verify against the official source before publishing. Partial search support only: Malaysiakini's 2025 headline says MAHB was delisted 'after 25 years', and the 1999 annual report (NUS copy) names Malaysia Airports Holdings Berhad as the group company. The exact listing date (30 November 1999 from prior knowledge) was not re-confirmed."
+    },
+    {
+      "id": "hist-first-listed-airport-operator-asia",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "On listing in 1999, Malaysia Airports became the first airport operator in Asia, and the sixth in the world, to be listed on a stock exchange.",
+      "value": "first in Asia; sixth worldwide",
+      "as_of": "prior knowledge, approx. as of 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE - not re-confirmed in this run (official sites were blocked and the search budget ran out). Verify against the official source before publishing. A targeted search in this run found no source for this claim. Do not publish without a citation from the official corporate profile or an annual report."
+    },
+    {
+      "id": "identity-company-registration-number",
+      "category": "identity",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports Holdings Berhad's company registration number in the old format is 487092-W.",
+      "value": "487092-W",
+      "as_of": "1999 (annual report)",
+      "sources": [
+        {
+          "url": "https://lib.nus.edu.sg/nus_hl/airport1999-3.pdf",
+          "title": "Malaysia Airports Holdings Berhad Annual Report 1999, corporate profile pages (NUS Libraries copy)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Shown in the 1999 annual report corporate profile. The new-format SSM number (199901012192 from prior knowledge) was not re-confirmed in this run; verify on the current website footer or SSM before publishing."
+    },
+    {
+      "id": "hist-2014-klia2-opened",
+      "category": "corporate",
+      "airport": "KUL",
+      "terminal": "T2",
+      "claim": "klia2, the low-cost carrier terminal now known as KLIA Terminal 2, began operations on 2 May 2014.",
+      "value": "2014-05-02",
+      "as_of": "prior knowledge, approx. as of 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE - not re-confirmed in this run (official sites were blocked and the search budget ran out). Verify against the official source before publishing. "
+    },
+    {
+      "id": "hist-2023-terminal-renaming",
+      "category": "corporate",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "The two KLIA terminals are named KLIA Terminal 1 (formerly the KLIA Main Terminal) and KLIA Terminal 2 (formerly klia2), following a renaming announced in 2023.",
+      "value": "KLIA Terminal 1 / KLIA Terminal 2",
+      "as_of": "prior knowledge, approx. as of 2025",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2026/10/26/traffic-slows-in-malaysia-airports-in-september-amid-soft-domestic-demand",
+          "title": "Traffic slows in Malaysia airports in September amid soft domestic demand (The Star, 26 Oct 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE - not re-confirmed in this run (official sites were blocked and the search budget ran out). Verify against the official source before publishing. Search support is limited to current usage: October 2026 coverage of MAHB's traffic release refers to 'Terminal 1' and 'Terminal 2' at KLIA. The 2023 announcement date is prior knowledge."
+    },
+    {
+      "id": "hist-isg-acquisition",
+      "category": "corporate",
+      "airport": "SAW",
+      "terminal": null,
+      "claim": "Malaysia Airports acquired Istanbul Sabiha Gokcen International Airport in Turkiye, which is counted in its global network traffic.",
+      "value": null,
+      "as_of": "2025-10",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Malaysia_Airports",
+          "title": "Malaysia Airports (Wikipedia)",
+          "type": "other"
+        },
+        {
+          "url": "https://www.thevibes.com/articles/business/114341/mahb-records-12.2-rise-in-passenger-traffic-amid-route-expansion-and-airline-growth",
+          "title": "MAHB records 12.2% rise in passenger traffic amid route expansion and airline growth (The Vibes, 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://theedgemalaysia.com/node/819567",
+          "title": "Malaysia Airports' August passenger traffic up 5.2% (The Edge Malaysia, 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Search support: Wikipedia states that MAHB acquired Sabiha Gokcen International Airport, and 2025-2026 traffic coverage reports ISG within the group's overseas operations and group totals. Stake history from PRIOR knowledge, not re-confirmed: initial 20% in 2008 in a consortium with Limak and GMR; raised to 60% and then 100% during 2014; the concession end date was not verified."
+    },
+    {
+      "id": "priv-2024-05-proposal-announced",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "In May 2024 a consortium led by Khazanah Nasional and the Employees Provident Fund (EPF) announced a proposal to take Malaysia Airports private.",
+      "value": "2024-05-15",
+      "as_of": "2024-05-15",
+      "sources": [
+        {
+          "url": "https://www.freemalaysiatoday.com/category/highlight/2024/05/15/khazanah-and-epf-lead-consortium-to-take-over-mahb",
+          "title": "Khazanah and EPF lead consortium to take over MAHB (FMT, 15 May 2024)",
+          "type": "news"
+        },
+        {
+          "url": "https://nst.com.my/amp/business/corporate/2024/05/1051048/khazanah-epf-two-partners-privatise-malaysia-airports-rm123bil",
+          "title": "Khazanah, EPF, two partners privatise Malaysia Airports RM12.3bil (NST, May 2024; title from URL slug)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "FMT article dated 15 May 2024; NST's May 2024 headline puts the cost of buying the remaining shares at RM12.3 billion (figure taken from the headline/URL slug only)."
+    },
+    {
+      "id": "priv-consortium-members",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "The Gateway Development Alliance (GDA) consortium comprises Khazanah Nasional Berhad, the Employees Provident Fund (EPF), the Abu Dhabi Investment Authority (ADIA) and Global Infrastructure Partners (GIP).",
+      "value": "Khazanah, EPF, ADIA, GIP",
+      "as_of": "2025-02-25",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2025/02/25/delisting-a-watershed-moment-for-mahb-privatisation",
+          "title": "Delisting a watershed moment for MAHB privatisation (The Star, 25 Feb 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.malaysiakini.com/news/735493",
+          "title": "MAHB delisting after 25 years a watershed moment for its privatisation (Malaysiakini)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.bernama.com/en/news.php?id=2415761",
+          "title": "Bernama report on MAHB delisting (title not captured in search result)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.azmilaw.com/news/azmi-associates-advises-mahb-on-landmark-takeover-and-delisting-exercise/",
+          "title": "Azmi & Associates Advises MAHB on Landmark Takeover and Delisting Exercise",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "The acquiring company is Gateway Development Alliance Sdn Bhd. A CAPA summary also names the offer-vehicle entities Pantai Panorama, Kwasa Aktif and GIP Aurea (not independently verified)."
+    },
+    {
+      "id": "priv-offer-price",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "GDA offered RM11.00 in cash for each Malaysia Airports share it did not already own.",
+      "value": "RM11.00 per share",
+      "as_of": "2024-11-15",
+      "sources": [
+        {
+          "url": "https://fmtv5.freemalaysiatoday.com/category/nation/2024/11/15/khazanah-led-consortium-makes-formal-offer-for-mahb-at-rm11-per-share",
+          "title": "Khazanah-led consortium makes formal offer for MAHB at RM11 per share (FMT, 15 Nov 2024)",
+          "type": "news"
+        },
+        {
+          "url": "https://nst.com.my/amp/business/corporate/2024/05/1051048/khazanah-epf-two-partners-privatise-malaysia-airports-rm123bil",
+          "title": "Khazanah, EPF, two partners privatise Malaysia Airports RM12.3bil (NST, May 2024; title from URL slug)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "The formal offer was reported on 15 November 2024."
+    },
+    {
+      "id": "priv-deal-size",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "The cost of acquiring the Malaysia Airports shares not already held by the consortium was reported at about RM12.3 billion.",
+      "value": "RM12.3 billion",
+      "as_of": "2024-05",
+      "sources": [
+        {
+          "url": "https://nst.com.my/amp/business/corporate/2024/05/1051048/khazanah-epf-two-partners-privatise-malaysia-airports-rm123bil",
+          "title": "Khazanah, EPF, two partners privatise Malaysia Airports RM12.3bil (NST, May 2024; title from URL slug)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Figure comes from the NST headline/URL slug ('rm123bil') returned by search; the article body was not read. An implied equity value of about RM18.4 billion is prior knowledge and unverified."
+    },
+    {
+      "id": "priv-pre-deal-shareholding",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Before the takeover, Khazanah Nasional held about 33.2% and the EPF about 7.9% of Malaysia Airports.",
+      "value": "Khazanah 33.2%; EPF 7.9%",
+      "as_of": "2024-05",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/news/nation/2024/05/26/khazanah-epf-on-mahb-privatisation-and-future-benefits",
+          "title": "Khazanah, EPF on MAHB privatisation and future benefits (The Star, 26 May 2024)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.malaymail.com/amp/news/malaysia/2024/05/24/whats-behind-the-controversy-of-mahbs-khazanah-epf-takeover-and-what-does-israel-have-to-do-with-it/135866",
+          "title": "What's behind the controversy of MAHB's Khazanah-EPF takeover (Malay Mail, 24 May 2024)",
+          "type": "news"
+        },
+        {
+          "url": "https://nst.com.my/amp/business/corporate/2024/05/1051048/khazanah-epf-two-partners-privatise-malaysia-airports-rm123bil",
+          "title": "Khazanah, EPF, two partners privatise Malaysia Airports RM12.3bil (NST, May 2024; title from URL slug)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Stated in the search summary of May 2024 coverage; the specific article carrying each figure was not isolated."
+    },
+    {
+      "id": "priv-stakes-after-deal",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Under the privatisation plan, Khazanah Nasional was to hold 40% and the EPF 30%, giving Malaysian institutions 70%, with GIP and ADIA together holding the remaining 30%.",
+      "value": "Khazanah 40%; EPF 30%; GIP + ADIA 30%",
+      "as_of": "2024-06",
+      "sources": [
+        {
+          "url": "https://www.nst.com.my/amp/news/nation/2024/06/1067999/pm-no-sale-mahb-foreign-firms-ownership-boosted-70pct-watch",
+          "title": "PM: No sale of MAHB to foreign firms, ownership boosted to 70pct (NST, June 2024)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.thestar.com.my/news/nation/2024/05/26/khazanah-epf-on-mahb-privatisation-and-future-benefits",
+          "title": "Khazanah, EPF on MAHB privatisation and future benefits (The Star, 26 May 2024)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.malaymail.com/amp/news/malaysia/2024/05/24/whats-behind-the-controversy-of-mahbs-khazanah-epf-takeover-and-what-does-israel-have-to-do-with-it/135866",
+          "title": "What's behind the controversy of MAHB's Khazanah-EPF takeover (Malay Mail, 24 May 2024)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "CONFLICT/CAVEAT: most reports describe 40/30/30 as the effective stakes in MAHB after the deal (PM quoted: local ownership 'boosted to 70pct'); some early reports describe the same split as stakes within the consortium. Reported split of the foreign 30%: GIP about 25% effective, ADIA about 5% effective. These are planned stakes reported in mid-2024; the final post-completion percentages were not confirmed from an official 2025-2026 source."
+    },
+    {
+      "id": "priv-acceptance-98-68",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "By 17:00 on 12 February 2025, GDA held 1.64 billion Malaysia Airports shares, or 98.68% of the issued share capital.",
+      "value": "98.68%",
+      "as_of": "2025-02",
+      "sources": [
+        {
+          "url": "https://www.bernama.com/en/news.php?id=2415761",
+          "title": "Bernama report on MAHB delisting (title not captured in search result)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2025/02/25/delisting-a-watershed-moment-for-mahb-privatisation",
+          "title": "Delisting a watershed moment for MAHB privatisation (The Star, 25 Feb 2025)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "An earlier NST report (January 2025) recorded 84% acceptance while the offer was still open."
+    },
+    {
+      "id": "priv-last-trading-day",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports shares last traded on Bursa Malaysia on 19 February 2025, closing at RM10.90, and were suspended from 20 February 2025.",
+      "value": "2025-02-19",
+      "as_of": "2025-02-25",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2025/02/25/delisting-a-watershed-moment-for-mahb-privatisation",
+          "title": "Delisting a watershed moment for MAHB privatisation (The Star, 25 Feb 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.malaysiakini.com/news/735493",
+          "title": "MAHB delisting after 25 years a watershed moment for its privatisation (Malaysiakini)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "The delisting application was submitted to Bursa Securities on 13 February 2025."
+    },
+    {
+      "id": "priv-delisted-2025-02-25",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports Holdings Berhad was removed from the Official List of Bursa Malaysia Securities on 25 February 2025, ending just over 25 years as a listed company.",
+      "value": "2025-02-25",
+      "as_of": "2025-02-25",
+      "sources": [
+        {
+          "url": "https://www.azmilaw.com/news/azmi-associates-advises-mahb-on-landmark-takeover-and-delisting-exercise/",
+          "title": "Azmi & Associates Advises MAHB on Landmark Takeover and Delisting Exercise",
+          "type": "other"
+        },
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2025/02/25/delisting-a-watershed-moment-for-mahb-privatisation",
+          "title": "Delisting a watershed moment for MAHB privatisation (The Star, 25 Feb 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.malaysiakini.com/news/735493",
+          "title": "MAHB delisting after 25 years a watershed moment for its privatisation (Malaysiakini)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.bernama.com/en/news.php?id=2415761",
+          "title": "Bernama report on MAHB delisting (title not captured in search result)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Sources agree on 19 Feb (last trading day) and 20 Feb (suspension). The 25 Feb delisting date is given by Azmi & Associates (legal adviser to MAHB) and Bernama; '25 years' is from the Malaysiakini headline."
+    },
+    {
+      "id": "ownership-current",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports is now a privately held company wholly owned by Gateway Development Alliance, with the Government of Malaysia retaining a special share.",
+      "value": "100% GDA; Government special share",
+      "as_of": "2025-02",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2025/02/25/delisting-a-watershed-moment-for-mahb-privatisation",
+          "title": "Delisting a watershed moment for MAHB privatisation (The Star, 25 Feb 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.malaysiakini.com/news/735493",
+          "title": "MAHB delisting after 25 years a watershed moment for its privatisation (Malaysiakini)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Search summary: delisting 'will see MAHB emerge as a single-shareholder company, fully owned by GDA, with the government remaining a special shareholder'. GDA held 98.68% on 12 Feb 2025; completion of the compulsory acquisition of the remainder was not separately confirmed. No source found describing any ownership change during 2025-2026."
+    },
+    {
+      "id": "ownership-mof-inc-role",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "The Ministry of Finance (Incorporated) approved the 2026 extension of the Managing Director's tenure.",
+      "value": null,
+      "as_of": "2026-06-18",
+      "sources": [
+        {
+          "url": "https://www.nst.com.my/business/corporate/2026/06/1466564/malaysia-airports-names-azmil-khalid-chairman-extends-mds-tenure",
+          "title": "Malaysia Airports names Azmil Khalid as chairman, extends MD's tenure (NST, June 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://theedgemalaysia.com/node/807430",
+          "title": "MAHB appoints Azmil Khalid as new chairman (The Edge Malaysia, June 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Reported in June 2026; consistent with the Government retaining a special share. Whether MOF (Inc) approval applies to other appointments was not established."
+    },
+    {
+      "id": "governance-ineds-resigned-on-delisting",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "All five independent non-executive directors of Malaysia Airports resigned with effect from the delisting date in February 2025.",
+      "value": "5 directors",
+      "as_of": "2025-02",
+      "sources": [
+        {
+          "url": "https://centreforaviation.com/news/mahb-all-independent-non-executive-directors-tender-resignations-prior-to-bursa-de-listing-1304931",
+          "title": "MAHB: all independent non-executive directors tender resignations prior to Bursa de-listing (CAPA)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "From a CAPA news summary. The full current board composition could not be captured; see the official Board of Directors page."
+    },
+    {
+      "id": "lead-chairman-azmil-khalid",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Tan Sri Dr. Azmil Khalid is the Chairman (non-independent non-executive) of Malaysia Airports, appointed with effect from 18 June 2026.",
+      "value": "Tan Sri Dr. Azmil Khalid; effective 2026-06-18",
+      "as_of": "2026-06-18",
+      "sources": [
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/media-centre/news/1787",
+          "title": "Tan Sri Dr. Azmil Khalid appointed as Malaysia Airports ... (Malaysia Airports media centre)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2026/06/18/mahb-appoints-azmil-khalid-as-non-independent-non-executive-chairman",
+          "title": "MAHB appoints Azmil Khalid as non-independent non-executive chairman (The Star, 18 Jun 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://theedgemalaysia.com/node/807430",
+          "title": "MAHB appoints Azmil Khalid as new chairman (The Edge Malaysia, June 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.nst.com.my/business/corporate/2026/06/1466564/malaysia-airports-names-azmil-khalid-chairman-extends-mds-tenure",
+          "title": "Malaysia Airports names Azmil Khalid as chairman, extends MD's tenure (NST, June 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Most recent chairman appointment found; no later change surfaced in searches run on 2026-11-16. Honorific as styled in the official media-centre headline."
+    },
+    {
+      "id": "lead-chairman-predecessor-nungsari",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Tan Sri Dr. Azmil Khalid succeeded Dr. Nungsari Ahmad Radhi, who stepped down after more than two years as Chairman following his appointment to the board of Khazanah Nasional Berhad.",
+      "value": null,
+      "as_of": "2026-06-18",
+      "sources": [
+        {
+          "url": "https://theedgemalaysia.com/node/807430",
+          "title": "MAHB appoints Azmil Khalid as new chairman (The Edge Malaysia, June 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2026/06/18/mahb-appoints-azmil-khalid-as-non-independent-non-executive-chairman",
+          "title": "MAHB appoints Azmil Khalid as non-independent non-executive chairman (The Star, 18 Jun 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.nst.com.my/business/corporate/2026/06/1466564/malaysia-airports-names-azmil-khalid-chairman-extends-mds-tenure",
+          "title": "Malaysia Airports names Azmil Khalid as chairman, extends MD's tenure (NST, June 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "For archive/history content only."
+    },
+    {
+      "id": "lead-md-izani-ghani",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Dato' Mohd Izani Ghani is the Managing Director of Malaysia Airports, appointed with effect from 1 August 2024.",
+      "value": "Dato' Mohd Izani Ghani; effective 2024-08-01",
+      "as_of": "2026-06-18",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairports.com.my/en/media-centre/news/1401",
+          "title": "Managing Director Dato' Mohd Izani Ghani appointed ... (Malaysia Airports media centre)",
+          "type": "official"
+        },
+        {
+          "url": "https://careers.malaysiaairports.com.my/content/Our-Leaders/?locale=en_GB",
+          "title": "Our Leaders - Careers - Malaysia Airports",
+          "type": "official"
+        },
+        {
+          "url": "https://www.nst.com.my/business/corporate/2026/06/1466564/malaysia-airports-names-azmil-khalid-chairman-extends-mds-tenure",
+          "title": "Malaysia Airports names Azmil Khalid as chairman, extends MD's tenure (NST, June 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "News outlets style him 'Datuk'; the official site uses 'Dato''. A separate Edge article naming Iskandar Mizal Mahmood as MD dates from about October 2021 and is historical (see lead-history-2021-md)."
+    },
+    {
+      "id": "lead-md-tenure-extended-2026",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "The Managing Director's tenure was extended for a further two years with effect from 1 August 2026.",
+      "value": "2 years from 2026-08-01",
+      "as_of": "2026-06-18",
+      "sources": [
+        {
+          "url": "https://www.nst.com.my/business/corporate/2026/06/1466564/malaysia-airports-names-azmil-khalid-chairman-extends-mds-tenure",
+          "title": "Malaysia Airports names Azmil Khalid as chairman, extends MD's tenure (NST, June 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://theedgemalaysia.com/node/807430",
+          "title": "MAHB appoints Azmil Khalid as new chairman (The Edge Malaysia, June 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/media-centre/news/1787",
+          "title": "Tan Sri Dr. Azmil Khalid appointed as Malaysia Airports ... (Malaysia Airports media centre)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Extension approved by the Ministry of Finance (Incorporated) and announced together with the chairman appointment in June 2026."
+    },
+    {
+      "id": "lead-md-former-board-member",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Before becoming Managing Director, Dato' Mohd Izani Ghani served on the Malaysia Airports Board from 2011 to 2019.",
+      "value": "2011-2019",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://careers.malaysiaairports.com.my/content/Our-Leaders/?locale=en_GB",
+          "title": "Our Leaders - Careers - Malaysia Airports",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "From the 'Our Leaders' page on the careers site, as summarised by search."
+    },
+    {
+      "id": "lead-cfo-zeid-abdul-razak",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Zeid Abdul Razak is listed as Chief Financial Officer on the corporate website's management team page.",
+      "value": "Chief Financial Officer",
+      "as_of": "unknown (page retrieved via search on 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/about-us/organisation/management-team",
+          "title": "Management Team (Malaysia Airports corporate website)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Search-engine snapshot of the official page; snapshot date unknown. Re-check the live page before publishing because senior roles changed during 2024-2026."
+    },
+    {
+      "id": "lead-chief-airports-officer-bryan-thompson",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Bryan John Thompson is listed as Chief Airports Officer on the corporate website's management team page.",
+      "value": "Chief Airports Officer",
+      "as_of": "unknown (page retrieved via search on 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/about-us/organisation/management-team",
+          "title": "Management Team (Malaysia Airports corporate website)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Search-engine snapshot; re-check the live page."
+    },
+    {
+      "id": "lead-chief-human-capital-nadiah-tan",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Nadiah Tan Abdullah is listed as Chief Human Capital Officer on the corporate website's management team page.",
+      "value": "Chief Human Capital Officer",
+      "as_of": "unknown (page retrieved via search on 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/about-us/organisation/management-team",
+          "title": "Management Team (Malaysia Airports corporate website)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Search-engine snapshot; re-check the live page."
+    },
+    {
+      "id": "lead-chief-development-steven-andersen",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Steven Andersen is listed as Chief Development Officer on the corporate website's management team page.",
+      "value": "Chief Development Officer",
+      "as_of": "unknown (page retrieved via search on 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/about-us/organisation/management-team",
+          "title": "Management Team (Malaysia Airports corporate website)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Search-engine snapshot; re-check the live page."
+    },
+    {
+      "id": "lead-chief-commercial-maureen-bannerman",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Maureen Mary Bannerman is listed as Chief Commercial Officer on the corporate website's management team page.",
+      "value": "Chief Commercial Officer",
+      "as_of": "unknown (page retrieved via search on 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/about-us/organisation/management-team",
+          "title": "Management Team (Malaysia Airports corporate website)",
+          "type": "official"
+        },
+        {
+          "url": "https://corporate.malaysiaairports.com.my/penang/about-us/organisation/management-team",
+          "title": "Management team - Corporate - Malaysia Airports (Penang-path version)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Search-engine snapshot. Two versions of the page differ on another commercial title: Hani Ezra Hussin appears as Deputy Chief Commercial Officer on one and Senior General Manager, Commercial Services on the other."
+    },
+    {
+      "id": "lead-chief-legal-ahmad-zaky-ismail",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Ahmad Zaky Ismail is listed as Chief Legal Officer on the corporate website's management team page.",
+      "value": "Chief Legal Officer",
+      "as_of": "unknown (page retrieved via search on 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/about-us/organisation/management-team",
+          "title": "Management Team (Malaysia Airports corporate website)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Search-engine snapshot; re-check the live page."
+    },
+    {
+      "id": "lead-other-c-suite-roles",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "The management team page also lists a Chief Operating Officer for Malaysia Airports Sdn Bhd, a Chief Operating Officer for KL International Airport, a Chief Information Officer, a Chief Procurement Officer and a Chief Aviation Development Officer.",
+      "value": null,
+      "as_of": "unknown (page retrieved via search on 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/about-us/organisation/management-team",
+          "title": "Management Team (Malaysia Airports corporate website)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Role titles only; the holders' names were not captured in this run (gap)."
+    },
+    {
+      "id": "lead-history-2021-md",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Datuk Iskandar Mizal Mahmood was appointed Managing Director effective 25 October, when Datuk Mohd Shukrie Mohd Salleh resigned as Group Chief Executive Officer; this is a past appointment, not the current leadership.",
+      "value": null,
+      "as_of": "about 2021-10",
+      "sources": [
+        {
+          "url": "https://theedgemalaysia.com/article/mahb-appoints-iskandar-mizal-managing-director",
+          "title": "MAHB appoints Iskandar Mizal as managing director, Mohd Shukrie resigns as group CEO (The Edge Malaysia, about Oct 2021)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Included to prevent confusion: the article surfaced in a 2026 leadership search but its age (about 1,851 days at retrieval) places it in October 2021. Year 2021 is consistent with prior knowledge."
+    },
+    {
+      "id": "brand-vision",
+      "category": "brand",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports' vision is 'A Global Airport Group That Champions Connectivity and Sustainability'.",
+      "value": "A Global Airport Group That Champions Connectivity and Sustainability",
+      "as_of": "unknown (official page retrieved via search on 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/about-us/corporate-profile/our-brand",
+          "title": "Our Core Values / Our Brand (Malaysia Airports corporate website)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "MAHB Annual Report 2023 (PDF)",
+          "type": "official"
+        },
+        {
+          "url": "http://annualreport2020.malaysiaairports.com.my/",
+          "title": "Malaysia Airports Annual Report 2020 microsite",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Stated on the official 'Our Brand' page and reaffirmed in the 2023 and 2020 annual reports. Capitalisation as returned by search; confirm verbatim on the live page."
+    },
+    {
+      "id": "brand-promise",
+      "category": "brand",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports' brand promise is 'Hosting Joyful Connections'.",
+      "value": "Hosting Joyful Connections",
+      "as_of": "unknown (official page retrieved via search on 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/about-us/corporate-profile/our-brand",
+          "title": "Our Core Values / Our Brand (Malaysia Airports corporate website)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/sites/corporate/files/2024-05/MAHB%20AR2023%20%5BSingle%5D-compressed.pdf",
+          "title": "MAHB Annual Report 2023 (PDF)",
+          "type": "official"
+        },
+        {
+          "url": "http://annualreport2020.malaysiaairports.com.my/",
+          "title": "Malaysia Airports Annual Report 2020 microsite",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Paired with the vision on the official brand page and in annual reports."
+    },
+    {
+      "id": "brand-core-values",
+      "category": "brand",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports' four core values are Integrity, Customer-Centricity, Accountability and New Ideas.",
+      "value": "Integrity; Customer-Centricity; Accountability; New Ideas",
+      "as_of": "2020 (annual report); current page not read",
+      "sources": [
+        {
+          "url": "http://annualreport2020.malaysiaairports.com.my/",
+          "title": "Malaysia Airports Annual Report 2020 microsite",
+          "type": "official"
+        },
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/about-us/corporate-profile/our-brand",
+          "title": "Our Core Values / Our Brand (Malaysia Airports corporate website)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "The four values are as listed in the 2020 annual report. The current official page is titled 'Our Core Values' and says the values guide how staff think, work and behave, but its present wording was not captured. Confirm before publishing."
+    },
+    {
+      "id": "brand-no-separate-mission",
+      "category": "brand",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports does not publish a separate mission statement: the brand promise replaced the former mission statement.",
+      "value": null,
+      "as_of": "2019 (sustainability report)",
+      "sources": [
+        {
+          "url": "https://drmapssdev.blob.core.windows.net/corporate-cms/2024-06/MAHB-Sustainability-Report-2019.pdf",
+          "title": "MAHB Sustainability Report 2019 (PDF on corporate CMS storage)",
+          "type": "official"
+        },
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/about-us/corporate-profile/our-brand",
+          "title": "Our Core Values / Our Brand (Malaysia Airports corporate website)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Per the 2019 Sustainability Report as summarised by search; no current standalone mission or 'purpose' statement surfaced in this run. Earlier (2018) wording: vision 'to be the global leader in creating airport cities' - historical only."
+    },
+    {
+      "id": "brand-descriptor-holistic",
+      "category": "brand",
+      "airport": null,
+      "terminal": null,
+      "claim": "The corporate website describes Malaysia Airports as 'A Holistic Global Airport Company'.",
+      "value": "A Holistic Global Airport Company",
+      "as_of": "unknown (official page retrieved via search on 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en",
+          "title": "Malaysia Airports corporate website home",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Descriptor reported in the search summary of the corporate site; treat as a tagline to confirm, not as a formal purpose statement."
+    },
+    {
+      "id": "sub-ma-sepang",
+      "category": "corporate",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "Malaysia Airports (Sepang) Sdn Bhd is the group subsidiary that operates KL International Airport (KLIA).",
+      "value": null,
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairports.com.my/about-us/subsidiaries",
+          "title": "Subsidiaries (Malaysia Airports corporate website)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2022/12/15/t7-consortium-secures-klia-contract",
+          "title": "T7 consortium secures KLIA contract (The Star, 15 Dec 2022)",
+          "type": "news"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Malaysia_Airports",
+          "title": "Malaysia Airports (Wikipedia)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Also the contracting entity for the KLIA Terminal 1 baggage handling system contract (2022)."
+    },
+    {
+      "id": "sub-ma-sdn-bhd",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports Sdn Bhd operates the group's airports in Malaysia other than KLIA.",
+      "value": null,
+      "as_of": "prior knowledge, approx. as of 2025",
+      "sources": [
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/about-us/organisation/management-team",
+          "title": "Management Team (Malaysia Airports corporate website)",
+          "type": "official"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE - not re-confirmed in this run (official sites were blocked and the search budget ran out). Verify against the official source before publishing. Search confirmed only that the company exists as a subsidiary and has its own Chief Operating Officer on the management team page; the description of its scope is prior knowledge."
+    },
+    {
+      "id": "sub-ma-niaga-eraman",
+      "category": "retail",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports (Niaga) Sdn Bhd, a wholly owned subsidiary incorporated in 1993, runs the group's Eraman duty-free and retail business.",
+      "value": "incorporated 1993",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairports.com.my/about-us/subsidiaries",
+          "title": "Subsidiaries (Malaysia Airports corporate website)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "From the official subsidiaries page as summarised by search."
+    },
+    {
+      "id": "sub-kl-airport-hotel-sama-sama",
+      "category": "hotels",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "K.L. Airport Hotel Sdn Bhd owns and operates Sama-Sama Hotel KL International Airport, a five-star hotel at KLIA.",
+      "value": "5-star",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairports.com.my/about-us/subsidiaries",
+          "title": "Subsidiaries (Malaysia Airports corporate website)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "The official page describes it as a wholly owned subsidiary of MA Properties (Malaysia Airports (Properties) Sdn Bhd). The Sama-Sama Express airside transit hotels at KLIA Terminal 1 and Terminal 2 are prior knowledge, not re-confirmed."
+    },
+    {
+      "id": "sub-ma-consultancy-services",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports Consultancy Services Sdn Bhd (MACS), established in 1994, offers management, maintenance and technical services for airport operations and development.",
+      "value": "established 1994",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairports.com.my/about-us/subsidiaries",
+          "title": "Subsidiaries (Malaysia Airports corporate website)",
+          "type": "official"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Malaysia_Airports",
+          "title": "Malaysia Airports (Wikipedia)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "The listing found by search styles the company 'MA Consultancy Services Sdn Bhd'; the search summary did not identify which listing carried the description. Confirm name and wording on the official subsidiaries page."
+    },
+    {
+      "id": "sub-urusan-teknologi-wawasan",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Urusan Teknologi Wawasan Sdn Bhd (UTW) is the group's engineering and facilities-management subsidiary, providing operations and maintenance services.",
+      "value": null,
+      "as_of": "prior knowledge, approx. as of 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE - not re-confirmed in this run (official sites were blocked and the search budget ran out). Verify against the official source before publishing. Search in this run confirmed only that UTW has been listed as a subsidiary (2008 annual report); no description of activities was found, and one listing shows 'MA Technologies' in a similar position."
+    },
+    {
+      "id": "sub-mab-agriculture-horticulture",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "MAB Agriculture-Horticulture Sdn Bhd cultivates and manages the group's oil palm and coconut plantations.",
+      "value": null,
+      "as_of": "unknown (older source)",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairports.com.my/about-us/subsidiaries",
+          "title": "Subsidiaries (Malaysia Airports corporate website)",
+          "type": "official"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Malaysia_Airports",
+          "title": "Malaysia Airports (Wikipedia)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "The source for this description may be dated; confirm the subsidiary is still active before including it."
+    },
+    {
+      "id": "sub-isg-lgm",
+      "category": "corporate",
+      "airport": "SAW",
+      "terminal": null,
+      "claim": "Overseas, Malaysia Airports wholly owns Istanbul Sabiha Gokcen International Airport (ISG) and its terminal-services company LGM in Turkiye.",
+      "value": "100%",
+      "as_of": "prior knowledge, approx. as of 2025",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Malaysia_Airports",
+          "title": "Malaysia Airports (Wikipedia)",
+          "type": "other"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE - not re-confirmed in this run (official sites were blocked and the search budget ran out). Verify against the official source before publishing. Search confirmed the acquisition of Sabiha Gokcen but not the current percentage or LGM's exact legal name and scope."
+    },
+    {
+      "id": "seg-klia-aeropolis",
+      "category": "corporate",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "KLIA Aeropolis is Malaysia Airports' airport-city development on the land around KLIA, planned around air cargo and logistics, aerospace and aviation, and business, leisure and MICE clusters.",
+      "value": null,
+      "as_of": "prior knowledge, approx. as of 2025",
+      "sources": [
+        {
+          "url": "https://theedgemalaysia.com/content/advertise/powering-the-future-of-aviation-how-klia-aeropolis-solar-park-supports-malaysia-airports-transformation-journey",
+          "title": "Powering the future of aviation: How KLIA Aeropolis Solar Park supports Malaysia Airports' transformation journey (The Edge Malaysia, advertorial)",
+          "type": "operator"
+        },
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2026/01/29/dpm-fadillah-unveils-klia-aeropolis-solar-farm-and-battery-project-as-malaysia-powers-up-energy-transition/207242",
+          "title": "DPM Fadillah unveils KLIA Aeropolis solar farm and battery project (Malay Mail, 29 Jan 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE - not re-confirmed in this run (official sites were blocked and the search budget ran out). Verify against the official source before publishing. Search in this run confirms the KLIA Aeropolis name and its solar park project only. The land area (about 100 sq km) and cluster names are prior knowledge."
+    },
+    {
+      "id": "network-39-airports-malaysia",
+      "category": "operations",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports operates 39 airports in Malaysia.",
+      "value": "39",
+      "as_of": "2026-01-20",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2026/01/20/mahb-registers-112-rise-in-passengers-for-2025",
+          "title": "MAHB registers 11.2% rise in passengers for 2025 (The Star, 20 Jan 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/media-centre/news/1678",
+          "title": "Strong 2025 passenger growth builds momentum for Visit Malaysia 2026 (Malaysia Airports media centre)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.pressreader.com/malaysia/the-borneo-post/20240319/281548000876163",
+          "title": "Govt, MAHB ink new 45-year deals to upgrade Malaysian airports (The Borneo Post, 19 Mar 2024)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "The Operating Agreements coverage describes the 39 as airports and short take-off and landing ports (STOLports)."
+    },
+    {
+      "id": "network-composition",
+      "category": "operations",
+      "airport": null,
+      "terminal": null,
+      "claim": "The 39 Malaysian airports comprise five international airports, 16 domestic airports and 18 STOLports.",
+      "value": "5 international; 16 domestic; 18 STOLports",
+      "as_of": "prior knowledge, approx. as of 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE - not re-confirmed in this run (official sites were blocked and the search budget ran out). Verify against the official source before publishing. The five international airports from prior knowledge: KLIA, Penang, Kota Kinabalu, Kuching and Langkawi."
+    },
+    {
+      "id": "traffic-2025-group-total",
+      "category": "operations",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports' global network recorded 153.3 million passenger movements in 2025.",
+      "value": "153.3 million",
+      "as_of": "2026-01-19",
+      "sources": [
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/media-centre/news/1678",
+          "title": "Strong 2025 passenger growth builds momentum for Visit Malaysia 2026 (Malaysia Airports media centre)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.routesonline.com/airports/9835/malaysia-airports-holdings-berhad/news/299665873/malaysia-airports-strong-2025-passenger-growth-builds-momentum-for-visit-malaysia-2026/",
+          "title": "Malaysia Airports' Strong 2025 Passenger Growth Builds Momentum for Visit Malaysia 2026 (operator release on Routesonline)",
+          "type": "operator"
+        },
+        {
+          "url": "https://english.news.cn/20260120/2233e40852214ce390452a2840fc711d/c.html",
+          "title": "Malaysia airports' passenger movements reach 153.3 mln in 2025 (Xinhua, 20 Jan 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2026/01/20/mahb-registers-112-rise-in-passengers-for-2025",
+          "title": "MAHB registers 11.2% rise in passengers for 2025 (The Star, 20 Jan 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Some outlets misprinted the figure as 15.53 million; one aggregator headline says 153.4 million. Includes Istanbul Sabiha Gokcen."
+    },
+    {
+      "id": "traffic-2025-malaysia",
+      "category": "operations",
+      "airport": null,
+      "terminal": null,
+      "claim": "The 39 airports in Malaysia handled 104.4 million passengers in 2025, up 11.2% on 2024.",
+      "value": "104.4 million (+11.2%)",
+      "as_of": "2026-01-20",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2026/01/20/mahb-registers-112-rise-in-passengers-for-2025",
+          "title": "MAHB registers 11.2% rise in passengers for 2025 (The Star, 20 Jan 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://theedgemalaysia.com/node/789693",
+          "title": "Malaysia Airports reports 11.2% rise in passenger traffic in 2025 (The Edge Malaysia)",
+          "type": "news"
+        },
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/media-centre/news/1678",
+          "title": "Strong 2025 passenger growth builds momentum for Visit Malaysia 2026 (Malaysia Airports media centre)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Full-year figure published January 2026."
+    },
+    {
+      "id": "traffic-2025-klia",
+      "category": "operations",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "KLIA handled 63.3 million passengers in 2025, up 10.8% year on year.",
+      "value": "63.3 million (+10.8%)",
+      "as_of": "2026-01-20",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2026/01/20/mahb-registers-112-rise-in-passengers-for-2025",
+          "title": "MAHB registers 11.2% rise in passengers for 2025 (The Star, 20 Jan 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/media-centre/news/1678",
+          "title": "Strong 2025 passenger growth builds momentum for Visit Malaysia 2026 (Malaysia Airports media centre)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.routesonline.com/airports/9835/malaysia-airports-holdings-berhad/news/299665873/malaysia-airports-strong-2025-passenger-growth-builds-momentum-for-visit-malaysia-2026/",
+          "title": "Malaysia Airports' Strong 2025 Passenger Growth Builds Momentum for Visit Malaysia 2026 (operator release on Routesonline)",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "KLIA handled 6.1 million passengers in December 2025."
+    },
+    {
+      "id": "traffic-2025-klia-share",
+      "category": "operations",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "KLIA accounted for about 61% of Malaysia Airports' passenger traffic in Malaysia in 2025, and about 41% of the group's global total.",
+      "value": "about 61% of Malaysia; about 41% of group",
+      "as_of": "2026-01-20",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2026/01/20/mahb-registers-112-rise-in-passengers-for-2025",
+          "title": "MAHB registers 11.2% rise in passengers for 2025 (The Star, 20 Jan 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/media-centre/news/1678",
+          "title": "Strong 2025 passenger growth builds momentum for Visit Malaysia 2026 (Malaysia Airports media centre)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "DERIVED by calculation in this run (63.3 / 104.4 = 60.6%; 63.3 / 153.3 = 41.3%); not a published figure."
+    },
+    {
+      "id": "traffic-2025-isg",
+      "category": "operations",
+      "airport": "SAW",
+      "terminal": null,
+      "claim": "Istanbul Sabiha Gokcen International Airport served a record of more than 48 million passengers in 2025.",
+      "value": "more than 48 million (48.4 million reported)",
+      "as_of": "2026-01",
+      "sources": [
+        {
+          "url": "https://hurriyetdailynews.com/istanbuls-airports-set-all-time-passenger-records-in-2025-217313",
+          "title": "Istanbul's airports set all-time passenger records in 2025 (Hurriyet Daily News)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.hurriyetdailynews.com/sabiha-gokcen-aims-to-become-global-hub-as-traffic-rises-222547",
+          "title": "Sabiha Gokcen aims to become global hub as traffic rises (Hurriyet Daily News)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "CONFLICT: Turkish press reports 48.4 million (and 'over 48 million' with more than 270,000 flights); MAHB's group total minus the Malaysian total implies about 48.9 million (153.3 - 104.4). 2024 base reported as 41.4-41.5 million. Use 'more than 48 million' until MAHB's own ISG figure is confirmed."
+    },
+    {
+      "id": "traffic-2025-december-peak",
+      "category": "operations",
+      "airport": null,
+      "terminal": null,
+      "claim": "December 2025 was the busiest month of the year, with 10 million passengers handled at airports across Malaysia, 15.5% more than a year earlier.",
+      "value": "10 million (+15.5%)",
+      "as_of": "2026-01-19",
+      "sources": [
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/media-centre/news/1678",
+          "title": "Strong 2025 passenger growth builds momentum for Visit Malaysia 2026 (Malaysia Airports media centre)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2026/01/20/mahb-registers-112-rise-in-passengers-for-2025",
+          "title": "MAHB registers 11.2% rise in passengers for 2025 (The Star, 20 Jan 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.routesonline.com/airports/9835/malaysia-airports-holdings-berhad/news/299665873/malaysia-airports-strong-2025-passenger-growth-builds-momentum-for-visit-malaysia-2026/",
+          "title": "Malaysia Airports' Strong 2025 Passenger Growth Builds Momentum for Visit Malaysia 2026 (operator release on Routesonline)",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Subang Airport grew 34.4% month on month in December 2025, from 142,000 to 191,000 passengers."
+    },
+    {
+      "id": "traffic-klia-hourly-record-2025",
+      "category": "operations",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "KLIA set an hourly record on 13 September 2025, handling 12,437 passengers between 19:00 and 20:00.",
+      "value": "12,437 passengers in one hour",
+      "as_of": "2025-09",
+      "sources": [
+        {
+          "url": "https://www.marketscreener.com/news/klia-breaks-hourly-passenger-record-with-more-than-12-000-movements-ce7d5bdbdb8af120",
+          "title": "KLIA breaks hourly passenger record with more than 12,000 movements (MarketScreener relay of MAHB release)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "MarketScreener relay of a Malaysia Airports release."
+    },
+    {
+      "id": "traffic-2025-q3-isg-growth",
+      "category": "operations",
+      "airport": "SAW",
+      "terminal": null,
+      "claim": "Istanbul Sabiha Gokcen recorded a 21.2% increase in passenger movements in the third quarter of 2025, with international traffic up 26.1%.",
+      "value": "+21.2% (international +26.1%)",
+      "as_of": "2025-10",
+      "sources": [
+        {
+          "url": "https://www.thevibes.com/articles/business/114341/mahb-records-12.2-rise-in-passenger-traffic-amid-route-expansion-and-airline-growth",
+          "title": "MAHB records 12.2% rise in passenger traffic amid route expansion and airline growth (The Vibes, 2025)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "From coverage of MAHB's Q3 2025 traffic statement."
+    },
+    {
+      "id": "traffic-2026-01-malaysia",
+      "category": "operations",
+      "airport": null,
+      "terminal": null,
+      "claim": "Airports across Malaysia handled 9.4 million passengers in January 2026, the first month of Visit Malaysia 2026.",
+      "value": "9.4 million",
+      "as_of": "2026-02-23",
+      "sources": [
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/media-centre/news/1686",
+          "title": "Visit Malaysia 2026 opens with 9.4 million passengers at ... (Malaysia Airports media centre)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.routesonline.com/airports/9835/malaysia-airports-holdings-berhad/news/299666012/visit-malaysia-2026-opens-with-94-million-passengers-at-airports-nationwide/",
+          "title": "Visit Malaysia 2026 Opens with 9.4 Million Passengers at Airports Nationwide (operator release on Routesonline)",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Official release headline: 'Visit Malaysia 2026 opens with 9.4 million passengers at airports nationwide'."
+    },
+    {
+      "id": "traffic-2026-08-group",
+      "category": "operations",
+      "airport": null,
+      "terminal": null,
+      "claim": "The Malaysia Airports group handled 13.6 million passengers in August 2026, including 5.2 million at Istanbul Sabiha Gokcen, taking the group's January-August 2026 total to 101.3 million.",
+      "value": "13.6 million (Aug 2026); 101.3 million (Jan-Aug 2026)",
+      "as_of": "2026-09",
+      "sources": [
+        {
+          "url": "https://theedgemalaysia.com/node/819567",
+          "title": "Malaysia Airports' August passenger traffic up 5.2% (The Edge Malaysia, 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Latest group-wide (including ISG) year-to-date figure found. The Edge headline reports August passenger traffic up 5.2%; the search summary did not make clear whether that growth rate refers to the group or to Malaysian operations."
+    },
+    {
+      "id": "traffic-2026-ytd-sep-malaysia",
+      "category": "operations",
+      "airport": null,
+      "terminal": null,
+      "claim": "From January to September 2026, Malaysia Airports' airports in Malaysia handled 75.2 million passengers, 2.4% fewer than in the same period of 2025.",
+      "value": "75.2 million (-2.4%)",
+      "as_of": "2026-10-26",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2026/10/26/traffic-slows-in-malaysia-airports-in-september-amid-soft-domestic-demand",
+          "title": "Traffic slows in Malaysia airports in September amid soft domestic demand (The Star, 26 Oct 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://theedgemalaysia.com/node/823206",
+          "title": "Subang, Ipoh, Penang airports see international passenger growth in September despite national decline (The Edge Malaysia, Oct 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.businesstoday.com.my/2026/10/26/penang-airport-international-traffic-rises-5-3-despite-malaysia-airports-september-decline/",
+          "title": "Penang Airport International Traffic Rises 5.3% Despite Malaysia Airports' September Decline (BusinessToday, 26 Oct 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.routesonline.com/airports/9835/malaysia-airports-holdings-berhad/news/299667154/malaysia-airports-regional-airports-record-international-traffic-growth-in-september/",
+          "title": "Malaysia Airports' Regional Airports Record International Traffic Growth in September (operator release on Routesonline)",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Latest year-to-date figure available on 2026-11-16. The October 2026 release had not appeared (the October 2025 release was published on 25 November 2025). Excludes ISG."
+    },
+    {
+      "id": "traffic-2026-ytd-sep-international",
+      "category": "operations",
+      "airport": null,
+      "terminal": null,
+      "claim": "International passenger traffic at Malaysia Airports' Malaysian airports grew 4.5% to 41.3 million in the first nine months of 2026.",
+      "value": "41.3 million (+4.5%)",
+      "as_of": "2026-10-26",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2026/10/26/traffic-slows-in-malaysia-airports-in-september-amid-soft-domestic-demand",
+          "title": "Traffic slows in Malaysia airports in September amid soft domestic demand (The Star, 26 Oct 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://theedgemalaysia.com/node/823206",
+          "title": "Subang, Ipoh, Penang airports see international passenger growth in September despite national decline (The Edge Malaysia, Oct 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Domestic traffic was the source of the overall decline."
+    },
+    {
+      "id": "traffic-2026-09-malaysia",
+      "category": "operations",
+      "airport": null,
+      "terminal": null,
+      "claim": "In September 2026 Malaysia Airports' Malaysian network handled 7.8 million passengers, down 12% year on year, with international traffic down 2.2% to 4.3 million and domestic traffic down 21.8% to 3.4 million.",
+      "value": "7.8 million (-12%)",
+      "as_of": "2026-10-26",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2026/10/26/traffic-slows-in-malaysia-airports-in-september-amid-soft-domestic-demand",
+          "title": "Traffic slows in Malaysia airports in September amid soft domestic demand (The Star, 26 Oct 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://theedgemalaysia.com/node/823206",
+          "title": "Subang, Ipoh, Penang airports see international passenger growth in September despite national decline (The Edge Malaysia, Oct 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.businesstoday.com.my/2026/10/26/penang-airport-international-traffic-rises-5-3-despite-malaysia-airports-september-decline/",
+          "title": "Penang Airport International Traffic Rises 5.3% Despite Malaysia Airports' September Decline (BusinessToday, 26 Oct 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Attributed in coverage to soft domestic demand."
+    },
+    {
+      "id": "traffic-2026-09-klia",
+      "category": "operations",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "KLIA handled approximately 4.9 million passengers in September 2026.",
+      "value": "about 4.9 million",
+      "as_of": "2026-10-26",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2026/10/26/traffic-slows-in-malaysia-airports-in-september-amid-soft-domestic-demand",
+          "title": "Traffic slows in Malaysia airports in September amid soft domestic demand (The Star, 26 Oct 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://theedgemalaysia.com/node/823206",
+          "title": "Subang, Ipoh, Penang airports see international passenger growth in September despite national decline (The Edge Malaysia, Oct 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Monthly figure only; a KLIA year-to-date 2026 figure was not found."
+    },
+    {
+      "id": "traffic-2026-09-regional-international-growth",
+      "category": "operations",
+      "airport": null,
+      "terminal": null,
+      "claim": "Subang, Ipoh and Penang airports recorded year-on-year growth in international passengers in September 2026, with Penang's international traffic up 5.3%.",
+      "value": "Penang international +5.3%",
+      "as_of": "2026-10-26",
+      "sources": [
+        {
+          "url": "https://theedgemalaysia.com/node/823206",
+          "title": "Subang, Ipoh, Penang airports see international passenger growth in September despite national decline (The Edge Malaysia, Oct 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.businesstoday.com.my/2026/10/26/penang-airport-international-traffic-rises-5-3-despite-malaysia-airports-september-decline/",
+          "title": "Penang Airport International Traffic Rises 5.3% Despite Malaysia Airports' September Decline (BusinessToday, 26 Oct 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.routesonline.com/airports/9835/malaysia-airports-holdings-berhad/news/299667154/malaysia-airports-regional-airports-record-international-traffic-growth-in-september/",
+          "title": "Malaysia Airports' Regional Airports Record International Traffic Growth in September (operator release on Routesonline)",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Penang percentage is from the BusinessToday headline."
+    },
+    {
+      "id": "service-klia-satisfaction-2026-09",
+      "category": "standards",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "Malaysia Airports reported passenger satisfaction of 98.8% at KLIA Terminal 1 and 99.4% at KLIA Terminal 2 for September 2026.",
+      "value": "T1 98.8%; T2 99.4%",
+      "as_of": "2026-10-26",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2026/10/26/traffic-slows-in-malaysia-airports-in-september-amid-soft-domestic-demand",
+          "title": "Traffic slows in Malaysia airports in September amid soft domestic demand (The Star, 26 Oct 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://theedgemalaysia.com/node/823206",
+          "title": "Subang, Ipoh, Penang airports see international passenger growth in September despite national decline (The Edge Malaysia, Oct 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "The measurement method (for example feedback-device ratings) was not stated in the search summary; do not present as an independent survey result."
+    },
+    {
+      "id": "oa-2023-agreed-in-principle",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "The Government of Malaysia announced in February 2023 that it had agreed in principle to new Operating Agreements (OA 2023) with Malaysia Airports.",
+      "value": "2023-02-09",
+      "as_of": "2023-02-09",
+      "sources": [
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2023/02/09/minister-under-new-deal-with-mahb-travellers-to-also-fund-airport-developments-along-with-govt/54105",
+          "title": "Minister: Under new deal with MAHB, travellers to also fund airport developments along with govt (Malay Mail, 9 Feb 2023)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.routesonline.com/airports/8/kuala-lumpur-international-airport-klia/news/299400/new-operating-agreements-ensure-commercial-sustainability-and-facilitate-growth-for-malaysia-airports/",
+          "title": "New Operating Agreements Ensure Commercial Sustainability and Facilitate Growth for Malaysia Airports (operator release on Routesonline)",
+          "type": "operator"
+        },
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/media-centre/news/273",
+          "title": "Malaysia Airports media centre item 273 (Operating Agreements release)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Announced by the Transport Minister; Malay Mail report dated 9 February 2023."
+    },
+    {
+      "id": "oa-2023-signed-2024",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "The new Operating Agreements between the Government and Malaysia Airports were signed on 18 March 2024.",
+      "value": "2024-03-18",
+      "as_of": "2024-03-19",
+      "sources": [
+        {
+          "url": "https://www.pressreader.com/malaysia/the-borneo-post/20240319/281548000876163",
+          "title": "Govt, MAHB ink new 45-year deals to upgrade Malaysian airports (The Borneo Post, 19 Mar 2024)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.kenanga.com.my/wp-content/uploads/2024/03/AIRPORT-240319-CU-Kenanga.pdf",
+          "title": "Kenanga Research company update on MAHB, 19 Mar 2024 (analyst note)",
+          "type": "other"
+        },
+        {
+          "url": "https://www.malaymail.com/news/money/2024/03/21/mahbs-new-operating-agreement-with-govt-strengthens-its-earnings-prospects-say-analysts/124690",
+          "title": "MAHB's new operating agreement with govt strengthens its earnings prospects, say analysts (Malay Mail, 21 Mar 2024)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Prior knowledge (not re-confirmed): there are two agreements, one for KLIA and one for the other designated airports."
+    },
+    {
+      "id": "oa-2023-term-2069",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "The Operating Agreements run for 45 years, ending on 11 February 2069.",
+      "value": "45 years, to 2069-02-11",
+      "as_of": "2024-03-19",
+      "sources": [
+        {
+          "url": "https://www.pressreader.com/malaysia/the-borneo-post/20240319/281548000876163",
+          "title": "Govt, MAHB ink new 45-year deals to upgrade Malaysian airports (The Borneo Post, 19 Mar 2024)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.kenanga.com.my/wp-content/uploads/2024/03/AIRPORT-240319-CU-Kenanga.pdf",
+          "title": "Kenanga Research company update on MAHB, 19 Mar 2024 (analyst note)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Term as stated by the Transport Minister at the signing."
+    },
+    {
+      "id": "oa-2023-scope",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Under the Operating Agreements, Malaysia Airports operates, manages, maintains and develops 39 airports and STOLports in Malaysia.",
+      "value": "39 airports and STOLports",
+      "as_of": "2024-03-19",
+      "sources": [
+        {
+          "url": "https://www.pressreader.com/malaysia/the-borneo-post/20240319/281548000876163",
+          "title": "Govt, MAHB ink new 45-year deals to upgrade Malaysian airports (The Borneo Post, 19 Mar 2024)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2023/02/09/minister-under-new-deal-with-mahb-travellers-to-also-fund-airport-developments-along-with-govt/54105",
+          "title": "Minister: Under new deal with MAHB, travellers to also fund airport developments along with govt (Malay Mail, 9 Feb 2023)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "One search result mentioned 45 airports; the official count used in traffic releases is 39."
+    },
+    {
+      "id": "oa-2023-airport-development-fund",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "The agreements create an Airport Development Fund (ADF): 50% of the Passenger Service Charge component used in calculating the User Fee is channelled into the ADF trust account to fund airport development.",
+      "value": "50% of PSC component of User Fee",
+      "as_of": "2024-03-19",
+      "sources": [
+        {
+          "url": "https://www.kenanga.com.my/wp-content/uploads/2024/03/AIRPORT-240319-CU-Kenanga.pdf",
+          "title": "Kenanga Research company update on MAHB, 19 Mar 2024 (analyst note)",
+          "type": "other"
+        },
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2023/02/09/minister-under-new-deal-with-mahb-travellers-to-also-fund-airport-developments-along-with-govt/54105",
+          "title": "Minister: Under new deal with MAHB, travellers to also fund airport developments along with govt (Malay Mail, 9 Feb 2023)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.malaymail.com/news/money/2024/03/21/mahbs-new-operating-agreement-with-govt-strengthens-its-earnings-prospects-say-analysts/124690",
+          "title": "MAHB's new operating agreement with govt strengthens its earnings prospects, say analysts (Malay Mail, 21 Mar 2024)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "The Minister described this as airport users, rather than the Government alone, funding airport development. User Fee percentage rates were not confirmed (reports cite about 12-13%); do not publish a rate."
+    },
+    {
+      "id": "oa-2023-funding-models",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Airport development under the agreements can be funded by Government development expenditure or by Malaysia Airports through an investment recovery model.",
+      "value": null,
+      "as_of": "2024-03-19",
+      "sources": [
+        {
+          "url": "https://www.kenanga.com.my/wp-content/uploads/2024/03/AIRPORT-240319-CU-Kenanga.pdf",
+          "title": "Kenanga Research company update on MAHB, 19 Mar 2024 (analyst note)",
+          "type": "other"
+        },
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2023/02/09/minister-under-new-deal-with-mahb-travellers-to-also-fund-airport-developments-along-with-govt/54105",
+          "title": "Minister: Under new deal with MAHB, travellers to also fund airport developments along with govt (Malay Mail, 9 Feb 2023)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.routesonline.com/airports/8/kuala-lumpur-international-airport-klia/news/299400/new-operating-agreements-ensure-commercial-sustainability-and-facilitate-growth-for-malaysia-airports/",
+          "title": "New Operating Agreements Ensure Commercial Sustainability and Facilitate Growth for Malaysia Airports (operator release on Routesonline)",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "As summarised from press and analyst reports; the agreement text is not public in the sources found."
+    },
+    {
+      "id": "oa-2023-investment-partners",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "The agreements allow Malaysia Airports to bring in partners and investors for airport development, subject to Government policy guidelines.",
+      "value": null,
+      "as_of": "2023-02",
+      "sources": [
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2023/02/09/minister-under-new-deal-with-mahb-travellers-to-also-fund-airport-developments-along-with-govt/54105",
+          "title": "Minister: Under new deal with MAHB, travellers to also fund airport developments along with govt (Malay Mail, 9 Feb 2023)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.routesonline.com/airports/8/kuala-lumpur-international-airport-klia/news/299400/new-operating-agreements-ensure-commercial-sustainability-and-facilitate-growth-for-malaysia-airports/",
+          "title": "New Operating Agreements Ensure Commercial Sustainability and Facilitate Growth for Malaysia Airports (operator release on Routesonline)",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Relevant to the Business Opportunities section."
+    },
+    {
+      "id": "oa-2023-user-fee-review-cycle",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Under the new agreements the User Fee percentage is reviewed on a three-year cycle rather than rising automatically each year.",
+      "value": "3-year review cycle",
+      "as_of": "2024-03-19",
+      "sources": [
+        {
+          "url": "https://www.kenanga.com.my/wp-content/uploads/2024/03/AIRPORT-240319-CU-Kenanga.pdf",
+          "title": "Kenanga Research company update on MAHB, 19 Mar 2024 (analyst note)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Analyst-note characterisation (Kenanga); not confirmed from an official source. The earlier arrangement increased the rate by 25 basis points a year."
+    },
+    {
+      "id": "proj-aerotrain-resumed-2025-07-01",
+      "category": "transport",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The KLIA Aerotrain between the Terminal 1 main building and the satellite building resumed service on 1 July 2025 after about 28 months of suspension.",
+      "value": "2025-07-01",
+      "as_of": "2025-07-02",
+      "sources": [
+        {
+          "url": "https://paultan.org/2025/07/02/klia-aerotrain-resumes-service-faster-train-sets-travel-times-between-terminals-now-under-3-minutes",
+          "title": "KLIA aerotrain resumes service - faster train sets, travel times between terminals now under 3 minutes (paultan.org, 2 Jul 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2025/06/30/klia-aerotrain-returns-july-1-anwar-to-officiate-relaunch-loke-applauds-revival/182306",
+          "title": "KLIA Aerotrain returns July 1, Anwar to officiate relaunch (Malay Mail, 30 Jun 2025)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Relaunch officiated by the Prime Minister; service restarted at 10:00 on 1 July 2025."
+    },
+    {
+      "id": "proj-aerotrain-cost",
+      "category": "transport",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The Aerotrain replacement project cost RM456.1 million.",
+      "value": "RM456.1 million",
+      "as_of": "2025-01-24",
+      "sources": [
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2025/01/24/klia-aerotrain-to-return-in-second-quarter-of-2025-after-rm456m-overhaul-mahb-confirms/164425",
+          "title": "KLIA Aerotrain to return in second quarter of 2025 after RM456m overhaul, MAHB confirms (Malay Mail, 24 Jan 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2024/01/18/aerotrain-back-on-track-but-at-higher-cost",
+          "title": "Aerotrain back on track but at higher cost (The Star, 18 Jan 2024)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/media-centre/news/klia-aerotrain-replacement-project-back-track",
+          "title": "KLIA Aerotrain replacement project back on track (Malaysia Airports media centre)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Cost after a re-awarded contract with a capped 15% increase; excludes operation and maintenance."
+    },
+    {
+      "id": "proj-aerotrain-contractors",
+      "category": "transport",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The Aerotrain replacement was completed by Alstom together with the IJMC-Pestech joint venture under a contract arrangement announced in January 2024.",
+      "value": "Alstom; IJMC-Pestech JV",
+      "as_of": "2024-01-17",
+      "sources": [
+        {
+          "url": "https://www.malaymail.com/news/money/2024/01/17/mahb-alstom-ijmc-pestech-jv-tie-up-to-complete-klia-aerotrain-replacement-project/112923",
+          "title": "MAHB, Alstom, IJMC-Pestech JV tie up to complete KLIA Aerotrain replacement project (Malay Mail, 17 Jan 2024)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2024/01/18/aerotrain-back-on-track-but-at-higher-cost",
+          "title": "Aerotrain back on track but at higher cost (The Star, 18 Jan 2024)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "id": "proj-aerotrain-trainsets",
+      "category": "transport",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The new Aerotrain uses Alstom Innovia APM 300R driverless three-car trainsets, each carrying up to 270 passengers.",
+      "value": "Innovia APM 300R; 270 passengers per train",
+      "as_of": "2025-07-02",
+      "sources": [
+        {
+          "url": "https://paultan.org/2025/07/02/klia-aerotrain-resumes-service-faster-train-sets-travel-times-between-terminals-now-under-3-minutes",
+          "title": "KLIA aerotrain resumes service - faster train sets, travel times between terminals now under 3 minutes (paultan.org, 2 Jul 2025)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Model name is well supported; the 270-passenger capacity and 56 km/h speed come from a single outlet and were not confirmed from an official source."
+    },
+    {
+      "id": "proj-aerotrain-journey-time",
+      "category": "transport",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The Aerotrain journey between the Terminal 1 main building and the satellite building takes under three minutes.",
+      "value": "under 3 minutes",
+      "as_of": "2025-07-02",
+      "sources": [
+        {
+          "url": "https://paultan.org/2025/07/02/klia-aerotrain-resumes-service-faster-train-sets-travel-times-between-terminals-now-under-3-minutes",
+          "title": "KLIA aerotrain resumes service - faster train sets, travel times between terminals now under 3 minutes (paultan.org, 2 Jul 2025)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": ""
+    },
+    {
+      "id": "proj-aerotrain-24h-and-ridership",
+      "category": "transport",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The Aerotrain returned to round-the-clock operation after scheduled maintenance, and had carried more than 6.55 million passengers between its July 2025 restart and May 2026.",
+      "value": "6.55 million passengers (to May 2026)",
+      "as_of": "2026-05",
+      "sources": [
+        {
+          "url": "https://www.edgeprop.my/content/1913679/after-delays-klia-aerotrain-now-ready-247-operations",
+          "title": "After delays, KLIA aerotrain now ready for 24/7 operations (EdgeProp)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.pulse.bot/transportation/news/klia-aerotrain-to-resume-24-hour-running-by-end-may-15839b97-7066-40bf-a05c-0cf4bf594e83/",
+          "title": "KLIA Aerotrain to Resume 24-Hour Running by End-May (aggregator summary, May 2026)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Ridership figure is from an aggregator summary of a May 2026 report. Reports also record several service disruptions after the relaunch and an independent review of the power system; check current operating hours before publishing."
+    },
+    {
+      "id": "proj-bhs-contract-award",
+      "category": "facilities",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Malaysia Airports (Sepang) awarded the contract for a new baggage handling system at KLIA Terminal 1 to a consortium of T7 Kemuncak and Siemens Logistics in late 2022.",
+      "value": "awarded 2022 (contract from 2022-11-04)",
+      "as_of": "2022-12-15",
+      "sources": [
+        {
+          "url": "https://theedgemalaysia.com/article/t7-globalsiemens-consortium-wins-klia-baggage-handling-system-contract",
+          "title": "T7 Global-Siemens consortium wins KLIA baggage handling system contract (The Edge Malaysia, Dec 2022)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2022/12/15/t7-consortium-secures-klia-contract",
+          "title": "T7 consortium secures KLIA contract (The Star, 15 Dec 2022)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.skrine.com/insights/alerts/january-2023/transaction-news-malaysia-airports-awards-contract",
+          "title": "Transaction News: Malaysia Airports awards contract for upgrade of baggage handling system at KLIA-1 (Skrine, Jan 2023)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Scope: design, supply, installation, testing and commissioning. Original contract period 4 November 2022 to 3 November 2025; value not disclosed."
+    },
+    {
+      "id": "proj-bhs-scope",
+      "category": "facilities",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The new Terminal 1 baggage system includes an early bag store with 2,500 bag positions and a high-speed tray link between the main terminal and the satellite building.",
+      "value": "2,500 early-bag positions",
+      "as_of": "2022-12",
+      "sources": [
+        {
+          "url": "https://theedgemalaysia.com/article/t7-globalsiemens-consortium-wins-klia-baggage-handling-system-contract",
+          "title": "T7 Global-Siemens consortium wins KLIA baggage handling system contract (The Edge Malaysia, Dec 2022)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2022/12/15/t7-consortium-secures-klia-contract",
+          "title": "T7 consortium secures KLIA contract (The Star, 15 Dec 2022)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "The high-speed link uses Siemens Logistics' VarioTray system; work is done in three sections while the airport remains in operation."
+    },
+    {
+      "id": "proj-bhs-completion-2028",
+      "category": "facilities",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Completion of the KLIA Terminal 1 baggage handling system replacement is now targeted for the fourth quarter of 2028.",
+      "value": "Q4 2028",
+      "as_of": "2026-01 (approx.)",
+      "sources": [
+        {
+          "url": "https://thesun.my/business/t7-global-executes-resequencing-agreement-for-klia-t1-baggage-handling-system-targeted-to-be-complete-by-q4-2028/",
+          "title": "T7 Global executes resequencing agreement for KLIA T1 baggage handling system, targeted to be complete by Q4 2028 (The Sun)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Single source (The Sun, reporting T7 Global's supplemental 'resequencing' agreement). Verify against a Malaysia Airports statement before publishing a date."
+    },
+    {
+      "id": "proj-subang-regeneration-plan",
+      "category": "corporate",
+      "airport": "SZB",
+      "terminal": null,
+      "claim": "The Subang Airport Regeneration Plan aims to redevelop Sultan Abdul Aziz Shah Airport in Subang as a city airport and aviation and aerospace hub, with passenger capacity planned to rise to about 8 million a year.",
+      "value": "about 8 million passengers a year (planned)",
+      "as_of": "prior knowledge, approx. as of 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE - not re-confirmed in this run (official sites were blocked and the search budget ran out). Verify against the official source before publishing. Not searched in this run (search budget exhausted). Cabinet approval in 2023 and the capacity target are from prior knowledge; the 2026 status and timeline are unknown."
+    },
+    {
+      "id": "proj-subang-jet-operations-2024",
+      "category": "corporate",
+      "airport": "SZB",
+      "terminal": null,
+      "claim": "Scheduled narrow-body jet services returned to Subang Airport on 1 August 2024.",
+      "value": "2024-08-01",
+      "as_of": "prior knowledge, approx. as of 2025",
+      "sources": [
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/media-centre/news/1678",
+          "title": "Strong 2025 passenger growth builds momentum for Visit Malaysia 2026 (Malaysia Airports media centre)",
+          "type": "official"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR KNOWLEDGE - not re-confirmed in this run (official sites were blocked and the search budget ran out). Verify against the official source before publishing. Search in this run confirms only that Subang handled 191,000 passengers in December 2025."
+    },
+    {
+      "id": "proj-penang-expansion",
+      "category": "corporate",
+      "airport": "PEN",
+      "terminal": null,
+      "claim": "Penang International Airport is being expanded to raise its capacity from 6.5 million to 12 million passengers a year, with completion targeted for 2028.",
+      "value": "6.5 to 12 million passengers a year; 2028",
+      "as_of": "prior knowledge, approx. as of 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE - not re-confirmed in this run (official sites were blocked and the search budget ran out). Verify against the official source before publishing. Not searched in this run. Project cost (about RM1.5 billion) and the 2028 target are from prior knowledge and may have changed."
+    },
+    {
+      "id": "proj-airports-4-0",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Airports 4.0 is Malaysia Airports' digital transformation programme, which includes single-token passenger journeys using facial recognition and the MYairports mobile app.",
+      "value": null,
+      "as_of": "prior knowledge, approx. as of 2024",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE - not re-confirmed in this run (official sites were blocked and the search budget ran out). Verify against the official source before publishing. Not searched in this run. The programme dates from about 2018-2019; its current name, scope and the present feature set of the MYairports app are unverified."
+    },
+    {
+      "id": "proj-klia-aeropolis-solar-park",
+      "category": "standards",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "The KLIA Aeropolis solar farm and battery storage project was unveiled by Deputy Prime Minister Fadillah Yusof in late January 2026.",
+      "value": "reported 2026-01-29",
+      "as_of": "2026-01-29",
+      "sources": [
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2026/01/29/dpm-fadillah-unveils-klia-aeropolis-solar-farm-and-battery-project-as-malaysia-powers-up-energy-transition/207242",
+          "title": "DPM Fadillah unveils KLIA Aeropolis solar farm and battery project (Malay Mail, 29 Jan 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://theedgemalaysia.com/content/advertise/powering-the-future-of-aviation-how-klia-aeropolis-solar-park-supports-malaysia-airports-transformation-journey",
+          "title": "Powering the future of aviation: How KLIA Aeropolis Solar Park supports Malaysia Airports' transformation journey (The Edge Malaysia, advertorial)",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "29 January 2026 is the Malay Mail publication date; the event date itself was not captured. Honorific omitted - confirm official styling before publishing."
+    },
+    {
+      "id": "sust-net-zero-2050",
+      "category": "standards",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports targets net-zero carbon emissions by 2050 under its Net Zero Decarbonisation Roadmap.",
+      "value": "2050",
+      "as_of": "2026-01",
+      "sources": [
+        {
+          "url": "https://theedgemalaysia.com/content/advertise/powering-the-future-of-aviation-how-klia-aeropolis-solar-park-supports-malaysia-airports-transformation-journey",
+          "title": "Powering the future of aviation: How KLIA Aeropolis Solar Park supports Malaysia Airports' transformation journey (The Edge Malaysia, advertorial)",
+          "type": "operator"
+        },
+        {
+          "url": "https://www.bernama.com/lite/news.php?id=2518164",
+          "title": "KLIA Aeropolis Solar Farm To Cut KLIA's Carbon Emissions By 30 Pct In 2027 -- MAHB (Bernama)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2026/01/29/dpm-fadillah-unveils-klia-aeropolis-solar-farm-and-battery-project-as-malaysia-powers-up-energy-transition/207242",
+          "title": "DPM Fadillah unveils KLIA Aeropolis solar farm and battery project (Malay Mail, 29 Jan 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "From 2026 coverage of the KLIA Aeropolis solar project (including an operator advertorial)."
+    },
+    {
+      "id": "sust-renewable-energy-20-by-2030",
+      "category": "standards",
+      "airport": null,
+      "terminal": null,
+      "claim": "The roadmap sets an interim target of a 20% renewable energy mix by 2030.",
+      "value": "20% by 2030",
+      "as_of": "2026-01",
+      "sources": [
+        {
+          "url": "https://theedgemalaysia.com/content/advertise/powering-the-future-of-aviation-how-klia-aeropolis-solar-park-supports-malaysia-airports-transformation-journey",
+          "title": "Powering the future of aviation: How KLIA Aeropolis Solar Park supports Malaysia Airports' transformation journey (The Edge Malaysia, advertorial)",
+          "type": "operator"
+        },
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2026/01/29/dpm-fadillah-unveils-klia-aeropolis-solar-farm-and-battery-project-as-malaysia-powers-up-energy-transition/207242",
+          "title": "DPM Fadillah unveils KLIA Aeropolis solar farm and battery project (Malay Mail, 29 Jan 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": ""
+    },
+    {
+      "id": "sust-solar-park-impact",
+      "category": "standards",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "Once fully operational, the KLIA Aeropolis solar project is expected to give KLIA a renewable energy mix of about 30% and to cut KLIA's carbon emissions by about 30% in 2027.",
+      "value": "about 30% renewable mix; about 30% emissions cut (2027)",
+      "as_of": "2026-01",
+      "sources": [
+        {
+          "url": "https://www.bernama.com/lite/news.php?id=2518164",
+          "title": "KLIA Aeropolis Solar Farm To Cut KLIA's Carbon Emissions By 30 Pct In 2027 -- MAHB (Bernama)",
+          "type": "news"
+        },
+        {
+          "url": "https://theedgemalaysia.com/content/advertise/powering-the-future-of-aviation-how-klia-aeropolis-solar-park-supports-malaysia-airports-transformation-journey",
+          "title": "Powering the future of aviation: How KLIA Aeropolis Solar Park supports Malaysia Airports' transformation journey (The Edge Malaysia, advertorial)",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Forward-looking operator statements; the 2027 date is from the Bernama headline."
+    },
+    {
+      "id": "sust-aca-klia-level-3",
+      "category": "standards",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "KLIA holds Level 3 (Optimisation) Airport Carbon Accreditation.",
+      "value": "ACA Level 3",
+      "as_of": "2026-05-13",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2026/05/13/malaysia-airports-wins-international-carbon-accreditation-recognition",
+          "title": "Malaysia Airports wins international carbon accreditation recognition (The Star, 13 May 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://bernama.com/en/news.php?id=2371297",
+          "title": "Kota Kinabalu And Langkawi Achieve Airport Carbon Accreditation (Bernama, Dec 2024)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Most recent report found is May 2026. Progress to Level 4 is described as a future goal. Not checked against the ACI accredited-airports directory."
+    },
+    {
+      "id": "sust-aca-penang-kuching-level-1",
+      "category": "standards",
+      "airport": null,
+      "terminal": null,
+      "claim": "Penang International Airport and Kuching International Airport attained Level 1 Airport Carbon Accreditation in May 2026.",
+      "value": "ACA Level 1",
+      "as_of": "2026-05-13",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2026/05/13/malaysia-airports-wins-international-carbon-accreditation-recognition",
+          "title": "Malaysia Airports wins international carbon accreditation recognition (The Star, 13 May 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": ""
+    },
+    {
+      "id": "sust-aca-kota-kinabalu-langkawi-level-1",
+      "category": "standards",
+      "airport": null,
+      "terminal": null,
+      "claim": "Kota Kinabalu International Airport and Langkawi International Airport achieved Level 1 (Mapping) Airport Carbon Accreditation in December 2024.",
+      "value": "ACA Level 1 (Mapping)",
+      "as_of": "2024-12-05",
+      "sources": [
+        {
+          "url": "https://www.aci-asiapac.aero/media-centre/news/kota-kinabalu-and-langkawi-achieve-airport-carbon-accreditation",
+          "title": "Kota Kinabalu and Langkawi achieve Airport Carbon Accreditation (ACI Asia-Pacific & Middle East)",
+          "type": "other"
+        },
+        {
+          "url": "https://bernama.com/en/news.php?id=2371297",
+          "title": "Kota Kinabalu And Langkawi Achieve Airport Carbon Accreditation (Bernama, Dec 2024)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Announced by ACI Asia-Pacific & Middle East."
+    },
+    {
+      "id": "sust-framework-pillars",
+      "category": "standards",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports' sustainability framework is organised around five pillars: Practising Sensible Economics, Environmental Consciousness, Creating an Inspiring Workplace, Community-Friendly Organisation and Memorable Airport Experiences.",
+      "value": "5 pillars",
+      "as_of": "prior knowledge, approx. as of 2024",
+      "sources": [
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/sustainability/memorable-airport-experiences",
+          "title": "Memorable Airport Experiences (Malaysia Airports corporate website, Sustainability section)",
+          "type": "official"
+        }
+      ],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE - not re-confirmed in this run (official sites were blocked and the search budget ran out). Verify against the official source before publishing. Search confirmed only that 'Memorable Airport Experiences' is a page in the Sustainability section of the corporate site; the other four pillar names are prior knowledge and the framework may have been revised after privatisation."
+    },
+    {
+      "id": "award-skytrax-2025-klia-65th",
+      "category": "standards",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "KLIA ranked 65th in the Skytrax World's Top 100 Airports 2025.",
+      "value": "65th",
+      "as_of": "2025-04-10",
+      "sources": [
+        {
+          "url": "https://www.freemalaysiatoday.com/category/nation/2025/04/10/klia-climbs-to-65th-best-airport-worldwide",
+          "title": "KLIA climbs to 65th best airport worldwide (FMT, 10 Apr 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.scoop.my/news/252929/klia-improves-seven-spots-to-be-worlds-65th-best-airport-in-skytrax-rankings/",
+          "title": "KLIA improves seven spots to be world's 65th best airport in Skytrax rankings (Scoop)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "FMT reports the 2024 rank as 71st, while another outlet's headline says KLIA rose 'seven spots'; quote only the 2025 rank. The 2026 Skytrax result was not retrieved (gap)."
+    },
+    {
+      "id": "award-skytrax-2025-t2-low-cost-terminal",
+      "category": "standards",
+      "airport": "KUL",
+      "terminal": "T2",
+      "claim": "KLIA Terminal 2 ranked sixth among the world's best low-cost airline terminals in the Skytrax World Airport Awards 2025.",
+      "value": "6th",
+      "as_of": "2025-04-10",
+      "sources": [
+        {
+          "url": "https://www.freemalaysiatoday.com/category/nation/2025/04/10/klia-climbs-to-65th-best-airport-worldwide",
+          "title": "KLIA climbs to 65th best airport worldwide (FMT, 10 Apr 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.scoop.my/news/252929/klia-improves-seven-spots-to-be-worlds-65th-best-airport-in-skytrax-rankings/",
+          "title": "KLIA improves seven spots to be world's 65th best airport in Skytrax rankings (Scoop)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": ""
+    },
+    {
+      "id": "award-asq-2024-klia-top-10",
+      "category": "standards",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "KLIA was placed among the world's top 10 airports in the over-40-million-passenger category of the ACI Airport Service Quality (ASQ) survey for 2024, with a score of 4.99 out of 5.",
+      "value": "top 10; 4.99/5",
+      "as_of": "2025-03-17",
+      "sources": [
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2025/03/17/klia-makes-worlds-top-10-in-2024-airport-service-quality-survey/169917",
+          "title": "KLIA makes world's top 10 in 2024 Airport Service Quality survey (Malay Mail, 17 Mar 2025)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "A January 2025 NST report describes the ranking differently (first among 355 airports in a quarterly survey); use the full-year wording."
+    },
+    {
+      "id": "award-asq-2025-langkawi",
+      "category": "standards",
+      "airport": "LGK",
+      "terminal": null,
+      "claim": "Langkawi International Airport was named Best Airport in Asia-Pacific in the 2-5 million passengers category at the 2025 ACI ASQ Awards, its fifth consecutive win in the category.",
+      "value": "5th consecutive win",
+      "as_of": "2026 (ASQ 2025 awards)",
+      "sources": [
+        {
+          "url": "https://www.routesonline.com/airports/6438/langkawi-international-airport/news/299666010/langkawi-international-airport-5th-asq-awards-win-for-best-airport/",
+          "title": "Langkawi International Airport 5th ASQ Awards Win for Best Airport (operator release on Routesonline)",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Operator release on Routesonline; exact publication date not captured."
+    },
+    {
+      "id": "award-capa-2024-klia",
+      "category": "standards",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "KLIA received the CAPA Large Airport of the Year award for 2024.",
+      "value": "2024",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://www.mot.gov.my/en/Pages/Aviation/ICAO.aspx",
+          "title": "Ministry of Transport Malaysia Official Portal - Aviation / ICAO page",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Listed on the Ministry of Transport portal as summarised by search; not confirmed against CAPA. The same page lists KLIA eighth in Skytrax's 50-60 million passenger category for 2025, also unconfirmed."
+    },
+    {
+      "id": "careers-portal-url",
+      "category": "corporate",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports' careers portal is at careers.malaysiaairports.com.my.",
+      "value": "https://careers.malaysiaairports.com.my",
+      "as_of": "unknown (retrieved via search on 2026-11-16)",
+      "sources": [
+        {
+          "url": "https://careers.malaysiaairports.com.my/content/Our-Leaders/?locale=en_GB",
+          "title": "Our Leaders - Careers - Malaysia Airports",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "The portal includes an 'Our Leaders' content page. Named graduate, internship or scholarship programmes were not verified (gap)."
+    },
+    {
+      "id": "contact-corporate-office-address",
+      "category": "contact",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports' corporate office is the Malaysia Airports Corporate Office, Persiaran Korporat KLIA, 64000 KLIA, Sepang, Selangor Darul Ehsan, Malaysia.",
+      "value": "Persiaran Korporat KLIA, 64000 KLIA, Sepang, Selangor",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Malaysia_Airports",
+          "title": "Malaysia Airports (Wikipedia)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Search (Wikipedia / finance-profile listings) confirms 'Malaysia Airports Corporate Office, Persiaran Korporat KLIA'. Postcode, district and state are from prior knowledge. Whether this is also the registered office was not confirmed."
+    },
+    {
+      "id": "contact-general-line",
+      "category": "contact",
+      "airport": null,
+      "terminal": null,
+      "claim": "The corporate office general telephone line is +603-8777 7000.",
+      "value": "+603-8777 7000",
+      "as_of": "prior knowledge, approx. as of 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE - not re-confirmed in this run (official sites were blocked and the search budget ran out). Verify against the official source before publishing. A contact-details search could not be run. Confirm on the official Contact Us page before publishing."
+    },
+    {
+      "id": "contact-careline",
+      "category": "contact",
+      "airport": null,
+      "terminal": null,
+      "claim": "The Malaysia Airports Careline for passenger enquiries and feedback is +603-8776 2000.",
+      "value": "+603-8776 2000",
+      "as_of": "prior knowledge, approx. as of 2025",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR KNOWLEDGE - not re-confirmed in this run (official sites were blocked and the search budget ran out). Verify against the official source before publishing. Operating hours and the feedback e-mail address were not verified. Confirm on the official Contact Us page before publishing."
+    },
+    {
+      "id": "web-corporate-site-structure",
+      "category": "other",
+      "airport": null,
+      "terminal": null,
+      "claim": "Corporate content currently sits on corporate.malaysiaairports.com.my (and mirrored www paths), with sections for About Us (corporate profile, brand, organisation), Sustainability and a Media Centre whose news items use numeric IDs.",
+      "value": "corporate.malaysiaairports.com.my/en/...",
+      "as_of": "retrieved via search on 2026-11-16",
+      "sources": [
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/about-us/corporate-profile/our-brand",
+          "title": "Our Core Values / Our Brand (Malaysia Airports corporate website)",
+          "type": "official"
+        },
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/about-us/organisation/management-team",
+          "title": "Management Team (Malaysia Airports corporate website)",
+          "type": "official"
+        },
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/about-us/organisation/board-directors",
+          "title": "Board of Directors (Malaysia Airports corporate website)",
+          "type": "official"
+        },
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/media-centre/news/1678",
+          "title": "Strong 2025 passenger growth builds momentum for Visit Malaysia 2026 (Malaysia Airports media centre)",
+          "type": "official"
+        },
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/sustainability/memorable-airport-experiences",
+          "title": "Memorable Airport Experiences (Malaysia Airports corporate website, Sustainability section)",
+          "type": "official"
+        },
+        {
+          "url": "https://corporate.malaysiaairports.com.my/penang/about-us/organisation/management-team",
+          "title": "Management team - Corporate - Malaysia Airports (Penang-path version)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Observed from URLs returned by search: /en/about-us/corporate-profile/our-brand, /en/about-us/organisation/management-team, /en/about-us/organisation/board-directors, /en/media-centre/news/{id}, /en/sustainability/memorable-airport-experiences. The same management page is also served under a /penang/ path with different content, which is a content-governance issue for the redesign to resolve."
+    },
+    {
+      "id": "web-monthly-traffic-releases",
+      "category": "other",
+      "airport": null,
+      "terminal": null,
+      "claim": "Malaysia Airports publishes a passenger traffic statement every month through its Media Centre, typically in the last week of the following month.",
+      "value": "monthly",
+      "as_of": "2026-10-26",
+      "sources": [
+        {
+          "url": "https://www.thestar.com.my/business/business-news/2026/10/26/traffic-slows-in-malaysia-airports-in-september-amid-soft-domestic-demand",
+          "title": "Traffic slows in Malaysia airports in September amid soft domestic demand (The Star, 26 Oct 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/media-centre/news/1686",
+          "title": "Visit Malaysia 2026 opens with 9.4 million passengers at ... (Malaysia Airports media centre)",
+          "type": "official"
+        },
+        {
+          "url": "https://theedgemalaysia.com/node/819567",
+          "title": "Malaysia Airports' August passenger traffic up 5.2% (The Edge Malaysia, 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Pattern observed in this run: January 2026 figures reported 23 February 2026; September 2026 figures reported 26 October 2026; October 2025 figures on 25 November 2025. Supports a 'traffic statistics' data module on the corporate site."
+    }
+  ],
+  "gaps": [
+    "ACCESS: www.malaysiaairports.com.my and corporate.malaysiaairports.com.my could not be fetched (not on the session network allowlist), so no fact is 'direct'. Every official-site fact is from a search-engine snippet and must be re-read on the live page before publication.",
+    "SEARCH BUDGET: the shared WebSearch limit was reached after 19 queries. Not searched at all: Skytrax 2026, ACI ASQ 2025 results for KLIA, procurement portal, whistleblowing and anti-bribery, PDPA notice, contact details, Subang regeneration, Penang expansion, KLIA terminal expansion, digital programme, commercial reset, airline incentives, careers programmes, community programmes.",
+    "Ownership: official post-completion percentage stakes of Khazanah, EPF, GIP and ADIA in Gateway Development Alliance / MAHB (reported 40/30/25/5 in 2024, with conflicting readings), and confirmation that the compulsory acquisition of the last 1.32% completed.",
+    "Board: full current list of directors after the February 2025 delisting and the June 2026 chairman change.",
+    "Management: names of the Chief Operating Officers (Malaysia Airports Sdn Bhd and KLIA), Chief Information Officer, Chief Procurement Officer and Chief Aviation Development Officer; confirmation that the listed chief officers are still in post in November 2026.",
+    "Brand: current verbatim wording of the core values, any mission or purpose statement, and the current tagline on the live site.",
+    "History: exact incorporation date of Malaysia Airports Holdings Berhad, exact listing date (30 November 1999 from prior knowledge), the 'first listed airport operator in Asia' claim, klia2 opening date and ISG acquisition dates and concession end date - none confirmed by a source in this run.",
+    "Subsidiaries: current official list and descriptions for Malaysia Airports Sdn Bhd, Urusan Teknologi Wawasan, Malaysia Airports (Properties), Malaysia Airports Consultancy Services and LGM; whether MAB Agriculture-Horticulture is still active; Sama-Sama hotel portfolio and room counts.",
+    "Network: official breakdown of the 39 airports (international / domestic / STOLports) and published counts of airlines and destinations served at KLIA or network-wide.",
+    "Traffic: MAHB's own 2025 figure for ISG (48.4 million in Turkish press vs about 48.9 million implied), KLIA and ISG year-to-date 2026 figures, and the October 2026 release (not yet published on 2026-11-16).",
+    "Operating Agreements: User Fee rates, the number and names of the agreements, capital-expenditure commitments and any tariff/PSC framework details from an official source.",
+    "Projects: KLIA terminal expansion and master plan (capacity targets, phases, dates); Subang Airport Regeneration Plan status in 2026; Penang expansion cost, capacity and completion date; baggage system completion date from an official source; current Aerotrain operating hours.",
+    "Digital: current name and scope of the digital programme ('Airports 4.0'), single-token/biometric journey availability and the MYairports app's current features and store links.",
+    "Commercial: commercial reset/retail strategy status, commercial leasing and advertising contacts, airline incentive programme names and terms, cargo and KLIA Aeropolis development opportunities and land area.",
+    "Sustainability: ESG reporting frameworks used, community programme names, Airport Carbon Accreditation status of ISG and the remaining Malaysian airports, and whether the five-pillar sustainability framework is still current.",
+    "Awards 2026: Skytrax World Airport Awards 2026 ranking for KLIA, ACI ASQ 2025 results for airports other than Langkawi, and any 2026 industry awards; ISG 'Europe's fastest-growing airport' claims (period and category not captured).",
+    "Business opportunities: procurement/tender portal name and URL, vendor registration process.",
+    "Careers: named programmes (graduate, internship, scholarship, technical) and application process.",
+    "Governance: whistleblowing channel (URL, e-mail, phone), anti-bribery policy and any ISO 37001 certification, code of ethics, PDPA/privacy notice URL.",
+    "Contact: registered office address, general line and Careline numbers (prior knowledge only), Careline hours and e-mail, media/corporate communications contact."
+  ]
+}

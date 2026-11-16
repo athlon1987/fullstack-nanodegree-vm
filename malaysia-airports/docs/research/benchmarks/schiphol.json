@@ -1,0 +1,167 @@
+{
+  "key": "schiphol",
+  "name": "Amsterdam Airport Schiphol",
+  "host": "www.schiphol.nl",
+  "assessed": "2026-11-16",
+  "assessment_type": "expert assessment",
+  "direct_access": false,
+  "direct_access_note": "Start of run: proxy refused the tunnel (403). End of run: host reachable, but the site served a Cloudflare managed challenge (HTTP 403, 'Just a moment...') to curl and to headless Chromium; challenges.cloudflare.com is not reachable from the container, so no site content was observed. No attempt was made to get around the bot protection. Evidence is search-level (18 searches) plus flagged prior knowledge; 6 further searches were refused when the shared search budget ran out.",
+  "weighted_score": 4.075,
+  "weighted_score_pct": 81.5,
+  "scores": {
+    "ui": {
+      "score": 4.0,
+      "confidence": "low",
+      "evidence_level": "prior + search proxy + one direct observation of the challenge page",
+      "evidence": [
+        "search: Schiphol app 12.0.0 (13 Oct 2025) described as a visual overhaul - https://apps.apple.com/es/app/schiphol-amsterdam-airport/id409161665?l=en-GB&platform=watch",
+        "search: app rated 4.7-4.9 on Google Play across 42-47K reviews (undated snapshots) - https://play.google.com/store/apps/details?id=org.schiphol",
+        "search: digital instructions reuse the terminal's yellow-sign wayfinding language - https://www.schiphol.nl/en/timeslots/",
+        "direct: only the branded bot-challenge interstitial was seen (dark slate header, 'AMS Schiphol' logo, pale blue canvas, bold heading) - screenshots/schiphol-cloudflare-challenge-desktop.png",
+        "prior (~2025): restrained, consistent design system on the website; homepage and flight pages NOT observed in this run"
+      ]
+    },
+    "ux": {
+      "score": 4.5,
+      "confidence": "medium",
+      "evidence_level": "search",
+      "evidence": [
+        "search: one clean URL per flight number and direction, codeshares included - https://www.schiphol.nl/en/departures/MS758/ , https://www.schiphol.nl/en/departures/KL6033/",
+        "search: free security time-slot booking for the whole party, opens 3 days ahead, QR code by email, dedicated lane - https://www.schiphol.nl/en/timeslots/",
+        "search: arrivals walking-time prediction from a flight number on web and app - https://www.schiphol.nl/en/blog/find-out-how-long-it-will-take-to-get-outside/",
+        "not task-timed; expert assessment only"
+      ]
+    },
+    "info": {
+      "score": 4.0,
+      "confidence": "medium",
+      "evidence_level": "search",
+      "evidence": [
+        "search: detailed transfer-desk, assistance and transport content - https://www.schiphol.nl/en/at-schiphol/services/transferdesk/ , https://www.schiphol.nl/en/assistance/ , https://www.schiphol.nl/en/from-to-schiphol/",
+        "search: weekly air-traffic outlook published openly (1,235 daily flights for 9-15 Nov 2026) - https://www.schiphol.nl/en/schiphol-as-a-neighbour/look-ahead-at-air-traffic/",
+        "search: marked down for conflicting Privium prices on official URLs (EUR 180/305 on an older page vs EUR 190/370 on the registration page) - https://www.schiphol.nl/en/privium/kieslidmaatschap/ , https://www.schiphol.nl/en/privium/register/?membershipChoice=priviumPlus",
+        "search: several guidance blogs date from 2020-2023 and still rank - https://www.schiphol.nl/en/blog/when-do-i-need-to-be-where-at-schiphol/"
+      ]
+    },
+    "flight": {
+      "score": 5.0,
+      "confidence": "medium",
+      "evidence_level": "search",
+      "evidence": [
+        "search: per-flight and per-codeshare pages for departures, arrivals and transfers - https://www.schiphol.nl/en/departures/MS758/ , https://www.schiphol.nl/en/arrivals/AY1305/ , https://www.schiphol.nl/en/transfers/",
+        "search: personal itinerary with walking time to gate, security waiting time, boarding time; push and SMS alerts - https://www.schiphol.nl/en/blog/when-do-i-need-to-be-where-at-schiphol/",
+        "search: bookable 15-minute security time slots - https://www.schiphol.nl/en/timeslots/",
+        "search: day-level crowd expectation by hall - https://www.schiphol.nl/en/my-travel-day/today/departures/",
+        "search: the journey platform is resold to other airports, i.e. a reference others adopt - https://www.schiphol.nl/en/aviation-solutions/page/pxp-discover-all-possibilities/",
+        "search: public Flight API v4 (spec 4.2.0, OpenAPI 3.0) - https://developer.schiphol.nl/apis/flight-api/overview"
+      ]
+    },
+    "mobile": {
+      "score": 4.5,
+      "confidence": "medium",
+      "evidence_level": "search",
+      "evidence": [
+        "search: Google Play 4.7 from 46.7K reviews, 1M+ downloads (other cached snapshots 4.8-4.9 from 42-43K) - https://play.google.com/store/apps/details?id=org.schiphol",
+        "search: v12.0.0 (13 Oct 2025) added real-time flight widgets on home screen, lock screen and Apple Watch - https://apps.apple.com/es/app/schiphol-amsterdam-airport/id409161665?l=en-GB&platform=watch",
+        "search: app tracks all flights, gate-change and delay alerts, in-app parking booking flow revised - https://www.schiphol.nl/en/the-schiphol-app/",
+        "gap: mobile web not observed; App Store star rating not found"
+      ]
+    },
+    "nav": {
+      "score": 3.5,
+      "confidence": "low",
+      "evidence_level": "search + hypothesis",
+      "evidence": [
+        "search: guessable URL structure by task (/departures/, /arrivals/, /transfers/, /timeslots/, /from-to-schiphol/, /assistance/) - https://www.schiphol.nl/en/transfers/",
+        "search: searchable interactive map on web and app; blue-dot position in app - https://www.schiphol.nl/en/blog/find-your-way-quickly-and-easily-at-schiphol/",
+        "search: website in Dutch and English only (/nl/, /en/) - https://www.schiphol.nl/nl/van-naar-schiphol/",
+        "search: text service for deaf or hard-of-hearing callers is Dutch-only - https://www.schiphol.nl/en/contact-schiphol/",
+        "gap: no accessibility statement or WCAG claim found; site search not evaluated"
+      ]
+    },
+    "ai": {
+      "score": 3.0,
+      "confidence": "low",
+      "evidence_level": "search",
+      "evidence": [
+        "search: an AI chatbot is confirmed only through its privacy statement; no name, capabilities, languages or launch date found - https://www.schiphol.nl/en/privacy-and-cookies/schiphol-chatbot-privacy-statement/",
+        "search: 24/7 human contact centre via WhatsApp, chat, phone, email - https://www.schiphol.nl/en/contact-schiphol/",
+        "search: personalisation is keyed on the flight (itinerary, walking times) - https://www.schiphol.nl/en/blog/when-do-i-need-to-be-where-at-schiphol/",
+        "gap: no evidence of account-based saved trips or recommendations"
+      ]
+    },
+    "commerce": {
+      "score": 3.5,
+      "confidence": "low",
+      "evidence_level": "search",
+      "evidence": [
+        "search: Privium tiers sold online, EUR 190 / 235 / 370 per year and EUR 95 three-month trial (2026) - https://www.schiphol.nl/en/privium/register/?membershipChoice=priviumPlus",
+        "search: parking pre-booking with dynamic pricing; in-app parking booking flow (domain ownership of flyschiphol.com unverified) - https://flyschiphol.com/parking , https://play.google.com/store/apps/details?id=org.schiphol",
+        "search: click-and-collect was a limited 2021 pilot with unclear current status - https://www.futuretravelexperience.com/2021/06/schiphol-airport-launches-click-collect-pre-order-service/",
+        "gap: no unified basket, points loyalty or food pre-order evidenced"
+      ]
+    },
+    "perf": {
+      "score": 3.0,
+      "confidence": "low",
+      "evidence_level": "search + one direct observation; no speed measured",
+      "evidence": [
+        "direct: Cloudflare managed challenge (HTTP 403) served to curl and headless Chromium on 2026-11-16; single observation from one data-centre IP - https://www.schiphol.nl/en/",
+        "search: live flight information withdrawn from the app as a precaution during a global cyber threat while schiphol.nl stayed up (date per search summary 21 Oct 2026, unverified) - https://www.schiphol.nl/en/messages/schiphol-responds-to-global-cyber-threat/",
+        "search: July 2024 global Windows outage delayed or cancelled all flights for a day - https://news.schiphol.com/impact-global-computer-failure-schiphol-airport/",
+        "search: developer API authentication moved to client-credentials JWT, guide dated 20 Jul 2026 - https://developer.schiphol.nl/news-and-updates/api-consumer-migration-guide.md",
+        "no page-speed or uptime data found or measured"
+      ]
+    }
+  },
+  "standouts": [
+    {
+      "name": "Free bookable security time slots",
+      "why": "Guaranteed 15-minute window, bookable 3 days ahead for the whole party, QR code by email and a dedicated signed lane. Turns the passenger's biggest uncertainty into an appointment and smooths demand for the operator.",
+      "url": "https://www.schiphol.nl/en/timeslots/"
+    },
+    {
+      "name": "The flight as the organising object (per-flight pages and personal itinerary)",
+      "why": "Clean URL per flight number including codeshares; itinerary shows walking time to gate, security wait, boarding time and alerts; arrivals get a landing-to-exit walking-time prediction; 'my travel day' sets crowd expectations.",
+      "url": "https://www.schiphol.nl/en/departures/MS758/"
+    },
+    {
+      "name": "Schiphol app with glanceable live surfaces",
+      "why": "Since v12.0 (Oct 2025) real-time flight updates on home screen, lock screen and Apple Watch; 4.7-4.9 on Google Play across 42-47K reviews; in-app parking booking.",
+      "url": "https://www.schiphol.nl/en/the-schiphol-app/"
+    },
+    {
+      "name": "Public Flight API and developer portal",
+      "why": "Versioned OpenAPI 3.0 spec (4.2.0) with production and acceptance environments, release notes and a dated migration guide. Makes the airport the default data source for third parties and enforces data discipline internally.",
+      "url": "https://developer.schiphol.nl/apis/flight-api/overview"
+    },
+    {
+      "name": "Privium paid membership",
+      "why": "Three tiers (EUR 190 / 235 / 370 a year) plus a EUR 95 trial, sold online, bundling fast border passage, lounges and check-in privileges: recurring ancillary revenue from frequent flyers.",
+      "url": "https://www.schiphol.nl/en/privium/kieslidmaatschap/"
+    }
+  ],
+  "weaknesses": [
+    "Website published in Dutch and English only for a global transfer hub; text service for deaf callers is Dutch-only (search: https://www.schiphol.nl/en/contact-schiphol/).",
+    "No door-to-gate ground transport planner: train, bus and taxi pages hand off to NS and 9292, nothing produces a 'leave by' time (search: https://www.schiphol.nl/en/from-to-schiphol/).",
+    "Wayfinding depth is app-first and incomplete: blue dot and itinerary walking times live in the app, no public pier-to-pier walking times, no evidence of step-free routing or AR (search + hypothesis: https://www.schiphol.nl/en/blog/find-your-way-quickly-and-easily-at-schiphol/).",
+    "Thin AI and account personalisation: an AI chatbot exists but is not a named, marketed assistant; no saved trips or recommendations evidenced; help relies on human agents over WhatsApp (search + hypothesis: https://www.schiphol.nl/en/privacy-and-cookies/schiphol-chatbot-privacy-statement/).",
+    "Fragmented commerce and uneven hygiene: click-and-collect was a limited 2021 pilot of unclear status; parking, Privium and lounges are separate purchases; superseded prices and 2020-2023 blogs remain on official URLs; live app flight data was pulled during a security scare; no accessibility statement located (search: https://www.schiphol.nl/en/privium/kieslidmaatschap/ , https://www.schiphol.nl/en/messages/schiphol-responds-to-global-cyber-threat/)."
+  ],
+  "ideas": [
+    "'My Journey' without an install: a flight-number URL that opens the full timeline (leave home, check-in close, security and immigration wait, walk to gate, boarding) with opt-in web push and WhatsApp alerts; Schiphol keeps the richest version in its native app.",
+    "A true door-to-gate planner for KLIA combining ERL, bus, e-hailing zones, live parking availability and live security and immigration waits into one 'leave by' recommendation, including the Terminal 1 to Terminal 2 transfer.",
+    "Multilingual from day one for live data and the assistant, not just static pages: Bahasa Malaysia, English, Chinese, Arabic, Japanese, Korean, Tamil.",
+    "Accessible wayfinding on the open web: walking times between any two points with a step-free toggle, rest points and prayer rooms, usable in a browser.",
+    "One account, one basket: parking, lounge, fast track, reserve-and-collect and points attached to the saved flight with a single checkout, and a visible 'last updated' stamp on every live figure.",
+    "Open data plus a public status page: match the Flight API, add queue-time and facility-status endpoints, and keep a cached read-only flight board available when dynamic services are withdrawn for security reasons."
+  ],
+  "gaps": [
+    "Homepage above-the-fold and navigation labels not observed (prior knowledge only).",
+    "Chatbot name, capabilities, languages and launch date not found.",
+    "Accessibility statement / WCAG conformance not found.",
+    "Website account, saved trips and bookmarking not evidenced.",
+    "No performance measurements; no 2024-2026 digital awards found.",
+    "Official parking tariffs and live availability not confirmed; date of the cyber-threat notice unverified."
+  ]
+}

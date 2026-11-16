@@ -1,0 +1,2505 @@
+{
+  "topic": "KLIA Terminal 1 (Kuala Lumpur International Airport, KUL): terminal layout, airlines, passenger facilities and commercial outlets",
+  "generated": "2026-11-16",
+  "facts": [
+    {
+      "id": "kul-t1-official-name",
+      "category": "identity",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Malaysia Airports' official website names the terminal 'KLIA Terminal 1'.",
+      "value": "KLIA Terminal 1",
+      "as_of": "unknown (page titles as indexed in Nov 2026)",
+      "sources": [
+        {
+          "url": "https://airports.malaysiaairports.com.my/en/klia1",
+          "title": "KLIA Terminal 1 (Malaysia Airports)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/en/klia1/map",
+          "title": "KLIA Terminal 1 Map (Malaysia Airports)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/en/klia1/air-travel/airport-facilities",
+          "title": "Airport Facilities at KLIA Terminal 1 (Malaysia Airports)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Confirmed from official page titles returned by search ('KLIA Terminal 1', 'KLIA Terminal 1 Map', 'Airport Facilities at KLIA Terminal 1'); the page body was not fetched."
+    },
+    {
+      "id": "kul-t1-rebrand-announced-2023",
+      "category": "identity",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "In February 2023 Transport Minister Anthony Loke announced that KLIA and klia2 would be rebranded as KLIA Terminal 1 and KLIA Terminal 2.",
+      "value": "announced 9 February 2023",
+      "as_of": "2023-02-09",
+      "sources": [
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2023/02/09/anthony-loke-klia-and-klia2-to-be-rebranded-to-terminals-1-and-2/54096",
+          "title": "Anthony Loke: KLIA and KLIA2 to be rebranded to Terminals 1 and 2 (Malay Mail, 9 Feb 2023)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.freemalaysiatoday.com/category/nation/2023/02/09/klia-klia2-to-be-rebranded-as-klia-terminal-1-and-2",
+          "title": "KLIA, klia2 to be rebranded as KLIA Terminal 1 and 2 (Free Malaysia Today, 9 Feb 2023)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "The announcement gave no implementation date; the official website now uses the new names (see kul-t1-official-name)."
+    },
+    {
+      "id": "kul-t1-url-slug-klia1",
+      "category": "brand",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The official website still uses the short form 'klia1' in URL paths and in some page titles (for example 'KLIA1 Live Departure Flights'), alongside the full name 'KLIA Terminal 1'.",
+      "value": "klia1",
+      "as_of": "unknown (as indexed in Nov 2026)",
+      "sources": [
+        {
+          "url": "https://airports.malaysiaairports.com.my/en/klia1",
+          "title": "KLIA Terminal 1 (Malaysia Airports)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/en/klia1/flight-information/departures",
+          "title": "KLIA1 Live Departure Flights (Malaysia Airports)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/en/klia1/flight-information/arrivals",
+          "title": "KLIA1 Live Arrival Flights (Malaysia Airports)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Naming is inconsistent between 'KLIA1' and 'KLIA Terminal 1' on the current site; a naming rule is needed for the redesign."
+    },
+    {
+      "id": "kul-opened-1998",
+      "category": "identity",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Terminal 1 (Main Terminal Building, Contact Pier and Satellite Building) opened on 27 June 1998.",
+      "value": "27 June 1998",
+      "as_of": "unknown (encyclopedia entry)",
+      "sources": [
+        {
+          "url": "https://www.wikiwand.com/en/articles/KLIA",
+          "title": "Kuala Lumpur International Airport (Wikipedia mirror, Wikiwand)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "From a Wikipedia-derived page, not an official MAHB source; consistent with background knowledge that KLIA was inaugurated on 27 June 1998. Confirm the wording (inauguration vs first commercial flights) with MAHB."
+    },
+    {
+      "id": "kul-location-sepang",
+      "category": "identity",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "KLIA is located in Sepang, Selangor.",
+      "value": "Sepang, Selangor",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://sg.trip.com/moments/poi-klia-jungle-boardwalk-sepang-selangor-143788650/",
+          "title": "KLIA Jungle Boardwalk travel guide 2026 (Trip.com)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.expedia.com/Sepang-Hotels-Sama-Sama-Express-KLIA-Airside-Transit-Hotel.h10945921.Hotel-Information",
+          "title": "Sama-Sama Express KLIA Terminal 1 - Airside Transit Hotel (Expedia listing)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Location is given in third-party listings returned by search; long-standing and uncontroversial."
+    },
+    {
+      "id": "kul-icao-code",
+      "category": "identity",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "Kuala Lumpur International Airport's ICAO code is WMKK and its IATA code is KUL.",
+      "value": "KUL / WMKK",
+      "as_of": "prior knowledge, stable for many years (as of ~2025)",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "high",
+      "notes": "PRIOR: not re-confirmed in this run. Airport codes are stable reference data."
+    },
+    {
+      "id": "kul-architect-kurokawa",
+      "category": "identity",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The original KLIA terminal complex was designed by Japanese architect Kisho Kurokawa around an 'airport in the forest, forest in the airport' concept.",
+      "value": null,
+      "as_of": "prior knowledge (historical, as of ~2025)",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR: not re-confirmed in this run. Verify wording with MAHB before using in brand storytelling."
+    },
+    {
+      "id": "kul-t1-full-service-positioning",
+      "category": "identity",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Third-party terminal guides describe Terminal 1 as the terminal for full-service airlines and Terminal 2 as the terminal used mainly by AirAsia and AirAsia X.",
+      "value": null,
+      "as_of": "2026 (third-party guides dated 2026)",
+      "sources": [
+        {
+          "url": "https://www.klia2.info/airlines/",
+          "title": "KLIA 1 or 2? Find Your Airline's Terminal - Full 2026 List (klia2.info, third-party)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://destinationkualalumpur.com/klia-vs-klia2/",
+          "title": "KLIA vs KLIA2: Which Terminal Is My Airline? (2026) (destinationkualalumpur.com, blog)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://klairport.info/which-terminal/",
+          "title": "Which terminal? (klairport.info, third-party)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Some low-cost carriers are also listed at Terminal 1 by the same guides (see t1-low-cost-carriers-listed), so 'full-service only' should not be published as a rule."
+    },
+    {
+      "id": "t1-building-structure",
+      "category": "terminal",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "KLIA Terminal 1 is made up of the Main Terminal Building, the Contact Pier and the Satellite Building.",
+      "value": null,
+      "as_of": "2026-10-07",
+      "sources": [
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2026/10/07/flying-in-to-klia-after-midnight-buses-replace-aerotrain-from-12am-to-5am-during-software-works/238049",
+          "title": "Flying in to KLIA after midnight? Buses replace Aerotrain from 12am to 5am during software works (Malay Mail, 7 Oct 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.malaysiaairlines.com/my/en/travel-info/klia-terminal-1-passenger-journey.html",
+          "title": "KLIA Terminal 1 Passenger Journey (Malaysia Airlines)",
+          "type": "operator"
+        },
+        {
+          "url": "https://www.dragonpass.com/explore/lounge/A10023/N03675",
+          "title": "Plaza Premium Lounge (International Departures, Contact Pier) - DragonPass listing",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "All three building names appear in 2026 news, airline and lounge-operator sources returned by search. No official level-by-level description was retrievable."
+    },
+    {
+      "id": "t1-departures-level-5",
+      "category": "terminal",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The departure hall and check-in counters are on Level 5 of the Main Terminal Building.",
+      "value": "Level 5",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairlines.com/my/en/travel-info/klia-terminal-1-passenger-journey.html",
+          "title": "KLIA Terminal 1 Passenger Journey (Malaysia Airlines)",
+          "type": "operator"
+        },
+        {
+          "url": "https://klia.info/passenger_guides/domestic_departures.htm",
+          "title": "Domestic Departures Guides at KLIA (klia.info, third-party)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.klia2.info/?p=1149",
+          "title": "KLIA Main Terminal Building level guide (klia2.info, third-party)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Malaysia Airlines lists its check-in rows under 'Level 5'; two third-party guides agree. One third-party map site places departures on Level 2, which contradicts these and was disregarded."
+    },
+    {
+      "id": "t1-arrivals-level-3",
+      "category": "terminal",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The arrival hall is on Level 3 of the Main Terminal Building.",
+      "value": "Level 3",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://www.klia2.info/?p=1149",
+          "title": "KLIA Main Terminal Building level guide (klia2.info, third-party)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Third-party guide only. Not confirmed on an official Malaysia Airports page in this run (official hosts were blocked); verify before publishing."
+    },
+    {
+      "id": "t1-bus-terminal-level-1",
+      "category": "terminal",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The bus terminal serving Terminal 1 is on Level 1.",
+      "value": "Level 1",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://www.ana.co.jp/en/kh/travel-information/airport-and-city-info/kuala-lumpur/",
+          "title": "Kuala Lumpur International Airport, Terminal 1 (ANA airport guide)",
+          "type": "operator"
+        },
+        {
+          "url": "https://www.klia2.info/?p=1149",
+          "title": "KLIA Main Terminal Building level guide (klia2.info, third-party)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "ANA's airport guide words this as 'Bus Terminal located on the basement floor of KLIA1 (Level 1)'. Exact position (terminal building vs car park block) not confirmed; Not confirmed on an official Malaysia Airports page in this run (official hosts were blocked); verify before publishing."
+    },
+    {
+      "id": "t1-ground-transport-ticket-counters",
+      "category": "terminal",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Ticket counters for taxi and airport rail services are located on the route into the Level 3 arrival hall.",
+      "value": null,
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://www.klia2.info/?p=1149",
+          "title": "KLIA Main Terminal Building level guide (klia2.info, third-party)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Third-party guide only; exact counter names and positions not confirmed."
+    },
+    {
+      "id": "t1-rail-station-level-1",
+      "category": "terminal",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The KLIA Ekspres and KLIA Transit rail station for Terminal 1 is on Level 1 of the Main Terminal Building.",
+      "value": "Level 1",
+      "as_of": "prior knowledge (as of ~2024)",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR: not re-confirmed in this run. Cross-check with the rail/transport fact file before publishing."
+    },
+    {
+      "id": "t1-gates-c-satellite",
+      "category": "terminal",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The C gates are in the Satellite Building.",
+      "value": "C gates",
+      "as_of": "2026-10-07",
+      "sources": [
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2026/10/07/flying-in-to-klia-after-midnight-buses-replace-aerotrain-from-12am-to-5am-during-software-works/238049",
+          "title": "Flying in to KLIA after midnight? Buses replace Aerotrain from 12am to 5am during software works (Malay Mail, 7 Oct 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://soyacincau.com/2026/10/07/klia-aerotrain-unavailable-12am-5am-software-works/",
+          "title": "Taking a red-eye flight? KLIA Aerotrain unavailable 12am-5am until 17 October (SoyaCincau, 7 Oct 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.malaysiaairlines.com/my/en/travel-info/klia-terminal-1-passenger-journey.html",
+          "title": "KLIA Terminal 1 Passenger Journey (Malaysia Airlines)",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "2026 news reports refer to the 'Satellite Building (C Gates)'."
+    },
+    {
+      "id": "t1-gates-g-h-contact-pier",
+      "category": "terminal",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The G and H gates are in the main terminal's Contact Pier and are used for international departures.",
+      "value": "G and H gates",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairlines.com/my/en/travel-info/klia-terminal-1-passenger-journey.html",
+          "title": "KLIA Terminal 1 Passenger Journey (Malaysia Airlines)",
+          "type": "operator"
+        },
+        {
+          "url": "https://www.dragonpass.com/explore/lounge/A10023/N03675",
+          "title": "Plaza Premium Lounge (International Departures, Contact Pier) - DragonPass listing",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://klia.info/accommodations/mid_range_hotels/sama-sama_express_klia.htm",
+          "title": "Sama-Sama Express KLIA (Terminal 1) (klia.info, third-party)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Malaysia Airlines lists 'Gates G & H - Main Terminal'; Plaza Premium's listing places its international departures lounge at the Contact Pier near Gate G."
+    },
+    {
+      "id": "t1-gates-a-b-main-terminal",
+      "category": "terminal",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The A and B gates are in the main terminal (Contact Pier) and are the gates associated with domestic flights.",
+      "value": "A and B gates",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairlines.com/my/en/travel-info/klia-terminal-1-passenger-journey.html",
+          "title": "KLIA Terminal 1 Passenger Journey (Malaysia Airlines)",
+          "type": "operator"
+        },
+        {
+          "url": "https://klia.info/passenger_guides/domestic_departures.htm",
+          "title": "Domestic Departures Guides at KLIA (klia.info, third-party)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Malaysia Airlines lists 'Gates A & B - Main Terminal' and its Domestic Golden Lounge at Gate A. The 'domestic' designation is inferred from that and from a third-party domestic departures guide; confirm with MAHB."
+    },
+    {
+      "id": "t1-satellite-reached-by-aerotrain",
+      "category": "terminal",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Passengers reach the Satellite Building (C gates) from the Main Terminal Building by the Aerotrain.",
+      "value": null,
+      "as_of": "2026-10-07",
+      "sources": [
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2026/10/07/flying-in-to-klia-after-midnight-buses-replace-aerotrain-from-12am-to-5am-during-software-works/238049",
+          "title": "Flying in to KLIA after midnight? Buses replace Aerotrain from 12am to 5am during software works (Malay Mail, 7 Oct 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.malaysiaairlines.com/my/en/travel-info/klia-terminal-1-passenger-journey.html",
+          "title": "KLIA Terminal 1 Passenger Journey (Malaysia Airlines)",
+          "type": "operator"
+        },
+        {
+          "url": "https://paultan.org/2025/07/02/klia-aerotrain-resumes-service-faster-train-sets-travel-times-between-terminals-now-under-3-minutes",
+          "title": "KLIA aerotrain resumes service - faster train sets, travel times between terminals now under 3 minutes (paultan.org, 2 Jul 2025)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Replacement shuttle buses run when the Aerotrain is closed (see aerotrain-software-update-phase-2-nov-2026)."
+    },
+    {
+      "id": "t1-checkin-rows-a-to-m",
+      "category": "terminal",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The Level 5 departure hall has check-in rows lettered A to M (there is no row I), with about 216 counters in total.",
+      "value": "Rows A-M, about 216 counters",
+      "as_of": "prior knowledge (as of ~2024)",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR: not re-confirmed in this run. Rows B, C, D, F, G and H are corroborated by Malaysia Airlines' page (see mh-checkin-* facts); the full range and counter count are not."
+    },
+    {
+      "id": "t1-official-interactive-map",
+      "category": "terminal",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The official website has an interactive KLIA Terminal 1 map showing check-in zones, departure gates and facilities.",
+      "value": null,
+      "as_of": "unknown (as indexed in Nov 2026)",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairports.com.my/en/klia1/map",
+          "title": "KLIA Terminal 1 Map (Malaysia Airports)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Map content could not be inspected in this run (host blocked)."
+    },
+    {
+      "id": "t1-official-flight-information",
+      "category": "operations",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The official website publishes live Terminal 1 departures with gate numbers and flight status, and live arrivals with expected landing times and baggage belt assignments.",
+      "value": null,
+      "as_of": "unknown (as indexed in Nov 2026)",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairports.com.my/en/klia1/flight-information/departures",
+          "title": "KLIA1 Live Departure Flights (Malaysia Airports)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/en/klia1/flight-information/arrivals",
+          "title": "KLIA1 Live Arrival Flights (Malaysia Airports)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "From official page descriptions returned by search."
+    },
+    {
+      "id": "aerotrain-suspended-2023",
+      "category": "transport",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The original Aerotrain was withdrawn from service in March 2023, and passengers were carried between the Main Terminal Building and the Satellite Building by shuttle bus until the new system opened.",
+      "value": "March 2023",
+      "as_of": "prior knowledge (as of 2023-2025)",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR: not re-confirmed in this run. Search results did confirm that feeder buses were operating up to the July 2025 relaunch."
+    },
+    {
+      "id": "aerotrain-resumed-2025-07-01",
+      "category": "transport",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The new Aerotrain service between the Main Terminal Building and the Satellite Building began carrying passengers at 10:00 on 1 July 2025.",
+      "value": "1 July 2025, 10:00",
+      "as_of": "2025-07-02",
+      "sources": [
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2025/06/21/klia-aerotrain-to-resume-service-for-travellers-on-july-1-transport-ministry-announces/181134",
+          "title": "KLIA Aerotrain to resume service for travellers on July 1, Transport Ministry announces (Malay Mail, 21 Jun 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://paultan.org/2025/07/02/klia-aerotrain-resumes-service-faster-train-sets-travel-times-between-terminals-now-under-3-minutes",
+          "title": "KLIA aerotrain resumes service - faster train sets, travel times between terminals now under 3 minutes (paultan.org, 2 Jul 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://soyacincau.com/2025/06/21/klia-aerotrain-terminal-1-satellite-building-resume-1-july-2025/",
+          "title": "KLIA Aerotrain Terminal 1 - Satellite Building to resume 1 July 2025 (SoyaCincau, 21 Jun 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.theborneopost.com/2025/06/30/revamped-klia-aerotrain-to-resume-service-tomorrow-launched-by-pm-anwar/",
+          "title": "Revamped KLIA Aerotrain to resume service tomorrow, launched by PM Anwar (Borneo Post, 30 Jun 2025)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Announced by Transport Minister Anthony Loke on 21 June 2025 and launched by the Prime Minister."
+    },
+    {
+      "id": "aerotrain-trainset-innovia-300r",
+      "category": "transport",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The Aerotrain uses Alstom Innovia APM 300R train sets.",
+      "value": "Alstom Innovia APM 300R",
+      "as_of": "2025-07-02",
+      "sources": [
+        {
+          "url": "https://paultan.org/2025/07/02/klia-aerotrain-resumes-service-faster-train-sets-travel-times-between-terminals-now-under-3-minutes",
+          "title": "KLIA aerotrain resumes service - faster train sets, travel times between terminals now under 3 minutes (paultan.org, 2 Jul 2025)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "id": "aerotrain-capacity-270",
+      "category": "transport",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Each three-car Aerotrain can carry up to 270 passengers.",
+      "value": "270 passengers per three-car train",
+      "as_of": "2025-07-02",
+      "sources": [
+        {
+          "url": "https://paultan.org/2025/07/02/klia-aerotrain-resumes-service-faster-train-sets-travel-times-between-terminals-now-under-3-minutes",
+          "title": "KLIA aerotrain resumes service - faster train sets, travel times between terminals now under 3 minutes (paultan.org, 2 Jul 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.bernama.com/en/general/news.php?id=2439972",
+          "title": "Bernama report on KLIA Aerotrain resumption (Jun/Jul 2025)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "id": "aerotrain-max-speed-56",
+      "category": "transport",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The Aerotrain operates at a maximum speed of 56 km/h.",
+      "value": "56 km/h",
+      "as_of": "2025-07-02",
+      "sources": [
+        {
+          "url": "https://paultan.org/2025/07/02/klia-aerotrain-resumes-service-faster-train-sets-travel-times-between-terminals-now-under-3-minutes",
+          "title": "KLIA aerotrain resumes service - faster train sets, travel times between terminals now under 3 minutes (paultan.org, 2 Jul 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.bernama.com/en/general/news.php?id=2439972",
+          "title": "Bernama report on KLIA Aerotrain resumption (Jun/Jul 2025)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "id": "aerotrain-journey-under-3-min",
+      "category": "transport",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The Aerotrain journey between the Main Terminal Building and the Satellite Building takes under three minutes.",
+      "value": "under 3 minutes",
+      "as_of": "2025-07-02",
+      "sources": [
+        {
+          "url": "https://paultan.org/2025/07/02/klia-aerotrain-resumes-service-faster-train-sets-travel-times-between-terminals-now-under-3-minutes",
+          "title": "KLIA aerotrain resumes service - faster train sets, travel times between terminals now under 3 minutes (paultan.org, 2 Jul 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2025/07/01/anwar-rides-upgraded-klia-aerotrain-says-its-good-faster-than-before/182410",
+          "title": "Anwar rides upgraded KLIA Aerotrain (Malay Mail, 1 Jul 2025)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "No official headway (minutes between trains) was found; do not publish a frequency figure."
+    },
+    {
+      "id": "aerotrain-two-trains-daytime",
+      "category": "transport",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Two Aerotrain sets run through the day and one set runs between 00:00 and 05:00.",
+      "value": "2 trains by day; 1 train 00:00-05:00",
+      "as_of": "2025-07-02 (relaunch); overnight single-train pattern restated 2026-05-31",
+      "sources": [
+        {
+          "url": "https://paultan.org/2025/07/02/klia-aerotrain-resumes-service-faster-train-sets-travel-times-between-terminals-now-under-3-minutes",
+          "title": "KLIA aerotrain resumes service - faster train sets, travel times between terminals now under 3 minutes (paultan.org, 2 Jul 2025)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.freemalaysiatoday.com/category/nation/2026/05/31/klia-aerotrain-resumes-24-hour-operations-from-june-1",
+          "title": "KLIA aerotrain resumes 24-hour operations from June 1 (Free Malaysia Today, 31 May 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Stated at the July 2025 relaunch; the May 2026 report on the return to 24-hour running again describes a single train serving passengers during the 00:00-05:00 engineering window."
+    },
+    {
+      "id": "aerotrain-project-cost-rm456m",
+      "category": "transport",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The Aerotrain replacement project cost RM456 million.",
+      "value": "RM456 million",
+      "as_of": "2025 (article undated in search result)",
+      "sources": [
+        {
+          "url": "https://www.metproperty.com/?p=26558",
+          "title": "KLIA's Upgraded Aerotrain Now Fully Operational After RM456 Million Overhaul (metproperty.com)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Figure appears in a headline from a non-news site; consistent with background knowledge of the contract value. Confirm against an MAHB release before publishing."
+    },
+    {
+      "id": "aerotrain-night-halt-nov-2025",
+      "category": "transport",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "From 15 November 2025 the Aerotrain was taken out of service daily between 21:00 and 07:00 for rectification works, with shuttle buses running between the main terminal and the satellite building.",
+      "value": "21:00-07:00 daily from 15 Nov 2025",
+      "as_of": "2025-11",
+      "sources": [
+        {
+          "url": "https://theedgemalaysia.com/node/779715",
+          "title": "KLIA aerotrain to halt operations at 9pm-7am daily for rectification works from Nov 15 (The Edge Malaysia)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Historical. Taken from a headline and search summary; superseded by the return to 24-hour service on 1 June 2026."
+    },
+    {
+      "id": "aerotrain-mahb-statement-feb-2026",
+      "category": "transport",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "In February 2026 Malaysia Airports said the Aerotrain was operating as intended and described early service disruptions as typical for new rail systems.",
+      "value": null,
+      "as_of": "2026-02-03",
+      "sources": [
+        {
+          "url": "https://paultan.org/2026/02/03/klia-aerotrain-operating-as-intended-early-disruptions-to-service-deemed-typical-for-new-rail-systems-mahb/",
+          "title": "KLIA aerotrain operating as intended, early disruptions deemed typical for new rail systems - MAHB (paultan.org, 3 Feb 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Headline-level evidence only."
+    },
+    {
+      "id": "aerotrain-24-hour-service-resumed-2026-06-01",
+      "category": "transport",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The Aerotrain returned to 24-hour service on 1 June 2026.",
+      "value": "1 June 2026",
+      "as_of": "2026-05-31",
+      "sources": [
+        {
+          "url": "https://www.freemalaysiatoday.com/category/nation/2026/05/31/klia-aerotrain-resumes-24-hour-operations-from-june-1",
+          "title": "KLIA aerotrain resumes 24-hour operations from June 1 (Free Malaysia Today, 31 May 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.thestar.com.my/news/nation/2026/05/31/klias-24-hour-aerotrain-service-resumes-on-june-1",
+          "title": "KLIA's 24-hour Aerotrain service resumes on June 1 (The Star, 31 May 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.scoop.my/news/290479/24-hr-aerotrain-service-returns-to-klia-from-june-1/",
+          "title": "24-hr Aerotrain service returns to KLIA from June 1 (Scoop)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.freemalaysiatoday.com/category/nation/2026/05/05/klia-aerotrain-set-to-resume-24-hour-service-by-end-may",
+          "title": "KLIA aerotrain set to resume 24-hour service by end-May (Free Malaysia Today, 5 May 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Followed a comprehensive action plan verified by independent assessors. Sources differ slightly on whether the trigger was regulator certification or independent-assessor verification."
+    },
+    {
+      "id": "aerotrain-engineering-hours-0000-0500",
+      "category": "transport",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Daily Aerotrain engineering hours run from 00:00 to 05:00, during which a single train continues to serve passengers.",
+      "value": "00:00-05:00",
+      "as_of": "2026-05-31",
+      "sources": [
+        {
+          "url": "https://www.freemalaysiatoday.com/category/nation/2026/05/31/klia-aerotrain-resumes-24-hour-operations-from-june-1",
+          "title": "KLIA aerotrain resumes 24-hour operations from June 1 (Free Malaysia Today, 31 May 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Applies to normal operations; during the scheduled software-update windows the Aerotrain is fully closed 00:00-05:00 and buses replace it."
+    },
+    {
+      "id": "aerotrain-availability-99-9",
+      "category": "transport",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "KLIA has stated that the Aerotrain maintained 99.9% availability after its Comprehensive Action Plan was completed in June 2026.",
+      "value": "99.9% availability",
+      "as_of": "2026-10-07",
+      "sources": [
+        {
+          "url": "https://soyacincau.com/2026/10/07/klia-aerotrain-unavailable-12am-5am-software-works/",
+          "title": "Taking a red-eye flight? KLIA Aerotrain unavailable 12am-5am until 17 October (SoyaCincau, 7 Oct 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2026/10/07/flying-in-to-klia-after-midnight-buses-replace-aerotrain-from-12am-to-5am-during-software-works/238049",
+          "title": "Flying in to KLIA after midnight? Buses replace Aerotrain from 12am to 5am during software works (Malay Mail, 7 Oct 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Operator claim reported by news media; measurement period ends at the October 2026 statement."
+    },
+    {
+      "id": "aerotrain-20000-operational-hours",
+      "category": "transport",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "KLIA said the 2026 software update follows the Aerotrain's completion of 20,000 continuous operational hours.",
+      "value": "20,000 hours",
+      "as_of": "2026-10-07",
+      "sources": [
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2026/10/07/flying-in-to-klia-after-midnight-buses-replace-aerotrain-from-12am-to-5am-during-software-works/238049",
+          "title": "Flying in to KLIA after midnight? Buses replace Aerotrain from 12am to 5am during software works (Malay Mail, 7 Oct 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://soyacincau.com/2026/10/07/klia-aerotrain-unavailable-12am-5am-software-works/",
+          "title": "Taking a red-eye flight? KLIA Aerotrain unavailable 12am-5am until 17 October (SoyaCincau, 7 Oct 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": ""
+    },
+    {
+      "id": "aerotrain-software-update-phase-1-oct-2026",
+      "category": "transport",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "During the first phase of a scheduled software update from 8 to 17 October 2026, the Aerotrain was unavailable between 00:00 and 05:00 and shuttle buses carried passengers between the Main Terminal Building and the Satellite Building (C gates).",
+      "value": "8-17 October 2026, 00:00-05:00",
+      "as_of": "2026-10-07",
+      "sources": [
+        {
+          "url": "https://soyacincau.com/2026/10/07/klia-aerotrain-unavailable-12am-5am-software-works/",
+          "title": "Taking a red-eye flight? KLIA Aerotrain unavailable 12am-5am until 17 October (SoyaCincau, 7 Oct 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2026/10/07/flying-in-to-klia-after-midnight-buses-replace-aerotrain-from-12am-to-5am-during-software-works/238049",
+          "title": "Flying in to KLIA after midnight? Buses replace Aerotrain from 12am to 5am during software works (Malay Mail, 7 Oct 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Historical as of 16 November 2026."
+    },
+    {
+      "id": "aerotrain-software-update-phase-2-nov-2026",
+      "category": "transport",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Subject to an independent safety assessment, the permanent Aerotrain software update is scheduled for 28 November to 1 December 2026, with the Aerotrain unavailable from 00:00 to 05:00 and shuttle buses replacing it.",
+      "value": "28 Nov - 1 Dec 2026, 00:00-05:00",
+      "as_of": "2026-10-07",
+      "sources": [
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2026/10/07/flying-in-to-klia-after-midnight-buses-replace-aerotrain-from-12am-to-5am-during-software-works/238049",
+          "title": "Flying in to KLIA after midnight? Buses replace Aerotrain from 12am to 5am during software works (Malay Mail, 7 Oct 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://soyacincau.com/2026/10/07/klia-aerotrain-unavailable-12am-5am-software-works/",
+          "title": "Taking a red-eye flight? KLIA Aerotrain unavailable 12am-5am until 17 October (SoyaCincau, 7 Oct 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "TIME-SENSITIVE: upcoming as of 16 November 2026 and conditional on the assessment; no confirmation of the final dates was found. Re-check before launch and remove after the window."
+    },
+    {
+      "id": "aerotrain-closure-bus-lounge",
+      "category": "transport",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "When the Aerotrain is closed, passengers are advised to follow the signage to the bus lounge, where transfer buses are available, or to ask ground staff for help.",
+      "value": null,
+      "as_of": "2026-10-07",
+      "sources": [
+        {
+          "url": "https://www.malaymail.com/news/malaysia/2026/10/07/flying-in-to-klia-after-midnight-buses-replace-aerotrain-from-12am-to-5am-during-software-works/238049",
+          "title": "Flying in to KLIA after midnight? Buses replace Aerotrain from 12am to 5am during software works (Malay Mail, 7 Oct 2026)",
+          "type": "news"
+        },
+        {
+          "url": "https://soyacincau.com/2026/10/07/klia-aerotrain-unavailable-12am-5am-software-works/",
+          "title": "Taking a red-eye flight? KLIA Aerotrain unavailable 12am-5am until 17 October (SoyaCincau, 7 Oct 2026)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "KLIA gave no bus journey time or frequency in the reports found."
+    },
+    {
+      "id": "t1-malaysia-airlines-home",
+      "category": "airlines",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Malaysia Airlines operates from KLIA Terminal 1.",
+      "value": "Malaysia Airlines (MH)",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairlines.com/my/en/travel-info/klia-terminal-1-passenger-journey.html",
+          "title": "KLIA Terminal 1 Passenger Journey (Malaysia Airlines)",
+          "type": "operator"
+        },
+        {
+          "url": "https://www.klia2.info/airlines/",
+          "title": "KLIA 1 or 2? Find Your Airline's Terminal - Full 2026 List (klia2.info, third-party)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Malaysia Airlines publishes a dedicated 'KLIA Terminal 1 Passenger Journey' page."
+    },
+    {
+      "id": "t1-batik-air-firefly",
+      "category": "airlines",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Third-party terminal guides list Batik Air Malaysia and Firefly among the Malaysian carriers at Terminal 1.",
+      "value": "Batik Air Malaysia; Firefly",
+      "as_of": "2026 (third-party guides)",
+      "sources": [
+        {
+          "url": "https://www.blacklane.com/en/blog/travel/airports/a-guide-to-kuala-lumpur-airport-klia/",
+          "title": "A 2026 Guide to Kuala Lumpur International Airport (Blacklane blog)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://klairport.info/klia/",
+          "title": "KLIA Terminal 1 (klairport.info, third-party)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.klia2.info/airlines/",
+          "title": "KLIA 1 or 2? Find Your Airline's Terminal - Full 2026 List (klia2.info, third-party)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Not confirmed against the official airline directory in this run."
+    },
+    {
+      "id": "t1-ana",
+      "category": "airlines",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "All Nippon Airways (ANA) identifies its Kuala Lumpur operation as Kuala Lumpur International Airport, Terminal 1.",
+      "value": "ANA (NH)",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://www.ana.co.jp/en/kh/travel-information/airport-and-city-info/kuala-lumpur/",
+          "title": "Kuala Lumpur International Airport, Terminal 1 (ANA airport guide)",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "From the title of ANA's own airport guide."
+    },
+    {
+      "id": "t1-foreign-carriers-third-party-list",
+      "category": "airlines",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Third-party terminal guides list the following international carriers at Terminal 1: Air India, British Airways, Cathay Pacific, Emirates, Etihad Airways, KLM, Korean Air, Qatar Airways, Singapore Airlines and Turkish Airlines.",
+      "value": null,
+      "as_of": "2026 (third-party guides)",
+      "sources": [
+        {
+          "url": "https://www.blacklane.com/en/blog/travel/airports/a-guide-to-kuala-lumpur-airport-klia/",
+          "title": "A 2026 Guide to Kuala Lumpur International Airport (Blacklane blog)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://klairport.info/klia/",
+          "title": "KLIA Terminal 1 (klairport.info, third-party)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://destinationkualalumpur.com/klia-vs-klia2/",
+          "title": "KLIA vs KLIA2: Which Terminal Is My Airline? (2026) (destinationkualalumpur.com, blog)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.cathaypacific.com/cx/en_AU/destinations/airports/kuala-lumpur-international-airport.html",
+          "title": "Kuala Lumpur International Airport (Cathay Pacific airport guide)",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Aggregator/blog evidence only; the same guides also name Air France and Lufthansa, which were left out here because current KUL service by them could not be corroborated. Publish only from the official airline directory."
+    },
+    {
+      "id": "t1-carrier-count-third-party",
+      "category": "airlines",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "A third-party 2026 terminal list shows about 50 airlines at Terminal 1, including Air China, IndiGo, Lion Air and VietJet.",
+      "value": "about 50 airlines",
+      "as_of": "2026 (third-party list)",
+      "sources": [
+        {
+          "url": "https://www.klia2.info/airlines/",
+          "title": "KLIA 1 or 2? Find Your Airline's Terminal - Full 2026 List (klia2.info, third-party)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Third-party site; not an official count. Do not publish a number without the official directory."
+    },
+    {
+      "id": "t1-low-cost-carriers-listed",
+      "category": "airlines",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Some third-party guides state that the low-cost carriers VietJet and Air Arabia operate from Terminal 1, not Terminal 2.",
+      "value": "VietJet; Air Arabia",
+      "as_of": "2026 (third-party guides)",
+      "sources": [
+        {
+          "url": "https://www.klia2.info/airlines/",
+          "title": "KLIA 1 or 2? Find Your Airline's Terminal - Full 2026 List (klia2.info, third-party)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://destinationkualalumpur.com/klia-vs-klia2/",
+          "title": "KLIA vs KLIA2: Which Terminal Is My Airline? (2026) (destinationkualalumpur.com, blog)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Sources conflict on several low-cost carriers (for example Scoot and Cebu Pacific are placed at Terminal 2 by most lists and at Terminal 1 by one)."
+    },
+    {
+      "id": "t2-airasia",
+      "category": "airlines",
+      "airport": "KUL",
+      "terminal": "T2",
+      "claim": "AirAsia and AirAsia X operate from KLIA Terminal 2, where they account for most flights.",
+      "value": "AirAsia; AirAsia X",
+      "as_of": "2026 (third-party guides)",
+      "sources": [
+        {
+          "url": "https://destinationkualalumpur.com/klia-vs-klia2/",
+          "title": "KLIA vs KLIA2: Which Terminal Is My Airline? (2026) (destinationkualalumpur.com, blog)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://klairport.info/which-terminal/",
+          "title": "Which terminal? (klairport.info, third-party)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Included because 'which terminal?' is the most common passenger question; one third-party list wrongly shows AirAsia at Terminal 1."
+    },
+    {
+      "id": "mh-checkin-international-economy-row-h",
+      "category": "airlines",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Malaysia Airlines international Economy Class check-in is at Row H, counters 1-18, on Level 5.",
+      "value": "Row H, counters 1-18",
+      "as_of": "unknown (page undated)",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairlines.com/my/en/travel-info/klia-terminal-1-passenger-journey.html",
+          "title": "KLIA Terminal 1 Passenger Journey (Malaysia Airlines)",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Regional editions of the Malaysia Airlines page are not fully consistent, and the airline notes that counters are arranged by the airport authority based on daily conditions."
+    },
+    {
+      "id": "mh-checkin-international-business-row-d",
+      "category": "airlines",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Malaysia Airlines international Business Class check-in is at Row D, counters 4-12, and Business Suite check-in is at Row D, counters 1-3.",
+      "value": "Row D: Business Suite 1-3; Business 4-12",
+      "as_of": "unknown (page undated)",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairlines.com/my/en/travel-info/klia-terminal-1-passenger-journey.html",
+          "title": "KLIA Terminal 1 Passenger Journey (Malaysia Airlines)",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Subject to daily change by the airport authority."
+    },
+    {
+      "id": "mh-checkin-domestic-row-b",
+      "category": "airlines",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Malaysia Airlines domestic Economy Class check-in is at Row B, counters 1-18.",
+      "value": "Row B, counters 1-18",
+      "as_of": "unknown (page undated)",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairlines.com/my/en/travel-info/klia-terminal-1-passenger-journey.html",
+          "title": "KLIA Terminal 1 Passenger Journey (Malaysia Airlines)",
+          "type": "operator"
+        },
+        {
+          "url": "https://www.malaysiaairlines.com/us/en/travel-info/klia-terminal-1-passenger-journey.html",
+          "title": "KLIA Terminal 1 Passenger Journey (Malaysia Airlines, US edition)",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "The US edition of the page says only 'Counter B'."
+    },
+    {
+      "id": "mh-checkin-domestic-business-row-d",
+      "category": "airlines",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Malaysia Airlines domestic Business Class check-in is at Row D, counters 15-18.",
+      "value": "Row D, counters 15-18",
+      "as_of": "unknown (page undated)",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairlines.com/my/en/travel-info/klia-terminal-1-passenger-journey.html",
+          "title": "KLIA Terminal 1 Passenger Journey (Malaysia Airlines)",
+          "type": "operator"
+        },
+        {
+          "url": "https://www.malaysiaairlines.com/us/en/travel-info/klia-terminal-1-passenger-journey.html",
+          "title": "KLIA Terminal 1 Passenger Journey (Malaysia Airlines, US edition)",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "CONFLICT: another regional edition of the same page gives D13-D18."
+    },
+    {
+      "id": "mh-checkin-groups-c13",
+      "category": "airlines",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Malaysia Airlines international group check-in (groups of 10 or more) is at counter C13.",
+      "value": "Counter C13",
+      "as_of": "unknown (page undated)",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairlines.com/my/en/travel-info/klia-terminal-1-passenger-journey.html",
+          "title": "KLIA Terminal 1 Passenger Journey (Malaysia Airlines)",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": ""
+    },
+    {
+      "id": "mh-self-service-bag-drop-rows-f-g",
+      "category": "procedures",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Malaysia Airlines self-service bag drop is at check-in counters F and G on Level 5.",
+      "value": "Counters F and G",
+      "as_of": "unknown (page undated)",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairlines.com/my/en/travel-info/klia-terminal-1-passenger-journey.html",
+          "title": "KLIA Terminal 1 Passenger Journey (Malaysia Airlines)",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Stated on several regional editions of the airline's page. No official MAHB description of kiosks or common-use bag drop was retrievable."
+    },
+    {
+      "id": "mh-checkin-counters-vary-daily",
+      "category": "procedures",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Malaysia Airlines states that its check-in counters at KLIA Terminal 1 are arranged by the airport authority based on daily conditions.",
+      "value": null,
+      "as_of": "unknown (page undated)",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairlines.com/my/en/travel-info/klia-terminal-1-passenger-journey.html",
+          "title": "KLIA Terminal 1 Passenger Journey (Malaysia Airlines)",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Design implication: check-in row information should be driven by live data, not static copy."
+    },
+    {
+      "id": "mh-row-h-since-2019",
+      "category": "airlines",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Malaysia Airlines moved its international Economy Class check-in to Row H with effect from 7 August 2019.",
+      "value": "7 August 2019",
+      "as_of": "2019",
+      "sources": [
+        {
+          "url": "https://holidays.malaysiaairlines.com/hq/en/news-article/2019/changes-malaysia-airlines-check-in-counters-klia.html",
+          "title": "Changes to Malaysia Airlines check-in counters at KLIA (2019)",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Historical context for the Row H allocation."
+    },
+    {
+      "id": "mahb-checkin-row-reassignment",
+      "category": "operations",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Malaysia Airports has reassigned check-in rows among airlines at KLIA to spread passenger flow in the departure hall.",
+      "value": null,
+      "as_of": "unknown (release names Malindo, so likely 2022 or earlier)",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairports.com.my/media-centre/news/better-check-experience-coming-klia",
+          "title": "Better check-in experience coming to KLIA (Malaysia Airports media centre)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "From the search summary of an MAHB media release ('Better check-in experience coming to KLIA'); date and current validity unknown."
+    },
+    {
+      "id": "mh-arrive-early-advisory-2026",
+      "category": "operations",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "Malaysia Airlines advised passengers to arrive early at KLIA during the peak festive period from 22 May to 7 June 2026.",
+      "value": "22 May - 7 June 2026",
+      "as_of": "2026-05",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairlines.com/cn/en/mh-media-centre/important-for-you/passengers-to-arrive-early-at-klia.html",
+          "title": "Malaysia Airlines advises passengers to arrive early at KLIA during peak festive period from 22 May to 7 June 2026",
+          "type": "operator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Historical example of a peak-period advisory; the recommended arrival lead time was not captured."
+    },
+    {
+      "id": "autogate-63-countries",
+      "category": "procedures",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "Third-party guides state that visitors from 63 countries and territories are eligible to use the immigration autogates at KLIA.",
+      "value": "63 countries/territories",
+      "as_of": "2026 (third-party guides); expansion understood to date from June 2024",
+      "sources": [
+        {
+          "url": "https://www.klia2.info/klia/klia-layout-plan/",
+          "title": "KLIA Layout Plan: Navigate KLIA Terminal 1 with Ease (klia2.info, third-party)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://malaysiajourneys.com/klia-arrivals-guide-navigating-kuala-lumpur-airport-immigration/",
+          "title": "KLIA Arrivals Guide: Navigating Kuala Lumpur Airport Immigration (malaysiajourneys.com, blog)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://exploreseasia.com/malaysia/malaysia-digital-arrival-card-mdac/",
+          "title": "Malaysia Digital Arrival Card (MDAC): 2026 Guide (exploreseasia.com, blog)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "CONFLICT: older travel pages list 10 countries and one guide says 46 from 1 June 2024. No official Immigration Department list was retrieved. Background knowledge (unconfirmed here) is that eligibility widened to 63 from 1 June 2024."
+    },
+    {
+      "id": "autogate-requirements-epassport-mdac",
+      "category": "procedures",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "Foreign visitors using the autogates need a machine-readable e-passport and a Malaysia Digital Arrival Card (MDAC) submitted within three days before arrival.",
+      "value": "MDAC within 3 days before arrival",
+      "as_of": "2026 (third-party guides)",
+      "sources": [
+        {
+          "url": "https://www.klia2.info/klia/klia-layout-plan/",
+          "title": "KLIA Layout Plan: Navigate KLIA Terminal 1 with Ease (klia2.info, third-party)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.traveloka.com/en-my/explore/tips/malaysia-digital-arrival-card/302172",
+          "title": "Policies for Malaysia's Digital Arrival Card for Foreigners (Traveloka)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://exploreseasia.com/malaysia/malaysia-digital-arrival-card-mdac/",
+          "title": "Malaysia Digital Arrival Card (MDAC): 2026 Guide (exploreseasia.com, blog)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Verify against the Immigration Department of Malaysia before publishing."
+    },
+    {
+      "id": "autogate-passport-validity-six-months",
+      "category": "procedures",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "Visitors from eligible countries need a passport valid for at least six months to use the autogate.",
+      "value": "6 months",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://dollarsandsense.my/guide-to-using-malaysias-autogate-at-kuala-lumpur-international-airport-klia/",
+          "title": "Guide To Using Malaysia's Autogate At KLIA (DollarsAndSense.my)",
+          "type": "other"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Third-party guide."
+    },
+    {
+      "id": "autogate-departure-only-nationalities",
+      "category": "procedures",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "A third-party guide states that travellers from Thailand, Cambodia, Laos, the Philippines, Vietnam, Myanmar, Indonesia and Timor-Leste may use the autogates for departure clearance only.",
+      "value": null,
+      "as_of": "2026 (third-party guide)",
+      "sources": [
+        {
+          "url": "https://www.klia2.info/klia/klia-layout-plan/",
+          "title": "KLIA Layout Plan: Navigate KLIA Terminal 1 with Ease (klia2.info, third-party)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Single third-party source; requires official confirmation."
+    },
+    {
+      "id": "mdac-exemption-pr-long-term-pass",
+      "category": "procedures",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "Malaysian permanent residents and long-term pass holders are exempt from the Malaysia Digital Arrival Card.",
+      "value": null,
+      "as_of": "2026 (third-party guide)",
+      "sources": [
+        {
+          "url": "https://www.klia2.info/klia/klia-layout-plan/",
+          "title": "KLIA Layout Plan: Navigate KLIA Terminal 1 with Ease (klia2.info, third-party)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.traveloka.com/en-my/explore/tips/malaysia-digital-arrival-card/302172",
+          "title": "Policies for Malaysia's Digital Arrival Card for Foreigners (Traveloka)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Other exemptions may apply; confirm against the Immigration Department of Malaysia."
+    },
+    {
+      "id": "lounge-official-listing-page",
+      "category": "lounges",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Malaysia Airports publishes an official lounges listing for KLIA on its website.",
+      "value": null,
+      "as_of": "unknown (as indexed in Nov 2026)",
+      "sources": [
+        {
+          "url": "https://airports.malaysiaairports.com.my/shop-dine-services/services/lounges",
+          "title": "Lounges (Malaysia Airports, KLIA services listing)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Page content could not be read in this run; the lounge facts below come from operator and aggregator listings."
+    },
+    {
+      "id": "lounge-plaza-premium-contact-pier",
+      "category": "lounges",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Plaza Premium Lounge is airside in the Contact Pier, International Departures, Level 2, near Gate G.",
+      "value": "Contact Pier, Level 2, near Gate G",
+      "as_of": "unknown (listing undated)",
+      "sources": [
+        {
+          "url": "https://www.dragonpass.com/explore/lounge/A10023/N03675",
+          "title": "Plaza Premium Lounge (International Departures, Contact Pier) - DragonPass listing",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://airport.mastercard.com/en/lounge-finder/lounge?loungecode=KUL27",
+          "title": "Mastercard airport lounge finder - KUL27",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "One listing says 'near Gate G2'. Lounge-network listings, not the operator's own site."
+    },
+    {
+      "id": "lounge-plaza-premium-24h",
+      "category": "lounges",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Plaza Premium Lounge in the Contact Pier is listed as open 24 hours.",
+      "value": "24 hours",
+      "as_of": "unknown (listing undated)",
+      "sources": [
+        {
+          "url": "https://www.dragonpass.com/explore/lounge/A10023/N03675",
+          "title": "Plaza Premium Lounge (International Departures, Contact Pier) - DragonPass listing",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Confirm hours with the operator."
+    },
+    {
+      "id": "lounge-plaza-premium-first",
+      "category": "lounges",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Plaza Premium First is in the same Contact Pier location (Level 2, international, near Gate G) as Plaza Premium Lounge.",
+      "value": "Contact Pier, Level 2, near Gate G",
+      "as_of": "unknown (listing undated)",
+      "sources": [
+        {
+          "url": "https://layoverindex.com/kul/lounges/",
+          "title": "KUL lounges (layoverindex.com)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.dragonpass.com/explore/lounge/A10023/N03675",
+          "title": "Plaza Premium Lounge (International Departures, Contact Pier) - DragonPass listing",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Aggregator listings describe both lounges as sharing one site and as one of Plaza Premium's largest locations; the search summary did not attribute this to a single listing and it is not confirmed with the operator."
+    },
+    {
+      "id": "lounge-mh-golden-satellite",
+      "category": "lounges",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The Malaysia Airlines Satellite Golden Lounge is on the mezzanine floor of the Satellite Building (listed as West Zone, Level 2, Mezzanine Floor).",
+      "value": "Satellite Building, mezzanine",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairlines.com/my/en/travel-info/klia-terminal-1-passenger-journey.html",
+          "title": "KLIA Terminal 1 Passenger Journey (Malaysia Airlines)",
+          "type": "operator"
+        },
+        {
+          "url": "https://loungereview.com/lounges/airport/kul",
+          "title": "KUL lounges - 26 lounges (loungereview.com)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "The search summary did not attribute the level wording to a single source; one aggregator says simply 'mezzanine level'."
+    },
+    {
+      "id": "lounge-mh-golden-regional",
+      "category": "lounges",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The Malaysia Airlines Regional Golden Lounge is in the main terminal at Gate H (listed as Level 4, Mezzanine Floor).",
+      "value": "Gate H, Level 4 mezzanine",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairlines.com/my/en/travel-info/klia-terminal-1-passenger-journey.html",
+          "title": "KLIA Terminal 1 Passenger Journey (Malaysia Airlines)",
+          "type": "operator"
+        },
+        {
+          "url": "https://loungereview.com/lounges/airport/kul",
+          "title": "KUL lounges - 26 lounges (loungereview.com)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Level wording from search summary; confirm with Malaysia Airlines."
+    },
+    {
+      "id": "lounge-mh-golden-domestic",
+      "category": "lounges",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The Malaysia Airlines Domestic Golden Lounge is at Gate A, Level 3.",
+      "value": "Gate A, Level 3",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairlines.com/my/en/travel-info/klia-terminal-1-passenger-journey.html",
+          "title": "KLIA Terminal 1 Passenger Journey (Malaysia Airlines)",
+          "type": "operator"
+        },
+        {
+          "url": "https://loungereview.com/lounges/airport/kul",
+          "title": "KUL lounges - 26 lounges (loungereview.com)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Level wording from search summary; confirm with Malaysia Airlines."
+    },
+    {
+      "id": "hotel-sama-sama-express-name",
+      "category": "hotels",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The airside transit hotel at Terminal 1 is marketed as 'Sama-Sama Express KLIA Terminal 1 - Airside Transit Hotel'.",
+      "value": null,
+      "as_of": "unknown (booking listings)",
+      "sources": [
+        {
+          "url": "https://booking.com/hotel/my/sama-sama-express-klia.en-gb.html",
+          "title": "Sama-Sama Express KLIA Terminal 1 - Airside Transit Hotel (Booking.com listing)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.expedia.com/Sepang-Hotels-Sama-Sama-Express-KLIA-Airside-Transit-Hotel.h10945921.Hotel-Information",
+          "title": "Sama-Sama Express KLIA Terminal 1 - Airside Transit Hotel (Expedia listing)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Name is consistent across multiple booking platforms."
+    },
+    {
+      "id": "hotel-sama-sama-express-location",
+      "category": "hotels",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Sama-Sama Express KLIA Terminal 1 is airside on the mezzanine level of the Satellite Building, near Gate C5.",
+      "value": "Satellite Building, mezzanine level, near Gate C5",
+      "as_of": "unknown (booking listings)",
+      "sources": [
+        {
+          "url": "https://booking.com/hotel/my/sama-sama-express-klia.en-gb.html",
+          "title": "Sama-Sama Express KLIA Terminal 1 - Airside Transit Hotel (Booking.com listing)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://klia.info/accommodations/mid_range_hotels/sama-sama_express_klia.htm",
+          "title": "Sama-Sama Express KLIA (Terminal 1) (klia.info, third-party)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.sleepinginairports.net/guides/kuala-lumpur-airport-guide.htm",
+          "title": "Kuala Lumpur Airport Guide (sleepinginairports.net)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "CONFLICT: one guide says 'Level 1' of the Satellite Building; most listings say mezzanine. Confirm with the operator."
+    },
+    {
+      "id": "hotel-sama-sama-express-no-immigration",
+      "category": "hotels",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Guests can reach Sama-Sama Express KLIA Terminal 1 without clearing Malaysian immigration.",
+      "value": null,
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://klia.info/accommodations/mid_range_hotels/sama-sama_express_klia.htm",
+          "title": "Sama-Sama Express KLIA (Terminal 1) (klia.info, third-party)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.sleepinginairports.net/guides/kuala-lumpur-airport-guide.htm",
+          "title": "Kuala Lumpur Airport Guide (sleepinginairports.net)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": ""
+    },
+    {
+      "id": "hotel-sama-sama-express-no-checked-bags",
+      "category": "hotels",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Guests staying at the airside transit hotel do not have access to their checked-in luggage.",
+      "value": null,
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://booking.com/hotel/my/sama-sama-express-klia.en-gb.html",
+          "title": "Sama-Sama Express KLIA Terminal 1 - Airside Transit Hotel (Booking.com listing)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.expedia.com/Sepang-Hotels-Sama-Sama-Express-KLIA-Airside-Transit-Hotel.h10945921.Hotel-Information",
+          "title": "Sama-Sama Express KLIA Terminal 1 - Airside Transit Hotel (Expedia listing)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Stated in the property's booking-platform description."
+    },
+    {
+      "id": "hotel-sama-sama-express-from-g-h-gates",
+      "category": "hotels",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Passengers arriving at the G or H gates must first travel to the Satellite Building before they can reach the airside transit hotel.",
+      "value": null,
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://klia.info/accommodations/mid_range_hotels/sama-sama_express_klia.htm",
+          "title": "Sama-Sama Express KLIA (Terminal 1) (klia.info, third-party)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "The source calls the link the 'airport transit shuttle' (the Aerotrain, or replacement bus when it is closed)."
+    },
+    {
+      "id": "hotel-sama-sama-express-rooms-80",
+      "category": "hotels",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "A booking-platform listing gives Sama-Sama Express KLIA Terminal 1 as having 80 rooms.",
+      "value": "80 rooms",
+      "as_of": "unknown (booking listing)",
+      "sources": [
+        {
+          "url": "https://www.expedia.com/Sepang-Hotels-Sama-Sama-Express-KLIA-Airside-Transit-Hotel.h10945921.Hotel-Information",
+          "title": "Sama-Sama Express KLIA Terminal 1 - Airside Transit Hotel (Expedia listing)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Third-party listing; verify room count with the operator."
+    },
+    {
+      "id": "hotel-sama-sama-express-short-stays",
+      "category": "hotels",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Sama-Sama Express KLIA Terminal 1 is sold in short-stay blocks; one listing shows a 'Superior Twin Room (12 Hours)'.",
+      "value": "12-hour room block listed",
+      "as_of": "unknown (booking listing)",
+      "sources": [
+        {
+          "url": "https://booking.com/hotel/my/sama-sama-express-klia.en-gb.html",
+          "title": "Sama-Sama Express KLIA Terminal 1 - Airside Transit Hotel (Booking.com listing)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Other block lengths and prices were not captured."
+    },
+    {
+      "id": "hotel-sama-sama-klia-landside",
+      "category": "hotels",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Sama-Sama Hotel KLIA is a landside five-star hotel next to Terminal 1, linked to the Main Terminal Building by a covered walkway.",
+      "value": null,
+      "as_of": "prior knowledge (as of ~2024)",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "medium",
+      "notes": "PRIOR: not re-confirmed in this run. Room count, link-bridge level and buggy service details need operator confirmation."
+    },
+    {
+      "id": "t1-official-facilities-page",
+      "category": "facilities",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The official 'Airport Facilities at KLIA Terminal 1' page lists lounges, prayer rooms, medical services and ATMs among the terminal's facilities.",
+      "value": null,
+      "as_of": "unknown (as indexed in Nov 2026)",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairports.com.my/en/klia1/air-travel/airport-facilities",
+          "title": "Airport Facilities at KLIA Terminal 1 (Malaysia Airports)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "From the page description returned by search; locations, levels and opening hours could not be read."
+    },
+    {
+      "id": "lost-found-official-page",
+      "category": "facilities",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Malaysia Airports publishes an official Lost & Found page for KLIA Terminal 1.",
+      "value": null,
+      "as_of": "unknown (as indexed in Nov 2026)",
+      "sources": [
+        {
+          "url": "https://airports.malaysiaairports.com.my/airport-amenities/services/lost-found",
+          "title": "Lost & Found (Malaysia Airports, KLIA)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/en/klia1/help",
+          "title": "Help & Support at KLIA Terminal 1 (Malaysia Airports)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Page content could not be read in this run."
+    },
+    {
+      "id": "lost-found-location-level-2",
+      "category": "facilities",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "A third-party guide places the Terminal 1 Lost & Found Centre on Level 2 of the Main Terminal Building, next to the Food Garden entrance.",
+      "value": "Main Terminal Building, Level 2",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://klia.info/facilities/lost_and_found.htm",
+          "title": "Lost & Found Counter at KLIA Terminal 1 (klia.info, third-party)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Not confirmed on an official Malaysia Airports page in this run (official hosts were blocked); verify before publishing."
+    },
+    {
+      "id": "lost-found-contact",
+      "category": "contact",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "A third-party guide lists the Terminal 1 Lost & Found Centre as contactable 24 hours on +603 8776 4312 and at lostandfound@malaysiaairports.com.my.",
+      "value": "+603 8776 4312; lostandfound@malaysiaairports.com.my",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://klia.info/facilities/lost_and_found.htm",
+          "title": "Lost & Found Counter at KLIA Terminal 1 (klia.info, third-party)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "CONFLICT: an older third-party listing gives +603 8776 5773. Not confirmed on an official Malaysia Airports page in this run (official hosts were blocked); verify before publishing."
+    },
+    {
+      "id": "lost-baggage-handled-by-airline",
+      "category": "procedures",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Missing checked-in baggage and items left on board an aircraft are handled by the airline or its ground handler, not by the airport Lost & Found Centre.",
+      "value": null,
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://klia.info/facilities/lost_and_found.htm",
+          "title": "Lost & Found Counter at KLIA Terminal 1 (klia.info, third-party)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Standard practice; third-party source."
+    },
+    {
+      "id": "mh-mishandled-baggage-office",
+      "category": "contact",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "A third-party guide lists the Malaysia Airlines Mishandled Luggage Office at +603 8777 2288, open 07:00 to 23:59.",
+      "value": "+603 8777 2288; 07:00-23:59",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://klia.info/facilities/lost_and_found.htm",
+          "title": "Lost & Found Counter at KLIA Terminal 1 (klia.info, third-party)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Airline service, third-party source; verify with Malaysia Airlines."
+    },
+    {
+      "id": "wifi-network-name",
+      "category": "facilities",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "Third-party guides give the free airport Wi-Fi network name as 'FREE_WIFI@KLIA'.",
+      "value": "FREE_WIFI@KLIA",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://klia.info/facilities/wifi.htm",
+          "title": "Free WiFi Coverage at KLIA Terminal 1 (klia.info, third-party)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://www.cheapflights.com.sg/news/?p=301162",
+          "title": "Cheapflights airport Wi-Fi article",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Another travel guide calls the network 'Airport Wifi'. Not confirmed on an official Malaysia Airports page in this run (official hosts were blocked); verify before publishing."
+    },
+    {
+      "id": "wifi-session-limit",
+      "category": "facilities",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "A third-party guide says a free Wi-Fi session lasts three hours at a time.",
+      "value": "3 hours per session",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://klia.info/facilities/wifi.htm",
+          "title": "Free WiFi Coverage at KLIA Terminal 1 (klia.info, third-party)",
+          "type": "aggregator"
+        },
+        {
+          "url": "https://fmtv5.freemalaysiatoday.com/category/nation/2016/05/12/free-and-premium-wifi-services-at-klia-klia2",
+          "title": "Free and premium WiFi services at KLIA, klia2 (Free Malaysia Today, 12 May 2016)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "CONFLICT: a 2016 news report described one hour of free access plus a paid premium tier. Current limit not officially confirmed."
+    },
+    {
+      "id": "wifi-no-registration",
+      "category": "facilities",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "A third-party guide says the free Wi-Fi needs no registration: select the network, open a browser and tap 'Click to surf'.",
+      "value": null,
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://klia.info/facilities/wifi.htm",
+          "title": "Free WiFi Coverage at KLIA Terminal 1 (klia.info, third-party)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Not confirmed on an official Malaysia Airports page in this run (official hosts were blocked); verify before publishing."
+    },
+    {
+      "id": "jungle-boardwalk-location",
+      "category": "facilities",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The KLIA Jungle Boardwalk is in the Satellite Building of KLIA Terminal 1.",
+      "value": "Satellite Building",
+      "as_of": "2023-10",
+      "sources": [
+        {
+          "url": "https://www.tiktok.com/@malaysiaairports/video/7285278239071767815",
+          "title": "Malaysia Airports official TikTok: KLIA Jungle Boardwalk is now open again",
+          "type": "official"
+        },
+        {
+          "url": "https://www.kln.gov.my/web/mex_mexico-city/news-from-mission/-/blogs/10306547",
+          "title": "New Rimba Jungle Boardwalk in KLIA T1 (Ministry of Foreign Affairs Malaysia, Embassy of Malaysia Mexico City)",
+          "type": "government"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "From Malaysia Airports' own social-media post."
+    },
+    {
+      "id": "jungle-boardwalk-reopened-2023",
+      "category": "facilities",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Malaysia Airports announced in October 2023 that the Jungle Boardwalk had reopened after a short maintenance period.",
+      "value": "reopened October 2023",
+      "as_of": "2023-10",
+      "sources": [
+        {
+          "url": "https://www.tiktok.com/@malaysiaairports/video/7285278239071767815",
+          "title": "Malaysia Airports official TikTok: KLIA Jungle Boardwalk is now open again",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "No 2025-2026 official status statement was found; one undated aggregator listing shows 'Closed'. Confirm current status."
+    },
+    {
+      "id": "jungle-boardwalk-hours",
+      "category": "facilities",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Malaysia Airports' Convergence magazine gives the Jungle Boardwalk's opening hours as 07:00 to 19:00 daily.",
+      "value": "07:00-19:00 daily",
+      "as_of": "unknown (article undated in search result)",
+      "sources": [
+        {
+          "url": "https://convergence.malaysiaairports.com.my/inside-story/touch-zen",
+          "title": "A Touch of Zen (Malaysia Airports Convergence magazine)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "CONFLICT: a social-media post by a third party gives 08:00 to 19:00."
+    },
+    {
+      "id": "jungle-boardwalk-free-airside",
+      "category": "facilities",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "A 2026 third-party guide describes the Jungle Boardwalk as free to enter and accessible after security screening (airside).",
+      "value": "free",
+      "as_of": "2026 (third-party guide)",
+      "sources": [
+        {
+          "url": "https://sg.trip.com/moments/poi-klia-jungle-boardwalk-sepang-selangor-143788650/",
+          "title": "KLIA Jungle Boardwalk travel guide 2026 (Trip.com)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Aggregator source."
+    },
+    {
+      "id": "dining-food-garden-level-2",
+      "category": "dining",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "A food court called Food Garden is on Level 2 of the Main Terminal Building.",
+      "value": "Food Garden, Level 2",
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://klia.info/facilities/lost_and_found.htm",
+          "title": "Lost & Found Counter at KLIA Terminal 1 (klia.info, third-party)",
+          "type": "aggregator"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Named only as a landmark in a third-party lost-and-found guide; current trading status not confirmed, and landside/airside is not stated (Level 2 is understood to be landside). This is the only outlet that could be sourced in this run."
+    },
+    {
+      "id": "butterfly-effect-official-page",
+      "category": "accessibility",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "Malaysia Airports publishes an official 'What is the Butterfly Effect?' page describing its hidden-disabilities programme.",
+      "value": null,
+      "as_of": "unknown (as indexed in Nov 2026)",
+      "sources": [
+        {
+          "url": "https://airports.malaysiaairports.com.my/airport-amenities/services/butterfly-effect",
+          "title": "What is the Butterfly Effect? (Malaysia Airports)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Page content could not be read in this run."
+    },
+    {
+      "id": "butterfly-effect-purpose",
+      "category": "accessibility",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "The Butterfly Effect is KLIA's assistance programme for passengers with hidden disabilities such as autism, ADHD, global developmental delay and sensory processing disorder.",
+      "value": null,
+      "as_of": "2020-12",
+      "sources": [
+        {
+          "url": "https://www.passengerterminaltoday.com/news/passenger-experience/klia-introduces-initiative-for-passengers-with-hidden-disabilities.html",
+          "title": "KLIA introduces initiative for passengers with hidden disabilities (Passenger Terminal Today)",
+          "type": "news"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/airport-amenities/services/butterfly-effect",
+          "title": "What is the Butterfly Effect? (Malaysia Airports)",
+          "type": "official"
+        },
+        {
+          "url": "https://nst.com.my/amp/news/nation/2020/12/653386/creating-inclusive-experience-airport",
+          "title": "Creating inclusive experience at airport (New Straits Times, Dec 2020)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "id": "butterfly-effect-launched-2020",
+      "category": "accessibility",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "The Butterfly Effect programme was introduced at KLIA in December 2020.",
+      "value": "December 2020",
+      "as_of": "2020-12",
+      "sources": [
+        {
+          "url": "https://nst.com.my/amp/news/nation/2020/12/653386/creating-inclusive-experience-airport",
+          "title": "Creating inclusive experience at airport (New Straits Times, Dec 2020)",
+          "type": "news"
+        },
+        {
+          "url": "https://www.passengerterminaltoday.com/news/passenger-experience/klia-introduces-initiative-for-passengers-with-hidden-disabilities.html",
+          "title": "KLIA introduces initiative for passengers with hidden disabilities (Passenger Terminal Today)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Date taken from the publication date of launch coverage."
+    },
+    {
+      "id": "butterfly-effect-support-offered",
+      "category": "accessibility",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "The Butterfly Effect offers priority access at major airport touchpoints, a Calm Room and sensory walls.",
+      "value": null,
+      "as_of": "2020-12",
+      "sources": [
+        {
+          "url": "https://www.passengerterminaltoday.com/news/passenger-experience/klia-introduces-initiative-for-passengers-with-hidden-disabilities.html",
+          "title": "KLIA introduces initiative for passengers with hidden disabilities (Passenger Terminal Today)",
+          "type": "news"
+        },
+        {
+          "url": "https://says.com/my/lifestyle/klia-creates-calm-room-and-sensory-walls-to-support-travellers-with-autism",
+          "title": "KLIA Shows Support For Travelers With Autism With New Calm Room & Sensory Walls (SAYS)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "id": "calm-room-t1-level-5",
+      "category": "accessibility",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The Terminal 1 Calm Room is on Level 5 of the Main Terminal Building.",
+      "value": "Main Terminal Building, Level 5",
+      "as_of": "unknown (launch coverage, 2020-2021)",
+      "sources": [
+        {
+          "url": "https://says.com/my/lifestyle/klia-creates-calm-room-and-sensory-walls-to-support-travellers-with-autism",
+          "title": "KLIA Shows Support For Travelers With Autism With New Calm Room & Sensory Walls (SAYS)",
+          "type": "news"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/airport-amenities/services/butterfly-effect",
+          "title": "What is the Butterfly Effect? (Malaysia Airports)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Exact position within Level 5 not captured."
+    },
+    {
+      "id": "calm-room-access-code",
+      "category": "accessibility",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "Entry to the Calm Room uses an access code supplied in the Butterfly Kit, and parents or carers are asked to accompany and supervise children.",
+      "value": null,
+      "as_of": "unknown (launch coverage, 2020-2021)",
+      "sources": [
+        {
+          "url": "https://says.com/my/lifestyle/klia-creates-calm-room-and-sensory-walls-to-support-travellers-with-autism",
+          "title": "KLIA Shows Support For Travelers With Autism With New Calm Room & Sensory Walls (SAYS)",
+          "type": "news"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/airport-amenities/services/butterfly-effect",
+          "title": "What is the Butterfly Effect? (Malaysia Airports)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": ""
+    },
+    {
+      "id": "sensory-walls-t1-six",
+      "category": "accessibility",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "There are six sensory walls in Terminal 1 (and four in Terminal 2).",
+      "value": "6 in T1; 4 in T2",
+      "as_of": "unknown (launch coverage, 2020-2021)",
+      "sources": [
+        {
+          "url": "https://says.com/my/lifestyle/klia-creates-calm-room-and-sensory-walls-to-support-travellers-with-autism",
+          "title": "KLIA Shows Support For Travelers With Autism With New Calm Room & Sensory Walls (SAYS)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Counts date from launch coverage and may have changed."
+    },
+    {
+      "id": "butterfly-kit-registration",
+      "category": "accessibility",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "Passengers register for the Butterfly Effect at the airport information counter and receive a Butterfly Kit containing a Butterfly lanyard and information on the Calm Room and sensory wall locations.",
+      "value": null,
+      "as_of": "2025 (press coverage)",
+      "sources": [
+        {
+          "url": "https://www.routesonline.com/airports/8/kuala-lumpur-international-airport-klia/news/299664807/new-calm-room-opens-at-klia-terminal-2-enhancing-support-for-passengers-with-hidden-disabilities-through-a-sensory-friendly-space",
+          "title": "New Calm Room opens at KLIA Terminal 2 (Routes Online, airport press release, 2025)",
+          "type": "operator"
+        },
+        {
+          "url": "https://says.com/my/lifestyle/klia-creates-calm-room-and-sensory-walls-to-support-travellers-with-autism",
+          "title": "KLIA Shows Support For Travelers With Autism With New Calm Room & Sensory Walls (SAYS)",
+          "type": "news"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/airport-amenities/services/butterfly-effect",
+          "title": "What is the Butterfly Effect? (Malaysia Airports)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "The 2025 Terminal 2 Calm Room release directs passengers or caregivers to the main information counter in either terminal's Departure Hall."
+    },
+    {
+      "id": "butterfly-registration-each-visit",
+      "category": "accessibility",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "Registration for the Butterfly Effect is required on each visit to the airport.",
+      "value": null,
+      "as_of": "unknown",
+      "sources": [
+        {
+          "url": "https://airports.malaysiaairports.com.my/airport-amenities/services/butterfly-effect",
+          "title": "What is the Butterfly Effect? (Malaysia Airports)",
+          "type": "official"
+        },
+        {
+          "url": "https://says.com/my/lifestyle/klia-creates-calm-room-and-sensory-walls-to-support-travellers-with-autism",
+          "title": "KLIA Shows Support For Travelers With Autism With New Calm Room & Sensory Walls (SAYS)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "low",
+      "notes": "Attributed in the search summary to 'Airport CARE InfoCentre guidance'; confirm the current process, including any pre-registration option."
+    },
+    {
+      "id": "butterfly-10000-passengers",
+      "category": "accessibility",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "Malaysia Airports has said the Butterfly Effect service has assisted more than 10,000 passengers.",
+      "value": "more than 10,000 passengers",
+      "as_of": "unknown (press coverage, 2025-2026)",
+      "sources": [
+        {
+          "url": "https://thesun.my/news/a-familiar-face-in-a-busy-airport-how-klia-helps-passengers-with-autism/",
+          "title": "A familiar face in a busy airport: how KLIA helps passengers with autism (The Sun)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Cumulative figure reported by news media; date of the count not captured."
+    },
+    {
+      "id": "calm-room-t2-2025",
+      "category": "accessibility",
+      "airport": "KUL",
+      "terminal": "T2",
+      "claim": "A Calm Room opened at KLIA Terminal 2 in July 2025 on the Mezzanine Floor (Level 3A) of the Departure Hall.",
+      "value": "T2 Departure Hall, Level 3A",
+      "as_of": "2025-07",
+      "sources": [
+        {
+          "url": "https://www.routesonline.com/airports/8/kuala-lumpur-international-airport-klia/news/299664807/new-calm-room-opens-at-klia-terminal-2-enhancing-support-for-passengers-with-hidden-disabilities-through-a-sensory-friendly-space",
+          "title": "New Calm Room opens at KLIA Terminal 2 (Routes Online, airport press release, 2025)",
+          "type": "operator"
+        },
+        {
+          "url": "https://www.thestar.com.my/metro/metro-news/2025/07/25/calming-touch-at-klia2",
+          "title": "Calming touch at KLIA2 (The Star, 25 Jul 2025)",
+          "type": "news"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Cross-terminal fact, included so accessibility content is consistent across both terminals."
+    },
+    {
+      "id": "prm-assistance-via-airline",
+      "category": "accessibility",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "Wheelchair and reduced-mobility assistance at KLIA is arranged through the passenger's airline, ideally when booking or at least 48 hours before departure.",
+      "value": "48 hours' notice",
+      "as_of": "prior knowledge (general industry practice, as of ~2025)",
+      "sources": [],
+      "evidence": "prior",
+      "confidence": "low",
+      "notes": "PRIOR: not re-confirmed for KLIA in this run; lead time and any MAHB-provided service must be verified."
+    },
+    {
+      "id": "contact-help-page",
+      "category": "contact",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The official 'Help & Support at KLIA Terminal 1' page covers FAQs, airport service contact details, lost and found and passenger support resources.",
+      "value": null,
+      "as_of": "unknown (as indexed in Nov 2026)",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairports.com.my/en/klia1/help",
+          "title": "Help & Support at KLIA Terminal 1 (Malaysia Airports)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "id": "contact-customer-support-number",
+      "category": "contact",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "Structured data on the official KLIA Terminal 1 help page lists the customer support telephone number +603 8777 0000.",
+      "value": "+603 8777 0000",
+      "as_of": "unknown (as indexed in Nov 2026)",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairports.com.my/en/klia1/help",
+          "title": "Help & Support at KLIA Terminal 1 (Malaysia Airports)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Reported in a search summary of the page's structured data; the widely quoted careline 03-8776 2000 could NOT be confirmed in this run. Opening hours not captured."
+    },
+    {
+      "id": "contact-main-number",
+      "category": "contact",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "Malaysia Airports lists +603 8777 7000 as the telephone number for KLIA Terminal 1 and for its corporate office.",
+      "value": "+603 8777 7000",
+      "as_of": "unknown (as indexed in Nov 2026)",
+      "sources": [
+        {
+          "url": "https://www.malaysiaairports.com.my/en/klia1/help",
+          "title": "Help & Support at KLIA Terminal 1 (Malaysia Airports)",
+          "type": "official"
+        },
+        {
+          "url": "https://corporate.malaysiaairports.com.my/en/contact-us/corporate",
+          "title": "Contact Us (Malaysia Airports corporate)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Corporate office hours are weekdays with different Friday hours; exact times not captured."
+    },
+    {
+      "id": "contact-email",
+      "category": "contact",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "Malaysia Airports' general enquiry and feedback email address is info@malaysiaairports.com.my.",
+      "value": "info@malaysiaairports.com.my",
+      "as_of": "unknown (as indexed in Nov 2026)",
+      "sources": [
+        {
+          "url": "https://care.malaysiaairports.com.my/chat",
+          "title": "Chat with us / Berbual bersama kami (Malaysia Airports CARE)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": ""
+    },
+    {
+      "id": "contact-live-chat",
+      "category": "contact",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "Malaysia Airports offers a live chat staffed by human agents at care.malaysiaairports.com.my/chat, operating on a split daily schedule rather than 24 hours.",
+      "value": null,
+      "as_of": "unknown (as indexed in Nov 2026)",
+      "sources": [
+        {
+          "url": "https://care.malaysiaairports.com.my/chat",
+          "title": "Chat with us / Berbual bersama kami (Malaysia Airports CARE)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": "Exact chat hours were not captured."
+    },
+    {
+      "id": "contact-myairports-app",
+      "category": "contact",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "Malaysia Airports directs passenger feedback to its website, its email address and the MYairports mobile app.",
+      "value": "MYairports app",
+      "as_of": "unknown (as indexed in Nov 2026)",
+      "sources": [
+        {
+          "url": "https://care.malaysiaairports.com.my/chat",
+          "title": "Chat with us / Berbual bersama kami (Malaysia Airports CARE)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "medium",
+      "notes": ""
+    },
+    {
+      "id": "site-duplicate-hosts",
+      "category": "other",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "The same KLIA Terminal 1 pages are indexed on two official hostnames, www.malaysiaairports.com.my and airports.malaysiaairports.com.my.",
+      "value": null,
+      "as_of": "2026-11-16 (search index)",
+      "sources": [
+        {
+          "url": "https://airports.malaysiaairports.com.my/en/klia1",
+          "title": "KLIA Terminal 1 (Malaysia Airports)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/en/klia1/help",
+          "title": "Help & Support at KLIA Terminal 1 (Malaysia Airports)",
+          "type": "official"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/en/klia1/help",
+          "title": "Help & Support at KLIA Terminal 1 (airports subdomain)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Observed in search results (identical titles on both hosts). Whether canonical tags are set could not be checked."
+    },
+    {
+      "id": "site-legacy-url-schemes",
+      "category": "other",
+      "airport": "KUL",
+      "terminal": null,
+      "claim": "Older URL schemes for the same content remain indexed, including /airport-amenities/services/..., /shop-dine-services/services/..., /index.php/klia1/... and query-string URLs such as ?m=contact_us.",
+      "value": null,
+      "as_of": "2026-11-16 (search index)",
+      "sources": [
+        {
+          "url": "https://airports.malaysiaairports.com.my/airport-amenities/services/lost-found",
+          "title": "Lost & Found (Malaysia Airports, KLIA)",
+          "type": "official"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/shop-dine-services/services/lounges",
+          "title": "Lounges (Malaysia Airports, KLIA services listing)",
+          "type": "official"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/index.php/klia1/shop-dine-services/services",
+          "title": "Services at Kuala Lumpur International Airport (KUL) KLIA Terminal",
+          "type": "official"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/?m=contact_us",
+          "title": "KLIA Terminal 1 (contact us, query-string URL)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "A redirect map from legacy URLs will be needed in the redesign."
+    },
+    {
+      "id": "site-t1-section-structure",
+      "category": "other",
+      "airport": "KUL",
+      "terminal": "T1",
+      "claim": "The current official Terminal 1 section includes pages for flight information (arrivals, departures), a terminal map, an air travel guide, airport facilities, services, and help and support.",
+      "value": null,
+      "as_of": "2026-11-16 (search index)",
+      "sources": [
+        {
+          "url": "https://airports.malaysiaairports.com.my/en/klia1",
+          "title": "KLIA Terminal 1 (Malaysia Airports)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/en/klia1/map",
+          "title": "KLIA Terminal 1 Map (Malaysia Airports)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/en/klia1/air-travel",
+          "title": "Air Travel Guide at KLIA Terminal 1 (Malaysia Airports)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/en/klia1/air-travel/airport-facilities",
+          "title": "Airport Facilities at KLIA Terminal 1 (Malaysia Airports)",
+          "type": "official"
+        },
+        {
+          "url": "https://www.malaysiaairports.com.my/en/klia1/help",
+          "title": "Help & Support at KLIA Terminal 1 (Malaysia Airports)",
+          "type": "official"
+        },
+        {
+          "url": "https://airports.malaysiaairports.com.my/en/klia1/air-travel/services",
+          "title": "Services at KLIA Terminal 1 (Malaysia Airports)",
+          "type": "official"
+        }
+      ],
+      "evidence": "search",
+      "confidence": "high",
+      "notes": "Derived from indexed URL paths under /en/klia1/."
+    }
+  ],
+  "gaps": [
+    "ACCESS: every official host (airports.malaysiaairports.com.my, www.malaysiaairports.com.my) and www.malaysiaairlines.com was blocked by the network allowlist, and the shared WebSearch budget ran out after 17 searches; no fact in this file is 'direct'.",
+    "Dining and retail outlets: no outlet list could be sourced (only 'Food Garden', Level 2, from a third-party guide). The official shop/dine directory must be captured before any outlet is published.",
+    "Official current list of airlines at Terminal 1 and the official check-in row allocation per airline (only Malaysia Airlines' own allocation was found; third-party lists conflict on Scoot, Cebu Pacific, VietJet, Air Arabia, Air France, Lufthansa).",
+    "Level-by-level official description of the Main Terminal Building (Levels 1-5), Contact Pier and Satellite Building; purpose of Levels 2 and 4; gate number ranges for A, B, C, G and H.",
+    "Aerotrain headway (minutes between trains), first/last train wording, and whether the 28 Nov - 1 Dec 2026 software update went ahead as scheduled; shuttle-bus journey time and frequency.",
+    "MAHB careline: the widely quoted 03-8776 2000 could not be confirmed; search surfaced +603 8777 0000 (customer support) and +603 8777 7000 (KLIA Terminal 1 / corporate) instead. Careline and live-chat opening hours not captured.",
+    "Lost & Found: official location, opening hours, phone and email (only third-party values found, with two conflicting phone numbers).",
+    "Free Wi-Fi: official network name, session limit and sign-in method (third-party sources conflict: 'FREE_WIFI@KLIA' vs 'Airport Wifi'; 3 hours vs 1 hour).",
+    "Prayer rooms (surau), baby care/nursing rooms, children's play areas, medical clinic and pharmacy: locations, levels and hours not verified (the official facilities page lists prayer rooms and medical services but its details could not be read).",
+    "Baggage storage/left luggage (operator, location, RM rates), baggage wrapping, porter service and buggy service: not verified.",
+    "Showers, rest/nap zones, charging points, smoking rooms, drinking-water points, viewing areas, post office, tourist information counter, SIM/telco counters, money changers: not verified. ATMs are listed on the official facilities page but without locations.",
+    "Other lounges at Terminal 1 (for example airline-operated and pay-per-use lounges in the Satellite Building): names, locations and operators not verified; an aggregator counts 26 lounges across KUL without an official cross-check.",
+    "Sama-Sama Hotel KLIA (landside): room count, walkway level, buggy service; Sama-Sama Express: exact level (mezzanine vs Level 1), room count, rates, minimum stay; any capsule or sleep-pod facility in Terminal 1.",
+    "Immigration: official Immigration Department list of autogate-eligible nationalities, first-time-visitor enrolment rule (sources conflict), and autogate locations in Terminal 1.",
+    "Security screening: location of screening points (central vs gate), liquids rule wording and any newer scanner lanes at Terminal 1 not verified.",
+    "Self-service check-in kiosks and common-use self bag drop provided by the airport (as opposed to Malaysia Airlines' own bag drop at counters F and G): not verified.",
+    "Accessibility: reduced-mobility assistance process, wheelchair availability, accessible toilets, Airport CARE Ambassadors and any hidden-disability lanyard scheme other than the Butterfly lanyard were not confirmed; the exact Level 5 position and opening hours of the Terminal 1 Calm Room were not captured.",
+    "Jungle Boardwalk: current (2026) open/closed status and opening hours (07:00-19:00 official magazine vs 08:00-19:00 third party).",
+    "Terminal 1 design capacity and current passenger throughput: only Wikipedia-derived figures surfaced and they were not used."
+  ]
+}

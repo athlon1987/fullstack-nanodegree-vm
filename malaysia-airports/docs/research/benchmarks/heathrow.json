@@ -1,0 +1,161 @@
+{
+  "key": "heathrow",
+  "name": "London Heathrow Airport",
+  "host": "www.heathrow.com",
+  "assessed": "2026-11-16",
+  "assessment_type": "expert assessment",
+  "direct_access": true,
+  "direct_access_note": "Partial. 12 official HTML pages plus homepage response headers were fetched and two mobile (390x844) pages rendered between 12:49 and 12:51 UTC. The site answers 403 to curl's default user agent and ERR_TOO_MANY_REDIRECTS to default headless Chromium, so direct fetching was stopped once that was established and no desktop 1440x900 screenshots exist. The flight data API, map host and chat host were unreachable from the container, so live flight data, wait-time values, journey planner results and Hallie web chat were not observed running. Web search budget ran out after 16 searches.",
+  "weighted_score_pct": 79.0,
+  "scores": {
+    "ui": {
+      "score": 3.5,
+      "confidence": "medium",
+      "evidence_level": "direct (mobile render only; no desktop render)",
+      "evidence": [
+        "Consistent purple brand, clear typography and icon set in mobile screenshots of homepage and departures page - https://www.heathrow.com/ , https://www.heathrow.com/departures",
+        "Hero is a six-slide auto-rotating carousel of campaign and corporate messages (expansion consultation, winter routes, Skytrax vote) with a pause control - https://www.heathrow.com/",
+        "Component styling is functional rather than premium; expert judgement, not a user test"
+      ]
+    },
+    "ux": {
+      "score": 4.0,
+      "confidence": "medium",
+      "evidence_level": "direct + search",
+      "evidence": [
+        "Four-tab widget (Arrivals, Departures, Connections, Book Parking) with date picker and one field 'Search airline, flight no. or city' in the first mobile screen - https://www.heathrow.com/",
+        "Six task cards (parking, which terminal, drop-off, restaurants, Fast Track, shopping) and 'Popular Searches' in site search - https://www.heathrow.com/",
+        "Flight modal asks 'Are you a passenger on this flight?' with passenger / collecting-someone paths - https://www.heathrow.com/departures",
+        "Parking page combines quote widget, six-product tabs, comparison table and FAQ with free cancellation up to two hours before arrival - https://www.heathrow.com/transport-and-directions/heathrow-parking",
+        "Held back by a very dense seven-group mega-menu and hand-offs to boutique.heathrow.com, maps.heathrow.com, heathrowexpress.com and heathrowvip.com - https://www.heathrow.com/"
+      ]
+    },
+    "info": {
+      "score": 4.0,
+      "confidence": "medium",
+      "evidence_level": "direct + search",
+      "evidence": [
+        "Plain-language connections FAQ covering security, immigration, baggage, minimum connection time, terminal transfer and delays - https://www.heathrow.com/connecting-flights",
+        "Parking page states products, closures (T4 Terminal Parking, T2/T3 Priority Park & Ride), on-the-day prices and absence of EV charging - https://www.heathrow.com/transport-and-directions/heathrow-parking",
+        "Drop-off charge change to GBP 7 from 1 January 2026 published - https://www.heathrow.com/passenger-updates",
+        "Stale content: ETA notice still says all visitors will need one 'by the end of 2024' (seen 2026-11-16) - https://www.heathrow.com/passenger-updates",
+        "Search snapshots show parking prices differing between page versions and conflicting Reserve & Collect lead times - https://www.heathrow.com/transport-and-directions/heathrow-parking/heathrow-park-and-ride , https://boutique.heathrow.com/en/brands/jekyll-and-hide"
+      ]
+    },
+    "flight": {
+      "score": 4.5,
+      "confidence": "medium",
+      "evidence_level": "direct (page source and configuration) + search; live board not observed running",
+      "evidence": [
+        "Arrivals and departures 'updated minute-by-minute'; search by airline, flight number or city plus date; 365-day horizon - https://www.heathrow.com/departures , https://www.heathrow.com/flight-timetable",
+        "Flight detail pages show status, scheduled and estimated time, check-in zone with opening time, terminal, gate, belt and a 'Last updated at' stamp (search snapshot) - https://www.heathrow.com/departures/terminal-2/flight-details/AC859",
+        "Shipped strings: 'Gate will be announced at {0}', codeshare disclosure, 'Estimated security wait times', 'Estimated immigration wait times', 'Share flight', 'Save flight' - https://www.heathrow.com/departures",
+        "Connections planner returns a timeline, total time between flights, transfer minutes and a sufficiency verdict - https://www.heathrow.com/connecting-flights",
+        "Weak points: live alerts are app-only; with the data API unreachable the page shows only an error (no cached or server-rendered fallback); app reviews mention missing gates - https://www.heathrow.com/departures , https://play.google.com/store/apps/details?id=com.baa.heathrow&hl=en"
+      ]
+    },
+    "mobile": {
+      "score": 4.0,
+      "confidence": "medium",
+      "evidence_level": "direct + search",
+      "evidence": [
+        "Mobile render at 390x844 shows header utilities, flight widget and a sticky wait-times panel in the first screen - https://www.heathrow.com/",
+        "Service worker and web app manifest registered; smart app banners for iOS (app id 427951859) and Android (com.baa.heathrow) - https://www.heathrow.com/",
+        "App 'LHR London Heathrow Airport': live flight notifications, wait times, connection itinerary, wayfinding, Rewards card, parking booking, food pre-order (store listing via search) - https://apps.apple.com/us/app/-/id427951859",
+        "Store rating snapshots: App Store about 4.7; Google Play 4.2 to 4.3 from about 4.45K reviews (snapshots conflict on counts) - https://play.google.com/store/apps/details?id=com.baa.heathrow&hl=en",
+        "Every HTML document is about 485 KB compressed / 1.1 MB decoded - https://www.heathrow.com/"
+      ]
+    },
+    "nav": {
+      "score": 3.5,
+      "confidence": "medium",
+      "evidence_level": "direct",
+      "evidence": [
+        "Seven navigation groups (Flights, At the airport, Transport and directions, Shop and eat, My Heathrow, Booking, Help) plus a utility bar with Assistance and accessibility first - https://www.heathrow.com/",
+        "Site search with popular searches and 'Did you mean' strings; eight languages (en, it, fr, de, sv, zh, es, hi) with hreflang; skip link - https://www.heathrow.com/",
+        "Defects in delivered HTML: six h1 elements on the homepage, no main landmark, heading levels out of order - https://www.heathrow.com/",
+        "Hallie chat launcher is a div with onclick, not a focusable button - https://www.heathrow.com/departures",
+        "No accessibility toolbar in page source; no Arabic, Japanese, Korean or Malay; accessibility statement linked in footer but not read - https://www.heathrow.com/"
+      ]
+    },
+    "ai": {
+      "score": 4.0,
+      "confidence": "medium",
+      "evidence_level": "direct + search",
+      "evidence": [
+        "Hallie AI agent on Salesforce Agentforce via WhatsApp, announced 11 June 2025; vendor-reported 90% chat resolution without human transfer - https://www.salesforce.com/uk/news/press-releases/2025/06/11/heathrow-airport-agentforce-passenger-experience/",
+        "Hallie web chat embedded (deployment HAL_AgentforceWeb) on arrivals, departures, connecting flights and parking pages, not on the homepage; embed language set to en_US - https://www.heathrow.com/departures",
+        "Tailored travel guide: questionnaire-based personal airport guide with ideal arrival time and shareable output (from shipped strings and configuration; not run) - https://www.heathrow.com/departures",
+        "My Heathrow account with My Flights (saved flights), My Bookings, Offers and preferences; personalisation tag loaded on every page - https://www.heathrow.com/",
+        "No evidence found of on-site recommendations that react to a saved flight (insufficient evidence)"
+      ]
+    },
+    "commerce": {
+      "score": 4.5,
+      "confidence": "medium",
+      "evidence_level": "direct + search",
+      "evidence": [
+        "Official parking: six products, 11 car parks, quote widget with promo code, 5% My Heathrow and 10% Rewards Premium discounts until 1 February 2027 - https://www.heathrow.com/transport-and-directions/heathrow-parking",
+        "Fast Track for departures (from GBP 12.99) and arrivals (from GBP 25 off-peak), bookable online only (search) - https://www.heathrow.com/at-the-airport/airport-services/fast-track",
+        "Reserve & Collect marketplace on boutique.heathrow.com with basket in the global header, Personal Shopper, Collect on Return, Home Delivery - https://www.heathrow.com/ , https://www.heathrow.com/at-the-airport/shopping/reserve-and-collect",
+        "Lounges, Heathrow Express, hotel and parking packages, VIP, car rental all bookable from the Booking menu - https://www.heathrow.com/",
+        "Heathrow Rewards: 1 point per GBP 1, Premium tier at GBP 750 annual spend, airline-mile conversion (search) - https://www.heathrow.com/my-heathrow/heathrow-rewards/heathrow-rewards-premium"
+      ]
+    },
+    "perf": {
+      "score": 3.0,
+      "confidence": "low",
+      "evidence_level": "direct (single-run lab observation from a cloud container; third-party asset hosts may be blocked so rendering may be incomplete; not field data) + prior",
+      "evidence": [
+        "Mobile lab run: homepage TTFB 113 ms, DOMContentLoaded 1,096 ms, load 1,102 ms, FCP 580 ms, 1.86 MB transferred; departures TTFB 61 ms, load 747 ms, 1.17 MB transferred; fonts, tag managers, personalisation, chat and data API hosts were blocked so real load is higher - https://www.heathrow.com/",
+        "HTML document about 485 KB compressed / 1.14 MB decoded on every page, about 851 KB of it inline SVG - https://www.heathrow.com/",
+        "Headers: CSP present but permits unsafe-eval and inline script elements; HSTS max-age 63072000 includeSubdomains; nosniff; referrer-policy; permissions-policy; cache-control max-age 300 - https://www.heathrow.com/",
+        "Flight board is client-rendered only and fails to an error when the API is unreachable - https://www.heathrow.com/departures",
+        "Search snapshot: My Heathrow registration unavailable due to a 'global Microsoft outage' (date unverified) - https://www.heathrow.com/my-heathrow/help",
+        "Prior knowledge, not re-confirmed: March 2025 substation-fire closure, September 2025 check-in software cyberattack, October 2025 Azure outage reported to affect the website"
+      ]
+    }
+  },
+  "standouts": [
+    {
+      "name": "Flight search and decision-oriented flight detail",
+      "why": "One field for airline, flight number or city on the homepage; detail pages give check-in zone and opening time, gate announcement time, belt, codeshares, wait times, a passenger / collector split, save and share.",
+      "url": "https://www.heathrow.com/departures"
+    },
+    {
+      "name": "Estimated security and immigration wait times as a first-class element",
+      "why": "Surfaced in the utility bar, Flights menu, a sticky homepage panel, flight details and the app, so the key operational unknown is always one tap away.",
+      "url": "https://www.heathrow.com/passenger-updates#wait-times"
+    },
+    {
+      "name": "Connections planner, tailored travel guide and virtual terminal tours",
+      "why": "Flight-pair connection verdict with timeline and transfer minutes; questionnaire-based personal guide with ideal arrival time; step-by-step tours by arrival mode with accessible routes.",
+      "url": "https://www.heathrow.com/connecting-flights"
+    },
+    {
+      "name": "Hallie AI agent on WhatsApp and web chat",
+      "why": "Grounded in airport knowledge and live data, vendor-reported 90% resolution without human transfer, and placed on the pages where questions arise (flights, parking).",
+      "url": "https://www.salesforce.com/uk/news/press-releases/2025/06/11/heathrow-airport-agentforce-passenger-experience/"
+    },
+    {
+      "name": "Ancillary commerce tied to one account and loyalty",
+      "why": "Six parking products with comparison, free cancellation and member discounts, Fast Track both directions, lounges, Reserve & Collect marketplace and Heathrow Rewards under My Heathrow.",
+      "url": "https://www.heathrow.com/transport-and-directions/heathrow-parking"
+    }
+  ],
+  "weaknesses": [
+    "Fragmented ecosystem: main site, /booking, /myheathrow, boutique.heathrow.com, maps.heathrow.com, heathrowexpress.com and heathrowvip.com; map and shop leave the main site; Hallie web chat only on some pages (direct).",
+    "Heavy pages with no graceful degradation: about 1.1 MB HTML (485 KB compressed) per page, about 850 KB of it an inline SVG sprite; flight data is client-only and fails to an error with no last-known data (direct).",
+    "Stale and inconsistent content: ETA notice saying 'by the end of 2024' still live in November 2026; parking prices and Reserve & Collect lead times differ between pages (direct + search).",
+    "Accessibility and language gaps: six h1 and no main landmark on the homepage, non-focusable chat launcher, no site accessibility tools, eight languages only (no Arabic, Japanese, Korean, Malay), assistant embed set to English (direct).",
+    "Best features are app-gated or missing: live alerts and turn-by-turn navigation need the app, saving a flight needs an account, no live parking availability or AR found, no EV charging, no Terminal 4 virtual tour, self-connecting passengers excluded from the connections tool (direct + hypothesis)."
+  ],
+  "ideas": [
+    "No-login 'My journey' web timeline: enter a flight number once and get a shareable, server-rendered timeline with web push or WhatsApp alerts and role views (passenger, greeter, driver) across KLIA T1, T2 and regional airports.",
+    "Operational status with timestamps, typical-for-this-hour context and a forecast for the user's departure time, keeping last-known values when a feed fails, instead of a bare current estimate or 'unavailable'.",
+    "Connections planner that includes self-transfer between KLIA T1 and T2 and low-cost carriers, with honest minimum times, immigration and bag re-check steps and what to do when the connection is tight.",
+    "Multilingual, transactional, accessible assistant on every page (Bahasa Malaysia, English, Mandarin, Tamil, Arabic, Japanese, Korean, Bahasa Indonesia), grounded in live data, able to complete bookings, with a real keyboard-operable button and human handover.",
+    "Published performance and accessibility budget: server-rendered flight board, small HTML with a cached external sprite, WCAG 2.2 AA with correct headings and landmarks, public Core Web Vitals targets.",
+    "One basket and one identity on the main domain across parking, fast track, lounge, retail pre-order and rail tickets, with loyalty earn and burn at each price, live car park and EV charger availability and local payment methods."
+  ]
+}
