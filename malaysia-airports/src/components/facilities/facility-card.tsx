@@ -58,10 +58,13 @@ export function FacilityCard({ facility, sources, showTerminal }: FacilityCardPr
 
       <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-1 pt-4">
         {facility.mapHref ? (
-          <LocaleLink href={facility.mapHref} className="link-action type-body-sm inline-flex items-center gap-1.5">
+          <LocaleLink
+            href={facility.mapHref}
+            aria-label={`${t('mapPages.facilities.showOnMap')}: ${facility.name}`}
+            className="link-action type-body-sm inline-flex items-center gap-1.5"
+          >
             <Icon name="map" size="sm" />
             {t('mapPages.facilities.showOnMap')}
-            <span className="sr-only">: {facility.name}</span>
           </LocaleLink>
         ) : null}
         {facility.bookingUrl ? (

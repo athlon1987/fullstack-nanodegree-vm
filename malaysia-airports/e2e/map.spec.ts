@@ -34,7 +34,7 @@ test.describe('terminal map', () => {
     const main = page.getByRole('main');
     await expect(main.getByRole('heading', { level: 1, name: 'Terminal map' })).toBeVisible();
     await expect(main.getByText('Schematic demonstration map, not a floor plan').first()).toBeVisible();
-    await expect(main.getByRole('group', { name: 'Level' })).toBeVisible();
+    await expect(main.getByRole('group', { name: 'Level', exact: true })).toBeVisible();
     await expect(main.getByRole('group', { name: /Schematic map: Level 5/ })).toBeVisible();
 
     const search = main.getByRole('searchbox', { name: 'Search this map' });
@@ -49,7 +49,7 @@ test.describe('terminal map', () => {
     await expect(details.getByText('Demo', { exact: false }).first()).toBeVisible();
     await expect(page).toHaveURL(/poi=l5-prayer-room/);
 
-    await details.getByRole('button', { name: 'Route here' }).click();
+    await details.getByRole('button', { name: 'Route here', exact: true }).click();
     await expect(page).toHaveURL(/to=l5-prayer-room/);
     const directions = main.getByRole('region', { name: 'Directions' });
     await expect(directions.getByRole('heading', { name: 'Step by step' })).toBeVisible();

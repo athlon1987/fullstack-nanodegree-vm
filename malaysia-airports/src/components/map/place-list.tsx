@@ -81,13 +81,11 @@ export function PlaceList({ levels, pois, total, filters, selectedId, onShow, on
                         </p>
                         <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
                           <ProvenanceTag provenance={poi.provenance} length="short" />
-                          <button type="button" onClick={() => onShow(poi.id)} className="link-action type-body-sm">
+                          <button type="button" onClick={() => onShow(poi.id)} aria-label={`${t('mapPages.list.showOnMap')}: ${poi.name}`} className="link-action type-body-sm">
                             {t('mapPages.list.showOnMap')}
-                            <span className="sr-only">: {poi.name}</span>
                           </button>
-                          <button type="button" onClick={() => onRouteHere(poi.id)} className="link-action type-body-sm">
+                          <button type="button" onClick={() => onRouteHere(poi.id)} aria-label={`${t('mapPages.details.routeHere')}: ${poi.name}`} className="link-action type-body-sm">
                             {t('mapPages.details.routeHere')}
-                            <span className="sr-only">: {poi.name}</span>
                           </button>
                         </div>
                       </div>
