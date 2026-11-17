@@ -6,9 +6,8 @@ import { useT } from '@/lib/i18n/client';
 import { LocaleLink } from '@/components/common/locale-link';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { SourceNote } from '@/components/common/source-note';
-import { AccessibleValue, AreaValue, HoursValue, sourcesFor } from '@/components/facilities/facility-values';
+import { AccessibleValue, AreaValue, FactList, HoursValue, sourcesFor } from '@/components/facilities/facility-values';
 import { Button } from '@/components/ui/button';
-import { DataList, DataListItem } from '@/components/ui/data-list';
 import { Icon } from '@/components/ui/icon';
 import { IconButton } from '@/components/ui/icon-button';
 import type { LevelView, PoiView } from './map-logic';
@@ -68,21 +67,17 @@ export function PlaceDetails({ poi, level, sources, facilitiesHref, isDestinatio
       </div>
 
       <div className="flex flex-col gap-4 px-4 pb-4 sm:px-5 sm:pb-5">
-        <DataList dense>
-          <DataListItem label={t('mapPages.details.level')}>{level?.name ?? poi.level}</DataListItem>
-          <DataListItem label={t('mapPages.details.area')}>
-            <AreaValue side={poi.side} />
-          </DataListItem>
-          <DataListItem label={t('mapPages.details.hours')}>
-            <HoursValue hours={facility?.hours} />
-          </DataListItem>
-          <DataListItem label={t('mapPages.details.accessibility')}>
-            <AccessibleValue accessible={facility?.accessible} />
-          </DataListItem>
-          {facility?.locationNote ? <DataListItem label={t('mapPages.details.location')}>{facility.locationNote}</DataListItem> : null}
-          {facility?.access ? <DataListItem label={t('mapPages.details.access')}>{facility.access}</DataListItem> : null}
-          {facility?.operator ? <DataListItem label={t('mapPages.details.operator')}>{facility.operator}</DataListItem> : null}
-        </DataList>
+        <FactList
+          facts={[
+            { label: t('mapPages.details.level'), value: level?.name ?? poi.level },
+            { label: t('mapPages.details.area'), value: poi.side !== 'unknown' ? <AreaValue side={poi.side} /> : undefined },
+            ...(facility?.locationNote ? [{ label: t('mapPages.details.location'), value: facility.locationNote }] : []),
+            { label: t('mapPages.details.hours'), value: facility?.hours ? <HoursValue hours={facility.hours} /> : undefined },
+            { label: t('mapPages.details.accessibility'), value: facility?.accessible !== undefined ? <AccessibleValue accessible={facility.accessible} /> : undefined },
+            ...(facility?.access ? [{ label: t('mapPages.details.access'), value: facility.access }] : []),
+            ...(facility?.operator ? [{ label: t('mapPages.details.operator'), value: facility.operator }] : []),
+          ]}
+        />
 
         <div className="flex flex-wrap gap-2">
           {!isDestination ? (

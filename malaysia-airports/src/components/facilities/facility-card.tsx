@@ -4,13 +4,11 @@ import type { Source } from '@/content/types';
 import { useT } from '@/lib/i18n/client';
 import { ExternalLink } from '@/components/common/external-link';
 import { LocaleLink } from '@/components/common/locale-link';
-import { NotPublished } from '@/components/common/not-published';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { SourceNote } from '@/components/common/source-note';
 import { Badge } from '@/components/ui/badge';
-import { DataList, DataListItem } from '@/components/ui/data-list';
 import { Icon } from '@/components/ui/icon';
-import { AccessibleValue, AreaValue, HoursValue, sourcesFor } from './facility-values';
+import { AccessibleValue, AreaValue, FactList, HoursValue, sourcesFor } from './facility-values';
 import type { FacilityView } from './facility-view';
 
 export interface FacilityCardProps {
@@ -45,21 +43,18 @@ export function FacilityCard({ facility, sources, showTerminal }: FacilityCardPr
 
       <p className="type-body mt-3 text-ink-2">{facility.description}</p>
 
-      <DataList dense className="mt-4">
-        <DataListItem label={t('mapPages.details.location')}>{facility.locationNote ?? <NotPublished />}</DataListItem>
-        <DataListItem label={t('mapPages.details.level')}>{facility.levelName ?? <NotPublished />}</DataListItem>
-        <DataListItem label={t('mapPages.details.area')}>
-          <AreaValue side={facility.zone} />
-        </DataListItem>
-        <DataListItem label={t('mapPages.details.hours')}>
-          <HoursValue hours={facility.hours} />
-        </DataListItem>
-        <DataListItem label={t('mapPages.details.accessibility')}>
-          <AccessibleValue accessible={facility.accessible} />
-        </DataListItem>
-        {facility.access ? <DataListItem label={t('mapPages.details.access')}>{facility.access}</DataListItem> : null}
-        {facility.operator ? <DataListItem label={t('mapPages.details.operator')}>{facility.operator}</DataListItem> : null}
-      </DataList>
+      <FactList
+        className="mt-4"
+        facts={[
+          { label: t('mapPages.details.location'), value: facility.locationNote },
+          { label: t('mapPages.details.level'), value: facility.levelName },
+          { label: t('mapPages.details.area'), value: facility.zone !== 'unknown' ? <AreaValue side={facility.zone} /> : undefined },
+          { label: t('mapPages.details.hours'), value: facility.hours ? <HoursValue hours={facility.hours} /> : undefined },
+          { label: t('mapPages.details.accessibility'), value: facility.accessible !== undefined ? <AccessibleValue accessible={facility.accessible} /> : undefined },
+          ...(facility.access ? [{ label: t('mapPages.details.access'), value: facility.access }] : []),
+          ...(facility.operator ? [{ label: t('mapPages.details.operator'), value: facility.operator }] : []),
+        ]}
+      />
 
       <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-1 pt-4">
         {facility.mapHref ? (

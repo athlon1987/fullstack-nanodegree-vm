@@ -9,7 +9,6 @@ import { MapExplorer } from '@/components/map/map-explorer';
 import { MapUnavailable } from '@/components/map/map-unavailable';
 import { buildMapView, mapSourceIds, needsTranslationNotice, officialPages, sourceLookup } from '@/components/map/map-view.server';
 import { airportsWithSection } from '@/components/shell/sections.server';
-import { Chip } from '@/components/ui/chip';
 import { Container } from '@/components/ui/container';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -54,15 +53,8 @@ async function TerminalMap({ params }: { params: AirportPageParams }) {
       <PageHeader
         eyebrow={maps.length > 0 && isMultiTerminal(airport) ? maps.map((map) => map.terminalLabel).join(' · ') : airport.shortName}
         title={t('mapPages.title')}
-        lead={t('mapPages.lead')}
+        lead={maps.length > 0 ? t('mapPages.lead') : undefined}
         breadcrumbs={<Breadcrumbs items={[{ label: airport.shortName, href: `/${airport.slug}` }, { label: t('nav.map') }]} />}
-        meta={
-          maps.length > 0 ? (
-            <Chip tone="outline" icon="flask-conical">
-              {t('mapPages.schematicLabel')}
-            </Chip>
-          ) : undefined
-        }
       />
       <Container className="pb-section">
         {translationMissing ? <TranslationNotice className="mb-6" /> : null}

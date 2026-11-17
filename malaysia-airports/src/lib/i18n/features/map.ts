@@ -10,7 +10,7 @@
  */
 export const mapPagesEn = {
   title: 'Terminal map',
-  lead: 'Find gates, prayer rooms, lounges and more, then follow directions written out step by step.',
+  lead: 'Find a place, then follow directions written out step by step.',
   metaDescription: 'A schematic map of {airport}: search places, filter by type and get step-free routes listed step by step.',
   schematicLabel: 'Schematic demonstration map, not a floor plan',
   officialMap: 'Official terminal map',
@@ -190,7 +190,7 @@ export const mapPagesEn = {
 
 export const mapPagesMs: typeof mapPagesEn = {
   title: 'Peta terminal',
-  lead: 'Cari pintu berlepas, surau, lounge dan banyak lagi, kemudian ikut arah yang ditulis langkah demi langkah.',
+  lead: 'Cari tempat, kemudian ikut arah yang ditulis langkah demi langkah.',
   metaDescription: 'Peta skematik {airport}: cari tempat, tapis mengikut jenis dan dapatkan laluan tanpa tangga yang disenaraikan langkah demi langkah.',
   schematicLabel: 'Peta demonstrasi skematik, bukan pelan lantai',
   officialMap: 'Peta terminal rasmi',

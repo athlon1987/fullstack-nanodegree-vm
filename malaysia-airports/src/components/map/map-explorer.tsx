@@ -466,7 +466,7 @@ function MapWorkspace({ map, query, sources, facilitiesHref, officialMapUrl, off
             options={map.levels.map((item) => ({
               value: item.id,
               label: item.label,
-              hint: routeLevels.has(item.id) ? `${item.hint ?? ''} · ${t('mapPages.levels.onRoute')}` : item.hint,
+              hint: item.hint,
               icon: routeLevels.has(item.id) ? 'route' : 'layers',
             }))}
           />

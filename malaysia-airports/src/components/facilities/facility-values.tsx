@@ -1,8 +1,11 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import type { Source } from '@/content/types';
-import { useT } from '@/lib/i18n/client';
+import { formatList } from '@/lib/format';
+import { useLang, useT } from '@/lib/i18n/client';
 import { NotPublished } from '@/components/common/not-published';
+import { DataList, DataListItem } from '@/components/ui/data-list';
 import type { Side } from '@/components/map/map-logic';
 import type { FacilityView, HoursView } from './facility-view';
 
@@ -37,6 +40,37 @@ export function AreaValue({ side }: { side: Side }) {
   const t = useT();
   if (side === 'unknown') return <NotPublished />;
   return <span>{t(`mapPages.area.${side}`)}</span>;
+}
+
+export interface Fact {
+  label: string;
+  /** Undefined when the source does not publish it. */
+  value?: ReactNode;
+}
+
+/**
+ * Published facts as rows, then one row naming everything that is not published, so a sparse
+ * record reads as one honest line instead of a column of "Not published".
+ */
+export function FactList({ facts, className }: { facts: readonly Fact[]; className?: string }) {
+  const t = useT();
+  const lang = useLang();
+  const present = facts.filter((fact) => fact.value !== undefined && fact.value !== null && fact.value !== '');
+  const missing = facts.filter((fact) => !present.includes(fact)).map((fact) => fact.label);
+  return (
+    <DataList dense className={className}>
+      {present.map((fact) => (
+        <DataListItem key={fact.label} label={fact.label}>
+          {fact.value}
+        </DataListItem>
+      ))}
+      {missing.length > 0 ? (
+        <DataListItem label={<NotPublished />}>
+          <span className="type-body-sm font-normal text-ink-2">{formatList(missing, lang)}</span>
+        </DataListItem>
+      ) : null}
+    </DataList>
+  );
 }
 
 /** Resolve source ids against a lookup, dropping unknown ids and duplicates. */
