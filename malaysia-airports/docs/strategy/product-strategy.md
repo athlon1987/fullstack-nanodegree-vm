@@ -45,9 +45,8 @@ FK `docs/research/facts/f-klia-t1.md`; FS `docs/research/facts/f-supplement-comm
 The product connects what is separate today: the 39 airports, the stages of a journey (home to onward transport) and
 the people involved (traveller, greeter, business partner). "Beautifully" is earned by calm, precise design and fast
 answers, not decoration. The line is this project's working proposition, beneath MAHB's brand promise, "Hosting Joyful
-Connections", and vision,
-"A Global Airport Group That Champions Connectivity and Sustainability" [search, FC `brand-promise`, `brand-vision`,
-corporate.malaysiaairports.com.my/en/about-us/corporate-profile/our-brand].
+Connections", and vision, "A Global Airport Group That Champions Connectivity and Sustainability" [search, FC
+`brand-promise`, `brand-vision`, corporate.malaysiaairports.com.my/en/about-us/corporate-profile/our-brand].
 
 | Quality | What it means in the product | How we will know (sections 6 and 7) | What it rules out |
 |---|---|---|---|
@@ -369,7 +368,7 @@ structurally cannot and refusing their common failures.
 
 1. **One airport model for the whole network, STOLports included.** All 39 airports in one registry and URL scheme,
    KLIA as one airport with a terminal filter, depth tiers that are honest about what a listing holds. Beats every
-   benchmark, including the "network-wide" idea Changi cannot execute [BM-changi]: rural Borneo services included.
+   benchmark structurally, since none runs a network (BM-changi, idea 6); rural Sabah and Sarawak services included.
 2. **Provenance on every piece of guidance.** Each item is tagged official, estimated, suggestion or demo, with source
    and retrieval date [BS §1]. Beats Changi (S$10 against S$50 for one benefit across languages), Heathrow (a 2024
    notice live in 2026) and Schiphol (superseded prices) [BM files]; MAHB's parking controversy (V2) was the same
