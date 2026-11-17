@@ -174,6 +174,14 @@ export const transportPagesEn = {
     sourcesDiffer: 'Sources differ. Check the official page.',
     officialPage: 'Official parking page',
     longStayCheck: 'Check the rate before a long stay',
+    rates: {
+      upTo: 'Up to {duration}',
+      between: '{from} to {to}',
+      after: 'After {duration}',
+      perBlock: '{amount} each {block}',
+    },
+    tableCaption: 'Car parks at {airport} compared',
+    carPark: 'Car park',
   },
   availability: {
     title: 'Space now',
@@ -408,6 +416,14 @@ export const transportPagesMs: typeof transportPagesEn = {
     sourcesDiffer: 'Sumber berbeza. Semak halaman rasmi.',
     officialPage: 'Halaman parkir rasmi',
     longStayCheck: 'Semak kadar sebelum parkir lama',
+    rates: {
+      upTo: 'Sehingga {duration}',
+      between: '{from} hingga {to}',
+      after: 'Selepas {duration}',
+      perBlock: '{amount} setiap {block}',
+    },
+    tableCaption: 'Perbandingan tempat letak kereta di {airport}',
+    carPark: 'Tempat letak kereta',
   },
   availability: {
     title: 'Ruang sekarang',
