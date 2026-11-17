@@ -40,9 +40,9 @@ test.describe('terminal map', () => {
     const search = main.getByRole('searchbox', { name: 'Search this map' });
     await expect(async () => {
       await search.fill('prayer');
-      await expect(main.getByRole('button', { name: /Prayer room \(illustrative position\)/ }).first()).toBeVisible({ timeout: 2_000 });
+      await expect(main.getByRole('listitem').getByRole('button', { name: /^Prayer room \(illustrative position\) Prayer room/ })).toBeVisible({ timeout: 2_000 });
     }).toPass();
-    await main.getByRole('button', { name: /Prayer room \(illustrative position\)/ }).first().click();
+    await main.getByRole('listitem').getByRole('button', { name: /^Prayer room \(illustrative position\) Prayer room/ }).click();
 
     const details = main.getByRole('region', { name: 'Prayer room (illustrative position)' });
     await expect(details).toBeVisible();

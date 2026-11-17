@@ -530,7 +530,7 @@ function MarkerLabel({ text, side, radius, strong }: { text: string; side: Label
       strokeWidth={4}
       strokeLinejoin="round"
       aria-hidden="true"
-      className={cn('pointer-events-none fill-ink stroke-surface font-sans [paint-order:stroke]', strong ? 'font-bold' : 'font-semibold')}
+      className={cn('fill-ink stroke-surface font-sans [paint-order:stroke]', strong ? 'font-bold' : 'font-semibold')}
     >
       {text}
     </text>
