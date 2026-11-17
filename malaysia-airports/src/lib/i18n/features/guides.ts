@@ -6,7 +6,7 @@
  * Both languages live here. `guidePagesMs` must have exactly the same keys as `guidePagesEn`
  * (TypeScript enforces it). Plurals are { one, other } objects read with `t.count`.
  * Same copy rules as en.ts: sentence case, plain and warm, no facts (facts live in src/content).
- * The Malay copy is a draft pending review by a native-speaking editor.
+ * The Malay copy is a draft pending review by a native-speaking editor (guides team, November 2026).
  */
 export const guidePagesEn = {
   title: 'Plan your journey',
