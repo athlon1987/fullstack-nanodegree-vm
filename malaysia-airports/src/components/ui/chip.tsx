@@ -32,14 +32,14 @@ export function Chip({ tone = 'neutral', icon, className, children, ...rest }: C
   return (
     <span
       className={cn(
-        'type-caption inline-flex h-chip max-w-full items-center gap-1.5 rounded-sm border px-2 font-medium whitespace-nowrap',
+        'type-caption inline-flex min-h-chip max-w-full items-center gap-1.5 rounded-sm border px-2 py-0.5 font-medium',
         TONES[tone],
         className,
       )}
       {...rest}
     >
       {icon ? <Icon name={icon} size="xs" strokeWidth={1.75} /> : null}
-      <span className="truncate">{children}</span>
+      <span className="min-w-0">{children}</span>
     </span>
   );
 }

@@ -1,5 +1,6 @@
 import { AIRPORTS, getAirport } from '@/content/airports';
 import type { Lang } from '@/content/types';
+import { cn } from '@/lib/cn';
 import { formatFlightNumber } from '@/lib/flights';
 import type { Translator } from '@/lib/i18n/translate';
 import { boardWindow, createDemoProvider } from '@/lib/providers';
@@ -32,11 +33,18 @@ export function sampleFlights(limit = 7) {
 export function BoardSample({ t, lang }: { t: Translator; lang: Lang }) {
   const { provider, flights } = sampleFlights();
   const airport = getAirport('kul') ?? AIRPORTS[0];
+  const gateOf = (gate: string | undefined) =>
+    gate ?? (
+      <span className="text-ink-2">
+        <span aria-hidden="true">–</span>
+        <span className="sr-only">{t('flights.board.gateNotAssigned')}</span>
+      </span>
+    );
   return (
     <div>
       <DemoDataBanner attached />
-      <div className="surface-board relative overflow-hidden rounded-b-lg border border-t-0 border-line">
-        <WeaveTexture className="absolute right-0 bottom-0 h-14 w-2/5" />
+      <div className="surface-board @container relative overflow-hidden rounded-b-lg border border-t-0 border-line">
+        <WeaveTexture className="absolute right-0 bottom-0 h-14 w-2/5 max-sm:hidden" />
         <div className="relative flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-b border-line px-4 py-4 sm:px-5">
           <div>
             <h3 className="type-title-lg text-ink">{t('flights.board.departuresTitle')}</h3>
@@ -53,8 +61,43 @@ export function BoardSample({ t, lang }: { t: Translator; lang: Lang }) {
             }
           />
         </div>
-        <TableScroll label={t('flights.board.departuresTitle')} className="relative">
-          <Table density="default" className="min-w-[44rem]">
+        {/* Narrow boards (phones, small tablets, large text): each flight is a stacked row and nothing
+            scrolls sideways. The switch is a container query, so it also follows the text-size setting. */}
+        <ul aria-label={t('flights.board.departuresTitle')} className="relative @4xl:hidden">
+          {flights.map((flight) => {
+            const moved = flight.estimated !== flight.scheduled;
+            const cancelled = flight.status === 'cancelled';
+            return (
+              <li key={flight.id} className={cn('flex gap-3 border-b border-line px-4 py-3 sm:px-5', cancelled && 'text-ink-3')}>
+                <p className="flex w-[4.25rem] shrink-0 flex-col">
+                  <span className="sr-only">{t('common.labels.time')}: </span>
+                  {moved ? <s className="type-data-sm text-ink-2">{formatTime(flight.scheduled)}</s> : null}
+                  <span className={cn('type-data-lg', !cancelled && 'text-board-accent')}>{formatTime(moved ? flight.estimated : flight.scheduled)}</span>
+                </p>
+                <div className="flex min-w-0 flex-1 flex-wrap items-center justify-between gap-x-5 gap-y-2">
+                  <div className="min-w-0 grow basis-52">
+                    <p className="type-title-sm">
+                      {flight.destination.city} <AirportCode code={flight.destination.code} size="sm" className="ml-1 text-ink-2" />
+                    </p>
+                    <p className="type-data-sm mt-0.5 text-ink-2">
+                      {formatFlightNumber(flight)} <span aria-hidden="true">·</span> <span className="font-sans">{flight.airline.name}</span>
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 @max-lg:basis-full">
+                    <span className="type-data-md inline-flex items-center gap-2">
+                      <span className="sr-only">{t('common.labels.gate')}: </span>
+                      <TerminalBadge terminal={flight.terminal} size="sm" />
+                      {gateOf(flight.gate)}
+                    </span>
+                    <FlightStatusChip status={flight.status} size="sm" />
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+        <TableScroll label={t('flights.board.departuresTitle')} className="relative @max-4xl:hidden">
+          <Table density="default">
             <caption className="sr-only">
               {t('flights.board.departuresTitle')}: {airport.name}. {t('demo.badge')}.
             </caption>
@@ -94,12 +137,7 @@ export function BoardSample({ t, lang }: { t: Translator; lang: Lang }) {
                     <Td mono className="whitespace-nowrap">
                       <span className="inline-flex items-center gap-2">
                         <TerminalBadge terminal={flight.terminal} size="sm" />
-                        {flight.gate ?? (
-                          <span className="text-ink-2">
-                            <span aria-hidden="true">–</span>
-                            <span className="sr-only">{t('flights.board.gateNotAssigned')}</span>
-                          </span>
-                        )}
+                        {gateOf(flight.gate)}
                       </span>
                     </Td>
                     <Td>

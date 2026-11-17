@@ -30,7 +30,7 @@ function Swatch({ token }: { token: string }) {
   return (
     <div className="min-w-0">
       <div className="h-14 rounded-md border border-line-control" style={swatchStyle(token)} />
-      <p className="type-data-sm mt-2 truncate text-ink">{token}</p>
+      <p className="type-data-sm mt-2 break-words text-ink">{token}</p>
       <p className="type-data-xs mt-0.5 text-ink-3">
         {TOKEN_VALUES.light[token]} · {TOKEN_VALUES.dark[token]}
       </p>
@@ -119,17 +119,25 @@ export function ContrastTables({ t }: { t: Translator }) {
       </p>
       <div className="rounded-lg border border-line-strong bg-surface">
         <TableScroll label={t('designSystem.table.caption')}>
-          <Table density="compact" className="min-w-[46rem]">
+          {/* Phones show the pair in one cell with the two standard themes; the background, the
+              threshold and the high-contrast columns join as the screen widens. */}
+          <Table density="compact">
             <caption className="sr-only">{t('designSystem.table.caption')}</caption>
             <THead>
               <Tr>
                 <Th>{t('designSystem.table.foreground')}</Th>
-                <Th>{t('designSystem.table.background')}</Th>
-                <Th numeric>{t('designSystem.table.needs')}</Th>
+                <Th className="max-md:hidden">{t('designSystem.table.background')}</Th>
+                <Th numeric className="max-md:hidden">
+                  {t('designSystem.table.needs')}
+                </Th>
                 <Th numeric>{t('designSystem.table.light')}</Th>
                 <Th numeric>{t('designSystem.table.dark')}</Th>
-                <Th numeric>{t('designSystem.table.hcLight')}</Th>
-                <Th numeric>{t('designSystem.table.hcDark')}</Th>
+                <Th numeric className="max-xl:hidden">
+                  {t('designSystem.table.hcLight')}
+                </Th>
+                <Th numeric className="max-xl:hidden">
+                  {t('designSystem.table.hcDark')}
+                </Th>
               </Tr>
             </THead>
             {groups.map((group) => {
@@ -144,13 +152,21 @@ export function ContrastTables({ t }: { t: Translator }) {
                   </Tr>
                   {CONTRAST_PAIRS.filter((pair) => pair.group === group).map((pair) => (
                     <Tr key={`${pair.fg}-${pair.bg}`}>
-                      <Td mono>{pair.fg}</Td>
-                      <Td mono>{pair.bg}</Td>
-                      <Td numeric className={cn(!NEEDS[pair.kind] && 'text-ink-3')}>
+                      <Td mono className="max-md:py-1.5">
+                        {pair.fg}
+                        <span className="block text-ink-3 md:hidden">
+                          <span className="sr-only">{t('designSystem.table.background')}: </span>
+                          {pair.bg}
+                        </span>
+                      </Td>
+                      <Td mono className="max-md:hidden">
+                        {pair.bg}
+                      </Td>
+                      <Td numeric className={cn('max-md:hidden', !NEEDS[pair.kind] && 'text-ink-3')}>
                         {NEEDS[pair.kind] ?? t('designSystem.table.decorative')}
                       </Td>
                       {columns.map((theme, index) => (
-                        <Td key={index} numeric>
+                        <Td key={index} numeric className={cn(index > 1 && 'max-xl:hidden')}>
                           <Ratio pair={pair} theme={theme} />
                         </Td>
                       ))}

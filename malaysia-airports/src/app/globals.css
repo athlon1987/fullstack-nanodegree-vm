@@ -318,8 +318,8 @@
     --color-inverse: #1d2152;
     --color-on-inverse: #f4eedf;
     --color-on-inverse-dim: #c2c0d6;
-    --color-primary: #e7cd95;
-    --color-primary-hover: #f2ddae;
+    --color-primary: #c5c9fb;
+    --color-primary-hover: #dfe1ff;
     --color-on-primary: #14163a;
     --color-primary-soft: #20245a;
     --color-primary-ink: #c7ccff;
@@ -378,8 +378,8 @@
       --color-inverse: #1d2152;
       --color-on-inverse: #f4eedf;
       --color-on-inverse-dim: #c2c0d6;
-      --color-primary: #e7cd95;
-      --color-primary-hover: #f2ddae;
+      --color-primary: #c5c9fb;
+      --color-primary-hover: #dfe1ff;
       --color-on-primary: #14163a;
       --color-primary-soft: #20245a;
       --color-primary-ink: #c7ccff;
@@ -501,8 +501,8 @@
     --color-line: #6e7198;
     --color-line-strong: #a2a4c4;
     --color-line-control: #e6e4f2;
-    --color-primary: #f4dfae;
-    --color-primary-hover: #fbecc8;
+    --color-primary: #dde0ff;
+    --color-primary-hover: #f1f2ff;
     --color-primary-ink: #dde0ff;
     --color-gold: #e2c383;
     --color-gold-ink: #f0d9a4;
@@ -823,6 +823,17 @@
   mask-repeat: repeat, no-repeat;
   -webkit-mask-composite: source-in;
   mask-composite: intersect;
+}
+
+/* Edge fade for a sideways scroller (tabs, chip rows). The component sets --fade-start and
+   --fade-end to a length while there is more content in that direction, and to 0px otherwise. */
+@utility scroll-fade-x {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--fade-start, 0px), #000 calc(100% - var(--fade-end, 0px)), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 var(--fade-start, 0px), #000 calc(100% - var(--fade-end, 0px)), transparent);
+  @media (forced-colors: active) {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
 }
 
 /* Hazard stripes for demonstration data. Paint it on an amber block. */

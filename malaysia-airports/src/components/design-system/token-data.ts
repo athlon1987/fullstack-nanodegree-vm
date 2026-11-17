@@ -84,8 +84,8 @@ export const TOKEN_VALUES: Record<TokenThemeId, Record<string, string>> = {
     "inverse": "#1d2152",
     "on-inverse": "#f4eedf",
     "on-inverse-dim": "#c2c0d6",
-    "primary": "#e7cd95",
-    "primary-hover": "#f2ddae",
+    "primary": "#c5c9fb",
+    "primary-hover": "#dfe1ff",
     "on-primary": "#14163a",
     "primary-soft": "#20245a",
     "primary-ink": "#c7ccff",
@@ -144,8 +144,8 @@ export const TOKEN_VALUES: Record<TokenThemeId, Record<string, string>> = {
     "inverse": "#1d2152",
     "on-inverse": "#f4eedf",
     "on-inverse-dim": "#c2c0d6",
-    "primary": "#e7cd95",
-    "primary-hover": "#f2ddae",
+    "primary": "#c5c9fb",
+    "primary-hover": "#dfe1ff",
     "on-primary": "#14163a",
     "primary-soft": "#20245a",
     "primary-ink": "#c7ccff",
@@ -264,8 +264,8 @@ export const TOKEN_VALUES: Record<TokenThemeId, Record<string, string>> = {
     "inverse": "#1d2152",
     "on-inverse": "#f4eedf",
     "on-inverse-dim": "#c2c0d6",
-    "primary": "#f4dfae",
-    "primary-hover": "#fbecc8",
+    "primary": "#dde0ff",
+    "primary-hover": "#f1f2ff",
     "on-primary": "#14163a",
     "primary-soft": "#20245a",
     "primary-ink": "#dde0ff",
@@ -324,8 +324,8 @@ export const TOKEN_VALUES: Record<TokenThemeId, Record<string, string>> = {
     "inverse": "#1d2152",
     "on-inverse": "#f4eedf",
     "on-inverse-dim": "#c2c0d6",
-    "primary": "#f4dfae",
-    "primary-hover": "#fbecc8",
+    "primary": "#dde0ff",
+    "primary-hover": "#f1f2ff",
     "on-primary": "#14163a",
     "primary-soft": "#20245a",
     "primary-ink": "#dde0ff",
@@ -673,11 +673,11 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "kind": "text",
     "ratios": {
       "light": 11.97,
-      "dark": 11.25,
-      "board": 11.25,
+      "dark": 10.88,
+      "board": 10.88,
       "hc-light": 14.8,
-      "hc-dark": 13.28,
-      "hc-board": 13.28
+      "hc-dark": 13.42,
+      "hc-board": 13.42
     }
   },
   {
@@ -687,11 +687,11 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "kind": "text",
     "ratios": {
       "light": 14.77,
-      "dark": 13.04,
-      "board": 13.04,
+      "dark": 13.56,
+      "board": 13.56,
       "hc-light": 17.18,
-      "hc-dark": 14.87,
-      "hc-board": 14.87
+      "hc-dark": 15.66,
+      "hc-board": 15.66
     }
   },
   {
@@ -701,11 +701,11 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "kind": "ui",
     "ratios": {
       "light": 11.87,
-      "dark": 12.28,
-      "board": 12.67,
+      "dark": 11.88,
+      "board": 12.26,
       "hc-light": 15.57,
-      "hc-dark": 15.28,
-      "hc-board": 15.44
+      "hc-dark": 15.44,
+      "hc-board": 15.6
     }
   },
   {
@@ -715,11 +715,11 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "kind": "ui",
     "ratios": {
       "light": 12.7,
-      "dark": 10.83,
-      "board": 11.59,
+      "dark": 10.48,
+      "board": 11.21,
       "hc-light": 15.96,
-      "hc-dark": 13.86,
-      "hc-board": 14.22
+      "hc-dark": 14.01,
+      "hc-board": 14.36
     }
   },
   {
@@ -1434,6 +1434,20 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
       "hc-light": 12.93,
       "hc-dark": 15.05,
       "hc-board": 15.43
+    }
+  },
+  {
+    "group": "status",
+    "fg": "page",
+    "bg": "critical-fg",
+    "kind": "text",
+    "ratios": {
+      "light": 6.8,
+      "dark": 10.34,
+      "board": 10.67,
+      "hc-light": 10.25,
+      "hc-dark": 13.53,
+      "hc-board": 13.66
     }
   },
   {

@@ -167,7 +167,7 @@ export function FormsShowcase({ t }: ShowcaseProps) {
       <Demo name="SegmentedControl · native radios, arrow keys" className="block">
         <SegmentedDemo />
       </Demo>
-      <Demo name="Input · default · hint · error · disabled" className="grid gap-5 sm:grid-cols-2">
+      <Demo name="Input · default · hint · error · disabled" className="grid items-start gap-5 sm:grid-cols-2">
         <Input label={t('journey.saved.parkedCar.carPark')} placeholder="P1" fieldClassName="w-full" />
         <Input label={t('journey.saved.parkedCar.zone')} hint={t('designSystem.demo.fieldHint')} optionalLabel={t('common.labels.optional')} mono defaultValue="B2-114" />
         <Input label={t('common.labels.flight')} iconStart="plane-takeoff" error={t('errors.invalidInput')} defaultValue="MH" mono />
@@ -319,7 +319,7 @@ export function DataShowcase({ t, lang }: ShowcaseProps) {
       </Demo>
       <Demo name="Table · density dense" bare>
         <TableScroll label={t('airportSwitcher.featured')}>
-          <Table density="dense" className="min-w-[30rem]">
+          <Table density="dense">
             <caption className="sr-only">{t('airportSwitcher.featured')}</caption>
             <THead>
               <Tr>
@@ -543,11 +543,11 @@ export function ArtShowcase({ t }: ShowcaseProps) {
             <RebungRule />
             <RebungRule size="lg" className="mt-8" />
           </Demo>
-          <Demo name="TaburField · fade" bare className="relative h-40">
+          <Demo name="TaburField · fade" bare className="relative min-h-40">
             <TaburField className="absolute inset-y-0 left-0 w-1/2" />
             <TaburField fade className="absolute inset-y-0 right-0 w-1/2" />
           </Demo>
-          <Demo name="WeaveTexture · surface-board" bare frameClassName="surface-board border-line" className="relative h-40">
+          <Demo name="WeaveTexture · surface-board" bare frameClassName="surface-board border-line" className="relative min-h-40">
             <WeaveTexture className="absolute inset-0 text-board-dim" />
           </Demo>
         </DemoGrid>
@@ -561,7 +561,7 @@ export function ArtShowcase({ t }: ShowcaseProps) {
               <li key={key} className="overflow-hidden rounded-lg border border-line-strong bg-surface">
                 <AirportVignette code={code} terminal={terminal?.toUpperCase()} />
                 <p className="flex items-center justify-between gap-3 border-t border-line px-3 py-2.5">
-                  <span className="type-title-sm truncate text-ink">
+                  <span className="type-title-sm min-w-0 text-ink">
                     {airport ? airport.shortName : t('nav.airports')}
                     {terminal ? ` · ${t('common.labels.terminal')} ${terminal.slice(1)}` : ''}
                   </span>

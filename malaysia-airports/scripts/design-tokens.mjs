@@ -104,6 +104,7 @@ for (const tone of STATUS) {
   add('status', `${tone}-border`, 'page', 'ui');
   add('status', `${tone}-border`, 'surface', 'ui');
 }
+add('status', 'page', 'critical-fg', 'text', 'danger button label');
 for (const tone of PROVENANCE) {
   add('provenance', `${tone}-fg`, `${tone}-bg`, 'text');
   if (tone !== 'official') {
