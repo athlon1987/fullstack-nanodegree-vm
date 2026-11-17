@@ -363,7 +363,7 @@ Lighthouse figures are independent lab measurements; feature judgements are expe
 
 The pattern [assessment]: best features app-only or login-gated (Changi, Haneda, HKIA, Heathrow, Schiphol); estates
 split across hosts; content drifting between pages and languages (Changi, Heathrow, Schiphol); accessibility statements
-rare (only Munich's was found). All are single hubs or two-airport city systems. MAHB wins by doing what they
+uncommon (published by Munich, Hong Kong and Incheon; not found for the others assessed) [direct]. All are single hubs or two-airport city systems. MAHB wins by doing what they
 structurally cannot and refusing their common failures.
 
 1. **One airport model for the whole network, STOLports included.** All 39 airports in one registry and URL scheme,

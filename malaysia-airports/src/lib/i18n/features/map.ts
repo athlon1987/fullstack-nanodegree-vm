@@ -34,7 +34,7 @@ export const mapPagesEn = {
   filters: {
     label: 'Show on the map',
     showAll: 'Show everything',
-    notMapped: 'Not on this map yet: {list}.',
+    notMapped: 'Not on this map yet',
     notMappedLink: 'Check the facilities directory',
     groups: {
       prayer: 'Prayer rooms',
@@ -214,7 +214,7 @@ export const mapPagesMs: typeof mapPagesEn = {
   filters: {
     label: 'Tunjukkan pada peta',
     showAll: 'Tunjukkan semua',
-    notMapped: 'Belum ada dalam peta ini: {list}.',
+    notMapped: 'Belum ada dalam peta ini',
     notMappedLink: 'Semak direktori kemudahan',
     groups: {
       prayer: 'Surau',

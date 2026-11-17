@@ -2,7 +2,7 @@
 
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import type { Source } from '@/content/types';
+import type { MapNode, Source } from '@/content/types';
 import { shortestPath } from '@/lib/map';
 import { useT } from '@/lib/i18n/client';
 import { ExternalLink } from '@/components/common/external-link';
@@ -251,7 +251,7 @@ function MapWorkspace({ map, query, sources, facilitiesHref, officialMapUrl, off
     const links: RouteConnector[] = [];
     const order = (id: string) => levelsById.get(id)?.order ?? 0;
     for (const step of steps) {
-      const nodes = step.nodes.map((id) => nodesById.get(id)).filter((node) => node !== undefined);
+      const nodes = step.nodes.map((id) => nodesById.get(id)).filter((node): node is MapNode => node !== undefined);
       let run: [number, number][] = [];
       const flush = () => {
         if (run.length > 1) lines.push({ key: `${step.key}-${lines.length}`, points: run, ride: step.kind === 'ride', active: step.key === activeStepKey });
@@ -351,10 +351,10 @@ function MapWorkspace({ map, query, sources, facilitiesHref, officialMapUrl, off
     setActiveStep(next);
     if (!next) return;
     if (step.level !== level.id) writeQuery({ level: step.level });
-    const points = step.nodes.map((id) => nodesById.get(id)).filter((node) => node !== undefined && node.level === step.level);
+    const points = step.nodes.map((id) => nodesById.get(id)).filter((node): node is MapNode => node !== undefined && node.level === step.level);
     if (points.length === 0) return;
-    const xs = points.map((node) => node!.x);
-    const ys = points.map((node) => node!.y);
+    const xs = points.map((node) => node.x);
+    const ys = points.map((node) => node.y);
     const current = viewsRef.current[step.level];
     changeView(
       step.level,
@@ -437,7 +437,7 @@ function MapWorkspace({ map, query, sources, facilitiesHref, officialMapUrl, off
             </div>
             {unmapped.length > 0 ? (
               <div className="mt-3 rounded-lg border border-dashed border-line-strong p-3">
-                <p className="type-body-sm text-ink-2">{t('mapPages.filters.notMapped', { list: '' }).replace(/[\s:.]+$/, '')}:</p>
+                <p className="type-body-sm text-ink-2">{t('mapPages.filters.notMapped')}</p>
                 <ul className="mt-2 flex flex-wrap gap-1.5">
                   {unmapped.map((filter) => (
                     <li key={filter.id} className="type-caption inline-flex items-center gap-1 rounded-sm bg-page-subtle px-2 py-1 text-ink-2">
