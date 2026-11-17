@@ -77,39 +77,39 @@ export function Coverage({ lang, stats }: CoverageProps) {
     { key: 'price', value: stats.price },
   ] as const;
   return (
-    <section aria-labelledby="coverage-title" className="mt-16 grid gap-8 border-t border-line pt-10 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] lg:gap-10">
-      <div className="min-w-0">
+    <section aria-labelledby="coverage-title" className="mt-16 border-t border-line pt-10">
+      <div className="grid gap-x-10 gap-y-3 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)]">
         <h2 id="coverage-title" className="type-title-lg text-ink">
           {t('commercePages.coverage.title')}
         </h2>
-        <p className="type-body-sm mt-2 text-ink-2">{t('commercePages.coverage.lead')}</p>
+        <p className="type-body max-w-reading text-ink-2">{t('commercePages.coverage.lead')}</p>
       </div>
-      <div className="grid min-w-0 gap-10 xl:grid-cols-[minmax(0,1fr)_minmax(0,20rem)]">
-        <dl className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
-          <div className="min-w-0 sm:col-span-2">
-            <dt className="type-body-sm text-ink-2">{t('commercePages.coverage.outlets')}</dt>
-            <dd className="type-data-xl mt-1 text-ink">{stats.total}</dd>
-          </div>
-          {rows.map((row) => {
-            const share = stats.total > 0 ? Math.round((row.value / stats.total) * 100) : 0;
-            return (
-              <div key={row.key} className="min-w-0">
-                <dt className="type-body-sm text-ink-2">{t(`commercePages.coverage.${row.key}`)}</dt>
-                <dd className="mt-1">
-                  <span className="type-data-md text-ink">{t('commercePages.coverage.of', { count: row.value, total: stats.total })}</span>
-                  <span aria-hidden="true" className="mt-2 block h-1.5 overflow-hidden rounded-pill bg-line">
-                    <span className="block h-full rounded-pill bg-ink" style={{ width: `${share}%` }} />
-                  </span>
-                </dd>
-              </div>
-            );
-          })}
-        </dl>
-        <div className="min-w-0">
-          <h3 className="type-title-sm text-ink">{t('commercePages.howTitle')}</h3>
-          <p className="type-body-sm mt-2 text-ink-2">{t('commercePages.howBody')}</p>
-          <ProvenanceLegend kinds={['official', 'estimated', 'demo']} headingLevel={null} className="mt-4" />
+      <dl className="mt-8 grid gap-px overflow-hidden rounded-xl border border-line-strong bg-line sm:grid-cols-2 lg:grid-cols-5">
+        <div className="min-w-0 bg-surface p-5">
+          <dt className="type-body-sm text-ink-2">{t('commercePages.coverage.outlets')}</dt>
+          <dd className="type-data-xl mt-2 text-ink">{stats.total}</dd>
         </div>
+        {rows.map((row) => {
+          const share = stats.total > 0 ? Math.round((row.value / stats.total) * 100) : 0;
+          return (
+            <div key={row.key} className="min-w-0 bg-surface p-5">
+              <dt className="type-body-sm text-ink-2">{t(`commercePages.coverage.${row.key}`)}</dt>
+              <dd className="mt-2">
+                <span className="type-data-md text-ink">{t('commercePages.coverage.of', { count: row.value, total: stats.total })}</span>
+                <span aria-hidden="true" className="mt-3 block h-1.5 overflow-hidden rounded-pill bg-line">
+                  <span className="block h-full rounded-pill bg-ink" style={{ width: `${share}%` }} />
+                </span>
+              </dd>
+            </div>
+          );
+        })}
+      </dl>
+      <div className="mt-10 grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)]">
+        <div className="min-w-0">
+          <h3 className="type-title-md text-ink">{t('commercePages.howTitle')}</h3>
+          <p className="type-body-sm mt-2 text-ink-2">{t('commercePages.howBody')}</p>
+        </div>
+        <ProvenanceLegend kinds={['official', 'estimated', 'demo']} headingLevel={null} className="max-w-narrow" />
       </div>
     </section>
   );

@@ -34,7 +34,7 @@ export function TransportTable({ rows, placeKey, context, day, terminal, caption
   const t = useT();
   const lang = useLang();
   return (
-    <TableScroll label={caption} className="rounded-xl border border-line-strong bg-surface">
+    <TableScroll label={caption} className="relative rounded-xl border border-line-strong bg-surface">
       <Table density="dense" className="min-w-[64rem]">
         <caption className="sr-only">{caption}</caption>
         <THead>
