@@ -503,9 +503,9 @@ const transport: Handler = (s) => {
     const quickest = [...timed].sort((a, b) => (a.row.durationMinutes ?? 0) - (b.row.durationMinutes ?? 0))[0];
     const priority = s.u.slots.priority;
     if (priority === 'time' && quickest) {
-      s.b.text = s.b.say('transportFastest', { destination, option: s.b.pick(quickest.option.name), duration: minutesLabel(quickest.row.durationMinutes ?? 0, s.lang) });
+      s.b.text = s.b.say('transportFastest', { destination, option: shortName(s.b.pick(quickest.option.name)), duration: minutesLabel(quickest.row.durationMinutes ?? 0, s.lang) });
     } else if (priority === 'price' && cheapest) {
-      s.b.text = s.b.say('transportCheapest', { destination, option: s.b.pick(cheapest.option.name), fare: cheapest.row.fare ? fareText(s, cheapest.row.fare) : '' });
+      s.b.text = s.b.say('transportCheapest', { destination, option: shortName(s.b.pick(cheapest.option.name)), fare: cheapest.row.fare ? fareText(s, cheapest.row.fare) : '' });
     } else {
       s.b.text = s.b.say('transportList', { destination, airport: airport.shortName, options: list(matches.map((match) => s.b.pick(match.option.name)), s.lang) });
     }
@@ -520,12 +520,12 @@ const transport: Handler = (s) => {
       for (const row of match.rows) {
         if (row.fare) {
           s.b.statement(
-            { text: s.b.say('destinationFare', { option: s.b.pick(match.option.name), destination: s.b.pick(row.name), fare: fareText(s, row.fare) }), provenance: match.option.provenance, sourceIds: match.option.sources, href: hrefFor(s.k, 'transport', match.option.id) },
+            { text: s.b.say('destinationFare', { option: shortName(s.b.pick(match.option.name)), destination: s.b.pick(row.name), fare: fareText(s, row.fare) }), provenance: match.option.provenance, sourceIds: match.option.sources, href: hrefFor(s.k, 'transport', match.option.id) },
             `fare:${match.option.id}:${row.name.en}`,
           );
         } else if (row.durationMinutes && priority === 'time') {
           s.b.statement(
-            { text: s.b.say('destinationDuration', { option: s.b.pick(match.option.name), destination: s.b.pick(row.name), duration: minutesLabel(row.durationMinutes, s.lang) }), provenance: match.option.provenance, sourceIds: match.option.sources },
+            { text: s.b.say('destinationDuration', { option: shortName(s.b.pick(match.option.name)), destination: s.b.pick(row.name), duration: minutesLabel(row.durationMinutes, s.lang) }), provenance: match.option.provenance, sourceIds: match.option.sources },
             `time:${match.option.id}:${row.name.en}`,
           );
         }
@@ -693,7 +693,7 @@ const lostProperty: Handler = (s) => {
 
 const assistance: Handler = (s) => {
   s.b.text = s.airport ? s.b.say('assistance', { airport: s.airport.shortName }) : s.b.say('assistanceGeneral');
-  passages(s, { text: s.question, terminal: undefined, topics: ['accessibility', 'assistance', 'reduced-mobility', 'neurodivergent', 'older-travellers'], limit: 3, minScore: 4 });
+  passages(s, { text: s.question, terminal: undefined, topics: ['accessibility', 'assistance', 'reduced-mobility', 'neurodivergent', 'older-travellers'], limit: 6, minScore: 4 });
   if (s.airport) {
     const related = s.k.facilities.filter((item) => item.airport === s.airport?.slug && (item.category === 'assistance' || item.category === 'calm-room'));
     for (const item of related.slice(0, 2)) facilityCard(s, item);
@@ -911,6 +911,8 @@ export function answerQuestion(input: ConciergeInput, deps: ConciergeDeps): Conc
       terminal,
       flightId: flight?.id ?? context.flightId,
       intent: b.clarify ? u.intent : u.intent === 'greeting' ? context.intent : u.intent,
+      category: u.intent === 'facility' ? u.slots.category : undefined,
+      destination: u.intent === 'transport' ? u.slots.destination : undefined,
     },
   };
 }

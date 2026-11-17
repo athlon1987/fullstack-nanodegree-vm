@@ -169,6 +169,9 @@ export interface ConciergeContext {
   flightId?: string;
   /** The previous question's intent, for follow-ups such as "and in Terminal 2?". */
   intent?: ConciergeIntent;
+  /** The previous question's facility category and destination, for the same follow-ups. */
+  category?: FacilityCategory;
+  destination?: string;
 }
 
 export interface ConciergeInput {

@@ -250,10 +250,13 @@ export function understand(question: string, knowledge: ConciergeKnowledge, cont
   }
 
   // A follow-up such as "and at Terminal 2?" keeps the previous topic.
+  let followUp = false;
   if ((intent === 'unknown' || score < 2) && context.intent && context.intent !== 'greeting' && context.intent !== 'unknown') {
     if (airport || terminals.length > 0 || duration !== undefined || category) {
       intent = category ? 'facility' : context.intent;
       score = 1;
+      if (intent === 'facility') category ??= context.category;
+      followUp = true;
     }
   }
 
@@ -266,7 +269,7 @@ export function understand(question: string, knowledge: ConciergeKnowledge, cont
     airport,
     terminals,
     flight,
-    destination: destinationHit?.key,
+    destination: destinationHit?.key ?? (followUp && intent === 'transport' ? context.destination : undefined),
     category,
     durationMinutes: duration,
     gate,
