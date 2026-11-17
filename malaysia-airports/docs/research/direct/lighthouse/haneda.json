@@ -1,0 +1,96 @@
+{
+ "key": "haneda",
+ "url": "https://tokyo-haneda.com/en/",
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-16T23:58:35.934Z",
+ "median": {
+  "performance": 49,
+  "accessibility": 80,
+  "bestPractices": 96,
+  "seo": 91,
+  "fcp_ms": 1824,
+  "lcp_ms": 24476,
+  "tbt_ms": 732,
+  "cls": 0.062,
+  "si_ms": 6238,
+  "totalBytes": 13819669,
+  "requests": 187
+ },
+ "a11yFailures": [
+  "aria-hidden-focus",
+  "button-name",
+  "label",
+  "list",
+  "listitem"
+ ],
+ "rows": [
+  {
+   "finalUrl": "https://tokyo-haneda.com/en/index.html",
+   "runtimeError": null,
+   "performance": 54,
+   "accessibility": 80,
+   "bestPractices": 96,
+   "seo": 91,
+   "fcp_ms": 1941,
+   "lcp_ms": 23035,
+   "tbt_ms": 482,
+   "cls": 0.062,
+   "si_ms": 6718,
+   "totalBytes": 13819971,
+   "requests": 188,
+   "a11yFailures": [
+    "aria-hidden-focus",
+    "button-name",
+    "label",
+    "list",
+    "listitem"
+   ]
+  },
+  {
+   "finalUrl": "https://tokyo-haneda.com/en/index.html",
+   "runtimeError": null,
+   "performance": 49,
+   "accessibility": 80,
+   "bestPractices": 96,
+   "seo": 91,
+   "fcp_ms": 1824,
+   "lcp_ms": 24476,
+   "tbt_ms": 732,
+   "cls": 0.062,
+   "si_ms": 6238,
+   "totalBytes": 13819584,
+   "requests": 187,
+   "a11yFailures": [
+    "aria-hidden-focus",
+    "button-name",
+    "label",
+    "list",
+    "listitem"
+   ]
+  },
+  {
+   "finalUrl": "https://tokyo-haneda.com/en/index.html",
+   "runtimeError": null,
+   "performance": 22,
+   "accessibility": 80,
+   "bestPractices": 96,
+   "seo": 91,
+   "fcp_ms": 1809,
+   "lcp_ms": 27122,
+   "tbt_ms": 1281,
+   "cls": 0.637,
+   "si_ms": 5553,
+   "totalBytes": 13819669,
+   "requests": 187,
+   "a11yFailures": [
+    "aria-hidden-focus",
+    "button-name",
+    "label",
+    "list",
+    "listitem"
+   ]
+  }
+ ],
+ "caveat": "Lab measurement: Lighthouse mobile emulation with simulated throttling, run from a shared cloud container; hosts outside the session allowlist (analytics, some CDNs) were blocked, which changes page weight and timings. Indicative only; not field data and not comparable to CrUX."
+}

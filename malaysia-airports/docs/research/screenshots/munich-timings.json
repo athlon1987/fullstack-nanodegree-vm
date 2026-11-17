@@ -1,0 +1,214 @@
+{
+  "label": "single-run lab observation from a cloud container; third-party asset hosts may be blocked so rendering may be incomplete; not field data",
+  "captured_utc": "2026-11-16T12:59:23.292Z",
+  "results": [
+    {
+      "page": "home",
+      "url": "https://www.munich-airport.com/",
+      "viewport": "1440x900",
+      "device": "desktop",
+      "status": 200,
+      "ttfb_ms": 1460,
+      "domContentLoaded_ms": 5210,
+      "load_ms": 5299,
+      "document_transfer_bytes": 105821,
+      "document_decoded_bytes": 105521,
+      "paints": {
+        "first-paint": 3232,
+        "first-contentful-paint": 3232
+      },
+      "resource_count": 56,
+      "transferred_bytes_all_requests": 4401268,
+      "requests_finished": 60,
+      "failed_request_hosts": {
+        "cdn.eye-able.com": 2,
+        "code.etracker.com": 1
+      },
+      "ok_request_hosts": {
+        "www.munich-airport.com": 54
+      },
+      "xhr": [
+        "GET https://www.munich-airport.com/assets/symbol/svg/sprite.symbol-073804e144cb6f03f86406a79dc8f5d5103794344a4b974c3ff6fe18d27321f7.svg",
+        "GET https://www.munich-airport.com/flightsearch/arrivals?from=2026-11-16T13%3A58%3A38&allow_scroll_back=1&per_page=6&allow_pagination=1&min_date=2026-11-15T00%3A00%3A00&max_date=2026-11-18T00%3A00%3A00&page=0&_=1794833921888",
+        "GET https://www.munich-airport.com/flightsearch/departures?from=2026-11-16T13%3A58%3A38&allow_scroll_back=1&per_page=6&allow_pagination=1&min_date=2026-11-15T00%3A00%3A00&max_date=2026-11-18T00%3A00%3A00&page=0&_=1794833921892",
+        "POST https://www.munich-airport.com/clm10"
+      ],
+      "title": "Welcome to MUC - Munich Airport",
+      "dom": {
+        "html_lang": "en",
+        "h1": [],
+        "images": 59,
+        "images_without_alt": 24,
+        "images_empty_alt": 1,
+        "has_skip_link": true,
+        "landmarks": {
+          "header": 8,
+          "nav": 6,
+          "main": 1,
+          "footer": 24
+        },
+        "viewport_meta": "width=device-width, initial-scale=1, maximum-scale=1",
+        "horizontal_overflow_px": 0,
+        "iframes": []
+      },
+      "screenshot": "munich-home-desktop-1440x900.png"
+    },
+    {
+      "page": "home",
+      "url": "https://www.munich-airport.com/",
+      "viewport": "390x844",
+      "device": "mobile",
+      "status": 200,
+      "ttfb_ms": 994,
+      "domContentLoaded_ms": 3629,
+      "load_ms": 3661,
+      "document_transfer_bytes": 105821,
+      "document_decoded_bytes": 105521,
+      "paints": {
+        "first-paint": 2140,
+        "first-contentful-paint": 2140
+      },
+      "resource_count": 56,
+      "transferred_bytes_all_requests": 4767366,
+      "requests_finished": 60,
+      "failed_request_hosts": {
+        "code.etracker.com": 1,
+        "cdn.eye-able.com": 2
+      },
+      "ok_request_hosts": {
+        "www.munich-airport.com": 54
+      },
+      "xhr": [
+        "GET https://www.munich-airport.com/assets/symbol/svg/sprite.symbol-073804e144cb6f03f86406a79dc8f5d5103794344a4b974c3ff6fe18d27321f7.svg",
+        "GET https://www.munich-airport.com/flightsearch/departures?from=2026-11-16T13%3A58%3A50&allow_scroll_back=1&per_page=6&allow_pagination=1&min_date=2026-11-15T00%3A00%3A00&max_date=2026-11-18T00%3A00%3A00&page=0&_=1794833933706",
+        "GET https://www.munich-airport.com/flightsearch/arrivals?from=2026-11-16T13%3A58%3A50&allow_scroll_back=1&per_page=6&allow_pagination=1&min_date=2026-11-15T00%3A00%3A00&max_date=2026-11-18T00%3A00%3A00&page=0&_=1794833933704",
+        "POST https://www.munich-airport.com/clm10"
+      ],
+      "title": "Welcome to MUC - Munich Airport",
+      "dom": {
+        "html_lang": "en",
+        "h1": [],
+        "images": 59,
+        "images_without_alt": 24,
+        "images_empty_alt": 1,
+        "has_skip_link": true,
+        "landmarks": {
+          "header": 8,
+          "nav": 6,
+          "main": 1,
+          "footer": 24
+        },
+        "viewport_meta": "width=device-width, initial-scale=1, maximum-scale=1",
+        "horizontal_overflow_px": 0,
+        "iframes": []
+      },
+      "screenshot": "munich-home-mobile-390x844.png"
+    },
+    {
+      "page": "flights-departures",
+      "url": "https://www.munich-airport.com/all-departures-1450598",
+      "viewport": "1440x900",
+      "device": "desktop",
+      "status": 200,
+      "ttfb_ms": 1590,
+      "domContentLoaded_ms": 3495,
+      "load_ms": 3571,
+      "document_transfer_bytes": 42758,
+      "document_decoded_bytes": 42458,
+      "paints": {
+        "first-paint": 2684,
+        "first-contentful-paint": 2684
+      },
+      "resource_count": 39,
+      "transferred_bytes_all_requests": 3032745,
+      "requests_finished": 38,
+      "failed_request_hosts": {
+        "code.etracker.com": 1,
+        "cdn.eye-able.com": 2
+      },
+      "ok_request_hosts": {
+        "www.munich-airport.com": 37
+      },
+      "xhr": [
+        "POST https://www.munich-airport.com/clm10",
+        "GET https://www.munich-airport.com/assets/symbol/svg/sprite.symbol-073804e144cb6f03f86406a79dc8f5d5103794344a4b974c3ff6fe18d27321f7.svg",
+        "GET https://www.munich-airport.com/flightsearch/departures?from=2026-11-16T13%3A59%3A03&allow_scroll_back=1&per_page=50&allow_pagination=1&min_date=2026-11-15T00%3A00%3A00&max_date=2026-11-18T00%3A00%3A00&page=0&_=1794833945371",
+        "GET https://www.munich-airport.com/flightsearch/arrivals?from=2026-11-16T13%3A59%3A03&allow_scroll_back=1&per_page=50&allow_pagination=1&min_date=2026-11-15T00%3A00%3A00&max_date=2026-11-18T00%3A00%3A00&page=0&_=1794833945369"
+      ],
+      "title": "All departures - Munich Airport",
+      "dom": {
+        "html_lang": "en",
+        "h1": [
+          "All departures"
+        ],
+        "images": 202,
+        "images_without_alt": 200,
+        "images_empty_alt": 0,
+        "has_skip_link": true,
+        "landmarks": {
+          "header": 5,
+          "nav": 6,
+          "main": 1,
+          "footer": 8
+        },
+        "viewport_meta": "width=device-width, initial-scale=1, maximum-scale=1",
+        "horizontal_overflow_px": 0,
+        "iframes": []
+      },
+      "screenshot": "munich-flights-departures-desktop-1440x900.png"
+    },
+    {
+      "page": "flights-departures",
+      "url": "https://www.munich-airport.com/all-departures-1450598",
+      "viewport": "390x844",
+      "device": "mobile",
+      "status": 200,
+      "ttfb_ms": 216,
+      "domContentLoaded_ms": 2307,
+      "load_ms": 2527,
+      "document_transfer_bytes": 41013,
+      "document_decoded_bytes": 40713,
+      "paints": {
+        "first-paint": 1484,
+        "first-contentful-paint": 1484
+      },
+      "resource_count": 40,
+      "transferred_bytes_all_requests": 3087961,
+      "requests_finished": 39,
+      "failed_request_hosts": {
+        "code.etracker.com": 1,
+        "cdn.eye-able.com": 2
+      },
+      "ok_request_hosts": {
+        "www.munich-airport.com": 38
+      },
+      "xhr": [
+        "GET https://www.munich-airport.com/assets/symbol/svg/sprite.symbol-073804e144cb6f03f86406a79dc8f5d5103794344a4b974c3ff6fe18d27321f7.svg",
+        "GET https://www.munich-airport.com/main_nav_remote?obj_id=240142&current_page_id=1450598",
+        "GET https://www.munich-airport.com/flightsearch/arrivals?from=2026-11-16T13%3A59%3A13&allow_scroll_back=1&per_page=50&allow_pagination=1&min_date=2026-11-15T00%3A00%3A00&max_date=2026-11-18T00%3A00%3A00&page=0&_=1794833955260",
+        "GET https://www.munich-airport.com/flightsearch/departures?from=2026-11-16T13%3A59%3A13&allow_scroll_back=1&per_page=50&allow_pagination=1&min_date=2026-11-15T00%3A00%3A00&max_date=2026-11-18T00%3A00%3A00&page=0&_=1794833955263"
+      ],
+      "title": "All departures - Munich Airport",
+      "dom": {
+        "html_lang": "en",
+        "h1": [
+          "All departures"
+        ],
+        "images": 202,
+        "images_without_alt": 200,
+        "images_empty_alt": 0,
+        "has_skip_link": true,
+        "landmarks": {
+          "header": 10,
+          "nav": 6,
+          "main": 1,
+          "footer": 8
+        },
+        "viewport_meta": "width=device-width, initial-scale=1, maximum-scale=1",
+        "horizontal_overflow_px": 0,
+        "iframes": []
+      },
+      "screenshot": "munich-flights-departures-mobile-390x844.png"
+    }
+  ]
+}

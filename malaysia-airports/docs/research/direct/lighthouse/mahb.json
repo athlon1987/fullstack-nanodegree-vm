@@ -1,0 +1,86 @@
+{
+ "key": "mahb",
+ "url": "https://airports.malaysiaairports.com.my/en/klia1",
+ "runs": 3,
+ "validRuns": 1,
+ "measured": "2026-11-16T23:46:55.712Z",
+ "median": {
+  "performance": 9,
+  "accessibility": 79,
+  "bestPractices": 85,
+  "seo": 100,
+  "fcp_ms": 3136,
+  "lcp_ms": 6871,
+  "tbt_ms": 4461,
+  "cls": 0.621,
+  "si_ms": 11828,
+  "totalBytes": 34276078,
+  "requests": 171
+ },
+ "a11yFailures": [
+  "aria-hidden-focus",
+  "button-name",
+  "color-contrast",
+  "label",
+  "landmark-one-main",
+  "link-name"
+ ],
+ "rows": [
+  {
+   "finalUrl": "https://airports.malaysiaairports.com.my/en/klia1",
+   "runtimeError": null,
+   "performance": 9,
+   "accessibility": 79,
+   "bestPractices": 85,
+   "seo": 100,
+   "fcp_ms": 3136,
+   "lcp_ms": 6871,
+   "tbt_ms": 4461,
+   "cls": 0.621,
+   "si_ms": 11828,
+   "totalBytes": 34276078,
+   "requests": 171,
+   "a11yFailures": [
+    "aria-hidden-focus",
+    "button-name",
+    "color-contrast",
+    "label",
+    "landmark-one-main",
+    "link-name"
+   ]
+  },
+  {
+   "finalUrl": "chrome-error://chromewebdata/",
+   "runtimeError": "CHROME_INTERSTITIAL_ERROR",
+   "performance": null,
+   "accessibility": null,
+   "bestPractices": null,
+   "seo": null,
+   "fcp_ms": null,
+   "lcp_ms": null,
+   "tbt_ms": null,
+   "cls": null,
+   "si_ms": null,
+   "totalBytes": null,
+   "requests": null,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "https://airports.malaysiaairports.com.my/en/klia1",
+   "runtimeError": "CHROME_INTERSTITIAL_ERROR",
+   "performance": null,
+   "accessibility": null,
+   "bestPractices": null,
+   "seo": null,
+   "fcp_ms": null,
+   "lcp_ms": null,
+   "tbt_ms": null,
+   "cls": null,
+   "si_ms": null,
+   "totalBytes": null,
+   "requests": null,
+   "a11yFailures": []
+  }
+ ],
+ "caveat": "Lab measurement: Lighthouse mobile emulation with simulated throttling, run from a shared cloud container; hosts outside the session allowlist (analytics, some CDNs) were blocked, which changes page weight and timings. Indicative only; not field data and not comparable to CrUX."
+}

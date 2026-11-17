@@ -1,0 +1,222 @@
+{
+  "label": "single-run lab observation from a cloud container; third-party asset hosts may be blocked so rendering may be incomplete; not field data",
+  "captured_utc": "2026-11-16T12:56:37.953Z",
+  "results": [
+    {
+      "page": "home",
+      "url": "https://www.changiairport.com/en.html",
+      "viewport": "1440x900",
+      "device": "desktop",
+      "status": 200,
+      "ttfb_ms": 297,
+      "domContentLoaded_ms": 1005,
+      "load_ms": 4826,
+      "document_transfer_bytes": 43541,
+      "document_decoded_bytes": 277748,
+      "paints": {
+        "first-paint": 732,
+        "first-contentful-paint": 732
+      },
+      "resource_count": 121,
+      "transferred_bytes_all_requests": 22125507,
+      "requests_finished": 113,
+      "failed_request_hosts": {
+        "rum.hlx.page": 1,
+        "www.googletagmanager.com": 1,
+        "changiairport.scene7.com": 2,
+        "assets.adobedtm.com": 1,
+        "chatbot-storage.changiairport.com": 1,
+        "js-agent.newrelic.com": 2,
+        "zn6ysjdyjpvmiscf4-changirewardscx.siteintercept.qualtrics.com": 1
+      },
+      "ok_request_hosts": {
+        "www.changiairport.com": 60,
+        "changiairport.scene7.com": 53
+      },
+      "title": "Airport",
+      "dom": {
+        "html_lang": "en-SG",
+        "h1": [
+          "HELLO FROM CHANGI",
+          "Follow us"
+        ],
+        "images": 87,
+        "images_without_alt": 5,
+        "images_empty_alt": 0,
+        "has_skip_link": false,
+        "landmarks": {
+          "header": 1,
+          "nav": 3,
+          "main": 0,
+          "footer": 0
+        },
+        "viewport_meta": "width=device-width, initial-scale=1, viewport-fit=cover",
+        "horizontal_overflow_px": 0,
+        "iframes": []
+      },
+      "screenshot": "changi-home-desktop-1440x900.png"
+    },
+    {
+      "page": "home",
+      "url": "https://www.changiairport.com/en.html",
+      "viewport": "390x844",
+      "device": "mobile",
+      "status": 200,
+      "ttfb_ms": 38,
+      "domContentLoaded_ms": 715,
+      "load_ms": 6519,
+      "document_transfer_bytes": 43541,
+      "document_decoded_bytes": 277748,
+      "paints": {
+        "first-paint": 424,
+        "first-contentful-paint": 424
+      },
+      "resource_count": 120,
+      "transferred_bytes_all_requests": 21785710,
+      "requests_finished": 113,
+      "failed_request_hosts": {
+        "rum.hlx.page": 1,
+        "assets.adobedtm.com": 1,
+        "www.googletagmanager.com": 1,
+        "changiairport.scene7.com": 2,
+        "chatbot-storage.changiairport.com": 1,
+        "zn6ysjdyjpvmiscf4-changirewardscx.siteintercept.qualtrics.com": 1,
+        "js-agent.newrelic.com": 2
+      },
+      "ok_request_hosts": {
+        "www.changiairport.com": 60,
+        "changiairport.scene7.com": 52
+      },
+      "title": "Airport",
+      "dom": {
+        "html_lang": "en-SG",
+        "h1": [
+          "HELLO FROM CHANGI",
+          "Follow us"
+        ],
+        "images": 84,
+        "images_without_alt": 5,
+        "images_empty_alt": 0,
+        "has_skip_link": false,
+        "landmarks": {
+          "header": 1,
+          "nav": 4,
+          "main": 0,
+          "footer": 0
+        },
+        "viewport_meta": "width=device-width, initial-scale=1, viewport-fit=cover",
+        "horizontal_overflow_px": 0,
+        "iframes": []
+      },
+      "screenshot": "changi-home-mobile-390x844.png"
+    },
+    {
+      "page": "flights-departures",
+      "url": "https://www.changiairport.com/en/fly/flight-information/departures.html",
+      "viewport": "1440x900",
+      "device": "desktop",
+      "status": 200,
+      "ttfb_ms": 52,
+      "domContentLoaded_ms": 729,
+      "load_ms": 891,
+      "document_transfer_bytes": 38951,
+      "document_decoded_bytes": 209807,
+      "paints": {
+        "first-paint": 412,
+        "first-contentful-paint": 412
+      },
+      "resource_count": 51,
+      "transferred_bytes_all_requests": 900587,
+      "requests_finished": 44,
+      "failed_request_hosts": {
+        "rum.hlx.page": 1,
+        "assets.adobedtm.com": 1,
+        "www.googletagmanager.com": 1,
+        "ca-appsync.lz.changiairport.com": 1,
+        "js-agent.newrelic.com": 2,
+        "zn6ysjdyjpvmiscf4-changirewardscx.siteintercept.qualtrics.com": 1,
+        "chatbot-storage.changiairport.com": 1
+      },
+      "ok_request_hosts": {
+        "www.changiairport.com": 43,
+        "changiairport.scene7.com": 1
+      },
+      "title": "Changi Airport Departures: Live Flight Status",
+      "dom": {
+        "html_lang": "en-SG",
+        "h1": [
+          "DEPARTURE FLIGHT LISTING",
+          "Follow us"
+        ],
+        "images": 25,
+        "images_without_alt": 4,
+        "images_empty_alt": 0,
+        "has_skip_link": false,
+        "landmarks": {
+          "header": 1,
+          "nav": 3,
+          "main": 0,
+          "footer": 0
+        },
+        "viewport_meta": "width=device-width, initial-scale=1, viewport-fit=cover",
+        "horizontal_overflow_px": 0,
+        "iframes": []
+      },
+      "screenshot": "changi-flights-departures-desktop-1440x900.png"
+    },
+    {
+      "page": "flights-departures",
+      "url": "https://www.changiairport.com/en/fly/flight-information/departures.html",
+      "viewport": "390x844",
+      "device": "mobile",
+      "status": 200,
+      "ttfb_ms": 40,
+      "domContentLoaded_ms": 991,
+      "load_ms": 1234,
+      "document_transfer_bytes": 38951,
+      "document_decoded_bytes": 209807,
+      "paints": {
+        "first-paint": 640,
+        "first-contentful-paint": 640
+      },
+      "resource_count": 51,
+      "transferred_bytes_all_requests": 890678,
+      "requests_finished": 44,
+      "failed_request_hosts": {
+        "rum.hlx.page": 1,
+        "assets.adobedtm.com": 1,
+        "www.googletagmanager.com": 1,
+        "ca-appsync.lz.changiairport.com": 1,
+        "js-agent.newrelic.com": 2,
+        "zn6ysjdyjpvmiscf4-changirewardscx.siteintercept.qualtrics.com": 1,
+        "chatbot-storage.changiairport.com": 1
+      },
+      "ok_request_hosts": {
+        "www.changiairport.com": 43,
+        "changiairport.scene7.com": 1
+      },
+      "title": "Changi Airport Departures: Live Flight Status",
+      "dom": {
+        "html_lang": "en-SG",
+        "h1": [
+          "DEPARTURE FLIGHT LISTING",
+          "Follow us"
+        ],
+        "images": 25,
+        "images_without_alt": 4,
+        "images_empty_alt": 0,
+        "has_skip_link": false,
+        "landmarks": {
+          "header": 1,
+          "nav": 4,
+          "main": 0,
+          "footer": 0
+        },
+        "viewport_meta": "width=device-width, initial-scale=1, viewport-fit=cover",
+        "horizontal_overflow_px": 0,
+        "iframes": []
+      },
+      "screenshot": "changi-flights-departures-mobile-390x844.png"
+    }
+  ]
+}

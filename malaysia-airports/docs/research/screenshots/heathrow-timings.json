@@ -1,0 +1,82 @@
+{
+  "label": "single-run lab observation from a cloud container; third-party asset hosts may be blocked so rendering may be incomplete; not field data",
+  "captured_utc": "2026-11-16T12:51:54.260Z",
+  "results": [
+    {
+      "page": "home",
+      "url": "https://www.heathrow.com/",
+      "viewport": "1440x900",
+      "device": "desktop",
+      "error": "page.goto: net::ERR_TOO_MANY_REDIRECTS at https://www.heathrow.com/\nCall log:\n\u001b[2m  - navigating to \"https://www.heathrow.com/\", waiting until \"load\"\u001b[22m\n"
+    },
+    {
+      "page": "home",
+      "url": "https://www.heathrow.com/",
+      "viewport": "390x844",
+      "device": "mobile",
+      "status": 200,
+      "ttfb_ms": 113,
+      "domContentLoaded_ms": 1096,
+      "load_ms": 1102,
+      "document_transfer_bytes": 487026,
+      "document_decoded_bytes": 1141283,
+      "paints": {
+        "first-paint": 580,
+        "first-contentful-paint": 580
+      },
+      "resource_count": 36,
+      "transferred_bytes_all_requests": 1859703,
+      "requests_finished": 32,
+      "failed_request_hosts": {
+        "cdn.evgnet.com": 1,
+        "rum.hlx.page": 1,
+        "cdn.fonts.net": 1,
+        "assets.adobedtm.com": 1,
+        "tags.heathrow.com": 1,
+        "static.addtoany.com": 1,
+        "api-dp-prod.dp.heathrow.com": 3,
+        "www.google.com": 1
+      },
+      "title": "Heathrow: Welcome to Heathrow Airport | Heathrow",
+      "screenshot": "heathrow-home-mobile-390x844.png"
+    },
+    {
+      "page": "flights-departures",
+      "url": "https://www.heathrow.com/departures",
+      "viewport": "1440x900",
+      "device": "desktop",
+      "error": "page.goto: net::ERR_TOO_MANY_REDIRECTS at https://www.heathrow.com/departures\nCall log:\n\u001b[2m  - navigating to \"https://www.heathrow.com/departures\", waiting until \"load\"\u001b[22m\n"
+    },
+    {
+      "page": "flights-departures",
+      "url": "https://www.heathrow.com/departures",
+      "viewport": "390x844",
+      "device": "mobile",
+      "status": 200,
+      "ttfb_ms": 61,
+      "domContentLoaded_ms": 726,
+      "load_ms": 747,
+      "document_transfer_bytes": 485570,
+      "document_decoded_bytes": 1109010,
+      "paints": {
+        "first-paint": 548,
+        "first-contentful-paint": 548
+      },
+      "resource_count": 29,
+      "transferred_bytes_all_requests": 1172377,
+      "requests_finished": 27,
+      "failed_request_hosts": {
+        "rum.hlx.page": 1,
+        "cdn.fonts.net": 1,
+        "cdn.evgnet.com": 1,
+        "tags.heathrow.com": 1,
+        "d4k000005n2fwuas.my.site.com": 1,
+        "static.addtoany.com": 1,
+        "assets.adobedtm.com": 1,
+        "api-dp-prod.dp.heathrow.com": 1
+      },
+      "title": "Departures | Heathrow",
+      "screenshot": "heathrow-flights-departures-mobile-390x844.png"
+    }
+  ]
+}

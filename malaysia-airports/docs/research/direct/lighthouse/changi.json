@@ -1,0 +1,104 @@
+{
+ "key": "changi",
+ "url": "https://www.changiairport.com/",
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-16T23:52:12.064Z",
+ "median": {
+  "performance": 58,
+  "accessibility": 74,
+  "bestPractices": 96,
+  "seo": 85,
+  "fcp_ms": 1817,
+  "lcp_ms": 7948,
+  "tbt_ms": 379,
+  "cls": 0.077,
+  "si_ms": 6673,
+  "totalBytes": 21984901,
+  "requests": 122
+ },
+ "a11yFailures": [
+  "aria-valid-attr-value",
+  "button-name",
+  "heading-order",
+  "image-alt",
+  "label",
+  "landmark-one-main",
+  "link-name"
+ ],
+ "rows": [
+  {
+   "finalUrl": "https://www.changiairport.com/",
+   "runtimeError": null,
+   "performance": 58,
+   "accessibility": 74,
+   "bestPractices": 96,
+   "seo": 85,
+   "fcp_ms": 1951,
+   "lcp_ms": 7948,
+   "tbt_ms": 379,
+   "cls": 0.077,
+   "si_ms": 6236,
+   "totalBytes": 22010451,
+   "requests": 122,
+   "a11yFailures": [
+    "aria-valid-attr-value",
+    "button-name",
+    "heading-order",
+    "image-alt",
+    "label",
+    "landmark-one-main",
+    "link-name"
+   ]
+  },
+  {
+   "finalUrl": "https://www.changiairport.com/",
+   "runtimeError": null,
+   "performance": 58,
+   "accessibility": 74,
+   "bestPractices": 96,
+   "seo": 85,
+   "fcp_ms": 1817,
+   "lcp_ms": 7960,
+   "tbt_ms": 366,
+   "cls": 0.076,
+   "si_ms": 6753,
+   "totalBytes": 21984901,
+   "requests": 122,
+   "a11yFailures": [
+    "aria-valid-attr-value",
+    "button-name",
+    "heading-order",
+    "image-alt",
+    "label",
+    "landmark-one-main",
+    "link-name"
+   ]
+  },
+  {
+   "finalUrl": "https://www.changiairport.com/",
+   "runtimeError": null,
+   "performance": 58,
+   "accessibility": 74,
+   "bestPractices": 96,
+   "seo": 85,
+   "fcp_ms": 1804,
+   "lcp_ms": 7152,
+   "tbt_ms": 404,
+   "cls": 0.077,
+   "si_ms": 6673,
+   "totalBytes": 21959170,
+   "requests": 122,
+   "a11yFailures": [
+    "aria-valid-attr-value",
+    "button-name",
+    "heading-order",
+    "image-alt",
+    "label",
+    "landmark-one-main",
+    "link-name"
+   ]
+  }
+ ],
+ "caveat": "Lab measurement: Lighthouse mobile emulation with simulated throttling, run from a shared cloud container; hosts outside the session allowlist (analytics, some CDNs) were blocked, which changes page weight and timings. Indicative only; not field data and not comparable to CrUX."
+}

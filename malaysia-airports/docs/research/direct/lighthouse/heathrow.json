@@ -1,0 +1,88 @@
+{
+ "key": "heathrow",
+ "url": "https://www.heathrow.com/",
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-16T23:52:58.860Z",
+ "median": {
+  "performance": 56,
+  "accessibility": 92,
+  "bestPractices": 96,
+  "seo": 92,
+  "fcp_ms": 4080,
+  "lcp_ms": 6283,
+  "tbt_ms": 393,
+  "cls": 0.102,
+  "si_ms": 4080,
+  "totalBytes": 1937599,
+  "requests": 47
+ },
+ "a11yFailures": [
+  "color-contrast",
+  "heading-order",
+  "target-size"
+ ],
+ "rows": [
+  {
+   "finalUrl": "https://www.heathrow.com/",
+   "runtimeError": null,
+   "performance": 56,
+   "accessibility": 92,
+   "bestPractices": 96,
+   "seo": 92,
+   "fcp_ms": 4080,
+   "lcp_ms": 5880,
+   "tbt_ms": 393,
+   "cls": 0.102,
+   "si_ms": 4080,
+   "totalBytes": 1937426,
+   "requests": 47,
+   "a11yFailures": [
+    "color-contrast",
+    "heading-order",
+    "target-size"
+   ]
+  },
+  {
+   "finalUrl": "https://www.heathrow.com/",
+   "runtimeError": null,
+   "performance": 54,
+   "accessibility": 92,
+   "bestPractices": 96,
+   "seo": 92,
+   "fcp_ms": 4080,
+   "lcp_ms": 6283,
+   "tbt_ms": 429,
+   "cls": 0.102,
+   "si_ms": 4186,
+   "totalBytes": 1937599,
+   "requests": 47,
+   "a11yFailures": [
+    "color-contrast",
+    "heading-order",
+    "target-size"
+   ]
+  },
+  {
+   "finalUrl": "https://www.heathrow.com/",
+   "runtimeError": null,
+   "performance": 56,
+   "accessibility": 92,
+   "bestPractices": 96,
+   "seo": 92,
+   "fcp_ms": 4080,
+   "lcp_ms": 6425,
+   "tbt_ms": 381,
+   "cls": 0.102,
+   "si_ms": 4080,
+   "totalBytes": 1937647,
+   "requests": 47,
+   "a11yFailures": [
+    "color-contrast",
+    "heading-order",
+    "target-size"
+   ]
+  }
+ ],
+ "caveat": "Lab measurement: Lighthouse mobile emulation with simulated throttling, run from a shared cloud container; hosts outside the session allowlist (analytics, some CDNs) were blocked, which changes page weight and timings. Indicative only; not field data and not comparable to CrUX."
+}

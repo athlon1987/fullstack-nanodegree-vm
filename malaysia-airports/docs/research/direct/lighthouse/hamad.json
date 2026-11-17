@@ -1,0 +1,60 @@
+{
+ "key": "hamad",
+ "url": "https://dohahamadairport.com/",
+ "runs": 3,
+ "validRuns": 0,
+ "measured": "2026-11-16T23:54:42.491Z",
+ "median": null,
+ "a11yFailures": null,
+ "rows": [
+  {
+   "finalUrl": "https://dohahamadairport.com/",
+   "runtimeError": "NO_FCP",
+   "performance": null,
+   "accessibility": null,
+   "bestPractices": null,
+   "seo": null,
+   "fcp_ms": null,
+   "lcp_ms": null,
+   "tbt_ms": null,
+   "cls": null,
+   "si_ms": null,
+   "totalBytes": null,
+   "requests": null,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "https://dohahamadairport.com/",
+   "runtimeError": "NO_FCP",
+   "performance": null,
+   "accessibility": null,
+   "bestPractices": null,
+   "seo": null,
+   "fcp_ms": null,
+   "lcp_ms": null,
+   "tbt_ms": null,
+   "cls": null,
+   "si_ms": null,
+   "totalBytes": null,
+   "requests": null,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "https://dohahamadairport.com/",
+   "runtimeError": "NO_FCP",
+   "performance": null,
+   "accessibility": null,
+   "bestPractices": null,
+   "seo": null,
+   "fcp_ms": null,
+   "lcp_ms": null,
+   "tbt_ms": null,
+   "cls": null,
+   "si_ms": null,
+   "totalBytes": null,
+   "requests": null,
+   "a11yFailures": []
+  }
+ ],
+ "caveat": "Lab measurement: Lighthouse mobile emulation with simulated throttling, run from a shared cloud container; hosts outside the session allowlist (analytics, some CDNs) were blocked, which changes page weight and timings. Indicative only; not field data and not comparable to CrUX."
+}

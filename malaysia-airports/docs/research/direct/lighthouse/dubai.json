@@ -1,0 +1,80 @@
+{
+ "key": "dubai",
+ "url": "https://www.dubaiairports.ae/",
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-16T23:56:17.458Z",
+ "median": {
+  "performance": 68,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 92,
+  "fcp_ms": 2557,
+  "lcp_ms": 6147,
+  "tbt_ms": 26,
+  "cls": 0,
+  "si_ms": 7551,
+  "totalBytes": 4620232,
+  "requests": 94
+ },
+ "a11yFailures": [
+  "label-content-name-mismatch"
+ ],
+ "rows": [
+  {
+   "finalUrl": "https://dubaiairports.ae/",
+   "runtimeError": null,
+   "performance": 66,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 92,
+   "fcp_ms": 2767,
+   "lcp_ms": 6082,
+   "tbt_ms": 26,
+   "cls": 0,
+   "si_ms": 8068,
+   "totalBytes": 4620392,
+   "requests": 94,
+   "a11yFailures": [
+    "label-content-name-mismatch"
+   ]
+  },
+  {
+   "finalUrl": "https://dubaiairports.ae/",
+   "runtimeError": null,
+   "performance": 68,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 92,
+   "fcp_ms": 2557,
+   "lcp_ms": 6307,
+   "tbt_ms": 65,
+   "cls": 0,
+   "si_ms": 6460,
+   "totalBytes": 4620080,
+   "requests": 94,
+   "a11yFailures": [
+    "label-content-name-mismatch"
+   ]
+  },
+  {
+   "finalUrl": "https://dubaiairports.ae/",
+   "runtimeError": null,
+   "performance": 69,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 92,
+   "fcp_ms": 1922,
+   "lcp_ms": 6147,
+   "tbt_ms": 19,
+   "cls": 0,
+   "si_ms": 7551,
+   "totalBytes": 4620232,
+   "requests": 94,
+   "a11yFailures": [
+    "label-content-name-mismatch"
+   ]
+  }
+ ],
+ "caveat": "Lab measurement: Lighthouse mobile emulation with simulated throttling, run from a shared cloud container; hosts outside the session allowlist (analytics, some CDNs) were blocked, which changes page weight and timings. Indicative only; not field data and not comparable to CrUX."
+}

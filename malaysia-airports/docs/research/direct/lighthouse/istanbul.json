@@ -1,0 +1,100 @@
+{
+ "key": "istanbul",
+ "url": "https://www.istairport.com/en",
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-17T00:00:03.137Z",
+ "median": {
+  "performance": 53,
+  "accessibility": 78,
+  "bestPractices": 92,
+  "seo": 92,
+  "fcp_ms": 7813,
+  "lcp_ms": 16663,
+  "tbt_ms": 163,
+  "cls": 0,
+  "si_ms": 13097,
+  "totalBytes": 6136928,
+  "requests": 100
+ },
+ "a11yFailures": [
+  "aria-required-children",
+  "aria-required-parent",
+  "color-contrast",
+  "heading-order",
+  "listitem",
+  "meta-viewport"
+ ],
+ "rows": [
+  {
+   "finalUrl": "https://www.istairport.com/en",
+   "runtimeError": null,
+   "performance": 51,
+   "accessibility": 78,
+   "bestPractices": 92,
+   "seo": 92,
+   "fcp_ms": 8158,
+   "lcp_ms": 16663,
+   "tbt_ms": 241,
+   "cls": 0,
+   "si_ms": 12881,
+   "totalBytes": 6136929,
+   "requests": 100,
+   "a11yFailures": [
+    "aria-required-children",
+    "aria-required-parent",
+    "color-contrast",
+    "heading-order",
+    "listitem",
+    "meta-viewport"
+   ]
+  },
+  {
+   "finalUrl": "https://www.istairport.com/en",
+   "runtimeError": null,
+   "performance": 53,
+   "accessibility": 78,
+   "bestPractices": 92,
+   "seo": 92,
+   "fcp_ms": 7813,
+   "lcp_ms": 16855,
+   "tbt_ms": 163,
+   "cls": 0,
+   "si_ms": 13440,
+   "totalBytes": 6134246,
+   "requests": 100,
+   "a11yFailures": [
+    "aria-required-children",
+    "aria-required-parent",
+    "color-contrast",
+    "heading-order",
+    "listitem",
+    "meta-viewport"
+   ]
+  },
+  {
+   "finalUrl": "https://www.istairport.com/en",
+   "runtimeError": null,
+   "performance": 53,
+   "accessibility": 78,
+   "bestPractices": 92,
+   "seo": 92,
+   "fcp_ms": 7171,
+   "lcp_ms": 15116,
+   "tbt_ms": 163,
+   "cls": 0,
+   "si_ms": 13097,
+   "totalBytes": 6136928,
+   "requests": 100,
+   "a11yFailures": [
+    "aria-required-children",
+    "aria-required-parent",
+    "color-contrast",
+    "heading-order",
+    "listitem",
+    "meta-viewport"
+   ]
+  }
+ ],
+ "caveat": "Lab measurement: Lighthouse mobile emulation with simulated throttling, run from a shared cloud container; hosts outside the session allowlist (analytics, some CDNs) were blocked, which changes page weight and timings. Indicative only; not field data and not comparable to CrUX."
+}

@@ -46,3 +46,10 @@ docs/research/direct/raw/
 /test-results/
 /playwright-report/
 /.lighthouse/
+
+# raw first-run captures awaiting curation (large PNGs, helper scripts, full-page captures)
+docs/research/screenshots/*.png
+docs/research/screenshots/*.cjs
+docs/research/screenshots/*.js
+docs/research/screenshots/*-full.jpg
+docs/research/benchmarks/**/*.png
