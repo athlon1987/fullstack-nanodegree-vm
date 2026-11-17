@@ -38,7 +38,9 @@ test.describe('terminal map', () => {
     await expect(main.getByRole('group', { name: /Schematic map: Level 5/ })).toBeVisible();
 
     const search = main.getByRole('searchbox', { name: 'Search this map' });
+    // Typing before hydration does not reach React, so clear and type again until results show.
     await expect(async () => {
+      await search.fill('');
       await search.fill('prayer');
       await expect(main.getByRole('listitem').getByRole('button', { name: /^Prayer room \(illustrative position\) Prayer room/ })).toBeVisible({ timeout: 2_000 });
     }).toPass();
