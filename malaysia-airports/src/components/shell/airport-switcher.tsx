@@ -30,6 +30,8 @@ export interface AirportSwitcherButtonProps {
   variant?: 'header' | 'desk' | 'row';
   /** Continue to this section after choosing (the "choose an airport first" step). */
   then?: AirportSectionId;
+  /** `header` only: when the airport name shows beside its code (the header passes container-query classes). */
+  labelClassName?: string;
   className?: string;
 }
 
@@ -37,7 +39,7 @@ export interface AirportSwitcherButtonProps {
  * Opens the airport switcher. No airport is ever assumed: until the visitor chooses, the control
  * is a solid, clearly highlighted "Choose airport".
  */
-export function AirportSwitcherButton({ variant = 'header', then, className }: AirportSwitcherButtonProps) {
+export function AirportSwitcherButton({ variant = 'header', then, labelClassName, className }: AirportSwitcherButtonProps) {
   const t = useT();
   const lang = useLang();
   const { choice, hydrated } = useAirportContext();
@@ -103,7 +105,7 @@ export function AirportSwitcherButton({ variant = 'header', then, className }: A
         <>
           <AirportCode code={choice.code} size="sm" className="font-bold" />
           {choice.terminal ? <TerminalBadge terminal={choice.terminal} size="sm" /> : null}
-          <span className="hidden min-w-0 leading-tight sm:inline">{label}</span>
+          <span className={cn('min-w-0 leading-tight', labelClassName ?? 'hidden sm:inline')}>{label}</span>
         </>
       ) : (
         <>
