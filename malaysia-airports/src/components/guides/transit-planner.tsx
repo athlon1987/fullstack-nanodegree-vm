@@ -119,7 +119,6 @@ export function TransitPlanner({ data, initial }: TransitPlannerProps) {
     if (step === 'customs') facts.push(data.customs);
     if (step === 'check-in') facts.push(data.checkIn[input.to]);
     if (step === 'gate') facts.push(data.gates[input.to]);
-    if (step === 'travel') facts.push(data.interTerminal);
     return facts.filter((fact): fact is FactView => Boolean(fact));
   };
 
@@ -135,11 +134,11 @@ export function TransitPlanner({ data, initial }: TransitPlannerProps) {
   const terminalOptions = (['T1', 'T2'] as const).map((value) => ({ value, label: terminalName(value), icon: 'terminal' as const }));
 
   return (
-    <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-12">
+    <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)] lg:gap-12">
       <form
         aria-labelledby="transit-planner-title"
         onSubmit={(event) => event.preventDefault()}
-        className="flex min-w-0 flex-col gap-5 rounded-xl border border-line-strong bg-surface p-5 shadow-sm lg:sticky lg:top-header lg:mt-6"
+        className="flex min-w-0 flex-col gap-5 rounded-xl border border-line-strong bg-surface p-5 shadow-sm lg:sticky lg:top-header"
       >
         <h2 id="transit-planner-title" className="type-title-lg text-ink">
           {t('guidePages.transit.planner.title')}

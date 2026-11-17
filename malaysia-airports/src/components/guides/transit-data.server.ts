@@ -130,7 +130,10 @@ export function transitData(content: AirportContent, lang: Lang, t: Translator, 
     airportSlug: content.airport.slug,
     hasLounges,
     interTerminal: interTerminalNote ? noteFact(interTerminalNote, lang) : undefined,
-    options: content.transport.filter((option) => option.mode === 'inter-terminal').map((option) => optionFact(option, content, lang, t)),
+    // Only services that link two terminals: people movers inside one terminal (the Aerotrain) are not a transfer option.
+    options: content.transport
+      .filter((option) => option.mode === 'inter-terminal' && new Set(option.boarding.map((boarding) => boarding.terminal)).size > 1)
+      .map((option) => optionFact(option, content, lang, t)),
     mdac: mdacNote ? noteFact(mdacNote, lang) : undefined,
     customs: step('declare'),
     entry: step('documents'),

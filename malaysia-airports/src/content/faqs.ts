@@ -125,7 +125,7 @@ export const FAQS: Faq[] = [
     provenance: 'official',
     sources: ['prototype-method'],
   },
-  /* ---- Appended by the guides team (17 November 2026). ---------------------------------- */
+  /* ---- Appended by the guides team (17 November 2026); answers cite their own sources. ---- */
   {
     id: 'flight-status-real-times',
     topic: 'flights',
