@@ -47,7 +47,7 @@ function NavList({ slug, name, sections, segment, terminal }: SectionNavProps & 
                 href={localeHref(lang, sectionPath(slug, section.id, terminal))}
                 aria-current={current ? 'page' : undefined}
                 className={cn(
-                  'relative inline-flex h-12 items-center gap-2 px-3 text-[0.9375rem] font-medium whitespace-nowrap text-ink-2 transition-colors duration-fast hover:text-ink focus-visible:focus-ring-inset',
+                  'relative inline-flex h-12 items-center gap-1.5 px-2.5 text-sm font-medium whitespace-nowrap text-ink-2 transition-colors duration-fast hover:text-ink focus-visible:focus-ring-inset',
                   'after:absolute after:inset-x-3 after:bottom-0 after:h-0.5 after:rounded-pill after:bg-transparent hover:after:bg-line-control',
                   'aria-[current]:font-semibold aria-[current]:text-ink aria-[current]:after:bg-primary',
                 )}

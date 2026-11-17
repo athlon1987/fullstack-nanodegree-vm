@@ -112,7 +112,7 @@ export function AirportSwitcherButton({ variant = 'header', then, labelClassName
       ) : (
         <>
           <Icon name="map-pin" size="sm" strokeWidth={2} />
-          <span className="min-w-0 leading-tight max-xs:max-w-20 max-xs:text-xs">{label}</span>
+          <span className="min-w-0 leading-tight max-xs:text-xs">{label}</span>
         </>
       )}
       <Icon name="chevron-down" size="sm" strokeWidth={2} className="shrink-0 opacity-70 max-xs:hidden" />

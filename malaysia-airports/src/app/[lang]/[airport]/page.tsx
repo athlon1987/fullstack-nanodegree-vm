@@ -22,6 +22,12 @@ export function generateStaticParams() {
   return airportSlugs().map((airport) => ({ airport }));
 }
 
+/**
+ * The overview is fully static for every listed airport. An unknown code then waits for the
+ * complete render instead of serving the fallback shell, so its first response is already a 404.
+ */
+export const ensureStatic = 'navigation';
+
 export function generateMetadata({ params }: PageProps<'/[lang]/[airport]'>) {
   return airportSectionMetadata(params, 'overview');
 }
