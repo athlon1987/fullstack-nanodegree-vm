@@ -22,7 +22,7 @@ import { calculateParking } from '@/lib/parking';
 import { formatTime } from '@/lib/time';
 import { ANSWER_LIMITS, CONCIERGE_MAX_QUESTION } from './constants';
 import { hrefFor, retrievePassages, searchKnowledge, type PassageQuery } from './retrieve';
-import { fellBack, list, minutesLabel, normalise, phrase, pickText, type EnginePhrase } from './text';
+import { fellBack, list, minutesLabel, normalise, phrase, pickText, tokens, type EnginePhrase } from './text';
 import { understand } from './understand';
 import type {
   AnswerAction,
@@ -56,6 +56,7 @@ class Builder {
   demo = false;
   fallback = false;
   private seen = new Set<string>();
+  private said: Set<string>[] = [];
 
   constructor(
     readonly k: ConciergeKnowledge,
@@ -81,8 +82,17 @@ class Builder {
   statement(statement: AnswerStatement, key?: string): void {
     if (this.statements.length >= ANSWER_LIMITS.statements) return;
     if (!statement.text.trim()) return;
-    if (key && !this.once(`s:${key}`)) return;
-    if (!key && !this.once(`t:${statement.text}`)) return;
+    if (key && this.seen.has(`s:${key}`)) return;
+    // Near-duplicates: the same fact often appears in an FAQ, a guide step and an airport note.
+    const words = new Set(tokens(statement.text));
+    const overlaps = this.said.some((other) => {
+      let shared = 0;
+      for (const word of words) if (other.has(word)) shared += 1;
+      return shared / Math.max(1, Math.min(words.size, other.size)) >= 0.6;
+    });
+    if (overlaps) return;
+    if (key) this.seen.add(`s:${key}`);
+    this.said.push(words);
     this.statements.push(statement);
   }
 
@@ -199,6 +209,24 @@ function liveNotices(s: Scope, filter: (notice: Notice) => boolean = () => true)
     .filter((notice) => noticeState(notice, s.now) !== 'expired')
     .filter(filter)
     .sort((a, b) => rank[a.severity] - rank[b.severity]);
+}
+
+const GENERIC_WORDS = new Set(tokens('train trains bus buses coach coaches shuttle free between terminal terminals the to and klia express ekspres car park long term building main satellite non stop service'));
+
+/** True when the question names this option by a distinctive word ("Aerotrain"). */
+function namedIn(question: string, name: string): boolean {
+  const asked = new Set(tokens(question));
+  return tokens(name.split('(')[0]).some((word) => !GENERIC_WORDS.has(word) && asked.has(word));
+}
+
+/** "KLIA Ekspres (non-stop train to KL Sentral)" is mentioned as "KLIA Ekspres". */
+function shortName(name: string): string {
+  return name.split('(')[0].trim();
+}
+
+/** "Toilets" becomes "toilets" mid-sentence; "Wi-Fi" and "ATM" keep their capitals. */
+function sentenceCase(label: string): string {
+  return /[A-Z]/.test(label.slice(1)) ? label : label.charAt(0).toLowerCase() + label.slice(1);
 }
 
 function mentions(text: string, name: string): boolean {
@@ -386,6 +414,8 @@ function carParkCard(s: Scope, carPark: CarPark, estimate?: string): void {
 
 type Handler = (s: Scope) => void;
 
+const CHECK_IN_WORDS = ['check in', 'counter', 'counters', 'bag drop', 'daftar masuk', 'kaunter'];
+
 const checkIn: Handler = (s) => {
   if (needAirport(s)) return;
   const airport = s.airport as KnowledgeAirport;
@@ -406,10 +436,10 @@ const checkIn: Handler = (s) => {
       s.b.text = s.b.say('checkInAirlineMissing', { airline: name, airport: airport.shortName });
       escalate(s, 'missing', true);
     }
-    passages(s, { text: `${s.question} check in`, airline: code, topics: ['check-in'], limit: 2, minScore: 4 });
+    passages(s, { text: `${s.question} check in`, airline: code, topics: ['check-in'], require: CHECK_IN_WORDS, limit: 2, minScore: 4 });
   } else {
     s.b.text = s.b.say('checkInGeneral', { airport: placeName(s) });
-    passages(s, { text: `${s.question} check in counter`, topics: ['check-in'], limit: 3, minScore: 4 });
+    passages(s, { text: `${s.question} check in counter`, topics: ['check-in'], require: CHECK_IN_WORDS, limit: 3, minScore: 4 });
     s.b.limit(s.b.say('checkInAskFlight'));
   }
   s.b.link(s.b.say('actionDeparturesBoard'), sectionHref(s, 'flights'), 'plane-takeoff');
@@ -438,12 +468,13 @@ const terminalTransfer: Handler = (s) => {
       options: list(options.map((option) => s.b.pick(option.name)), s.lang),
     });
   }
-  passages(s, { text: `${s.question} change terminals`, terminal: undefined, topics: ['parking-transport', 'transit', 'terminals'], limit: 2, minScore: 4 });
+  const later = normalise(airport.terminals[airport.terminals.length - 1].shortName.en);
+  passages(s, { text: `${s.question} change terminals`, terminal: undefined, topics: ['parking-transport', 'transit', 'terminals'], require: [later], limit: 2, minScore: 4 });
   for (const option of options) {
     transportCard(s, option, option.destinations);
     if (option.description) s.b.statement({ title: s.b.pick(option.name), text: s.b.pick(option.description), provenance: option.provenance, sourceIds: option.sources, href: hrefFor(s.k, 'transport', option.id) }, `transport:${option.id}`);
   }
-  for (const notice of liveNotices(s, (notice) => options.some((option) => mentions(`${notice.title.en} ${notice.body.en}`, option.name.en)))) addNotice(s, notice);
+  for (const notice of liveNotices(s, (notice) => options.some((option) => mentions(`${notice.title.en} ${notice.body.en}`, shortName(option.name.en))))) addNotice(s, notice);
   s.b.link(s.b.say('actionConnectionsAndTransit'), sectionHref({ ...s, terminal: undefined }, 'transit'), 'route');
   s.b.link(s.b.say('actionTransportPlanner'), sectionHref({ ...s, terminal: undefined }, 'transport'), 'train-front');
 };
@@ -502,6 +533,7 @@ const transport: Handler = (s) => {
       const highlight = cheapest?.option.id === match.option.id && priority === 'price' ? 'lowest-fare' : quickest?.option.id === match.option.id && priority === 'time' ? 'quickest' : undefined;
       transportCard(s, match.option, match.rows, highlight);
     }
+    for (const notice of liveNotices(s, (notice) => matches.some((match) => mentions(`${notice.title.en} ${notice.body.en}`, shortName(match.option.name.en))))) addNotice(s, notice);
     const unpriced = matches.filter((match) => match.rows.every((row) => !row.fare));
     if (priority === 'price' && unpriced.length > 0) {
       s.b.statement({ text: s.b.say('transportFareGap', { options: list(unpriced.map((match) => s.b.pick(match.option.name)), s.lang) }), provenance: 'suggestion', sourceIds: [] });
@@ -510,7 +542,6 @@ const transport: Handler = (s) => {
     for (const match of ordered.slice(0, 2)) {
       if (match.option.description) s.b.statement({ title: s.b.pick(match.option.name), text: s.b.pick(match.option.description), provenance: match.option.provenance, sourceIds: match.option.sources }, `transport:${match.option.id}`);
     }
-    for (const notice of liveNotices(s, (notice) => matches.some((match) => mentions(`${notice.title.en} ${notice.body.en}`, match.option.name.en)))) addNotice(s, notice);
   } else {
     if (wanted) s.b.limit(s.b.say('transportNoDestination', { destination: wanted, airport: airport.shortName }));
     s.b.text = s.b.say('transportGeneral', { airport: airport.shortName, options: list(all.map((option) => s.b.pick(option.name)), s.lang) });
@@ -564,8 +595,9 @@ const facility: Handler = (s) => {
     const mapped = chosen.find((item) => item.mapPoint && airport.sections.includes('map'));
     if (mapped) s.b.link(s.b.say('actionShowOnTheTerminal'), `/${airport.slug}/map?poi=${mapped.mapPoint}`, 'map');
   } else {
-    s.b.text = s.b.say('facilityNone', { category: label, place: placeName(s) });
+    s.b.text = s.b.say('facilityNone', { category: s.lang === 'en' ? sentenceCase(label) : label, place: placeName(s) });
     escalate(s, 'missing');
+    passages(s, { text: `${s.k.labels.categories[category].en} not verified`, includeGaps: true, require: tokens(s.k.labels.categories[category].en).slice(0, 1), limit: 1, minScore: 1 });
     const info = s.k.facilities.find((item) => item.airport === airport.slug && item.category === 'information');
     if (info) {
       facilityCard(s, info);
@@ -706,11 +738,11 @@ const gate: Handler = (s) => {
   const airport = s.airport as KnowledgeAirport;
   const gateSlot = s.u.slots.gate;
   s.b.text = s.b.say('gate', { airport: placeName(s) });
-  const named = s.k.transport.filter((option) => option.airport === airport.slug && (mentions(s.question, option.name.en) || (option.mode === 'inter-terminal' && option.destinations.some((row) => gateSlot && mentions(row.name.en, `${gateSlot[0]} gates`)))));
+  const named = s.k.transport.filter((option) => option.airport === airport.slug && (namedIn(s.question, option.name.en) || (option.mode === 'inter-terminal' && option.destinations.some((row) => gateSlot && mentions(row.name.en, `${gateSlot[0]} gates`)))));
   for (const option of named) {
     transportCard(s, option, option.destinations);
     if (option.description) s.b.statement({ title: s.b.pick(option.name), text: s.b.pick(option.description), provenance: option.provenance, sourceIds: option.sources }, `transport:${option.id}`);
-    for (const notice of liveNotices(s, (notice) => mentions(`${notice.title.en} ${notice.body.en}`, option.name.en))) addNotice(s, notice);
+    for (const notice of liveNotices(s, (notice) => mentions(`${notice.title.en} ${notice.body.en}`, shortName(option.name.en)))) addNotice(s, notice);
   }
   if (/\b(running|operating|working|open|beroperasi|berjalan)\b/.test(normalise(s.question))) s.b.limit(s.b.say('liveStatus'));
   passages(s, { text: `${s.question} gate`, gatePrefix: gateSlot?.[0], topics: ['gate', 'terminals'], limit: 3, minScore: 4 });

@@ -159,7 +159,7 @@ export const conciergePageEn = {
     diningNone: 'No food or drink outlets are published for {place} in our sources yet.',
     facility: 'Published for {place}: {names}.',
     facilityNearest: 'I cannot see where you are, so I cannot tell which is nearest. Here is what our sources publish.',
-    facilityNone: '{category} is not published for {place} in our sources yet.',
+    facilityNone: 'Our sources do not publish {category} for {place} yet.',
     facilityOtherTerminal: 'Nothing is published for {terminal}; these are in another terminal.',
     layover: 'With {duration} at {airport}, here are published places to rest, eat and pass the time.',
     layoverNoDuration: 'For a layover at {airport}, here are published places to rest, eat and pass the time.',

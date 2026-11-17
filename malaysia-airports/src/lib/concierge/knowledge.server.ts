@@ -71,6 +71,7 @@ function passagesFromContent(): KnowledgePassage[] {
           provenance: step.provenance,
           sourceIds: step.sources ?? guide.sources,
           href: `/guides/${guide.slug}#${section.id}`,
+          scope: `${guide.title.en} ${section.title.en}`,
         });
       }
     }
@@ -89,6 +90,7 @@ function passagesFromContent(): KnowledgePassage[] {
         body: note.body,
         provenance: note.provenance,
         sourceIds: note.sources,
+        gap: note.id.endsWith('content-gaps'),
       });
     }
   }

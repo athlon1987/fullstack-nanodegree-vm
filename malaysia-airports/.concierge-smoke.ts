@@ -9,6 +9,17 @@ const flights = flightSourceFromProvider(getFlightProvider(now));
 const some = getFlightProvider(now).listFlightsSync({ airport: 'kul', direction: 'd', limit: 3 });
 console.log('sample flights', some.map(f => f.number + ' ' + f.status).join(', '));
 const qs: [string, any][] = [
+ ['Is the Aerotrain running?', { airport: 'kul' }],
+ ['Di mana surau terdekat?', { airport: 'kul', terminal: 'T2' }],
+ ['Where is the toilet?', { airport: 'kul', terminal: 'T2' }],
+ [`Where do I check in for ${some[0].number}?`, {}],
+ ['what is the meaning of life', {}],
+ ['I need wheelchair assistance', {}],
+ ['How do I get from Terminal 1 to Terminal 2?', {}],
+ ['What is the cheapest way to get to KL Sentral?', {}],
+ ['and in Terminal 2?', { airport: 'kul', terminal: 'T1', intent: 'facility' }],
+];
+const old: [string, any][] = [
  ['Where do I check in for my flight?', {}],
  ['Where do I check in for my flight?', { airport: 'kul' }],
  [`Where do I check in for ${some[0].number}?`, {}],
@@ -28,7 +39,7 @@ const qs: [string, any][] = [
  ['Bagaimana saya pergi dari Terminal 1 ke Terminal 2?', {}],
 ];
 for (const [q, ctx] of qs) {
-  const a = answerQuestion({ question: q, lang: 'en', context: ctx }, { knowledge: k, now, flights });
+  const a = answerQuestion({ question: q, lang: /^(Di |Bagaimana)/.test(q) ? 'ms' : 'en', context: ctx }, { knowledge: k, now, flights });
   console.log(`\n### ${q} ${JSON.stringify(ctx)} -> ${a.intent} ctx=${JSON.stringify(a.context)}`);
   console.log('TEXT:', a.text);
   for (const s of a.statements) console.log(`  - [${s.provenance}|${s.sourceIds.length}] ${s.title ? s.title + ' :: ' : ''}${s.text.slice(0, 110)}`);

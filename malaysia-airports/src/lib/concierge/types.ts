@@ -61,6 +61,10 @@ export interface KnowledgePassage {
   sourceIds: string[];
   /** Internal link without the locale. */
   href?: string;
+  /** Guide and section titles (English), used only to tell which terminal a step is about. */
+  scope?: string;
+  /** A "what we have not verified" note: shown only when an answer is missing. */
+  gap?: boolean;
 }
 
 /** An airline fact with the airport it belongs to. */

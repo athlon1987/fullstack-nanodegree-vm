@@ -22,6 +22,8 @@ export interface PassageQuery {
   limit?: number;
   /** Ignore passages scoring below this. */
   minScore?: number;
+  /** Also consider "what we have not verified" notes (for answers that are missing). */
+  includeGaps?: boolean;
 }
 
 export interface ScoredPassage {
@@ -29,14 +31,15 @@ export interface ScoredPassage {
   score: number;
 }
 
-const passageTokenCache = new WeakMap<KnowledgePassage, { title: Set<string>; body: Set<string>; text: string }>();
+const passageTokenCache = new WeakMap<KnowledgePassage, { title: Set<string>; body: Set<string>; text: string; scoped: string }>();
 
 function passageTokens(passage: KnowledgePassage) {
   let cached = passageTokenCache.get(passage);
   if (!cached) {
     const title = [passage.title.en, passage.title.ms ?? ''].join(' ');
     const body = [passage.body.en, passage.body.ms ?? ''].join(' ');
-    cached = { title: new Set(tokens(title)), body: new Set(tokens(body)), text: normalise(`${title} ${body}`) };
+    const text = normalise(`${title} ${body}`);
+    cached = { title: new Set(tokens(title)), body: new Set(tokens(body)), text, scoped: ` ${normalise(passage.scope ?? '')} ${text} ` };
     passageTokenCache.set(passage, cached);
   }
   return cached;
@@ -64,9 +67,20 @@ export function retrievePassages(knowledge: ConciergeKnowledge, query: PassageQu
   const wanted = tokens(query.text);
   const unique = [...new Set(wanted)];
   const results: ScoredPassage[] = [];
+  const airport = knowledge.airports.find((item) => item.slug === query.airport);
+  const otherTerminals =
+    airport && airport.terminals.length > 1 && query.terminal
+      ? { mine: ` ${normalise(airport.terminals.find((item) => item.id === query.terminal)?.shortName.en ?? '')} `, others: airport.terminals.filter((item) => item.id !== query.terminal).map((item) => ` ${normalise(item.shortName.en)} `) }
+      : undefined;
   for (const passage of knowledge.passages) {
+    if (passage.gap && !query.includeGaps) continue;
     if (!passageApplies(passage, query.airport, knowledge)) continue;
     if (passage.terminal && query.terminal && passage.terminal !== query.terminal) continue;
+    // A step written for KLIA Terminal 1 does not answer a question about Terminal 2.
+    if (otherTerminals && !passage.terminal) {
+      const scoped = passageTokens(passage).scoped;
+      if (otherTerminals.others.some((name) => scoped.includes(name)) && !scoped.includes(otherTerminals.mine)) continue;
+    }
     if (passage.airline && query.airline && passage.airline !== query.airline) continue;
     if (passage.gatePrefixes && query.gatePrefix && !passage.gatePrefixes.includes(query.gatePrefix)) continue;
     const { title, body, text } = passageTokens(passage);
@@ -99,9 +113,12 @@ export function searchKnowledge(
     indexCache.set(knowledge, index);
   }
   const results = searchAll(index, question, { airport: options.airport, types: options.types, limit: 3 });
+  const wanted = new Set(tokens(question));
   return results.groups
     .flatMap((group) => group.hits)
     .filter((hit) => !options.airport || !hit.airport || hit.airport === options.airport)
+    // Fuzzy matching finds something for anything: keep hits that share a real word with the question.
+    .filter((hit) => tokens(`${hit.title} ${hit.summary} ${Array.isArray(hit.keywords) ? hit.keywords.join(' ') : String(hit.keywords ?? '')}`).some((token) => wanted.has(token)))
     .sort((a, b) => b.score - a.score)
     .slice(0, options.limit ?? 4);
 }
