@@ -56,7 +56,7 @@ export function NoticeStrip({ notices, className }: { notices: readonly NoticeVi
   return (
     <section
       aria-label={t('home.strip.label')}
-      className={cn('grid overflow-hidden rounded-lg border border-line-strong bg-surface lg:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)_minmax(0,1fr)]', className)}
+      className={cn('grid overflow-hidden rounded-lg border border-line-strong bg-surface lg:grid-cols-[minmax(0,1.9fr)_minmax(0,1fr)_minmax(0,1fr)]', className)}
     >
       {notice ? (
         <div data-severity={notice.severity} className={cn('flex min-w-0 items-center gap-3 px-3 py-2 sm:px-4 sm:py-2.5', style.box)}>
@@ -71,7 +71,7 @@ export function NoticeStrip({ notices, className }: { notices: readonly NoticeVi
               {notice.provenance === 'demo' ? <ProvenanceTag provenance="demo" length="short" className="ml-1" /> : null}
             </h2>
             <p className="type-body-sm mt-1 font-semibold text-ink sm:text-[0.9375rem]">{notice.title}</p>
-            {period ? <p className="type-data-xs mt-0.5 text-ink-2 max-sm:hidden">{period}</p> : null}
+            {period ? <p className="type-data-xs mt-0.5 text-ink-2 max-sm:hidden [@media(max-height:50rem)]:hidden">{period}</p> : null}
           </div>
           <LocaleLink
             href={`/notices#${notice.id}`}

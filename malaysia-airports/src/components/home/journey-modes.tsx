@@ -43,8 +43,8 @@ export function JourneyModes({ className }: { className?: string }) {
           <label
             key={mode}
             className={cn(
-              'relative flex min-h-13 min-w-0 cursor-pointer flex-col items-center justify-center gap-1 rounded-md px-1 py-1.5 text-center font-semibold text-ink-2 transition-colors duration-fast select-none',
-              'sm:flex-row sm:gap-2.5 sm:px-4',
+              'relative flex min-h-12 min-w-0 cursor-pointer flex-col items-center justify-center gap-0.5 rounded-md px-1 py-1 text-center font-semibold text-ink-2 transition-colors duration-fast select-none',
+              'sm:min-h-13 sm:flex-row sm:gap-2.5 sm:px-4 sm:py-1.5',
               'hover:text-ink has-[:checked]:bg-ink has-[:checked]:text-page has-[:checked]:shadow-xs has-[:focus-visible]:focus-ring',
               'forced-colors:has-[:checked]:forced-color-adjust-none forced-colors:has-[:checked]:bg-[Highlight] forced-colors:has-[:checked]:text-[HighlightText]',
             )}

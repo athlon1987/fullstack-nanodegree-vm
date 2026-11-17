@@ -187,7 +187,7 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
                 { value: 'a', label: t('common.labels.arrivals'), icon: 'plane-landing' },
               ]}
             />
-            <p className="type-body-sm min-w-0 flex-1 basis-56 px-1 text-ink-2 sm:text-right" data-flight-scope="">
+            <p className="type-body-sm min-w-0 flex-1 basis-56 px-1 text-ink-2 max-sm:text-[0.8125rem] max-sm:leading-snug sm:text-right" data-flight-scope="">
               {scopeSentence}
             </p>
           </div>

@@ -274,8 +274,8 @@ export const ms: Dictionary = {
       examplesLabel: 'Cuba',
       scopeNetwork: 'Mencari {direction} di {count} lapangan terbang',
       scopeAirport: 'Mencari {direction} di {airport}',
-      directionDepartures: 'penerbangan berlepas',
-      directionArrivals: 'penerbangan tiba',
+      directionDepartures: 'pelepasan',
+      directionArrivals: 'ketibaan',
       readingAs: 'Dibaca sebagai',
       kinds: {
         flightNumber: 'Nombor penerbangan',
