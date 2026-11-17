@@ -1,0 +1,156 @@
+{
+  "key": "haneda",
+  "name": "Tokyo Haneda Airport",
+  "host": "tokyo-haneda.com",
+  "assessed": "2026-11-17",
+  "assessment_type": "expert assessment",
+  "direct_access": true,
+  "direct_access_note": "First-hand browser access to tokyo-haneda.com: 9 pages captured on desktop and mobile, 11 more read with Playwright, 5 interaction scripts; all HTTP 200, no bot challenge. Blocked by the container's network policy (not site defects): www.googletagmanager.com, j.wovn.io and data.wovn.io (translation layer), platinumaps.jp (HANEDA MAP and floor-guide map iframe), search-tokyo-haneda.dga.jp (site-search backend), Zendesk, YouTube, online shop and reservation domains. The interactive map, site-search result quality, chatbot behaviour and external booking flows were therefore not observable, and some Japanese strings seen on English pages may be translated for real users. Scores are expert assessments, not instrumented tests.",
+  "weighted_score_pct": 78.5,
+  "scores": {
+    "ui": {
+      "score": 4.0,
+      "confidence": "high",
+      "evidence_level": "direct",
+      "evidence": [
+        "direct: current card-based design with consistent blue brand, rounded cards, status pills and terminal chips on desktop and mobile - https://tokyo-haneda.com/en/flight/int_search.html",
+        "direct: 'Real Time Congestion Delay Information' panel uses clear colour chips (yellow Congestion, white Vacant) with a timestamp - https://tokyo-haneda.com/en/",
+        "direct: full-bleed night video hero is striking but pushes the flight search to the bottom edge of the first viewport - https://tokyo-haneda.com/en/",
+        "direct: some Japanese labels and a typo ('View Delay & Cancellation Atatus') on the English homepage in this session; WOVN was blocked, so this may differ for users - https://tokyo-haneda.com/en/"
+      ]
+    },
+    "ux": {
+      "score": 4.0,
+      "confidence": "high",
+      "evidence_level": "direct",
+      "evidence": [
+        "direct: homepage combines flight search, five task tiles and a live panel for delays, rail status and car park occupancy - https://tokyo-haneda.com/en/",
+        "direct: one international flight's status in 4 interactions from the homepage (3 for domestic); exact match for 'JL43' with status, counters and gate - https://tokyo-haneda.com/en/flight/int_search.html",
+        "direct: flight detail turns into a step-by-step 'Sample Plan' for that flight - https://tokyo-haneda.com/en/flight/detail/int_departure.html?searchDt=20261117&flightNumber=JL43",
+        "direct: restaurant search filters for terminal, open now, coupon, halal and vegetarian, with before/after security location - https://tokyo-haneda.com/en/shop_and_dine/search_r.html",
+        "direct: news, timetables and some guides are PDFs; reservations and shops leave for several separate domains - https://tokyo-haneda.com/en/access/index.html"
+      ]
+    },
+    "info": {
+      "score": 4.0,
+      "confidence": "high",
+      "evidence_level": "direct",
+      "evidence": [
+        "direct: connection procedures for four transfer types with steps per arrival terminal - https://tokyo-haneda.com/en/flight/transit/int_int.html",
+        "direct: inter-terminal shuttle with first and last departures and intervals; rail and underground passage options - https://tokyo-haneda.com/en/access/travel_between_terminals/index.html",
+        "direct: parking page with capacity per car park, EV charging, accessible spaces, fees, congestion advice and status 'updated every 3 minutes' - https://tokyo-haneda.com/en/access/parking/index.html",
+        "direct: granular services list (counters, exchange, baggage, relay service, quiet spaces, clinic, lounges and more) - https://tokyo-haneda.com/en/service/facilities/index.html",
+        "direct: special-assistance content by type of need, with operator support links; two reports titled in Japanese only - https://tokyo-haneda.com/en/service/barrier-free_information/index.html"
+      ]
+    },
+    "flight": {
+      "score": 4.5,
+      "confidence": "high",
+      "evidence_level": "direct",
+      "evidence": [
+        "direct: search by route or flight number, date, airline and status (Delayed, Canceled, Divert), domestic and international, plus a monthly schedule - https://tokyo-haneda.com/en/flight/int_search.html",
+        "direct: cards show time, route, status pill (Check-in, Boarding, Final boarding call, Gate Closed), terminal chip, check-in counters, gate and all codeshares - https://tokyo-haneda.com/en/flight/int_search.html",
+        "direct: timestamp '2026/11/17 09:07:18 Current (Japan time)' and result count; delay and cancellation counters by region and city - https://tokyo-haneda.com/en/flight/int_search.html",
+        "direct: flight-specific 'Sample Plan' timeline: duty-free pre-order, route to airport, arrive three hours before, counters, recommended outlets in the flight's terminal, security, customs, gate - https://tokyo-haneda.com/en/flight/detail/int_departure.html?searchDt=20261117&flightNumber=JL43",
+        "direct: the list 'will not be updated automatically' and saved flights or push alerts exist only in the app - https://tokyo-haneda.com/en/other/haneda__navigator_appli.html"
+      ]
+    },
+    "mobile": {
+      "score": 4.0,
+      "confidence": "medium",
+      "evidence_level": "direct + search",
+      "evidence": [
+        "direct: no horizontal overflow on any captured page; flight cards, form controls and status chips are large and legible at 390 px - https://tokyo-haneda.com/en/flight/int_search.html",
+        "direct: accordion menu with search at the top, language switch in the header and special-assistance and FAQ shortcuts - https://tokyo-haneda.com/en/",
+        "direct: 24 of 71 visible targets under 24 px on the flight search page; mobile homepage transfers about 17 MB - https://tokyo-haneda.com/en/",
+        "direct: companion app HANEDA Navigator promoted with flight search, My Flights push notifications, facility search, navigation and points - https://tokyo-haneda.com/en/other/haneda__navigator_appli.html",
+        "search: US App Store listing shows the app as free with not enough ratings to display a score; notifications require member login - https://apps.apple.com/app/id6621228101"
+      ]
+    },
+    "nav": {
+      "score": 3.5,
+      "confidence": "medium",
+      "evidence_level": "direct",
+      "evidence": [
+        "direct: six clear top-level sections, permanent special-assistance and FAQ links, full footer sitemap, breadcrumbs - https://tokyo-haneda.com/en/",
+        "direct: axe homepage: desktop 4 rules (critical 2, serious 2), mobile 5 rules (critical 2, serious 3); special-assistance page 1 serious - https://tokyo-haneda.com/en/service/barrier-free_information/index.html",
+        "direct (lab): Lighthouse accessibility 80; one each of header, nav, main and footer landmarks; one h1 - docs/research/direct/lighthouse/haneda.json",
+        "direct: keyboard order logical with a focus outline on 11 of 12 first stops; no skip link; search field has a Japanese aria-label on the English page - https://tokyo-haneda.com/en/",
+        "direct: site search has category facets but its hosted backend was blocked here, so result quality is not assessed - https://tokyo-haneda.com/en/search/index.html?q=prayer+room"
+      ]
+    },
+    "ai": {
+      "score": 3.5,
+      "confidence": "medium",
+      "evidence_level": "direct + search",
+      "evidence": [
+        "direct: flight-contextual 'Sample Plan' personalises tasks and outlet recommendations by terminal, counters and gate without login - https://tokyo-haneda.com/en/flight/detail/int_departure.html?searchDt=20261117&flightNumber=JL43",
+        "direct: FAQ offers 'Ask a question via chatbot' linking to a Chatbots section; the chatbot was not rendered or tested here - https://tokyo-haneda.com/en/contact/index.html",
+        "direct: accounts, My Flights and points live in the app and online shop, not on the website - https://tokyo-haneda.com/en/other/nav_pointprogram.html",
+        "direct: no generative AI assistant observed on the site; LINE and WeChat official accounts linked - https://tokyo-haneda.com/en/"
+      ]
+    },
+    "commerce": {
+      "score": 4.0,
+      "confidence": "medium",
+      "evidence_level": "direct",
+      "evidence": [
+        "direct: 'Online Shop' is a primary nav item: official HANEDA Shopping store, Haneda Direct Selection and duty-free advance reservations in five languages (external domains, not opened) - https://tokyo-haneda.com/en/",
+        "direct: HANEDA Points: 10 points per 500 yen in airport stores, 1 point per 100 yen online, redeemable, valid 3 years - https://tokyo-haneda.com/en/other/nav_pointprogram.html",
+        "direct: parking reservation for P2-P5, lounge, escort service and special assistance reservation - https://tokyo-haneda.com/en/access/index.html",
+        "direct: flight detail cross-sells duty-free pre-order (5% discount) and recommends outlets near the gate - https://tokyo-haneda.com/en/flight/detail/int_departure.html?searchDt=20261117&flightNumber=JL43",
+        "direct: offers are spread over many domains with no shared basket or sign-in on the site - https://tokyo-haneda.com/en/access/parking/index.html"
+      ]
+    },
+    "perf": {
+      "score": 3.0,
+      "confidence": "medium",
+      "evidence_level": "direct (lab, single container, third-party hosts blocked, indicative only)",
+      "evidence": [
+        "direct (lab): homepage TTFB 0.52 s, FCP 1.2 s desktop / 1.0 s mobile, load 7.5 s / 2.6 s, 185-193 requests, 16.3-17.3 MB - https://tokyo-haneda.com/en/",
+        "direct (lab): flight search page 49 requests, 0.29 MB, FCP 1.5 s desktop / 0.4 s mobile - https://tokyo-haneda.com/en/flight/int_search.html",
+        "direct (lab): Lighthouse mobile median of 3: performance 49 (54, 49, 22), FCP 1.8 s, LCP 24.5 s, TBT 732 ms, CLS 0.062, 13.8 MB, best practices 96 - docs/research/direct/lighthouse/haneda.json",
+        "direct: static hosting on Amazon S3 behind CloudFront; no HSTS, X-Frame-Options, X-Content-Type-Options or CSP header on the HTML response checked - https://tokyo-haneda.com/en/index.html",
+        "direct: all pages, the flight API and the live JSON feeds returned HTTP 200 during the run - https://tokyo-haneda.com/en/"
+      ]
+    }
+  },
+  "steps_to_flight_status": 4,
+  "steps_to_flight_status_note": "International flight from the homepage: International Flights tab, Search by flight number, type the number, search. Domestic flights need 3 (default tab). One more click opens the Sample Plan.",
+  "languages": ["ja", "en", "ko", "zh-Hans", "zh-Hant"],
+  "axe": {
+    "desktop": { "violations": 4, "byImpact": { "critical": 2, "serious": 2 } },
+    "mobile": { "violations": 5, "byImpact": { "critical": 2, "serious": 3 } }
+  },
+  "axe_note": "Homepage, axe-core WCAG A/AA rule violations. Flight search page: 4 on desktop and mobile (critical 2, serious 2). Special-assistance page: 1 serious.",
+  "lighthouse_lab": { "performance": 49, "accessibility": 80, "bestPractices": 96, "seo": 91, "fcp_ms": 1824, "lcp_ms": 24476, "tbt_ms": 732, "cls": 0.062, "note": "lab, single container, third-party hosts blocked, indicative only" },
+  "standouts": [
+    { "name": "Flight-specific 'Sample Plan' timeline", "why": "Turns a flight number into an ordered journey with counters, gate and outlet recommendations for that terminal, without login.", "url": "https://tokyo-haneda.com/en/flight/detail/int_departure.html?searchDt=20261117&flightNumber=JL43" },
+    { "name": "Real-time congestion and delay panel on the homepage", "why": "Delay and cancellation counts, rail service status and car park occupancy in one timestamped block.", "url": "https://tokyo-haneda.com/en/" },
+    { "name": "Flight cards with status pill, counters, gate and codeshares", "why": "All decision-critical fields in one card that reads equally well on mobile; status filters for delayed, cancelled and diverted.", "url": "https://tokyo-haneda.com/en/flight/int_search.html" },
+    { "name": "Restaurant and shop search with open-now, coupon, halal and vegetarian filters", "why": "Answers real passenger questions and states terminal, floor and before/after security.", "url": "https://tokyo-haneda.com/en/shop_and_dine/search_r.html" },
+    { "name": "Special-assistance content organised by need", "why": "Permanent header link; quiet spaces, relay service, Sunflower scheme and an autonomous wheelchair service.", "url": "https://tokyo-haneda.com/en/service/barrier-free_information/index.html" }
+  ],
+  "weaknesses": [
+    "Flight lists do not refresh automatically; saved flights and alerts need the app and a member login",
+    "Homepage is about 16 MB with a video hero; lab LCP 24.5 s on throttled mobile",
+    "Map and site search depend on third-party hosts and do not degrade gracefully when those are unreachable",
+    "Shop, duty-free and parking reservations are spread over many domains with no shared basket or sign-in",
+    "News and timetables are often PDFs; no skip link; no security headers on the HTML response"
+  ],
+  "ideas": [
+    "Make the journey timeline live: update with flight status, add walking times and security waits, and let passengers share it with whoever is collecting them",
+    "Offer web alerts (push, WhatsApp, e-mail) without an app install or account",
+    "Extend the real-time panel to security and immigration waits and to rail and bus departures",
+    "Keep map and search first-party with a list fallback so both work under restrictive networks",
+    "Use one basket and one identity for parking, lounge, fast-track and pre-order, surfaced inside the flight timeline",
+    "Publish notices as accessible HTML, with PDF as an optional download"
+  ],
+  "gaps": [
+    "Interactive map (platinumaps.jp), site-search results, chatbot behaviour, route search and online shops not observable",
+    "WOVN translation layer was blocked, so residual Japanese strings on English pages may not reflect what users see",
+    "Delay, cancellation and diversion status treatments were not live in the sample",
+    "App quality and ratings rest on one search result; no store score available",
+    "Lighthouse and capture timings are lab values from one container with analytics blocked"
+  ]
+}

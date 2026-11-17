@@ -19,7 +19,7 @@
   --serif:"Fraunces","Iowan Old Style","Palatino Linotype",Georgia,serif;
   --sans:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --fs-0:.75rem;--fs-1:.8125rem;--fs-2:.875rem;--fs-3:1rem;--fs-4:1.125rem;--fs-5:1.375rem;
-  --fs-6:clamp(1.75rem,1.1rem + 1.9vw,2.75rem);--fs-7:clamp(1.875rem,.6rem + 4.4vw,4.5rem);
+  --fs-6:clamp(1.75rem,1.1rem + 1.9vw,2.75rem);--fs-7:clamp(2.125rem,.6rem + 4.4vw,4.5rem);
   /* space, radius, motion */
   --s-1:4px;--s-2:8px;--s-3:12px;--s-4:16px;--s-5:24px;--s-6:32px;--s-7:48px;--s-8:80px;--s-9:120px;
   --r-1:6px;--r-2:10px;--r-3:14px;--r-4:22px;--r-pill:999px;
@@ -128,7 +128,7 @@ h1 em,h2 em{font-style:italic;font-weight:330}
 
 /* ───── Hero: the concierge desk ───── */
 .hero{position:relative;padding-block:clamp(14px,3.6vh,36px) var(--s-7)}
-.hero::before{content:"";position:absolute;top:0;right:0;width:min(46%,640px);height:300px;background:var(--gold);opacity:.5;pointer-events:none;
+.hero::before{content:"";position:absolute;top:0;right:0;width:min(40%,560px);height:230px;background:var(--gold);opacity:.42;pointer-events:none;
   -webkit-mask:var(--pat-tabur) 0 0/44px 44px,linear-gradient(200deg,#000,transparent 62%);-webkit-mask-composite:source-in;mask:var(--pat-tabur) 0 0/44px 44px,linear-gradient(200deg,#000,transparent 62%);mask-composite:intersect}
 .hero-head{position:relative;display:grid;grid-template-columns:1fr minmax(0,350px);align-items:end;gap:var(--s-6);margin-bottom:var(--s-5)}
 .hero-head h1{margin-top:14px}
@@ -157,23 +157,27 @@ h1 em,h2 em{font-style:italic;font-weight:330}
 .go{display:flex;align-items:center;gap:10px;margin:7px;padding:0 22px;border-radius:9px;background:var(--action);color:var(--on-action);font-weight:600;white-space:nowrap;transition:background var(--d-1),transform var(--d-1)}
 .go:hover{background:var(--action-h)}.go:active{transform:scale(.985)}
 .desk-msg{margin-top:10px;font-size:var(--fs-1);color:var(--ink-2)}.desk-msg:empty{display:none}
-.fold{display:grid;grid-template-columns:minmax(0,1fr) 372px;gap:var(--s-5);margin-top:var(--s-5)}
+.fold{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:var(--s-5);margin-top:var(--s-5)}
 .fold-main{display:flex;flex-direction:column;gap:var(--s-3)}
-.modes{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:4px;border:1px solid var(--line-2);border-radius:var(--r-3);background:var(--surface)}
+.modes{display:grid;grid-template-columns:1fr 1fr 1fr 1.32fr;gap:4px;padding:4px;border:1px solid var(--line-2);border-radius:var(--r-3);background:var(--surface)}
 .mode{display:flex;align-items:center;justify-content:center;gap:10px;height:46px;border-radius:var(--r-2);font:420 1.0625rem/1.1 var(--serif);color:var(--ink-2);white-space:nowrap;transition:background var(--d-2) var(--e-out),color var(--d-2)}
 .mode:hover{background:var(--paper-2);color:var(--ink)}
 .mode[aria-selected="true"]{background:var(--ink);color:var(--paper)}.mode[aria-selected="true"] .i,.seg input:checked+span .i{color:var(--ink-gold)}
-.qa{flex:1;display:grid;grid-template-columns:1.18fr 1fr 1fr;grid-auto-rows:minmax(88px,1fr);gap:var(--s-3)}
-.qa-t{position:relative;display:flex;align-items:center;gap:12px;padding:0 14px;border:1px solid var(--line);border-radius:var(--r-3);text-decoration:none;transition:border-color var(--d-1),background var(--d-1)}
-.qa-t:hover{border-color:var(--line-2);background:var(--surface)}
+.qa{flex:1;display:grid;grid-template-columns:1.24fr 1fr 1fr;grid-auto-rows:minmax(96px,1fr)}
+.qa-t{position:relative;display:flex;align-items:center;gap:12px;padding:0 16px;border:0 solid var(--line);text-decoration:none;transition:background var(--d-1)}
+.qa-t:hover{background:var(--surface)}
 .qa-i{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--paper-2);flex:none}
 .qa-b{display:grid;gap:1px;min-width:0}.qa-b b{font-weight:600;font-size:.9375rem;line-height:1.25}.qa-b small{font-size:var(--fs-1);line-height:1.3;color:var(--ink-3)}
 .qa-a{margin-left:auto;color:var(--ink-3);display:none}
-.qa-t:nth-child(1){grid-area:1/1}.qa-t:nth-child(2){grid-area:2/1}
-.qa-t:nth-child(-n+2){padding:0 16px;gap:14px;background:var(--surface);border-color:var(--gold);box-shadow:var(--sh-1)}
+.qa-t:nth-child(1){grid-area:1/1;margin:0 12px 6px 0}.qa-t:nth-child(2){grid-area:2/1;margin:6px 12px 0 0}
+.qa-t:nth-child(-n+2){gap:14px;background:var(--surface);border:1px solid var(--gold);border-radius:var(--r-3);box-shadow:var(--sh-1)}
+.qa-t:nth-child(3){border-width:1px;border-top-color:var(--line-2);border-left-color:var(--line-2);border-top-left-radius:var(--r-3)}
+.qa-t:nth-child(4){border-width:1px 1px 1px 0;border-top-color:var(--line-2);border-right-color:var(--line-2);border-top-right-radius:var(--r-3)}
+.qa-t:nth-child(5){border-width:0 1px 1px;border-left-color:var(--line-2);border-bottom-color:var(--line-2);border-bottom-left-radius:var(--r-3)}
+.qa-t:nth-child(6){border-width:0 1px 1px 0;border-right-color:var(--line-2);border-bottom-color:var(--line-2);border-bottom-right-radius:var(--r-3)}
 .qa-t:nth-child(-n+2) .qa-i{width:48px;height:48px;background:var(--gold-wash);color:var(--gold-ink)}.qa-t:nth-child(-n+2) .qa-i .i{width:24px;height:24px}
 .qa-t:nth-child(-n+2) b{font:400 1.3125rem/1.15 var(--serif);letter-spacing:-.01em}.qa-t:nth-child(-n+2) small{font-size:var(--fs-2);color:var(--ink-2)}
-.qa-t:nth-child(-n+2) .qa-a{display:block}
+.qa-t:nth-child(-n+2) .qa-a{display:block;position:absolute;top:14px;right:14px}
 ::view-transition-group(*){animation-duration:.38s;animation-timing-function:var(--e-io)}
 .ctx{display:flex;flex-direction:column;gap:var(--s-3)}
 .notice{flex:1;padding:16px 18px;border-radius:var(--r-3);background:var(--gold-wash)}
@@ -210,8 +214,8 @@ h1 em,h2 em{font-style:italic;font-weight:330}
 .board-ft{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--s-2) var(--s-5);margin-top:var(--s-4);font-size:var(--fs-2);color:var(--ink-2)}
 
 /* ───── Your journey ───── */
-.jr-top{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-7);align-items:start;margin-bottom:var(--s-6)}
-.legend{display:grid;gap:10px}.legend li{display:grid;grid-template-columns:172px 1fr;align-items:center;gap:var(--s-3);font-size:var(--fs-2);color:var(--ink-2)}
+.jr-top{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-7);align-items:end;margin-bottom:var(--s-6)}
+.legend{margin-top:10px;border-top:1px solid var(--line-2)}.legend li{display:grid;grid-template-columns:172px 1fr;align-items:center;gap:var(--s-3);padding:11px 0;border-bottom:1px solid var(--line);font-size:var(--fs-2);color:var(--ink-2)}
 .tg{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px 0 7px;border-radius:var(--r-1);font-size:var(--fs-0);font-weight:600;letter-spacing:.01em;white-space:nowrap;justify-self:start;border:1px solid transparent}
 .tg .i{width:15px;height:15px;stroke-width:1.7}
 .tg-off{background:var(--ink);color:var(--paper)}.tg-est{border-color:var(--ink-2);color:var(--ink)}.tg-sug{border:1px dashed var(--gold);color:var(--gold-ink)}
@@ -220,13 +224,12 @@ h1 em,h2 em{font-style:italic;font-weight:330}
 .jr-cap b{color:var(--ink);font-weight:600}
 .pill-demo{display:inline-flex;align-items:center;height:26px;padding:0 10px;border:1px solid var(--line-2);border-radius:var(--r-pill);font-size:var(--fs-0);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
 .steps{display:grid;grid-template-columns:repeat(6,1fr);margin-top:var(--s-5)}
-.step{position:relative;display:flex;flex-direction:column;align-items:flex-start;padding:38px 18px 0 0}
-.step::before{content:"";position:absolute;left:0;right:0;top:8px;height:1px;background:var(--gold)}
+.step{position:relative;display:flex;flex-direction:column;align-items:flex-start;padding:54px 14px 0 0}
+.step::before{content:"";position:absolute;left:0;right:0;top:18px;height:1px;background:var(--gold)}
 .step:last-child::before{right:40%;background:linear-gradient(90deg,var(--gold),transparent)}
-.step::after{content:"";position:absolute;left:2px;top:3px;width:10px;height:10px;transform:rotate(45deg);background:var(--surface);border:1.5px solid var(--gold)}
-.step:first-child::after{background:var(--gold)}
-.step-k{display:flex;align-items:center;gap:8px;font-size:var(--fs-0);font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
-.step-k .i{width:18px;height:18px;color:var(--ink-2)}
+.step-n{position:absolute;left:0;top:0;display:grid;place-items:center;width:37px;height:37px;border-radius:50%;background:var(--surface);border:1px solid var(--gold);color:var(--gold-ink)}
+.step:first-child .step-n{background:var(--gold-wash)}
+.step-k{font-size:.6875rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
 .step-v{font:400 1.375rem/1.15 var(--serif);letter-spacing:-.01em;margin-top:10px}
 .step-d{font-size:var(--fs-2);color:var(--ink-2);margin:6px 0 14px;text-wrap:pretty}
 .step .tg{margin-top:auto}
@@ -237,7 +240,7 @@ h1 em,h2 em{font-style:italic;font-weight:330}
 .ap-card:hover{transform:translateY(-3px);box-shadow:var(--sh-2);border-color:var(--gold)}
 .ap-card.big{grid-column:span 5;flex-direction:row}
 .ap-art{background:var(--ill-bg);border-bottom:1px solid var(--line);color:var(--ink);line-height:0}
-.big .ap-art{flex:0 0 54%;border-bottom:0;border-right:1px solid var(--line)}
+.big .ap-art{flex:0 0 54%;display:flex;align-items:flex-end;border-bottom:0;border-right:1px solid var(--line)}
 .ill{display:block;width:100%;height:auto;fill:none;stroke:currentColor;stroke-width:1;stroke-linecap:round;stroke-linejoin:round}
 .ill .f{stroke-opacity:.36}.ill .g{stroke:var(--gold);stroke-width:1.2}.ill .gf{fill:var(--gold);stroke:none}.ill .pf{fill:var(--ill-bg)}.ill .pf2{fill:var(--ill-bg);stroke-opacity:.45}
 .ap-body{display:flex;flex-direction:column;gap:4px;padding:16px 18px 14px;flex:1}
@@ -258,7 +261,7 @@ h1 em,h2 em{font-style:italic;font-weight:330}
 .shops{display:grid;grid-template-columns:repeat(5,1fr);gap:var(--s-5)}
 .shop-t{display:flex;flex-direction:column;text-decoration:none}
 .sw{position:relative;display:block;height:140px;border-radius:var(--r-3);background:var(--sw-bg);overflow:hidden;margin-bottom:14px;transition:transform var(--d-2) var(--e-out)}
-.sw::after{content:"";position:absolute;inset:0;background:var(--sw-fg);opacity:var(--sw-o,1);-webkit-mask:var(--sw-pat) center/var(--sw-size);mask:var(--sw-pat) center/var(--sw-size)}
+.sw::after{content:"";position:absolute;inset:0;background:var(--sw-fg);opacity:var(--sw-o,1);-webkit-mask:var(--sw-pat) center/var(--sw-size),linear-gradient(25deg,transparent 8%,#000 62%);-webkit-mask-composite:source-in;mask:var(--sw-pat) center/var(--sw-size),linear-gradient(25deg,transparent 8%,#000 62%);mask-composite:intersect}
 .sw .i{position:absolute;z-index:1;left:12px;bottom:12px;width:40px;height:40px;padding:9px;border-radius:50%;background:var(--surface);color:var(--ink);box-shadow:var(--sh-1)}
 .shop-t:hover .sw{transform:translateY(-3px)}
 .sw-1{--sw-bg:var(--inv-bg);--sw-fg:var(--inv-gold);--sw-pat:var(--pat-tabur);--sw-size:44px 44px}
@@ -296,10 +299,11 @@ h1 em,h2 em{font-style:italic;font-weight:330}
 .ft-note{font-size:var(--fs-2);color:var(--inv-muted);margin-top:10px;max-width:30ch}
 .ft h3{font-size:var(--fs-0);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--inv-muted);margin-bottom:10px}
 .ft-col a{display:flex;align-items:center;min-height:36px;font-size:.9375rem;text-decoration:none;color:var(--inv-fg)}.ft-col a:hover{text-decoration:underline;text-decoration-color:var(--inv-gold);text-underline-offset:5px}
-.ft-mid{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-4) var(--s-7);padding-block:var(--s-5);border-block:1px solid var(--inv-line)}
+.ft-mid{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s-4) var(--s-6);padding-block:var(--s-5);border-block:1px solid var(--inv-line)}
 .ft-mid .ctl{gap:12px}.ft .lang,.ft .tog{--on-bg:var(--inv-fg);--on-fg:var(--foot-bg);border-color:var(--line-2)}
-.ft-mid .corp{margin-left:auto;color:var(--inv-fg);text-decoration-color:var(--inv-gold)}
+.ft .corp{margin-top:10px;color:var(--inv-fg);text-decoration-color:var(--inv-gold)}
 .ft-btm{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px var(--s-5);padding-block:var(--s-5) var(--s-6);font-size:var(--fs-1);color:var(--inv-muted)}
+.legal{display:flex;flex-wrap:wrap;gap:4px var(--s-5)}.legal a{display:inline-flex;align-items:center;min-height:28px}.ft-btm{align-items:center}
 .ft :focus-visible{outline-color:var(--inv-gold)}
 .tabbar{display:none}
 
@@ -318,38 +322,41 @@ h1 em,h2 em{font-style:italic;font-weight:330}
   .ap-card:nth-child(n+6){grid-column:span 3}.all39{grid-template-columns:1fr auto}.all39 .ill{display:none}
   .cc{grid-template-columns:1fr;gap:var(--s-6)}.ft-top{grid-template-columns:repeat(4,1fr)}.ft-brand{grid-column:1/-1}
 }
-@media (max-width:720px){
-  :root{--hdr:61px;--s-8:56px}
-  body{padding-bottom:calc(64px + env(safe-area-inset-bottom))}
-  .hdr-in{height:54px;gap:4px}.brand{font-size:1.125rem;gap:8px}.mark{width:26px;height:26px}
-  .util>:not(.pop):not(.u-menu){display:none}.icon-btn{width:44px;height:44px}.pop-panel{right:-44px}
-  .hero{padding-block:12px var(--s-6)}.hero::before{width:70%;height:160px}
-  .hero-head{grid-template-columns:1fr;margin-bottom:12px}.hero-head .eyebrow,.hero-lede{display:none}.hero-head h1{margin-top:0}
-  .desk{padding:10px 10px 22px;border-radius:18px}.desk::after{left:16px;right:16px;bottom:8px}.desk-top{margin-bottom:8px}.try{display:none}
-  .seg{display:grid;grid-template-columns:1fr 1fr;width:100%}.seg span{height:38px}
-  .desk-main{grid-template-columns:minmax(0,1fr) auto}.ap-field{grid-column:1/-1;border-bottom:1px solid var(--line-2)}
-  .ap-field select{height:54px;padding:18px 40px 0 48px;font-size:1.0625rem}.ap-field .ap-l{left:48px;top:8px}.ap-field>.i:first-of-type{left:14px}
-  .q{border-left:0}.q input{height:54px;font-size:1rem;padding-left:44px}.q>.i{left:14px}.go{margin:5px;padding:0;width:44px;justify-content:center}.go span{display:none}
-  .fold{margin-top:12px;gap:12px}.fold-main{gap:8px}
-  .modes{grid-template-columns:1fr 1fr}.mode{height:44px;font-size:1rem;gap:8px}
-  .qa{grid-template-columns:1fr 1fr;grid-auto-rows:52px;gap:8px}.qa-t,.qa-t:nth-child(-n+2){grid-area:auto;padding:0 10px;gap:8px;border-radius:12px}
-  .qa-i,.qa-t:nth-child(-n+2) .qa-i{width:32px;height:32px}.qa-t:nth-child(-n+2) .qa-i .i{width:20px;height:20px}
-  .qa-b small,.qa-t:nth-child(-n+2) .qa-a{display:none}.qa-b b{font-size:var(--fs-2);line-height:1.2}.qa-t:nth-child(-n+2) b{font-size:1.0625rem;line-height:1.1}
-  .ctx{flex-direction:column;gap:8px}.notice{padding:10px 14px;display:grid;grid-template-columns:1fr auto;align-items:center;column-gap:10px}
-  .notice-k{font-size:.6875rem}.notice h2{font-size:var(--fs-2);margin-top:2px;grid-column:1}.notice p{display:none}.notice .link{grid-area:1/2/3/3;margin:0;min-height:44px}.notice .link span{display:none}
-  .strip{display:grid;grid-template-columns:1fr 1fr}.strip a{padding:8px 10px;gap:8px;min-height:52px}.strip a+a{border-top:0;border-left:1px solid var(--line)}.strip small,.strip .i:last-child{display:none}.strip b{font-size:var(--fs-2);line-height:1.2}
-  .sec-h{grid-template-columns:1fr;margin-bottom:var(--s-5)}.sec-h .link{justify-self:start}
-  .demo{border-radius:17px 17px 0 0;padding:10px 14px}.board{border-radius:18px}
+@media (max-width:900px){
+  .try{display:none}
   .board thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
   .board table,.board tbody{display:block}
   .board tr{display:grid;grid-template-columns:54px auto minmax(0,1fr) auto;grid-template-areas:"time dest dest st" "time fl air gate";gap:3px 10px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line)}
   .board tr:last-child{border-bottom:0}.board td{display:block;padding:0;border:0;font-size:var(--fs-1)}
   .c-time{grid-area:time;align-self:start;font-size:1rem!important;line-height:1.3;white-space:normal}.c-time s{display:block;margin:0}
   .c-dest{grid-area:dest;font-size:1.125rem!important}.c-st{grid-area:st;justify-self:end}.c-fl{grid-area:fl}.c-air{grid-area:air;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.c-air span{display:inline}.mono{display:none!important}.c-gate{grid-area:gate;justify-self:end}
-  .st{height:26px;padding:0 9px 0 6px;font-size:var(--fs-0)}
+  .st{height:26px;padding:0 9px 0 6px;font-size:var(--fs-0)}.st-x{display:none}
+}
+@media (max-width:720px){
+  :root{--hdr:61px;--s-8:56px}
+  body{padding-bottom:calc(64px + env(safe-area-inset-bottom))}
+  .hdr-in{height:54px;gap:4px}.brand{font-size:1.125rem;gap:8px}.mark{width:26px;height:26px}
+  .util>:not(.pop):not(.u-menu){display:none}.icon-btn{width:44px;height:44px}.pop-panel{right:-44px}
+  .hero{padding-block:10px var(--s-6)}.hero::before{width:70%;height:160px}
+  .hero-head{grid-template-columns:1fr;margin-bottom:12px}.hero-head .eyebrow,.hero-lede{display:none}.hero-head h1{margin-top:0}
+  .desk{padding:10px 10px 22px;border-radius:18px}.desk::after{left:16px;right:16px;bottom:8px}.desk-top{margin-bottom:8px}.try{display:none}
+  .seg{display:grid;grid-template-columns:1fr 1fr;width:100%}.seg span{height:38px}
+  .desk-main{grid-template-columns:minmax(0,1fr) auto}.ap-field{grid-column:1/-1;border-bottom:1px solid var(--line-2)}
+  .ap-field select{height:54px;padding:18px 40px 0 48px;font-size:1.0625rem}.ap-field .ap-l{left:48px;top:8px}.ap-field>.i:first-of-type{left:14px}
+  .q{border-left:0}.q input{height:54px;font-size:1rem;padding-left:44px}.q>.i{left:14px}.go{margin:5px;padding:0;width:44px;justify-content:center}.go span{display:none}
+  .fold{margin-top:10px;gap:10px}.fold-main{gap:8px}
+  .modes{grid-template-columns:1fr 1fr}.mode{height:44px;font-size:1rem}
+  .qa{grid-template-columns:1fr 1fr;grid-template-rows:60px;grid-auto-rows:48px}.qa-t,.qa-t:nth-child(-n+2){grid-area:auto;padding:0 10px;gap:8px}.qa-t:nth-child(1){margin:0 4px 8px 0}.qa-t:nth-child(2){margin:0 0 8px 4px}
+  .qa-i,.qa-t:nth-child(-n+2) .qa-i{width:32px;height:32px}.qa-t:nth-child(-n+2) .qa-i .i{width:20px;height:20px}
+  .qa-b small,.qa-t:nth-child(-n+2) .qa-a{display:none}.qa-b b{font-size:var(--fs-2);line-height:1.2}.qa-t:nth-child(-n+2) b{font-size:1.0625rem;line-height:1.1}
+  .ctx{flex-direction:column;gap:8px}.notice{padding:10px 14px;display:grid;grid-template-columns:1fr auto;align-items:center;column-gap:10px}
+  .notice-k{font-size:.6875rem;letter-spacing:.06em;white-space:nowrap}.notice h2{font-size:var(--fs-2);margin-top:2px;grid-column:1}.notice p:not(.notice-k){display:none}.notice .link{grid-area:1/2/3/3;margin:0;min-height:44px;width:44px;justify-content:center}.notice .link span{display:none}
+  .strip{display:grid;grid-template-columns:1fr 1fr}.strip a{padding:6px 10px;gap:8px;min-height:48px}.strip a+a{border-top:0;border-left:1px solid var(--line)}.strip small,.strip .i:last-child{display:none}.strip b{font-size:var(--fs-2);line-height:1.2}
+  .sec-h{grid-template-columns:1fr;margin-bottom:var(--s-5)}.sec-h .link{justify-self:start}
+  .demo{border-radius:17px 17px 0 0;padding:10px 14px}.board{border-radius:18px}
   .jr-top{grid-template-columns:1fr}.legend li{grid-template-columns:1fr;gap:4px}.jr-card{padding:var(--s-4);border-radius:18px}
-  .steps{grid-template-columns:1fr;row-gap:0}.step{padding:0 0 var(--s-5) 30px}.step:last-child{padding-bottom:0}
-  .step::before,.step:last-child::before{left:7px;right:auto;top:8px;bottom:-8px;width:1px;height:auto;background:var(--gold)}.step:last-child::before{display:none}.step::after{left:2px;top:4px}
+  .steps{grid-template-columns:1fr;row-gap:0}.step{padding:0 0 var(--s-5) 52px}.step:last-child{padding-bottom:0}
+  .step::before,.step:last-child::before{left:18px;right:auto;top:8px;bottom:-8px;width:1px;height:auto;background:var(--gold)}.step:last-child::before{display:none}
   .step-v{margin-top:6px}.step-d{margin:4px 0 10px}
   .net{grid-template-columns:1fr 1fr;gap:12px}.ap-card,.ap-card.big,.ap-card:nth-child(n+6){grid-column:span 1}.ap-card.big{grid-column:1/-1}.ap-card:nth-child(7){grid-column:1/-1;flex-direction:row}.ap-card:nth-child(7) .ap-art{flex:0 0 50%;border-bottom:0;border-right:1px solid var(--line)}
   .ap-body{padding:12px 14px}.ap-name{font-size:1.1875rem}.big .ap-name{font-size:1.5rem}
@@ -357,13 +364,14 @@ h1 em,h2 em{font-style:italic;font-weight:330}
   .filters{flex-wrap:nowrap;overflow-x:auto;margin-inline:calc(-1 * var(--gutter));padding-inline:var(--gutter);scrollbar-width:none}.filters .chip{height:44px;flex:none}
   .shops{grid-template-columns:repeat(5,72%);gap:12px}
   .cc-card{padding:var(--s-4);border-radius:18px}
-  .ft-top{grid-template-columns:1fr 1fr;gap:var(--s-5);padding-block:var(--s-6)}.ft-col a{min-height:44px}.ft-mid{gap:var(--s-4)}.ft-mid .corp{margin-left:0}.ft-mid .ctl{width:100%}
+  .ft-top{grid-template-columns:1fr 1fr;gap:var(--s-5);padding-block:var(--s-6)}.ft-col a,.legal a{min-height:44px}.ft-mid{gap:var(--s-4)}.ft-mid .ctl{width:100%}
   .tabbar{position:fixed;z-index:60;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(5,1fr);align-items:end;height:calc(64px + env(safe-area-inset-bottom));padding:0 6px env(safe-area-inset-bottom);background:var(--surface);border-top:1px solid var(--line-2);box-shadow:0 -8px 24px -12px rgba(24,27,58,.25)}
   .tabbar a{display:grid;justify-items:center;align-content:center;gap:3px;height:64px;font-size:.6875rem;font-weight:600;letter-spacing:.01em;color:var(--ink-2);text-decoration:none}
   .tabbar .i{width:22px;height:22px}
   .tabbar .tb-main{color:var(--ink)}.tabbar .tb-main .i{width:50px;height:50px;padding:14px;margin-top:-22px;border-radius:50%;background:var(--action);color:var(--on-action);box-shadow:0 0 0 5px var(--surface),0 0 0 6px var(--gold)}
 }
-@media (max-width:374px){.brand{font-size:1rem}.mode{font-size:.9375rem;gap:6px}.mode .i{width:18px;height:18px}}
+@media (max-width:430px){.mode .i{display:none}}
+@media (max-width:374px){.brand{font-size:1rem}.mode{font-size:.875rem}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
 html[data-motion="reduce"]{scroll-behavior:auto}html[data-motion="reduce"] *,html[data-motion="reduce"] *::before,html[data-motion="reduce"] *::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
 </style>
@@ -493,9 +501,9 @@ html[data-motion="reduce"]{scroll-behavior:auto}html[data-motion="reduce"] *,htm
       </div>
       <aside class="ctx" aria-label="Notices and guidance">
         <article class="notice">
-          <p class="notice-k"><svg class="i i-s"><use href="#i-info"/></svg>Service notice <span aria-hidden="true">·</span> KLIA Terminal 1</p>
+          <p class="notice-k"><svg class="i i-s"><use href="#i-info"/></svg><span>Service notice · KLIA Terminal 1</span></p>
           <h2>The Aerotrain is running 24 hours</h2>
-          <p>Service between the main terminal and the satellite building returned to round-the-clock operation on 1 June 2026.</p>
+          <p>Between the main terminal and the satellite building, around the clock since 1 June 2026.</p>
           <a class="link" href="#" aria-label="Terminal 1 guide"><span>Terminal 1 guide</span><svg class="i i-s"><use href="#i-arrow"/></svg></a>
         </article>
         <div class="strip">
@@ -526,7 +534,7 @@ html[data-motion="reduce"]{scroll-behavior:auto}html[data-motion="reduce"] *,htm
           <tr><td class="c-time">14:20</td><td class="c-fl">EK 343</td><td class="c-dest">Dubai</td><td class="c-air"><span><span class="mono" aria-hidden="true">EK</span>Emirates</span></td><td class="c-gate">T1<i aria-hidden="true">·</i>C21</td><td class="c-st"><span class="st st-cls"><svg class="i"><use href="#i-minus"/></svg>Gate closed</span></td></tr>
           <tr><td class="c-time">14:35</td><td class="c-fl">MH 2</td><td class="c-dest">London Heathrow</td><td class="c-air"><span><span class="mono" aria-hidden="true">MH</span>Malaysia Airlines</span></td><td class="c-gate">T1<i aria-hidden="true">·</i>C12</td><td class="c-st"><span class="st st-brd"><svg class="i"><use href="#i-board"/></svg>Boarding</span></td></tr>
           <tr><td class="c-time">14:50</td><td class="c-fl">AK 5106</td><td class="c-dest">Kota Kinabalu</td><td class="c-air"><span><span class="mono" aria-hidden="true">AK</span>AirAsia</span></td><td class="c-gate">T2<i aria-hidden="true">·</i>J8</td><td class="c-st"><span class="st st-ok"><svg class="i"><use href="#i-ok"/></svg>On time</span></td></tr>
-          <tr><td class="c-time"><s><span class="sr">Was </span>15:05</s><span class="sr"> now </span>15:40</td><td class="c-fl">OD 2104</td><td class="c-dest">Penang</td><td class="c-air"><span><span class="mono" aria-hidden="true">OD</span>Batik Air</span></td><td class="c-gate">T1<i aria-hidden="true">·</i>A5</td><td class="c-st"><span class="st st-dly"><svg class="i"><use href="#i-clock"/></svg>Delayed, now 15:40</span></td></tr>
+          <tr><td class="c-time"><s><span class="sr">Was </span>15:05</s><span class="sr"> now </span>15:40</td><td class="c-fl">OD 2104</td><td class="c-dest">Penang</td><td class="c-air"><span><span class="mono" aria-hidden="true">OD</span>Batik Air</span></td><td class="c-gate">T1<i aria-hidden="true">·</i>A5</td><td class="c-st"><span class="st st-dly"><svg class="i"><use href="#i-clock"/></svg><span>Delayed<span class="st-x">, now</span> 15:40</span></span></td></tr>
           <tr><td class="c-time">15:10</td><td class="c-fl">SQ 107</td><td class="c-dest">Singapore</td><td class="c-air"><span><span class="mono" aria-hidden="true">SQ</span>Singapore Airlines</span></td><td class="c-gate">T1<i aria-hidden="true">·</i>C4</td><td class="c-st"><span class="st st-ok"><svg class="i"><use href="#i-ok"/></svg>On time</span></td></tr>
           <tr class="is-cxl"><td class="c-time"><s>15:25</s></td><td class="c-fl">AK 5206</td><td class="c-dest">Kuching</td><td class="c-air"><span><span class="mono" aria-hidden="true">AK</span>AirAsia</span></td><td class="c-gate">T2<i aria-hidden="true">·</i>K3</td><td class="c-st"><span class="st st-cxl"><svg class="i"><use href="#i-x"/></svg>Cancelled</span></td></tr>
           <tr><td class="c-time">15:40</td><td class="c-fl">JL 724</td><td class="c-dest">Tokyo Narita</td><td class="c-air"><span><span class="mono" aria-hidden="true">JL</span>Japan Airlines</span></td><td class="c-gate">T1<i aria-hidden="true">·</i>C17</td><td class="c-st"><span class="st st-ok"><svg class="i"><use href="#i-ok"/></svg>On time</span></td></tr>
@@ -548,21 +556,21 @@ html[data-motion="reduce"]{scroll-behavior:auto}html[data-motion="reduce"] *,htm
       <div><p class="eyebrow"><span class="no">02</span>Plan your journey</p><h2 id="h-journey">From your door to the gate, <em>laid out plainly</em></h2>
         <p class="lede" style="margin-top:16px">Add a flight and we set out each step in order, and tell you how sure we are of each one. What is an instruction, what is an estimate and what is only a suggestion are never blurred together.</p>
         <a class="link" href="#" style="margin-top:8px">Plan my journey<svg class="i i-s"><use href="#i-arrow"/></svg></a></div>
-      <ul class="legend" aria-label="How to read the labels">
+      <div><p class="step-k">How to read the labels</p><ul class="legend">
         <li><span class="tg tg-off"><svg class="i"><use href="#i-shield"/></svg>Official instruction</span>From the airport, your airline or the authorities. Please follow it.</li>
         <li><span class="tg tg-est"><svg class="i"><use href="#i-approx"/></svg>Estimated guidance</span>Our best estimate from current conditions. It can change.</li>
         <li><span class="tg tg-sug"><svg class="i"><use href="#i-idea"/></svg>Suggestion</span>A helpful idea for a smoother trip. Take it or leave it.</li>
-      </ul>
+      </ul></div>
     </div>
     <div class="jr-card">
       <p class="jr-cap"><span><b>MH 2</b> Kuala Lumpur to London Heathrow, departing 14:35</span><span class="pill-demo">Illustrative journey</span></p>
       <ol class="steps">
-        <li class="step"><p class="step-k"><svg class="i"><use href="#i-building"/></svg>Terminal</p><p class="step-v">KLIA Terminal 1</p><p class="step-d">Confirmed by your airline for this flight.</p><span class="tg tg-off"><svg class="i"><use href="#i-shield"/></svg>Official instruction</span></li>
-        <li class="step"><p class="step-k"><svg class="i"><use href="#i-clock"/></svg>When to arrive</p><p class="step-v">By 11:35</p><p class="step-d">Worked back from your departure, the day and how busy we expect to be.</p><span class="tg tg-est"><svg class="i"><use href="#i-approx"/></svg>Estimated guidance</span></li>
-        <li class="step"><p class="step-k"><svg class="i"><use href="#i-train"/></svg>How to get there</p><p class="step-v">Rail or road</p><p class="step-d">Your options side by side, with the steadiest one at that hour picked out.</p><span class="tg tg-sug"><svg class="i"><use href="#i-idea"/></svg>Suggestion</span></li>
-        <li class="step"><p class="step-k"><svg class="i"><use href="#i-ticket"/></svg>Check-in</p><p class="step-v">Online or at the desk</p><p class="step-d">Counter row and closing time, as published by your airline.</p><span class="tg tg-off"><svg class="i"><use href="#i-shield"/></svg>Official instruction</span></li>
-        <li class="step"><p class="step-k"><svg class="i"><use href="#i-scan"/></svg>Security and immigration</p><p class="step-v">About 25 minutes</p><p class="step-d">A typical time to clear both at that hour, refreshed as the day changes.</p><span class="tg tg-est"><svg class="i"><use href="#i-approx"/></svg>Estimated guidance</span></li>
-        <li class="step"><p class="step-k"><svg class="i"><use href="#i-gate"/></svg>Gate</p><p class="step-v">C12</p><p class="step-d">Shown the moment it is confirmed, with a nudge when it is time to walk.</p><span class="tg tg-off"><svg class="i"><use href="#i-shield"/></svg>Official instruction</span></li>
+        <li class="step"><span class="step-n" aria-hidden="true"><svg class="i"><use href="#i-building"/></svg></span><p class="step-k">Terminal</p><p class="step-v">KLIA Terminal 1</p><p class="step-d">Confirmed by your airline for this flight.</p><span class="tg tg-off"><svg class="i"><use href="#i-shield"/></svg>Official instruction</span></li>
+        <li class="step"><span class="step-n" aria-hidden="true"><svg class="i"><use href="#i-clock"/></svg></span><p class="step-k">When to arrive</p><p class="step-v">By 11:35</p><p class="step-d">Worked back from your departure, the day and how busy we expect to be.</p><span class="tg tg-est"><svg class="i"><use href="#i-approx"/></svg>Estimated guidance</span></li>
+        <li class="step"><span class="step-n" aria-hidden="true"><svg class="i"><use href="#i-train"/></svg></span><p class="step-k">How to get there</p><p class="step-v">Rail or road</p><p class="step-d">Your options side by side, with the steadiest one at that hour picked out.</p><span class="tg tg-sug"><svg class="i"><use href="#i-idea"/></svg>Suggestion</span></li>
+        <li class="step"><span class="step-n" aria-hidden="true"><svg class="i"><use href="#i-ticket"/></svg></span><p class="step-k">Check-in</p><p class="step-v">Online or desk</p><p class="step-d">Counter row and closing time, as published by your airline.</p><span class="tg tg-off"><svg class="i"><use href="#i-shield"/></svg>Official instruction</span></li>
+        <li class="step"><span class="step-n" aria-hidden="true"><svg class="i"><use href="#i-scan"/></svg></span><p class="step-k">Security and immigration</p><p class="step-v">About 25 minutes</p><p class="step-d">A typical time to clear both at that hour, refreshed as the day changes.</p><span class="tg tg-est"><svg class="i"><use href="#i-approx"/></svg>Estimated guidance</span></li>
+        <li class="step"><span class="step-n" aria-hidden="true"><svg class="i"><use href="#i-gate"/></svg></span><p class="step-k">Gate</p><p class="step-v">C12</p><p class="step-d">Shown the moment it is confirmed, with a nudge when it is time to walk.</p><span class="tg tg-off"><svg class="i"><use href="#i-shield"/></svg>Official instruction</span></li>
       </ol>
     </div>
   </div>
@@ -604,9 +612,9 @@ html[data-motion="reduce"]{scroll-behavior:auto}html[data-motion="reduce"] *,htm
     <div class="shops" tabindex="0" role="group" aria-label="Places to eat and shop">
       <a class="shop-t" href="#"><span class="sw sw-1" aria-hidden="true"><svg class="i"><use href="#i-dine"/></svg></span><span class="shop-k">Eat</span><b>Malaysian kitchens</b><small>Nasi lemak, laksa and teh tarik. A first taste, or a last one for the road.</small></a>
       <a class="shop-t" href="#"><span class="sw sw-2" aria-hidden="true"><svg class="i"><use href="#i-cup"/></svg></span><span class="shop-k">Drink</span><b>Coffee and kopitiam</b><small>A quiet cup and kaya toast within sight of the departures screen.</small></a>
-      <a class="shop-t" href="#"><span class="sw sw-3" aria-hidden="true"><svg class="i"><use href="#i-bag"/></svg></span><span class="shop-k">Shop</span><b>Duty free and beauty</b><small>Fragrance, skincare and confectionery. See fares and offers in store.</small></a>
+      <a class="shop-t" href="#"><span class="sw sw-3" aria-hidden="true"><svg class="i"><use href="#i-bag"/></svg></span><span class="shop-k">Shop</span><b>Duty free and beauty</b><small>Fragrance, skincare and confectionery from familiar names.</small></a>
       <a class="shop-t" href="#"><span class="sw sw-4" aria-hidden="true"><svg class="i"><use href="#i-gift"/></svg></span><span class="shop-k">Take home</span><b>Craft and gifts</b><small>Batik, pewter and woven pieces made by Malaysian hands.</small></a>
-      <a class="shop-t" href="#"><span class="sw sw-5" aria-hidden="true"><svg class="i"><use href="#i-book"/></svg></span><span class="shop-k">Essentials</span><b>Books and travel needs</b><small>Adapters, something to read, and whatever stayed on the kitchen table.</small></a>
+      <a class="shop-t" href="#"><span class="sw sw-5" aria-hidden="true"><svg class="i"><use href="#i-book"/></svg></span><span class="shop-k">Essentials</span><b>Books and essentials</b><small>Adapters, something to read, and whatever stayed on the kitchen table.</small></a>
     </div>
   </div>
 </section>
@@ -646,6 +654,7 @@ html[data-motion="reduce"]{scroll-behavior:auto}html[data-motion="reduce"] *,htm
         <a class="brand" href="#" aria-label="Malaysia Airports, home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M3.5 27 16 9l12.5 18"/><path d="M10.5 27l5.5-8 5.5 8"/><path class="gd" d="M16 1l2.6 3.2L16 7.4l-2.6-3.2z"/></svg><span>Malaysia Airports</span></a>
         <p class="promise">Hosting Joyful Connections</p>
         <p class="ft-note">39 airports across Malaysia, welcoming the world in Visit Malaysia 2026.</p>
+        <a class="link corp" href="#">Malaysia Airports corporate site<svg class="i i-s"><use href="#i-ext"/></svg></a>
       </div>
       <nav class="ft-col" aria-label="Flights"><h3>Flights</h3><ul><li><a href="#">Departures</a></li><li><a href="#">Arrivals</a></li><li><a href="#">Track a flight</a></li><li><a href="#">Airlines</a></li></ul></nav>
       <nav class="ft-col" aria-label="Plan your journey"><h3>Plan your journey</h3><ul><li><a href="#">Journey planner</a></li><li><a href="#">Getting to the airport</a></li><li><a href="#">Parking</a></li><li><a href="#">Special assistance</a></li></ul></nav>
@@ -657,11 +666,10 @@ html[data-motion="reduce"]{scroll-behavior:auto}html[data-motion="reduce"] *,htm
       <div class="ctl"><span class="ctl-l">Theme</span><div class="tog" role="group" aria-label="Theme"><button type="button" data-set="theme" data-v="light" aria-pressed="false"><svg class="i i-s"><use href="#i-sun"/></svg>Light</button><button type="button" data-set="theme" data-v="dark" aria-pressed="false"><svg class="i i-s"><use href="#i-moon"/></svg>Dark</button></div></div>
 <div class="ctl"><span class="ctl-l">Text size</span><div class="tog" role="group" aria-label="Text size"><button type="button" data-set="text" data-v="md" aria-pressed="true">Default</button><button type="button" data-set="text" data-v="lg" aria-pressed="false">Larger</button></div></div>
 <div class="ctl"><span class="ctl-l">Motion</span><div class="tog" role="group" aria-label="Motion"><button type="button" data-set="motion" data-v="full" aria-pressed="true">Full</button><button type="button" data-set="motion" data-v="reduce" aria-pressed="false">Reduced</button></div></div>
-      <a class="link corp" href="#">Malaysia Airports corporate site<svg class="i i-s"><use href="#i-ext"/></svg></a>
     </div>
     <div class="ft-btm">
       <p>Concept design for demonstration. Not an official Malaysia Airports website. Flight information shown is illustrative.</p>
-      <p><a href="#">Privacy</a> &nbsp;·&nbsp; <a href="#">Terms</a> &nbsp;·&nbsp; <a href="#">Accessibility statement</a></p>
+      <p class="legal"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Accessibility statement</a></p>
     </div>
   </div>
 </footer>
@@ -699,6 +707,7 @@ html[data-motion="reduce"]{scroll-behavior:auto}html[data-motion="reduce"] *,htm
   dirs.forEach(r=>r.addEventListener("change",()=>setDir(r.value)));
   $$("[data-q]").forEach(b=>b.addEventListener("click",()=>{q.value=b.dataset.q;q.focus()}));
   $$("[data-focus-q]").forEach(a=>a.addEventListener("click",()=>setTimeout(()=>q.focus({preventScroll:true}),still()?0:350)));
+  const narrow=matchMedia("(max-width:720px)"),ph=()=>q.placeholder=narrow.matches?"Flight, place, airline or route":"Flight number, destination, airline or route";ph();narrow.addEventListener("change",ph);
   $("#search").addEventListener("submit",e=>{e.preventDefault();msg.textContent="This concept shows sample results only. See the demonstration board below."});
   $$("[data-demo]").forEach(f=>f.addEventListener("submit",e=>e.preventDefault()));
   /* journey modes reorganise the quick actions */

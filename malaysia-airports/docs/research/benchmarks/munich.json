@@ -1,0 +1,154 @@
+{
+  "key": "munich",
+  "name": "Munich Airport",
+  "host": "www.munich-airport.com",
+  "assessed": "2026-11-17",
+  "assessment_type": "expert assessment",
+  "direct_access": true,
+  "direct_access_note": "First-hand browser access to www.munich-airport.com: 9 pages captured on desktop and mobile, 13 more read with Playwright, 4 interaction scripts; all HTTP 200, no bot challenge. Blocked by the container's network policy (not site defects): code.etracker.com (analytics), cdn.eye-able.com (Visual help toolbar), www.munich-airport.de (German site and host of the embedded digital map), parken.munich-airport.de (parking booking engine). The digital map, the Visual help tool, the chatbot widget and the parking checkout were therefore not observable. Captures were taken about 01:00 local time, so only the statuses 'planned' and 'departed' were live. Scores are expert assessments, not instrumented tests.",
+  "weighted_score_pct": 66.5,
+  "scores": {
+    "ui": {
+      "score": 3.5,
+      "confidence": "high",
+      "evidence_level": "direct",
+      "evidence": [
+        "direct: distinctive, restrained brand system (M mark, navy and lavender, one typeface) applied consistently across homepage, flight pages and menus - https://www.munich-airport.com/",
+        "direct: six large icon quick links (Departure, Arrival, Parking, Pick-up and drop-off, Experience, Accessible travel) give the homepage a clear visual hierarchy - https://www.munich-airport.com/",
+        "direct: flight tables are plain; status is lower-case black text with no colour, icon or pill - https://www.munich-airport.com/all-departures-1450598",
+        "direct: a full-width photo carousel fills the first viewport on mobile, and the same h2 is repeated four times in the DOM - https://www.munich-airport.com/"
+      ]
+    },
+    "ux": {
+      "score": 3.5,
+      "confidence": "high",
+      "evidence_level": "direct",
+      "evidence": [
+        "direct: flight status for one flight in 2 interactions (type flight number, press SEARCH) with results inline on the homepage, but the module sits two to three screens below the fold - https://www.munich-airport.com/",
+        "direct: parking booking widget (dates, times, 'Find your parking space') on the homepage and parking page - https://www.munich-airport.com/parking-260363",
+        "direct: four top-level tasks, breadcrumbs, and Category / Location / A-Z filters on shops and services - https://www.munich-airport.com/facilities-services-261950",
+        "direct: the map page stayed blank because the map iframe is consent-gated on a second domain, with no fallback - https://www.munich-airport.com/airport-map-261352",
+        "direct: on mobile the quick links show two of six at a time in a swipe carousel - https://www.munich-airport.com/"
+      ]
+    },
+    "info": {
+      "score": 4.0,
+      "confidence": "high",
+      "evidence_level": "direct",
+      "evidence": [
+        "direct: accessible-travel page covers the 48-hour rule, PRM codes, Mobility Service, service animals, battery wheelchairs and boarding-bridge incline - https://www.munich-airport.com/accessible-travel-260945",
+        "direct: connection guidance with shuttle bus and shuttle train frequencies, operating hours and ride times - https://www.munich-airport.com/connecting-flights-260553",
+        "direct: public transport page with S1/S8 intervals, journey time and operator links; dated disruption notices (A99 closure 20-23 Nov 2026) - https://www.munich-airport.com/public-transport-260822",
+        "direct: flight detail adds gate, check-in area, airline contact, weather at both airports and aircraft facts - https://www.munich-airport.com/flight-details-75388?flight_id=10323897.0",
+        "direct: directories of more than 150 shops and service facilities and about 60 restaurants, plus FAQ and an accessibility declaration - https://www.munich-airport.com/shops-261891"
+      ]
+    },
+    "flight": {
+      "score": 3.5,
+      "confidence": "medium",
+      "evidence_level": "direct",
+      "evidence": [
+        "direct: arrivals, departures and a four-week flight plan searchable by date, time range, airport, airline and flight number, each with autocomplete - https://www.munich-airport.com/flights-240142",
+        "direct: per flight: airline, destination, flight number with aircraft type, status, scheduled | expected, time at the other airport, terminal area, Track toggle - https://www.munich-airport.com/all-departures-1450598",
+        "direct: 'Track flight' stores the flight in the browser and shows a tracker strip under the header on every page, no login - https://www.munich-airport.com/all-departures-1450598",
+        "direct: freshness control 'Just updated - Last update 0 min. ago' and Print - https://www.munich-airport.com/all-arrivals-1450715",
+        "direct: only 'planned' and 'departed' were live at capture time; status has no visual treatment; no e-mail or push alerts and no live security waiting times were found - https://www.munich-airport.com/security-screening-and-passport-control-3949908"
+      ]
+    },
+    "mobile": {
+      "score": 3.0,
+      "confidence": "medium",
+      "evidence_level": "direct + search",
+      "evidence": [
+        "direct: no horizontal overflow on any captured page; flight tables reflow into label/value cards with the Track toggle - https://www.munich-airport.com/all-departures-1450598",
+        "direct: full-screen menu with drill-down arrows, audience switch, language and Visual help; search field always visible in the header - https://www.munich-airport.com/",
+        "direct: viewport meta sets maximum-scale=1 (pinch zoom disabled); axe target-size fails on 13 nodes on the mobile homepage; 28 of 92 visible targets under 24 px on the parking page - https://www.munich-airport.com/parking-260363",
+        "direct: the hero carousel takes the whole first screen on mobile - https://www.munich-airport.com/",
+        "direct + search: no passenger app is promoted on the site (on-site search for 'app' returns an employee Airport Community App); one web search did not confirm a current passenger app or store rating - https://www.munich-airport.com/search-results-75585"
+      ]
+    },
+    "nav": {
+      "score": 3.0,
+      "confidence": "high",
+      "evidence_level": "direct",
+      "evidence": [
+        "direct: site search with typeahead and section-labelled results; 'prayer room' returns Prayer and Meditation Room, Muslim prayer room, Chapel, Chaplaincy; 'parking' 298 results with the booking page first - https://www.munich-airport.com/search-results-75585",
+        "direct: flight-like queries are routed to flight search, but 'LH 2000' listed London (LHR) flights and 'London' returned press releases - https://www.munich-airport.com/search-results-75585",
+        "direct: axe homepage: desktop 10 rules (critical 4, serious 5, moderate 1), mobile 13 rules (critical 6, serious 6, moderate 1); departures page 9 and 12 rules - https://www.munich-airport.com/",
+        "direct (lab): Lighthouse accessibility 47 - docs/research/direct/lighthouse/munich.json",
+        "direct: keyboard order is logical but no skip link received focus in the first 12 stops; focus shown by underline and colour only; header search field has no label; 200 of 202 images on the departures page lack alt - https://www.munich-airport.com/all-departures-1450598"
+      ]
+    },
+    "ai": {
+      "score": 2.5,
+      "confidence": "medium",
+      "evidence_level": "direct",
+      "evidence": [
+        "direct: contact page describes a 24-hour 'Chatbot - Your digital assistant' that is 'still in the learning phase'; the dialog icon was not rendered in this session, so it was not tested - https://www.munich-airport.com/your-contact-to-munich-airport-835056",
+        "direct: device-level personalisation only: tracked flights kept in localStorage and shown in a header strip - https://www.munich-airport.com/all-departures-1450598",
+        "direct: no account, saved trips or personalised journey timeline anywhere on the passenger site - https://www.munich-airport.com/",
+        "direct: 'Visual help' assistive toolbar (Eye-Able) is offered in the header; the script host was blocked here - https://www.munich-airport.com/"
+      ]
+    },
+    "commerce": {
+      "score": 3.0,
+      "confidence": "medium",
+      "evidence_level": "direct",
+      "evidence": [
+        "direct: online parking booking from the homepage with discount code, free cancellation until entry and 'Manage my booking'; checkout host not reachable here - https://www.munich-airport.com/parking-260363",
+        "direct: Miles & More earn and redeem in participating shops, with a 5 miles per euro promotion to 31 Dec 2026 - https://www.munich-airport.com/miles-more-25406351",
+        "direct: Home Delivery is arranged in the shop (DHL, EUR 4.95, Germany only); no online shop or reserve-and-collect found - https://www.munich-airport.com/home-delivery-5231263",
+        "direct: VipWing reservation is a PDF form; lounges are listed but not sold online - https://www.munich-airport.com/vipwing-719148"
+      ]
+    },
+    "perf": {
+      "score": 3.0,
+      "confidence": "medium",
+      "evidence_level": "direct (lab, single container, third-party hosts blocked, indicative only)",
+      "evidence": [
+        "direct (lab): homepage TTFB 1.29 s, FCP 3.5 s desktop / 2.4 s mobile, load 6.5 s / 5.2 s, 55 requests, 3.7-4.1 MB - https://www.munich-airport.com/",
+        "direct (lab): departures page FCP 1.8 s, load 3.2 s, 1.2 MB - https://www.munich-airport.com/all-departures-1450598",
+        "direct (lab): Lighthouse mobile median of 3: performance 47, FCP 6.9 s, LCP 8.7 s, TBT 389 ms, CLS 0, best practices 96 - docs/research/direct/lighthouse/munich.json",
+        "direct: HSTS (max-age 31536000), X-Frame-Options SAMEORIGIN and nosniff present; no Content-Security-Policy seen; Server header discloses nginx and Phusion Passenger versions - https://www.munich-airport.com/",
+        "direct: every page and flight XHR returned HTTP 200 during the run - https://www.munich-airport.com/"
+      ]
+    }
+  },
+  "steps_to_flight_status": 2,
+  "steps_to_flight_status_note": "Homepage flight module: type flight number, press SEARCH; result row appears inline with status, times and area. Requires scrolling to the module first; one more click opens the detail page with the gate.",
+  "languages": ["en", "de"],
+  "axe": {
+    "desktop": { "violations": 10, "byImpact": { "critical": 4, "serious": 5, "moderate": 1 } },
+    "mobile": { "violations": 13, "byImpact": { "critical": 6, "serious": 6, "moderate": 1 } }
+  },
+  "axe_note": "Homepage, axe-core WCAG A/AA rule violations. Departures page: desktop 9 (critical 4, serious 4, moderate 1), mobile 12 (critical 5, serious 6, moderate 1).",
+  "lighthouse_lab": { "performance": 47, "accessibility": 47, "bestPractices": 96, "seo": 85, "fcp_ms": 6936, "lcp_ms": 8736, "tbt_ms": 389, "cls": 0, "note": "lab, single container, third-party hosts blocked, indicative only" },
+  "standouts": [
+    { "name": "Login-free flight tracking strip", "why": "One toggle pins a flight under the header on every page using browser storage; no account or app needed.", "url": "https://www.munich-airport.com/all-departures-1450598" },
+    { "name": "Inline flight search on the homepage", "why": "Airport, airline and flight-number autocomplete with results rendered in place and a four-week schedule.", "url": "https://www.munich-airport.com/" },
+    { "name": "Rich flight detail page", "why": "Joins gate, check-in area, airline contact, weather at both ends and aircraft facts on one page.", "url": "https://www.munich-airport.com/flight-details-75388?flight_id=10323897.0" },
+    { "name": "Site search with typeahead and flight-intent routing", "why": "Section-labelled results; 'prayer room' returns the four right facilities first; flight-like queries go to flight search.", "url": "https://www.munich-airport.com/search-results-75585" },
+    { "name": "Operationally detailed accessible-travel content", "why": "PRM codes, notification rules, Sunflower programme and accessible checkpoint, promoted as a homepage quick link, with a published accessibility declaration.", "url": "https://www.munich-airport.com/accessible-travel-260945" }
+  ],
+  "weaknesses": [
+    "Technical accessibility: 10-13 axe rule violations per page with 4-6 critical, Lighthouse accessibility 47, pinch zoom disabled, no visible skip link, airline logos without alt text",
+    "Flight status is plain lower-case text with no colour or icon; no alerts beyond the on-page strip; no live security waiting times",
+    "Digital map is consent-gated on a second domain and the map page has no fallback list or plan when it does not load",
+    "Only two languages (English, German) for an intercontinental hub",
+    "Commerce stops at parking: no online shop or reserve-and-collect; lounge and VIP services by PDF or offline"
+  ],
+  "ideas": [
+    "Keep the login-free tracking idea but add opt-in web push or WhatsApp alerts and a colour-plus-icon status system that works for colour-blind users",
+    "Put the flight search field in the first viewport on mobile and desktop, ahead of campaign imagery",
+    "Ship a first-party, consent-free map with step-free routing, walking times and a 'show on map' link on every facility page",
+    "Make accessibility measurable: zero critical axe findings as a release gate, a visible skip link and a strong focus ring",
+    "Answer destination and flight-number queries in site search with a live flight card instead of press releases",
+    "Join parking, lounge and fast-track in one basket tied to the tracked flight"
+  ],
+  "gaps": [
+    "Digital map, Visual help toolbar, chatbot widget and parking checkout not observable (blocked hosts or consent gating)",
+    "Only 'planned' and 'departed' statuses were live; delay, cancellation and boarding treatments unverified",
+    "Absence of a passenger app is inferred from the site and one inconclusive search, not confirmed in app stores",
+    "Lighthouse and capture timings are lab values from one container with analytics blocked"
+  ]
+}

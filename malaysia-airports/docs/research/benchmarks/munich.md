@@ -135,7 +135,7 @@ URL pattern: https://www.munich-airport.com/search-results-75585?search_form_pre
 |---|---|
 | prayer room | 6 results; top five: The Prayer and Meditation Room, Muslim prayer room, Facilities & Services behind security check, Chapel, Chaplaincy. Accurate. |
 | parking | 298 results; top: Parking (booking), Contact Parking, Visitors Park. Right first hit, long undifferentiated tail. |
-| London | 18 results, led by press releases that mention London. The destination is not treated as flight intent. |
+| London | 18 results, led by press releases that mention London (among them "Best Airport in Central Europe" at the 2026 World Airport Awards). The destination is not treated as flight intent. |
 | LH 2000 | Redirected to "Search results flight plan", but the list showed London (LHR) flights (VL 2470, BA 957, LH 2472), not LH 2000. Flight intent is detected, matching is imprecise. |
 | wheelchair | 12 results; top: Wheelchairs, Barrier-free travel. Accurate. |
 
