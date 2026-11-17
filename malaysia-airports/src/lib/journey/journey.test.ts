@@ -6,7 +6,8 @@ import { LHR, PEN, makeFlight, type FlightSeed } from '@/lib/testing/fixtures';
 import { JOURNEY_MODES, buildJourney, type JourneyStep } from './index';
 
 const kul = getAirportContent('kul') as AirportContent;
-const penangAirport = getAirportContent('pen') as AirportContent;
+// Ipoh: a real MAHB airport with no content file yet.
+const noContentAirport = getAirportContent('iph') as AirportContent;
 const at = (clock: string) => new Date(`2026-11-17T${clock}:00+08:00`);
 
 const international = (extra: FlightSeed = {}) =>
@@ -159,11 +160,11 @@ describe('buildJourney: departing', () => {
   });
 
   it('still gives useful, untimed guidance without a flight or airport content', () => {
-    const steps = buildJourney({ flight: null, mode: 'departing', airportContent: penangAirport, now: at('08:00') });
+    const steps = buildJourney({ flight: null, mode: 'departing', airportContent: noContentAirport, now: at('08:00') });
     expect(ids(steps)).toEqual(['terminal', 'travel', 'arrive', 'check-in', 'security', 'gate', 'food', 'boarding']);
     expect(steps.every((item) => item.time === undefined && item.state === 'upcoming')).toBe(true);
     expect(step(steps, 'terminal').provenance).toBe('suggestion');
-    expect(step(steps, 'travel').actions.map((action) => action.href)).toEqual(['/pen/transport', '/pen/parking']);
+    expect(step(steps, 'travel').actions.map((action) => action.href)).toEqual(['/iph/transport', '/iph/parking']);
     expect(steps.every((item) => item.notes.length === 0)).toBe(true);
   });
 });

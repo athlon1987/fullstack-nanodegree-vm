@@ -154,21 +154,24 @@ describe('airport registry', () => {
 
 describe('airport content', () => {
   it('returns empty collections for airports without a content file, and undefined for unknown airports', () => {
-    const penang = getAirportContent('pen');
-    expect(penang).toMatchObject({ hasContent: false, facilities: [], outlets: [], transport: [], carParks: [], airlines: [], notices: [], maps: [], guidesNotes: [] });
-    expect(penang?.airport.code).toBe('PEN');
+    // Ipoh is a real MAHB airport with no content file yet.
+    const ipoh = getAirportContent('iph');
+    expect(ipoh).toMatchObject({ hasContent: false, facilities: [], outlets: [], transport: [], carParks: [], airlines: [], notices: [], maps: [], guidesNotes: [] });
+    expect(ipoh?.airport.code).toBe('IPH');
     expect(getAirportContent('zzz')).toBeUndefined();
     expect(airportsWithContent()).toContain('kul');
   });
 
   it('publishes KLIA parking without rates, because the official rates were not captured', () => {
     const carParks = getAirportContent('kul')?.carParks ?? [];
-    expect(carParks.map((carPark) => carPark.id)).toEqual(['kul-t1-car-park', 'kul-t1-preferred-parking', 'kul-long-term-car-park']);
+    expect(carParks.map((carPark) => carPark.id)).toEqual(['kul-t1-car-park', 'kul-t1-preferred-parking', 'kul-long-term-car-park', 'kul-t2-gateway-car-park']);
     for (const carPark of carParks) {
+      // Sources disagree on the rates, so none are published as settled figures.
       expect(carPark.rates).toEqual([]);
       expect(carPark.rateStatus).toBe('not-verified');
-      expect(carPark.sources).toEqual(['mahb-klia-t1-parking']);
+      expect(carPark.sources.length).toBeGreaterThan(0);
     }
+    expect(carParks.filter((carPark) => carPark.terminal !== 'T2').every((carPark) => carPark.sources.includes('mahb-klia-t1-parking'))).toBe(true);
     expect(carParks[0]).toMatchObject({ bays: 5700, baysQualifier: 'over' });
   });
 
@@ -225,10 +228,13 @@ describe('labels, notices and seeds', () => {
 
   it('shows current and soon-to-start notices, most serious first, and scopes them to an airport', () => {
     const now = new Date('2026-11-17T04:00:00Z');
-    expect(currentNotices(getNotices('kul'), now).map((notice) => notice.id)).toEqual(['kul-aerotrain-software-update-nov-2026', 'prototype-demo-data']);
-    expect(currentNotices(getNotices('kul'), now, { upcomingWithinDays: 2 }).map((notice) => notice.id)).toEqual(['prototype-demo-data']);
-    expect(currentNotices(getNotices('kul'), new Date('2026-12-05T00:00:00Z')).map((notice) => notice.id)).toEqual(['prototype-demo-data']);
-    expect(getNotices('pen').map((notice) => notice.id)).toEqual(['prototype-demo-data']);
+    expect(currentNotices(getNotices('kul'), now).map((notice) => notice.id)).toEqual(['kul-aerotrain-software-update-nov-2026', 'kul-klia-ekspres-fare-rise-2027', 'prototype-demo-data']);
+    expect(currentNotices(getNotices('kul'), now, { upcomingWithinDays: 2 }).map((notice) => notice.id)).toEqual(['kul-klia-ekspres-fare-rise-2027', 'prototype-demo-data']);
+    expect(currentNotices(getNotices('kul'), new Date('2026-12-05T00:00:00Z')).map((notice) => notice.id)).toEqual(['kul-klia-ekspres-fare-rise-2027', 'prototype-demo-data']);
+    // The fare-rise notice expires when the new fare takes effect.
+    expect(currentNotices(getNotices('kul'), new Date('2027-01-02T00:00:00Z')).map((notice) => notice.id)).toEqual(['prototype-demo-data']);
+    expect(getNotices('pen').map((notice) => notice.id)).toEqual(['prototype-demo-data', 'pen-terminal-expansion-works']);
+    expect(getNotices('iph').map((notice) => notice.id)).toEqual(['prototype-demo-data']);
   });
 
   it('labels the demo notice as demonstration data', () => {

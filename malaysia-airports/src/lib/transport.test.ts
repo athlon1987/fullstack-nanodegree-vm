@@ -84,10 +84,14 @@ describe('compareTransport', () => {
     expect(compareTransport([], { priority: 'price' })).toEqual([]);
   });
 
-  it('works on the real KLIA content: only the complimentary shuttle has a published fare', () => {
+  it('works on the real KLIA content: free shuttles first, unpublished fares last and labelled', () => {
     const rows = compareTransport(getAirportContent('kul')?.transport ?? [], { priority: 'price' });
     expect(rows[0]).toMatchObject({ fare: 0, score: 100 });
-    expect(rows[0].option.id).toBe('kul-ltcp-shuttle');
-    expect(rows.slice(1).every((row) => row.fare === undefined && row.labels.includes('fare-not-published'))).toBe(true);
+    expect(rows.filter((row) => row.fare === 0).map((row) => row.option.id).sort()).toEqual(['kul-inter-terminal-shuttle', 'kul-ltcp-shuttle']);
+    const firstUnpublished = rows.findIndex((row) => row.fare === undefined);
+    expect(firstUnpublished).toBeGreaterThan(0);
+    // Options without a published fare never sort above one that has a fare, and are labelled.
+    expect(rows.slice(firstUnpublished).every((row) => row.fare === undefined && row.labels.includes('fare-not-published'))).toBe(true);
+    expect(rows.slice(0, firstUnpublished).every((row, i, list) => i === 0 || (list[i - 1].fare ?? 0) <= (row.fare ?? 0))).toBe(true);
   });
 });

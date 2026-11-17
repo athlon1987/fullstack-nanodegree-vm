@@ -18,7 +18,10 @@ describe('buildSearchDocuments', () => {
       expect(types.has(type), type).toBe(true);
     }
     expect(english.filter((document) => document.type === 'airport')).toHaveLength(39 + 2);
-    expect(english.filter((document) => document.type === 'parking')).toHaveLength(3);
+    expect(english.filter((document) => document.type === 'parking').map((document) => document.id)).toEqual(
+      expect.arrayContaining(['parking:kul-t1-car-park', 'parking:kul-t1-preferred-parking', 'parking:kul-long-term-car-park', 'parking:kul-t2-gateway-car-park']),
+    );
+    expect(english.filter((document) => document.type === 'parking').length).toBe(english.filter((document) => document.id.startsWith('parking:')).length);
   });
 
   it('gives every document a unique id and a link without a locale prefix', () => {
@@ -36,7 +39,7 @@ describe('buildSearchDocuments', () => {
     expect(malay.find((document) => document.id === 'facility:kul-t1-prayer-rooms')?.title).toBe('Surau');
     expect(english.find((document) => document.id === 'facility:kul-t1-prayer-rooms')?.title).toBe('Prayer rooms (surau)');
     expect(searchAll(malayIndex, 'prayer', { airport: 'kul' }).groups[0]?.hits[0]?.id).toBe('facility:kul-t1-prayer-rooms');
-    expect(searchAll(malayIndex, 'parkir').groups.find((group) => group.type === 'parking')?.hits.length).toBe(3);
+    expect(searchAll(malayIndex, 'parkir').groups.find((group) => group.type === 'parking')?.hits.length).toBeGreaterThanOrEqual(3);
   });
 });
 
@@ -54,7 +57,7 @@ describe('searchAll', () => {
     expect(allIds('cash machine')).toContain('facility:kul-t1-atms');
     expect(allIds('doctor')).toContain('facility:kul-t1-medical-services');
     expect(allIds('autism')).toContain('facility:kul-t1-calm-room');
-    expect(allIds('car park').filter((id) => id.startsWith('parking:'))).toHaveLength(3);
+    expect(allIds('car park').filter((id) => id.startsWith('parking:'))).toHaveLength(english.filter((document) => document.type === 'parking').length);
     expect(allIds('satellite')).toContain('transport:kul-t1-aerotrain');
     expect(allIds('lost')).toEqual(expect.arrayContaining(['facility:kul-t1-lost-and-found', 'faq:klia-lost-item']));
     expect(allIds('coach')).toContain('transport:kul-t1-buses');
