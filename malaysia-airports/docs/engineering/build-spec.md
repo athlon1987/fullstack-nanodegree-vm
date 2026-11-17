@@ -69,7 +69,7 @@ airport (`kul`) with two terminals; terminal is a filter (`?t=T1|T2`), never a s
 | Route | Purpose | Owner |
 |---|---|---|
 | `/` | Network home: flight search, journey modes, airport chooser, notices, quick actions | foundation-ui |
-| `/airports` | All 39 airports: list, filters, map of Malaysia | corporate-network |
+| `/airports` | Airport chooser and directory of all 39 airports (also the "choose an airport first" step: `?then=<section>`) | foundation-ui |
 | `/[airport]` | Airport home (same tools, scoped) | foundation-ui |
 | `/[airport]/flights` | Departures and arrivals board, search, filters | flights |
 | `/[airport]/flights/[flightId]` | Flight detail and journey timeline | flights |
@@ -86,7 +86,7 @@ airport (`kul`) with two terminals; terminal is a filter (`?t=T1|T2`), never a s
 | `/help` and `/help/[topic]` | Help centre, FAQs, contacts, lost property, disruption help | guides |
 | `/notices` | Travel advisories and operational notices | foundation-ui |
 | `/concierge` | Concierge full page (also a global panel) | concierge |
-| `/search` | Search results (also a global command palette) | concierge |
+| `/search` | Search results page and the global command palette | foundation-ui |
 | `/corporate/**` | Corporate: about, leadership, network, business, procurement, sustainability, careers, news, governance, contact | corporate-network |
 | `/about-this-prototype`, `/privacy`, `/terms` | Transparency and legal | corporate-network |
 | `/design-system` | Living style guide | foundation-ui |
@@ -97,6 +97,16 @@ Only the owner creates or edits files under a route. Shared code changes go thro
 that shared file (section 5). If you need something from a shared module that is missing, add a
 small, clearly named file of your own under your feature folder instead of editing shared files,
 and list it in your hand-off note.
+
+### Navigation without an airport
+
+Primary navigation is the same everywhere: Flights, Plan your journey, At the airport, Shop & dine,
+Transport & parking, Help. When an airport is selected the airport-scoped items go to
+`/[airport]/<section>`; when none is selected they go to `/airports?then=<section>` so the visitor
+chooses first and continues in one tap. Use `sectionHref()` from `src/components/shell/sections.ts`
+(foundation-ui) rather than building these URLs by hand. Airport sections and their order:
+overview, flights, map, facilities, transport, parking, shop-dine, lounges, transit. A section is
+shown for an airport only when the content layer has something for it.
 
 ## 5. Folder layout and shared-module ownership
 
