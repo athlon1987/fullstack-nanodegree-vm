@@ -1,0 +1,109 @@
+'use client';
+
+import { pick, TRANSPORT_MODE_LABELS, type TerminalId, type TransportOption } from '@/content/types';
+import { useLang, useT } from '@/lib/i18n/client';
+import { ProvenanceTag } from '@/components/common/provenance-tag';
+import { SourceNote } from '@/components/common/source-note';
+import { Icon } from '@/components/ui/icon';
+import { Table, TableScroll, TBody, Td, Th, THead, Tr } from '@/components/ui/table';
+import { fareInfo } from './transport-logic';
+import { sourcesFor, type TransportContext } from './transport-types';
+import { AccessValue, AsOf, BoardingList, DurationValue, FareFigure, FareTimeline, FrequencyValue, HoursValue, PaymentValue } from './transport-values';
+
+export interface TransportTableRow {
+  option: TransportOption;
+  rank: number;
+}
+
+export interface TransportTableProps {
+  rows: readonly TransportTableRow[];
+  placeKey?: string;
+  context: TransportContext;
+  day: string | null;
+  terminal?: TerminalId;
+  caption: string;
+}
+
+const CELL = 'px-3 py-3 align-top first:pl-4 last:pr-4 sm:px-4 sm:first:pl-5 sm:last:pr-5';
+
+/**
+ * The ranked options side by side, with provenance and sources in each row header. The card view
+ * has the descriptions and notes. The table scrolls inside its labelled region on narrow screens.
+ */
+export function TransportTable({ rows, placeKey, context, day, terminal, caption }: TransportTableProps) {
+  const t = useT();
+  const lang = useLang();
+  return (
+    <TableScroll label={caption} className="rounded-xl border border-line-strong bg-surface">
+      <Table density="dense" className="min-w-[64rem]">
+        <caption className="sr-only">{caption}</caption>
+        <THead>
+          <Tr>
+            <Th numeric>
+              <span className="sr-only">{t('transportPages.planner.rank', { rank: '' })}</span>
+              <span aria-hidden="true">#</span>
+            </Th>
+            <Th>{t('transportPages.planner.option')}</Th>
+            <Th>{t('transportPages.fields.fare')}</Th>
+            <Th>{t('transportPages.fields.time')}</Th>
+            <Th>
+              {t('transportPages.fields.frequency')} / {t('transportPages.fields.hours')}
+            </Th>
+            <Th>{t('transportPages.fields.boarding')}</Th>
+            <Th>{t('transportPages.fields.payment')}</Th>
+            <Th>{t('transportPages.fields.accessibility')}</Th>
+          </Tr>
+        </THead>
+        <TBody>
+          {rows.map(({ option, rank }) => {
+            const info = fareInfo(option, placeKey, day);
+            return (
+              <Tr key={option.id}>
+                <Td numeric className="type-data-sm align-top pt-3.5 text-ink-2">
+                  {rank}
+                </Td>
+                <th scope="row" className={`${CELL} w-60 text-left font-normal`}>
+                  <span className="flex items-start gap-2.5">
+                    <Icon name={option.mode} size="sm" className="mt-0.5 shrink-0 text-ink-2" />
+                    <span className="min-w-0">
+                      <span className="type-body-sm block font-semibold text-ink">{pick(option.name, lang)}</span>
+                      <span className="type-caption mt-0.5 block text-ink-2">
+                        {pick(TRANSPORT_MODE_LABELS[option.mode], lang)}
+                        {option.operator ? ` · ${option.operator}` : null}
+                      </span>
+                      <ProvenanceTag provenance={option.provenance} length="short" className="mt-1.5" />
+                      <SourceNote sources={sourcesFor(option.sources, context.sources)} className="mt-1" />
+                      {option.asOf ? <AsOf value={option.asOf} timeZone={context.timezone} className="py-0" /> : null}
+                    </span>
+                  </span>
+                </th>
+                <td className={`${CELL} w-44`}>
+                  <FareFigure info={info} context={context} size="md" />
+                  <FareTimeline info={info} context={context} compact />
+                </td>
+                <td className={CELL}>
+                  <DurationValue info={info} />
+                </td>
+                <td className={`${CELL} w-56`}>
+                  <span className="flex flex-col gap-2">
+                    <FrequencyValue option={option} />
+                    <HoursValue hours={option.hours} />
+                  </span>
+                </td>
+                <td className={`${CELL} w-64`}>
+                  <BoardingList option={option} context={context} terminal={terminal} compact />
+                </td>
+                <td className={CELL}>
+                  <PaymentValue option={option} />
+                </td>
+                <td className={CELL}>
+                  <AccessValue option={option} compact />
+                </td>
+              </Tr>
+            );
+          })}
+        </TBody>
+      </Table>
+    </TableScroll>
+  );
+}
