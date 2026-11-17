@@ -46,9 +46,9 @@ export function BoardPreview({ airport, terminal, rows = 8, headingLevel = 2, cl
   const flights = useMemo<Flight[] | null>(() => {
     if (!provider) return null;
     const now = provider.meta().generatedAt;
-    const window = boardWindow(now, 8, 10);
+    const range = boardWindow(now, 8, 10);
     const slugs = scopeSlug ? [scopeSlug] : FEATURED_AIRPORT_SLUGS.filter((slug) => hasDemoRoutes(slug));
-    const all = slugs.flatMap((slug) => provider.listFlightsSync({ airport: slug, direction, terminal: scopeSlug ? scopeTerminal : undefined, ...window }));
+    const all = slugs.flatMap((slug) => provider.listFlightsSync({ airport: slug, direction, terminal: scopeSlug ? scopeTerminal : undefined, ...range }));
     // Lead with flights that are still to come; finished ones only fill the gap on a quiet board.
     const open = all.filter((flight) => !isFinalStatus(flight.status));
     const list = open.length >= rows ? open : all;
