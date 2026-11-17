@@ -18,12 +18,14 @@ export function SavePlaceButton({ id, airport, title, href }: SavePlaceButtonPro
   const { isPlaceSaved, savePlace, removePlace, hydrated } = useSavedJourney();
   const saved = hydrated && isPlaceSaved('outlet', id);
   return (
-    <div className="flex flex-col gap-1.5">
+    <div className="flex min-w-0 max-w-full flex-col gap-1.5">
       <Button
         variant="secondary"
         iconStart={saved ? 'bookmark-check' : 'bookmark'}
         aria-pressed={saved}
         disabled={!hydrated}
+        // Long Malay labels at a large text size wrap instead of widening the page.
+        className="h-auto min-h-11 max-w-full shrink self-start py-2 text-left whitespace-normal"
         onClick={() => (saved ? removePlace('outlet', id) : savePlace({ id, type: 'outlet', airport, title, href }))}
       >
         {saved ? t('commercePages.outlet.saved') : t('commercePages.outlet.save')}
