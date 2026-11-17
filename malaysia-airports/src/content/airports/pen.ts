@@ -12,8 +12,11 @@
  *    figures quoted in its description.
  *  - Lounge hours: the operator, an airline and a reseller give three different sets of hours for
  *    the international lounge, so the hours are prose (`kind: 'text'`), not an open/closed badge.
- *  - Buses: routes and frequencies as listed by Rapid Penang (MyRapid); fares are distance-based,
- *    and the exact airport fares were not captured, so fares are `basis: 'from'`.
+ *  - Buses: routes and frequencies as listed by Rapid Penang (MyRapid). Fares are distance-based
+ *    and the fare from the airport to each place was not captured, so no structured `fare` is set:
+ *    the network's RM1.40 minimum covers only the first 7 km and is not the fare to George Town.
+ *    The published fare range is in each destination note. Where older guides give a different
+ *    frequency (routes 401E and 306), both figures are in the text and nothing is machine-readable.
  *  - Taxi and e-hailing fares exist only as conflicting third-party estimates: not published.
  *  - Airlines: a partial list from visitpenang.com. Entries are created only for airlines
  *    whose IATA designator is already recorded in this repository; the others are named in a note.
@@ -21,7 +24,7 @@
  *
  * Known gaps (also published as the guide note `pen-content-gaps`): no verified shops or
  * restaurants; prayer rooms, Wi-Fi, ATMs and money changers are prior knowledge only; no taxi
- * tariff; no bus stop location or first and last buses; no official standard parking rate card;
+ * tariff; no bus stop location, exact bus fares or first and last buses; no official standard parking rate card;
  * domestic lounge hours; the full airline and destination list; terminal opening hours; whether
  * the airport telephone number in the aeronautical publication answers passenger enquiries.
  */
@@ -69,7 +72,7 @@ const facilities: Facility[] = [
       'A lounge after security and immigration. Cathay Pacific lists it as its lounge for eligible passengers at Penang.',
       'Lounge selepas pemeriksaan keselamatan dan imigresen. Cathay Pacific menyenaraikannya sebagai lounge untuk penumpangnya yang layak di Pulau Pinang.',
     ),
-    operator: 'Plaza Premium Group',
+    operator: 'Plaza Premium',
     access: lt(
       'Only for passengers departing on international flights, with a valid boarding pass.',
       'Hanya untuk penumpang yang berlepas dengan penerbangan antarabangsa, dengan pas masuk yang sah.',
@@ -93,10 +96,10 @@ const facilities: Facility[] = [
       'Listed by Priority Pass, which limits its members to a stay of up to two hours. Opening hours are not verified: check with the lounge.',
       'Disenaraikan oleh Priority Pass, yang mengehadkan ahlinya kepada penginapan sehingga dua jam. Waktu operasi belum disahkan: semak dengan lounge.',
     ),
-    operator: 'Plaza Premium Group',
+    operator: 'Plaza Premium',
     provenance: 'estimated',
     asOf: CHECKED,
-    sources: ['prioritypass-penang-plaza-premium'],
+    sources: ['prioritypass-penang-plaza-premium', 'taketours-penang-plaza-premium-domestic'],
   },
   {
     id: 'pen-airport-contact',
@@ -120,8 +123,8 @@ const facilities: Facility[] = [
  * ---------------------------------------------------------------------------------------- */
 
 const BUS_FARE_NOTE: LocalizedText = lt(
-  'Rapid Penang fares depend on distance, from RM1.40 for the first 7 km up to RM5.00 for 42 to 49 km. The exact fare from the airport was not captured.',
-  'Tambang Rapid Penang bergantung pada jarak, daripada RM1.40 bagi 7 km pertama hingga RM5.00 bagi 42 hingga 49 km. Tambang tepat dari lapangan terbang belum diperoleh.',
+  'No fare is published here: the fare from the airport was not captured. Rapid Penang fares depend on distance, from RM1.40 for the first 7 km up to RM5.00 for 42 to 49 km. Check MyRapid.',
+  'Tiada tambang diterbitkan di sini: tambang dari lapangan terbang belum diperoleh. Tambang Rapid Penang bergantung pada jarak, daripada RM1.40 bagi 7 km pertama hingga RM5.00 bagi 42 hingga 49 km. Semak MyRapid.',
 );
 
 const transport: TransportOption[] = [
@@ -138,24 +141,25 @@ const transport: TransportOption[] = [
     destinations: [
       {
         name: lt('George Town (Komtar and Weld Quay)', 'George Town (Komtar dan Weld Quay)'),
-        fare: { amount: 1.4, currency: 'MYR', basis: 'from' },
         note: lt(
-          'Fares on route 401E range from RM1.40 to RM4.70 depending on distance. The exact airport to Komtar fare was not captured.',
-          'Tambang laluan 401E antara RM1.40 hingga RM4.70 bergantung pada jarak. Tambang tepat dari lapangan terbang ke Komtar belum diperoleh.',
+          'No fare is published here: the fare from the airport to Komtar was not captured. Fares on route 401E range from RM1.40 to RM4.70 depending on distance. Check MyRapid.',
+          'Tiada tambang diterbitkan di sini: tambang dari lapangan terbang ke Komtar belum diperoleh. Tambang laluan 401E antara RM1.40 hingga RM4.70 bergantung pada jarak. Semak MyRapid.',
         ),
       },
       {
         name: lt('Queensbay Mall and Bayan Baru', 'Queensbay Mall dan Bayan Baru'),
-        fare: { amount: 1.4, currency: 'MYR', basis: 'from' },
         note: BUS_FARE_NOTE,
       },
-      { name: lt('Balik Pulau', 'Balik Pulau'), fare: { amount: 1.4, currency: 'MYR', basis: 'from' }, note: BUS_FARE_NOTE },
+      { name: lt('Balik Pulau', 'Balik Pulau'), note: BUS_FARE_NOTE },
     ],
-    frequency: lt('About every 15 to 20 minutes.', 'Kira-kira setiap 15 hingga 20 minit.'),
+    frequency: lt(
+      'Sources differ: about every 15 to 20 minutes according to Rapid Penang; older third-party guides give about 30 minutes, or 30 to 40. Check MyRapid.',
+      'Sumber berbeza: kira-kira setiap 15 hingga 20 minit menurut Rapid Penang; panduan pihak ketiga yang lebih lama menyatakan kira-kira 30 minit, atau 30 hingga 40. Semak MyRapid.',
+    ),
     boarding: [],
     provenance: 'official',
     asOf: CHECKED,
-    sources: ['myrapid-rapid-penang-bus', 'visitpenang-bus-401'],
+    sources: ['myrapid-rapid-penang-bus', 'visitpenang-bus-401', 'holidaygogogo-penang-airport', 'travelswithsun-penang-airport-georgetown'],
   },
   {
     id: 'pen-bus-102',
@@ -170,11 +174,13 @@ const transport: TransportOption[] = [
     destinations: [
       {
         name: lt('Batu Ferringhi and Teluk Bahang (via Komtar and Gurney Drive)', 'Batu Ferringhi dan Teluk Bahang (melalui Komtar dan Gurney Drive)'),
-        fare: { amount: 1.4, currency: 'MYR', basis: 'from' },
         note: BUS_FARE_NOTE,
       },
     ],
-    frequency: lt('About every 75 minutes.', 'Kira-kira setiap 75 minit.'),
+    frequency: lt(
+      'About every 75 minutes according to Rapid Penang: check the timetable before you rely on it.',
+      'Kira-kira setiap 75 minit menurut Rapid Penang: semak jadual sebelum bergantung padanya.',
+    ),
     frequencyMinutes: 75,
     boarding: [],
     provenance: 'official',
@@ -194,18 +200,17 @@ const transport: TransportOption[] = [
     destinations: [
       {
         name: lt('Penang General Hospital', 'Hospital Besar Pulau Pinang'),
-        fare: { amount: 1.4, currency: 'MYR', basis: 'from' },
         note: BUS_FARE_NOTE,
       },
     ],
     frequency: lt(
-      'About every 45 minutes according to Rapid Penang; other listings give 40 minutes or longer gaps.',
-      'Kira-kira setiap 45 minit menurut Rapid Penang; penyenaraian lain menyatakan 40 minit atau selang yang lebih panjang.',
+      'Sources differ: about every 45 minutes according to Rapid Penang; a 2025 route table on Wikipedia gives 40 minutes and an older guide gives 60 to 80. Check MyRapid.',
+      'Sumber berbeza: kira-kira setiap 45 minit menurut Rapid Penang; jadual laluan 2025 di Wikipedia menyatakan 40 minit dan sebuah panduan lama menyatakan 60 hingga 80. Semak MyRapid.',
     ),
     boarding: [],
     provenance: 'official',
     asOf: CHECKED,
-    sources: ['myrapid-rapid-penang-bus'],
+    sources: ['myrapid-rapid-penang-bus', 'wikipedia-penang-bus-routes', 'holidaygogogo-penang-airport'],
   },
   {
     id: 'pen-coupon-taxi',
@@ -305,6 +310,7 @@ const carParks: CarPark[] = [
       'businesstoday-penang-expansion-mar-2026',
       'klia2info-penang-airport',
       'parkinginmalaysia-penang',
+      'parkingcommy-penang',
       'penangsentral-penang-parking',
     ],
   },
@@ -494,8 +500,8 @@ const guidesNotes: GuideNote[] = [
     airport: 'pen',
     title: lt('What this prototype has not verified at Penang', 'Perkara yang belum disahkan oleh prototaip ini di Pulau Pinang'),
     body: lt(
-      'Left out because we could not verify them: shops and restaurants; prayer rooms, Wi-Fi, ATMs and money changers; taxi fares; the airport bus stop and the first and last buses; the official rate card for standard parking; opening hours of the domestic lounge; the full list of airlines and destinations; terminal opening hours. Thai Airways and several Chinese and Indonesian airlines are also named as serving Penang, but are not listed here yet. For these, use the official Penang airport page or call Malaysia Airports on +603-8777 0000.',
-      'Tidak disertakan kerana belum dapat disahkan: kedai dan restoran; surau, Wi-Fi, ATM dan pengurup wang; tambang teksi; hentian bas lapangan terbang serta bas pertama dan terakhir; kadar rasmi parkir biasa; waktu operasi lounge domestik; senarai penuh syarikat penerbangan dan destinasi; waktu operasi terminal. Thai Airways serta beberapa syarikat penerbangan China dan Indonesia turut dinamakan beroperasi di Pulau Pinang, tetapi belum disenaraikan di sini. Untuk perkara ini, gunakan halaman rasmi lapangan terbang Pulau Pinang atau hubungi Malaysia Airports di +603-8777 0000.',
+      'Left out because we could not verify them: shops and restaurants; prayer rooms, Wi-Fi, ATMs and money changers; taxi fares; the airport bus stop, the exact bus fare from the airport and the first and last buses; the official rate card for standard parking; opening hours of the domestic lounge; the full list of airlines and destinations; terminal opening hours. Thai Airways and several Chinese and Indonesian airlines are also named as serving Penang, but are not listed here yet. For these, use the official Penang airport page or call Malaysia Airports on +603-8777 0000.',
+      'Tidak disertakan kerana belum dapat disahkan: kedai dan restoran; surau, Wi-Fi, ATM dan pengurup wang; tambang teksi; hentian bas lapangan terbang, tambang bas yang tepat dari lapangan terbang serta bas pertama dan terakhir; kadar rasmi parkir biasa; waktu operasi lounge domestik; senarai penuh syarikat penerbangan dan destinasi; waktu operasi terminal. Thai Airways serta beberapa syarikat penerbangan China dan Indonesia turut dinamakan beroperasi di Pulau Pinang, tetapi belum disenaraikan di sini. Untuk perkara ini, gunakan halaman rasmi lapangan terbang Pulau Pinang atau hubungi Malaysia Airports di +603-8777 0000.',
     ),
     sources: ['prototype-method', 'mahb-penang-site', 'visitpenang-direct-flights'],
     asOf: RETRIEVED_16_NOV,
@@ -514,10 +520,14 @@ const sources: Source[] = [
   source('cathay-penang-airport', 'operator', 'Cathay Pacific', 'Penang International Airport', 'https://www.cathaypacific.com/cx/en_ZA/destinations/airports/penang-international-airport.html', R),
   source('viator-penang-plaza-premium', 'aggregator', 'Viator', 'Penang International Airport Plaza Premium Lounge', 'https://www.viator.com/en-MY/tours/Penang/Penang-International-Airport-Plaza-Premium-Lounge/d339-5079PENLOUNGE', R),
   source('prioritypass-penang-plaza-premium', 'other', 'Priority Pass', 'Plaza Premium Lounge, Penang International', 'https://www.prioritypass.com/en-GB/lounges/malaysia/penang-international/pen-plaza-premium-lounge', R),
+  source('taketours-penang-plaza-premium-domestic', 'aggregator', 'TakeTours', 'Plaza Premium Lounge, Penang airport (domestic departures)', 'https://www.taketours.com/page/experience/plaza-premium-lounge-penang-airport-domestic-departures-300-20731.html', R),
   source('myrapid-rapid-penang-bus', 'operator', 'Rapid Penang (MyRapid, Prasarana)', 'Rapid Penang bus routes and fares', 'https://myrapid.com.my/bus-train/rapid-penang/rapid-pg-bus/', R, '2026'),
   source('visitpenang-bus-401', 'other', 'Visit Penang', 'Bus route 401', 'https://www.visitpenang.com/getting-around/bus-routes/401', R, '2026'),
   source('visitpenang-bus-routes', 'other', 'Visit Penang', 'Bus routes', 'https://www.visitpenang.com/getting-around/bus-routes', R, '2026'),
   source('visitpenang-direct-flights', 'other', 'Visit Penang', 'Direct flights to Penang', 'https://www.visitpenang.com/getting-there/direct-flights', R, '2026'),
+  source('holidaygogogo-penang-airport', 'other', 'HolidayGoGoGo', 'Penang International Airport (older guide)', 'https://www.holidaygogogo.com/penang-international-airport/', R),
+  source('travelswithsun-penang-airport-georgetown', 'other', 'Travels With Sun', 'Penang airport to George Town (older guide)', 'https://www.travelswithsun.com/penang-airport-to-georgetown/', R),
+  source('wikipedia-penang-bus-routes', 'other', 'Wikipedia', 'List of bus routes in Penang', 'https://en.wikipedia.org/wiki/List_of_bus_routes_in_Penang', R, '2025'),
   source('secretflying-penang-airports', 'other', 'Secret Flying', 'Penang airport guide', 'https://www.secretflying.com/guides/penang/airports/', R, '2026'),
   source('themalaysianguide-penang-transfer', 'other', 'The Malaysian Guide', 'Penang airport transfer', 'https://www.themalaysianguide.com/practical/penang-airport-transfer/', R, '2026'),
   source('onpenang-grab', 'other', 'OnPenang', 'Grab in Penang', 'https://onpenang.com/grab-in-penang/', R),
@@ -526,6 +536,7 @@ const sources: Source[] = [
   source('threads-penangfoodie-premium-parking', 'other', 'Penang Foodie (Threads)', 'Repost of the Malaysia Airports Premium Parking announcement', 'https://www.threads.com/@penangfoodie/post/DP5y3q-k0OU/penang-international-airport-now-offers-premium-parking-the-premium-parking-is-l', R, '2025-10'),
   source('klia2info-penang-airport', 'aggregator', 'klia2.info', 'Penang International Airport', 'https://www.klia2.info/airports/penang-international-airport/', R, '2025-10-01'),
   source('parkinginmalaysia-penang', 'aggregator', 'Parking in Malaysia', 'Penang International Airport parking info', 'https://parkinginmalaysia.com/penang-international-airport-parking-info/', R),
+  source('parkingcommy-penang', 'aggregator', 'parking.com.my', 'Penang International Airport', 'https://parking.com.my/item/penang-international-airport/', R),
   source('penangsentral-penang-parking', 'aggregator', 'penangsentral.com', 'Penang airport parking (older tariff)', 'https://penangsentral.com/penang_airport/parking.htm', R),
   source('businesstoday-penang-expansion-mar-2026', 'news', 'BusinessToday', 'Penang airport expansion phase nears completion', 'https://www.businesstoday.com.my/2026/03/11/penang-airport-expansion-phase-nears-completion/', R, '2026-03-11'),
   source('bernama-penang-expansion-2025', 'news', 'Bernama', 'Penang airport expansion: capacity, cost and June 2028 target', 'https://bernama.com/en/news.php?id=2446593', R, '2025-07'),
