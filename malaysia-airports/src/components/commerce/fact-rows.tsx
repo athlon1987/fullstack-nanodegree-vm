@@ -21,7 +21,10 @@ export interface FactRow {
 export function FactRows({ facts, className, wide = false }: { facts: readonly FactRow[]; className?: string; wide?: boolean }) {
   const lang = useLang();
   const present = facts.filter((fact) => fact.value !== undefined && fact.value !== null && fact.value !== '');
-  const missing = facts.filter((fact) => !present.includes(fact)).map((fact) => fact.label);
+  const missing = facts
+    .filter((fact) => !present.includes(fact))
+    // Labels read as one sentence: "Level, opening hours and who may use it".
+    .map((fact, index) => (index === 0 ? fact.label : fact.label.charAt(0).toLocaleLowerCase(lang) + fact.label.slice(1)));
   const row = cn('grid gap-x-4 gap-y-0.5 py-2.5', wide ? '@md:grid-cols-[10rem_minmax(0,1fr)]' : '@sm:grid-cols-[7.5rem_minmax(0,1fr)]');
   return (
     <div className={cn('@container', className)}>

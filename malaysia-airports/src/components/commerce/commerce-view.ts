@@ -104,6 +104,8 @@ export interface GateContext {
   /** The gate itself (`C12`) when it comes from a flight; undefined for a chosen area. */
   gate?: string;
   letter?: string;
+  /** Gate letters the context covers: the gate's own letter, or every letter of a chosen area. */
+  letters: string[];
   building?: Building;
   international?: boolean;
   /** The area id when it was chosen from the list. */
@@ -111,7 +113,7 @@ export interface GateContext {
 }
 
 export function contextForArea(area: GateArea): GateContext {
-  return { terminal: area.terminal, building: area.building, international: area.international, areaId: area.id };
+  return { terminal: area.terminal, letters: area.letters, building: area.building, international: area.international, areaId: area.id };
 }
 
 export function contextForGate(airport: string, terminal: TerminalId, gate: string, international?: boolean): GateContext {
@@ -121,6 +123,7 @@ export function contextForGate(airport: string, terminal: TerminalId, gate: stri
     terminal,
     gate,
     letter,
+    letters: letter ? [letter] : [],
     building: area?.building,
     international: area?.international ?? international,
   };
@@ -173,7 +176,7 @@ export function gateProximity(outlet: Pick<OutletView, 'terminal' | 'zone' | 'pl
   if (outlet.zone === 'unknown') return 'unknown';
   const { place } = outlet;
   if (place.international !== undefined && gate.international !== undefined && place.international !== gate.international) return 'otherSide';
-  if (gate.letter && place.gates.includes(gate.letter)) return 'near';
+  if (gate.letters.some((letter) => place.gates.includes(letter))) return 'near';
   if (place.building && gate.building) {
     if (place.building === gate.building) return 'sameBuilding';
     // Every Satellite Building departure starts in the Main Terminal Building (the Aerotrain).

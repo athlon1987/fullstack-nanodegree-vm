@@ -64,6 +64,8 @@ describe('gateProximity', () => {
 
   it('puts an outlet by the same gates first', () => {
     expect(gateProximity(satelliteShop, contextForGate('kul', 'T1', 'C12'))).toBe('near');
+    const area = gateContextFor('kul', 'kul-t1-c');
+    expect(area && gateProximity(satelliteShop, area)).toBe('near');
   });
 
   it('treats the Main Terminal Building as on the way to the Satellite gates', () => {

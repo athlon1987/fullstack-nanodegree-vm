@@ -45,8 +45,8 @@ export function GatePanel({ airport, terminalLabels, value, context, onChange }:
 
   const flightValue = flight?.gate ? `${flight.terminal}-${flight.gate}` : undefined;
   const fromFlight = value !== undefined && !areas.some((area) => area.id === value);
-  const areaLabel = (letters: string[], terminal: TerminalId, international: boolean) =>
-    `${t('commercePages.gate.areaOption', { terminal: terminalLabels[terminal] ?? terminal, gates: formatList(letters, lang) })}, ${t(
+  const areaLabel = (letters: string[], international: boolean) =>
+    `${t('commercePages.gate.areaOption', { gates: formatList(letters, lang) })}, ${t(
       international ? 'commercePages.gate.international' : 'commercePages.gate.domestic',
     )}`;
 
@@ -71,10 +71,16 @@ export function GatePanel({ airport, terminalLabels, value, context, onChange }:
           fieldClassName="mt-3"
         >
           <option value="">{t('commercePages.gate.areaNone')}</option>
-          {areas.map((area) => (
-            <option key={area.id} value={area.id}>
-              {areaLabel(area.letters, area.terminal, area.international)}
-            </option>
+          {[...new Set(areas.map((area) => area.terminal))].map((terminal) => (
+            <optgroup key={terminal} label={terminalLabels[terminal] ?? terminal}>
+              {areas
+                .filter((area) => area.terminal === terminal)
+                .map((area) => (
+                  <option key={area.id} value={area.id}>
+                    {areaLabel(area.letters, area.international)}
+                  </option>
+                ))}
+            </optgroup>
           ))}
           {fromFlight && value && context?.gate ? (
             <option value={value}>
