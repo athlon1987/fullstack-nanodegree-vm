@@ -73,7 +73,7 @@ test.describe('home', () => {
     await page.goto('/en');
     const main = page.getByRole('main');
     await main.getByRole('radio', { name: /^Arriving/ }).check();
-    await expect(main.getByRole('radio', { name: 'Arrivals' })).toBeChecked();
+    await expect(main.getByRole('radio', { name: 'Arrivals', exact: true })).toBeChecked();
     await expect(main.getByRole('list', { name: 'Quick actions' }).getByRole('link').first()).toHaveAccessibleName(/Follow your flight in/);
     await expect(main.getByRole('group', { name: 'What are you doing today?' }).getByRole('status')).toContainText('Arriving selected');
   });
