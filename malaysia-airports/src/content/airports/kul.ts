@@ -25,7 +25,7 @@
  *  - Coach and taxi fares are indicative lower bounds (`basis: 'from'`) on `estimated` items.
  *
  * Sources: KLIA sources captured on 16 November 2026 are in `../sources.ts`; those captured on
- * 17 November 2026 are in `KUL_SOURCES` below. Six of them are publisher-level only, because the
+ * 17 November 2026 are in `KUL_SOURCES` below. Seven of them are publisher-level only, because the
  * research file names the publisher but records no article link; their titles say so.
  *
  * Known gaps (also published as the guide note `kul-content-gaps`): no verified outlets; no first

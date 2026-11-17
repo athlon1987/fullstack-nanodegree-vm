@@ -171,7 +171,7 @@ attributes both to The Edge.
 ## Things the product team should know
 
 1. **Publisher-level sources.** `f-klia-transport.md` names some publishers without an article
-   link. Six KLIA sources and one Kota Kinabalu source therefore point at the publisher's site,
+   link. Seven KLIA sources and one Kota Kinabalu source therefore point at the publisher's site,
    and their titles say "exact link not recorded": `busonlineticket-airport-coach`,
    `klia2commy-inter-terminal-shuttle`, `rakyatpost-ltcp-rate-rise-2026`,
    `tripcom-klia-parking-guide`, `mahb-klia-parking-pages-indexed`, `kliainfo-parking-rates`,
