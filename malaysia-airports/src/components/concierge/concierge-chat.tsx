@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useId, useRef, useState, type FormEvent } from 'react';
+import { useEffect, useEffectEvent, useId, useRef, useState, type FormEvent } from 'react';
 import { getAirport, terminalLabel } from '@/content/airports';
 import { CONCIERGE_MAX_QUESTION } from '@/lib/concierge/constants';
 import type { ConciergeContext } from '@/lib/concierge/types';
@@ -167,7 +167,8 @@ export function ConciergeChat({ variant, initialQuestion, onDecline }: Concierge
   const { turns, busy, consent, ask, retry, clear, scope, clearScope, savedFlight, useFlight, setUseFlight } = concierge;
   const [draft, setDraft] = useState('');
   const [announcement, setAnnouncement] = useState('');
-  const inputRef = useRef<HTMLInputElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const focusInput = () => formRef.current?.querySelector('input')?.focus();
   const logRef = useRef<HTMLOListElement>(null);
   const askedInitial = useRef<string | null>(null);
   const pendingInitial = useRef<string | null>(initialQuestion ?? null);
@@ -187,14 +188,15 @@ export function ConciergeChat({ variant, initialQuestion, onDecline }: Concierge
   };
 
   // A launcher's question: ask it once consent is given (or right away if it already is).
-  useEffect(() => {
+  const askInitial = useEffectEvent(() => {
     const question = pendingInitial.current;
-    if (!consent || !question || askedInitial.current === question) return;
+    if (!question || askedInitial.current === question) return;
     askedInitial.current = question;
     pendingInitial.current = null;
     submit(question);
-    // `submit` changes every render; this runs once per launcher question.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  });
+  useEffect(() => {
+    if (consent) askInitial();
   }, [consent]);
 
   // Once agreed, fetch the knowledge pack in the background so answers keep working offline.
@@ -212,13 +214,13 @@ export function ConciergeChat({ variant, initialQuestion, onDecline }: Concierge
   const onSubmit = (event: FormEvent) => {
     event.preventDefault();
     submit(draft);
-    inputRef.current?.focus();
+    focusInput();
   };
 
   const onClear = () => {
     clear();
     setAnnouncement(t('conciergePage.log.announceCleared'));
-    inputRef.current?.focus();
+    focusInput();
   };
 
   if (!hydrated) {
@@ -236,7 +238,7 @@ export function ConciergeChat({ variant, initialQuestion, onDecline }: Concierge
       <Consent
         onAccept={() => {
           concierge.accept();
-          window.setTimeout(() => inputRef.current?.focus(), 0);
+          window.setTimeout(() => focusInput(), 0);
         }}
         onDecline={onDecline}
       />
@@ -296,6 +298,7 @@ export function ConciergeChat({ variant, initialQuestion, onDecline }: Concierge
       </ol>
 
       <form
+        ref={formRef}
         onSubmit={onSubmit}
         className={cn(
           'mt-auto flex flex-col gap-1.5',
@@ -304,7 +307,6 @@ export function ConciergeChat({ variant, initialQuestion, onDecline }: Concierge
       >
         <div className="flex items-end gap-2">
           <Input
-            ref={inputRef}
             label={t('conciergePage.composer.label')}
             hideLabel
             placeholder={t('conciergePage.composer.placeholder')}
