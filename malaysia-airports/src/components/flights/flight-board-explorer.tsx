@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { getAirport } from '@/content/airports';
+import { getAirport, terminalLabel } from '@/content/airports';
 import type { Airport, TerminalId } from '@/content/types';
 import type { Flight, FlightDirection } from '@/lib/flights';
 import { useFlightProvider, useSavedJourney } from '@/lib/hooks';
@@ -155,7 +155,9 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
     ? airport.name
     : searching
       ? t('flightPages.board.searchWindow', { query: draft.trim() })
-      : t('flightPages.board.window', { from: formatTime(range.from, zone), to: formatTime(range.to, zone) });
+      : params.terminal
+        ? t('flightPages.board.windowTerminal', { terminal: terminalLabel(airport, params.terminal, lang), from: formatTime(range.from, zone), to: formatTime(range.to, zone) })
+        : t('flightPages.board.window', { from: formatTime(range.from, zone), to: formatTime(range.to, zone) });
   const generatedAt = provider?.meta().generatedAt ?? null;
 
   const earlierButton = (
@@ -233,12 +235,13 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
       />
 
       {savedOnBoard > 0 ? (
-        <p className="type-body-sm flex flex-wrap items-center gap-x-3 gap-y-1 rounded-md border border-line bg-page-subtle px-3 py-2 text-ink-2">
+        <p className="type-body-sm flex flex-wrap items-center gap-x-3 gap-y-0.5 rounded-md border border-line bg-page-subtle py-1 pr-1 pl-3 text-ink-2">
           <Icon name="bookmark-check" size="sm" className="text-ink" />
-          <span>
-            <strong className="font-semibold text-ink">{t.count('flightPages.board.savedHere', savedOnBoard)}</strong> {t('flightPages.board.savedHint')}
+          <span className="min-w-0 flex-1 basis-48">
+            <strong className="font-semibold text-ink">{t.count('flightPages.board.savedHere', savedOnBoard)}</strong>{' '}
+            <span className="max-md:sr-only">{t('flightPages.board.savedHint')}</span>
           </span>
-          <LocaleLink href="/journey" className="link-action ml-auto text-ink">
+          <LocaleLink href="/journey" className="link-action px-2 text-ink">
             {t('flightPages.board.openJourney')}
             <Icon name="arrow-right" size="sm" strokeWidth={1.75} />
           </LocaleLink>

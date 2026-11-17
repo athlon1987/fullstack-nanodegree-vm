@@ -8,7 +8,6 @@ import { useLang, useT } from '@/lib/i18n/client';
 import { Button } from '@/components/ui/button';
 import { FilterChip } from '@/components/ui/filter-chip';
 import { SearchField } from '@/components/ui/search-field';
-import { SegmentedControl } from '@/components/ui/segmented-control';
 import { STATUS_GROUPS, readQueryKind, type StatusGroupId } from './board-model';
 
 export interface BoardToolbarProps {
@@ -25,8 +24,10 @@ export interface BoardToolbarProps {
 }
 
 /**
- * Search within the board, the KLIA terminal filter and the status filters. Every control is a
- * real form control or toggle button; nothing depends on colour alone.
+ * Search within the board and the status filters. The KLIA terminal is chosen with the terminal
+ * chips in the airport header (they write `?t=`); when one is chosen it shows here as a pressed
+ * chip that clears it. Every control is a real form control or toggle button; nothing depends
+ * on colour alone.
  */
 export function BoardToolbar({ airport, direction, query, onQueryChange, terminal, onTerminalChange, groups, onGroupsChange, counts }: BoardToolbarProps) {
   const t = useT();
@@ -34,7 +35,6 @@ export function BoardToolbar({ airport, direction, query, onQueryChange, termina
   const id = useId();
   const statusLabelId = `${id}-status`;
   const reading = readQueryKind(query);
-  const multiTerminal = airport.terminals.length > 1;
   const visibleGroups = STATUS_GROUPS[direction].filter((group) => !counts || (counts[group.id] ?? 0) > 0 || groups.includes(group.id));
 
   const toggle = (group: StatusGroupId, pressed: boolean) => {
@@ -60,25 +60,22 @@ export function BoardToolbar({ airport, direction, query, onQueryChange, termina
             autoComplete="off"
           />
         </form>
-        {multiTerminal ? (
-          <SegmentedControl<string>
-            label={t('flightPages.board.terminalLabel')}
-            value={terminal ?? 'all'}
-            onValueChange={(value) => onTerminalChange(value === 'all' ? undefined : airport.terminals.find((item) => item.id === value)?.id)}
-            className="max-sm:w-full"
-            block
-            options={[
-              { value: 'all', label: t('flightPages.board.allTerminals') },
-              ...airport.terminals.map((item) => ({ value: item.id, label: terminalLabel(airport, item.id, lang, { short: true }) })),
-            ]}
-          />
-        ) : null}
       </div>
 
-      <div role="group" aria-labelledby={statusLabelId} className="flex flex-wrap items-center gap-2">
-        <span id={statusLabelId} className="type-eyebrow mr-1 text-ink-2">
+      {/* One row that scrolls sideways on phones, so the board stays near the top of the screen. */}
+      <div
+        role="group"
+        aria-labelledby={statusLabelId}
+        className="flex items-center gap-2 max-sm:-mx-gutter max-sm:overflow-x-auto max-sm:px-gutter max-sm:pb-1 sm:flex-wrap"
+      >
+        <span id={statusLabelId} className="type-eyebrow mr-1 shrink-0 text-ink-2">
           {t('flightPages.board.statusLabel')}
         </span>
+        {terminal ? (
+          <FilterChip pressed onPressedChange={() => onTerminalChange(undefined)} aria-label={t('flightPages.board.terminalChip', { terminal: terminalLabel(airport, terminal, lang) })}>
+            {terminalLabel(airport, terminal, lang, { short: true })}
+          </FilterChip>
+        ) : null}
         {visibleGroups.map((group) => (
           <FilterChip
             key={group.id}
@@ -91,7 +88,7 @@ export function BoardToolbar({ airport, direction, query, onQueryChange, termina
           </FilterChip>
         ))}
         {groups.length > 0 ? (
-          <Button variant="quiet" size="sm" iconStart="x" onClick={() => onGroupsChange([])}>
+          <Button variant="quiet" size="sm" iconStart="x" className="shrink-0" onClick={() => onGroupsChange([])}>
             {t('flightPages.board.clearFilters')}
           </Button>
         ) : null}

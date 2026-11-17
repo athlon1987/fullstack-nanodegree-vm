@@ -72,7 +72,7 @@ export function MyJourney({ notes, sources, carParks }: MyJourneyProps) {
       const flight = provider.getFlightSync(saved.id, saved.airport);
       if (!flight) return { saved, flight: null };
       const mode = saved.mode && modesForFlight(flight).includes(saved.mode) ? saved.mode : modesForFlight(flight)[0];
-      const next = buildJourney({ flight, mode, airportContent: content, now: provider.now }).find((step) => step.state !== 'done');
+      const next = buildJourney({ flight, mode, airportContent: content, now: provider.now }).find((step) => step.state !== 'done' && step.kind !== 'status');
       return { saved, flight, next };
     });
     if (!provider) return list;

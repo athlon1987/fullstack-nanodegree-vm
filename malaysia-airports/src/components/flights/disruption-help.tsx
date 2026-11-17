@@ -33,7 +33,7 @@ export function DisruptionHelp({ lang, airline }: DisruptionHelpProps) {
       </div>
       <p className="type-body-sm mt-2 text-ink">{t('flightPages.disruption.airline', { airline })}</p>
       <p className="type-body-sm mt-2 text-ink-2">{t('flightPages.disruption.help')}</p>
-      <ul className="mt-3 flex flex-col gap-1">
+      <ul className="mt-3 flex flex-wrap gap-x-6 gap-y-1">
         {links.map((link) => (
           <li key={link.href}>
             <LocaleLink href={link.href} className="link-action type-body-sm text-ink">
