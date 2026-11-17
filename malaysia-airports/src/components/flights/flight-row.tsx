@@ -9,6 +9,7 @@ import { AirportCode } from '@/components/common/airport-code';
 import { FlightStatusChip } from '@/components/common/flight-status-chip';
 import { LocaleLink } from '@/components/common/locale-link';
 import { TerminalBadge } from '@/components/common/terminal-badge';
+import { IconButton } from '@/components/ui/icon-button';
 import { Td, Tr } from '@/components/ui/table';
 
 /** Path of a flight's detail page (no locale prefix): `/kul/flights/mh2610-20261117-d`. */
@@ -27,6 +28,10 @@ export interface FlightRowProps {
   showAirport?: boolean;
   /** Called when the link to the flight is followed (for closing an overlay). */
   onNavigate?: () => void;
+  /** Whether the flight is in My journey. Only used with `onSaveChange`. */
+  saved?: boolean;
+  /** Show a save toggle (a bookmark button) and report presses. Omit for rows without one. */
+  onSaveChange?: (saved: boolean) => void;
   className?: string;
 }
 
@@ -38,7 +43,7 @@ export interface FlightRowProps {
  * Every flight in this prototype is simulated: whatever lists these rows must carry the
  * demonstration label.
  */
-export function FlightRow({ flight, layout = 'card', showAirport = false, onNavigate, className }: FlightRowProps) {
+export function FlightRow({ flight, layout = 'card', showAirport = false, onNavigate, saved = false, onSaveChange, className }: FlightRowProps) {
   const t = useT();
   const place = remotePlace(flight);
   const moved = flight.estimated !== flight.scheduled;
@@ -49,6 +54,18 @@ export function FlightRow({ flight, layout = 'card', showAirport = false, onNavi
   const notAssigned = flight.direction === 'd' ? t('flights.board.gateNotAssigned') : t('flights.board.beltNotAssigned');
   const boardAirport = showAirport ? getAirport(flight.airport) : undefined;
   const linkLabel = `${t('flights.search.viewFlight', { number })}, ${place.city}`;
+
+  const saveButton = onSaveChange ? (
+    <IconButton
+      icon={saved ? 'bookmark-check' : 'bookmark'}
+      label={t('flightPages.board.saveFlight', { number })}
+      pressed={saved}
+      size="sm"
+      variant={saved ? 'secondary' : 'quiet'}
+      onClick={() => onSaveChange(!saved)}
+      className="relative z-10 shrink-0"
+    />
+  ) : null;
 
   const standValue = stand ?? (
     <span className="text-ink-2">
@@ -101,6 +118,7 @@ export function FlightRow({ flight, layout = 'card', showAirport = false, onNavi
         <Td>
           <FlightStatusChip status={flight.status} />
         </Td>
+        {saveButton ? <Td className="w-px">{saveButton}</Td> : null}
       </Tr>
     );
   }
@@ -152,6 +170,7 @@ export function FlightRow({ flight, layout = 'card', showAirport = false, onNavi
           <FlightStatusChip status={flight.status} size="sm" />
         </div>
       </div>
+      {saveButton ? <div className="-mr-1.5 flex items-center sm:-mr-2">{saveButton}</div> : null}
     </li>
   );
 }

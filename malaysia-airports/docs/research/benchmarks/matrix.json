@@ -1,0 +1,2018 @@
+{
+  "schema_version": 1,
+  "generated": "2026-11-17",
+  "title": "Global airport website benchmark: calibrated expert-assessment matrix",
+  "status": "Expert assessments with stated confidence. Not rankings, not usability-test results, not field performance data.",
+  "report": "docs/strategy/benchmark-report.md",
+  "method": {
+    "scale": "1 to 5 with half points",
+    "anchors": {
+      "1": "Absent or broken: the capability is missing or fails for most visitors.",
+      "2": "Weak: present, but material defects block or mislead common tasks.",
+      "3": "Adequate: the sector norm; core tasks possible with noticeable friction or gaps.",
+      "4": "Strong: clearly above the sector norm, few material gaps, at least one distinctive feature.",
+      "5": "Sector-leading: a reference implementation with no material gap on the website, verified first-hand."
+    },
+    "calibration_rules": [
+      "R1: a 5 requires first-hand observation; search-only or prior evidence caps a dimension at 4.5.",
+      "R2: confidence is at most medium for search-only evidence and low for prior-only evidence.",
+      "R3: the website is assessed; an app feature can support a score but cannot alone place the website above a peer whose equivalent web feature was observed.",
+      "R4: independent lab measurements made by this project (Lighthouse, axe-core, capture timings, page structure) are used as evidence where the original analyst did not have them.",
+      "R5: no score is raised without evidence recorded in the calibration log."
+    ],
+    "confidence_levels": [
+      "low",
+      "medium",
+      "high"
+    ],
+    "evidence_modes": {
+      "direct": "An analyst browsed the official site first-hand (captures, page reads, interaction scripts).",
+      "partial-direct": "Some official pages fetched first-hand before access was cut; the rest from search.",
+      "search-plus-project-captures": "Analyst report from web search; the project later captured screenshots and ran Lighthouse on the live site.",
+      "search-only": "No site content observed; web search and prior knowledge only.",
+      "direct-structure-and-lab": "MAHB: structure, HTML and lab audits observed first-hand; page content largely unreadable after the content API stopped serving the project network."
+    }
+  },
+  "dimensions": [
+    {
+      "key": "ui",
+      "label": "UI aesthetics and brand sophistication",
+      "weight": 0.1
+    },
+    {
+      "key": "ux",
+      "label": "UX and task completion efficiency",
+      "weight": 0.2
+    },
+    {
+      "key": "info",
+      "label": "Information comprehensiveness and accuracy",
+      "weight": 0.15
+    },
+    {
+      "key": "flight",
+      "label": "Live flight information and journey assistance",
+      "weight": 0.15
+    },
+    {
+      "key": "mobile",
+      "label": "Mobile experience",
+      "weight": 0.1
+    },
+    {
+      "key": "nav",
+      "label": "Navigation, search and accessibility",
+      "weight": 0.1
+    },
+    {
+      "key": "ai",
+      "label": "Personalisation and AI",
+      "weight": 0.1
+    },
+    {
+      "key": "commerce",
+      "label": "Digital commerce and ancillary revenue",
+      "weight": 0.05
+    },
+    {
+      "key": "perf",
+      "label": "Performance, security and reliability",
+      "weight": 0.05
+    }
+  ],
+  "airports": [
+    {
+      "key": "heathrow",
+      "name": "London Heathrow",
+      "iata": "LHR",
+      "host": "www.heathrow.com",
+      "evidence_mode": "partial-direct",
+      "evidence_mode_note": "12 HTML pages and two mobile renders fetched first-hand before an automation filter stopped direct access; data API, map and chat hosts unreachable; 16 web searches.",
+      "overall_confidence": "medium",
+      "weighted_total": 3.95,
+      "weighted_pct": 79,
+      "original_weighted_pct": 79,
+      "scores": {
+        "ui": {
+          "score": 3.5,
+          "confidence": "medium",
+          "evidence_level": "direct (mobile render only)",
+          "original_score": 3.5,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "ux": {
+          "score": 4,
+          "confidence": "medium",
+          "evidence_level": "direct + search",
+          "original_score": 4,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "info": {
+          "score": 4,
+          "confidence": "medium",
+          "evidence_level": "direct + search",
+          "original_score": 4,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "flight": {
+          "score": 4.5,
+          "confidence": "medium",
+          "evidence_level": "direct (page source) + search",
+          "original_score": 4.5,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "mobile": {
+          "score": 4,
+          "confidence": "medium",
+          "evidence_level": "direct + search",
+          "original_score": 4,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "nav": {
+          "score": 3.5,
+          "confidence": "medium",
+          "evidence_level": "direct",
+          "original_score": 3.5,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "ai": {
+          "score": 4,
+          "confidence": "medium",
+          "evidence_level": "direct + search",
+          "original_score": 4,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "commerce": {
+          "score": 4.5,
+          "confidence": "medium",
+          "evidence_level": "direct + search",
+          "original_score": 4.5,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "perf": {
+          "score": 3,
+          "confidence": "low",
+          "evidence_level": "direct (lab) + prior",
+          "original_score": 3,
+          "original_confidence": "low",
+          "calibrated": false,
+          "calibration_ids": []
+        }
+      },
+      "lighthouse_lab": {
+        "url": "https://www.heathrow.com/",
+        "measured_utc": "2026-11-16T23:52:58.860Z",
+        "valid_runs": 3,
+        "runs": 3,
+        "performance": 56,
+        "accessibility": 92,
+        "best_practices": 96,
+        "seo": 92,
+        "lcp_ms": 6283,
+        "tbt_ms": 393,
+        "cls": 0.102,
+        "total_bytes": 1937599,
+        "requests": 47,
+        "failing_accessibility_audits": [
+          "color-contrast",
+          "heading-order",
+          "target-size"
+        ],
+        "measures_site": true
+      },
+      "lighthouse_note": null,
+      "axe_homepage": null,
+      "report": "docs/research/benchmarks/heathrow.md",
+      "screenshots": [
+        "docs/research/screenshots/heathrow-home-mobile.jpg",
+        "docs/research/screenshots/heathrow-flights-departures-mobile.jpg"
+      ]
+    },
+    {
+      "key": "haneda",
+      "name": "Tokyo Haneda",
+      "iata": "HND",
+      "host": "tokyo-haneda.com",
+      "evidence_mode": "direct",
+      "evidence_mode_note": "20 pages read first-hand (9 captured on desktop and mobile), 5 interaction scripts; map, site-search backend and translation layer blocked by the container.",
+      "overall_confidence": "high",
+      "weighted_total": 3.875,
+      "weighted_pct": 77.5,
+      "original_weighted_pct": 78.5,
+      "scores": {
+        "ui": {
+          "score": 4,
+          "confidence": "high",
+          "evidence_level": "direct",
+          "original_score": 4,
+          "original_confidence": "high",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "ux": {
+          "score": 4,
+          "confidence": "high",
+          "evidence_level": "direct",
+          "original_score": 4,
+          "original_confidence": "high",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "info": {
+          "score": 4,
+          "confidence": "high",
+          "evidence_level": "direct",
+          "original_score": 4,
+          "original_confidence": "high",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "flight": {
+          "score": 4.5,
+          "confidence": "high",
+          "evidence_level": "direct",
+          "original_score": 4.5,
+          "original_confidence": "high",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "mobile": {
+          "score": 3.5,
+          "confidence": "medium",
+          "evidence_level": "direct + direct (lab) + search",
+          "original_score": 4,
+          "original_confidence": "medium",
+          "calibrated": true,
+          "calibration_ids": [
+            "C08"
+          ]
+        },
+        "nav": {
+          "score": 3.5,
+          "confidence": "medium",
+          "evidence_level": "direct",
+          "original_score": 3.5,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "ai": {
+          "score": 3.5,
+          "confidence": "medium",
+          "evidence_level": "direct + search",
+          "original_score": 3.5,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "commerce": {
+          "score": 4,
+          "confidence": "medium",
+          "evidence_level": "direct",
+          "original_score": 4,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "perf": {
+          "score": 3,
+          "confidence": "medium",
+          "evidence_level": "direct (lab)",
+          "original_score": 3,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        }
+      },
+      "lighthouse_lab": {
+        "url": "https://tokyo-haneda.com/en/",
+        "measured_utc": "2026-11-16T23:58:35.934Z",
+        "valid_runs": 3,
+        "runs": 3,
+        "performance": 49,
+        "accessibility": 80,
+        "best_practices": 96,
+        "seo": 91,
+        "lcp_ms": 24476,
+        "tbt_ms": 732,
+        "cls": 0.062,
+        "total_bytes": 13819669,
+        "requests": 187,
+        "failing_accessibility_audits": [
+          "aria-hidden-focus",
+          "button-name",
+          "label",
+          "list",
+          "listitem"
+        ],
+        "measures_site": true
+      },
+      "lighthouse_note": null,
+      "axe_homepage": {
+        "desktop_rules": 4,
+        "mobile_rules": 5,
+        "note": "critical 2, serious 2 (desktop); critical 2, serious 3 (mobile)"
+      },
+      "report": "docs/research/benchmarks/haneda.md",
+      "screenshots": [
+        "docs/research/screenshots/haneda-home-desktop.jpg",
+        "docs/research/screenshots/haneda-home-mobile.jpg",
+        "docs/research/screenshots/haneda-congestion-desktop.jpg",
+        "docs/research/screenshots/haneda-flightdetail-desktop.jpg",
+        "docs/research/screenshots/haneda-flights-mobile.jpg",
+        "docs/research/screenshots/haneda-menu-mobile.jpg"
+      ]
+    },
+    {
+      "key": "schiphol",
+      "name": "Amsterdam Schiphol",
+      "iata": "AMS",
+      "host": "www.schiphol.nl",
+      "evidence_mode": "search-only",
+      "evidence_mode_note": "No site content observed: the host served a Cloudflare managed challenge to curl and headless Chromium; 18 web searches; the Lighthouse run measured the challenge page, not the site.",
+      "overall_confidence": "low",
+      "weighted_total": 3.85,
+      "weighted_pct": 77,
+      "original_weighted_pct": 81.5,
+      "scores": {
+        "ui": {
+          "score": 4,
+          "confidence": "low",
+          "evidence_level": "prior + search",
+          "original_score": 4,
+          "original_confidence": "low",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "ux": {
+          "score": 4,
+          "confidence": "medium",
+          "evidence_level": "search",
+          "original_score": 4.5,
+          "original_confidence": "medium",
+          "calibrated": true,
+          "calibration_ids": [
+            "C03"
+          ]
+        },
+        "info": {
+          "score": 4,
+          "confidence": "medium",
+          "evidence_level": "search",
+          "original_score": 4,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "flight": {
+          "score": 4.5,
+          "confidence": "medium",
+          "evidence_level": "search",
+          "original_score": 5,
+          "original_confidence": "medium",
+          "calibrated": true,
+          "calibration_ids": [
+            "C01"
+          ]
+        },
+        "mobile": {
+          "score": 4,
+          "confidence": "low",
+          "evidence_level": "search (app only; mobile web not observed)",
+          "original_score": 4.5,
+          "original_confidence": "medium",
+          "calibrated": true,
+          "calibration_ids": [
+            "C04"
+          ]
+        },
+        "nav": {
+          "score": 3.5,
+          "confidence": "low",
+          "evidence_level": "search + hypothesis",
+          "original_score": 3.5,
+          "original_confidence": "low",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "ai": {
+          "score": 3,
+          "confidence": "low",
+          "evidence_level": "search",
+          "original_score": 3,
+          "original_confidence": "low",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "commerce": {
+          "score": 3.5,
+          "confidence": "low",
+          "evidence_level": "search",
+          "original_score": 3.5,
+          "original_confidence": "low",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "perf": {
+          "score": 3,
+          "confidence": "low",
+          "evidence_level": "search + one direct observation (challenge page)",
+          "original_score": 3,
+          "original_confidence": "low",
+          "calibrated": false,
+          "calibration_ids": []
+        }
+      },
+      "lighthouse_lab": {
+        "url": "https://www.schiphol.nl/en/",
+        "measured_utc": "2026-11-17T00:02:31.770Z",
+        "valid_runs": 3,
+        "runs": 3,
+        "performance": null,
+        "accessibility": null,
+        "best_practices": null,
+        "seo": null,
+        "lcp_ms": null,
+        "tbt_ms": null,
+        "cls": null,
+        "total_bytes": null,
+        "requests": null,
+        "failing_accessibility_audits": [],
+        "measures_site": false,
+        "challenge_page_figures": {
+          "performance": 76,
+          "accessibility": 92,
+          "lcp_ms": 1629,
+          "total_bytes": 498156,
+          "requests": 9
+        }
+      },
+      "lighthouse_note": "Not a measurement of the Schiphol site: the response was a Cloudflare bot-challenge page. Recorded only to show the site could not be measured.",
+      "axe_homepage": null,
+      "report": "docs/research/benchmarks/schiphol.md",
+      "screenshots": [
+        "docs/research/screenshots/schiphol-cloudflare-challenge-desktop.jpg"
+      ]
+    },
+    {
+      "key": "istanbul",
+      "name": "Istanbul (iGA)",
+      "iata": "IST",
+      "host": "www.istairport.com",
+      "evidence_mode": "direct",
+      "evidence_mode_note": "13 pages read first-hand (5 captured on desktop and mobile), 4 interaction scripts; map, chatbot and airline-logo hosts blocked.",
+      "overall_confidence": "high",
+      "weighted_total": 3.825,
+      "weighted_pct": 76.5,
+      "original_weighted_pct": 76.5,
+      "scores": {
+        "ui": {
+          "score": 3.5,
+          "confidence": "high",
+          "evidence_level": "direct",
+          "original_score": 3.5,
+          "original_confidence": "high",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "ux": {
+          "score": 4,
+          "confidence": "high",
+          "evidence_level": "direct",
+          "original_score": 4,
+          "original_confidence": "high",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "info": {
+          "score": 4,
+          "confidence": "high",
+          "evidence_level": "direct",
+          "original_score": 4,
+          "original_confidence": "high",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "flight": {
+          "score": 4.5,
+          "confidence": "high",
+          "evidence_level": "direct",
+          "original_score": 4.5,
+          "original_confidence": "high",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "mobile": {
+          "score": 3.5,
+          "confidence": "medium",
+          "evidence_level": "direct + search",
+          "original_score": 3.5,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "nav": {
+          "score": 3,
+          "confidence": "medium",
+          "evidence_level": "direct",
+          "original_score": 3,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "ai": {
+          "score": 4,
+          "confidence": "medium",
+          "evidence_level": "direct + search",
+          "original_score": 4,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "commerce": {
+          "score": 4,
+          "confidence": "medium",
+          "evidence_level": "direct + search",
+          "original_score": 4,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "perf": {
+          "score": 3,
+          "confidence": "medium",
+          "evidence_level": "direct (lab)",
+          "original_score": 3,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        }
+      },
+      "lighthouse_lab": {
+        "url": "https://www.istairport.com/en",
+        "measured_utc": "2026-11-17T00:00:03.137Z",
+        "valid_runs": 3,
+        "runs": 3,
+        "performance": 53,
+        "accessibility": 78,
+        "best_practices": 92,
+        "seo": 92,
+        "lcp_ms": 16663,
+        "tbt_ms": 163,
+        "cls": 0,
+        "total_bytes": 6136928,
+        "requests": 100,
+        "failing_accessibility_audits": [
+          "aria-required-children",
+          "aria-required-parent",
+          "color-contrast",
+          "heading-order",
+          "listitem",
+          "meta-viewport"
+        ],
+        "measures_site": true
+      },
+      "lighthouse_note": null,
+      "axe_homepage": {
+        "desktop_rules": 8,
+        "mobile_rules": 5,
+        "note": "critical 4 (desktop), critical 2 (mobile); zoom disabled on every page"
+      },
+      "report": "docs/research/benchmarks/istanbul.md",
+      "screenshots": [
+        "docs/research/screenshots/istanbul-home-desktop.jpg",
+        "docs/research/screenshots/istanbul-alerts-desktop.jpg",
+        "docs/research/screenshots/istanbul-flightdetail-desktop.jpg",
+        "docs/research/screenshots/istanbul-flights-mobile.jpg"
+      ]
+    },
+    {
+      "key": "changi",
+      "name": "Singapore Changi",
+      "iata": "SIN",
+      "host": "www.changiairport.com",
+      "evidence_mode": "search-plus-project-captures",
+      "evidence_mode_note": "Analyst report is search-only (proxy blocked; 11 searches). The project later captured the homepage and departures page on desktop and mobile and ran Lighthouse (3 valid runs); the flight listing did not render in either capture.",
+      "overall_confidence": "low",
+      "weighted_total": 3.825,
+      "weighted_pct": 76.5,
+      "original_weighted_pct": null,
+      "scores": {
+        "ui": {
+          "score": 4,
+          "confidence": "medium",
+          "evidence_level": "direct (project screenshots) + prior",
+          "original_score": 4,
+          "original_confidence": "low",
+          "calibrated": true,
+          "calibration_ids": [
+            "C12"
+          ]
+        },
+        "ux": {
+          "score": 4,
+          "confidence": "medium",
+          "evidence_level": "search",
+          "original_score": 4,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "info": {
+          "score": 4,
+          "confidence": "medium",
+          "evidence_level": "search",
+          "original_score": 4,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "flight": {
+          "score": 4,
+          "confidence": "medium",
+          "evidence_level": "search + direct (project screenshots)",
+          "original_score": 4.5,
+          "original_confidence": "medium",
+          "calibrated": true,
+          "calibration_ids": [
+            "C05"
+          ]
+        },
+        "mobile": {
+          "score": 4,
+          "confidence": "medium",
+          "evidence_level": "search + direct (lab)",
+          "original_score": 4.5,
+          "original_confidence": "medium",
+          "calibrated": true,
+          "calibration_ids": [
+            "C06"
+          ]
+        },
+        "nav": {
+          "score": 3,
+          "confidence": "medium",
+          "evidence_level": "direct (lab, page structure) + search",
+          "original_score": 3.5,
+          "original_confidence": "low",
+          "calibrated": true,
+          "calibration_ids": [
+            "C07"
+          ]
+        },
+        "ai": {
+          "score": 3.5,
+          "confidence": "low",
+          "evidence_level": "search",
+          "original_score": 4,
+          "original_confidence": "medium",
+          "calibrated": true,
+          "calibration_ids": [
+            "C09"
+          ]
+        },
+        "commerce": {
+          "score": 4.5,
+          "confidence": "medium",
+          "evidence_level": "search",
+          "original_score": 5,
+          "original_confidence": "high",
+          "calibrated": true,
+          "calibration_ids": [
+            "C02"
+          ]
+        },
+        "perf": {
+          "score": 3,
+          "confidence": "low",
+          "evidence_level": "direct (lab) + search",
+          "original_score": null,
+          "original_confidence": "low",
+          "calibrated": true,
+          "calibration_ids": [
+            "C10"
+          ]
+        }
+      },
+      "lighthouse_lab": {
+        "url": "https://www.changiairport.com/",
+        "measured_utc": "2026-11-16T23:52:12.064Z",
+        "valid_runs": 3,
+        "runs": 3,
+        "performance": 58,
+        "accessibility": 74,
+        "best_practices": 96,
+        "seo": 85,
+        "lcp_ms": 7948,
+        "tbt_ms": 379,
+        "cls": 0.077,
+        "total_bytes": 21984901,
+        "requests": 122,
+        "failing_accessibility_audits": [
+          "aria-valid-attr-value",
+          "button-name",
+          "heading-order",
+          "image-alt",
+          "label",
+          "landmark-one-main",
+          "link-name"
+        ],
+        "measures_site": true
+      },
+      "lighthouse_note": null,
+      "axe_homepage": null,
+      "report": "docs/research/benchmarks/changi.md",
+      "screenshots": [
+        "docs/research/screenshots/changi-home-desktop.jpg",
+        "docs/research/screenshots/changi-home-mobile.jpg",
+        "docs/research/screenshots/changi-flights-departures-desktop.jpg",
+        "docs/research/screenshots/changi-flights-departures-mobile.jpg"
+      ],
+      "original_partial_pct_excluding_perf": 82.6
+    },
+    {
+      "key": "hkia",
+      "name": "Hong Kong International",
+      "iata": "HKG",
+      "host": "www.hongkongairport.com",
+      "evidence_mode": "direct",
+      "evidence_mode_note": "15 pages captured first-hand on desktop and mobile, 3 interaction scripts; map data host and chatbot blocked; one Cloudflare challenge on the shop directory.",
+      "overall_confidence": "medium",
+      "weighted_total": 3.775,
+      "weighted_pct": 75.5,
+      "original_weighted_pct": 77,
+      "scores": {
+        "ui": {
+          "score": 3,
+          "confidence": "high",
+          "evidence_level": "direct",
+          "original_score": 3,
+          "original_confidence": "high",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "ux": {
+          "score": 4,
+          "confidence": "medium",
+          "evidence_level": "direct",
+          "original_score": 4,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "info": {
+          "score": 4.5,
+          "confidence": "medium",
+          "evidence_level": "direct",
+          "original_score": 4.5,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "flight": {
+          "score": 4,
+          "confidence": "high",
+          "evidence_level": "direct",
+          "original_score": 4.5,
+          "original_confidence": "high",
+          "calibrated": true,
+          "calibration_ids": [
+            "C11"
+          ]
+        },
+        "mobile": {
+          "score": 3.5,
+          "confidence": "medium",
+          "evidence_level": "direct",
+          "original_score": 3.5,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "nav": {
+          "score": 4,
+          "confidence": "medium",
+          "evidence_level": "direct",
+          "original_score": 4,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "ai": {
+          "score": 3,
+          "confidence": "low",
+          "evidence_level": "direct + search",
+          "original_score": 3,
+          "original_confidence": "low",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "commerce": {
+          "score": 4,
+          "confidence": "medium",
+          "evidence_level": "direct (descriptions; flows not tested)",
+          "original_score": 4,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "perf": {
+          "score": 3,
+          "confidence": "medium",
+          "evidence_level": "direct (lab)",
+          "original_score": 3,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        }
+      },
+      "lighthouse_lab": {
+        "url": "https://www.hongkongairport.com/en/",
+        "measured_utc": "2026-11-16T23:55:30.500Z",
+        "valid_runs": 3,
+        "runs": 3,
+        "performance": 28,
+        "accessibility": 68,
+        "best_practices": 50,
+        "seo": 83,
+        "lcp_ms": 8880,
+        "tbt_ms": 2454,
+        "cls": 0.184,
+        "total_bytes": 2383249,
+        "requests": 59,
+        "failing_accessibility_audits": [
+          "aria-allowed-attr",
+          "aria-hidden-focus",
+          "aria-input-field-name",
+          "aria-required-children",
+          "aria-required-parent",
+          "aria-valid-attr-value",
+          "landmark-one-main",
+          "meta-viewport",
+          "target-size",
+          "presentation-role-conflict"
+        ],
+        "measures_site": true
+      },
+      "lighthouse_note": null,
+      "axe_homepage": {
+        "desktop_rules": 8,
+        "mobile_rules": 8,
+        "note": "critical 4, serious 3, moderate 1 on both"
+      },
+      "report": "docs/research/benchmarks/hkia.md",
+      "screenshots": [
+        "docs/research/screenshots/hkia-home-desktop.jpg",
+        "docs/research/screenshots/hkia-home-mobile.jpg",
+        "docs/research/screenshots/hkia-departures-desktop.jpg",
+        "docs/research/screenshots/hkia-departures-mobile.jpg",
+        "docs/research/screenshots/hkia-search-desktop.jpg"
+      ]
+    },
+    {
+      "key": "incheon",
+      "name": "Seoul Incheon",
+      "iata": "ICN",
+      "host": "www.airport.kr",
+      "evidence_mode": "direct",
+      "evidence_mode_note": "13 pages read first-hand (6 captured on desktop and mobile), 3 interaction scripts; map engine on a non-standard port blocked.",
+      "overall_confidence": "high",
+      "weighted_total": 3.725,
+      "weighted_pct": 74.5,
+      "original_weighted_pct": 74.5,
+      "scores": {
+        "ui": {
+          "score": 3.5,
+          "confidence": "high",
+          "evidence_level": "direct",
+          "original_score": 3.5,
+          "original_confidence": "high",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "ux": {
+          "score": 4,
+          "confidence": "high",
+          "evidence_level": "direct",
+          "original_score": 4,
+          "original_confidence": "high",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "info": {
+          "score": 4.5,
+          "confidence": "high",
+          "evidence_level": "direct",
+          "original_score": 4.5,
+          "original_confidence": "high",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "flight": {
+          "score": 4.5,
+          "confidence": "high",
+          "evidence_level": "direct",
+          "original_score": 4.5,
+          "original_confidence": "high",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "mobile": {
+          "score": 3,
+          "confidence": "medium",
+          "evidence_level": "direct + search",
+          "original_score": 3,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "nav": {
+          "score": 3.5,
+          "confidence": "medium",
+          "evidence_level": "direct",
+          "original_score": 3.5,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "ai": {
+          "score": 3,
+          "confidence": "medium",
+          "evidence_level": "direct + search",
+          "original_score": 3,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "commerce": {
+          "score": 3,
+          "confidence": "medium",
+          "evidence_level": "direct + search",
+          "original_score": 3,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "perf": {
+          "score": 2.5,
+          "confidence": "medium",
+          "evidence_level": "direct (lab)",
+          "original_score": 2.5,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        }
+      },
+      "lighthouse_lab": {
+        "url": "https://www.airport.kr/ap_en/index.do",
+        "measured_utc": "2026-11-17T00:01:55.713Z",
+        "valid_runs": 3,
+        "runs": 3,
+        "performance": 27,
+        "accessibility": 79,
+        "best_practices": 73,
+        "seo": 100,
+        "lcp_ms": 25134,
+        "tbt_ms": 2403,
+        "cls": 0,
+        "total_bytes": 4727930,
+        "requests": 215,
+        "failing_accessibility_audits": [
+          "color-contrast",
+          "label-content-name-mismatch",
+          "link-name",
+          "list",
+          "meta-viewport",
+          "skip-link",
+          "target-size"
+        ],
+        "measures_site": true
+      },
+      "lighthouse_note": null,
+      "axe_homepage": {
+        "desktop_rules": 5,
+        "mobile_rules": 6,
+        "note": "serious 4 and 5; zoom disabled on every page"
+      },
+      "report": "docs/research/benchmarks/incheon.md",
+      "screenshots": [
+        "docs/research/screenshots/incheon-home-desktop.jpg",
+        "docs/research/screenshots/incheon-flightdetail-desktop.jpg",
+        "docs/research/screenshots/incheon-waittimes-desktop.jpg",
+        "docs/research/screenshots/incheon-flights-mobile.jpg"
+      ]
+    },
+    {
+      "key": "dubai",
+      "name": "Dubai International",
+      "iata": "DXB",
+      "host": "dubaiairports.ae",
+      "evidence_mode": "search-plus-project-captures",
+      "evidence_mode_note": "Analyst report is search-only (apex host blocked; 10 searches). The project later captured the homepage, flight board, a flight page, site search, the contact launcher and the Arabic homepage, and ran Lighthouse (3 valid runs). Captures were reviewed for this report; no interaction script was recorded.",
+      "overall_confidence": "low",
+      "weighted_total": 3.55,
+      "weighted_pct": 71,
+      "original_weighted_pct": 64,
+      "scores": {
+        "ui": {
+          "score": 4,
+          "confidence": "medium",
+          "evidence_level": "direct (project screenshots) + search",
+          "original_score": 3.5,
+          "original_confidence": "low",
+          "calibrated": true,
+          "calibration_ids": [
+            "C13"
+          ]
+        },
+        "ux": {
+          "score": 3.5,
+          "confidence": "medium",
+          "evidence_level": "direct (project screenshots) + search",
+          "original_score": 3,
+          "original_confidence": "low",
+          "calibrated": true,
+          "calibration_ids": [
+            "C14"
+          ]
+        },
+        "info": {
+          "score": 3.5,
+          "confidence": "medium",
+          "evidence_level": "search",
+          "original_score": 3.5,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "flight": {
+          "score": 4,
+          "confidence": "medium",
+          "evidence_level": "direct (project screenshots) + search",
+          "original_score": 3.5,
+          "original_confidence": "low",
+          "calibrated": true,
+          "calibration_ids": [
+            "C15"
+          ]
+        },
+        "mobile": {
+          "score": 3.5,
+          "confidence": "medium",
+          "evidence_level": "direct (lab, screenshots) + search",
+          "original_score": 3.5,
+          "original_confidence": "low",
+          "calibrated": true,
+          "calibration_ids": [
+            "C16"
+          ]
+        },
+        "nav": {
+          "score": 3.5,
+          "confidence": "medium",
+          "evidence_level": "direct (project screenshots, lab) + search",
+          "original_score": 3,
+          "original_confidence": "low",
+          "calibrated": true,
+          "calibration_ids": [
+            "C17"
+          ]
+        },
+        "ai": {
+          "score": 3,
+          "confidence": "low",
+          "evidence_level": "direct (project screenshots) + search",
+          "original_score": 2.5,
+          "original_confidence": "low",
+          "calibrated": true,
+          "calibration_ids": [
+            "C18"
+          ]
+        },
+        "commerce": {
+          "score": 3,
+          "confidence": "low",
+          "evidence_level": "search",
+          "original_score": 3,
+          "original_confidence": "low",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "perf": {
+          "score": 3.5,
+          "confidence": "medium",
+          "evidence_level": "direct (lab, capture timings) + search",
+          "original_score": 3,
+          "original_confidence": "low",
+          "calibrated": true,
+          "calibration_ids": [
+            "C19"
+          ]
+        }
+      },
+      "lighthouse_lab": {
+        "url": "https://www.dubaiairports.ae/",
+        "measured_utc": "2026-11-16T23:56:17.458Z",
+        "valid_runs": 3,
+        "runs": 3,
+        "performance": 68,
+        "accessibility": 100,
+        "best_practices": 96,
+        "seo": 92,
+        "lcp_ms": 6147,
+        "tbt_ms": 26,
+        "cls": 0,
+        "total_bytes": 4620232,
+        "requests": 94,
+        "failing_accessibility_audits": [
+          "label-content-name-mismatch"
+        ],
+        "measures_site": true
+      },
+      "lighthouse_note": "Accessibility 100 with one flagged audit (label-content-name-mismatch).",
+      "axe_homepage": null,
+      "report": "docs/research/benchmarks/dubai.md",
+      "screenshots": [
+        "docs/research/screenshots/dubai-home-desktop-first-view.jpg",
+        "docs/research/screenshots/dubai-home-mobile-first-view.jpg",
+        "docs/research/screenshots/dubai-flight-status-desktop.jpg",
+        "docs/research/screenshots/dubai-flight-status-mobile-first-view.jpg",
+        "docs/research/screenshots/dubai-flight-detail-desktop.jpg",
+        "docs/research/screenshots/dubai-site-search-wheelchair-desktop.jpg",
+        "docs/research/screenshots/dubai-contact-launcher-desktop.jpg",
+        "docs/research/screenshots/dubai-home-arabic-desktop.jpg",
+        "docs/research/screenshots/dubai-express-maps-desktop.jpg"
+      ]
+    },
+    {
+      "key": "hamad",
+      "name": "Hamad International, Doha",
+      "iata": "DOH",
+      "host": "dohahamadairport.com",
+      "evidence_mode": "direct",
+      "evidence_mode_note": "3 pages captured and 13 fetched first-hand, 2 interaction scripts; slow and intermittently failing from the container; tag manager, map engine and weather hosts blocked.",
+      "overall_confidence": "medium",
+      "weighted_total": 3.45,
+      "weighted_pct": 69,
+      "original_weighted_pct": 69,
+      "scores": {
+        "ui": {
+          "score": 4,
+          "confidence": "high",
+          "evidence_level": "direct",
+          "original_score": 4,
+          "original_confidence": "high",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "ux": {
+          "score": 3.5,
+          "confidence": "medium",
+          "evidence_level": "direct",
+          "original_score": 3.5,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "info": {
+          "score": 3.5,
+          "confidence": "medium",
+          "evidence_level": "direct",
+          "original_score": 3.5,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "flight": {
+          "score": 4.5,
+          "confidence": "high",
+          "evidence_level": "direct",
+          "original_score": 4.5,
+          "original_confidence": "high",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "mobile": {
+          "score": 3,
+          "confidence": "medium",
+          "evidence_level": "direct",
+          "original_score": 3,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "nav": {
+          "score": 3,
+          "confidence": "medium",
+          "evidence_level": "direct",
+          "original_score": 3,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "ai": {
+          "score": 3,
+          "confidence": "low",
+          "evidence_level": "direct + search",
+          "original_score": 3,
+          "original_confidence": "low",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "commerce": {
+          "score": 3,
+          "confidence": "medium",
+          "evidence_level": "direct + search",
+          "original_score": 3,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "perf": {
+          "score": 2,
+          "confidence": "low",
+          "evidence_level": "direct (lab)",
+          "original_score": 2,
+          "original_confidence": "low",
+          "calibrated": false,
+          "calibration_ids": []
+        }
+      },
+      "lighthouse_lab": {
+        "url": "https://dohahamadairport.com/",
+        "measured_utc": "2026-11-16T23:54:42.491Z",
+        "valid_runs": 0,
+        "runs": 3,
+        "performance": null,
+        "accessibility": null,
+        "best_practices": null,
+        "seo": null,
+        "lcp_ms": null,
+        "tbt_ms": null,
+        "cls": null,
+        "total_bytes": null,
+        "requests": null,
+        "failing_accessibility_audits": [],
+        "measures_site": false
+      },
+      "lighthouse_note": "No valid run in the final batch (no first contentful paint within the time limit). An earlier run the same day gave performance 55, accessibility 82, best practices 69, SEO 69, LCP 36.6 s, 11.6 MB, 191 requests; the Hamad report records three failed runs of its own.",
+      "axe_homepage": {
+        "desktop_rules": 1,
+        "mobile_rules": 3,
+        "note": "flight board: 4 rules on 2,651 nodes (desktop)"
+      },
+      "report": "docs/research/benchmarks/hamad.md",
+      "screenshots": [
+        "docs/research/screenshots/hamad-home-desktop.jpg",
+        "docs/research/screenshots/hamad-home-mobile.jpg",
+        "docs/research/screenshots/hamad-flights-desktop.jpg",
+        "docs/research/screenshots/hamad-flights-mobile.jpg",
+        "docs/research/screenshots/hamad-flightdetail-desktop.jpg",
+        "docs/research/screenshots/hamad-search-desktop.jpg"
+      ]
+    },
+    {
+      "key": "munich",
+      "name": "Munich",
+      "iata": "MUC",
+      "host": "www.munich-airport.com",
+      "evidence_mode": "direct",
+      "evidence_mode_note": "22 pages read first-hand (9 captured on desktop and mobile), 4 interaction scripts, at about 01:00 local time; map, Visual help toolbar and parking checkout hosts blocked.",
+      "overall_confidence": "high",
+      "weighted_total": 3.325,
+      "weighted_pct": 66.5,
+      "original_weighted_pct": 66.5,
+      "scores": {
+        "ui": {
+          "score": 3.5,
+          "confidence": "high",
+          "evidence_level": "direct",
+          "original_score": 3.5,
+          "original_confidence": "high",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "ux": {
+          "score": 3.5,
+          "confidence": "high",
+          "evidence_level": "direct",
+          "original_score": 3.5,
+          "original_confidence": "high",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "info": {
+          "score": 4,
+          "confidence": "high",
+          "evidence_level": "direct",
+          "original_score": 4,
+          "original_confidence": "high",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "flight": {
+          "score": 3.5,
+          "confidence": "medium",
+          "evidence_level": "direct",
+          "original_score": 3.5,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "mobile": {
+          "score": 3,
+          "confidence": "medium",
+          "evidence_level": "direct + search",
+          "original_score": 3,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "nav": {
+          "score": 3,
+          "confidence": "high",
+          "evidence_level": "direct",
+          "original_score": 3,
+          "original_confidence": "high",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "ai": {
+          "score": 2.5,
+          "confidence": "medium",
+          "evidence_level": "direct",
+          "original_score": 2.5,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "commerce": {
+          "score": 3,
+          "confidence": "medium",
+          "evidence_level": "direct",
+          "original_score": 3,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        },
+        "perf": {
+          "score": 3,
+          "confidence": "medium",
+          "evidence_level": "direct (lab)",
+          "original_score": 3,
+          "original_confidence": "medium",
+          "calibrated": false,
+          "calibration_ids": []
+        }
+      },
+      "lighthouse_lab": {
+        "url": "https://www.munich-airport.com/",
+        "measured_utc": "2026-11-16T23:57:30.188Z",
+        "valid_runs": 3,
+        "runs": 3,
+        "performance": 47,
+        "accessibility": 47,
+        "best_practices": 96,
+        "seo": 85,
+        "lcp_ms": 8736,
+        "tbt_ms": 389,
+        "cls": 0,
+        "total_bytes": 4790479,
+        "requests": 63,
+        "failing_accessibility_audits": [
+          "aria-hidden-focus",
+          "aria-prohibited-attr",
+          "aria-required-children",
+          "aria-required-parent",
+          "aria-roles",
+          "button-name",
+          "color-contrast",
+          "image-alt",
+          "label",
+          "list",
+          "listitem",
+          "meta-viewport",
+          "select-name",
+          "target-size"
+        ],
+        "measures_site": true
+      },
+      "lighthouse_note": null,
+      "axe_homepage": {
+        "desktop_rules": 10,
+        "mobile_rules": 13,
+        "note": "critical 4 (desktop), critical 6 (mobile)"
+      },
+      "report": "docs/research/benchmarks/munich.md",
+      "screenshots": [
+        "docs/research/screenshots/munich-home-desktop.jpg",
+        "docs/research/screenshots/munich-home-mobile.jpg",
+        "docs/research/screenshots/munich-flights-departures-desktop.jpg",
+        "docs/research/screenshots/munich-flightdetail-desktop.jpg",
+        "docs/research/screenshots/munich-departures-mobile.jpg",
+        "docs/research/screenshots/munich-menu-mobile.jpg"
+      ]
+    },
+    {
+      "key": "mahb",
+      "name": "Malaysia Airports (current passenger site)",
+      "iata": "KUL",
+      "host": "airports.malaysiaairports.com.my",
+      "evidence_mode": "direct-structure-and-lab",
+      "evidence_mode_note": "Navigation, sitemap (276 URLs), titles, headings, HTML, API endpoints and lab audits observed first-hand on 16 November 2026 until the content API stopped serving the project network; most passenger pages were never read with content and no screenshots were kept; supplemented by a search-derived audit.",
+      "overall_confidence": "medium",
+      "weighted_total": 2.125,
+      "weighted_pct": 42.5,
+      "original_weighted_pct": null,
+      "scores": {
+        "ui": {
+          "score": 2.5,
+          "confidence": "low",
+          "evidence_level": "direct (headings, titles, lab layout shift); no visual inspection",
+          "original_score": null,
+          "original_confidence": null,
+          "calibrated": true,
+          "calibration_ids": [
+            "M01"
+          ]
+        },
+        "ux": {
+          "score": 2,
+          "confidence": "medium",
+          "evidence_level": "direct (navigation, sitemap) + search; tasks reconstructed, not performed",
+          "original_score": null,
+          "original_confidence": null,
+          "calibrated": true,
+          "calibration_ids": [
+            "M01"
+          ]
+        },
+        "info": {
+          "score": 2,
+          "confidence": "medium",
+          "evidence_level": "direct + search",
+          "original_score": null,
+          "original_confidence": null,
+          "calibrated": true,
+          "calibration_ids": [
+            "M01"
+          ]
+        },
+        "flight": {
+          "score": 2.5,
+          "confidence": "medium",
+          "evidence_level": "direct + search",
+          "original_score": null,
+          "original_confidence": null,
+          "calibrated": true,
+          "calibration_ids": [
+            "M01"
+          ]
+        },
+        "mobile": {
+          "score": 2,
+          "confidence": "medium",
+          "evidence_level": "direct (lab) + search",
+          "original_score": null,
+          "original_confidence": null,
+          "calibrated": true,
+          "calibration_ids": [
+            "M01"
+          ]
+        },
+        "nav": {
+          "score": 2,
+          "confidence": "medium",
+          "evidence_level": "direct + direct (lab)",
+          "original_score": null,
+          "original_confidence": null,
+          "calibrated": true,
+          "calibration_ids": [
+            "M01"
+          ]
+        },
+        "ai": {
+          "score": 2,
+          "confidence": "low",
+          "evidence_level": "direct + search",
+          "original_score": null,
+          "original_confidence": null,
+          "calibrated": true,
+          "calibration_ids": [
+            "M01"
+          ]
+        },
+        "commerce": {
+          "score": 2.5,
+          "confidence": "medium",
+          "evidence_level": "direct + search",
+          "original_score": null,
+          "original_confidence": null,
+          "calibrated": true,
+          "calibration_ids": [
+            "M01"
+          ]
+        },
+        "perf": {
+          "score": 1.5,
+          "confidence": "medium",
+          "evidence_level": "direct (lab and observed failures)",
+          "original_score": null,
+          "original_confidence": null,
+          "calibrated": true,
+          "calibration_ids": [
+            "M01"
+          ]
+        }
+      },
+      "lighthouse_lab": {
+        "url": "https://airports.malaysiaairports.com.my/en/klia1",
+        "measured_utc": "2026-11-16T23:46:55.712Z",
+        "valid_runs": 1,
+        "runs": 3,
+        "performance": 9,
+        "accessibility": 79,
+        "best_practices": 85,
+        "seo": 100,
+        "lcp_ms": 6871,
+        "tbt_ms": 4461,
+        "cls": 0.621,
+        "total_bytes": 34276078,
+        "requests": 171,
+        "failing_accessibility_audits": [
+          "aria-hidden-focus",
+          "button-name",
+          "color-contrast",
+          "label",
+          "landmark-one-main",
+          "link-name"
+        ],
+        "measures_site": true
+      },
+      "lighthouse_note": "One valid run of three. An earlier run the same day (heavier CPU contention) gave performance 19, accessibility 79, LCP 5.2 s, CLS 0.621, 172 requests.",
+      "axe_homepage": {
+        "desktop_rules": 6,
+        "mobile_rules": 5,
+        "note": "27 elements (desktop), 19 elements (mobile)"
+      },
+      "report": "docs/research/audit/mahb-audit.md",
+      "screenshots": []
+    }
+  ],
+  "calibration_log": [
+    {
+      "id": "C01",
+      "type": "adjusted",
+      "airport": "schiphol",
+      "dimension": "flight",
+      "from_score": 5,
+      "to_score": 4.5,
+      "from_confidence": "medium",
+      "to_confidence": "medium",
+      "rules": [
+        "R1",
+        "R3"
+      ],
+      "reason": "The only 5 in the original set rested on search evidence alone, and the itinerary with gate walking time, security wait and alerts is an app feature. Per-flight web pages and bookable security slots are evidenced by search and justify the top of the observed range (4.5), not more.",
+      "evidence": [
+        "docs/research/benchmarks/schiphol.md (Scores table, flight)"
+      ]
+    },
+    {
+      "id": "C02",
+      "type": "adjusted",
+      "airport": "changi",
+      "dimension": "commerce",
+      "from_score": 5,
+      "to_score": 4.5,
+      "from_confidence": "high",
+      "to_confidence": "medium",
+      "rules": [
+        "R1",
+        "R2"
+      ],
+      "reason": "iShopChangi, Changi Rewards and Changi Pay are well documented in official pages found by search, but no checkout was observed. Capped at 4.5, level with Heathrow (direct and search); confidence cannot be high on search alone.",
+      "evidence": [
+        "docs/research/benchmarks/changi.md (Scores table, commerce)"
+      ]
+    },
+    {
+      "id": "C03",
+      "type": "adjusted",
+      "airport": "schiphol",
+      "dimension": "ux",
+      "from_score": 4.5,
+      "to_score": 4,
+      "from_confidence": "medium",
+      "to_confidence": "medium",
+      "rules": [
+        "R3"
+      ],
+      "reason": "Task efficiency was not observed (the report says 'not task-timed' and the homepage composition is prior knowledge). The highest observed UX score in the set is 4.0 (Heathrow, Haneda, Hong Kong, Istanbul, Incheon); an unobserved site should not sit above them.",
+      "evidence": [
+        "docs/research/benchmarks/schiphol.md (Scores table, ux; section 1)"
+      ]
+    },
+    {
+      "id": "C04",
+      "type": "adjusted",
+      "airport": "schiphol",
+      "dimension": "mobile",
+      "from_score": 4.5,
+      "to_score": 4,
+      "from_confidence": "medium",
+      "to_confidence": "low",
+      "rules": [
+        "R2",
+        "R3"
+      ],
+      "reason": "The score rested on app-store ratings and app features; the report states 'Mobile web not observed'. Aligned with Heathrow (4.0), whose mobile web was rendered first-hand and whose app is similarly rated.",
+      "evidence": [
+        "docs/research/benchmarks/schiphol.md (Scores table, mobile)"
+      ]
+    },
+    {
+      "id": "C05",
+      "type": "adjusted",
+      "airport": "changi",
+      "dimension": "flight",
+      "from_score": 4.5,
+      "to_score": 4,
+      "from_confidence": "medium",
+      "to_confidence": "medium",
+      "rules": [
+        "R3",
+        "R4"
+      ],
+      "reason": "On the website only a searchable arrivals and departures listing is evidenced; saved flights, alerts, take-off-to-landing tracking and FlightSaver are app features. In both project captures the listing did not render and the page showed 'Unable to load' with a retry (cause not established). Every other 4.5 has an observed per-flight web page with journey assistance.",
+      "evidence": [
+        "docs/research/benchmarks/changi.md (Scores table, flight)",
+        "docs/research/screenshots/changi-flights-departures-desktop.jpg",
+        "docs/research/screenshots/changi-flights-departures-mobile.jpg"
+      ]
+    },
+    {
+      "id": "C06",
+      "type": "adjusted",
+      "airport": "changi",
+      "dimension": "mobile",
+      "from_score": 4.5,
+      "to_score": 4,
+      "from_confidence": "medium",
+      "to_confidence": "medium",
+      "rules": [
+        "R3",
+        "R4"
+      ],
+      "reason": "The score rested on the app rating; the report says the mobile web was not assessed. Project lab data: mobile homepage 21.0 MiB over 122 requests, Lighthouse performance 58 and accessibility 74. It cannot sit above Heathrow (4.0, 1.8 MiB, accessibility 92, similar app rating).",
+      "evidence": [
+        "docs/research/direct/lighthouse/changi.json",
+        "docs/research/screenshots/changi-timings.json"
+      ]
+    },
+    {
+      "id": "C07",
+      "type": "adjusted",
+      "airport": "changi",
+      "dimension": "nav",
+      "from_score": 3.5,
+      "to_score": 3,
+      "from_confidence": "low",
+      "to_confidence": "medium",
+      "rules": [
+        "R4"
+      ],
+      "reason": "Project captures found no skip link, no main landmark and images without alt text on the homepage and departures page; Lighthouse accessibility 74 with button-name, link-name, label, image-alt and landmark-one-main failing. With the report's own negatives (indexed staging hosts, no accessibility statement, PDF sensory map) this matches Istanbul, Hamad and Munich (3.0), not Heathrow (3.5, skip link, accessibility 92).",
+      "evidence": [
+        "docs/research/screenshots/changi-timings.json",
+        "docs/research/direct/lighthouse/changi.json"
+      ]
+    },
+    {
+      "id": "C08",
+      "type": "adjusted",
+      "airport": "haneda",
+      "dimension": "mobile",
+      "from_score": 4,
+      "to_score": 3.5,
+      "from_confidence": "medium",
+      "to_confidence": "medium",
+      "rules": [
+        "R4"
+      ],
+      "reason": "The report's own evidence includes a mobile homepage of about 17 MB, 24 of 71 visible targets under 24 px and app alerts behind a member login; lab LCP 24.5 s. Heathrow (4.0) loads 1.8 MiB; Hong Kong and Istanbul, with comparable defects, hold 3.5.",
+      "evidence": [
+        "docs/research/benchmarks/haneda.json (scores.mobile)",
+        "docs/research/direct/lighthouse/haneda.json"
+      ]
+    },
+    {
+      "id": "C09",
+      "type": "adjusted",
+      "airport": "changi",
+      "dimension": "ai",
+      "from_score": 4,
+      "to_score": 3.5,
+      "from_confidence": "medium",
+      "to_confidence": "low",
+      "rules": [
+        "R2",
+        "R3"
+      ],
+      "reason": "Evidence is account-based rewards personalisation, app saved flights and a task chatbot dating from 2020; no generative or flight-aware assistant was found. Heathrow (4.0) has an evidenced AI agent on live data and Istanbul (4.0) login-free personalisation on the web. The analyst noted the AI search could not be run; confirmed current capability would restore 4.0.",
+      "evidence": [
+        "docs/research/benchmarks/changi.md (Scores table, ai; section 10)"
+      ]
+    },
+    {
+      "id": "C10",
+      "type": "scored",
+      "airport": "changi",
+      "dimension": "perf",
+      "from_score": null,
+      "to_score": 3,
+      "from_confidence": "low",
+      "to_confidence": "low",
+      "rules": [
+        "R4"
+      ],
+      "reason": "Scored null in the report for lack of evidence. The project has since measured it: Lighthouse performance 58, LCP 7.9 s, TBT 379 ms, CLS 0.077, 21.0 MiB and 122 requests on the homepage; departures page about 0.9 MB in a capture. Comparable to Heathrow, Haneda and Istanbul (3.0). Low confidence: lab only, no header or incident evidence.",
+      "evidence": [
+        "docs/research/direct/lighthouse/changi.json",
+        "docs/research/screenshots/changi-timings.json"
+      ]
+    },
+    {
+      "id": "C11",
+      "type": "adjusted",
+      "airport": "hkia",
+      "dimension": "flight",
+      "from_score": 4.5,
+      "to_score": 4,
+      "from_confidence": "high",
+      "to_confidence": "high",
+      "rules": [
+        "R3"
+      ],
+      "reason": "The board is the deepest in the set (nine fields, map deep links, codeshare grouping, timestamp, login-free bookmarks), but the report records no flight detail URL, no web alerts and no wait-time or walking-time context. Every other 4.5 adds a per-flight page with journey assistance; on board depth alone Hong Kong sits at 4.0, above Munich (3.5).",
+      "evidence": [
+        "docs/research/benchmarks/hkia.md (Scores table, flight)"
+      ]
+    },
+    {
+      "id": "C12",
+      "type": "confidence",
+      "airport": "changi",
+      "dimension": "ui",
+      "from_score": 4,
+      "to_score": 4,
+      "from_confidence": "low",
+      "to_confidence": "medium",
+      "rules": [
+        "R4"
+      ],
+      "reason": "Previously prior knowledge only. Project screenshots show a restrained, image-led design with a unified flight and facility search in the hero and a consistent header; score confirmed, confidence raised.",
+      "evidence": [
+        "docs/research/screenshots/changi-home-desktop.jpg",
+        "docs/research/screenshots/changi-home-mobile.jpg"
+      ]
+    },
+    {
+      "id": "C13",
+      "type": "adjusted",
+      "airport": "dubai",
+      "dimension": "ui",
+      "from_score": 3.5,
+      "to_score": 4,
+      "from_confidence": "low",
+      "to_confidence": "medium",
+      "rules": [
+        "R4",
+        "R5"
+      ],
+      "reason": "Previously vendor claims only. Project screenshots show a coherent system (consistent type, palette and components), a task-first hero with flight search, quick tiles and a full Arabic build. Deduction kept for a modal cookie dialogue over the first view on desktop and mobile.",
+      "evidence": [
+        "docs/research/screenshots/dubai-home-desktop-first-view.jpg",
+        "docs/research/screenshots/dubai-flight-status-desktop.jpg",
+        "docs/research/screenshots/dubai-home-arabic-desktop.jpg"
+      ]
+    },
+    {
+      "id": "C14",
+      "type": "adjusted",
+      "airport": "dubai",
+      "dimension": "ux",
+      "from_score": 3,
+      "to_score": 3.5,
+      "from_confidence": "low",
+      "to_confidence": "medium",
+      "rules": [
+        "R4",
+        "R5"
+      ],
+      "reason": "Project captures show flight search (airline, city or flight number) in the first view, working site search, and a contact launcher that puts feedback, lost and found, live chat, FAQs and contacts one tap away. Offsets from the report remain (bookings hand off to several partner platforms). Level with Hamad and Munich.",
+      "evidence": [
+        "docs/research/screenshots/dubai-home-desktop-first-view.jpg",
+        "docs/research/screenshots/dubai-site-search-wheelchair-desktop.jpg",
+        "docs/research/screenshots/dubai-contact-launcher-desktop.jpg"
+      ]
+    },
+    {
+      "id": "C15",
+      "type": "adjusted",
+      "airport": "dubai",
+      "dimension": "flight",
+      "from_score": 3.5,
+      "to_score": 4,
+      "from_confidence": "low",
+      "to_confidence": "medium",
+      "rules": [
+        "R4",
+        "R5"
+      ],
+      "reason": "Project captures show a board with scheduled and actual times, terminal, gate, coloured status, a date selector and earlier flights, and a per-flight page with a 'Journey planner' timeline personalised by traveller type. Not higher: no update stamp was visible in the captured screens and no saved flights or web alerts are evidenced.",
+      "evidence": [
+        "docs/research/screenshots/dubai-flight-status-desktop.jpg",
+        "docs/research/screenshots/dubai-flight-detail-desktop.jpg"
+      ]
+    },
+    {
+      "id": "C16",
+      "type": "confidence",
+      "airport": "dubai",
+      "dimension": "mobile",
+      "from_score": 3.5,
+      "to_score": 3.5,
+      "from_confidence": "low",
+      "to_confidence": "medium",
+      "rules": [
+        "R4"
+      ],
+      "reason": "Score confirmed by project data: Lighthouse mobile performance 68 (the best valid run in the set), accessibility 100, CLS 0, 4.4 MiB; mobile board renders as cards. Held at 3.5 because the cookie dialogue covers the first mobile view and no official app is evidenced.",
+      "evidence": [
+        "docs/research/direct/lighthouse/dubai.json",
+        "docs/research/screenshots/dubai-flight-status-mobile-first-view.jpg"
+      ]
+    },
+    {
+      "id": "C17",
+      "type": "adjusted",
+      "airport": "dubai",
+      "dimension": "nav",
+      "from_score": 3,
+      "to_score": 3.5,
+      "from_confidence": "low",
+      "to_confidence": "medium",
+      "rules": [
+        "R4",
+        "R5"
+      ],
+      "reason": "The report found no site search; a project capture shows one returning the accessibility services page first for 'wheelchair'. Lighthouse accessibility 100 (automated only). Offsets kept: English and Arabic only, no accessibility statement found, keyboard behaviour untested.",
+      "evidence": [
+        "docs/research/screenshots/dubai-site-search-wheelchair-desktop.jpg",
+        "docs/research/direct/lighthouse/dubai.json"
+      ]
+    },
+    {
+      "id": "C18",
+      "type": "adjusted",
+      "airport": "dubai",
+      "dimension": "ai",
+      "from_score": 2.5,
+      "to_score": 3,
+      "from_confidence": "low",
+      "to_confidence": "low",
+      "rules": [
+        "R4",
+        "R5"
+      ],
+      "reason": "Project captures show a chat launcher on every captured page, 'Live chat support' in the contact launcher and a flight-page journey planner personalised by traveller type. With WhatsApp and a vendor-documented chatbot (search) this matches Hamad and Hong Kong (3.0). Chat not exercised, so confidence stays low.",
+      "evidence": [
+        "docs/research/screenshots/dubai-contact-launcher-desktop.jpg",
+        "docs/research/screenshots/dubai-flight-detail-desktop.jpg"
+      ]
+    },
+    {
+      "id": "C19",
+      "type": "adjusted",
+      "airport": "dubai",
+      "dimension": "perf",
+      "from_score": 3,
+      "to_score": 3.5,
+      "from_confidence": "low",
+      "to_confidence": "medium",
+      "rules": [
+        "R4",
+        "R5"
+      ],
+      "reason": "Previously redirect timing only. Project lab: performance 68, TBT 26 ms, CLS 0, 4.4 MiB (the best valid Lighthouse result in the set); desktop load event about 2 s in a capture. Offsets kept: no HSTS on the redirect response and indexed development hosts (report).",
+      "evidence": [
+        "docs/research/direct/lighthouse/dubai.json",
+        "docs/research/screenshots/dubai-timings.json"
+      ]
+    },
+    {
+      "id": "M01",
+      "type": "new",
+      "airport": "mahb",
+      "dimension": "all",
+      "from_score": null,
+      "to_score": null,
+      "from_confidence": null,
+      "to_confidence": null,
+      "rules": [
+        "R1",
+        "R2",
+        "R4"
+      ],
+      "reason": "MAHB's current passenger site scored for the first time on the same rubric from the consolidated audit and first-hand observations. See the MAHB section of the report for the evidence behind each score.",
+      "evidence": [
+        "docs/research/audit/mahb-audit.md",
+        "docs/research/audit/firsthand-observations.md",
+        "docs/research/direct/lighthouse/mahb.json"
+      ]
+    },
+    {
+      "id": "K01",
+      "type": "checked-unchanged",
+      "airport": "munich",
+      "dimension": "flight",
+      "rules": [
+        "R3"
+      ],
+      "reason": "Checked against Hong Kong and Dubai (4.0 after calibration). Munich has a detail page, a login-free tracking strip and a freshness stamp, but no status styling, no alerts, no wait times and no journey timeline. 3.5 kept."
+    },
+    {
+      "id": "K02",
+      "type": "checked-unchanged",
+      "airport": "schiphol",
+      "dimension": "ui",
+      "rules": [
+        "R2"
+      ],
+      "reason": "Rests on prior knowledge and the app; no page was seen. No evidence to move it either way; kept at 4.0 with low confidence and listed as a gap."
+    },
+    {
+      "id": "K03",
+      "type": "checked-unchanged",
+      "airport": "schiphol",
+      "dimension": "perf",
+      "rules": [
+        "R2"
+      ],
+      "reason": "No speed data (the lab run measured a challenge page). Kept at 3.0 with low confidence as a neutral placeholder supported by search evidence on incident handling; Changi's null was replaced only because measurements exist."
+    },
+    {
+      "id": "K04",
+      "type": "checked-unchanged",
+      "airport": "istanbul",
+      "dimension": "ai",
+      "rules": [
+        "R3"
+      ],
+      "reason": "Checked against Heathrow (4.0). Login-free WhatsApp updates and a needs-tailored journey directory are observed on the web; the chatbot was not. 4.0 kept."
+    },
+    {
+      "id": "K05",
+      "type": "checked-unchanged",
+      "airport": "hkia",
+      "dimension": "perf",
+      "rules": [
+        "R4"
+      ],
+      "reason": "Checked against Incheon (2.5). Similar Lighthouse performance (28 against 27) but Hong Kong's LCP is 8.9 s against 25.1 s and it sends transport security headers. 3.0 kept."
+    },
+    {
+      "id": "K06",
+      "type": "checked-unchanged",
+      "airport": "heathrow",
+      "dimension": "flight",
+      "rules": [
+        "R3"
+      ],
+      "reason": "Detail pages, wait times and the connections planner are evidenced from page source and configuration rather than seen running. 4.5 kept at medium confidence; it is the only directly assessed 4.5 whose key features were not seen running."
+    }
+  ],
+  "caveats": [
+    "Weighted totals are expert assessments by several analysts with different access, calibrated by one reviewer. Differences of up to about 3 percentage points are within the uncertainty of the method.",
+    "Lighthouse figures are lab measurements from one shared cloud container with mobile emulation and simulated slow 4G, with third-party hosts blocked; indicative only, not field data, not comparable with Chrome UX Report.",
+    "Automated accessibility checks (Lighthouse, axe-core) detect only part of WCAG; they are not conformance claims.",
+    "Schiphol was not measured: the Lighthouse result is a bot-challenge page."
+  ]
+}
