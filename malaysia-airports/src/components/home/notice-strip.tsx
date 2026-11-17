@@ -29,7 +29,7 @@ const MODE_LINK: Record<JourneyMode, { section: AirportSectionId; icon: IconName
 };
 
 const LINK =
-  'group flex min-h-14 min-w-0 items-center gap-3 px-3 py-2.5 text-ink transition-colors duration-fast hover:bg-page-subtle focus-visible:focus-ring-inset sm:px-4';
+  'group flex min-h-12 min-w-0 items-center gap-3 px-3 py-2 text-ink transition-colors duration-fast hover:bg-page-subtle focus-visible:focus-ring-inset sm:px-4';
 
 /**
  * The strip that closes the first screen: one operational notice (the most serious one that is
@@ -49,7 +49,7 @@ export function NoticeStrip({ notices, className }: { notices: readonly NoticeVi
   const upcoming = notice && now !== null && noticeViewState(notice, now) === 'upcoming';
   const period = notice?.validFrom && upcoming ? t('notices.from', { date: formatDate(notice.validFrom, lang, 'medium') }) : null;
 
-  const airportName = airport ? terminalLabel(airport, selection?.terminal, lang) : t('home.strip.anyAirport');
+  const airportName = airport ? (selection?.terminal ? terminalLabel(airport, selection.terminal, lang) : airport.shortName) : t('home.strip.anyAirport');
   const mode = MODE_LINK[effectiveMode];
   const klia = !airport || airport.terminals.length > 1;
 
@@ -59,17 +59,19 @@ export function NoticeStrip({ notices, className }: { notices: readonly NoticeVi
       className={cn('grid overflow-hidden rounded-lg border border-line-strong bg-surface lg:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)_minmax(0,1fr)]', className)}
     >
       {notice ? (
-        <div data-severity={notice.severity} className={cn('flex min-w-0 items-center gap-3 px-3 py-2.5 sm:px-4', style.box)}>
+        <div data-severity={notice.severity} className={cn('flex min-w-0 items-center gap-3 px-3 py-2 sm:px-4 sm:py-2.5', style.box)}>
           <Icon name={style.icon} className={cn('max-xs:hidden', style.text)} />
           <div className="min-w-0 flex-1">
             <h2 className={cn('type-eyebrow flex flex-wrap items-center gap-x-1.5 gap-y-0.5', style.text)}>
-              <span>{t('home.notice.label')}</span>
-              <span aria-hidden="true">·</span>
+              <span className="max-sm:sr-only">{t('home.notice.label')}</span>
+              <span aria-hidden="true" className="max-sm:hidden">
+                ·
+              </span>
               <span className="text-ink-2">{notice.scope ?? t('home.notice.network')}</span>
               {notice.provenance === 'demo' ? <ProvenanceTag provenance="demo" length="short" className="ml-1" /> : null}
             </h2>
             <p className="type-body-sm mt-1 font-semibold text-ink sm:text-[0.9375rem]">{notice.title}</p>
-            {period ? <p className="type-data-xs mt-0.5 text-ink-2">{period}</p> : null}
+            {period ? <p className="type-data-xs mt-0.5 text-ink-2 max-sm:hidden">{period}</p> : null}
           </div>
           <LocaleLink
             href={`/notices#${notice.id}`}

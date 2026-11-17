@@ -42,10 +42,12 @@ export interface AirportSwitcherButtonProps {
 export function AirportSwitcherButton({ variant = 'header', then, labelClassName, className }: AirportSwitcherButtonProps) {
   const t = useT();
   const lang = useLang();
-  const { choice, hydrated } = useAirportContext();
+  const { choice, selection, hydrated } = useAirportContext();
   const { open } = useOverlayState();
   const airport = choice ? getAirport(choice.airport) : undefined;
-  const label = choice ? pick(choice.label, lang) : t('airportSwitcher.none');
+  // KLIA without a chosen terminal is just "KLIA": never imply Terminal 1.
+  const terminal = selection?.terminal;
+  const label = choice ? (terminal || !airport ? pick(choice.label, lang) : airport.shortName) : t('airportSwitcher.none');
   const unset = hydrated && !choice;
   const common = {
     type: 'button' as const,
@@ -61,7 +63,7 @@ export function AirportSwitcherButton({ variant = 'header', then, labelClassName
         data-airport-switcher={variant}
         className={cn(
           'group flex w-full min-w-0 items-center gap-3 rounded-lg border text-left transition-colors duration-fast',
-          variant === 'desk' ? 'min-h-14 px-3 py-2' : 'min-h-14 px-3 py-2.5',
+          variant === 'desk' ? 'min-h-13 px-2.5 py-1.5' : 'min-h-14 px-3 py-2.5',
           unset
             ? 'border-primary bg-primary-soft text-primary-ink shadow-xs hover:bg-surface'
             : 'border-line-control bg-surface text-ink hover:border-ink hover:bg-page-subtle',
@@ -104,7 +106,7 @@ export function AirportSwitcherButton({ variant = 'header', then, labelClassName
       {choice ? (
         <>
           <AirportCode code={choice.code} size="sm" className="font-bold" />
-          {choice.terminal ? <TerminalBadge terminal={choice.terminal} size="sm" /> : null}
+          {terminal ? <TerminalBadge terminal={terminal} size="sm" /> : null}
           <span className={cn('min-w-0 leading-tight', labelClassName ?? 'hidden sm:inline')}>{label}</span>
         </>
       ) : (
@@ -144,7 +146,8 @@ export function AirportSwitcherDialog() {
   const router = useRouter();
   const dialog = useOverlayDialog('airport');
   const availability = useSectionAvailability();
-  const { selection, choice: current, set, clear } = useAirportContext();
+  const { selection, set, clear } = useAirportContext();
+  const isSelected = (choice: AirportChoice): boolean => Boolean(selection && choice.airport === selection.airport && choice.terminal === selection.terminal);
   const [query, setQuery] = useState('');
   const listRef = useRef<HTMLDivElement>(null);
   const then = dialog.payload.then;
@@ -172,7 +175,11 @@ export function AirportSwitcherDialog() {
   const groups: { id: string; title: string; items: Option[] }[] = filtering
     ? [{ id: 'matches', title: t.count('shell.switcher.matches', matches.length), items: matches }]
     : [
-        { id: 'last', title: t('shell.switcher.lastUsed'), items: options.filter((option) => option.choice.id === current?.id) },
+        {
+          id: 'last',
+          title: t('shell.switcher.lastUsed'),
+          items: options.filter((option) => selection && option.choice.airport === selection.airport && (!selection.terminal || option.choice.terminal === selection.terminal)),
+        },
         { id: 'featured', title: t('airportSwitcher.featured'), items: options.filter((option) => option.choice.featured) },
         {
           id: 'international',
@@ -281,7 +288,7 @@ export function AirportSwitcherDialog() {
               </h3>
               <ul className="-mx-2 flex flex-col">
                 {group.items.map(({ choice, label, name }) => {
-                  const selected = current?.id === choice.id;
+                  const selected = isSelected(choice);
                   return (
                     <li key={`${group.id}-${choice.id}`}>
                       <button

@@ -50,7 +50,7 @@ export function HomeHero({ lang, notices }: { lang: Lang; notices: readonly Noti
   return (
     <section aria-labelledby="home-title" className="relative isolate overflow-hidden border-b border-line">
       <TaburField fade className="absolute top-0 right-0 -z-10 h-52 w-[44rem] max-w-[65%] opacity-45 max-md:hidden" />
-      <Container className="flex flex-col gap-[clamp(0.625rem,1.7vh,1.125rem)] pt-[clamp(0.75rem,2.4vh,2rem)] pb-[clamp(1.25rem,3.2vh,2.75rem)]">
+      <Container className="flex flex-col gap-[clamp(0.5rem,1.9vh,1.25rem)] pt-[clamp(0.625rem,2.4vh,2rem)] pb-[clamp(1.25rem,3.2vh,2.75rem)]">
         <div className="flex items-end justify-between gap-x-10 gap-y-2">
           <div className="min-w-0">
             <p className="type-eyebrow mb-2.5 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-gold-ink max-sm:hidden">
@@ -59,7 +59,7 @@ export function HomeHero({ lang, notices }: { lang: Lang; notices: readonly Noti
               <span aria-hidden="true">·</span>
               <span>{t('home.eyebrow', { count: AIRPORTS.length })}</span>
             </p>
-            <h1 id="home-title" className="type-display-lg text-ink">
+            <h1 id="home-title" className="type-display-lg text-ink max-sm:text-[1.75rem]">
               {t('home.headlineLead')} <em className="text-primary-ink">{t('home.headlineAccent')}</em>
             </h1>
           </div>
@@ -68,7 +68,7 @@ export function HomeHero({ lang, notices }: { lang: Lang; notices: readonly Noti
 
         <FlightSearchBox id="flight-search" showAirportSelector />
 
-        <div className="flex flex-col gap-[clamp(0.5rem,1.2vh,0.75rem)]">
+        <div className="flex flex-col gap-[clamp(0.5rem,1.3vh,0.875rem)]">
           <JourneyModes />
           <JourneyModeGuidance className="px-1 max-sm:hidden" />
           <ModeQuickActions />

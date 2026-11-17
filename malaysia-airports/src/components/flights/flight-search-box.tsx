@@ -146,7 +146,7 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
   };
 
   const directionWord = direction === 'd' ? t('flights.search.directionDepartures') : t('flights.search.directionArrivals');
-  const scopeName = scope ? terminalLabel(scope, scopeTerminal, lang) : '';
+  const scopeName = scope ? (scopeTerminal ? terminalLabel(scope, scopeTerminal, lang) : scope.shortName) : '';
   const scopeSentence = scope
     ? rich(t('flights.search.scopeAirport'), { direction: <strong className="font-semibold text-ink">{directionWord}</strong>, airport: <strong className="font-semibold text-ink">{scopeName}</strong> })
     : rich(t('flights.search.scopeNetwork'), {
@@ -171,7 +171,7 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
   };
 
   return (
-    <section id={id} aria-label={t('home.deskLabel')} className={cn('relative scroll-mt-24', className)}>
+    <section id={id} aria-label={t('home.deskLabel')} className={cn('group/desk relative scroll-mt-24', className)}>
       <div className="relative overflow-hidden rounded-xl border border-line-strong bg-surface shadow-md">
         <div className="flex flex-col gap-2 p-2 sm:gap-2.5 sm:p-3">
           <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
@@ -180,15 +180,14 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
               label={t('flights.filters.direction')}
               value={direction}
               onValueChange={setDirection}
-              size="lg"
-              className="max-sm:w-full"
+              className="sm:w-auto sm:flex-none"
               block
               options={[
                 { value: 'd', label: t('common.labels.departures'), icon: 'plane-takeoff' },
                 { value: 'a', label: t('common.labels.arrivals'), icon: 'plane-landing' },
               ]}
             />
-            <p className="type-body-sm min-w-0 flex-1 basis-56 text-ink-2 sm:px-1 sm:text-right" data-flight-scope="">
+            <p className="type-body-sm min-w-0 flex-1 basis-56 px-1 text-ink-2 sm:text-right" data-flight-scope="">
               {scopeSentence}
             </p>
           </div>
@@ -225,7 +224,8 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
           </form>
 
           {examples.length > 0 && !searching ? (
-            <div className="flex items-center gap-2 max-sm:-mx-2 max-sm:overflow-x-auto max-sm:px-2 sm:flex-wrap">
+            /* On phones the examples appear once the search has focus, so the first screen stays short. */
+            <div className="flex items-center gap-2 max-sm:-mx-2 max-sm:hidden max-sm:overflow-x-auto max-sm:px-2 max-sm:group-focus-within/desk:flex sm:flex-wrap">
               <span className="type-eyebrow shrink-0 text-ink-2">{t('flights.search.examplesLabel')}</span>
               <ul className="flex items-center gap-1.5 sm:flex-wrap">
                 {examples.map((example) => (
