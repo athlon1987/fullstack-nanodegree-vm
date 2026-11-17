@@ -57,6 +57,7 @@ export const transportPagesEn = {
     tableCaption: 'Ways to travel between {airport} and {destination}, sorted by {priority}',
     option: 'Option',
     noResults: 'No published option serves this place yet.',
+    bookOnline: 'Book online',
   },
   fields: {
     fare: 'Fare',
@@ -280,6 +281,7 @@ export const transportPagesMs: typeof transportPagesEn = {
     tableCaption: 'Cara perjalanan antara {airport} dan {destination}, disusun mengikut {priority}',
     option: 'Pilihan',
     noResults: 'Belum ada pilihan yang diterbitkan untuk tempat ini.',
+    bookOnline: 'Tempah dalam talian',
   },
   fields: {
     fare: 'Tambang',
