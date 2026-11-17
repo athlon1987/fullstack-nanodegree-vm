@@ -1,13 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import type { GuideScope } from '@/content/guides';
 import { useT } from '@/lib/i18n/client';
 import { EmptyState } from '@/components/common/empty-state';
 import { SectionHeading } from '@/components/common/section-heading';
 import { FilterChip } from '@/components/ui/filter-chip';
 import { GuideCard } from './guide-card';
-import { SCOPE_ICONS, SCOPE_LABEL_KEYS, SCOPE_ORDER, START_HERE_GUIDE, type GuideGroupId } from './guide-meta';
+import { SCOPE_ICONS, SCOPE_LABEL_KEYS, START_HERE_GUIDE, type GuideGroupId } from './guide-meta';
+import { GUIDE_SCOPES, type GuideScope } from './guide-scopes';
 import type { GuideCardView } from './guide-views.server';
 
 export interface GuideIndexProps {
@@ -39,7 +39,7 @@ export function GuideIndex({ groups }: GuideIndexProps) {
           <FilterChip pressed={scope === null} onPressedChange={() => setScope(null)}>
             {t('guidePages.hub.filterAll')}
           </FilterChip>
-          {SCOPE_ORDER.map((item) => (
+          {GUIDE_SCOPES.map((item) => (
             <FilterChip key={item} icon={SCOPE_ICONS[item]} pressed={scope === item} onPressedChange={(on) => setScope(on ? item : null)}>
               {t(SCOPE_LABEL_KEYS[item])}
             </FilterChip>

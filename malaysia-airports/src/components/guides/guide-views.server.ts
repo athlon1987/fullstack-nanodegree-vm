@@ -6,19 +6,17 @@ import {
   GUIDES,
   airportsWithContent,
   getAirportContent,
-  guideScopes,
-  guideStepScopes,
   hasTranslation,
   pick,
   resolveSources,
   type Guide,
   type GuideNote,
-  type GuideScope,
   type Lang,
   type Provenance,
   type Source,
 } from '@/content';
 import { GUIDE_GROUPS, GUIDE_NOTE_TOPICS, guideIcon, type GuideGroupId } from './guide-meta';
+import { guideScopes, guideStepScopes, type GuideScope } from './guide-scopes';
 import type { IconKey } from '@/components/ui/icon';
 
 export interface GuideActionView {

@@ -1,4 +1,4 @@
-import type { GuideScope } from '@/content/guides';
+import type { GuideScope } from './guide-scopes';
 import type { Translator } from '@/lib/i18n/translate';
 import { cn } from '@/lib/cn';
 import { Chip } from '@/components/ui/chip';

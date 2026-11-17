@@ -2,7 +2,7 @@
  * Presentation metadata for the guides: icons, hub groups, related guides and which airport
  * guide-note topics belong to each guide. Client-safe: no content is imported, only types.
  */
-import type { GuideScope } from '@/content/guides';
+import type { GuideScope } from './guide-scopes';
 import type { GuideNoteTopic } from '@/content/types';
 import type { TKey } from '@/lib/i18n/translate';
 import type { IconKey } from '@/components/ui/icon';
@@ -66,9 +66,6 @@ export const RELATED_GUIDES: Readonly<Record<string, readonly string[]>> = {
   neurodivergent: ['families', 'reduced-mobility', 'security'],
   'older-travellers': ['reduced-mobility', 'baggage', 'departing'],
 };
-
-/** Scope order for filters (mirrors `GUIDE_SCOPES` in the content layer, without importing content). */
-export const SCOPE_ORDER: readonly GuideScope[] = ['domestic', 'international', 'sabah-sarawak'];
 
 export const SCOPE_LABEL_KEYS: Readonly<Record<GuideScope, TKey>> = {
   domestic: 'guidePages.scopes.domestic',
