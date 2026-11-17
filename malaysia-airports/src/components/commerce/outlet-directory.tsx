@@ -80,7 +80,7 @@ function DirectoryFromUrl(props: OutletDirectoryProps) {
 
 function write(filters: OutletFilters) {
   const query = writeOutletFilters(new URLSearchParams(window.location.search), filters).toString();
-  window.history.replaceState(window.history.state, '', `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`);
+  window.history.replaceState(null, '', `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`);
 }
 
 const PRICE_BANDS: readonly PriceBand[] = [1, 2, 3, 4];
