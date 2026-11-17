@@ -71,13 +71,14 @@ test.describe('transport planner', () => {
     const main = page.getByRole('main');
     await expect(main.getByRole('heading', { level: 1 })).toBeVisible();
 
+    // The visible label covers each visually hidden radio, so check it without the pointer test.
     await expect(async () => {
-      await main.getByRole('radio', { name: 'Least effort' }).check();
-      await expect(page).toHaveURL(/by=convenience/);
+      await main.getByRole('radio', { name: 'Least effort' }).check({ force: true });
+      await expect(page).toHaveURL(/by=convenience/, { timeout: 2_000 });
     }).toPass();
     await expect(main.getByText(/Sorted by our rule of thumb/)).toBeVisible();
 
-    await main.getByRole('radio', { name: 'Table' }).check();
+    await main.getByRole('radio', { name: 'Table' }).check({ force: true });
     await expect(page).toHaveURL(/view=table/);
     const table = main.getByRole('table', { name: /Ways to travel between KLIA and KL Sentral/ });
     await expect(table).toBeVisible();
@@ -155,6 +156,7 @@ test.describe('parking', () => {
 
     await main.getByRole('link', { name: 'Open My journey' }).click();
     await expect(page).toHaveURL(/\/en\/journey/);
-    await expect(page.getByRole('main').getByText('B-114')).toBeVisible();
+    // Next.js keeps the parking page mounted but hidden; role queries skip it.
+    await expect(page.getByRole('main').getByRole('definition').filter({ hasText: 'B-114' })).toBeVisible();
   });
 });

@@ -1,6 +1,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
+import { useState } from 'react';
 import { useTerminalFilter } from '@/components/airport/use-terminal-filter';
 import type { TransportPriority } from '@/lib/transport';
 import { DEFAULT_PLANNER_STATE, PRIORITIES, TransportPlanner, type PlannerState } from './transport-planner';
@@ -18,13 +19,17 @@ export function TransportPlannerFromUrl(props: PlannerData) {
   const params = useSearchParams();
   const { terminal, hrefFor } = useTerminalFilter(props.context.slug);
   const by = params.get('by');
-  const state: PlannerState = {
+  // The latest choice is kept locally too, so the controls answer at once while the router catches up.
+  const [local, setLocal] = useState<PlannerState | null>(null);
+  const fromUrl: PlannerState = {
     place: params.get('to') ?? undefined,
     priority: isPriority(by) ? by : DEFAULT_PLANNER_STATE.priority,
     view: params.get('view') === 'table' ? 'table' : 'cards',
   };
+  const state = local ?? fromUrl;
 
   const onStateChange = (next: PlannerState) => {
+    setLocal(next);
     const query = new URLSearchParams(params);
     const write = (name: string, value: string | undefined, fallback?: string) => {
       if (value && value !== fallback) query.set(name, value);
