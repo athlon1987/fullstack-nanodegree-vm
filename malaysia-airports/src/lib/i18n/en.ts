@@ -10,6 +10,16 @@
  *
  * UI engineers: add new keys to BOTH dictionaries, in the section they belong to.
  */
+// Feature namespaces: each feature team owns its own file in ./features/.
+import { flightPagesEn } from './features/flights';
+import { mapPagesEn } from './features/map';
+import { transportPagesEn } from './features/transport';
+import { commercePagesEn } from './features/commerce';
+import { guidePagesEn } from './features/guides';
+import { conciergePageEn } from './features/concierge';
+import { corporatePagesEn } from './features/corporate';
+import { platformPagesEn } from './features/platform';
+
 export const en = {
   common: {
     appName: 'Malaysia Airports',
@@ -922,6 +932,14 @@ export const en = {
     noticeTitle: 'Some content is in English',
     noticeBody: 'This page has not been fully translated yet. Verified details are shown in English.',
   },
+  flightPages: flightPagesEn,
+  mapPages: mapPagesEn,
+  transportPages: transportPagesEn,
+  commercePages: commercePagesEn,
+  guidePages: guidePagesEn,
+  conciergePage: conciergePageEn,
+  corporatePages: corporatePagesEn,
+  platformPages: platformPagesEn,
 };
 
 /** Shape of an interface dictionary. `ms.ts` must match it exactly. */

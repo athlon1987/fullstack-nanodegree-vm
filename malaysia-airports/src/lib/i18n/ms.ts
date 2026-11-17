@@ -10,6 +10,16 @@
  */
 import type { Dictionary } from './en';
 
+// Feature namespaces: each feature team owns its own file in ./features/.
+import { flightPagesMs } from './features/flights';
+import { mapPagesMs } from './features/map';
+import { transportPagesMs } from './features/transport';
+import { commercePagesMs } from './features/commerce';
+import { guidePagesMs } from './features/guides';
+import { conciergePageMs } from './features/concierge';
+import { corporatePagesMs } from './features/corporate';
+import { platformPagesMs } from './features/platform';
+
 export const ms: Dictionary = {
   common: {
     appName: 'Malaysia Airports',
@@ -922,4 +932,12 @@ export const ms: Dictionary = {
     noticeTitle: 'Sebahagian kandungan dalam bahasa Inggeris',
     noticeBody: 'Halaman ini belum diterjemahkan sepenuhnya. Butiran yang disahkan dipaparkan dalam bahasa Inggeris.',
   },
+  flightPages: flightPagesMs,
+  mapPages: mapPagesMs,
+  transportPages: transportPagesMs,
+  commercePages: commercePagesMs,
+  guidePages: guidePagesMs,
+  conciergePage: conciergePageMs,
+  corporatePages: corporatePagesMs,
+  platformPages: platformPagesMs,
 };
