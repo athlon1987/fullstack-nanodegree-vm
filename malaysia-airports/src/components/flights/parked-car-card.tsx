@@ -75,7 +75,7 @@ export function ParkedCarCard({ carParks }: { carParks: readonly CarParkOption[]
   return (
     <section aria-labelledby={`${id}-title`} className="rounded-xl border border-line-strong bg-surface p-5 sm:p-6">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h2 id={`${id}-title`} ref={heading} tabIndex={-1} className="type-title-lg flex items-center gap-2.5 text-ink outline-none">
+        <h2 id={`${id}-title`} ref={heading} tabIndex={-1} className="type-title-lg flex items-center gap-2.5 text-ink">
           <Icon name="car-front" />
           {t('journey.saved.parkedCar.title')}
         </h2>

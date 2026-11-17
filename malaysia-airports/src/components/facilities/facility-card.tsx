@@ -1,0 +1,84 @@
+'use client';
+
+import type { Source } from '@/content/types';
+import { useT } from '@/lib/i18n/client';
+import { ExternalLink } from '@/components/common/external-link';
+import { LocaleLink } from '@/components/common/locale-link';
+import { NotPublished } from '@/components/common/not-published';
+import { ProvenanceTag } from '@/components/common/provenance-tag';
+import { SourceNote } from '@/components/common/source-note';
+import { Badge } from '@/components/ui/badge';
+import { DataList, DataListItem } from '@/components/ui/data-list';
+import { Icon } from '@/components/ui/icon';
+import { AccessibleValue, AreaValue, HoursValue, sourcesFor } from './facility-values';
+import type { FacilityView } from './facility-view';
+
+export interface FacilityCardProps {
+  facility: FacilityView;
+  sources: Readonly<Record<string, Source>>;
+  showTerminal: boolean;
+}
+
+/** One facility: what it is, where, when, for whom, how sure we are and where that comes from. */
+export function FacilityCard({ facility, sources, showTerminal }: FacilityCardProps) {
+  const t = useT();
+  return (
+    <article
+      id={facility.id}
+      aria-labelledby={`${facility.id}-title`}
+      className="flex min-w-0 scroll-mt-32 flex-col rounded-xl border border-line-strong bg-surface p-4 shadow-xs target:border-ink target:shadow-md sm:p-5"
+    >
+      <div className="flex items-start gap-3">
+        <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-page-subtle text-ink">
+          <Icon name={facility.icon} />
+        </span>
+        <div className="min-w-0 flex-1">
+          <h3 id={`${facility.id}-title`} className="type-title-md text-ink">
+            {facility.name}
+          </h3>
+          <div className="mt-1.5 flex flex-wrap items-center gap-2">
+            <ProvenanceTag provenance={facility.provenance} />
+            {showTerminal ? <Badge size="sm">{facility.terminalLabel}</Badge> : null}
+          </div>
+        </div>
+      </div>
+
+      <p className="type-body mt-3 text-ink-2">{facility.description}</p>
+
+      <DataList dense className="mt-4">
+        <DataListItem label={t('mapPages.details.location')}>{facility.locationNote ?? <NotPublished />}</DataListItem>
+        <DataListItem label={t('mapPages.details.level')}>{facility.levelName ?? <NotPublished />}</DataListItem>
+        <DataListItem label={t('mapPages.details.area')}>
+          <AreaValue side={facility.zone} />
+        </DataListItem>
+        <DataListItem label={t('mapPages.details.hours')}>
+          <HoursValue hours={facility.hours} />
+        </DataListItem>
+        <DataListItem label={t('mapPages.details.accessibility')}>
+          <AccessibleValue accessible={facility.accessible} />
+        </DataListItem>
+        {facility.access ? <DataListItem label={t('mapPages.details.access')}>{facility.access}</DataListItem> : null}
+        {facility.operator ? <DataListItem label={t('mapPages.details.operator')}>{facility.operator}</DataListItem> : null}
+      </DataList>
+
+      <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-1 pt-4">
+        {facility.mapHref ? (
+          <LocaleLink href={facility.mapHref} className="link-action type-body-sm inline-flex items-center gap-1.5">
+            <Icon name="map" size="sm" />
+            {t('mapPages.facilities.showOnMap')}
+            <span className="sr-only">: {facility.name}</span>
+          </LocaleLink>
+        ) : null}
+        {facility.bookingUrl ? (
+          <ExternalLink href={facility.bookingUrl} variant="action" className="type-body-sm">
+            {t('common.actions.openOfficialSite')}
+          </ExternalLink>
+        ) : null}
+      </div>
+      <div className="mt-1 flex flex-wrap items-center gap-x-4">
+        <SourceNote sources={sourcesFor(facility.sourceIds, sources)} />
+        {facility.asOf ? <p className="type-caption py-2 text-ink-2">{t('freshness.asOf', { date: facility.asOf })}</p> : null}
+      </div>
+    </article>
+  );
+}
