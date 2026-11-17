@@ -140,11 +140,14 @@ export function FlightRow({ flight, layout = 'card', showAirport = false, onNavi
           </p>
         </div>
         <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 @max-lg:basis-full">
-          <span className="type-data-md inline-flex items-center gap-2">
+          <span className="type-data-md inline-flex flex-wrap items-center gap-x-3 gap-y-1">
             {boardAirport ? <AirportCode code={boardAirport.code} name={boardAirport.name} size="sm" variant="boxed" /> : null}
-            <span className="sr-only">{standLabel}: </span>
-            <TerminalBadge terminal={flight.terminal} size="sm" />
-            {standValue}
+            <span className="inline-flex items-center gap-1.5">
+              <TerminalBadge terminal={flight.terminal} size="sm" />
+              {/* Visible on cards: a bare "2" next to an airport code does not say it is a gate. */}
+              <span className="type-caption font-sans text-ink-2">{standLabel}</span>
+              {standValue}
+            </span>
           </span>
           <FlightStatusChip status={flight.status} size="sm" />
         </div>
