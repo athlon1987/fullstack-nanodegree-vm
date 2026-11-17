@@ -62,6 +62,7 @@ export interface PoiView {
 /** Everything the client needs to draw and route one schematic map, already localised. */
 export interface MapView {
   id: string;
+  airport: string;
   terminal: TerminalId;
   terminalLabel: string;
   name: string;
@@ -116,7 +117,7 @@ export function sideFor(kind: MapPoiKind, zoneKind: MapZone['kind'] | undefined,
 export function routingModel(view: MapView): MapModel {
   return {
     id: view.id,
-    airport: 'kul',
+    airport: view.airport,
     terminal: view.terminal,
     name: { en: view.name },
     schematic: true,
@@ -449,10 +450,10 @@ export interface StepContext {
 
 const CONVEYANCES: readonly MapEdge['kind'][] = ['lift', 'escalator', 'stairs'];
 
-function stepMinutes(edges: readonly Pick<MapEdge, 'metres' | 'fixedMinutes' | 'kind' | 'accessible' | 'from' | 'to'>[]): Record<WalkProfile, number> {
+function stepMinutes(edges: readonly MapEdge[]): Record<WalkProfile, number> {
   return {
-    standard: edges.reduce((sum, edge) => sum + edgeMinutes(edge as MapEdge, 'standard'), 0),
-    reduced: edges.reduce((sum, edge) => sum + edgeMinutes(edge as MapEdge, 'reduced'), 0),
+    standard: edges.reduce((sum, edge) => sum + edgeMinutes(edge, 'standard'), 0),
+    reduced: edges.reduce((sum, edge) => sum + edgeMinutes(edge, 'reduced'), 0),
   };
 }
 
