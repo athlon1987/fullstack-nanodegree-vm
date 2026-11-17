@@ -16,7 +16,7 @@ export interface OutletCardProps {
   outlet: OutletView;
   sources: Readonly<Record<string, Source>>;
   showTerminal: boolean;
-  /** Schematic proximity to the passenger's gate, when a gate is set. */
+  /** Schematic proximity to the passenger's gate, when a gate is set and the list is not grouped by it. */
   proximity?: ProximityKind;
   headingLevel?: 2 | 3;
 }
@@ -87,7 +87,7 @@ export function OutletCard({ outlet, sources, showTerminal, proximity, headingLe
         </span>
       </p>
 
-      {proximity ? (
+      {proximity && proximity !== 'unknown' ? (
         <p className="type-body-sm mt-2 flex gap-2 text-ink">
           <Icon name="navigation" size="sm" className="mt-0.5 shrink-0 text-ink-2" />
           <span className="min-w-0">

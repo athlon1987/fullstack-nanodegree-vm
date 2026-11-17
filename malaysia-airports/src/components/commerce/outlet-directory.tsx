@@ -397,7 +397,7 @@ function Directory({ airport, items, sources, terminals, loungesHref, notice, fi
                             outlet={item}
                             sources={sources}
                             showTerminal={multiTerminal}
-                            proximity={gate ? gateProximity(item, gate) : undefined}
+                            proximity={gate && sort !== 'gate' ? gateProximity(item, gate) : undefined}
                             headingLevel={group.title ? 3 : 2}
                           />
                         </div>
