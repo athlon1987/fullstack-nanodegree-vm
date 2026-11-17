@@ -129,7 +129,7 @@ const transport: TransportOption[] = [
     id: 'pen-bus-401e',
     airport: 'pen',
     mode: 'bus',
-    name: lt('Rapid Penang bus 401E (George Town and Balik Pulau)', 'Bas Rapid Penang 401E (George Town dan Balik Pulau)'),
+    name: lt('Bus 401E to George Town and Balik Pulau', 'Bas 401E ke George Town dan Balik Pulau'),
     operator: 'Rapid Penang',
     description: lt(
       'Runs between Weld Quay in George Town and Balik Pulau, calling at Komtar, Queensbay Mall, Bayan Baru and the airport. Rapid Penang also lists routes 401, 102 and 306 at the airport. The bus stop at the airport and the first and last buses are not verified here: check MyRapid.',
@@ -161,7 +161,7 @@ const transport: TransportOption[] = [
     id: 'pen-bus-102',
     airport: 'pen',
     mode: 'bus',
-    name: lt('Rapid Penang bus 102 (Batu Ferringhi and Teluk Bahang)', 'Bas Rapid Penang 102 (Batu Ferringhi dan Teluk Bahang)'),
+    name: lt('Bus 102 to Batu Ferringhi and Teluk Bahang', 'Bas 102 ke Batu Ferringhi dan Teluk Bahang'),
     operator: 'Rapid Penang',
     description: lt(
       'Runs between the airport and Teluk Bahang, passing Komtar, Gurney Drive and Batu Ferringhi.',
@@ -185,7 +185,7 @@ const transport: TransportOption[] = [
     id: 'pen-bus-306',
     airport: 'pen',
     mode: 'bus',
-    name: lt('Rapid Penang bus 306 (Penang General Hospital)', 'Bas Rapid Penang 306 (Hospital Pulau Pinang)'),
+    name: lt('Bus 306 to Penang General Hospital', 'Bas 306 ke Hospital Pulau Pinang'),
     operator: 'Rapid Penang',
     description: lt(
       'Links the airport with Penang General Hospital by way of Scotland Road and Western Road.',
