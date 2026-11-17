@@ -46,7 +46,8 @@ export function BoardPreview({ airport, terminal, rows = 8, headingLevel = 2, cl
   const flights = useMemo<Flight[] | null>(() => {
     if (!provider) return null;
     const now = provider.meta().generatedAt;
-    const range = boardWindow(now, 8, 10);
+    // A day ahead, so a quiet night still fills the preview with the first flights of the morning.
+    const range = boardWindow(now, 24, 10);
     const slugs = scopeSlug ? [scopeSlug] : FEATURED_AIRPORT_SLUGS.filter((slug) => hasDemoRoutes(slug));
     const all = slugs.flatMap((slug) => provider.listFlightsSync({ airport: slug, direction, terminal: scopeSlug ? scopeTerminal : undefined, ...range }));
     // Lead with flights that are still to come; finished ones only fill the gap on a quiet board.
@@ -90,7 +91,7 @@ export function BoardPreview({ airport, terminal, rows = 8, headingLevel = 2, cl
       emptyMessage={noBoard ? t('flights.board.noDemoData') : undefined}
       footer={
         <>
-          <p className="type-body-sm text-ink-2">{t('home.board.preview', { count: rows })}</p>
+          <p className="type-body-sm text-ink-2">{t('home.board.preview', { count: flights?.length || rows })}</p>
           {scopeSlug && !noBoard ? (
             <LocaleLink href={`${sectionPath(scopeSlug, 'flights', scopeTerminal)}${scopeTerminal ? '&' : '?'}dir=${direction}`} className="link-action text-ink">
               {t('home.board.fullBoard')}
