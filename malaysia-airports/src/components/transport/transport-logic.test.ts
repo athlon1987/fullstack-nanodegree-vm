@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { TransportOption } from '@/content/types';
 import { compareTransport } from '@/lib/transport';
 import {
+  fareInfo,
   fareStatus,
   farePeriods,
   isDoorToDoor,
@@ -115,5 +116,17 @@ describe('places and door-to-door options', () => {
     expect(rows[0].fare).toBeUndefined();
     expect(rows[0].labels).not.toContain('destination-not-listed');
     expect(rows.find((row) => row.option.id === 'shuttle')?.labels).toContain('destination-not-listed');
+  });
+});
+
+describe('fareInfo', () => {
+  it('shows the first period before the clock is read, and today’s once it is', () => {
+    expect(fareInfo(express, 'kl sentral', null)).toMatchObject({ dated: true, shown: { fare: { amount: 55 } } });
+    const today = fareInfo(express, 'kl sentral', '2027-01-02');
+    expect(today.shown?.fare?.amount).toBe(65);
+    expect(today.status?.upcoming).toEqual([]);
+    expect(fareInfo(express, 'nowhere', '2026-11-17')).toEqual({ dated: false, doorToDoor: false });
+    expect(fareInfo(hailing, undefined, '2026-11-17')).toEqual({ dated: false, doorToDoor: true });
+    expect(fareInfo(coach, undefined, '2026-11-17')).toMatchObject({ dated: false, shown: { name: { en: 'KL Sentral' } } });
   });
 });

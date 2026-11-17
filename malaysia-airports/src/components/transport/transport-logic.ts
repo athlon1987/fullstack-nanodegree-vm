@@ -175,3 +175,38 @@ export function asOfLabel(asOf: string, lang: Lang, formatDay: (key: string, lan
 export function listedPlaces(option: TransportOption, lang: Lang): string[] {
   return farePeriods(option).map((place) => pick(place.name, lang));
 }
+
+/** What to show as an option's fare for a place on a day. */
+export interface FareInfo {
+  /** The place the figures are for, if the option lists one. */
+  place?: PlaceFares;
+  /** The entry whose fare, time and note are shown: today's period, or the first when the day is unknown. */
+  shown?: TransportDestination;
+  /** True when the place has dated fare periods. */
+  dated: boolean;
+  /** Where the dated fares stand on the day (only when the day is known). */
+  status?: FareStatus;
+  /** True for door-to-door options with no fixed route. */
+  doorToDoor: boolean;
+}
+
+/**
+ * The fare to show for an option. `placeKey` is the lower-case English place name; without one the
+ * option's first place is used. `day` is the airport-local date key, or null before the clock is read.
+ */
+export function fareInfo(option: TransportOption, placeKey: string | undefined, day: string | null): FareInfo {
+  const doorToDoor = isDoorToDoor(option);
+  const places = farePeriods(option);
+  const place = placeKey ? places.find((item) => item.key === placeKey) : places[0];
+  if (!place) return { dated: false, doorToDoor };
+  const dated = place.periods.some((period) => period.from || period.until);
+  if (!dated || day === null) return { place, shown: place.periods[0].destination, dated, doorToDoor };
+  const status = fareStatus(place, day);
+  const info: FareInfo = { place, dated, status, doorToDoor };
+  const shown = status.current?.destination;
+  if (shown) info.shown = shown;
+  return info;
+}
+
+/** Lower-case English place key for a place value from `placeChoices`. */
+export const placeKey = (value: string): string => value.toLowerCase();
