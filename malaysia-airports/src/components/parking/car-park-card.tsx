@@ -41,11 +41,11 @@ export function CarParkCard({ carPark, sources, timezone, availability, showTerm
   const bays = baysText(carPark, lang);
   const walk = walkText(carPark, t);
   const missing = [
-    carPark.accessibleBays === undefined ? t('transportPages.parking.fields.accessibleBays') : undefined,
-    carPark.evCharging === undefined ? t('transportPages.parking.fields.ev') : undefined,
-    carPark.payment?.length ? undefined : t('transportPages.parking.fields.payment'),
-    bays ? undefined : t('transportPages.parking.fields.bays'),
-    walk ? undefined : t('transportPages.parking.fields.access'),
+    bays ? undefined : t('transportPages.parking.missingNames.bays'),
+    walk ? undefined : t('transportPages.parking.missingNames.access'),
+    carPark.accessibleBays === undefined ? t('transportPages.parking.missingNames.accessibleBays') : undefined,
+    carPark.evCharging === undefined ? t('transportPages.parking.missingNames.ev') : undefined,
+    carPark.payment?.length ? undefined : t('transportPages.parking.missingNames.payment'),
   ].filter((item): item is string => item !== undefined);
   const notVerified = carPark.rateStatus !== 'published';
 
@@ -129,7 +129,7 @@ export function CarParkCard({ carPark, sources, timezone, availability, showTerm
             </Fact>
           ) : null}
         </dl>
-        {missing.length > 0 ? <NotPublished label={t('transportPages.fields.missing', { facts: formatList(missing.map((item) => item.toLocaleLowerCase(lang === 'ms' ? 'ms-MY' : 'en-GB')), lang) })} /> : null}
+        {missing.length > 0 ? <NotPublished label={t('transportPages.fields.missing', { facts: formatList(missing, lang) })} /> : null}
 
         <div className={cn('rounded-lg border p-4', notVerified ? 'border-line-strong bg-page-subtle' : 'border-line bg-surface')}>
           <div className="flex flex-wrap items-center justify-between gap-2">

@@ -64,12 +64,18 @@ export function ParkingCalculator({ data }: { data: ParkingPageData }) {
     if (next) setExit(next);
   };
 
-  let headline: string;
-  if (minutes === null) headline = t('transportPages.calculator.incomplete');
-  else if (invalid) headline = t('transportPages.calculator.invalid');
-  else if (result && !result.unavailable) headline = `${t('transportPages.calculator.total')}: ${formatCurrency(result.total, lang, { alwaysShowSen: !Number.isInteger(result.total) })}`;
-  else if (ceiling) headline = t('transportPages.calculator.ceilingTitle', { amount: formatCurrency(ceiling.amount, lang) });
-  else headline = t('transportPages.calculator.noFigureTitle');
+  const estimate = result && !result.unavailable ? result : null;
+  const money = (amount: number) => formatCurrency(amount, lang, { alwaysShowSen: !Number.isInteger(amount) });
+  const headline =
+    minutes === null
+      ? t('transportPages.calculator.incomplete')
+      : invalid
+        ? t('transportPages.calculator.invalid')
+        : estimate
+          ? money(estimate.total)
+          : ceiling
+            ? t('transportPages.calculator.ceilingTitle', { amount: money(ceiling.amount) })
+            : t('transportPages.calculator.noFigureTitle');
 
   return (
     <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
@@ -125,7 +131,7 @@ export function ParkingCalculator({ data }: { data: ParkingPageData }) {
             })}
           </div>
         </div>
-        <p className="type-caption text-ink-2">{now === null ? t('transportPages.calculator.lead') : `${t('transportPages.calculator.lead')} ${timezoneLabel(now, data.timezone)}.`}</p>
+        {now !== null ? <p className="type-caption text-ink-2">{t('transportPages.calculator.timezone', { zone: timezoneLabel(now, data.timezone) })}</p> : null}
       </form>
 
       <section aria-labelledby={`${id}-result`} className="flex flex-col gap-4 rounded-xl border border-line-strong bg-surface-sunken p-4 sm:p-5">
@@ -141,8 +147,9 @@ export function ParkingCalculator({ data }: { data: ParkingPageData }) {
           </Callout>
         ) : null}
         <div>
-          <p role="status" className={result && !result.unavailable ? 'type-display-sm text-ink' : ceiling ? 'type-display-sm text-ink' : 'type-title-md text-ink'}>
-            {result && !result.unavailable ? formatCurrency(result.total, lang, { alwaysShowSen: !Number.isInteger(result.total) }) : ceiling ? t('transportPages.calculator.ceilingTitle', { amount: formatCurrency(ceiling.amount, lang) }) : headline}
+          {estimate ? <p className="type-body-sm text-ink-2">{t('transportPages.calculator.total')}</p> : null}
+          <p role="status" className={estimate || ceiling ? 'type-display-sm text-ink' : 'type-title-md text-ink'}>
+            {headline}
           </p>
           {minutes !== null && minutes > 0 ? (
             <p className="type-body-sm mt-1 text-ink-2">
@@ -151,9 +158,9 @@ export function ParkingCalculator({ data }: { data: ParkingPageData }) {
           ) : null}
         </div>
 
-        {result && !result.unavailable ? (
+        {estimate ? (
           <>
-            {result.capped ? (
+            {estimate.capped ? (
               <Chip tone="info" icon="badge-check" className="self-start">
                 {t('transportPages.calculator.capped')}
               </Chip>
@@ -161,13 +168,13 @@ export function ParkingCalculator({ data }: { data: ParkingPageData }) {
             <div>
               <p className="type-eyebrow text-ink-3">{t('transportPages.calculator.breakdown')}</p>
               <ul className="mt-2 divide-y divide-line border-y border-line">
-                {result.breakdown.map((line) => (
+                {estimate.breakdown.map((line) => (
                   <li key={`${line.minutes}-${pick(line.label, 'en')}`} className="flex items-center justify-between gap-4 py-2">
                     <span className="type-body-sm text-ink-2">
                       {pick(line.label, lang)}
                       {line.capped ? ` · ${t('transportPages.calculator.capped')}` : null}
                     </span>
-                    <span className="type-data-sm text-ink">{formatCurrency(line.amount, lang, { alwaysShowSen: !Number.isInteger(line.amount) })}</span>
+                    <span className="type-data-sm text-ink">{money(line.amount)}</span>
                   </li>
                 ))}
               </ul>
@@ -184,9 +191,9 @@ export function ParkingCalculator({ data }: { data: ParkingPageData }) {
         {ceiling ? (
           <p className="type-body-sm text-ink-2">
             {t('transportPages.calculator.ceilingBody', {
-              max: formatCurrency(ceiling.dailyMax, lang),
+              max: money(ceiling.dailyMax),
               duration: formatDuration(minutes ?? 0, lang),
-              amount: formatCurrency(ceiling.amount, lang),
+              amount: money(ceiling.amount),
             })}
           </p>
         ) : null}

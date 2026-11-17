@@ -105,6 +105,8 @@ export const commercePagesEn = {
     hoursNotPublished: 'Hours not published',
     details: 'Details',
     detailsFor: 'Details for {name}',
+    via: 'From {publisher}',
+    viaMore: 'From {publisher} and {count} more',
     halal: { certified: 'Halal certified', 'pork-free': 'Pork-free', 'non-halal': 'Not halal' },
     zone: { landside: 'Before security', airside: 'After security', both: 'Both sides of security', unknown: 'Side of security not published' },
   },
@@ -312,6 +314,8 @@ export const commercePagesMs: typeof commercePagesEn = {
     hoursNotPublished: 'Waktu operasi tidak diterbitkan',
     details: 'Butiran',
     detailsFor: 'Butiran untuk {name}',
+    via: 'Daripada {publisher}',
+    viaMore: 'Daripada {publisher} dan {count} lagi',
     halal: { certified: 'Disahkan halal', 'pork-free': 'Tanpa babi', 'non-halal': 'Tidak halal' },
     zone: {
       landside: 'Sebelum pemeriksaan keselamatan',

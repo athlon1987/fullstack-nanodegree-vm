@@ -182,6 +182,13 @@ export const transportPagesEn = {
     },
     tableCaption: 'Car parks at {airport} compared',
     carPark: 'Car park',
+    missingNames: {
+      accessibleBays: 'accessible bays',
+      ev: 'EV charging',
+      payment: 'payment methods',
+      bays: 'number of bays',
+      access: 'how to reach the terminal',
+    },
   },
   availability: {
     title: 'Space now',
@@ -223,6 +230,7 @@ export const transportPagesEn = {
     noFigureBody: 'Sources differ on the rates for this car park, so we do not calculate a fee. Here is what they say.',
     officialLink: 'Check rates on the official page',
     resultLabel: 'Estimate',
+    timezone: 'Times are airport time, {zone}.',
   },
   parked: {
     title: 'Where I parked',
@@ -424,6 +432,13 @@ export const transportPagesMs: typeof transportPagesEn = {
     },
     tableCaption: 'Perbandingan tempat letak kereta di {airport}',
     carPark: 'Tempat letak kereta',
+    missingNames: {
+      accessibleBays: 'petak OKU',
+      ev: 'pengecasan EV',
+      payment: 'kaedah pembayaran',
+      bays: 'bilangan petak',
+      access: 'cara ke terminal',
+    },
   },
   availability: {
     title: 'Ruang sekarang',
@@ -465,6 +480,7 @@ export const transportPagesMs: typeof transportPagesEn = {
     noFigureBody: 'Sumber berbeza tentang kadar tempat letak kereta ini, jadi kami tidak mengira fi. Ini kata mereka.',
     officialLink: 'Semak kadar di halaman rasmi',
     resultLabel: 'Anggaran',
+    timezone: 'Masa ialah waktu lapangan terbang, {zone}.',
   },
   parked: {
     title: 'Lokasi kereta saya',
