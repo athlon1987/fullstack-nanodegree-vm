@@ -14,8 +14,14 @@ import { expect, test, type Page } from '@playwright/test';
 
 const AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'];
 
+/**
+ * `@axe-core/playwright` is typed against a newer `playwright-core` than the one `@playwright/test`
+ * bundles, so the two `Page` types differ by a few new methods. The runtime object is the same.
+ */
+type AxePage = ConstructorParameters<typeof AxeBuilder>[0]['page'];
+
 async function expectNoAxeViolations(page: Page) {
-  const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+  const results = await new AxeBuilder({ page: page as unknown as AxePage }).withTags(AXE_TAGS).analyze();
   const summary = results.violations.map((v) => `${v.id} (${v.impact}): ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`);
   expect(summary, 'axe violations').toEqual([]);
 }
@@ -74,11 +80,13 @@ test.describe('home', () => {
 
   test('flight search shows demo-labelled results inline', async ({ page }) => {
     await page.goto('/en');
-    const main = page.getByRole('main');
-    await main.getByRole('searchbox', { name: 'Search flights' }).fill('MH');
-    await main.getByRole('button', { name: 'Search flights' }).click();
-    await expect(main.getByRole('note', { name: 'Demonstration data' }).first()).toBeVisible();
-    await expect(main.getByRole('link', { name: /MH\s?\d+/ }).first()).toBeVisible();
+    const desk = page.getByRole('main').getByRole('region', { name: 'Flight search' });
+    await desk.getByRole('searchbox', { name: 'Search flights' }).fill('MH');
+    await desk.getByRole('button', { name: 'Search flights' }).click();
+    const results = desk.getByRole('list', { name: 'Matching flights' });
+    await expect(results.getByRole('link', { name: /^View flight MH \d+/ }).first()).toBeVisible();
+    await expect(desk.getByText('Demo', { exact: true })).toBeVisible();
+    await expect(desk.getByRole('status')).toContainText('flights found');
   });
 });
 
