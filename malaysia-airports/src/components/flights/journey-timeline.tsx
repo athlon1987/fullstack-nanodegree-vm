@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { hasTranslation, pick, type Source } from '@/content/types';
 import type { Flight } from '@/lib/flights';
 import { useJourneyMode } from '@/lib/hooks';
@@ -60,7 +60,7 @@ export function JourneyTimeline({ flight, content, sources, now, title, headingI
           : modes[0];
   const zone = content.airport.timezone;
 
-  const steps = useMemo(() => buildJourney({ flight, mode, airportContent: content, now }), [flight, mode, content, now]);
+  const steps = buildJourney({ flight, mode, airportContent: content, now });
   const untranslated = lang !== 'en' && steps.some((step) => step.notes.some((note) => !hasTranslation(note.body, lang) || !hasTranslation(note.title, lang)));
 
   const resolve = (ids: readonly string[] | undefined): Source[] => (ids ?? []).map((id) => sources[id]).filter((source): source is Source => Boolean(source));

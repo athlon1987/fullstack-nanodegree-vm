@@ -54,24 +54,20 @@ export function MyJourney({ notes, sources, carParks }: MyJourneyProps) {
   const [announcement, setAnnouncement] = useState('');
   const savedHeading = useRef<HTMLHeadingElement>(null);
 
-  const contentFor = useMemo(() => {
-    const cache = new Map<string, JourneyAirportContent>();
-    return (slug: string): JourneyAirportContent | null => {
-      const airport = getAirport(slug);
-      if (!airport) return null;
-      let content = cache.get(slug);
-      if (!content) {
-        content = { airport, guidesNotes: [...(notes[slug] ?? [])] };
-        cache.set(slug, content);
-      }
-      return content;
-    };
-  }, [notes]);
+  /* The airport slice each saved flight's timeline needs, built once per change of the list. */
+  const contents = useMemo(() => {
+    const map = new Map<string, JourneyAirportContent>();
+    for (const saved of journey.flights) {
+      const airport = map.has(saved.airport) ? undefined : getAirport(saved.airport);
+      if (airport) map.set(saved.airport, { airport, guidesNotes: [...(notes[saved.airport] ?? [])] });
+    }
+    return map;
+  }, [journey.flights, notes]);
 
   const entries = useMemo<Entry[]>(() => {
     const list = journey.flights.map((saved): Entry => {
       if (!provider) return { saved, flight: undefined };
-      const content = contentFor(saved.airport);
+      const content = contents.get(saved.airport);
       if (!content || flightAvailability(saved.date, provider.now, content.airport.timezone) !== 'current') return { saved, flight: null };
       const flight = provider.getFlightSync(saved.id, saved.airport);
       if (!flight) return { saved, flight: null };
@@ -85,11 +81,11 @@ export function MyJourney({ notes, sources, carParks }: MyJourneyProps) {
       if (!a.flight || !b.flight) return a.flight ? -1 : b.flight ? 1 : 0;
       return Date.parse(a.flight.estimated) - Date.parse(b.flight.estimated);
     });
-  }, [journey.flights, provider, contentFor]);
+  }, [journey.flights, provider, contents]);
 
   const live = useMemo(() => entries.flatMap((entry) => (entry.flight ? [entry.flight] : [])), [entries]);
   const selected = entries.find((entry) => entry.flight && entry.saved.id === selectedId) ?? entries.find((entry) => entry.flight);
-  const selectedContent = selected?.flight ? contentFor(selected.flight.airport) : null;
+  const selectedContent = selected?.flight ? contents.get(selected.flight.airport) : undefined;
 
   const select = (id: string) => {
     setSelectedId(id);
