@@ -212,9 +212,9 @@ files do not carry.
    statements) was checked item by item.
 3. Item checks: every item has a source; every source id resolves; every source was retrieved on
    16 or 17 November 2026; the English and Malay texts carry the same figures. Of the 126 sources
-   the six files now use, 116 have a URL recorded in the fact files. The other ten are the seven
-   publisher-level sources listed above, the internal method note, the first-hand KLIA parking page
-   and one core source with a shortened URL (see "Left for others").
+   the six files now use, 116 have a URL recorded in the fact files. The other ten are seven of
+   the publisher-level sources listed above, the internal method note, the first-hand KLIA parking
+   page and one core source with a shortened URL (see "Left for others").
 4. Tone: a search for marketing wording and for claims of live data found none. No outlet is
    published anywhere.
 
@@ -223,12 +223,12 @@ files do not carry.
 | Airport | Values | Supported | Conflict, already shown as unverified | Weak, already shown as unverified or indicative | Conflict shown as settled | Weak shown as settled | Unsupported | Mismatch | Identifier not in the research | Items without `asOf` | Items without a source |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | KUL | 251 | 177 | 35 | 9 | 4 | 5 | 7 | 0 | 14 | 11 | 0 |
-| PEN | 128 | 95 | 19 | 0 | 1 | 0 | 3 | 5 | 5 | 0 | 0 |
+| PEN | 128 | 96 | 19 | 0 | 1 | 0 | 3 | 5 | 4 | 0 | 0 |
 | BKI | 79 | 59 | 13 | 0 | 0 | 0 | 3 | 1 | 3 | 0 | 0 |
 | KCH | 15 | 14 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 0 |
 | LGK | 3 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | SZB | 15 | 10 | 0 | 0 | 0 | 4 | 0 | 0 | 1 | 0 | 0 |
-| Total | 491 | 358 | 67 | 9 | 5 | 9 | 13 | 6 | 24 | 11 | 0 |
+| Total | 491 | 359 | 67 | 9 | 5 | 9 | 13 | 6 | 23 | 11 | 0 |
 
 How to read the columns:
 
@@ -241,11 +241,11 @@ How to read the columns:
 - **Conflict shown as settled, weak shown as settled, unsupported, mismatch**: the 33 findings
   fixed below.
 - **Identifier not in the research**: IATA airline designators. The fact files give only MH, NH and
-  MY. The other 24 uses come from the repository's own airline registry. They are kept because an
+  MY. The other 23 uses come from the repository's own airline registry. They are kept because an
   airline record needs a code; the airline names themselves are supported.
 
-After the fixes the same script finds 481 values: 367 supported, 80 conflicts shown as "sources
-differ", 10 weak figures shown as indicative or approximate, 24 airline designators, and nothing
+After the fixes the same script finds 481 values: 368 supported, 80 conflicts shown as "sources
+differ", 10 weak figures shown as indicative or approximate, 23 airline designators, and nothing
 in the other columns. `validateAllContent()` reports no issues.
 
 ### Every change made
@@ -326,8 +326,8 @@ retrieval date 16 November 2026: `taketours-penang-plaza-premium-domestic`,
    shuttles now carry sourced fares, so those expectations need updating by the domain owner.
 2. **KLIA Ekspres on 1 January 2027.** The fare model has no validity dates, so the RM55 entry has
    to be deleted by hand on that day; until then the comparison shows the lower of the two entries.
-3. **Airline designators.** 24 codes are not in the research (see the table). Confirm them against
-   the airline registry.
+3. **Airline designators.** 23 uses of airline codes are not in the research (see the table).
+   Confirm them against the airline registry.
 4. **Core source `routesonline-calm-room-t2`.** Its URL in `src/content/sources.ts` stops short of
    the one in `f-klia-t1.json` (which ends `-through-a-sensory-friendly-space`). The core registry
    is append-only for content authors.
