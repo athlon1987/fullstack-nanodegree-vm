@@ -1,0 +1,889 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Malaysia Airports. Your journey, beautifully connected.</title>
+<meta name="description" content="Concept homepage for Malaysia Airports: search flights, choose your airport and plan your journey across 39 airports.">
+<script>try{var t=localStorage.getItem('ma-theme');document.documentElement.dataset.theme=(t==='light'||t==='dark')?t:(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}</script>
+<style>
+/* Concept C: Laluan (Wayfinding). Typefaces self-hosted: Hanken Grotesk + Geist Mono (SIL OFL). */
+@font-face{font-family:"Hanken Grotesk";src:url(fonts/hanken-grotesk-latin-wght-normal.woff2) format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
+@font-face{font-family:"Geist Mono";src:url(fonts/geist-mono-latin-wght-normal.woff2) format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
+
+/* ---------- Tokens ---------- */
+:root{
+  --font-sans:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --font-mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  /* type scale */
+  --fs-11:.6875rem;--fs-12:.75rem;--fs-13:.8125rem;--fs-14:.875rem;--fs-15:.9375rem;--fs-16:1rem;--fs-18:1.125rem;--fs-20:1.25rem;--fs-24:1.5rem;--fs-32:2rem;--fs-44:2.75rem;
+  /* spacing scale (4px base) */
+  --sp-1:.25rem;--sp-2:.5rem;--sp-3:.75rem;--sp-4:1rem;--sp-5:1.25rem;--sp-6:1.5rem;--sp-8:2rem;--sp-10:2.5rem;--sp-12:3rem;--sp-16:4rem;--sp-20:5rem;--sp-24:6rem;
+  --gutter:clamp(1rem,4vw,2.5rem);
+  /* radii */
+  --r-1:.25rem;--r-2:.5rem;--r-3:.75rem;--r-4:1rem;--r-full:999px;
+  /* motion */
+  --dur-1:120ms;--dur-2:200ms;--dur-3:320ms;--ease-out:cubic-bezier(.2,.7,.2,1);--ease-io:cubic-bezier(.6,0,.2,1);
+  /* mengkuang weave tile, used as a mask so it takes any token colour */
+  --weave:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath d='M0 3h12M0 9h12M15 0v12M21 0v12M12 15h12M12 21h12M3 12v12M9 12v12' stroke='%23000' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  /* colour: light theme */
+  --bg:#F2F4F7;--surface:#FFFFFF;--surface-2:#E8ECF1;
+  --ink:#0A1A2B;--ink-2:#3A4A5C;--ink-3:#566576;
+  --line:#D4DAE2;--line-strong:#9BA7B5;
+  --primary:#0B4FCC;--primary-hover:#083D9F;--on-primary:#FFFFFF;--primary-tint:#E4ECFB;
+  --signal:#FFB300;--signal-ink:#1C1400;--signal-text:#7A4E00;
+  --focus:#0B4FCC;
+  /* the board: stays dark in both themes, like the hardware it borrows from */
+  --board:#0A1626;--board-2:#111F33;--board-line:#263850;--board-ink:#F1F4F8;--board-dim:#A3B3C8;--board-amber:#FFBE2E;
+  /* flight status (always paired with an icon and a label) */
+  --st-ok:#6BE3AC;--st-delay:#FFA36B;--st-cancel:#FF8D96;--st-closed:#2C3E58;
+  --shadow-1:0 1px 2px rgba(10,26,43,.06),0 1px 1px rgba(10,26,43,.04);
+  --shadow-2:0 10px 28px -10px rgba(10,26,43,.2);
+  --shadow-pop:0 18px 44px -12px rgba(10,26,43,.34),0 2px 6px rgba(10,26,43,.1);
+}
+:root[data-theme="dark"]{
+  --bg:#070E18;--surface:#0E1827;--surface-2:#162336;--ink:#EDF1F6;--ink-2:#B6C2D2;--ink-3:#8F9EB3;--line:#223249;--line-strong:#465A77;
+  --primary:#8AB4FF;--primary-hover:#A9C8FF;--on-primary:#06142C;--primary-tint:#11264A;
+  --signal:#FFBE2E;--signal-text:#FFCB5C;--focus:#FFBE2E;
+  --board:#03070D;--board-2:#0A1320;--board-line:#1F2E44;
+  --shadow-1:0 1px 2px rgba(0,0,0,.4);--shadow-2:0 10px 28px -10px rgba(0,0,0,.6);--shadow-pop:0 18px 44px -12px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme]){
+  --bg:#070E18;--surface:#0E1827;--surface-2:#162336;--ink:#EDF1F6;--ink-2:#B6C2D2;--ink-3:#8F9EB3;--line:#223249;--line-strong:#465A77;
+  --primary:#8AB4FF;--primary-hover:#A9C8FF;--on-primary:#06142C;--primary-tint:#11264A;
+  --signal:#FFBE2E;--signal-text:#FFCB5C;--focus:#FFBE2E;--board:#03070D;--board-2:#0A1320;--board-line:#1F2E44;
+}}
+:root[data-contrast="high"]{--ink-2:#1F2D3D;--ink-3:#33414F;--line:#6B7785;--line-strong:#0A1A2B;--board-dim:#D5DEEA;--board-line:#5B7191}
+:root[data-theme="dark"][data-contrast="high"]{--ink-2:#DCE4EE;--ink-3:#C3CEDB;--line:#6F84A3;--line-strong:#EDF1F6}
+:root[data-textsize="lg"]{font-size:112.5%}
+
+/* ---------- Base ---------- */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:5.5rem}
+body{margin:0;font:400 var(--fs-16)/1.5 var(--font-sans);color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:clip}
+h1,h2,h3,p{margin:0}
+h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.15;text-wrap:balance}
+a{color:inherit}
+button{font:inherit;color:inherit}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:var(--r-1)}
+.vh{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+.wrap{width:min(100% - 2*var(--gutter),80rem);margin-inline:auto}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.ic{width:1.25rem;height:1.25rem;flex:none;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.ic--sm{width:1rem;height:1rem}
+.skip{position:absolute;left:var(--sp-4);top:-4rem;z-index:100;background:var(--ink);color:var(--bg);padding:var(--sp-3) var(--sp-4);border-radius:var(--r-2);font-weight:600;transition:top var(--dur-2) var(--ease-out)}
+.skip:focus{top:var(--sp-3)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-2);min-height:2.75rem;padding:0 var(--sp-5);border-radius:var(--r-2);border:1px solid transparent;font:600 var(--fs-15)/1 var(--font-sans);text-decoration:none;cursor:pointer;white-space:nowrap;transition:background var(--dur-1),border-color var(--dur-1),transform var(--dur-1)}
+.btn:active{transform:translateY(1px)}
+.btn--signal{background:var(--board-amber);color:var(--signal-ink)}.btn--signal:hover{background:#FFD066}
+.btn--primary{background:var(--primary);color:var(--on-primary)}.btn--primary:hover{background:var(--primary-hover)}
+.btn--ghost{border-color:var(--line-strong);background:transparent}.btn--ghost:hover{border-color:var(--ink)}
+.eyebrow{font:500 var(--fs-12)/1.2 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.tag{display:inline-flex;align-items:center;gap:.375rem;padding:.3125rem .5rem;border-radius:var(--r-1);font:600 var(--fs-11)/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase}
+.tag--signal{background:var(--signal);color:var(--signal-ink)}
+.more{display:inline-flex;align-items:center;gap:var(--sp-2);min-height:2.75rem;font-weight:600;font-size:var(--fs-15);color:var(--primary);text-decoration:none;white-space:nowrap}
+.more:hover{text-decoration:underline;text-underline-offset:.25em}
+.more .ic{transition:transform var(--dur-2) var(--ease-out)}.more:hover .ic{transform:translateX(3px)}
+/* segmented control used for language and accessibility settings */
+.seg{display:inline-flex;padding:2px;border:1px solid var(--line-strong);border-radius:var(--r-2);gap:2px}
+.seg button{min-height:1.75rem;min-width:2.25rem;padding:0 var(--sp-2);border:0;border-radius:calc(var(--r-2) - 2px);background:none;font-weight:600;font-size:var(--fs-13);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+
+/* ---------- Header ---------- */
+.hdr{position:sticky;top:-2rem;z-index:50;background:var(--surface);border-bottom:1px solid var(--line)}
+.strip{background:var(--board);color:var(--board-dim);font-size:var(--fs-13);--focus:var(--board-amber)}
+.strip__in{display:flex;align-items:center;justify-content:space-between;height:2rem;gap:var(--sp-4)}
+.strip__l{font:500 var(--fs-11)/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;display:flex;gap:var(--sp-3);align-items:center}
+.strip__l i{width:.375rem;height:.375rem;background:var(--board-amber);transform:rotate(45deg)}
+.strip__r{display:flex;align-items:center;gap:var(--sp-5);position:relative}
+.strip a,.strip__btn{display:inline-flex;align-items:center;gap:.375rem;min-height:1.75rem;color:var(--board-ink);text-decoration:none;background:none;border:0;cursor:pointer;font-size:var(--fs-13);padding:0}
+.strip a:hover,.strip__btn:hover{color:var(--board-amber)}
+.strip .seg{border-color:var(--board-line);padding:1px}.strip .seg button{min-height:1.5rem;color:var(--board-dim);font-size:var(--fs-12)}
+.strip .seg button[aria-pressed="true"]{background:var(--board-ink);color:var(--board)}
+.bar{display:flex;align-items:center;height:4rem;gap:var(--sp-5)}
+.brand{display:inline-flex;align-items:center;gap:.625rem;text-decoration:none;font-weight:700;font-size:1.0625rem;letter-spacing:-.02em;white-space:nowrap;min-height:2.75rem}
+.brand svg{width:2rem;height:2rem;flex:none}
+.brand span b{font-weight:700}.brand span{font-weight:500}
+.nav{display:flex;gap:var(--sp-5);margin-left:var(--sp-5);flex:1}
+.nav a{display:inline-flex;align-items:center;height:4rem;font-size:var(--fs-15);font-weight:500;text-decoration:none;color:var(--ink-2);white-space:nowrap;border-bottom:2px solid transparent;border-top:2px solid transparent;transition:color var(--dur-1)}
+.nav a:hover{color:var(--ink);border-bottom-color:var(--signal)}
+.nav__util{display:none}
+.utils{display:flex;align-items:center;gap:var(--sp-1);margin-left:auto}
+.ibtn{display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-2);min-width:2.75rem;height:2.75rem;padding:0 .625rem;border-radius:var(--r-2);border:0;background:none;cursor:pointer;text-decoration:none;font-weight:600;font-size:var(--fs-14);color:var(--ink)}
+.ibtn:hover{background:var(--surface-2)}
+.ibtn--line{border:1px solid var(--line-strong);padding:0 var(--sp-3)}
+.menu-btn{display:none}
+.pop{position:absolute;top:calc(100% + .5rem);left:0;z-index:60;min-width:19rem;padding:.375rem;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:var(--r-3);box-shadow:var(--shadow-pop);--focus:var(--primary);animation:pop var(--dur-2) var(--ease-out)}
+:root[data-theme="dark"] .pop{--focus:var(--signal)}
+@keyframes pop{from{opacity:0;transform:translateY(-4px)}}
+.pop--r{left:auto;right:0}
+.a11y{padding:var(--sp-4);display:grid;gap:var(--sp-3);min-width:18rem}
+.a11y h3{font-size:var(--fs-14)}
+.a11y__row{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-4);font-size:var(--fs-14);color:var(--ink-2)}
+/* airport selector */
+.apt{position:relative}
+.apt__btn{display:flex;align-items:center;gap:var(--sp-3);width:100%;height:3.5rem;padding:0 var(--sp-4);border:1.5px solid var(--board-amber);border-radius:var(--r-3);background:color-mix(in srgb,var(--board-amber) 12%,transparent);color:var(--board-ink);cursor:pointer;text-align:left;transition:background var(--dur-1)}
+.apt__btn:hover{background:color-mix(in srgb,var(--board-amber) 20%,transparent)}
+.apt__btn>.ic:first-child{color:var(--board-amber)}
+.apt__lbl{flex:1;min-width:0}
+.apt__lbl small{display:block;font:500 var(--fs-11)/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--board-amber);margin-bottom:.3125rem}
+.apt__lbl b{display:block;font-size:var(--fs-18);font-weight:650;line-height:1.1;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.apt.is-set .apt__btn{border-color:var(--board-line);background:var(--board-2)}
+.apt.is-set small{color:var(--board-dim)}
+.apt--pill .apt__btn{height:2.75rem;padding:0 var(--sp-3);gap:var(--sp-2);border:1.5px solid var(--signal-text);background:color-mix(in srgb,var(--signal) 14%,var(--surface));color:var(--ink);border-radius:var(--r-2)}
+.apt--pill .apt__btn>.ic:first-child{color:var(--signal-text)}
+.apt--pill b{font-size:var(--fs-14);font-weight:600;max-width:10rem}
+.apt--pill.is-set .apt__btn{border-color:var(--line-strong);background:var(--surface)}
+.apt__opt{display:grid;grid-template-columns:2.75rem 1fr auto;align-items:center;gap:var(--sp-3);width:100%;min-height:3rem;padding:.375rem var(--sp-3);border:0;border-radius:var(--r-2);background:none;text-align:left;cursor:pointer}
+.apt__opt:hover{background:var(--surface-2)}
+.apt__opt .code{font:600 var(--fs-13)/1 var(--font-mono);color:var(--ink-3)}
+.apt__opt b{display:block;font-size:var(--fs-15);font-weight:600;line-height:1.2}
+.apt__opt small{display:block;font-size:var(--fs-12);color:var(--ink-3);line-height:1.3}
+.apt__opt .ic{color:var(--primary);visibility:hidden}
+.apt__opt[aria-selected="true"]{background:var(--primary-tint)}.apt__opt[aria-selected="true"] .ic{visibility:visible}
+.apt__opt--all{border-top:1px solid var(--line);border-radius:0 0 var(--r-2) var(--r-2);margin-top:.25rem}
+
+/* ---------- Hero: search-first ---------- */
+.hero{padding:var(--sp-8) 0 var(--sp-10)}
+.hero__top{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--sp-8);margin-bottom:var(--sp-5)}
+.hero h1{font-size:clamp(1.375rem,.8rem + 2.5vw,2.75rem);letter-spacing:-.035em;line-height:1.02;margin-top:var(--sp-3)}
+.hero__lead{max-width:25rem;font-size:var(--fs-15);line-height:1.45;color:var(--ink-2)}
+.hero__grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);grid-template-areas:"board ctx" "modes modes";gap:var(--sp-6)}
+.board{grid-area:board;position:relative;background:var(--board);color:var(--board-ink);border:1px solid var(--board-line);border-radius:var(--r-4);padding:var(--sp-5) var(--sp-6) var(--sp-5);--focus:var(--board-amber)}
+.board::before{content:"";position:absolute;top:0;right:0;width:46%;height:5.75rem;border-top-right-radius:inherit;background:var(--board-dim);opacity:.28;pointer-events:none;-webkit-mask:var(--weave) 0 0/24px 24px,linear-gradient(to left,#000,transparent);mask:var(--weave) 0 0/24px 24px,linear-gradient(to left,#000,transparent);-webkit-mask-composite:source-in;mask-composite:intersect}
+.board__top{position:relative;display:flex;align-items:center;gap:var(--sp-3);margin-bottom:var(--sp-5)}
+.board__top .apt{flex:0 1 21rem}
+.dir{display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:.25rem;margin-left:auto;background:var(--board-2);border:1px solid var(--board-line);border-radius:var(--r-3)}
+.dir label{display:flex;align-items:center;justify-content:center;gap:var(--sp-2);min-height:2.875rem;padding:0 var(--sp-4);border-radius:var(--r-2);font-weight:600;font-size:var(--fs-15);color:var(--board-dim);cursor:pointer;transition:background var(--dur-1),color var(--dur-1)}
+.dir label:hover{color:var(--board-ink)}
+.dir input:checked+label{background:var(--board-ink);color:var(--board)}
+.dir input:focus-visible+label,.mode input:focus-visible+label{outline:3px solid var(--focus);outline-offset:2px}
+.dir .sm{display:none}
+.srch__label{display:block;font:500 var(--fs-11)/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--board-dim);margin-bottom:var(--sp-2)}
+.srch__field{display:flex;align-items:center;gap:var(--sp-3);height:4.5rem;padding:0 var(--sp-3) 0 var(--sp-5);background:var(--board-2);border:1px solid var(--board-line);border-radius:var(--r-3);transition:border-color var(--dur-1),box-shadow var(--dur-1)}
+.srch__field:focus-within{border-color:var(--board-amber);box-shadow:0 0 0 3px color-mix(in srgb,var(--board-amber) 32%,transparent)}
+.srch__field>.ic{width:1.5rem;height:1.5rem;color:var(--board-amber)}
+.srch input{flex:1;min-width:0;height:100%;padding:0;border:0;outline:0;background:none;color:var(--board-amber);caret-color:var(--board-amber);font:500 1.375rem/1 var(--font-mono);letter-spacing:-.01em}
+.srch input::placeholder{color:var(--board-dim);opacity:1;font-family:var(--font-sans);font-weight:400;letter-spacing:-.015em}
+.srch input::-webkit-search-cancel-button{display:none}
+.srch .btn{min-height:3rem;font-size:var(--fs-16)}
+.srch__out{margin-top:var(--sp-4);min-height:7.25rem}
+.ex__h,.res__h{font:500 var(--fs-11)/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--board-dim)}
+.ex__grid{list-style:none;margin:var(--sp-1) 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:0 var(--sp-6)}
+.ex__grid button{display:flex;align-items:center;gap:var(--sp-3);width:100%;min-height:2.875rem;padding:0 var(--sp-1);border:0;border-bottom:1px solid var(--board-line);background:none;color:inherit;cursor:pointer;text-align:left}
+.ex__grid li:nth-child(n+3) button{border-bottom-color:transparent}
+.ex .k{flex:none;width:7.75rem;font:500 var(--fs-11)/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--board-dim)}
+.ex .v{font:500 var(--fs-16)/1 var(--font-mono);transition:color var(--dur-1)}
+.ex .ic{margin-left:auto;color:var(--board-dim);transition:transform var(--dur-2) var(--ease-out),color var(--dur-1)}
+.ex button:hover .v,.ex button:hover .ic{color:var(--board-amber)}.ex button:hover .ic{transform:translateX(3px)}
+.res__h{display:flex;align-items:center;gap:var(--sp-3);flex-wrap:wrap}
+.demo{display:inline-flex;align-items:center;gap:.375rem;padding:.25rem .4375rem;background:var(--board-amber);color:var(--signal-ink);border-radius:var(--r-1);font-weight:600}
+.res__x{margin-left:auto;min-height:1.5rem;padding:0 var(--sp-2);border:1px solid var(--board-line);border-radius:var(--r-1);background:none;color:var(--board-ink);cursor:pointer;font:inherit;letter-spacing:inherit;text-transform:inherit}
+.res__rows{list-style:none;margin:var(--sp-1) 0 0;padding:0}
+.res__rows li{animation:flap var(--dur-3) var(--ease-out) both;animation-delay:calc(var(--i)*45ms);transform-origin:50% 0}
+@keyframes flap{from{opacity:0;transform:perspective(600px) rotateX(-70deg)}}
+.res__rows a{display:grid;grid-template-columns:4.25rem 5.25rem minmax(0,1fr) auto auto;align-items:center;gap:var(--sp-4);min-height:2.875rem;padding:0 var(--sp-1);border-bottom:1px solid var(--board-line);text-decoration:none}
+.res__rows a:hover{background:var(--board-2)}
+.res__meta{display:contents}
+.res__none{margin-top:var(--sp-3);color:var(--board-dim);font-size:var(--fs-15)}
+/* context column: one notice, compact guidance strip */
+.ctx{grid-area:ctx;display:flex;flex-direction:column;gap:var(--sp-3)}
+.notice{flex:1;display:flex;flex-direction:column;align-items:flex-start;padding:var(--sp-5);background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--signal);border-radius:var(--r-3)}
+.notice h2{font-size:var(--fs-20);margin:var(--sp-3) 0 var(--sp-2);letter-spacing:-.02em}
+.notice p{font-size:var(--fs-14);line-height:1.5;color:var(--ink-2)}
+.notice .more{margin-top:auto;padding-top:var(--sp-2);font-size:var(--fs-14)}
+.guide{display:grid;gap:var(--sp-3)}
+.guide a{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:var(--sp-3);min-height:4.75rem;padding:var(--sp-3) var(--sp-4);background:var(--surface);border:1px solid var(--line);border-radius:var(--r-3);text-decoration:none;transition:border-color var(--dur-1)}
+.guide a:hover{border-color:var(--primary)}
+.guide .ic:first-child{width:1.5rem;height:1.5rem;color:var(--primary)}
+.guide b{display:block;font-size:var(--fs-15);font-weight:650;line-height:1.25}
+.guide small{display:block;font-size:var(--fs-13);line-height:1.35;color:var(--ink-2);margin-top:.125rem}
+.guide .ic:last-child{color:var(--ink-3)}
+/* journey mode: a strip of signs */
+.modes{grid-area:modes;min-width:0}
+.mode{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r-3);overflow:hidden}
+.mode label{position:relative;display:flex;align-items:center;gap:var(--sp-3);min-height:4rem;padding:0 var(--sp-5);border-left:1px solid var(--line);cursor:pointer;transition:background var(--dur-1),color var(--dur-1)}
+.mode label:first-of-type{border-left:0}
+.mode label:hover{background:var(--surface-2)}
+.mode .ic{width:1.5rem;height:1.5rem;color:var(--primary)}
+.mode b{display:block;font-size:var(--fs-18);font-weight:650;letter-spacing:-.015em;line-height:1.15}
+.mode small{display:block;font:500 var(--fs-11)/1.2 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-top:.1875rem}
+.mode input:checked+label{background:var(--primary);color:var(--on-primary);border-left-color:transparent}
+.mode input:checked+label .ic,.mode input:checked+label small{color:inherit}
+.mode input:checked+label::after{content:"";position:absolute;inset:auto 0 0 0;height:4px;background:var(--signal)}
+.mode input:focus-visible+label{outline-offset:-4px;outline-color:var(--signal)}
+.acts{list-style:none;margin:var(--sp-3) 0 0;padding:0;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:var(--sp-3)}
+.acts li:nth-child(-n+2){grid-column:span 2}
+.acts.swap li{animation:actIn var(--dur-3) var(--ease-out) both;animation-delay:calc(var(--i)*35ms)}
+@keyframes actIn{from{opacity:0;transform:translateY(8px)}}
+.act{position:relative;display:flex;flex-direction:column;height:100%;min-height:8.25rem;padding:var(--sp-4);background:var(--surface);border:1px solid var(--line);border-radius:var(--r-3);text-decoration:none;transition:border-color var(--dur-1),box-shadow var(--dur-2)}
+.act:hover{border-color:var(--primary);box-shadow:var(--shadow-2)}
+.act>.ic{width:1.75rem;height:1.75rem;color:var(--primary)}
+.act__n{position:absolute;top:var(--sp-4);right:var(--sp-4);font:500 var(--fs-11)/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.act__t{margin-top:auto;padding-top:var(--sp-3);font-size:var(--fs-15);font-weight:650;line-height:1.2;letter-spacing:-.01em}
+.act__s{margin-top:.1875rem;font-size:var(--fs-13);line-height:1.35;color:var(--ink-2)}
+.acts li:nth-child(-n+2) .act__t{font-size:var(--fs-20);letter-spacing:-.02em}
+.acts li:first-child .act{background:var(--primary-tint);border-color:var(--primary)}
+.acts li:first-child .act__n{color:var(--primary)}.acts li:first-child .act__n::after{content:" · Start here"}
+.acts li:nth-child(n+3) .act__s{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ---------- Sections ---------- */
+.sec{padding:var(--sp-16) 0}
+.sec--band{background:var(--surface);border-block:1px solid var(--line)}
+.sec__h{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:end;gap:var(--sp-5);padding-top:var(--sp-6);margin-bottom:var(--sp-8);
+  /* batik line rhythm: three canting strokes of falling length */
+  background:linear-gradient(var(--ink),var(--ink)) 0 0/100% 1px no-repeat,linear-gradient(var(--line-strong),var(--line-strong)) 0 5px/38% 1px no-repeat,linear-gradient(var(--line-strong),var(--line-strong)) 0 10px/14% 1px no-repeat}
+.plate{display:grid;place-items:center;width:2.75rem;height:2.75rem;background:var(--board);border:1px solid var(--board-line);border-radius:var(--r-1);color:var(--board-amber);font:600 var(--fs-15)/1 var(--font-mono);align-self:start}
+.sec__h h2{font-size:clamp(1.5rem,1.1rem + 1.6vw,2.25rem);letter-spacing:-.03em}
+.sec__h p{margin-top:var(--sp-2);max-width:42rem;color:var(--ink-2)}
+/* departures board */
+.fids{background:var(--board);color:var(--board-ink);border:1px solid var(--board-line);border-radius:var(--r-4);--focus:var(--board-amber)}
+.fids__demo{display:flex;align-items:center;gap:var(--sp-3);flex-wrap:wrap;padding:var(--sp-3) var(--sp-5) var(--sp-3) var(--sp-12);border-radius:calc(var(--r-4) - 1px) calc(var(--r-4) - 1px) 0 0;color:var(--signal-ink);font-size:var(--fs-14);position:sticky;top:4rem;z-index:5;
+  background:repeating-linear-gradient(-45deg,var(--signal-ink) 0 6px,transparent 6px 12px) 0 0/2.25rem 100% no-repeat,var(--board-amber)}
+.fids__demo strong{font:700 var(--fs-13)/1.2 var(--font-mono);letter-spacing:.08em;text-transform:uppercase}
+.fids__meta{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-4);flex-wrap:wrap;padding:var(--sp-4) var(--sp-5);font:500 var(--fs-12)/1.3 var(--font-mono);letter-spacing:.04em;color:var(--board-dim);border-bottom:1px solid var(--board-line)}
+.fresh{display:inline-flex;align-items:center;gap:var(--sp-2);color:var(--board-ink)}
+.fresh time{color:var(--board-amber)}
+.fids table{width:100%;border-collapse:collapse}
+.fids th{padding:var(--sp-3) var(--sp-5);text-align:left;font:500 var(--fs-11)/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--board-dim);border-bottom:1px solid var(--board-line)}
+.fids td{padding:.8125rem var(--sp-5);border-bottom:1px solid var(--board-line);vertical-align:middle}
+.fids tbody tr:hover{background:var(--board-2)}
+.t-time{font:600 var(--fs-20)/1 var(--font-mono);color:var(--board-amber);font-variant-numeric:tabular-nums;white-space:nowrap}
+.t-time s{color:var(--board-dim);text-decoration-thickness:2px}
+.t-flt{font:500 var(--fs-15)/1 var(--font-mono);white-space:nowrap}
+.t-dest{font-size:1.0625rem;font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t-dest i{font:500 var(--fs-12)/1 var(--font-mono);font-style:normal;color:var(--board-dim);margin-left:.375rem;letter-spacing:.04em}
+.t-air{color:var(--board-dim);font-size:var(--fs-15)}
+.t-gate{font:500 var(--fs-15)/1 var(--font-mono);white-space:nowrap}
+.t-gate i{display:inline-block;font-style:normal;font-size:var(--fs-11);padding:.1875rem .3125rem;margin-right:.375rem;border:1px solid var(--board-line);border-radius:3px;color:var(--board-dim)}
+.chip{display:inline-flex;align-items:center;gap:.375rem;height:1.75rem;padding:0 .625rem 0 .5rem;border-radius:var(--r-1);border:1px solid currentColor;font:600 var(--fs-13)/1 var(--font-sans);white-space:nowrap}
+.chip .ic{width:.9375rem;height:.9375rem;stroke-width:2.25}
+.chip b{font:600 var(--fs-13)/1 var(--font-mono)}
+.chip--ok{color:var(--st-ok)}
+.chip--board{background:var(--board-amber);border-color:var(--board-amber);color:var(--signal-ink)}
+.chip--board .ic{animation:nudge 1.6s var(--ease-io) infinite}
+@keyframes nudge{50%{transform:translateX(2px)}}
+.chip--delay{color:var(--st-delay)}
+.chip--closed{background:var(--st-closed);border-color:var(--st-closed);color:var(--board-ink)}
+.chip--cancel{color:var(--st-cancel);border-style:dashed}
+.fids__foot{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-4);flex-wrap:wrap;padding:var(--sp-4) var(--sp-5);font-size:var(--fs-13);color:var(--board-dim)}
+.fids__foot .more{color:var(--board-amber)}
+/* journey timeline */
+.legend{list-style:none;margin:0 0 var(--sp-8);padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--sp-5)}
+.legend li{display:flex;flex-direction:column;align-items:flex-start;gap:var(--sp-2);font-size:var(--fs-14);color:var(--ink-2);line-height:1.45}
+.src{display:inline-flex;align-items:center;gap:.375rem;height:1.625rem;padding:0 .5rem 0 .4375rem;border-radius:var(--r-1);border:1px solid var(--ink);font:600 var(--fs-11)/1 var(--font-mono);letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;color:var(--ink)}
+.src .ic{width:.875rem;height:.875rem;stroke-width:2}
+.src--off{background:var(--ink);color:var(--surface)}
+.src--est{border-style:dashed}
+.src--sug{border-color:transparent;background:var(--primary-tint);color:var(--primary)}
+.trip{border:1px solid var(--line);border-radius:var(--r-4);background:var(--bg);padding:var(--sp-6)}
+.trip__h{display:flex;align-items:center;gap:var(--sp-3) var(--sp-5);flex-wrap:wrap;margin-bottom:var(--sp-6)}
+.trip__h h3{font-size:var(--fs-20);letter-spacing:-.02em}
+.trip__h .mono{font-size:var(--fs-13);color:var(--ink-2)}
+.trip__h .tag{margin-left:auto}
+.tl{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));counter-reset:s}
+.tl li{position:relative;padding:2.75rem var(--sp-5) 0 0;counter-increment:s}
+.tl li::before{content:"";position:absolute;top:.8125rem;left:0;right:0;height:2px;background:var(--line-strong)}
+.tl li:last-child::before{right:auto;width:1.75rem}
+.tl li::after{content:counter(s,decimal-leading-zero);position:absolute;top:0;left:0;display:grid;place-items:center;width:1.75rem;height:1.75rem;border-radius:var(--r-1);background:var(--board);color:var(--board-amber);font:600 var(--fs-11)/1 var(--font-mono)}
+.tl .k{font:500 var(--fs-11)/1.2 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.tl h4{margin:var(--sp-2) 0 var(--sp-1);font-size:var(--fs-18);font-weight:650;letter-spacing:-.015em;line-height:1.2}
+.tl p{font-size:var(--fs-13);line-height:1.45;color:var(--ink-2);margin-bottom:var(--sp-3)}
+.trip__f{display:flex;gap:var(--sp-3);flex-wrap:wrap;margin-top:var(--sp-6);padding-top:var(--sp-5);border-top:1px solid var(--line)}
+/* airport network */
+.net{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--sp-5)}
+.net a{display:flex;flex-direction:column;height:100%;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-3);overflow:hidden;text-decoration:none;transition:border-color var(--dur-1),box-shadow var(--dur-2),transform var(--dur-2) var(--ease-out)}
+.net a:hover{border-color:var(--primary);box-shadow:var(--shadow-2);transform:translateY(-2px)}
+.net__il{display:block;width:100%;aspect-ratio:5/2;background:var(--primary-tint);color:var(--primary);border-bottom:1px solid var(--line)}
+.net__il *{vector-effect:non-scaling-stroke}
+.net__b{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--sp-1) var(--sp-3);padding:var(--sp-4);flex:1;align-content:start}
+.net__b h3{font-size:var(--fs-18);letter-spacing:-.015em;line-height:1.2}
+.net__b .code{font:600 var(--fs-15)/1.3 var(--font-mono);color:var(--primary)}
+.net__b p{grid-column:1/-1;font-size:var(--fs-14);color:var(--ink-2);line-height:1.4}
+.net__b .motif{grid-column:1/-1;margin-top:var(--sp-3);padding-top:var(--sp-3);border-top:1px solid var(--line);font:500 var(--fs-11)/1.2 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.net .is-all a{background:var(--board);border-color:var(--board-line);color:var(--board-ink);--focus:var(--board-amber)}
+.net .is-all .net__il{background:none;color:var(--board-dim);border-color:var(--board-line)}
+.net .is-all .code{color:var(--board-amber)}.net .is-all p,.net .is-all .motif{color:var(--board-dim);border-color:var(--board-line)}
+/* shop and dine */
+.filters{display:flex;gap:var(--sp-2);flex-wrap:wrap;margin-bottom:var(--sp-5)}
+.fchip{display:inline-flex;align-items:center;min-height:2.25rem;padding:0 var(--sp-4);border:1px solid var(--line-strong);border-radius:var(--r-full);background:var(--surface);font-size:var(--fs-14);font-weight:500;cursor:pointer}
+.fchip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.sd{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--sp-5)}
+.sd a{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--sp-4);height:100%;padding:var(--sp-5);background:var(--surface);border:1px solid var(--line);border-radius:var(--r-3);text-decoration:none;transition:border-color var(--dur-1)}
+.sd a:hover{border-color:var(--primary)}
+.sd__i{display:grid;place-items:center;width:3rem;height:3rem;border-radius:var(--r-2);background:var(--primary-tint);color:var(--primary)}
+.sd__i .ic{width:1.5rem;height:1.5rem}
+.sd h3{font-size:var(--fs-18);letter-spacing:-.015em}
+.sd p{margin-top:var(--sp-1);font-size:var(--fs-14);line-height:1.45;color:var(--ink-2)}
+.sd .k{display:block;margin-top:var(--sp-3);font:500 var(--fs-11)/1.2 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+/* concierge */
+.con{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--sp-10);align-items:start}
+.con__qs{list-style:none;margin:var(--sp-5) 0;padding:0;display:grid;gap:var(--sp-2)}
+.con__qs button{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3);width:100%;min-height:3rem;padding:var(--sp-2) var(--sp-4);border:1px solid var(--line);border-radius:var(--r-2);background:var(--bg);text-align:left;font-size:var(--fs-15);font-weight:500;cursor:pointer;transition:border-color var(--dur-1)}
+.con__qs button:hover{border-color:var(--primary)}.con__qs .ic{color:var(--ink-3)}
+.con__ask{display:flex;gap:var(--sp-2)}
+.con__ask input{flex:1;min-width:0;height:3rem;padding:0 var(--sp-4);border:1px solid var(--line-strong);border-radius:var(--r-2);background:var(--surface);color:var(--ink);font:inherit;font-size:var(--fs-16)}
+.con__ask input::placeholder{color:var(--ink-3);opacity:1}
+.con small{display:block;margin-top:var(--sp-3);font-size:var(--fs-13);color:var(--ink-3)}
+.chat{display:grid;gap:var(--sp-3);padding:var(--sp-5);border:1px solid var(--line);border-radius:var(--r-4);background:var(--bg)}
+.chat__q{justify-self:end;max-width:85%;padding:var(--sp-3) var(--sp-4);border-radius:var(--r-3) var(--r-3) var(--r-1) var(--r-3);background:var(--primary);color:var(--on-primary);font-size:var(--fs-15);font-weight:500}
+.chat__a{max-width:94%;padding:var(--sp-4);border-radius:var(--r-3) var(--r-3) var(--r-3) var(--r-1);background:var(--surface);border:1px solid var(--line);font-size:var(--fs-15);line-height:1.5}
+.chat__a p+p{margin-top:var(--sp-3)}
+.chat__a .src{margin-right:.375rem;vertical-align:.0625rem}
+.chat__f{display:flex;gap:var(--sp-2);flex-wrap:wrap;margin-top:var(--sp-4)}
+.chat__f .btn{min-height:2.5rem;font-size:var(--fs-14);padding:0 var(--sp-4)}
+
+/* ---------- Footer ---------- */
+.ftr{background:var(--board);color:var(--board-dim);--focus:var(--board-amber);font-size:var(--fs-14)}
+.ftr__weave{height:1.5rem;background:var(--board-amber);opacity:.55;-webkit-mask:var(--weave) 0 0/24px 24px;mask:var(--weave) 0 0/24px 24px}
+.ftr__in{display:grid;grid-template-columns:1.5fr repeat(4,minmax(0,1fr));gap:var(--sp-8);padding:var(--sp-12) 0 var(--sp-10)}
+.ftr .brand{color:var(--board-ink)}
+.ftr__lead{margin-top:var(--sp-3);max-width:20rem;line-height:1.5}
+.ftr h2{font:500 var(--fs-11)/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--board-amber);margin-bottom:var(--sp-3)}
+.ftr ul{list-style:none;margin:0;padding:0}
+.ftr li a,.ftr__corp{display:inline-flex;align-items:center;gap:.375rem;min-height:2rem;color:var(--board-ink);text-decoration:none}
+.ftr a:hover{color:var(--board-amber);text-decoration:underline;text-underline-offset:.25em}
+.ftr__corp{margin-top:var(--sp-4);font-weight:600}
+.ftr__set{display:flex;flex-wrap:wrap;gap:var(--sp-4) var(--sp-8);align-items:center;padding:var(--sp-5) 0;border-top:1px solid var(--board-line)}
+.ftr__set>div{display:flex;align-items:center;gap:var(--sp-3)}
+.ftr .seg{border-color:var(--board-line)}.ftr .seg button{color:var(--board-ink);min-height:2rem;padding:0 var(--sp-3)}
+.ftr .seg button[aria-pressed="true"]{background:var(--board-ink);color:var(--board)}
+.ftr__legal{padding:var(--sp-5) 0 var(--sp-8);border-top:1px solid var(--board-line);font-size:var(--fs-13);line-height:1.5;display:flex;justify-content:space-between;gap:var(--sp-5);flex-wrap:wrap}
+.tabbar{display:none}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1279px){
+  .nav{display:none;position:absolute;top:100%;left:0;right:0;margin:0;flex-direction:column;gap:0;padding:var(--sp-2) var(--gutter) var(--sp-5);background:var(--surface);border-bottom:1px solid var(--line);box-shadow:var(--shadow-2)}
+  .nav a{height:3rem;border:0;border-bottom:1px solid var(--line);font-size:var(--fs-16);color:var(--ink)}
+  .nav-open .nav{display:flex}
+  .menu-btn{display:inline-flex}
+  .bar{position:relative}
+}
+@media (max-width:1099px){
+  .hero__grid{grid-template-columns:minmax(0,1fr);grid-template-areas:"board" "modes" "ctx"}
+  .ctx{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}
+  .acts{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .hero__lead{display:none}
+  .net{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sd{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tl{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:var(--sp-6)}
+  .tl li:nth-child(3)::before{right:auto;width:1.75rem}
+  .ftr__in{grid-template-columns:repeat(4,minmax(0,1fr))}.ftr__in>div:first-child{grid-column:1/-1}
+  .t-air,.fids th:nth-child(4){display:none}
+}
+@media (max-width:719px){
+  html{scroll-padding-top:4.5rem}
+  body{padding-bottom:calc(4rem + env(safe-area-inset-bottom))}
+  .strip,.utils .apt,.utils .ibtn--line,.utils .ibtn[data-focus-q]{display:none}
+  .hdr{top:0}.bar{height:3.5rem}
+  .nav__util{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3);padding-top:var(--sp-4);font-size:var(--fs-14)}
+  .seg button{min-height:2.75rem;min-width:2.75rem}
+  .hero{padding:var(--sp-3) 0 var(--sp-6)}
+  .hero__top{margin-bottom:.625rem}.hero .eyebrow{display:none}.hero h1{margin:0;font-size:1.375rem;letter-spacing:-.03em}
+  .hero__grid{gap:var(--sp-3)}
+  .board{padding:var(--sp-3)}.board::before{display:none}
+  .board__top{gap:var(--sp-2);margin-bottom:.625rem}
+  .board__top .apt{flex:1 1 auto;min-width:0}
+  .apt__btn{height:3rem;padding:0 var(--sp-3);gap:var(--sp-2)}
+  .apt__lbl small{font-size:.625rem;margin-bottom:.1875rem}.apt__lbl b{font-size:var(--fs-15)}
+  .pop{min-width:0;width:calc(100vw - 2*var(--gutter) - 1.5rem - 2px)}
+  .dir{padding:.1875rem}.dir label{min-height:2.625rem;padding:0 .625rem;font-size:var(--fs-14);gap:.375rem}
+  .dir .lg{display:none}.dir .sm{display:inline;text-decoration:none}
+  .srch__label{margin-bottom:.375rem}
+  .srch__field{height:3.5rem;padding:0 .375rem 0 var(--sp-3);gap:var(--sp-2)}
+  .srch__field>.ic{width:1.25rem;height:1.25rem}
+  .srch input{font-size:1rem}
+  .srch .btn{min-height:2.75rem;width:2.75rem;padding:0}.srch .btn span{display:none}.srch .btn .ic{display:block}
+  .srch__out{margin-top:.625rem;min-height:0}
+  .ex__h{display:none}
+  .ex__grid{display:flex;gap:var(--sp-2);margin:0 calc(-1*var(--sp-3));padding:0 var(--sp-3);overflow-x:auto;scrollbar-width:none}
+  .ex__grid::-webkit-scrollbar{display:none}
+  .ex__grid button,.ex__grid li:nth-child(n+3) button{width:auto;min-height:2.75rem;padding:0 var(--sp-3);border:1px solid var(--board-line);border-radius:var(--r-2);white-space:nowrap}
+  .ex .k,.ex .ic{display:none}.ex .v{font-size:var(--fs-14)}
+  .res__rows a{grid-template-columns:3.5rem minmax(0,1fr) auto;grid-template-areas:"time dest st" "time meta st";gap:.125rem var(--sp-3);min-height:3.25rem;padding:.375rem 0}
+  .res__rows .t-time{grid-area:time;font-size:var(--fs-16)}.res__rows .t-dest{grid-area:dest;font-size:var(--fs-15)}.res__rows a>span:last-child{grid-area:st}
+  .res__meta{grid-area:meta;display:flex;gap:var(--sp-3);font-size:var(--fs-12);color:var(--board-dim)}.res__meta>*{font-size:var(--fs-12)}
+  .mode label{flex-direction:column;justify-content:center;gap:.25rem;min-height:4.25rem;padding:.375rem .25rem;text-align:center}
+  .mode .ic{width:1.25rem;height:1.25rem}.mode b{font-size:.78125rem;line-height:1.15;letter-spacing:0}.mode small{display:none}
+  .acts{grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--sp-2);margin-top:var(--sp-2)}
+  .acts li:nth-child(-n+2){grid-column:auto}
+  .act{min-height:4.75rem;padding:.625rem}
+  .act>.ic{width:1.375rem;height:1.375rem}
+  .act__n{top:.625rem;right:.625rem;font-size:.625rem}.acts li:first-child .act__n::after{content:""}
+  .act__t,.acts li:nth-child(-n+2) .act__t{font-size:var(--fs-13);padding-top:.375rem;letter-spacing:0}
+  .act__s{display:none}
+  .ctx{grid-template-columns:minmax(0,1fr);gap:var(--sp-2)}
+  .notice{flex-direction:row;align-items:center;flex-wrap:wrap;gap:.375rem var(--sp-3);padding:var(--sp-3)}
+  .notice h2{flex:1 1 100%;order:2;margin:0;font-size:var(--fs-15);letter-spacing:-.01em}
+  .notice p,.notice .more{display:none}
+  .guide{grid-template-columns:1fr 1fr;gap:var(--sp-2)}
+  .guide a{grid-template-columns:auto minmax(0,1fr);min-height:3.5rem;padding:var(--sp-2) var(--sp-3);gap:var(--sp-2)}
+  .guide small,.guide .ic:last-child{display:none}.guide b{font-size:var(--fs-13)}
+  .sec{padding:var(--sp-10) 0}
+  .sec__h{grid-template-columns:auto minmax(0,1fr);gap:var(--sp-3);margin-bottom:var(--sp-5)}
+  .sec__h .more{grid-column:1/-1}
+  .plate{width:2.25rem;height:2.25rem;font-size:var(--fs-13)}
+  .fids__demo{padding:var(--sp-3) var(--sp-3) var(--sp-3) 2.75rem;font-size:var(--fs-13);top:3.5rem;background-size:2rem 100%,auto}
+  .fids__meta,.fids__foot{padding:var(--sp-3)}
+  .fids thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+  .fids tr{display:grid;grid-template-columns:3.75rem minmax(0,1fr) auto;grid-template-areas:"time dest st" "time flt gate";gap:.375rem var(--sp-3);align-items:center;padding:var(--sp-3);border-bottom:1px solid var(--board-line)}
+  .fids td{padding:0;border:0}
+  .fids .t-time{grid-area:time;font-size:1.0625rem;align-self:start;padding-top:.25rem}.fids .t-time s{display:block;font-size:var(--fs-12);margin-bottom:.125rem}
+  .fids .t-dest{grid-area:dest;font-size:var(--fs-16)}.fids .t-st{grid-area:st;justify-self:end}
+  .fids .t-flt{grid-area:flt;font-size:var(--fs-13);color:var(--board-dim)}.fids .t-gate{grid-area:gate;justify-self:end;font-size:var(--fs-13)}
+  .chip{height:1.625rem;font-size:var(--fs-12);padding:0 .5rem 0 .375rem}.chip b{font-size:var(--fs-12)}
+  .legend{grid-template-columns:1fr;gap:var(--sp-3);margin-bottom:var(--sp-5)}
+  .trip{padding:var(--sp-4)}.trip__h .tag{margin-left:0}
+  .tl{grid-template-columns:1fr;row-gap:0}
+  .tl li{padding:0 0 var(--sp-5) 2.75rem}
+  .tl li::before,.tl li:nth-child(3)::before,.tl li:last-child::before{top:0;bottom:0;left:.8125rem;right:auto;width:2px;height:auto}
+  .tl li:last-child{padding-bottom:0}
+  .trip__f .btn{flex:1}
+  .net{gap:var(--sp-3)}.net__b{padding:var(--sp-3);grid-template-columns:1fr}.net__b h3{font-size:var(--fs-16)}.net__b .code{grid-row:1;font-size:var(--fs-13)}
+  .net__b p{font-size:var(--fs-13)}.net__b .motif{margin-top:var(--sp-2);padding-top:var(--sp-2);font-size:.625rem}
+  .filters,.sd{flex-wrap:nowrap;overflow-x:auto;margin-inline:calc(-1*var(--gutter));padding-inline:var(--gutter);scrollbar-width:none;scroll-snap-type:x proximity}
+  .filters::-webkit-scrollbar,.sd::-webkit-scrollbar{display:none}
+  .fchip{flex:none;min-height:2.75rem}
+  .sd{display:flex;gap:var(--sp-3)}.sd li{flex:0 0 78%;scroll-snap-align:start}
+  .con{grid-template-columns:1fr;gap:var(--sp-6)}
+  .ftr__in{grid-template-columns:1fr 1fr;gap:var(--sp-6);padding:var(--sp-8) 0}
+  .ftr li a,.ftr__corp{min-height:2.75rem}
+  .ftr .seg button{min-height:2.75rem}
+  .ftr__set>div{flex:1 1 100%;justify-content:space-between}
+  /* thumb-reach bar: search sits under the thumb */
+  .tabbar{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;inset:auto 0 0 0;z-index:50;height:calc(4rem + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);background:var(--surface);border-top:1px solid var(--line);box-shadow:0 -6px 20px -12px rgba(10,26,43,.3)}
+  .tabbar a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.1875rem;font-size:.6875rem;font-weight:600;text-decoration:none;color:var(--ink-2)}
+  .tabbar .ic{width:1.375rem;height:1.375rem}
+  .tabbar .is-main{color:var(--ink)}
+  .tabbar .is-main span:first-child{display:grid;place-items:center;width:3rem;height:3rem;margin-top:-1.375rem;border-radius:var(--r-3);background:var(--board);color:var(--board-amber);border:2px solid var(--surface);box-shadow:var(--shadow-2)}
+}
+@media (max-width:379px){.brand{font-size:var(--fs-16)}.mode b{font-size:.71875rem}.dir label{padding:0 .5rem}}
+@media (min-width:720px){.srch .btn .ic{display:none}}
+@media (min-width:720px) and (max-width:1099px){.utils .ibtn--line span{display:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+:root[data-motion="reduced"] *,:root[data-motion="reduced"] *::before,:root[data-motion="reduced"] *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+
+<!-- Icon sprite: one 24px grid, 1.75 stroke, round caps and joins -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.25"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
+<symbol id="i-ext" viewBox="0 0 24 24"><path d="M10 6H6v12h12v-4M14 5h5v5m0-5-8 8"/></symbol>
+<symbol id="i-a11y" viewBox="0 0 24 24"><circle cx="12" cy="4.75" r="1.75"/><path d="M5 9c2.3.8 4.6 1.2 7 1.2S16.700 9.800 19 9M12 10.200V15m0 0-3 5.500M12 15l3 5.500"/></symbol>
+<symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M7 4h10v16l-5-4-5 4V4Z"/></symbol>
+<symbol id="i-chat" viewBox="0 0 24 24"><path d="M4.500 5h15v11h-8.500l-4 3.500V16h-2.500V5Z"/><path d="M9 10.500h.01M12 10.500h.01M15 10.500h.01"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5"/><path d="M12 3v2m0 14v2M3 12h2m14 0h2M5.600 5.600 7 7m10 10 1.400 1.400M5.600 18.400 7 17M17 7l1.400-1.400"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path d="M19.500 14.500A8 8 0 0 1 9.500 4.500a8 8 0 1 0 10 10Z"/></symbol>
+<symbol id="i-plane" viewBox="0 0 24 24"><path d="M12 2.500c.8 0 1.300 1 1.300 2.500v3.500l7.200 4.500v2L13.300 12.800v4.700l2.200 1.700v1.800L12 20l-3.500 1v-1.800l2.200-1.700v-4.700L3.500 15v-2l7.200-4.500V5c0-1.500.5-2.500 1.300-2.500Z"/></symbol>
+<symbol id="i-depart" viewBox="0 0 24 24"><g transform="rotate(52 12 10) translate(1.800 .6) scale(.82)"><path d="M12 2.500c.8 0 1.300 1 1.300 2.500v3.500l7.200 4.500v2L13.300 12.800v4.700l2.200 1.700v1.800L12 20l-3.500 1v-1.800l2.200-1.700v-4.700L3.500 15v-2l7.200-4.500V5c0-1.500.5-2.500 1.300-2.500Z"/></g><path d="M3.500 21h17"/></symbol>
+<symbol id="i-arrive" viewBox="0 0 24 24"><g transform="rotate(128 12 10) translate(2.600 2.400) scale(.82)"><path d="M12 2.500c.8 0 1.300 1 1.300 2.500v3.500l7.200 4.500v2L13.300 12.800v4.700l2.200 1.700v1.800L12 20l-3.500 1v-1.800l2.200-1.700v-4.700L3.500 15v-2l7.200-4.500V5c0-1.500.5-2.500 1.300-2.500Z"/></g><path d="M3.500 21h17"/></symbol>
+<symbol id="i-transit" viewBox="0 0 24 24"><path d="M4 8h14m-4-4 4 4-4 4M20 16H6m4-4-4 4 4 4"/></symbol>
+<symbol id="i-meet" viewBox="0 0 24 24"><circle cx="8.500" cy="7.500" r="2.750"/><circle cx="17" cy="8.500" r="2"/><path d="M3.500 19.500v-2a5 5 0 0 1 10 0v2M15 13.700a3.700 3.700 0 0 1 5.700 3.100v2.700"/></symbol>
+<symbol id="i-park" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M10 16.500v-9h3a2.750 2.750 0 0 1 0 5.500h-3"/></symbol>
+<symbol id="i-train" viewBox="0 0 24 24"><rect x="6" y="3.500" width="12" height="13" rx="3"/><path d="M6 11h12M9.500 13.800h.01M14.500 13.800h.01M8.500 16.500l-2 4M15.500 16.500l2 4"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="m4 6.500 5-2 6 2 5-2v13l-5 2-6-2-5 2v-13ZM9 4.500v13M15 6.500v13"/></symbol>
+<symbol id="i-food" viewBox="0 0 24 24"><path d="M7 3v7m-2.500-7v4.500a2.500 2.500 0 0 0 5 0V3M7 10v11M16.500 3C14.800 4.200 14 6.400 14 9.500V13h2.500m0-10v18"/></symbol>
+<symbol id="i-lounge" viewBox="0 0 24 24"><path d="M5.500 11V8.500a3 3 0 0 1 3-3h7a3 3 0 0 1 3 3V11"/><path d="M3 13a2 2 0 0 1 4 0v2h10v-2a2 2 0 0 1 4 0v5H3v-5ZM6 18v2M18 18v2"/></symbol>
+<symbol id="i-track" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.500"/><circle cx="12" cy="12" r="2.500"/><path d="M12 2v2.500M12 19.500V22M2 12h2.500M19.500 12H22"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.500"/><path d="M12 11v5.500M12 7.500h.01"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.500"/><path d="M12 7v5l3.500 2"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.500 4.500 4.500L19 7.500"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+<symbol id="i-gate" viewBox="0 0 24 24"><path d="M13 4h6v16h-6M4 12h10m-4-4 4 4-4 4"/></symbol>
+<symbol id="i-closed" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.500"/><path d="M7.500 12h9"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.500 5 6v5.500c0 4.300 2.900 7.400 7 9 4.100-1.600 7-4.700 7-9V6l-7-2.500Z"/><path d="m9 12 2.200 2.200L15 10.500"/></symbol>
+<symbol id="i-approx" viewBox="0 0 24 24"><path d="M4 9.500c2-2.500 4-2.500 6 0s4 2.500 6 0 3-2 4-1M4 15.500c2-2.500 4-2.500 6 0s4 2.500 6 0 3-2 4-1"/></symbol>
+<symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9.500 17h5M10 20h4M8.500 14.200a6 6 0 1 1 7 0c-.6.700-1 1.600-1 2.800h-5c0-1.200-.4-2.100-1-2.800Z"/></symbol>
+<symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V7a3 3 0 0 1 6 0v1"/></symbol>
+<symbol id="i-cup" viewBox="0 0 24 24"><path d="M5 9h11v5a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5V9ZM16 10.500h1.500a2.500 2.500 0 0 1 0 5H16M8 3.500V6M12 3.500V6"/></symbol>
+<symbol id="i-bowl" viewBox="0 0 24 24"><path d="M3.500 11h17a8.500 8.500 0 0 1-17 0ZM9 20h6M8.500 7.500c0-1.500 1.500-1.500 1.500-3M13 7.500c0-1.500 1.500-1.500 1.500-3"/></symbol>
+<symbol id="i-gift" viewBox="0 0 24 24"><rect x="4.500" y="9" width="15" height="11" rx="1.500"/><path d="M3 9h18M12 9v11M12 9c-3 0-4.500-1-4.500-2.500S9 4 10 5s2 2.500 2 4Zm0 0c3 0 4.500-1 4.500-2.500S15 4 14 5s-2 2.500-2 4Z"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="M12 19V5m-6 6 6-6 6 6"/></symbol>
+<symbol id="mark" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="var(--primary)"/><path d="M6.500 23 11.500 11l4.500 8.500L20.500 11l5 12" fill="none" stroke="var(--on-primary)" stroke-width="2.600" stroke-linecap="round" stroke-linejoin="round"/><path d="m16 5.200 2.600 2.600L16 10.400l-2.600-2.600Z" fill="var(--signal)"/></symbol>
+</defs></svg>
+
+<header class="hdr">
+  <div class="strip">
+    <div class="wrap strip__in">
+      <p class="strip__l"><i></i>Hosting Joyful Connections<span aria-hidden="true">/</span>Visit Malaysia 2026</p>
+      <div class="strip__r">
+        <a href="#corporate">Corporate site <svg class="ic ic--sm"><use href="#i-ext"/></svg></a>
+        <div class="seg" role="group" aria-label="Language">
+          <button type="button" data-set="lang:en" aria-pressed="true" aria-label="English">EN</button>
+          <button type="button" data-set="lang:ms" aria-pressed="false" aria-label="Bahasa Malaysia">BM</button>
+        </div>
+        <button type="button" class="strip__btn" data-pop="a11y-pop" aria-expanded="false" aria-controls="a11y-pop"><svg class="ic ic--sm"><use href="#i-a11y"/></svg>Accessibility</button>
+        <div class="pop pop--r a11y" id="a11y-pop" hidden>
+          <h3>Accessibility</h3>
+          <div class="a11y__row"><span>Text size</span><div class="seg" role="group" aria-label="Text size"><button type="button" data-set="textsize:default" aria-pressed="true">Default</button><button type="button" data-set="textsize:lg" aria-pressed="false">Larger</button></div></div>
+          <div class="a11y__row"><span>Contrast</span><div class="seg" role="group" aria-label="Contrast"><button type="button" data-set="contrast:default" aria-pressed="true">Standard</button><button type="button" data-set="contrast:high" aria-pressed="false">Higher</button></div></div>
+          <div class="a11y__row"><span>Motion</span><div class="seg" role="group" aria-label="Motion"><button type="button" data-set="motion:default" aria-pressed="true">Standard</button><button type="button" data-set="motion:reduced" aria-pressed="false">Reduced</button></div></div>
+        </div>
+        <button type="button" class="strip__btn" data-theme-toggle aria-label="Switch between light and dark theme"><svg class="ic ic--sm"><use href="#i-moon" data-theme-icon/></svg><span data-theme-label>Dark</span></button>
+      </div>
+    </div>
+  </div>
+  <div class="wrap bar">
+    <a class="brand" href="#main" aria-label="Malaysia Airports home"><svg aria-hidden="true"><use href="#mark"/></svg><span>Malaysia <b>Airports</b></span></a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="#departures">Flights</a><a href="#journey">Plan your journey</a><a href="#network">At the airport</a><a href="#shop">Shop &amp; dine</a><a href="#transport">Transport &amp; parking</a><a href="#help">Help</a>
+      <div class="nav__util"><div class="seg" role="group" aria-label="Language"><button type="button" data-set="lang:en" aria-pressed="true">English</button><button type="button" data-set="lang:ms" aria-pressed="false">Bahasa Malaysia</button></div><a class="more" href="#settings">Accessibility</a></div>
+    </nav>
+    <div class="utils">
+      <div class="apt apt--pill" data-apt>
+        <button type="button" class="apt__btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="apt-hdr" data-pop="apt-hdr"><svg class="ic"><use href="#i-pin"/></svg><span class="apt__lbl"><span class="vh">Airport and terminal: </span><b data-apt-label>Choose airport</b></span><svg class="ic ic--sm"><use href="#i-chev"/></svg></button>
+        <div class="pop pop--r" id="apt-hdr" role="listbox" aria-label="Airport and terminal" data-apt-clone hidden></div>
+      </div>
+      <button type="button" class="ibtn" data-focus-q aria-label="Search flights"><svg class="ic"><use href="#i-search"/></svg></button>
+      <a class="ibtn" href="#journey" aria-label="Saved journey"><svg class="ic"><use href="#i-bookmark"/></svg></a>
+      <a class="ibtn ibtn--line" href="#concierge"><svg class="ic"><use href="#i-chat"/></svg><span>Concierge</span></a>
+      <button type="button" class="ibtn menu-btn" data-menu aria-expanded="false" aria-controls="nav" aria-label="Menu"><svg class="ic"><use href="#i-menu"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+<section class="hero" aria-labelledby="hero-h">
+  <div class="wrap">
+    <div class="hero__top">
+      <div><p class="eyebrow">Malaysia Airports · 39 airports, one network</p><h1 id="hero-h">Your journey, beautifully connected.</h1></div>
+      <p class="hero__lead">Flights, terminals and transport in one place. Tell us your airport and how you are travelling, and the page reorganises around you.</p>
+    </div>
+    <div class="hero__grid">
+      <!-- A + C: the board that answers back -->
+      <div class="board">
+        <div class="board__top">
+          <div class="apt" data-apt>
+            <button type="button" class="apt__btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="apt-hero" data-pop="apt-hero"><svg class="ic"><use href="#i-pin"/></svg><span class="apt__lbl"><small>Airport and terminal</small><b data-apt-label>Choose airport</b></span><svg class="ic ic--sm"><use href="#i-chev"/></svg></button>
+            <div class="pop" id="apt-hero" role="listbox" aria-label="Airport and terminal" hidden>
+              <button type="button" class="apt__opt" role="option" aria-selected="false" data-apt-opt="KLIA Terminal 1"><span class="code">KUL</span><span><b>KLIA Terminal 1</b><small>Kuala Lumpur International Airport</small></span><svg class="ic"><use href="#i-check"/></svg></button>
+              <button type="button" class="apt__opt" role="option" aria-selected="false" data-apt-opt="KLIA Terminal 2"><span class="code">KUL</span><span><b>KLIA Terminal 2</b><small>Kuala Lumpur International Airport</small></span><svg class="ic"><use href="#i-check"/></svg></button>
+              <button type="button" class="apt__opt" role="option" aria-selected="false" data-apt-opt="Penang"><span class="code">PEN</span><span><b>Penang</b><small>Penang International Airport</small></span><svg class="ic"><use href="#i-check"/></svg></button>
+              <button type="button" class="apt__opt" role="option" aria-selected="false" data-apt-opt="Kota Kinabalu"><span class="code">BKI</span><span><b>Kota Kinabalu</b><small>Kota Kinabalu International Airport</small></span><svg class="ic"><use href="#i-check"/></svg></button>
+              <button type="button" class="apt__opt" role="option" aria-selected="false" data-apt-opt="Kuching"><span class="code">KCH</span><span><b>Kuching</b><small>Kuching International Airport</small></span><svg class="ic"><use href="#i-check"/></svg></button>
+              <button type="button" class="apt__opt" role="option" aria-selected="false" data-apt-opt="Langkawi"><span class="code">LGK</span><span><b>Langkawi</b><small>Langkawi International Airport</small></span><svg class="ic"><use href="#i-check"/></svg></button>
+              <button type="button" class="apt__opt" role="option" aria-selected="false" data-apt-opt="Subang"><span class="code">SZB</span><span><b>Subang</b><small>Sultan Abdul Aziz Shah Airport</small></span><svg class="ic"><use href="#i-check"/></svg></button>
+              <button type="button" class="apt__opt apt__opt--all" role="option" aria-selected="false" data-apt-opt="All 39 airports"><span class="code">39</span><span><b>All 39 airports</b><small>Browse the whole network</small></span><svg class="ic"><use href="#i-check"/></svg></button>
+            </div>
+          </div>
+          <div class="dir" role="radiogroup" aria-label="Flight direction">
+            <input class="vh" type="radio" name="dir" id="d-dep" value="departure" checked><label for="d-dep"><svg class="ic"><use href="#i-depart"/></svg><span class="lg">Departures</span><span class="sm" aria-hidden="true">Dep</span></label>
+            <input class="vh" type="radio" name="dir" id="d-arr" value="arrival"><label for="d-arr"><svg class="ic"><use href="#i-arrive"/></svg><span class="lg">Arrivals</span><span class="sm" aria-hidden="true">Arr</span></label>
+          </div>
+        </div>
+        <form class="srch" id="srch" role="search" aria-label="Flights" autocomplete="off">
+          <label class="srch__label" for="q">Search <span data-dir-word>departures</span></label>
+          <div class="srch__field">
+            <svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>
+            <input id="q" name="q" type="search" inputmode="search" spellcheck="false" placeholder="Flight number, destination, airline or route" aria-describedby="q-ex-h" aria-controls="q-out">
+            <button class="btn btn--signal" type="submit" aria-label="Search flights"><span>Search</span><svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+        </form>
+        <div class="srch__out" id="q-out" aria-live="polite">
+          <div class="ex" id="q-ex">
+            <p class="ex__h" id="q-ex-h">Search any of these ways</p>
+            <ul class="ex__grid">
+              <li><button type="button" data-ex="MH 2"><span class="k">Flight number</span><span class="v">MH 2</span><svg class="ic ic--sm" aria-hidden="true"><use href="#i-arrow"/></svg></button></li>
+              <li><button type="button" data-ex="London"><span class="k">Destination</span><span class="v">London</span><svg class="ic ic--sm" aria-hidden="true"><use href="#i-arrow"/></svg></button></li>
+              <li><button type="button" data-ex="AirAsia"><span class="k">Airline</span><span class="v">AirAsia</span><svg class="ic ic--sm" aria-hidden="true"><use href="#i-arrow"/></svg></button></li>
+              <li><button type="button" data-ex="KUL → PEN"><span class="k">Route</span><span class="v">KUL → PEN</span><svg class="ic ic--sm" aria-hidden="true"><use href="#i-arrow"/></svg></button></li>
+            </ul>
+          </div>
+          <div class="res" id="q-res" hidden></div>
+        </div>
+      </div>
+
+      <!-- B + E: journey mode reorganises the quick actions -->
+      <section class="modes" aria-labelledby="modes-h">
+        <h2 class="vh" id="modes-h">How are you travelling?</h2>
+        <div class="mode" role="radiogroup" aria-labelledby="modes-h">
+          <input class="vh" type="radio" name="mode" id="m-dep" value="dep" checked><label for="m-dep"><svg class="ic" aria-hidden="true"><use href="#i-depart"/></svg><span><b>I'm departing</b><small>Door to gate</small></span></label>
+          <input class="vh" type="radio" name="mode" id="m-arr" value="arr"><label for="m-arr"><svg class="ic" aria-hidden="true"><use href="#i-arrive"/></svg><span><b>I'm arriving</b><small>Gate to door</small></span></label>
+          <input class="vh" type="radio" name="mode" id="m-tra" value="tra"><label for="m-tra"><svg class="ic" aria-hidden="true"><use href="#i-transit"/></svg><span><b>I'm transiting</b><small>Gate to gate</small></span></label>
+          <input class="vh" type="radio" name="mode" id="m-meet" value="meet"><label for="m-meet"><svg class="ic" aria-hidden="true"><use href="#i-meet"/></svg><span><b>I'm meeting someone</b><small>Arrivals hall</small></span></label>
+        </div>
+        <p class="vh" id="mode-live" aria-live="polite"></p>
+        <ul class="acts" id="acts" aria-label="Quick actions">
+          <li data-act="getting"><a class="act" href="#transport"><svg class="ic" aria-hidden="true"><use href="#i-train"/></svg><span class="act__n">01</span><span class="act__t">Getting to the airport</span><span class="act__s">Rail, bus, taxi, e-hailing or your own car: compare routes to your terminal.</span></a></li>
+          <li data-act="parking"><a class="act" href="#transport"><svg class="ic" aria-hidden="true"><use href="#i-park"/></svg><span class="act__n">02</span><span class="act__t">Parking</span><span class="act__s">Short-stay, long-term and drop-off zones, with the walk to check-in.</span></a></li>
+          <li data-act="maps"><a class="act" href="#network"><svg class="ic" aria-hidden="true"><use href="#i-map"/></svg><span class="act__n">03</span><span class="act__t">Terminal maps</span><span class="act__s">Check-in to gate</span></a></li>
+          <li data-act="track"><a class="act" href="#departures"><svg class="ic" aria-hidden="true"><use href="#i-track"/></svg><span class="act__n">04</span><span class="act__t">Track a flight</span><span class="act__s">Gate and status</span></a></li>
+          <li data-act="lounges"><a class="act" href="#network"><svg class="ic" aria-hidden="true"><use href="#i-lounge"/></svg><span class="act__n">05</span><span class="act__t">Lounges</span><span class="act__s">Before you board</span></a></li>
+          <li data-act="food"><a class="act" href="#shop"><svg class="ic" aria-hidden="true"><use href="#i-food"/></svg><span class="act__n">06</span><span class="act__t">Food and shops</span><span class="act__s">Near your gate</span></a></li>
+        </ul>
+      </section>
+
+      <!-- D: one notice, compact guidance strip -->
+      <aside class="ctx" aria-label="Notices and guidance">
+        <article class="notice">
+          <p class="tag tag--signal"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-info"/></svg>Service notice</p>
+          <h2>Terminal 1 Aerotrain is running 24 hours</h2>
+          <p>The Aerotrain between the KLIA Terminal 1 main terminal and the satellite building returned to 24-hour service on 1 June 2026.</p>
+          <a class="more" href="#network">Terminal 1 guidance <svg class="ic ic--sm" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </article>
+        <div class="guide" id="transport">
+          <a href="#transport"><svg class="ic" aria-hidden="true"><use href="#i-train"/></svg><span><b>Getting to the airport</b><small data-ctx="get">Rail, bus, taxi, e-hailing and parking. Choose an airport to see routes to your terminal.</small></span><svg class="ic ic--sm" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a href="#network"><svg class="ic" aria-hidden="true"><use href="#i-map"/></svg><span><b>Terminal guidance</b><small data-ctx="term">KLIA has two terminals. Search your flight to confirm Terminal 1 or Terminal 2.</small></span><svg class="ic ic--sm" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="departures" aria-labelledby="dep-h" style="padding-top:var(--sp-6)">
+  <div class="wrap">
+    <header class="sec__h">
+      <span class="plate" aria-hidden="true">01</span>
+      <div><h2 id="dep-h">Departures</h2><p>A sample board for Kuala Lumpur International Airport. Choose your airport above to see its own flights.</p></div>
+      <a class="more" href="#departures">Full departures board <svg class="ic ic--sm" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    </header>
+    <div class="fids" id="fids">
+      <p class="fids__demo" role="note"><strong>Demonstration data, not live</strong><span>Flights, times and gates are illustrative. Do not use them to plan travel.</span></p>
+      <div class="fids__meta"><span class="fresh"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-clock"/></svg>Last updated <time datetime="14:32">14:32</time> MYT · sample snapshot</span><span>KUL · Kuala Lumpur · Today</span></div>
+      <table>
+        <caption class="vh">Sample departures from Kuala Lumpur International Airport. Demonstration data, not live.</caption>
+        <thead><tr><th scope="col">Time</th><th scope="col">Flight</th><th scope="col">Destination</th><th scope="col">Airline</th><th scope="col">Terminal / Gate</th><th scope="col">Status</th></tr></thead>
+        <tbody>
+          <tr data-q="sq107 sq 107 singapore sin singapore airlines kul"><td class="t-time"><time>14:20</time></td><td class="t-flt">SQ 107</td><td class="t-dest">Singapore<i>SIN</i></td><td class="t-air">Singapore Airlines</td><td class="t-gate"><i>T1</i>C4</td><td class="t-st"><span class="chip chip--closed"><svg class="ic" aria-hidden="true"><use href="#i-closed"/></svg>Gate closed</span></td></tr>
+          <tr data-q="od2104 od 2104 penang pen batik air kul"><td class="t-time"><time>14:35</time></td><td class="t-flt">OD 2104</td><td class="t-dest">Penang<i>PEN</i></td><td class="t-air">Batik Air</td><td class="t-gate"><i>T1</i>A6</td><td class="t-st"><span class="chip chip--board"><svg class="ic" aria-hidden="true"><use href="#i-gate"/></svg>Boarding</span></td></tr>
+          <tr data-q="ak5104 ak 5104 kota kinabalu bki airasia air asia kul"><td class="t-time"><time>14:50</time></td><td class="t-flt">AK 5104</td><td class="t-dest">Kota Kinabalu<i>BKI</i></td><td class="t-air">AirAsia</td><td class="t-gate"><i>T2</i>J12</td><td class="t-st"><span class="chip chip--board"><svg class="ic" aria-hidden="true"><use href="#i-gate"/></svg>Boarding</span></td></tr>
+          <tr data-q="mh2 mh 2 london heathrow lhr malaysia airlines kul"><td class="t-time"><time>15:05</time></td><td class="t-flt">MH 2</td><td class="t-dest">London Heathrow<i>LHR</i></td><td class="t-air">Malaysia Airlines</td><td class="t-gate"><i>T1</i>C22</td><td class="t-st"><span class="chip chip--ok"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>On time</span></td></tr>
+          <tr data-q="ek343 ek 343 dubai dxb emirates kul"><td class="t-time"><s><span class="vh">Was </span>15:20</s></td><td class="t-flt">EK 343</td><td class="t-dest">Dubai<i>DXB</i></td><td class="t-air">Emirates</td><td class="t-gate"><i>T1</i>C15</td><td class="t-st"><span class="chip chip--delay"><svg class="ic" aria-hidden="true"><use href="#i-clock"/></svg>Delayed, now <b>16:05</b></span></td></tr>
+          <tr data-q="jl724 jl 724 tokyo narita nrt japan airlines jal kul"><td class="t-time"><time>15:35</time></td><td class="t-flt">JL 724</td><td class="t-dest">Tokyo Narita<i>NRT</i></td><td class="t-air">Japan Airlines</td><td class="t-gate"><i>T1</i>C31</td><td class="t-st"><span class="chip chip--ok"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>On time</span></td></tr>
+          <tr data-q="ak6124 ak 6124 langkawi lgk airasia air asia kul"><td class="t-time"><s><span class="vh">Was </span>15:50</s></td><td class="t-flt">AK 6124</td><td class="t-dest">Langkawi<i>LGK</i></td><td class="t-air">AirAsia</td><td class="t-gate"><i>T2</i>K3</td><td class="t-st"><span class="chip chip--cancel"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg>Cancelled</span></td></tr>
+          <tr data-q="mh2610 mh 2610 kuching kch malaysia airlines kul"><td class="t-time"><time>16:10</time></td><td class="t-flt">MH 2610</td><td class="t-dest">Kuching<i>KCH</i></td><td class="t-air">Malaysia Airlines</td><td class="t-gate"><i>T1</i>B8</td><td class="t-st"><span class="chip chip--ok"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>On time</span></td></tr>
+        </tbody>
+      </table>
+      <div class="fids__foot"><span>Every status pairs a symbol with words, so it never relies on colour.</span><a class="more" href="#departures">See arrivals <svg class="ic ic--sm" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--band" id="journey" aria-labelledby="jr-h">
+  <div class="wrap">
+    <header class="sec__h">
+      <span class="plate" aria-hidden="true">02</span>
+      <div><h2 id="jr-h">Your journey, step by step</h2><p>One timeline from your front door to the gate. Every step says where its information comes from, so you know what is fixed and what may change.</p></div>
+    </header>
+    <ul class="legend">
+      <li><span class="src src--off"><svg class="ic" aria-hidden="true"><use href="#i-shield"/></svg>Official instruction</span>Confirmed by your airline or the airport. Follow it.</li>
+      <li><span class="src src--est"><svg class="ic" aria-hidden="true"><use href="#i-approx"/></svg>Estimated guidance</span>Worked out from your flight and typical conditions. It can change on the day.</li>
+      <li><span class="src src--sug"><svg class="ic" aria-hidden="true"><use href="#i-bulb"/></svg>Suggestion</span>An optional idea to make the journey easier. Take it or leave it.</li>
+    </ul>
+    <div class="trip">
+      <div class="trip__h"><h3>Sample journey</h3><span class="mono">MH 2 · Kuala Lumpur to London Heathrow · departs 15:05</span><span class="tag tag--signal">Demonstration data</span></div>
+      <ol class="tl">
+        <li><span class="k">Terminal</span><h4>KLIA Terminal 1</h4><p>Set by your airline for this flight.</p><span class="src src--off"><svg class="ic" aria-hidden="true"><use href="#i-shield"/></svg>Official instruction</span></li>
+        <li><span class="k">When to arrive</span><h4>Around 12:05</h4><p>Your airline's check-in deadline always takes priority.</p><span class="src src--est"><svg class="ic" aria-hidden="true"><use href="#i-approx"/></svg>Estimated guidance</span></li>
+        <li><span class="k">How to get there</span><h4>Compare your routes</h4><p>Rail, bus, taxi, e-hailing, or drive and park.</p><span class="src src--sug"><svg class="ic" aria-hidden="true"><use href="#i-bulb"/></svg>Suggestion</span></li>
+        <li><span class="k">Check-in</span><h4>Counter, kiosk or online</h4><p>Your row is shown here on the day of travel.</p><span class="src src--off"><svg class="ic" aria-hidden="true"><use href="#i-shield"/></svg>Official instruction</span></li>
+        <li><span class="k">Security and immigration</span><h4>Allow extra time at peaks</h4><p>Queue estimates appear on the day.</p><span class="src src--est"><svg class="ic" aria-hidden="true"><use href="#i-approx"/></svg>Estimated guidance</span></li>
+        <li><span class="k">Gate</span><h4>C22, satellite building</h4><p>Take the Aerotrain from the main terminal. It runs 24 hours.</p><span class="src src--off"><svg class="ic" aria-hidden="true"><use href="#i-shield"/></svg>Official instruction</span></li>
+      </ol>
+      <div class="trip__f"><a class="btn btn--primary" href="#main">Build my journey</a><a class="btn btn--ghost" href="#journey"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-bookmark"/></svg>Save for later</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="network" aria-labelledby="net-h">
+  <div class="wrap">
+    <header class="sec__h">
+      <span class="plate" aria-hidden="true">03</span>
+      <div><h2 id="net-h">One network, 39 airports</h2><p>Five international airports, 17 domestic airports and 17 short take-off and landing ports. Start with the busiest, or browse them all.</p></div>
+      <a class="more" href="#network">All 39 airports <svg class="ic ic--sm" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    </header>
+    <ul class="net">
+      <li><a href="#network"><svg class="net__il" viewBox="0 0 280 112" preserveAspectRatio="xMidYMid slice" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><defs><g id="il-col"><path d="M0 112V66M0 66-30 14M0 66-15 18M0 66V20M0 66 15 18M0 66 30 14"/></g></defs><use href="#il-col" x="35"/><use href="#il-col" x="105"/><use href="#il-col" x="175"/><use href="#il-col" x="245"/><path d="M0 12q35 18 70 0t70 0 70 0 70 0M0 104h280"/><circle cx="105" cy="66" r="4.500" fill="var(--signal)" stroke="none"/></svg><span class="net__b"><h3>KLIA Terminal 1</h3><span class="code">KUL</span><p>Sepang, Selangor</p><span class="motif">Motif · canopy columns</span></span></a></li>
+      <li><a href="#network"><svg class="net__il" viewBox="0 0 280 112" preserveAspectRatio="xMidYMid slice" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><defs><pattern id="p-weave" width="24" height="24" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 3h12M0 9h12M15 0v12M21 0v12M12 15h12M12 21h12M3 12v12M9 12v12"/></pattern></defs><rect width="280" height="112" fill="url(#p-weave)" stroke="none"/><circle cx="182" cy="52" r="4.500" fill="var(--signal)" stroke="none"/></svg><span class="net__b"><h3>KLIA Terminal 2</h3><span class="code">KUL</span><p>Sepang, Selangor</p><span class="motif">Motif · mengkuang weave</span></span></a></li>
+      <li><a href="#network"><svg class="net__il" viewBox="0 0 280 112" preserveAspectRatio="xMidYMid slice" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><defs><path id="il-wave" d="M-10 72q17.500-9 35 0t35 0 35 0 35 0 35 0 35 0 35 0 35 0 35 0"/></defs><use href="#il-wave"/><use href="#il-wave" y="11" opacity=".75"/><use href="#il-wave" y="22" opacity=".5"/><use href="#il-wave" y="33" opacity=".3"/><path d="M0 58h280M92 58V16M188 58V16M92 16 50 58M92 20 66 58M92 16l42 42M92 20l26 38M188 16l-42 42M188 20l-26 38M188 16l42 42M188 20l26 38"/><circle cx="140" cy="58" r="4.500" fill="var(--signal)" stroke="none"/></svg><span class="net__b"><h3>Penang</h3><span class="code">PEN</span><p>Bayan Lepas, Penang</p><span class="motif">Motif · straits waves</span></span></a></li>
+      <li><a href="#network"><svg class="net__il" viewBox="0 0 280 112" preserveAspectRatio="xMidYMid slice" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><defs><path id="il-ridge" d="M-4 92 30 56l18 16 36-46 16 20 14-26 18 22 20-14 26 38 22-18 34 44 54 6"/><pattern id="p-rebung" width="14" height="12" patternUnits="userSpaceOnUse"><path d="M0 12 7 2l7 10"/></pattern></defs><use href="#il-ridge"/><use href="#il-ridge" y="9" opacity=".6"/><use href="#il-ridge" y="18" opacity=".38"/><use href="#il-ridge" y="27" opacity=".2"/><rect y="100" width="280" height="12" fill="url(#p-rebung)" stroke="none"/><circle cx="114" cy="20" r="4.500" fill="var(--signal)" stroke="none"/></svg><span class="net__b"><h3>Kota Kinabalu</h3><span class="code">BKI</span><p>Kota Kinabalu, Sabah</p><span class="motif">Motif · Kinabalu ridgeline</span></span></a></li>
+      <li><a href="#network"><svg class="net__il" viewBox="0 0 280 112" preserveAspectRatio="xMidYMid slice" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><defs><pattern id="p-canopy" width="40" height="28" patternUnits="userSpaceOnUse"><path d="M0 14a20 20 0 0 1 40 0M-20 28a20 20 0 0 1 40 0M20 28a20 20 0 0 1 40 0M8 14a12 12 0 0 1 24 0M-12 28a12 12 0 0 1 24 0M28 28a12 12 0 0 1 24 0"/></pattern></defs><rect width="280" height="112" fill="url(#p-canopy)" stroke="none"/><circle cx="140" cy="56" r="4.500" fill="var(--signal)" stroke="none"/></svg><span class="net__b"><h3>Kuching</h3><span class="code">KCH</span><p>Kuching, Sarawak</p><span class="motif">Motif · rainforest canopy</span></span></a></li>
+      <li><a href="#network"><svg class="net__il" viewBox="0 0 280 112" preserveAspectRatio="xMidYMid slice" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><g transform="rotate(-12 92 52)"><ellipse cx="92" cy="52" rx="52" ry="28"/><ellipse cx="92" cy="52" rx="38" ry="19"/><ellipse cx="96" cy="51" rx="22" ry="10"/></g><g transform="rotate(14 198 66)"><ellipse cx="198" cy="66" rx="32" ry="17"/><ellipse cx="198" cy="66" rx="19" ry="9"/></g><ellipse cx="232" cy="24" rx="15" ry="8"/><ellipse cx="232" cy="24" rx="7" ry="3.500"/><ellipse cx="160" cy="18" rx="9" ry="5"/><path d="M0 100h44M62 100h96M178 100h102M22 107h70M112 107h120" opacity=".5"/><circle cx="96" cy="51" r="4.500" fill="var(--signal)" stroke="none"/></svg><span class="net__b"><h3>Langkawi</h3><span class="code">LGK</span><p>Padang Matsirat, Kedah</p><span class="motif">Motif · island contours</span></span></a></li>
+      <li><a href="#network"><svg class="net__il" viewBox="0 0 280 112" preserveAspectRatio="xMidYMid slice" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><defs><path id="il-petal" d="M0-5C-11-13-11-29 0-35 11-29 11-13 0-5Z"/><g id="il-hib"><use href="#il-petal"/><use href="#il-petal" transform="rotate(72)"/><use href="#il-petal" transform="rotate(144)"/><use href="#il-petal" transform="rotate(216)"/><use href="#il-petal" transform="rotate(288)"/></g></defs><use href="#il-hib" transform="translate(140 58) scale(1.250)"/><circle cx="140" cy="58" r="50" stroke-dasharray="2 5"/><use href="#il-hib" transform="translate(44 40) scale(.7) rotate(36)" opacity=".55"/><use href="#il-hib" transform="translate(238 76) scale(.7) rotate(36)" opacity=".55"/><use href="#il-hib" transform="translate(52 108) scale(.5)" opacity=".3"/><use href="#il-hib" transform="translate(226 6) scale(.5)" opacity=".3"/><circle cx="140" cy="58" r="4.500" fill="var(--signal)" stroke="none"/></svg><span class="net__b"><h3>Subang</h3><span class="code">SZB</span><p>Subang, Selangor</p><span class="motif">Motif · hibiscus geometry</span></span></a></li>
+      <li class="is-all"><a href="#network"><svg class="net__il" viewBox="0 0 280 112" preserveAspectRatio="xMidYMid slice" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><defs><pattern id="p-dots" x="10" y="26" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="2.500" fill="currentColor" stroke="none"/></pattern></defs><rect x="10" y="26" width="260" height="60" fill="url(#p-dots)" stroke="none"/><g fill="var(--board-amber)" stroke="none"><circle cx="40" cy="36" r="5"/><circle cx="100" cy="56" r="5"/><circle cx="140" cy="76" r="5"/><circle cx="200" cy="36" r="5"/><circle cx="240" cy="56" r="5"/></g></svg><span class="net__b"><h3>All 39 airports</h3><span class="code">39</span><p>Find any airport by name, state or code.</p><span class="motif">5 international · 17 domestic · 17 STOLports</span></span></a></li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec sec--band" id="shop" aria-labelledby="sd-h">
+  <div class="wrap">
+    <header class="sec__h">
+      <span class="plate" aria-hidden="true">04</span>
+      <div><h2 id="sd-h">Shop and dine</h2><p>Find what is open on your side of security and close to your gate.</p></div>
+      <a class="more" href="#shop">Browse everything <svg class="ic ic--sm" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    </header>
+    <div class="filters" role="group" aria-label="Filter shops and restaurants">
+      <button type="button" class="fchip" aria-pressed="true">All</button><button type="button" class="fchip" aria-pressed="false">Open now</button><button type="button" class="fchip" aria-pressed="false">Before security</button><button type="button" class="fchip" aria-pressed="false">After security</button><button type="button" class="fchip" aria-pressed="false">Halal</button><button type="button" class="fchip" aria-pressed="false">Near my gate</button>
+    </div>
+    <ul class="sd">
+      <li><a href="#shop"><span class="sd__i"><svg class="ic" aria-hidden="true"><use href="#i-bowl"/></svg></span><span><h3>Malaysian favourites</h3><p>Nasi lemak, laksa, satay and teh tarik before you fly.</p><span class="k">Dine · See menus</span></span></a></li>
+      <li><a href="#shop"><span class="sd__i"><svg class="ic" aria-hidden="true"><use href="#i-cup"/></svg></span><span><h3>Kopitiam and coffee</h3><p>Kaya toast, local kopi and quick bites close to the gates.</p><span class="k">Cafés · See opening hours</span></span></a></li>
+      <li><a href="#shop"><span class="sd__i"><svg class="ic" aria-hidden="true"><use href="#i-bag"/></svg></span><span><h3>Duty-free and essentials</h3><p>Beauty, confectionery, and the charger you left at home.</p><span class="k">Shop · See stores</span></span></a></li>
+      <li><a href="#shop"><span class="sd__i"><svg class="ic" aria-hidden="true"><use href="#i-gift"/></svg></span><span><h3>Crafts and gifts</h3><p>Batik, pewter and woven pieces to take home.</p><span class="k">Shop · See stores</span></span></a></li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec" id="concierge" aria-labelledby="con-h">
+  <div class="wrap">
+    <header class="sec__h">
+      <span class="plate" aria-hidden="true">05</span>
+      <div><h2 id="con-h">Ask the concierge</h2><p>A quiet assistant for the questions signs cannot answer. It works from official airport information, says when an answer is an estimate, and hands over to a person when you need one.</p></div>
+    </header>
+    <div class="con" id="help">
+      <div>
+        <p class="eyebrow">People often ask</p>
+        <ul class="con__qs">
+          <li><button type="button">How do I get from Terminal 1 to Terminal 2?<svg class="ic ic--sm" aria-hidden="true"><use href="#i-arrow"/></svg></button></li>
+          <li><button type="button">Where is the nearest prayer room to my gate?<svg class="ic ic--sm" aria-hidden="true"><use href="#i-arrow"/></svg></button></li>
+          <li><button type="button">Is there somewhere to shower during a long layover?<svg class="ic ic--sm" aria-hidden="true"><use href="#i-arrow"/></svg></button></li>
+          <li><button type="button">Which car park should I use for a week away?<svg class="ic ic--sm" aria-hidden="true"><use href="#i-arrow"/></svg></button></li>
+        </ul>
+        <form class="con__ask" onsubmit="return false"><label class="vh" for="ask">Ask the concierge a question</label><input id="ask" type="text" placeholder="Ask about flights, terminals or transport"><button class="btn btn--primary" type="submit" aria-label="Send question"><svg class="ic" aria-hidden="true"><use href="#i-send"/></svg></button></form>
+        <small>Concept preview. The reply shown is an example, not a live response.</small>
+      </div>
+      <div class="chat" aria-label="Example conversation">
+        <p class="chat__q">Which car park should I use for a week away?</p>
+        <div class="chat__a">
+          <p><span class="src src--sug"><svg class="ic" aria-hidden="true"><use href="#i-bulb"/></svg>Suggestion</span>For a week away from KLIA Terminal 1, the Long Term Car Park is the natural choice.</p>
+          <p><span class="src src--off"><svg class="ic" aria-hidden="true"><use href="#i-shield"/></svg>Official information</span>It has over 5,200 bays, with a free shuttle to the terminal every 10 minutes. Closer in, Terminal 1 parking has over 5,700 bays across Blocks A to D.</p>
+          <div class="chat__f"><a class="btn btn--ghost" href="#transport">Parking guide</a><a class="btn btn--ghost" href="#transport">Directions to the car park</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="ftr">
+  <div class="ftr__weave" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="ftr__in">
+      <div>
+        <a class="brand" href="#main" aria-label="Malaysia Airports home"><svg aria-hidden="true"><use href="#mark"/></svg><span>Malaysia <b>Airports</b></span></a>
+        <p class="ftr__lead">Hosting Joyful Connections across 39 airports in Malaysia.</p>
+        <a class="ftr__corp" id="corporate" href="#corporate">Malaysia Airports corporate site <svg class="ic ic--sm" aria-hidden="true"><use href="#i-ext"/></svg></a>
+      </div>
+      <nav aria-labelledby="f1"><h2 id="f1">Flights</h2><ul><li><a href="#departures">Departures</a></li><li><a href="#departures">Arrivals</a></li><li><a href="#departures">Track a flight</a></li><li><a href="#departures">Airlines</a></li></ul></nav>
+      <nav aria-labelledby="f2"><h2 id="f2">Plan your journey</h2><ul><li><a href="#transport">Getting to the airport</a></li><li><a href="#transport">Parking</a></li><li><a href="#journey">Check-in and security</a></li><li><a href="#help">Special assistance</a></li></ul></nav>
+      <nav aria-labelledby="f3"><h2 id="f3">At the airport</h2><ul><li><a href="#network">Terminal maps</a></li><li><a href="#network">Lounges</a></li><li><a href="#shop">Shop and dine</a></li><li><a href="#network">Prayer rooms</a></li></ul></nav>
+      <nav aria-labelledby="f4"><h2 id="f4">Help</h2><ul><li><a href="#concierge">Ask the concierge</a></li><li><a href="#help">Lost property</a></li><li><a href="#help">Contact us</a></li><li><a href="#help">Feedback</a></li></ul></nav>
+    </div>
+    <div class="ftr__set" id="settings">
+      <div><span>Language</span><div class="seg" role="group" aria-label="Language"><button type="button" data-set="lang:en" aria-pressed="true">English</button><button type="button" data-set="lang:ms" aria-pressed="false">Bahasa Malaysia</button></div></div>
+      <div><span>Text size</span><div class="seg" role="group" aria-label="Text size"><button type="button" data-set="textsize:default" aria-pressed="true">Default</button><button type="button" data-set="textsize:lg" aria-pressed="false">Larger</button></div></div>
+      <div><span>Contrast</span><div class="seg" role="group" aria-label="Contrast"><button type="button" data-set="contrast:default" aria-pressed="true">Standard</button><button type="button" data-set="contrast:high" aria-pressed="false">Higher</button></div></div>
+      <div><span>Theme</span><div class="seg" role="group" aria-label="Theme"><button type="button" data-set="theme:light" aria-pressed="false">Light</button><button type="button" data-set="theme:dark" aria-pressed="false">Dark</button></div></div>
+    </div>
+    <div class="ftr__legal"><p>Concept design for demonstration. Not an official Malaysia Airports website. Flight information shown is illustrative.</p><p><a href="#settings">Accessibility statement</a> · <a href="#help">Privacy</a> · <a href="#help">Terms</a></p></div>
+  </div>
+</footer>
+
+<nav class="tabbar" aria-label="Quick access">
+  <a href="#departures"><svg class="ic" aria-hidden="true"><use href="#i-depart"/></svg>Flights</a>
+  <a href="#network"><svg class="ic" aria-hidden="true"><use href="#i-map"/></svg>Maps</a>
+  <a href="#q" class="is-main" data-focus-q><span><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg></span><span>Search</span></a>
+  <a href="#journey"><svg class="ic" aria-hidden="true"><use href="#i-bookmark"/></svg>Journey</a>
+  <a href="#concierge"><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg>Ask</a>
+</nav>
+
+<script>
+(()=>{
+  const d=document,h=d.documentElement,$=(s,r=d)=>r.querySelector(s),$$=(s,r=d)=>[...r.querySelectorAll(s)];
+  const store={get:k=>{try{return localStorage.getItem('ma-'+k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem('ma-'+k,v)}catch(e){}}};
+
+  /* Settings: theme, text size, contrast, motion, language. One attribute on <html> each. */
+  function apply(k,v){
+    if(v==='default')h.removeAttribute('data-'+k);else h.setAttribute('data-'+k,v);
+    $$('[data-set^="'+k+':"]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.set===k+':'+v)));
+    if(k==='theme'){const dark=v==='dark';$('[data-theme-icon]').setAttribute('href',dark?'#i-sun':'#i-moon');$('[data-theme-label]').textContent=dark?'Light':'Dark'}
+  }
+  apply('theme',h.dataset.theme||'light');
+  ['textsize','contrast','motion'].forEach(k=>{const v=store.get(k);if(v)apply(k,v)});
+  $('[data-theme-toggle]').addEventListener('click',()=>{const v=h.dataset.theme==='dark'?'light':'dark';apply('theme',v);store.set('theme',v)});
+
+  /* Popovers (airport lists, accessibility panel) */
+  function closePops(except){$$('[data-pop][aria-expanded="true"]').forEach(b=>{if(b!==except){b.setAttribute('aria-expanded','false');$('#'+b.dataset.pop).hidden=true}})}
+  const hero=$('#apt-hero');$$('[data-apt-clone]').forEach(el=>el.innerHTML=hero.innerHTML);
+  const CTX={'KLIA Terminal 1':['Terminal 1 parking has over 5,700 bays across Blocks A to D. The Long Term Car Park has over 5,200 bays and a free shuttle every 10 minutes.','The Aerotrain links the main terminal and the satellite building, 24 hours a day.'],
+    'All 39 airports':['Browse transport guides for every airport in the network.','Five international airports, 17 domestic airports and 17 short take-off and landing ports.']};
+  function setAirport(name){
+    $$('[data-apt-opt]').forEach(o=>o.setAttribute('aria-selected',String(o.dataset.aptOpt===name)));
+    $$('[data-apt-label]').forEach(l=>l.textContent=name);$$('[data-apt]').forEach(a=>a.classList.add('is-set'));
+    const c=CTX[name]||['Routes, drop-off and parking for '+name+'.','Maps and step-by-step guidance for '+name+'.'];
+    $('[data-ctx="get"]').textContent=c[0];$('[data-ctx="term"]').textContent=c[1];
+  }
+  d.addEventListener('click',e=>{
+    const set=e.target.closest('[data-set]');if(set){const [k,v]=set.dataset.set.split(':');apply(k,v);store.set(k,v);return}
+    const opt=e.target.closest('[data-apt-opt]');if(opt){const b=$('[data-pop="'+opt.parentElement.id+'"]');setAirport(opt.dataset.aptOpt);closePops();b.focus();return}
+    const pb=e.target.closest('[data-pop]');
+    if(pb){const p=$('#'+pb.dataset.pop),open=pb.getAttribute('aria-expanded')==='true';closePops(pb);pb.setAttribute('aria-expanded',String(!open));p.hidden=open;if(!open){const f=$('[aria-selected="true"],button',p);f&&f.focus()}return}
+    if(!e.target.closest('.pop'))closePops();
+    const m=e.target.closest('[data-menu]');if(m){m.setAttribute('aria-expanded',String(h.classList.toggle('nav-open')))}else if(e.target.closest('.nav a'))h.classList.remove('nav-open');
+    const fq=e.target.closest('[data-focus-q]');if(fq){e.preventDefault();q.scrollIntoView({block:'center'});q.focus({preventScroll:true})}
+    const fc=e.target.closest('.fchip');if(fc){$$('.fchip').forEach(x=>x.setAttribute('aria-pressed',String(x===fc)))}
+    const cq=e.target.closest('.con__qs button');if(cq){$('#ask').value=cq.textContent.trim();$('#ask').focus()}
+  });
+  d.addEventListener('keydown',e=>{
+    if(e.key==='Escape'){const b=$('[data-pop][aria-expanded="true"]');if(b){closePops();b.focus()}h.classList.remove('nav-open')}
+    const lb=e.target.closest&&e.target.closest('[role="listbox"]');
+    if(lb&&(e.key==='ArrowDown'||e.key==='ArrowUp')){e.preventDefault();const o=$$('button',lb),i=o.indexOf(d.activeElement);o[(i+(e.key==='ArrowDown'?1:-1)+o.length)%o.length].focus()}
+  });
+
+  /* Flight search: the hero board answers from the same rows as the departures board below */
+  const q=$('#q'),ex=$('#q-ex'),res=$('#q-res');
+  const flights=$$('#fids tbody tr').map(tr=>{const c=tr.children;return{q:tr.dataset.q,no:c[1].textContent.trim(),time:c[0].innerHTML,dest:c[2].innerHTML,gate:c[4].innerHTML,st:c[5].innerHTML}});
+  const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const dir=()=>$('input[name="dir"]:checked').value;
+  function search(){
+    const raw=q.value.trim();if(!raw){res.hidden=true;ex.hidden=false;return}
+    const s=raw.toLowerCase().replace(/[→>–,\-]/g,' ').replace(/\bto\b/g,' ').trim(),compact=s.replace(/\s+/g,'');
+    const isNo=/^[a-z]{2}\d{1,4}$/.test(compact);
+    const hit=flights.filter(f=>isNo?f.no.toLowerCase().replace(/\s/g,'').startsWith(compact):s.split(/\s+/).every(t=>f.q.includes(t)));
+    res.innerHTML='<p class="res__h"><span class="demo">Demonstration data, not live</span><span>'+(hit.length?hit.length+' sample '+dir()+(hit.length>1?'s':'')+' for':'No sample '+dir()+'s for')+' “'+esc(raw)+'”</span><button type="button" class="res__x" data-clear>Clear</button></p>'+
+      (hit.length?'<ol class="res__rows">'+hit.slice(0,3).map((f,i)=>'<li style="--i:'+i+'"><a href="#departures"><span class="t-time">'+f.time+'</span><span class="res__meta"><span class="t-flt">'+f.no+'</span></span><span class="t-dest">'+f.dest+'</span><span class="t-gate">'+f.gate+'</span><span>'+f.st+'</span></a></li>').join('')+'</ol>'
+      :'<p class="res__none">Try a flight number such as MH 2, a city such as Penang, or an airline such as Emirates.</p>');
+    ex.hidden=true;res.hidden=false;
+  }
+  $('#srch').addEventListener('submit',e=>{e.preventDefault();search()});
+  q.addEventListener('input',search);
+  $('#q-out').addEventListener('click',e=>{
+    const b=e.target.closest('[data-ex]');if(b){q.value=b.dataset.ex;search();q.focus()}
+    if(e.target.closest('[data-clear]')){q.value='';search();q.focus()}
+  });
+  $$('input[name="dir"]').forEach(r=>r.addEventListener('change',()=>{
+    const arr=dir()==='arrival';$$('[data-dir-word]').forEach(w=>w.textContent=arr?'arrivals':'departures');
+    const route=$('[data-ex^="KUL"],[data-ex^="PEN"]');route.dataset.ex=arr?'PEN → KUL':'KUL → PEN';$('.v',route).textContent=route.dataset.ex;
+    $('[data-ex="London"] .k').textContent=arr?'Origin':'Destination';
+    setPlaceholder();search();
+  }));
+  const narrow=matchMedia('(max-width:719px)');
+  function setPlaceholder(){const arr=dir()==='arrival';q.placeholder=narrow.matches?'Flight, city or airline':'Flight number, '+(arr?'origin':'destination')+', airline or route'}
+  narrow.addEventListener('change',setPlaceholder);setPlaceholder();
+
+  /* Journey mode reorders and rewrites the six quick actions */
+  const MODES={
+    dep:['departing',[['getting','Getting to the airport','Rail, bus, taxi, e-hailing or your own car: compare routes to your terminal.'],['parking','Parking','Short-stay, long-term and drop-off zones, with the walk to check-in.'],['maps','Terminal maps','Check-in to gate'],['track','Track a flight','Gate and status'],['lounges','Lounges','Before you board'],['food','Food and shops','Near your gate']]],
+    arr:['arriving',[['track','Track a flight','Follow your arrival: baggage belt, arrival hall and the nearest exit.'],['getting','Onward transport','Rail, bus, taxi and e-hailing pick-up points from your terminal.'],['maps','Terminal maps','Baggage to exit'],['food','Food and shops','After you land'],['parking','Parking','Find your car park'],['lounges','Lounges','Freshen up']]],
+    tra:['transiting',[['maps','Terminal maps','Follow the transfer route between gates, piers and terminals.'],['track','Track a flight','Check the gate and status of your connecting flight before you walk.'],['lounges','Lounges','Rest between flights'],['food','Food and shops','Near your next gate'],['getting','Between terminals','Terminal 1 and 2'],['parking','Parking','Not needed in transit']]],
+    meet:['meeting someone',[['track','Track a flight','See when they land and which arrival hall to wait in.'],['parking','Parking','Short-stay parking and pick-up zones close to arrivals.'],['getting','Getting to the airport','Routes to arrivals'],['maps','Terminal maps','Meeting points'],['food','Food and shops','While you wait'],['lounges','Lounges','For travellers']]]
+  };
+  const acts=$('#acts');
+  $$('input[name="mode"]').forEach(r=>r.addEventListener('change',()=>{
+    const [say,order]=MODES[r.value];
+    order.forEach(([id,t,s],i)=>{const li=$('[data-act="'+id+'"]',acts);li.style.setProperty('--i',i);$('.act__n',li).textContent=String(i+1).padStart(2,'0');$('.act__t',li).textContent=t;$('.act__s',li).textContent=s;acts.appendChild(li)});
+    acts.classList.remove('swap');void acts.offsetWidth;acts.classList.add('swap');
+    $('#mode-live').textContent='Quick actions reordered for '+say+'. First: '+order[0][1]+'.';
+  }));
+})();
+</script>
+</body>
+</html>

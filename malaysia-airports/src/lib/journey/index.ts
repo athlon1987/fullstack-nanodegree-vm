@@ -22,10 +22,9 @@ import type { Flight } from '@/lib/flights/types';
 import type { TKey } from '@/lib/i18n/translate';
 import { addMinutes, formatTime, minutesBetween, toDate, toIsoWithOffset, type Instant } from '@/lib/time';
 import { formatDuration } from '@/lib/format';
+import type { JourneyMode } from './modes';
 
-/** The four ways someone uses an airport. */
-export const JOURNEY_MODES = ['departing', 'arriving', 'transiting', 'meeting'] as const;
-export type JourneyMode = (typeof JOURNEY_MODES)[number];
+export { DEFAULT_JOURNEY_MODE, JOURNEY_MODES, isJourneyMode, type JourneyMode } from './modes';
 
 /** Recommended minutes to be at the airport before departure. Estimated guidance, not a rule. */
 export const RECOMMENDED_ARRIVAL_MINUTES = { international: 180, domestic: 120 } as const;

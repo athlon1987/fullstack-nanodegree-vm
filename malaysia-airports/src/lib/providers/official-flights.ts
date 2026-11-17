@@ -41,13 +41,7 @@
  * from demo to live data.
  */
 import type { Flight } from '@/lib/flights/types';
-import {
-  ProviderNotConfiguredError,
-  type FlightDataProvider,
-  type FlightListQuery,
-  type FlightSearchQuery,
-  type ProviderMeta,
-} from './types';
+import { ProviderNotConfiguredError, type FlightDataProvider, type FlightListQuery, type ProviderMeta } from './types';
 
 /** The endpoint observed in the audit. Documented only: nothing in this codebase requests it. */
 export const OFFICIAL_FLIGHTS_ENDPOINT = 'https://api.myairports.com.my/passenger-fids/api/flights/search-flights';
@@ -105,15 +99,15 @@ export class OfficialFlightProvider implements FlightDataProvider {
     throw new ProviderNotConfiguredError('OfficialFlightProvider', REASON);
   }
 
-  async listFlights(_query: FlightListQuery): Promise<Flight[]> {
+  async listFlights(): Promise<Flight[]> {
     throw new ProviderNotConfiguredError('OfficialFlightProvider', REASON);
   }
 
-  async getFlight(_id: string, _airport?: string): Promise<Flight | null> {
+  async getFlight(): Promise<Flight | null> {
     throw new ProviderNotConfiguredError('OfficialFlightProvider', REASON);
   }
 
-  async search(_query: FlightSearchQuery): Promise<Flight[]> {
+  async search(): Promise<Flight[]> {
     throw new ProviderNotConfiguredError('OfficialFlightProvider', REASON);
   }
 }

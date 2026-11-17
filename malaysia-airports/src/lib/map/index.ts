@@ -152,7 +152,7 @@ export function shortestPath(
     nodes,
     legs,
     metres: Math.round(legs.reduce((sum, leg) => sum + leg.edge.metres, 0)),
-    minutes: Math.ceil(exactMinutes - 1e-9),
+    minutes: exactMinutes <= 0 ? 0 : Math.ceil(exactMinutes - 1e-9),
     levels,
     accessible: legs.every((leg) => leg.edge.accessible),
     profile,
