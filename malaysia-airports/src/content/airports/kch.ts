@@ -1,8 +1,8 @@
 /**
  * Kuching International Airport (KCH).
  *
- * Where this comes from: `docs/research/facts/f-kuching.json`. That file is thin: of 51 Kuching
- * facts, 31 are unconfirmed background knowledge (`prior`), including everything it holds on the
+ * Where this comes from: `docs/research/facts/f-kuching.json`. That file is thin: of its 62
+ * facts, 41 are unconfirmed background knowledge (`prior`), including everything it holds on the
  * terminal layout, ground transport, lounges, facilities and the Sarawak arrival immigration
  * rules. None of those is published. What remains (evidence `search`, confidence high or medium)
  * is relayed from the other research files: a few airline routes, the Immigration Department's
