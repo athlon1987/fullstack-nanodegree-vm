@@ -50,7 +50,7 @@ function Links({ variant, pathname, className }: LanguageSwitchProps & { pathnam
             hrefLang={lang}
             lang={lang}
             aria-current={active ? 'true' : undefined}
-            aria-label={active ? names[lang] : t('shell.languageSwitch', { language: names[lang] })}
+            aria-label={variant === 'inline' ? `${t(`shell.langShort.${lang}`)}: ${names[lang]}` : active ? names[lang] : t('shell.languageSwitch', { language: names[lang] })}
             onClick={onClick(lang)}
             className={
               variant === 'block'

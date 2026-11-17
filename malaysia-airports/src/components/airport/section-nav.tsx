@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useSearchParams, useSelectedLayoutSegment } from 'next/navigation';
+import { useSelectedLayoutSegment } from 'next/navigation';
 import { Suspense, useEffect, useRef } from 'react';
 import { getAirport, type AirportSelection } from '@/content/airports';
 import type { TerminalId } from '@/content/types';

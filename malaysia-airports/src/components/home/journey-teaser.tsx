@@ -50,6 +50,7 @@ export function JourneyTeaser({ facts, fallback }: JourneyTeaserProps) {
   const chosen = context.airport?.slug;
   const sampleAirport = chosen && hasDemoRoutes(chosen) ? chosen : (Object.keys(facts)[0] ?? 'kul');
   const fact = facts[sampleAirport];
+  const factTerminal = fact?.terminal;
   const airport = getAirport(sampleAirport);
 
   const flight = useMemo<Flight | null>(() => {
@@ -58,8 +59,8 @@ export function JourneyTeaser({ facts, fallback }: JourneyTeaserProps) {
     const candidates = provider
       .listFlightsSync({ airport: sampleAirport, direction: 'd', from: addMinutes(now, 150), to: boardWindow(now, 14).to })
       .filter((item) => !isFinalStatus(item.status) && item.status !== 'cancelled');
-    return candidates.find((item) => !fact?.terminal || item.terminal === fact.terminal) ?? candidates[0] ?? null;
-  }, [provider, sampleAirport, fact?.terminal]);
+    return candidates.find((item) => !factTerminal || item.terminal === factTerminal) ?? candidates[0] ?? null;
+  }, [provider, sampleAirport, factTerminal]);
 
   const arriveBy = flight ? formatTime(addMinutes(flight.scheduled, -(isInternationalFlight(flight) ? ARRIVE_BEFORE.international : ARRIVE_BEFORE.domestic))) : null;
   const saved = flight ? isFlightSaved(flight.id) : false;
