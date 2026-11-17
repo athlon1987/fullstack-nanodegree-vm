@@ -11,7 +11,8 @@
  *    Kinabalu with one terminal (`MAIN`) and no levels, so locations are words only.
  *  - Buses: BAS.MY routes, fares, hours and payment come from third-party guides that cite the
  *    operator's tables, so the items are `estimated`. Departure times are prose because they are
- *    probably times from KK Sentral, not from the airport stop.
+ *    probably times from KK Sentral, not from the airport stop. No `operator` is set: BAS.MY is
+ *    the service brand, and the company named as its operator is a low-confidence fact.
  *  - Parking: the tariff is known only from two parking directories, an older directory differs
  *    and the official rate board was not captured, so the car park is `not-verified` with both
  *    sets of figures quoted in its description.
@@ -123,7 +124,6 @@ function basMyRoute(input: {
     airport: 'bki',
     mode: 'bus',
     name: lt(`BAS.MY bus ${route} (KK Sentral)`, `Bas BAS.MY ${route} (KK Sentral)`),
-    operator: 'BAS.MY Kota Kinabalu',
     description: lt(
       `A loop that links the airport with the KK Sentral bus terminal: ${path.en}. Third-party guides say the buses are cashless. Routes S07 and S08 circulate in opposite directions, so the quicker one depends on where you are going. The stop at the airport is not verified here.`,
       `Laluan pusingan yang menghubungkan lapangan terbang dengan terminal bas KK Sentral: ${path.ms ?? path.en}. Panduan pihak ketiga menyatakan bas ini tanpa tunai. Laluan S07 dan S08 bergerak dalam arah bertentangan, jadi laluan yang lebih cepat bergantung pada destinasi anda. Hentian di lapangan terbang belum disahkan di sini.`,
@@ -234,8 +234,8 @@ const airlines: AirlineAtAirport[] = [
     ],
     basis: 'third-party',
     note: lt(
-      "AirBorneo took over MASwings' rural and regional services in Sabah, Sarawak and Labuan on 1 January 2026. Flight listings from 2026 show it flying ATR 72 turboprops between Kota Kinabalu and Mulu, and between Kota Kinabalu and Labuan.",
-      'AirBorneo mengambil alih perkhidmatan luar bandar dan serantau MASwings di Sabah, Sarawak dan Labuan pada 1 Januari 2026. Penyenaraian penerbangan 2026 menunjukkan ia mengendalikan pesawat turboprop ATR 72 antara Kota Kinabalu dan Mulu, serta antara Kota Kinabalu dan Labuan.',
+      "AirBorneo took over MASwings' rural and regional services in Sabah, Sarawak and Labuan on 1 January 2026. Flight listings from 2026 show it flying ATR 72 turboprops between Kota Kinabalu and Mulu, and also flying between Kota Kinabalu and Labuan.",
+      'AirBorneo mengambil alih perkhidmatan luar bandar dan serantau MASwings di Sabah, Sarawak dan Labuan pada 1 Januari 2026. Penyenaraian penerbangan 2026 menunjukkan ia mengendalikan pesawat turboprop ATR 72 antara Kota Kinabalu dan Mulu, dan turut terbang antara Kota Kinabalu dan Labuan.',
     ),
     asOf: '2026-10',
     sources: ['capa-airborneo-takeover-2026', 'navitime-mzv', 'fr24-airborneo-9m-mwa', 'flightstats-lbu-departures'],
@@ -364,8 +364,8 @@ const guidesNotes: GuideNote[] = [
       'Perkara yang belum disahkan oleh prototaip ini di Kota Kinabalu',
     ),
     body: lt(
-      'Left out because we could not verify them: taxi and e-hailing pick-up points and fares; how often the airport buses run and where they stop; the official parking rates, the number of bays and how to pay; whether the Golden Lounge and Plaza Premium Lounge are open; left luggage; the information desk; shop and restaurant names; which level each service is on. Press reports of March 2026 also name Batik Air, Air Busan, Jin Air, Jeju Air, T’way Air, HK Express, China Southern Airlines, Shanghai Airlines, Spring Airlines and Xiamen Airlines at Kota Kinabalu, and record new flights from Shanghai (Spring Airlines, daily from 28 January 2026) and Chongqing (Chongqing Airlines, three a week from March 2026); they are not listed here yet and current schedules were not re-checked. For these, use the official Kota Kinabalu airport page or call Malaysia Airports on +603-8777 0000.',
-      'Tidak disertakan kerana belum dapat disahkan: tempat mengambil penumpang dan tambang teksi serta e-hailing; kekerapan dan hentian bas lapangan terbang; kadar parkir rasmi, bilangan petak dan cara bayaran; sama ada Golden Lounge dan Plaza Premium Lounge dibuka; simpanan bagasi; kaunter pertanyaan; nama kedai dan restoran; aras bagi setiap perkhidmatan. Laporan akhbar Mac 2026 turut menamakan Batik Air, Air Busan, Jin Air, Jeju Air, T’way Air, HK Express, China Southern Airlines, Shanghai Airlines, Spring Airlines dan Xiamen Airlines di Kota Kinabalu, serta merekodkan penerbangan baharu dari Shanghai (Spring Airlines, setiap hari mulai 28 Januari 2026) dan Chongqing (Chongqing Airlines, tiga kali seminggu mulai Mac 2026); semuanya belum disenaraikan di sini dan jadual semasa tidak disemak semula. Untuk perkara ini, gunakan halaman rasmi lapangan terbang Kota Kinabalu atau hubungi Malaysia Airports di +603-8777 0000.',
+      'Left out because we could not verify them: taxi and e-hailing pick-up points and fares; how often the airport buses run and where they stop; the official parking rates, the number of bays and how to pay; whether the Golden Lounge and Plaza Premium Lounge are open; left luggage; the information desk; shop and restaurant names; which level each service is on. Press reports of March 2026 also name Batik Air, Air Busan, Jin Air, Jeju Air, T’way Air, HK Express, China Southern Airlines, Shanghai Airlines, Spring Airlines and Xiamen Airlines at Kota Kinabalu, and other reports record flights from Shanghai (Spring Airlines, daily again from 28 January 2026) and from Chongqing (Chongqing Airlines, three a week when it launched in March 2026); they are not listed here yet and current schedules were not re-checked. For these, use the official Kota Kinabalu airport page or call Malaysia Airports on +603-8777 0000.',
+      'Tidak disertakan kerana belum dapat disahkan: tempat mengambil penumpang dan tambang teksi serta e-hailing; kekerapan dan hentian bas lapangan terbang; kadar parkir rasmi, bilangan petak dan cara bayaran; sama ada Golden Lounge dan Plaza Premium Lounge dibuka; simpanan bagasi; kaunter pertanyaan; nama kedai dan restoran; aras bagi setiap perkhidmatan. Laporan akhbar Mac 2026 turut menamakan Batik Air, Air Busan, Jin Air, Jeju Air, T’way Air, HK Express, China Southern Airlines, Shanghai Airlines, Spring Airlines dan Xiamen Airlines di Kota Kinabalu, dan laporan lain merekodkan penerbangan dari Shanghai (Spring Airlines, setiap hari semula mulai 28 Januari 2026) dan dari Chongqing (Chongqing Airlines, tiga kali seminggu semasa dilancarkan pada Mac 2026); semuanya belum disenaraikan di sini dan jadual semasa tidak disemak semula. Untuk perkara ini, gunakan halaman rasmi lapangan terbang Kota Kinabalu atau hubungi Malaysia Airports di +603-8777 0000.',
     ),
     sources: [
       'prototype-method',

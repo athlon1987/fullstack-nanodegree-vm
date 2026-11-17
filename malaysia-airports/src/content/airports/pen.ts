@@ -24,7 +24,8 @@
  *
  * Known gaps (also published as the guide note `pen-content-gaps`): no verified shops or
  * restaurants; prayer rooms, Wi-Fi, ATMs and money changers are prior knowledge only; no taxi
- * tariff; no bus stop location, exact bus fares or first and last buses; no official standard parking rate card;
+ * tariff; no bus stop location, exact bus fares or first and last buses; no official standard
+ * parking rate card;
  * domestic lounge hours; the full airline and destination list; terminal opening hours; whether
  * the airport telephone number in the aeronautical publication answers passenger enquiries.
  */
