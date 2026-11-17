@@ -132,7 +132,7 @@ Lab, single container, indicative only.
 - Lighthouse (mobile emulation, median of 3): performance 27 (runs 7, 27, 27), accessibility 79, best practices 73, SEO 100; FCP 12.4 s, LCP 25.1 s, TBT 2,403 ms, CLS 0 (one run 0.4), Speed Index 23.5 s, 4.5 MB, 215 requests.
 - The mobility-impaired services page transferred 9.4 MB by content-length.
 - No `Strict-Transport-Security`, `X-Frame-Options`, `X-Content-Type-Options` or Content-Security-Policy header on the HTML response checked.
-- Reliability: all pages returned 200 in this assessment, and the flight and congestion endpoints (`getDepPasSchList.do`, `passengerNoticeApiData.do`) returned 200; an earlier probe in this project received HTTP 502 from the homepage.
+- Reliability: all pages returned 200 in this assessment, and the data endpoints called by the departures and wait-time pages (`getDepPasSchList.do`, `passengerNoticeApiData.do`) returned 200; an earlier probe in this project received HTTP 502 from the homepage.
 
 ## 13. Site search
 

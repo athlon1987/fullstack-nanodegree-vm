@@ -1,0 +1,154 @@
+{
+  "key": "incheon",
+  "name": "Seoul Incheon International Airport",
+  "host": "www.airport.kr",
+  "assessed": "2026-11-17",
+  "assessment_type": "expert assessment",
+  "direct_access": true,
+  "direct_access_note": "First-hand browser access to the English site www.airport.kr/ap_en/: 6 pages captured on desktop and mobile (homepage 00:20 UTC; inner pages 10:59-11:02 UTC), 7 more read with Playwright, 3 interaction scripts (headers, skip links and keyboard, homepage flight search to results and detail, integrated search, mobile menu and flight list); every load returned HTTP 200 and no bot challenge appeared. An earlier probe in this project had received HTTP 502, so the fallback URL was not needed. Blocked by the container's network policy (not a site defect): icnmap.airport.kr:28702, so the Airport Map page was blank. Parking reservation, the duty-free operator site and the transfer route guide's output were not opened. Scores are expert assessments, not instrumented tests.",
+  "weighted_score_pct": 74.5,
+  "scores": {
+    "ui": {
+      "score": 3.5,
+      "confidence": "high",
+      "evidence_level": "direct",
+      "evidence": [
+        "direct: consistent blue public-service design with clear icons for map, accessibility, login and search on desktop and mobile - https://www.airport.kr/ap_en/index.do",
+        "direct: flight detail is visually strong: route bar, step chain from car park to gate, destination card and share panel - https://www.airport.kr/ap_en/1396/subview.do",
+        "direct: dense, portal-like pages with carousels, full-screen section scrolling on the desktop homepage and a flight search at the bottom edge of the first screen - https://www.airport.kr/ap_en/index.do",
+        "direct: Korean strings on English pages ('위치 상세보기', '새로고침', '페이지 만족도 설문조사') and typos ('peak tiem', 'Infomation') - https://www.airport.kr/ap_en/1534/subview.do"
+      ]
+    },
+    "ux": {
+      "score": 4.0,
+      "confidence": "high",
+      "evidence_level": "direct",
+      "evidence": [
+        "direct: one flight's status in 3 interactions from the homepage; the row expands in place to a route-to-gate detail - https://www.airport.kr/ap_en/1396/subview.do",
+        "direct: homepage shows live car park availability by terminal and floor and a live departures list - https://www.airport.kr/ap_en/index.do",
+        "direct: content pages offer share, favourites, print and font-size controls - https://www.airport.kr/ap_en/6654/subview.do",
+        "direct: homepage clock follows the visitor's device (00:20 shown at 09:20 Korea time) - https://www.airport.kr/ap_en/index.do",
+        "direct: site search opens in a new tab without a shareable URL; feedback requires login with mobile-phone identity verification - https://www.airport.kr/ap_en/1550/subview.do"
+      ]
+    },
+    "info": {
+      "score": 4.5,
+      "confidence": "high",
+      "evidence_level": "direct",
+      "evidence": [
+        "direct: departure procedures step by step with declarations, tax refund, quarantine, Smart Pass and Easy Drop - https://www.airport.kr/ap_en/1413/subview.do",
+        "direct: hourly passenger forecasts per arrival hall and departure area, updated daily at 17:00 - https://www.airport.kr/ap_en/1410/subview.do",
+        "direct: transfer guides per terminal and concourse, transit tour and K-Stopover - https://www.airport.kr/ap_en/1454/subview.do",
+        "direct: mobility page with drop-off exits, help phones, wheelchair lift service with journey time and booking route, valet discounts - https://www.airport.kr/ap_en/1478/subview.do",
+        "direct: duty-free and dining directories with hours, phone and gate-level locations - https://www.airport.kr/ap_en/1534/subview.do"
+      ]
+    },
+    "flight": {
+      "score": 4.5,
+      "confidence": "high",
+      "evidence_level": "direct",
+      "evidence": [
+        "direct: filters for terminal, 20-day date window, hour range, destination, airline and flight number; 'Last Updated' stamp in Korea time, Refresh and Excel download - https://www.airport.kr/ap_en/1396/subview.do",
+        "direct: rows show estimated time with the scheduled time struck through, destination, airline, terminal, counters, gate and a status chip, with the status vocabulary explained - https://www.airport.kr/ap_en/1396/subview.do",
+        "direct: detail gives the shortest route (East parking lot, B,C tunnel, counters G17-J40, gate 278), 'after immigration 20 min', destination time and weather, and sharing to KakaoTalk, LINE or e-mail - https://www.airport.kr/ap_en/1396/subview.do",
+        "direct: each codeshare is a separate row (one Narita departure shown six times); no saved flights or alerts on the website - https://www.airport.kr/ap_en/1396/subview.do",
+        "search: Incheon Airport+ app offers My Flights push notifications - https://apps.apple.com/app/id581487293"
+      ]
+    },
+    "mobile": {
+      "score": 3.0,
+      "confidence": "medium",
+      "evidence_level": "direct + search",
+      "evidence": [
+        "direct: separate mobile layout with no horizontal overflow; flight cards label every field and show a status chip - https://www.airport.kr/ap_en/1396/subview.do",
+        "direct: viewport fixed at width=500 with user-scalable=no; 66 of 194 visible homepage targets under 24 px; floating back-to-top button overlaps cards - https://www.airport.kr/ap_en/index.do",
+        "direct (lab): mobile homepage FCP 8.5 s in the capture; Lighthouse mobile performance 27, LCP 25.1 s, TBT 2.4 s - docs/research/direct/lighthouse/incheon.json",
+        "search: Incheon Airport+ app with indoor navigation, My Flights push, ICN Planner and membership benefits; ratings not checked - https://apps.apple.com/app/id581487293"
+      ]
+    },
+    "nav": {
+      "score": 3.5,
+      "confidence": "medium",
+      "evidence_level": "direct",
+      "evidence": [
+        "direct: five-section nav with a header accessibility icon, breadcrumbs with section dropdowns, sitemap, accessibility statement and a guide for visually impaired users - https://www.airport.kr/ap_en/index.do",
+        "direct: three skip links first in the tab order and a box-shadow focus indicator on all first 14 stops; the footer skip target is missing - https://www.airport.kr/ap_en/index.do",
+        "direct: axe homepage 5 rules desktop / 6 mobile (all serious or moderate); departures 138 nodes including 78 nested-interactive; no h1 on any page; Korean hidden headings - https://www.airport.kr/ap_en/1396/subview.do",
+        "direct (lab): Lighthouse accessibility 79 (color-contrast, label-content-name-mismatch, link-name, list, meta-viewport, skip-link, target-size) - docs/research/direct/lighthouse/incheon.json",
+        "direct: integrated search answers 'prayer room' with four facilities giving hours, location and View Location - https://www.airport.kr/search/ap_en"
+      ]
+    },
+    "ai": {
+      "score": 3.0,
+      "confidence": "medium",
+      "evidence_level": "direct + search",
+      "evidence": [
+        "direct: flight-specific route to gate and walking time in the flight detail, without login - https://www.airport.kr/ap_en/1396/subview.do",
+        "direct: transfer route guide 'based on your flight' from the arriving and onward flights (output not generated here) - https://www.airport.kr/ap_en/1454/subview.do",
+        "direct: no chatbot on the English homepage or the Voice of Customer page; website accounts serve tours and civil services, not personal flight lists - https://www.airport.kr/ap_en/1550/subview.do",
+        "search: AIRBOT text chatbot launched in 2020; generative-AI guide robots for spoken conversation announced May 2026 (in the terminal, not on the website) - https://www.asiae.co.kr/en/article/2020060110170710090 and https://www.asiae.co.kr/en/article/2026051811105138352"
+      ]
+    },
+    "commerce": {
+      "score": 3.0,
+      "confidence": "medium",
+      "evidence_level": "direct + search",
+      "evidence": [
+        "direct: parking reservation, valet and an estimated parking fee link; reservation on parking.airport.kr (not opened) - https://www.airport.kr/ap_en/index.do",
+        "direct: duty-free directory links to a separate duty-free app and site; a transfer lounge coupon link on flight pages - https://www.airport.kr/ap_en/1531/subview.do",
+        "direct: no basket, online shop, pre-order or loyalty on the website - https://www.airport.kr/ap_en/index.do",
+        "search: Incheon Airport+ app lists membership benefits - https://apps.apple.com/app/id581487293"
+      ]
+    },
+    "perf": {
+      "score": 2.5,
+      "confidence": "medium",
+      "evidence_level": "direct (lab, single container, indicative only)",
+      "evidence": [
+        "direct (lab): homepage TTFB 1.0 s desktop / 0.45 s mobile, FCP 5.2 s / 8.5 s, load 12.4 s / 12.1 s, 214-216 requests, 4.3 MB by content-length - https://www.airport.kr/ap_en/index.do",
+        "direct (lab): departures page TTFB 4.8 s, FCP 11.0 s, load 16.4 s, 172 requests - https://www.airport.kr/ap_en/1396/subview.do",
+        "direct (lab): Lighthouse mobile median of 3: performance 27 (7, 27, 27), FCP 12.4 s, LCP 25.1 s, TBT 2,403 ms, CLS 0 (one run 0.4), 4.5 MB, 215 requests, best practices 73, SEO 100 - docs/research/direct/lighthouse/incheon.json",
+        "direct: no HSTS, X-Frame-Options, X-Content-Type-Options or Content-Security-Policy header on the HTML response checked - https://www.airport.kr/ap_en/index.do",
+        "direct: all loads returned HTTP 200 in this assessment; an earlier probe in this project received HTTP 502 from the homepage - https://www.airport.kr/ap_en/index.do"
+      ]
+    }
+  },
+  "steps_to_flight_status": 3,
+  "steps_to_flight_status_note": "From the homepage: focus the 'Enter Flight number / Airline / City' field, type the number, press Flight Search; the results page shows the flight with status, counters and gate. One more click expands the route-to-gate detail.",
+  "languages": ["en", "ko", "zh", "ja"],
+  "axe": {
+    "desktop": { "violations": 5, "byImpact": { "serious": 4, "moderate": 1 } },
+    "mobile": { "violations": 6, "byImpact": { "serious": 5, "moderate": 1 } }
+  },
+  "axe_note": "Homepage, axe-core WCAG A/AA rule violations (desktop 15 nodes, mobile 35). Departures: 5 rules / 138 nodes desktop (78 nested-interactive, 45 color-contrast), 4 rules / 101 nodes mobile. Mobility-impaired services: 3 rules / 21 nodes. meta-viewport (zoom disabled) fails on every page.",
+  "lighthouse_lab": { "performance": 27, "accessibility": 79, "bestPractices": 73, "seo": 100, "fcp_ms": 12408, "lcp_ms": 25134, "tbt_ms": 2403, "cls": 0, "note": "lab, single container, hosts outside the allowlist blocked, indicative only" },
+  "standouts": [
+    { "name": "Route-to-gate flight detail", "why": "Shortest route from car park through tunnel and counters to the gate, walking time after immigration, destination time and weather, and sharing to KakaoTalk, LINE or e-mail.", "url": "https://www.airport.kr/ap_en/1396/subview.do" },
+    { "name": "Expected Airport Congestion forecast", "why": "Hourly passenger forecasts per arrival hall and departure area for the next two days, updated daily.", "url": "https://www.airport.kr/ap_en/1410/subview.do" },
+    { "name": "Real-time waiting times per departure area", "why": "Minutes and a four-level legend for every departure area in both terminals.", "url": "https://www.airport.kr/ap_en/6654/subview.do" },
+    { "name": "Power-user flight search", "why": "20-day window with hour, destination, airline and flight-number filters, a Last Updated stamp and Excel download.", "url": "https://www.airport.kr/ap_en/1396/subview.do" },
+    { "name": "Facility-level site search", "why": "Answers with facilities (hours, exact location, view on map) rather than pages.", "url": "https://www.airport.kr/search/ap_en" }
+  ],
+  "weaknesses": [
+    "Weakest lab performance in the set: Lighthouse 27, LCP 25.1 s, TBT 2.4 s, departures TTFB 4.8 s; no security headers",
+    "Korean strings on English pages (some only for screen readers), no h1, zoom disabled, nested-interactive and contrast failures; 66 of 194 mobile targets under 24 px",
+    "Homepage clock and waiting-time stamp follow the visitor's device clock, not Korea time",
+    "Codeshares listed as separate rows; saved flights and alerts only in the app",
+    "Map depends on a non-standard port; search opens a new tab with no shareable URL; feedback needs login with Korean mobile verification; no chatbot on the English site"
+  ],
+  "ideas": [
+    "Merge the route-to-gate detail with live queue and walking times into one live 'time to gate' figure per flight",
+    "Turn congestion forecasts into advice, for example 'arrive by 07:10 for a 09:00 departure from Terminal 2'",
+    "Group codeshares under the operating flight while keeping every number searchable",
+    "Always show airport local time with its zone and timestamp every live figure from the data source",
+    "Offer web alerts by WhatsApp or push without an app or account",
+    "Set a performance budget (LCP under 2.5 s on mid-range mobile) and serve security headers by default"
+  ],
+  "gaps": [
+    "Map engine, parking reservation, duty-free site and the transfer route guide's output not observed",
+    "Only 'Departure' and 'Gate Closing' statuses were live during the captures",
+    "App features, AIRBOT and the generative-AI robots rest on search results; app ratings not checked",
+    "The waiting-time stamp's dependence on the device clock is inferred from one observation",
+    "Lighthouse and capture timings are lab values from one container"
+  ]
+}
