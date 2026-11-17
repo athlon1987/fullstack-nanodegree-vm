@@ -43,7 +43,7 @@ export function AirportHeader({ airport, lang, sections }: AirportHeaderProps) {
             <AirportTitle slug={airport.slug} name={airport.name} />
             <div className="mt-3.5 flex flex-wrap items-center gap-x-5 gap-y-2.5">
               <AirportCode code={airport.code} name={airport.name} variant="boxed" />
-              <LocalTime showLabel timeZone={airport.timezone} />
+              <LocalTime showLabel timeZone={airport.timezone} className="flex-wrap whitespace-normal" />
               {isMultiTerminal(airport) ? (
                 <TerminalChips slug={airport.slug} terminals={airport.terminals.map((terminal) => ({ id: terminal.id, label: pick(terminal.shortName, lang) }))} />
               ) : null}

@@ -16,6 +16,10 @@ import type { IconKey } from '@/components/ui/icon';
  * Filter ids as they travel in the `filters` query parameter of the shop and dine page
  * (`/kul/shop-dine?filters=open-now,halal`).
  */
+
+/** Lets a control's label wrap (min height kept) so nothing pushes the page wider than the screen. */
+const WRAP = 'h-auto min-h-9 max-w-full shrink py-1.5 text-left whitespace-normal touch:h-auto touch:min-h-11';
+const WRAP_BUTTON = 'h-auto min-h-11 max-w-full shrink py-2 text-left whitespace-normal';
 export const SHOP_DINE_FILTERS = ['open-now', 'halal', 'landside', 'airside'] as const;
 export type ShopDineFilter = (typeof SHOP_DINE_FILTERS)[number];
 
@@ -61,22 +65,29 @@ export function ShopDineStrip({ outletCounts }: ShopDineStripProps) {
     <div className="flex flex-col gap-5">
       <div role="group" aria-label={t('home.shop.filtersLabel')} className="flex flex-wrap gap-2">
         {SHOP_DINE_FILTERS.map((filter) => (
-          <FilterChip key={filter} pressed={active.includes(filter)} onPressedChange={(pressed) => toggle(filter, pressed)} icon={FILTER_META[filter].icon}>
+          <FilterChip
+            key={filter}
+            pressed={active.includes(filter)}
+            onPressedChange={(pressed) => toggle(filter, pressed)}
+            icon={FILTER_META[filter].icon}
+            // Long Malay labels at a large text size wrap inside the chip instead of widening the page.
+            className={WRAP}
+          >
             {t(FILTER_META[filter].label)}
           </FilterChip>
         ))}
       </div>
       <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
         {airport && hasListing ? (
-          <Button asChild iconEnd="arrow-right">
+          <Button asChild iconEnd="arrow-right" className={WRAP_BUTTON}>
             <LocaleLink href={href}>{t('home.shop.browseAt', { airport: airport.shortName })}</LocaleLink>
           </Button>
         ) : airport ? (
-          <Button variant="secondary" iconEnd="chevrons-up-down" onClick={() => overlays.openAirportSwitcher('shop-dine')}>
+          <Button variant="secondary" iconEnd="chevrons-up-down" className={WRAP_BUTTON} onClick={() => overlays.openAirportSwitcher('shop-dine')}>
             {t('common.actions.change')}: {airport.shortName}
           </Button>
         ) : (
-          <Button iconStart="map-pin" onClick={() => overlays.openAirportSwitcher('shop-dine')}>
+          <Button iconStart="map-pin" className={WRAP_BUTTON} onClick={() => overlays.openAirportSwitcher('shop-dine')}>
             {t('home.shop.chooseAirport')}
           </Button>
         )}
