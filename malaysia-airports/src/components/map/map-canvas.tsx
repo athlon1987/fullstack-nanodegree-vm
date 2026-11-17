@@ -23,7 +23,6 @@ import {
   type PoiView,
   type ViewState,
 } from './map-logic';
-import { useReducedMotion } from './use-reduced-motion';
 
 export interface RouteLine {
   key: string;
@@ -117,8 +116,7 @@ export function MapCanvas({
 }: MapCanvasProps) {
   const t = useT();
   const instructionsId = useId();
-  const patternId = useId().replace(/:/g, '');
-  const reduceMotion = useReducedMotion();
+  const patternId = `map${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`;
   const frameRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   const [frame, setFrame] = useState<FrameSize>(DEFAULT_FRAME);
@@ -205,11 +203,13 @@ export function MapCanvas({
 
   const corridors = useMemo(() => {
     const nodes = new Map(map.nodes.map((node) => [node.id, node]));
-    return map.edges
-      .map((edge) => ({ edge, a: nodes.get(edge.from), b: nodes.get(edge.to) }))
-      .filter(({ edge, a, b }) => a && b && a.level === level.id && b.level === level.id && edge.kind === 'walk')
-      .map(({ a, b }) => `M${a!.x} ${a!.y}L${b!.x} ${b!.y}`)
-      .join('');
+    let d = '';
+    for (const edge of map.edges) {
+      const a = nodes.get(edge.from);
+      const b = nodes.get(edge.to);
+      if (a && b && a.level === level.id && b.level === level.id && edge.kind === 'walk') d += `M${a.x} ${a.y}L${b.x} ${b.y}`;
+    }
+    return d;
   }, [map.nodes, map.edges, level.id]);
 
   const pan = (dx: number, dy: number) => onViewChange(panByPixels(view, dx, dy, box.scale, bounds), true);
@@ -303,7 +303,7 @@ export function MapCanvas({
           onPointerUp={endDrag}
           onPointerCancel={endDrag}
           onDoubleClick={(event) => {
-            if (event.target !== event.currentTarget && !(event.target as Element).hasAttribute('data-map-ground')) return;
+            if ((event.target as Element).closest('[data-poi]')) return;
             const rect = event.currentTarget.getBoundingClientRect();
             onViewChange(zoomAround(view, 1.6, { x: box.x + (event.clientX - rect.left) / box.scale, y: box.y + (event.clientY - rect.top) / box.scale }, bounds), true);
           }}
@@ -317,7 +317,7 @@ export function MapCanvas({
               <line x1="0" y1="0" x2="0" y2="12" className="stroke-primary-ink" strokeWidth="1.5" strokeOpacity="0.14" />
             </pattern>
           </defs>
-          <rect data-map-ground="" x={-2000} y={-2000} width={5000} height={4600} fill={`url(#${patternId}-dots)`} opacity={0.55} />
+          <rect x={-2000} y={-2000} width={5000} height={4600} fill={`url(#${patternId}-dots)`} opacity={0.55} />
 
           <g aria-hidden="true">
             {map.zones
@@ -330,7 +330,7 @@ export function MapCanvas({
                   strokeDasharray: zone.tone === 'link' ? '5 4' : undefined,
                 };
                 return (
-                  <g key={zone.id} data-map-ground="">
+                  <g key={zone.id}>
                     {zone.shape.type === 'rect' ? (
                       <>
                         <rect x={zone.shape.x} y={zone.shape.y} width={zone.shape.width} height={zone.shape.height} rx={16} {...shared} />
@@ -366,7 +366,7 @@ export function MapCanvas({
               const points = line.points.map(([x, y]) => `${x},${y}`).join(' ');
               const dim = stepActive && !line.active;
               return (
-                <g key={line.key} className={cn('transition-opacity duration-base', dim && 'opacity-35')}>
+                <g key={line.key} className={cn('animate-fade-in transition-opacity duration-base', dim && 'opacity-35')}>
                   <polyline points={points} className="fill-none stroke-surface" strokeWidth={line.active ? 13 : 11} strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
                   <polyline
                     points={points}
@@ -374,13 +374,9 @@ export function MapCanvas({
                     strokeWidth={line.active ? 7 : 5}
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeDasharray={line.ride ? '0.5 10' : undefined}
+                    strokeDasharray={line.ride ? '0.1 11' : undefined}
                     vectorEffect="non-scaling-stroke"
-                    pathLength={line.ride ? undefined : 1}
-                    {...(!line.ride ? { strokeDasharray: '1 0' } : {})}
-                  >
-                    {!line.ride && !reduceMotion ? <animate attributeName="stroke-dasharray" from="0 1" to="1 0" dur="0.7s" fill="freeze" /> : null}
-                  </polyline>
+                  />
                 </g>
               );
             })}
