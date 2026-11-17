@@ -766,6 +766,7 @@ export const en = {
       food: { title: 'Food and shops', hint: 'Eat and browse before boarding' },
       foodArrival: { title: 'Food and shops', hint: 'Something to eat before you head on' },
       foodWaiting: { title: 'Food and shops', hint: 'A coffee while you wait' },
+      facilities: { title: 'Facilities', hint: 'Prayer rooms, baby care and more' },
     },
     notice: {
       label: 'Operational notice',

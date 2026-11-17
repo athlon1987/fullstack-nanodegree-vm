@@ -766,6 +766,7 @@ export const ms: Dictionary = {
       food: { title: 'Makanan dan kedai', hint: 'Makan dan beli-belah sebelum berlepas' },
       foodArrival: { title: 'Makanan dan kedai', hint: 'Alas perut sebelum meneruskan perjalanan' },
       foodWaiting: { title: 'Makanan dan kedai', hint: 'Secawan kopi sementara menunggu' },
+      facilities: { title: 'Kemudahan', hint: 'Surau, penjagaan bayi dan lain-lain' },
     },
     notice: {
       label: 'Notis operasi',
