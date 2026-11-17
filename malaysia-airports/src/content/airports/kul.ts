@@ -8,7 +8,10 @@
  *  - `docs/research/facts/f-klia-transport.md` (search summaries of 17 November 2026): rail, coach,
  *    taxi, e-hailing, inter-terminal transfer, parking figures and the Malaysia Digital Arrival Card.
  *  - The official parking page, read first hand on 16 November 2026
- *    (https://airports.malaysiaairports.com.my/en/klia1/parking): bays, blocks and features.
+ *    (https://airports.malaysiaairports.com.my/en/klia1/parking): bays, blocks and features, as
+ *    recorded at the end of `f-klia-transport.md`. Only what that record lists is published; how
+ *    each car park connects to the terminal is not in it, so no walk note is given for the
+ *    Terminal 1 Car Park or Preferred Parking.
  *
  * Provenance rule used here: `official` when the core fact comes from Malaysia Airports, an airline
  * or operator speaking about itself, the government, or such a statement reported by the press;
@@ -729,12 +732,11 @@ const carParks: CarPark[] = [
     name: lt('Terminal 1 Car Park', 'Tempat Letak Kereta Terminal 1'),
     type: 'terminal',
     description: lt(
-      'Short-stay parking in Blocks A, B, C and D, connected to the Main Terminal Building. Online booking is offered on the official parking page. Rates are not verified: an undated Malaysia Airports page gives RM4 an hour for the first three hours and klia.info gives a daily maximum of RM52, but we could not confirm either against the current official rate card. Check the official parking page.',
-      'Parkir jangka pendek di Blok A, B, C dan D, bersambung dengan Bangunan Terminal Utama. Tempahan dalam talian ditawarkan di halaman parkir rasmi. Kadar belum disahkan: halaman Malaysia Airports tanpa tarikh menyatakan RM4 sejam bagi tiga jam pertama dan klia.info menyatakan maksimum harian RM52, tetapi kami tidak dapat mengesahkannya dengan kadar rasmi semasa. Semak halaman parkir rasmi.',
+      'Short-stay parking in Blocks A, B, C and D. Online booking is offered on the official parking page. Rates are not verified: an undated Malaysia Airports page gives RM4 an hour for the first three hours and klia.info gives a daily maximum of RM52, but we could not confirm either against the current official rate card. Check the official parking page.',
+      'Parkir jangka pendek di Blok A, B, C dan D. Tempahan dalam talian ditawarkan di halaman parkir rasmi. Kadar belum disahkan: halaman Malaysia Airports tanpa tarikh menyatakan RM4 sejam bagi tiga jam pertama dan klia.info menyatakan maksimum harian RM52, tetapi kami tidak dapat mengesahkannya dengan kadar rasmi semasa. Semak halaman parkir rasmi.',
     ),
     bays: 5700,
     baysQualifier: 'over',
-    walk: { note: lt('Connected to the Main Terminal Building.', 'Bersambung dengan Bangunan Terminal Utama.') },
     rates: [],
     rateStatus: 'not-verified',
     features: [
@@ -755,12 +757,11 @@ const carParks: CarPark[] = [
     name: lt('Preferred Parking', 'Parkir Pilihan (Preferred Parking)'),
     type: 'preferred',
     description: lt(
-      'Terminal 1 Car Park Level 2, Blocks B and C: the bays closest to the Main Terminal. This is a premium product, not long-stay parking. In January 2025 paultan.org reported a bill of RM2,084 for a driver who left a car here during a long trip. We have not captured its rates. For a longer trip use the Long Term Car Park, and check the official parking page before you park.',
-      'Aras 2 Tempat Letak Kereta Terminal 1, Blok B dan C: petak paling hampir dengan Terminal Utama. Ini produk premium, bukan parkir jangka panjang. Pada Januari 2025 paultan.org melaporkan bil RM2,084 bagi pemandu yang meninggalkan kereta di sini sepanjang perjalanan yang lama. Kadarnya belum kami peroleh. Untuk perjalanan lebih lama, gunakan Tempat Letak Kereta Jangka Panjang dan semak halaman parkir rasmi sebelum meletak kereta.',
+      'Terminal 1 Car Park Level 2, Blocks B and C. This is a premium product, not long-stay parking. In January 2025 paultan.org reported a bill of RM2,084 for a driver who left a car here during a long trip. We have not captured its rates. For a longer trip use the Long Term Car Park, and check the official parking page before you park.',
+      'Aras 2 Tempat Letak Kereta Terminal 1, Blok B dan C. Ini produk premium, bukan parkir jangka panjang. Pada Januari 2025 paultan.org melaporkan bil RM2,084 bagi pemandu yang meninggalkan kereta di sini sepanjang perjalanan yang lama. Kadarnya belum kami peroleh. Untuk perjalanan lebih lama, gunakan Tempat Letak Kereta Jangka Panjang dan semak halaman parkir rasmi sebelum meletak kereta.',
     ),
     bays: 300,
     baysQualifier: 'over',
-    walk: { note: lt('The bays closest to the Main Terminal.', 'Petak paling hampir dengan Terminal Utama.') },
     rates: [],
     rateStatus: 'not-verified',
     features: [],
