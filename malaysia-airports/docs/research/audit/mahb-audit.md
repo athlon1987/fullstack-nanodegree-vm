@@ -101,13 +101,12 @@ HTML and lab audits, not on images.
 
 ### What came from search [search]
 
-- The search-derived passenger audit (`a-passenger-klia.md`, 23 queries on 16 November 2026). It was
-  written while the container could not reach MAHB at all; it reports indexed URLs, titles and
-  snippets, not rendered pages.
-- The fact files (`f-corporate.md`, `f-network.md`, `f-klia-transport.md`, `f-klia-t1.md`,
-  `f-supplement-commerce-regional.md`).
-- 14 web searches on 17 November 2026 for voice-of-customer, press, rankings, management statements,
-  the MYairports app and corporate functions. URLs are given where each claim is used.
+The search-derived passenger audit (`a-passenger-klia.md`, 23 queries on 16 November 2026, written
+while the container could not reach MAHB at all, so it reports indexed URLs, titles and snippets);
+the fact files (`f-corporate.md`, `f-network.md`, `f-klia-transport.md`, `f-klia-t1.md`,
+`f-supplement-commerce-regional.md`); and 14 web searches on 17 November 2026 for voice-of-customer,
+press, rankings, management statements, the MYairports app and corporate functions, with URLs given
+where each claim is used.
 
 ### The access block and why it matters
 
@@ -333,12 +332,9 @@ security or in the terminal belong to different parties (airline, MAHB, ground h
 page needs to route accordingly [prior]; two different general numbers appear in structured data
 [search]. Severity: medium [assessment].
 
-### Cross-task patterns
-
-- Two to four steps to reach the right page is reasonable; the friction lies in having to know the
-  terminal, in duplicate destinations and in missing answers on the destination page. [assessment]
-- The same transport and transfer content is reachable from Air Travel, Transit and Booking
-  Services. [direct]
+Across the five tasks, two to four steps is a reasonable path length; the friction lies in having to
+know the terminal, in duplicate destinations and in missing answers on the destination page.
+[assessment]
 
 ---
 
@@ -363,10 +359,9 @@ here. What can be said rests on headings, titles, HTML and lab audits.
   data is missing. [direct] A visible wrong value is worse for trust than an empty slot.
   [assessment]
 - **Two visual systems.** The corporate site is a separate Next.js application using the Ant Design
-  component library; the passenger site is a different build. [direct] Visible inconsistency
-  between them is likely. [hypothesis]
-- **Icons fetched at run time.** Icons come from Iconify APIs on three hosts. [direct] Icons can
-  pop in late or fail with the network. [hypothesis]
+  component library; the passenger site is a different build, with icons fetched at run time from
+  Iconify APIs on three hosts. [direct] Visible inconsistency between the two, and late-arriving
+  icons, are likely. [hypothesis]
 
 ---
 
@@ -385,16 +380,11 @@ homepage unless stated. They are not field data and not a conformance claim.
 Context from the same lab session (indicative only): Dubai 100, Heathrow 92, Haneda 80, Incheon 79,
 Istanbul 78, Changi 74, Hong Kong 68, Munich 47. [direct, lab]
 
-What these failures mean in practice [assessment, on the direct findings]:
-
-- `button-name` and `link-name`: icon-only controls (likely the menu, search, switcher and social
-  icons) are announced to screen-reader users without a name.
-- `label`: at least one form field (the flight search or parking booking inputs are candidates)
-  has no programmatic label. [hypothesis on which field]
-- `landmark-one-main`: no `main` landmark, so "skip to content" and landmark navigation fail.
-- `aria-hidden-focus`: focusable elements hidden from assistive technology, typically a closed menu
-  or carousel that keyboard users can still tab into.
-- `color-contrast`: some text does not meet contrast minimums.
+In practice [assessment]: icon-only controls are announced without a name (`button-name`,
+`link-name`); at least one form field has no programmatic label (`label`; which field is a
+hypothesis); landmark navigation has no `main` to jump to; keyboard users can tab into content hidden
+from screen readers, typically a closed menu or carousel (`aria-hidden-focus`); some text fails
+contrast minimums.
 
 Other accessibility observations:
 
@@ -457,23 +447,18 @@ Confirmed on the site:
   Visit @ KUL). [direct]
 - Shop, dine and services directories exist per airport. [direct (URLs)]
 
-Management direction (2025-2026):
+Management direction (2025-2026), all [search]:
 
-- A "commercial reset" repositioning airports as lifestyle destinations, a curated,
-  experience-led model, with digital and omnichannel engagement described as central. [search,
-  Future Travel Experience, May 2026,
-  https://www.futuretravelexperience.com/2026/05/how-malaysia-airports-is-blending-digital-innovation-curated-retail-and-personalised-passenger-engagement/]
-- ShopLAH, an always-on retail campaign tied to Visit Malaysia 2026, with a digital card offering
-  discounts and rewards to international visitors. [search,
-  https://www.marketing-interactive.com/malaysia-airports-doubles-down-on-retail-with-shoplah-push-for-vm2026]
-- About 44 million sales transactions across the Malaysian network in 2025, up 28.8%, as reported
-  in 2026 trade coverage. [search, per search summary of International Airport Review and
-  Marketing-Interactive; confirm before use]
-- A review of the duty-free concession model, with passenger experience as the main consideration.
-  [search, NST Aug 2026,
-  https://www.nst.com.my/amp/business/corporate/2026/08/1520652/mahb-reviews-duty-free-concession-model-its-airports]
-- Upgraded Eraman duty-free mall at Terminal 2 (July 2026) and a relaunched Terminal 1 mall
-  (November 2024). [search, `f-supplement-commerce-regional.md`]
+- A "commercial reset" towards a curated, experience-led model, with digital and omnichannel
+  engagement described as central (Future Travel Experience, May 2026,
+  https://www.futuretravelexperience.com/2026/05/how-malaysia-airports-is-blending-digital-innovation-curated-retail-and-personalised-passenger-engagement/);
+  ShopLAH, an always-on retail campaign for Visit Malaysia 2026 with a digital card for international
+  visitors (https://www.marketing-interactive.com/malaysia-airports-doubles-down-on-retail-with-shoplah-push-for-vm2026).
+- About 44 million sales transactions across the Malaysian network in 2025, up 28.8% (search summary
+  of 2026 trade coverage; confirm before use); a review of the duty-free concession model with
+  passenger experience as the main consideration (NST, August 2026,
+  https://www.nst.com.my/amp/business/corporate/2026/08/1520652/mahb-reviews-duty-free-concession-model-its-airports);
+  upgraded Eraman malls at Terminal 2 (July 2026) and Terminal 1 (November 2024).
 
 Gaps and hypotheses:
 
@@ -560,9 +545,8 @@ Homepage first contentful paint 3.1 s and speed index 11.8 s in the valid run. A
 browser load on 16 November gave time to first byte 1.0 s, DOMContentLoaded 2.7 s, first
 contentful paint 2.7 s and load event 10.0 s. [direct]
 
-Note on units: the project README gives the homepage weight as both 32.7 MB and 34.3 MB. The raw
-byte count of the valid run (34,276,078) is 34.3 MB in decimal units and 32.7 MiB in binary units,
-so the two figures may describe the same weight. Use "about 34 million bytes". [direct]
+Units: the valid run's raw count (34,276,078 bytes) is 34.3 MB decimal and 32.7 MiB binary, so the
+README's "32.7 MB" and "34.3 MB" may describe the same weight; quote "about 34 million bytes". [direct]
 
 Comparison, same session and method (homepages): Heathrow 1.8 MB, Hong Kong 2.3 MB, Dubai 4.4 MB,
 Incheon 4.5 MB, Munich 4.6 MB, Istanbul 5.9 MB, Hamad 11.6 MB (first run only), Haneda 13.2 MB,
