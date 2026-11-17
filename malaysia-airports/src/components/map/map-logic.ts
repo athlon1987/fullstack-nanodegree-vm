@@ -566,3 +566,51 @@ export function buildRouteSteps(path: PathResult, context: StepContext): RouteSt
   steps.push({ key: 'arrive', kind: 'arrive', level: last.level, place: placeByNode.get(last.id), via: [], metres: 0, minutes: { standard: 0, reduced: 0 }, nodes: [last.id] });
   return steps;
 }
+
+/* -------------------------------------------------------------------------------------------
+ * Deep links
+ * ---------------------------------------------------------------------------------------- */
+
+/** The map's URL state: `?t=T1&level=L5&poi=…&from=…&to=…&sf=1&cat=gates,prayer`. */
+export interface MapQuery {
+  terminal?: string;
+  level?: string;
+  poi?: string;
+  from?: string;
+  to?: string;
+  /** Step-free routing (`sf=1`). */
+  stepFree: boolean;
+  filters: MapFilterId[];
+}
+
+export const EMPTY_MAP_QUERY: MapQuery = { stepFree: false, filters: [] };
+
+export function parseMapQuery(params: { get(name: string): string | null }): MapQuery {
+  const value = (name: string) => params.get(name)?.trim() || undefined;
+  const filters = (params.get('cat') ?? '')
+    .split(',')
+    .map((item) => item.trim())
+    .filter(isMapFilterId);
+  return {
+    terminal: value('t'),
+    level: value('level'),
+    poi: value('poi'),
+    from: value('from'),
+    to: value('to'),
+    stepFree: params.get('sf') === '1',
+    filters: [...new Set(filters)],
+  };
+}
+
+/** A query patch: `null` removes the parameter. */
+export type QueryPatch = Partial<Record<'t' | 'level' | 'poi' | 'from' | 'to' | 'sf' | 'cat', string | null>>;
+
+export function applyQueryPatch(search: string, patch: QueryPatch): string {
+  const params = new URLSearchParams(search);
+  for (const [key, value] of Object.entries(patch)) {
+    if (value === null || value === undefined || value === '') params.delete(key);
+    else params.set(key, value);
+  }
+  const text = params.toString();
+  return text ? `?${text}` : '';
+}
