@@ -9,7 +9,12 @@
  * `@/content/airports` (the 39-airport registry), and take content as props from the server.
  */
 import { AIRPORTS, getAirport } from './airports';
+import { BKI_CONTENT } from './airports/bki';
+import { KCH_CONTENT } from './airports/kch';
 import { KUL_CONTENT } from './airports/kul';
+import { LGK_CONTENT } from './airports/lgk';
+import { PEN_CONTENT } from './airports/pen';
+import { SZB_CONTENT } from './airports/szb';
 import { CORPORATE_PAGES, NEWS_ITEMS } from './corporate';
 import { FAQS } from './faqs';
 import { GUIDES } from './guides';
@@ -34,6 +39,11 @@ import {
  */
 const AIRPORT_CONTENT: Readonly<Record<string, AirportContentModule>> = {
   kul: KUL_CONTENT,
+  pen: PEN_CONTENT,
+  bki: BKI_CONTENT,
+  kch: KCH_CONTENT,
+  lgk: LGK_CONTENT,
+  szb: SZB_CONTENT,
 };
 
 /** Slugs of the airports that have a registered content file. */
