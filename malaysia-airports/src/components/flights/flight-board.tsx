@@ -44,6 +44,8 @@ export interface FlightBoardProps {
   groupByHour?: boolean;
   /** Time zone of the board's airport, for the hour groups. */
   timeZone?: string;
+  /** Names the day of an hour group ("Tomorrow") when it is not today; return `undefined` for today. */
+  dayLabel?: (date: string) => string | undefined;
   /** Inside the board, above the rows (for example "Show earlier flights"). Hidden while loading or empty. */
   before?: ReactNode;
   /** Inside the board, below the rows (for example "Show later flights"). Shown unless loading. */
@@ -86,6 +88,7 @@ export function FlightBoard({
   hideBanner = false,
   groupByHour = false,
   timeZone,
+  dayLabel,
   before,
   after,
   savedIds,
@@ -110,7 +113,10 @@ export function FlightBoard({
       onSaveChange={onSaveChange ? (saved) => onSaveChange(flight, saved) : undefined}
     />
   );
-  const groupLabel = (group: FlightHourGroup) => t('flightPages.board.hourGroup', { time: group.label });
+  const groupLabel = (group: FlightHourGroup) => {
+    const day = dayLabel?.(group.date);
+    return day ? t('flightPages.board.hourGroupDay', { time: group.label, day }) : t('flightPages.board.hourGroup', { time: group.label });
+  };
   const groupCount = (group: FlightHourGroup) => t.count('flights.board.count', group.flights.length);
 
   return (

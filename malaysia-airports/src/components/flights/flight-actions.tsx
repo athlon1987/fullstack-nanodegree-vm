@@ -70,6 +70,7 @@ export function FlightActions({ flight, title }: FlightActionsProps) {
           variant={saved ? 'secondary' : 'primary'}
           iconStart={saved ? 'bookmark-check' : 'bookmark'}
           aria-pressed={saved}
+          className={saved ? 'border-ink bg-ink text-page hover:border-ink hover:bg-ink' : undefined}
           onClick={() => (saved ? removeFlight(flight.id) : saveFlight(toSavedFlight(flight, t)))}
         >
           {t('flightPages.detail.save')}

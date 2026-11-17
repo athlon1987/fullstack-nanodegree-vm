@@ -7,7 +7,7 @@ import type { Airport, TerminalId } from '@/content/types';
 import type { Flight, FlightDirection } from '@/lib/flights';
 import { useFlightProvider, useSavedJourney } from '@/lib/hooks';
 import { useLang, useT } from '@/lib/i18n/client';
-import { formatDate, formatTime, timezoneLabel } from '@/lib/time';
+import { dateKey, formatDate, formatTime, shiftDateKey, timezoneLabel, zonedDateTime } from '@/lib/time';
 import { AirportCode } from '@/components/common/airport-code';
 import { EmptyState } from '@/components/common/empty-state';
 import { LocaleLink } from '@/components/common/locale-link';
@@ -266,6 +266,14 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
         live="off"
         groupByHour
         timeZone={zone}
+        dayLabel={(date) => {
+          if (!now) return undefined;
+          const today = dateKey(now, zone);
+          if (date === today) return undefined;
+          if (date === shiftDateKey(today, 1)) return t('common.labels.tomorrow');
+          if (date === shiftDateKey(today, -1)) return t('common.labels.yesterday');
+          return formatDate(zonedDateTime(date, 720, zone), lang, 'weekday', zone);
+        }}
         skeletonRows={8}
         savedIds={savedIds}
         onSaveChange={(flight, saved) => (saved ? saveFlight(toSavedFlight(flight, t)) : removeFlight(flight.id))}

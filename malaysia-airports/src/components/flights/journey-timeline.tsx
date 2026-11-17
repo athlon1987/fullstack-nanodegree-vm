@@ -85,7 +85,6 @@ export function JourneyTimeline({ flight, content, sources, now, title, headingI
           value={mode}
           onValueChange={setChosen}
           className="mt-4"
-          stackOnPhone
           options={modes.map((value) => ({ value, label: t(`journey.modes.${value}.label`), icon: value }))}
         />
       ) : null}

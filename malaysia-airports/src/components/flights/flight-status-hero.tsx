@@ -88,7 +88,7 @@ export function FlightStatusHero({ flight, updatedAt, refreshSeconds }: FlightSt
               <span className="type-data-xl text-ink">{flight.origin.code}</span>
               <span className="relative flex items-center">
                 <span className="h-px w-full border-t border-dashed border-line-control" />
-                <Icon name="plane" size="sm" className="absolute left-1/2 -translate-x-1/2 bg-board px-1 text-ink-2" />
+                <Icon name="plane" className="absolute left-1/2 box-content -translate-x-1/2 bg-board px-1.5 text-ink-2" />
               </span>
               <span className="type-data-xl text-right text-ink">{flight.destination.code}</span>
               <span className={cn('type-body-sm text-ink-2', cancelled && 'line-through')}>{flight.origin.city}</span>
