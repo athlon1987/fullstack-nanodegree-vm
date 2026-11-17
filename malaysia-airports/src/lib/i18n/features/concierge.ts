@@ -6,7 +6,7 @@
  * Both languages live here. `conciergePageMs` must have exactly the same keys as `conciergePageEn`
  * (TypeScript enforces it). Plurals are { one, other } objects read with `t.count`.
  * Same copy rules as en.ts: sentence case, plain and warm, no facts (facts live in src/content).
- * The Malay copy is a draft pending review by a native-speaking editor.
+ * The Malay copy is a draft pending review by a native-speaking editor (both groups).
  *
  * The `engine` group is read by the answer engine in `src/lib/concierge` (server and browser),
  * not through `t()`. Its templates only frame content: every fact, name, number and place in an
