@@ -2,7 +2,7 @@
  * Small helpers shared by the per-airport content files. Not an airport module: nothing here is
  * registered in `AIRPORT_CONTENT`.
  */
-import { lt, type GuideNote, type LocalizedText, type Source } from '../types';
+import type { GuideNote, LocalizedText, Source } from '../types';
 
 /** Dates of the research runs that produced `docs/research/facts/*`. */
 export const RETRIEVED_16_NOV = '2026-11-16';
@@ -10,7 +10,6 @@ export const RETRIEVED_17_NOV = '2026-11-17';
 
 export const MAHB = 'Malaysia Airports Holdings Berhad';
 export const CAAM = 'Civil Aviation Authority of Malaysia';
-export const IMMIGRATION = 'Immigration Department of Malaysia';
 
 /** Build a source record. `retrieved` is the date the research run captured it. */
 export function source(
@@ -52,6 +51,3 @@ export function contentGapsNote(input: {
     sources: input.sources,
   };
 }
-
-/** Standard closing line for items that rest on third-party listings. */
-export const CHECK_WITH_OPERATOR: LocalizedText = lt('Check with the operator before you travel.', 'Semak dengan pengendali sebelum perjalanan.');

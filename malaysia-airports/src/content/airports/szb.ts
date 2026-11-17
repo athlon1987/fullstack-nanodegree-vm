@@ -73,8 +73,8 @@ const guidesNotes: GuideNote[] = [
       'Maklumat terperinci untuk Subang belum tersedia di sini',
     ),
     body: lt(
-      'Detailed content for Subang awaits a first-hand source. We have not verified its current airlines and routes beyond the Firefly flights listed, or its facilities, lounges, transport and parking, so none is shown. Ask your airline, or call Malaysia Airports on +603-8777 0000.',
-      'Kandungan terperinci untuk Subang menunggu sumber langsung. Kami belum mengesahkan syarikat penerbangan dan laluan semasa selain penerbangan Firefly yang disenaraikan, atau kemudahan, lounge, pengangkutan dan parkirnya, jadi tiada yang dipaparkan. Tanya syarikat penerbangan anda, atau hubungi Malaysia Airports di +603-8777 0000.',
+      'Malaysia Airports lists Subang among its domestic airports. Detailed content for Subang awaits a first-hand source. We have not verified its current airlines and routes beyond the Firefly flights listed, or its facilities, lounges, transport and parking, so none is shown. Ask your airline, or call Malaysia Airports on +603-8777 0000.',
+      'Malaysia Airports menyenaraikan Subang antara lapangan terbang domestiknya. Kandungan terperinci untuk Subang menunggu sumber langsung. Kami belum mengesahkan syarikat penerbangan dan laluan semasa selain penerbangan Firefly yang disenaraikan, atau kemudahan, lounge, pengangkutan dan parkirnya, jadi tiada yang dipaparkan. Tanya syarikat penerbangan anda, atau hubungi Malaysia Airports di +603-8777 0000.',
     ),
     sources: ['prototype-method', 'mahb-annual-report-2023', 'mahb-contact'],
     asOf: RETRIEVED_16_NOV,
