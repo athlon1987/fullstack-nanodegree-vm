@@ -10,6 +10,7 @@ import { formatDate, zonedDateTime } from '@/lib/time';
 import { NotPublished } from '@/components/common/not-published';
 import { TerminalBadge } from '@/components/common/terminal-badge';
 import { Chip } from '@/components/ui/chip';
+import { Icon } from '@/components/ui/icon';
 import { asOfLabel, type FareInfo, type FarePeriod } from './transport-logic';
 import type { TransportContext } from './transport-types';
 
@@ -78,8 +79,27 @@ export function FareTimeline({ info, context, compact = false }: { info: FareInf
   }
   const { current, upcoming, expired } = info.status;
   const next = upcoming[0];
+  if (compact) {
+    return (
+      <div className="mt-2 flex flex-col gap-1">
+        {current ? (
+          <p className="type-caption flex items-start gap-1.5 text-positive-fg">
+            <Icon name="circle-check" size="xs" className="mt-0.5 shrink-0" />
+            {current.until ? t('transportPages.fare.todayShort', { date: dayLabel(current.until, lang, context.timezone, 'medium') }) : t('transportPages.fare.appliesToday')}
+          </p>
+        ) : null}
+        {next?.destination.fare && next.from ? (
+          <p className="type-caption flex items-start gap-1.5 text-ink-2">
+            <Icon name="calendar-days" size="xs" className="mt-0.5 shrink-0" />
+            {t('transportPages.fare.upcomingShort', { amount: moneyText(next.destination.fare, lang, t).amount, date: dayLabel(next.from, lang, context.timezone, 'medium') })}
+          </p>
+        ) : null}
+        {expired?.until ? <p className="type-caption text-ink-2">{t('transportPages.fare.expired', { date: dayLabel(expired.until, lang, context.timezone, 'medium') })}</p> : null}
+      </div>
+    );
+  }
   return (
-    <div className={cn('flex flex-wrap items-center gap-2', compact && 'mt-1.5')}>
+    <div className="flex flex-wrap items-center gap-2">
       {current ? (
         <Chip tone="positive" icon="circle-check">
           {t('transportPages.fare.appliesToday')}
@@ -109,19 +129,19 @@ export function DurationValue({ info, shortLabel = false }: { info: FareInfo; sh
 }
 
 /** How often the service runs: the published words, or the published interval. */
-export function FrequencyValue({ option }: { option: TransportOption }) {
+export function FrequencyValue({ option, shortLabel = false }: { option: TransportOption; shortLabel?: boolean }) {
   const t = useT();
   const lang = useLang();
   if (option.frequency) return <span className="type-body-sm text-ink">{pick(option.frequency, lang)}</span>;
   if (option.frequencyMinutes !== undefined) return <span className="type-body-sm text-ink">{t('transportPages.fare.everyMinutes', { minutes: option.frequencyMinutes })}</span>;
-  return <NotPublished label={t('transportPages.fare.frequencyNotPublished')} />;
+  return <NotPublished label={shortLabel ? undefined : t('transportPages.fare.frequencyNotPublished')} />;
 }
 
 /** Published hours. */
-export function HoursValue({ hours }: { hours: Hours | undefined }) {
+export function HoursValue({ hours, shortLabel = false }: { hours: Hours | undefined; shortLabel?: boolean }) {
   const t = useT();
   const lang = useLang();
-  if (!hours) return <NotPublished label={t('transportPages.fare.hoursNotPublished')} />;
+  if (!hours) return <NotPublished label={shortLabel ? undefined : t('transportPages.fare.hoursNotPublished')} />;
   if (hours.kind === 'text') return <span className="type-body-sm text-ink">{pick(hours.text, lang)}</span>;
   const main = hours.kind === '24h' ? t('transportPages.fare.open24') : `${hours.open}–${hours.close}`;
   return (
@@ -133,13 +153,13 @@ export function HoursValue({ hours }: { hours: Hours | undefined }) {
 }
 
 /** Accepted payment methods as published. */
-export function PaymentValue({ option }: { option: TransportOption }) {
+export function PaymentValue({ option, shortLabel = false }: { option: TransportOption; shortLabel?: boolean }) {
   const t = useT();
   const lang = useLang();
   return option.payment && option.payment.length > 0 ? (
     <span className="type-body-sm text-ink">{formatList(option.payment, lang)}</span>
   ) : (
-    <NotPublished label={t('transportPages.fare.paymentNotPublished')} />
+    <NotPublished label={shortLabel ? undefined : t('transportPages.fare.paymentNotPublished')} />
   );
 }
 
@@ -160,7 +180,7 @@ export function AccessValue({ option, compact = false }: { option: TransportOpti
       </Chip>
     ) : (
       <Chip tone="neutral" icon="circle-help">
-        {t('transportPages.access.unknown')}
+        {compact ? t('transportPages.access.unknownShort') : t('transportPages.access.unknown')}
       </Chip>
     );
   return (

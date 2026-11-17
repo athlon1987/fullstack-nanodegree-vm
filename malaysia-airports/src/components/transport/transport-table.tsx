@@ -86,15 +86,15 @@ export function TransportTable({ rows, placeKey, context, day, terminal, caption
                 </td>
                 <td className={`${CELL} w-56`}>
                   <span className="flex flex-col gap-2">
-                    <FrequencyValue option={option} />
-                    <HoursValue hours={option.hours} />
+                    <FrequencyValue option={option} shortLabel />
+                    <HoursValue hours={option.hours} shortLabel />
                   </span>
                 </td>
                 <td className={`${CELL} w-64`}>
                   <BoardingList option={option} context={context} terminal={terminal} compact />
                 </td>
                 <td className={CELL}>
-                  <PaymentValue option={option} />
+                  <PaymentValue option={option} shortLabel />
                 </td>
                 <td className={CELL}>
                   <AccessValue option={option} compact />
