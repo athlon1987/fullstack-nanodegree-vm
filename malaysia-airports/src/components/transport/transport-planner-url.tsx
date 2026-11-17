@@ -35,7 +35,8 @@ export function TransportPlannerFromUrl(props: PlannerData) {
     write('view', next.view, DEFAULT_PLANNER_STATE.view);
     const suffix = query.toString();
     // Next.js keeps useSearchParams in step with the History API; no server round trip is needed.
-    window.history.replaceState(window.history.state, '', `${window.location.pathname}${suffix ? `?${suffix}` : ''}${window.location.hash}`);
+    // Pass null as the state: Next.js skips syncing when the state carries its own router marker.
+    window.history.replaceState(null, '', `${window.location.pathname}${suffix ? `?${suffix}` : ''}${window.location.hash}`);
   };
 
   return <TransportPlanner {...props} state={state} onStateChange={onStateChange} terminal={terminal} allTerminalsHref={terminal ? hrefFor(undefined) : undefined} />;
