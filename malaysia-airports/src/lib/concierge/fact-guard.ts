@@ -27,21 +27,30 @@ export function namesIn(text: string): string[] {
 
 export interface GuardResult {
   ok: boolean;
-  /** Numbers and names in `candidate` that `reference` does not support. */
+  /** Numbers and names in `candidate` that no reference supports. */
   unsupported: string[];
 }
 
-/** True when every number and name in `candidate` is supported by `reference`. */
-export function checkGrounded(candidate: string, reference: string): GuardResult {
-  const allowedNumbers = new Set(numbersIn(reference).map((value) => String(value)));
-  const referenceWords = ` ${normalise(reference)} `;
+/** A reference text prepared once, for checking many candidates against it. */
+export interface PreparedReference {
+  numbers: Set<string>;
+  words: string;
+}
+
+export function prepareReference(reference: string): PreparedReference {
+  return { numbers: new Set(numbersIn(reference).map(String)), words: ` ${normalise(reference)} ` };
+}
+
+/** True when every number and name in `candidate` is supported by at least one reference. */
+export function checkGrounded(candidate: string, ...references: (string | PreparedReference)[]): GuardResult {
+  const prepared = references.map((reference) => (typeof reference === 'string' ? prepareReference(reference) : reference));
   const unsupported: string[] = [];
   for (const value of numbersIn(candidate)) {
-    if (!allowedNumbers.has(String(value))) unsupported.push(String(value));
+    if (!prepared.some((reference) => reference.numbers.has(String(value)))) unsupported.push(String(value));
   }
   for (const name of namesIn(candidate)) {
     const key = normalise(name);
-    if (key && !referenceWords.includes(` ${key} `)) unsupported.push(name);
+    if (key && !prepared.some((reference) => reference.words.includes(` ${key} `))) unsupported.push(name);
   }
   return { ok: unsupported.length === 0, unsupported };
 }

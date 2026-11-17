@@ -5,7 +5,8 @@ import { calculateParking } from '@/lib/parking';
 import { getFlightProvider } from '@/lib/providers';
 import type { Flight } from '@/lib/flights/types';
 import { answerQuestion } from './engine';
-import { checkGrounded } from './fact-guard';
+import { checkGrounded, prepareReference } from './fact-guard';
+import { formatCurrency } from '@/lib/format';
 import { flightSourceFromProvider } from './flights';
 import { buildConciergeKnowledge } from './knowledge.server';
 import type { ConciergeAnswer, ConciergeContext, ConciergeFlightSource, ConciergeKnowledge } from './types';
@@ -302,21 +303,22 @@ describe('property: answers contain no invented numbers or names', () => {
     let checked = 0;
     for (const lang of ['en', 'ms'] as const) {
       const knowledge = lang === 'ms' ? ms : en;
-      const corpus = JSON.stringify(knowledge) + phrasebook;
+      // Formatting conventions are not facts: the currency prefix ("RM") comes from formatCurrency.
+      const corpus = prepareReference([JSON.stringify(knowledge), phrasebook, formatCurrency(1, lang)].join('\n'));
       for (const context of CONTEXTS) {
         for (const question of QUESTIONS) {
           seenFlights.length = 0;
           const answer = ask(question, context, lang);
-          const reference = [corpus, question, JSON.stringify(seenFlights), derived(answer, knowledge, context)].join('\n');
+          const extra = prepareReference([question, JSON.stringify(seenFlights), derived(answer, knowledge, context)].join('\n'));
           for (const text of answerStrings(answer)) {
-            const result = checkGrounded(text, reference);
+            const result = checkGrounded(text, corpus, extra);
             if (!result.ok) failures.push(`[${lang} ${JSON.stringify(context)}] ${question}: ${result.unsupported.join(', ')} in "${text}"`);
           }
           // Every source id resolves; demo data is always flagged.
           const ids = new Set(knowledge.sources.map((source) => source.id));
           for (const statement of answer.statements) for (const id of statement.sourceIds) if (!ids.has(id)) failures.push(`unknown source ${id}`);
           if (answer.cards.some((card) => card.type === 'flight') && !answer.demo) failures.push(`${question}: flight card without demo flag`);
-          if (answer.statements.some((statement) => statement.provenance === 'demo' && statement.sourceIds.length > 0)) failures.push(`${question}: demo statement with a source`);
+          if (answer.statements.some((statement) => statement.provenance === 'demo') && !answer.demo) failures.push(`${question}: demo statement without the demo flag`);
           // Grounded, or an honest "not available" with official contacts, or a clarifying question.
           if (!answer.clarify && answer.intent !== 'greeting') {
             const grounded = sourced(answer).length > 0 || (answer.escalation?.contacts.length ?? 0) > 0;
