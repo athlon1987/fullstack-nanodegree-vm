@@ -1,0 +1,286 @@
+{
+ "key": "hkia",
+ "name": "Hong Kong International Airport",
+ "host": "www.hongkongairport.com",
+ "assessed": "2026-11-17",
+ "assessment_type": "expert assessment",
+ "direct_access": true,
+ "direct_access_note": "15 pages captured first-hand on desktop and iPhone 14 emulation plus three interaction scripts. One page (shop directory) returned a Cloudflare challenge once and was not retried beyond a sibling page. Blocked by the container, not site defects: analytics, the map data host (hkia-cdn.starbeacon.io), the live car park feed (zcarp-blob.hkairport.com); the chatbot window did not open. E-shop, booking platform and rewards site not reachable. Scores are expert judgements, not instrumented tests.",
+ "weighted_score_pct": 77,
+ "scores": {
+  "ui": {
+   "score": 3,
+   "weight": 0.1,
+   "confidence": "high",
+   "evidence_level": "direct",
+   "evidence": [
+    "[direct] Coherent blue/teal system and consistent components on all 13 pages captured, but condensed type, angled hero masks and a three-slide carousel date the design: https://www.hongkongairport.com/en/",
+    "[direct] Flight status values are plain black text with no colour, pill or icon hierarchy: https://www.hongkongairport.com/en/flights/departures/passenger.page",
+    "[direct] Homepage hero carries a slogan (\"WHERE AMAZING JOURNEYS BEGIN\") rather than a task; flight panel is a small overlay bottom-right",
+    "Expert assessment from desktop and mobile screenshots; competent, not a reference design"
+   ]
+  },
+  "ux": {
+   "score": 4,
+   "weight": 0.2,
+   "confidence": "medium",
+   "evidence_level": "direct",
+   "evidence": [
+    "[direct] Arrivals and Departures one click from the homepage hero panel: https://www.hongkongairport.com/en/",
+    "[direct] Site search doubles as flight search: typing \"CX 257\" suggests \"CX 257 (Depart: 17 Nov 2026)\" and opens a live flight card",
+    "[direct] Check-in aisle, transfer desk, gate, arrival hall and belt link straight to map anchors (e.g. /en/map/index.page#gate_069)",
+    "[direct] Bookmarked flights persist without login (cookie HKIA.flight-bookmark) and show in the header of every page",
+    "[direct] Negatives: mobile first screen is app banner + notice (dated 2026-03-30) + hero; table rows are not clickable; flight card has no URL of its own",
+    "3 interactions from homepage to one flight's status by either route"
+   ]
+  },
+  "info": {
+   "score": 4.5,
+   "weight": 0.15,
+   "confidence": "medium",
+   "evidence_level": "direct",
+   "evidence": [
+    "[direct] Nine fields per departure incl. terminal, check-in aisle, transfer desk, gate; arrivals add parking stand, hall, belt: https://www.hongkongairport.com/en/flights/arrivals/passenger.page",
+    "[direct] Transfer guide with separate step sequences for with/without onward boarding pass: https://www.hongkongairport.com/en/passenger-guide/transfer-transit/",
+    "[direct] Parking has nine sub-pages (availability, charges, booking, online payment, valet, EV, HZMB, automated car parks): https://www.hongkongairport.com/en/transport/parking/space-availability.page",
+    "[direct] Special-needs content filterable by journey stage and by type of need: https://www.hongkongairport.com/en/passenger-guide/airport-facilities-services/special-needs-access",
+    "[direct] Dining directory with gate-relative locations and opening hours: https://www.hongkongairport.com/en/shop-dine/dining/",
+    "[direct] Deduction: stale items in prominent places (\"Latest updates on COVID-19\" in main menu; March 2026 notice pinned in November)"
+   ]
+  },
+  "flight": {
+   "score": 4.5,
+   "weight": 0.15,
+   "confidence": "high",
+   "evidence_level": "direct",
+   "evidence": [
+    "[direct] \"Last updated on: 17 Nov 2026, 07:58 HKT\" with refresh control; feed returns lastUpdatedTime: https://www.hongkongairport.com/en/flights/departures/passenger.page",
+    "[direct] Filters: keyword (flight number / destination / airline), date picker, two-hour time bands, Passenger/Cargo tabs, Load Earlier Flights",
+    "[direct] Codeshares grouped in one row; status vocabulary Boarding Soon / Boarding / Final Call / Gate Closed / Dep HH:MM / Est at HH:MM / Landed HH:MM / At gate HH:MM",
+    "[direct] Login-free bookmark per flight with header counter; search suggests flights for today and tomorrow; live card shows airline phone and lounge link",
+    "[direct] Not a 5: no status colour coding, no flight detail URL, no web alerts (boarding alerts are app-only), no wait-time or walking-time context",
+    "[direct, described not tested] App adds boarding alerts and MyTAG baggage arrival notice: https://www.hongkongairport.com/en/flights/MyHKG-mobile-app/"
+   ]
+  },
+  "mobile": {
+   "score": 3.5,
+   "weight": 0.1,
+   "confidence": "medium",
+   "evidence_level": "direct",
+   "evidence": [
+    "[direct] No horizontal overflow on any of 13 pages captured in iPhone 14 emulation",
+    "[direct] Flight table reflows to labelled cards with map pins; menu shows six sections at 65 px row height",
+    "[direct] Negatives: viewport meta disables zoom (axe meta-viewport on every page); target-size flagged on 19 nodes of the flight list; app banner + notice consume about 45% of the first screen",
+    "[direct, lab] Lighthouse mobile median performance 28, LCP 8.9 s, TBT 2,454 ms (lab, single container, third-party hosts blocked, indicative only)",
+    "[search] My HKG app rated about 3.6/5 from ~1.4K ratings on the Hong Kong App Store: https://apps.apple.com/hk/app/id1488720261"
+   ]
+  },
+  "nav": {
+   "score": 4,
+   "weight": 0.1,
+   "confidence": "medium",
+   "evidence_level": "direct",
+   "evidence": [
+    "[direct] Six primary labels (Flights, Passenger Guide, Transport, Shop & Dine, Relax & Fun, Map), breadcrumbs and local nav on every page",
+    "[direct] Keyboard: three skip links first, browser-default focus outline visible on all 12 stops, logical order: https://www.hongkongairport.com/en/",
+    "[direct] Text-size control (A/A+/A++), sitemap, accessibility statement citing Triple Gold 2020: https://www.hongkongairport.com/en/accessibility-statement.page",
+    "[direct] Search: \"prayer room\" returns 4 results with the right page first; \"parking\" returns Space Availability first; category tabs",
+    "[direct] Negatives: axe home 8 rules desktop and mobile (4 critical ARIA structure failures), 3 critical on every page tested, no main landmark, unlabelled time-band select"
+   ]
+  },
+  "ai": {
+   "score": 3,
+   "weight": 0.1,
+   "confidence": "low",
+   "evidence_level": "direct+search",
+   "evidence": [
+    "[direct] Web personalisation limited to login-free flight bookmarks and remembered text size/notice state; no account or dashboard on the website",
+    "[direct, limited] Chatbot launcher (#aahk-chatbot-launcher) on every page; its window did not open in this container so quality is unassessed",
+    "[direct, described not tested] App chatbot, boarding alerts, AR wayfinding, rewards account: https://www.hongkongairport.com/en/flights/MyHKG-mobile-app/",
+    "[search] Generative AI Virtual Assistant tender awarded 12 June 2025: https://www.hongkongairport.com/en/airport-authority/tender-notices/PRO_T292_25_NC_Award (link to the web chatbot not confirmed)"
+   ]
+  },
+  "commerce": {
+   "score": 4,
+   "weight": 0.05,
+   "confidence": "medium",
+   "evidence_level": "direct",
+   "evidence": [
+    "[direct] HKairport Rewards: points on merchant, e-shop, food-ordering and automated car park spend; HKIA Dollar and coupons; QR membership at checkout: https://www.hongkongairport.com/en/shop-dine/hkairport-rewards.page",
+    "[direct link, not visited] E-shop HKairportShop.com in the primary menu; one-stop services booking platform https://www.hkairportbooking.com/en/ (meet and assist, VIP lounge, baggage)",
+    "[direct] Car park booking, online payment, valet and automated car parks: https://www.hongkongairport.com/en/transport/parking/car-park-booking.page",
+    "Transaction flows not tested (hosts outside reach); shop directory page returned a Cloudflare challenge once"
+   ]
+  },
+  "perf": {
+   "score": 3,
+   "weight": 0.05,
+   "confidence": "medium",
+   "evidence_level": "direct",
+   "evidence": [
+    "[direct, lab] Homepage desktop TTFB 163 ms, FCP 0.67 s, load 3.75 s, 57 requests, 1.88 MB; inner pages FCP 1.6-2.6 s (lab, single container, third-party hosts blocked, indicative only)",
+    "[direct, lab] Lighthouse mobile median: performance 28, accessibility 68, best practices 50, SEO 83, LCP 8.9 s, TBT 2,454 ms, CLS 0.184",
+    "[direct] HSTS with preload, nosniff, x-frame-options sameorigin; no content-security-policy header returned; Cloudflare with 5-minute cache",
+    "[direct] One transient Cloudflare 403 challenge in about 30 loads; live parking and map data depend on extra hosts"
+   ]
+  }
+ },
+ "steps_to_flight_status": 3,
+ "steps_note": "Route A: click search box, type flight number, pick suggestion. Route B: click Departures, type in filter, press Enter.",
+ "languages": [
+  "English",
+  "Traditional Chinese",
+  "Simplified Chinese"
+ ],
+ "axe": {
+  "desktop": {
+   "violations": 8,
+   "nodes": 15,
+   "byImpact": {
+    "critical": 4,
+    "serious": 3,
+    "moderate": 1
+   },
+   "page": "https://www.hongkongairport.com/en/"
+  },
+  "mobile": {
+   "violations": 8,
+   "nodes": 12,
+   "byImpact": {
+    "critical": 4,
+    "serious": 3,
+    "moderate": 1
+   },
+   "page": "https://www.hongkongairport.com/en/"
+  },
+  "other_pages": {
+   "departures": {
+    "desktop": {
+     "violations": 5,
+     "byImpact": {
+      "critical": 3,
+      "serious": 1,
+      "moderate": 1
+     }
+    },
+    "mobile": {
+     "violations": 4,
+     "byImpact": {
+      "critical": 2,
+      "serious": 1,
+      "moderate": 1
+     }
+    }
+   }
+  },
+  "note": "axe-core WCAG A/AA rules, automated only; not a conformance audit"
+ },
+ "keyboard": {
+  "skip_link": true,
+  "visible_focus": true,
+  "logical_order": true,
+  "note": "Three skip links; browser-default outline on all 12 stops; two notice-bar stops were scrolled out of view when focused"
+ },
+ "landmarks": {
+  "header": 1,
+  "nav": 2,
+  "main": 0,
+  "footer": 1
+ },
+ "performance_lab": {
+  "label": "lab, single container, third-party hosts blocked, indicative only",
+  "capture_home_desktop": {
+   "ttfb_ms": 163,
+   "fcp_ms": 668,
+   "dcl_ms": 683,
+   "load_ms": 3754,
+   "requests": 57,
+   "bytes": 1876473
+  },
+  "lighthouse_mobile_median": {
+   "performance": 28,
+   "accessibility": 68,
+   "bestPractices": 50,
+   "seo": 83,
+   "fcp_ms": 2890,
+   "lcp_ms": 8880,
+   "tbt_ms": 2454,
+   "cls": 0.184,
+   "totalBytes": 2383249,
+   "requests": 59
+  }
+ },
+ "standouts": [
+  {
+   "name": "Flight board with operational depth and map deep links",
+   "why": "Check-in aisle, transfer desk, gate, stand, hall and belt per flight, each linked to its map location, with a visible last-updated stamp",
+   "url": "https://www.hongkongairport.com/en/flights/departures/passenger.page"
+  },
+  {
+   "name": "Login-free flight bookmarking in the global header",
+   "why": "One tap to save a flight, counter visible on every page, no account needed",
+   "url": "https://www.hongkongairport.com/en/flights/arrivals/passenger.page"
+  },
+  {
+   "name": "One search box for content and flights",
+   "why": "Flight-number suggestions for today and tomorrow, screen-reader announcements, live flight card",
+   "url": "https://www.hongkongairport.com/en/"
+  },
+  {
+   "name": "Special-needs guide on two axes",
+   "why": "Filter by journey stage and by type of need; ACI Level 3 and Sunflower membership stated",
+   "url": "https://www.hongkongairport.com/en/passenger-guide/airport-facilities-services/special-needs-access"
+  },
+  {
+   "name": "Parking product family tied to loyalty",
+   "why": "Availability, booking, online payment, valet, EV, automated car parks, with reward points on parking spend",
+   "url": "https://www.hongkongairport.com/en/shop-dine/hkairport-rewards.page"
+  }
+ ],
+ "weaknesses": [
+  "Flight status is undifferentiated black text; urgent states do not stand out",
+  "No flight detail URL: the live card cannot be shared, bookmarked in the browser or indexed",
+  "Personal features (alerts, rewards, baggage notice, wayfinding) require the app; no web account",
+  "Accessibility drift: critical ARIA failures on every page, no main landmark, zoom disabled on mobile",
+  "Mobile first screen dominated by app banner, notice and hero; mobile lab performance 28; stale content in prominent places"
+ ],
+ "ideas": [
+  "Permanent shareable flight pages with colour and icon status, gate walking time and web push or WhatsApp alerts without an app",
+  "Turn a login-free saved flight into a homepage 'My journey' strip: terminal, counter, time to leave, transport and parking for that flight",
+  "Answer facility searches directly with nearest location, level, hours and map link",
+  "Compare ground transport modes in one view (time, cost, first/last service, step-free) with deep links to booking",
+  "Maintain accessibility in the build: main landmark, zoom allowed, automated checks, dated statement",
+  "Mobile-first homepage with flight search in the first 300 px and a performance budget (mobile LCP under 2.5 s)"
+ ],
+ "gaps": [
+  "Interactive map routing, walking times and accessible routes not assessed (map data host blocked)",
+  "Live car park numbers not seen (feed host blocked)",
+  "Chatbot conversation not assessed (window did not open)",
+  "Shop directory not seen (Cloudflare challenge)",
+  "E-shop, booking platform and rewards transaction flows not tested",
+  "App features are as described by the airport, not tested"
+ ],
+ "sources": {
+  "direct": [
+   "https://www.hongkongairport.com/en/",
+   "https://www.hongkongairport.com/en/flights/departures/passenger.page",
+   "https://www.hongkongairport.com/en/flights/arrivals/passenger.page",
+   "https://www.hongkongairport.com/en/flights/MyHKG-mobile-app/",
+   "https://www.hongkongairport.com/en/map/",
+   "https://www.hongkongairport.com/en/transport/to-from-airport/",
+   "https://www.hongkongairport.com/en/transport/parking/space-availability.page",
+   "https://www.hongkongairport.com/en/transport/parking/car-park-booking.page",
+   "https://www.hongkongairport.com/en/passenger-guide/transfer-transit/",
+   "https://www.hongkongairport.com/en/passenger-guide/flight-token.page",
+   "https://www.hongkongairport.com/en/passenger-guide/airport-facilities-services/special-needs-access",
+   "https://www.hongkongairport.com/en/shop-dine/dining/",
+   "https://www.hongkongairport.com/en/shop-dine/hkairport-rewards.page",
+   "https://www.hongkongairport.com/en/accessibility-statement.page"
+  ],
+  "search": [
+   "https://apps.apple.com/hk/app/id1488720261",
+   "https://www.hongkongairport.com/en/airport-authority/tender-notices/PRO_T292_25_NC_Award",
+   "https://aerocorner.com/blog/best-airports-in-the-world-ranked/"
+  ]
+ }
+}

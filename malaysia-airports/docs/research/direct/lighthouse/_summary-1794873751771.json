@@ -1,0 +1,122 @@
+{
+ "changi": {
+  "performance": 58,
+  "accessibility": 74,
+  "bestPractices": 96,
+  "seo": 85,
+  "fcp_ms": 1817,
+  "lcp_ms": 7948,
+  "tbt_ms": 379,
+  "cls": 0.077,
+  "si_ms": 6673,
+  "totalBytes": 21984901,
+  "requests": 122
+ },
+ "heathrow": {
+  "performance": 56,
+  "accessibility": 92,
+  "bestPractices": 96,
+  "seo": 92,
+  "fcp_ms": 4080,
+  "lcp_ms": 6283,
+  "tbt_ms": 393,
+  "cls": 0.102,
+  "si_ms": 4080,
+  "totalBytes": 1937599,
+  "requests": 47
+ },
+ "hamad": {
+  "error": "NO_FCP"
+ },
+ "hkia": {
+  "performance": 28,
+  "accessibility": 68,
+  "bestPractices": 50,
+  "seo": 83,
+  "fcp_ms": 2890,
+  "lcp_ms": 8880,
+  "tbt_ms": 2454,
+  "cls": 0.184,
+  "si_ms": 5954,
+  "totalBytes": 2383249,
+  "requests": 59
+ },
+ "dubai": {
+  "performance": 68,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 92,
+  "fcp_ms": 2557,
+  "lcp_ms": 6147,
+  "tbt_ms": 26,
+  "cls": 0,
+  "si_ms": 7551,
+  "totalBytes": 4620232,
+  "requests": 94
+ },
+ "munich": {
+  "performance": 47,
+  "accessibility": 47,
+  "bestPractices": 96,
+  "seo": 85,
+  "fcp_ms": 6936,
+  "lcp_ms": 8736,
+  "tbt_ms": 389,
+  "cls": 0,
+  "si_ms": 12085,
+  "totalBytes": 4790479,
+  "requests": 63
+ },
+ "haneda": {
+  "performance": 49,
+  "accessibility": 80,
+  "bestPractices": 96,
+  "seo": 91,
+  "fcp_ms": 1824,
+  "lcp_ms": 24476,
+  "tbt_ms": 732,
+  "cls": 0.062,
+  "si_ms": 6238,
+  "totalBytes": 13819669,
+  "requests": 187
+ },
+ "istanbul": {
+  "performance": 53,
+  "accessibility": 78,
+  "bestPractices": 92,
+  "seo": 92,
+  "fcp_ms": 7813,
+  "lcp_ms": 16663,
+  "tbt_ms": 163,
+  "cls": 0,
+  "si_ms": 13097,
+  "totalBytes": 6136928,
+  "requests": 100
+ },
+ "incheon": {
+  "performance": 27,
+  "accessibility": 79,
+  "bestPractices": 73,
+  "seo": 100,
+  "fcp_ms": 12408,
+  "lcp_ms": 25134,
+  "tbt_ms": 2403,
+  "cls": 0,
+  "si_ms": 23500,
+  "totalBytes": 4727930,
+  "requests": 215
+ },
+ "schiphol": {
+  "performance": 76,
+  "accessibility": 92,
+  "bestPractices": 96,
+  "seo": 82,
+  "fcp_ms": 1629,
+  "lcp_ms": 1629,
+  "tbt_ms": 1079,
+  "cls": 0,
+  "si_ms": 1629,
+  "totalBytes": 498156,
+  "requests": 9
+ }
+}

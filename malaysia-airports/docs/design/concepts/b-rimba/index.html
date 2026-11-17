@@ -1,0 +1,810 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Malaysia Airports. Your journey, beautifully connected.</title>
+<meta name="description" content="Concept homepage for the Malaysia Airports network: search any flight, choose your airport and plan every step of your journey.">
+<meta name="color-scheme" content="light dark">
+<script>
+(function(){var d=document.documentElement,t=null;try{t=localStorage.getItem('ma-theme')}catch(e){}
+d.dataset.themePref=(t==='light'||t==='dark')?t:'auto';
+d.dataset.theme=(t==='light'||t==='dark')?t:(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');})();
+</script>
+<style>
+/* ---------- Fonts (self-hosted, latin subsets) ---------- */
+@font-face{font-family:"Bricolage Grotesque";src:url("fonts/bricolage-grotesque-latin-opsz-normal.woff2") format("woff2");font-weight:200 800;font-style:normal;font-display:swap}
+@font-face{font-family:"Hanken Grotesk";src:url("fonts/hanken-grotesk-latin-wght-normal.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
+@font-face{font-family:"Geist Mono";src:url("fonts/geist-mono-latin-wght-normal.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
+
+/* ---------- Tokens ---------- */
+:root{
+  /* primitives: rainforest, mist and limestone, hibiscus, songket gold */
+  --forest-950:#081712;--forest-900:#0B1E19;--forest-850:#11281F;--forest-800:#17362B;--forest-700:#1B4A3A;--forest-600:#245E49;--forest-500:#2F775C;
+  --leaf-400:#6FA58A;--leaf-300:#8FD0AC;--leaf-200:#C7DAC8;--leaf-100:#E1ECDF;
+  --mist-0:#FFFFFF;--mist-50:#F8F8F3;--mist-100:#F3F3EC;--mist-200:#E9EBE2;--stone-400:#7C8C82;
+  --hibiscus-700:#A82A18;--hibiscus-600:#C2331F;--hibiscus-500:#F0553F;--coral-300:#FF8A75;--coral-100:#FDE5DF;
+  --gold-600:#7A5A12;--gold-300:#E3C27A;
+  /* type */
+  --f-display:"Bricolage Grotesque","Hanken Grotesk",system-ui,sans-serif;
+  --f-text:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"Geist Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --fs-2xs:.75rem;--fs-xs:.8125rem;--fs-sm:.875rem;--fs-md:1rem;--fs-lg:1.125rem;--fs-xl:1.375rem;
+  --fs-2xl:clamp(1.75rem,1.05rem + 2.1vw,2.875rem);--fs-3xl:clamp(1.75rem,.6rem + 3.7vw,3.75rem);
+  --lh-tight:1.04;--lh-snug:1.25;--lh-body:1.5;
+  /* space */
+  --s-1:4px;--s-2:8px;--s-3:12px;--s-4:16px;--s-5:20px;--s-6:24px;--s-7:32px;--s-8:40px;--s-9:56px;--s-10:72px;--s-11:96px;--s-12:128px;
+  /* radii: soft, with one tight "leaf" corner as the signature */
+  --r-xs:6px;--r-sm:10px;--r-md:16px;--r-lg:22px;--r-xl:28px;--r-pill:999px;--r-leaf:16px 16px 16px 5px;
+  /* motion */
+  --dur-1:120ms;--dur-2:220ms;--dur-3:420ms;--ease-out:cubic-bezier(.2,.7,.2,1);--ease-io:cubic-bezier(.6,0,.2,1);
+  /* layout */
+  --wrap:1184px;--gut:clamp(16px,4vw,40px);--hdr:68px;
+}
+:root,[data-theme="light"]{
+  color-scheme:light;
+  --bg:#F3F3EC;--bg-2:#E9EBE2;--surface:#FFFFFF;--surface-2:#F8F8F3;--field:#F0F1EA;
+  --ink:#10241D;--ink-2:#42544B;--ink-3:#5A6A61;
+  --line:rgba(16,36,29,.11);--line-2:rgba(16,36,29,.22);--line-ui:#7C8C82;
+  --brand:#1B4A3A;--brand-hover:#15392E;--on-brand:#FFFFFF;--brand-text:#245E49;--brand-soft:#E1ECDF;--brand-soft-2:#D2E3D3;
+  --action:#C2331F;--action-hover:#A82A18;--on-action:#FFFFFF;--action-text:#B02C1A;--action-soft:#FDE5DF;
+  --accent:#F0553F;--gold:#7A5A12;--focus:#C2331F;
+  --canopy-1:#E2EBDD;--canopy-2:#D2E1CF;--canopy-3:#BFD5C0;--canopy-rib:rgba(27,74,58,.12);
+  --hero-bg:linear-gradient(180deg,#E8EEE2 0%,#F3F3EC 78%);--hero-glow:rgba(255,255,255,.96);
+  --pat-ink:rgba(27,74,58,.3);
+  --sh-1:0 1px 2px rgba(16,36,29,.06);--sh-2:0 14px 34px -20px rgba(16,36,29,.3);--sh-3:0 36px 80px -40px rgba(16,36,29,.42),0 2px 8px rgba(16,36,29,.04);
+  /* flight status: always paired with an icon and a word */
+  --st-ok-fg:#17573A;--st-ok-bg:#DCEEDD;--st-go-fg:#1B4C86;--st-go-bg:#DCE8F7;--st-late-fg:#734600;--st-late-bg:#FAEAC4;--st-shut-fg:#39463F;--st-shut-bg:#E2E5DC;--st-x-fg:#9C2415;--st-x-bg:#FBE0DA;
+}
+[data-theme="dark"],.forest{
+  color-scheme:dark;
+  --bg:#0B1E19;--bg-2:#081712;--surface:#11281F;--surface-2:#17362B;--field:#0C211B;
+  --ink:#E8EFE6;--ink-2:#A9BDB0;--ink-3:#8AA093;
+  --line:rgba(232,239,230,.11);--line-2:rgba(232,239,230,.2);--line-ui:#6B8577;
+  --brand:#2F775C;--brand-hover:#38886A;--on-brand:#FFFFFF;--brand-text:#8FD0AC;--brand-soft:#17362B;--brand-soft-2:#1E4436;
+  --action:#FF8A75;--action-hover:#FFA291;--on-action:#2A0B06;--action-text:#FF9A87;--action-soft:#3A1C16;
+  --accent:#FF8A75;--gold:#E3C27A;--focus:#FFB3A4;
+  --canopy-1:#0E261F;--canopy-2:#122F26;--canopy-3:#173B2F;--canopy-rib:rgba(143,208,172,.1);
+  --hero-bg:linear-gradient(180deg,#081712 0%,#0B1E19 78%);--hero-glow:rgba(47,119,92,.3);
+  --pat-ink:rgba(143,208,172,.28);
+  --sh-1:0 1px 2px rgba(0,0,0,.3);--sh-2:0 14px 34px -20px rgba(0,0,0,.6);--sh-3:0 36px 80px -40px rgba(0,0,0,.8),0 0 0 1px rgba(143,208,172,.06);
+  --st-ok-fg:#9BE0B4;--st-ok-bg:#143D2B;--st-go-fg:#A9CCF7;--st-go-bg:#152F4D;--st-late-fg:#F6D27E;--st-late-bg:#40300A;--st-shut-fg:#C9D3CC;--st-shut-bg:#26332D;--st-x-fg:#FFB1A3;--st-x-bg:#4A1A12;
+}
+
+/* ---------- Base ---------- */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:calc(var(--hdr) + 20px)}
+html[data-text="lg"]{font-size:112.5%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 var(--fs-md)/var(--lh-body) var(--f-text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:clip}
+h1,h2,h3,p,ul,ol,fieldset,table{margin:0;padding:0}
+ul,ol{list-style:none}fieldset{border:0;min-width:0}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;padding:0}
+svg{display:block;flex:none}
+.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:var(--r-xs)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.skip{position:absolute;left:16px;top:-80px;z-index:100;background:var(--brand);color:var(--on-brand);padding:12px 18px;border-radius:var(--r-pill);font-weight:600;transition:top var(--dur-2) var(--ease-out)}
+.skip:focus{top:12px}
+.wrap{width:min(100% - 2*var(--gut),var(--wrap));margin-inline:auto}
+h2{font:600 var(--fs-2xl)/1.06 var(--f-display);letter-spacing:-.03em;text-wrap:balance}
+.eyebrow{font:600 var(--fs-xs)/1.2 var(--f-text);letter-spacing:.1em;text-transform:uppercase;color:var(--brand-text)}
+.lede{font-size:var(--fs-lg);line-height:1.5;color:var(--ink-2);max-width:58ch;text-wrap:pretty}
+.link{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--brand-text);min-height:44px}
+.link .i{width:18px;height:18px;transition:transform var(--dur-2) var(--ease-out)}
+.link:hover .i{transform:translateX(3px)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;border-radius:var(--r-pill);font-weight:600;font-size:var(--fs-sm);border:1.5px solid var(--line-2);white-space:nowrap;transition:background var(--dur-1),border-color var(--dur-1)}
+.btn:hover{border-color:var(--ink-2)}
+.btn--action{background:var(--action);color:var(--on-action);border-color:transparent}
+.btn--action:hover{background:var(--action-hover);border-color:transparent}
+.ib{display:inline-grid;place-items:center;width:42px;height:42px;border-radius:50%;color:var(--ink-2);transition:background var(--dur-1),color var(--dur-1)}
+.ib:hover{background:var(--brand-soft);color:var(--ink)}
+/* pressed-button groups (language, theme, text size) */
+.pg{display:inline-flex;padding:3px;border-radius:var(--r-pill);background:var(--field);border:1px solid var(--line)}
+.pg button{min-width:40px;min-height:34px;padding:0 12px;border-radius:var(--r-pill);font-size:var(--fs-xs);font-weight:600;color:var(--ink-2)}
+.pg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--sh-1),0 0 0 1px var(--line-2)}
+/* radio segments (flight direction) */
+.seg{display:flex;gap:4px;padding:4px;border-radius:var(--r-pill);background:var(--field);border:1px solid var(--line)}
+.seg label{position:relative;flex:1}
+.seg input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.seg span{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:var(--r-pill);font-weight:600;font-size:var(--fs-sm);color:var(--ink-2);white-space:nowrap;transition:background var(--dur-2) var(--ease-out),color var(--dur-2)}
+.seg label:hover span{color:var(--ink)}
+.seg input:checked+span{background:var(--surface);color:var(--ink);box-shadow:var(--sh-1),0 0 0 1px var(--line-2)}
+.seg input:focus-visible+span{outline:3px solid var(--focus);outline-offset:2px}
+
+/* ---------- Header ---------- */
+.hdr{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.hdr__in{display:flex;align-items:center;gap:var(--s-4);height:var(--hdr);width:min(100% - 2*var(--gut),1520px);margin-inline:auto}
+.brand{display:flex;align-items:center;gap:10px;font:650 1.1875rem/1 var(--f-display);letter-spacing:-.025em;white-space:nowrap;color:var(--ink)}
+.brand svg{width:30px;height:30px;color:var(--brand-text)}
+.brand b{font-weight:400;color:var(--ink-2)}
+.nav{margin-inline:auto}
+.nav ul{display:flex;gap:2px}
+.nav a{display:block;padding:10px 12px;border-radius:var(--r-pill);font-size:.9375rem;font-weight:500;color:var(--ink-2);white-space:nowrap;transition:background var(--dur-1),color var(--dur-1)}
+.nav a:hover{color:var(--ink);background:var(--brand-soft)}
+.util{display:flex;align-items:center;gap:4px}
+.menu-btn{display:none}
+/* airport selector: a native select, dressed */
+.apt{position:relative;display:block;height:42px;width:186px;border-radius:var(--r-pill);border:1.5px solid var(--line-2);background:var(--surface);transition:border-color var(--dur-1),background var(--dur-1)}
+.apt select{position:absolute;inset:0;width:100%;height:100%;appearance:none;-webkit-appearance:none;background:transparent;border:0;border-radius:inherit;padding:0 34px 0 38px;font:600 var(--fs-sm)/1 var(--f-text);cursor:pointer;text-overflow:ellipsis}
+.apt option{background:var(--surface);color:var(--ink);font-family:var(--f-text)}
+.apt .pin,.apt .chev{position:absolute;top:50%;translate:0 -50%;pointer-events:none}
+.apt .pin{left:12px;width:18px;height:18px}.apt .chev{right:12px;width:16px;height:16px;color:var(--ink-2)}
+.apt[data-unset]{border-style:dashed;border-color:var(--action)}
+.apt[data-unset] .pin{color:var(--action-text)}
+.apt:not([data-unset]){background:var(--brand-soft);border-color:var(--brand)}
+.apt:hover{border-color:var(--ink-2)}
+
+/* ---------- Hero: the clearing ---------- */
+.hero{position:relative;isolation:isolate;padding:clamp(18px,4.6vh,44px) 0 clamp(28px,6vh,60px);background:var(--hero-bg);overflow:clip}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse 44% 62% at 50% 38%,var(--hero-glow),transparent 74%);pointer-events:none}
+.canopy{position:absolute;top:0;z-index:-2;width:clamp(170px,31vw,460px);height:auto;pointer-events:none}
+.canopy--l{left:0}.canopy--r{right:0}
+.l1{fill:var(--canopy-1)}.l2{fill:var(--canopy-2)}.l3{fill:var(--canopy-3)}
+.rib{fill:none;stroke:var(--canopy-rib);stroke-width:1;vector-effect:non-scaling-stroke}
+.hero .eyebrow{text-align:center;display:flex;justify-content:center;align-items:center;gap:10px}
+.hero .eyebrow i{width:4px;height:4px;border-radius:50%;background:var(--accent)}
+.hero h1{margin:14px 0 clamp(18px,3.2vh,30px);font:600 var(--fs-3xl)/var(--lh-tight) var(--f-display);letter-spacing:-.038em;text-align:center;text-wrap:balance}
+.hero h1 em{font-style:normal;color:var(--brand-text)}
+.clearing{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);box-shadow:var(--sh-3);padding:12px}
+.clearing__ctx{display:flex;align-items:center;gap:12px;padding-bottom:12px}
+.apt--lg{height:60px;width:316px;border-radius:var(--r-md);flex:none}
+.apt--lg select{padding:22px 40px 0 58px;font:600 1.0625rem/1.2 var(--f-display);letter-spacing:-.01em}
+.apt--lg .apt__l{position:absolute;left:58px;top:10px;font:600 var(--fs-2xs)/1.2 var(--f-text);letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);pointer-events:none}
+.apt--lg .pin{left:10px;width:38px;height:38px;padding:9px;border-radius:12px 12px 12px 4px;background:var(--brand-soft);color:var(--brand-text)}
+.apt--lg[data-unset] .pin{background:var(--action-soft);color:var(--action-text)}
+.apt--lg .chev{right:14px;width:18px;height:18px}
+.clearing .seg{flex:none}
+.clearing .seg span{min-height:50px;padding:0 20px;font-size:.9375rem}
+.scope{margin-left:auto;padding-right:10px;font-size:var(--fs-sm);color:var(--ink-3);text-align:right;text-wrap:balance}
+.scope b{color:var(--ink);font-weight:600}
+.clearing__q{display:flex;align-items:center;gap:12px;height:72px;padding:0 8px 0 22px;border-radius:var(--r-lg);background:var(--field);border:1.5px solid var(--line-2);transition:border-color var(--dur-2),background var(--dur-2)}
+.clearing__q:focus-within{border-color:var(--brand-text);background:var(--surface)}
+.clearing__q>.i{width:24px;height:24px;color:var(--brand-text)}
+.clearing__q input{flex:1;min-width:0;height:100%;border:0;background:transparent;outline:0;font:500 var(--fs-xl)/1 var(--f-text);letter-spacing:-.01em}
+.clearing__q input::placeholder{color:var(--ink-3);opacity:1}
+.clearing__q input::-webkit-search-cancel-button{display:none}
+.q-read{flex:none;font-size:var(--fs-xs);font-weight:600;color:var(--brand-text);background:var(--brand-soft);padding:6px 10px;border-radius:var(--r-xs)}
+.q-read:empty{display:none}
+.btn--go{min-height:56px;padding:0 26px;font-size:var(--fs-md)}
+.try{display:flex;align-items:center;gap:8px;margin-top:14px;padding-left:14px;font-size:var(--fs-sm);color:var(--ink-3)}
+.try button{min-height:32px;padding:0 12px;border-radius:var(--r-pill);border:1px solid var(--line-2);background:color-mix(in srgb,var(--surface) 70%,transparent);font-size:var(--fs-xs);font-weight:500;color:var(--ink-2);transition:border-color var(--dur-1),color var(--dur-1)}
+.try button:hover{border-color:var(--brand-text);color:var(--ink)}
+.try kbd{font:500 var(--fs-xs) var(--f-mono)}
+
+/* journey modes + quick actions */
+.jp{margin-top:clamp(14px,2.6vh,24px);padding:10px;border-radius:var(--r-xl);background:var(--surface-2);border:1px solid var(--line)}
+.modes{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.modes label{position:relative}
+.modes input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.modes span{display:flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 12px;border-radius:var(--r-leaf);font:600 var(--fs-md)/1.15 var(--f-display);letter-spacing:-.01em;color:var(--ink-2);border:1px solid transparent;transition:background var(--dur-2) var(--ease-out),color var(--dur-2)}
+.modes label:hover span{background:var(--brand-soft);color:var(--ink)}
+.modes input:checked+span{background:var(--brand);color:var(--on-brand)}
+.modes input:focus-visible+span{outline:3px solid var(--focus);outline-offset:2px}
+.jp__lead{display:flex;align-items:baseline;gap:10px;margin:14px 6px 10px;font-size:var(--fs-sm);color:var(--ink-2)}
+.jp__lead b{font:600 var(--fs-2xs)/1 var(--f-text);letter-spacing:.09em;text-transform:uppercase;color:var(--brand-text)}
+.qa{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.qa a{position:relative;display:flex;flex-direction:column;gap:3px;height:100%;min-height:112px;padding:14px;border-radius:var(--r-md);background:var(--surface);border:1px solid var(--line);transition:border-color var(--dur-1),background var(--dur-1)}
+.qa a:hover{border-color:var(--brand-text)}
+.qa .i{width:24px;height:24px;margin-bottom:9px;color:var(--brand-text)}
+.qa__t{font:600 var(--fs-md)/1.2 var(--f-display);letter-spacing:-.01em}
+.qa__c{font-size:var(--fs-xs);line-height:1.35;color:var(--ink-2)}
+.qa li:first-child a{background:var(--brand);border-color:transparent;color:var(--on-brand);border-radius:var(--r-md) var(--r-md) var(--r-md) 5px}
+.qa li:first-child a:hover{background:var(--brand-hover)}
+.qa li:first-child .i,.qa li:first-child .qa__c{color:inherit}
+.qa li:first-child a::after{content:"Start here";position:absolute;top:13px;right:12px;font:600 .6875rem/1 var(--f-text);letter-spacing:.06em;text-transform:uppercase;padding:5px 7px;border-radius:var(--r-xs);background:rgba(255,255,255,.16)}
+
+/* notice + guidance */
+.ctx{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:8px;margin-top:10px}
+.ctx>*{display:flex;align-items:center;gap:12px;min-height:66px;padding:10px 16px;border-radius:var(--r-md);background:var(--surface);border:1px solid var(--line);font-size:var(--fs-sm);line-height:1.35}
+.ctx>*>.i:first-child{width:22px;height:22px;color:var(--brand-text)}
+.ctx p{color:var(--ink-2)}
+.ctx .k{display:block;font-weight:600;color:var(--ink)}
+.notice{background:var(--brand-soft);border-color:transparent}
+.notice .k{font:600 var(--fs-2xs)/1.3 var(--f-text);letter-spacing:.08em;text-transform:uppercase;color:var(--brand-text)}
+.notice p{color:var(--ink)}
+.notice a{margin-left:auto;font-weight:600;color:var(--brand-text);text-decoration:underline;text-underline-offset:3px;padding:10px 0 10px 8px}
+.strip .go{margin-left:auto;width:18px;height:18px;color:var(--ink-3);transition:transform var(--dur-2) var(--ease-out)}
+.strip:hover{border-color:var(--brand-text)}.strip:hover .go{transform:translateX(3px)}
+
+/* ---------- Sections ---------- */
+.sec{padding:clamp(56px,8.5vw,112px) 0}
+.sec--tint{background:var(--bg-2)}
+.sec__hd{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s-7);margin-bottom:clamp(24px,3.6vw,44px)}
+.sec__hd h2{margin:12px 0 14px;max-width:18ch}
+
+/* departures board */
+.board-sec{padding-top:clamp(8px,2vw,24px)}
+.board{--pad:clamp(14px,3vw,36px);background:var(--surface);color:var(--ink);border-radius:var(--r-xl);padding:0 var(--pad) var(--pad)}
+.demo{position:sticky;top:var(--hdr);z-index:5;display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px;margin:0 calc(-1*var(--pad));padding:10px var(--pad);border-radius:var(--r-xl) var(--r-xl) 0 0;background:repeating-linear-gradient(-45deg,#FF8A75 0 12px,#FA7E68 12px 24px);color:#2A0B06;font-size:var(--fs-sm);line-height:1.3}
+.demo strong{font-weight:700;letter-spacing:.01em}
+.board__hd{display:flex;align-items:flex-end;gap:var(--s-6);padding:clamp(20px,3vw,34px) 0 clamp(14px,2vw,22px)}
+.board__hd h2{margin-top:10px}
+.board__hd h2 small{display:block;margin-top:8px;font:500 var(--fs-md)/1.3 var(--f-text);letter-spacing:0;color:var(--ink-2)}
+.fresh{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:var(--fs-sm);color:var(--ink-2);min-height:44px}
+.fresh .i{width:18px;height:18px;color:var(--brand-text)}
+.fresh time{font:500 var(--fs-sm) var(--f-mono);color:var(--ink)}
+.fl{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.fl th{padding:10px 12px;text-align:left;font:600 var(--fs-2xs)/1.2 var(--f-text);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);border-bottom:1px solid var(--line-2)}
+.fl td{padding:13px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+.fl th:first-child,.fl td:first-child{padding-left:4px}.fl th:last-child,.fl td:last-child{padding-right:4px}
+.fl .t{font:500 var(--fs-lg)/1.2 var(--f-mono);white-space:nowrap}
+.fl .t s{display:block;font-size:var(--fs-xs);color:var(--ink-3)}
+.fl .t.new time{color:var(--st-late-fg)}
+.fl .f{font:500 .9375rem/1.2 var(--f-mono);color:var(--ink-2);white-space:nowrap}
+.fl .d{font:600 1.1875rem/1.2 var(--f-display);letter-spacing:-.015em}
+.fl .d abbr{margin-left:8px;font:500 var(--fs-2xs)/1 var(--f-mono);letter-spacing:.06em;color:var(--ink-3);text-decoration:none}
+.fl .m{display:none;margin-top:3px;font:500 var(--fs-2xs)/1.35 var(--f-mono);letter-spacing:0;color:var(--ink-2)}
+.fl .a{color:var(--ink-2);font-size:.9375rem;white-space:nowrap}
+.al{display:inline-grid;place-items:center;width:30px;height:30px;margin-right:10px;vertical-align:middle;border-radius:9px 9px 9px 3px;background:var(--surface-2);border:1px solid var(--line);font:600 .6875rem/1 var(--f-mono);color:var(--ink)}
+.fl .g{white-space:nowrap;font:500 var(--fs-sm)/1.2 var(--f-mono);color:var(--ink-2)}
+.fl .g b{margin-left:8px;font-weight:600;font-size:var(--fs-md);color:var(--ink)}
+.fl tr.off .d,.fl tr.off .t{color:var(--ink-3)}
+.fl tr[hidden]{display:none}
+.chip{display:inline-flex;align-items:center;gap:6px;min-height:30px;padding:0 12px 0 7px;border-radius:var(--r-pill);font-size:var(--fs-sm);font-weight:600;white-space:nowrap}
+.chip .i{width:18px;height:18px}
+.chip--ok{color:var(--st-ok-fg);background:var(--st-ok-bg)}.chip--go{color:var(--st-go-fg);background:var(--st-go-bg)}
+.chip--late{color:var(--st-late-fg);background:var(--st-late-bg)}.chip--shut{color:var(--st-shut-fg);background:var(--st-shut-bg)}
+.chip--x{color:var(--st-x-fg);background:var(--st-x-bg)}
+.board__ft{display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);flex-wrap:wrap;padding-top:var(--s-5);font-size:var(--fs-sm);color:var(--ink-2)}
+
+/* your journey */
+.legend{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:var(--fs-sm);color:var(--ink-2)}
+.legend li{display:flex;align-items:center;gap:8px}
+.tag{display:inline-flex;align-items:center;gap:5px;min-height:26px;padding:0 9px 0 6px;border-radius:var(--r-xs);font:600 var(--fs-2xs)/1 var(--f-text);white-space:nowrap;border:1.5px solid transparent}
+.tag .i{width:15px;height:15px}
+.tag--off{background:var(--brand);color:var(--on-brand)}
+.tag--est{border:1.5px dashed var(--line-ui);color:var(--ink)}
+.tag--sug{background:var(--action-soft);color:var(--action-text)}
+.trip{margin-top:var(--s-7);padding:clamp(18px,3vw,36px);border-radius:var(--r-xl);background:var(--surface);border:1px solid var(--line)}
+.trip__hd{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding-bottom:clamp(18px,2.4vw,28px);margin-bottom:clamp(20px,2.6vw,32px);border-bottom:1px solid var(--line)}
+.trip__hd p{font:600 var(--fs-lg)/1.2 var(--f-display);letter-spacing:-.01em}
+.trip__hd small{font:500 var(--fs-xs) var(--f-text);color:var(--ink-3);letter-spacing:0}
+.trip__hd .btn{margin-left:auto}
+.tl{display:grid;grid-template-columns:repeat(6,1fr)}
+.step{position:relative;padding-right:18px;display:flex;flex-direction:column;align-items:flex-start}
+.step::before{content:"";position:absolute;left:52px;right:8px;top:22px;border-top:1.5px dashed var(--line-2)}
+.step:last-child::before{display:none}
+.step__n{display:grid;place-items:center;width:44px;height:44px;border-radius:14px 14px 14px 4px;background:var(--brand-soft);color:var(--brand-text)}
+.step__k{margin-top:18px;font:600 var(--fs-2xs)/1.2 var(--f-text);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.step__v{margin-top:6px;font:600 1.1875rem/1.18 var(--f-display);letter-spacing:-.015em}
+.step__d{margin:6px 0 14px;font-size:var(--fs-sm);line-height:1.4;color:var(--ink-2)}
+.step .tag{margin-top:auto}
+
+/* airport network */
+.stats{display:flex;gap:clamp(20px,3vw,44px)}
+.stats li{font-size:var(--fs-sm);line-height:1.3;color:var(--ink-2);max-width:11ch}
+.stats b{display:block;font:600 clamp(2rem,3vw,2.75rem)/1 var(--f-display);letter-spacing:-.03em;color:var(--ink)}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-4)}
+.card{display:flex;flex-direction:column;height:100%;border-radius:var(--r-lg) var(--r-lg) var(--r-lg) 6px;background:var(--surface);border:1px solid var(--line);overflow:hidden;transition:transform var(--dur-2) var(--ease-out),box-shadow var(--dur-2)}
+.card:hover{transform:translateY(-3px);box-shadow:var(--sh-2)}
+.art{width:100%;height:auto;aspect-ratio:16/10}
+.card__b{display:grid;grid-template-columns:1fr auto;align-items:end;gap:2px 8px;padding:14px 16px 16px}
+.card__c{grid-column:1/-1;font:500 var(--fs-2xs)/1.2 var(--f-mono);letter-spacing:.08em;color:var(--ink-3)}
+.card__n{font:600 1.1875rem/1.2 var(--f-display);letter-spacing:-.015em}
+.card__s{grid-column:1;font-size:var(--fs-sm);color:var(--ink-2)}
+.card__b .i{grid-column:2;grid-row:2/4;color:var(--brand-text);transition:transform var(--dur-2) var(--ease-out)}
+.card:hover .card__b .i{transform:translateX(3px)}
+
+/* shop and dine */
+.shop{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-4)}
+.shop a{display:flex;flex-direction:column;height:100%;padding:8px 8px 18px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);transition:border-color var(--dur-1)}
+.shop a:hover{border-color:var(--brand-text)}
+.shop__art{position:relative;height:124px;border-radius:var(--r-md) var(--r-md) var(--r-md) 5px;overflow:hidden;background:var(--brand-soft)}
+.shop li:nth-child(1) .shop__art{background:var(--action-soft)}.shop li:nth-child(3) .shop__art{background:var(--bg-2)}
+.shop__art svg.pt{position:absolute;inset:0;width:100%;height:100%}
+.shop__art .i{position:absolute;left:12px;bottom:12px;width:44px;height:44px;padding:11px;border-radius:14px 14px 14px 4px;background:var(--surface);color:var(--brand-text)}
+.pat{stroke:var(--pat-ink);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}.patf{fill:var(--pat-ink)}
+.shop h3{margin:16px 10px 6px;font:600 1.1875rem/1.2 var(--f-display);letter-spacing:-.015em}
+.shop p{margin:0 10px;font-size:var(--fs-sm);line-height:1.45;color:var(--ink-2)}
+
+/* concierge */
+.con{position:relative;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(24px,5vw,72px);align-items:center;padding:clamp(22px,4.4vw,56px);border-radius:var(--r-xl);background:var(--surface);border:1px solid var(--line);overflow:hidden;isolation:isolate}
+.con__leaf{position:absolute;left:-90px;bottom:-130px;width:320px;height:320px;z-index:-1}
+.con h2{margin:12px 0 14px;font-size:clamp(1.625rem,1rem + 1.6vw,2.375rem)}
+.con .lede{font-size:var(--fs-md)}
+.ask{display:flex;align-items:center;gap:10px;height:60px;padding:0 8px 0 18px;border-radius:var(--r-lg);background:var(--field);border:1.5px solid var(--line-2)}
+.ask:focus-within{border-color:var(--brand-text)}
+.ask .i{color:var(--brand-text)}
+.ask input{flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;font-size:var(--fs-md)}
+.ask input::placeholder{color:var(--ink-3);opacity:1}
+.eg{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.eg button{min-height:40px;padding:8px 14px;border-radius:var(--r-leaf);border:1px solid var(--line-2);text-align:left;font-size:var(--fs-sm);line-height:1.3;color:var(--ink-2);transition:border-color var(--dur-1),color var(--dur-1)}
+.eg button:hover{border-color:var(--brand-text);color:var(--ink)}
+.con__note{margin-top:16px;font-size:var(--fs-xs);color:var(--ink-3)}
+
+/* ---------- Footer ---------- */
+.ftr{background:var(--bg-2);color:var(--ink);padding-bottom:var(--s-8)}
+.rebung{width:100%;height:20px;color:var(--surface-2)}
+.ftr__top{display:grid;grid-template-columns:1.25fr repeat(4,1fr);gap:var(--s-7) var(--s-6);padding:var(--s-9) 0 var(--s-8)}
+.ftr__top>div>p{margin-top:16px;color:var(--ink-2);font-size:var(--fs-sm);max-width:28ch}
+.promise{font:500 var(--fs-xl)/1.15 var(--f-display)!important;letter-spacing:-.02em;color:var(--ink)!important}
+.ftr h3{font:600 var(--fs-2xs)/1.2 var(--f-text);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px}
+.ftr li a{display:inline-block;padding:5px 0;font-size:.9375rem;color:var(--ink-2)}
+.ftr a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.ftr__ctl{display:flex;flex-wrap:wrap;align-items:center;gap:14px 28px;padding:var(--s-6) 0;border-block:1px solid var(--line)}
+.ftr__ctl>div{display:flex;align-items:center;gap:10px;font-size:var(--fs-sm);color:var(--ink-2)}
+.ftr__ctl .link{margin-left:auto}
+.ftr__legal{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;padding-top:var(--s-6);font-size:var(--fs-xs);color:var(--ink-3)}
+
+/* ---------- Popovers ---------- */
+[popover]{border:1px solid var(--line-2);background:var(--surface);color:var(--ink);box-shadow:var(--sh-3);margin:0}
+[popover]::backdrop{background:rgba(8,23,18,.45)}
+.pop{position:fixed;inset:calc(var(--hdr) + 8px) var(--gut) auto auto;width:min(340px,calc(100vw - 32px));padding:18px;border-radius:var(--r-lg)}
+.pop__t{font:600 var(--fs-lg)/1.2 var(--f-display);margin-bottom:12px}
+.pop__r{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0;font-size:var(--fs-sm);color:var(--ink-2)}
+.sheet{position:fixed;inset:0 0 0 auto;width:min(400px,100vw);height:100dvh;max-height:none;padding:14px 20px 28px;border-width:0 0 0 1px;overflow:auto}
+.sheet__hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.sheet nav a{display:flex;align-items:center;justify-content:space-between;min-height:52px;border-bottom:1px solid var(--line);font:600 var(--fs-xl)/1.2 var(--f-display);letter-spacing:-.02em}
+.sheet__u{display:grid;gap:6px;margin-top:20px}
+.sheet__u>a,.sheet__u>button{display:flex;align-items:center;gap:12px;min-height:48px;font-weight:500;color:var(--ink-2)}
+.sheet__u>div{display:flex;align-items:center;justify-content:space-between;min-height:48px;color:var(--ink-2)}
+
+/* ---------- Mobile dock ---------- */
+.dock{display:none}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1439px){.util .pg,.util .u-x{display:none}.menu-btn{display:inline-grid}}
+@media (max-width:1239px){.nav{display:none}.util{margin-left:auto}}
+@media (max-width:1099px){
+  .scope{display:none}.clearing__ctx{justify-content:space-between}
+  .qa{grid-template-columns:repeat(3,1fr)}.qa a{min-height:96px}
+  .ctx{grid-template-columns:1fr 1fr}.notice{grid-column:1/-1}
+  .tl{grid-template-columns:repeat(3,1fr);row-gap:var(--s-7)}.step:nth-child(3)::before{display:none}
+  .cards,.shop{grid-template-columns:repeat(2,1fr)}
+  .con{grid-template-columns:1fr}
+  .ftr__top{grid-template-columns:repeat(4,1fr)}.ftr__top>div:first-child{grid-column:1/-1}
+}
+@media (max-width:899px){.fl .a{display:none}.sec__hd{flex-direction:column;align-items:flex-start;gap:var(--s-5)}}
+@media (max-width:719px){
+  :root{--hdr:56px}
+  body{padding-bottom:calc(68px + env(safe-area-inset-bottom))}
+  .hdr .apt,.hdr .u-s{display:none}
+  .brand{font-size:1.0625rem}.brand svg{width:26px;height:26px}
+  .ib{width:44px;height:44px}
+  .hero{padding:14px 0 22px}
+  .hero .eyebrow{display:none}
+  .hero h1{margin:0 0 12px;text-align:left;font-size:1.75rem;letter-spacing:-.035em}
+  .canopy--l{display:none}.canopy--r{width:190px;top:-30px}
+  .hero::after{background:radial-gradient(ellipse 90% 50% at 40% 46%,var(--hero-glow),transparent 76%)}
+  .clearing{padding:8px;border-radius:var(--r-lg)}
+  .clearing__ctx{flex-direction:column;align-items:stretch;gap:6px;padding-bottom:6px}
+  .apt--lg{width:100%;height:54px}.apt--lg select{padding-top:20px}.apt--lg .apt__l{top:8px}.apt--lg .pin{width:36px;height:36px}
+  .clearing .seg span{min-height:44px}
+  .clearing__q{height:54px;padding:0 4px 0 14px;gap:10px;border-radius:var(--r-md)}
+  .clearing__q>.i{width:20px;height:20px}
+  .clearing__q input{font-size:var(--fs-md)}
+  .q-read{display:none}
+  .btn--go{min-height:44px;width:44px;padding:0}.btn--go span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+  .try,.jp__lead{display:none}
+  .jp{margin-top:10px;padding:8px;border-radius:var(--r-lg)}
+  .modes{grid-template-columns:1fr 1fr;margin-bottom:8px}
+  .modes span{min-height:44px;justify-content:flex-start;padding:0 12px;font-size:.9375rem;gap:8px}
+  .qa{gap:6px}.qa a{min-height:68px;padding:10px 10px 9px;gap:0}
+  .qa .i{width:22px;height:22px;margin-bottom:6px}
+  .qa__t{font-size:var(--fs-xs);line-height:1.2}.qa__c{display:none}
+  .qa li:first-child a::after{top:10px;right:8px;font-size:.625rem;padding:4px 5px}
+  .ctx{gap:6px;margin-top:8px}.ctx>*{min-height:52px;padding:8px 12px;gap:10px;font-size:var(--fs-xs)}
+  .notice a{display:none}.strip p span{display:none}.strip .go{display:none}
+  .board{border-radius:var(--r-lg)}.demo{border-radius:var(--r-lg) var(--r-lg) 0 0}
+  .board__hd{flex-direction:column;align-items:flex-start;gap:6px}.fresh{margin-left:0}
+  .fl thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+  .fl .f,.fl .g{display:none}.fl .m{display:block}
+  .fl td{padding:12px 6px}.fl .t{font-size:var(--fs-md)}.fl .d{font-size:1.0625rem}.fl .d abbr{display:none}
+  .fl .s{text-align:right}.chip{font-size:var(--fs-xs);padding:0 10px 0 6px;min-height:28px}
+  .trip__hd .btn{margin-left:0;width:100%}
+  .tl{grid-template-columns:1fr;row-gap:0}
+  .step{display:grid;grid-template-columns:44px 1fr;column-gap:16px;padding:0 0 26px}
+  .step>*{grid-column:2}.step__n{grid-column:1;grid-row:1/6}.step__k{margin-top:2px}.step .tag{justify-self:start;margin-top:0}.step__d{margin-bottom:10px}
+  .step::before,.step:nth-child(3)::before{display:block;left:22px;right:auto;top:50px;bottom:6px;border-top:0;border-left:1.5px dashed var(--line-2)}
+  .step:last-child{padding-bottom:0}.step:last-child::before{display:none}
+  .stats{gap:18px}
+  .cards,.shop{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:calc(-1*var(--gut));padding:4px var(--gut) 14px;scrollbar-width:none}
+  .cards::-webkit-scrollbar,.shop::-webkit-scrollbar{display:none}
+  .cards>li,.shop>li{flex:0 0 74%;scroll-snap-align:center}
+  .eg button{min-height:44px}
+  .ftr__top{grid-template-columns:1fr 1fr}
+  .ftr li a{padding:11px 0}
+  .ftr__ctl .link{margin-left:0}
+  .pg button{min-height:44px;min-width:44px}
+  .dock{display:grid;grid-template-columns:repeat(5,1fr);align-items:end;position:fixed;inset:auto 0 0 0;z-index:60;padding:6px 6px calc(6px + env(safe-area-inset-bottom));background:var(--surface);border-top:1px solid var(--line-2)}
+  .dock a,.dock button{display:grid;justify-items:center;align-content:center;gap:3px;min-height:54px;font:600 .6875rem/1.1 var(--f-text);color:var(--ink-2)}
+  .dock .i{width:22px;height:22px}
+  .dock__go{color:var(--ink)!important}
+  .dock__go i{display:grid;place-items:center;width:52px;height:52px;margin-top:-26px;border-radius:50%;background:var(--action);color:var(--on-action);box-shadow:0 0 0 5px var(--surface),var(--sh-2)}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+html[data-motion="reduce"] *,html[data-motion="reduce"] *::before,html[data-motion="reduce"] *::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+
+<!-- Sprite: icons (24 grid, 1.75 stroke, round joins), brand mark, leaf, patterns -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+<defs>
+  <path id="bl" d="M0 0c-3.1-5-3.5-12.6 0-20.5C3.5-12.6 3.1-5 0 0Z"/>
+  <symbol id="mark" viewBox="0 5 32 25"><g transform="translate(16 29)"><use href="#bl" transform="rotate(-66) scale(.78)"/><use href="#bl" transform="rotate(-33) scale(.94)"/><use href="#bl" transform="scale(1.08)" style="fill:var(--accent)"/><use href="#bl" transform="rotate(33) scale(.94)"/><use href="#bl" transform="rotate(66) scale(.78)"/></g></symbol>
+  <g id="leaf"><path d="M0 0L-26.3 86.1L-30.8 71.6L-45 79.4L-46.2 64L-61.9 68.6L-59.7 53.1L-76.3 54.2L-70.7 39.4L-87.2 36.7L-78.4 23.4L-94.1 17.1L-82.5 5.8L-96.6 -3.8L-82.6 -12.3L-94.3 -24.9L-78.6 -30.2L-87.3 -45.1L-70.6 -46.9L-75.9 -63.3L-59.1 -61.4L-60.6 -78.7L-44.5 -73.1L-42.3 -90.3L-27.7 -81.3L-21.7 -97.5L-9.4 -85.5L0 -100L9.4 -85.5L21.7 -97.5L27.7 -81.3L42.3 -90.3L44.5 -73.1L60.6 -78.7L59.1 -61.4L75.9 -63.3L70.6 -46.9L87.3 -45.1L78.6 -30.2L94.3 -24.9L82.6 -12.3L96.6 -3.8L82.5 5.8L94.1 17.1L78.4 23.4L87.2 36.7L70.7 39.4L76.3 54.2L59.7 53.1L61.9 68.6L46.2 64L45 79.4L30.8 71.6L26.3 86.1Z"/><path class="rib" d="M0 0L-25.5 83.5M0 0L-43.6 77M0 0L-60.1 66.5M0 0L-74 52.5M0 0L-84.6 35.6M0 0L-91.3 16.6M0 0L-93.7 -3.6M0 0L-91.4 -24.1M0 0L-84.7 -43.7M0 0L-73.6 -61.4M0 0L-58.8 -76.3M0 0L-41 -87.6M0 0L-21 -94.6M0 0L0 -97M0 0L21 -94.6M0 0L41 -87.6M0 0L58.8 -76.3M0 0L73.6 -61.4M0 0L84.7 -43.7M0 0L91.4 -24.1M0 0L93.7 -3.6M0 0L91.3 16.6M0 0L84.6 35.6M0 0L74 52.5M0 0L60.1 66.5M0 0L43.6 77M0 0L25.5 83.5"/></g>
+  <path id="pl" d="M12 2.8c.9 0 1.6 1.1 1.6 2.6v3.5l6.9 4.2v1.9l-6.9-2.1v4.3l2.2 1.7v1.6L12 19.6l-3.8.9v-1.6l2.2-1.7v-4.3l-6.9 2.1v-1.9l6.9-4.2V5.4c0-1.5.7-2.6 1.6-2.6Z"/>
+  <path id="fan" d="M0 96L-120 0M0 96L-96 0M0 96L-72 0M0 96L-48 0M0 96L-24 0M0 96L0 0M0 96L24 0M0 96L48 0M0 96L72 0M0 96L96 0M0 96L120 0"/>
+  <path id="cab" d="M0 -46L9 0M0 -46L-9 0M0 -46L18 0M0 -46L-18 0M0 -46L27 0M0 -46L-27 0M0 -46L36 0M0 -46L-36 0M0 -46L45 0M0 -46L-45 0M0 -46L54 0M0 -46L-54 0"/>
+  <path id="fern" d="M0 -2.5L.9 -2.7L1.9 -2.5L2.9 -1.9L3.7 -1L4.2 .3L4.2 1.8L3.6 3.3L2.5 4.6L1 5.5L-.9 5.8L-2.9 5.5L-4.8 4.5L-6.3 2.8L-7.2 .7L-7.4 -1.8L-6.7 -4.2L-5.2 -6.4L-2.9 -8.1L-.1 -8.9L2.9 -8.8L5.8 -7.7L8.2 -5.6L9.9 -2.7L10.6 .7L10.1 4.2L8.5 7.5L5.8 10.1L2.2 11.7L-1.7 12.2L-5.7 11.2L-9.3 9L-12 5.7L-13.6 1.5L-13.6 -3L-12.2 -7.5L-9.3 -11.3L-5.3 -14L-.5 -15.3L4.6 -15L9.4 -12.9C19.4 1.1 15.4 27.1 19.4 57.1"/>
+  <path id="prop" d="M0 0c-9-16-9-44 0-68 9 24 9 52 0 68Z"/>
+  <pattern id="p-weave" width="24" height="24" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path class="patf" d="M1 1h10v4H1zM1 7h10v4H1zM13 1h4v10h-4zM19 1h4v10h-4zM1 13h4v10H1zM7 13h4v10H7zM13 13h10v4H13zM13 19h10v4H13z"/></pattern>
+  <pattern id="p-rebung" width="30" height="46" patternUnits="userSpaceOnUse"><path class="pat" d="M3 44 15 6l12 38ZM9 44l6-19 6 19"/><circle class="patf" cx="15" cy="37" r="1.7"/></pattern>
+  <pattern id="p-batik" width="56" height="30" patternUnits="userSpaceOnUse"><path class="pat" d="M0 15c9-13 19-13 28 0s19 13 28 0"/><path class="patf" d="M13 4c5 0 7 3 7 7-5 0-7-3-7-7ZM43 26c-5 0-7-3-7-7 5 0 7 3 7 7Z"/><circle class="patf" cx="28" cy="4" r="1.4"/><circle class="patf" cx="0" cy="27" r="1.4"/><circle class="patf" cx="56" cy="27" r="1.4"/></pattern>
+  <pattern id="p-vein" width="38" height="24" patternUnits="userSpaceOnUse"><path class="pat" d="M19 0v24M19 9 2 0M19 9l17-9M19 21 2 12M19 21l17-9"/></pattern>
+  <pattern id="p-tri" width="20" height="20" patternUnits="userSpaceOnUse"><path fill="currentColor" d="M0 20 10 3l10 17Z"/></pattern>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-5.6-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.4 12 21 12 21Z"/><circle cx="12" cy="10.5" r="2.25"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M9 6h9v9M18 6 7 17"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 8h16M4 16h16"/></symbol>
+  <symbol id="i-a11y" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="7.9" r=".6"/><path d="M7.8 10.6c2.8.8 5.6.8 8.4 0M12 11.2v3.3m0 0-2 3.3m2-3.3 2 3.3"/></symbol>
+  <symbol id="i-save" viewBox="0 0 24 24"><path d="M7 4.5h10a1 1 0 0 1 1 1V20l-6-4-6 4V5.5a1 1 0 0 1 1-1Z"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M5 6.5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v7.5a2 2 0 0 1-2 2h-5l-4 3.5V16H7a2 2 0 0 1-2-2Z"/><path d="M12 7.4c.3 1.7.9 2.4 2.6 2.7-1.7.3-2.3 1-2.6 2.7-.3-1.7-.9-2.4-2.6-2.7 1.7-.3 2.3-1 2.6-2.7Z"/></symbol>
+  <symbol id="i-depart" viewBox="0 0 24 24"><use href="#pl" transform="rotate(45 12 11) translate(2.6 1.6) scale(.78)" stroke-width="2.2"/><path d="M3 21h18"/></symbol>
+  <symbol id="i-arrive" viewBox="0 0 24 24"><use href="#pl" transform="rotate(135 12 11) translate(2.6 1.6) scale(.78)" stroke-width="2.2"/><path d="M3 21h18"/></symbol>
+  <symbol id="i-transit" viewBox="0 0 24 24"><path d="M4 8h14m0 0-3.5-3.5M18 8l-3.5 3.5M20 16H6m0 0 3.5-3.5M6 16l3.5 3.5"/></symbol>
+  <symbol id="i-meet" viewBox="0 0 24 24"><circle cx="8.5" cy="8" r="2.75"/><path d="M3.5 19c.3-3 2.3-5 5-5s4.7 2 5 5"/><circle cx="16.5" cy="9" r="2.25"/><path d="M15.6 14.1c2.7-.4 4.7 1.6 4.9 4.9"/></symbol>
+  <symbol id="i-park" viewBox="0 0 24 24"><rect x="4.5" y="4.5" width="15" height="15" rx="4"/><path d="M10 16V8h3a2.5 2.5 0 0 1 0 5h-3"/></symbol>
+  <symbol id="i-train" viewBox="0 0 24 24"><rect x="6" y="3.5" width="12" height="13" rx="3"/><path d="M6 11h12M9.6 14h.01M14.4 14h.01M8.5 20.5l1.5-4M15.5 20.5l-1.5-4"/></symbol>
+  <symbol id="i-map" viewBox="0 0 24 24"><path d="M9 5 4 7v12l5-2 6 2 5-2V5l-5 2-6-2Zm0 0v12m6-10v12"/></symbol>
+  <symbol id="i-food" viewBox="0 0 24 24"><path d="M6.5 3.5v5a2.5 2.5 0 0 0 5 0v-5M9 3.5v17M17.5 20.5v-17c-2 1.4-3 3.8-3 7v2.5h3"/></symbol>
+  <symbol id="i-lounge" viewBox="0 0 24 24"><path d="M7 11V8a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v3"/><path d="M4.5 13a2 2 0 0 1 4 0v2h7v-2a2 2 0 0 1 4 0v4.5h-15Z"/><path d="M6.5 17.5v2M17.5 17.5v2"/></symbol>
+  <symbol id="i-track" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/><path d="M8 18h6.5a3.5 3.5 0 0 0 0-7h-5a3.5 3.5 0 0 1 0-7H16"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8h.01"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="i-ok" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m8.5 12.2 2.4 2.4 4.6-5"/></symbol>
+  <symbol id="i-go" viewBox="0 0 24 24"><path d="M14 4.5h4.5v15H14M4 12h10m0 0-3.5-3.5M14 12l-3.5 3.5"/></symbol>
+  <symbol id="i-shut" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M8 12h8"/></symbol>
+  <symbol id="i-cancel" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m9 9 6 6m0-6-6 6"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.5 5 6v5.5c0 4.3 2.9 7.4 7 9 4.1-1.6 7-4.7 7-9V6l-7-2.5Z"/><path d="m9 12 2.2 2.2L15 10"/></symbol>
+  <symbol id="i-approx" viewBox="0 0 24 24"><path d="M5 10c2.3-2.6 4.7-2.6 7 0s4.7 2.6 7 0M5 15.5c2.3-2.6 4.7-2.6 7 0s4.7 2.6 7 0"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19c0-8 5-13 14-14 0 9-4.5 14-12 14M5 19c2.5-4.5 5.5-7.5 9.5-9.5"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><rect x="5" y="8" width="14" height="11.5" rx="2.5"/><path d="M9.5 8V5.5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1V8M9.5 12v4M14.5 12v4"/></symbol>
+  <symbol id="i-pass" viewBox="0 0 24 24"><rect x="6" y="3.5" width="12" height="17" rx="2.5"/><circle cx="12" cy="10.5" r="2.75"/><path d="M9.5 16.5h5"/></symbol>
+  <symbol id="i-gate" viewBox="0 0 24 24"><path d="M6 20.5V5.5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v15M3.5 20.5h17M14.5 12.5v.01"/></symbol>
+  <symbol id="i-term" viewBox="0 0 24 24"><path d="M3.5 20.5h17M5.5 20.5V11L12 5l6.5 6v9.5M10 20.5v-5h4v5"/></symbol>
+  <symbol id="i-cup" viewBox="0 0 24 24"><path d="M5 9h11v5a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5ZM16 10.5h1.5a2.5 2.5 0 0 1 0 5H16M8 3.5v2.5M12 3.5v2.5"/></symbol>
+  <symbol id="i-gift" viewBox="0 0 24 24"><rect x="4.5" y="9" width="15" height="11" rx="2"/><path d="M12 9v11M4.5 13.5h15M12 9c-1-3-2.5-4.5-4-4.5a2.2 2.2 0 0 0 0 4.5Zm0 0c1-3 2.5-4.5 4-4.5a2.2 2.2 0 0 1 0 4.5Z"/></symbol>
+  <symbol id="i-gem" viewBox="0 0 24 24"><path d="M7.5 4.5h9L20.5 10 12 20 3.5 10ZM3.5 10h17M9.5 10 12 20l2.5-10L12 4.5Z"/></symbol>
+</defs>
+</svg>
+
+<header class="hdr">
+  <div class="hdr__in">
+    <a class="brand" href="#top" aria-label="Malaysia Airports, home"><svg aria-hidden="true" fill="currentColor"><use href="#mark"/></svg><span>Malaysia <b>Airports</b></span></a>
+    <nav class="nav" aria-label="Primary">
+      <ul>
+        <li><a href="#board">Flights</a></li><li><a href="#journey">Plan your journey</a></li><li><a href="#network">At the airport</a></li>
+        <li><a href="#shop">Shop &amp; dine</a></li><li><a href="#main">Transport &amp; parking</a></li><li><a href="#concierge">Help</a></li>
+      </ul>
+    </nav>
+    <div class="util">
+      <label class="apt" data-unset><svg class="i pin" aria-hidden="true"><use href="#i-pin"/></svg>
+        <select class="js-apt" aria-label="Airport or terminal"><option value="">Choose airport</option><option value="kul1">KLIA Terminal 1</option><option value="kul2">KLIA Terminal 2</option><option value="pen">Penang</option><option value="bki">Kota Kinabalu</option><option value="kch">Kuching</option><option value="lgk">Langkawi</option><option value="szb">Subang</option><option value="all">All 39 airports</option></select>
+        <svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></label>
+      <button class="ib u-s js-focus" type="button" aria-label="Search flights"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg></button>
+      <div class="pg" role="group" aria-label="Language"><button type="button" data-set="lang:en" aria-pressed="true" aria-label="English">EN</button><button type="button" data-set="lang:bm" aria-pressed="false" aria-label="Bahasa Malaysia">BM</button></div>
+      <button class="ib u-x" type="button" popovertarget="a11y" aria-label="Display and accessibility settings"><svg class="i" aria-hidden="true"><use href="#i-a11y"/><circle cx="12" cy="7.9" r=".6" fill="currentColor"/></svg></button>
+      <a class="ib u-x" href="#journey" aria-label="Saved journey"><svg class="i" aria-hidden="true"><use href="#i-save"/></svg></a>
+      <a class="ib u-s" href="#concierge" aria-label="Ask the concierge"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg></a>
+      <button class="ib menu-btn" type="button" popovertarget="menu" aria-label="Menu"><svg class="i" aria-hidden="true"><use href="#i-menu"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+<span id="top"></span>
+<!-- =================== HERO =================== -->
+<section class="hero" aria-labelledby="h1">
+  <svg class="canopy canopy--l" viewBox="0 0 460 640" aria-hidden="true"><use href="#leaf" class="l1" transform="translate(30 300) rotate(84) scale(2.2)"/><use href="#leaf" class="l2" transform="translate(-36 60) rotate(128) scale(2.7)"/><use href="#leaf" class="l3" transform="translate(150 -78) rotate(168) scale(1.9)"/><use href="#leaf" class="l2" transform="translate(322 -58) rotate(196) scale(1.1)"/><use href="#leaf" class="l1" transform="translate(-70 540) rotate(72) scale(1.7)"/></svg>
+  <svg class="canopy canopy--r" viewBox="0 0 460 640" aria-hidden="true"><use href="#leaf" class="l1" transform="translate(438 318) rotate(-82) scale(2)"/><use href="#leaf" class="l3" transform="translate(500 70) rotate(-130) scale(2.6)"/><use href="#leaf" class="l2" transform="translate(300 -84) rotate(-172) scale(1.8)"/><use href="#leaf" class="l1" transform="translate(150 -56) rotate(170) scale(1)"/><use href="#leaf" class="l2" transform="translate(530 560) rotate(-64) scale(1.6)"/></svg>
+  <div class="wrap">
+    <p class="eyebrow">Selamat datang <i></i> 39 airports, one connected journey</p>
+    <h1 id="h1">Your journey, <em>beautifully connected.</em></h1>
+
+    <form class="clearing" role="search" aria-label="Flight search" id="search">
+      <div class="clearing__ctx">
+        <label class="apt apt--lg" data-unset><svg class="i pin" aria-hidden="true"><use href="#i-pin"/></svg><span class="apt__l">Airport or terminal</span>
+          <select class="js-apt"><option value="">Choose airport</option><option value="kul1">KLIA Terminal 1</option><option value="kul2">KLIA Terminal 2</option><option value="pen">Penang</option><option value="bki">Kota Kinabalu</option><option value="kch">Kuching</option><option value="lgk">Langkawi</option><option value="szb">Subang</option><option value="all">All 39 airports</option></select>
+          <svg class="i chev" aria-hidden="true"><use href="#i-chev"/></svg></label>
+        <fieldset class="seg"><legend class="sr">Flight direction</legend>
+          <label><input type="radio" name="dir" value="departures" checked><span><svg class="i" aria-hidden="true"><use href="#i-depart"/></svg>Departures</span></label>
+          <label><input type="radio" name="dir" value="arrivals"><span><svg class="i" aria-hidden="true"><use href="#i-arrive"/></svg>Arrivals</span></label>
+        </fieldset>
+        <p class="scope" id="scope" aria-live="polite">Searching <b>departures</b> across <b>all 39 airports</b></p>
+      </div>
+      <div class="clearing__q">
+        <svg class="i" aria-hidden="true"><use href="#i-search"/></svg>
+        <label class="sr" for="q">Search by flight number, destination, airline or route</label>
+        <input id="q" type="search" placeholder="Flight number, destination, airline or route" autocomplete="off" spellcheck="false" enterkeyhint="search">
+        <span class="q-read" id="q-read" aria-live="polite"></span>
+        <button class="btn btn--action btn--go" type="submit"><span>Search flights</span><svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+      </div>
+    </form>
+    <div class="try"><span>Try</span>
+      <button type="button" data-q="MH 2"><kbd>MH 2</kbd></button><button type="button" data-q="London Heathrow">London Heathrow</button><button type="button" data-q="AirAsia">AirAsia</button><button type="button" data-q="Kuala Lumpur to Kota Kinabalu">Kuala Lumpur to Kota Kinabalu</button>
+    </div>
+
+    <section class="jp" aria-labelledby="jp-h">
+      <h2 class="sr" id="jp-h">Quick actions for your journey</h2>
+      <fieldset class="modes"><legend class="sr">What are you doing today?</legend>
+        <label><input type="radio" name="mode" value="dep" checked><span><svg class="i" aria-hidden="true"><use href="#i-depart"/></svg>I'm departing</span></label>
+        <label><input type="radio" name="mode" value="arr"><span><svg class="i" aria-hidden="true"><use href="#i-arrive"/></svg>I'm arriving</span></label>
+        <label><input type="radio" name="mode" value="tra"><span><svg class="i" aria-hidden="true"><use href="#i-transit"/></svg>I'm transiting</span></label>
+        <label><input type="radio" name="mode" value="meet"><span><svg class="i" aria-hidden="true"><use href="#i-meet"/></svg>I'm meeting someone</span></label>
+      </fieldset>
+      <p class="jp__lead" aria-live="polite"><b id="lead-k">Departing</b><span id="lead-t">Check your flight first, then plan the trip to the terminal.</span></p>
+      <ul class="qa" id="qa">
+        <li data-k="track"><a href="#board"><svg class="i" aria-hidden="true"><use href="#i-track"/></svg><span class="qa__t">Track a flight</span><span class="qa__c">Gate, time and live status</span></a></li>
+        <li data-k="getting"><a href="#journey"><svg class="i" aria-hidden="true"><use href="#i-train"/></svg><span class="qa__t">Getting to the airport</span><span class="qa__c">Rail, bus, taxi and e-hailing</span></a></li>
+        <li data-k="parking"><a href="#journey"><svg class="i" aria-hidden="true"><use href="#i-park"/></svg><span class="qa__t">Parking</span><span class="qa__c">Short-stay and long-term bays</span></a></li>
+        <li data-k="maps"><a href="#network"><svg class="i" aria-hidden="true"><use href="#i-map"/></svg><span class="qa__t">Terminal maps</span><span class="qa__c">Check-in, security and gates</span></a></li>
+        <li data-k="lounges"><a href="#shop"><svg class="i" aria-hidden="true"><use href="#i-lounge"/></svg><span class="qa__t">Lounges</span><span class="qa__c">A quiet seat before you fly</span></a></li>
+        <li data-k="food"><a href="#shop"><svg class="i" aria-hidden="true"><use href="#i-food"/></svg><span class="qa__t">Food and shops</span><span class="qa__c">Eat and browse before boarding</span></a></li>
+      </ul>
+    </section>
+
+    <div class="ctx">
+      <div class="notice" role="note"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>
+        <p><span class="k">Operational notice <span aria-hidden="true">·</span> KLIA Terminal 1</span>The Aerotrain to the satellite building runs 24 hours again.</p>
+        <a href="#journey" aria-label="Aerotrain notice details">Details</a></div>
+      <a class="strip" href="#journey"><svg class="i" aria-hidden="true"><use href="#i-train"/></svg>
+        <p><span class="k">Getting to the airport</span><span id="ctx-g">Rail, road and parking, airport by airport.</span></p><svg class="i go" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      <a class="strip" href="#network"><svg class="i" aria-hidden="true"><use href="#i-term"/></svg>
+        <p><span class="k">Terminal guidance</span><span id="ctx-t">KLIA has two terminals. Check your booking.</span></p><svg class="i go" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- =================== DEPARTURES BOARD =================== -->
+<section class="sec board-sec" id="board" aria-labelledby="board-h">
+  <div class="wrap">
+    <div class="board forest">
+      <p class="demo" role="note"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg><strong>Demonstration data, not live.</strong><span>Flights, times and gates on this board are illustrative only.</span></p>
+      <div class="board__hd">
+        <div><p class="eyebrow">Departures board preview</p><h2 id="board-h">Departures<small>Kuala Lumpur International Airport <span aria-hidden="true">·</span> KUL</small></h2></div>
+        <p class="fresh"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Last updated <time datetime="14:32">14:32</time> MYT <span aria-hidden="true">·</span> sample snapshot</p>
+      </div>
+      <table class="fl">
+        <caption class="sr">Sample departures from Kuala Lumpur International Airport. Demonstration data, not live. <span id="board-msg" aria-live="polite"></span></caption>
+        <thead><tr><th scope="col">Time</th><th scope="col" class="f">Flight</th><th scope="col">Destination</th><th scope="col" class="a">Airline</th><th scope="col" class="g">Terminal / Gate</th><th scope="col" class="s">Status</th></tr></thead>
+        <tbody id="rows">
+          <tr><td class="t"><time>14:40</time></td><td class="f">AK 5104</td><td class="d">Kota Kinabalu<abbr title="Kota Kinabalu International Airport">BKI</abbr><span class="m">AK 5104 · AirAsia · T2 · Gate L8</span></td><td class="a"><span class="al" aria-hidden="true">AK</span>AirAsia</td><td class="g">T2<b>L8</b></td><td class="s"><span class="chip chip--shut"><svg class="i" aria-hidden="true"><use href="#i-shut"/></svg>Gate closed</span></td></tr>
+          <tr><td class="t"><time>14:45</time></td><td class="f">MH 2</td><td class="d">London Heathrow<abbr title="London Heathrow Airport">LHR</abbr><span class="m">MH 2 · Malaysia Airlines · T1 · Gate C12</span></td><td class="a"><span class="al" aria-hidden="true">MH</span>Malaysia Airlines</td><td class="g">T1<b>C12</b></td><td class="s"><span class="chip chip--go"><svg class="i" aria-hidden="true"><use href="#i-go"/></svg>Boarding</span></td></tr>
+          <tr><td class="t"><time>14:55</time></td><td class="f">OD 2104</td><td class="d">Penang<abbr title="Penang International Airport">PEN</abbr><span class="m">OD 2104 · Batik Air · T1 · Gate B4</span></td><td class="a"><span class="al" aria-hidden="true">OD</span>Batik Air</td><td class="g">T1<b>B4</b></td><td class="s"><span class="chip chip--go"><svg class="i" aria-hidden="true"><use href="#i-go"/></svg>Boarding</span></td></tr>
+          <tr><td class="t"><time>15:10</time></td><td class="f">SQ 107</td><td class="d">Singapore<abbr title="Singapore Changi Airport">SIN</abbr><span class="m">SQ 107 · Singapore Airlines · T1 · Gate C3</span></td><td class="a"><span class="al" aria-hidden="true">SQ</span>Singapore Airlines</td><td class="g">T1<b>C3</b></td><td class="s"><span class="chip chip--ok"><svg class="i" aria-hidden="true"><use href="#i-ok"/></svg>On time</span></td></tr>
+          <tr><td class="t new"><s><span class="sr">Was </span>15:20</s><time><span class="sr">New time </span>16:05</time></td><td class="f">EK 343</td><td class="d">Dubai<abbr title="Dubai International Airport">DXB</abbr><span class="m">EK 343 · Emirates · T1 · Gate C22</span></td><td class="a"><span class="al" aria-hidden="true">EK</span>Emirates</td><td class="g">T1<b>C22</b></td><td class="s"><span class="chip chip--late"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>Delayed to 16:05</span></td></tr>
+          <tr><td class="t"><time>15:35</time></td><td class="f">JL 724</td><td class="d">Tokyo Narita<abbr title="Narita International Airport">NRT</abbr><span class="m">JL 724 · Japan Airlines · T1 · Gate C15</span></td><td class="a"><span class="al" aria-hidden="true">JL</span>Japan Airlines</td><td class="g">T1<b>C15</b></td><td class="s"><span class="chip chip--ok"><svg class="i" aria-hidden="true"><use href="#i-ok"/></svg>On time</span></td></tr>
+          <tr class="off"><td class="t"><s><span class="sr">Was </span>15:40</s></td><td class="f">MH 2612</td><td class="d">Kuching<abbr title="Kuching International Airport">KCH</abbr><span class="m">MH 2612 · Malaysia Airlines · T1</span></td><td class="a"><span class="al" aria-hidden="true">MH</span>Malaysia Airlines</td><td class="g">T1<b aria-label="No gate">&ndash;</b></td><td class="s"><span class="chip chip--x"><svg class="i" aria-hidden="true"><use href="#i-cancel"/></svg>Cancelled</span></td></tr>
+          <tr><td class="t"><time>15:55</time></td><td class="f">AK 6124</td><td class="d">Langkawi<abbr title="Langkawi International Airport">LGK</abbr><span class="m">AK 6124 · AirAsia · T2 · Gate J5</span></td><td class="a"><span class="al" aria-hidden="true">AK</span>AirAsia</td><td class="g">T2<b>J5</b></td><td class="s"><span class="chip chip--ok"><svg class="i" aria-hidden="true"><use href="#i-ok"/></svg>On time</span></td></tr>
+        </tbody>
+      </table>
+      <div class="board__ft"><p id="board-note">Eight sample flights shown. Status is always given as a word and a symbol, never by colour alone.</p><a class="link" href="#board">Open the full board<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== YOUR JOURNEY =================== -->
+<section class="sec" id="journey" aria-labelledby="journey-h">
+  <div class="wrap">
+    <div class="sec__hd">
+      <div><p class="eyebrow">Your journey</p><h2 id="journey-h">One clear plan, from front door to gate.</h2>
+        <p class="lede">Add your flight and we arrange each step around it. Every step says where it comes from, so you always know what is a rule and what is simply good advice.</p></div>
+      <ul class="legend" aria-label="How to read each step">
+        <li><span class="tag tag--off"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg>Official instruction</span>From your airline or the airport</li>
+        <li><span class="tag tag--est"><svg class="i" aria-hidden="true"><use href="#i-approx"/></svg>Estimated guidance</span>Our best estimate for the day</li>
+        <li><span class="tag tag--sug"><svg class="i" aria-hidden="true"><use href="#i-leaf"/></svg>Suggestion</span>Optional, to make things easier</li>
+      </ul>
+    </div>
+    <div class="trip">
+      <div class="trip__hd"><span class="al" aria-hidden="true">MH</span><p>MH 2 to London Heathrow <small>· departs 14:45 · sample journey, demonstration data</small></p><a class="btn btn--action" href="#search">Build my journey</a></div>
+      <ol class="tl">
+        <li class="step"><span class="step__n"><svg class="i" aria-hidden="true"><use href="#i-term"/></svg></span><p class="step__k">Terminal</p><p class="step__v">KLIA Terminal 1</p><p class="step__d">Confirmed by your airline for this flight.</p><span class="tag tag--off"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg>Official instruction</span></li>
+        <li class="step"><span class="step__n"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></span><p class="step__k">When to arrive</p><p class="step__v">By 11:45</p><p class="step__d">About three hours ahead of a long-haul departure.</p><span class="tag tag--est"><svg class="i" aria-hidden="true"><use href="#i-approx"/></svg>Estimated guidance</span></li>
+        <li class="step"><span class="step__n"><svg class="i" aria-hidden="true"><use href="#i-train"/></svg></span><p class="step__k">How to get there</p><p class="step__v">Rail, or drive and park</p><p class="step__d">KLIA Ekspres from KL Sentral, or park in Blocks A to D.</p><span class="tag tag--sug"><svg class="i" aria-hidden="true"><use href="#i-leaf"/></svg>Suggestion</span></li>
+        <li class="step"><span class="step__n"><svg class="i" aria-hidden="true"><use href="#i-bag"/></svg></span><p class="step__k">Check-in</p><p class="step__v">Row and closing time</p><p class="step__d">Shown here as soon as your airline publishes them.</p><span class="tag tag--off"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg>Official instruction</span></li>
+        <li class="step"><span class="step__n"><svg class="i" aria-hidden="true"><use href="#i-pass"/></svg></span><p class="step__k">Security and immigration</p><p class="step__v">Allow extra time</p><p class="step__d">Queue estimates appear here on the day you travel.</p><span class="tag tag--est"><svg class="i" aria-hidden="true"><use href="#i-approx"/></svg>Estimated guidance</span></li>
+        <li class="step"><span class="step__n"><svg class="i" aria-hidden="true"><use href="#i-gate"/></svg></span><p class="step__k">Gate</p><p class="step__v">C12, satellite building</p><p class="step__d">Take the Aerotrain, now running 24 hours.</p><span class="tag tag--off"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg>Official instruction</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- =================== AIRPORT NETWORK =================== -->
+<section class="sec sec--tint" id="network" aria-labelledby="network-h">
+  <div class="wrap">
+    <div class="sec__hd">
+      <div><p class="eyebrow">Airport network</p><h2 id="network-h">39 airports. One warm welcome.</h2>
+        <p class="lede">From the canopy columns of KLIA to island runways and rainforest airstrips, every airport guide starts with the same things: your flight, your way there and your way through.</p></div>
+      <ul class="stats"><li><b>5</b>international airports</li><li><b>17</b>domestic airports</li><li><b>17</b>short take-off and landing ports</li></ul>
+    </div>
+    <ul class="cards">
+      <li><a class="card" href="#top"><svg class="art" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#123B2F"/><g fill="none" stroke="#5FA283" stroke-width="1" opacity=".8"><use href="#fan" x="40" y="14"/><use href="#fan" x="160" y="14"/><use href="#fan" x="280" y="14"/></g><g fill="#D6E6D6"><path d="M36 200l2.4-90h3.2l2.4 90ZM156 200l2.4-90h3.2l2.4 90ZM276 200l2.4-90h3.2l2.4 90Z"/></g><path d="M0 182h320v18H0z" fill="#0B261E"/><g fill="#FF8A75"><circle cx="100" cy="62" r="2.5"/><circle cx="220" cy="62" r="2.5"/></g></svg>
+        <span class="card__b"><span class="card__c">KUL</span><span class="card__n">KLIA Terminal 1</span><span class="card__s">Sepang, Selangor</span><svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span></a></li>
+      <li><a class="card" href="#top"><svg class="art" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#CFE4DA"/><circle cx="252" cy="50" r="19" fill="#F7FBF6"/><path d="M0 152h320v48H0z" fill="#A6CBB6"/><path d="M0 174h320" stroke="#F7FBF6" stroke-width="2" stroke-dasharray="14 10"/><rect x="50" y="80" width="26" height="76" rx="5" fill="#1B4A3A"/><rect x="244" y="80" width="26" height="76" rx="5" fill="#1B4A3A"/><path d="M26 96Q160 56 294 96v15Q160 71 26 111Z" fill="#245E49"/><path d="M26 96Q160 56 294 96v15Q160 71 26 111Z" fill="url(#p-weave)" opacity=".7"/><use href="#pl" transform="translate(132 164) rotate(90) scale(1.9) translate(-12 -12)" fill="#C2331F"/></svg>
+        <span class="card__b"><span class="card__c">KUL</span><span class="card__n">KLIA Terminal 2</span><span class="card__s">Sepang, Selangor</span><svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span></a></li>
+      <li><a class="card" href="#top"><svg class="art" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#F9DDD3"/><circle cx="238" cy="82" r="27" fill="#F0553F"/><path d="M0 138C40 100 86 86 128 104s70 30 112 12 60-18 80-8v92H0Z" fill="#8DB89F"/><path d="M0 152h320v48H0z" fill="#1B4A3A"/><g stroke="#0F2C24" fill="none"><path d="M0 152h320" stroke-width="3"/><g transform="translate(104 152)"><use href="#cab"/><path d="M0-52V0" stroke-width="3"/></g><g transform="translate(216 152)"><use href="#cab"/><path d="M0-52V0" stroke-width="3"/></g></g><path d="M22 170h40M92 182h62M204 168h50M236 186h48" stroke="#8DB89F" stroke-width="2" stroke-linecap="round"/></svg>
+        <span class="card__b"><span class="card__c">PEN</span><span class="card__n">Penang</span><span class="card__s">Bayan Lepas, Penang</span><svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span></a></li>
+      <li><a class="card" href="#top"><svg class="art" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#DCE9E6"/><circle cx="66" cy="48" r="15" fill="#fff"/><path d="M0 130 36 106l22 6 26-36 14 12 18-30 12 10 14-20 12 16 14-10 16 24 18-10 24 30 26-8 32 24 36-8v94H0Z" fill="#7FAA99"/><rect x="-10" y="120" width="190" height="9" rx="4.5" fill="#F4F8F4" opacity=".9"/><rect x="150" y="137" width="200" height="8" rx="4" fill="#F4F8F4" opacity=".75"/><path d="M0 162c46-22 92-12 142-24s104 16 178-6v68H0Z" fill="#245E49"/><path d="M0 186c40-14 80-6 120-14s90 12 200-4v32H0Z" fill="#0F2C24"/></svg>
+        <span class="card__b"><span class="card__c">BKI</span><span class="card__n">Kota Kinabalu</span><span class="card__s">Sabah</span><svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span></a></li>
+      <li><a class="card" href="#top"><svg class="art" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#1B4A3A"/><g fill="none" stroke-linecap="round"><path d="M-20 56C70 56 96 108 160 108s86 54 180 54" stroke="#2F775C" stroke-width="46"/><path d="M-20 56C70 56 96 108 160 108s86 54 180 54" stroke="#BFE0DA" stroke-width="20"/><path d="M-20 56C70 56 96 108 160 108s86 54 180 54" stroke="#F4F8F4" stroke-width="1.5" stroke-dasharray="2 10" opacity=".8"/><g stroke="#E3C27A" stroke-width="2"><use href="#fern" transform="translate(58 142) scale(1.25)"/><use href="#fern" transform="translate(112 166) scale(.8)"/><use href="#fern" transform="translate(258 62) rotate(180) scale(1.1)"/></g></g></svg>
+        <span class="card__b"><span class="card__c">KCH</span><span class="card__n">Kuching</span><span class="card__s">Sarawak</span><svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span></a></li>
+      <li><a class="card" href="#top"><svg class="art" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#C6E3DD"/><circle cx="240" cy="54" r="17" fill="#FFA291"/><path d="M98 136c4-18 12-30 24-30 10 0 14 12 22 18 6 5 12 6 14 12Z" fill="#6FA58A"/><path d="M18 136C22 100 42 72 62 74c16 2 20 26 32 36 10 8 20 12 24 26Z" fill="#1B4A3A"/><path d="M166 136c6-40 26-78 50-74 20 3 22 36 42 48 14 8 24 12 28 26Z" fill="#245E49"/><path d="M0 136h320v64H0z" fill="#1F6B63"/><path d="M28 148h72M44 160h40M178 148h92M196 160h56M212 172h28M108 150h36" stroke="#C6E3DD" stroke-width="2" stroke-linecap="round" opacity=".6"/></svg>
+        <span class="card__b"><span class="card__c">LGK</span><span class="card__n">Langkawi</span><span class="card__s">Kedah</span><svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span></a></li>
+      <li><a class="card" href="#top"><svg class="art" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#EFE7D2"/><g fill="none" stroke="#B8892B" opacity=".6"><circle cx="160" cy="100" r="36"/><circle cx="160" cy="100" r="60"/><circle cx="160" cy="100" r="84"/></g><g transform="translate(160 100)" fill="#1B4A3A"><use href="#prop"/><use href="#prop" transform="rotate(60)"/><use href="#prop" transform="rotate(120)"/><use href="#prop" transform="rotate(180)"/><use href="#prop" transform="rotate(240)"/><use href="#prop" transform="rotate(300)"/></g><circle cx="160" cy="100" r="9" fill="#F0553F"/></svg>
+        <span class="card__b"><span class="card__c">SZB</span><span class="card__n">Subang</span><span class="card__s">Subang, Selangor</span><svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span></a></li>
+      <li><a class="card" href="#top"><svg class="art" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#0F2C24"/><g transform="translate(0 10)"><g fill="#FF8A75"><circle cx="171.2" cy="90" r="5.5"/><circle cx="146.5" cy="99.7" r="5.5"/><circle cx="162" cy="71.7" r="5.5"/><circle cx="176.7" cy="107.1" r="5.5"/><circle cx="129.4" cy="85.8" r="5.5"/></g><g fill="#8FD0AC"><circle cx="189" cy="75.6" r="3.6"/><circle cx="150.3" cy="118.2" r="3.6"/><circle cx="141.6" cy="62.2" r="3.6"/><circle cx="199.9" cy="101.4" r="3.6"/><circle cx="118.5" cy="103.4" r="3.6"/><circle cx="180" cy="56.5" r="3.6"/><circle cx="174.8" cy="126.9" r="3.6"/><circle cx="115.5" cy="69.8" r="3.6"/><circle cx="212.2" cy="81" r="3.6"/><circle cx="128.1" cy="125.5" r="3.6"/><circle cx="152.6" cy="45.5" r="3.6"/><circle cx="205.2" cy="119.9" r="3.6"/><circle cx="99.2" cy="92" r="3.6"/><circle cx="204.3" cy="55.4" r="3.6"/><circle cx="157" cy="140.3" r="3.6"/><circle cx="117.8" cy="50.4" r="3.6"/><circle cx="226.8" cy="97" r="3.6"/></g><g fill="none" stroke="#8FD0AC" stroke-width="1.3"><circle cx="103.4" cy="120.9" r="2.6"/><circle cx="175.5" cy="36.1" r="2.6"/><circle cx="195.7" cy="138.9" r="2.6"/><circle cx="90.1" cy="72.5" r="2.6"/><circle cx="227.9" cy="65.4" r="2.6"/><circle cx="130.6" cy="145.1" r="2.6"/><circle cx="133.8" cy="32.8" r="2.6"/><circle cx="229.8" cy="118.8" r="2.6"/><circle cx="82.4" cy="106" r="2.6"/><circle cx="204.1" cy="36.3" r="2.6"/><circle cx="174" cy="154" r="2.6"/><circle cx="93.6" cy="49.6" r="2.6"/><circle cx="245" cy="84.5" r="2.6"/><circle cx="101.2" cy="139.8" r="2.6"/><circle cx="160.4" cy="21.2" r="2.6"/><circle cx="219.7" cy="141.6" r="2.6"/><circle cx="70.3" cy="83.5" r="2.6"/></g></g></svg>
+        <span class="card__b"><span class="card__c">39 AIRPORTS</span><span class="card__n">All 39 airports</span><span class="card__s">Find any airport in the network</span><svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span></a></li>
+    </ul>
+  </div>
+</section>
+
+<!-- =================== SHOP & DINE =================== -->
+<section class="sec" id="shop" aria-labelledby="shop-h">
+  <div class="wrap">
+    <div class="sec__hd">
+      <div><p class="eyebrow">Shop &amp; dine</p><h2 id="shop-h">A taste of Malaysia before you fly.</h2>
+        <p class="lede">Browse by what you feel like and where you are in the terminal. Choose an airport to see what is open near your gate.</p></div>
+      <a class="link" href="#shop">Browse all shops and restaurants<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    </div>
+    <ul class="shop">
+      <li><a href="#shop"><div class="shop__art"><svg class="pt" aria-hidden="true"><rect width="100%" height="100%" fill="url(#p-weave)"/></svg><svg class="i" aria-hidden="true"><use href="#i-food"/></svg></div><h3>Malaysian flavours</h3><p>Nasi lemak, laksa, roti canai and teh tarik: local favourites to begin or end a trip.</p></a></li>
+      <li><a href="#shop"><div class="shop__art"><svg class="pt" aria-hidden="true"><rect width="100%" height="100%" fill="url(#p-vein)"/></svg><svg class="i" aria-hidden="true"><use href="#i-cup"/></svg></div><h3>Coffee and quick bites</h3><p>Cafes and grab-and-go counters, sorted by walking distance from your gate.</p></a></li>
+      <li><a href="#shop"><div class="shop__art"><svg class="pt" aria-hidden="true"><rect width="100%" height="100%" fill="url(#p-batik)"/></svg><svg class="i" aria-hidden="true"><use href="#i-gem"/></svg></div><h3>Duty free and beauty</h3><p>Fragrance, skincare, confectionery and travel essentials. See current offers.</p></a></li>
+      <li><a href="#shop"><div class="shop__art"><svg class="pt" aria-hidden="true"><rect width="100%" height="100%" fill="url(#p-rebung)"/></svg><svg class="i" aria-hidden="true"><use href="#i-gift"/></svg></div><h3>Crafts and gifts</h3><p>Batik, songket, pewter and rainforest-inspired keepsakes from Malaysian makers.</p></a></li>
+    </ul>
+  </div>
+</section>
+
+<!-- =================== CONCIERGE =================== -->
+<section class="sec" id="concierge" aria-labelledby="con-h" style="padding-top:0">
+  <div class="wrap">
+    <div class="con">
+      <svg class="con__leaf" viewBox="-100 -100 200 200" aria-hidden="true"><use href="#leaf" class="l1" transform="rotate(40)"/></svg>
+      <div><p class="eyebrow">AI concierge</p><h2 id="con-h">Ask in your own words. Get a clear answer.</h2>
+        <p class="lede">The concierge answers from published airport information, shows where each answer comes from, and hands you to a person when it cannot help.</p></div>
+      <div>
+        <form class="ask" id="ask" aria-label="Ask the concierge"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg>
+          <label class="sr" for="ask-q">Your question</label><input id="ask-q" type="text" placeholder="Ask about your journey" autocomplete="off">
+          <button class="btn btn--action" type="submit">Ask</button></form>
+        <div class="eg" role="group" aria-label="Example questions">
+          <button type="button">How do I get from Terminal 1 to Terminal 2?</button><button type="button">Where is the nearest prayer room to my gate?</button>
+          <button type="button">Which car park is closest to departures?</button><button type="button">Where can I rest during a long layover?</button>
+        </div>
+        <p class="con__note">AI answers can be wrong. Instructions from your airline and airport staff always come first.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- =================== FOOTER =================== -->
+<footer class="ftr forest">
+  <svg class="rebung" aria-hidden="true"><rect width="100%" height="20" fill="url(#p-tri)"/></svg>
+  <div class="wrap">
+    <div class="ftr__top">
+      <div><a class="brand" href="#top" aria-label="Malaysia Airports, home"><svg aria-hidden="true" fill="currentColor"><use href="#mark"/></svg><span>Malaysia <b>Airports</b></span></a>
+        <p class="promise">Hosting Joyful Connections.</p><p>39 airports across Malaysia, welcoming the world in Visit Malaysia 2026.</p></div>
+      <nav aria-label="Flights"><h3>Flights</h3><ul><li><a href="#board">Departures</a></li><li><a href="#board">Arrivals</a></li><li><a href="#search">Track a flight</a></li><li><a href="#board">Airlines</a></li></ul></nav>
+      <nav aria-label="Plan your journey"><h3>Plan your journey</h3><ul><li><a href="#journey">Journey planner</a></li><li><a href="#journey">Transfers and transit</a></li><li><a href="#journey">Getting to the airport</a></li><li><a href="#journey">Parking</a></li></ul></nav>
+      <nav aria-label="At the airport"><h3>At the airport</h3><ul><li><a href="#network">Terminal maps</a></li><li><a href="#shop">Shop and dine</a></li><li><a href="#shop">Lounges</a></li><li><a href="#network">Prayer rooms and facilities</a></li></ul></nav>
+      <nav aria-label="Help"><h3>Help</h3><ul><li><a href="#concierge">Help centre</a></li><li><a href="#concierge">Assistance and accessibility</a></li><li><a href="#concierge">Lost and found</a></li><li><a href="#concierge">Share feedback</a></li></ul></nav>
+    </div>
+    <div class="ftr__ctl">
+      <div><span id="f-lang">Language</span><div class="pg" role="group" aria-labelledby="f-lang"><button type="button" data-set="lang:en" aria-pressed="true">English</button><button type="button" data-set="lang:bm" aria-pressed="false">Bahasa Malaysia</button></div></div>
+      <div><span id="f-theme">Theme</span><div class="pg" role="group" aria-labelledby="f-theme"><button type="button" data-set="theme:auto" aria-pressed="true">Auto</button><button type="button" data-set="theme:light" aria-pressed="false">Light</button><button type="button" data-set="theme:dark" aria-pressed="false">Dark</button></div></div>
+      <div><span id="f-text">Text size</span><div class="pg" role="group" aria-labelledby="f-text"><button type="button" data-set="text:md" aria-pressed="true">Default</button><button type="button" data-set="text:lg" aria-pressed="false">Larger</button></div></div>
+      <div><span id="f-motion">Motion</span><div class="pg" role="group" aria-labelledby="f-motion"><button type="button" data-set="motion:full" aria-pressed="true">Full</button><button type="button" data-set="motion:reduce" aria-pressed="false">Reduced</button></div></div>
+      <a class="link" href="#top">Malaysia Airports corporate site<svg class="i" aria-hidden="true"><use href="#i-ext"/></svg></a>
+    </div>
+    <div class="ftr__legal"><p>Concept design for demonstration. Not an official Malaysia Airports website. Flight information shown is illustrative.</p><p><a href="#top">Accessibility statement</a> · <a href="#top">Privacy</a> · <a href="#top">Terms</a></p></div>
+  </div>
+</footer>
+
+<!-- Mobile dock: thumb-reachable search -->
+<nav class="dock" aria-label="Quick access">
+  <a href="#board"><svg class="i" aria-hidden="true"><use href="#i-depart"/></svg>Flights</a>
+  <a href="#journey"><svg class="i" aria-hidden="true"><use href="#i-track"/></svg>Journey</a>
+  <button type="button" class="dock__go js-focus"><i><svg class="i" aria-hidden="true"><use href="#i-search"/></svg></i>Search</button>
+  <a href="#network"><svg class="i" aria-hidden="true"><use href="#i-map"/></svg>Maps</a>
+  <a href="#concierge"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg>Ask</a>
+</nav>
+
+<!-- Popovers -->
+<div id="a11y" class="pop" popover aria-label="Display and accessibility">
+  <p class="pop__t">Display and accessibility</p>
+  <div class="pop__r"><span id="p-theme">Theme</span><div class="pg" role="group" aria-labelledby="p-theme"><button type="button" data-set="theme:auto" aria-pressed="true">Auto</button><button type="button" data-set="theme:light" aria-pressed="false">Light</button><button type="button" data-set="theme:dark" aria-pressed="false">Dark</button></div></div>
+  <div class="pop__r"><span id="p-text">Text size</span><div class="pg" role="group" aria-labelledby="p-text"><button type="button" data-set="text:md" aria-pressed="true">Default</button><button type="button" data-set="text:lg" aria-pressed="false">Larger</button></div></div>
+  <div class="pop__r"><span id="p-motion">Motion</span><div class="pg" role="group" aria-labelledby="p-motion"><button type="button" data-set="motion:full" aria-pressed="true">Full</button><button type="button" data-set="motion:reduce" aria-pressed="false">Reduced</button></div></div>
+</div>
+<div id="menu" class="sheet" popover aria-label="Menu">
+  <div class="sheet__hd"><span class="brand"><svg aria-hidden="true" fill="currentColor"><use href="#mark"/></svg><span>Malaysia <b>Airports</b></span></span><button class="ib" type="button" popovertarget="menu" popovertargetaction="hide" aria-label="Close menu"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+  <nav aria-label="Menu"><ul>
+    <li><a href="#board">Flights<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a></li><li><a href="#journey">Plan your journey<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a></li><li><a href="#network">At the airport<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+    <li><a href="#shop">Shop &amp; dine<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a></li><li><a href="#main">Transport &amp; parking<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a></li><li><a href="#concierge">Help<svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+  </ul></nav>
+  <div class="sheet__u">
+    <div><span id="m-lang">Language</span><div class="pg" role="group" aria-labelledby="m-lang"><button type="button" data-set="lang:en" aria-pressed="true">English</button><button type="button" data-set="lang:bm" aria-pressed="false">Bahasa Malaysia</button></div></div>
+    <div><span id="m-theme">Theme</span><div class="pg" role="group" aria-labelledby="m-theme"><button type="button" data-set="theme:auto" aria-pressed="true">Auto</button><button type="button" data-set="theme:light" aria-pressed="false">Light</button><button type="button" data-set="theme:dark" aria-pressed="false">Dark</button></div></div>
+    <div><span id="m-text">Text size</span><div class="pg" role="group" aria-labelledby="m-text"><button type="button" data-set="text:md" aria-pressed="true">Default</button><button type="button" data-set="text:lg" aria-pressed="false">Larger</button></div></div>
+    <a href="#journey"><svg class="i" aria-hidden="true"><use href="#i-save"/></svg>Saved journey</a>
+    <a href="#concierge"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg>Ask the concierge</a>
+    <a href="#top"><svg class="i" aria-hidden="true"><use href="#i-ext"/></svg>Malaysia Airports corporate site</a>
+  </div>
+</div>
+
+<script>
+(function(){
+  var root=document.documentElement,$=function(s,c){return (c||document).querySelector(s)},$$=function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
+  var calm=function(){return root.dataset.motion==='reduce'||matchMedia('(prefers-reduced-motion: reduce)').matches};
+
+  /* Settings: theme, text size, motion, language */
+  var mq=matchMedia('(prefers-color-scheme: dark)');
+  function set(k,v){
+    if(k==='theme'){try{localStorage.setItem('ma-theme',v)}catch(e){} root.dataset.themePref=v;root.dataset.theme=v==='auto'?(mq.matches?'dark':'light'):v}
+    else root.dataset[k]=v;
+    $$('[data-set^="'+k+':"]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.set===k+':'+v))});
+  }
+  document.addEventListener('click',function(e){var b=e.target.closest('[data-set]');if(b){var p=b.dataset.set.split(':');set(p[0],p[1])}});
+  mq.addEventListener('change',function(){if(root.dataset.themePref==='auto')set('theme','auto')});
+  set('theme',root.dataset.themePref||'auto');
+
+  /* Airport selector: never assumed, synced everywhere, drives the guidance strips */
+  var APT={kul1:{n:'KLIA Terminal 1',g:'Over 5,700 bays in Blocks A to D. Long Term Car Park shuttle every 10 minutes.',t:'Main terminal and satellite, linked by the 24-hour Aerotrain.'},kul2:{n:'KLIA Terminal 2'},pen:{n:'Penang'},bki:{n:'Kota Kinabalu'},kch:{n:'Kuching'},lgk:{n:'Langkawi'},szb:{n:'Subang'}};
+  var sels=$$('.js-apt'),dir='departures',apt='';
+  function scope(){var a=APT[apt];$('#scope').innerHTML='Searching <b>'+dir+'</b> '+(a?'at <b>'+a.n+'</b>':'across <b>all 39 airports</b>')}
+  function pick(v){apt=v;var a=APT[v];
+    sels.forEach(function(s){s.value=v;s.parentNode.toggleAttribute('data-unset',!v)});
+    $('#ctx-g').textContent=a?(a.g||'Rail, road and parking options for '+a.n+'.'):'Rail, road and parking, airport by airport.';
+    $('#ctx-t').textContent=a?(a.t||'Maps, facilities and walking routes for '+a.n+'.'):'KLIA has two terminals. Check your booking.';
+    scope()}
+  sels.forEach(function(s){s.addEventListener('change',function(){pick(s.value)})});
+  $$('input[name=dir]').forEach(function(r){r.addEventListener('change',function(){dir=r.value;scope()})});
+
+  /* Journey modes reorganise the quick actions (DOM order changes, so focus order follows) */
+  var MODES={
+    dep:{k:'Departing',l:'Check your flight first, then plan the trip to the terminal.',o:['track','getting','parking','maps','lounges','food'],t:{getting:'Getting to the airport'},c:{track:'Gate, time and live status',getting:'Rail, bus, taxi and e-hailing',parking:'Short-stay and long-term bays',maps:'Check-in, security and gates',lounges:'A quiet seat before you fly',food:'Eat and browse before boarding'}},
+    arr:{k:'Arriving',l:'Find your way out of the terminal, then your onward ride.',o:['maps','getting','track','food','parking','lounges'],t:{getting:'Onward transport'},c:{maps:'Immigration, baggage and exits',getting:'Rail, bus, taxi and e-hailing',track:'Share your arrival with family',food:'A meal after you land',parking:'Find your way back to your car',lounges:'Freshen up on arrival'}},
+    tra:{k:'Transiting',l:'Confirm your next gate, then make the most of the time between flights.',o:['track','maps','lounges','food','getting','parking'],t:{getting:'Between terminals'},c:{track:'Your connecting gate and time',maps:'Transfer routes and the Aerotrain',lounges:'Rest between flights',food:'Open near your next gate',getting:'Terminal 1 to Terminal 2',parking:'Not needed in transit'}},
+    meet:{k:'Meeting someone',l:'See when they land, then choose where to park and wait.',o:['track','parking','getting','maps','food','lounges'],t:{getting:'Getting to the airport'},c:{track:'See when their flight lands',parking:'Short-stay near arrivals',getting:'Routes to the arrival hall',maps:'Arrival hall meeting points',food:'Coffee while you wait',lounges:'For travelling guests'}}
+  };
+  var qa=$('#qa');
+  function mode(m){var M=MODES[m],items=$$('li',qa),before=items.map(function(li){return li.getBoundingClientRect()});
+    M.o.forEach(function(k){var li=$('[data-k="'+k+'"]',qa);qa.appendChild(li);$('.qa__c',li).textContent=M.c[k];if(M.t[k])$('.qa__t',li).textContent=M.t[k]});
+    $('#lead-k').textContent=M.k;$('#lead-t').textContent=M.l;
+    if(calm()||!qa.animate)return;
+    items.forEach(function(li,i){var a=li.getBoundingClientRect(),dx=before[i].left-a.left,dy=before[i].top-a.top;
+      if(dx||dy)li.animate([{transform:'translate('+dx+'px,'+dy+'px)'},{transform:'none'}],{duration:420,easing:'cubic-bezier(.2,.7,.2,1)'})});
+  }
+  $$('input[name=mode]').forEach(function(r){r.addEventListener('change',function(){mode(r.value)})});
+
+  /* Flight search: reads what you typed, then filters the sample board */
+  var q=$('#q'),read=$('#q-read'),rows=$$('#rows tr');
+  function kind(v){return /^[a-z]{2}\s?\d{1,4}$/i.test(v)?'Flight number':/(\sto\s|→|->)/i.test(v)?'Route':/(air|airlines|batik|emirates|firefly)\b/i.test(v)?'Airline':'Destination'}
+  q.addEventListener('input',function(){var v=q.value.trim();read.textContent=v?'Reads as: '+kind(v).toLowerCase():''});
+  $$('.try button').forEach(function(b){b.addEventListener('click',function(){q.value=b.dataset.q;q.dispatchEvent(new Event('input'));q.focus()})});
+  $('#search').addEventListener('submit',function(e){e.preventDefault();
+    var v=q.value.trim().toLowerCase().split(/\sto\s|→|->/).pop().trim(),n=0;
+    rows.forEach(function(r){var hit=!v||r.textContent.toLowerCase().replace(/\s+/g,' ').indexOf(v)>-1;r.hidden=!hit;if(hit)n++});
+    if(!n)rows.forEach(function(r){r.hidden=false});
+    var msg=!v?'Eight sample flights shown.':n?n+' sample flight'+(n>1?'s':'')+' matching "'+q.value.trim()+'".':'No sample flights match "'+q.value.trim()+'". Showing all eight.';
+    $('#board-note').textContent=msg+' Demonstration data, not live.';$('#board-msg').textContent=msg;
+    $('#board').scrollIntoView({behavior:calm()?'auto':'smooth'})});
+  $$('.js-focus').forEach(function(b){b.addEventListener('click',function(){$('#top').scrollIntoView({behavior:calm()?'auto':'smooth'});q.focus({preventScroll:true})})});
+
+  /* Concierge examples fill the prompt */
+  $$('.eg button').forEach(function(b){b.addEventListener('click',function(){var i=$('#ask-q');i.value=b.textContent;i.focus()})});
+  $('#ask').addEventListener('submit',function(e){e.preventDefault()});
+  /* Close the menu sheet after choosing a link */
+  $$('#menu a').forEach(function(a){a.addEventListener('click',function(){var m=$('#menu');if(m.hidePopover)m.hidePopover()})});
+})();
+</script>
+</body>
+</html>

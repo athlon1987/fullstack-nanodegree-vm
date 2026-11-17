@@ -1,0 +1,104 @@
+{
+ "key": "incheon",
+ "url": "https://www.airport.kr/ap_en/index.do",
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-17T00:01:55.713Z",
+ "median": {
+  "performance": 27,
+  "accessibility": 79,
+  "bestPractices": 73,
+  "seo": 100,
+  "fcp_ms": 12408,
+  "lcp_ms": 25134,
+  "tbt_ms": 2403,
+  "cls": 0,
+  "si_ms": 23500,
+  "totalBytes": 4727930,
+  "requests": 215
+ },
+ "a11yFailures": [
+  "color-contrast",
+  "label-content-name-mismatch",
+  "link-name",
+  "list",
+  "meta-viewport",
+  "skip-link",
+  "target-size"
+ ],
+ "rows": [
+  {
+   "finalUrl": "https://www.airport.kr/ap_en/index.do",
+   "runtimeError": null,
+   "performance": 7,
+   "accessibility": 79,
+   "bestPractices": 73,
+   "seo": 100,
+   "fcp_ms": 12408,
+   "lcp_ms": 20760,
+   "tbt_ms": 2903,
+   "cls": 0.4,
+   "si_ms": 31582,
+   "totalBytes": 4727854,
+   "requests": 215,
+   "a11yFailures": [
+    "color-contrast",
+    "label-content-name-mismatch",
+    "link-name",
+    "list",
+    "meta-viewport",
+    "skip-link",
+    "target-size"
+   ]
+  },
+  {
+   "finalUrl": "https://www.airport.kr/ap_en/index.do",
+   "runtimeError": null,
+   "performance": 27,
+   "accessibility": 79,
+   "bestPractices": 73,
+   "seo": 100,
+   "fcp_ms": 12123,
+   "lcp_ms": 25134,
+   "tbt_ms": 2403,
+   "cls": 0,
+   "si_ms": 23500,
+   "totalBytes": 4727930,
+   "requests": 215,
+   "a11yFailures": [
+    "color-contrast",
+    "label-content-name-mismatch",
+    "link-name",
+    "list",
+    "meta-viewport",
+    "skip-link",
+    "target-size"
+   ]
+  },
+  {
+   "finalUrl": "https://www.airport.kr/ap_en/index.do",
+   "runtimeError": null,
+   "performance": 27,
+   "accessibility": 79,
+   "bestPractices": 73,
+   "seo": 100,
+   "fcp_ms": 13105,
+   "lcp_ms": 28234,
+   "tbt_ms": 2371,
+   "cls": 0,
+   "si_ms": 22550,
+   "totalBytes": 4727932,
+   "requests": 215,
+   "a11yFailures": [
+    "color-contrast",
+    "label-content-name-mismatch",
+    "link-name",
+    "list",
+    "meta-viewport",
+    "skip-link",
+    "target-size"
+   ]
+  }
+ ],
+ "caveat": "Lab measurement: Lighthouse mobile emulation with simulated throttling, run from a shared cloud container; hosts outside the session allowlist (analytics, some CDNs) were blocked, which changes page weight and timings. Indicative only; not field data and not comparable to CrUX."
+}

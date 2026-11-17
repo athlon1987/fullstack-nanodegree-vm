@@ -1,0 +1,722 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Malaysia Airports. Your journey, beautifully connected.</title>
+<meta name="description" content="Search flights, choose your airport and plan your journey through Malaysia's 39 airports. Concept design.">
+<meta name="color-scheme" content="light dark">
+<script>(function(){var t;try{t=localStorage.getItem("ma-theme")}catch(e){}document.documentElement.dataset.theme=t||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")})()</script>
+<style>
+/* Tenun (Woven Light): concept A. Fonts self-hosted: Fraunces + Hanken Grotesk (SIL OFL). */
+@font-face{font-family:"Fraunces";src:url(fonts/fraunces-latin-opsz-normal.woff2) format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
+@font-face{font-family:"Fraunces";src:url(fonts/fraunces-latin-opsz-italic.woff2) format("woff2");font-weight:100 900;font-style:italic;font-display:swap}
+@font-face{font-family:"Hanken Grotesk";src:url(fonts/hanken-grotesk-latin-wght-normal.woff2) format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
+
+/* ───── Tokens ───── */
+:root{
+  /* type */
+  --serif:"Fraunces","Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --sans:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --fs-0:.75rem;--fs-1:.8125rem;--fs-2:.875rem;--fs-3:1rem;--fs-4:1.125rem;--fs-5:1.375rem;
+  --fs-6:clamp(1.75rem,1.1rem + 1.9vw,2.75rem);--fs-7:clamp(1.875rem,.6rem + 4.4vw,4.5rem);
+  /* space, radius, motion */
+  --s-1:4px;--s-2:8px;--s-3:12px;--s-4:16px;--s-5:24px;--s-6:32px;--s-7:48px;--s-8:80px;--s-9:120px;
+  --r-1:6px;--r-2:10px;--r-3:14px;--r-4:22px;--r-pill:999px;
+  --d-1:120ms;--d-2:220ms;--d-3:420ms;--e-out:cubic-bezier(.2,.7,.2,1);--e-io:cubic-bezier(.65,0,.25,1);
+  --gutter:clamp(16px,4vw,48px);--max:1240px;--hdr:75px;
+  /* woven geometry, used as masks so they inherit theme colour */
+  --pat-rebung:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='6'%3E%3Cpath d='M0 6 6 .5l6 5.5' fill='none' stroke='%23000'/%3E%3C/svg%3E");
+  --pat-rebung-lg:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='20'%3E%3Cpath d='M1 20 12 2l11 18M6.5 20 12 11l5.5 9M12 20v-4' fill='none' stroke='%23000'/%3E%3C/svg%3E");
+  --pat-tabur:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Cpath d='M11 6.5 12.2 9.8 15.5 11 12.2 12.2 11 15.5 9.8 12.2 6.5 11 9.8 9.8zM33 28.5 34.2 31.8 37.5 33 34.2 34.2 33 37.5 31.8 34.2 28.5 33 31.8 31.8z'/%3E%3Ccircle cx='33' cy='11' r='1'/%3E%3Ccircle cx='11' cy='33' r='1'/%3E%3C/svg%3E");
+  --pat-weave:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath d='M0 3h12M0 9h12M15 0v12M21 0v12M3 12v12M9 12v12M12 15h12M12 21h12' fill='none' stroke='%23000'/%3E%3C/svg%3E");
+  --pat-wave:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='16'%3E%3Cpath d='M0 8q12-12 24 0t24 0' fill='none' stroke='%23000'/%3E%3C/svg%3E");
+  --pat-plaid:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Cpath d='M0 8h32M0 11h32M8 0v32M11 0v32M0 24h32M24 0v32' fill='none' stroke='%23000'/%3E%3C/svg%3E");
+  /* colour: light, warm woven paper and indigo ink */
+  color-scheme:light;
+  --paper:#FAF5EA;--paper-2:#F3ECDC;--surface:#FFFDF8;--ill-bg:#F7F1E3;
+  --ink:#181B3A;--ink-2:#454867;--ink-3:#616480;
+  --line:rgba(24,27,58,.13);--line-2:rgba(24,27,58,.26);
+  --action:#252A6C;--action-h:#181C4F;--on-action:#FBF6EA;
+  --gold:#A57B2B;--gold-ink:#7A5814;--ink-gold:#D8B36A;--gold-wash:#F2E7CC;--indigo-wash:#E7E8F4;
+  --inv-bg:#181B3A;--inv-fg:#F6F0E2;--inv-muted:#C2C0D6;--inv-gold:#D8B36A;--inv-line:rgba(246,240,226,.2);
+  --foot-bg:#14173A;--focus:#3340C8;
+  --ok-fg:#1A6245;--ok-bg:#E2F0E6;--brd-fg:#2A3FA6;--brd-bg:#E4E8FA;--dly-fg:#874A00;--dly-bg:#FAEACD;--cls-fg:#494C66;--cls-bg:#EAE5DA;--cxl-fg:#A02925;--cxl-bg:#FAE3DF;
+  --sh-1:0 1px 2px rgba(24,27,58,.06);--sh-2:0 1px 2px rgba(24,27,58,.05),0 18px 40px -18px rgba(24,27,58,.22);--sh-3:0 2px 4px rgba(24,27,58,.06),0 24px 60px -16px rgba(24,27,58,.3);
+}
+:root[data-theme="dark"]{/*DARK*/
+  color-scheme:dark;
+  --paper:#0C0E24;--paper-2:#11142F;--surface:#171A3D;--ill-bg:#141736;
+  --ink:#F4EEDF;--ink-2:#C9C7DA;--ink-3:#A2A1BD;
+  --line:rgba(244,238,223,.13);--line-2:rgba(244,238,223,.28);
+  --action:#E7CD95;--action-h:#F2DDAE;--on-action:#14163A;
+  --gold:#D2AC62;--gold-ink:#E2C383;--ink-gold:#7A5814;--gold-wash:#2B2946;--indigo-wash:#20245A;
+  --inv-bg:#1D2152;--inv-fg:#F4EEDF;--inv-muted:#C2C0D6;--inv-gold:#D8B36A;--inv-line:rgba(244,238,223,.2);
+  --foot-bg:#080917;--focus:#F0D58A;
+  --ok-fg:#8FDDB5;--ok-bg:#12382B;--brd-fg:#B4C0FF;--brd-bg:#262E72;--dly-fg:#F5C46E;--dly-bg:#47300A;--cls-fg:#CDCEDD;--cls-bg:#2B2E50;--cxl-fg:#FFA99E;--cxl-bg:#4C1B1D;
+  --sh-1:0 1px 2px rgba(0,0,0,.3);--sh-2:0 1px 2px rgba(0,0,0,.3),0 18px 40px -18px rgba(0,0,0,.6);--sh-3:0 2px 4px rgba(0,0,0,.3),0 24px 60px -16px rgba(0,0,0,.7);
+/*/DARK*/}
+@media (prefers-color-scheme:dark){:root:not([data-theme]){color-scheme:dark;
+  --paper:#0C0E24;--paper-2:#11142F;--surface:#171A3D;--ill-bg:#141736;
+  --ink:#F4EEDF;--ink-2:#C9C7DA;--ink-3:#A2A1BD;
+  --line:rgba(244,238,223,.13);--line-2:rgba(244,238,223,.28);
+  --action:#E7CD95;--action-h:#F2DDAE;--on-action:#14163A;
+  --gold:#D2AC62;--gold-ink:#E2C383;--ink-gold:#7A5814;--gold-wash:#2B2946;--indigo-wash:#20245A;
+  --inv-bg:#1D2152;--inv-fg:#F4EEDF;--inv-muted:#C2C0D6;--inv-gold:#D8B36A;--inv-line:rgba(244,238,223,.2);
+  --foot-bg:#080917;--focus:#F0D58A;
+  --ok-fg:#8FDDB5;--ok-bg:#12382B;--brd-fg:#B4C0FF;--brd-bg:#262E72;--dly-fg:#F5C46E;--dly-bg:#47300A;--cls-fg:#CDCEDD;--cls-bg:#2B2E50;--cxl-fg:#FFA99E;--cxl-bg:#4C1B1D;
+  --sh-1:0 1px 2px rgba(0,0,0,.3);--sh-2:0 1px 2px rgba(0,0,0,.3),0 18px 40px -18px rgba(0,0,0,.6);--sh-3:0 2px 4px rgba(0,0,0,.3),0 24px 60px -16px rgba(0,0,0,.7);}}
+html[data-text="lg"]{font-size:112.5%}
+
+/* ───── Base ───── */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:calc(var(--hdr) + 20px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 var(--fs-3)/1.5 var(--sans);font-variant-numeric:tabular-nums lining-nums;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:clip}
+h1,h2,h3,p,ul,ol,figure{margin:0}ul,ol{padding:0;list-style:none}
+a{color:inherit}button,input,select{font:inherit;color:inherit}button{background:none;border:0;padding:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:4px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.skip{position:absolute;left:16px;top:-64px;z-index:100;background:var(--ink);color:var(--paper);padding:12px 18px;border-radius:var(--r-2);font-weight:600}.skip:focus{top:14px}
+.wrap{width:min(100% - 2 * var(--gutter),var(--max));margin-inline:auto}
+.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.i-s{width:16px;height:16px}
+h1,h2{font-family:var(--serif);font-weight:380;font-variation-settings:"opsz" 144;text-wrap:balance}
+h1{font-size:var(--fs-7);line-height:1;letter-spacing:-.028em}
+h2{font-size:var(--fs-6);line-height:1.08;letter-spacing:-.02em;margin-top:12px}
+h1 em,h2 em{font-style:italic;font-weight:330}
+.eyebrow{display:flex;align-items:center;gap:10px;font-size:var(--fs-0);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-ink)}
+.eyebrow::before{content:"";width:28px;height:1px;background:var(--gold)}
+.eyebrow .no{color:var(--ink-3);font-weight:500}
+.lede{color:var(--ink-2);max-width:58ch;text-wrap:pretty}
+.link{display:inline-flex;align-items:center;gap:8px;min-height:44px;font-weight:600;text-decoration:underline;text-decoration-color:var(--gold);text-decoration-thickness:1px;text-underline-offset:6px;white-space:nowrap}
+.link .i{transition:transform var(--d-2) var(--e-out)}.link:hover .i{transform:translateX(3px)}
+.thread{height:6px;background:var(--gold);-webkit-mask:var(--pat-rebung) repeat-x center/12px 6px;mask:var(--pat-rebung) repeat-x center/12px 6px}
+.sec{padding-block:var(--s-8)}
+.band{background:var(--paper-2);border-block:1px solid var(--line)}
+.sec-h{display:grid;grid-template-columns:1fr auto;align-items:end;gap:var(--s-3) var(--s-6);margin-bottom:var(--s-6)}
+
+/* ───── Header ───── */
+.hdr{position:sticky;top:0;z-index:50;background:var(--paper);border-bottom:1px solid var(--line)}
+.hdr-in{display:flex;align-items:center;gap:var(--s-4);height:68px;padding-inline:clamp(16px,2.2vw,32px);max-width:1600px;margin-inline:auto}
+.brand{display:flex;align-items:center;gap:10px;font:500 1.25rem/1 var(--serif);letter-spacing:-.012em;text-decoration:none;white-space:nowrap;min-height:44px}
+.mark{width:30px;height:30px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:square;flex:none}.mark .gd{fill:var(--gold);stroke:none}
+.nav{display:flex;gap:2px;margin-inline:auto}
+.nav a{padding:10px;border-radius:var(--r-2);font-size:.9375rem;color:var(--ink-2);text-decoration:none;white-space:nowrap;transition:color var(--d-1),background var(--d-1)}
+.nav a:hover{color:var(--ink);background:var(--paper-2)}
+.nav-extra{display:none}
+.util{display:flex;align-items:center;gap:4px}
+.icon-btn{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;color:var(--ink-2);transition:background var(--d-1),color var(--d-1);cursor:pointer}
+.icon-btn:hover{background:var(--paper-2);color:var(--ink)}
+.u-conc{display:flex;align-items:center;gap:8px;height:40px;padding:0 14px 0 12px;border-radius:var(--r-pill);border:1px solid var(--line-2);font-size:var(--fs-2);font-weight:600;text-decoration:none;margin-left:4px}
+.u-conc .i{color:var(--gold-ink)}.u-conc:hover{background:var(--surface)}
+.u-menu{display:none}
+.lang,.tog{--on-bg:var(--ink);--on-fg:var(--paper);display:inline-flex;border:1px solid var(--line-2);border-radius:var(--r-pill);padding:2px}
+.lang button,.tog button{display:flex;align-items:center;gap:6px;min-width:32px;height:32px;padding:0 10px;border-radius:var(--r-pill);font-size:var(--fs-1);font-weight:600;color:inherit;opacity:.82}
+.lang button[aria-pressed="true"],.tog button[aria-pressed="true"]{background:var(--on-bg);color:var(--on-fg);opacity:1}
+/* airport selector (native select: full keyboard + native picker on phones) */
+.ap{position:relative;display:flex;align-items:center}
+.ap select{appearance:none;-webkit-appearance:none;width:100%;border:0;background:none;cursor:pointer;text-overflow:ellipsis;font-weight:600}
+.ap>.i{position:absolute;pointer-events:none}
+.ap-pill{height:40px;border:1px solid var(--line-2);border-radius:var(--r-pill);background:var(--surface);margin-right:4px}
+.ap-pill select{height:38px;padding:0 32px 0 36px;font-size:var(--fs-2);border-radius:var(--r-pill);max-width:190px}
+.ap-pill>.i:first-of-type{left:11px;color:var(--gold-ink)}.ap-pill>.i-s{right:11px}
+.pop{position:relative}.pop summary{list-style:none}.pop summary::-webkit-details-marker{display:none}
+.pop[open] summary{background:var(--paper-2);color:var(--ink)}
+.pop-panel{position:absolute;right:0;top:calc(100% + 10px);width:300px;padding:var(--s-4);background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r-3);box-shadow:var(--sh-3);display:grid;gap:var(--s-3)}
+.pop-t{font:500 var(--fs-4) var(--serif)}
+.ctl{display:flex;align-items:center;justify-content:space-between;gap:var(--s-3)}.ctl-l{font-size:var(--fs-2);opacity:.85}
+
+/* ───── Hero: the concierge desk ───── */
+.hero{position:relative;padding-block:clamp(14px,3.6vh,36px) var(--s-7)}
+.hero::before{content:"";position:absolute;top:0;right:0;width:min(46%,640px);height:300px;background:var(--gold);opacity:.5;pointer-events:none;
+  -webkit-mask:var(--pat-tabur) 0 0/44px 44px,linear-gradient(200deg,#000,transparent 62%);-webkit-mask-composite:source-in;mask:var(--pat-tabur) 0 0/44px 44px,linear-gradient(200deg,#000,transparent 62%);mask-composite:intersect}
+.hero-head{position:relative;display:grid;grid-template-columns:1fr minmax(0,350px);align-items:end;gap:var(--s-6);margin-bottom:var(--s-5)}
+.hero-head h1{margin-top:14px}
+.hero-lede{color:var(--ink-2);font-size:1.0625rem;line-height:1.5;padding-bottom:6px;text-wrap:pretty}
+.desk{position:relative;background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r-4);box-shadow:var(--sh-2);padding:var(--s-4) var(--s-4) 26px}
+.desk::after{content:"";position:absolute;left:22px;right:22px;bottom:9px;height:6px;background:var(--gold);opacity:.8;-webkit-mask:var(--pat-rebung) repeat-x center/12px 6px;mask:var(--pat-rebung) repeat-x center/12px 6px}
+.desk-top{display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);margin-bottom:var(--s-3)}
+.seg{display:inline-flex;padding:3px;border-radius:var(--r-pill);background:var(--paper-2);border:1px solid var(--line)}
+.seg label{position:relative}.seg input{position:absolute;inset:0;opacity:0;cursor:pointer;margin:0}
+.seg span{display:flex;align-items:center;justify-content:center;gap:8px;height:38px;padding:0 18px;border-radius:var(--r-pill);font-size:.9375rem;font-weight:600;color:var(--ink-2);transition:background var(--d-2) var(--e-out),color var(--d-2)}
+.seg input:checked+span{background:var(--ink);color:var(--paper)}
+.seg input:focus-visible+span{outline:2px solid var(--focus);outline-offset:2px}
+.try{display:flex;align-items:center;gap:8px;font-size:var(--fs-1);color:var(--ink-3)}
+.chip{height:32px;padding:0 12px;border:1px solid var(--line-2);border-radius:var(--r-pill);font-size:var(--fs-1);font-weight:500;color:var(--ink-2);white-space:nowrap;transition:border-color var(--d-1),color var(--d-1),background var(--d-1)}
+.chip:hover,.chip[aria-pressed="true"]{border-color:var(--ink);color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.desk-main{display:grid;grid-template-columns:minmax(230px,290px) minmax(0,1fr) auto;border:1px solid var(--line-2);border-radius:var(--r-3);background:var(--paper)}
+.ap-field select{height:68px;padding:22px 40px 0 54px;font-size:var(--fs-4);border-radius:var(--r-3) 0 0 var(--r-3)}
+.ap-field .ap-l{position:absolute;left:54px;top:12px;font-size:.6875rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);pointer-events:none}
+.ap-field>.i:first-of-type{left:18px;width:24px;height:24px;color:var(--gold-ink)}.ap-field>.i-s{right:16px;color:var(--ink-2)}
+.q{position:relative;display:flex;align-items:center;border-left:1px solid var(--line-2)}
+.q>.i{position:absolute;left:18px;width:22px;height:22px;color:var(--ink-3);pointer-events:none}
+.q input{appearance:none;-webkit-appearance:none;width:100%;height:68px;border:0;background:none;padding:0 12px 0 52px;font-size:1.25rem;border-radius:0;min-width:0}
+.q input::placeholder{color:var(--ink-3);opacity:1}
+.q input:focus-visible,.ap select:focus-visible{outline-offset:-3px;border-radius:var(--r-2)}
+.go{display:flex;align-items:center;gap:10px;margin:7px;padding:0 22px;border-radius:9px;background:var(--action);color:var(--on-action);font-weight:600;white-space:nowrap;transition:background var(--d-1),transform var(--d-1)}
+.go:hover{background:var(--action-h)}.go:active{transform:scale(.985)}
+.desk-msg{margin-top:10px;font-size:var(--fs-1);color:var(--ink-2)}.desk-msg:empty{display:none}
+.fold{display:grid;grid-template-columns:minmax(0,1fr) 372px;gap:var(--s-5);margin-top:var(--s-5)}
+.fold-main{display:flex;flex-direction:column;gap:var(--s-3)}
+.modes{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:4px;border:1px solid var(--line-2);border-radius:var(--r-3);background:var(--surface)}
+.mode{display:flex;align-items:center;justify-content:center;gap:10px;height:46px;border-radius:var(--r-2);font:420 1.0625rem/1.1 var(--serif);color:var(--ink-2);white-space:nowrap;transition:background var(--d-2) var(--e-out),color var(--d-2)}
+.mode:hover{background:var(--paper-2);color:var(--ink)}
+.mode[aria-selected="true"]{background:var(--ink);color:var(--paper)}.mode[aria-selected="true"] .i,.seg input:checked+span .i{color:var(--ink-gold)}
+.qa{flex:1;display:grid;grid-template-columns:1.18fr 1fr 1fr;grid-auto-rows:minmax(88px,1fr);gap:var(--s-3)}
+.qa-t{position:relative;display:flex;align-items:center;gap:12px;padding:0 14px;border:1px solid var(--line);border-radius:var(--r-3);text-decoration:none;transition:border-color var(--d-1),background var(--d-1)}
+.qa-t:hover{border-color:var(--line-2);background:var(--surface)}
+.qa-i{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--paper-2);flex:none}
+.qa-b{display:grid;gap:1px;min-width:0}.qa-b b{font-weight:600;font-size:.9375rem;line-height:1.25}.qa-b small{font-size:var(--fs-1);line-height:1.3;color:var(--ink-3)}
+.qa-a{margin-left:auto;color:var(--ink-3);display:none}
+.qa-t:nth-child(1){grid-area:1/1}.qa-t:nth-child(2){grid-area:2/1}
+.qa-t:nth-child(-n+2){padding:0 16px;gap:14px;background:var(--surface);border-color:var(--gold);box-shadow:var(--sh-1)}
+.qa-t:nth-child(-n+2) .qa-i{width:48px;height:48px;background:var(--gold-wash);color:var(--gold-ink)}.qa-t:nth-child(-n+2) .qa-i .i{width:24px;height:24px}
+.qa-t:nth-child(-n+2) b{font:400 1.3125rem/1.15 var(--serif);letter-spacing:-.01em}.qa-t:nth-child(-n+2) small{font-size:var(--fs-2);color:var(--ink-2)}
+.qa-t:nth-child(-n+2) .qa-a{display:block}
+::view-transition-group(*){animation-duration:.38s;animation-timing-function:var(--e-io)}
+.ctx{display:flex;flex-direction:column;gap:var(--s-3)}
+.notice{flex:1;padding:16px 18px;border-radius:var(--r-3);background:var(--gold-wash)}
+.notice-k{display:flex;align-items:center;gap:8px;font-size:var(--fs-0);font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-ink)}
+.notice h2{font:600 1.0625rem/1.3 var(--sans);letter-spacing:0;margin-top:8px;font-variation-settings:normal}
+.notice p{font-size:var(--fs-2);color:var(--ink-2);margin-top:4px;text-wrap:pretty}
+.notice .link{font-size:var(--fs-2);min-height:32px;margin-top:4px}
+.strip{border:1px solid var(--line-2);border-radius:var(--r-3);background:var(--surface)}
+.strip a{display:flex;align-items:center;gap:12px;padding:11px 14px;text-decoration:none;min-height:58px}
+.strip a+a{border-top:1px solid var(--line)}
+.strip b{display:block;font-size:.9375rem;font-weight:600;line-height:1.3}.strip small{display:block;font-size:var(--fs-1);color:var(--ink-3);line-height:1.35}
+.strip .i:last-child{margin-left:auto;color:var(--ink-3)}.strip a>.i:first-child{color:var(--gold-ink);width:22px;height:22px}
+
+/* ───── Departures board ───── */
+.board{border:1px solid var(--line-2);border-radius:var(--r-4);background:var(--surface);box-shadow:var(--sh-1)}
+.demo{position:sticky;top:var(--hdr);z-index:5;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px var(--s-4);padding:10px 18px;background:var(--inv-bg);color:var(--inv-fg);border-radius:21px 21px 0 0;font-size:var(--fs-2)}
+.demo-l{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.01em}
+.demo-l::before{content:"";width:22px;height:22px;border-radius:5px;background:repeating-linear-gradient(135deg,var(--inv-gold) 0 3px,transparent 3px 7px);border:1px solid var(--inv-gold);flex:none}
+.fresh{display:flex;align-items:center;gap:8px;color:var(--inv-muted)}.fresh b{color:var(--inv-fg);font-weight:600}
+.board table{width:100%;border-collapse:collapse}
+.board th{padding:14px 18px 10px;text-align:left;font-size:var(--fs-0);font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);border-bottom:1px solid var(--line-2)}
+.board td{padding:13px 18px;border-bottom:1px solid var(--line);vertical-align:middle;font-size:.9375rem}
+.board tr:last-child td{border-bottom:0}
+.c-time{font-size:1.0625rem!important;font-weight:600;white-space:nowrap}.c-time s{color:var(--ink-3);font-weight:400;text-decoration-thickness:1px;margin-right:6px}
+.c-fl{font-weight:600;letter-spacing:.02em;white-space:nowrap}
+.c-dest{font:400 1.25rem/1.2 var(--serif)!important;letter-spacing:-.01em}
+.c-air{color:var(--ink-2)}.c-air span{display:flex;align-items:center;gap:10px}
+.mono{display:inline-grid!important;place-items:center;width:30px;height:24px;border:1px solid var(--line-2);border-radius:5px;font-size:.6875rem;font-weight:700;letter-spacing:.04em;color:var(--ink)}
+.c-gate{white-space:nowrap}.c-gate i{font-style:normal;color:var(--gold);margin-inline:3px}
+.is-cxl .c-dest,.is-cxl .c-fl,.is-cxl .c-gate{color:var(--ink-3)}
+.st{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px 0 7px;border-radius:var(--r-pill);font-size:var(--fs-1);font-weight:600;white-space:nowrap}
+.st .i{width:17px;height:17px;stroke-width:1.7}
+.st-ok{color:var(--ok-fg);background:var(--ok-bg)}.st-brd{color:var(--brd-fg);background:var(--brd-bg)}.st-dly{color:var(--dly-fg);background:var(--dly-bg)}.st-cls{color:var(--cls-fg);background:var(--cls-bg)}.st-cxl{color:var(--cxl-fg);background:var(--cxl-bg)}
+.board-ft{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--s-2) var(--s-5);margin-top:var(--s-4);font-size:var(--fs-2);color:var(--ink-2)}
+
+/* ───── Your journey ───── */
+.jr-top{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-7);align-items:start;margin-bottom:var(--s-6)}
+.legend{display:grid;gap:10px}.legend li{display:grid;grid-template-columns:172px 1fr;align-items:center;gap:var(--s-3);font-size:var(--fs-2);color:var(--ink-2)}
+.tg{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px 0 7px;border-radius:var(--r-1);font-size:var(--fs-0);font-weight:600;letter-spacing:.01em;white-space:nowrap;justify-self:start;border:1px solid transparent}
+.tg .i{width:15px;height:15px;stroke-width:1.7}
+.tg-off{background:var(--ink);color:var(--paper)}.tg-est{border-color:var(--ink-2);color:var(--ink)}.tg-sug{border:1px dashed var(--gold);color:var(--gold-ink)}
+.jr-card{background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r-4);padding:var(--s-5) var(--s-5) var(--s-6);box-shadow:var(--sh-1)}
+.jr-cap{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--s-2) var(--s-4);font-size:var(--fs-2);color:var(--ink-2);padding-bottom:var(--s-4);border-bottom:1px solid var(--line)}
+.jr-cap b{color:var(--ink);font-weight:600}
+.pill-demo{display:inline-flex;align-items:center;height:26px;padding:0 10px;border:1px solid var(--line-2);border-radius:var(--r-pill);font-size:var(--fs-0);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.steps{display:grid;grid-template-columns:repeat(6,1fr);margin-top:var(--s-5)}
+.step{position:relative;display:flex;flex-direction:column;align-items:flex-start;padding:38px 18px 0 0}
+.step::before{content:"";position:absolute;left:0;right:0;top:8px;height:1px;background:var(--gold)}
+.step:last-child::before{right:40%;background:linear-gradient(90deg,var(--gold),transparent)}
+.step::after{content:"";position:absolute;left:2px;top:3px;width:10px;height:10px;transform:rotate(45deg);background:var(--surface);border:1.5px solid var(--gold)}
+.step:first-child::after{background:var(--gold)}
+.step-k{display:flex;align-items:center;gap:8px;font-size:var(--fs-0);font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.step-k .i{width:18px;height:18px;color:var(--ink-2)}
+.step-v{font:400 1.375rem/1.15 var(--serif);letter-spacing:-.01em;margin-top:10px}
+.step-d{font-size:var(--fs-2);color:var(--ink-2);margin:6px 0 14px;text-wrap:pretty}
+.step .tg{margin-top:auto}
+
+/* ───── Network ───── */
+.net{display:grid;grid-template-columns:repeat(10,1fr);gap:var(--s-5)}
+.ap-card{grid-column:span 2;display:flex;flex-direction:column;border:1px solid var(--line-2);border-radius:var(--r-3);background:var(--surface);overflow:hidden;text-decoration:none;transition:transform var(--d-2) var(--e-out),box-shadow var(--d-2),border-color var(--d-2)}
+.ap-card:hover{transform:translateY(-3px);box-shadow:var(--sh-2);border-color:var(--gold)}
+.ap-card.big{grid-column:span 5;flex-direction:row}
+.ap-art{background:var(--ill-bg);border-bottom:1px solid var(--line);color:var(--ink);line-height:0}
+.big .ap-art{flex:0 0 54%;border-bottom:0;border-right:1px solid var(--line)}
+.ill{display:block;width:100%;height:auto;fill:none;stroke:currentColor;stroke-width:1;stroke-linecap:round;stroke-linejoin:round}
+.ill .f{stroke-opacity:.36}.ill .g{stroke:var(--gold);stroke-width:1.2}.ill .gf{fill:var(--gold);stroke:none}.ill .pf{fill:var(--ill-bg)}.ill .pf2{fill:var(--ill-bg);stroke-opacity:.45}
+.ap-body{display:flex;flex-direction:column;gap:4px;padding:16px 18px 14px;flex:1}
+.ap-code{font-size:var(--fs-0);font-weight:600;letter-spacing:.14em;color:var(--gold-ink)}
+.ap-name{font:400 1.375rem/1.15 var(--serif);letter-spacing:-.01em}.big .ap-name{font-size:1.75rem}
+.ap-place{font-size:var(--fs-2);color:var(--ink-2)}
+.ap-go{display:flex;align-items:center;gap:8px;margin-top:auto;padding-top:12px;font-size:var(--fs-2);font-weight:600}
+.all39{grid-column:1/-1;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:var(--s-7);padding:var(--s-5) var(--s-6);border-radius:var(--r-3);background:var(--inv-bg);color:var(--inv-fg);text-decoration:none}
+.all39 .ill{width:300px;stroke:none}.m-i{fill:var(--inv-gold)}.m-r{fill:none;stroke:var(--inv-gold);stroke-width:.8;stroke-opacity:.7}.m-d{fill:none;stroke:var(--inv-fg);stroke-width:1}.m-s{fill:var(--inv-fg);fill-opacity:.7}
+.all39 h3{font:400 1.75rem/1.1 var(--serif);letter-spacing:-.01em}
+.stats{display:flex;flex-wrap:wrap;gap:6px var(--s-5);margin-top:10px;font-size:var(--fs-2);color:var(--inv-muted)}
+.stats li{display:flex;align-items:center;gap:8px}.stats b{color:var(--inv-fg);font-weight:600}
+.stats svg{width:14px;height:14px;overflow:visible}
+.btn-inv{display:inline-flex;align-items:center;gap:10px;height:48px;padding:0 20px;border-radius:var(--r-pill);border:1px solid var(--inv-gold);color:var(--inv-fg);font-weight:600;white-space:nowrap}
+
+/* ───── Shop & dine ───── */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:var(--s-5)}.filters .chip{height:36px;padding:0 14px;font-size:var(--fs-2)}
+.shops{display:grid;grid-template-columns:repeat(5,1fr);gap:var(--s-5)}
+.shop-t{display:flex;flex-direction:column;text-decoration:none}
+.sw{position:relative;display:block;height:140px;border-radius:var(--r-3);background:var(--sw-bg);overflow:hidden;margin-bottom:14px;transition:transform var(--d-2) var(--e-out)}
+.sw::after{content:"";position:absolute;inset:0;background:var(--sw-fg);opacity:var(--sw-o,1);-webkit-mask:var(--sw-pat) center/var(--sw-size);mask:var(--sw-pat) center/var(--sw-size)}
+.sw .i{position:absolute;z-index:1;left:12px;bottom:12px;width:40px;height:40px;padding:9px;border-radius:50%;background:var(--surface);color:var(--ink);box-shadow:var(--sh-1)}
+.shop-t:hover .sw{transform:translateY(-3px)}
+.sw-1{--sw-bg:var(--inv-bg);--sw-fg:var(--inv-gold);--sw-pat:var(--pat-tabur);--sw-size:44px 44px}
+.sw-2{--sw-bg:var(--gold-wash);--sw-fg:var(--gold);--sw-pat:var(--pat-wave);--sw-size:48px 16px}
+.sw-3{--sw-bg:var(--indigo-wash);--sw-fg:var(--ink);--sw-o:.4;--sw-pat:var(--pat-rebung-lg);--sw-size:24px 20px}
+.sw-4{--sw-bg:var(--paper-2);--sw-fg:var(--gold);--sw-pat:var(--pat-weave);--sw-size:24px 24px;border:1px solid var(--line)}
+.sw-5{--sw-bg:var(--indigo-wash);--sw-fg:var(--ink);--sw-o:.3;--sw-pat:var(--pat-plaid);--sw-size:32px 32px}
+.shop-k{font-size:var(--fs-0);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-ink)}
+.shop-t b{font:400 1.375rem/1.15 var(--serif);letter-spacing:-.01em;margin-top:4px}.shop-t small{font-size:var(--fs-2);color:var(--ink-2);margin-top:6px;text-wrap:pretty}
+
+/* ───── Concierge ───── */
+.cc{display:grid;grid-template-columns:5fr 6fr;gap:var(--s-8);align-items:center}
+.cc .lede{margin-top:var(--s-4)}
+.cc-notes{display:grid;gap:10px;margin-top:var(--s-5);font-size:var(--fs-2);color:var(--ink-2)}.cc-notes li{display:flex;gap:10px}.cc-notes .i{color:var(--gold-ink);margin-top:1px}
+.cc-card{background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r-4);box-shadow:var(--sh-2);padding:var(--s-5)}
+.cc-hd{display:flex;align-items:center;gap:10px;font:500 var(--fs-4) var(--serif);padding-bottom:var(--s-4);border-bottom:1px solid var(--line)}
+.cc-hd .i{color:var(--gold-ink)}.cc-hd .pill-demo{margin-left:auto;font-family:var(--sans)}
+.bub{max-width:86%;margin-top:var(--s-4);padding:12px 16px;border-radius:16px;font-size:.9375rem}
+.bub-q{margin-left:auto;background:var(--ink);color:var(--paper);border-bottom-right-radius:4px;width:fit-content}
+.bub-a{background:var(--paper-2);border-bottom-left-radius:4px}
+.src{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:var(--fs-0);color:var(--ink-2)}.src .i{width:15px;height:15px}
+.cc-sug{display:grid;gap:8px;margin-top:var(--s-5)}.cc-sug p{font-size:var(--fs-0);font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.cc-sug button{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;padding:8px 14px;border:1px solid var(--line-2);border-radius:var(--r-2);text-align:left;font-size:.9375rem;transition:border-color var(--d-1),background var(--d-1)}
+.cc-sug button:hover{border-color:var(--gold);background:var(--paper)}.cc-sug .i{color:var(--ink-3)}
+.cc-in{display:flex;align-items:center;gap:8px;margin-top:var(--s-4);padding:5px 5px 5px 16px;border:1px solid var(--line-2);border-radius:var(--r-pill);background:var(--paper)}
+.cc-in input{flex:1;min-width:0;height:40px;border:0;background:none;font-size:.9375rem}.cc-in input::placeholder{color:var(--ink-3);opacity:1}
+.cc-in button{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--action);color:var(--on-action)}
+
+/* ───── Footer ───── */
+.ft{background:var(--foot-bg);color:var(--inv-fg);--line:var(--inv-line);--line-2:rgba(246,240,226,.34)}
+.ft .thread{background:var(--inv-gold);height:20px;-webkit-mask:var(--pat-rebung-lg) repeat-x center/24px 20px;mask:var(--pat-rebung-lg) repeat-x center/24px 20px;opacity:.7}
+.ft-top{display:grid;grid-template-columns:1.5fr repeat(4,1fr);gap:var(--s-6);padding-block:var(--s-7)}
+.ft .brand{font-size:1.375rem}.ft .mark .gd{fill:var(--inv-gold)}
+.promise{font:330 italic 1.5rem/1.2 var(--serif);margin-top:var(--s-4);color:var(--inv-gold)}
+.ft-note{font-size:var(--fs-2);color:var(--inv-muted);margin-top:10px;max-width:30ch}
+.ft h3{font-size:var(--fs-0);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--inv-muted);margin-bottom:10px}
+.ft-col a{display:flex;align-items:center;min-height:36px;font-size:.9375rem;text-decoration:none;color:var(--inv-fg)}.ft-col a:hover{text-decoration:underline;text-decoration-color:var(--inv-gold);text-underline-offset:5px}
+.ft-mid{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-4) var(--s-7);padding-block:var(--s-5);border-block:1px solid var(--inv-line)}
+.ft-mid .ctl{gap:12px}.ft .lang,.ft .tog{--on-bg:var(--inv-fg);--on-fg:var(--foot-bg);border-color:var(--line-2)}
+.ft-mid .corp{margin-left:auto;color:var(--inv-fg);text-decoration-color:var(--inv-gold)}
+.ft-btm{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px var(--s-5);padding-block:var(--s-5) var(--s-6);font-size:var(--fs-1);color:var(--inv-muted)}
+.ft :focus-visible{outline-color:var(--inv-gold)}
+.tabbar{display:none}
+
+/* ───── Responsive ───── */
+@media (max-width:1380px){.u-conc span{display:none}.u-conc{padding:0;width:40px;justify-content:center}.ap-pill select{max-width:168px}}
+@media (max-width:1180px){
+  .u-menu{display:grid}.nav{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;gap:0;padding:8px var(--gutter) 16px;background:var(--paper);border-bottom:1px solid var(--line-2);box-shadow:var(--sh-2)}
+  .hdr[data-open] .nav{display:flex}.nav a{padding:13px 4px;font-size:var(--fs-4);font-family:var(--serif);color:var(--ink);border-bottom:1px solid var(--line);border-radius:0}
+  .util{margin-left:auto}.nav-extra{display:flex;align-items:center;justify-content:space-between;padding-top:14px}
+  .shops{grid-template-columns:repeat(5,minmax(200px,1fr));overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:calc(-1 * var(--gutter));padding-inline:var(--gutter);padding-bottom:8px;scrollbar-width:thin}.shop-t{scroll-snap-align:start;scroll-margin-left:var(--gutter)}
+}
+@media (max-width:1040px){
+  .fold{grid-template-columns:1fr}.ctx{flex-direction:row}.ctx>*{flex:1}
+  .steps{grid-template-columns:repeat(3,1fr);row-gap:var(--s-6)}.jr-top{gap:var(--s-5)}
+  .net{grid-template-columns:repeat(6,1fr)}.ap-card.big{grid-column:span 3;flex-direction:column}.big .ap-art{flex:none;border-right:0;border-bottom:1px solid var(--line)}
+  .ap-card:nth-child(n+6){grid-column:span 3}.all39{grid-template-columns:1fr auto}.all39 .ill{display:none}
+  .cc{grid-template-columns:1fr;gap:var(--s-6)}.ft-top{grid-template-columns:repeat(4,1fr)}.ft-brand{grid-column:1/-1}
+}
+@media (max-width:720px){
+  :root{--hdr:61px;--s-8:56px}
+  body{padding-bottom:calc(64px + env(safe-area-inset-bottom))}
+  .hdr-in{height:54px;gap:4px}.brand{font-size:1.125rem;gap:8px}.mark{width:26px;height:26px}
+  .util>:not(.pop):not(.u-menu){display:none}.icon-btn{width:44px;height:44px}.pop-panel{right:-44px}
+  .hero{padding-block:12px var(--s-6)}.hero::before{width:70%;height:160px}
+  .hero-head{grid-template-columns:1fr;margin-bottom:12px}.hero-head .eyebrow,.hero-lede{display:none}.hero-head h1{margin-top:0}
+  .desk{padding:10px 10px 22px;border-radius:18px}.desk::after{left:16px;right:16px;bottom:8px}.desk-top{margin-bottom:8px}.try{display:none}
+  .seg{display:grid;grid-template-columns:1fr 1fr;width:100%}.seg span{height:38px}
+  .desk-main{grid-template-columns:minmax(0,1fr) auto}.ap-field{grid-column:1/-1;border-bottom:1px solid var(--line-2)}
+  .ap-field select{height:54px;padding:18px 40px 0 48px;font-size:1.0625rem}.ap-field .ap-l{left:48px;top:8px}.ap-field>.i:first-of-type{left:14px}
+  .q{border-left:0}.q input{height:54px;font-size:1rem;padding-left:44px}.q>.i{left:14px}.go{margin:5px;padding:0;width:44px;justify-content:center}.go span{display:none}
+  .fold{margin-top:12px;gap:12px}.fold-main{gap:8px}
+  .modes{grid-template-columns:1fr 1fr}.mode{height:44px;font-size:1rem;gap:8px}
+  .qa{grid-template-columns:1fr 1fr;grid-auto-rows:52px;gap:8px}.qa-t,.qa-t:nth-child(-n+2){grid-area:auto;padding:0 10px;gap:8px;border-radius:12px}
+  .qa-i,.qa-t:nth-child(-n+2) .qa-i{width:32px;height:32px}.qa-t:nth-child(-n+2) .qa-i .i{width:20px;height:20px}
+  .qa-b small,.qa-t:nth-child(-n+2) .qa-a{display:none}.qa-b b{font-size:var(--fs-2);line-height:1.2}.qa-t:nth-child(-n+2) b{font-size:1.0625rem;line-height:1.1}
+  .ctx{flex-direction:column;gap:8px}.notice{padding:10px 14px;display:grid;grid-template-columns:1fr auto;align-items:center;column-gap:10px}
+  .notice-k{font-size:.6875rem}.notice h2{font-size:var(--fs-2);margin-top:2px;grid-column:1}.notice p{display:none}.notice .link{grid-area:1/2/3/3;margin:0;min-height:44px}.notice .link span{display:none}
+  .strip{display:grid;grid-template-columns:1fr 1fr}.strip a{padding:8px 10px;gap:8px;min-height:52px}.strip a+a{border-top:0;border-left:1px solid var(--line)}.strip small,.strip .i:last-child{display:none}.strip b{font-size:var(--fs-2);line-height:1.2}
+  .sec-h{grid-template-columns:1fr;margin-bottom:var(--s-5)}.sec-h .link{justify-self:start}
+  .demo{border-radius:17px 17px 0 0;padding:10px 14px}.board{border-radius:18px}
+  .board thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+  .board table,.board tbody{display:block}
+  .board tr{display:grid;grid-template-columns:54px auto minmax(0,1fr) auto;grid-template-areas:"time dest dest st" "time fl air gate";gap:3px 10px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line)}
+  .board tr:last-child{border-bottom:0}.board td{display:block;padding:0;border:0;font-size:var(--fs-1)}
+  .c-time{grid-area:time;align-self:start;font-size:1rem!important;line-height:1.3;white-space:normal}.c-time s{display:block;margin:0}
+  .c-dest{grid-area:dest;font-size:1.125rem!important}.c-st{grid-area:st;justify-self:end}.c-fl{grid-area:fl}.c-air{grid-area:air;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.c-air span{display:inline}.mono{display:none!important}.c-gate{grid-area:gate;justify-self:end}
+  .st{height:26px;padding:0 9px 0 6px;font-size:var(--fs-0)}
+  .jr-top{grid-template-columns:1fr}.legend li{grid-template-columns:1fr;gap:4px}.jr-card{padding:var(--s-4);border-radius:18px}
+  .steps{grid-template-columns:1fr;row-gap:0}.step{padding:0 0 var(--s-5) 30px}.step:last-child{padding-bottom:0}
+  .step::before,.step:last-child::before{left:7px;right:auto;top:8px;bottom:-8px;width:1px;height:auto;background:var(--gold)}.step:last-child::before{display:none}.step::after{left:2px;top:4px}
+  .step-v{margin-top:6px}.step-d{margin:4px 0 10px}
+  .net{grid-template-columns:1fr 1fr;gap:12px}.ap-card,.ap-card.big,.ap-card:nth-child(n+6){grid-column:span 1}.ap-card.big{grid-column:1/-1}.ap-card:nth-child(7){grid-column:1/-1;flex-direction:row}.ap-card:nth-child(7) .ap-art{flex:0 0 50%;border-bottom:0;border-right:1px solid var(--line)}
+  .ap-body{padding:12px 14px}.ap-name{font-size:1.1875rem}.big .ap-name{font-size:1.5rem}
+  .all39{grid-template-columns:1fr;gap:var(--s-4);padding:var(--s-5)}.btn-inv{justify-self:start}
+  .filters{flex-wrap:nowrap;overflow-x:auto;margin-inline:calc(-1 * var(--gutter));padding-inline:var(--gutter);scrollbar-width:none}.filters .chip{height:44px;flex:none}
+  .shops{grid-template-columns:repeat(5,72%);gap:12px}
+  .cc-card{padding:var(--s-4);border-radius:18px}
+  .ft-top{grid-template-columns:1fr 1fr;gap:var(--s-5);padding-block:var(--s-6)}.ft-col a{min-height:44px}.ft-mid{gap:var(--s-4)}.ft-mid .corp{margin-left:0}.ft-mid .ctl{width:100%}
+  .tabbar{position:fixed;z-index:60;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(5,1fr);align-items:end;height:calc(64px + env(safe-area-inset-bottom));padding:0 6px env(safe-area-inset-bottom);background:var(--surface);border-top:1px solid var(--line-2);box-shadow:0 -8px 24px -12px rgba(24,27,58,.25)}
+  .tabbar a{display:grid;justify-items:center;align-content:center;gap:3px;height:64px;font-size:.6875rem;font-weight:600;letter-spacing:.01em;color:var(--ink-2);text-decoration:none}
+  .tabbar .i{width:22px;height:22px}
+  .tabbar .tb-main{color:var(--ink)}.tabbar .tb-main .i{width:50px;height:50px;padding:14px;margin-top:-22px;border-radius:50%;background:var(--action);color:var(--on-action);box-shadow:0 0 0 5px var(--surface),0 0 0 6px var(--gold)}
+}
+@media (max-width:374px){.brand{font-size:1rem}.mode{font-size:.9375rem;gap:6px}.mode .i{width:18px;height:18px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+html[data-motion="reduce"]{scroll-behavior:auto}html[data-motion="reduce"] *,html[data-motion="reduce"] *::before,html[data-motion="reduce"] *::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+
+<!-- Icon sprite: one stroke style (1.5px, round caps) on a 24px grid -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s6.5-5.6 6.5-11a6.5 6.5 0 0 0-13 0c0 5.4 6.5 11 6.5 11Z"/><circle cx="12" cy="10" r="2.3"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-plane" viewBox="0 0 24 24"><path d="M12 3c.9 0 1.4 1.2 1.4 2.6V9l7.1 4.4v1.8L13.4 13v4.6l2.3 1.7v1.4L12 19.8l-3.7.9v-1.4l2.3-1.7V13l-7.1 2.2v-1.8L10.6 9V5.6C10.6 4.2 11.1 3 12 3Z"/></symbol>
+  <symbol id="i-depart" viewBox="0 0 24 24"><use href="#i-plane" transform="rotate(45 12 12)"/></symbol>
+  <symbol id="i-arrive" viewBox="0 0 24 24"><use href="#i-plane" transform="rotate(135 12 12)"/></symbol>
+  <symbol id="i-transit" viewBox="0 0 24 24"><path d="M4 8h13m-3.5-3.5L17 8l-3.5 3.5M20 16H7m3.5-3.5L7 16l3.5 3.5"/></symbol>
+  <symbol id="i-meet" viewBox="0 0 24 24"><circle cx="8.5" cy="8" r="2.8"/><circle cx="16.5" cy="9.5" r="2.2"/><path d="M3 19.5c0-3.3 2.4-5.5 5.5-5.5s5.5 2.2 5.5 5.5M15.2 14.6c.4-.1.9-.2 1.3-.2 2.6 0 4.5 1.9 4.5 4.6"/></symbol>
+  <symbol id="i-park" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M9.5 16.5v-9h3.2a2.8 2.8 0 0 1 0 5.6H9.5"/></symbol>
+  <symbol id="i-train" viewBox="0 0 24 24"><rect x="6" y="3.5" width="12" height="13" rx="3"/><path d="M6 11h12M9.5 13.8h.01M14.5 13.8h.01M8.5 20.5l1.8-4M15.5 20.5l-1.8-4"/></symbol>
+  <symbol id="i-map" viewBox="0 0 24 24"><path d="m3.5 6.5 5.5-2 6 2 5.5-2v13l-5.5 2-6-2-5.5 2v-13ZM9 4.5v13M15 6.5v13"/></symbol>
+  <symbol id="i-dine" viewBox="0 0 24 24"><path d="M5 3.5v5a2 2 0 0 0 4 0v-5M7 3.5v17M17 20.5v-7c-1.7 0-2.5-1.3-2.5-3.7 0-3 1.2-6.3 2.5-6.3v10"/></symbol>
+  <symbol id="i-lounge" viewBox="0 0 24 24"><path d="M6.5 11V8a3 3 0 0 1 3-3h5a3 3 0 0 1 3 3v3"/><path d="M4 12.5a1.8 1.8 0 0 1 3.6 0V15h8.8v-2.5a1.8 1.8 0 0 1 3.6 0v4a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 16.5v-4ZM7 18v2M17 18v2"/></symbol>
+  <symbol id="i-track" viewBox="0 0 24 24"><circle cx="5.5" cy="18" r="1.8"/><path d="M7 16.2C9.5 9.5 14 6.5 19 6.5" stroke-dasharray="2 2.8"/><path d="m15.8 4.3 3.7 2.1-2.2 3.5"/></symbol>
+  <symbol id="i-bus" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="13" rx="2.5"/><path d="M5 11.5h14M8 20v-3M16 20v-3M8.5 14.3h.01M15.5 14.3h.01"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.6 3.6 5.4 3.6 8.5s-1.1 5.9-3.6 8.5c-2.5-2.6-3.6-5.4-3.6-8.5s1.1-5.9 3.6-8.5Z"/></symbol>
+  <symbol id="i-a11y" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.7h.01M7.8 10.3c2.8.7 5.6.7 8.4 0M12 10.9v3.3m0 0-2.1 3.6m2.1-3.6 2.1 3.6"/></symbol>
+  <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M7 4h10a1 1 0 0 1 1 1v15l-6-4-6 4V5a1 1 0 0 1 1-1Z"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3.5c.6 4.6 3.4 7.4 8 8-4.6.6-7.4 3.4-8 8-.6-4.6-3.4-7.4-8-8 4.6-.6 7.4-3.4 8-8Z"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 7.8h.01"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="i-ok" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m8.2 12.3 2.6 2.6 5-5.4"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m9 9 6 6m0-6-6 6"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M8 12h8"/></symbol>
+  <symbol id="i-board" viewBox="0 0 24 24"><path d="M13 4.5h4.5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H13M4.5 12h10m-3.5-3.5 3.5 3.5-3.5 3.5"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7.5h16M4 12h16M4 16.5h16"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.8"/><path d="M12 3.5v2M12 18.5v2M3.5 12h2M18.5 12h2M6 6l1.4 1.4M16.6 16.6 18 18M18 6l-1.4 1.4M7.4 16.6 6 18"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M19.5 14.2A8 8 0 0 1 9.8 4.5a8 8 0 1 0 9.7 9.7Z"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.5 5 6v5.5c0 4.3 2.9 7.6 7 9 4.1-1.4 7-4.7 7-9V6l-7-2.5Z"/><path d="m9 12 2.2 2.2 4-4.2"/></symbol>
+  <symbol id="i-approx" viewBox="0 0 24 24"><path d="M4.5 9.5c2.5-2.5 5-2.5 7.5 0s5 2.5 7.5 0M4.5 15c2.5-2.5 5-2.5 7.5 0s5 2.5 7.5 0"/></symbol>
+  <symbol id="i-idea" viewBox="0 0 24 24"><path d="M9.5 17.5h5M10.5 20.5h3M12 3.5a6 6 0 0 0-3.6 10.8c.4.3.6.8.6 1.3h6c0-.5.2-1 .6-1.3A6 6 0 0 0 12 3.5Z"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 5h5v5M19 5l-8 8M17 14v4a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h4"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5.5 8.5h13l-1 11h-11l-1-11ZM9 8.5V7a3 3 0 0 1 6 0v1.5"/></symbol>
+  <symbol id="i-cup" viewBox="0 0 24 24"><path d="M5 9.5h11v4.5a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5V9.5ZM16 11h1.5a2.5 2.5 0 0 1 0 5H16M8.5 3.5V6M12.5 3.5V6"/></symbol>
+  <symbol id="i-gift" viewBox="0 0 24 24"><rect x="4.5" y="9" width="15" height="10.5" rx="1.5"/><path d="M3.5 9h17M12 9v10.5M12 9C10.5 5.5 6.5 5 6.5 7.3 6.5 9 10 9 12 9Zm0 0c1.5-3.5 5.5-4 5.5-1.7C17.5 9 14 9 12 9Z"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M5 5.5A1.5 1.5 0 0 1 6.5 4H19v13H6.5A1.5 1.5 0 0 0 5 18.5v-13ZM5 18.5A1.5 1.5 0 0 0 6.5 20H19"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M19 12a7 7 0 1 1-2.3-5.2M19 4.5V8h-3.5"/></symbol>
+  <symbol id="i-ticket" viewBox="0 0 24 24"><path d="M4 8a1.5 1.5 0 0 1 1.5-1.5h13A1.5 1.5 0 0 1 20 8v2a2 2 0 0 0 0 4v2a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 16v-2a2 2 0 0 0 0-4V8Z"/><path d="M14 7v10" stroke-dasharray="1.5 2.5"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><path d="M3.5 19.5h17M5.5 19.5V10l6.5-4.5 6.5 4.5v9.5M10 19.5v-5h4v5"/></symbol>
+  <symbol id="i-gate" viewBox="0 0 24 24"><path d="M6.5 20V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v15M4 20h16M14.3 12.2h.01"/></symbol>
+  <symbol id="i-scan" viewBox="0 0 24 24"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2M4 12h16"/></symbol>
+</svg>
+
+
+<header class="hdr">
+  <div class="thread" aria-hidden="true"></div>
+  <div class="hdr-in">
+    <a class="brand" href="#" aria-label="Malaysia Airports, home">
+      <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M3.5 27 16 9l12.5 18"/><path d="M10.5 27l5.5-8 5.5 8"/><path class="gd" d="M16 1l2.6 3.2L16 7.4l-2.6-3.2z"/></svg>
+      <span>Malaysia Airports</span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="#board">Flights</a><a href="#journey">Plan your journey</a><a href="#network">At the airport</a><a href="#shop">Shop &amp; dine</a><a href="#search">Transport &amp; parking</a><a href="#concierge">Help</a>
+      <div class="nav-extra"><a href="#journey" style="border:0;font-family:var(--sans);font-size:1rem">Saved journey</a><div class="lang" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true" aria-label="English">EN</button><button type="button" data-lang="ms" aria-pressed="false" aria-label="Bahasa Malaysia">BM</button></div></div>
+    </nav>
+    <div class="util">
+      <label class="ap ap-pill"><span class="sr">Airport and terminal</span><svg class="i"><use href="#i-pin"/></svg><select data-ap><option value="">Choose airport</option><optgroup label="Kuala Lumpur International (KUL)"><option value="KUL-T1">KLIA Terminal 1</option><option value="KUL-T2">KLIA Terminal 2</option></optgroup><optgroup label="Main airports"><option value="PEN">Penang</option><option value="BKI">Kota Kinabalu</option><option value="KCH">Kuching</option><option value="LGK">Langkawi</option><option value="SZB">Subang</option></optgroup><optgroup label="The whole network"><option value="ALL">All 39 airports</option></optgroup></select><svg class="i i-s"><use href="#i-chev"/></svg></label>
+      <a class="icon-btn" href="#search" data-focus-q aria-label="Search flights"><svg class="i"><use href="#i-search"/></svg></a>
+      <div class="lang" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true" aria-label="English">EN</button><button type="button" data-lang="ms" aria-pressed="false" aria-label="Bahasa Malaysia">BM</button></div>
+      <details class="pop"><summary class="icon-btn" aria-label="Accessibility and display options"><svg class="i"><use href="#i-a11y"/></svg></summary>
+        <div class="pop-panel"><p class="pop-t">Accessibility &amp; display</p><div class="ctl"><span class="ctl-l">Theme</span><div class="tog" role="group" aria-label="Theme"><button type="button" data-set="theme" data-v="light" aria-pressed="false"><svg class="i i-s"><use href="#i-sun"/></svg>Light</button><button type="button" data-set="theme" data-v="dark" aria-pressed="false"><svg class="i i-s"><use href="#i-moon"/></svg>Dark</button></div></div>
+<div class="ctl"><span class="ctl-l">Text size</span><div class="tog" role="group" aria-label="Text size"><button type="button" data-set="text" data-v="md" aria-pressed="true">Default</button><button type="button" data-set="text" data-v="lg" aria-pressed="false">Larger</button></div></div>
+<div class="ctl"><span class="ctl-l">Motion</span><div class="tog" role="group" aria-label="Motion"><button type="button" data-set="motion" data-v="full" aria-pressed="true">Full</button><button type="button" data-set="motion" data-v="reduce" aria-pressed="false">Reduced</button></div></div></div></details>
+      <a class="icon-btn" href="#journey" aria-label="Saved journey"><svg class="i"><use href="#i-bookmark"/></svg></a>
+      <a class="u-conc" href="#concierge" aria-label="Concierge"><svg class="i"><use href="#i-spark"/></svg><span>Concierge</span></a>
+      <button class="icon-btn u-menu" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menu"><svg class="i"><use href="#i-menu"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+<!-- ═════ First screen: search, mode, airport, context, quick actions ═════ -->
+<section class="hero" aria-labelledby="h1">
+  <div class="wrap">
+    <div class="hero-head">
+      <div>
+        <p class="eyebrow">Selamat datang <span aria-hidden="true">·</span> Welcome</p>
+        <h1 id="h1">Your journey,<br><em>beautifully connected.</em></h1>
+      </div>
+      <p class="hero-lede">One calm place to begin, whichever of our 39 airports you are travelling through. Find your flight, choose your airport, and everything else arranges itself around you.</p>
+    </div>
+
+    <form class="desk" id="search" role="search" aria-label="Flight search">
+      <div class="desk-top">
+        <div class="seg" role="radiogroup" aria-label="Show departures or arrivals">
+          <label><input type="radio" name="dir" value="dep" checked><span><svg class="i"><use href="#i-depart"/></svg>Departures</span></label>
+          <label><input type="radio" name="dir" value="arr"><span><svg class="i"><use href="#i-arrive"/></svg>Arrivals</span></label>
+        </div>
+        <p class="try"><span>Try</span>
+          <button type="button" class="chip" data-q="MH 2">MH 2</button><button type="button" class="chip" data-q="Kota Kinabalu">Kota Kinabalu</button><button type="button" class="chip" data-q="AirAsia">AirAsia</button><button type="button" class="chip" data-q="Kuala Lumpur to London">Kuala Lumpur to London</button></p>
+      </div>
+      <div class="desk-main">
+        <label class="ap ap-field"><span class="ap-l">Airport</span><svg class="i"><use href="#i-pin"/></svg><select data-ap aria-label="Airport and terminal"><option value="">Choose airport</option><optgroup label="Kuala Lumpur International (KUL)"><option value="KUL-T1">KLIA Terminal 1</option><option value="KUL-T2">KLIA Terminal 2</option></optgroup><optgroup label="Main airports"><option value="PEN">Penang</option><option value="BKI">Kota Kinabalu</option><option value="KCH">Kuching</option><option value="LGK">Langkawi</option><option value="SZB">Subang</option></optgroup><optgroup label="The whole network"><option value="ALL">All 39 airports</option></optgroup></select><svg class="i i-s"><use href="#i-chev"/></svg></label>
+        <div class="q"><label class="sr" for="q">Search by flight number, destination, airline or route</label><svg class="i"><use href="#i-search"/></svg>
+          <input id="q" name="q" type="search" autocomplete="off" enterkeyhint="search" placeholder="Flight number, destination, airline or route"></div>
+        <button class="go" type="submit" aria-label="Find flights"><span data-go>Find departures</span><svg class="i"><use href="#i-arrow"/></svg></button>
+      </div>
+      <p class="desk-msg" role="status" aria-live="polite"></p>
+    </form>
+
+    <div class="fold">
+      <div class="fold-main">
+        <div class="modes" role="tablist" aria-label="What brings you to the airport?">
+          <button class="mode" role="tab" id="m-depart" data-mode="depart" aria-selected="true" aria-controls="qa"><svg class="i"><use href="#i-depart"/></svg>I’m departing</button>
+          <button class="mode" role="tab" id="m-arrive" data-mode="arrive" aria-selected="false" aria-controls="qa" tabindex="-1"><svg class="i"><use href="#i-arrive"/></svg>I’m arriving</button>
+          <button class="mode" role="tab" id="m-transit" data-mode="transit" aria-selected="false" aria-controls="qa" tabindex="-1"><svg class="i"><use href="#i-transit"/></svg>I’m transiting</button>
+          <button class="mode" role="tab" id="m-meet" data-mode="meet" aria-selected="false" aria-controls="qa" tabindex="-1"><svg class="i"><use href="#i-meet"/></svg>I’m meeting someone</button>
+        </div>
+        <div class="qa" id="qa" role="tabpanel" aria-labelledby="m-depart">
+          <a class="qa-t" href="#" data-k="transport" style="view-transition-name:qa-transport"><span class="qa-i"><svg class="i"><use href="#i-train"/></svg></span><span class="qa-b"><b>Getting to the airport</b><small>Rail, bus, taxi or drive, compared</small></span><svg class="i qa-a"><use href="#i-arrow"/></svg></a>
+          <a class="qa-t" href="#" data-k="parking" style="view-transition-name:qa-parking"><span class="qa-i"><svg class="i"><use href="#i-park"/></svg></span><span class="qa-b"><b>Parking</b><small>Find a bay close to departures</small></span><svg class="i qa-a"><use href="#i-arrow"/></svg></a>
+          <a class="qa-t" href="#" data-k="track" style="view-transition-name:qa-track"><span class="qa-i"><svg class="i"><use href="#i-track"/></svg></span><span class="qa-b"><b>Track a flight</b><small>Gate, boarding and changes</small></span><svg class="i qa-a"><use href="#i-arrow"/></svg></a>
+          <a class="qa-t" href="#" data-k="maps" style="view-transition-name:qa-maps"><span class="qa-i"><svg class="i"><use href="#i-map"/></svg></span><span class="qa-b"><b>Terminal maps</b><small>Check-in, security, your gate</small></span><svg class="i qa-a"><use href="#i-arrow"/></svg></a>
+          <a class="qa-t" href="#" data-k="lounges" style="view-transition-name:qa-lounges"><span class="qa-i"><svg class="i"><use href="#i-lounge"/></svg></span><span class="qa-b"><b>Lounges</b><small>A quiet hour before you fly</small></span><svg class="i qa-a"><use href="#i-arrow"/></svg></a>
+          <a class="qa-t" href="#" data-k="dine" style="view-transition-name:qa-dine"><span class="qa-i"><svg class="i"><use href="#i-dine"/></svg></span><span class="qa-b"><b>Food and shops</b><small>Open now, near your gate</small></span><svg class="i qa-a"><use href="#i-arrow"/></svg></a>
+        </div>
+      </div>
+      <aside class="ctx" aria-label="Notices and guidance">
+        <article class="notice">
+          <p class="notice-k"><svg class="i i-s"><use href="#i-info"/></svg>Service notice <span aria-hidden="true">·</span> KLIA Terminal 1</p>
+          <h2>The Aerotrain is running 24 hours</h2>
+          <p>Service between the main terminal and the satellite building returned to round-the-clock operation on 1 June 2026.</p>
+          <a class="link" href="#" aria-label="Terminal 1 guide"><span>Terminal 1 guide</span><svg class="i i-s"><use href="#i-arrow"/></svg></a>
+        </article>
+        <div class="strip">
+          <a href="#"><svg class="i"><use href="#i-train"/></svg><span><b>Getting to the airport</b><small>Rail, bus, taxi, e-hailing or your own car</small></span><svg class="i i-s"><use href="#i-arrow"/></svg></a>
+          <a href="#"><svg class="i"><use href="#i-building"/></svg><span><b>Which terminal?</b><small>KLIA has two. Search your flight to be sure</small></span><svg class="i i-s"><use href="#i-arrow"/></svg></a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ═════ Departures board preview ═════ -->
+<section class="sec" id="board" aria-labelledby="h-board">
+  <div class="wrap">
+    <header class="sec-h">
+      <div><p class="eyebrow"><span class="no">01</span>Flights</p><h2 id="h-board">Departures, <em>at a glance</em></h2></div>
+      <a class="link" href="#">All departures<svg class="i i-s"><use href="#i-arrow"/></svg></a>
+    </header>
+    <div class="board">
+      <div class="demo">
+        <p class="demo-l">Demonstration data, not live</p>
+        <p class="fresh"><svg class="i i-s"><use href="#i-refresh"/></svg>Last updated <b><time datetime="14:32">14:32</time> MYT</b><span>· sample snapshot</span></p>
+      </div>
+      <table>
+        <caption class="sr">Sample departures from <span data-ap-name="Kuala Lumpur International">Kuala Lumpur International</span>. Demonstration data, not live.</caption>
+        <thead><tr><th scope="col">Time</th><th scope="col">Flight</th><th scope="col">Destination</th><th scope="col">Airline</th><th scope="col">Terminal · Gate</th><th scope="col">Status</th></tr></thead>
+        <tbody>
+          <tr><td class="c-time">14:20</td><td class="c-fl">EK 343</td><td class="c-dest">Dubai</td><td class="c-air"><span><span class="mono" aria-hidden="true">EK</span>Emirates</span></td><td class="c-gate">T1<i aria-hidden="true">·</i>C21</td><td class="c-st"><span class="st st-cls"><svg class="i"><use href="#i-minus"/></svg>Gate closed</span></td></tr>
+          <tr><td class="c-time">14:35</td><td class="c-fl">MH 2</td><td class="c-dest">London Heathrow</td><td class="c-air"><span><span class="mono" aria-hidden="true">MH</span>Malaysia Airlines</span></td><td class="c-gate">T1<i aria-hidden="true">·</i>C12</td><td class="c-st"><span class="st st-brd"><svg class="i"><use href="#i-board"/></svg>Boarding</span></td></tr>
+          <tr><td class="c-time">14:50</td><td class="c-fl">AK 5106</td><td class="c-dest">Kota Kinabalu</td><td class="c-air"><span><span class="mono" aria-hidden="true">AK</span>AirAsia</span></td><td class="c-gate">T2<i aria-hidden="true">·</i>J8</td><td class="c-st"><span class="st st-ok"><svg class="i"><use href="#i-ok"/></svg>On time</span></td></tr>
+          <tr><td class="c-time"><s><span class="sr">Was </span>15:05</s><span class="sr"> now </span>15:40</td><td class="c-fl">OD 2104</td><td class="c-dest">Penang</td><td class="c-air"><span><span class="mono" aria-hidden="true">OD</span>Batik Air</span></td><td class="c-gate">T1<i aria-hidden="true">·</i>A5</td><td class="c-st"><span class="st st-dly"><svg class="i"><use href="#i-clock"/></svg>Delayed, now 15:40</span></td></tr>
+          <tr><td class="c-time">15:10</td><td class="c-fl">SQ 107</td><td class="c-dest">Singapore</td><td class="c-air"><span><span class="mono" aria-hidden="true">SQ</span>Singapore Airlines</span></td><td class="c-gate">T1<i aria-hidden="true">·</i>C4</td><td class="c-st"><span class="st st-ok"><svg class="i"><use href="#i-ok"/></svg>On time</span></td></tr>
+          <tr class="is-cxl"><td class="c-time"><s>15:25</s></td><td class="c-fl">AK 5206</td><td class="c-dest">Kuching</td><td class="c-air"><span><span class="mono" aria-hidden="true">AK</span>AirAsia</span></td><td class="c-gate">T2<i aria-hidden="true">·</i>K3</td><td class="c-st"><span class="st st-cxl"><svg class="i"><use href="#i-x"/></svg>Cancelled</span></td></tr>
+          <tr><td class="c-time">15:40</td><td class="c-fl">JL 724</td><td class="c-dest">Tokyo Narita</td><td class="c-air"><span><span class="mono" aria-hidden="true">JL</span>Japan Airlines</span></td><td class="c-gate">T1<i aria-hidden="true">·</i>C17</td><td class="c-st"><span class="st st-ok"><svg class="i"><use href="#i-ok"/></svg>On time</span></td></tr>
+          <tr><td class="c-time">15:55</td><td class="c-fl">MH 1438</td><td class="c-dest">Langkawi</td><td class="c-air"><span><span class="mono" aria-hidden="true">MH</span>Malaysia Airlines</span></td><td class="c-gate">T1<i aria-hidden="true">·</i>B6</td><td class="c-st"><span class="st st-ok"><svg class="i"><use href="#i-ok"/></svg>On time</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="board-ft">
+      <p>A sample board for <b data-ap-name="Kuala Lumpur International">Kuala Lumpur International</b>. Flights, times and gates are illustrative. Always confirm with your airline.</p>
+      <a class="link" href="#">Switch to arrivals<svg class="i i-s"><use href="#i-arrow"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- ═════ Your journey ═════ -->
+<section class="sec band" id="journey" aria-labelledby="h-journey">
+  <div class="wrap">
+    <div class="jr-top">
+      <div><p class="eyebrow"><span class="no">02</span>Plan your journey</p><h2 id="h-journey">From your door to the gate, <em>laid out plainly</em></h2>
+        <p class="lede" style="margin-top:16px">Add a flight and we set out each step in order, and tell you how sure we are of each one. What is an instruction, what is an estimate and what is only a suggestion are never blurred together.</p>
+        <a class="link" href="#" style="margin-top:8px">Plan my journey<svg class="i i-s"><use href="#i-arrow"/></svg></a></div>
+      <ul class="legend" aria-label="How to read the labels">
+        <li><span class="tg tg-off"><svg class="i"><use href="#i-shield"/></svg>Official instruction</span>From the airport, your airline or the authorities. Please follow it.</li>
+        <li><span class="tg tg-est"><svg class="i"><use href="#i-approx"/></svg>Estimated guidance</span>Our best estimate from current conditions. It can change.</li>
+        <li><span class="tg tg-sug"><svg class="i"><use href="#i-idea"/></svg>Suggestion</span>A helpful idea for a smoother trip. Take it or leave it.</li>
+      </ul>
+    </div>
+    <div class="jr-card">
+      <p class="jr-cap"><span><b>MH 2</b> Kuala Lumpur to London Heathrow, departing 14:35</span><span class="pill-demo">Illustrative journey</span></p>
+      <ol class="steps">
+        <li class="step"><p class="step-k"><svg class="i"><use href="#i-building"/></svg>Terminal</p><p class="step-v">KLIA Terminal 1</p><p class="step-d">Confirmed by your airline for this flight.</p><span class="tg tg-off"><svg class="i"><use href="#i-shield"/></svg>Official instruction</span></li>
+        <li class="step"><p class="step-k"><svg class="i"><use href="#i-clock"/></svg>When to arrive</p><p class="step-v">By 11:35</p><p class="step-d">Worked back from your departure, the day and how busy we expect to be.</p><span class="tg tg-est"><svg class="i"><use href="#i-approx"/></svg>Estimated guidance</span></li>
+        <li class="step"><p class="step-k"><svg class="i"><use href="#i-train"/></svg>How to get there</p><p class="step-v">Rail or road</p><p class="step-d">Your options side by side, with the steadiest one at that hour picked out.</p><span class="tg tg-sug"><svg class="i"><use href="#i-idea"/></svg>Suggestion</span></li>
+        <li class="step"><p class="step-k"><svg class="i"><use href="#i-ticket"/></svg>Check-in</p><p class="step-v">Online or at the desk</p><p class="step-d">Counter row and closing time, as published by your airline.</p><span class="tg tg-off"><svg class="i"><use href="#i-shield"/></svg>Official instruction</span></li>
+        <li class="step"><p class="step-k"><svg class="i"><use href="#i-scan"/></svg>Security and immigration</p><p class="step-v">About 25 minutes</p><p class="step-d">A typical time to clear both at that hour, refreshed as the day changes.</p><span class="tg tg-est"><svg class="i"><use href="#i-approx"/></svg>Estimated guidance</span></li>
+        <li class="step"><p class="step-k"><svg class="i"><use href="#i-gate"/></svg>Gate</p><p class="step-v">C12</p><p class="step-d">Shown the moment it is confirmed, with a nudge when it is time to walk.</p><span class="tg tg-off"><svg class="i"><use href="#i-shield"/></svg>Official instruction</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ═════ Airport network ═════ -->
+<section class="sec" id="network" aria-labelledby="h-network">
+  <div class="wrap">
+    <header class="sec-h">
+      <div><p class="eyebrow"><span class="no">03</span>The network</p><h2 id="h-network">Thirty-nine airports, <em>one welcome</em></h2></div>
+      <p class="lede" style="max-width:40ch;font-size:.9375rem">From the capital’s two terminals to island runways. In Visit Malaysia 2026, every arrival begins with the same hospitality.</p>
+    </header>
+    <div class="net">
+      <a class="ap-card big" href="#"><span class="ap-art"><svg class="ill" viewBox="0 0 320 180" aria-hidden="true" focusable="false"><path class="f" d="M-40 62Q0 34 40 62M40 62Q80 34 120 62M120 62Q160 34 200 62M200 62Q240 34 280 62M280 62Q320 34 360 62"/><path d="M34.6 110Q23.9 81.3 1.6 34M35.5 110Q26.6 82.4 8 35.1M36.4 110Q29.2 83.5 14.4 37.6M37.3 110Q31.9 84.6 20.8 41.6M38.2 110Q34.6 85.8 27.2 46.9M39.1 110Q37.3 86.9 33.6 53.8M40 110Q40 88 40 62M40.9 110Q42.7 86.9 46.4 53.8M41.8 110Q45.4 85.8 52.8 46.9M42.7 110Q48.1 84.6 59.2 41.6M43.6 110Q50.8 83.5 65.6 37.6M44.5 110Q53.4 82.4 72 35.1M45.4 110Q56.1 81.3 78.4 34M114.6 110Q103.9 81.3 81.6 34M115.5 110Q106.6 82.4 88 35.1M116.4 110Q109.2 83.5 94.4 37.6M117.3 110Q111.9 84.6 100.8 41.6M118.2 110Q114.6 85.8 107.2 46.9M119.1 110Q117.3 86.9 113.6 53.8M120 110Q120 88 120 62M120.9 110Q122.7 86.9 126.4 53.8M121.8 110Q125.4 85.8 132.8 46.9M122.7 110Q128.1 84.6 139.2 41.6M123.6 110Q130.8 83.5 145.6 37.6M124.5 110Q133.4 82.4 152 35.1M125.4 110Q136.1 81.3 158.4 34M194.6 110Q183.9 81.3 161.6 34M195.5 110Q186.6 82.4 168 35.1M196.4 110Q189.2 83.5 174.4 37.6M197.3 110Q191.9 84.6 180.8 41.6M198.2 110Q194.6 85.8 187.2 46.9M199.1 110Q197.3 86.9 193.6 53.8M200 110Q200 88 200 62M200.9 110Q202.7 86.9 206.4 53.8M201.8 110Q205.4 85.8 212.8 46.9M202.7 110Q208.1 84.6 219.2 41.6M203.6 110Q210.8 83.5 225.6 37.6M204.5 110Q213.4 82.4 232 35.1M205.4 110Q216.1 81.3 238.4 34M274.6 110Q263.9 81.3 241.6 34M275.5 110Q266.6 82.4 248 35.1M276.4 110Q269.2 83.5 254.4 37.6M277.3 110Q271.9 84.6 260.8 41.6M278.2 110Q274.6 85.8 267.2 46.9M279.1 110Q277.3 86.9 273.6 53.8M280 110Q280 88 280 62M280.9 110Q282.7 86.9 286.4 53.8M281.8 110Q285.4 85.8 292.8 46.9M282.7 110Q288.1 84.6 299.2 41.6M283.6 110Q290.8 83.5 305.6 37.6M284.5 110Q293.4 82.4 312 35.1M285.4 110Q296.1 81.3 318.4 34"/><path d="M34 110L37 158M46 110L43 158M33 110h14M35 158h10M114 110L117 158M126 110L123 158M113 110h14M115 158h10M194 110L197 158M206 110L203 158M193 110h14M195 158h10M274 110L277 158M286 110L283 158M273 110h14M275 158h10"/><path class="g" d="M-40 62Q0 6 40 62M40 62Q80 6 120 62M120 62Q160 6 200 62M200 62Q240 6 280 62M280 62Q320 6 360 62"/><path class="gf" d="M0 20l3.5 5-3.5 5-3.5-5zM80 20l3.5 5-3.5 5-3.5-5zM160 20l3.5 5-3.5 5-3.5-5zM240 20l3.5 5-3.5 5-3.5-5zM320 20l3.5 5-3.5 5-3.5-5z"/><path d="M0 158H320"/><path class="f" d="M14 166h52M92 166h60M176 166h44M244 166h62"/></svg></span><span class="ap-body"><span class="ap-code">KUL · TERMINAL 1</span><span class="ap-name">KLIA Terminal 1</span><span class="ap-place">Kuala Lumpur International Airport, Sepang. Main terminal and satellite building, joined by the Aerotrain around the clock.</span><span class="ap-go">Flights and terminal guide<svg class="i i-s"><use href="#i-arrow"/></svg></span></span></a>
+      <a class="ap-card big" href="#"><span class="ap-art"><svg class="ill" viewBox="0 0 320 180" aria-hidden="true" focusable="false"><path class="f" d="M8 72V150M312 72V150M16 72V150M304 72V150M24 72V150M296 72V150M32 72V150M288 72V150M40 72V150M280 72V150M48 72V150M272 72V150M56 72V150M264 72V150"/><path d="M0 62H64V150M320 62H256V150M0 72H64M320 72H256"/><path d="M64 94L72 78L80 94M80 94L88 78L96 94M96 94L104 78L112 94M112 94L120 78L128 94M128 94L136 78L144 94M144 94L152 78L160 94M160 94L168 78L176 94M176 94L184 78L192 94M192 94L200 78L208 94M208 94L216 78L224 94M224 94L232 78L240 94M240 94L248 78L256 94"/><path class="g" d="M64 78H256M64 94H256"/><path d="M104 94V150M112 94V150M208 94V150M216 94V150"/><path d="M120 138c-6-.5-10-2.5-12-5 3-3.5 9-5 16-5h62l12-17h7l-5 17c5 .5 8 2 8 4.5s-4 5-10 5.5Z"/><path class="f" d="M150 138l13 8h8l-6-8M126 132h52"/><path d="M0 150H320"/><path class="f" d="M20 160h36M84 160h48M160 160h36M224 160h60"/></svg></span><span class="ap-body"><span class="ap-code">KUL · TERMINAL 2</span><span class="ap-name">KLIA Terminal 2</span><span class="ap-place">Kuala Lumpur International Airport, Sepang. The second of KLIA’s two terminals. Your booking shows which is yours.</span><span class="ap-go">Flights and terminal guide<svg class="i i-s"><use href="#i-arrow"/></svg></span></span></a>
+      <a class="ap-card" href="#"><span class="ap-art"><svg class="ill" viewBox="0 0 320 180" aria-hidden="true" focusable="false"><path class="f" d="M0 104Q36 66 78 88T160 78T250 92T320 80"/><path class="g" d="M112 50L104 112M112 50L120 112M112 50L96 112M112 50L128 112M112 50L88 112M112 50L136 112M112 50L80 112M112 50L144 112M112 50L72 112M112 50L152 112M112 50L64 112M112 50L160 112M208 50L200 112M208 50L216 112M208 50L192 112M208 50L224 112M208 50L184 112M208 50L232 112M208 50L176 112M208 50L240 112M208 50L168 112M208 50L248 112M208 50L160 112M208 50L256 112"/><path d="M107 150V46h10V150M107 58h10M107 98h10M203 150V46h10V150M203 58h10M203 98h10"/><path d="M16 117V150M40 117V150M280 117V150M304 117V150"/><path d="M0 112H320M0 117H320"/><path class="f" d="M-12 152q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0M-5 161q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0M2 170q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0q6-5 12 0t12 0"/></svg></span><span class="ap-body"><span class="ap-code">PEN</span><span class="ap-name">Penang</span><span class="ap-place">Bayan Lepas, Penang</span><span class="ap-go">Explore<svg class="i i-s"><use href="#i-arrow"/></svg></span></span></a>
+      <a class="ap-card" href="#"><span class="ap-art"><svg class="ill" viewBox="0 0 320 180" aria-hidden="true" focusable="false"><clipPath id="c-bki"><path d="M0 134L34 118L66 96L86 70L96 76L106 52L116 64L126 42L136 58L146 46L156 66L168 56L182 78L206 92L244 112L284 124L320 130V180H0Z"/></clipPath><g clip-path="url(#c-bki)" class="f"><path d="M-60 180L-14 30M-52 180L-6 30M-44 180L2 30M-36 180L10 30M-28 180L18 30M-20 180L26 30M-12 180L34 30M-4 180L42 30M4 180L50 30M12 180L58 30M20 180L66 30M28 180L74 30M36 180L82 30M44 180L90 30M52 180L98 30M60 180L106 30M68 180L114 30M76 180L122 30M84 180L130 30M92 180L138 30M100 180L146 30M108 180L154 30M116 180L162 30M124 180L170 30M132 180L178 30M140 180L186 30M148 180L194 30M156 180L202 30M164 180L210 30M172 180L218 30M180 180L226 30M188 180L234 30M196 180L242 30M204 180L250 30M212 180L258 30M220 180L266 30M228 180L274 30M236 180L282 30M244 180L290 30M252 180L298 30M260 180L306 30M268 180L314 30M276 180L322 30M284 180L330 30M292 180L338 30M300 180L346 30M308 180L354 30M316 180L362 30M324 180L370 30"/></g><path d="M0 134L34 118L66 96L86 70L96 76L106 52L116 64L126 42L136 58L146 46L156 66L168 56L182 78L206 92L244 112L284 124L320 130"/><circle class="g" cx="246" cy="52" r="15"/><path class="pf" d="M0 150Q56 128 120 144T240 140T320 146V180H0Z"/><path class="f" d="M10 158h70M128 158h96M252 158h56M32 166h60M142 166h78M246 166h48M54 174h50M156 174h60M240 174h40"/></svg></span><span class="ap-body"><span class="ap-code">BKI</span><span class="ap-name">Kota Kinabalu</span><span class="ap-place">Sabah</span><span class="ap-go">Explore<svg class="i i-s"><use href="#i-arrow"/></svg></span></span></a>
+      <a class="ap-card" href="#"><span class="ap-art"><svg class="ill" viewBox="0 0 320 180" aria-hidden="true" focusable="false"><path class="pf2" d="M18 84A22 22 0 0 1 62 84Z"/><path class="f" d="M40 84L60.4 75.8M40 84L55.6 68.5M40 84L48.5 63.7M40 84L40 62M40 84L31.5 63.7M40 84L24.4 68.5M40 84V128"/><path class="pf2" d="M66 76A26 26 0 0 1 118 76Z"/><path class="f" d="M92 76L116.1 66.3M92 76L110.5 57.7M92 76L102 52M92 76L92 50M92 76L82 52M92 76L73.5 57.7M92 76V128"/><path class="pf2" d="M128 82A22 22 0 0 1 172 82Z"/><path class="f" d="M150 82L170.4 73.8M150 82L165.6 66.5M150 82L158.5 61.7M150 82L150 60M150 82L141.5 61.7M150 82L134.4 66.5M150 82V128"/><path class="pf2" d="M178 74A26 26 0 0 1 230 74Z"/><path class="f" d="M204 74L228.1 64.3M204 74L222.5 55.7M204 74L214 50M204 74L204 48M204 74L194 50M204 74L185.5 55.7M204 74V128"/><path class="pf2" d="M236 82A22 22 0 0 1 280 82Z"/><path class="f" d="M258 82L278.4 73.8M258 82L273.6 66.5M258 82L266.5 61.7M258 82L258 60M258 82L249.5 61.7M258 82L242.4 66.5M258 82V128"/><path class="pf2" d="M286 78A20 20 0 0 1 326 78Z"/><path class="f" d="M306 78L324.5 70.5M306 78L320.2 63.9M306 78L313.7 59.5M306 78L306 58M306 78L298.3 59.5M306 78L291.8 63.9M306 78V128"/><path class="pf" d="M-8 104A24 24 0 0 1 40 104Z"/><path d="M16 104L38.3 95M16 104L33.1 87.1M16 104L25.2 81.9M16 104L16 80M16 104L6.8 81.9M16 104L-1.1 87.1M16 104V128"/><path class="pf" d="M38 100A28 28 0 0 1 94 100Z"/><path d="M66 100L92 89.5M66 100L85.9 80.3M66 100L76.8 74.2M66 100L66 72M66 100L55.2 74.2M66 100L46.1 80.3M66 100V128"/><path class="pf" d="M98 106A24 24 0 0 1 146 106Z"/><path d="M122 106L144.3 97M122 106L139.1 89.1M122 106L131.2 83.9M122 106L122 82M122 106L112.8 83.9M122 106L104.9 89.1M122 106V128"/><path class="pf" d="M146 98A30 30 0 0 1 206 98Z"/><path d="M176 98L203.8 86.8M176 98L197.3 76.9M176 98L187.6 70.3M176 98L176 68M176 98L164.4 70.3M176 98L154.7 76.9M176 98V128"/><path class="pf" d="M208 106A24 24 0 0 1 256 106Z"/><path d="M232 106L254.3 97M232 106L249.1 89.1M232 106L241.2 83.9M232 106L232 82M232 106L222.8 83.9M232 106L214.9 89.1M232 106V128"/><path class="pf" d="M256 100A28 28 0 0 1 312 100Z"/><path d="M284 100L310 89.5M284 100L303.9 80.3M284 100L294.8 74.2M284 100L284 72M284 100L273.2 74.2M284 100L264.1 80.3M284 100V128"/><path d="M0 128H320"/><path class="g" d="M-10 146C50 128 110 168 180 146S290 130 330 150M-10 154C50 136 110 176 180 154S290 138 330 158M-10 162C50 144 110 184 180 162S290 146 330 166"/></svg></span><span class="ap-body"><span class="ap-code">KCH</span><span class="ap-name">Kuching</span><span class="ap-place">Sarawak</span><span class="ap-go">Explore<svg class="i i-s"><use href="#i-arrow"/></svg></span></span></a>
+      <a class="ap-card" href="#"><span class="ap-art"><svg class="ill" viewBox="0 0 320 180" aria-hidden="true" focusable="false"><clipPath id="c-lgk"><path d="M14 116Q28 82 52 92Q68 60 94 80Q110 70 124 116ZM150 116Q164 92 184 98Q200 76 216 116ZM268 116Q280 98 294 102Q304 96 312 116Z"/></clipPath><g clip-path="url(#c-lgk)" class="f"><path d="M0 64H320M0 69H320M0 74H320M0 79H320M0 84H320M0 89H320M0 94H320M0 99H320M0 104H320M0 109H320M0 114H320"/></g><path d="M14 116Q28 82 52 92Q68 60 94 80Q110 70 124 116ZM150 116Q164 92 184 98Q200 76 216 116ZM268 116Q280 98 294 102Q304 96 312 116Z"/><path class="g" d="M221 116A18 18 0 0 1 257 116M226 126h26M231 136h16M235 146h8"/><path d="M0 116H320"/><path class="f" d="M0 126h22M38 126h30M84 126h46M146 126h48M294 126h46M37 136h42M103 136h48M175 136h30M277 136h42M28 146h46M92 146h50M160 146h28M268 146h46M19 156h50M95 156h36M157 156h38M289 156h50M10 166h24M54 166h38M112 166h36M168 166h32M264 166h38"/></svg></span><span class="ap-body"><span class="ap-code">LGK</span><span class="ap-name">Langkawi</span><span class="ap-place">Kedah</span><span class="ap-go">Explore<svg class="i i-s"><use href="#i-arrow"/></svg></span></span></a>
+      <a class="ap-card" href="#"><span class="ap-art"><svg class="ill" viewBox="0 0 320 180" aria-hidden="true" focusable="false"><path d="M20 74H300M36 80H284"/><circle class="pf" cx="160" cy="100" r="25"/><path d="M145 92q15-9 30 0M160 86v6M160 75V32M130 32h60M150 124v10M170 124v10"/><circle cx="150" cy="138" r="3.5"/><circle cx="170" cy="138" r="3.5"/><path d="M96.9 85Q108.6 92.6 120.4 90Q110.6 82.9 96.9 85M93.5 88.8Q92.8 102.7 101 111.6Q102.3 99.6 93.5 88.8M88.7 87.7Q76.2 94 72.6 105.6Q83.7 100.7 88.7 87.7M87.1 83Q75.4 75.4 63.6 78Q73.4 85.1 87.1 83M90.5 79.2Q91.2 65.3 83 56.4Q81.7 68.4 90.5 79.2M95.3 80.3Q107.8 74 111.4 62.4Q100.3 67.3 95.3 80.3M232.9 85Q244.6 92.6 256.4 90Q246.6 82.9 232.9 85M229.5 88.8Q228.8 102.7 237 111.6Q238.3 99.6 229.5 88.8M224.7 87.7Q212.2 94 208.6 105.6Q219.7 100.7 224.7 87.7M223.1 83Q211.4 75.4 199.6 78Q209.4 85.1 223.1 83M226.5 79.2Q227.2 65.3 219 56.4Q217.7 68.4 226.5 79.2M231.3 80.3Q243.8 74 247.4 62.4Q236.3 67.3 231.3 80.3"/><circle class="g" cx="92" cy="84" r="33" stroke-dasharray="2 5"/><circle cx="92" cy="84" r="5"/><circle class="g" cx="228" cy="84" r="33" stroke-dasharray="2 5"/><circle cx="228" cy="84" r="5"/><path d="M0 142H140M180 142H320"/><path class="f" d="M24 152h40M96 152h30M194 152h30M256 152h40"/></svg></span><span class="ap-body"><span class="ap-code">SZB</span><span class="ap-name">Subang</span><span class="ap-place">Selangor</span><span class="ap-go">Explore<svg class="i i-s"><use href="#i-arrow"/></svg></span></span></a>
+      <a class="all39" href="#"><svg class="ill" viewBox="0 0 360 120" aria-hidden="true" focusable="false"><path class="m-d" d="M20 9.5l3.8 4.5-3.8 4.5-3.8-4.5z"/><circle class="m-s" cx="60" cy="14" r="1.7"/><path class="m-d" d="M100 9.5l3.8 4.5-3.8 4.5-3.8-4.5z"/><circle class="m-s" cx="140" cy="14" r="1.7"/><path class="m-i" d="M180 8l5 6-5 6-5-6z"/><path class="m-r" d="M180 4l8.5 10-8.5 10-8.5-10z"/><path class="m-d" d="M220 9.5l3.8 4.5-3.8 4.5-3.8-4.5z"/><circle class="m-s" cx="260" cy="14" r="1.7"/><path class="m-d" d="M300 9.5l3.8 4.5-3.8 4.5-3.8-4.5z"/><circle class="m-s" cx="40" cy="37" r="1.7"/><path class="m-d" d="M80 32.5l3.8 4.5-3.8 4.5-3.8-4.5z"/><circle class="m-s" cx="120" cy="37" r="1.7"/><path class="m-i" d="M160 31l5 6-5 6-5-6z"/><path class="m-r" d="M160 27l8.5 10-8.5 10-8.5-10z"/><path class="m-d" d="M200 32.5l3.8 4.5-3.8 4.5-3.8-4.5z"/><circle class="m-s" cx="240" cy="37" r="1.7"/><path class="m-d" d="M280 32.5l3.8 4.5-3.8 4.5-3.8-4.5z"/><circle class="m-s" cx="20" cy="60" r="1.7"/><path class="m-d" d="M60 55.5l3.8 4.5-3.8 4.5-3.8-4.5z"/><circle class="m-s" cx="100" cy="60" r="1.7"/><path class="m-d" d="M140 55.5l3.8 4.5-3.8 4.5-3.8-4.5z"/><path class="m-i" d="M180 54l5 6-5 6-5-6z"/><path class="m-r" d="M180 50l8.5 10-8.5 10-8.5-10z"/><circle class="m-s" cx="220" cy="60" r="1.7"/><path class="m-d" d="M260 55.5l3.8 4.5-3.8 4.5-3.8-4.5z"/><circle class="m-s" cx="300" cy="60" r="1.7"/><path class="m-d" d="M40 78.5l3.8 4.5-3.8 4.5-3.8-4.5z"/><circle class="m-s" cx="80" cy="83" r="1.7"/><path class="m-d" d="M120 78.5l3.8 4.5-3.8 4.5-3.8-4.5z"/><circle class="m-s" cx="160" cy="83" r="1.7"/><path class="m-i" d="M200 77l5 6-5 6-5-6z"/><path class="m-r" d="M200 73l8.5 10-8.5 10-8.5-10z"/><path class="m-d" d="M240 78.5l3.8 4.5-3.8 4.5-3.8-4.5z"/><circle class="m-s" cx="280" cy="83" r="1.7"/><path class="m-d" d="M20 101.5l3.8 4.5-3.8 4.5-3.8-4.5z"/><circle class="m-s" cx="60" cy="106" r="1.7"/><path class="m-d" d="M100 101.5l3.8 4.5-3.8 4.5-3.8-4.5z"/><circle class="m-s" cx="140" cy="106" r="1.7"/><path class="m-i" d="M180 100l5 6-5 6-5-6z"/><path class="m-r" d="M180 96l8.5 10-8.5 10-8.5-10z"/><path class="m-d" d="M220 101.5l3.8 4.5-3.8 4.5-3.8-4.5z"/><circle class="m-s" cx="260" cy="106" r="1.7"/><path class="m-d" d="M300 101.5l3.8 4.5-3.8 4.5-3.8-4.5z"/><circle class="m-s" cx="340" cy="106" r="1.7"/></svg>
+        <div><h3>All 39 airports</h3>
+          <ul class="stats"><li><svg viewBox="0 0 14 14" aria-hidden="true"><path class="m-i" d="M7 1l5 6-5 6-5-6z"/></svg><b>5</b> international</li><li><svg viewBox="0 0 14 14" aria-hidden="true"><path class="m-d" d="M7 2.5l3.8 4.5L7 11.5 3.2 7z"/></svg><b>17</b> domestic</li><li><svg viewBox="0 0 14 14" aria-hidden="true"><circle class="m-s" cx="7" cy="7" r="2"/></svg><b>17</b> short take-off and landing ports</li></ul></div>
+        <span class="btn-inv">Browse the network<svg class="i i-s"><use href="#i-arrow"/></svg></span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ═════ Shop & dine ═════ -->
+<section class="sec band" id="shop" aria-labelledby="h-shop">
+  <div class="wrap">
+    <header class="sec-h">
+      <div><p class="eyebrow"><span class="no">04</span>Shop &amp; dine</p><h2 id="h-shop">A little time <em>before the gate</em></h2></div>
+      <a class="link" href="#">Everything at your airport<svg class="i i-s"><use href="#i-arrow"/></svg></a>
+    </header>
+    <div class="filters" role="group" aria-label="Filter shops and restaurants">
+      <button type="button" class="chip" aria-pressed="true">Open now</button><button type="button" class="chip" aria-pressed="false">Halal</button><button type="button" class="chip" aria-pressed="false">Near my gate</button><button type="button" class="chip" aria-pressed="false">Before security</button><button type="button" class="chip" aria-pressed="false">After security</button>
+    </div>
+    <div class="shops" tabindex="0" role="group" aria-label="Places to eat and shop">
+      <a class="shop-t" href="#"><span class="sw sw-1" aria-hidden="true"><svg class="i"><use href="#i-dine"/></svg></span><span class="shop-k">Eat</span><b>Malaysian kitchens</b><small>Nasi lemak, laksa and teh tarik. A first taste, or a last one for the road.</small></a>
+      <a class="shop-t" href="#"><span class="sw sw-2" aria-hidden="true"><svg class="i"><use href="#i-cup"/></svg></span><span class="shop-k">Drink</span><b>Coffee and kopitiam</b><small>A quiet cup and kaya toast within sight of the departures screen.</small></a>
+      <a class="shop-t" href="#"><span class="sw sw-3" aria-hidden="true"><svg class="i"><use href="#i-bag"/></svg></span><span class="shop-k">Shop</span><b>Duty free and beauty</b><small>Fragrance, skincare and confectionery. See fares and offers in store.</small></a>
+      <a class="shop-t" href="#"><span class="sw sw-4" aria-hidden="true"><svg class="i"><use href="#i-gift"/></svg></span><span class="shop-k">Take home</span><b>Craft and gifts</b><small>Batik, pewter and woven pieces made by Malaysian hands.</small></a>
+      <a class="shop-t" href="#"><span class="sw sw-5" aria-hidden="true"><svg class="i"><use href="#i-book"/></svg></span><span class="shop-k">Essentials</span><b>Books and travel needs</b><small>Adapters, something to read, and whatever stayed on the kitchen table.</small></a>
+    </div>
+  </div>
+</section>
+
+<!-- ═════ Concierge ═════ -->
+<section class="sec" id="concierge" aria-labelledby="h-cc">
+  <div class="wrap cc">
+    <div>
+      <p class="eyebrow"><span class="no">05</span>Concierge</p><h2 id="h-cc">Ask, and be <em>shown the way</em></h2>
+      <p class="lede">A concierge for the questions that do not fit a menu. It answers in plain language, in English or Bahasa Malaysia, and waits quietly until you need it.</p>
+      <ul class="cc-notes">
+        <li><svg class="i"><use href="#i-shield"/></svg>Answers come from official airport information, and say so.</li>
+        <li><svg class="i"><use href="#i-approx"/></svg>When it is not sure, it tells you, and points you to a person.</li>
+      </ul>
+    </div>
+    <div class="cc-card">
+      <p class="cc-hd"><svg class="i"><use href="#i-spark"/></svg>Airport concierge<span class="pill-demo">Preview</span></p>
+      <p class="bub bub-q">Where can I park for a week away?</p>
+      <div class="bub bub-a"><p>The Long Term Car Park has over 5,200 bays, with a free shuttle to the terminal every 10 minutes. For shorter stays, Terminal 1 has over 5,700 bays across Blocks A to D.</p>
+        <p class="src"><svg class="i"><use href="#i-shield"/></svg>Source: Malaysia Airports parking information</p></div>
+      <div class="cc-sug"><p>Others are asking</p>
+        <button type="button">How do I get from Terminal 1 to Terminal 2?<svg class="i i-s"><use href="#i-arrow"/></svg></button>
+        <button type="button">Where is the nearest surau to my gate?<svg class="i i-s"><use href="#i-arrow"/></svg></button>
+        <button type="button">Is the Aerotrain running tonight?<svg class="i i-s"><use href="#i-arrow"/></svg></button>
+      </div>
+      <form class="cc-in" data-demo><label class="sr" for="ask">Ask the concierge</label><input id="ask" type="text" autocomplete="off" placeholder="Ask about your journey"><button type="submit" aria-label="Send question"><svg class="i"><use href="#i-arrow"/></svg></button></form>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="ft">
+  <div class="thread" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="ft-top">
+      <div class="ft-brand">
+        <a class="brand" href="#" aria-label="Malaysia Airports, home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M3.5 27 16 9l12.5 18"/><path d="M10.5 27l5.5-8 5.5 8"/><path class="gd" d="M16 1l2.6 3.2L16 7.4l-2.6-3.2z"/></svg><span>Malaysia Airports</span></a>
+        <p class="promise">Hosting Joyful Connections</p>
+        <p class="ft-note">39 airports across Malaysia, welcoming the world in Visit Malaysia 2026.</p>
+      </div>
+      <nav class="ft-col" aria-label="Flights"><h3>Flights</h3><ul><li><a href="#">Departures</a></li><li><a href="#">Arrivals</a></li><li><a href="#">Track a flight</a></li><li><a href="#">Airlines</a></li></ul></nav>
+      <nav class="ft-col" aria-label="Plan your journey"><h3>Plan your journey</h3><ul><li><a href="#">Journey planner</a></li><li><a href="#">Getting to the airport</a></li><li><a href="#">Parking</a></li><li><a href="#">Special assistance</a></li></ul></nav>
+      <nav class="ft-col" aria-label="At the airport"><h3>At the airport</h3><ul><li><a href="#">Terminal maps</a></li><li><a href="#">Shop &amp; dine</a></li><li><a href="#">Lounges</a></li><li><a href="#">Prayer rooms and facilities</a></li></ul></nav>
+      <nav class="ft-col" aria-label="Help"><h3>Help</h3><ul><li><a href="#">Help centre</a></li><li><a href="#">Lost and found</a></li><li><a href="#">Feedback</a></li><li><a href="#">Contact us</a></li></ul></nav>
+    </div>
+    <div class="ft-mid">
+      <div class="ctl"><span class="ctl-l">Language</span><div class="lang" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true">English</button><button type="button" data-lang="ms" aria-pressed="false">Bahasa Malaysia</button></div></div>
+      <div class="ctl"><span class="ctl-l">Theme</span><div class="tog" role="group" aria-label="Theme"><button type="button" data-set="theme" data-v="light" aria-pressed="false"><svg class="i i-s"><use href="#i-sun"/></svg>Light</button><button type="button" data-set="theme" data-v="dark" aria-pressed="false"><svg class="i i-s"><use href="#i-moon"/></svg>Dark</button></div></div>
+<div class="ctl"><span class="ctl-l">Text size</span><div class="tog" role="group" aria-label="Text size"><button type="button" data-set="text" data-v="md" aria-pressed="true">Default</button><button type="button" data-set="text" data-v="lg" aria-pressed="false">Larger</button></div></div>
+<div class="ctl"><span class="ctl-l">Motion</span><div class="tog" role="group" aria-label="Motion"><button type="button" data-set="motion" data-v="full" aria-pressed="true">Full</button><button type="button" data-set="motion" data-v="reduce" aria-pressed="false">Reduced</button></div></div>
+      <a class="link corp" href="#">Malaysia Airports corporate site<svg class="i i-s"><use href="#i-ext"/></svg></a>
+    </div>
+    <div class="ft-btm">
+      <p>Concept design for demonstration. Not an official Malaysia Airports website. Flight information shown is illustrative.</p>
+      <p><a href="#">Privacy</a> &nbsp;·&nbsp; <a href="#">Terms</a> &nbsp;·&nbsp; <a href="#">Accessibility statement</a></p>
+    </div>
+  </div>
+</footer>
+
+<nav class="tabbar" aria-label="Quick access">
+  <a href="#board"><svg class="i"><use href="#i-depart"/></svg>Flights</a>
+  <a href="#network"><svg class="i"><use href="#i-map"/></svg>Airports</a>
+  <a class="tb-main" href="#search" data-focus-q><svg class="i"><use href="#i-search"/></svg>Search</a>
+  <a href="#journey"><svg class="i"><use href="#i-bookmark"/></svg>Journey</a>
+  <a href="#concierge"><svg class="i"><use href="#i-spark"/></svg>Concierge</a>
+</nav>
+
+<script>
+(()=>{
+  const d=document,root=d.documentElement,$=(s,r=d)=>r.querySelector(s),$$=(s,r=d)=>[...r.querySelectorAll(s)];
+  const still=()=>root.dataset.motion==="reduce"||matchMedia("(prefers-reduced-motion: reduce)").matches;
+  /* display settings: theme, text size, motion */
+  const sync=()=>$$("[data-set]").forEach(b=>b.setAttribute("aria-pressed",(root.dataset[b.dataset.set]||{text:"md",motion:"full"}[b.dataset.set])===b.dataset.v));
+  d.addEventListener("click",e=>{const b=e.target.closest("[data-set]");if(b){root.dataset[b.dataset.set]=b.dataset.v;if(b.dataset.set==="theme")try{localStorage.setItem("ma-theme",b.dataset.v)}catch(_){}sync()}
+    const l=e.target.closest("[data-lang]");if(l)$$("[data-lang]").forEach(x=>x.setAttribute("aria-pressed",x.dataset.lang===l.dataset.lang));
+    const c=e.target.closest(".filters .chip");if(c)c.setAttribute("aria-pressed",c.getAttribute("aria-pressed")!=="true");
+    const p=$(".pop[open]");if(p&&!p.contains(e.target))p.open=false});
+  d.addEventListener("keydown",e=>{if(e.key==="Escape"){const p=$(".pop[open]");if(p){p.open=false;$("summary",p).focus()}hdr.removeAttribute("data-open");menu.setAttribute("aria-expanded","false")}});
+  sync();
+  /* mobile menu */
+  const hdr=$(".hdr"),menu=$(".u-menu");
+  menu.addEventListener("click",()=>{const o=hdr.toggleAttribute("data-open");menu.setAttribute("aria-expanded",o)});
+  $$(".nav a").forEach(a=>a.addEventListener("click",()=>{hdr.removeAttribute("data-open");menu.setAttribute("aria-expanded","false")}));
+  /* airport selectors stay in step; nothing is assumed until the traveller chooses */
+  const aps=$$("[data-ap]");
+  aps.forEach(s=>s.addEventListener("change",()=>{aps.forEach(o=>o.value=s.value);const n=s.value&&s.value!=="ALL"?s.options[s.selectedIndex].text:"";$$("[data-ap-name]").forEach(el=>el.textContent=n||el.dataset.apName)}));
+  /* search desk */
+  const q=$("#q"),go=$("[data-go]"),msg=$(".desk-msg"),dirs=$$("input[name=dir]");
+  const setDir=v=>{dirs.forEach(r=>r.checked=r.value===v);go.textContent=v==="arr"?"Find arrivals":"Find departures"};
+  dirs.forEach(r=>r.addEventListener("change",()=>setDir(r.value)));
+  $$("[data-q]").forEach(b=>b.addEventListener("click",()=>{q.value=b.dataset.q;q.focus()}));
+  $$("[data-focus-q]").forEach(a=>a.addEventListener("click",()=>setTimeout(()=>q.focus({preventScroll:true}),still()?0:350)));
+  $("#search").addEventListener("submit",e=>{e.preventDefault();msg.textContent="This concept shows sample results only. See the demonstration board below."});
+  $$("[data-demo]").forEach(f=>f.addEventListener("submit",e=>e.preventDefault()));
+  /* journey modes reorganise the quick actions */
+  const base={transport:"Getting to the airport",parking:"Parking",track:"Track a flight",maps:"Terminal maps",lounges:"Lounges",dine:"Food and shops"};
+  const modes={
+    depart:{dir:"dep",order:["transport","parking","track","maps","lounges","dine"],hint:{transport:"Rail, bus, taxi or drive, compared",parking:"Find a bay close to departures",track:"Gate, boarding and changes",maps:"Check-in, security, your gate",lounges:"A quiet hour before you fly",dine:"Open now, near your gate"}},
+    arrive:{dir:"arr",order:["track","transport","maps","dine","parking","lounges"],title:{transport:"Leaving the airport",track:"Track my flight"},hint:{track:"Landing time and baggage belt",transport:"Rail, bus, taxi and e-hailing onward",maps:"Immigration, baggage, exits",dine:"Something warm after landing",parking:"Find your way back to the car",lounges:"Freshen up on arrival"}},
+    transit:{order:["maps","track","lounges","dine","transport","parking"],title:{maps:"Connection maps",track:"Track my next flight",transport:"Between terminals"},hint:{maps:"Your route from gate to gate",track:"Next gate and boarding time",lounges:"Rest and shower between flights",dine:"Open now, along your route",transport:"Moving between Terminal 1 and 2",parking:"Not needed in transit"}},
+    meet:{dir:"arr",order:["track","parking","maps","dine","transport","lounges"],title:{track:"Track their flight",maps:"Arrivals hall maps"},hint:{track:"Know the moment they land",parking:"Short stays close to arrivals",maps:"Where to wait and meet",dine:"Coffee while you wait",transport:"Drive, ride or take the train",lounges:"A welcome for your guest"}}};
+  const grid=$("#qa"),tabs=$$(".mode"),tiles=Object.fromEntries($$(".qa-t").map(t=>[t.dataset.k,t]));
+  const setMode=(m,animate)=>{const c=modes[m],run=()=>{c.order.forEach(k=>{const t=tiles[k];$("b",t).textContent=(c.title&&c.title[k])||base[k];$("small",t).textContent=c.hint[k];grid.appendChild(t)});
+      tabs.forEach(t=>{const on=t.dataset.mode===m;t.setAttribute("aria-selected",on);t.tabIndex=on?0:-1});grid.setAttribute("aria-labelledby","m-"+m);if(c.dir)setDir(c.dir)};
+    animate&&d.startViewTransition&&!still()?d.startViewTransition(run):run()};
+  tabs.forEach((t,i)=>{t.addEventListener("click",()=>setMode(t.dataset.mode,true));
+    t.addEventListener("keydown",e=>{const k={ArrowRight:1,ArrowLeft:-1,ArrowDown:1,ArrowUp:-1}[e.key];if(k){e.preventDefault();const n=tabs[(i+k+tabs.length)%tabs.length];n.focus();setMode(n.dataset.mode,true)}})});
+  /* keep table semantics when the board reflows to cards on small screens */
+  const tb=$(".board table");tb.setAttribute("role","table");$$("thead,tbody",tb).forEach(x=>x.setAttribute("role","rowgroup"));$$("tr",tb).forEach(x=>x.setAttribute("role","row"));$$("th",tb).forEach(x=>x.setAttribute("role","columnheader"));$$("td",tb).forEach(x=>x.setAttribute("role","cell"));
+})();
+</script>
+</body>
+</html>
