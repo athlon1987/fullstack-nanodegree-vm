@@ -185,15 +185,15 @@ const transport: TransportOption[] = [
     id: 'pen-bus-306',
     airport: 'pen',
     mode: 'bus',
-    name: lt('Bus 306 to Penang General Hospital', 'Bas 306 ke Hospital Pulau Pinang'),
+    name: lt('Bus 306 to the General Hospital', 'Bas 306 ke Hospital Besar'),
     operator: 'Rapid Penang',
     description: lt(
       'Links the airport with Penang General Hospital by way of Scotland Road and Western Road.',
-      'Menghubungkan lapangan terbang dengan Hospital Pulau Pinang melalui Jalan Scotland dan Jalan Western.',
+      'Menghubungkan lapangan terbang dengan Hospital Besar Pulau Pinang melalui Scotland Road dan Western Road.',
     ),
     destinations: [
       {
-        name: lt('Penang General Hospital', 'Hospital Pulau Pinang'),
+        name: lt('Penang General Hospital', 'Hospital Besar Pulau Pinang'),
         fare: { amount: 1.4, currency: 'MYR', basis: 'from' },
         note: BUS_FARE_NOTE,
       },
