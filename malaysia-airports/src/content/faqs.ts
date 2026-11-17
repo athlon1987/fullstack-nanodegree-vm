@@ -356,7 +356,7 @@ export const FAQS: Faq[] = [
   },
   {
     id: 'klia-change-terminals',
-    topic: 'terminals',
+    topic: 'parking-transport',
     question: lt('Can I walk between Terminal 1 and Terminal 2 at KLIA without leaving the secure area?', 'Bolehkah saya bergerak antara Terminal 1 dan Terminal 2 di KLIA tanpa keluar dari kawasan udara?'),
     answer: lt(
       'No. There is no airside link between the terminals. To change terminals, clear immigration, collect your bags, travel between the terminals by train (RM2 adult fare, as reported in October 2026) or by the free shuttle bus, then check in again. A seamless transfer system was announced for mid-2026; we could not confirm that it has started, so check with your airline.',
