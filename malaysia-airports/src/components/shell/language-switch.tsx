@@ -10,8 +10,8 @@ import { switchLocalePath } from '@/lib/locale';
 import { closeOverlay } from './overlay-store';
 
 export interface LanguageSwitchProps {
-  /** `inline`: EN | BM in the utility bar (on the ink band). `block`: two large buttons for the phone menu. */
-  variant?: 'inline' | 'block';
+  /** `inline`: EN | BM in the utility bar (on the ink band). `block`: two large buttons for the phone menu. `plain`: text links for the footer. */
+  variant?: 'inline' | 'block' | 'plain';
   className?: string;
 }
 
@@ -39,7 +39,7 @@ function Links({ variant, pathname, className }: LanguageSwitchProps & { pathnam
     <div
       role="group"
       aria-label={t('nav.languageLabel')}
-      className={cn(variant === 'block' ? 'grid grid-cols-2 gap-2' : 'inline-flex items-center gap-0.5', className)}
+      className={cn(variant === 'block' ? 'grid grid-cols-2 gap-2' : variant === 'plain' ? 'inline-flex items-center gap-4' : 'inline-flex items-center gap-0.5', className)}
     >
       {LANGS.map((lang) => {
         const active = lang === current;
@@ -58,13 +58,18 @@ function Links({ variant, pathname, className }: LanguageSwitchProps & { pathnam
                     'flex min-h-12 items-center justify-center gap-2 rounded-md border px-3 text-base font-semibold transition-colors duration-fast',
                     active ? 'border-ink bg-ink text-page' : 'border-line-control bg-surface text-ink hover:border-ink',
                   )
-                : cn(
-                    'type-data-xs inline-flex h-7 min-w-8 items-center justify-center rounded-xs px-1.5 font-bold transition-colors duration-fast',
-                    active ? 'bg-on-inverse text-inverse' : 'text-on-inverse-dim hover:text-on-inverse',
-                  )
+                : variant === 'plain'
+                  ? cn(
+                      'inline-flex min-h-8 items-center rounded-sm underline underline-offset-4 transition-colors duration-fast touch:min-h-11',
+                      active ? 'font-semibold text-ink decoration-gold' : 'text-ink-2 decoration-transparent hover:text-ink hover:decoration-gold',
+                    )
+                  : cn(
+                      'type-data-xs inline-flex h-7 min-w-8 items-center justify-center rounded-xs px-1.5 font-bold transition-colors duration-fast',
+                      active ? 'bg-on-inverse text-inverse' : 'text-on-inverse-dim hover:text-on-inverse',
+                    )
             }
           >
-            {variant === 'block' ? names[lang] : t(`shell.langShort.${lang}`)}
+            {variant === 'inline' ? t(`shell.langShort.${lang}`) : names[lang]}
           </Link>
         );
       })}
