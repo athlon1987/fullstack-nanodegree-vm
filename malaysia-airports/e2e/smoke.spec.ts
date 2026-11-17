@@ -134,7 +134,8 @@ test.describe('shell', () => {
       await page.getByRole('navigation', { name: 'Quick navigation' }).getByRole('button', { name: 'Menu' }).click();
       await page.getByRole('dialog', { name: 'Menu' }).getByRole('link', { name: /Bahasa Malaysia/ }).click();
     } else {
-      await page.getByRole('group', { name: 'Language' }).getByRole('link', { name: /Bahasa Malaysia/ }).click();
+      // The utility bar's switch comes first; the footer carries a second one.
+      await page.getByRole('group', { name: 'Language' }).first().getByRole('link', { name: /Bahasa Malaysia/ }).click();
     }
     await expect(page).toHaveURL(/\/ms\/kul$/);
     await expect(page.locator('html')).toHaveAttribute('lang', 'ms');
@@ -142,8 +143,12 @@ test.describe('shell', () => {
 
   test('the search palette opens with the keyboard and finds flights and places', async ({ page }) => {
     await page.goto('/en');
-    await page.keyboard.press('/');
     const dialog = page.getByRole('dialog', { name: 'Search' });
+    // The shortcut listens once the page has hydrated: retry the key press until it is heard.
+    await expect(async () => {
+      await page.keyboard.press('/');
+      await expect(dialog).toBeVisible({ timeout: 1_000 });
+    }).toPass({ timeout: 15_000 });
     const box = dialog.getByRole('combobox', { name: 'Search the site' });
     await expect(box).toBeFocused();
     await box.fill('prayer');

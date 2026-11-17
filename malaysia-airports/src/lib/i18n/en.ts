@@ -734,6 +734,9 @@ export const en = {
     headlineAccent: 'beautifully connected.',
     lead: 'Find your flight, choose your airport, and this page arranges itself around your journey.',
     deskLabel: 'Flight search',
+    /** Placeholders sized so they never clip in the flight search field, in either language. */
+    searchPlaceholder: 'Flight number, destination, airline or route',
+    searchPlaceholderShort: 'Flight, city or airline',
     modes: {
       sub: { departing: 'Door to gate', arriving: 'Gate to door', transiting: 'Gate to gate', meeting: 'Arrivals hall' },
       guidance: {

@@ -49,7 +49,10 @@ export function JourneyModes({ className }: { className?: string }) {
               'forced-colors:has-[:checked]:forced-color-adjust-none forced-colors:has-[:checked]:bg-[Highlight] forced-colors:has-[:checked]:text-[HighlightText]',
             )}
           >
-            <input type="radio" name={group} value={mode} checked={effectiveMode === mode} onChange={() => choose(mode)} className="sr-only" />
+            <input type="radio" name={group} value={mode} checked={effectiveMode === mode} onChange={() => choose(mode)}
+              // Covers the whole tile (invisibly), so a tap anywhere lands on the native radio itself.
+              className="absolute inset-0 z-10 m-0 cursor-pointer appearance-none rounded-md opacity-0"
+            />
             <Icon name={mode} size="md" strokeWidth={1.75} className="sm:size-4" />
             <span className="flex min-w-0 flex-col leading-tight">
               <span className="text-[0.8125rem] sm:text-base">{t(`journey.modes.${mode}.label`)}</span>

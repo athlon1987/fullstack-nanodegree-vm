@@ -734,6 +734,9 @@ export const ms: Dictionary = {
     headlineAccent: 'terhubung dengan indah.',
     lead: 'Cari penerbangan anda, pilih lapangan terbang, dan halaman ini tersusun mengikut perjalanan anda.',
     deskLabel: 'Carian penerbangan',
+    /** Placeholders sized so they never clip in the flight search field, in either language. */
+    searchPlaceholder: 'Nombor penerbangan, destinasi atau laluan',
+    searchPlaceholderShort: 'Penerbangan, bandar',
     modes: {
       sub: { departing: 'Pintu rumah ke pintu pelepasan', arriving: 'Pintu ketibaan ke rumah', transiting: 'Pintu ke pintu', meeting: 'Balai ketibaan' },
       guidance: {
