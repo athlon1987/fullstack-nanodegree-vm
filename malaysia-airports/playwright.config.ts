@@ -8,7 +8,12 @@ import { defineConfig, devices } from '@playwright/test';
  * (for example while you iterate), it is reused, except on CI.
  */
 const PORT = 3100;
-const baseURL = `http://localhost:${PORT}`;
+/**
+ * PLAYWRIGHT_BASE_URL points the suite at a server that is already running (for example the
+ * shared dev server while features are built in parallel). No web server is started then.
+ */
+const externalBaseURL = process.env.PLAYWRIGHT_BASE_URL;
+const baseURL = externalBaseURL ?? `http://localhost:${PORT}`;
 
 export default defineConfig({
   testDir: './e2e',
@@ -35,7 +40,7 @@ export default defineConfig({
       use: { ...devices['Pixel 7'], viewport: { width: 390, height: 844 } },
     },
   ],
-  webServer: {
+  webServer: externalBaseURL ? undefined : {
     command: `npm run build && npx next start -p ${PORT}`,
     url: `${baseURL}/en`,
     reuseExistingServer: !process.env.CI,

@@ -1,0 +1,159 @@
+{
+  "key": "istanbul",
+  "name": "iGA Istanbul Airport",
+  "host": "www.istairport.com",
+  "assessed": "2026-11-17",
+  "assessment_type": "expert assessment",
+  "direct_access": true,
+  "direct_access_note": "First-hand browser access to www.istairport.com/en: 5 pages captured on desktop and mobile (homepage and departures twice, 10:57-11:06 and 14:51-14:53 UTC), 8 more read with Playwright, 4 interaction scripts (headers and keyboard, homepage flight lookup, departures filters and search, site search, mobile menu, car park tabs, flight-detail alert opt-in); all HTTP 200, no bot challenge. Blocked by the container's network policy (not site defects): webnav.poilabs.com and maps.istairport.com (map iframes), igachatbot.etiya.com (chat widget), api.igairport.aero (airline logos), serve.motaword.com, and analytics or advertising hosts. The map, chatbot and airline logos were therefore not observable; igapass.com checkout and the WhatsApp hand-off were not opened. Scores are expert assessments, not instrumented tests.",
+  "weighted_score_pct": 76.5,
+  "scores": {
+    "ui": {
+      "score": 3.5,
+      "confidence": "high",
+      "evidence_level": "direct",
+      "evidence": [
+        "direct: clean, current design with a consistent teal and blue palette, large type and photographic heroes on desktop and mobile - https://www.istairport.com/en",
+        "direct: flight search sits in the first screen, but the lower half of the first desktop screen and the next scroll are given to selling iGA Pass services - https://www.istairport.com/en",
+        "direct: flight detail presents the flight card, a LIVE label and a journey directory with clear icons for each need - https://www.istairport.com/en/flights/flight-info/departure-flights/flight-detail?flight=TK2326&flighttype=1&flightlocationtype=0&id=3914078&date=17.11.2026",
+        "direct: status shown as red text ('Gate Closed', 'Cancelled') rather than a consistent chip system; repeated 'Click for details' labels in carousels - https://www.istairport.com/en/flights/flight-info/departure-flights",
+        "direct: copy slips on English pages ('Detailed recipes for the visually impaired', language label '中国人 / ZH') - https://www.istairport.com/en/flights/flight-info/departure-flights/flight-detail?flight=TK2326&flighttype=1&flightlocationtype=0&id=3914078&date=17.11.2026"
+      ]
+    },
+    "ux": {
+      "score": 4.0,
+      "confidence": "high",
+      "evidence_level": "direct",
+      "evidence": [
+        "direct: typing a flight number in the homepage field shows the matching row inline with status, counters and gate (2 interactions) - https://www.istairport.com/en",
+        "direct: live waiting times for terminal entrance, passport control and domestic security on the homepage and every flight page - https://www.istairport.com/en#waitingpoints",
+        "direct: flight updates by WhatsApp from the detail page without an account - https://www.istairport.com/en/flights/flight-info/departure-flights/flight-detail?flight=TK2326&flighttype=1&flightlocationtype=0&id=3914078&date=17.11.2026",
+        "direct: restaurant and store finders with dietary filters (vegan, gluten-free, diabetic, lactose-free, kids menu) and airside or landside zones - https://www.istairport.com/en/services/food-beverage/restaurants-cafes",
+        "direct: homepage prioritises premium-service purchases; Enter in the flight field does nothing; map page empty when its third-party host is unreachable - https://www.istairport.com/en/airport/maps/airport-map"
+      ]
+    },
+    "info": {
+      "score": 4.0,
+      "confidence": "high",
+      "evidence_level": "direct",
+      "evidence": [
+        "direct: transfer guides for four connection types with numbered steps and a document checklist - https://www.istairport.com/en/flights/airport-guides/transfer-passenger-guide",
+        "direct: Havaist pick-up and drop-off points with floor and gates, a timetable selector of about 50 stops and accessible midibuses - https://www.istairport.com/en/airport/airport-transportation",
+        "direct: parking rules (subscriptions, daily rates, valet, HGS payment, Find My Car) - https://www.istairport.com/en/airport/airport-transportation/airport-carpark; FAQ grouped into eight subjects - https://www.istairport.com/en/faq",
+        "direct: iGA Cares lists 14 complimentary accessible services plus a volunteers community and newsletters - https://www.istairport.com/en/flights/airport-guides/iga-cares-accessibility",
+        "direct: passenger and corporate content in one menu (charges tariff, VDGS procedures, terminal allocation, sustainability); press and certificates on a second domain - https://www.istairport.com/en"
+      ]
+    },
+    "flight": {
+      "score": 4.5,
+      "confidence": "high",
+      "evidence_level": "direct",
+      "evidence": [
+        "direct: board with departure and arrival, domestic and international, yesterday, today and tomorrow, previous flights and a flight-number or city filter ('London' returned LHR, STN and LGW) - https://www.istairport.com/en/flights/flight-info/departure-flights",
+        "direct: rows show planned and estimated times, codeshares, destination, check-in counters, gate and status (Proceed to Gate, Boarding, Last Call, Gate Closed, Cancelled) - https://www.istairport.com/en/flights/flight-info/departure-flights",
+        "direct: detail page with 'Get updates for this flight' opening a WhatsApp opt-in for push notifications, then a step-by-step journey directory - https://www.istairport.com/en/flights/flight-info/departure-flights/flight-detail?flight=TK2326&flighttype=1&flightlocationtype=0&id=3914078&date=17.11.2026",
+        "direct: no 'last updated' time on the board, only a Refresh button; no airline or status filter - https://www.istairport.com/en/flights/flight-info/departure-flights",
+        "direct: codeshares rotate in one cell on desktop, and the detail page headed TK2326 lists 'Flight Number XY7086' - https://www.istairport.com/en/flights/flight-info/departure-flights/flight-detail?flight=TK2326&flighttype=1&flightlocationtype=0&id=3914078&date=17.11.2026"
+      ]
+    },
+    "mobile": {
+      "score": 3.5,
+      "confidence": "medium",
+      "evidence_level": "direct + search",
+      "evidence": [
+        "direct: flight field in the first mobile screen; flight cards stack every codeshare with counters, gate and status - https://www.istairport.com/en/flights/flight-info/departure-flights",
+        "direct: no horizontal overflow on homepage or departures at 390 px, but overflow on flight detail, map and iGA Cares pages - https://www.istairport.com/en/flights/airport-guides/iga-cares-accessibility",
+        "direct: zoom disabled (maximum-scale=1.0, user-scalable=no); 15 of 58 visible homepage targets under 24 px; floating back-to-top button covers part of the flight list - https://www.istairport.com/en",
+        "direct (lab): Lighthouse mobile performance 53, LCP 16.7 s - docs/research/direct/lighthouse/istanbul.json",
+        "search: 'Istanbul Airport' app with flight tracking by boarding-pass scan, notifications, Home to Airport times, map, iGA Pass QR and MyIST loyalty; no store rating found - https://apps.apple.com/app/id1440706986"
+      ]
+    },
+    "nav": {
+      "score": 3.0,
+      "confidence": "medium",
+      "evidence_level": "direct",
+      "evidence": [
+        "direct: five-section mega menu (Flights, Services, Airport, Commercial, Corporate), full footer sitemap and breadcrumbs on inner pages; no nav landmark - https://www.istairport.com/en",
+        "direct: axe homepage desktop 8 rules (critical 4: aria-required-children, aria-required-parent, image-alt, label), mobile 5 rules; meta-viewport fails on every page - https://www.istairport.com/en",
+        "direct: no skip link; computed outline none and no box-shadow on all first 14 keyboard stops, so no focus indicator was detected - https://www.istairport.com/en",
+        "direct (lab): Lighthouse accessibility 78 (aria-required-children, aria-required-parent, color-contrast, heading-order, listitem, meta-viewport) - docs/research/direct/lighthouse/istanbul.json",
+        "direct: site search with its own URL and facets; 'prayer room' returned 5 results, four titled 'Prayer Rooms' and one unrelated announcement, without location or hours - https://www.istairport.com/en/search?searchKey=prayer%20room"
+      ]
+    },
+    "ai": {
+      "score": 4.0,
+      "confidence": "medium",
+      "evidence_level": "direct + search",
+      "evidence": [
+        "direct: journey directory on each flight can be tailored to Accessibility, Families with Children, Age Friendly, Stimuli, Description and iGA Pass, with matching modules marked 'Customized Content' (filter effect not verified) - https://www.istairport.com/en/flights/flight-info/departure-flights/flight-detail?flight=TK2326&flighttype=1&flightlocationtype=0&id=3914078&date=17.11.2026",
+        "direct: WhatsApp flight updates without an account; WhatsApp support line in the footer - https://www.istairport.com/en",
+        "direct: a chat widget script from igachatbot.etiya.com loads on every page; blocked here, not rendered or tested - https://www.istairport.com/en",
+        "search: chatbot offered across app, web, social media and WhatsApp (operator account on the ACI blog); vendor case study claims a bilingual virtual assistant answering over 1,000 questions - https://blog.aci.aero/airport-it/istanbul-airport-digital-services-passenger-experience/ and https://www.sestek.com/istanbul-grand-airport-enhances-visitor-experience-with-virtual-assistant",
+        "direct: no generative AI assistant observed on the website; no website account - https://www.istairport.com/en"
+      ]
+    },
+    "commerce": {
+      "score": 4.0,
+      "confidence": "medium",
+      "evidence_level": "direct + search",
+      "evidence": [
+        "direct: homepage purchase widget for iGA Lounge, iGA Buggy and iGA Pass Daily with domestic or international, adult and child counts and Buy; checkout on igapass.com (not opened) - https://www.istairport.com/en",
+        "direct: iGA Pass services page (Lounge, Buggy, Meet & Greet, Fast Track, Valet) - https://www.istairport.com/en/services/discover/iga-pass-experiences",
+        "direct: 41 dated discounts and offers from airport retailers and cafés - https://www.istairport.com/en/services/discounts-offers",
+        "direct: hotel booking teasers (Yotel), on-airport hotels and the JETEX private terminal promoted - https://www.istairport.com/en",
+        "search: MyIST loyalty programme for app members (app listing) and iGA PASS membership privileges (operator release); no loyalty on the website - https://apps.apple.com/app/id1440706986 and https://www.igairport.aero/en/media-center/press-releases/iga-launches-their-special-passenger-program"
+      ]
+    },
+    "perf": {
+      "score": 3.0,
+      "confidence": "medium",
+      "evidence_level": "direct (lab, single container, third-party hosts blocked, indicative only)",
+      "evidence": [
+        "direct (lab): homepage TTFB 1.4 s desktop / 0.26 s mobile, FCP 4.9 s / 2.1 s, load 8.6 s / 8.0 s, 98-99 requests, 3.7 MB by content-length - https://www.istairport.com/en",
+        "direct (lab): departures page 68 requests, 1.6 MB, FCP 3.8 s desktop / 3.3 s mobile - https://www.istairport.com/en/flights/flight-info/departure-flights",
+        "direct (lab): Lighthouse mobile median of 3: performance 53 (51, 53, 53), FCP 7.8 s, LCP 16.7 s, TBT 163 ms, CLS 0, 5.9 MB, 100 requests, best practices 92 - docs/research/direct/lighthouse/istanbul.json",
+        "direct: HSTS, X-Content-Type-Options and X-Frame-Options present on the HTML response; no Content-Security-Policy; nine third-party tag hosts on every page - https://www.istairport.com/en",
+        "direct: all pages, the flight board API, waiting-times API and weather API returned HTTP 200 - https://www.istairport.com/en"
+      ]
+    }
+  },
+  "steps_to_flight_status": 2,
+  "steps_to_flight_status_note": "From the homepage: focus the 'Search for Flight Number / City' field and type the flight number; the matching row appears inline with status, counters and gate. One more click opens the detail page with the WhatsApp opt-in.",
+  "languages": ["tr", "en", "zh", "ru", "ar", "de", "fr", "es"],
+  "axe": {
+    "desktop": { "violations": 8, "byImpact": { "critical": 4, "serious": 3, "moderate": 1 } },
+    "mobile": { "violations": 5, "byImpact": { "critical": 2, "serious": 2, "moderate": 1 } }
+  },
+  "axe_note": "Homepage, axe-core WCAG A/AA rule violations (desktop 31 nodes, mobile 17). Departures: 3 rules on desktop and mobile (serious 2, moderate 1). Flight detail: 3 desktop, 4 mobile. iGA Cares: 2 desktop, 3 mobile. meta-viewport (zoom disabled) fails on every page.",
+  "lighthouse_lab": { "performance": 53, "accessibility": 78, "bestPractices": 92, "seo": 92, "fcp_ms": 7813, "lcp_ms": 16663, "tbt_ms": 163, "cls": 0, "note": "lab, single container, third-party hosts blocked, indicative only" },
+  "standouts": [
+    { "name": "WhatsApp flight updates without an app or account", "why": "Any flight's detail page offers push updates through WhatsApp, the channel many passengers already use, with no install or login.", "url": "https://www.istairport.com/en/flights/flight-info/departure-flights/flight-detail?flight=TK2326&flighttype=1&flightlocationtype=0&id=3914078&date=17.11.2026" },
+    { "name": "Live checkpoint waiting times", "why": "Terminal entrance, passport control and domestic security waits, with the busiest entrance named, on the homepage and every flight page.", "url": "https://www.istairport.com/en#waitingpoints" },
+    { "name": "Need-based journey directory", "why": "Step-by-step guidance per flight and per transfer type that can be tailored to accessibility, family, age-friendly, sensory and visual-description needs.", "url": "https://www.istairport.com/en/flights/airport-guides/transfer-passenger-guide" },
+    { "name": "Inline homepage flight lookup", "why": "Status, counters and gate appear under the homepage field in two interactions.", "url": "https://www.istairport.com/en" },
+    { "name": "Dining and shop finders with dietary filters and dated offers", "why": "Vegan, gluten-free, diabetic, lactose-free and kids-menu filters, airside or landside zones, and 41 dated offers.", "url": "https://www.istairport.com/en/services/food-beverage/restaurants-cafes" }
+  ],
+  "weaknesses": [
+    "Homepage gives more of the first two screens to selling premium services and award announcements than to passenger tasks",
+    "No skip link, no detectable focus indicator, zoom disabled, critical ARIA and label errors; accessibility not linked from the header",
+    "Flight board has no 'last updated' time, rotates codeshares in one cell, and the detail page can headline one code and list another",
+    "Nine third-party marketing and analytics hosts on every page; lab LCP 16.7 s on throttled mobile; no Content-Security-Policy",
+    "Map and chatbot depend on third-party hosts and fail silently when unreachable; localisation slips on English pages"
+  ],
+  "ideas": [
+    "Pair WhatsApp opt-in with a live journey: each alert carries the next step, the gate's walking time and the current queue at the relevant checkpoint",
+    "Show checkpoint queues with a trend and a short forecast, not only the current minutes",
+    "Remember a passenger's chosen needs on the device and apply them across the site without login",
+    "Keep flight and live-status modules ahead of commercial modules; offer services in context, such as a lounge offer when a flight is delayed",
+    "Make accessibility the default: skip link, visible focus, zoom allowed, labelled fields, proper landmarks",
+    "Keep the map first-party with a text list fallback"
+  ],
+  "gaps": [
+    "Map (poilabs), car park map, chatbot (Etiya), airline logos and one third-party script (MotaWord) not observable",
+    "WhatsApp hand-off not completed; effect of the need filters on the detail page not verified",
+    "Automatic board refresh not tested; delayed and diverted labels not seen",
+    "App features, MyIST and the virtual assistant rest on search results; no store rating found",
+    "2026 Skytrax ranking unconfirmed: one secondary source reports eighth (https://www.listmag.com/en/travel-and-stay/guide/skytrax-world-best-airports); the site's own award claims were not independently checked",
+    "Lighthouse and capture timings are lab values from one container with analytics blocked"
+  ]
+}
