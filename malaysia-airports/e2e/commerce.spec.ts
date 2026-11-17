@@ -78,9 +78,10 @@ test.describe('shop and dine', () => {
     await expect(main.getByRole('link', { name: 'Eraman Duty-Free Mall' })).toHaveCount(0);
   });
 
-  test('honours the home page filters and explains why "open now" leaves outlets out', async ({ page }) => {
+  test('honours the home page filters and explains why "open now" leaves outlets out', async ({ page, isMobile }) => {
     await page.goto('/en/kul/shop-dine?filters=open-now,airside', { timeout: 90_000 });
     const main = page.getByRole('main');
+    await openFilters(page, isMobile);
     await expect(main.getByRole('switch', { name: 'Open now' })).toBeChecked();
     await expect(main.getByRole('heading', { name: 'No outlet with published hours is open now' })).toBeVisible();
     await main.getByRole('button', { name: 'Turn off “Open now”' }).click();
