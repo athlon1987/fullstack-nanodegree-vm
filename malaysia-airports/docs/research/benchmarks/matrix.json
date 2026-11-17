@@ -1698,7 +1698,7 @@
       "rules": [
         "R4"
       ],
-      "reason": "Project captures found no skip link, no main landmark and images without alt text on the homepage and departures page; Lighthouse accessibility 74 with button-name, link-name, label, image-alt and landmark-one-main failing. With the report's own negatives (indexed staging hosts, no accessibility statement, PDF sensory map) this matches Istanbul, Hamad and Munich (3.0), not Heathrow (3.5, skip link, accessibility 92).",
+      "reason": "Project captures found no skip link, no main landmark and images without alt text on the homepage and departures page; Lighthouse accessibility 74 with seven failing audits, including button-name, link-name, label, image-alt and landmark-one-main. With the report's own negatives (indexed staging hosts, no accessibility statement, PDF sensory map) this matches Istanbul, Hamad and Munich (3.0), not Heathrow (3.5, skip link, accessibility 92).",
       "evidence": [
         "docs/research/screenshots/changi-timings.json",
         "docs/research/direct/lighthouse/changi.json"

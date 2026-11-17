@@ -52,7 +52,7 @@ export function FlightDetail({ flightId, airport, title, journeyContent, sources
   if (!flight || availability !== 'current') {
     const todayId = sameFlightOn(flightId, dateKey(provider.now, zone));
     const today = todayId && todayId !== flightId.toLowerCase() ? provider.getFlightSync(todayId, airport) : null;
-    return <FlightNotFound airport={airport} reason={flight ? availability : 'unknown'} sameToday={today} />;
+    return <FlightNotFound airport={airport} reason={!flight || availability === 'current' ? 'unknown' : availability} sameToday={today} />;
   }
 
   const disrupted = flight.status === 'delayed' || flight.status === 'cancelled';

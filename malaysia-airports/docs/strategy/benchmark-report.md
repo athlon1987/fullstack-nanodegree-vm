@@ -30,16 +30,16 @@ Every score in this document is an **expert assessment**. Only the figures in se
 
 ### What the benchmark says
 
-1. **The leading airport websites are close together, and none leads everywhere.** After calibration, eight of the ten
+1. **The leading airport websites are close together, and none leads everywhere.** After calibration, nine of the ten
    benchmarks score between 69% and 79% of the maximum, and the top five lie within 2.5 points of each other:
    Heathrow 79.0%, Haneda 77.5%, Schiphol 77.0%, Istanbul 76.5% and Changi 76.5% [assessment]. Differences of that
    size are inside the uncertainty of the method, so the totals are not a ranking.
 2. **Each strength lives at a different airport.** Hamad and Haneda turn a flight into a journey timeline; Istanbul,
    Heathrow and Incheon publish live queue times; Hong Kong and Munich let a visitor save a flight without an account;
-   only Istanbul sends flight updates (by WhatsApp) without an app or a login; Heathrow and Changi tie parking, Fast
+   Istanbul is the only site observed to send flight updates (by WhatsApp) without an app or a login; Heathrow and Changi tie parking, Fast
    Track and retail to one account [direct; search for Changi]. No site combines these.
-3. **The best features are usually behind an app or a login.** Saved flights and alerts need the app or an account at
-   Changi, Haneda, Hong Kong, Heathrow, Incheon and Schiphol [direct; search]. First-time and foreign visitors, who start
+3. **The best features are usually behind an app or a login.** Flight alerts need the app or an account at Changi,
+   Haneda, Hong Kong, Heathrow and Incheon, and Schiphol's richest itinerary features are in its app [direct; search]. First-time and foreign visitors, who start
    on the mobile web, get the weaker product.
 4. **The field shares the same failures.** Heavy pages (Changi 21.0 MiB and Haneda 13.2 MiB in the lab; an 87.8 MB hero
    video at Hamad), basic accessibility defects (zoom disabled on four sites, missing `main` landmarks, invisible
@@ -51,7 +51,7 @@ Every score in this document is an **expert assessment**. Only the figures in se
 
 MAHB's current passenger site scores **42.5% (medium confidence)**, 24 points below the lowest benchmark (Munich,
 66.5%) and lowest on all nine dimensions [assessment]. The measured gap is as large as the assessed one: in the same
-lab session its KLIA Terminal 1 homepage was the heaviest of the eleven pages measured (32.7 MiB over 171 requests,
+lab session its KLIA Terminal 1 homepage was the heaviest homepage measured (32.7 MiB over 171 requests,
 about 18 times Heathrow's), had the lowest valid performance score (9 of 100) and was the only one with a layout shift
 above 0.2 (0.621) [direct, lab]. When its content API stopped serving this project's network, pages went blank without
 an error message [direct]. The site covers 5 of MAHB's 39 airports as six cloned 46-page trees, in English only
@@ -338,7 +338,7 @@ set, with the lightest valid homepage measured.
 - Six `h1` elements and no `main` landmark on the homepage; the chat launcher cannot take keyboard focus; eight
   languages, none of them Malay, Arabic, Japanese or Korean [direct].
 - Live alerts and turn-by-turn navigation need the app; saving a flight needs an account; the connections planner does
-  not apply to self-connecting passengers [direct; search]. The estate spans at least seven hosts [direct].
+  not apply to self-connecting passengers [direct; search]. The estate spans at least five hosts (main site, shop, maps, Heathrow Express, VIP) [direct].
 
 **What MAHB should beat, and how.** Heathrow's flight detail, wait times and connections planner are the functional
 bar. MAHB beats them by making the same page login-free with web alerts, by showing last-known data when the feed
@@ -581,7 +581,7 @@ the field; thin on transit tooling, languages and a single account.
   shift [direct, lab].
 
 **Weaknesses.**
-- English and Arabic only for one of the world's most international passenger bases [search; direct, capture].
+- English and Arabic only for a highly international passenger base [search; direct, capture].
 - Fragmented estate: separate hosts and registrations for DXB, DWC, Al Majlis and operator checkouts; no single
   account or basket evidenced; the official app reportedly removed [search].
 - Transfers described as procedure only, with no connection planner [search].
@@ -680,15 +680,17 @@ Screenshots: [`munich-home-desktop.jpg`](../research/screenshots/munich-home-des
 What the best do that the others do not [assessment, built on the evidence in section 4]:
 
 1. **They organise around the flight, not the organisation chart.** Hamad, Haneda, Incheon, Istanbul and Heathrow give
-   each flight a web page with journey help (a timeline, a route to the gate, wait times or a connections planner);
-   Dubai's flight page carries a journey planner; Schiphol has per-flight URLs [search]. Hong Kong, Changi's website
+   each flight a web detail view with journey help (a timeline, a route to the gate, wait times or a connections
+   planner); Dubai's flight page carries a journey planner; Schiphol has per-flight URLs [search]; Munich's detail page
+   has flight facts but no journey help. Hong Kong, Changi's website
    and MAHB do not. No benchmark combines a permanent page, a live timeline, queue times and alerts without an app.
 2. **They are candid about operations.** Istanbul, Heathrow and Incheon publish queue times; Hamad shows crowd levels;
    Haneda has a timestamped congestion panel; Incheon forecasts two days ahead and shows live car-park availability.
    Munich, Changi's website and Dubai showed none at the level of evidence available.
 3. **They let people keep a flight without signing up**, but rarely follow through. Hong Kong (bookmarks), Munich
-   (tracking strip) and Istanbul (WhatsApp) need no account; only Istanbul sends updates. Changi, Haneda, Hong Kong,
-   Heathrow, Incheon and Schiphol put alerts in an app or behind a login.
+   (tracking strip) and Istanbul (WhatsApp) need no account; only Istanbul was seen sending updates. Changi, Haneda, Hong
+   Kong, Heathrow and Incheon put alerts in an app or behind a login; Schiphol offers text-message updates according to
+   an older blog post [search].
 4. **Their search finds things, not pages.** Hamad returns facility records and live flights; Incheon answers with
    facility hours and locations; Munich routes flight numbers and finds prayer rooms; Hong Kong suggests flights as you
    type. MAHB has no site-wide search that this project could find.
@@ -697,7 +699,7 @@ What the best do that the others do not [assessment, built on the evidence in se
 6. **Commerce leaders tie services to one account.** Heathrow and Changi connect parking, Fast Track, retail and
    loyalty; Hamad, Dubai, Haneda, Incheon and Schiphol hand off to partner domains with separate checkouts.
 7. **They share the same failures, which is MAHB's opening.** Weight (Changi 21.0 MiB, Haneda 13.2 MiB, Hamad's video);
-   technical accessibility (zoom disabled at four sites, no `main` landmark at five of the pages inspected, statements
+   technical accessibility (zoom disabled at four sites, no `main` landmark on four benchmark homepages, statements
    found at only three); dependence on third-party hosts for maps, search and chat with no fallback; two languages at
    Dubai, Hamad, Munich and Schiphol, and none of Heathrow's eight is Malay.
 8. **Graceful failure is almost absent.** Changi's "Unable to load / Try again" is the best behaviour seen; no site
@@ -735,7 +737,7 @@ leaders on content, brand and AI, and accept being behind on commerce until part
 | Dimension | Best benchmark (calibrated) | MAHB today | Target | Verified by |
 |---|---|---|---|---|
 | ui | 4.0 (Hamad, Haneda, Changi, Dubai, Schiphol) | 2.5 | 4.5 | Independent design review against the direction document; first-screen tests |
-| ux | 4.0 (five sites) | 2.0 | 4.5 | Moderated tests: 90% unaided completion of the top eight tasks |
+| ux | 4.0 (seven sites) | 2.0 | 4.5 | Moderated tests: 90% unaided completion of the top eight tasks |
 | info | 4.5 (Hong Kong, Incheon) | 2.0 | 4.5 at launch, 5.0 with MAHB data | Content tests: 100% of facts sourced and dated; 39 airports listed |
 | flight | 4.5 (six sites) | 2.5 | 5.0 | Requirements BR-01 to BR-05 accepted; usability tests |
 | mobile | 4.0 (Heathrow, Changi, Schiphol) | 2.0 | 4.5 | Field Core Web Vitals; 44 px targets; zoom enabled |
@@ -756,7 +758,7 @@ report's proposals, aligned with section 7 of the product strategy.
 | BR-01 | One flight search, on every page, accepting flight number, airline, city or airport code, across both KLIA terminals and every MAHB airport; the result states the terminal. | MAHB's terminal-first, departures-only widget; Hong Kong, Changi, Dubai and Heathrow offer one field but for one airport. | Must | For 20 test flights split across Terminals 1 and 2 and two regional airports, the right flight and terminal appear within two interactions from any page, with no terminal chosen beforehand. |
 | BR-02 | A permanent, indexable page per operating flight; codeshare numbers resolve to it; boards show one row per operating flight with all numbers searchable. | Hong Kong has no detail URL; Hamad (1,300+ rows) and Incheon list codeshares as rows; MAHB has no flight page. | Must | Every flight in the feed has a stable URL valid for its operating day; each codeshare number redirects to it; a board test finds no duplicate rows for one operating flight. |
 | BR-03 | A journey timeline on the flight page (leave-by, transport, check-in row, security, immigration, gate) with walking times and current queue times where data exists, and departing, arriving, transfer and greeter views. | Hamad (timeline and queues), Haneda (Sample Plan) and Incheon (route to gate) each do part; none offers a greeter view; Heathrow's collector split sits inside detail only. | Must | For a test departure the timeline shows at least six steps, each with a time or a stated "Not published"; switching view changes the steps; every value shows its source. |
-| BR-04 | Follow a flight without an account; opt-in alerts by web push and e-mail, and by WhatsApp subject to a partner agreement; a share link for whoever is collecting. | Only Istanbul alerts without an app or account; Munich's strip has no alerts; Changi, Haneda, Hong Kong, Heathrow, Incheon and Schiphol gate alerts. | Must (web push, e-mail); Should (WhatsApp) | Follow and opt-in take no more than three interactions with no account; in staging, a simulated gate change reaches each channel within 60 seconds [assessment]. |
+| BR-04 | Follow a flight without an account; opt-in alerts by web push and e-mail, and by WhatsApp subject to a partner agreement; a share link for whoever is collecting. | Only Istanbul alerts without an app or account; Munich's strip has no alerts; Changi, Haneda, Hong Kong, Heathrow and Incheon gate alerts behind an app or account. | Must (web push, e-mail); Should (WhatsApp) | Follow and opt-in take no more than three interactions with no account; in staging, a simulated gate change reaches each channel within 60 seconds [assessment]. |
 | BR-05 | Freshness and failure states for all live data: "Updated hh:mm" in airport-local time; on feed failure, last-known values with their age and a retry; dates computed in airport time. | Hamad (no stamp, visitor-clock "Today"), Incheon (device clock), Heathrow (error, no last-known data), MAHB ("Loading..." indefinitely). | Must | With the flight API stubbed to fail, every flight surface shows last-known data and its age within 2 seconds and no spinner lasts more than 10 seconds; with the device clock set to UTC-10, "today" still follows Malaysia time. |
 | BR-06 | Guidance pages server-rendered and complete with JavaScript disabled and with the content API unavailable. | MAHB's blank pages under its API block; Heathrow's client-only board; maps and search at six benchmarks fail with their third-party host. | Must | With scripts off and the API blocked, all guidance, transport, parking and contact pages render their full text; an automated crawl checks every route. |
 | BR-07 | Weight and speed budgets enforced in CI: homepages 1,000 KB or less transferred, guidance pages 500 KB or less, 40 requests or fewer; field LCP 2.5 s, INP 200 ms, CLS 0.1 or better at the 75th percentile. | MAHB 32.7 MiB and CLS 0.621; Changi 21.0 MiB; Haneda 13.2 MiB; the lightest valid benchmark, Heathrow, is 1.8 MiB. | Must | The CI budget check fails the build on any breach; Lighthouse lab median on the homepage below 1,000 KB and CLS under 0.1; field data meets the thresholds three months after launch. |
@@ -820,7 +822,7 @@ follow the rules in section 1.2. The full log, with evidence paths, is in
 | C04 | Schiphol | mobile | 4.5 to 4.0 | medium to low | R2, R3 | Rested on app ratings; "mobile web not observed". Aligned with Heathrow, whose mobile web was rendered. |
 | C05 | Changi | flight | 4.5 to 4.0 | medium | R3, R4 | Only a searchable listing is evidenced on the web, and it did not render in either project capture; saving, alerts, tracking and FlightSaver are app features. Every other 4.5 has an observed per-flight web page with journey help. |
 | C06 | Changi | mobile | 4.5 to 4.0 | medium | R3, R4 | Rested on the app rating; mobile web not assessed. Lab: 21.0 MiB, performance 58, accessibility 74. Cannot sit above Heathrow. |
-| C07 | Changi | nav | 3.5 to 3.0 | low to medium | R4 | Captures found no skip link, no `main` landmark and images without alt text; accessibility 74 with five rule families failing; plus the report's own negatives. Matches Istanbul, Hamad and Munich. |
+| C07 | Changi | nav | 3.5 to 3.0 | low to medium | R4 | Captures found no skip link, no `main` landmark and images without alt text; accessibility 74 with seven failing audits; plus the report's own negatives. Matches Istanbul, Hamad and Munich. |
 | C08 | Haneda | mobile | 4.0 to 3.5 | medium | R4 | Report evidence: about 17 MB mobile homepage, a third of targets under 24 px, alerts behind member login; lab LCP 24.5 s. Heathrow at 4.0 loads 1.8 MiB; Hong Kong and Istanbul hold 3.5. |
 | C09 | Changi | ai | 4.0 to 3.5 | medium to low | R2, R3 | Account-based rewards, app saved flights and a 2020 task chatbot; no generative or flight-aware assistant found. Below Heathrow and Istanbul (4.0). The analyst noted the AI search could not run; confirmed current capability would restore 4.0. |
 | C10 | Changi | perf | none to 3.0 | low | R4 | Left unscored for lack of evidence; now measured: performance 58, LCP 7.9 s, TBT 379 ms, CLS 0.077, 21.0 MiB. Comparable with Heathrow, Haneda and Istanbul. |
