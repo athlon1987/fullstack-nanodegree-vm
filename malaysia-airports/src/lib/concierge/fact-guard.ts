@@ -19,7 +19,8 @@ export function namesIn(text: string): string[] {
   const names: string[] = [];
   for (const match of text.matchAll(/(^|[.!?:;]\s+|\s|\(|“|")([A-Z][\p{L}0-9&@'’-]*)/gu)) {
     const startOfSentence = match.index === 0 || /[.!?:;]\s+$/.test(match[1]);
-    if (!startOfSentence) names.push(match[2].replace(/[’']s$/, ''));
+    const name = match[2].replace(/[’']s$/, '');
+    if (!startOfSentence && name.length > 1) names.push(name);
   }
   return names;
 }
