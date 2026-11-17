@@ -27,10 +27,11 @@ export function moneyText(money: Money, lang: Lang, t: Translator): { amount: st
 }
 
 /** The fare figure for a card or a table cell. */
-export function FareFigure({ info, context, size = 'lg' }: { info: FareInfo; context: TransportContext; size?: 'lg' | 'md' }) {
+export function FareFigure({ info, context, size = 'lg', shortLabel = false }: { info: FareInfo; context: TransportContext; size?: 'lg' | 'md'; shortLabel?: boolean }) {
   const t = useT();
   const lang = useLang();
-  if (!info.place || info.doorToDoor) return <NotPublished label={t('transportPages.fare.notPublished')} />;
+  const missing = <NotPublished label={shortLabel ? undefined : t('transportPages.fare.notPublished')} />;
+  if (!info.place || info.doorToDoor) return missing;
   if (info.dated && !info.status) {
     return (
       <ul className="flex flex-col gap-1.5">
@@ -48,7 +49,7 @@ export function FareFigure({ info, context, size = 'lg' }: { info: FareInfo; con
     );
   }
   const fare = info.shown?.fare;
-  if (!fare) return <NotPublished label={t('transportPages.fare.notPublished')} />;
+  if (!fare) return missing;
   const text = moneyText(fare, lang, t);
   return (
     <span className="flex flex-col">
@@ -96,11 +97,15 @@ export function FareTimeline({ info, context, compact = false }: { info: FareInf
 }
 
 /** Published journey time, or "not published". */
-export function DurationValue({ info }: { info: FareInfo }) {
+export function DurationValue({ info, shortLabel = false }: { info: FareInfo; shortLabel?: boolean }) {
   const t = useT();
   const lang = useLang();
   const minutes = info.doorToDoor ? undefined : info.shown?.durationMinutes;
-  return minutes !== undefined ? <span className="type-data-md text-ink">{formatDuration(minutes, lang)}</span> : <NotPublished label={t('transportPages.fare.timeNotPublished')} />;
+  return minutes !== undefined ? (
+    <span className="type-data-md text-ink">{formatDuration(minutes, lang)}</span>
+  ) : (
+    <NotPublished label={shortLabel ? undefined : t('transportPages.fare.timeNotPublished')} />
+  );
 }
 
 /** How often the service runs: the published words, or the published interval. */

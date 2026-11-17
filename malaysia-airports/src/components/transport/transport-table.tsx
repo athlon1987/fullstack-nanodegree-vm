@@ -40,7 +40,7 @@ export function TransportTable({ rows, placeKey, context, day, terminal, caption
         <THead>
           <Tr>
             <Th numeric>
-              <span className="sr-only">{t('transportPages.planner.rank', { rank: '' })}</span>
+              <span className="sr-only">{t('transportPages.planner.rankHeader')}</span>
               <span aria-hidden="true">#</span>
             </Th>
             <Th>{t('transportPages.planner.option')}</Th>
@@ -78,11 +78,11 @@ export function TransportTable({ rows, placeKey, context, day, terminal, caption
                   </span>
                 </th>
                 <td className={`${CELL} w-44`}>
-                  <FareFigure info={info} context={context} size="md" />
+                  <FareFigure info={info} context={context} size="md" shortLabel />
                   <FareTimeline info={info} context={context} compact />
                 </td>
                 <td className={CELL}>
-                  <DurationValue info={info} />
+                  <DurationValue info={info} shortLabel />
                 </td>
                 <td className={`${CELL} w-56`}>
                   <span className="flex flex-col gap-2">

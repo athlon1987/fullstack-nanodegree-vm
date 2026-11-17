@@ -56,6 +56,7 @@ export const transportPagesEn = {
     showAllTerminals: 'Show all terminals',
     tableCaption: 'Ways to travel between {airport} and {destination}, sorted by {priority}',
     option: 'Option',
+    rankHeader: 'Rank',
     noResults: 'No published option serves this place yet.',
     bookOnline: 'Book online',
   },
@@ -72,6 +73,12 @@ export const transportPagesEn = {
     route: 'Route',
     note: 'Good to know',
     about: 'About this option',
+    missing: 'Not published: {facts}.',
+    missingNames: {
+      frequency: 'how often it runs',
+      hours: 'hours',
+      payment: 'payment methods',
+    },
   },
   fare: {
     free: 'Free',
@@ -280,6 +287,7 @@ export const transportPagesMs: typeof transportPagesEn = {
     showAllTerminals: 'Papar semua terminal',
     tableCaption: 'Cara perjalanan antara {airport} dan {destination}, disusun mengikut {priority}',
     option: 'Pilihan',
+    rankHeader: 'Kedudukan',
     noResults: 'Belum ada pilihan yang diterbitkan untuk tempat ini.',
     bookOnline: 'Tempah dalam talian',
   },
@@ -296,6 +304,12 @@ export const transportPagesMs: typeof transportPagesEn = {
     route: 'Laluan',
     note: 'Perlu tahu',
     about: 'Tentang pilihan ini',
+    missing: 'Tidak diterbitkan: {facts}.',
+    missingNames: {
+      frequency: 'kekerapan',
+      hours: 'waktu operasi',
+      payment: 'kaedah pembayaran',
+    },
   },
   fare: {
     free: 'Percuma',

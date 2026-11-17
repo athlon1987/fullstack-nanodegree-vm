@@ -2,7 +2,9 @@
 
 import { pick, TRANSPORT_MODE_LABELS, type TerminalId, type TransportOption } from '@/content/types';
 import { cn } from '@/lib/cn';
+import { formatList } from '@/lib/format';
 import { useLang, useT } from '@/lib/i18n/client';
+import { NotPublished } from '@/components/common/not-published';
 import { ExternalLink } from '@/components/common/external-link';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { SourceNote } from '@/components/common/source-note';
@@ -45,7 +47,15 @@ export function TransportOptionCard({ option, placeKey, context, day, terminal, 
   const titleId = `transport-${option.id}-title`;
   const official = officialSourceUrl(option.sources, context.sources);
   const note = info.doorToDoor ? undefined : info.shown?.note ?? info.place?.periods[0]?.destination.note;
-  const route = info.place && option.destinations.length > 0 ? pick(info.place.name, lang) : undefined;
+  const route = info.doorToDoor ? t('transportPages.planner.doorToDoor') : info.place ? pick(info.place.name, lang) : undefined;
+  const hasHours = option.hours !== undefined;
+  const hasFrequency = option.frequency !== undefined || option.frequencyMinutes !== undefined;
+  const hasPayment = (option.payment?.length ?? 0) > 0;
+  const missing = [
+    hasFrequency ? undefined : t('transportPages.fields.missingNames.frequency'),
+    hasHours ? undefined : t('transportPages.fields.missingNames.hours'),
+    hasPayment ? undefined : t('transportPages.fields.missingNames.payment'),
+  ].filter((item): item is string => item !== undefined);
 
   return (
     <article
@@ -89,10 +99,10 @@ export function TransportOptionCard({ option, placeKey, context, day, terminal, 
 
         <dl className="grid shrink-0 grid-cols-2 gap-x-6 gap-y-3 border-t border-line pt-4 @2xl:w-72 @2xl:border-t-0 @2xl:pt-0">
           <Fact label={info.dated && info.status ? t('transportPages.fields.fareToday') : t('transportPages.fields.fare')}>
-            <FareFigure info={info} context={context} />
+            <FareFigure info={info} context={context} shortLabel />
           </Fact>
           <Fact label={t('transportPages.fields.time')}>
-            <DurationValue info={info} />
+            <DurationValue info={info} shortLabel />
           </Fact>
         </dl>
       </div>
@@ -105,23 +115,27 @@ export function TransportOptionCard({ option, placeKey, context, day, terminal, 
 
       <div className="flex flex-col gap-5 border-t border-line p-4 sm:p-5">
         {option.description ? <p className="type-body-sm max-w-reading text-ink-2">{pick(option.description, lang)}</p> : null}
-        {info.doorToDoor ? <p className="type-body-sm font-medium text-ink">{t('transportPages.planner.doorToDoor')}</p> : null}
-
         <dl className="grid grid-cols-1 gap-x-8 gap-y-5 @md:grid-cols-2 @4xl:grid-cols-4">
           {route ? (
             <Fact label={t('transportPages.fields.route')}>
               <span className="type-body-sm text-ink">{route}</span>
             </Fact>
           ) : null}
-          <Fact label={t('transportPages.fields.frequency')}>
-            <FrequencyValue option={option} />
-          </Fact>
-          <Fact label={t('transportPages.fields.hours')}>
-            <HoursValue hours={option.hours} />
-          </Fact>
-          <Fact label={t('transportPages.fields.payment')}>
-            <PaymentValue option={option} />
-          </Fact>
+          {hasFrequency ? (
+            <Fact label={t('transportPages.fields.frequency')}>
+              <FrequencyValue option={option} />
+            </Fact>
+          ) : null}
+          {hasHours ? (
+            <Fact label={t('transportPages.fields.hours')}>
+              <HoursValue hours={option.hours} />
+            </Fact>
+          ) : null}
+          {hasPayment ? (
+            <Fact label={t('transportPages.fields.payment')}>
+              <PaymentValue option={option} />
+            </Fact>
+          ) : null}
           <Fact label={t('transportPages.fields.accessibility')}>
             <AccessValue option={option} />
           </Fact>
@@ -134,6 +148,7 @@ export function TransportOptionCard({ option, placeKey, context, day, terminal, 
             </Fact>
           ) : null}
         </dl>
+        {missing.length > 0 ? <NotPublished label={t('transportPages.fields.missing', { facts: formatList(missing, lang) })} /> : null}
       </div>
 
       <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-line px-4 py-1.5 sm:px-5">
