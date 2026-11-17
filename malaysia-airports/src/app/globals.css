@@ -1,26 +1,981 @@
-@import "tailwindcss";
+/*
+ * Malaysia Airports design tokens and base styles (Tailwind CSS 4).
+ *
+ * Everything a component may use is a token declared in `@theme` below, which Tailwind turns
+ * into utilities (`bg-page`, `text-ink-2`, `border-line`, `rounded-md`, `shadow-md`, `px-gutter`,
+ * `h-row`, `type-title-md`, ...). Components never use raw hex values.
+ *
+ * Themes are switched by attributes that `PREFERENCES_INIT_SCRIPT` sets on <html> before paint:
+ *   data-theme="light|dark"   data-contrast="normal|more"   data-text-size="100|112|125"
+ *   data-motion="normal|reduce"
+ * Without JavaScript no attribute is set and the stylesheet follows `prefers-color-scheme`.
+ *
+ * Measured contrast for every pair is in docs/design/design-system.md; regenerate it with
+ * `node scripts/design-tokens.mjs` after changing a colour (the script reads THIS file).
+ */
+@import 'tailwindcss';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ------------------------------------------------------------------------------------------
+ * Variants
+ * --------------------------------------------------------------------------------------- */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* dark: the resolved theme attribute, or the system setting when no attribute is present. */
+@custom-variant dark {
+  &:where([data-theme='dark'], [data-theme='dark'] *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where(html:not([data-theme]), html:not([data-theme]) *) {
+      @slot;
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* hc: the in-app high-contrast setting. */
+@custom-variant hc (&:where([data-contrast='more'], [data-contrast='more'] *, [data-contrast='high'], [data-contrast='high'] *));
+
+/* touch: phones and any coarse pointer. Use it to grow compact controls to 44px. */
+@custom-variant touch {
+  @media (width < 48rem), (pointer: coarse) {
+    @slot;
+  }
+}
+
+/* on-board: inside the dark flight-board surface. */
+@custom-variant on-board (&:where(.surface-board, .surface-board *));
+
+/* ------------------------------------------------------------------------------------------
+ * Tokens (light theme values; other themes override the same variables further down)
+ * --------------------------------------------------------------------------------------- */
+@theme static {
+  /* Remove Tailwind's default palette, radii and shadows: only our tokens exist. */
+  --color-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
+
+  /* --- Colour: surfaces --- */
+  --color-page: #faf5ea;
+  --color-page-subtle: #f3ecdc;
+  --color-surface: #fffdf8;
+  --color-surface-raised: #ffffff;
+  --color-surface-sunken: #f5efe1;
+
+  /* --- Colour: ink --- */
+  --color-ink: #181b3a;
+  --color-ink-2: #454867;
+  --color-ink-3: #5c5f7b;
+
+  /* --- Colour: lines. `line` and `line-strong` divide; `line-control` bounds controls (3:1). --- */
+  --color-line: #e3dccb;
+  --color-line-strong: #cbc4b6;
+  --color-line-control: #7f7c95;
+
+  /* --- Colour: inverse surface (ink bands, footer, tooltips) --- */
+  --color-inverse: #181b3a;
+  --color-on-inverse: #f6f0e2;
+  --color-on-inverse-dim: #c2c0d6;
+
+  /* --- Colour: brand primary, songket indigo. Never used as a status colour. --- */
+  --color-primary: #252a6c;
+  --color-primary-hover: #181c4f;
+  --color-on-primary: #fbf6ea;
+  --color-primary-soft: #e7e8f4;
+  --color-primary-ink: #252a6c;
+
+  /* --- Colour: gold thread. Decoration only: rules, ornaments, eyebrows. Never a status. --- */
+  --color-gold: #a57b2b;
+  --color-gold-ink: #7a5814;
+  --color-gold-soft: #f2e7cc;
+
+  /* --- Colour: leaf green, the secondary living accent for illustration. --- */
+  --color-leaf: #1f6b4a;
+  --color-leaf-soft: #e0eee3;
+
+  /* --- Colour: focus. Orchid: not a brand colour and not a status colour. --- */
+  --color-focus: #a6157f;
+
+  /* --- Colour: the board. A neutral dark data surface, the same in both themes. --- */
+  --color-board: #080b16;
+  --color-board-raised: #121627;
+  --color-board-ink: #f3f1ea;
+  --color-board-dim: #a9aec2;
+  --color-board-line: #2b3148;
+  --color-board-accent: #ffc24a;
+
+  /* --- Colour: status tones. Always paired with an icon and words. --- */
+  --color-positive-fg: #1a6245;
+  --color-positive-bg: #e2f0e6;
+  --color-positive-border: #458a6a;
+  --color-warning-fg: #874a00;
+  --color-warning-bg: #faeacd;
+  --color-warning-border: #ad7320;
+  --color-critical-fg: #a02925;
+  --color-critical-bg: #fae3df;
+  --color-critical-border: #c55f57;
+  --color-info-fg: #0f5873;
+  --color-info-bg: #ddeef3;
+  --color-info-border: #41869f;
+  --color-neutral-fg: #494c66;
+  --color-neutral-bg: #eae5da;
+  --color-neutral-border: #7f7c95;
+
+  /* --- Colour: provenance tones (solid, outlined, dashed, striped) --- */
+  --color-official-fg: #fbf6ea;
+  --color-official-bg: #181b3a;
+  --color-official-border: #181b3a;
+  --color-estimated-fg: #181b3a;
+  --color-estimated-bg: #fffdf8;
+  --color-estimated-border: #454867;
+  --color-suggestion-fg: #252a6c;
+  --color-suggestion-bg: #e7e8f4;
+  --color-suggestion-border: #252a6c;
+  --color-demo-fg: #1f1600;
+  --color-demo-bg: #ffc233;
+  --color-demo-border: #8a6400;
+
+  /* --- Shadow colour (used by the shadow tokens) --- */
+  --elevation-rgb: 24 27 58;
+  --elevation-alpha: 1;
+
+  /* --- Type families (the variables come from next/font in src/fonts) --- */
+  --font-display: var(--font-fraunces), 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --font-display--font-variation-settings: 'opsz' 144;
+  --font-sans: var(--font-hanken), system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* --- Type sizes (prefer the composite `type-*` utilities below) --- */
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.35;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.5;
+  --text-base: 1rem;
+  --text-base--line-height: 1.55;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.6;
+  --text-xl: 1.375rem;
+  --text-xl--line-height: 1.25;
+  --text-2xl: 1.625rem;
+  --text-2xl--line-height: 1.18;
+  --text-3xl: 2.25rem;
+  --text-3xl--line-height: 1.1;
+  --text-4xl: 3.25rem;
+  --text-4xl--line-height: 1.04;
+  --text-5xl: 4.5rem;
+  --text-5xl--line-height: 1;
+
+  --tracking-eyebrow: 0.14em;
+  --tracking-data: 0.04em;
+
+  /* --- Radii: fine corners, few pills --- */
+  --radius-xs: 0.1875rem;
+  --radius-sm: 0.3125rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-pill: 999px;
+
+  /* --- Elevation: restrained --- */
+  --shadow-xs: 0 1px 2px rgb(var(--elevation-rgb) / calc(0.06 * var(--elevation-alpha)));
+  --shadow-sm:
+    0 1px 2px rgb(var(--elevation-rgb) / calc(0.05 * var(--elevation-alpha))),
+    0 6px 16px -8px rgb(var(--elevation-rgb) / calc(0.14 * var(--elevation-alpha)));
+  --shadow-md:
+    0 1px 2px rgb(var(--elevation-rgb) / calc(0.05 * var(--elevation-alpha))),
+    0 18px 40px -18px rgb(var(--elevation-rgb) / calc(0.22 * var(--elevation-alpha)));
+  --shadow-lg:
+    0 2px 4px rgb(var(--elevation-rgb) / calc(0.06 * var(--elevation-alpha))),
+    0 24px 60px -16px rgb(var(--elevation-rgb) / calc(0.3 * var(--elevation-alpha)));
+
+  /* --- Motion --- */
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 360ms;
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.25, 1);
+  --default-transition-duration: 160ms;
+  --default-transition-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  --animate-fade-in: fade-in var(--duration-base) var(--ease-out) both;
+  --animate-fade-out: fade-out var(--duration-fast) var(--ease-out) both;
+  --animate-rise-in: rise-in var(--duration-base) var(--ease-out) both;
+  --animate-sheet-in-right: sheet-in-right var(--duration-slow) var(--ease-out) both;
+  --animate-sheet-out-right: sheet-out-right var(--duration-base) var(--ease-in-out) both;
+  --animate-sheet-in-bottom: sheet-in-bottom var(--duration-slow) var(--ease-out) both;
+  --animate-sheet-out-bottom: sheet-out-bottom var(--duration-base) var(--ease-in-out) both;
+  --animate-collapse-down: collapse-down var(--duration-base) var(--ease-out);
+  --animate-collapse-up: collapse-up var(--duration-base) var(--ease-out);
+  --animate-shimmer: shimmer 1.6s var(--ease-in-out) infinite;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.375rem);
+    }
+  }
+  @keyframes sheet-in-right {
+    from {
+      transform: translateX(100%);
+    }
+  }
+  @keyframes sheet-out-right {
+    to {
+      transform: translateX(100%);
+    }
+  }
+  @keyframes sheet-in-bottom {
+    from {
+      transform: translateY(100%);
+    }
+  }
+  @keyframes sheet-out-bottom {
+    to {
+      transform: translateY(100%);
+    }
+  }
+  @keyframes collapse-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes collapse-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+  @keyframes shimmer {
+    50% {
+      opacity: 0.45;
+    }
+  }
+
+  /* --- Layout --- */
+  --breakpoint-xs: 25rem;
+  --container-reading: 42rem;
+  --container-narrow: 56rem;
+  --container-page: 77.5rem;
+  --container-wide: 90rem;
+  --spacing-gutter: clamp(1rem, 4vw, 3rem);
+  --spacing-section: clamp(3rem, 2rem + 4vw, 5rem);
+  --spacing-header: 4.25rem;
+  --spacing-touch: 2.75rem;
+
+  /* --- Dense data --- */
+  --spacing-row: 3.25rem;
+  --spacing-row-dense: 2.5rem;
+  --spacing-row-compact: 2rem;
+  --spacing-chip: 1.75rem;
+  --spacing-badge: 1.5rem;
+  --spacing-badge-sm: 1.25rem;
+}
+
+/* ------------------------------------------------------------------------------------------
+ * Theme overrides
+ * --------------------------------------------------------------------------------------- */
+@layer theme {
+  :root {
+    color-scheme: light;
+    /* Patterns are masks, so they take any token colour. */
+    --pattern-rebung: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='6'%3E%3Cpath d='M0 6 6 .5l6 5.5' fill='none' stroke='%23000'/%3E%3C/svg%3E");
+    --pattern-rebung-lg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='20'%3E%3Cpath d='M1 20 12 2l11 18M6.5 20 12 11l5.5 9M12 20v-4' fill='none' stroke='%23000'/%3E%3C/svg%3E");
+    --pattern-tabur: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Cpath d='M11 6.5 12.2 9.8 15.5 11 12.2 12.2 11 15.5 9.8 12.2 6.5 11 9.8 9.8zM33 28.5 34.2 31.8 37.5 33 34.2 34.2 33 37.5 31.8 34.2 28.5 33 31.8 31.8z'/%3E%3Ccircle cx='33' cy='11' r='1'/%3E%3Ccircle cx='11' cy='33' r='1'/%3E%3C/svg%3E");
+    --pattern-weave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath d='M0 3h12M0 9h12M15 0v12M21 0v12M3 12v12M9 12v12M12 15h12M12 21h12' fill='none' stroke='%23000'/%3E%3C/svg%3E");
+  }
+
+  /* The board scope shares the dark values, so every component works on it unchanged. */
+  /* tokens:dark:start */
+  html[data-theme='dark'],
+  .surface-board {
+    color-scheme: dark;
+    --color-page: #0c0e24;
+    --color-page-subtle: #11142f;
+    --color-surface: #171a3d;
+    --color-surface-raised: #1f2350;
+    --color-surface-sunken: #090b1d;
+    --color-ink: #f4eedf;
+    --color-ink-2: #c9c7da;
+    --color-ink-3: #a2a1bd;
+    --color-line: #2a2c48;
+    --color-line-strong: #454866;
+    --color-line-control: #7d80a3;
+    --color-inverse: #1d2152;
+    --color-on-inverse: #f4eedf;
+    --color-on-inverse-dim: #c2c0d6;
+    --color-primary: #e7cd95;
+    --color-primary-hover: #f2ddae;
+    --color-on-primary: #14163a;
+    --color-primary-soft: #20245a;
+    --color-primary-ink: #c7ccff;
+    --color-gold: #d2ac62;
+    --color-gold-ink: #e2c383;
+    --color-gold-soft: #2b2946;
+    --color-leaf: #8fd3ae;
+    --color-leaf-soft: #12382b;
+    --color-focus: #ff9fdc;
+    --color-positive-fg: #8fddb5;
+    --color-positive-bg: #12382b;
+    --color-positive-border: #3e8f6b;
+    --color-warning-fg: #f5c46e;
+    --color-warning-bg: #47300a;
+    --color-warning-border: #a87a2a;
+    --color-critical-fg: #ffa99e;
+    --color-critical-bg: #4c1b1d;
+    --color-critical-border: #c0625c;
+    --color-info-fg: #8cd3ec;
+    --color-info-bg: #0e3646;
+    --color-info-border: #3f8ca8;
+    --color-neutral-fg: #cdcedd;
+    --color-neutral-bg: #2b2e50;
+    --color-neutral-border: #7d80a3;
+    --color-official-fg: #14163a;
+    --color-official-bg: #f4eedf;
+    --color-official-border: #f4eedf;
+    --color-estimated-fg: #f4eedf;
+    --color-estimated-bg: #171a3d;
+    --color-estimated-border: #c9c7da;
+    --color-suggestion-fg: #c7ccff;
+    --color-suggestion-bg: #20245a;
+    --color-suggestion-border: #c7ccff;
+    --color-demo-border: #ffc233;
+    --elevation-rgb: 0 0 0;
+    --elevation-alpha: 2.4;
+  }
+  /* tokens:dark:end */
+
+  /* The same values again for visitors without JavaScript (no data-theme attribute). */
+  @media (prefers-color-scheme: dark) {
+    /* tokens:dark-fallback:start */
+    html:not([data-theme]) {
+      color-scheme: dark;
+      --color-page: #0c0e24;
+      --color-page-subtle: #11142f;
+      --color-surface: #171a3d;
+      --color-surface-raised: #1f2350;
+      --color-surface-sunken: #090b1d;
+      --color-ink: #f4eedf;
+      --color-ink-2: #c9c7da;
+      --color-ink-3: #a2a1bd;
+      --color-line: #2a2c48;
+      --color-line-strong: #454866;
+      --color-line-control: #7d80a3;
+      --color-inverse: #1d2152;
+      --color-on-inverse: #f4eedf;
+      --color-on-inverse-dim: #c2c0d6;
+      --color-primary: #e7cd95;
+      --color-primary-hover: #f2ddae;
+      --color-on-primary: #14163a;
+      --color-primary-soft: #20245a;
+      --color-primary-ink: #c7ccff;
+      --color-gold: #d2ac62;
+      --color-gold-ink: #e2c383;
+      --color-gold-soft: #2b2946;
+      --color-leaf: #8fd3ae;
+      --color-leaf-soft: #12382b;
+      --color-focus: #ff9fdc;
+      --color-positive-fg: #8fddb5;
+      --color-positive-bg: #12382b;
+      --color-positive-border: #3e8f6b;
+      --color-warning-fg: #f5c46e;
+      --color-warning-bg: #47300a;
+      --color-warning-border: #a87a2a;
+      --color-critical-fg: #ffa99e;
+      --color-critical-bg: #4c1b1d;
+      --color-critical-border: #c0625c;
+      --color-info-fg: #8cd3ec;
+      --color-info-bg: #0e3646;
+      --color-info-border: #3f8ca8;
+      --color-neutral-fg: #cdcedd;
+      --color-neutral-bg: #2b2e50;
+      --color-neutral-border: #7d80a3;
+      --color-official-fg: #14163a;
+      --color-official-bg: #f4eedf;
+      --color-official-border: #f4eedf;
+      --color-estimated-fg: #f4eedf;
+      --color-estimated-bg: #171a3d;
+      --color-estimated-border: #c9c7da;
+      --color-suggestion-fg: #c7ccff;
+      --color-suggestion-bg: #20245a;
+      --color-suggestion-border: #c7ccff;
+      --color-demo-border: #ffc233;
+      --elevation-rgb: 0 0 0;
+      --elevation-alpha: 2.4;
+    }
+    /* tokens:dark-fallback:end */
+  }
+
+  /* The board: dark values (above) with the surfaces remapped to the board set. */
+  /* tokens:board:start */
+  .surface-board {
+    --color-page: #080b16;
+    --color-page-subtle: #121627;
+    --color-surface: #121627;
+    --color-surface-raised: #1a1f33;
+    --color-surface-sunken: #04060d;
+    --color-ink: #f3f1ea;
+    --color-ink-2: #a9aec2;
+    --color-ink-3: #a9aec2;
+    --color-line: #2b3148;
+    --color-line-strong: #3d4563;
+    --color-line-control: #7279a0;
+    --color-estimated-bg: #121627;
+    --color-neutral-bg: #262c44;
+    --color-neutral-border: #7279a0;
+  }
+  /* tokens:board:end */
+
+  /* High contrast, light. */
+  /* tokens:hc-light:start */
+  html[data-contrast='more'],
+  html[data-contrast='high'] {
+    --color-page: #fffcf4;
+    --color-page-subtle: #f6f0e0;
+    --color-surface: #ffffff;
+    --color-surface-raised: #ffffff;
+    --color-surface-sunken: #f6f0e0;
+    --color-ink: #0d0f26;
+    --color-ink-2: #25284a;
+    --color-ink-3: #35385a;
+    --color-line: #8c899c;
+    --color-line-strong: #5d5a73;
+    --color-line-control: #25284a;
+    --color-primary: #171b52;
+    --color-primary-hover: #0d0f33;
+    --color-primary-ink: #171b52;
+    --color-gold: #7a5814;
+    --color-gold-ink: #5a3f07;
+    --color-leaf: #124a32;
+    --color-focus: #86095f;
+    --color-board-dim: #d5d9e8;
+    --color-board-line: #636b8c;
+    --color-positive-fg: #0d4a32;
+    --color-positive-border: #0d4a32;
+    --color-warning-fg: #643600;
+    --color-warning-border: #643600;
+    --color-critical-fg: #7c1814;
+    --color-critical-border: #7c1814;
+    --color-info-fg: #084256;
+    --color-info-border: #084256;
+    --color-neutral-fg: #2c2f4e;
+    --color-neutral-border: #2c2f4e;
+    --color-official-bg: #0d0f26;
+    --color-official-border: #0d0f26;
+    --color-estimated-fg: #0d0f26;
+    --color-estimated-border: #0d0f26;
+    --color-suggestion-fg: #171b52;
+    --color-suggestion-border: #171b52;
+    --color-demo-border: #1f1600;
+  }
+  /* tokens:hc-light:end */
+
+  /* High contrast, dark (and the board in high contrast). */
+  /* tokens:hc-dark:start */
+  html[data-theme='dark'][data-contrast='more'],
+  html[data-theme='dark'][data-contrast='high'],
+  html[data-contrast='more'] .surface-board,
+  html[data-contrast='high'] .surface-board {
+    --color-page: #05061a;
+    --color-page-subtle: #0a0c26;
+    --color-surface: #0f1233;
+    --color-surface-raised: #171b45;
+    --color-surface-sunken: #020312;
+    --color-ink: #ffffff;
+    --color-ink-2: #e6e4f2;
+    --color-ink-3: #cfcde2;
+    --color-line: #6e7198;
+    --color-line-strong: #a2a4c4;
+    --color-line-control: #e6e4f2;
+    --color-primary: #f4dfae;
+    --color-primary-hover: #fbecc8;
+    --color-primary-ink: #dde0ff;
+    --color-gold: #e2c383;
+    --color-gold-ink: #f0d9a4;
+    --color-leaf: #b6f2d2;
+    --color-focus: #ffc2e9;
+    --color-positive-fg: #b6f2d2;
+    --color-positive-border: #b6f2d2;
+    --color-warning-fg: #ffd88f;
+    --color-warning-border: #ffd88f;
+    --color-critical-fg: #ffc7bf;
+    --color-critical-border: #ffc7bf;
+    --color-info-fg: #b5e6f7;
+    --color-info-border: #b5e6f7;
+    --color-neutral-fg: #e8e9f3;
+    --color-neutral-border: #e8e9f3;
+    --color-official-fg: #05061a;
+    --color-official-bg: #ffffff;
+    --color-official-border: #ffffff;
+    --color-estimated-fg: #ffffff;
+    --color-estimated-border: #ffffff;
+    --color-suggestion-fg: #dde0ff;
+    --color-suggestion-border: #dde0ff;
+    --color-demo-border: #ffc233;
+  }
+  /* tokens:hc-dark:end */
+
+  /* The board keeps its own surfaces in high contrast. */
+  /* tokens:hc-board:start */
+  html[data-contrast='more'] .surface-board,
+  html[data-contrast='high'] .surface-board {
+    --color-page: #04060d;
+    --color-page-subtle: #0e1220;
+    --color-surface: #0e1220;
+    --color-surface-raised: #171c2e;
+    --color-ink-2: #d5d9e8;
+    --color-ink-3: #d5d9e8;
+    --color-line: #636b8c;
+    --color-line-strong: #8d95b5;
+    --color-estimated-bg: #0e1220;
+  }
+  /* tokens:hc-board:end */
+}
+
+/* ------------------------------------------------------------------------------------------
+ * Base
+ * --------------------------------------------------------------------------------------- */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* Keep focused elements and anchor targets clear of the sticky header. */
+    scroll-padding-top: calc(var(--spacing-header) + 1rem);
+    background-color: var(--color-page);
+  }
+  html[data-text-size='112'] {
+    font-size: 112.5%;
+  }
+  html[data-text-size='125'] {
+    font-size: 125%;
+  }
+
+  body {
+    min-height: 100dvh;
+    background-color: var(--color-page);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.55;
+    font-variant-numeric: lining-nums;
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+  p,
+  li,
+  dd {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+
+  /* Focus is always visible and is never a brand or status colour. */
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+  :where([data-contrast='more'], [data-contrast='high']) :focus-visible {
+    outline-width: 3px;
+  }
+  /* The main landmark takes programmatic focus from the skip link without a ring. */
+  main:focus {
+    outline: none;
+  }
+
+  /* Native disclosure: we draw our own chevron. */
+  summary {
+    cursor: pointer;
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  button,
+  [role='button'],
+  label[for],
+  select {
+    cursor: pointer;
+  }
+  :disabled,
+  [aria-disabled='true'] {
+    cursor: not-allowed;
+  }
+
+  /* Search inputs: we provide the clear button. */
+  input[type='search']::-webkit-search-cancel-button,
+  input[type='search']::-webkit-search-decoration {
+    appearance: none;
+  }
+  ::placeholder {
+    color: var(--color-ink-3);
+    opacity: 1;
+  }
+
+  /* Scoped dark surface: the element paints itself. */
+  .surface-board {
+    background-color: var(--color-page);
+    color: var(--color-ink);
+  }
+}
+
+/* ------------------------------------------------------------------------------------------
+ * Type styles: family, size, leading, tracking and weight in one utility
+ * --------------------------------------------------------------------------------------- */
+@utility type-display-xl {
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 144;
+  font-size: clamp(2.375rem, 1.25rem + 4.6vw, 4.5rem);
+  line-height: 1;
+  letter-spacing: -0.028em;
+  font-weight: 380;
+}
+@utility type-display-lg {
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 144;
+  font-size: clamp(2rem, 1.3rem + 2.8vw, 3.25rem);
+  line-height: 1.04;
+  letter-spacing: -0.024em;
+  font-weight: 380;
+}
+@utility type-display-md {
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 144;
+  font-size: clamp(1.625rem, 1.25rem + 1.5vw, 2.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-weight: 380;
+}
+@utility type-display-sm {
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 72;
+  font-size: clamp(1.375rem, 1.25rem + 0.5vw, 1.625rem);
+  line-height: 1.18;
+  letter-spacing: -0.014em;
+  font-weight: 400;
+}
+@utility type-title-lg {
+  font-size: 1.375rem;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  font-weight: 650;
+}
+@utility type-title-md {
+  font-size: 1.125rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  font-weight: 650;
+}
+@utility type-title-sm {
+  font-size: 1rem;
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+  font-weight: 650;
+}
+@utility type-body-lg {
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+@utility type-body {
+  font-size: 1rem;
+  line-height: 1.55;
+}
+@utility type-body-sm {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+@utility type-caption {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  letter-spacing: 0.005em;
+}
+@utility type-eyebrow {
+  font-size: 0.75rem;
+  line-height: 1.2;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+@utility type-data-xl {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-size: 1.5rem;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+@utility type-data-lg {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-size: 1.25rem;
+  line-height: 1.1;
+  font-weight: 600;
+}
+@utility type-data-md {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-size: 0.9375rem;
+  line-height: 1.3;
+  font-weight: 500;
+}
+@utility type-data-sm {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  font-weight: 500;
+}
+@utility type-data-xs {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-size: 0.6875rem;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+/* ------------------------------------------------------------------------------------------
+ * Motion, focus and pattern utilities
+ * --------------------------------------------------------------------------------------- */
+@utility duration-fast {
+  transition-duration: var(--duration-fast);
+}
+@utility duration-base {
+  transition-duration: var(--duration-base);
+}
+@utility duration-slow {
+  transition-duration: var(--duration-slow);
+}
+
+/* The focus ring for elements that take focus through a child (hidden radio, card link). */
+@utility focus-ring {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+@utility focus-ring-inset {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
+}
+
+/* Pucuk rebung (bamboo shoot) hairline: a 6px zig-zag rule in the current text colour. */
+@utility pattern-rebung {
+  height: 6px;
+  background-color: currentColor;
+  -webkit-mask: var(--pattern-rebung) repeat-x left center / 12px 6px;
+  mask: var(--pattern-rebung) repeat-x left center / 12px 6px;
+}
+/* Larger pucuk rebung border, for band edges. */
+@utility pattern-rebung-lg {
+  height: 20px;
+  background-color: currentColor;
+  -webkit-mask: var(--pattern-rebung-lg) repeat-x left bottom / 24px 20px;
+  mask: var(--pattern-rebung-lg) repeat-x left bottom / 24px 20px;
+}
+/* Bunga tabur (scattered flowers) field. Size the element; it fills with the motif. */
+@utility pattern-tabur {
+  background-color: currentColor;
+  -webkit-mask: var(--pattern-tabur) repeat 0 0 / 44px 44px;
+  mask: var(--pattern-tabur) repeat 0 0 / 44px 44px;
+}
+/* Fine mengkuang weave texture. */
+@utility pattern-weave {
+  background-color: currentColor;
+  -webkit-mask: var(--pattern-weave) repeat 0 0 / 24px 24px;
+  mask: var(--pattern-weave) repeat 0 0 / 24px 24px;
+}
+/* Fade a pattern field out towards one side so it never fights the content. */
+@utility pattern-tabur-fade {
+  background-color: currentColor;
+  -webkit-mask-image: var(--pattern-tabur), linear-gradient(to left, #000 20%, transparent);
+  mask-image: var(--pattern-tabur), linear-gradient(to left, #000 20%, transparent);
+  -webkit-mask-size: 44px 44px, 100% 100%;
+  mask-size: 44px 44px, 100% 100%;
+  -webkit-mask-repeat: repeat, no-repeat;
+  mask-repeat: repeat, no-repeat;
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+/* Hazard stripes for demonstration data. Paint it on an amber block. */
+@utility hazard-stripes {
+  background-image: repeating-linear-gradient(-45deg, var(--color-demo-fg) 0 6px, transparent 6px 12px);
+}
+
+/* Small-caps style numerals for section numbers. */
+@utility tabular {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* ------------------------------------------------------------------------------------------
+ * Reduced motion: the system setting and the in-app setting
+ * --------------------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 0.01ms !important;
+  }
+}
+html:where([data-motion='reduce'], [data-motion='reduced']) *,
+html:where([data-motion='reduce'], [data-motion='reduced']) *::before,
+html:where([data-motion='reduce'], [data-motion='reduced']) *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+html:where([data-motion='reduce'], [data-motion='reduced'])::view-transition-group(*),
+html:where([data-motion='reduce'], [data-motion='reduced'])::view-transition-old(*),
+html:where([data-motion='reduce'], [data-motion='reduced'])::view-transition-new(*) {
+  animation-duration: 0.01ms !important;
+}
+::view-transition {
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------------------------------------
+ * Forced colours (Windows contrast themes): keep boundaries, focus and state visible
+ * --------------------------------------------------------------------------------------- */
+@media (forced-colors: active) {
+  :focus-visible {
+    outline: 3px solid Highlight;
+    outline-offset: 2px;
+  }
+  /* Patterns are masks over a background colour, which forced colours would repaint. */
+  .pattern-rebung,
+  .pattern-rebung-lg,
+  .pattern-tabur,
+  .pattern-tabur-fade,
+  .pattern-weave {
+    forced-color-adjust: none;
+    background-color: CanvasText;
+  }
+  .hazard-stripes {
+    forced-color-adjust: none;
+    background-color: Canvas;
+    background-image: repeating-linear-gradient(-45deg, CanvasText 0 6px, Canvas 6px 12px);
+  }
+  /* Selected and pressed states get a system highlight instead of a tint. */
+  [aria-pressed='true'],
+  [aria-current='page'],
+  [role='tab'][data-state='active'],
+  [data-selected='true'] {
+    forced-color-adjust: none;
+    background-color: Highlight;
+    color: HighlightText;
+    border-color: Highlight;
+  }
+  [aria-pressed='true'] svg,
+  [aria-current='page'] svg,
+  [role='tab'][data-state='active'] svg,
+  [data-selected='true'] svg {
+    color: HighlightText;
+  }
+  :disabled,
+  [aria-disabled='true'] {
+    color: GrayText;
+    border-color: GrayText;
+  }
+}
+
+/* ------------------------------------------------------------------------------------------
+ * Print: guidance pages are printable
+ * --------------------------------------------------------------------------------------- */
+@media print {
+  body {
+    background: #fff;
+    color: #000;
+  }
+  .print\:hidden,
+  [data-print='hidden'] {
+    display: none !important;
+  }
+}
+
+/* ------------------------------------------------------------------------------------------
+ * Inline text link: ink text on a gold-thread underline that firms up on hover
+ * --------------------------------------------------------------------------------------- */
+@utility link {
+  color: inherit;
+  font-weight: 600;
+  text-decoration-line: underline;
+  text-decoration-color: var(--color-gold);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+  border-radius: 2px;
+  transition: text-decoration-color var(--duration-fast) var(--ease-out);
+  &:hover {
+    text-decoration-color: currentColor;
+    text-decoration-thickness: 2px;
+  }
+  @media (forced-colors: active) {
+    color: LinkText;
+    text-decoration-color: LinkText;
+  }
+}
+
+/* A standalone text link ("View all", "About this prototype"): the same thread underline, with a
+   44px touch target on phones. Use `link` only for links inside running text. */
+@utility link-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-height: 2rem;
+  color: inherit;
+  font-weight: 600;
+  text-decoration-line: underline;
+  text-decoration-color: var(--color-gold);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+  border-radius: 2px;
+  transition: text-decoration-color var(--duration-fast) var(--ease-out);
+  &:hover {
+    text-decoration-color: currentColor;
+    text-decoration-thickness: 2px;
+  }
+  @media (width < 48rem), (pointer: coarse) {
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+  }
+  @media (forced-colors: active) {
+    color: LinkText;
+    text-decoration-color: LinkText;
+  }
 }
