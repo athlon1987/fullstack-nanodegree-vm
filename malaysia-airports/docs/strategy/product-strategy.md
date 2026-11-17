@@ -27,29 +27,25 @@ FK `docs/research/facts/f-klia-t1.md`; FS `docs/research/facts/f-supplement-comm
 
 ## Summary for the board
 
-1. MAHB runs 39 Malaysian airports [search, FN `network-total-39`], but its passenger website covers five of them, as
-   six cloned 46-page trees, and models KLIA as two airports [direct, FO]. In 2025 about 41 million passengers, roughly
-   39% of the Malaysian total, used airports other than KLIA [derived from search, FC].
-2. The current site fails silently when its content API is unavailable, moved about 33 MB on a lab homepage load with
-   a layout shift of 0.62, and shows no price on the KLIA Terminal 1 parking page [direct; direct, lab].
-3. The pain that reached the press in 2025 and 2026 is operational: parking bills, Aerotrain stoppages, a baggage-system
-   failure, immigration outages, touting and the gap between KLIA Terminal 1 and Terminal 2 [search, AUD V1 to V7]. No
-   live status layer for any of them was seen on the site [hypothesis, absence not confirmed].
-4. The leading airport sites each excel at one or two things; almost all are single hubs that keep their best features
-   in an app or behind a login [assessment, benchmarks]. MAHB can outperform them by being the only network-wide,
-   web-first, source-cited and fast airport platform, not by copying any one of them.
-5. The strategy rests on twelve differentiators (section 5), ten testable principles (section 6) and a measurement plan
-   that needs baselines only MAHB holds (section 7). Commercial upside is real but depends on partner agreements that do
-   not yet exist (section 8).
+1. MAHB runs 39 Malaysian airports [search, FN `network-total-39`]; its passenger site covers five, as six cloned
+   46-page trees [direct, FO]. In 2025 about 39% of Malaysian passengers used airports other than KLIA [derived, FC].
+2. The site fails silently when its content API is unavailable, moved about 33 MB on a lab homepage load with a layout
+   shift of 0.62, and shows no price on the KLIA Terminal 1 parking page [direct; direct, lab].
+3. The pain that reached the press in 2025 and 2026 is operational (parking bills, Aerotrain, baggage, immigration,
+   touting, the Terminal 1 to Terminal 2 gap) [search, AUD V1 to V7]; no live status layer was seen [hypothesis].
+4. The leading airport sites are single hubs that keep their best features in an app or behind a login [assessment].
+   MAHB can outperform them as the only network-wide, web-first, source-cited and fast airport platform.
+5. The plan: twelve differentiators (section 5), ten testable principles (section 6), metrics that need MAHB
+   baselines (section 7), and commercial upside that depends on partner agreements not yet in place (section 8).
 
 ## 1. Vision and positioning
 
 **Proposition: Malaysia Airports. Your journey, beautifully connected.**
 
-The product connects three things that are separate today: the 39 airports; the stages of a journey (home, kerb,
-terminal, gate, arrival hall, onward transport); and the people involved (the traveller, the person meeting them, the
-business partner). "Beautifully" is earned by calm, precise design and fast answers, not by decoration. The line is this
-project's working proposition. It sits beneath MAHB's published brand promise, "Hosting Joyful Connections", and vision,
+The product connects what is separate today: the 39 airports, the stages of a journey (home to onward transport) and
+the people involved (traveller, greeter, business partner). "Beautifully" is earned by calm, precise design and fast
+answers, not decoration. The line is this project's working proposition, beneath MAHB's brand promise, "Hosting Joyful
+Connections", and vision,
 "A Global Airport Group That Champions Connectivity and Sustainability" [search, FC `brand-promise`, `brand-vision`,
 corporate.malaysiaairports.com.my/en/about-us/corporate-profile/our-brand].
 
@@ -68,10 +64,9 @@ corporate.malaysiaairports.com.my/en/about-us/corporate-profile/our-brand].
 - Not an app-download funnel or a login wall. Saving, following and planning work on the open web without an account.
 - Not a retail catalogue on the front door. Commerce appears in the journey, after the answer.
 - Not an AI chatbot product. The concierge retrieves verified content, cites it and works with no AI service at all.
-- Not an operational system, and not a substitute for airlines, Immigration or transport operators: it presents their
-  information with attribution and hands off. In the prototype every live-looking value is labelled demonstration data
-  [BS rule 1].
-- Not a tracking platform. Personal state stays on the device; the prototype makes no third-party requests [BS §2, §3].
+- Not an operational system or a substitute for airlines, Immigration or operators: it attributes and hands off. In
+  the prototype every live-looking value is labelled demonstration data [BS rule 1].
+- Not a tracking platform. Personal state stays on the device; no third-party requests [BS §2, §3].
 
 **Positioning statement.** For anyone travelling through, meeting someone at or doing business with a Malaysian
 airport, Malaysia Airports is the one place that answers what to do next at any of the 39 airports, with the source of
@@ -122,10 +117,10 @@ with a digital card for international visitors, for the same year [search,
 marketing-interactive.com/malaysia-airports-doubles-down-on-retail-with-shoplah-push-for-vm2026]. ShopLAH was not seen
 on the passenger pages that rendered [direct for what was seen; absence: hypothesis].
 
-The campaign year ends in six weeks, so this platform cannot serve it and should not be presented as if it could. Its
-relevance is the legacy: more first-time international visitors, growing international traffic, and partners who expect
-the airport to be the country's first impression [hypothesis]. The response is bilingual parity at launch, a planned
-path to the main inbound languages, and arrival guidance that protects visitors from touting where they decide (V6).
+The campaign year ends in six weeks; this platform cannot serve it and should not claim to. Its relevance is the
+legacy: more first-time international visitors and partners who expect the airport to be the country's first
+impression [hypothesis]. The response: bilingual parity at launch, a path to the main inbound languages, and arrival
+guidance that protects visitors from touting where they decide (V6).
 
 ### 2.4 Privatisation and what it implies for digital ambition
 
@@ -134,10 +129,9 @@ MAHB was delisted from Bursa Malaysia on 25 February 2025 and is wholly owned by
 Nasional, the Employees Provident Fund, the Abu Dhabi Investment Authority and Global Infrastructure Partners), with the
 Government holding a special share. The five independent non-executive directors resigned on delisting. The Operating
 Agreements signed on 18 March 2024 run to 11 February 2069, cover all 39 airports and STOLports, allow an investment
-recovery model and permit partners subject to Government policy. Management's 2026 priorities include a "commercial
-reset" in which digital and omnichannel engagement are described as central [search, futuretravelexperience.com, May
-2026], a review of the duty-free concession model [search, nst.com.my, Aug 2026] and investment in connectivity and
-capacity [search, thestar.com.my, 20 Oct 2026].
+recovery model and permit partners. 2026 priorities include a "commercial reset" with digital engagement described
+as central [search, futuretravelexperience.com, May 2026], a duty-free concession review [search, nst.com.my, Aug 2026]
+and connectivity and capacity [search, thestar.com.my, 20 Oct 2026].
 
 Implications [assessment, to test with MAHB]:
 
@@ -175,24 +169,20 @@ each persona is a hypothesis to validate before launch (Q12). P1 to P9 are passe
 - Accessibility needs: one-handed use; a board legible in bright light; no taps lost during load.
 
 **P2 First-time international visitor (arriving at KLIA).**
-- Goals and context: get through entry and into the city safely at a fair price; unfamiliar with Malaysia; may read
-  English as a second language; on roaming data or airport Wi-Fi.
+- Goals and context: reach the city safely at a fair price; new to Malaysia; English may be a second language.
 - Top tasks: entry requirements (Malaysia Digital Arrival Card); which terminal; official transport and fares; SIM,
   money, prayer rooms.
 - Pain points: touting at the transport decision [search, V6]; fares that change on 1 January 2027 [search, FT];
   immigration outages [search, V5]; an English-only site [direct].
-- Success: knows before landing what to submit and where to go; reaches an official option without being approached by
-  a tout; every fare shown with its date.
+- Success: knows before landing what to submit and where to go; reaches an official option with a dated fare.
 - Accessibility needs: plain language; low data use; icons with words; further languages in phase 2.
 
 **P3 Family with an infant.**
 - Goals and context: avoid waiting with a tired child; travelling with a pram, milk and nappies.
-- Top tasks: what baby food and liquids can be carried; nursing rooms and play areas near the gate; family parking
-  bays; food open now.
+- Top tasks: baby food and liquids rules; nursing rooms and play areas near the gate; family parking; food open now.
 - Pain points: facility locations, levels and hours not captured from any source [search gap, Task 3]; two facilities
   pages per airport [direct].
-- Success: finds the nearest nursing room on the correct side of security with level and hours, or a clear "Not
-  published" with the official contact.
+- Success: the nearest nursing room on the correct side of security, or "Not published" with the official contact.
 - Accessibility needs: step-free (pram-friendly) routes; large targets for use while carrying a child.
 
 **P4 Wheelchair user.**
@@ -222,21 +212,18 @@ each persona is a hypothesis to validate before launch (Q12). P1 to P9 are passe
 - Accessibility needs: reduced motion; no autoplay; predictable layout; literal language.
 
 **P7 Self-transfer passenger between KLIA Terminal 1 and Terminal 2.**
-- Goals and context: on separate tickets, for example a long-haul arrival at one terminal and a low-cost regional
-  departure from the other; must not miss the second flight.
+- Goals and context: separate tickets, arriving at one terminal and leaving from the other; must not miss flight two.
 - Top tasks: what the transfer involves; how long to allow; train or shuttle; where to re-check bags.
-- Pain points: no airside link, so passengers clear immigration, collect bags and re-check [search, FT]; shuttle stated
-  as every 10 or every 15 minutes depending on the page [direct and search, AUD §8]; a seamless link announced for
-  mid-2026 is not confirmed as launched [search, V7]; transfer pages duplicated under every airport tree [direct].
+- Pain points: no airside link, so immigration, bags and re-check [search, FT]; shuttle every 10 or 15 minutes by page
+  [AUD §8]; a seamless link announced for mid-2026 not confirmed as launched [search, V7]; duplicated pages [direct].
 - Success: enters two flights or two times and gets ordered steps, an estimated buffer verdict and what to do if tight.
 - Accessibility needs: works on roaming data and while walking; Aerotrain status where relevant.
 
 **P8 Domestic commuter (Kuala Lumpur to Penang, Kuching or Kota Kinabalu; sometimes via Subang).**
 - Goals and context: routine, often weekly trips; knows the airport; wants speed and early warning.
 - Top tasks: flight status; parking and its daily cap; which airport (KLIA or Subang) and terminal; disruption.
-- Pain points: Subang is absent from the site [direct] although it carries scheduled services and saw airlines move jets
-  away in 2025 [search, FN §5, year inferred]; Penang, Kuching and Kota Kinabalu share KLIA template pages [direct].
-  Travellers entering Sabah or Sarawak may face a separate state immigration check [prior; confirm before publishing].
+- Pain points: Subang is absent from the site [direct] although airlines moved jets away in 2025 [search, FN §5];
+  regional trees share KLIA template pages [direct]; Sabah and Sarawak entry checks [prior; confirm before publishing].
 - Success: saved flight and parked-car note on the home screen; airport changed in one tap.
 - Accessibility needs: fast repeat use; keyboard shortcuts on desktop; low data.
 
@@ -294,11 +281,10 @@ demonstration provider and carry the "Demonstration data" label; maps are schema
    flight number, airline, city or facility.
 2. A flight number returns an inline card: status (icon, shape and word), terminal, scheduled and estimated time and
    "Updated hh:mm". The terminal is resolved for the passenger, never asked for first.
-3. The flight page is a timeline: leave by (estimated), check-in (airline rules linked, not restated), security, gate,
-   boarding, each step tagged with its provenance. "Save this flight" stores it on the device and the home screen then
-   leads with it; notifications are opt-in and, in the prototype, demonstration notifications.
-4. "How will you get there?" opens the transport comparison with the terminal pre-set (see Ground transport).
-5. If flight data fails, the page says so, shows last-known values with their time and links to the airline; all static
+3. The flight page is a timeline (leave by, check-in, security, gate, boarding), each step tagged with provenance;
+   airline rules are linked, not restated. "Save this flight" keeps it on the device and on the home screen;
+   notifications are opt-in (demonstration notifications in the prototype). "How will you get there?" opens transport.
+4. If flight data fails, the page says so, shows last-known values with their time and links to the airline; all static
    guidance still renders.
 
 **Arriving (P2, first visit to KLIA).**
@@ -334,11 +320,9 @@ demonstration provider and carry the "Demonstration data" label; maps are schema
 **Accessibility (P4 and P6).**
 1. "Assistance" is in the header and Help on every page and leads to one hub organised by need (mobility, hidden
    disability, sight, hearing, older travellers, families) and by journey stage.
-2. Mobility: how to request assistance and with what notice, marked official only when confirmed; otherwise "arrange
-   through your airline" with the source of that guidance.
-3. Hidden disability: the Butterfly Effect, registration, the kit, Calm Room locations and what the scheme does not
-   cover [search, FK].
-4. The schematic map offers step-free routes, lifts, accessible toilets and quiet rooms, with list and button
+2. Mobility: how and when to request assistance, official only when confirmed, otherwise "arrange through your
+   airline" with its source. Hidden disability: the Butterfly Effect, Calm Rooms and the scheme's limits [search, FK].
+3. The schematic map offers step-free routes, lifts, accessible toilets and quiet rooms, with list and button
    alternatives for every map action [BS §9]. Text size, contrast and motion settings persist; an accessibility
    statement gives the audit date and a contact for reporting barriers.
 
@@ -353,9 +337,8 @@ demonstration provider and carry the "Demonstration data" label; maps are schema
 **Ground transport (P2, KLIA to the city).**
 1. The planner takes a destination and shows rail, bus, taxi, e-hailing and car hire side by side: time (estimated),
    fare (official, dated), hours, boarding point, payment and step-free access.
-2. Fares switch on their validity dates: the KLIA Ekspres adult fare is RM55 until 31 December 2026 and RM65 from 1
-   January 2027 [search, FT], announced in advance as a notice.
-3. Where sources conflict (first and last train), it points to the operator instead of choosing a figure.
+2. Fares switch on their validity dates (KLIA Ekspres adult RM55 until 31 December 2026, RM65 from 1 January 2027
+   [search, FT]); where sources conflict (first and last train), it points to the operator.
 
 **Shop and dine (P3, airside at Terminal 1).**
 1. From the flight page, "Before you board" lists outlets in the same terminal and zone, filtered by halal, open now
@@ -365,8 +348,7 @@ demonstration provider and carry the "Demonstration data" label; maps are schema
 
 ## 5. Competitive differentiation
 
-Lighthouse figures are independent lab measurements by this project; feature judgements in the benchmark files are
-expert assessments made at the evidence level shown.
+Lighthouse figures are independent lab measurements; feature judgements are expert assessments at the level shown.
 
 | Benchmark | Our evidence | What it does best (to beat) | Lab weight / accessibility [direct, lab, LH] |
 |---|---|---|---|
@@ -380,20 +362,18 @@ expert assessments made at the evidence level shown.
 | Amsterdam Schiphol | Search only (bot challenge) | Bookable security slots; per-flight URLs; public Flight API | not measured |
 | MAHB today | Direct | | 32.7 MB / 79 |
 
-The pattern [assessment]: the best journey features are app-only or login-gated (Changi, Haneda, HKIA, Heathrow,
-Schiphol); estates are split across hosts (Changi, Dubai, Heathrow, Haneda); content drifts between pages and languages
-(Changi, Heathrow, Schiphol); and accessibility statements are rare (Munich publishes one; none was found for Changi,
-Dubai, Hamad, Heathrow or Schiphol). Every benchmark is a single hub or a two-airport city system. MAHB wins by doing
-what they structurally cannot and by refusing their common failures.
+The pattern [assessment]: best features app-only or login-gated (Changi, Haneda, HKIA, Heathrow, Schiphol); estates
+split across hosts; content drifting between pages and languages (Changi, Heathrow, Schiphol); accessibility statements
+rare (only Munich's was found). All are single hubs or two-airport city systems. MAHB wins by doing what they
+structurally cannot and refusing their common failures.
 
 1. **One airport model for the whole network, STOLports included.** All 39 airports in one registry and URL scheme,
-   KLIA as one airport with a terminal filter, and depth tiers so a STOLport listing is honest about what it holds.
-   Beats every benchmark, and Changi's "network-wide" idea that Changi itself cannot execute [BM-changi]. Why: the
-   airports people fly between, including rural air services in Sabah and Sarawak, are in one product.
+   KLIA as one airport with a terminal filter, depth tiers that are honest about what a listing holds. Beats every
+   benchmark, including the "network-wide" idea Changi cannot execute [BM-changi]: rural Borneo services included.
 2. **Provenance on every piece of guidance.** Each item is tagged official, estimated, suggestion or demo, with source
    and retrieval date [BS §1]. Beats Changi (S$10 against S$50 for one benefit across languages), Heathrow (a 2024
-   notice live in 2026; prices differing by page) and Schiphol (superseded prices) [BM files]. Why: trust is built where
-   competitors visibly lose it, and MAHB's own parking controversy (V2) was an accuracy failure.
+   notice live in 2026) and Schiphol (superseded prices) [BM files]; MAHB's parking controversy (V2) was the same
+   failure.
 3. **Honest live and demo separation, with freshness and failure states.** "Updated hh:mm" on every live list,
    last-known values when a feed fails, airport-local time and a labelled demo mode. Beats Hamad (no timestamp; "today"
    from the visitor's clock), Heathrow (client-only data failing to an error) and MAHB today (blank pages) [BM-hamad,
@@ -407,9 +387,8 @@ what they structurally cannot and by refusing their common failures.
    Dubai, which publishes procedural text only [BM-heathrow, BM-dubai]. Why: it is the network's most distinctive
    transfer risk (V7).
 6. **The flight as a shareable, login-free page.** A permanent URL per flight with timeline, save, share, role views and
-   web push without an app. Beats Changi, Haneda, HKIA and Heathrow (alerts behind an app or account), HKIA (no
-   per-flight URL) and Munich (a track strip without alerts) [BM files]. Why: most first-time and foreign visitors start
-   on the mobile web.
+   web push without an app. Beats Changi, Haneda, HKIA and Heathrow (alerts behind an app or account) and Munich (a
+   track strip without alerts) [BM files]; first-time visitors start on the mobile web.
 7. **Price-first parking from one rate source.** Daily caps first, a calculator on the same data, a long-stay warning
    and dated rate changes. Beats Dubai's tariff page, the best seen, by adding calculation and warnings [BM-dubai]; fixes
    V1 and V2. Depends on MAHB's tariff data (Q2).
@@ -418,9 +397,8 @@ what they structurally cannot and by refusing their common failures.
    visitor's highest-risk decision (V6) and handles the 1 January 2027 fare change automatically.
 9. **Published weight budgets, and a site that works without JavaScript.** Static guidance is server-rendered and
    readable with scripts off; a service worker caches the shell and guidance [BS §3, §8]; budgets in section 7. Beats
-   every measured benchmark on weight, from Heathrow's 1.8 MB (the lightest valid run) to Changi's 21.0 MB and Hamad's
-   11.6 MB with an 87.8 MB hero video [direct, lab, LH, BM-hamad]. Why: airport Wi-Fi, roaming and mid-range phones are
-   the real conditions.
+   every measured benchmark on weight, from Heathrow's 1.8 MB (lightest valid run) to Changi's 21.0 MB and Hamad's
+   87.8 MB hero video [direct, lab, LH, BM-hamad], for airport Wi-Fi, roaming and mid-range phones.
 10. **Bilingual from day one, with parity enforced in code.** English and Bahasa Malaysia for every interface string, a
     visible notice where Malay content falls back to English, and one structured fact shared by both languages so they
     cannot drift [BS §8]. Matches Dubai, Munich and Schiphol on count, beats them on drift control, and beats MAHB today
@@ -428,8 +406,7 @@ what they structurally cannot and by refusing their common failures.
 11. **A concierge that cites sources and works without AI.** Answers only from the content layer and flight provider,
     with provenance, escalation to official contacts and a deterministic retrieval mode; an optional model may rephrase
     a grounded answer and never receives personal data [BS §8]. Beats Heathrow's Hallie (English-configured, some pages
-    only, resolution figure vendor-reported) and Dubai's DXBChat (documented only by its vendor) [BM-heathrow,
-    BM-dubai]. Why: an airport cannot afford an assistant that invents a gate or a fare.
+    only, vendor-reported resolution) and Dubai's DXBChat (vendor-documented only) [BM-heathrow, BM-dubai].
 12. **Accessibility as a product layer and a release gate.** WCAG 2.2 AA as the floor, the assistance hub at the top
     level, step-free and sensory routes in the map, persisted preferences and a dated statement. Beats Munich (lab 47),
     HKIA (68) and Changi (74; PDF sensory map; no statement found) on measured basics; beating Dubai (lab 100 and a
@@ -456,10 +433,9 @@ Q16).
 
 ## 7. Success metrics
 
-No baselines exist in this project: MAHB's analytics, contact-centre and commercial data were not available. Targets
-marked "set after baseline" are fixed three months after launch. Production measurement needs first-party, aggregate,
-consent-aware analytics; the prototype deliberately has none [BS §2], and the tool is a privacy decision for MAHB under
-Malaysian data-protection law [prior] (Q15).
+No baselines exist here: MAHB's analytics, contact and commercial data were unavailable. "Set after baseline" targets
+are fixed three months after launch. Measurement needs first-party, aggregate, consent-aware analytics; the prototype
+has none [BS §2], and the tool is a privacy decision for MAHB under Malaysian data-protection law [prior] (Q15).
 
 **North-star metric: answered journey rate.** The share of sessions that start one of the 15 top tasks and reach that
 task's answer state (a flight page viewed, a parking total calculated, a transport option opened, a facility located, a
@@ -480,9 +456,8 @@ visitors to call.
 | Operational deflection | Contacts per 100,000 passengers on covered topics (parking rates, transport, flight status, lost property, assistance) | Set after baseline; hypothesis: a measurable fall within 12 months | Contact-reason coding before and after, by topic | Contact volumes by reason and channel, 12 months |
 | Reliability | Static-page availability; freshness shown on live data | 99.95% monthly; every live list stamped | Synthetic monitoring; freshness checks | Uptime and incident history; API rate-limit policy (FO) |
 
-Satisfaction is tracked by a short post-task question rather than internal figures: the reported 98.8% (Terminal 1)
-and 99.4% (Terminal 2) for September 2026 have no stated method [search, low, FC], and ACI ASQ surveys departing
-passengers at the gate [prior], which can miss arrival-side pain.
+Satisfaction uses a post-task question, not internal figures: the reported 98.8% and 99.4% (Terminals 1 and 2,
+September 2026) have no stated method [search, low, FC], and ACI ASQ surveys departing passengers only [prior].
 
 ## 8. Commercial model and ancillary revenue
 
@@ -491,8 +466,8 @@ on `myairportfasttrack.com`; a DaySleeper promotion (6 hours for MYR135, seen on
 homepage editorial; Eraman duty-free malls at both terminals [search, FS]; ShopLAH [search]; a duty-free concession
 review [search]. No single basket, account or contextual offer was evidenced [hypothesis].
 
-Everything below is an opportunity that requires an agreement with MAHB, a subsidiary or a third party. The platform
-states none of it as an existing capability; the prototype only links to official channels.
+Each item below is an opportunity requiring an agreement with MAHB, a subsidiary or a third party, never stated as an
+existing capability; the prototype only links to official channels.
 
 | Opportunity | Passenger value | Where it appears | Agreement and data needed | Revenue logic [assessment] | Main risk |
 |---|---|---|---|---|---|
@@ -534,13 +509,11 @@ nothing is pre-selected, and no personal data is sold or shared for advertising.
 - **Q5 Analytics.** Current traffic, top pages, search queries and device mix; Chrome UX Report access.
 - **Q6 Inter-terminal link.** Has the seamless Terminal 1 to Terminal 2 link launched; what are the official times?
 - **Q7 Network register.** An official list of the 39 airports with names, codes and classification.
-- **Q8 Assistance.** The official reduced-mobility request process and lead time; whether Butterfly registration is
-  needed on each visit.
+- **Q8 Assistance.** The reduced-mobility request process and lead time; is Butterfly registration needed each visit?
 - **Q9 Languages.** Priorities beyond English and Bahasa Malaysia, and who reviews translations.
 - **Q10 App.** The future of MYairports, and whether the web should be the primary channel.
 - **Q11 Corporate disclosure.** What ownership, governance and financial information will be published after delisting?
-- **Q12 Research access.** Can we recruit passengers, including disabled travellers, for testing at KLIA and a regional
-  airport?
+- **Q12 Research access.** Can we recruit passengers, including disabled travellers, at KLIA and a regional airport?
 - **Q13 Brand.** May the platform use MAHB marks, and does the proposition fit the brand architecture?
 - **Q14 Duty free.** The timetable and scope of the concession review, and its effect on reserve-and-collect.
 - **Q15 Privacy.** The policy for analytics, notifications and messaging channels.
