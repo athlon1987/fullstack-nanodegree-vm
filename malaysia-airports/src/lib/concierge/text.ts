@@ -37,7 +37,7 @@ export type EnginePhrase = keyof typeof conciergePageEn.engine;
 
 /** An engine template in the asked language, with `{name}` placeholders filled. */
 export function phrase(lang: Lang, key: EnginePhrase, vars: Record<string, string | number> = {}): string {
-  const template = (lang === 'ms' ? conciergePageMs : conciergePageEn).engine[key];
+  const template = (lang === 'ms' ? conciergePageMs : conciergePageEn).engine[key] ?? conciergePageEn.engine[key] ?? '';
   return template.replace(/\{(\w+)\}/g, (match, name: string) => (name in vars ? String(vars[name]) : match));
 }
 

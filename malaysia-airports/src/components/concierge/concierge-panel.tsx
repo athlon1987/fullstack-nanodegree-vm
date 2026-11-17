@@ -38,13 +38,24 @@ export function ConciergePanel() {
         onCloseAutoFocus={dialog.onCloseAutoFocus}
         className="max-sm:h-[88dvh] sm:w-[32rem]"
       >
-        <div className="flex min-h-full flex-col gap-5">
-          <LocaleLink href="/concierge" onClick={() => closeOverlay()} className="link-action type-body-sm inline-flex items-center gap-1.5 self-start">
-            <Icon name="arrow-up-right" size="sm" />
-            {t('conciergePage.openFullPage')}
-          </LocaleLink>
+        <div className="flex h-full min-h-0 flex-col">
           <Suspense fallback={<Loading />}>
-            <ConciergeChat variant="panel" initialQuestion={dialog.payload.question} onDecline={() => closeOverlay('concierge')} />
+            <ConciergeChat
+              variant="panel"
+              initialQuestion={dialog.payload.question}
+              onDecline={() => closeOverlay('concierge')}
+              toolbarEnd={
+                <LocaleLink
+                  href="/concierge"
+                  onClick={() => closeOverlay()}
+                  aria-label={t('conciergePage.openFullPage')}
+                  title={t('conciergePage.openFullPage')}
+                  className="flex size-9 items-center justify-center rounded-md text-ink-2 transition-colors duration-fast hover:bg-page-subtle hover:text-ink touch:size-11"
+                >
+                  <Icon name="arrow-up-right" size="sm" />
+                </LocaleLink>
+              }
+            />
           </Suspense>
         </div>
       </SheetContent>

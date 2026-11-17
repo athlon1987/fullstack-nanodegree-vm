@@ -79,10 +79,16 @@ export function ConciergeAnswerView({ answer, mode, note, onAsk, busy }: Concier
   return (
     <div className="@container flex min-w-0 flex-col gap-4">
       <p className="type-body-lg text-ink">{answer.text}</p>
+      {answer.hint ? (
+        <p className="type-body flex items-start gap-2 text-ink-2">
+          <Icon name="lightbulb" size="sm" className="mt-1 shrink-0" />
+          <span>{answer.hint}</span>
+        </p>
+      ) : null}
 
       {answer.demo ? (
         <div className="flex flex-col gap-2">
-          <DemoDataBanner compact>{t('conciergePage.answer.demoBanner')}</DemoDataBanner>
+          <DemoDataBanner>{t('conciergePage.answer.demoBanner')}</DemoDataBanner>
           {answer.demoGeneratedAt ? <Freshness updatedAt={answer.demoGeneratedAt} live="off" /> : null}
         </div>
       ) : null}
@@ -111,6 +117,8 @@ export function ConciergeAnswerView({ answer, mode, note, onAsk, busy }: Concier
         </div>
       ) : null}
 
+      <ConciergeCards cards={answer.cards} />
+
       {answer.statements.length > 0 ? (
         <ul aria-label={t('conciergePage.answer.details')} className="flex flex-col divide-y divide-line overflow-hidden rounded-lg border border-line bg-surface">
           {answer.statements.map((statement, index) => (
@@ -134,8 +142,6 @@ export function ConciergeAnswerView({ answer, mode, note, onAsk, busy }: Concier
           ))}
         </ul>
       ) : null}
-
-      <ConciergeCards cards={answer.cards} />
 
       {answer.escalation ? <Escalation escalation={answer.escalation} /> : null}
 

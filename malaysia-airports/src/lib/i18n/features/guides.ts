@@ -250,6 +250,7 @@ export const guidePagesEn = {
       toiletsBody: 'Accessible toilets on our KLIA map, where the drawing has them. Positions are not yet verified.',
       toiletsAction: 'Show on the map',
       otherAirports: 'Facilities directories are also published for',
+      and: 'and',
     },
     settings: {
       title: 'Settings for this site',
@@ -608,6 +609,7 @@ export const guidePagesMs: typeof guidePagesEn = {
       toiletsBody: 'Tandas OKU pada peta KLIA kami, jika ada dalam lukisan. Kedudukannya belum disahkan.',
       toiletsAction: 'Tunjukkan pada peta',
       otherAirports: 'Direktori kemudahan juga diterbitkan untuk',
+      and: 'dan',
     },
     settings: {
       title: 'Tetapan laman ini',

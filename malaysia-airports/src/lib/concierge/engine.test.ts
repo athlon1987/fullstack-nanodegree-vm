@@ -47,7 +47,11 @@ beforeAll(() => {
 const ask = (question: string, context: ConciergeContext = {}, lang: Lang = 'en'): ConciergeAnswer =>
   answerQuestion({ question, lang, context }, { knowledge: lang === 'ms' ? ms : en, now: NOW, flights });
 
-const sourced = (answer: ConciergeAnswer) => answer.statements.filter((statement) => statement.sourceIds.length > 0);
+/** Statements and cards (other than demo flights) that cite at least one source. */
+const sourced = (answer: ConciergeAnswer) => [
+  ...answer.statements.filter((statement) => statement.sourceIds.length > 0),
+  ...answer.cards.filter((card) => card.type !== 'flight' && card.sourceIds.length > 0),
+];
 
 /** Grounded with at least one source, or an honest "not available" with official contacts. */
 function expectGroundedOrHonest(answer: ConciergeAnswer) {
@@ -271,12 +275,12 @@ const CONTEXTS: ConciergeContext[] = [{}, { airport: 'kul' }, { airport: 'kul', 
 
 /** Every string a passenger can read in an answer. */
 function answerStrings(answer: ConciergeAnswer): string[] {
-  const out = [answer.text, ...answer.limits, ...answer.statements.flatMap((statement) => [statement.title ?? '', statement.text])];
+  const out = [answer.text, answer.hint ?? '', ...answer.limits, ...answer.statements.flatMap((statement) => [statement.title ?? '', statement.text])];
   for (const card of answer.cards) {
     if (card.type === 'flight') out.push(card.number, card.place, card.terminalLabel, card.airline, card.gate ?? '');
     else if (card.type === 'transport') out.push(card.name, card.modeLabel, card.operator ?? '', card.frequency ?? '', ...card.rows.flatMap((row) => [row.name, row.fare ?? '', row.duration ?? '', row.note ?? '']));
     else if (card.type === 'car-park') out.push(card.name, card.place, card.estimate ?? '');
-    else out.push(card.name, card.place, card.location ?? '', card.hours ?? '');
+    else out.push(card.name, card.place, card.description ?? '', card.location ?? '', card.hours ?? '');
   }
   for (const action of answer.actions) out.push(action.label);
   if (answer.escalation) out.push(answer.escalation.text, ...answer.escalation.contacts.flatMap((contact) => [contact.label, contact.value, contact.note ?? '']));

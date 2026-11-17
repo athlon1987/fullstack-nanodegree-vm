@@ -44,9 +44,12 @@ export function WhoHandles({ t, faqs, only }: WhoHandlesProps) {
                 <td className="type-title-sm mt-0.5 text-ink @2xl:py-3 @2xl:pr-4">{t(WHO_CONTACT_KEYS[row.contact])}</td>
                 <td className="mt-1 @2xl:py-3">
                   <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                    <LocaleLink href={`/help/${faq.topic}#${faq.id}`} className="link-action type-body-sm text-ink">
+                    <LocaleLink
+                      href={`/help/${faq.topic}#${faq.id}`}
+                      aria-label={`${t('guidePages.help.readAnswer')}: ${faq.question}`}
+                      className="link-action type-body-sm text-ink"
+                    >
                       {t('guidePages.help.readAnswer')}
-                      <span className="sr-only">: {faq.question}</span>
                     </LocaleLink>
                     <ProvenanceTag provenance={faq.provenance} length="short" />
                   </span>

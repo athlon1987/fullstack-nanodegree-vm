@@ -51,6 +51,7 @@ class Builder {
   cards: AnswerCard[] = [];
   actions: AnswerAction[] = [];
   limits: string[] = [];
+  hint?: string;
   clarify?: ConciergeAnswer['clarify'];
   escalation?: AnswerEscalation;
   demo = false;
@@ -224,6 +225,14 @@ function shortName(name: string): string {
   return name.split('(')[0].trim();
 }
 
+const GENERIC_STARTS = new Set(['train', 'trains', 'free', 'bus', 'buses', 'shuttle', 'coupon', 'taxi', 'taxis', 'airport', 'car', 'e-hailing']);
+
+/** "Free shuttle bus …" reads "free shuttle bus …" mid-sentence; names such as "KLIA Ekspres" keep their capitals. */
+function midSentence(name: string, lang: Lang): string {
+  const first = name.split(' ')[0].toLowerCase();
+  return lang === 'en' && GENERIC_STARTS.has(first) ? name.charAt(0).toLowerCase() + name.slice(1) : name;
+}
+
 /** "Toilets" becomes "toilets" mid-sentence; "Wi-Fi" and "ATM" keep their capitals. */
 function sentenceCase(label: string): string {
   return /[A-Z]/.test(label.slice(1)) ? label : label.charAt(0).toLowerCase() + label.slice(1);
@@ -329,6 +338,7 @@ function facilityCard(s: Scope, facility: Facility): void {
     categoryLabel: s.b.pick(s.k.labels.categories[facility.category]),
     place,
     zone: facility.zone,
+    description: s.b.pick(facility.description),
     location: facility.locationNote ? s.b.pick(facility.locationNote) : undefined,
     hours: formatHours(s.b, facility.hours),
     provenance: facility.provenance,
@@ -355,6 +365,7 @@ function outletCard(s: Scope, outlet: Outlet): void {
     category: outlet.cuisine ?? outlet.category,
     place: airport && airport.terminals.length > 1 && terminal ? s.b.pick(terminal.name) : (airport?.shortName ?? ''),
     zone: outlet.zone,
+    description: outlet.description ? s.b.pick(outlet.description) : undefined,
     location: outlet.locationNote ? s.b.pick(outlet.locationNote) : undefined,
     hours: formatHours(s.b, outlet.hours),
     halal: outlet.halal,
@@ -440,7 +451,7 @@ const checkIn: Handler = (s) => {
   } else {
     s.b.text = s.b.say('checkInGeneral', { airport: placeName(s) });
     passages(s, { text: `${s.question} check in counter`, topics: ['check-in'], require: CHECK_IN_WORDS, limit: 3, minScore: 4 });
-    s.b.limit(s.b.say('checkInAskFlight'));
+    s.b.hint = s.b.say('checkInAskFlight');
   }
   s.b.link(s.b.say('actionDeparturesBoard'), sectionHref(s, 'flights'), 'plane-takeoff');
   if (s.k.guides.includes('check-in')) s.b.link(s.b.say('actionCheckinAndBagDrop'), '/guides/check-in', 'ticket-check');
@@ -465,7 +476,7 @@ const terminalTransfer: Handler = (s) => {
     s.b.text = s.b.say('transfer', {
       terminals: list(airport.terminals.map((terminal) => s.b.pick(terminal.shortName)), s.lang),
       airport: airport.shortName,
-      options: list(options.map((option) => s.b.pick(option.name)), s.lang),
+      options: list(options.map((option) => midSentence(s.b.pick(option.name), s.lang)), s.lang),
     });
   }
   const later = normalise(airport.terminals[airport.terminals.length - 1].shortName.en);
@@ -507,7 +518,7 @@ const transport: Handler = (s) => {
     } else if (priority === 'price' && cheapest) {
       s.b.text = s.b.say('transportCheapest', { destination, option: shortName(s.b.pick(cheapest.option.name)), fare: cheapest.row.fare ? fareText(s, cheapest.row.fare) : '' });
     } else {
-      s.b.text = s.b.say('transportList', { destination, airport: airport.shortName, options: list(matches.map((match) => s.b.pick(match.option.name)), s.lang) });
+      s.b.text = s.b.say('transportList', { destination, airport: airport.shortName, options: list(matches.map((match) => midSentence(shortName(s.b.pick(match.option.name)), s.lang)), s.lang) });
     }
     const ordered = [...matches].sort((a, b) => {
       const fa = Math.min(...a.rows.map((row) => row.fare?.amount ?? Number.POSITIVE_INFINITY));
@@ -536,7 +547,7 @@ const transport: Handler = (s) => {
     for (const notice of liveNotices(s, (notice) => matches.some((match) => mentions(`${notice.title.en} ${notice.body.en}`, shortName(match.option.name.en))))) addNotice(s, notice);
     const unpriced = matches.filter((match) => match.rows.every((row) => !row.fare));
     if (priority === 'price' && unpriced.length > 0) {
-      s.b.statement({ text: s.b.say('transportFareGap', { options: list(unpriced.map((match) => s.b.pick(match.option.name)), s.lang) }), provenance: 'suggestion', sourceIds: [] });
+      s.b.statement({ text: s.b.say('transportFareGap', { options: list(unpriced.map((match) => midSentence(s.b.pick(match.option.name), s.lang)), s.lang) }), provenance: 'suggestion', sourceIds: [] });
     }
     if (priority === 'price' && !cheapest) s.b.limit(s.b.say('transportNoFare', { destination }));
     for (const match of ordered.slice(0, 2)) {
@@ -544,7 +555,7 @@ const transport: Handler = (s) => {
     }
   } else {
     if (wanted) s.b.limit(s.b.say('transportNoDestination', { destination: wanted, airport: airport.shortName }));
-    s.b.text = s.b.say('transportGeneral', { airport: airport.shortName, options: list(all.map((option) => s.b.pick(option.name)), s.lang) });
+    s.b.text = s.b.say('transportGeneral', { airport: airport.shortName, options: list(all.map((option) => midSentence(shortName(s.b.pick(option.name)), s.lang)), s.lang) });
     for (const option of all.slice(0, ANSWER_LIMITS.cards)) transportCard(s, option, option.destinations);
     passages(s, { text: `${s.question} transport`, topics: ['parking-transport', 'onward-transport', 'getting-there'], limit: 2, minScore: 4 });
   }
@@ -559,11 +570,7 @@ const dining: Handler = (s) => {
   outlets.sort((a, b) => zoneRank[a.zone] - zoneRank[b.zone] || a.name.localeCompare(b.name));
   if (outlets.length > 0) {
     s.b.text = s.b.say('dining', { place: placeName(s), outlets: list(outlets.slice(0, 6).map((outlet) => outlet.name), s.lang) });
-    for (const outlet of outlets) {
-      outletCard(s, outlet);
-      if (outlet.description) s.b.statement({ title: outlet.name, text: s.b.pick(outlet.description), provenance: 'official', sourceIds: outlet.sources, href: hrefFor(s.k, 'outlet', outlet.id) }, `outlet:${outlet.id}`);
-      else s.b.statement({ text: [outlet.name, outlet.locationNote ? s.b.pick(outlet.locationNote) : ''].filter(Boolean).join(': '), provenance: 'official', sourceIds: outlet.sources, href: hrefFor(s.k, 'outlet', outlet.id) }, `outlet:${outlet.id}`);
-    }
+    for (const outlet of outlets) outletCard(s, outlet);
   } else {
     s.b.text = s.b.say('diningNone', { place: placeName(s) });
     escalate(s, 'missing');
@@ -588,10 +595,7 @@ const facility: Handler = (s) => {
     if (s.terminal && inTerminal.length === 0) s.b.limit(s.b.say('facilityOtherTerminal', { terminal: terminalName(s, s.terminal) ?? '' }));
     s.b.text = s.b.say('facility', { category: label, place: inTerminal.length > 0 ? placeName(s) : airport.shortName, names: list(chosen.slice(0, 5).map((item) => s.b.pick(item.name)), s.lang) });
     if (s.u.slots.nearest) s.b.limit(s.b.say('facilityNearest'));
-    for (const item of chosen) {
-      facilityCard(s, item);
-      facilityStatement(s, item);
-    }
+    for (const item of chosen) facilityCard(s, item);
     const mapped = chosen.find((item) => item.mapPoint && airport.sections.includes('map'));
     if (mapped) s.b.link(s.b.say('actionShowOnTheTerminal'), `/${airport.slug}/map?poi=${mapped.mapPoint}`, 'map');
   } else {
@@ -599,10 +603,7 @@ const facility: Handler = (s) => {
     escalate(s, 'missing');
     passages(s, { text: `${s.k.labels.categories[category].en} not verified`, includeGaps: true, require: tokens(s.k.labels.categories[category].en).slice(0, 1), limit: 1, minScore: 1 });
     const info = s.k.facilities.find((item) => item.airport === airport.slug && item.category === 'information');
-    if (info) {
-      facilityCard(s, info);
-      facilityStatement(s, info);
-    }
+    if (info) facilityCard(s, info);
   }
   passages(s, { text: `${s.question} ${s.k.labels.categories[category].en}`, limit: 2, minScore: 5 });
   const page = category === 'lounge' || category === 'hotel' ? 'lounges' : 'facilities';
@@ -623,10 +624,7 @@ const layover: Handler = (s) => {
     ? s.b.say('layover', { duration: minutesLabel(duration, s.lang), airport: placeName(s) })
     : s.b.say('layoverNoDuration', { airport: placeName(s) });
   passages(s, { text: `${s.question} transit layover`, topics: ['transit'], limit: 2, minScore: 4 });
-  for (const item of picked.slice(0, ANSWER_LIMITS.cards)) {
-    facilityCard(s, item);
-    facilityStatement(s, item);
-  }
+  for (const item of picked.slice(0, ANSWER_LIMITS.cards)) facilityCard(s, item);
   const food = s.k.outlets.filter((outlet) => outlet.airport === airport.slug && outlet.kind === 'dine' && (!s.terminal || outlet.terminal === s.terminal));
   for (const outlet of food.slice(0, 1)) outletCard(s, outlet);
   if (picked.length === 0 && food.length === 0) {
@@ -682,10 +680,7 @@ const lostProperty: Handler = (s) => {
   s.b.text = s.airport ? s.b.say('lost', { airport: s.airport.shortName }) : s.b.say('lostGeneral');
   passages(s, { text: `${s.question} lost${baggage ? ' baggage bag' : ''}`, terminal: undefined, topics: baggage ? ['lost-property', 'baggage'] : ['lost-property'], limit: 3, minScore: 4 });
   if (s.airport) {
-    for (const item of s.k.facilities.filter((entry) => entry.airport === s.airport?.slug && entry.category === 'lost-property')) {
-      facilityCard(s, item);
-      facilityStatement(s, item);
-    }
+    for (const item of s.k.facilities.filter((entry) => entry.airport === s.airport?.slug && entry.category === 'lost-property')) facilityCard(s, item);
   }
   escalate(s, 'human', baggage);
   if (s.k.helpTopics.includes('lost-property')) s.b.link(s.b.say('actionLostPropertyHelp'), '/help/lost-property', 'package-search');
@@ -711,7 +706,7 @@ const flightDelay: Handler = (s) => {
   } else {
     s.b.text = s.b.say('delayGeneral');
     if (s.missingFlight) s.b.limit(s.b.say('flightNotFound', { flight: s.missingFlight }));
-    else s.b.limit(s.b.say('flightAsk'));
+    else s.b.hint = s.b.say('flightAsk');
   }
   passages(s, { text: `${s.question} delay delayed airline`, terminal: undefined, topics: ['flights'], limit: 3, minScore: 4 });
   for (const notice of liveNotices(s, (notice) => notice.severity === 'warning' || notice.severity === 'critical').slice(0, 1)) addNotice(s, notice);
@@ -900,6 +895,7 @@ export function answerQuestion(input: ConciergeInput, deps: ConciergeDeps): Conc
     cards: b.cards,
     actions: b.actions,
     limits: b.limits,
+    hint: b.hint,
     clarify: b.clarify,
     escalation: b.escalation,
     sources,

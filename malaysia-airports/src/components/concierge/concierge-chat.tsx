@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Callout } from '@/components/ui/callout';
 import { FilterChip } from '@/components/ui/filter-chip';
 import { Icon, type IconName } from '@/components/ui/icon';
+import { IconButton } from '@/components/ui/icon-button';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ConciergeAnswerView } from './concierge-answer';
@@ -113,7 +114,7 @@ function Turn({ turn, onAsk, onRetry, busy }: { turn: ConciergeTurn; onAsk: (que
         {turn.question}
       </h3>
       <div className="flex min-w-0 items-start gap-3">
-        <span aria-hidden="true" className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary-ink">
+        <span aria-hidden="true" className="mt-0.5 hidden size-8 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary-ink @md:flex">
           <Icon name="sparkles" size="sm" />
         </span>
         <div className="min-w-0 flex-1">
@@ -152,6 +153,8 @@ export interface ConciergeChatProps {
   initialQuestion?: string;
   /** Panel only: close the panel ("Not now"). */
   onDecline?: () => void;
+  /** Extra controls at the end of the toolbar (the panel's "open full page" link). */
+  toolbarEnd?: React.ReactNode;
 }
 
 /**
@@ -159,7 +162,7 @@ export interface ConciergeChatProps {
  * questions, the log of questions and answers, and the question field. Used by the panel and
  * by the full page.
  */
-export function ConciergeChat({ variant, initialQuestion, onDecline }: ConciergeChatProps) {
+export function ConciergeChat({ variant, initialQuestion, onDecline, toolbarEnd }: ConciergeChatProps) {
   const t = useT();
   const lang = useLang();
   const hydrated = useHydrated();
@@ -250,14 +253,14 @@ export function ConciergeChat({ variant, initialQuestion, onDecline }: Concierge
   const length = draft.length;
 
   return (
-    <div className={cn('@container flex min-h-full flex-col gap-6', variant === 'page' && 'gap-8')}>
+    <div className={cn('@container flex flex-col', variant === 'panel' ? 'h-full min-h-0 gap-4' : 'gap-8')}>
       <p role="status" aria-live="polite" aria-atomic="true" className="sr-only">
         {announcement}
       </p>
 
-      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-        <div className="flex min-w-0 flex-wrap items-center gap-2">
-          <span className="type-caption text-ink-2">{t('conciergePage.scope.label')}</span>
+      <div className={cn('flex items-center justify-between gap-x-4 gap-y-2', variant === 'page' && 'flex-wrap')}>
+        <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
+          <span className={cn('type-caption text-ink-2', variant === 'panel' && 'sr-only')}>{t('conciergePage.scope.label')}</span>
           {scopeLabel ? (
             <span className="type-body-sm inline-flex min-h-8 items-center gap-1 rounded-pill border border-line-strong bg-surface py-0.5 pr-0.5 pl-3 text-ink touch:min-h-11">
               <Icon name="map-pin" size="xs" className="text-ink-2" />
@@ -280,30 +283,39 @@ export function ConciergeChat({ variant, initialQuestion, onDecline }: Concierge
             </FilterChip>
           ) : null}
         </div>
-        {turns.length > 0 ? (
-          <Button variant="ghost" size="sm" iconStart="trash-2" onClick={onClear}>
-            {t('conciergePage.clear')}
-          </Button>
-        ) : null}
+        <div className="flex shrink-0 items-center gap-1">
+          {turns.length > 0 ? (
+            variant === 'panel' ? (
+              <IconButton icon="trash-2" label={t('conciergePage.clear')} size="sm" onClick={onClear} />
+            ) : (
+              <Button variant="ghost" size="sm" iconStart="trash-2" onClick={onClear}>
+                {t('conciergePage.clear')}
+              </Button>
+            )
+          ) : null}
+          {toolbarEnd}
+        </div>
       </div>
 
-      {turns.length === 0 ? (
-        <Examples keys={variant === 'panel' ? PANEL_EXAMPLES : EXAMPLE_KEYS} onAsk={(question) => submit(question)} disabled={busy} />
-      ) : null}
+      {/* In the panel the conversation scrolls on its own, so the question field stays in view. */}
+      <div className={cn('flex flex-col gap-8', variant === 'panel' && '-mx-1 min-h-0 flex-1 overflow-y-auto overscroll-contain px-1 pb-2')}>
+        {turns.length === 0 ? (
+          <Examples keys={variant === 'panel' ? PANEL_EXAMPLES : EXAMPLE_KEYS} onAsk={(question) => submit(question)} disabled={busy} />
+        ) : null}
 
-      <ol ref={logRef} role="log" aria-label={t('conciergePage.log.label')} aria-live="off" className={cn('flex flex-col gap-8', turns.length === 0 && 'hidden')}>
-        {turns.map((turn) => (
-          <Turn key={turn.id} turn={turn} busy={busy} onAsk={(question, context) => submit(question, context)} onRetry={() => void retry(turn)} />
-        ))}
-      </ol>
+        <div role="log" aria-label={t('conciergePage.log.label')} aria-live="off" className={cn(turns.length === 0 && 'hidden')}>
+          <ol ref={logRef} className="flex flex-col gap-8">
+            {turns.map((turn) => (
+              <Turn key={turn.id} turn={turn} busy={busy} onAsk={(question, context) => submit(question, context)} onRetry={() => void retry(turn)} />
+            ))}
+          </ol>
+        </div>
+      </div>
 
       <form
         ref={formRef}
         onSubmit={onSubmit}
-        className={cn(
-          'mt-auto flex flex-col gap-1.5',
-          variant === 'panel' && 'sticky bottom-0 z-10 -mx-5 -mb-5 border-t border-line bg-surface-raised px-5 pt-3 pb-4 sm:-mx-6 sm:px-6',
-        )}
+        className={cn('flex shrink-0 flex-col gap-1.5', variant === 'panel' && '-mx-5 border-t border-line px-5 pt-4 sm:-mx-6 sm:px-6')}
       >
         <div className="flex items-end gap-2">
           <Input

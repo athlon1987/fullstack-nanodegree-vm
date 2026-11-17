@@ -65,8 +65,10 @@ function optionFact(option: TransportOption, content: AirportContent, lang: Lang
   const details: { label: string; value: string }[] = [];
   for (const destination of option.destinations) {
     if (destination.fare) {
-      const fare = destination.fare.amount === 0 ? t('common.labels.free') : formatCurrency(destination.fare, lang);
-      details.push({ label: t('guidePages.transit.official.fare'), value: destination.note ? `${fare}. ${pick(destination.note, lang)}` : fare });
+      const note = destination.note ? pick(destination.note, lang) : undefined;
+      // A free service's note already says so ("Free of charge."); don't repeat it.
+      const value = destination.fare.amount === 0 ? (note ?? t('common.labels.free')) : note ? `${formatCurrency(destination.fare, lang)}. ${note}` : formatCurrency(destination.fare, lang);
+      details.push({ label: t('guidePages.transit.official.fare'), value });
     }
   }
   if (option.frequency) details.push({ label: t('guidePages.transit.official.frequency'), value: pick(option.frequency, lang) });

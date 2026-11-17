@@ -156,13 +156,17 @@ export default async function AccessibilityPage() {
             ))}
           </ul>
           {data.otherFacilityAirports.length > 0 ? (
-            <p className="type-body-sm mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-ink-2">
-              <span>{t('guidePages.accessibility.facilities.otherAirports')}</span>
-              {data.otherFacilityAirports.map((airport) => (
-                <LocaleLink key={airport.slug} href={`/${airport.slug}/facilities?access=1`} className="link-action text-ink">
-                  {airport.name}
-                </LocaleLink>
+            <p className="type-body-sm mt-5 text-ink-2">
+              {t('guidePages.accessibility.facilities.otherAirports')}{' '}
+              {data.otherFacilityAirports.map((airport, index) => (
+                <span key={airport.slug}>
+                  {index > 0 ? (index === data.otherFacilityAirports.length - 1 ? ` ${t('guidePages.accessibility.facilities.and')} ` : ', ') : null}
+                  <LocaleLink href={`/${airport.slug}/facilities?access=1`} className="link text-ink">
+                    {airport.name}
+                  </LocaleLink>
+                </span>
               ))}
+              .
             </p>
           ) : null}
         </section>

@@ -108,6 +108,7 @@ function Facility({ card }: { card: FacilityCard }) {
         title={card.name}
         meta={<><ProvenanceTag provenance={card.provenance} length="short" /><Badge size="sm">{card.place}</Badge>{zone ? <Badge size="sm">{zone}</Badge> : null}</>}
       />
+      {card.description ? <p className="type-body text-ink-2">{card.description}</p> : null}
       {card.location || card.hours ? (
         <dl className="grid gap-2">
           {card.location ? <Fact label={t('common.labels.location')}>{card.location}</Fact> : null}
@@ -137,6 +138,7 @@ function Outlet({ card }: { card: OutletCard }) {
         title={card.name}
         meta={<><ProvenanceTag provenance={card.provenance} length="short" /><Badge size="sm">{card.place}</Badge>{card.halal ? <Badge size="sm" tone="positive">{t(`conciergePage.answer.halal.${card.halal}`)}</Badge> : null}</>}
       />
+      {card.description ? <p className="type-body text-ink-2">{card.description}</p> : null}
       <dl className="grid gap-2">
         <Fact label={t('common.labels.location')}>{card.location ?? zone ?? <NotPublished />}</Fact>
         {card.hours ? <Fact label={t('common.labels.hours')}>{card.hours}</Fact> : null}

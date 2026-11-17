@@ -234,6 +234,7 @@ export interface FacilityCard {
   categoryLabel: string;
   place: string;
   zone: 'landside' | 'airside' | 'both' | 'unknown';
+  description?: string;
   location?: string;
   hours?: string;
   provenance: Provenance;
@@ -249,6 +250,7 @@ export interface OutletCard {
   category: string;
   place: string;
   zone: 'landside' | 'airside' | 'both' | 'unknown';
+  description?: string;
   location?: string;
   hours?: string;
   halal?: 'certified' | 'pork-free' | 'non-halal';
@@ -322,6 +324,8 @@ export interface ConciergeAnswer {
   actions: AnswerAction[];
   /** Things we do not know, said plainly. */
   limits: string[];
+  /** A prompt for a better answer: "Tell me your flight number…". */
+  hint?: string;
   clarify?: { prompt: string; options: { label: string; context: ConciergeContext }[] };
   escalation?: AnswerEscalation;
   sources: Source[];
