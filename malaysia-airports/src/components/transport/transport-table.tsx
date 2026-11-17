@@ -2,6 +2,7 @@
 
 import { pick, TRANSPORT_MODE_LABELS, type TerminalId, type TransportOption } from '@/content/types';
 import { useLang, useT } from '@/lib/i18n/client';
+import { NotPublished } from '@/components/common/not-published';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { SourceNote } from '@/components/common/source-note';
 import { Icon } from '@/components/ui/icon';
@@ -81,14 +82,18 @@ export function TransportTable({ rows, placeKey, context, day, terminal, caption
                   <FareFigure info={info} context={context} size="md" shortLabel />
                   <FareTimeline info={info} context={context} compact />
                 </td>
-                <td className={CELL}>
+                <td className={`${CELL} w-32`}>
                   <DurationValue info={info} shortLabel />
                 </td>
                 <td className={`${CELL} w-56`}>
-                  <span className="flex flex-col gap-2">
-                    <FrequencyValue option={option} shortLabel />
-                    <HoursValue hours={option.hours} shortLabel />
-                  </span>
+                  {option.hours || option.frequency || option.frequencyMinutes !== undefined ? (
+                    <span className="flex flex-col gap-2">
+                      <FrequencyValue option={option} />
+                      <HoursValue hours={option.hours} />
+                    </span>
+                  ) : (
+                    <NotPublished />
+                  )}
                 </td>
                 <td className={`${CELL} w-64`}>
                   <BoardingList option={option} context={context} terminal={terminal} compact />

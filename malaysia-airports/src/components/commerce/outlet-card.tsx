@@ -57,6 +57,12 @@ export function OutletCard({ outlet, sources, showTerminal, proximity, headingLe
             <CardLink href={outlet.href}>{outlet.name}</CardLink>
           </Heading>
         </div>
+        <span
+          aria-hidden="true"
+          className="flex size-8 shrink-0 items-center justify-center rounded-full border border-line text-ink-2 transition-colors duration-fast group-hover/card:border-ink group-hover/card:text-ink"
+        >
+          <Icon name="arrow-right" size="sm" className="transition-transform duration-fast group-hover/card:translate-x-0.5" />
+        </span>
       </div>
 
       {outlet.zone === 'airside' || outlet.zone === 'landside' || outlet.zone === 'both' || outlet.halal || outlet.hours ? (
@@ -92,15 +98,9 @@ export function OutletCard({ outlet, sources, showTerminal, proximity, headingLe
       ) : null}
 
       <div aria-hidden="true" className="min-h-4 flex-1" />
-      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-line pt-3.5">
-        <div className="flex min-w-0 flex-wrap items-center gap-x-2.5 gap-y-1.5">
-          <ProvenanceTag provenance={outlet.provenance} length="short" />
-          {attribution ? <span className="type-caption min-w-0 text-ink-2">{attribution}</span> : null}
-        </div>
-        <span aria-hidden="true" className="type-body-sm inline-flex items-center gap-1 font-semibold text-primary-ink">
-          {t('commercePages.card.details')}
-          <Icon name="arrow-right" size="sm" className="transition-transform duration-fast group-hover/card:translate-x-0.5" />
-        </span>
+      <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5 border-t border-line pt-3.5">
+        <ProvenanceTag provenance={outlet.provenance} length="short" />
+        {attribution ? <span className="type-caption min-w-0 text-ink-2">{attribution}</span> : null}
       </div>
     </article>
   );
