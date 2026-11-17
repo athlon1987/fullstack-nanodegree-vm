@@ -51,7 +51,7 @@ export function TransportTable({ rows, placeKey, context, day, terminal, caption
             </Th>
             <Th>{t('transportPages.fields.boarding')}</Th>
             <Th>{t('transportPages.fields.payment')}</Th>
-            <Th>{t('transportPages.fields.accessibility')}</Th>
+            <Th>{t('transport.stepFree')}</Th>
           </Tr>
         </THead>
         <TBody>
