@@ -28,13 +28,15 @@ export interface NoticeListProps {
   /** Add a link to the full notices page under the list. */
   linkToAll?: boolean;
   className?: string;
+  /** Classes for the list itself, for example a two-column grid on wide pages. */
+  listClassName?: string;
 }
 
 /**
  * A list of notices with their provenance, period and sources. Whether a notice is in effect,
  * coming up or ended depends on the clock, so that part appears after hydration.
  */
-export function NoticeList({ notices, airport, severities, show = 'current', headingLevel = 3, emptyText, linkToAll = false, className }: NoticeListProps) {
+export function NoticeList({ notices, airport, severities, show = 'current', headingLevel = 3, emptyText, linkToAll = false, className, listClassName }: NoticeListProps) {
   const t = useT();
   const lang = useLang();
   const now = useNow();
@@ -74,7 +76,7 @@ export function NoticeList({ notices, airport, severities, show = 'current', hea
           {emptyText}
         </p>
       ) : (
-        <ul className="flex flex-col gap-4">
+        <ul className={cn('flex flex-col gap-4', listClassName)}>
           {ordered.map(({ notice, state }) => (
             <li key={notice.id} id={notice.id} className={cn('scroll-mt-28', state === 'expired' && 'opacity-75')}>
               <NoticeCard

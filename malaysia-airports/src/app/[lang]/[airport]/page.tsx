@@ -85,7 +85,12 @@ async function Overview({ params }: { params: AirportPageParams }) {
 
       <Section tone="subtle" spacing="md" aria-labelledby="airport-notices-title">
         <SectionHeading id="airport-notices-title" eyebrow={t('nav.notices')} title={t('airportPage.noticesTitle', { airport: airport.shortName })} variant="title" />
-        <NoticeList notices={notices} emptyText={t('notices.none')} linkToAll className="max-w-narrow" />
+        <NoticeList
+          notices={notices}
+          emptyText={t('notices.none')}
+          linkToAll
+          listClassName={notices.length > 1 ? 'grid items-start lg:grid-cols-2' : 'max-w-narrow'}
+        />
       </Section>
 
       {explore.length > 0 ? (
