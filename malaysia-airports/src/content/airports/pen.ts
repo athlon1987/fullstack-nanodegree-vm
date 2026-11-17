@@ -296,8 +296,8 @@ const carParks: CarPark[] = [
     ),
     walk: {
       note: lt(
-        'The multi-storey car park is across the road from the main terminal building.',
-        'Tempat letak kereta bertingkat terletak di seberang jalan dari bangunan terminal utama.',
+        'A multi-storey car park stands across the road from the main terminal building. Which areas are standard parking is not verified.',
+        'Sebuah tempat letak kereta bertingkat terletak di seberang jalan dari bangunan terminal utama. Kawasan yang menjadi parkir biasa belum disahkan.',
       ),
     },
     rates: [],
