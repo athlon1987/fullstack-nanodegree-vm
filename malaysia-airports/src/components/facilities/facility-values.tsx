@@ -53,7 +53,6 @@ export interface Fact {
  * record reads as one honest line instead of a column of "Not published".
  */
 export function FactList({ facts, className }: { facts: readonly Fact[]; className?: string }) {
-  const t = useT();
   const lang = useLang();
   const present = facts.filter((fact) => fact.value !== undefined && fact.value !== null && fact.value !== '');
   const missing = facts.filter((fact) => !present.includes(fact)).map((fact) => fact.label);

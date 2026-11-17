@@ -54,7 +54,6 @@ export const mapPagesEn = {
   },
   levels: {
     label: 'Level',
-    onRoute: 'On your route',
   },
   canvas: {
     label: 'Schematic map: {level}',
@@ -234,7 +233,6 @@ export const mapPagesMs: typeof mapPagesEn = {
   },
   levels: {
     label: 'Aras',
-    onRoute: 'Dalam laluan anda',
   },
   canvas: {
     label: 'Peta skematik: {level}',

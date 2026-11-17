@@ -185,8 +185,13 @@ export function MapCanvas({
         out.push({ id: zone.id, x: cx, y: top - 10 / box.scale, anchor: 'middle', text: zone.name, screen: { x1: sx - width / 2, y1: sy - 12, x2: sx + width / 2, y2: sy + 4 } });
       }
     }
-    return out;
-  }, [map.zones, level.id, box.scale, box.x, box.y]);
+    const markers = pois.map((poi) => {
+      const x = (poi.x - box.x) * box.scale;
+      const y = (poi.y - box.y) * box.scale;
+      return { x1: x - radius - 4, y1: y - radius - 4, x2: x + radius + 4, y2: y + radius + 4 };
+    });
+    return out.filter((label) => !markers.some((m) => label.screen.x1 < m.x2 && m.x1 < label.screen.x2 && label.screen.y1 < m.y2 && m.y1 < label.screen.y2));
+  }, [map.zones, level.id, box.scale, box.x, box.y, pois, radius]);
 
   const labelSides = useMemo(() => {
     const candidates: LabelCandidate[] = pois.map((poi) => {

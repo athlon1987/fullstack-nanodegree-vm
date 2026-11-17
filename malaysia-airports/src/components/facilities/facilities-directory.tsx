@@ -1,13 +1,13 @@
 'use client';
 
-import { Suspense, useMemo } from 'react';
+import { Suspense, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import type { FacilityCategory, Source, TerminalId } from '@/content/types';
 import { useT } from '@/lib/i18n/client';
 import { EmptyState } from '@/components/common/empty-state';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/cn';
 import { FilterChip } from '@/components/ui/filter-chip';
-import { SegmentedControl } from '@/components/ui/segmented-control';
 import { Switch } from '@/components/ui/switch';
 import { FacilityCard } from './facility-card';
 import {
@@ -72,6 +72,7 @@ function Directory({ items, sources, terminals, filters }: FacilitiesDirectoryPr
     .filter((group) => group.items.length > 0);
   const active = activeFilterCount(filters);
   const update = (patch: Partial<FacilityFilters>) => write({ ...filters, ...patch });
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,17.5rem)_minmax(0,1fr)] lg:gap-10">
@@ -87,7 +88,19 @@ function Directory({ items, sources, terminals, filters }: FacilitiesDirectoryPr
           ) : null}
         </div>
 
-        <div className="mt-4 flex flex-col gap-5 rounded-xl border border-line-strong bg-surface p-4">
+        <Button
+          variant="secondary"
+          block
+          iconStart="sliders-horizontal"
+          aria-expanded={open}
+          aria-controls="facility-filters-panel"
+          onClick={() => setOpen((value) => !value)}
+          className="mt-3 lg:hidden"
+        >
+          {t('mapPages.facilities.filtersTitle')}
+          {active > 0 ? ` (${active})` : null}
+        </Button>
+        <div id="facility-filters-panel" className={cn('mt-4 flex-col gap-5 rounded-xl border border-line-strong bg-surface p-4 lg:flex', open ? 'flex' : 'hidden')}>
           <div role="group" aria-labelledby="facility-type-label">
             <p id="facility-type-label" className="type-body-sm mb-2 font-semibold text-ink">
               {t('mapPages.facilities.category')}
@@ -110,29 +123,37 @@ function Directory({ items, sources, terminals, filters }: FacilitiesDirectoryPr
           </div>
 
           {multiTerminal ? (
-            <SegmentedControl
-              label={t('mapPages.facilities.terminal')}
-              showLabel
-              block
-              value={filters.terminal ?? 'all'}
-              onValueChange={(value) => update({ terminal: value === 'all' ? undefined : (value as TerminalId) })}
-              options={[{ value: 'all', label: t('mapPages.facilities.allTerminals') }, ...terminals.map((terminal) => ({ value: terminal.id, label: terminal.label }))]}
-            />
+            <div role="group" aria-labelledby="facility-terminal-label">
+              <p id="facility-terminal-label" className="type-body-sm mb-2 font-semibold text-ink">
+                {t('mapPages.facilities.terminal')}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {terminals.map((terminal) => (
+                  <FilterChip
+                    key={terminal.id}
+                    icon="building-2"
+                    pressed={filters.terminal === terminal.id}
+                    onPressedChange={(pressed) => update({ terminal: pressed ? terminal.id : undefined })}
+                  >
+                    {terminal.label}
+                  </FilterChip>
+                ))}
+              </div>
+            </div>
           ) : null}
 
-          <SegmentedControl
-            label={t('mapPages.facilities.area')}
-            showLabel
-            block
-            value={filters.area ?? 'all'}
-            onValueChange={(value) => update({ area: value === 'all' ? undefined : (value as 'landside' | 'airside') })}
-            options={[
-              { value: 'all', label: t('mapPages.facilities.areaAll') },
-              { value: 'landside', label: t('mapPages.legend.landside') },
-              { value: 'airside', label: t('mapPages.legend.airside') },
-            ]}
-            className="[&_label]:min-h-14"
-          />
+          <div role="group" aria-labelledby="facility-area-label">
+            <p id="facility-area-label" className="type-body-sm mb-2 font-semibold text-ink">
+              {t('mapPages.facilities.area')}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {(['landside', 'airside'] as const).map((area) => (
+                <FilterChip key={area} pressed={filters.area === area} onPressedChange={(pressed) => update({ area: pressed ? area : undefined })}>
+                  {t(`mapPages.legend.${area}`)}
+                </FilterChip>
+              ))}
+            </div>
+          </div>
 
           <Switch
             label={t('mapPages.facilities.accessibleOnly')}
