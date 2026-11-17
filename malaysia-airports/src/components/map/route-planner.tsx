@@ -112,7 +112,7 @@ export function RoutePlanner({
         .filter((poi) => poi.level === level.id)
         .map((poi) => (
           <option key={poi.id} value={poi.id}>
-            {poi.name}
+            {poi.short} · {level.label}
           </option>
         ))}
     </optgroup>
@@ -130,21 +130,22 @@ export function RoutePlanner({
           </h2>
           <p className="type-body-sm mt-1 text-ink-2">{t('mapPages.route.lead')}</p>
         </div>
+        <IconButton
+          icon="arrow-left-right"
+          variant="secondary"
+          size="sm"
+          label={t('mapPages.route.swap')}
+          onClick={onSwap}
+          disabled={!fromId && !toId}
+          className="shrink-0 [&_svg]:rotate-90"
+        />
       </div>
 
-      <div className="mt-4 grid grid-cols-[minmax(0,1fr)_auto] items-end gap-x-2 gap-y-3">
+      <div className="mt-4 flex flex-col gap-3">
         <NativeSelect id={ROUTE_FROM_ID} label={t('mapPages.route.from')} iconStart="circle-dot" value={fromId ?? ''} onChange={(event) => onFromChange(event.target.value || undefined)}>
           <option value="">{t('mapPages.route.choose')}</option>
           {options}
         </NativeSelect>
-        <IconButton
-          icon="arrow-left-right"
-          variant="secondary"
-          label={t('mapPages.route.swap')}
-          onClick={onSwap}
-          disabled={!fromId && !toId}
-          className="row-span-2 self-center [&_svg]:rotate-90"
-        />
         <NativeSelect id={ROUTE_TO_ID} label={t('mapPages.route.to')} iconStart="map-pin" value={toId ?? ''} onChange={(event) => onToChange(event.target.value || undefined)}>
           <option value="">{t('mapPages.route.choose')}</option>
           {options}
@@ -171,11 +172,11 @@ export function RoutePlanner({
           <div className="grid grid-cols-2 gap-3">
             <div className="rounded-lg bg-page-subtle p-3">
               <p className="type-body-sm text-ink-2">{t('mapPages.route.standard')}</p>
-              <p className="type-data-lg mt-1 text-ink">{t('mapPages.route.minutes', { minutes: minutes.standard })}</p>
+              <p className="type-title-lg tabular mt-1 text-ink">{t('mapPages.route.minutes', { minutes: minutes.standard })}</p>
             </div>
             <div className="rounded-lg bg-page-subtle p-3">
               <p className="type-body-sm text-ink-2">{t('mapPages.route.reduced')}</p>
-              <p className="type-data-lg mt-1 text-ink">{t('mapPages.route.minutes', { minutes: minutes.reduced })}</p>
+              <p className="type-title-lg tabular mt-1 text-ink">{t('mapPages.route.minutes', { minutes: minutes.reduced })}</p>
               <p className="type-caption mt-1 text-ink-2">{t('mapPages.route.reducedHint')}</p>
             </div>
           </div>

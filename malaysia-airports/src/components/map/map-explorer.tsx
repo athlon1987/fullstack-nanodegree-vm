@@ -9,7 +9,7 @@ import { ExternalLink } from '@/components/common/external-link';
 import { LocaleLink } from '@/components/common/locale-link';
 import { ProvenanceLegend } from '@/components/common/provenance-legend';
 import { SourceNote } from '@/components/common/source-note';
-import { sourcesFor } from '@/components/facilities/facility-values';
+import { AsOf, sourcesFor } from '@/components/facilities/facility-values';
 import { Button } from '@/components/ui/button';
 import { FilterChip } from '@/components/ui/filter-chip';
 import { Icon } from '@/components/ui/icon';
@@ -564,7 +564,7 @@ function MapWorkspace({ map, query, sources, facilitiesHref, officialMapUrl, off
           </div>
           <div className="mt-4 flex flex-wrap items-center gap-x-6">
             <SourceNote sources={sourcesFor(map.sourceIds, sources)} />
-            {map.asOf ? <p className="type-caption py-2 text-ink-2">{t('freshness.asOf', { date: map.asOf })}</p> : null}
+            {map.asOf ? <AsOf value={map.asOf} /> : null}
           </div>
         </div>
         <ProvenanceLegend kinds={['official', 'estimated', 'demo']} />

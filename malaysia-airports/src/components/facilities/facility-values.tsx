@@ -5,7 +5,8 @@ import type { Source } from '@/content/types';
 import { formatList } from '@/lib/format';
 import { useLang, useT } from '@/lib/i18n/client';
 import { NotPublished } from '@/components/common/not-published';
-import { DataList, DataListItem } from '@/components/ui/data-list';
+import { cn } from '@/lib/cn';
+import { formatDate } from '@/lib/time';
 import type { Side } from '@/components/map/map-logic';
 import type { FacilityView, HoursView } from './facility-view';
 
@@ -56,20 +57,35 @@ export function FactList({ facts, className }: { facts: readonly Fact[]; classNa
   const lang = useLang();
   const present = facts.filter((fact) => fact.value !== undefined && fact.value !== null && fact.value !== '');
   const missing = facts.filter((fact) => !present.includes(fact)).map((fact) => fact.label);
+  const row = 'grid gap-x-4 gap-y-0.5 py-2.5 @sm:grid-cols-[7.5rem_minmax(0,1fr)]';
   return (
-    <DataList dense className={className}>
-      {present.map((fact) => (
-        <DataListItem key={fact.label} label={fact.label}>
-          {fact.value}
-        </DataListItem>
-      ))}
-      {missing.length > 0 ? (
-        <DataListItem label={<NotPublished />}>
-          <span className="type-body-sm font-normal text-ink-2">{formatList(missing, lang)}</span>
-        </DataListItem>
-      ) : null}
-    </DataList>
+    <div className={cn('@container', className)}>
+      <dl className="divide-y divide-line border-y border-line">
+        {present.map((fact) => (
+          <div key={fact.label} className={row}>
+            <dt className="type-body-sm text-ink-2">{fact.label}</dt>
+            <dd className="type-body-sm min-w-0 font-medium text-ink">{fact.value}</dd>
+          </div>
+        ))}
+        {missing.length > 0 ? (
+          <div className={row}>
+            <dt>
+              <NotPublished />
+            </dt>
+            <dd className="type-body-sm min-w-0 text-ink-2">{formatList(missing, lang)}</dd>
+          </div>
+        ) : null}
+      </dl>
+    </div>
   );
+}
+
+/** "As of 16 November 2026" for a date, or the source's own wording ("As indexed in November 2026"). */
+export function AsOf({ value, className }: { value: string; className?: string }) {
+  const t = useT();
+  const lang = useLang();
+  const text = /^\d{4}-\d{2}-\d{2}$/.test(value) ? t('freshness.asOf', { date: formatDate(value, lang) }) : value;
+  return <p className={cn('type-caption py-2 text-ink-2', className)}>{text}</p>;
 }
 
 /** Resolve source ids against a lookup, dropping unknown ids and duplicates. */

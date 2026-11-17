@@ -9,7 +9,7 @@ export function MapLegend({ showRoute }: { showRoute: boolean }) {
   return (
     <div className="mt-3 px-1">
       <h2 className="sr-only">{t('mapPages.legend.title')}</h2>
-      <ul className="type-caption flex flex-wrap items-center gap-x-5 gap-y-2 text-ink-2">
+      <ul className="type-caption grid grid-cols-2 items-start gap-x-4 gap-y-2 text-ink-2 sm:flex sm:flex-wrap sm:items-center sm:gap-x-5">
         <Item label={t('mapPages.legend.landside')}>
           <rect x="1" y="3" width="22" height="14" rx="4" className="fill-surface stroke-line-strong" strokeWidth="1.25" />
         </Item>
@@ -48,8 +48,8 @@ export function MapLegend({ showRoute }: { showRoute: boolean }) {
 
 function Item({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <li className="inline-flex items-center gap-2">
-      <svg aria-hidden="true" viewBox="0 0 24 20" className="h-4 w-5 shrink-0 overflow-visible">
+    <li className="inline-flex items-start gap-2 sm:items-center">
+      <svg aria-hidden="true" viewBox="0 0 24 20" className="mt-px h-4 w-5 shrink-0 overflow-visible sm:mt-0">
         {children}
       </svg>
       {label}

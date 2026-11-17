@@ -8,7 +8,7 @@ import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { SourceNote } from '@/components/common/source-note';
 import { Badge } from '@/components/ui/badge';
 import { Icon } from '@/components/ui/icon';
-import { AccessibleValue, AreaValue, FactList, HoursValue, sourcesFor } from './facility-values';
+import { AccessibleValue, AreaValue, AsOf, FactList, HoursValue, sourcesFor } from './facility-values';
 import type { FacilityView } from './facility-view';
 
 export interface FacilityCardProps {
@@ -72,7 +72,7 @@ export function FacilityCard({ facility, sources, showTerminal }: FacilityCardPr
       </div>
       <div className="mt-1 flex flex-wrap items-center gap-x-4">
         <SourceNote sources={sourcesFor(facility.sourceIds, sources)} />
-        {facility.asOf ? <p className="type-caption py-2 text-ink-2">{t('freshness.asOf', { date: facility.asOf })}</p> : null}
+        {facility.asOf ? <AsOf value={facility.asOf} /> : null}
       </div>
     </article>
   );

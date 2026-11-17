@@ -78,7 +78,7 @@ function Directory({ items, sources, terminals, filters }: FacilitiesDirectoryPr
     <div className="grid gap-8 lg:grid-cols-[minmax(0,17.5rem)_minmax(0,1fr)] lg:gap-10">
       <section aria-labelledby="facility-filters-title" className="min-w-0 lg:sticky lg:top-[calc(var(--spacing-header)+1rem)] lg:self-start">
         <div className="flex items-center justify-between gap-3">
-          <h2 id="facility-filters-title" className="type-title-md text-ink">
+          <h2 id="facility-filters-title" className="type-title-md sr-only text-ink lg:not-sr-only">
             {t('mapPages.facilities.filtersTitle')}
           </h2>
           {active > 0 ? (

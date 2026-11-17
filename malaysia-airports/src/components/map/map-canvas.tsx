@@ -287,7 +287,7 @@ export function MapCanvas({
         ref={frameRef}
         onKeyDown={onKeyDown}
         className={cn(
-          'relative aspect-[4/3] w-full overflow-hidden bg-surface-sunken sm:aspect-[16/10] lg:aspect-auto lg:h-[min(64vh,42rem)] lg:min-h-[26rem]',
+          'relative aspect-square w-full overflow-hidden bg-surface-sunken xs:aspect-[5/4] sm:aspect-[16/10] lg:aspect-auto lg:h-[min(64vh,42rem)] lg:min-h-[26rem]',
           'has-[[data-map-surface]:focus-visible]:focus-ring-inset',
         )}
       >
