@@ -51,7 +51,7 @@ export default async function HelpPage() {
               <ul className="flex flex-col divide-y divide-line border-y border-line">
                 {popular.map((faq) => (
                   <li key={faq.id}>
-                    <LocaleLink href={`/help/${faq.topic}#${faq.id}`} className="group flex min-h-13 items-center justify-between gap-4 py-3 focus-ring-inset">
+                    <LocaleLink href={`/help/${faq.topic}#${faq.id}`} className="group flex min-h-13 items-center justify-between gap-4 py-3 focus-visible:focus-ring-inset">
                       <span className="type-body min-w-0 text-ink group-hover:underline">{faq.question}</span>
                       <Icon name="chevron-right" size="sm" className="shrink-0 text-ink-2" />
                     </LocaleLink>

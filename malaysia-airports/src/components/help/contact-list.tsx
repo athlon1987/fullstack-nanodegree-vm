@@ -11,9 +11,7 @@ export function ContactList({ contacts }: { contacts: readonly ContactView[] }) 
         <li key={contact.id} className="flex min-w-0 gap-3 rounded-lg border border-line-strong bg-surface p-4">
           <Icon name={contact.kind} className="mt-0.5 shrink-0 text-primary-ink" />
           <div className="min-w-0">
-            <p className="type-caption text-ink-2">
-              {contact.scope} · {contact.label}
-            </p>
+            <p className="type-caption text-ink-2">{contact.label}</p>
             <p className="type-title-sm mt-0.5 break-words text-ink">
               {contact.href?.startsWith('https:') ? (
                 <ExternalLink href={contact.href}>{contact.value}</ExternalLink>

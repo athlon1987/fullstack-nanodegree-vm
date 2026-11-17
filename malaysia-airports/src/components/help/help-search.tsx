@@ -76,7 +76,7 @@ export function HelpSearch({ items }: { items: readonly HelpSearchItem[] }) {
           <ul className="flex flex-col divide-y divide-line rounded-lg border border-line-strong bg-surface">
             {results.slice(0, LIMIT).map((item) => (
               <li key={item.id}>
-                <LocaleLink href={`/help/${item.topic}#${item.id}`} className="group flex min-h-13 items-start gap-3 px-4 py-3 focus-ring-inset">
+                <LocaleLink href={`/help/${item.topic}#${item.id}`} className="group flex min-h-13 items-start gap-3 px-4 py-3 focus-visible:focus-ring-inset">
                   <Icon name="circle-help" size="sm" className="mt-0.5 shrink-0 text-ink-2" />
                   <span className="min-w-0">
                     <span className="type-body block text-ink group-hover:underline">{item.question}</span>
