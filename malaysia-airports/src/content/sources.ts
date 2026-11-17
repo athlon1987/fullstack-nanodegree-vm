@@ -361,6 +361,53 @@ export const CORE_SOURCES: readonly Source[] = [
     'How this concept prototype estimates and labels guidance',
     '/about-this-prototype',
   ),
+
+  /* ---- Shared by more than one airport content file (appended with PEN, BKI, KCH, LGK, SZB) ---- */
+  source(
+    'imi-domestic-travel',
+    'government',
+    'Immigration Department of Malaysia',
+    'Domestic travel: documents for travel to and from Sabah and Sarawak (as summarised in search results)',
+    'https://www.imi.gov.my/index.php/en/main-services/domestic-travel-domestic/',
+  ),
+  source(
+    'imi-restricted-travel-documents',
+    'government',
+    'Immigration Department of Malaysia',
+    'Restricted travel documents (as summarised in search results)',
+    'https://www.imi.gov.my/index.php/en/main-services/travel-documents/restricted-travel-documents/',
+  ),
+  source(
+    'mh-visa-immigration-documents',
+    'operator',
+    'Malaysia Airlines',
+    'Visa and immigration documents',
+    'https://www.malaysiaairlines.com/my/en/travel-info/visa-and-immigration-documents.html',
+  ),
+  source(
+    'capa-airborneo-takeover-2026',
+    'news',
+    'CAPA Centre for Aviation',
+    'Malaysia Aviation Group completes ownership transfer of MASwings to AirBorneo',
+    'https://centreforaviation.com/news/malaysia-aviation-group-completes-ownership-transfer-of-maswings-to-airborneo-1343251',
+    '2026-01',
+  ),
+  source(
+    'fr24-airborneo-9m-mwa',
+    'aggregator',
+    'Flightradar24',
+    '9M-MWA, ATR 72-500, AirBorneo: flight history',
+    'https://www.flightradar24.com/data/aircraft/9m-mwa',
+    '2026-09 to 2026-10',
+  ),
+  source(
+    'flightconnections-myy',
+    'aggregator',
+    'FlightConnections',
+    'Flights from Miri (MYY)',
+    'https://www.flightconnections.com/flights-from-miri-myy',
+    '2026-11',
+  ),
 ];
 
 /** Core sources keyed by id. Prefer `getSource` from `@/content`, which also sees per-airport sources. */
