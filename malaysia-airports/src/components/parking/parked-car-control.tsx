@@ -150,6 +150,12 @@ export function ParkedCarControl({ slug, timezone, carParks, premiumWarning }: P
           </form>
         ) : here ? (
           <>
+            {carPark?.type === 'preferred' && premiumWarning ? (
+              <p className="type-body-sm mt-3 flex items-start gap-2 font-semibold text-warning-fg">
+                <Icon name="triangle-alert" size="sm" className="mt-0.5 shrink-0" />
+                {premiumWarning}
+              </p>
+            ) : null}
             <dl className="mt-4 grid grid-cols-2 gap-x-6 gap-y-4">
               {carPark ? (
                 <div className="col-span-2">
