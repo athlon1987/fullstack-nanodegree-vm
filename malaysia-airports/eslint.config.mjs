@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Research and design artefacts: captured pages, probe scripts and static concept mock-ups.
+    "docs/**",
+    "test-results/**",
+    "playwright-report/**",
   ]),
 ]);
 
