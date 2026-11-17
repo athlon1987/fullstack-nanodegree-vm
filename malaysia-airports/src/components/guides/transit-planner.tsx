@@ -138,7 +138,7 @@ export function TransitPlanner({ data, initial }: TransitPlannerProps) {
       <form
         aria-labelledby="transit-planner-title"
         onSubmit={(event) => event.preventDefault()}
-        className="flex min-w-0 flex-col gap-5 rounded-xl border border-line-strong bg-surface p-5 shadow-sm lg:sticky lg:top-header"
+        className="flex min-w-0 flex-col gap-5 rounded-xl border border-line-strong bg-surface p-5 shadow-sm lg:sticky lg:top-[calc(var(--spacing-header)+1.5rem)]"
       >
         <h2 id="transit-planner-title" className="type-title-lg text-ink">
           {t('guidePages.transit.planner.title')}
