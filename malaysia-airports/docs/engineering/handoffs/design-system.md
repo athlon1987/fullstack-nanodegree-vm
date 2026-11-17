@@ -71,7 +71,7 @@ The stylesheet also accepts `data-contrast="high"` and `data-motion="reduced"`.
 | `Button`, `buttonClasses` (`button`) | `variant` primary, secondary, ghost, quiet, danger; `size` md, sm, lg; `asChild`; `loading`, `loadingLabel`; `iconStart`, `iconEnd`; `block` | `<Button iconEnd="arrow-right">{t('common.actions.search')}</Button>` |
 | `IconButton` (`icon-button`) | `label` (required), `icon`; `variant` ghost, secondary, primary, quiet; `size` md, sm, lg; `pressed` | `<IconButton icon="bookmark" label={t('common.actions.save')} pressed={saved} />` |
 | `Chip` (`chip`) | `tone` neutral, outline, solid, primary, gold, positive, warning, critical, info; `icon` | `<Chip icon="moon-star">{t('common.labels.open24Hours')}</Chip>` |
-| `FilterChip` C (`filter-chip`) | `pressed`, `onPressedChange`; `icon`; `count` | `<FilterChip pressed={halal} onPressedChange={setHalal}>Halal</FilterChip>` |
+| `FilterChip` C (`filter-chip`) | `pressed`, `onPressedChange`; `icon`; `count` | `<FilterChip pressed={on} onPressedChange={setOn}>{label}</FilterChip>` |
 | `Badge` (`badge`) | `tone` neutral, solid, primary, gold, positive, warning, critical, info; `size` md, sm | `<Badge tone="solid">L3</Badge>` |
 | `Card`, `CardHeader`, `CardBody`, `CardFooter`, `CardLink` (`card`) | `variant` outline, raised, sunken, plain; `padding` none, sm, md, lg; `interactive`; `as` | `<Card interactive padding="md"><h3><CardLink href="/kul/parking">…</CardLink></h3></Card>` |
 | `Input` (`input`) | `label` (required), `hideLabel`, `hint`, `error`, `optionalLabel`, `iconStart`, `mono`, `fieldClassName` + input attributes | `<Input label={t('common.labels.flight')} error={msg} mono />` |
@@ -111,7 +111,7 @@ The stylesheet also accepts `data-contrast="high"` and `data-motion="reduced"`.
 | `Freshness` C (`freshness`) | `updatedAt` (instant or `null` while loading), `refreshSeconds`, `context`, `live` polite, off | `<Freshness updatedAt={provider?.meta().generatedAt ?? null} refreshSeconds={30} />` |
 | `FlightStatusChip` C (`flight-status-chip`) | `status: FlightStatus`; `size` md, sm; `detail` | `<FlightStatusChip status={flight.status} />` |
 | `TerminalBadge` C (`terminal-badge`) | `terminal` T1, T2, MAIN; `size` md, sm | `<TerminalBadge terminal={flight.terminal} size="sm" />` |
-| `AirportCode` (`airport-code`) | `code`, `name` (spoken), `variant` plain, boxed; `size` md, sm, lg | `<AirportCode code="KUL" name={airport.name} />` |
+| `AirportCode` (`airport-code`) | `code`, `name` (the expansion of the abbreviation), `variant` plain, boxed; `size` md, sm, lg | `<AirportCode code="KUL" name={airport.name} />` |
 | `LocalTime` C (`local-time`) | `timeZone` (airport time), `showLabel`, `zone` auto, always, never | `<LocalTime showLabel />` |
 | `EmptyState` (`empty-state`) | `title`, `children`, `icon`, `action`, `headingLevel` 3, `variant` card, plain | `<EmptyState title={t('flights.board.noFlights')} action={…}>{t('empty.officialPointer')}</EmptyState>` |
 | `PageHeader` (`page-header`) | `title` (the `h1`), `eyebrow`, `lead`, `breadcrumbs`, `actions`, `meta`, `art`, `tone` page, subtle; `size` md, lg; `width` | `<PageHeader title={…} lead={…} breadcrumbs={<Breadcrumbs items={[…]} />} />` |
@@ -121,7 +121,7 @@ The stylesheet also accepts `data-contrast="high"` and `data-motion="reduced"`.
 | `NoticeCard` C (`notice-card`) | `severity` info, advisory, warning, critical; `title`, `children`, `provenance`, `scope`, `period`, `footer`, `headingLevel` 3 | `<NoticeCard severity={n.severity} title={…} provenance={n.provenance}>{body}</NoticeCard>` |
 | `TranslationNotice` C (`translation-notice`) | `className` | Show when `hasTranslation(text, lang)` is false |
 | `KeyFact` (`key-fact`) | `label`, `value`, `hint`, `provenance`, `sources`, `mono` | `<KeyFact label={t('nav.airports')} value={39} provenance="official" sources={sources} />` |
-| `NotPublished` C (`not-published`) | `officialUrl`, `variant` inline, block; `label` | `<NotPublished officialUrl={airport.contacts.website} />` |
+| `NotPublished` C (`not-published`) | `officialUrl`, `variant` inline, block; `label` | `<NotPublished officialUrl={officialUrl} />` |
 | `SkipLink` (`skip-link`) | `label`, `target` main | Already mounted in the root layout |
 
 ## 5. Art: `@/components/art/<file>`
