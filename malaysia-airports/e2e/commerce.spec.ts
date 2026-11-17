@@ -84,8 +84,11 @@ test.describe('shop and dine', () => {
     await openFilters(page, isMobile);
     await expect(main.getByRole('switch', { name: 'Open now' })).toBeChecked();
     await expect(main.getByRole('heading', { name: 'No outlet with published hours is open now' })).toBeVisible();
-    await main.getByRole('button', { name: 'Turn off “Open now”' }).click();
-    await expect(main.getByRole('link', { name: 'Eraman Chocolate and Liquor Duty Free' })).toBeVisible();
+    // The button is in the static HTML: retry until hydration has attached its handler.
+    await expect(async () => {
+      await main.getByRole('button', { name: 'Turn off “Open now”' }).click({ timeout: 2_000 });
+      await expect(main.getByRole('link', { name: 'Eraman Chocolate and Liquor Duty Free' })).toBeVisible({ timeout: 1_000 });
+    }).toPass();
     await expect(main.getByRole('link', { name: 'gateway@klia2' })).toHaveCount(0);
   });
 
