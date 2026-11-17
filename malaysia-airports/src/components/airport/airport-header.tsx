@@ -34,8 +34,11 @@ export function AirportHeader({ airport, lang, sections }: AirportHeaderProps) {
             <p className="type-eyebrow mb-2.5 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-gold-ink">
               <span aria-hidden="true" className="h-px w-7 bg-gold" />
               <span>{pick(CLASSIFICATION_LABELS[airport.classification], lang)}</span>
-              <span aria-hidden="true">·</span>
-              <span className="text-ink-2">{place}</span>
+              <span aria-hidden="true" className="max-sm:hidden">
+                ·
+              </span>
+              {/* On phones the place takes its own line rather than leaving the dot dangling. */}
+              <span className="text-ink-2 max-sm:basis-full">{place}</span>
             </p>
             <AirportTitle slug={airport.slug} name={airport.name} />
             <div className="mt-3.5 flex flex-wrap items-center gap-x-5 gap-y-2.5">
