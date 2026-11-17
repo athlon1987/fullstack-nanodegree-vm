@@ -187,7 +187,7 @@ export function ParkedCarControl({ slug, timezone, carParks, premiumWarning }: P
             </div>
           </>
         ) : null}
-        <p role="status" className="type-body-sm mt-3 text-ink-2 empty:hidden">
+        <p role="status" className={message ? 'type-body-sm mt-3 text-ink-2' : 'sr-only'}>
           {message}
         </p>
       </div>
