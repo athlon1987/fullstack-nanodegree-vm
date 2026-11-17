@@ -72,6 +72,7 @@ export function JourneyModeGuidance({ className }: { className?: string }) {
   return (
     <p className={cn('type-body-sm text-ink-2', className)}>
       <span className="type-eyebrow mr-2.5 text-gold-ink">{t(`journey.modes.${effectiveMode}.label`)}</span>
+      {/* A real space, so assistive technology does not read "DepartingCheck…". */}{' '}
       {t(`home.modes.guidance.${effectiveMode}`)}
     </p>
   );
