@@ -78,7 +78,7 @@ const GREETINGS = ['hi', 'hello', 'hey', 'helo', 'hai', 'salam', 'assalamualaiku
 const NUMBER_WORDS: Readonly<Record<string, number>> = {
   one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12,
   satu: 1, dua: 2, tiga: 3, empat: 4, lima: 5, enam: 6, tujuh: 7, lapan: 8, sembilan: 9, sepuluh: 10, sebelas: 11,
-  a: 1, an: 1, se: 1,
+  a: 1, an: 1,
 };
 
 /** Words that look like two-letter airline codes but are ordinary words. */
@@ -95,18 +95,19 @@ function terminalMentions(text: string): TerminalId[] {
 }
 
 function durationMinutes(text: string): number | undefined {
-  if (/\b(?:half an hour|setengah jam|30 minit)\b/.test(text)) return 30;
+  if (/\b(?:half an hour|setengah jam)\b/.test(text)) return 30;
   if (/\bsejam\b/.test(text)) return 60;
   if (/\bsehari\b/.test(text)) return 1440;
-  const match = /\b(\d{1,3}(?: \d)?|[a-z]+)\s?(hours?|hrs?|h|jam|minutes?|mins?|minit|days?|hari|nights?|malam)\b/.exec(text);
-  if (!match) return undefined;
-  const raw = match[1].replace(' ', '.');
-  const amount = /^\d/.test(raw) ? Number.parseFloat(raw) : NUMBER_WORDS[raw];
-  if (amount === undefined || !Number.isFinite(amount) || amount <= 0) return undefined;
-  const unit = match[2];
-  if (/^(h|hr|hrs|hour|hours|jam)$/.test(unit)) return Math.round(amount * 60);
-  if (/^(min|mins|minute|minutes|minit)$/.test(unit)) return Math.round(amount);
-  return Math.round(amount * 1440);
+  for (const match of text.matchAll(/\b(\d{1,3}(?: \d)?|[a-z]+)\s?(hours?|hrs?|h|jam|minutes?|mins?|minit|days?|hari|nights?)\b/g)) {
+    const raw = match[1].replace(' ', '.');
+    const amount = /^\d/.test(raw) ? Number.parseFloat(raw) : NUMBER_WORDS[raw];
+    if (amount === undefined || !Number.isFinite(amount) || amount <= 0) continue;
+    const unit = match[2];
+    if (/^(h|hr|hrs|hour|hours|jam)$/.test(unit)) return Math.round(amount * 60);
+    if (/^(min|mins|minute|minutes|minit)$/.test(unit)) return Math.round(amount);
+    return Math.round(amount * 1440);
+  }
+  return undefined;
 }
 
 /** Airline codes we can recognise in a question. */
@@ -119,8 +120,11 @@ function flightDesignator(raw: string, knowledge: ConciergeKnowledge): Concierge
   for (const match of raw.matchAll(/\b([A-Za-z]{3}|[A-Za-z]{2}|[A-Za-z]\d|\d[A-Za-z])\s?-?\s?(\d{1,4})\b/g)) {
     const code = match[1];
     const lower = code.toLowerCase();
+    const before = raw.slice(0, match.index ?? 0).toLowerCase();
+    if (/(?:gate|pintu|terminal|level|aras|row|counter)\s*$/.test(before)) continue;
     let airline: string | undefined;
     if (code.length === 3) airline = AIRLINE_ALIASES[lower];
+    else if (/\d/.test(code)) airline = known.has(code.toUpperCase()) ? code.toUpperCase() : undefined;
     else if (!NOT_AIRLINES.has(lower) && (known.has(code.toUpperCase()) || code === code.toUpperCase())) airline = code.toUpperCase();
     if (airline) return { airline, number: String(Number.parseInt(match[2], 10)) };
   }
@@ -177,7 +181,9 @@ function airlineNamed(text: string, raw: string, knowledge: ConciergeKnowledge):
     if (hasPhrase(text, normalise(airline.name))) return airline.code;
   }
   for (const match of raw.matchAll(/\b([A-Z][A-Z0-9])\b/g)) {
-    if (knowledge.airlines.some((airline) => airline.code === match[1]) && !['T1', 'T2'].includes(match[1])) return match[1];
+    const code = match[1];
+    if (['T1', 'T2'].includes(code) || hasPhrase(text, `${code.toLowerCase()} sentral`)) continue;
+    if (knowledge.airlines.some((airline) => airline.code === code)) return code;
   }
   return undefined;
 }
@@ -202,7 +208,8 @@ export function understand(question: string, knowledge: ConciergeKnowledge, cont
   const terminals = terminalMentions(text);
   const flight = flightDesignator(raw, knowledge);
   let category = categoryOf(text);
-  const gateMatch = /\b(?:gate|pintu)\s([a-z])\s?(\d{1,3})?\b/.exec(text) ?? /\b([a-h])\s?(\d{1,3})?\s(?:gate|gates)\b/.exec(text);
+  const gateMatch =
+    /\b(?:gate|pintu)\s([a-z])\s?(\d{1,3})?\b/.exec(text) ?? /\b([a-h])\s?(\d{1,3})\s(?:gate|gates)\b/.exec(text) ?? /\b([b-h])\s(?:gate|gates)\b/.exec(text);
   const gate = gateMatch ? `${gateMatch[1].toUpperCase()}${gateMatch[2] ?? ''}` : undefined;
 
   // "KLIA Transit" is a train, not a layover.
