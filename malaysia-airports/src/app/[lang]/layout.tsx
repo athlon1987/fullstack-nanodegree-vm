@@ -5,6 +5,7 @@ import { getSource } from '@/content';
 import { SkipLink } from '@/components/common/skip-link';
 import { GlobalOverlays } from '@/components/shell/global-overlays';
 import { MobileBar } from '@/components/shell/mobile-bar';
+import { PlatformRuntime } from '@/components/platform/platform-runtime';
 import { sectionAvailability } from '@/components/shell/sections.server';
 import { ShellProvider } from '@/components/shell/shell-context';
 import { SiteFooter } from '@/components/shell/site-footer';
@@ -13,6 +14,7 @@ import { fontVariables } from '@/fonts';
 import { getDictionary, getT, isLang, langParams } from '@/lib/i18n';
 import { I18nProvider } from '@/lib/i18n/client';
 import { PREFERENCES_INIT_SCRIPT } from '@/lib/preferences';
+import { SITE_INDEXABLE } from '@/lib/seo';
 import '../globals.css';
 
 /** Both locales are prerendered; `[lang]` is a root param, so this is required under Cache Components. */
@@ -28,8 +30,9 @@ export async function generateMetadata(): Promise<Metadata> {
     title: { default: `${t('common.appName')}: ${t('common.tagline')}`, template: `%s | ${t('common.appName')}` },
     description: t('footer.disclaimer'),
     applicationName: t('common.appName'),
-    // A concept prototype must not be mistaken for the official site in search results.
-    robots: { index: false, follow: false },
+    // A concept prototype must not be mistaken for the official site in search results; the
+    // owner opts in with SITE_INDEXING=allow (the same switch as the X-Robots-Tag header).
+    robots: SITE_INDEXABLE ? undefined : { index: false, follow: false },
   };
 }
 
@@ -76,6 +79,7 @@ export default async function RootLayout({ children }: LayoutProps<'/[lang]'>) {
             <SiteFooter lang={lang} />
             <MobileBar />
             <GlobalOverlays />
+            <PlatformRuntime />
           </ShellProvider>
         </I18nProvider>
       </body>

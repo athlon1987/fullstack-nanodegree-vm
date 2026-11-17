@@ -177,7 +177,23 @@ describe('airport content', () => {
 
   it('publishes no outlets and no airline destinations that the research does not support', () => {
     const content = getAirportContent('kul');
-    expect(content?.outlets).toEqual([]);
+    // Only the rows marked "publishable" in docs/research/facts/f-supplement-commerce-regional.md
+    // (Nooodles: terminal uncertain; Dimensi Beauty: no citable link; gateway@klia2 restaurants:
+    // undated fan pages, so not listed).
+    expect(content?.outlets.map((outlet) => outlet.slug).sort()).toEqual([
+      '7-eleven-cafe',
+      'charlotte-tilbury',
+      'eraman-chocolate-and-liquor-duty-free',
+      'eraman-duty-free-mall-terminal-1',
+      'eraman-duty-free-mall-terminal-2',
+      'gateway-klia2',
+      'kapten-batik',
+      'paul-le-cafe',
+    ]);
+    for (const outlet of content?.outlets ?? []) {
+      expect(outlet.sources.length, outlet.id).toBeGreaterThan(0);
+      for (const id of outlet.sources) expect(getSource(id), `${outlet.id}: ${id}`).toBeDefined();
+    }
     expect(content?.airlines.every((airline) => airline.destinations.length === 0)).toBe(true);
     expect(content?.airlines.find((airline) => airline.code === 'MH')?.basis).toBe('airline');
     expect(content?.airlines.find((airline) => airline.code === 'EK')?.basis).toBe('third-party');

@@ -47,7 +47,7 @@ export function SiteHeader({ lang }: { lang: Lang }) {
               className="type-caption inline-flex h-7 items-center gap-1 rounded-xs px-1.5 font-semibold text-on-inverse-dim transition-colors duration-fast hover:text-on-inverse"
             >
               {t('shell.corporateSite')}
-              <Icon name="arrow-up-right" size="xs" strokeWidth={2} />
+              <Icon name="arrow-right" size="xs" strokeWidth={2} />
             </LocaleLink>
             <span aria-hidden="true" className="h-3.5 w-px bg-on-inverse-dim opacity-40" />
             <LanguageSwitch />

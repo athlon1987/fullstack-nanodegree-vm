@@ -15,7 +15,7 @@ import { KUL_CONTENT } from './airports/kul';
 import { LGK_CONTENT } from './airports/lgk';
 import { PEN_CONTENT } from './airports/pen';
 import { SZB_CONTENT } from './airports/szb';
-import { CORPORATE_PAGES, NEWS_ITEMS } from './corporate';
+import { CORPORATE_PAGES, CORPORATE_SOURCES, NEWS_ITEMS } from './corporate';
 import { FAQS } from './faqs';
 import { GUIDES } from './guides';
 import { NETWORK_NOTICES, filterNoticesForAirport } from './notices';
@@ -79,6 +79,8 @@ export function getAirportContent(slugOrCode: string): AirportContent | undefine
 export const ALL_SOURCES: readonly Source[] = [
   ...CORE_SOURCES,
   ...Object.values(AIRPORT_CONTENT).flatMap((content) => content.sources),
+  // The corporate section's own registry, so `resolveSources` and the concierge see it too.
+  ...CORPORATE_SOURCES,
 ];
 
 const SOURCE_MAP: ReadonlyMap<string, Source> = new Map(ALL_SOURCES.map((source) => [source.id, source]));
@@ -105,7 +107,7 @@ export function getNotices(airport?: string): Notice[] {
 /** Run every schema and cross-reference check over the real content. Empty array means sound. */
 export function validateAllContent(): ContentIssue[] {
   return validateContent({
-    sources: [...CORE_SOURCES],
+    sources: [...CORE_SOURCES, ...CORPORATE_SOURCES],
     airports: [...AIRPORTS],
     airportContent: Object.values(AIRPORT_CONTENT),
     guides: GUIDES,

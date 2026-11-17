@@ -581,6 +581,8 @@ export interface MapQuery {
   /** Step-free routing (`sf=1`). */
   stepFree: boolean;
   filters: MapFilterId[];
+  /** A flight's gate (`gate=C12`), as the journey timeline links it: see `gatePlaceId`. */
+  gate?: string;
 }
 
 export const EMPTY_MAP_QUERY: MapQuery = { stepFree: false, filters: [] };
@@ -599,11 +601,25 @@ export function parseMapQuery(params: { get(name: string): string | null }): Map
     to: value('to'),
     stepFree: params.get('sf') === '1',
     filters: [...new Set(filters)],
+    gate: value('gate'),
   };
 }
 
+/**
+ * The place drawn for a gate: the gate itself (`…-gate-c12`) when the map has it, otherwise its
+ * gate area (`…-gates-c`). Same rule as `poiForGate` in `@/lib/map`, on the client-side view.
+ */
+export function gatePlaceId(pois: readonly Pick<PoiView, 'id' | 'kind'>[], gate: string): string | undefined {
+  const gates = pois.filter((poi) => poi.kind === 'gate');
+  const wanted = gate.trim().toLowerCase();
+  const exact = gates.find((poi) => poi.id.endsWith(`-gate-${wanted}`));
+  if (exact) return exact.id;
+  const prefix = wanted.match(/^[a-z]+/)?.[0];
+  return prefix ? gates.find((poi) => poi.id.endsWith(`-gates-${prefix}`))?.id : undefined;
+}
+
 /** A query patch: `null` removes the parameter. */
-export type QueryPatch = Partial<Record<'t' | 'level' | 'poi' | 'from' | 'to' | 'sf' | 'cat', string | null>>;
+export type QueryPatch = Partial<Record<'t' | 'level' | 'poi' | 'from' | 'to' | 'sf' | 'cat' | 'gate', string | null>>;
 
 export function applyQueryPatch(search: string, patch: QueryPatch): string {
   const params = new URLSearchParams(search);

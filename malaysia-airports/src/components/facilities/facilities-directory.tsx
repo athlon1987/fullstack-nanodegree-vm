@@ -25,6 +25,8 @@ export interface FacilitiesDirectoryProps {
   sources: Record<string, Source>;
   /** The airport's terminals; the terminal filter shows only when there is more than one. */
   terminals: { id: TerminalId; label: string }[];
+  /** Airport slug: enables "save to My journey" on each card. */
+  airport?: string;
 }
 
 /**
@@ -33,7 +35,7 @@ export interface FacilitiesDirectoryProps {
  */
 export function FacilitiesDirectory(props: FacilitiesDirectoryProps) {
   return (
-    <Suspense fallback={<Directory {...props} filters={EMPTY_FACILITY_FILTERS} />}>
+    <Suspense fallback={<Directory {...props} filters={EMPTY_FACILITY_FILTERS} live={false} />}>
       <DirectoryFromUrl {...props} />
     </Suspense>
   );
@@ -46,7 +48,7 @@ function DirectoryFromUrl(props: FacilitiesDirectoryProps) {
     () => parseFacilityFilters(params, { categories, terminals: props.terminals.map((terminal) => terminal.id) }),
     [params, categories, props.terminals],
   );
-  return <Directory {...props} filters={filters} />;
+  return <Directory {...props} filters={filters} live />;
 }
 
 function write(filters: FacilityFilters) {
@@ -54,8 +56,23 @@ function write(filters: FacilityFilters) {
   window.history.replaceState(null, '', `${window.location.pathname}${query ? `?${query}` : ''}`);
 }
 
-function Directory({ items, sources, terminals, filters }: FacilitiesDirectoryProps & { filters: FacilityFilters }) {
+function Directory({
+  items,
+  sources,
+  terminals,
+  airport,
+  filters,
+  live,
+}: FacilitiesDirectoryProps & {
+  filters: FacilityFilters;
+  /**
+   * False in the Suspense fallback: that HTML is replaced, never hydrated, so its phone filter
+   * toggle cannot work. It is shown disabled until the live directory takes over.
+   */
+  live: boolean;
+}) {
   const t = useT();
+  const [open, setOpen] = useState(false);
   const multiTerminal = terminals.length > 1;
   const categories = useMemo(() => {
     const seen = new Map<FacilityCategory, { label: string; icon: string; count: number }>();
@@ -72,7 +89,6 @@ function Directory({ items, sources, terminals, filters }: FacilitiesDirectoryPr
     .filter((group) => group.items.length > 0);
   const active = activeFilterCount(filters);
   const update = (patch: Partial<FacilityFilters>) => write({ ...filters, ...patch });
-  const [open, setOpen] = useState(false);
 
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,17.5rem)_minmax(0,1fr)] lg:gap-10">
@@ -94,6 +110,7 @@ function Directory({ items, sources, terminals, filters }: FacilitiesDirectoryPr
           iconStart="sliders-horizontal"
           aria-expanded={open}
           aria-controls="facility-filters-panel"
+          disabled={!live}
           onClick={() => setOpen((value) => !value)}
           className="mt-3 lg:hidden"
         >
@@ -191,7 +208,7 @@ function Directory({ items, sources, terminals, filters }: FacilitiesDirectoryPr
                 </h2>
                 <div className="grid gap-4 @3xl:grid-cols-2">
                   {group.items.map((item) => (
-                    <FacilityCard key={item.id} facility={item} sources={sources} showTerminal={multiTerminal} />
+                    <FacilityCard key={item.id} facility={item} sources={sources} showTerminal={multiTerminal} airport={airport} />
                   ))}
                 </div>
               </section>

@@ -182,7 +182,8 @@ export function TransportPlanner({ context, options, state, onStateChange, termi
             {unlisted.map((option) => {
               const places = listedPlaces(option, lang);
               return (
-                <li key={option.id} className="flex min-w-0 items-start gap-3 rounded-lg border border-line-strong bg-surface p-3.5">
+                // Same anchor as a ranked card, so search results can land on the option either way.
+                <li key={option.id} id={`transport-${option.id}`} className="flex min-w-0 scroll-mt-32 items-start gap-3 rounded-lg border border-line-strong bg-surface p-3.5">
                   <Icon name={option.mode} className="mt-0.5 shrink-0 text-ink-2" />
                   <div className="min-w-0">
                     <p className="type-body-sm font-semibold text-ink">{pick(option.name, lang)}</p>

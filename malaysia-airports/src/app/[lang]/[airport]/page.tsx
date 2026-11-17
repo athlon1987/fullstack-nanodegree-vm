@@ -16,6 +16,7 @@ import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
 import { Section } from '@/components/ui/section';
 import { Skeleton } from '@/components/ui/skeleton';
+import { JsonLd, airportJsonLd } from '@/lib/seo';
 
 /** Every airport in the registry gets an overview page, including directory-only ones. */
 export function generateStaticParams() {
@@ -71,6 +72,7 @@ async function Overview({ params }: { params: AirportPageParams }) {
 
   return (
     <>
+      <JsonLd data={airportJsonLd(airport, lang)} />
       <Section spacing="md">
         <div className="flex flex-col gap-10">
           {limited ? (

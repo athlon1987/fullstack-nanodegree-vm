@@ -836,7 +836,7 @@ export const en = {
     shop: {
       eyebrow: 'Shop and dine',
       title: 'Find something good, wherever you are in the terminal',
-      lead: 'Filter by what matters right now. We list only outlets that an official source confirms.',
+      lead: 'Filter by what matters right now. We list only outlets that a named source confirms.',
       filtersLabel: 'Filter food and shops',
       halal: 'Halal',
       browseAt: 'Browse food and shops at {airport}',
@@ -904,7 +904,7 @@ export const en = {
       facilities: 'Prayer rooms, assistance, baby care and more.',
       transport: 'Rail, bus, taxi and e-hailing, side by side.',
       parking: 'Car parks, rates and a note of where you parked.',
-      shopDine: 'Food and shops confirmed by official sources.',
+      shopDine: 'Food and shops confirmed by a named source.',
       lounges: 'Lounges, hotels and places to rest.',
       transit: 'Changing flights or terminals.',
     },

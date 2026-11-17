@@ -130,22 +130,22 @@ test.describe('facilities directory', () => {
     await page.goto('/en/kul/facilities');
     const main = page.getByRole('main');
     await expect(main.getByRole('heading', { level: 1, name: 'Facilities and services' })).toBeVisible();
-    await expect(main.getByText('17 facilities')).toBeVisible();
+    await expect(main.getByText('20 facilities')).toBeVisible();
 
     const toggle = main.getByRole('button', { name: 'Filter facilities' });
     if (await toggle.isVisible()) await toggle.click();
     await expect(async () => {
-      await main.getByRole('button', { name: /^Lounge 5$/ }).click();
+      await main.getByRole('button', { name: /^Lounge 6$/ }).click();
       await expect(page).toHaveURL(/cat=lounge/, { timeout: 2_000 });
     }).toPass();
-    await expect(main.getByText('5 facilities')).toBeVisible();
+    await expect(main.getByText('6 facilities')).toBeVisible();
     await main.getByRole('button', { name: 'Passenger-only area (airside)' }).click();
     await expect(page).toHaveURL(/area=airside/);
-    await expect(main.getByText('5 facilities')).toBeVisible();
+    await expect(main.getByText('6 facilities')).toBeVisible();
     await expectNoAxeViolations(page);
 
     await main.getByRole('button', { name: 'Clear filters' }).first().click();
-    await expect(main.getByText('17 facilities')).toBeVisible();
+    await expect(main.getByText('20 facilities')).toBeVisible();
     await main.getByRole('link', { name: 'Show on map: Calm Room' }).click();
     await expect(page).toHaveURL(/\/en\/kul\/map\?t=T1&poi=l5-calm-room/);
     await expect(main.getByRole('region', { name: 'Calm Room' })).toBeVisible();

@@ -16,6 +16,11 @@
  */
 import { z } from 'zod';
 
+// Zod otherwise probes `new Function` once to decide whether to compile parsers; the site's CSP
+// blocks eval, so that probe shows up as a `script-src` violation in production consoles. This
+// module loads with the shell on every page, before any parse (platform hand-off).
+z.config({ jitless: true });
+
 /* -------------------------------------------------------------------------------------------
  * Language and localised text
  * ---------------------------------------------------------------------------------------- */

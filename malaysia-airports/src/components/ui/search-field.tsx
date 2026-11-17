@@ -1,6 +1,6 @@
 'use client';
 
-import { useId, useRef, type InputHTMLAttributes, type ReactNode } from 'react';
+import { useEffect, useId, useRef, type InputHTMLAttributes, type ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n/client';
 import { Icon, type IconName } from './icon';
@@ -64,6 +64,16 @@ export function SearchField({
   const inputId = id ?? generated;
   const ref = useRef<HTMLInputElement>(null);
   const s = SIZES[size];
+
+  // Text typed before hydration stays in the DOM (React does not overwrite it while hydrating)
+  // but not in the parent's state, so the next render would erase it. Hand it over once.
+  const adopted = useRef(false);
+  useEffect(() => {
+    if (adopted.current) return;
+    adopted.current = true;
+    const input = ref.current;
+    if (input && value !== undefined && input.value !== value) onValueChange?.(input.value);
+  }, [value, onValueChange]);
 
   const clear = () => {
     const input = ref.current;

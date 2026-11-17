@@ -47,7 +47,12 @@ async function Journey({ params }: { params: PageProps<'/[lang]/journey'>['param
     if (!content) continue;
     notes[slug] = content.guidesNotes;
     for (const note of content.guidesNotes) for (const id of note.sources) sourceIds.add(id);
-    for (const carPark of content.carParks) carParks.push({ id: carPark.id, airport: carPark.airport, name: pick(carPark.name, lang) });
+    // Premium car parks repeat the airport's warning in the saved note (transport hand-off).
+    const premium = content.guidesNotes.find((note) => note.id === `${slug}-preferred-parking-warning`);
+    for (const carPark of content.carParks) {
+      const warning = carPark.type === 'preferred' && premium ? { title: pick(premium.title, lang), body: pick(premium.body, lang), provenance: premium.provenance } : undefined;
+      carParks.push({ id: carPark.id, airport: carPark.airport, name: pick(carPark.name, lang), warning });
+    }
   }
   const sources: Record<string, Source> = Object.fromEntries(resolveSources([...sourceIds]).map((source) => [source.id, source]));
 

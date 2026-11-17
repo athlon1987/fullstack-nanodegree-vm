@@ -2,13 +2,16 @@
 
 import { useId, useRef, useState, type FormEvent } from 'react';
 import { AIRPORTS, getAirport } from '@/content/airports';
+import type { Provenance } from '@/content/types';
 import { useAirportContext, useSavedJourney } from '@/lib/hooks';
 import { useLang, useT } from '@/lib/i18n/client';
 import { formatDateTime } from '@/lib/time';
 import { LocaleLink } from '@/components/common/locale-link';
+import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { useSectionAvailability } from '@/components/shell/shell-context';
 import { hasSection } from '@/components/shell/sections';
 import { Button } from '@/components/ui/button';
+import { Callout } from '@/components/ui/callout';
 import { Field, controlClasses, describedBy } from '@/components/ui/field';
 import { Icon } from '@/components/ui/icon';
 import { Input } from '@/components/ui/input';
@@ -20,6 +23,8 @@ export interface CarParkOption {
   id: string;
   airport: string;
   name: string;
+  /** The airport's premium-parking warning, for car parks of type `preferred`. */
+  warning?: { title: string; body: string; provenance: Provenance };
 }
 
 /**
@@ -184,6 +189,11 @@ export function ParkedCarCard({ carParks }: { carParks: readonly CarParkOption[]
               </div>
             ) : null}
           </dl>
+          {carPark?.warning ? (
+            <Callout tone="warning" title={carPark.warning.title} className="mt-4" actions={<ProvenanceTag provenance={carPark.warning.provenance} />}>
+              <p>{carPark.warning.body}</p>
+            </Callout>
+          ) : null}
           <div className="mt-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-line pt-3">
             <p className="type-caption text-ink-2">{t('journey.saved.parkedCar.savedAt', { time: formatDateTime(note.savedAt, lang) })}</p>
             {note.airport && airport && hasSection(availability, note.airport, 'parking') ? (

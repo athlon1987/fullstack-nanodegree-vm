@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
 import { getNotices } from '@/content';
 import { getT, toLang } from '@/lib/i18n';
+import { JsonLd, organizationJsonLd, websiteJsonLd } from '@/lib/seo';
 import { toNoticeViews } from '@/components/airport/notice-views.server';
 import { HomeBoard, HomeConcierge, HomeHero, HomeJourney, HomeNetwork, HomeShopDine } from '@/components/home/home-sections';
 
@@ -22,6 +23,7 @@ export default async function HomePage() {
   const lang = toLang(await routeLang());
   return (
     <>
+      <JsonLd data={[websiteJsonLd(lang), organizationJsonLd(lang)]} />
       <HomeHero lang={lang} notices={toNoticeViews(getNotices(), lang, 'compact')} />
       <HomeBoard lang={lang} />
       <HomeJourney lang={lang} />

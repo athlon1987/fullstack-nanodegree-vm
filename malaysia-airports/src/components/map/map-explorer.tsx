@@ -26,6 +26,7 @@ import {
   filterCounts,
   fitView,
   levelBounds,
+  gatePlaceId,
   parseMapQuery,
   passesFilters,
   routeMinutes,
@@ -136,6 +137,14 @@ function MapWorkspace({ map, query, sources, facilitiesHref, officialMapUrl, off
     }),
     [map],
   );
+
+  // `?gate=C12` (journey timeline): show the gate and make it the route's destination, then keep
+  // only the standard parameters so later choices are not overridden.
+  const gateId = query.gate ? gatePlaceId(map.pois, query.gate) : undefined;
+  useEffect(() => {
+    if (!query.gate) return;
+    writeQuery(gateId ? { gate: null, poi: query.poi ?? gateId, to: query.to ?? gateId, level: null } : { gate: null });
+  }, [query.gate, query.poi, query.to, gateId]);
 
   const selected = query.poi ? poisById.get(query.poi) : undefined;
   const from = query.from ? poisById.get(query.from) : undefined;

@@ -836,7 +836,7 @@ export const ms: Dictionary = {
     shop: {
       eyebrow: 'Beli-belah dan makan',
       title: 'Cari yang sedap, di mana sahaja anda berada di terminal',
-      lead: 'Tapis mengikut keperluan semasa. Kami hanya menyenaraikan premis yang disahkan oleh sumber rasmi.',
+      lead: 'Tapis mengikut keperluan semasa. Kami hanya menyenaraikan premis yang disahkan oleh sumber yang dinamakan.',
       filtersLabel: 'Tapis makanan dan kedai',
       halal: 'Halal',
       browseAt: 'Layari makanan dan kedai di {airport}',
@@ -904,7 +904,7 @@ export const ms: Dictionary = {
       facilities: 'Surau, bantuan, penjagaan bayi dan banyak lagi.',
       transport: 'Rel, bas, teksi dan e-hailing, dibandingkan.',
       parking: 'Tempat letak kereta, kadar dan nota lokasi kereta anda.',
-      shopDine: 'Makanan dan kedai yang disahkan oleh sumber rasmi.',
+      shopDine: 'Makanan dan kedai yang disahkan oleh sumber yang dinamakan.',
       lounges: 'Lounge, hotel dan tempat berehat.',
       transit: 'Menukar penerbangan atau terminal.',
     },

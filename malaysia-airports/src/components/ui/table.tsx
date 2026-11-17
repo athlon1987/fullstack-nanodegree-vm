@@ -11,7 +11,9 @@ export interface TableScrollProps extends HTMLAttributes<HTMLDivElement> {
  * and scroll with the arrow keys; the page itself never scrolls sideways.
  */
 export function TableScroll({ label, className, ...rest }: TableScrollProps) {
-  return <div role="region" aria-label={label} tabIndex={0} className={cn('w-full overflow-x-auto focus-visible:focus-ring-inset', className)} {...rest} />;
+  // `relative` keeps absolutely positioned descendants (such as `sr-only` text) inside the scroll
+  // region; without it they escape and the whole page scrolls sideways on phones.
+  return <div role="region" aria-label={label} tabIndex={0} className={cn('relative w-full overflow-x-auto focus-visible:focus-ring-inset', className)} {...rest} />;
 }
 
 export interface TableProps extends TableHTMLAttributes<HTMLTableElement> {

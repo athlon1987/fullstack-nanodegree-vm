@@ -1,6 +1,7 @@
 'use client';
 
 import type { Source } from '@/content/types';
+import { useSavedJourney } from '@/lib/hooks';
 import { useT } from '@/lib/i18n/client';
 import { ExternalLink } from '@/components/common/external-link';
 import { LocaleLink } from '@/components/common/locale-link';
@@ -8,6 +9,7 @@ import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { SourceNote } from '@/components/common/source-note';
 import { Badge } from '@/components/ui/badge';
 import { Icon } from '@/components/ui/icon';
+import { IconButton } from '@/components/ui/icon-button';
 import { AccessibleValue, AreaValue, AsOf, FactList, HoursValue, sourcesFor } from './facility-values';
 import type { FacilityView } from './facility-view';
 
@@ -15,10 +17,12 @@ export interface FacilityCardProps {
   facility: FacilityView;
   sources: Readonly<Record<string, Source>>;
   showTerminal: boolean;
+  /** Airport slug: shows a toggle that saves the facility to My journey's saved places. */
+  airport?: string;
 }
 
 /** One facility: what it is, where, when, for whom, how sure we are and where that comes from. */
-export function FacilityCard({ facility, sources, showTerminal }: FacilityCardProps) {
+export function FacilityCard({ facility, sources, showTerminal, airport }: FacilityCardProps) {
   const t = useT();
   return (
     <article
@@ -39,6 +43,7 @@ export function FacilityCard({ facility, sources, showTerminal }: FacilityCardPr
             {showTerminal ? <Badge size="sm">{facility.terminalLabel}</Badge> : null}
           </div>
         </div>
+        {airport ? <SaveFacility airport={airport} facility={facility} /> : null}
       </div>
 
       <p className="type-body mt-3 text-ink-2">{facility.description}</p>
@@ -78,5 +83,26 @@ export function FacilityCard({ facility, sources, showTerminal }: FacilityCardPr
         {facility.asOf ? <AsOf value={facility.asOf} /> : null}
       </div>
     </article>
+  );
+}
+
+/** Save the facility to "Saved places" on My journey (this device only), or remove it. */
+function SaveFacility({ airport, facility }: { airport: string; facility: FacilityView }) {
+  const t = useT();
+  const { isPlaceSaved, savePlace, removePlace, hydrated } = useSavedJourney();
+  const saved = hydrated && isPlaceSaved('facility', facility.id);
+  return (
+    <IconButton
+      icon={saved ? 'bookmark-check' : 'bookmark'}
+      label={`${t('common.actions.save')}: ${facility.name}`}
+      pressed={saved}
+      disabled={!hydrated}
+      className="shrink-0"
+      onClick={() =>
+        saved
+          ? removePlace('facility', facility.id)
+          : savePlace({ id: facility.id, type: 'facility', airport, title: facility.name, href: `/${airport}/facilities#${facility.id}` })
+      }
+    />
   );
 }

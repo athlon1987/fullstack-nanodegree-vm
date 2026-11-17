@@ -10,6 +10,7 @@ import {
   filterForKind,
   fitView,
   levelBounds,
+  gatePlaceId,
   parseMapQuery,
   passesFilters,
   placeLabels,
@@ -207,5 +208,17 @@ describe('facilities directory', () => {
     const filters = parseFacilityFilters(new URLSearchParams('cat=lounge,bogus&t=T2&area=airside&access=1&x=1'), { categories: [...known.categories], terminals: [...known.terminals] });
     expect(filters).toEqual({ categories: ['lounge'], terminal: 'T2', area: 'airside', accessible: true });
     expect(writeFacilityFilters(new URLSearchParams('x=1'), filters).toString()).toBe('x=1&cat=lounge&t=T2&area=airside&access=1');
+  });
+});
+
+describe('gate deep links (journey timeline)', () => {
+  it('resolves a flight gate to the gate itself or its gate area, like poiForGate', () => {
+    const model = getAirportContent('kul')?.maps[0];
+    expect(model).toBeDefined();
+    const pois = model?.pois ?? [];
+    expect(parseMapQuery(new URLSearchParams('gate=C12&t=T1')).gate).toBe('C12');
+    expect(gatePlaceId(pois, 'C12')).toBe('g-gates-c');
+    expect(gatePlaceId(pois, 'h3')).toBe('g-gates-h');
+    expect(gatePlaceId(pois, 'Z9')).toBeUndefined();
   });
 });

@@ -56,7 +56,7 @@ export interface OutletDirectoryProps {
  */
 export function OutletDirectory(props: OutletDirectoryProps) {
   return (
-    <Suspense fallback={<Directory {...props} filters={EMPTY_OUTLET_FILTERS} />}>
+    <Suspense fallback={<Directory {...props} filters={EMPTY_OUTLET_FILTERS} live={false} />}>
       <DirectoryFromUrl {...props} />
     </Suspense>
   );
@@ -75,7 +75,7 @@ function DirectoryFromUrl(props: OutletDirectoryProps) {
     [items, terminals, airport],
   );
   const filters = useMemo(() => parseOutletFilters(params, options), [params, options]);
-  return <Directory {...props} filters={filters} />;
+  return <Directory {...props} filters={filters} live />;
 }
 
 function write(filters: OutletFilters) {
@@ -85,7 +85,23 @@ function write(filters: OutletFilters) {
 
 const PRICE_BANDS: readonly PriceBand[] = [1, 2, 3, 4];
 
-function Directory({ airport, items, sources, terminals, loungesHref, notice, filters }: OutletDirectoryProps & { filters: OutletFilters }) {
+function Directory({
+  airport,
+  items,
+  sources,
+  terminals,
+  loungesHref,
+  notice,
+  filters,
+  live,
+}: OutletDirectoryProps & {
+  filters: OutletFilters;
+  /**
+   * False in the Suspense fallback: that HTML is replaced, never hydrated, so its phone filter
+   * toggle cannot work. It is shown disabled until the live directory takes over.
+   */
+  live: boolean;
+}) {
   const t = useT();
   const lang = useLang();
   const now = useNow();
@@ -215,6 +231,7 @@ function Directory({ airport, items, sources, terminals, loungesHref, notice, fi
                 iconStart="sliders-horizontal"
                 aria-expanded={open}
                 aria-controls="outlet-filters-panel"
+                disabled={!live}
                 onClick={() => setOpen((value) => !value)}
               >
                 {t('commercePages.filters.toggle')}

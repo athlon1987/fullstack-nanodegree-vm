@@ -10,6 +10,7 @@ import {
   FACILITY_CATEGORY_META,
   FAQS,
   GUIDES,
+  MEDIA_ITEMS,
   NEWS_ITEMS,
   TRANSPORT_MODE_LABELS,
   getAirportContent,
@@ -19,6 +20,8 @@ import {
   type Lang,
   type LocalizedText,
 } from '@/content';
+import { getT } from '@/lib/i18n';
+import { CORPORATE_SECTIONS } from '@/components/corporate/corporate-sections';
 import type { SearchDocument } from './engine';
 
 const both = (text: LocalizedText): string[] => (text.ms ? [text.en, text.ms] : [text.en]);
@@ -63,7 +66,8 @@ export function buildSearchDocuments(lang: Lang): SearchDocument[] {
 
     for (const facility of content.facilities) {
       const meta = FACILITY_CATEGORY_META[facility.category];
-      const page = facility.category === 'lounge' || facility.category === 'hotel' ? 'lounges' : 'facilities';
+      // The lounges page lists lounges, hotels, rest and shower facilities with `#<id>` anchors.
+      const page = facility.category === 'lounge' || facility.category === 'hotel' || facility.category === 'rest' || facility.category === 'shower' ? 'lounges' : 'facilities';
       documents.push({
         id: `facility:${facility.id}`,
         type: 'facility',
@@ -91,7 +95,8 @@ export function buildSearchDocuments(lang: Lang): SearchDocument[] {
         type: 'transport',
         title: pick(option.name, lang),
         summary: clip(option.description ? pick(option.description, lang) : pick(TRANSPORT_MODE_LABELS[option.mode], lang)),
-        href: `/${airport.slug}/transport#${option.id}`,
+        // Anchors as the transport cards render them (`transport-<id>`).
+        href: `/${airport.slug}/transport#transport-${option.id}`,
         airport: airport.slug,
         keywords: [...both(TRANSPORT_MODE_LABELS[option.mode]), ...both(option.name), option.mode.replace(/-/g, ' '), option.operator ?? '', ...option.destinations.flatMap((destination) => both(destination.name)), airport.code, airport.shortName].filter(Boolean),
       });
@@ -102,7 +107,8 @@ export function buildSearchDocuments(lang: Lang): SearchDocument[] {
         type: 'parking',
         title: pick(carPark.name, lang),
         summary: clip(carPark.description ? pick(carPark.description, lang) : ''),
-        href: `/${airport.slug}/parking#${carPark.id}`,
+        // Anchors as the car park cards render them (`car-park-<id>`).
+        href: `/${airport.slug}/parking#car-park-${carPark.id}`,
         airport: airport.slug,
         keywords: ['parking', 'car park', 'parkir', 'tempat letak kereta', ...both(carPark.name), carPark.type.replace(/-/g, ' '), airport.code, airport.shortName],
       });
@@ -161,6 +167,32 @@ export function buildSearchDocuments(lang: Lang): SearchDocument[] {
       summary: clip(pick(item.summary, lang)),
       href: `/corporate/news/${item.slug}`,
       keywords: ['news', 'berita', item.date],
+    });
+  }
+  // The media centre's items and the corporate section pages (corporate-network hand-off).
+  const indexed = new Set(documents.map((document) => document.href));
+  for (const item of MEDIA_ITEMS) {
+    const href = `/corporate/news/${item.slug}`;
+    if (indexed.has(href)) continue;
+    documents.push({
+      id: `corporate:media:${item.slug}`,
+      type: 'corporate',
+      title: pick(item.title, lang),
+      summary: clip(pick(item.summary, lang)),
+      href,
+      keywords: ['news', 'berita', item.topic, item.date],
+    });
+  }
+  const t = getT(lang);
+  for (const section of CORPORATE_SECTIONS) {
+    if (indexed.has(section.href)) continue;
+    documents.push({
+      id: `corporate:section:${section.id}`,
+      type: 'corporate',
+      title: t(section.label),
+      summary: t(section.description),
+      href: section.href,
+      keywords: [section.id, 'corporate', 'korporat', 'Malaysia Airports'],
     });
   }
 
