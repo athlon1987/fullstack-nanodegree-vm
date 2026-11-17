@@ -1,8 +1,8 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import { Fragment, type ReactNode } from 'react';
 import { cn } from '@/lib/cn';
-import type { Flight, FlightDirection } from '@/lib/flights';
+import { groupFlightsByHour, type Flight, type FlightDirection, type FlightHourGroup } from '@/lib/flights';
 import { useT } from '@/lib/i18n/client';
 import type { Instant } from '@/lib/time';
 import { WeaveTexture } from '@/components/art/patterns';
@@ -32,12 +32,26 @@ export interface FlightBoardProps {
   showAirport?: boolean;
   /** Shown instead of rows when the list is empty. */
   emptyMessage?: ReactNode;
+  /** Richer content for an empty list (an `EmptyState` with actions). Takes precedence over `emptyMessage`. */
+  empty?: ReactNode;
   /** Links or buttons under the rows. */
   footer?: ReactNode;
   /** Rows of the loading skeleton. */
   skeletonRows?: number;
   /** Leave out the demonstration banner. Only when the same view already shows one directly above. */
   hideBanner?: boolean;
+  /** Group rows under the local hour of their scheduled time ("From 14:00"). */
+  groupByHour?: boolean;
+  /** Time zone of the board's airport, for the hour groups. */
+  timeZone?: string;
+  /** Inside the board, above the rows (for example "Show earlier flights"). Hidden while loading or empty. */
+  before?: ReactNode;
+  /** Inside the board, below the rows (for example "Show later flights"). Shown unless loading. */
+  after?: ReactNode;
+  /** Ids of flights in My journey; used with `onSaveChange`. */
+  savedIds?: ReadonlySet<string>;
+  /** Show a save toggle on every row. */
+  onSaveChange?: (flight: Flight, saved: boolean) => void;
   className?: string;
 }
 
@@ -66,15 +80,38 @@ export function FlightBoard({
   live = 'off',
   showAirport = false,
   emptyMessage,
+  empty,
   footer,
   skeletonRows = 6,
   hideBanner = false,
+  groupByHour = false,
+  timeZone,
+  before,
+  after,
+  savedIds,
+  onSaveChange,
   className,
 }: FlightBoardProps) {
   const t = useT();
   const Heading = `h${headingLevel}` as 'h2' | 'h3';
+  const GroupHeading = `h${headingLevel + 1}` as 'h3' | 'h4';
   const placeLabel = direction === 'd' ? t('flights.board.destination') : t('flights.board.origin');
   const standLabel = direction === 'd' ? t('common.labels.gate') : t('common.labels.belt');
+  const columns = 6 + (showAirport ? 1 : 0) + (onSaveChange ? 1 : 0);
+  const groups: FlightHourGroup[] | null = flights && groupByHour ? groupFlightsByHour(flights, timeZone) : null;
+
+  const row = (flight: Flight, layout: 'card' | 'table') => (
+    <FlightRow
+      key={flight.id}
+      flight={flight}
+      layout={layout}
+      showAirport={showAirport}
+      saved={savedIds?.has(flight.id) ?? false}
+      onSaveChange={onSaveChange ? (saved) => onSaveChange(flight, saved) : undefined}
+    />
+  );
+  const groupLabel = (group: FlightHourGroup) => t('flightPages.board.hourGroup', { time: group.label });
+  const groupCount = (group: FlightHourGroup) => t.count('flights.board.count', group.flights.length);
 
   return (
     <div className={className}>
@@ -101,14 +138,34 @@ export function FlightBoard({
             ))}
           </div>
         ) : flights.length === 0 ? (
-          <p className="type-body relative px-4 py-8 text-ink-2 sm:px-5">{emptyMessage ?? t('flights.board.noFlights')}</p>
+          empty ? (
+            <div className="relative">{empty}</div>
+          ) : (
+            <p className="type-body relative px-4 py-8 text-ink-2 sm:px-5">{emptyMessage ?? t('flights.board.noFlights')}</p>
+          )
         ) : (
           <>
-            <ul aria-label={title} className="relative @4xl:hidden">
-              {flights.map((flight) => (
-                <FlightRow key={flight.id} flight={flight} layout="card" showAirport={showAirport} />
-              ))}
-            </ul>
+            {before ? <div className="relative border-b border-line">{before}</div> : null}
+            {groups ? (
+              <div className="relative @4xl:hidden">
+                {groups.map((group) => {
+                  const id = `board-${direction}-${group.date}-${group.hour}`;
+                  return (
+                    <section key={id} aria-labelledby={id}>
+                      <GroupHeading id={id} className="flex items-baseline justify-between gap-3 border-b border-line bg-board-raised px-4 py-1.5 sm:px-5">
+                        <span className="type-data-sm text-ink">{groupLabel(group)}</span>
+                        <span className="type-caption text-ink-2">{groupCount(group)}</span>
+                      </GroupHeading>
+                      <ul aria-labelledby={id}>{group.flights.map((flight) => row(flight, 'card'))}</ul>
+                    </section>
+                  );
+                })}
+              </div>
+            ) : (
+              <ul aria-label={title} className="relative @4xl:hidden">
+                {flights.map((flight) => row(flight, 'card'))}
+              </ul>
+            )}
             <TableScroll label={title} className="relative @max-4xl:hidden">
               <Table density="default">
                 <caption className="sr-only">
@@ -124,18 +181,36 @@ export function FlightBoard({
                     {showAirport ? <Th>{t('common.labels.airport')}</Th> : null}
                     <Th>{standLabel}</Th>
                     <Th>{t('common.labels.status')}</Th>
+                    {onSaveChange ? (
+                      <Th>
+                        <span className="sr-only">{t('common.actions.save')}</span>
+                      </Th>
+                    ) : null}
                   </Tr>
                 </THead>
-                <TBody>
-                  {flights.map((flight) => (
-                    <FlightRow key={flight.id} flight={flight} layout="table" showAirport={showAirport} />
-                  ))}
-                </TBody>
+                {groups ? (
+                  groups.map((group) => (
+                    <Fragment key={`${group.date}-${group.hour}`}>
+                      <TBody>
+                        <tr className="border-b border-line bg-board-raised">
+                          <th scope="rowgroup" colSpan={columns} className="px-4 py-1.5 text-left font-normal sm:px-5">
+                            <span className="type-data-sm text-ink">{groupLabel(group)}</span>{' '}
+                            <span className="type-caption ml-2 text-ink-2">{groupCount(group)}</span>
+                          </th>
+                        </tr>
+                        {group.flights.map((flight) => row(flight, 'table'))}
+                      </TBody>
+                    </Fragment>
+                  ))
+                ) : (
+                  <TBody>{flights.map((flight) => row(flight, 'table'))}</TBody>
+                )}
               </Table>
             </TableScroll>
           </>
         )}
 
+        {flights !== null && after ? <div className="relative border-t border-line first:border-t-0">{after}</div> : null}
         {footer ? <div className="relative flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-line px-4 py-3 sm:px-5">{footer}</div> : null}
       </div>
     </div>
