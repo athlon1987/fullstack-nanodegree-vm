@@ -29,7 +29,7 @@ export function generateStaticParams() {
 }
 
 /** Guides are module content: every listed guide is fully static and an unknown slug is a real 404. */
-// export const ensureStatic = 'navigation';
+export const ensureStatic = 'navigation';
 
 export async function generateMetadata({ params }: PageProps<'/[lang]/guides/[topic]'>): Promise<Metadata> {
   const { lang: rawLang, topic } = await params;
