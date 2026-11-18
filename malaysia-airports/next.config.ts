@@ -18,6 +18,9 @@ const indexable = process.env.SITE_INDEXING === 'allow';
 const appVersion = process.env.APP_VERSION ?? new Date().toISOString().replace(/\D/g, '').slice(0, 12);
 
 const nextConfig: NextConfig = {
+  // NEXT_DIST_DIR lets several engineers run isolated dev servers in one checkout (for example
+  // NEXT_DIST_DIR=.next-map npx next dev -p 3201). Production builds use the default .next.
+  distDir: process.env.NEXT_DIST_DIR || '.next',
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {
