@@ -1,0 +1,195 @@
+{
+ "role": "documentation-review",
+ "note": "Defects found while writing docs/strategy/sitemap.md (F1-F9) and docs/engineering/architecture.md (A1-A6), each checked against the code by running its functions.",
+ "findings": [
+  {
+   "id": "docs-01",
+   "title": "sitemap.xml omits six corporate pages and 12 of 14 stories (36 URLs)",
+   "severity": "medium",
+   "area": "platform",
+   "url": "/sitemap.xml",
+   "evidence": "src/lib/seo/site-routes.ts reads CORPORATE_PAGES and NEWS_ITEMS instead of CORPORATE_SECTIONS and the media stories (sitemap.md F1)",
+   "expected": "every prerendered page appears in sitemap.xml in both locales",
+   "suggested_fix": "read the same registries the corporate routes use",
+   "files": [
+    "src/lib/seo/site-routes.ts"
+   ]
+  },
+  {
+   "id": "docs-02",
+   "title": "Canonical and hreflang links only on /offline",
+   "severity": "medium",
+   "area": "platform",
+   "url": "/en/kul",
+   "evidence": "only the offline page puts canonical and alternate links in the head (sitemap.md F2)",
+   "expected": "every page declares a canonical URL and en/ms alternates",
+   "suggested_fix": "add alternates to the shared metadata helpers and adopt them in layouts",
+   "files": [
+    "src/lib/seo",
+    "src/app/[lang]/layout.tsx"
+   ]
+  },
+  {
+   "id": "docs-03",
+   "title": "No airline-to-terminal lookup; concierge misses \"Which terminal does AirAsia use?\"",
+   "severity": "medium",
+   "area": "concierge",
+   "url": "/en/concierge",
+   "evidence": "there is no airline directory and the concierge does not recognise the question, though it answers a check-in phrasing (sitemap.md F3)",
+   "expected": "airline and terminal questions answered from the airline records with sources",
+   "suggested_fix": "add an airline-terminal intent using AirlineAtAirport records; consider a small airline list on the airport overview",
+   "files": [
+    "src/lib/concierge"
+   ]
+  },
+  {
+   "id": "docs-04",
+   "title": "Home shop and dine filters lost after choosing an airport",
+   "severity": "low",
+   "area": "home",
+   "url": "/en",
+   "evidence": "filters ticked on the home Shop & dine block are dropped when the visitor then chooses an airport (sitemap.md F4)",
+   "expected": "chosen filters carry into /[airport]/shop-dine",
+   "suggested_fix": "carry filters as query parameters",
+   "files": [
+    "src/components/home/shop-dine-strip.tsx"
+   ]
+  },
+  {
+   "id": "docs-05",
+   "title": "Search: \"fast track\" returns nothing; \"halal\" ranks unrelated help answers above the halal outlet",
+   "severity": "medium",
+   "area": "search",
+   "url": "/en/search?q=fast%20track",
+   "evidence": "sitemap.md F5",
+   "expected": "common service queries return the relevant item first",
+   "suggested_fix": "add synonyms and boosts; index fast track where content mentions it",
+   "files": [
+    "src/lib/search"
+   ]
+  },
+  {
+   "id": "docs-06",
+   "title": "/{airport}/map and /{airport}/transit answer for every airport but are not linked or listed",
+   "severity": "low",
+   "area": "platform",
+   "url": "/en/ipoh/map",
+   "evidence": "pages exist for all 39 airports as empty states (sitemap.md F6)",
+   "expected": "either listed intentionally or noindex",
+   "suggested_fix": "mark empty-state variants noindex",
+   "files": [
+    "src/app/[lang]/[airport]/map",
+    "src/app/[lang]/[airport]/transit"
+   ]
+  },
+  {
+   "id": "docs-07",
+   "title": "Legacy Wi-Fi and KLIA rental pages redirect permanently to pages without that content",
+   "severity": "medium",
+   "area": "platform",
+   "url": "/en/klia1/air-travel/services/wifi",
+   "evidence": "308 redirects to destinations with no Wi-Fi or rental content (sitemap.md F7)",
+   "expected": "permanent redirects only to equivalent content; otherwise the closest relevant page with a temporary redirect",
+   "suggested_fix": "re-point to the facilities page filtered to Wi-Fi and to the transport page car-rental section, or use 307",
+   "files": [
+    "next.config.ts"
+   ]
+  },
+  {
+   "id": "docs-08",
+   "title": "Breadcrumb structured-data helper unused",
+   "severity": "low",
+   "area": "platform",
+   "url": "/en/kul/parking",
+   "evidence": "the helper exists in src/lib/seo but no page emits BreadcrumbList (sitemap.md F8)",
+   "expected": "BreadcrumbList on pages with breadcrumbs",
+   "suggested_fix": "emit it from the Breadcrumbs component",
+   "files": [
+    "src/lib/seo",
+    "src/components/common/breadcrumbs.tsx"
+   ]
+  },
+  {
+   "id": "docs-09",
+   "title": "Inconsistent Malay name for the concierge",
+   "severity": "low",
+   "area": "content",
+   "url": "/ms",
+   "evidence": "\"Konsierj\", \"Concierge\" and \"Tanya concierge\" all appear (sitemap.md F9)",
+   "expected": "one consistent term",
+   "suggested_fix": "choose one term (pending native review) across dictionaries",
+   "files": [
+    "src/lib/i18n"
+   ]
+  },
+  {
+   "id": "docs-10",
+   "title": "JavaScript per page 294-312 KB gzip, over the 250 KB budget",
+   "severity": "high",
+   "area": "performance",
+   "url": "/en",
+   "evidence": "measured from the build: a zod chunk of about 33 KB and the demo flight generator ship to the browser (architecture.md)",
+   "expected": "each page at or under 250 KB gzip JavaScript",
+   "suggested_fix": "keep zod schemas server-only (validate at build), lazy-load the demo provider where flights are shown, audit client components",
+   "files": [
+    "src/content/types.ts",
+    "src/lib/providers",
+    "src/components"
+   ]
+  },
+  {
+   "id": "docs-11",
+   "title": "No CI configuration for the app",
+   "severity": "medium",
+   "area": "platform",
+   "url": "repository",
+   "evidence": "no workflow runs typecheck, lint, unit, build, e2e or axe (architecture.md)",
+   "expected": "a CI workflow scoped to malaysia-airports/",
+   "suggested_fix": "add .github/workflows/malaysia-airports-ci.yml limited to pull requests and manual runs with paths filter malaysia-airports/**; a clean checkout needs next typegen before tsc",
+   "files": [
+    ".github/workflows"
+   ]
+  },
+  {
+   "id": "docs-12",
+   "title": "Playwright runs Chromium only",
+   "severity": "low",
+   "area": "platform",
+   "url": "playwright.config.ts",
+   "evidence": "both projects use Chromium (architecture.md)",
+   "expected": "WebKit (Safari on iPhone) covered",
+   "suggested_fix": "add a WebKit phone project if the browser is available; otherwise document",
+   "files": [
+    "playwright.config.ts"
+   ]
+  },
+  {
+   "id": "docs-13",
+   "title": "Service worker cache names are not build-versioned; security.md says they are",
+   "severity": "low",
+   "area": "platform",
+   "url": "/sw.js",
+   "evidence": "cache names carry v1, not a build id (architecture.md)",
+   "expected": "document and code agree",
+   "suggested_fix": "version caches with the build id or correct the document",
+   "files": [
+    "src/components/platform",
+    "docs/engineering/security.md"
+   ]
+  },
+  {
+   "id": "docs-14",
+   "title": "Demo queue-time provider exists but no page shows queue times",
+   "severity": "low",
+   "area": "flights",
+   "url": "/en/kul",
+   "evidence": "benchmarks Istanbul and Incheon show live waits; the provider is unused (architecture.md)",
+   "expected": "either shown, demo-labelled, where it helps the journey, or removed from health",
+   "suggested_fix": "show demo-labelled security and immigration waits on the flight detail and airport overview",
+   "files": [
+    "src/components/flights",
+    "src/components/airport"
+   ]
+  }
+ ]
+}
