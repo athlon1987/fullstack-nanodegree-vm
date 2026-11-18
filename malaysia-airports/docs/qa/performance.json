@@ -1,0 +1,184 @@
+{
+  "role": "performance",
+  "measured": "2026-11-18T09:11Z/09:50Z",
+  "build": "j7VkfkZXItJvC8-BseSYP (next start -p 3101, localhost)",
+  "method": "Lab only. Lighthouse 13.6 mobile (simulated slow 4G, 4x CPU, 3 runs, median) on 15 pages; desktop preset; applied-throttling profiles for the Malaysian median mobile network (154/35 Mbps, 40 ms, 4x CPU) and congested airport Wi-Fi (1.5/0.5 Mbps, 250 ms, 4x CPU); Playwright Event Timing (durationThreshold 16) with CDP 4x CPU for interactions; layout-shift and LCP observers; CDP CPU profiles; build-manifest analysis. No field data exists for the prototype. Raw data in docs/qa/lighthouse/.",
+  "findings": [
+    {
+      "id": "performance-01",
+      "title": "Lighthouse mobile performance is below the 95 target on all 15 pages measured (56 to 92)",
+      "severity": "high",
+      "area": "performance",
+      "url": "/en, /ms, /en/kul, /en/kul/flights, /en/kul/flights/mh184-20261118-d, /en/journey, /en/kul/map, /en/kul/transport, /en/kul/parking, /en/kul/shop-dine, /en/guides, /en/kul/transit, /en/concierge, /en/corporate, /en/airports",
+      "evidence": "Lighthouse 13.6 mobile, 3 runs each, median: /en 56 (54/56/76), /ms 65, /en/kul 78, board 81, flight detail 64, journey 64, map 68, transport 89, parking 83, shop-dine 67, guides 91, transit 68, concierge 91, corporate 92, airports 81. TBT 338 to 1,978 ms on every page (home 1,391 ms, longest task 1,202 ms in the React DOM chunk); simulated TTI 4.3 to 6.4 s. Desktop preset: /en 92, /en/kul/flights 100. Accessibility 100 everywhere. On the Malaysian median network profile the score is still 74 (/en) and 77 (board) because TBT stays at 1.1 to 1.5 s. Shared container, benchmarkIndex 1,318 to 2,511.",
+      "expected": "Performance at least 95 on representative pages (brief), with TBT under about 200 ms on a 4x-throttled mobile profile.",
+      "suggested_fix": "Address the causes in performance-02 to performance-09 in order: move demo flight generation off the render path, stop streaming static pages through the loading.tsx fallback, remove hydration-gated skeletons, cut the shell bundle and the inlined dictionary. Add a Lighthouse CI budget (performance 95, TBT 200 ms, CLS 0.1) on /en, /en/kul/flights and /en/journey.",
+      "files": ["src/app/[lang]/layout.tsx", "src/app/[lang]/loading.tsx", "src/lib/providers/demo-flights.ts", "src/components/flights/flight-search-box.tsx"]
+    },
+    {
+      "id": "performance-02",
+      "title": "Typing in the flight board filter blocks the page for 736 to 832 ms per keystroke (INP proxy)",
+      "severity": "high",
+      "area": "flights",
+      "url": "/en/kul/flights",
+      "evidence": "Playwright, Pixel 7 emulation, CDP CPU throttling 4x, Event Timing (type event, durationThreshold 16), 3 fresh loads after hydration. Tap the board search field and type 'MH' (180 ms between keys): worst interaction 784, 832, 736 ms (keydown; input delay 0, processing 0, presentation 784 ms because the work runs in the input handler; long animation frame 729 ms with 523 ms of script invoked by document.oninput). Clearing the filter: 304 to 328 ms. A CPU profile of the two keystrokes shows 1,048 ms of busy main thread, the largest item being zonedParts (Intl.DateTimeFormat.formatToParts) at 296 ms, and 262 result rows rendered at once. Status chips and the Arrivals tab stay at 40 to 64 ms.",
+      "expected": "Every keystroke on the board responds within 200 ms (INP 'good') on a mid-range phone; the result list updates without blocking input.",
+      "suggested_fix": "Defer the search: keep the input controlled but derive the filtered list from useDeferredValue(draft) (or wrap the state update in startTransition) so typing stays responsive. Precompute the two-day search pool once per provider instant (or on the server / in a Web Worker) instead of regenerating both directions when 'searching' flips at two characters; cache per airport and date across provider instances; compute timezone offsets once per day rather than formatToParts per flight. Cap the rendered rows (for example the first 40 with 'show more').",
+      "files": ["src/components/flights/flight-board-explorer.tsx", "src/components/flights/board-model.ts", "src/lib/providers/demo-flights.ts", "src/lib/time.ts", "src/lib/hooks/use-flight-provider.ts"]
+    },
+    {
+      "id": "performance-03",
+      "title": "Home hydration blocks the main thread for 1.4 to 2.0 s; journey-mode and airport-switcher taps take 320 to 520 ms, and taps during hydration up to 1.5 s",
+      "severity": "high",
+      "area": "home",
+      "url": "/en, /ms",
+      "evidence": "Lighthouse mobile TBT 1,391 ms (/en) and 1,978 ms (/ms), longest task 1,202 and 1,419 ms. CDP CPU profile of a 4x-throttled load of /en: 2.8 s busy; the largest self time (653 ms) is zonedParts in src/lib/time.ts called by DemoFlightProvider.forDate and listFlightsSync from the home page chunk during React render (the home flight search box builds a pool for every demo airport before anyone types). Event Timing after hydration (4x CPU, 3 runs): switch journey mode to Arriving 392/400/520 ms (processing 302 ms: the direction flip regenerates the pool), open the airport switcher 376/408/320 ms, close it 152 to 240 ms. Tapping 'Arriving' 300 to 600 ms after DOMContentLoaded took 1,280 to 1,472 ms, and 3 of 6 early taps (at DOMContentLoaded plus 0 to 300 ms) did not change the radio at all.",
+      "expected": "Home hydration under about 200 ms of blocking time on a 4x-throttled profile; every tap on the home page answered within 200 ms, including while it is still loading.",
+      "suggested_fix": "Do not build flight pools at render: compute the search pool lazily on first focus or first keystroke, behind startTransition, or move demo generation to the server (the page is prerendered) or a Worker. Reuse one provider instance per day and keep its cache (getFlightProvider creates a new instance every 30 s). Make the journey-mode switch a transition and keep the expensive sections (board preview, journey teaser) memoised on the inputs that matter. For the airport switcher, mount the dialog content once and filter in a transition.",
+      "files": ["src/components/flights/flight-search-box.tsx", "src/components/flights/flight-direction.ts", "src/components/home/journey-modes.tsx", "src/components/home/board-preview.tsx", "src/components/shell/airport-switcher.tsx", "src/lib/providers/index.ts", "src/lib/time.ts"]
+    },
+    {
+      "id": "performance-04",
+      "title": "Desktop CLS 0.23 to 0.29: the footer jumps when streamed page content replaces the loading.tsx skeleton",
+      "severity": "high",
+      "area": "platform",
+      "url": "/en, /ms, /en/kul, /en/concierge (desktop 1440 x 900)",
+      "evidence": "Playwright at 1440 x 900, layout-shift observer with sources, 2 of 2 loads per page: footer moves from y=640 out of the viewport, value 0.2889 (/en, /ms, /en/kul) and 0.2317 (/en/concierge). A MutationObserver log shows the loading fallback inserted at 57 to 78 ms, the hidden S:n segments revealed by React's $RC script at 108 to 137 ms, and the shift at 126 to 186 ms. Lighthouse desktop /en: CLS 0.295 in 1 of 3 runs (Lighthouse mobile /en/kul also showed 0.246 in 1 of 3 runs, element not recorded, so not attributed). Every page under [lang] is wrapped by src/app/[lang]/loading.tsx, so fully static pages still stream as fallback-then-content.",
+      "expected": "CLS 0.1 or less at p75 on every page; a fully prerendered page paints its final layout first.",
+      "suggested_fix": "Remove the root src/app/[lang]/loading.tsx (or move it down to the few dynamic segments that need it, such as the flight detail page) so static pages are emitted in order without a Suspense fallback; if a fallback must stay, give it the same height as the page (or keep the footer out of the first viewport with a min-height main). Re-test with a desktop CLS budget in CI.",
+      "files": ["src/app/[lang]/loading.tsx", "src/app/[lang]/layout.tsx"]
+    },
+    {
+      "id": "performance-05",
+      "title": "CLS 0.16 on the Malay home page: the h1 rewraps when the display font arrives",
+      "severity": "high",
+      "area": "design-system",
+      "url": "/ms",
+      "evidence": "Lighthouse mobile 3 of 3 runs CLS 0.161 (shifted node section#flight-search > div.relative). Playwright: 0.158 on mobile and 0.154 on desktop in 2 of 2 loads; the flight search card and the content below move up 27 px (mobile) or 56 px (desktop) at 242 to 277 ms, right after Fraunces loads (about 182 ms). With Fraunces blocked the Malay h1 'Perjalanan anda, terhubung dengan indah.' is 2 lines (54 px mobile, 108 px desktop); with Fraunces it is 1 line (27 px, 54 px). English is unaffected (1 line either way). Fraunces is declared with preload: false and is discovered only after the stylesheet.",
+      "expected": "No layout shift from font loading on any language (CLS 0.1 or less).",
+      "suggested_fix": "Preload Fraunces normal and italic on the home pages (the h1 is the LCP element there), or use font-display: optional for the display face, and tune the fallback metrics (size-adjust / ascent-override on the generated fallback) so the Malay headline wraps the same in both faces; alternatively reserve the two-line height for the h1 at small widths. Add /ms to the CLS checks.",
+      "files": ["src/fonts/index.ts", "src/components/home/home-sections.tsx"]
+    },
+    {
+      "id": "performance-06",
+      "title": "My journey shows a skeleton until hydration, then swaps it: CLS 0.11 to 0.23 and LCP 5.3 to 5.6 s on slow 4G",
+      "severity": "high",
+      "area": "journey",
+      "url": "/en/journey",
+      "evidence": "Lighthouse with applied slow-4G throttling (150 ms, 1.6 Mbps, 4x CPU), 2 runs: performance 46/50, LCP 5.6/5.3 s (element: the empty-state paragraph 'Save a flight and this page shows its status...'), CLS 0.211 (footer). Playwright: CLS 0.2265 on mobile and 0.1136 on desktop in 2 of 2 loads; Event Timing run also recorded 0.2265 (footer) at about 1.5 s. Standard Lighthouse mobile reports LCP 4.5 s. MyJourney returns a skeleton while !hydrated and then renders the empty state or the saved flight, which has a different height.",
+      "expected": "The page's main content is in the server HTML, or the placeholder has the final size, so LCP is under 2.5 s and nothing moves after hydration.",
+      "suggested_fix": "Server-render the empty state (the most common case for a first visit) and switch to the saved journey after reading storage, keeping the container's min-height equal to the empty state; or read the saved journey with useSyncExternalStore and a server snapshot of 'empty' so the tree hydrates instead of re-rendering. Stop passing 33 KB of notes and 19 KB of sources to the client component; pass only what the saved flights need, or fetch it on demand.",
+      "files": ["src/components/flights/my-journey.tsx", "src/app/[lang]/journey/page.tsx", "src/lib/hooks/use-saved-journey.ts"]
+    },
+    {
+      "id": "performance-07",
+      "title": "The LCP element waits for the streamed-segment reveal: simulated LCP 4.1 to 4.8 s on 6 pages, 2.8 to 2.9 s on congested Wi-Fi",
+      "severity": "medium",
+      "area": "platform",
+      "url": "/en, /en/kul/flights/mh184-20261118-d, /en/journey, /en/kul/map, /en/kul/shop-dine, /en/kul/transit",
+      "evidence": "Lighthouse mobile median LCP: /en 4.8 s, flight detail 4.4 s, journey 4.5 s, map 4.4 s, shop-dine 4.1 s, transit 4.3 s (other pages 1.1 to 1.3 s; the same page flips between about 1.1 and 4.x s between runs). On localhost the LCP element painted 350 to 650 ms after FCP on these pages (observed FCP 139 to 294 ms, LCP 538 to 665 ms; element render delay 525 to 653 ms) because the page content is inside the [lang]/loading.tsx boundary and is revealed by React's $RC script, after the whole page body (on the map page the reveal script is at byte 207,815 of about 437,000) and with React's 300 ms reveal batching. Applied slow-4G cross-check: /en 1.9 s and map 2.0 s, so the 4.4 s is partly the simulator charging all JavaScript to LCP. Congested Wi-Fi profile (1.5 Mbps, 250 ms): /en 2.9 s, board 2.8 s, with Fraunces starting at 2.4 s.",
+      "expected": "LCP at or under 2.5 s in the standard Lighthouse mobile run and on slow airport Wi-Fi.",
+      "suggested_fix": "Same root fix as performance-04 (no root loading.tsx for static pages, so the h1 and lead are in the first HTML flush). Shrink the document (performance-09) and preload the display font where it is the LCP element (performance-05/10).",
+      "files": ["src/app/[lang]/loading.tsx", "src/app/[lang]/[airport]/layout.tsx", "src/fonts/index.ts"]
+    },
+    {
+      "id": "performance-08",
+      "title": "Every route ships 250 to 275 KB (gzip) of first-load JavaScript, 120 KB of it shell code that includes zod, the full icon registry and the demo generator",
+      "severity": "medium",
+      "area": "platform",
+      "url": "all pages",
+      "evidence": "From .next/build-manifest.json rootMainFiles plus each page_client-reference-manifest.js entryJSFiles (page and layouts), gzip -9: framework 128.6 KB; the same eight [lang]/layout chunks 120.1 KB on every route; page-specific 1.6 KB (corporate) to 26.6 KB (flight detail). Totals 250.3 (corporate) to 275.3 KB (flight detail), /en 263.0 KB (brotli 216.6 to 238.5 KB). Shell chunks identified by content: 3ja1rs91hq4qc.js 34.1 KB = zod 4 classic plus content schemas (Lighthouse: 22 to 24 KB unused at load); 0to19dt37pvik.js 22.7 KB = about 145 lucide icons (341 SVG paths) in the name-keyed registry; 15u7jvsixbpbh.js 12.7 KB = demo flight generator, routes and airlines; Radix 32 KB. Lighthouse transferred JS per page 322 to 426 KB including prefetched route chunks. Product strategy budget: home JavaScript 250 KB.",
+      "expected": "Home JavaScript at or under 250 KB transferred; content and guidance pages well under it (for example under 170 KB gzip), with the shell carrying only what every page needs.",
+      "suggested_fix": "Use zod/mini (or validate storage with small hand-written guards) in client code and keep content schemas server-only; split the icon registry (import icons directly per component or generate per-route sprites) so unused icons tree-shake; load the demo provider only in the components that show flights (dynamic import) rather than from the shell; audit Radix usage in the shell overlays and lazy-load the dialogs (search, concierge, airport switcher) on first open.",
+      "files": ["src/lib/preferences.ts", "src/lib/stores.ts", "src/lib/storage.ts", "src/content/types.ts", "src/components/ui/icon.tsx", "src/lib/providers/demo-flights.ts", "src/app/[lang]/layout.tsx"]
+    },
+    {
+      "id": "performance-09",
+      "title": "The whole interface dictionary (127 KB, 39 KB gzip) is inlined in every HTML document; the flight detail page sends it twice",
+      "severity": "medium",
+      "area": "platform",
+      "url": "all pages; worst /en/kul/flights/mh184-20261118-d",
+      "evidence": "curl and RSC payload parsing: I18nProvider in the root layout receives dictionary={getDictionary(lang)}: 126,921 bytes of JSON (38,942 gzip) in every page, including 28.7 KB of corporate copy on passenger pages; it is about half of the home's 78 KB gzip HTML. Inline RSC is 52 to 85 percent of each document (HTML gzip 57 to 79 KB on most pages). The flight detail page (rendered per request) contains the dictionary twice and its FlightDetail props twice (each with the whole airport object, 19 KB, from journeyContent={{ airport, ... }}): 500 KB raw, 127 KB gzip HTML. /en/journey passes notes (33 KB) and sources (19 KB) to MyJourney.",
+      "expected": "Only the strings a client component needs reach the browser; document HTML under about 40 KB gzip for content pages (build-spec section 10: no whole-airport objects in client props when a prop will do).",
+      "suggested_fix": "Split the dictionary by feature and pass each client island only its namespace (or translate on the server and pass rendered strings); keep corporate copy out of passenger pages. Pass airport slug and the few fields FlightDetail needs instead of the airport object. Investigate why the flight detail resume payload repeats the layout (a single Suspense boundary around the dynamic part, outside the layout, should avoid it).",
+      "files": ["src/app/[lang]/layout.tsx", "src/lib/i18n/client.tsx", "src/app/[lang]/[airport]/flights/[flightId]/page.tsx", "src/app/[lang]/journey/page.tsx"]
+    },
+    {
+      "id": "performance-10",
+      "title": "Fonts weigh 206 KB on the home pages (budget 150 KB), and the display face used by the LCP heading is not preloaded",
+      "severity": "medium",
+      "area": "design-system",
+      "url": "/en, /ms",
+      "evidence": "Lighthouse network requests: Hanken Grotesk 35 KB (preloaded via Link header), Fraunces 67 KB, Fraunces italic 81 KB, Geist Mono 24 KB on the homes (206 KB); other pages 125 KB. The italic sets only 'beautifully connected.' in the h1 (the LCP element on /en). Fraunces has preload: false ('display type is below the fold on most pages'), so on the congested Wi-Fi profile it starts at 2.4 s and the italic at 2.9 s, giving LCP 2.9 s; Geist Mono loads on every page.",
+      "expected": "Home fonts at or under 150 KB (product strategy budget); the LCP heading's face fetched early.",
+      "suggested_fix": "Drop the italic file (use the upright face in the accent colour, or a synthetic italic), or subset it to the glyphs used; preload Fraunces upright on pages whose h1 uses it; load Geist Mono only where tabular data appears above the fold (or rely on tabular-nums in Hanken Grotesk).",
+      "files": ["src/fonts/index.ts", "src/components/home/home-sections.tsx"]
+    },
+    {
+      "id": "performance-11",
+      "title": "Service-worker install on a first visit makes 94 fetches, downloads /en three times and brings the first visit to 1.07 MB",
+      "severity": "medium",
+      "area": "platform",
+      "url": "/en",
+      "evidence": "Playwright first visit to /en (Pixel 7), all requests recorded: page load 20 requests / 486 KB; RSC prefetch 15 / 55 KB; other after-load requests 8 / 155 KB; worker install 94 fetches for 28 distinct URLs / 401 KB as reported; total 138 requests, 1.07 MB. The worker fetches /en, /ms, /en/offline and /ms/offline with cache: 'reload' and then saves the current page again, so /en (78 KB) is downloaded three times; the four pages are saved in parallel and each checks cache.match before fetching its assets, so shared chunks are fetched up to 4 times (served by the HTTP cache when already loaded). Cache Storage after install: 2.5 MB.",
+      "expected": "A first visit costs little more than the page itself; precache only what offline mode needs, once.",
+      "suggested_fix": "Precache the current language's offline page and shell only (not both languages' homes); reuse the response the visitor already has for the current page instead of a reload fetch; dedupe asset fetches across pages (collect the asset set first, then fetch each once), and consider delaying install work until the network is idle or on a later visit.",
+      "files": ["src/components/platform/service-worker.ts", "src/components/platform/sw-routes.ts", "src/components/platform/sw-client.ts"]
+    },
+    {
+      "id": "performance-12",
+      "title": "Concierge chat is a skeleton until hydration, then the consent panel pushes content down (CLS 0.14 on mobile)",
+      "severity": "medium",
+      "area": "concierge",
+      "url": "/en/concierge",
+      "evidence": "Playwright Pixel 7, 2 of 2 loads: layout shift 0.1399 at 349 to 399 ms, the aside 'How answers are put together' moves out of the viewport. ConciergeChat returns a role=status skeleton while !hydrated and then the taller consent panel. The question field does not exist until hydration. Interactions after hydration are fast (accept 72 to 96 ms, typing 40 to 72 ms, submit 48 to 64 ms).",
+      "expected": "No layout shift on load; the consent text (static) visible in the server HTML.",
+      "suggested_fix": "Server-render the consent panel (it does not depend on storage for a first visit) and swap to the chat only when stored consent is found, keeping the container's min-height; or reserve the consent panel's height in the skeleton.",
+      "files": ["src/components/concierge/concierge-chat.tsx"]
+    },
+    {
+      "id": "performance-13",
+      "title": "Viewport prefetching costs 40 to 125 KB per mobile load and 235 KB on the desktop board",
+      "severity": "medium",
+      "area": "shell",
+      "url": "all pages; worst /en/kul (mobile) and /en/kul/flights (desktop)",
+      "evidence": "Lighthouse network requests with _rsc: 8 to 24 RSC prefetches per mobile page load (40 KB journey to 125 KB /en/kul), plus the JavaScript of the linked routes (transferred JS 322 to 426 KB against 250 to 275 KB first-load). Desktop: /en 25 prefetches (159 KB), /en/kul/flights 39 prefetches (235 KB) and 35 script files. These requests are what push 11 of 15 pages over the 40-request budget.",
+      "expected": "Prefetch does not compete with the page on slow or metered connections (airport Wi-Fi, roaming data).",
+      "suggested_fix": "Use prefetch only on the few likely next steps (board, flight, journey) and prefetch={false} on footer, mega-menu and long lists; or prefetch on hover/touchstart; respect navigator.connection.saveData and effectiveType.",
+      "files": ["src/components/common/locale-link.tsx", "src/components/shell"]
+    },
+    {
+      "id": "performance-14",
+      "title": "Opening the airport switcher takes 224 to 304 ms and the journey page's direction switch 208 to 216 ms",
+      "severity": "low",
+      "area": "shell",
+      "url": "/en/kul, /en/journey",
+      "evidence": "Event Timing, 4x CPU, 3 runs after hydration: /en/kul open the switcher 224/248/304 ms (processing 92 ms, presentation 112 ms), close with Escape 152 to 200 ms; /en/journey Departures to Arrivals 208/216/216 ms (processing 137 ms). Just above the 200 ms threshold; the home version of the switcher is 320 to 408 ms (performance-03).",
+      "expected": "Under 200 ms.",
+      "suggested_fix": "Keep the dialog content mounted (hidden) after first open or render its list in a transition; avoid normalising all airport choices on each open (memoise the haystack at module level); make the direction change a transition.",
+      "files": ["src/components/shell/airport-switcher.tsx", "src/components/flights/flight-direction.ts"]
+    },
+    {
+      "id": "performance-15",
+      "title": "Guidance pages exceed the 500 KB page-weight budget and most pages exceed 40 requests",
+      "severity": "low",
+      "area": "performance",
+      "url": "/en/airports, /en/guides, /en/corporate, /en/kul/transit, /en/kul/transport",
+      "evidence": "Lighthouse mobile transfer: /en/airports 582 KB, /en/corporate 598 KB, /en/guides 606 KB, /en/kul/transit 690 KB, /en/kul/transport 720 KB against the product-strategy budget of 500 KB for guidance pages. Requests 37 to 64; only journey, airports, concierge and corporate are at or under 40. Weight is mostly JavaScript (322 to 397 KB) and fonts (125 KB); no images.",
+      "expected": "Guidance pages at or under 500 KB and 40 requests (product strategy, metrics table).",
+      "suggested_fix": "Follows from performance-08, -09, -10 and -13; add a CI byte budget per route type.",
+      "files": ["docs/strategy/product-strategy.md"]
+    },
+    {
+      "id": "performance-16",
+      "title": "A new Intl.NumberFormat is constructed on every plural lookup",
+      "severity": "low",
+      "area": "platform",
+      "url": "/en/guides and any page with counts",
+      "evidence": "CDP CPU profile (4x) of /en/guides: the i18n 'count' function is the largest app-code self time after the framework (61 ms); src/lib/i18n/translate.ts:79 calls new Intl.NumberFormat(...) per call, and the bundled I18nProvider count helper does the same.",
+      "expected": "Formatters created once per language.",
+      "suggested_fix": "Cache one Intl.NumberFormat per language at module level (as src/lib/time.ts already does for DateTimeFormat).",
+      "files": ["src/lib/i18n/translate.ts", "src/lib/i18n/client.tsx"]
+    }
+  ]
+}

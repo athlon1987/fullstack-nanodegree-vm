@@ -1,0 +1,342 @@
+{
+ "key": "transport",
+ "url": "http://localhost:3101/en/kul/transport",
+ "preset": "mobile (Lighthouse default)",
+ "profile": null,
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-18T09:17:26.990Z",
+ "median": {
+  "performance": 89,
+  "accessibility": 100,
+  "bestPractices": 100,
+  "seo": 63,
+  "fcp_ms": 1246,
+  "lcp_ms": 1276,
+  "tbt_ms": 429,
+  "cls": 0,
+  "si_ms": 1567,
+  "totalBytes": 736863,
+  "requests": 56
+ },
+ "medianRunIndex": 0,
+ "diagnostics": {
+  "observed": {
+   "fcp": 228,
+   "lcp": 228,
+   "dcl": 301,
+   "load": 315,
+   "cls": 0.002534683027580909
+  },
+  "tti_ms": 4638,
+  "maxPotentialFid_ms": 216,
+  "lcpElement": {
+   "selector": "div.mx-auto > div.grid > div.min-w-0 > p.type-body-lg",
+   "label": "Choose where you are going and what matters most. Every fare and time here come…",
+   "snippet": "<p class=\"type-body-lg mt-4 max-w-reading text-ink-2\">"
+  },
+  "lcpPhases": {
+   "timeToFirstByte": 15,
+   "elementRenderDelay": 213
+  },
+  "renderBlocking": [
+   {
+    "url": "/_next/static/chunks/2blf4mykprvo-.css",
+    "bytes": 20494,
+    "ms": 155
+   }
+  ],
+  "layoutShifts": [
+   {
+    "score": 0.0025,
+    "node": "header.sticky > div.@container > div.flex > div.ml-auto",
+    "label": "KUL",
+    "cause": ""
+   }
+  ],
+  "longTasks": [
+   {
+    "url": "/en/kul/transport",
+    "start": 1213,
+    "dur": 216
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 3915,
+    "dur": 199
+   },
+   {
+    "url": "Unattributable",
+    "start": 1055,
+    "dur": 107
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 4361,
+    "dur": 106
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 4533,
+    "dur": 106
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 4146,
+    "dur": 99
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 4639,
+    "dur": 95
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 4245,
+    "dur": 71
+   }
+  ],
+  "bootup": [
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "total": 1250,
+    "scripting": 1082,
+    "parse": 20
+   },
+   {
+    "url": "/en/kul/transport",
+    "total": 857,
+    "scripting": 40,
+    "parse": 46
+   },
+   {
+    "url": "/_next/static/chunks/0_z_ds2phu1oc.js",
+    "total": 326,
+    "scripting": 244,
+    "parse": 15
+   },
+   {
+    "url": "Unattributable",
+    "total": 306,
+    "scripting": 11,
+    "parse": 0
+   }
+  ],
+  "mainThread": {
+   "scriptEvaluation": 1402,
+   "styleLayout": 534,
+   "other": 526,
+   "scriptParseCompile": 169,
+   "paintCompositeRender": 136,
+   "parseHTML": 64,
+   "garbageCollection": 50
+  },
+  "resources": {
+   "total": {
+    "n": 54,
+    "bytes": 735445
+   },
+   "script": {
+    "n": 27,
+    "bytes": 406737
+   },
+   "font": {
+    "n": 3,
+    "bytes": 128158
+   },
+   "other": {
+    "n": 22,
+    "bytes": 100712
+   },
+   "document": {
+    "n": 1,
+    "bytes": 79344
+   },
+   "stylesheet": {
+    "n": 1,
+    "bytes": 20494
+   },
+   "image": {
+    "n": 0,
+    "bytes": 0
+   },
+   "media": {
+    "n": 0,
+    "bytes": 0
+   },
+   "third-party": {
+    "n": 0,
+    "bytes": 0
+   }
+  },
+  "topRequests": [
+   {
+    "url": "/en/kul/transport",
+    "type": "Document",
+    "transfer": 79344,
+    "size": 386591
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "type": "Script",
+    "transfer": 72933,
+    "size": 229318
+   },
+   {
+    "url": "/_next/static/media/fraunces_latin_opsz_normal-s.17h97bimeg07z.woff2",
+    "type": "Font",
+    "transfer": 68312,
+    "size": 67304
+   },
+   {
+    "url": "/_next/static/chunks/0_z_ds2phu1oc.js",
+    "type": "Script",
+    "transfer": 47741,
+    "size": 169882
+   },
+   {
+    "url": "/_next/static/chunks/3ja1rs91hq4qc.js",
+    "type": "Script",
+    "transfer": 36099,
+    "size": 122029
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "type": "Font",
+    "transfer": 35711,
+    "size": 34704
+   },
+   {
+    "url": "/_next/static/chunks/0to19dt37pvik.js",
+    "type": "Script",
+    "transfer": 24592,
+    "size": 72635
+   },
+   {
+    "url": "/_next/static/media/geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+    "type": "Font",
+    "transfer": 24135,
+    "size": 23128
+   },
+   {
+    "url": "/_next/static/chunks/20zi65_zsmw1-.js",
+    "type": "Script",
+    "transfer": 20992,
+    "size": 58786
+   },
+   {
+    "url": "/_next/static/chunks/2blf4mykprvo-.css",
+    "type": "Stylesheet",
+    "transfer": 20494,
+    "size": 106576
+   }
+  ],
+  "fonts": [
+   {
+    "url": "hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "transfer": 35711,
+    "start": 41
+   },
+   {
+    "url": "fraunces_latin_opsz_normal-s.17h97bimeg07z.woff2",
+    "transfer": 68312,
+    "start": 203
+   },
+   {
+    "url": "geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+    "transfer": 24135,
+    "start": 203
+   }
+  ],
+  "prefetchFetches": 19,
+  "unusedJs": [
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "total": 71846,
+    "wasted": 25244
+   },
+   {
+    "url": "/_next/static/chunks/3ja1rs91hq4qc.js",
+    "total": 35012,
+    "wasted": 22633
+   }
+  ],
+  "domSize": [],
+  "a11yFailures": [
+   {
+    "id": "label-content-name-mismatch",
+    "n": 1,
+    "sample": [
+     "div.@container > div.flex > div.ml-auto > button.inline-flex"
+    ]
+   }
+  ],
+  "seoFailures": [
+   {
+    "id": "is-crawlable",
+    "n": 2,
+    "sample": [
+     "<meta name=\"robots\" content=\"noindex, nofollow\" />"
+    ]
+   }
+  ],
+  "bpFailures": []
+ },
+ "rows": [
+  {
+   "finalUrl": "/en/kul/transport",
+   "runtimeError": null,
+   "performance": 89,
+   "accessibility": 100,
+   "bestPractices": 100,
+   "seo": 63,
+   "fcp_ms": 1276,
+   "lcp_ms": 1276,
+   "tbt_ms": 429,
+   "cls": 0.003,
+   "si_ms": 1567,
+   "totalBytes": 735445,
+   "requests": 55,
+   "benchmarkIndex": 2411,
+   "throttling": "simulate {\"rttMs\":150,\"throughputKbps\":1638.4,\"requestLatencyMs\":562.5,\"downloadThroughputKbps\":1474.5600000000002,\"uploadThroughputKbps\":675,\"cpuSlowdownMultiplier\":4}",
+   "formFactor": "mobile"
+  },
+  {
+   "finalUrl": "/en/kul/transport",
+   "runtimeError": null,
+   "performance": 75,
+   "accessibility": 100,
+   "bestPractices": 100,
+   "seo": 63,
+   "fcp_ms": 1218,
+   "lcp_ms": 4250,
+   "tbt_ms": 444,
+   "cls": 0,
+   "si_ms": 1590,
+   "totalBytes": 736863,
+   "requests": 56,
+   "benchmarkIndex": 2232,
+   "throttling": "simulate {\"rttMs\":150,\"throughputKbps\":1638.4,\"requestLatencyMs\":562.5,\"downloadThroughputKbps\":1474.5600000000002,\"uploadThroughputKbps\":675,\"cpuSlowdownMultiplier\":4}",
+   "formFactor": "mobile"
+  },
+  {
+   "finalUrl": "/en/kul/transport",
+   "runtimeError": null,
+   "performance": 89,
+   "accessibility": 100,
+   "bestPractices": 100,
+   "seo": 63,
+   "fcp_ms": 1246,
+   "lcp_ms": 1246,
+   "tbt_ms": 426,
+   "cls": 0,
+   "si_ms": 1508,
+   "totalBytes": 746454,
+   "requests": 58,
+   "benchmarkIndex": 2319.5,
+   "throttling": "simulate {\"rttMs\":150,\"throughputKbps\":1638.4,\"requestLatencyMs\":562.5,\"downloadThroughputKbps\":1474.5600000000002,\"uploadThroughputKbps\":675,\"cpuSlowdownMultiplier\":4}",
+   "formFactor": "mobile"
+  }
+ ],
+ "caveat": "Lab measurement (Lighthouse 13.6, headless Chromium 1243) against next start on localhost in a shared 4-vCPU cloud container; other evaluators used the same CPU. Not field data."
+}

@@ -1,0 +1,1911 @@
+{
+ "measured": "2026-11-18T09:37:08.493Z",
+ "method": "Playwright Chromium (headless shell), Pixel 7 emulation, CDP Emulation.setCPUThrottlingRate 4, no network throttling, localhost next start; Event Timing type=event durationThreshold=16 buffered; interactions grouped by interactionId, worst per page reported",
+ "out": {
+  "home": {
+   "url": "/en",
+   "runs": [
+    {
+     "loadMs": 1849,
+     "steps": [
+      {
+       "label": "type in home flight search (\"MH184\")",
+       "err": null,
+       "interactions": 6,
+       "worst": {
+        "dur": 88,
+        "name": "keydown",
+        "target": "input#flight-search-input[q]",
+        "inDelay": 1,
+        "proc": 0,
+        "pres": 87,
+        "start": 4056
+       },
+       "all": [
+        88,
+        80,
+        80,
+        72,
+        56,
+        40
+       ]
+      },
+      {
+       "label": "switch journey mode to Arriving",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 392,
+        "name": "click",
+        "target": "input[_R_5p5feivb_]",
+        "inDelay": 27,
+        "proc": 302,
+        "pres": 63,
+        "start": 5604
+       },
+       "all": [
+        392
+       ]
+      },
+      {
+       "label": "switch journey mode to Transiting",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 160,
+        "name": "click",
+        "target": "input[_R_5p5feivb_]",
+        "inDelay": 19,
+        "proc": 59,
+        "pres": 83,
+        "start": 6855
+       },
+       "all": [
+        160
+       ]
+      },
+      {
+       "label": "switch Departures/Arrivals to Arrivals",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 104,
+        "name": "click",
+        "target": "span",
+        "inDelay": 24,
+        "proc": 35,
+        "pres": 45,
+        "start": 7865
+       },
+       "all": [
+        104
+       ]
+      },
+      {
+       "label": "open airport switcher",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 376,
+        "name": "click",
+        "target": "span",
+        "inDelay": 38,
+        "proc": 153,
+        "pres": 185,
+        "start": 8833
+       },
+       "all": [
+        376
+       ]
+      },
+      {
+       "label": "close airport switcher (Escape)",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 240,
+        "name": "keydown",
+        "target": "input#_r_0_",
+        "inDelay": 0,
+        "proc": 59,
+        "pres": 181,
+        "start": 10025
+       },
+       "all": [
+        240
+       ]
+      }
+     ],
+     "worst": {
+      "label": "switch journey mode to Arriving",
+      "dur": 392,
+      "name": "click",
+      "target": "input[_R_5p5feivb_]",
+      "inDelay": 27,
+      "proc": 302,
+      "pres": 63,
+      "start": 5604
+     },
+     "loafAtWorst": [
+      {
+       "start": 5614.5,
+       "dur": 354,
+       "block": 302.7,
+       "scripts": [
+        {
+         "src": "/_next/static/chunks/01t2i9pe5vz2-.js",
+         "fn": "fQ",
+         "inv": "#document.onclick",
+         "dur": 302
+        }
+       ]
+      }
+     ],
+     "cls": 0,
+     "layoutShifts": [],
+     "loafCount": 18,
+     "loafBlockingTotal": 1850
+    },
+    {
+     "loadMs": 1056,
+     "steps": [
+      {
+       "label": "type in home flight search (\"MH184\")",
+       "err": null,
+       "interactions": 6,
+       "worst": {
+        "dur": 80,
+        "name": "keydown",
+        "target": "input#flight-search-input[q]",
+        "inDelay": 1,
+        "proc": 1,
+        "pres": 78,
+        "start": 3014
+       },
+       "all": [
+        80,
+        64,
+        64,
+        56,
+        48,
+        32
+       ]
+      },
+      {
+       "label": "switch journey mode to Arriving",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 400,
+        "name": "click",
+        "target": "input[_R_5p5feivb_]",
+        "inDelay": 33,
+        "proc": 307,
+        "pres": 60,
+        "start": 4735
+       },
+       "all": [
+        400
+       ]
+      },
+      {
+       "label": "switch journey mode to Transiting",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 120,
+        "name": "click",
+        "target": "input[_R_5p5feivb_]",
+        "inDelay": 21,
+        "proc": 46,
+        "pres": 53,
+        "start": 5985
+       },
+       "all": [
+        120
+       ]
+      },
+      {
+       "label": "switch Departures/Arrivals to Arrivals",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 168,
+        "name": "click",
+        "target": "span",
+        "inDelay": 25,
+        "proc": 57,
+        "pres": 87,
+        "start": 6956
+       },
+       "all": [
+        168
+       ]
+      },
+      {
+       "label": "open airport switcher",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 408,
+        "name": "click",
+        "target": "span",
+        "inDelay": 40,
+        "proc": 159,
+        "pres": 209,
+        "start": 7979
+       },
+       "all": [
+        408
+       ]
+      },
+      {
+       "label": "close airport switcher (Escape)",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 152,
+        "name": "keydown",
+        "target": "input#_r_0_",
+        "inDelay": 1,
+        "proc": 47,
+        "pres": 104,
+        "start": 9198
+       },
+       "all": [
+        152
+       ]
+      }
+     ],
+     "worst": {
+      "label": "open airport switcher",
+      "dur": 408,
+      "name": "click",
+      "target": "span",
+      "inDelay": 40,
+      "proc": 159,
+      "pres": 209,
+      "start": 7979
+     },
+     "loafAtWorst": [
+      {
+       "start": 8004.300000000047,
+       "dur": 355.79999999981374,
+       "block": 305.8,
+       "scripts": [
+        {
+         "src": "/_next/static/chunks/01t2i9pe5vz2-.js",
+         "fn": "fQ",
+         "inv": "#document.onclick",
+         "dur": 159
+        }
+       ]
+      }
+     ],
+     "cls": 0,
+     "layoutShifts": [],
+     "loafCount": 14,
+     "loafBlockingTotal": 1947
+    },
+    {
+     "loadMs": 1314,
+     "steps": [
+      {
+       "label": "type in home flight search (\"MH184\")",
+       "err": null,
+       "interactions": 6,
+       "worst": {
+        "dur": 160,
+        "name": "keydown",
+        "target": "input#flight-search-input[q]",
+        "inDelay": 1,
+        "proc": 1,
+        "pres": 159,
+        "start": 3256
+       },
+       "all": [
+        160,
+        72,
+        64,
+        64,
+        48,
+        32
+       ]
+      },
+      {
+       "label": "switch journey mode to Arriving",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 520,
+        "name": "click",
+        "target": "input[_R_5p5feivb_]",
+        "inDelay": 37,
+        "proc": 423,
+        "pres": 60,
+        "start": 5058
+       },
+       "all": [
+        520
+       ]
+      },
+      {
+       "label": "switch journey mode to Transiting",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 144,
+        "name": "click",
+        "target": "input[_R_5p5feivb_]",
+        "inDelay": 26,
+        "proc": 46,
+        "pres": 72,
+        "start": 6447
+       },
+       "all": [
+        144
+       ]
+      },
+      {
+       "label": "switch Departures/Arrivals to Arrivals",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 160,
+        "name": "click",
+        "target": "span",
+        "inDelay": 31,
+        "proc": 69,
+        "pres": 60,
+        "start": 7438
+       },
+       "all": [
+        160
+       ]
+      },
+      {
+       "label": "open airport switcher",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 320,
+        "name": "click",
+        "target": "span",
+        "inDelay": 41,
+        "proc": 134,
+        "pres": 145,
+        "start": 8468
+       },
+       "all": [
+        320
+       ]
+      },
+      {
+       "label": "close airport switcher (Escape)",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 176,
+        "name": "keydown",
+        "target": "input#_r_0_",
+        "inDelay": 1,
+        "proc": 70,
+        "pres": 106,
+        "start": 9627
+       },
+       "all": [
+        176
+       ]
+      }
+     ],
+     "worst": {
+      "label": "switch journey mode to Arriving",
+      "dur": 520,
+      "name": "click",
+      "target": "input[_R_5p5feivb_]",
+      "inDelay": 37,
+      "proc": 423,
+      "pres": 60,
+      "start": 5058
+     },
+     "loafAtWorst": [
+      {
+       "start": 5074.399999999907,
+       "dur": 476.9000000001397,
+       "block": 425.8,
+       "scripts": [
+        {
+         "src": "/_next/static/chunks/01t2i9pe5vz2-.js",
+         "fn": "fQ",
+         "inv": "#document.onclick",
+         "dur": 422
+        }
+       ]
+      }
+     ],
+     "cls": 0,
+     "layoutShifts": [],
+     "loafCount": 15,
+     "loafBlockingTotal": 1980
+    }
+   ],
+   "medianWorst": 408,
+   "maxWorst": 520
+  },
+  "kul": {
+   "url": "/en/kul",
+   "runs": [
+    {
+     "loadMs": 2685,
+     "steps": [
+      {
+       "label": "open airport switcher",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 224,
+        "name": "click",
+        "target": "button[Change airport. Currently KLIA]",
+        "inDelay": 20,
+        "proc": 92,
+        "pres": 112,
+        "start": 4346
+       },
+       "all": [
+        224
+       ]
+      },
+      {
+       "label": "type in switcher search (\"pen\")",
+       "err": null,
+       "interactions": 3,
+       "worst": {
+        "dur": 64,
+        "name": "keydown",
+        "target": "input#_r_4_[p]",
+        "inDelay": 0,
+        "proc": 3,
+        "pres": 61,
+        "start": 5379
+       },
+       "all": [
+        64,
+        40,
+        32
+       ]
+      },
+      {
+       "label": "close airport switcher (Escape)",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 152,
+        "name": "keydown",
+        "target": "input#_r_4_",
+        "inDelay": 1,
+        "proc": 68,
+        "pres": 84,
+        "start": 6834
+       },
+       "all": [
+        152
+       ]
+      }
+     ],
+     "worst": {
+      "label": "open airport switcher",
+      "dur": 224,
+      "name": "click",
+      "target": "button[Change airport. Currently KLIA]",
+      "inDelay": 20,
+      "proc": 92,
+      "pres": 112,
+      "start": 4346
+     },
+     "loafAtWorst": [
+      {
+       "start": 4360.800000000047,
+       "dur": 185.30000000004657,
+       "block": 134.3,
+       "scripts": [
+        {
+         "src": "/_next/static/chunks/01t2i9pe5vz2-.js",
+         "fn": "fQ",
+         "inv": "#document.onclick",
+         "dur": 92
+        }
+       ]
+      }
+     ],
+     "cls": 0.0024,
+     "layoutShifts": [
+      {
+       "t": 1475,
+       "v": 0.0024,
+       "src": [
+        "div.ml-auto.flex.min-w-0"
+       ]
+      }
+     ],
+     "loafCount": 13,
+     "loafBlockingTotal": 897
+    },
+    {
+     "loadMs": 3000,
+     "steps": [
+      {
+       "label": "open airport switcher",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 248,
+        "name": "click",
+        "target": "button[Change airport. Currently KLIA]",
+        "inDelay": 18,
+        "proc": 114,
+        "pres": 116,
+        "start": 4663
+       },
+       "all": [
+        248
+       ]
+      },
+      {
+       "label": "type in switcher search (\"pen\")",
+       "err": null,
+       "interactions": 3,
+       "worst": {
+        "dur": 80,
+        "name": "keydown",
+        "target": "input#_r_4_[p]",
+        "inDelay": 1,
+        "proc": 3,
+        "pres": 76,
+        "start": 5749
+       },
+       "all": [
+        80,
+        32,
+        24
+       ]
+      },
+      {
+       "label": "close airport switcher (Escape)",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 168,
+        "name": "keydown",
+        "target": "input#_r_4_",
+        "inDelay": 1,
+        "proc": 67,
+        "pres": 101,
+        "start": 7200
+       },
+       "all": [
+        168
+       ]
+      }
+     ],
+     "worst": {
+      "label": "open airport switcher",
+      "dur": 248,
+      "name": "click",
+      "target": "button[Change airport. Currently KLIA]",
+      "inDelay": 18,
+      "proc": 114,
+      "pres": 116,
+      "start": 4663
+     },
+     "loafAtWorst": [
+      {
+       "start": 4676.399999999907,
+       "dur": 212,
+       "block": 162,
+       "scripts": [
+        {
+         "src": "/_next/static/chunks/01t2i9pe5vz2-.js",
+         "fn": "fQ",
+         "inv": "#document.onclick",
+         "dur": 114
+        }
+       ]
+      }
+     ],
+     "cls": 0.0024,
+     "layoutShifts": [
+      {
+       "t": 1626,
+       "v": 0.0024,
+       "src": [
+        "div.ml-auto.flex.min-w-0"
+       ]
+      }
+     ],
+     "loafCount": 15,
+     "loafBlockingTotal": 1193
+    },
+    {
+     "loadMs": 937,
+     "steps": [
+      {
+       "label": "open airport switcher",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 304,
+        "name": "click",
+        "target": "button[Change airport. Currently KLIA]",
+        "inDelay": 24,
+        "proc": 133,
+        "pres": 147,
+        "start": 2609
+       },
+       "all": [
+        304
+       ]
+      },
+      {
+       "label": "type in switcher search (\"pen\")",
+       "err": null,
+       "interactions": 3,
+       "worst": {
+        "dur": 144,
+        "name": "keydown",
+        "target": "input#_r_4_[p]",
+        "inDelay": 1,
+        "proc": 4,
+        "pres": 139,
+        "start": 3726
+       },
+       "all": [
+        144,
+        48,
+        32
+       ]
+      },
+      {
+       "label": "close airport switcher (Escape)",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 200,
+        "name": "keydown",
+        "target": "input#_r_4_",
+        "inDelay": 0,
+        "proc": 65,
+        "pres": 135,
+        "start": 5256
+       },
+       "all": [
+        200
+       ]
+      }
+     ],
+     "worst": {
+      "label": "open airport switcher",
+      "dur": 304,
+      "name": "click",
+      "target": "button[Change airport. Currently KLIA]",
+      "inDelay": 24,
+      "proc": 133,
+      "pres": 147,
+      "start": 2609
+     },
+     "loafAtWorst": [
+      {
+       "start": 2628.3000000000466,
+       "dur": 248.30000000004657,
+       "block": 198.3,
+       "scripts": [
+        {
+         "src": "/_next/static/chunks/01t2i9pe5vz2-.js",
+         "fn": "fQ",
+         "inv": "#document.onclick",
+         "dur": 133
+        }
+       ]
+      },
+      {
+       "start": 2897.8000000000466,
+       "dur": 58.800000000046566,
+       "block": 0,
+       "scripts": []
+      }
+     ],
+     "cls": 0.0024,
+     "layoutShifts": [
+      {
+       "t": 1420,
+       "v": 0.0024,
+       "src": [
+        "div.ml-auto.flex.min-w-0"
+       ]
+      }
+     ],
+     "loafCount": 14,
+     "loafBlockingTotal": 1022
+    }
+   ],
+   "medianWorst": 248,
+   "maxWorst": 304
+  },
+  "board": {
+   "url": "/en/kul/flights",
+   "runs": [
+    {
+     "loadMs": 2605,
+     "steps": [
+      {
+       "label": "type in board filter (\"MH\")",
+       "err": null,
+       "interactions": 3,
+       "worst": {
+        "dur": 784,
+        "name": "keydown",
+        "target": "input#_r_4_[q]",
+        "inDelay": 0,
+        "proc": 0,
+        "pres": 784,
+        "start": 4663
+       },
+       "all": [
+        784,
+        136,
+        40
+       ]
+      },
+      {
+       "label": "clear board filter",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 328,
+        "name": "click",
+        "target": "path",
+        "inDelay": 31,
+        "proc": 189,
+        "pres": 109,
+        "start": 6438
+       },
+       "all": [
+        328
+       ]
+      },
+      {
+       "label": "toggle a board filter chip",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 64,
+        "name": "click",
+        "target": "button",
+        "inDelay": 40,
+        "proc": 7,
+        "pres": 18,
+        "start": 7632
+       },
+       "all": [
+        64
+       ]
+      },
+      {
+       "label": "switch to Arrivals tab",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 48,
+        "name": "click",
+        "target": "button#radix-_r_0_-trigger-a",
+        "inDelay": 51,
+        "proc": 0,
+        "pres": -3,
+        "start": 8598
+       },
+       "all": [
+        48
+       ]
+      }
+     ],
+     "worst": {
+      "label": "type in board filter (\"MH\")",
+      "dur": 784,
+      "name": "keydown",
+      "target": "input#_r_4_[q]",
+      "inDelay": 0,
+      "proc": 0,
+      "pres": 784,
+      "start": 4663
+     },
+     "loafAtWorst": [
+      {
+       "start": 4662.800000000047,
+       "dur": 729.1999999999534,
+       "block": 678.8,
+       "scripts": [
+        {
+         "src": "/_next/static/chunks/01t2i9pe5vz2-.js",
+         "fn": "fQ",
+         "inv": "#document.oninput",
+         "dur": 523
+        }
+       ]
+      }
+     ],
+     "cls": 0.0024,
+     "layoutShifts": [
+      {
+       "t": 1392,
+       "v": 0.0024,
+       "src": [
+        "div.ml-auto.flex.min-w-0"
+       ]
+      }
+     ],
+     "loafCount": 13,
+     "loafBlockingTotal": 1663
+    },
+    {
+     "loadMs": 851,
+     "steps": [
+      {
+       "label": "type in board filter (\"MH\")",
+       "err": null,
+       "interactions": 3,
+       "worst": {
+        "dur": 832,
+        "name": "keydown",
+        "target": "input#_r_4_[q]",
+        "inDelay": 0,
+        "proc": 1,
+        "pres": 831,
+        "start": 2869
+       },
+       "all": [
+        832,
+        128,
+        56
+       ]
+      },
+      {
+       "label": "clear board filter",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 304,
+        "name": "click",
+        "target": "path",
+        "inDelay": 41,
+        "proc": 151,
+        "pres": 112,
+        "start": 4669
+       },
+       "all": [
+        304
+       ]
+      },
+      {
+       "label": "toggle a board filter chip",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 40,
+        "name": "click",
+        "target": "button",
+        "inDelay": 29,
+        "proc": 1,
+        "pres": 10,
+        "start": 5850
+       },
+       "all": [
+        40
+       ]
+      },
+      {
+       "label": "switch to Arrivals tab",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 48,
+        "name": "click",
+        "target": "button#radix-_r_0_-trigger-a",
+        "inDelay": 49,
+        "proc": 0,
+        "pres": -1,
+        "start": 6750
+       },
+       "all": [
+        48
+       ]
+      }
+     ],
+     "worst": {
+      "label": "type in board filter (\"MH\")",
+      "dur": 832,
+      "name": "keydown",
+      "target": "input#_r_4_[q]",
+      "inDelay": 0,
+      "proc": 1,
+      "pres": 831,
+      "start": 2869
+     },
+     "loafAtWorst": [
+      {
+       "start": 2869.1999999999534,
+       "dur": 780.7000000001863,
+       "block": 730.6,
+       "scripts": [
+        {
+         "src": "/_next/static/chunks/01t2i9pe5vz2-.js",
+         "fn": "fQ",
+         "inv": "#document.oninput",
+         "dur": 587
+        }
+       ]
+      }
+     ],
+     "cls": 0.0024,
+     "layoutShifts": [
+      {
+       "t": 1279,
+       "v": 0.0024,
+       "src": [
+        "div.ml-auto.flex.min-w-0"
+       ]
+      }
+     ],
+     "loafCount": 13,
+     "loafBlockingTotal": 1840
+    },
+    {
+     "loadMs": 1003,
+     "steps": [
+      {
+       "label": "type in board filter (\"MH\")",
+       "err": null,
+       "interactions": 3,
+       "worst": {
+        "dur": 736,
+        "name": "keydown",
+        "target": "input#_r_4_[q]",
+        "inDelay": 1,
+        "proc": 0,
+        "pres": 735,
+        "start": 3065
+       },
+       "all": [
+        736,
+        160,
+        64
+       ]
+      },
+      {
+       "label": "clear board filter",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 304,
+        "name": "click",
+        "target": "path",
+        "inDelay": 38,
+        "proc": 155,
+        "pres": 111,
+        "start": 4790
+       },
+       "all": [
+        304
+       ]
+      },
+      {
+       "label": "toggle a board filter chip",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 56,
+        "name": "click",
+        "target": "button",
+        "inDelay": 34,
+        "proc": 4,
+        "pres": 18,
+        "start": 5959
+       },
+       "all": [
+        56
+       ]
+      },
+      {
+       "label": "switch to Arrivals tab",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 56,
+        "name": "click",
+        "target": "button#radix-_r_0_-trigger-a",
+        "inDelay": 54,
+        "proc": 1,
+        "pres": 2,
+        "start": 6865
+       },
+       "all": [
+        56
+       ]
+      }
+     ],
+     "worst": {
+      "label": "type in board filter (\"MH\")",
+      "dur": 736,
+      "name": "keydown",
+      "target": "input#_r_4_[q]",
+      "inDelay": 1,
+      "proc": 0,
+      "pres": 735,
+      "start": 3065
+     },
+     "loafAtWorst": [
+      {
+       "start": 3065.7999999998137,
+       "dur": 680.6000000000931,
+       "block": 630.4,
+       "scripts": [
+        {
+         "src": "/_next/static/chunks/01t2i9pe5vz2-.js",
+         "fn": "fQ",
+         "inv": "#document.oninput",
+         "dur": 524
+        }
+       ]
+      }
+     ],
+     "cls": 0.0024,
+     "layoutShifts": [
+      {
+       "t": 1413,
+       "v": 0.0024,
+       "src": [
+        "div.ml-auto.flex.min-w-0"
+       ]
+      }
+     ],
+     "loafCount": 11,
+     "loafBlockingTotal": 1819
+    }
+   ],
+   "medianWorst": 784,
+   "maxWorst": 832
+  },
+  "map": {
+   "url": "/en/kul/map",
+   "runs": [
+    {
+     "loadMs": 802,
+     "steps": [
+      {
+       "label": "toggle map category filter #1",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 80,
+        "name": "click",
+        "target": "button",
+        "inDelay": 19,
+        "proc": 44,
+        "pres": 17,
+        "start": 2428
+       },
+       "all": [
+        80
+       ]
+      },
+      {
+       "label": "toggle map category filter #2",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 64,
+        "name": "click",
+        "target": "button",
+        "inDelay": 21,
+        "proc": 35,
+        "pres": 8,
+        "start": 3356
+       },
+       "all": [
+        64
+       ]
+      },
+      {
+       "label": "switch map level to L3",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 56,
+        "name": "click",
+        "target": "span",
+        "inDelay": 39,
+        "proc": 7,
+        "pres": 10,
+        "start": 4272
+       },
+       "all": [
+        56
+       ]
+      },
+      {
+       "label": "type in map search (\"toilet\")",
+       "err": null,
+       "interactions": 7,
+       "worst": {
+        "dur": 80,
+        "name": "keydown",
+        "target": "input#_r_0_[toil]",
+        "inDelay": 1,
+        "proc": 1,
+        "pres": 78,
+        "start": 5883
+       },
+       "all": [
+        80,
+        72,
+        72,
+        56,
+        56,
+        56,
+        56
+       ]
+      }
+     ],
+     "worst": {
+      "label": "toggle map category filter #1",
+      "dur": 80,
+      "name": "click",
+      "target": "button",
+      "inDelay": 19,
+      "proc": 44,
+      "pres": 17,
+      "start": 2428
+     },
+     "loafAtWorst": [
+      {
+       "start": 2441,
+       "dur": 55.299999999813735,
+       "block": 4.4,
+       "scripts": [
+        {
+         "src": "/_next/static/chunks/01t2i9pe5vz2-.js",
+         "fn": "fQ",
+         "inv": "#document.onclick",
+         "dur": 44
+        }
+       ]
+      }
+     ],
+     "cls": 0.0024,
+     "layoutShifts": [
+      {
+       "t": 1407,
+       "v": 0.0024,
+       "src": [
+        "div.ml-auto.flex.min-w-0"
+       ]
+      }
+     ],
+     "loafCount": 11,
+     "loafBlockingTotal": 603
+    },
+    {
+     "loadMs": 1290,
+     "steps": [
+      {
+       "label": "toggle map category filter #1",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 112,
+        "name": "click",
+        "target": "button",
+        "inDelay": 35,
+        "proc": 58,
+        "pres": 19,
+        "start": 2923
+       },
+       "all": [
+        112
+       ]
+      },
+      {
+       "label": "toggle map category filter #2",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 48,
+        "name": "click",
+        "target": "button",
+        "inDelay": 18,
+        "proc": 24,
+        "pres": 6,
+        "start": 3897
+       },
+       "all": [
+        48
+       ]
+      },
+      {
+       "label": "switch map level to L3",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 40,
+        "name": "click",
+        "target": "span",
+        "inDelay": 25,
+        "proc": 6,
+        "pres": 8,
+        "start": 4801
+       },
+       "all": [
+        40
+       ]
+      },
+      {
+       "label": "type in map search (\"toilet\")",
+       "err": null,
+       "interactions": 7,
+       "worst": {
+        "dur": 96,
+        "name": "keydown",
+        "target": "input#_r_0_[t]",
+        "inDelay": 3,
+        "proc": 2,
+        "pres": 91,
+        "start": 5737
+       },
+       "all": [
+        96,
+        80,
+        64,
+        48,
+        48,
+        40,
+        32
+       ]
+      }
+     ],
+     "worst": {
+      "label": "toggle map category filter #1",
+      "dur": 112,
+      "name": "click",
+      "target": "button",
+      "inDelay": 35,
+      "proc": 58,
+      "pres": 19,
+      "start": 2923
+     },
+     "loafAtWorst": [
+      {
+       "start": 2950.5,
+       "dur": 71.39999999990687,
+       "block": 21.3,
+       "scripts": [
+        {
+         "src": "/_next/static/chunks/01t2i9pe5vz2-.js",
+         "fn": "fQ",
+         "inv": "#document.onclick",
+         "dur": 58
+        }
+       ]
+      }
+     ],
+     "cls": 0.0024,
+     "layoutShifts": [
+      {
+       "t": 1770,
+       "v": 0.0024,
+       "src": [
+        "div.ml-auto.flex.min-w-0"
+       ]
+      }
+     ],
+     "loafCount": 13,
+     "loafBlockingTotal": 873
+    },
+    {
+     "loadMs": 2537,
+     "steps": [
+      {
+       "label": "toggle map category filter #1",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 96,
+        "name": "click",
+        "target": "button",
+        "inDelay": 24,
+        "proc": 58,
+        "pres": 14,
+        "start": 4174
+       },
+       "all": [
+        96
+       ]
+      },
+      {
+       "label": "toggle map category filter #2",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 56,
+        "name": "click",
+        "target": "button",
+        "inDelay": 19,
+        "proc": 28,
+        "pres": 9,
+        "start": 5141
+       },
+       "all": [
+        56
+       ]
+      },
+      {
+       "label": "switch map level to L3",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 40,
+        "name": "click",
+        "target": "span",
+        "inDelay": 29,
+        "proc": 8,
+        "pres": 3,
+        "start": 6058
+       },
+       "all": [
+        40
+       ]
+      },
+      {
+       "label": "type in map search (\"toilet\")",
+       "err": null,
+       "interactions": 7,
+       "worst": {
+        "dur": 128,
+        "name": "keydown",
+        "target": "input#_r_0_[t]",
+        "inDelay": 0,
+        "proc": 2,
+        "pres": 126,
+        "start": 7046
+       },
+       "all": [
+        128,
+        88,
+        72,
+        64,
+        64,
+        40,
+        40
+       ]
+      }
+     ],
+     "worst": {
+      "label": "type in map search (\"toilet\")",
+      "dur": 128,
+      "name": "keydown",
+      "target": "input#_r_0_[t]",
+      "inDelay": 0,
+      "proc": 2,
+      "pres": 126,
+      "start": 7046
+     },
+     "loafAtWorst": [
+      {
+       "start": 7042.09999999986,
+       "dur": 89.80000000004657,
+       "block": 34.8,
+       "scripts": [
+        {
+         "src": "/_next/static/chunks/01t2i9pe5vz2-.js",
+         "fn": "fQ",
+         "inv": "#document.oninput",
+         "dur": 44
+        }
+       ]
+      }
+     ],
+     "cls": 0.0024,
+     "layoutShifts": [
+      {
+       "t": 1516,
+       "v": 0.0024,
+       "src": [
+        "div.ml-auto.flex.min-w-0"
+       ]
+      }
+     ],
+     "loafCount": 12,
+     "loafBlockingTotal": 674
+    }
+   ],
+   "medianWorst": 112,
+   "maxWorst": 128
+  },
+  "journey": {
+   "url": "/en/journey",
+   "runs": [
+    {
+     "loadMs": 811,
+     "steps": [
+      {
+       "label": "type in journey flight search (\"MH1\")",
+       "err": null,
+       "interactions": 4,
+       "worst": {
+        "dur": 80,
+        "name": "keydown",
+        "target": "input#_r_0_-input[q]",
+        "inDelay": 1,
+        "proc": 0,
+        "pres": 80,
+        "start": 2717
+       },
+       "all": [
+        80,
+        56,
+        40,
+        24
+       ]
+      },
+      {
+       "label": "switch Departures/Arrivals to Arrivals",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 208,
+        "name": "click",
+        "target": "span",
+        "inDelay": 34,
+        "proc": 137,
+        "pres": 37,
+        "start": 4022
+       },
+       "all": [
+        208
+       ]
+      },
+      {
+       "label": "open \"Note where you parked\"",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 80,
+        "name": "click",
+        "target": null,
+        "inDelay": 33,
+        "proc": 23,
+        "pres": 24,
+        "start": 5072
+       },
+       "all": [
+        80
+       ]
+      }
+     ],
+     "worst": {
+      "label": "switch Departures/Arrivals to Arrivals",
+      "dur": 208,
+      "name": "click",
+      "target": "span",
+      "inDelay": 34,
+      "proc": 137,
+      "pres": 37,
+      "start": 4022
+     },
+     "loafAtWorst": [
+      {
+       "start": 4038.7999999998137,
+       "dur": 176.9000000001397,
+       "block": 126.8,
+       "scripts": [
+        {
+         "src": "/_next/static/chunks/01t2i9pe5vz2-.js",
+         "fn": "fQ",
+         "inv": "#document.onclick",
+         "dur": 128
+        }
+       ]
+      }
+     ],
+     "cls": 0.2265,
+     "layoutShifts": [
+      {
+       "t": 1551,
+       "v": 0.2265,
+       "src": [
+        "footer.mt-auto.border-t.border-line"
+       ]
+      }
+     ],
+     "loafCount": 11,
+     "loafBlockingTotal": 778
+    },
+    {
+     "loadMs": 807,
+     "steps": [
+      {
+       "label": "type in journey flight search (\"MH1\")",
+       "err": null,
+       "interactions": 4,
+       "worst": {
+        "dur": 120,
+        "name": "keydown",
+        "target": "input#_r_0_-input[q]",
+        "inDelay": 1,
+        "proc": 0,
+        "pres": 119,
+        "start": 2712
+       },
+       "all": [
+        120,
+        56,
+        48,
+        40
+       ]
+      },
+      {
+       "label": "switch Departures/Arrivals to Arrivals",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 216,
+        "name": "click",
+        "target": "span",
+        "inDelay": 34,
+        "proc": 134,
+        "pres": 49,
+        "start": 4072
+       },
+       "all": [
+        216
+       ]
+      },
+      {
+       "label": "open \"Note where you parked\"",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 104,
+        "name": "click",
+        "target": null,
+        "inDelay": 47,
+        "proc": 33,
+        "pres": 24,
+        "start": 5148
+       },
+       "all": [
+        104
+       ]
+      }
+     ],
+     "worst": {
+      "label": "switch Departures/Arrivals to Arrivals",
+      "dur": 216,
+      "name": "click",
+      "target": "span",
+      "inDelay": 34,
+      "proc": 134,
+      "pres": 49,
+      "start": 4072
+     },
+     "loafAtWorst": [
+      {
+       "start": 4086.399999999907,
+       "dur": 187.30000000004657,
+       "block": 136.3,
+       "scripts": [
+        {
+         "src": "/_next/static/chunks/01t2i9pe5vz2-.js",
+         "fn": "fQ",
+         "inv": "#document.onclick",
+         "dur": 124
+        }
+       ]
+      }
+     ],
+     "cls": 0.2265,
+     "layoutShifts": [
+      {
+       "t": 1636,
+       "v": 0.2265,
+       "src": [
+        "footer.mt-auto.border-t.border-line"
+       ]
+      }
+     ],
+     "loafCount": 10,
+     "loafBlockingTotal": 849
+    },
+    {
+     "loadMs": 757,
+     "steps": [
+      {
+       "label": "type in journey flight search (\"MH1\")",
+       "err": null,
+       "interactions": 4,
+       "worst": {
+        "dur": 80,
+        "name": "click",
+        "target": "input#_r_0_-input[q]",
+        "inDelay": 56,
+        "proc": 1,
+        "pres": 23,
+        "start": 2409
+       },
+       "all": [
+        80,
+        72,
+        56,
+        40
+       ]
+      },
+      {
+       "label": "switch Departures/Arrivals to Arrivals",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 216,
+        "name": "click",
+        "target": "span",
+        "inDelay": 32,
+        "proc": 153,
+        "pres": 32,
+        "start": 4052
+       },
+       "all": [
+        216
+       ]
+      },
+      {
+       "label": "open \"Note where you parked\"",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 112,
+        "name": "click",
+        "target": null,
+        "inDelay": 44,
+        "proc": 29,
+        "pres": 39,
+        "start": 5117
+       },
+       "all": [
+        112
+       ]
+      }
+     ],
+     "worst": {
+      "label": "switch Departures/Arrivals to Arrivals",
+      "dur": 216,
+      "name": "click",
+      "target": "span",
+      "inDelay": 32,
+      "proc": 153,
+      "pres": 32,
+      "start": 4052
+     },
+     "loafAtWorst": [
+      {
+       "start": 4063.1999999999534,
+       "dur": 193.30000000004657,
+       "block": 142,
+       "scripts": [
+        {
+         "src": "/_next/static/chunks/01t2i9pe5vz2-.js",
+         "fn": "fQ",
+         "inv": "#document.onclick",
+         "dur": 143
+        }
+       ]
+      }
+     ],
+     "cls": 0.2265,
+     "layoutShifts": [
+      {
+       "t": 1423,
+       "v": 0.2265,
+       "src": [
+        "footer.mt-auto.border-t.border-line"
+       ]
+      }
+     ],
+     "loafCount": 9,
+     "loafBlockingTotal": 714
+    }
+   ],
+   "medianWorst": 216,
+   "maxWorst": 216
+  },
+  "concierge": {
+   "url": "/en/concierge",
+   "runs": [
+    {
+     "loadMs": 791,
+     "steps": [
+      {
+       "label": "accept concierge consent (\"Agree and start\")",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 72,
+        "name": "click",
+        "target": null,
+        "inDelay": 25,
+        "proc": 19,
+        "pres": 28,
+        "start": 2441
+       },
+       "all": [
+        72
+       ]
+      },
+      {
+       "label": "type concierge question",
+       "err": "locator.tap: Timeout 30000ms exceeded.",
+       "interactions": 0,
+       "worst": null,
+       "all": []
+      },
+      {
+       "label": "submit concierge question (Enter)",
+       "err": null,
+       "interactions": 0,
+       "worst": null,
+       "all": []
+      }
+     ],
+     "worst": {
+      "label": "accept concierge consent (\"Agree and start\")",
+      "dur": 72,
+      "name": "click",
+      "target": null,
+      "inDelay": 25,
+      "proc": 19,
+      "pres": 28,
+      "start": 2441
+     },
+     "loafAtWorst": [],
+     "cls": 0.1399,
+     "layoutShifts": [
+      {
+       "t": 1312,
+       "v": 0.1399,
+       "src": [
+        "aside[How answers are put together].flex.min-w-0.flex-col"
+       ]
+      }
+     ],
+     "loafCount": 6,
+     "loafBlockingTotal": 300
+    },
+    {
+     "loadMs": 839,
+     "steps": [
+      {
+       "label": "accept concierge consent (\"Agree and start\")",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 72,
+        "name": "click",
+        "target": null,
+        "inDelay": 24,
+        "proc": 17,
+        "pres": 31,
+        "start": 2468
+       },
+       "all": [
+        72
+       ]
+      },
+      {
+       "label": "type concierge question",
+       "err": "locator.tap: Timeout 30000ms exceeded.",
+       "interactions": 0,
+       "worst": null,
+       "all": []
+      },
+      {
+       "label": "submit concierge question (Enter)",
+       "err": null,
+       "interactions": 0,
+       "worst": null,
+       "all": []
+      }
+     ],
+     "worst": {
+      "label": "accept concierge consent (\"Agree and start\")",
+      "dur": 72,
+      "name": "click",
+      "target": null,
+      "inDelay": 24,
+      "proc": 17,
+      "pres": 31,
+      "start": 2468
+     },
+     "loafAtWorst": [],
+     "cls": 0.1399,
+     "layoutShifts": [
+      {
+       "t": 1293,
+       "v": 0.1399,
+       "src": [
+        "aside[How answers are put together].flex.min-w-0.flex-col"
+       ]
+      }
+     ],
+     "loafCount": 6,
+     "loafBlockingTotal": 332
+    },
+    {
+     "loadMs": 1749,
+     "steps": [
+      {
+       "label": "accept concierge consent (\"Agree and start\")",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 72,
+        "name": "click",
+        "target": null,
+        "inDelay": 32,
+        "proc": 28,
+        "pres": 13,
+        "start": 3390
+       },
+       "all": [
+        72
+       ]
+      },
+      {
+       "label": "type concierge question",
+       "err": "locator.tap: Timeout 30000ms exceeded.",
+       "interactions": 0,
+       "worst": null,
+       "all": []
+      },
+      {
+       "label": "submit concierge question (Enter)",
+       "err": null,
+       "interactions": 0,
+       "worst": null,
+       "all": []
+      }
+     ],
+     "worst": {
+      "label": "accept concierge consent (\"Agree and start\")",
+      "dur": 72,
+      "name": "click",
+      "target": null,
+      "inDelay": 32,
+      "proc": 28,
+      "pres": 13,
+      "start": 3390
+     },
+     "loafAtWorst": [],
+     "cls": 0.1399,
+     "layoutShifts": [
+      {
+       "t": 1261,
+       "v": 0.1399,
+       "src": [
+        "aside[How answers are put together].flex.min-w-0.flex-col"
+       ]
+      }
+     ],
+     "loafCount": 6,
+     "loafBlockingTotal": 260
+    }
+   ],
+   "medianWorst": 72,
+   "maxWorst": 72
+  }
+ }
+}

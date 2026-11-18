@@ -1,0 +1,274 @@
+{
+  "role": "accessibility",
+  "method": "Playwright keyboard walkthroughs, accessibility-tree snapshots, live-region recorders, computed contrast, axe-core in dark/HC/125% modes, reflow and text-spacing scripts, Flesch-Kincaid; production build via next start -p 3102 on 2026-11-18",
+  "wcagSummary": {
+    "pass": 36,
+    "fail": 8,
+    "notApplicable": 11,
+    "notTested": 0,
+    "failing": [
+      "1.3.1",
+      "1.4.11",
+      "2.1.4",
+      "2.2.2",
+      "2.4.3",
+      "2.4.7",
+      "2.5.3",
+      "3.1.2"
+    ]
+  },
+  "findings": [
+    {
+      "id": "accessibility-01",
+      "title": "Focus falls to <body> after following an in-page link; next Tab jumps to the footer",
+      "severity": "high",
+      "area": "shell",
+      "url": "http://localhost:3102/en -> /en/kul/flights/mh2628-20261118-d; also -> /en/kul/map and /en/guides -> /en/journey",
+      "wcag": [
+        "2.4.3"
+      ],
+      "evidence": "Measured (Playwright, keyboard only, 1280x800): after Enter on a link inside main, document.activeElement is BODY; the first Tab focuses the footer link \"Malaysia Airports home\" and scrolls to scrollY=997. Reproduced on 3 navigations. Links in persistent nav keep focus on the link. Integration notes issue 2 understates this.",
+      "expected": "On pathname change, focus moves to the new page h1 (tabindex=-1) or main, so Tab continues from the top of the new content.",
+      "suggested_fix": "Shell effect keyed on pathname (not query) that focuses main h1; keep the route announcer; add an e2e test asserting document.activeElement after navigation.",
+      "files": [
+        "src/components/shell",
+        "docs/engineering/handoffs/integration.md"
+      ]
+    },
+    {
+      "id": "accessibility-02",
+      "title": "Airport switcher visible label \"KUL\" is not part of its accessible name",
+      "severity": "high",
+      "area": "shell",
+      "url": "http://localhost:3102/en/kul/flights (all airport-scoped pages)",
+      "wcag": [
+        "2.5.3"
+      ],
+      "evidence": "Measured: axe label-content-name-mismatch (experimental rule, not run by the suite) flags 1 node on /en/kul/flights, /kul/map, /kul/shop-dine, /kul/parking, /guides/departing, /concierge in light, dark, light HC, dark HC and 125%. Visible text \"KUL\" or \"KUL T1 TERMINAL 1\"; aria-label \"Change airport. Currently KLIA Terminal 1\".",
+      "expected": "The accessible name starts with the visible text so speech-input users can say \"click KUL\".",
+      "suggested_fix": "Name it \"KUL, KLIA Terminal 1: change airport\" or remove aria-label and add visually hidden text after the visible code.",
+      "files": [
+        "src/components/shell/airport-switcher.tsx:97",
+        "src/lib/i18n/en.ts:722",
+        "src/lib/i18n/ms.ts"
+      ]
+    },
+    {
+      "id": "accessibility-03",
+      "title": "Delayed and cancelled board times rely on strikethrough to show which time is old",
+      "severity": "high",
+      "area": "flights",
+      "url": "http://localhost:3102/en/kul/flights",
+      "wcag": [
+        "1.3.1"
+      ],
+      "evidence": "Measured (accessibility tree): the time cell for a delayed flight is <s>17:25</s> <span>18:20</span>, exposed as cell \"17:25 19:10\" with no \"scheduled\" or \"estimated\" word; most screen readers do not announce <s>. Same pattern in the phone list and saved-flight card. Flight detail page is correct (dl with Scheduled/Estimated).",
+      "expected": "Programmatic text such as \"Scheduled 17:25, now 18:20\" and \"Cancelled, was 17:25\".",
+      "suggested_fix": "Add visually hidden labels around the two times (keep the visual strikethrough), reusing the Scheduled/Estimated strings from the flight page.",
+      "files": [
+        "src/components/flights/flight-row.tsx:83",
+        "src/components/flights/flight-row.tsx:136",
+        "src/components/flights/saved-flight-card.tsx:103"
+      ]
+    },
+    {
+      "id": "accessibility-04",
+      "title": "Search palette active option is marked only by a 1.03:1 to 1.22:1 tint",
+      "severity": "high",
+      "area": "search",
+      "url": "http://localhost:3102/en/kul/flights (Ctrl+K, type \"KLIA\", ArrowDown)",
+      "wcag": [
+        "1.4.11",
+        "2.4.7"
+      ],
+      "evidence": "Measured (computed colours): aria-selected option background #e7e8f4 vs #ffffff = 1.22:1 (light and light HC); #20245a vs #1f2350 = 1.03:1 (dark). No outline, bar or icon; DOM focus stays in the combobox (aria-activedescendant). Screenshot reviewed: in dark mode the active row is barely distinguishable.",
+      "expected": "The active option differs from its neighbours by at least 3:1 (e.g. focus-colour outline or a left bar).",
+      "suggested_fix": "Add aria-selected:outline-2 aria-selected:outline-focus (or a 4 px inset left border in the focus colour) alongside bg-primary-soft.",
+      "files": [
+        "src/components/search/command-palette.tsx:43"
+      ]
+    },
+    {
+      "id": "accessibility-05",
+      "title": "Single-key \"/\" shortcut cannot be turned off or remapped",
+      "severity": "medium",
+      "area": "shell",
+      "url": "http://localhost:3102/en/kul/flights",
+      "wcag": [
+        "2.1.4"
+      ],
+      "evidence": "Measured: with focus on body or a link, pressing \"/\" opens the Search dialog; inside a text field it types \"/\" (correct). Display settings offers theme, text size, high contrast and reduce motion only. Level A failure, rated medium because the effect is a dismissible dialog.",
+      "expected": "A setting to turn single-character shortcuts off, or only modifier shortcuts (Ctrl/Cmd+K).",
+      "suggested_fix": "Add a \"Keyboard shortcuts\" switch (default on) to Display settings and check it in the global key handler, or drop \"/\" and keep Ctrl/Cmd+K.",
+      "files": [
+        "src/components/shell/global-overlays.tsx:41",
+        "src/components/shell/preferences-controls.tsx"
+      ]
+    },
+    {
+      "id": "accessibility-06",
+      "title": "Live board auto-updates every 30 seconds with no pause or frequency control",
+      "severity": "medium",
+      "area": "flights",
+      "url": "http://localhost:3102/en/kul/flights",
+      "wcag": [
+        "2.2.2"
+      ],
+      "evidence": "Measured (80 s recording, flight link focused): rows dropped from 63 to 61 and the \"Updated\" time changed; focus stayed on the same link and the page scrolled 90 px to keep it in place; 1 live-region change (aria-live=off). No control to pause or slow updates. Rated medium because updates are silent and keep focus.",
+      "expected": "A mechanism to pause, stop or set the frequency of auto-updating content presented alongside other content.",
+      "suggested_fix": "Add a \"Pause live updates\" toggle beside \"Refreshes every 30 seconds\"; pause while a row has focus or hover.",
+      "files": [
+        "src/lib/providers/demo-flights.ts:44",
+        "src/lib/hooks/use-flight-provider.ts:17"
+      ]
+    },
+    {
+      "id": "accessibility-07",
+      "title": "Focus ring is invisible on the yellow demo-data banner in dark themes",
+      "severity": "medium",
+      "area": "design-system",
+      "url": "http://localhost:3102/en/kul/flights (dark theme, Tab to \"About this prototype\" in the banner)",
+      "wcag": [
+        "1.4.11"
+      ],
+      "evidence": "Measured: outline #ff9fdc on banner #ffc233 = 1.16:1 (dark); #ffc2e9 on #ffc233 = 1.09:1 (dark high contrast). Light 4.29:1, light HC 5.87:1. Screenshot reviewed. Rated medium: one link per page.",
+      "expected": "Focus indicator at least 3:1 against the banner colour in every theme.",
+      "suggested_fix": "Override --color-focus inside the banner (use the light-theme #a6157f or the ink colour).",
+      "files": [
+        "src/components/common/demo-data-banner.tsx",
+        "src/app/globals.css:331",
+        "src/app/globals.css:391",
+        "src/app/globals.css:510"
+      ]
+    },
+    {
+      "id": "accessibility-08",
+      "title": "Large text sizes clip content and add sideways scrolling on narrow screens",
+      "severity": "medium",
+      "area": "design-system",
+      "url": "http://localhost:3102/en ; /en/kul/transport ; /en/help (320x640, in-app text size 125%)",
+      "wcag": [
+        "1.4.4",
+        "1.4.10"
+      ],
+      "evidence": "Measured: home network cards clip content by 34 to 55 px (overflow hidden on a 128 px card; IATA badges mostly cut off, screenshot reviewed); header \"Choose airport\" label spills out of its button; /en/kul/transport scrolls 30 px and /en/help 15 px sideways. At default text the badges are clipped by 8 to 12 px at 320x256, and at 200% text-only zoom on desktop.",
+      "expected": "No clipped text and no page-level horizontal scroll at 320 px with any in-app text size.",
+      "suggested_fix": "Let card title and badge wrap (flex-wrap, min-width 0, no overflow hidden on text), let the header label wrap or collapse to an icon with a name, overflow-wrap:anywhere on long strings.",
+      "files": [
+        "src/components/home/home-sections.tsx",
+        "src/components/shell/airport-switcher.tsx"
+      ]
+    },
+    {
+      "id": "accessibility-09",
+      "title": "Sticky header and bottom bar cover half the viewport at 400% zoom",
+      "severity": "low",
+      "area": "shell",
+      "url": "http://localhost:3102/en (320x256)",
+      "wcag": [
+        "1.4.10"
+      ],
+      "evidence": "Measured: sticky header 68 px plus fixed bottom bar 57 px = 125 of 256 px; 131 px left for content. No content lost and 0 focus stops fully hidden (2.4.11 passes), so advisory.",
+      "expected": "More reading room at very small viewport heights.",
+      "suggested_fix": "Un-stick the header (or hide on scroll down) below about 400 px viewport height.",
+      "files": [
+        "src/components/shell"
+      ]
+    },
+    {
+      "id": "accessibility-10",
+      "title": "Transport page: an h3 precedes its section h2 in source order",
+      "severity": "low",
+      "area": "transport",
+      "url": "http://localhost:3102/en/kul/transport",
+      "wcag": [
+        "1.3.1"
+      ],
+      "evidence": "Measured: in the region labelled \"Not covered here yet\", h3 \"Driving yourself\" comes before h2 \"Not covered here yet\" in the DOM (both at y=3036).",
+      "expected": "Section heading first in source order.",
+      "suggested_fix": "Reorder the markup (use CSS grid order for the visual layout if needed).",
+      "files": [
+        "src/app/[lang]/[airport]/transport/page.tsx"
+      ]
+    },
+    {
+      "id": "accessibility-11",
+      "title": "Search palette text field has no visible focus ring",
+      "severity": "low",
+      "area": "search",
+      "url": "http://localhost:3102/en (Open search)",
+      "wcag": [
+        "2.4.7"
+      ],
+      "evidence": "Measured: the combobox has outline none and no wrapper ring; only the caret shows focus (home and board search fields do show a wrapper ring). Screenshot reviewed.",
+      "expected": "A visible ring consistent with other search fields.",
+      "suggested_fix": "Add has-[:focus-visible]:focus-ring (or focus-within ring) to the palette input wrapper.",
+      "files": [
+        "src/components/search/command-palette.tsx"
+      ]
+    },
+    {
+      "id": "accessibility-12",
+      "title": "English source titles on Malay pages lack lang=\"en\"",
+      "severity": "low",
+      "area": "content",
+      "url": "http://localhost:3102/ms/kul/parking",
+      "wcag": [
+        "3.1.2"
+      ],
+      "evidence": "Measured (text scan): 6 English-language source titles on /ms/kul/parking and 1 on /ms/guides/departing sit inside lang=\"ms\" with no lang override, e.g. \"RM2,084 to park at KLIA: if you are going to park long term...\". English pages mark Malay correctly.",
+      "expected": "Text in another language carries its own lang attribute.",
+      "suggested_fix": "Render source titles with lang from the source record (default en).",
+      "files": [
+        "src/components/common/source-note.tsx:43"
+      ]
+    },
+    {
+      "id": "accessibility-13",
+      "title": "Immigration and customs guide reads at grade 11",
+      "severity": "low",
+      "area": "guides",
+      "url": "http://localhost:3102/en/guides/immigration-customs",
+      "wcag": [
+        "3.1.5"
+      ],
+      "evidence": "Measured (Flesch-Kincaid on main text): grade 11.3, reading ease 40, 20 sentences over 25 words; other guides grade 7.5 to 8.7, ease 56 to 64.",
+      "expected": "Plain language near grade 8 for travel guidance (3.1.5 AAA, advisory).",
+      "suggested_fix": "Split long sentences, lead with the action, move dated reporting into source notes.",
+      "files": [
+        "src/content/guides.ts"
+      ]
+    },
+    {
+      "id": "accessibility-14",
+      "title": "Concierge question field drops below the fold after an answer while keeping focus",
+      "severity": "low",
+      "area": "concierge",
+      "url": "http://localhost:3102/en/concierge",
+      "wcag": [],
+      "evidence": "Measured (1280x800): after one answer the focused field moved from y=534 to y=1027, outside the viewport.",
+      "expected": "The focused composer stays visible after each answer.",
+      "suggested_fix": "Make the composer sticky or call scrollIntoView({block:\"nearest\"}) on the field after rendering an answer.",
+      "files": [
+        "src/components/concierge"
+      ]
+    },
+    {
+      "id": "accessibility-15",
+      "title": "Board changes are never announced, even for a saved flight",
+      "severity": "low",
+      "area": "flights",
+      "url": "http://localhost:3102/en/kul/flights",
+      "wcag": [
+        "4.1.3"
+      ],
+      "evidence": "Measured: over 80 s the only live-region change was the aria-live=off timestamp. The build spec asks for polite board-update announcements; a screen-reader user watching their own flight learns of a gate or time change only by re-reading.",
+      "expected": "One polite announcement when a saved flight changes status, gate or time.",
+      "suggested_fix": "Diff saved flights on refresh and post a single polite message.",
+      "files": [
+        "src/lib/hooks/use-flight-provider.ts",
+        "docs/engineering/build-spec.md"
+      ]
+    }
+  ]
+}

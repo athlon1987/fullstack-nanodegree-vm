@@ -1,0 +1,887 @@
+{
+ "evaluator": "exec-commerce panel",
+ "date": "2026-11-18",
+ "server": "next start -p 3106 (existing .next build)",
+ "method": "Playwright 1440x900 desktop and iPhone 14 (390x664 CSS viewport) emulation, networkidle + 800 ms, single run per page",
+ "pages": [
+  {
+   "path": "/en",
+   "desktop": {
+    "status": 200,
+    "loadMs": 1484,
+    "requests": 56,
+    "transferKB": 757,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 5317,
+    "pageHeightPx": 5181,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   },
+   "h1": "Your journey, beautifully connected.",
+   "mobile": {
+    "status": 200,
+    "loadMs": 1315,
+    "requests": 40,
+    "transferKB": 660,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 4624,
+    "pageHeightPx": 8889,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   }
+  },
+  {
+   "path": "/en/kul",
+   "desktop": {
+    "status": 200,
+    "loadMs": 983,
+    "requests": 76,
+    "transferKB": 523,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 4500,
+    "pageHeightPx": 3997,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   },
+   "h1": "Kuala Lumpur International Airport",
+   "mobile": {
+    "status": 200,
+    "loadMs": 1024,
+    "requests": 53,
+    "transferKB": 413,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 4117,
+    "pageHeightPx": 7353,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   }
+  },
+  {
+   "path": "/en/kul/flights",
+   "desktop": {
+    "status": 200,
+    "loadMs": 1015,
+    "requests": 78,
+    "transferKB": 449,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 5006,
+    "pageHeightPx": 4531,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   },
+   "h1": "Departures and arrivals",
+   "mobile": {
+    "status": 200,
+    "loadMs": 895,
+    "requests": 46,
+    "transferKB": 321,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 5524,
+    "pageHeightPx": 8571,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   }
+  },
+  {
+   "path": "/en/kul/flights/mh939-20261118-d",
+   "desktop": {
+    "status": 200,
+    "loadMs": 1427,
+    "requests": 89,
+    "transferKB": 722,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 5964,
+    "pageHeightPx": 4059,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   },
+   "h1": "MH 939 to Delhi",
+   "mobile": {
+    "status": 200,
+    "loadMs": 1122,
+    "requests": 47,
+    "transferKB": 567,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 5932,
+    "pageHeightPx": 7536,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   }
+  },
+  {
+   "path": "/en/kul/flights/mh1663-20261118-a",
+   "desktop": {
+    "status": 200,
+    "loadMs": 1000,
+    "requests": 93,
+    "transferKB": 769,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 5196,
+    "pageHeightPx": 3626,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   },
+   "h1": "MH 1663 from Shanghai",
+   "mobile": {
+    "status": 200,
+    "loadMs": 1002,
+    "requests": 47,
+    "transferKB": 567,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 5163,
+    "pageHeightPx": 6740,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   }
+  },
+  {
+   "path": "/en/kul/parking",
+   "desktop": {
+    "status": 200,
+    "loadMs": 856,
+    "requests": 75,
+    "transferKB": 524,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 7531,
+    "pageHeightPx": 5267,
+    "horizontalOverflow": false,
+    "notPublished": 4
+   },
+   "h1": "Parking at KLIA",
+   "mobile": {
+    "status": 200,
+    "loadMs": 749,
+    "requests": 51,
+    "transferKB": 413,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 7503,
+    "pageHeightPx": 9815,
+    "horizontalOverflow": false,
+    "notPublished": 4
+   }
+  },
+  {
+   "path": "/en/kul/transport",
+   "desktop": {
+    "status": 200,
+    "loadMs": 956,
+    "requests": 75,
+    "transferKB": 568,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 9377,
+    "pageHeightPx": 6574,
+    "horizontalOverflow": false,
+    "notPublished": 14
+   },
+   "h1": "Getting to and from KLIA",
+   "mobile": {
+    "status": 200,
+    "loadMs": 826,
+    "requests": 51,
+    "transferKB": 451,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 9337,
+    "pageHeightPx": 11148,
+    "horizontalOverflow": false,
+    "notPublished": 14
+   }
+  },
+  {
+   "path": "/en/kul/shop-dine",
+   "desktop": {
+    "status": 200,
+    "loadMs": 808,
+    "requests": 76,
+    "transferKB": 519,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 3817,
+    "pageHeightPx": 3337,
+    "horizontalOverflow": false,
+    "notPublished": 5
+   },
+   "h1": "Shop & dine",
+   "mobile": {
+    "status": 200,
+    "loadMs": 825,
+    "requests": 51,
+    "transferKB": 407,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 3295,
+    "pageHeightPx": 6337,
+    "horizontalOverflow": false,
+    "notPublished": 5
+   }
+  },
+  {
+   "path": "/en/kul/shop-dine/paul-le-cafe",
+   "desktop": {
+    "status": 200,
+    "loadMs": 797,
+    "requests": 79,
+    "transferKB": 474,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 1946,
+    "pageHeightPx": 2464,
+    "horizontalOverflow": false,
+    "notPublished": 3
+   },
+   "h1": "PAUL Le Cafe",
+   "mobile": {
+    "status": 200,
+    "loadMs": 838,
+    "requests": 54,
+    "transferKB": 364,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 1908,
+    "pageHeightPx": 4434,
+    "horizontalOverflow": false,
+    "notPublished": 3
+   }
+  },
+  {
+   "path": "/en/kul/lounges",
+   "desktop": {
+    "status": 200,
+    "loadMs": 829,
+    "requests": 75,
+    "transferKB": 561,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 5401,
+    "pageHeightPx": 4694,
+    "horizontalOverflow": false,
+    "notPublished": 9
+   },
+   "h1": "Lounges and hotels",
+   "mobile": {
+    "status": 200,
+    "loadMs": 808,
+    "requests": 48,
+    "transferKB": 437,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 5362,
+    "pageHeightPx": 8759,
+    "horizontalOverflow": false,
+    "notPublished": 9
+   }
+  },
+  {
+   "path": "/en/kul/transit",
+   "desktop": {
+    "status": 200,
+    "loadMs": 934,
+    "requests": 75,
+    "transferKB": 555,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 8063,
+    "pageHeightPx": 5217,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   },
+   "h1": "Connecting at KLIA",
+   "mobile": {
+    "status": 200,
+    "loadMs": 865,
+    "requests": 48,
+    "transferKB": 432,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 8019,
+    "pageHeightPx": 10336,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   }
+  },
+  {
+   "path": "/en/kul/facilities",
+   "desktop": {
+    "status": 200,
+    "loadMs": 838,
+    "requests": 93,
+    "transferKB": 713,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 9763,
+    "pageHeightPx": 9616,
+    "horizontalOverflow": false,
+    "notPublished": 21
+   },
+   "h1": "Facilities and services",
+   "mobile": {
+    "status": 200,
+    "loadMs": 821,
+    "requests": 49,
+    "transferKB": 515,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 9383,
+    "pageHeightPx": 14786,
+    "horizontalOverflow": false,
+    "notPublished": 21
+   }
+  },
+  {
+   "path": "/en/kul/map",
+   "desktop": {
+    "status": 200,
+    "loadMs": 870,
+    "requests": 89,
+    "transferKB": 654,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 8375,
+    "pageHeightPx": 4482,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   },
+   "h1": "Terminal map",
+   "mobile": {
+    "status": 200,
+    "loadMs": 933,
+    "requests": 46,
+    "transferKB": 487,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 8226,
+    "pageHeightPx": 9845,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   }
+  },
+  {
+   "path": "/en/notices",
+   "desktop": {
+    "status": 200,
+    "loadMs": 758,
+    "requests": 58,
+    "transferKB": 419,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 4158,
+    "pageHeightPx": 3395,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   },
+   "h1": "Travel notices",
+   "mobile": {
+    "status": 200,
+    "loadMs": 767,
+    "requests": 36,
+    "transferKB": 312,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 4143,
+    "pageHeightPx": 5041,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   }
+  },
+  {
+   "path": "/en/concierge",
+   "desktop": {
+    "status": 200,
+    "loadMs": 795,
+    "requests": 62,
+    "transferKB": 391,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 2173,
+    "pageHeightPx": 2374,
+    "horizontalOverflow": false,
+    "notPublished": 1
+   },
+   "h1": "Ask the concierge",
+   "mobile": {
+    "status": 200,
+    "loadMs": 724,
+    "requests": 37,
+    "transferKB": 278,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 2163,
+    "pageHeightPx": 3862,
+    "horizontalOverflow": false,
+    "notPublished": 1
+   }
+  },
+  {
+   "path": "/en/journey",
+   "desktop": {
+    "status": 200,
+    "loadMs": 781,
+    "requests": 55,
+    "transferKB": 417,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 898,
+    "pageHeightPx": 1928,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   },
+   "h1": "My journey",
+   "mobile": {
+    "status": 200,
+    "loadMs": 722,
+    "requests": 34,
+    "transferKB": 299,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 777,
+    "pageHeightPx": 2989,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   }
+  },
+  {
+   "path": "/en/search?q=parking",
+   "desktop": {
+    "status": 200,
+    "loadMs": 933,
+    "requests": 70,
+    "transferKB": 163,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 2529,
+    "pageHeightPx": 2540,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   },
+   "h1": "Search",
+   "mobile": {
+    "status": 200,
+    "loadMs": 764,
+    "requests": 41,
+    "transferKB": 52,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 2522,
+    "pageHeightPx": 4210,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   }
+  },
+  {
+   "path": "/en/airports",
+   "desktop": {
+    "status": 200,
+    "loadMs": 843,
+    "requests": 65,
+    "transferKB": 439,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 2681,
+    "pageHeightPx": 3235,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   },
+   "h1": "Choose an airport",
+   "mobile": {
+    "status": 200,
+    "loadMs": 780,
+    "requests": 36,
+    "transferKB": 326,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 2668,
+    "pageHeightPx": 7382,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   }
+  },
+  {
+   "path": "/en/pen",
+   "desktop": {
+    "status": 200,
+    "loadMs": 854,
+    "requests": 64,
+    "transferKB": 458,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 3489,
+    "pageHeightPx": 3773,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   },
+   "h1": "Penang International Airport",
+   "mobile": {
+    "status": 200,
+    "loadMs": 897,
+    "requests": 49,
+    "transferKB": 374,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 3168,
+    "pageHeightPx": 6137,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   }
+  },
+  {
+   "path": "/en/pen/parking",
+   "desktop": {
+    "status": 200,
+    "loadMs": 779,
+    "requests": 65,
+    "transferKB": 453,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 4681,
+    "pageHeightPx": 4313,
+    "horizontalOverflow": false,
+    "notPublished": 2
+   },
+   "h1": "Parking at Penang",
+   "mobile": {
+    "status": 200,
+    "loadMs": 907,
+    "requests": 46,
+    "transferKB": 363,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 4653,
+    "pageHeightPx": 7396,
+    "horizontalOverflow": false,
+    "notPublished": 2
+   }
+  },
+  {
+   "path": "/en/bki/lounges",
+   "desktop": {
+    "status": 200,
+    "loadMs": 811,
+    "requests": 65,
+    "transferKB": 414,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 2092,
+    "pageHeightPx": 2670,
+    "horizontalOverflow": false,
+    "notPublished": 1
+   },
+   "h1": "Lounges and hotels",
+   "mobile": {
+    "status": 200,
+    "loadMs": 827,
+    "requests": 46,
+    "transferKB": 325,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 2053,
+    "pageHeightPx": 4106,
+    "horizontalOverflow": false,
+    "notPublished": 1
+   }
+  },
+  {
+   "path": "/en/lgk",
+   "desktop": {
+    "status": 200,
+    "loadMs": 798,
+    "requests": 53,
+    "transferKB": 399,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 2445,
+    "pageHeightPx": 3369,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   },
+   "h1": "Langkawi International Airport",
+   "mobile": {
+    "status": 200,
+    "loadMs": 759,
+    "requests": 37,
+    "transferKB": 316,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 2193,
+    "pageHeightPx": 5150,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   }
+  },
+  {
+   "path": "/en/corporate",
+   "desktop": {
+    "status": 200,
+    "loadMs": 869,
+    "requests": 67,
+    "transferKB": 521,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 2694,
+    "pageHeightPx": 3044,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   },
+   "h1": "The company that runs Malaysia’s airports",
+   "mobile": {
+    "status": 200,
+    "loadMs": 712,
+    "requests": 37,
+    "transferKB": 370,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 2612,
+    "pageHeightPx": 5810,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   }
+  },
+  {
+   "path": "/en/corporate/about",
+   "desktop": {
+    "status": 200,
+    "loadMs": 1071,
+    "requests": 85,
+    "transferKB": 783,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 9445,
+    "pageHeightPx": 9358,
+    "horizontalOverflow": false,
+    "notPublished": 1
+   },
+   "h1": "About Malaysia Airports",
+   "mobile": {
+    "status": 200,
+    "loadMs": 1028,
+    "requests": 38,
+    "transferKB": 567,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 9341,
+    "pageHeightPx": 14376,
+    "horizontalOverflow": false,
+    "notPublished": 1
+   }
+  },
+  {
+   "path": "/en/corporate/business",
+   "desktop": {
+    "status": 200,
+    "loadMs": 805,
+    "requests": 66,
+    "transferKB": 515,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 3478,
+    "pageHeightPx": 3231,
+    "horizontalOverflow": false,
+    "notPublished": 7
+   },
+   "h1": "Business with Malaysia Airports",
+   "mobile": {
+    "status": 200,
+    "loadMs": 789,
+    "requests": 39,
+    "transferKB": 374,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 3377,
+    "pageHeightPx": 6253,
+    "horizontalOverflow": false,
+    "notPublished": 7
+   }
+  },
+  {
+   "path": "/en/corporate/news",
+   "desktop": {
+    "status": 200,
+    "loadMs": 986,
+    "requests": 85,
+    "transferKB": 812,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 7934,
+    "pageHeightPx": 5768,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   },
+   "h1": "Media centre",
+   "mobile": {
+    "status": 200,
+    "loadMs": 815,
+    "requests": 38,
+    "transferKB": 596,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 7838,
+    "pageHeightPx": 9824,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   }
+  },
+  {
+   "path": "/en/help/contact",
+   "desktop": {
+    "status": 200,
+    "loadMs": 791,
+    "requests": 54,
+    "transferKB": 389,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 1599,
+    "pageHeightPx": 2162,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   },
+   "h1": "Contact Malaysia Airports",
+   "mobile": {
+    "status": 200,
+    "loadMs": 774,
+    "requests": 39,
+    "transferKB": 312,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 1568,
+    "pageHeightPx": 4128,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   }
+  },
+  {
+   "path": "/en/accessibility",
+   "desktop": {
+    "status": 200,
+    "loadMs": 741,
+    "requests": 53,
+    "transferKB": 480,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 6499,
+    "pageHeightPx": 5793,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   },
+   "h1": "Assistance and accessibility",
+   "mobile": {
+    "status": 200,
+    "loadMs": 811,
+    "requests": 39,
+    "transferKB": 405,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 6465,
+    "pageHeightPx": 9852,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   }
+  },
+  {
+   "path": "/ms/kul/parking",
+   "desktop": {
+    "status": 200,
+    "loadMs": 943,
+    "requests": 76,
+    "transferKB": 540,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 8246,
+    "pageHeightPx": 5511,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   },
+   "h1": "Parkir di KLIA",
+   "mobile": {
+    "status": 200,
+    "loadMs": 880,
+    "requests": 51,
+    "transferKB": 427,
+    "thirdPartyHosts": 0,
+    "consoleErrors": 0,
+    "mainTextChars": 8202,
+    "pageHeightPx": 10376,
+    "horizontalOverflow": false,
+    "notPublished": 0
+   }
+  }
+ ],
+ "phonePositionsPx": {
+  "viewportHeight": 664,
+  "kulBoardFirstFlightRow": 1185,
+  "kulBoardSearchField": 623,
+  "airportSubpageH1": 440,
+  "parkingBookCta": 657,
+  "parkingEstimateFigure": 2206,
+  "shopDineFirstOutlet": 1704
+ },
+ "homeSearchMH939ResultMs": {
+  "desktop": 114,
+  "phone": 101
+ },
+ "lighthouseMobileSingleRun": {
+  "home": {
+   "performance": 77,
+   "accessibility": 100,
+   "bestPractices": 100,
+   "seo": 63,
+   "fcp_ms": 1269,
+   "lcp_ms": 1269,
+   "tbt_ms": 1076,
+   "cls": 0,
+   "si_ms": 1577,
+   "totalBytes": 717889,
+   "requests": 45
+  },
+  "flight": {
+   "performance": 67,
+   "accessibility": 100,
+   "bestPractices": 100,
+   "seo": 54,
+   "fcp_ms": 1367,
+   "lcp_ms": 4835,
+   "tbt_ms": 621,
+   "cls": 0.003,
+   "si_ms": 1636,
+   "totalBytes": 778510,
+   "requests": 49
+  },
+  "parking": {
+   "performance": 89,
+   "accessibility": 100,
+   "bestPractices": 100,
+   "seo": 63,
+   "fcp_ms": 1151,
+   "lcp_ms": 1151,
+   "tbt_ms": 456,
+   "cls": 0,
+   "si_ms": 1574,
+   "totalBytes": 735547,
+   "requests": 58
+  },
+  "shop": {
+   "performance": 91,
+   "accessibility": 100,
+   "bestPractices": 100,
+   "seo": 63,
+   "fcp_ms": 1099,
+   "lcp_ms": 1099,
+   "tbt_ms": 385,
+   "cls": 0.003,
+   "si_ms": 1665,
+   "totalBytes": 732219,
+   "requests": 55
+  }
+ }
+}

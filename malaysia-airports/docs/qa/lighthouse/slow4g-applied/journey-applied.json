@@ -1,0 +1,322 @@
+{
+ "key": "journey-applied",
+ "url": "http://localhost:3101/en/journey",
+ "preset": "mobile (Lighthouse default)",
+ "profile": {
+  "name": "slow4g-applied",
+  "rtt": 150,
+  "down": 1638,
+  "up": 675,
+  "cpu": 4
+ },
+ "runs": 2,
+ "validRuns": 2,
+ "measured": "2026-11-18T09:32:37.676Z",
+ "median": {
+  "performance": 50,
+  "accessibility": 100,
+  "bestPractices": 100,
+  "seo": 63,
+  "fcp_ms": 1732,
+  "lcp_ms": 5622,
+  "tbt_ms": 1027,
+  "cls": 0.211,
+  "si_ms": 2830,
+  "totalBytes": 574861,
+  "requests": 38
+ },
+ "medianRunIndex": 1,
+ "diagnostics": {
+  "observed": {
+   "fcp": 1732,
+   "lcp": 5312,
+   "dcl": 1742,
+   "load": 4267,
+   "cls": 0.2114216281895504
+  },
+  "tti_ms": 5293,
+  "maxPotentialFid_ms": 513,
+  "lcpElement": {
+   "selector": "div.flex > section.overflow-hidden > div.p-5 > p.type-body-lg",
+   "label": "Save a flight and this page shows its status, what to do and when, and a note o…",
+   "snippet": "<p class=\"type-body-lg mt-3 max-w-reading text-ink-2\">"
+  },
+  "lcpPhases": {
+   "timeToFirstByte": 13,
+   "elementRenderDelay": 5299
+  },
+  "renderBlocking": [
+   {
+    "url": "/_next/static/chunks/2blf4mykprvo-.css",
+    "bytes": 20494,
+    "ms": 724
+   }
+  ],
+  "layoutShifts": [
+   {
+    "score": 0.2114,
+    "node": "body.flex > footer.mt-auto",
+    "label": "Malaysia Airports\n\nYour journey, beautifully connected.\n\nWhat this prototype is…",
+    "cause": ""
+   }
+  ],
+  "longTasks": [
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 4682,
+    "dur": 513
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 3101,
+    "dur": 238
+   },
+   {
+    "url": "/en/journey",
+    "start": 1562,
+    "dur": 137
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 4077,
+    "dur": 132
+   },
+   {
+    "url": "/en/journey",
+    "start": 5202,
+    "dur": 91
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 4284,
+    "dur": 79
+   },
+   {
+    "url": "Unattributable",
+    "start": 594,
+    "dur": 62
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 3478,
+    "dur": 50
+   }
+  ],
+  "bootup": [
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "total": 1353,
+    "scripting": 1232,
+    "parse": 25
+   },
+   {
+    "url": "/en/journey",
+    "total": 487,
+    "scripting": 25,
+    "parse": 56
+   },
+   {
+    "url": "Unattributable",
+    "total": 362,
+    "scripting": 10,
+    "parse": 0
+   },
+   {
+    "url": "/_next/static/chunks/0_z_ds2phu1oc.js",
+    "total": 165,
+    "scripting": 110,
+    "parse": 16
+   }
+  ],
+  "mainThread": {
+   "scriptEvaluation": 1436,
+   "other": 588,
+   "styleLayout": 202,
+   "scriptParseCompile": 197,
+   "paintCompositeRender": 44,
+   "garbageCollection": 43,
+   "parseHTML": 41
+  },
+  "resources": {
+   "total": {
+    "n": 36,
+    "bytes": 541828
+   },
+   "script": {
+    "n": 20,
+    "bytes": 304812
+   },
+   "font": {
+    "n": 3,
+    "bytes": 104023
+   },
+   "document": {
+    "n": 1,
+    "bytes": 71035
+   },
+   "other": {
+    "n": 11,
+    "bytes": 41464
+   },
+   "stylesheet": {
+    "n": 1,
+    "bytes": 20494
+   },
+   "image": {
+    "n": 0,
+    "bytes": 0
+   },
+   "media": {
+    "n": 0,
+    "bytes": 0
+   },
+   "third-party": {
+    "n": 0,
+    "bytes": 0
+   }
+  },
+  "topRequests": [
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "type": "Script",
+    "transfer": 72933,
+    "size": 229318
+   },
+   {
+    "url": "/en/journey",
+    "type": "Document",
+    "transfer": 71035,
+    "size": 278045
+   },
+   {
+    "url": "/_next/static/media/fraunces_latin_opsz_normal-s.17h97bimeg07z.woff2",
+    "type": "Font",
+    "transfer": 68312,
+    "size": 67304
+   },
+   {
+    "url": "/_next/static/chunks/0_z_ds2phu1oc.js",
+    "type": "Script",
+    "transfer": 47741,
+    "size": 169882
+   },
+   {
+    "url": "/_next/static/chunks/3ja1rs91hq4qc.js",
+    "type": "Script",
+    "transfer": 36099,
+    "size": 122029
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "type": "Font",
+    "transfer": 35711,
+    "size": 34704
+   },
+   {
+    "url": "/_next/static/chunks/0to19dt37pvik.js",
+    "type": "Script",
+    "transfer": 24592,
+    "size": 72635
+   },
+   {
+    "url": "/_next/static/chunks/20zi65_zsmw1-.js",
+    "type": "Script",
+    "transfer": 20992,
+    "size": 58786
+   },
+   {
+    "url": "/_next/static/chunks/2blf4mykprvo-.css",
+    "type": "Stylesheet",
+    "transfer": 20494,
+    "size": 106576
+   },
+   {
+    "url": "/_next/static/chunks/2lrd_0ckst003.js",
+    "type": "Script",
+    "transfer": 18887,
+    "size": 59468
+   }
+  ],
+  "fonts": [
+   {
+    "url": "hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "transfer": 35711,
+    "start": 627
+   },
+   {
+    "url": "fraunces_latin_opsz_normal-s.17h97bimeg07z.woff2",
+    "transfer": 68312,
+    "start": 1698
+   },
+   {
+    "url": "geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+    "transfer": 0,
+    "start": 5228
+   }
+  ],
+  "prefetchFetches": 8,
+  "unusedJs": [
+   {
+    "url": "/_next/static/chunks/3ja1rs91hq4qc.js",
+    "total": 35012,
+    "wasted": 24396
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "total": 71846,
+    "wasted": 24244
+   }
+  ],
+  "domSize": [],
+  "a11yFailures": [],
+  "seoFailures": [
+   {
+    "id": "is-crawlable",
+    "n": 3,
+    "sample": [
+     "<meta name=\"robots\" content=\"noindex, follow\" />"
+    ]
+   }
+  ],
+  "bpFailures": []
+ },
+ "rows": [
+  {
+   "finalUrl": "/en/journey",
+   "runtimeError": null,
+   "performance": 46,
+   "accessibility": 100,
+   "bestPractices": 100,
+   "seo": 63,
+   "fcp_ms": 1687,
+   "lcp_ms": 5622,
+   "tbt_ms": 1027,
+   "cls": 0.211,
+   "si_ms": 2830,
+   "totalBytes": 574861,
+   "requests": 38,
+   "benchmarkIndex": 2377,
+   "throttling": "devtools {\"rttMs\":150,\"throughputKbps\":1638,\"requestLatencyMs\":562.5,\"downloadThroughputKbps\":1474,\"uploadThroughputKbps\":608,\"cpuSlowdownMultiplier\":4}",
+   "formFactor": "mobile"
+  },
+  {
+   "finalUrl": "/en/journey",
+   "runtimeError": null,
+   "performance": 50,
+   "accessibility": 100,
+   "bestPractices": 100,
+   "seo": 63,
+   "fcp_ms": 1732,
+   "lcp_ms": 5312,
+   "tbt_ms": 804,
+   "cls": 0.211,
+   "si_ms": 2791,
+   "totalBytes": 541828,
+   "requests": 38,
+   "benchmarkIndex": 2207,
+   "throttling": "devtools {\"rttMs\":150,\"throughputKbps\":1638,\"requestLatencyMs\":562.5,\"downloadThroughputKbps\":1474,\"uploadThroughputKbps\":608,\"cpuSlowdownMultiplier\":4}",
+   "formFactor": "mobile"
+  }
+ ],
+ "caveat": "Lab measurement (Lighthouse 13.6, headless Chromium 1243) against next start on localhost in a shared 4-vCPU cloud container; other evaluators used the same CPU. Not field data."
+}

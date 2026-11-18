@@ -1,0 +1,40 @@
+{
+ "key": "access_en",
+ "url": "http://localhost:3108/en/accessibility",
+ "runs": 1,
+ "validRuns": 1,
+ "measured": "2026-11-18T10:54:21.685Z",
+ "median": {
+  "performance": 77,
+  "accessibility": 100,
+  "bestPractices": 100,
+  "seo": 63,
+  "fcp_ms": 1062,
+  "lcp_ms": 4019,
+  "tbt_ms": 411,
+  "cls": 0,
+  "si_ms": 1555,
+  "totalBytes": 630299,
+  "requests": 42
+ },
+ "a11yFailures": [],
+ "rows": [
+  {
+   "finalUrl": "http://localhost:3108/en/accessibility",
+   "runtimeError": null,
+   "performance": 77,
+   "accessibility": 100,
+   "bestPractices": 100,
+   "seo": 63,
+   "fcp_ms": 1062,
+   "lcp_ms": 4019,
+   "tbt_ms": 411,
+   "cls": 0,
+   "si_ms": 1555,
+   "totalBytes": 630299,
+   "requests": 42,
+   "a11yFailures": []
+  }
+ ],
+ "caveat": "Lab measurement: Lighthouse mobile emulation with simulated throttling, run from a shared cloud container; hosts outside the session allowlist (analytics, some CDNs) were blocked, which changes page weight and timings. Indicative only; not field data and not comparable to CrUX."
+}

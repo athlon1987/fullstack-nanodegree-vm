@@ -1,0 +1,333 @@
+{
+ "key": "home-en-applied",
+ "url": "http://localhost:3101/en",
+ "preset": "mobile (Lighthouse default)",
+ "profile": {
+  "name": "slow4g-applied",
+  "rtt": 150,
+  "down": 1638,
+  "up": 675,
+  "cpu": 4
+ },
+ "runs": 2,
+ "validRuns": 2,
+ "measured": "2026-11-18T09:30:41.482Z",
+ "median": {
+  "performance": 74,
+  "accessibility": 100,
+  "bestPractices": 100,
+  "seo": 63,
+  "fcp_ms": 1944,
+  "lcp_ms": 1944,
+  "tbt_ms": 1344,
+  "cls": 0,
+  "si_ms": 2288,
+  "totalBytes": 668292,
+  "requests": 47
+ },
+ "medianRunIndex": 0,
+ "diagnostics": {
+  "observed": {
+   "fcp": 1890,
+   "lcp": 1890,
+   "dcl": 1982,
+   "load": 4772,
+   "cls": 0.000492403864998735
+  },
+  "tti_ms": 6533,
+  "maxPotentialFid_ms": 940,
+  "lcpElement": {
+   "selector": "div.mx-auto > div.flex > div.min-w-0 > h1#home-title",
+   "label": "Your journey, beautifully connected.",
+   "snippet": "<h1 id=\"home-title\" class=\"type-display-lg text-ink max-sm:text-[1.625rem] max-xs:text-2xl\">"
+  },
+  "lcpPhases": {
+   "timeToFirstByte": 20,
+   "elementRenderDelay": 1869
+  },
+  "renderBlocking": [
+   {
+    "url": "/_next/static/chunks/2blf4mykprvo-.css",
+    "bytes": 20494,
+    "ms": 724
+   }
+  ],
+  "layoutShifts": [
+   {
+    "score": 0.0005,
+    "node": "div.mx-auto > div.flex > div.min-w-0 > h1#home-title",
+    "label": "Your journey, beautifully connected.",
+    "cause": "Web font loaded"
+   }
+  ],
+  "longTasks": [
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 5520,
+    "dur": 940
+   },
+   {
+    "url": "/en",
+    "start": 1543,
+    "dur": 325
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 3141,
+    "dur": 248
+   },
+   {
+    "url": "/_next/static/chunks/0ignovy3oxwt0.js",
+    "start": 4634,
+    "dur": 128
+   },
+   {
+    "url": "/en",
+    "start": 1907,
+    "dur": 75
+   },
+   {
+    "url": "/en",
+    "start": 6459,
+    "dur": 74
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 4783,
+    "dur": 69
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 5092,
+    "dur": 64
+   }
+  ],
+  "bootup": [
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "total": 1977,
+    "scripting": 1687,
+    "parse": 26
+   },
+   {
+    "url": "/en",
+    "total": 820,
+    "scripting": 42,
+    "parse": 47
+   },
+   {
+    "url": "Unattributable",
+    "total": 432,
+    "scripting": 16,
+    "parse": 0
+   },
+   {
+    "url": "/_next/static/chunks/0_z_ds2phu1oc.js",
+    "total": 234,
+    "scripting": 169,
+    "parse": 19
+   },
+   {
+    "url": "/_next/static/chunks/0ignovy3oxwt0.js",
+    "total": 127,
+    "scripting": 125,
+    "parse": 0
+   }
+  ],
+  "mainThread": {
+   "scriptEvaluation": 2083,
+   "other": 816,
+   "styleLayout": 424,
+   "scriptParseCompile": 177,
+   "paintCompositeRender": 106,
+   "garbageCollection": 89,
+   "parseHTML": 55
+  },
+  "resources": {
+   "total": {
+    "n": 45,
+    "bytes": 668292
+   },
+   "script": {
+    "n": 22,
+    "bytes": 292181
+   },
+   "font": {
+    "n": 4,
+    "bytes": 210686
+   },
+   "document": {
+    "n": 1,
+    "bytes": 80776
+   },
+   "other": {
+    "n": 17,
+    "bytes": 64155
+   },
+   "stylesheet": {
+    "n": 1,
+    "bytes": 20494
+   },
+   "image": {
+    "n": 0,
+    "bytes": 0
+   },
+   "media": {
+    "n": 0,
+    "bytes": 0
+   },
+   "third-party": {
+    "n": 0,
+    "bytes": 0
+   }
+  },
+  "topRequests": [
+   {
+    "url": "/_next/static/media/fraunces_latin_opsz_italic-s.09l6e6sk-66_f.woff2",
+    "type": "Font",
+    "transfer": 82528,
+    "size": 81520
+   },
+   {
+    "url": "/en",
+    "type": "Document",
+    "transfer": 80776,
+    "size": 370389
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "type": "Script",
+    "transfer": 72933,
+    "size": 229318
+   },
+   {
+    "url": "/_next/static/media/fraunces_latin_opsz_normal-s.17h97bimeg07z.woff2",
+    "type": "Font",
+    "transfer": 68312,
+    "size": 67304
+   },
+   {
+    "url": "/_next/static/chunks/0_z_ds2phu1oc.js",
+    "type": "Script",
+    "transfer": 47741,
+    "size": 169882
+   },
+   {
+    "url": "/_next/static/chunks/3ja1rs91hq4qc.js",
+    "type": "Script",
+    "transfer": 36099,
+    "size": 122029
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "type": "Font",
+    "transfer": 35711,
+    "size": 34704
+   },
+   {
+    "url": "/_next/static/chunks/0to19dt37pvik.js",
+    "type": "Script",
+    "transfer": 24592,
+    "size": 72635
+   },
+   {
+    "url": "/_next/static/media/geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+    "type": "Font",
+    "transfer": 24135,
+    "size": 23128
+   },
+   {
+    "url": "/_next/static/chunks/20zi65_zsmw1-.js",
+    "type": "Script",
+    "transfer": 20992,
+    "size": 58786
+   }
+  ],
+  "fonts": [
+   {
+    "url": "hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "transfer": 35711,
+    "start": 603
+   },
+   {
+    "url": "fraunces_latin_opsz_normal-s.17h97bimeg07z.woff2",
+    "transfer": 68312,
+    "start": 1869
+   },
+   {
+    "url": "fraunces_latin_opsz_italic-s.09l6e6sk-66_f.woff2",
+    "transfer": 82528,
+    "start": 1869
+   },
+   {
+    "url": "geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+    "transfer": 24135,
+    "start": 1869
+   }
+  ],
+  "prefetchFetches": 14,
+  "unusedJs": [
+   {
+    "url": "/_next/static/chunks/3ja1rs91hq4qc.js",
+    "total": 35012,
+    "wasted": 24396
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "total": 71846,
+    "wasted": 24079
+   }
+  ],
+  "domSize": [],
+  "a11yFailures": [],
+  "seoFailures": [
+   {
+    "id": "is-crawlable",
+    "n": 2,
+    "sample": [
+     "<meta name=\"robots\" content=\"noindex, nofollow\" />"
+    ]
+   }
+  ],
+  "bpFailures": []
+ },
+ "rows": [
+  {
+   "finalUrl": "/en",
+   "runtimeError": null,
+   "performance": 74,
+   "accessibility": 100,
+   "bestPractices": 100,
+   "seo": 63,
+   "fcp_ms": 1890,
+   "lcp_ms": 1890,
+   "tbt_ms": 1247,
+   "cls": 0,
+   "si_ms": 2254,
+   "totalBytes": 668292,
+   "requests": 47,
+   "benchmarkIndex": 2266,
+   "throttling": "devtools {\"rttMs\":150,\"throughputKbps\":1638,\"requestLatencyMs\":562.5,\"downloadThroughputKbps\":1474,\"uploadThroughputKbps\":608,\"cpuSlowdownMultiplier\":4}",
+   "formFactor": "mobile"
+  },
+  {
+   "finalUrl": "/en",
+   "runtimeError": null,
+   "performance": 73,
+   "accessibility": 100,
+   "bestPractices": 100,
+   "seo": 63,
+   "fcp_ms": 1944,
+   "lcp_ms": 1944,
+   "tbt_ms": 1344,
+   "cls": 0,
+   "si_ms": 2288,
+   "totalBytes": 668292,
+   "requests": 47,
+   "benchmarkIndex": 2371.5,
+   "throttling": "devtools {\"rttMs\":150,\"throughputKbps\":1638,\"requestLatencyMs\":562.5,\"downloadThroughputKbps\":1474,\"uploadThroughputKbps\":608,\"cpuSlowdownMultiplier\":4}",
+   "formFactor": "mobile"
+  }
+ ],
+ "caveat": "Lab measurement (Lighthouse 13.6, headless Chromium 1243) against next start on localhost in a shared 4-vCPU cloud container; other evaluators used the same CPU. Not field data."
+}

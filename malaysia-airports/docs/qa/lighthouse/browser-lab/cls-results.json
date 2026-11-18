@@ -1,0 +1,1616 @@
+{
+ "mobile /en": [
+  {
+   "ls": [
+    {
+     "t": 241,
+     "v": 0.0005,
+     "recent": true,
+     "src": [
+      {
+       "node": "#text",
+       "prev": [
+        109,
+        32
+       ],
+       "cur": [
+        107,
+        32
+       ]
+      }
+     ]
+    }
+   ],
+   "lcp": [
+    {
+     "t": 196,
+     "size": 10324,
+     "el": "h1#home-title.type-display-lg.text-ink.max-sm:text-[1.625rem].max-xs:text-2xl \"Your journey, beautifully connected.\""
+    }
+   ],
+   "fcp": 196,
+   "fonts": [
+    "hanken_grotesk_latin_wgh@55",
+    "fraunces_latin_opsz_norm@188",
+    "geist_mono_latin_wght_no@191",
+    "fraunces_latin_opsz_ital@192"
+   ],
+   "scripts": 22,
+   "cls": 0
+  },
+  {
+   "ls": [
+    {
+     "t": 214,
+     "v": 0.0005,
+     "recent": true,
+     "src": [
+      {
+       "node": "#text",
+       "prev": [
+        109,
+        32
+       ],
+       "cur": [
+        107,
+        32
+       ]
+      }
+     ]
+    }
+   ],
+   "lcp": [
+    {
+     "t": 168,
+     "size": 10324,
+     "el": "h1#home-title.type-display-lg.text-ink.max-sm:text-[1.625rem].max-xs:text-2xl \"Your journey, beautifully connected.\""
+    }
+   ],
+   "fcp": 168,
+   "fonts": [
+    "hanken_grotesk_latin_wgh@35",
+    "fraunces_latin_opsz_norm@159",
+    "geist_mono_latin_wght_no@160",
+    "fraunces_latin_opsz_ital@160"
+   ],
+   "scripts": 22,
+   "cls": 0
+  }
+ ],
+ "mobile /ms": [
+  {
+   "ls": [
+    {
+     "t": 258,
+     "v": 0.158,
+     "recent": true,
+     "src": [
+      {
+       "node": "div.relative.overflow-hidden.rounded-xl.border \"LAPANGAN TERBANG ATAU TERMINAL Pilih lapangan terb\"",
+       "prev": [
+        150,
+        304
+       ],
+       "cur": [
+        123,
+        304
+       ]
+      },
+      {
+       "node": "div.flex.flex-col.gap-[clamp(0.5rem,1.3vh,0.875rem)].max-sm:gap-2.5 \"Apa rancangan anda hari ini? Berlepas Tiba Transit\"",
+       "prev": [
+        404,
+        240
+       ],
+       "cur": [
+        377,
+        240
+       ]
+      },
+      {
+       "node": "section.grid.overflow-hidden.rounded-lg.border \"NOTIS OPERASI KLIA TERMINAL 1 Dirancang: tiada Aer\"",
+       "prev": [
+        653,
+        158
+       ],
+       "cur": [
+        626,
+        158
+       ]
+      },
+      {
+       "node": "#text",
+       "prev": [
+        136,
+        32
+       ],
+       "cur": [
+        107,
+        32
+       ]
+      },
+      {
+       "node": "#text",
+       "prev": [
+        110,
+        32
+       ],
+       "cur": [
+        107,
+        32
+       ]
+      }
+     ]
+    }
+   ],
+   "lcp": [
+    {
+     "t": 192,
+     "size": 15540,
+     "el": "p.type-body-sm.mt-1.font-semibold.text-ink \"Dirancang: tiada Aerotrain antara tengah malam dan\""
+    }
+   ],
+   "fcp": 192,
+   "fonts": [
+    "hanken_grotesk_latin_wgh@37",
+    "fraunces_latin_opsz_norm@181",
+    "geist_mono_latin_wght_no@182",
+    "fraunces_latin_opsz_ital@182"
+   ],
+   "scripts": 22,
+   "cls": 0
+  },
+  {
+   "ls": [
+    {
+     "t": 242,
+     "v": 0.158,
+     "recent": true,
+     "src": [
+      {
+       "node": "div.relative.overflow-hidden.rounded-xl.border \"LAPANGAN TERBANG ATAU TERMINAL Pilih lapangan terb\"",
+       "prev": [
+        150,
+        304
+       ],
+       "cur": [
+        123,
+        304
+       ]
+      },
+      {
+       "node": "div.flex.flex-col.gap-[clamp(0.5rem,1.3vh,0.875rem)].max-sm:gap-2.5 \"Apa rancangan anda hari ini? Berlepas Tiba Transit\"",
+       "prev": [
+        404,
+        240
+       ],
+       "cur": [
+        377,
+        240
+       ]
+      },
+      {
+       "node": "section.grid.overflow-hidden.rounded-lg.border \"NOTIS OPERASI KLIA TERMINAL 1 Dirancang: tiada Aer\"",
+       "prev": [
+        653,
+        158
+       ],
+       "cur": [
+        626,
+        158
+       ]
+      },
+      {
+       "node": "#text",
+       "prev": [
+        136,
+        32
+       ],
+       "cur": [
+        107,
+        32
+       ]
+      },
+      {
+       "node": "#text",
+       "prev": [
+        110,
+        32
+       ],
+       "cur": [
+        107,
+        32
+       ]
+      }
+     ]
+    }
+   ],
+   "lcp": [
+    {
+     "t": 192,
+     "size": 15540,
+     "el": "p.type-body-sm.mt-1.font-semibold.text-ink \"Dirancang: tiada Aerotrain antara tengah malam dan\""
+    }
+   ],
+   "fcp": 192,
+   "fonts": [
+    "hanken_grotesk_latin_wgh@38",
+    "fraunces_latin_opsz_norm@179",
+    "geist_mono_latin_wght_no@180",
+    "fraunces_latin_opsz_ital@180"
+   ],
+   "scripts": 22,
+   "cls": 0
+  }
+ ],
+ "mobile /en/kul": [
+  {
+   "ls": [
+    {
+     "t": 355,
+     "v": 0.0024,
+     "recent": true,
+     "src": [
+      {
+       "node": "div.ml-auto.flex.min-w-0.items-center \"KUL\"",
+       "prev": [
+        44,
+        44
+       ],
+       "cur": [
+        44,
+        44
+       ]
+      }
+     ]
+    }
+   ],
+   "lcp": [
+    {
+     "t": 168,
+     "size": 17457,
+     "el": "h1.type-display-lg.text-ink \"Kuala Lumpur International Airport\""
+    }
+   ],
+   "fcp": 168,
+   "fonts": [
+    "hanken_grotesk_latin_wgh@45",
+    "fraunces_latin_opsz_norm@152",
+    "geist_mono_latin_wght_no@149"
+   ],
+   "scripts": 30,
+   "cls": 0
+  },
+  {
+   "ls": [
+    {
+     "t": 428,
+     "v": 0.0024,
+     "recent": true,
+     "src": [
+      {
+       "node": "div.ml-auto.flex.min-w-0.items-center \"KUL\"",
+       "prev": [
+        44,
+        44
+       ],
+       "cur": [
+        44,
+        44
+       ]
+      }
+     ]
+    }
+   ],
+   "lcp": [
+    {
+     "t": 188,
+     "size": 17457,
+     "el": "h1.type-display-lg.text-ink \"Kuala Lumpur International Airport\""
+    }
+   ],
+   "fcp": 188,
+   "fonts": [
+    "hanken_grotesk_latin_wgh@47",
+    "fraunces_latin_opsz_norm@187",
+    "geist_mono_latin_wght_no@187"
+   ],
+   "scripts": 31,
+   "cls": 0
+  }
+ ],
+ "mobile /en/journey": [
+  {
+   "ls": [
+    {
+     "t": 102,
+     "v": 0.0152,
+     "recent": true,
+     "src": [
+      {
+       "node": "footer.mt-auto.border-t.border-line.bg-page-subtle \"Malaysia Airports Your journey, beautifully connec\"",
+       "prev": [
+        603,
+        236
+       ],
+       "cur": [
+        649,
+        190
+       ]
+      },
+      {
+       "node": "div.w-full.text-gold.pattern-rebung-lg.-mt-px \"\"",
+       "prev": [
+        0,
+        0
+       ],
+       "cur": [
+        649,
+        20
+       ]
+      }
+     ]
+    },
+    {
+     "t": 342,
+     "v": 0.2265,
+     "recent": true,
+     "src": [
+      {
+       "node": "footer.mt-auto.border-t.border-line.bg-page-subtle \"Malaysia Airports Your journey, beautifully connec\"",
+       "prev": [
+        649,
+        190
+       ],
+       "cur": [
+        0,
+        0
+       ]
+      }
+     ]
+    }
+   ],
+   "lcp": [
+    {
+     "t": 128,
+     "size": 18921,
+     "el": "p.type-body-lg.mt-4.max-w-reading.text-ink-2 \"Your saved flights, what to do next, and a note of\""
+    },
+    {
+     "t": 376,
+     "size": 26001,
+     "el": "p.type-body-lg.mt-3.max-w-reading.text-ink-2 \"Save a flight and this page shows its status, what\""
+    }
+   ],
+   "fcp": 128,
+   "fonts": [
+    "hanken_grotesk_latin_wgh@36",
+    "fraunces_latin_opsz_norm@110",
+    "geist_mono_latin_wght_no@350"
+   ],
+   "scripts": 20,
+   "cls": 0
+  },
+  {
+   "ls": [
+    {
+     "t": 133,
+     "v": 0.0152,
+     "recent": true,
+     "src": [
+      {
+       "node": "footer.mt-auto.border-t.border-line.bg-page-subtle \"Malaysia Airports Your journey, beautifully connec\"",
+       "prev": [
+        603,
+        236
+       ],
+       "cur": [
+        649,
+        190
+       ]
+      },
+      {
+       "node": "div.w-full.text-gold.pattern-rebung-lg.-mt-px \"\"",
+       "prev": [
+        0,
+        0
+       ],
+       "cur": [
+        649,
+        20
+       ]
+      }
+     ]
+    },
+    {
+     "t": 517,
+     "v": 0.2265,
+     "recent": true,
+     "src": [
+      {
+       "node": "footer.mt-auto.border-t.border-line.bg-page-subtle \"Malaysia Airports Your journey, beautifully connec\"",
+       "prev": [
+        649,
+        190
+       ],
+       "cur": [
+        0,
+        0
+       ]
+      }
+     ]
+    }
+   ],
+   "lcp": [
+    {
+     "t": 164,
+     "size": 18921,
+     "el": "p.type-body-lg.mt-4.max-w-reading.text-ink-2 \"Your saved flights, what to do next, and a note of\""
+    },
+    {
+     "t": 548,
+     "size": 26001,
+     "el": "p.type-body-lg.mt-3.max-w-reading.text-ink-2 \"Save a flight and this page shows its status, what\""
+    }
+   ],
+   "fcp": 164,
+   "fonts": [
+    "hanken_grotesk_latin_wgh@44",
+    "fraunces_latin_opsz_norm@142",
+    "geist_mono_latin_wght_no@524"
+   ],
+   "scripts": 20,
+   "cls": 0
+  }
+ ],
+ "mobile /en/concierge": [
+  {
+   "ls": [
+    {
+     "t": 399,
+     "v": 0.1399,
+     "recent": true,
+     "src": [
+      {
+       "node": "aside.flex.min-w-0.flex-col.gap-10 \"How answers are put together 1 The concierge first\"",
+       "prev": [
+        640,
+        199
+       ],
+       "cur": [
+        0,
+        0
+       ]
+      }
+     ]
+    }
+   ],
+   "lcp": [
+    {
+     "t": 144,
+     "size": 52026,
+     "el": "p.type-body-lg.mt-4.max-w-reading.text-ink-2 \"Ask in your own words. Every answer comes from our\""
+    }
+   ],
+   "fcp": 144,
+   "fonts": [
+    "hanken_grotesk_latin_wgh@36",
+    "fraunces_latin_opsz_norm@150",
+    "geist_mono_latin_wght_no@152"
+   ],
+   "scripts": 22,
+   "cls": 0
+  },
+  {
+   "ls": [
+    {
+     "t": 349,
+     "v": 0.1399,
+     "recent": true,
+     "src": [
+      {
+       "node": "aside.flex.min-w-0.flex-col.gap-10 \"How answers are put together 1 The concierge first\"",
+       "prev": [
+        640,
+        199
+       ],
+       "cur": [
+        0,
+        0
+       ]
+      }
+     ]
+    }
+   ],
+   "lcp": [
+    {
+     "t": 132,
+     "size": 52026,
+     "el": "p.type-body-lg.mt-4.max-w-reading.text-ink-2 \"Ask in your own words. Every answer comes from our\""
+    }
+   ],
+   "fcp": 132,
+   "fonts": [
+    "hanken_grotesk_latin_wgh@36",
+    "fraunces_latin_opsz_norm@128",
+    "geist_mono_latin_wght_no@128"
+   ],
+   "scripts": 22,
+   "cls": 0
+  }
+ ],
+ "desktop /en": [
+  {
+   "ls": [
+    {
+     "t": 129,
+     "v": 0.0001,
+     "recent": false,
+     "src": [
+      {
+       "node": "nav.ml-3.hidden.@[73rem]:block \"Flights Plan your journey At the airport Shop & di\"",
+       "prev": [
+        44,
+        44
+       ],
+       "cur": [
+        44,
+        44
+       ]
+      }
+     ]
+    },
+    {
+     "t": 481,
+     "v": 0.2889,
+     "recent": false,
+     "src": [
+      {
+       "node": "footer.mt-auto.border-t.border-line.bg-page-subtle \"Malaysia Airports Your journey, beautifully connec\"",
+       "prev": [
+        640,
+        260
+       ],
+       "cur": [
+        0,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "t": 522,
+     "v": 0.0001,
+     "recent": false,
+     "src": [
+      {
+       "node": "#text",
+       "prev": [
+        146,
+        64
+       ],
+       "cur": [
+        141,
+        64
+       ]
+      }
+     ]
+    },
+    {
+     "t": 736,
+     "v": 0.0005,
+     "recent": false,
+     "src": [
+      {
+       "node": "section.py-12 \"01 FLIGHT BOARD DEMONSTRATION DATA Flight times, g\"",
+       "prev": [
+        801,
+        99
+       ],
+       "cur": [
+        807,
+        93
+       ]
+      },
+      {
+       "node": "div.min-w-0.flex-1 \"OPERATIONAL NOTICE · KLIA TERMINAL 1 Planned: no A\"",
+       "prev": [
+        691,
+        64
+       ],
+       "cur": [
+        686,
+        80
+       ]
+      }
+     ]
+    }
+   ],
+   "lcp": [
+    {
+     "t": 152,
+     "size": 14320,
+     "el": "p.type-body-sm.mt-2.text-ink-2 \"A design and engineering concept for one passenger\""
+    },
+    {
+     "t": 524,
+     "size": 44032,
+     "el": "h1#home-title.type-display-lg.text-ink.max-sm:text-[1.625rem].max-xs:text-2xl \"Your journey, beautifully connected.\""
+    }
+   ],
+   "fcp": 152,
+   "fonts": [
+    "hanken_grotesk_latin_wgh@35",
+    "geist_mono_latin_wght_no@117",
+    "fraunces_latin_opsz_norm@118",
+    "fraunces_latin_opsz_ital@491"
+   ],
+   "scripts": 29,
+   "cls": 0.28959999999999997
+  },
+  {
+   "ls": [
+    {
+     "t": 179,
+     "v": 0.2889,
+     "recent": false,
+     "src": [
+      {
+       "node": "footer.mt-auto.border-t.border-line.bg-page-subtle \"Malaysia Airports Your journey, beautifully connec\"",
+       "prev": [
+        640,
+        260
+       ],
+       "cur": [
+        0,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "t": 294,
+     "v": 0.0009,
+     "recent": false,
+     "src": [
+      {
+       "node": "#text",
+       "prev": [
+        144,
+        64
+       ],
+       "cur": [
+        141,
+        64
+       ]
+      },
+      {
+       "node": "nav.ml-3.hidden.@[73rem]:block \"Flights Plan your journey At the airport Shop & di\"",
+       "prev": [
+        44,
+        44
+       ],
+       "cur": [
+        44,
+        44
+       ]
+      }
+     ]
+    },
+    {
+     "t": 809,
+     "v": 0.0005,
+     "recent": false,
+     "src": [
+      {
+       "node": "section.py-12 \"01 FLIGHT BOARD DEMONSTRATION DATA Flight times, g\"",
+       "prev": [
+        801,
+        99
+       ],
+       "cur": [
+        807,
+        93
+       ]
+      },
+      {
+       "node": "div.min-w-0.flex-1 \"OPERATIONAL NOTICE · KLIA TERMINAL 1 Planned: no A\"",
+       "prev": [
+        691,
+        64
+       ],
+       "cur": [
+        686,
+        80
+       ]
+      }
+     ]
+    }
+   ],
+   "lcp": [
+    {
+     "t": 220,
+     "size": 41238,
+     "el": "h1#home-title.type-display-lg.text-ink.max-sm:text-[1.625rem].max-xs:text-2xl \"Your journey, beautifully connected.\""
+    }
+   ],
+   "fcp": 220,
+   "fonts": [
+    "hanken_grotesk_latin_wgh@41",
+    "geist_mono_latin_wght_no@203",
+    "fraunces_latin_opsz_norm@204",
+    "fraunces_latin_opsz_ital@204"
+   ],
+   "scripts": 25,
+   "cls": 0.2903
+  }
+ ],
+ "desktop /ms": [
+  {
+   "ls": [
+    {
+     "t": 175,
+     "v": 0.2889,
+     "recent": false,
+     "src": [
+      {
+       "node": "footer.mt-auto.border-t.border-line.bg-page-subtle \"Malaysia Airports Perjalanan anda, terhubung denga\"",
+       "prev": [
+        640,
+        260
+       ],
+       "cur": [
+        0,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "t": 193,
+     "v": 0.0003,
+     "recent": false,
+     "src": [
+      {
+       "node": "#text",
+       "prev": [
+        144,
+        64
+       ],
+       "cur": [
+        141,
+        64
+       ]
+      },
+      {
+       "node": "nav.ml-3.hidden.@[84rem]:block \"Penerbangan Rancang perjalanan Di lapangan terbang\"",
+       "prev": [
+        44,
+        44
+       ],
+       "cur": [
+        44,
+        44
+       ]
+      }
+     ]
+    },
+    {
+     "t": 269,
+     "v": 0.1544,
+     "recent": false,
+     "src": [
+      {
+       "node": "div.relative.overflow-hidden.rounded-xl.border \"LAPANGAN TERBANG ATAU TERMINAL Pilih lapangan terb\"",
+       "prev": [
+        249,
+        275
+       ],
+       "cur": [
+        193,
+        275
+       ]
+      },
+      {
+       "node": "div.flex.flex-col.gap-[clamp(0.5rem,1.3vh,0.875rem)].max-sm:gap-2.5 \"Apa rancangan anda hari ini? Berlepas PINTU RUMAH \"",
+       "prev": [
+        482,
+        231
+       ],
+       "cur": [
+        425,
+        231
+       ]
+      },
+      {
+       "node": "section.py-12 \"01 PAPAN PENERBANGAN DATA DEMONSTRASI Waktu penerb\"",
+       "prev": [
+        855,
+        45
+       ],
+       "cur": [
+        799,
+        101
+       ]
+      },
+      {
+       "node": "section.grid.overflow-hidden.rounded-lg.border \"NOTIS OPERASI · KLIA TERMINAL 1 Dirancang: tiada A\"",
+       "prev": [
+        730,
+        68
+       ],
+       "cur": [
+        674,
+        95
+       ]
+      },
+      {
+       "node": "#text",
+       "prev": [
+        200,
+        64
+       ],
+       "cur": [
+        141,
+        64
+       ]
+      }
+     ]
+    },
+    {
+     "t": 655,
+     "v": 0.0005,
+     "recent": false,
+     "src": [
+      {
+       "node": "section.py-12 \"01 PAPAN PENERBANGAN DATA DEMONSTRASI Waktu penerb\"",
+       "prev": [
+        799,
+        101
+       ],
+       "cur": [
+        804,
+        96
+       ]
+      },
+      {
+       "node": "div.min-w-0.flex-1 \"NOTIS OPERASI · KLIA TERMINAL 1 Dirancang: tiada A\"",
+       "prev": [
+        689,
+        64
+       ],
+       "cur": [
+        684,
+        80
+       ]
+      }
+     ]
+    }
+   ],
+   "lcp": [
+    {
+     "t": 228,
+     "size": 55440,
+     "el": "h1#home-title.type-display-lg.text-ink.max-sm:text-[1.625rem].max-xs:text-2xl \"Perjalanan anda, terhubung dengan indah.\""
+    }
+   ],
+   "fcp": 228,
+   "fonts": [
+    "hanken_grotesk_latin_wgh@40",
+    "geist_mono_latin_wght_no@116",
+    "fraunces_latin_opsz_norm@117",
+    "fraunces_latin_opsz_ital@192"
+   ],
+   "scripts": 25,
+   "cls": 0.4441
+  },
+  {
+   "ls": [
+    {
+     "t": 197,
+     "v": 0.2889,
+     "recent": false,
+     "src": [
+      {
+       "node": "footer.mt-auto.border-t.border-line.bg-page-subtle \"Malaysia Airports Perjalanan anda, terhubung denga\"",
+       "prev": [
+        640,
+        260
+       ],
+       "cur": [
+        0,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "t": 216,
+     "v": 0.0003,
+     "recent": false,
+     "src": [
+      {
+       "node": "#text",
+       "prev": [
+        144,
+        64
+       ],
+       "cur": [
+        141,
+        64
+       ]
+      },
+      {
+       "node": "nav.ml-3.hidden.@[84rem]:block \"Penerbangan Rancang perjalanan Di lapangan terbang\"",
+       "prev": [
+        44,
+        44
+       ],
+       "cur": [
+        44,
+        44
+       ]
+      }
+     ]
+    },
+    {
+     "t": 277,
+     "v": 0.1544,
+     "recent": false,
+     "src": [
+      {
+       "node": "div.relative.overflow-hidden.rounded-xl.border \"LAPANGAN TERBANG ATAU TERMINAL Pilih lapangan terb\"",
+       "prev": [
+        249,
+        275
+       ],
+       "cur": [
+        193,
+        275
+       ]
+      },
+      {
+       "node": "div.flex.flex-col.gap-[clamp(0.5rem,1.3vh,0.875rem)].max-sm:gap-2.5 \"Apa rancangan anda hari ini? Berlepas PINTU RUMAH \"",
+       "prev": [
+        482,
+        231
+       ],
+       "cur": [
+        425,
+        231
+       ]
+      },
+      {
+       "node": "section.py-12 \"01 PAPAN PENERBANGAN DATA DEMONSTRASI Waktu penerb\"",
+       "prev": [
+        855,
+        45
+       ],
+       "cur": [
+        799,
+        101
+       ]
+      },
+      {
+       "node": "section.grid.overflow-hidden.rounded-lg.border \"NOTIS OPERASI · KLIA TERMINAL 1 Dirancang: tiada A\"",
+       "prev": [
+        730,
+        68
+       ],
+       "cur": [
+        674,
+        95
+       ]
+      },
+      {
+       "node": "#text",
+       "prev": [
+        200,
+        64
+       ],
+       "cur": [
+        141,
+        64
+       ]
+      }
+     ]
+    },
+    {
+     "t": 578,
+     "v": 0.0005,
+     "recent": false,
+     "src": [
+      {
+       "node": "section.py-12 \"01 PAPAN PENERBANGAN DATA DEMONSTRASI Waktu penerb\"",
+       "prev": [
+        799,
+        101
+       ],
+       "cur": [
+        804,
+        96
+       ]
+      },
+      {
+       "node": "div.min-w-0.flex-1 \"NOTIS OPERASI · KLIA TERMINAL 1 Dirancang: tiada A\"",
+       "prev": [
+        689,
+        64
+       ],
+       "cur": [
+        684,
+        80
+       ]
+      }
+     ]
+    }
+   ],
+   "lcp": [
+    {
+     "t": 240,
+     "size": 55440,
+     "el": "h1#home-title.type-display-lg.text-ink.max-sm:text-[1.625rem].max-xs:text-2xl \"Perjalanan anda, terhubung dengan indah.\""
+    }
+   ],
+   "fcp": 240,
+   "fonts": [
+    "hanken_grotesk_latin_wgh@74",
+    "geist_mono_latin_wght_no@144",
+    "fraunces_latin_opsz_norm@145",
+    "fraunces_latin_opsz_ital@213"
+   ],
+   "scripts": 25,
+   "cls": 0.4441
+  }
+ ],
+ "desktop /en/kul": [
+  {
+   "ls": [
+    {
+     "t": 139,
+     "v": 0.2889,
+     "recent": false,
+     "src": [
+      {
+       "node": "footer.mt-auto.border-t.border-line.bg-page-subtle \"Malaysia Airports Your journey, beautifully connec\"",
+       "prev": [
+        640,
+        260
+       ],
+       "cur": [
+        0,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "t": 162,
+     "v": 0.0003,
+     "recent": false,
+     "src": [
+      {
+       "node": "#text",
+       "prev": [
+        146,
+        64
+       ],
+       "cur": [
+        143,
+        64
+       ]
+      },
+      {
+       "node": "nav.ml-3.hidden.@[73rem]:block \"Flights Plan your journey At the airport Shop & di\"",
+       "prev": [
+        44,
+        44
+       ],
+       "cur": [
+        44,
+        44
+       ]
+      }
+     ]
+    },
+    {
+     "t": 343,
+     "v": 0.0009,
+     "recent": false,
+     "src": [
+      {
+       "node": "div.ml-auto.flex.min-w-0.items-center \"KUL KLIA\"",
+       "prev": [
+        44,
+        44
+       ],
+       "cur": [
+        44,
+        44
+       ]
+      },
+      {
+       "node": "a.link-action.type-body-sm.text-ink-2.max-sm:hidden \"All airports\"",
+       "prev": [
+        216,
+        32
+       ],
+       "cur": [
+        216,
+        32
+       ]
+      }
+     ]
+    }
+   ],
+   "lcp": [
+    {
+     "t": 168,
+     "size": 40948,
+     "el": "h1.type-display-lg.text-ink \"Kuala Lumpur International Airport\""
+    }
+   ],
+   "fcp": 168,
+   "fonts": [
+    "hanken_grotesk_latin_wgh@34",
+    "geist_mono_latin_wght_no@152",
+    "fraunces_latin_opsz_norm@154"
+   ],
+   "scripts": 35,
+   "cls": 0.2901
+  },
+  {
+   "ls": [
+    {
+     "t": 131,
+     "v": 0.2889,
+     "recent": false,
+     "src": [
+      {
+       "node": "footer.mt-auto.border-t.border-line.bg-page-subtle \"Malaysia Airports Your journey, beautifully connec\"",
+       "prev": [
+        640,
+        260
+       ],
+       "cur": [
+        0,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "t": 234,
+     "v": 0.0003,
+     "recent": false,
+     "src": [
+      {
+       "node": "#text",
+       "prev": [
+        146,
+        64
+       ],
+       "cur": [
+        143,
+        64
+       ]
+      },
+      {
+       "node": "nav.ml-3.hidden.@[73rem]:block \"Flights Plan your journey At the airport Shop & di\"",
+       "prev": [
+        44,
+        44
+       ],
+       "cur": [
+        44,
+        44
+       ]
+      }
+     ]
+    },
+    {
+     "t": 395,
+     "v": 0.0009,
+     "recent": false,
+     "src": [
+      {
+       "node": "div.ml-auto.flex.min-w-0.items-center \"KUL KLIA\"",
+       "prev": [
+        44,
+        44
+       ],
+       "cur": [
+        44,
+        44
+       ]
+      },
+      {
+       "node": "a.link-action.type-body-sm.text-ink-2.max-sm:hidden \"All airports\"",
+       "prev": [
+        216,
+        32
+       ],
+       "cur": [
+        216,
+        32
+       ]
+      }
+     ]
+    }
+   ],
+   "lcp": [
+    {
+     "t": 164,
+     "size": 40948,
+     "el": "h1.type-display-lg.text-ink \"Kuala Lumpur International Airport\""
+    }
+   ],
+   "fcp": 164,
+   "fonts": [
+    "hanken_grotesk_latin_wgh@33",
+    "geist_mono_latin_wght_no@144",
+    "fraunces_latin_opsz_norm@145"
+   ],
+   "scripts": 35,
+   "cls": 0.2901
+  }
+ ],
+ "desktop /en/journey": [
+  {
+   "ls": [
+    {
+     "t": 121,
+     "v": 0.008,
+     "recent": false,
+     "src": [
+      {
+       "node": "footer.mt-auto.border-t.border-line.bg-page-subtle \"Malaysia Airports Your journey, beautifully connec\"",
+       "prev": [
+        640,
+        260
+       ],
+       "cur": [
+        680,
+        220
+       ]
+      },
+      {
+       "node": "div.w-full.text-gold.pattern-rebung-lg.-mt-px \"\"",
+       "prev": [
+        0,
+        0
+       ],
+       "cur": [
+        680,
+        20
+       ]
+      },
+      {
+       "node": "a.link.inline-flex.min-h-8.items-center \"info@malaysiaairports.com.my\"",
+       "prev": [
+        875,
+        25
+       ],
+       "cur": [
+        0,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "t": 159,
+     "v": 0.0004,
+     "recent": false,
+     "src": [
+      {
+       "node": "#text",
+       "prev": [
+        170,
+        64
+       ],
+       "cur": [
+        167,
+        64
+       ]
+      },
+      {
+       "node": "nav.ml-3.hidden.@[73rem]:block \"Flights Plan your journey At the airport Shop & di\"",
+       "prev": [
+        44,
+        44
+       ],
+       "cur": [
+        44,
+        44
+       ]
+      }
+     ]
+    },
+    {
+     "t": 468,
+     "v": 0.1136,
+     "recent": false,
+     "src": [
+      {
+       "node": "footer.mt-auto.border-t.border-line.bg-page-subtle \"Malaysia Airports Your journey, beautifully connec\"",
+       "prev": [
+        680,
+        220
+       ],
+       "cur": [
+        0,
+        0
+       ]
+      }
+     ]
+    }
+   ],
+   "lcp": [
+    {
+     "t": 164,
+     "size": 13514,
+     "el": "h1.text-ink.type-display-lg \"My journey\""
+    },
+    {
+     "t": 496,
+     "size": 32385,
+     "el": "p.type-body-lg.mt-3.max-w-reading.text-ink-2 \"Save a flight and this page shows its status, what\""
+    }
+   ],
+   "fcp": 164,
+   "fonts": [
+    "hanken_grotesk_latin_wgh@46",
+    "geist_mono_latin_wght_no@143",
+    "fraunces_latin_opsz_norm@144"
+   ],
+   "scripts": 23,
+   "cls": 0.12200000000000001
+  },
+  {
+   "ls": [
+    {
+     "t": 101,
+     "v": 0.008,
+     "recent": false,
+     "src": [
+      {
+       "node": "footer.mt-auto.border-t.border-line.bg-page-subtle \"Malaysia Airports Your journey, beautifully connec\"",
+       "prev": [
+        640,
+        260
+       ],
+       "cur": [
+        680,
+        220
+       ]
+      },
+      {
+       "node": "div.w-full.text-gold.pattern-rebung-lg.-mt-px \"\"",
+       "prev": [
+        0,
+        0
+       ],
+       "cur": [
+        680,
+        20
+       ]
+      },
+      {
+       "node": "a.link.inline-flex.min-h-8.items-center \"info@malaysiaairports.com.my\"",
+       "prev": [
+        875,
+        25
+       ],
+       "cur": [
+        0,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "t": 169,
+     "v": 0.0004,
+     "recent": false,
+     "src": [
+      {
+       "node": "#text",
+       "prev": [
+        170,
+        64
+       ],
+       "cur": [
+        167,
+        64
+       ]
+      },
+      {
+       "node": "nav.ml-3.hidden.@[73rem]:block \"Flights Plan your journey At the airport Shop & di\"",
+       "prev": [
+        44,
+        44
+       ],
+       "cur": [
+        44,
+        44
+       ]
+      }
+     ]
+    },
+    {
+     "t": 365,
+     "v": 0.1136,
+     "recent": false,
+     "src": [
+      {
+       "node": "footer.mt-auto.border-t.border-line.bg-page-subtle \"Malaysia Airports Your journey, beautifully connec\"",
+       "prev": [
+        680,
+        220
+       ],
+       "cur": [
+        0,
+        0
+       ]
+      }
+     ]
+    }
+   ],
+   "lcp": [
+    {
+     "t": 140,
+     "size": 13514,
+     "el": "h1.text-ink.type-display-lg \"My journey\""
+    },
+    {
+     "t": 388,
+     "size": 32385,
+     "el": "p.type-body-lg.mt-3.max-w-reading.text-ink-2 \"Save a flight and this page shows its status, what\""
+    }
+   ],
+   "fcp": 140,
+   "fonts": [
+    "hanken_grotesk_latin_wgh@34",
+    "geist_mono_latin_wght_no@110",
+    "fraunces_latin_opsz_norm@112"
+   ],
+   "scripts": 23,
+   "cls": 0.12200000000000001
+  }
+ ],
+ "desktop /en/concierge": [
+  {
+   "ls": [
+    {
+     "t": 128,
+     "v": 0.2317,
+     "recent": false,
+     "src": [
+      {
+       "node": "footer.mt-auto.border-t.border-line.bg-page-subtle \"Malaysia Airports Your journey, beautifully connec\"",
+       "prev": [
+        640,
+        260
+       ],
+       "cur": [
+        0,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "t": 137,
+     "v": 0.0004,
+     "recent": false,
+     "src": [
+      {
+       "node": "#text",
+       "prev": [
+        196,
+        64
+       ],
+       "cur": [
+        193,
+        64
+       ]
+      },
+      {
+       "node": "nav.ml-3.hidden.@[73rem]:block \"Flights Plan your journey At the airport Shop & di\"",
+       "prev": [
+        44,
+        44
+       ],
+       "cur": [
+        44,
+        44
+       ]
+      }
+     ]
+    }
+   ],
+   "lcp": [
+    {
+     "t": 152,
+     "size": 50544,
+     "el": "p.type-body-lg.mt-4.max-w-reading.text-ink-2 \"Ask in your own words. Every answer comes from our\""
+    }
+   ],
+   "fcp": 152,
+   "fonts": [
+    "hanken_grotesk_latin_wgh@45",
+    "geist_mono_latin_wght_no@112",
+    "fraunces_latin_opsz_norm@113"
+   ],
+   "scripts": 26,
+   "cls": 0.2321
+  },
+  {
+   "ls": [
+    {
+     "t": 121,
+     "v": 0.2317,
+     "recent": false,
+     "src": [
+      {
+       "node": "footer.mt-auto.border-t.border-line.bg-page-subtle \"Malaysia Airports Your journey, beautifully connec\"",
+       "prev": [
+        640,
+        260
+       ],
+       "cur": [
+        0,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "t": 131,
+     "v": 0.0004,
+     "recent": false,
+     "src": [
+      {
+       "node": "#text",
+       "prev": [
+        196,
+        64
+       ],
+       "cur": [
+        193,
+        64
+       ]
+      },
+      {
+       "node": "nav.ml-3.hidden.@[73rem]:block \"Flights Plan your journey At the airport Shop & di\"",
+       "prev": [
+        44,
+        44
+       ],
+       "cur": [
+        44,
+        44
+       ]
+      }
+     ]
+    }
+   ],
+   "lcp": [
+    {
+     "t": 148,
+     "size": 50544,
+     "el": "p.type-body-lg.mt-4.max-w-reading.text-ink-2 \"Ask in your own words. Every answer comes from our\""
+    }
+   ],
+   "fcp": 148,
+   "fonts": [
+    "hanken_grotesk_latin_wgh@43",
+    "geist_mono_latin_wght_no@108",
+    "fraunces_latin_opsz_norm@110"
+   ],
+   "scripts": 26,
+   "cls": 0.2321
+  }
+ ]
+}

@@ -1,0 +1,116 @@
+[
+ {
+  "path": "/en",
+  "delay": 0,
+  "worst": [
+   "pointerdown",
+   216,
+   182,
+   909
+  ]
+ },
+ {
+  "path": "/en",
+  "delay": 0,
+  "worst": [
+   "click",
+   72,
+   55,
+   831
+  ]
+ },
+ {
+  "path": "/en",
+  "delay": 300,
+  "worst": [
+   "click",
+   120,
+   95,
+   1074
+  ]
+ },
+ {
+  "path": "/en",
+  "delay": 300,
+  "worst": [
+   "pointerdown",
+   1280,
+   29,
+   1225
+  ]
+ },
+ {
+  "path": "/en",
+  "delay": 600,
+  "worst": [
+   "pointerdown",
+   1464,
+   1009,
+   1731
+  ]
+ },
+ {
+  "path": "/en",
+  "delay": 600,
+  "worst": [
+   "click",
+   1472,
+   909,
+   1771
+  ]
+ },
+ {
+  "path": "/en/kul/flights",
+  "delay": 0,
+  "worst": [
+   "click",
+   160,
+   155,
+   1039
+  ]
+ },
+ {
+  "path": "/en/kul/flights",
+  "delay": 0,
+  "worst": [
+   "pointerdown",
+   152,
+   138,
+   752
+  ]
+ },
+ {
+  "path": "/en/kul/flights",
+  "delay": 300,
+  "worst": [
+   "click",
+   112,
+   106,
+   880
+  ]
+ },
+ {
+  "path": "/en/kul/flights",
+  "delay": 300,
+  "worst": [
+   "click",
+   928,
+   874,
+   1241
+  ]
+ },
+ {
+  "path": "/en/kul/flights",
+  "delay": 600,
+  "worst": [
+   "click",
+   968,
+   929,
+   1183
+  ]
+ },
+ {
+  "path": "/en/kul/flights",
+  "delay": 600
+ }
+]

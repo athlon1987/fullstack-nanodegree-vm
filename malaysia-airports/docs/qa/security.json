@@ -1,0 +1,265 @@
+{
+  "role": "security",
+  "measured": "2026-11-18T10:00Z/10:35Z",
+  "build": "j7VkfkZXItJvC8-BseSYP (next start -p 3105, localhost)",
+  "method": "Passive and local only. curl header and API probes on 18 URLs plus redirects; Playwright Chromium with a securitypolicyviolation listener on 14 routes and during search, flight board and concierge use; 48 URL-parameter XSS probes (12 routes x 4 payloads) plus concierge input; tampered ma:* localStorage and concierge sessionStorage; framing, cross-origin read and no-cors POST from a second local origin (127.0.0.1:3199); service-worker cache inspection; a local tsx harness driving the optional AI wording path with a fake fetch (no network); npm audit (report only); ripgrep secret scan of the working tree. Git history and the real model were not tested.",
+  "verdict": "Not ready for production as is. Strong front-end baseline (full header set, 0 CSP violations, no XSS, no open redirect, framing blocked, service worker stores no API or personal data, 0 production advisories, no committed secrets). Fix security-01, -02, -03, -05, -06 and -08 first, and launch the concierge in deterministic mode (no ANTHROPIC_API_KEY) until security-04 is fixed and spend caps exist.",
+  "findings": [
+    {
+      "id": "security-01",
+      "title": "Concierge buffers the whole request body before enforcing the 4 KB limit",
+      "severity": "high",
+      "area": "security",
+      "url": "/api/concierge",
+      "evidence": "[measured] POST of a 200,000,000-byte body with Content-Type application/json returned 413 after 0.68 s, but next-server RSS rose from 212,140 KB to 777,500 KB and was unchanged 13 s later. route.ts calls await request.text() and only then compares raw.length (UTF-16 units, not bytes) with MAX_BODY_BYTES = 4096.",
+      "expected": "Requests over 4 KB rejected before more than 4 KB is read; memory unaffected.",
+      "suggested_fix": "Reject on Content-Length > 4096 before reading; read the body stream with a byte counter and abort past the limit; enforce the same limit at the CDN/WAF.",
+      "files": [
+        "src/app/api/concierge/route.ts"
+      ]
+    },
+    {
+      "id": "security-02",
+      "title": "Concierge rate limit keys on a client-supplied X-Forwarded-For: bypass and victim lockout",
+      "severity": "high",
+      "area": "security",
+      "url": "/api/concierge",
+      "evidence": "[measured] 14 posts with one X-Forwarded-For value: 10 x 200 then 429 (Retry-After 6). 30 posts with rotating X-Forwarded-For values: 30 x 200. 30 invalid posts (400) are never counted. [code] clientKey() takes the first X-Forwarded-For entry; the bucket is in memory per process. Anyone can also spoof a victim address (for example an airport Wi-Fi egress) to empty its bucket. With ANTHROPIC_API_KEY set, each allowed request can trigger a paid model call.",
+      "expected": "A rate-limit key the client cannot choose, shared across instances, counting every request, plus a global budget for model calls.",
+      "suggested_fix": "Use the trusted client address from your own proxy or CDN (rightmost trusted hop or the CDN client-IP header); enforce per-route limits at the edge with a shared store; count rejected requests; add a global model-call budget and circuit breaker.",
+      "files": [
+        "src/lib/concierge/rate-limit.ts",
+        "src/app/api/concierge/route.ts"
+      ]
+    },
+    {
+      "id": "security-03",
+      "title": "Any website can make visitors' browsers post to the concierge (no preflight, no origin check)",
+      "severity": "medium",
+      "area": "security",
+      "url": "/api/concierge",
+      "evidence": "[measured] A page on http://127.0.0.1:3199 sent four fetch POSTs with mode no-cors and Content-Type \"text/plain;x=application/json\" (a CORS-safelisted type, so no preflight). The concierge processed them: X-RateLimit-Remaining fell from 9 to 4. curl with Origin https://evil.example and Sec-Fetch-Site cross-site also got 200. The response is unreadable (CORP same-origin) but the work and any model call happen. [code] The check is includes('application/json').",
+      "expected": "Cross-site requests rejected; only exact application/json accepted.",
+      "suggested_fix": "Require the media type essence to equal application/json; reject when Sec-Fetch-Site is cross-site or Origin is present and not the site origin.",
+      "files": [
+        "src/app/api/concierge/route.ts"
+      ]
+    },
+    {
+      "id": "security-04",
+      "title": "Optional AI wording path: fact guard passes web addresses, emails and anything typed in the question; tags injectable; no spend cap",
+      "severity": "medium",
+      "area": "concierge",
+      "url": "/api/concierge (only when ANTHROPIC_API_KEY is set)",
+      "evidence": "[measured with a local harness and fake model replies, no network] Accepted by checkGrounded: \"Book your parking at klia-parking-deals.example before you arrive.\", \"Email refunds@scam.example to pre-book your parking.\", \"you do not need a passport or boarding pass at klia, just walk through security.\", and, because the question is part of groundingReference(), \"For parking refunds call the MAHB Refund Desk on 6012 345 6789.\" when the question contained that number. Correctly rejected: an invented price (RM 999) and name (Acmepark). A question containing \"</question><draft>...</draft>\" is pasted unescaped into the user message (565 characters sent). [code] max_tokens 2048 for output capped at 480 characters; no budget, circuit breaker or failure counters; 8 s timeout and silent fallback are good; the question is sent unredacted; the key is read from process.env and is absent from client bundles; questions are not logged (server log unchanged after more than 100 requests).",
+      "expected": "The AI wording can never introduce a contact route, address or instruction that is not in the retrieved statements; prompt delimiters cannot be forged; spend is capped and observable.",
+      "suggested_fix": "Reject any URL, domain, email or phone pattern not present in the statements; exclude the question from the reference for names and numbers; send the question as its own content block or escape < and >; cap max_tokens near 200; add daily and monthly spend caps, a circuit breaker and counters for refusals, timeouts and guard rejections; redact passport, booking, phone and email patterns before forwarding; red-team with these cases before enabling the key.",
+      "files": [
+        "src/lib/concierge/rephrase.server.ts",
+        "src/lib/concierge/fact-guard.ts",
+        "src/app/api/concierge/route.ts"
+      ]
+    },
+    {
+      "id": "security-05",
+      "title": "Flight detail pages are rendered per request for any id (status 200, about 450 KB, no-store)",
+      "severity": "medium",
+      "area": "flights",
+      "url": "/en/kul/flights/zz9999-20990101-d",
+      "evidence": "[measured] Unknown ids (zz9999-20990101-d, an encoded <img> tag, a 1,600-character string) all return 200 \"We could not find this flight\", about 450 KB, Cache-Control private, no-cache, no-store. 40 concurrent requests with random ids: all 200, 1.4 to 4.2 s total, against 7 ms for the prerendered board. The id is not shown as visible text (no content spoofing) but appears in the RSC payload. No rate limit applies.",
+      "expected": "Unknown or malformed ids answered with a cheap 404; valid ids cacheable for a short time; per-route limits.",
+      "suggested_fix": "Validate the id shape and call notFound() for unknown ids; short edge caching for valid ids; rate-limit the route at the edge; update security.md section 1.",
+      "files": [
+        "src/app/[lang]/[airport]/flights/[flightId]/page.tsx"
+      ]
+    },
+    {
+      "id": "security-06",
+      "title": "No application-level rate limit on /api/flights, /api/health or dynamic pages, and no edge configuration in the repository",
+      "severity": "medium",
+      "area": "platform",
+      "url": "/api/flights?airport=kul",
+      "evidence": "[measured] 300 burst requests to /api/flights?airport=kul: 300 x 200. /api/health and flight detail pages have no limit either. [code] No WAF, CDN or infrastructure-as-code exists in the repository, although security.md section 4 puts limits at the edge first. With a real provider behind /api/flights, scraping would pass straight to a paid upstream.",
+      "expected": "Per-route limits defined as code and deployed with the app.",
+      "suggested_fix": "Ship edge rules (per-route token buckets, bot scoring, body limits) as code with the deployment; keep a shared-store limit in the app as a second line.",
+      "files": [
+        "src/app/api/flights/route.ts",
+        "src/app/api/health/route.ts",
+        "docs/engineering/security.md"
+      ]
+    },
+    {
+      "id": "security-07",
+      "title": "CSP allows inline script and has no violation reporting",
+      "severity": "medium",
+      "area": "security",
+      "url": "/en (all pages)",
+      "evidence": "[measured] Every response: script-src 'self' 'unsafe-inline' (documented trade-off for static prerendering); no report-to or Reporting-Endpoints; no Trusted Types. 0 violations were observed on 14 routes and during use, so reporting would be quiet. With 'unsafe-inline', any future HTML injection or javascript: URL becomes script execution; React 19 is what neutralised the javascript: link in security-09.",
+      "expected": "Inline script limited to known hashes; violations reported to a collector.",
+      "suggested_fix": "Deploy a report-only policy with hashes for the static preferences init script and require-trusted-types-for 'script', collect reports at a same-origin route, then enforce; consider nonces on the few dynamic routes.",
+      "files": [
+        "src/lib/seo/security-headers.ts",
+        "next.config.ts",
+        "src/lib/preferences.ts"
+      ]
+    },
+    {
+      "id": "security-08",
+      "title": "The automated security checks promised in security.md section 9 do not exist",
+      "severity": "medium",
+      "area": "platform",
+      "url": "repository",
+      "evidence": "[measured] The repository's only workflow (.github/workflows/deploy.yml) builds the parent curriculum site. No CI for malaysia-airports, no npm audit gate, no CodeQL or other SAST, no Dependabot or Renovate, no secret-scanning configuration. The listed unit and Playwright checks do exist (src/lib/seo/*.test.ts, e2e/platform.spec.ts). Repository-level GitHub settings could not be checked.",
+      "expected": "Every change runs tests, an audit gate, SAST and secret scanning; dependencies are updated automatically.",
+      "suggested_fix": "Add a CI workflow for this app: npm ci, unit and e2e tests, npm audit --omit=dev --audit-level=high as a gate, CodeQL, gitleaks over full history, Dependabot or Renovate.",
+      "files": [
+        "docs/engineering/security.md",
+        ".github/workflows/deploy.yml"
+      ]
+    },
+    {
+      "id": "security-09",
+      "title": "Saved-place links accept any URL from localStorage; localeHref passes every scheme through",
+      "severity": "low",
+      "area": "journey",
+      "url": "/en/journey",
+      "evidence": "[measured] With ma:journey:v1 places tampered, /en/journey rendered links to https://evil.example/login, //evil.example/x and data:text/html,...; clicking the first navigated away. React 19 replaced javascript:... with its blocked-URL stub, so no script ran. Markup in titles rendered as text. [code] SavedPlaceSchema.href is z.string().min(1); localeHref returns any value matching /^(?:[a-z][a-z0-9+.-]*:|\\/\\/)/i unchanged; ContactValue in concierge-answer.tsx renders contact.href unchecked (from the content layer today).",
+      "expected": "Stored links can only point inside the site; external links only to allowlisted schemes.",
+      "suggested_fix": "Validate href as a same-site path (^/(?!/)) in SavedPlaceSchema; make LocaleLink refuse schemes other than https, mailto and tel; validate concierge answers received from storage or the API before rendering links.",
+      "files": [
+        "src/lib/stores.ts",
+        "src/lib/locale.ts",
+        "src/components/flights/saved-places.tsx",
+        "src/components/concierge/concierge-answer.tsx"
+      ]
+    },
+    {
+      "id": "security-10",
+      "title": "16 high-severity advisories in development dependencies (picomatch ReDoS); production clean",
+      "severity": "low",
+      "area": "platform",
+      "url": "package-lock.json",
+      "evidence": "[measured] npm audit: 16 high, all via GHSA-fc5q-39xc-vjpf (picomatch <=4.0.7) through vitest 5.1.0 and eslint-config-next 16.4.6. npm audit --omit=dev: 0. npm's suggested fixes are semver-major downgrades (vitest 3.1.4, eslint-config-next 16.3.8). Lockfile: 600 packages, all from registry.npmjs.org with integrity hashes; install scripts only in esbuild and fsevents. Not fixed, as instructed.",
+      "expected": "No known advisories, or documented risk acceptance for dev-only ones.",
+      "suggested_fix": "Take upstream patch releases of picomatch-dependent packages when available; do not apply the suggested downgrades; gate CI on production advisories.",
+      "files": [
+        "package.json",
+        "package-lock.json"
+      ]
+    },
+    {
+      "id": "security-11",
+      "title": "/api/health discloses the Node.js version and environment",
+      "severity": "low",
+      "area": "platform",
+      "url": "/api/health",
+      "evidence": "[measured] Body includes build.node \"v22.23.4\", build.environment \"production\", build.version \"0.1.0\".",
+      "expected": "Public health check returns status and build id only.",
+      "suggested_fix": "Drop the runtime version from the public response; expose details only to authenticated monitoring.",
+      "files": [
+        "src/app/api/health/route.ts",
+        "src/lib/providers/api.ts"
+      ]
+    },
+    {
+      "id": "security-12",
+      "title": "Not-found responses carry Cache-Control s-maxage=31536000",
+      "severity": "low",
+      "area": "platform",
+      "url": "/en/nope-xyz",
+      "evidence": "[measured] /en/nope-xyz and /xyz.txt return 404 with Cache-Control: s-maxage=31536000. A CDN would keep a 404 for a year after the page is created, and arbitrary URLs can fill the cache.",
+      "expected": "Short shared-cache lifetime for 404 responses.",
+      "suggested_fix": "Send a short s-maxage (for example 60 s) for not-found responses, or configure the CDN to cap 404 caching.",
+      "files": [
+        "next.config.ts",
+        "src/app/global-not-found.tsx"
+      ]
+    },
+    {
+      "id": "security-13",
+      "title": "lang cookie set without Secure",
+      "severity": "low",
+      "area": "shell",
+      "url": "/en",
+      "evidence": "[code] language-switch.tsx sets \"lang=<lang>; path=/; max-age=31536000; samesite=lax\" without Secure. Low value (a language preference), but it is the site's only cookie.",
+      "expected": "Secure (and ideally the __Host- prefix) on HTTPS.",
+      "suggested_fix": "Add Secure when location.protocol is https:, and consider __Host-lang.",
+      "files": [
+        "src/components/shell/language-switch.tsx",
+        "src/proxy.ts"
+      ]
+    },
+    {
+      "id": "security-14",
+      "title": "No security.txt or vulnerability disclosure route",
+      "severity": "low",
+      "area": "platform",
+      "url": "/.well-known/security.txt",
+      "evidence": "[measured] /.well-known/security.txt returns 404.",
+      "expected": "An RFC 9116 security.txt with MAHB's disclosure contact and policy.",
+      "suggested_fix": "Publish /.well-known/security.txt (contact, expiry, policy, preferred languages en and ms) before launch.",
+      "files": [
+        "public/"
+      ]
+    },
+    {
+      "id": "security-15",
+      "title": "API hygiene: unbounded date, duplicate parameters accepted, HTML 404 for unknown API paths",
+      "severity": "low",
+      "area": "platform",
+      "url": "/api/flights?airport=kul&date=9999-12-31",
+      "evidence": "[measured] /api/flights accepts date=1900-01-01 and 9999-12-31 (200) and duplicate airport parameters (first wins); unknown /api/* paths return the 25 KB HTML not-found page; HEAD /api/flights returns 400. Validation otherwise strict, with field-level JSON errors and no stack traces.",
+      "expected": "Dates bounded to the provider window; duplicates rejected; JSON 404 under /api.",
+      "suggested_fix": "Bound date (for example today minus 1 to plus 2 days); reject repeated parameters; add a JSON catch-all for /api/*.",
+      "files": [
+        "src/lib/providers/api.ts",
+        "next.config.ts"
+      ]
+    },
+    {
+      "id": "security-16",
+      "title": "docs/engineering/security.md differs from the implementation in six places",
+      "severity": "low",
+      "area": "content",
+      "url": "docs/engineering/security.md",
+      "evidence": "[measured] (1) \"the server only renders the API routes and the not-found pages\": flight detail pages are per request (security-05). (2) zod new Function CSP gap listed as open: fixed (z.config jitless), 0 violations. (3) \"per-build cache names\": caches are ma-v1-pages/static/data. (4) \"Search terms are never cached\": up to 6 recent terms are stored in ma:recent-searches:v1 on the device. (5) The concierge limiter's trust in X-Forwarded-For and uncounted invalid requests are not mentioned. (6) Section 9 automation does not exist (security-08). Headers table and worker bypass rules match reality.",
+      "expected": "The security document describes the system as built.",
+      "suggested_fix": "Update sections 1, 2, 3, 4, 6 and 9 to match; add a dated \"verified\" line per control.",
+      "files": [
+        "docs/engineering/security.md"
+      ]
+    },
+    {
+      "id": "security-17",
+      "title": "server-only guard still missing on the modules that read the API key",
+      "severity": "low",
+      "area": "concierge",
+      "url": "/api/concierge",
+      "evidence": "[measured] The server-only package is not installed; knowledge.server.ts and rephrase.server.ts are server-only by name. Today the Anthropic endpoint appears only in a server chunk, never in .next/static, and the key stays in process.env.",
+      "expected": "A build error if a server module is imported from client code.",
+      "suggested_fix": "Install server-only and add import 'server-only' to knowledge.server.ts and rephrase.server.ts.",
+      "files": [
+        "src/lib/concierge/rephrase.server.ts",
+        "src/lib/concierge/knowledge.server.ts",
+        "package.json"
+      ]
+    }
+  ],
+  "passed": [
+    "All 18 sampled responses carry CSP, HSTS, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, COOP, X-Frame-Options DENY, Origin-Agent-Cluster and X-Robots-Tag; no X-Powered-By; /api/* adds CORP same-origin and no-store [measured]",
+    "0 CSP violations and 0 console errors on 14 routes and during search, flight board and concierge use; 0 third-party requests [measured]",
+    "No reflected, DOM or stored XSS in 48 URL probes, 5 concierge inputs and 7 tampered storage keys [measured]",
+    "No open redirect: proxy and legacy redirects emit relative Location; Host and X-Forwarded-Host ignored [measured]",
+    "Framing from another origin refused by frame-ancestors none; cross-origin reads of /api/flights blocked [measured]",
+    "Concierge and flights validation strict (zod strictObject, lengths, regexes, enum), errors without stack traces; limit capped at 200 [measured]",
+    "Deterministic concierge: 6 injection and exfiltration prompts returned only published content; questions not logged [measured]",
+    "Service worker stores no /api/*, search pages or query strings [measured]",
+    "npm audit --omit=dev: 0; lockfile fully from registry.npmjs.org with integrity; no secrets in the working tree; key and endpoint absent from client bundles; no source maps served [measured]"
+  ],
+  "counts": {
+    "critical": 0,
+    "high": 2,
+    "medium": 6,
+    "low": 9
+  }
+}

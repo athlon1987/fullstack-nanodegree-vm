@@ -1,0 +1,463 @@
+{
+  "role": "ux-frequent",
+  "panel": [
+    "(A) UX and digital product design director",
+    "(B) Frequent international business traveller (monthly KLIA; Changi, Heathrow, Hong Kong)"
+  ],
+  "date": "2026-11-18",
+  "build": "existing .next production build, next start -p 3107",
+  "scores": {
+    "scale": "1-5 half points; anchors 3 competent major airport, 4 strong with evidence, 5 best-in-class reference with first-hand evidence",
+    "dimensions": {
+      "ui": {
+        "weight": 10,
+        "score": 4,
+        "confidence": "medium"
+      },
+      "ux": {
+        "weight": 20,
+        "score": 4,
+        "confidence": "medium"
+      },
+      "info": {
+        "weight": 15,
+        "score": 3,
+        "confidence": "high",
+        "note": "scored on content actually present"
+      },
+      "flight": {
+        "weight": 15,
+        "score": 4,
+        "confidence": "medium"
+      },
+      "mobile": {
+        "weight": 10,
+        "score": 3.5,
+        "confidence": "high"
+      },
+      "nav": {
+        "weight": 10,
+        "score": 4,
+        "confidence": "medium"
+      },
+      "ai": {
+        "weight": 10,
+        "score": 3,
+        "confidence": "medium"
+      },
+      "commerce": {
+        "weight": 5,
+        "score": 2,
+        "confidence": "high",
+        "note": "scored on what is actually there"
+      },
+      "perf": {
+        "weight": 5,
+        "score": 3.5,
+        "confidence": "medium"
+      }
+    },
+    "weighted_percent": 71.5,
+    "confidence": "medium",
+    "comparison": {
+      "mahb_today": 42.5,
+      "heathrow_best_single": 79,
+      "best_per_dimension_composite": 83
+    },
+    "projections_judgement": {
+      "with_mahb_data": 77,
+      "with_mahb_data_and_findings_01_to_07_fixed": "83-84"
+    }
+  },
+  "tasks_phone_390": [
+    {
+      "id": "T1",
+      "task": "Flight status, terminal, gate for MH 2630 from home",
+      "interactions": 1,
+      "answer_y_px": 450,
+      "viewport_h_px": 664,
+      "machine_ms_after_submit": "100-140",
+      "outcome": "success"
+    },
+    {
+      "id": "T2",
+      "task": "Follow flight: save, alerts, share",
+      "interactions": 5,
+      "save_y_px": 1547,
+      "alerts_y_px": 5321,
+      "outcome": "partial: alerts page-bound; none on iOS Safari; no e-mail"
+    },
+    {
+      "id": "T3",
+      "task": "Parking price, 3-day stay at KLIA",
+      "interactions": 3,
+      "quick_chip_y_px": 2029,
+      "estimate_y_px": 2206,
+      "result": "At most RM 96 (LTCP); T1 car park not verified",
+      "outcome": "partial"
+    },
+    {
+      "id": "T4",
+      "task": "Lounge at KLIA T1 with price and hours",
+      "interactions": 2,
+      "result": "Plaza Premium Lounge, Contact Pier near Gate G, open 24 h (directory); no price or access rules",
+      "outcome": "partial"
+    },
+    {
+      "id": "T5",
+      "task": "KLIA Ekspres fare and time to KL Sentral",
+      "interactions": 2,
+      "fare_y_px": 1467,
+      "result": "RM 55 until 31 Dec 2026, RM 65 from 1 Jan 2027, 28 min",
+      "outcome": "success"
+    },
+    {
+      "id": "T6",
+      "task": "Fast Track",
+      "interactions": null,
+      "result": "0 results in site search; 0 flights in home search; concierge returns Butterfly Effect",
+      "outcome": "fail"
+    }
+  ],
+  "counts": {
+    "critical": 0,
+    "high": 7,
+    "medium": 11,
+    "low": 5
+  },
+  "findings": [
+    {
+      "id": "ux-frequent-01",
+      "title": "Journey timeline marks the wrong step as \"Now\": check-in after it has closed, and boarding on a departed flight",
+      "severity": "high",
+      "area": "flights",
+      "url": "http://localhost:3107/en/kul/flights/mh2630-20261118-d",
+      "evidence": "[measured] Desktop 1440, 18 Nov 2026. At 18:52 MYT the MH 2630 status card read \"Check-in closed\" (check-in closed 18:40), but the timeline showed \"Now: 16:40 Check in and drop your bags ... closes at 18:40\". At 19:00 the departed AK 6336 (departed 07:00) showed \"Now: 06:30 Board from 06:30\". Cause: src/lib/journey/index.ts lines 176-184 set current = the last step whose start time is in the past; steps have no end time, and untimed steps (security, gate) can never be current. Reproduce: open the URL between check-in close and boarding, or open /en/kul/flights/ak6336-20261118-d after departure. Still present from usability-04 and wider than first logged.",
+      "expected": "\"Now\" never points at a step whose deadline has passed. After check-in closes: \"Check-in has closed. Contact Malaysia Airlines\" (or move to security if checked in). After departure: the timeline collapses to \"Departed 07:00\" with arrival information.",
+      "suggested_fix": "Give timed steps an end (checkInClosesAt, gateClosesAt, actual departure) and compute the state from start and end. Add a closed or missed state with airline contact. Add unit tests at check-in close + 1 min, boarding, and departure + 1 min.",
+      "files": [
+        "src/lib/journey/index.ts",
+        "src/components/flights/journey-timeline.tsx",
+        "src/lib/journey/journey.test.ts"
+      ]
+    },
+    {
+      "id": "ux-frequent-02",
+      "title": "The home page ignores the visitor's saved flight",
+      "severity": "high",
+      "area": "home",
+      "url": "http://localhost:3107/en",
+      "evidence": "[measured] Phone 390. Saved MH 2630 on its flight page; localStorage held ma:journey:v1 with the flight, and /en/journey listed it. Back on /en, the text \"MH 2630\" appeared nowhere in main. The \"Your journey, step by step\" teaser still said \"Save a flight and we build a timeline\" with a sample flight (\"Be at the airport by 17:30\"), and the board preview stayed network-wide. Only the tab-bar Journey badge showed \"1\" (contact sheet 07). journey-teaser.tsx always picks a sample flight from the demo provider.",
+      "expected": "Design principle 1 and the P1 and P8 success criteria: a saved flight appears on the home first screen with live status, gate, the next step and leave-by, within 0 interactions.",
+      "suggested_fix": "In JourneyTeaser and home-sections, read useSavedJourney(). When a saved flight is for today or the future, render its live card and next timeline step above the journey modes. Fall back to the sample only when nothing is saved.",
+      "files": [
+        "src/components/home/journey-teaser.tsx",
+        "src/components/home/home-sections.tsx"
+      ]
+    },
+    {
+      "id": "ux-frequent-03",
+      "title": "Flight alerts only work while the page is open, do not exist on iPhone Safari, offer no e-mail, and sit 8 phone screens down",
+      "severity": "high",
+      "area": "flights",
+      "url": "http://localhost:3107/en/kul/flights/mh2630-20261118-d",
+      "evidence": "[measured] Copy: \"They only arrive while this page is open.\" With window.Notification removed (as on iOS Safari outside an installed web app), the panel shows \"This browser cannot show notifications.\" with no other channel. With a stubbed Notification API the toggle works (\"Demo alerts are on for MH 2630\"; a notification fired). Phone 390: the Flight alerts heading is at y=5,321 px (Save flight at 1,547). Desktop 1440: 1,239 px. No e-mail or WhatsApp opt-in exists anywhere (grep of src/lib/i18n/features/flights.ts). Headless Chromium reported the permission as blocked even when granted; that part is a lab artefact.",
+      "expected": "BR-04 (Must): follow and opt in within 3 interactions with no account, by web push and e-mail. Alerts that reach a closed browser; a working path for iPhone users.",
+      "suggested_fix": "Design the follow control as one \"Follow this flight\" sheet next to Save: push (service worker; on iOS, a prompt to add to the home screen), e-mail (double opt-in) and later WhatsApp. On browsers without the API, offer e-mail instead of a dead end. Move the control into the status card. A server-side watcher is needed for production.",
+      "files": [
+        "src/components/flights/flight-alerts-panel.tsx",
+        "src/components/flights/flight-alerts.ts",
+        "src/components/flights/flight-detail.tsx",
+        "src/components/flights/flight-actions.tsx"
+      ]
+    },
+    {
+      "id": "ux-frequent-04",
+      "title": "Fast Track is absent from search, the concierge and the content, a regression on MAHB today",
+      "severity": "high",
+      "area": "commerce",
+      "url": "http://localhost:3107/en/search?q=fast%20track",
+      "evidence": "[measured] /en/search?q=fast track gives \"0 results\". The home search for \"fast track\" gives \"0 flights found\". Concierge API \"Is there fast track at KLIA?\" returned \"I could not match that to one topic\" and, as its first item, the Butterfly Effect hidden-disability programme with \"priority access\". grep finds no Fast Track content in src/content. The legacy path air-travel/services/fast-track redirects to the airport overview (src/lib/seo/legacy-redirects.ts:77). MAHB today sells Fast Track on another domain (benchmark report), and P1 lists Fast Track as a top task.",
+      "expected": "A Fast Track entry per airport where the service exists (price, hours, terminal, how to buy, sources), offered on busy departures from the flight page (BR-21, principle 9), findable by search and the concierge. Where unpublished, an explicit \"Not published\" with the official link.",
+      "suggested_fix": "Add a sourced Fast Track service record for KLIA T1 and T2 and a services section. Index it in search with synonyms (\"priority lane\", \"laluan pantas\"). Add a concierge intent. Point the legacy redirect at it. Add a slot on the flight page next to security.",
+      "files": [
+        "src/lib/seo/legacy-redirects.ts",
+        "src/content/airports/kul.ts",
+        "src/lib/search/documents.ts",
+        "src/lib/concierge/engine.ts"
+      ]
+    },
+    {
+      "id": "ux-frequent-05",
+      "title": "The home's main search is flights-only and dead-ends on topic words",
+      "severity": "high",
+      "area": "search",
+      "url": "http://localhost:3107/en",
+      "evidence": "[measured] Phone 390, home search: \"parking\" gives \"0 flights found ... Try a flight number, a city, an airline, or a route\". \"lounge\" and \"fast track\" give the same. Site search for the same words returns 14 (parking rate) and 10 (lounge) results. Desktop placeholder \"Flight number, destination, airline or route\"; Changi's hero field is \"Search for flights, and dining options\". Still present from usability-03.",
+      "expected": "BR-19: one search for flights, facilities, services and pages, with entity results first. A non-flight query in the home field must reach site results, not a dead end.",
+      "suggested_fix": "When the flight matcher returns 0 (or the query is classified as a topic), render the top 3 site-search entities inline with \"See all results for …\". Keep flights first when both match.",
+      "files": [
+        "src/components/flights/flight-search-box.tsx",
+        "src/components/flights/identify-flight.ts",
+        "src/lib/search/documents.ts"
+      ]
+    },
+    {
+      "id": "ux-frequent-06",
+      "title": "Label in Name (WCAG 2.5.3, Level A) fails on the header airport switcher on every page once an airport is chosen; the CI axe tags omit wcag21a",
+      "severity": "high",
+      "area": "accessibility",
+      "url": "http://localhost:3107/en/kul",
+      "evidence": "[measured] axe-core with tags wcag2a, wcag2aa, wcag21a, wcag21aa and wcag22aa: label-content-name-mismatch (serious) x1 on /en/kul and every airport page at 1440, 390 and 360, light and dark, EN and MS. It also appears on /ms/concierge, /en/corporate/news and /ms/accessibility once an airport has been chosen. Lighthouse mobile listed the same failure on the board, flight and transport pages. Element: button[data-airport-switcher=header] with aria-label \"Change airport. Currently {airport}\", while its visible text starts with the code \"KUL\" (src/components/shell/airport-switcher.tsx:97). The integration report's \"0 violations\" used AXE_TAGS without wcag21a (e2e/platform.spec.ts:13, e2e/guides.spec.ts:11).",
+      "expected": "The accessible name contains the visible label text, ideally at its start, so speech-input users can say \"click KUL\". CI scans all A and AA rules.",
+      "suggested_fix": "Drop the aria-label and use visible text plus an sr-only suffix (for example \"KUL KLIA Terminal 1, change airport\"), or begin the aria-label with the visible text. Add wcag21a to AXE_TAGS in every e2e spec.",
+      "files": [
+        "src/components/shell/airport-switcher.tsx",
+        "e2e/platform.spec.ts",
+        "e2e/guides.spec.ts",
+        "e2e/corporate.spec.ts"
+      ]
+    },
+    {
+      "id": "ux-frequent-07",
+      "title": "About 440 px of airport chrome puts every phone answer below the first screen",
+      "severity": "high",
+      "area": "shell",
+      "url": "http://localhost:3107/en/kul/flights/mh2630-20261118-d",
+      "evidence": "[measured] iPhone 14 profile (390 x 664). The H1 is at 440 px on the flight page, Transport and Transit (466 px on Parking at 360, 516 px on the Malay flight page at 360, where the terminal chips wrap). Answer positions: flight-page gate G6 at 1,306 px, Save at 1,547 px; first board row at 1,173 px; KLIA Ekspres fare at 1,467 px; parking quick-stay at 2,029 px. The chrome is airport identity, clock, three terminal chips, a 9-tab strip and a breadcrumb (contact sheet 03). Still present from usability-06.",
+      "expected": "Principle 3 (\"Answer before asking\"): on a task page the key answer (gate, fare, price, verdict) is within the first 664 px on a phone.",
+      "suggested_fix": "On task pages at under 640 px, collapse the airport header to one 56 px row (code, terminal, overflow menu for sections). Hide the clock and the terminal chips behind it. Shrink the demo banner to a chip [prototype]. Then put a compact status, fare or price summary directly under the H1.",
+      "files": [
+        "src/components/airport/section-nav.tsx",
+        "src/components/shell/site-header.tsx",
+        "src/components/flights/flight-status-hero.tsx"
+      ]
+    },
+    {
+      "id": "ux-frequent-08",
+      "title": "The flight card states the Economy check-in row as the flight's check-in",
+      "severity": "medium",
+      "area": "flights",
+      "url": "http://localhost:3107/en/kul/flights/mh2630-20261118-d",
+      "evidence": "[measured] The status card shows \"CHECK-IN Row H · Counters 1-18\" for MH 2630. Further down, the timeline note \"Malaysia Airlines check-in rows\" says Row H is international Economy, Row D (counters 4-12) is international Business, and bag drop is at F and G. A business traveller following the card goes to the wrong row. The row comes from the demo provider (src/lib/providers/demo-flights.ts) and is rendered in flight-status-hero.tsx:51-52 [prototype data, but the field model is the issue].",
+      "expected": "Check-in in the card is by cabin (\"Economy: Row H 1-18 · Business: Row D 4-12 · Bag drop: F, G\"), or labelled \"Economy\" when only one is known.",
+      "suggested_fix": "Model checkInRow per cabin in the flight type and the content layer (airline rows already exist in content). Render up to three short lines in the card.",
+      "files": [
+        "src/lib/flights/types.ts",
+        "src/lib/providers/demo-flights.ts",
+        "src/components/flights/flight-status-hero.tsx"
+      ]
+    },
+    {
+      "id": "ux-frequent-09",
+      "title": "Codeshare flight URLs return \"We could not find this flight\"",
+      "severity": "medium",
+      "area": "flights",
+      "url": "http://localhost:3107/en/kul/flights/qr5700-20261118-d",
+      "evidence": "[measured] Home search \"QR5700\" resolves to MH 2630 (\"Reading this as FLIGHT NUMBER\"), but /en/kul/flights/qr5700-20261118-d renders the not-found page (title \"We could not find this flight | Malaysia Airports\"). A colleague who shares or bookmarks the number on their ticket, or a deep link from a partner, fails.",
+      "expected": "BR-02: each codeshare number redirects (308) to the operating flight's page for that day.",
+      "suggested_fix": "In the flight page (or a proxy), when the id is not found, look the number up among codeshares for that date and airport and redirect to the operating id.",
+      "files": [
+        "src/app/[lang]/[airport]/flights/[flightId]/page.tsx",
+        "src/lib/providers/demo-flights.ts"
+      ]
+    },
+    {
+      "id": "ux-frequent-10",
+      "title": "Boards open 45 minutes in the past, so departed flights lead",
+      "severity": "medium",
+      "area": "flights",
+      "url": "http://localhost:3107/en/kul/flights",
+      "evidence": "[measured] Phone 390 at about 18:55: the board header read \"17:53 to 00:38\". The first row (AK 6340, Departed) is at 1,173 px, and 5 of the first 8 rows are departed. The first row still to depart is at 1,298 px; the 18:55 departures start at about 2,478 px. Desktop 1280 shows the same order (contact sheet 05). board-model.ts:132 sets back = 45 minutes before any \"earlier\" step, although a \"Show earlier flights\" control exists.",
+      "expected": "The board opens at \"now\" (or now minus 10 minutes), with departed flights folded behind \"Show earlier flights\". Search results are unaffected.",
+      "suggested_fix": "Set the default earlier window to 0 to 10 minutes, or keep 45 but scroll to the first not-departed row and visually collapse departed rows.",
+      "files": [
+        "src/components/flights/board-model.ts",
+        "src/components/flights/flight-board-explorer.tsx"
+      ]
+    },
+    {
+      "id": "ux-frequent-11",
+      "title": "The concierge does not lead with the asked-for answer",
+      "severity": "medium",
+      "area": "concierge",
+      "url": "http://localhost:3107/en/concierge",
+      "evidence": "[measured] POST /api/concierge. \"How much is the KLIA Ekspres?\" (EN) and \"Berapa tambang KLIA Ekspres?\" (MS) led with the inter-terminal and Long Term Car Park shuttle FAQs. RM 55 appeared only further down, among cards for every mode. \"Which terminal does Emirates use?\" gave a generic \"check your booking\". \"Which lounge can I use near gate G6 in business class?\", with flightId mh2630, listed all 5 T1 lounges including the Domestic and Satellite Golden Lounges, not ranked by gate. \"Is there fast track at KLIA?\" returned the Butterfly Effect (see 04).",
+      "expected": "BR-20: answer the question asked first, with the figure (\"RM 55 until 31 Dec 2026; RM 65 from 1 Jan 2027\"), use the followed flight for gate-relative answers, and escalate honestly when nothing is published.",
+      "suggested_fix": "Add slot-specific intents (fare for a named mode, airline to terminal, lounge near a gate) whose first statement is the direct answer. Rank cards by the flight context. Return an explicit \"not published\" plus the official link instead of loosely related FAQs.",
+      "files": [
+        "src/lib/concierge/engine.ts"
+      ]
+    },
+    {
+      "id": "ux-frequent-12",
+      "title": "The self-transfer verdict is at 2,943 px on a phone, after the steps",
+      "severity": "medium",
+      "area": "transit",
+      "url": "http://localhost:3107/en/kul/transit",
+      "evidence": "[measured] iPhone 14 profile: H1 at 440 px, \"Your steps\" at 1,691 px, verdict \"Looks workable\" at 2,943 px (page height 10,336 px), with default inputs. On desktop the verdict sits in the right column but below the steps. Still present from usability-07.",
+      "expected": "The verdict (comfortable, tight or not advised) and the time range appear directly under the form, before the steps.",
+      "suggested_fix": "Reorder the result: verdict card, then the \"what if it is tight\" action, then the steps. On phones, make the verdict sticky after it is computed.",
+      "files": [
+        "src/components/guides/transit-planner.tsx"
+      ]
+    },
+    {
+      "id": "ux-frequent-13",
+      "title": "The leave-by time is not personalised and the timeline does not suggest the lounge by the gate",
+      "severity": "medium",
+      "area": "journey",
+      "url": "http://localhost:3107/en/kul/flights/mh2630-20261118-d",
+      "evidence": "[measured] The timeline says \"Arrive at the airport by 16:40: 3 hours before your international flight\" for a 65-minute KUL to SIN hop. There are no options for hand luggage only, online check-in, cabin class or Fast Track. \"Time to spare? Eat or shop near your gate\" links to shop and dine, but the lounges data has Plaza Premium Lounge \"Contact Pier ... near Gate G\", next to gate G6, and the timeline does not mention it. Security plus immigration is a flat \"allow at least 45 minutes\".",
+      "expected": "A leave-by that reflects the traveller's situation (hand luggage, cabin, regional or long-haul), plus the nearest lounge and facilities to the gate in the \"Time to spare\" step (BR-03, BR-12, principle 9).",
+      "suggested_fix": "Add two remembered toggles (\"Hand luggage only\", \"Business or lounge access\") that adjust the arrive-by from sourced airline deadlines. Query facilities and lounges by gate area for the gate step.",
+      "files": [
+        "src/lib/journey/index.ts",
+        "src/components/flights/journey-timeline.tsx"
+      ]
+    },
+    {
+      "id": "ux-frequent-14",
+      "title": "Parking is not price-first, and the Terminal 1 car park has no rate",
+      "severity": "medium",
+      "area": "parking",
+      "url": "http://localhost:3107/en/kul/parking",
+      "evidence": "[measured] Phone 360/390: after the H1 (466 px at 360) come a \"Book parking online\" link, a red \"Avoid Preferred Parking\" callout and an amber \"Parking rates are not verified\" callout, then the calculator. The \"3 days\" chip is at 2,029 px and the estimate \"At most RM 96\" (Long Term Car Park, preselected) at 2,206 px. The Terminal 1 car park card reads \"Rates · Not verified\". The page has 1,348 words and 17 not-verified mentions. The booking link opens the official site without dates [content gap; layout is a design issue].",
+      "expected": "BR-10: the total for a typed stay for each product is visible without scrolling; the calculator uses the barrier tariff; the long-stay warning is a rule, not an anecdote.",
+      "suggested_fix": "Lead with a compact matrix (car park x 1 day / 3 days / 7 days), with \"Not verified\" cells linking out. Move the warnings into the Preferred Parking row. Pass dates to the booking hand-off. Load the MAHB rate cards before launch.",
+      "files": [
+        "src/app/[lang]/[airport]/parking/page.tsx",
+        "src/content/airports/kul.ts"
+      ]
+    },
+    {
+      "id": "ux-frequent-15",
+      "title": "Label and provenance noise across the system",
+      "severity": "medium",
+      "area": "design-system",
+      "url": "http://localhost:3107/en/kul/transport",
+      "evidence": "[measured] DOM counts at 1440 inside main. Home: 78 upper-case labels, 86 monospaced text runs, 13 font sizes. Transport: 64 upper-case labels, 22 \"not published\" or \"not verified\" mentions, 8 source toggles, 1,597 words. Facilities: 21 \"N sources\" toggles, 22 not-published mentions, 1,508 words. Parking: 1,348 words. Lounge cards stack \"Estimated\", \"After security\", \"Open now\" and a dashed-circle \"Not published\" row (contact sheet 06). [judgement] The provenance system is the product's strongest idea, but its current presentation competes with the answers.",
+      "expected": "Provenance is available on demand and quiet by default. Chips are reserved for states that change behaviour (Demo, Not verified, Open now). Any page uses about 8 type sizes or fewer.",
+      "suggested_fix": "Replace per-fact chips with a small superscript source marker that opens a popover. Collapse \"Not published: …\" lists into one muted line per card. Audit type sizes to a fixed scale. Limit mono capitals to data labels inside the flight card and board.",
+      "files": [
+        "src/components/ui",
+        "src/components/common",
+        "docs/design/design-system.md"
+      ]
+    },
+    {
+      "id": "ux-frequent-16",
+      "title": "The airport section tab strip is clipped at 1440 and 1280 px with no overflow cue",
+      "severity": "medium",
+      "area": "design-system",
+      "url": "http://localhost:3107/en/kul/flights",
+      "evidence": "[measured] nav \"KLIA sections\": scrollWidth 1,347 px in a 1,240 px clientWidth at both 1440 and 1280. The last tab \"Connections and transit\" is cut mid-word (\"Connections anc\") with overflow-x auto, no mask and no button (contact sheets 05 and 08). At 360 px in Malay the strip opens scrolled to the active tab, cutting the first label to \"ran keseluruhan\".",
+      "expected": "All sections visible on desktop, or a visible overflow affordance (\"More\" menu, or a fade plus arrow). No label clipped mid-word.",
+      "suggested_fix": "Shorten labels (\"Transit\", \"Getting here\") or move lower-traffic sections into a \"More\" menu at 1024 to 1440 px. Add a gradient mask and scroll buttons on all horizontal strips. On phones, scroll the active tab into view with inline padding.",
+      "files": [
+        "src/components/airport/section-nav.tsx"
+      ]
+    },
+    {
+      "id": "ux-frequent-17",
+      "title": "Mobile Total Blocking Time of 0.66 to 1.31 s on core pages",
+      "severity": "medium",
+      "area": "performance",
+      "url": "http://localhost:3107/en",
+      "evidence": "[measured] Lighthouse mobile, one run each, shared 4-core container. /en: performance 75, TBT 1,308 ms, LCP 1.3 s, 718 KB, 45 requests. Flight page: 66, TBT 808 ms, LCP 4.4 s, 780 KB. Board: 78, TBT 1,039 ms. /ms/kul/transport: 69, TBT 656 ms, LCP 4.2 s. CLS 0 to 0.003. This matches docs/qa/performance.md (home TBT 1.4 s). Weight and request budgets (BR-07) pass. TBT is the gap; Dubai (26 ms) and Istanbul (163 ms) show what is possible.",
+      "expected": "TBT under 200 ms (lab) and INP under 200 ms (field) on the home, board and flight pages, so taps are not lost on mid-range Android over roaming data (P1, P5).",
+      "suggested_fix": "Server-render the static parts of the home and flight page and hydrate only the search, board and timeline islands. Defer the board preview, concierge questions and shop strip below the fold. Split the content dictionary per route.",
+      "files": [
+        "src/app/[lang]/page.tsx",
+        "src/components/home/home-sections.tsx",
+        "src/components/flights/flight-detail.tsx"
+      ]
+    },
+    {
+      "id": "ux-frequent-23",
+      "title": "The KLIA overview buries the operational notice and leads its board preview with gate-closed flights",
+      "severity": "medium",
+      "area": "home",
+      "url": "http://localhost:3107/en/kul",
+      "evidence": "[measured] Phone 390: the Aerotrain night-closure notice (\"no Aerotrain between midnight and 5am, 28 November to 1 December\") is at 2,270 px on /en/kul, although the network home shows it near the top. Desktop: the \"Departures\" preview listed 6 flights, 4 of them \"Gate closed\" (contact sheet 08). BR-08 asks for the notice on the KLIA homepage and affected pages.",
+      "expected": "Active operational notices sit directly under the airport header on the airport overview. Board previews start with flights the visitor can still catch or meet.",
+      "suggested_fix": "Render NoticeStrip directly below the airport header on the overview and on affected section pages. Start previews at now + 15 minutes and exclude gate-closed and departed flights.",
+      "files": [
+        "src/app/[lang]/[airport]/page.tsx",
+        "src/components/home/notice-strip.tsx",
+        "src/components/home/board-preview.tsx"
+      ]
+    },
+    {
+      "id": "ux-frequent-18",
+      "title": "The phone tab bar's search button covers the \"Lounges\" tile label on the home first screen",
+      "severity": "low",
+      "area": "home",
+      "url": "http://localhost:3107/en",
+      "evidence": "[measured] Screenshots at 390 (light) and 390 returning: the raised central Search button overlaps the \"Lounges\" tile, whose label reads \"Loun…\" (contact sheets 01 and 07). Similar overlaps appear mid-page in full-page captures.",
+      "expected": "Fixed bottom elements never cover tappable content on the first screen. Bottom padding reserves the button overhang.",
+      "suggested_fix": "Add scroll-padding and padding-bottom equal to the tab bar height plus the button overhang, or reduce the overhang. Check tile rows at 360, 390 and 430 px.",
+      "files": [
+        "src/components/shell/mobile-bar.tsx",
+        "src/components/home/mode-quick-actions.tsx"
+      ]
+    },
+    {
+      "id": "ux-frequent-19",
+      "title": "Redundant controls on the home page",
+      "severity": "low",
+      "area": "home",
+      "url": "http://localhost:3107/en",
+      "evidence": "[measured] Phone 390 first screen: \"Choose airport\" in the header and again in the search card. A Departures/Arrivals toggle sits directly above the Departing/Arriving/Transiting/Meeting someone switch. Desktop: a \"Getting to the airport\" tile and a \"Getting to the airport\" card in the notice row (contact sheets 01 and 04).",
+      "expected": "One control per decision on the first screen.",
+      "suggested_fix": "Derive the search direction from the journey mode (Departing gives departures, Arriving and Meeting give arrivals). Remove the duplicate card. Keep the airport chooser in the search card on the home page and hide the header copy there.",
+      "files": [
+        "src/components/home/journey-modes.tsx",
+        "src/components/flights/flight-search-box.tsx",
+        "src/components/home/home-sections.tsx"
+      ]
+    },
+    {
+      "id": "ux-frequent-20",
+      "title": "The flight number H1 uses old-style figures and the route is stated three times",
+      "severity": "low",
+      "area": "design-system",
+      "url": "http://localhost:3107/en/kul/flights/mh2630-20261118-d",
+      "evidence": "[measured] Screenshots at 390, 360 and 1280: the H1 \"MH 2630 to Singapore\" is set in the display serif with old-style figures (the 3 descends). The lead \"Malaysia Airlines. Kuala Lumpur (KUL) to Singapore (SIN).\" and the card header \"Malaysia Airlines · MH 2630 … KUL → SIN Kuala Lumpur Singapore\" repeat it (contact sheet 03).",
+      "expected": "Flight numbers in lining, tabular figures, read at a glance; the route stated once.",
+      "suggested_fix": "Apply font-variant-numeric: lining-nums tabular-nums to flight identifiers, or set them in the sans. Drop the lead sentence on flight pages.",
+      "files": [
+        "src/app/[lang]/[airport]/flights/[flightId]/page.tsx",
+        "src/components/flights/flight-status-hero.tsx"
+      ]
+    },
+    {
+      "id": "ux-frequent-21",
+      "title": "The parking warning quotes a blog's report of a customer's bill",
+      "severity": "low",
+      "area": "content",
+      "url": "http://localhost:3107/en/kul/parking",
+      "evidence": "[measured] The red callout (also repeated in the flight timeline) reads: \"In January 2025 paultan.org reported a bill of RM2,084 for a long stay there.\"",
+      "expected": "The operator's own site states the rule and the tariff, with the source in the provenance layer, not an anecdote about a customer.",
+      "suggested_fix": "Reword: \"Preferred Parking is priced for short stays. For more than a day, use the Long Term Car Park (daily maximum RM 32 from 1 May 2026).\" Keep the press source in the sources popover.",
+      "files": [
+        "src/content/airports/kul.ts"
+      ]
+    },
+    {
+      "id": "ux-frequent-22",
+      "title": "Malay tab-bar labels crowd, and the section tabs open clipped mid-word at 360 px",
+      "severity": "low",
+      "area": "shell",
+      "url": "http://localhost:3107/ms/kul/flights/mh2630-20261118-d",
+      "evidence": "[measured] At 390 (dark) the tab-bar labels \"Laman utama\" and \"Penerbangan\" run together with no visible gap. At 360 \"Laman utama\" wraps to two lines. The section tab strip opens scrolled so the first label shows as \"ran keseluruhan\" (contact sheets 03 and 06).",
+      "expected": "Bottom-bar labels fit on one line with a visible gap in both languages at 360 px; no mid-word clipping.",
+      "suggested_fix": "Use short Malay labels for the bar (\"Utama\", \"Penerbangan\", \"Cari\", \"Perjalanan\", \"Menu\") or 11 px labels with a minimum gap. Add an inline-padding offset when scrolling the active tab into view.",
+      "files": [
+        "src/components/shell/mobile-bar.tsx",
+        "src/lib/i18n/ms.ts",
+        "src/components/airport/section-nav.tsx"
+      ]
+    }
+  ]
+}

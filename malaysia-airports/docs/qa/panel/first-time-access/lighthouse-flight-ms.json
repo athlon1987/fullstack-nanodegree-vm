@@ -1,0 +1,44 @@
+{
+ "key": "flight_ms",
+ "url": "http://localhost:3108/ms/kul/flights/mh2072-20261118-d",
+ "runs": 1,
+ "validRuns": 1,
+ "measured": "2026-11-18T10:54:08.142Z",
+ "median": {
+  "performance": 68,
+  "accessibility": 100,
+  "bestPractices": 100,
+  "seo": 54,
+  "fcp_ms": 1362,
+  "lcp_ms": 4381,
+  "tbt_ms": 648,
+  "cls": 0,
+  "si_ms": 2166,
+  "totalBytes": 783773,
+  "requests": 50
+ },
+ "a11yFailures": [
+  "label-content-name-mismatch"
+ ],
+ "rows": [
+  {
+   "finalUrl": "http://localhost:3108/ms/kul/flights/mh2072-20261118-d",
+   "runtimeError": null,
+   "performance": 68,
+   "accessibility": 100,
+   "bestPractices": 100,
+   "seo": 54,
+   "fcp_ms": 1362,
+   "lcp_ms": 4381,
+   "tbt_ms": 648,
+   "cls": 0,
+   "si_ms": 2166,
+   "totalBytes": 783773,
+   "requests": 50,
+   "a11yFailures": [
+    "label-content-name-mismatch"
+   ]
+  }
+ ],
+ "caveat": "Lab measurement: Lighthouse mobile emulation with simulated throttling, run from a shared cloud container; hosts outside the session allowlist (analytics, some CDNs) were blocked, which changes page weight and timings. Indicative only; not field data and not comparable to CrUX."
+}

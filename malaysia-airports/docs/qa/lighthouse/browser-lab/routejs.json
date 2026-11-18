@@ -1,0 +1,666 @@
+{
+ "rootMainFiles": [
+  "static/chunks/310vm2bl3xxpt.js",
+  "static/chunks/3mwm0pfu8c8me.js",
+  "static/chunks/01t2i9pe5vz2-.js",
+  "static/chunks/0_z_ds2phu1oc.js",
+  "static/chunks/turbopack-2u1d16houkiyo.js"
+ ],
+ "polyfill": [
+  "static/chunks/0cz1d0mv5g_q7.js"
+ ],
+ "rows": [
+  {
+   "route": "/[lang]/[airport]/flights/[flightId]",
+   "chunks": 16,
+   "shared_gz": 131684,
+   "route_gz": 150209,
+   "total_raw": 917651,
+   "total_gz": 281893,
+   "total_br": 244265,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/journey",
+   "chunks": 15,
+   "shared_gz": 131684,
+   "route_gz": 149150,
+   "total_raw": 916792,
+   "total_gz": 280834,
+   "total_br": 243410,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/[airport]/map",
+   "chunks": 16,
+   "shared_gz": 131684,
+   "route_gz": 145547,
+   "total_raw": 900617,
+   "total_gz": 277231,
+   "total_br": 240517,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/[airport]/flights",
+   "chunks": 15,
+   "shared_gz": 131684,
+   "route_gz": 142088,
+   "total_raw": 888390,
+   "total_gz": 273772,
+   "total_br": 237317,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/[airport]/parking",
+   "chunks": 15,
+   "shared_gz": 131684,
+   "route_gz": 139257,
+   "total_raw": 888023,
+   "total_gz": 270941,
+   "total_br": 234740,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/[airport]",
+   "chunks": 16,
+   "shared_gz": 131684,
+   "route_gz": 139133,
+   "total_raw": 881408,
+   "total_gz": 270817,
+   "total_br": 234657,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/design-system",
+   "chunks": 14,
+   "shared_gz": 131684,
+   "route_gz": 138818,
+   "total_raw": 881740,
+   "total_gz": 270502,
+   "total_br": 234429,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]",
+   "chunks": 14,
+   "shared_gz": 131684,
+   "route_gz": 137596,
+   "total_raw": 882867,
+   "total_gz": 269280,
+   "total_br": 233291,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/search",
+   "chunks": 15,
+   "shared_gz": 131684,
+   "route_gz": 136735,
+   "total_raw": 871102,
+   "total_gz": 268419,
+   "total_br": 232684,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/[airport]/transport",
+   "chunks": 15,
+   "shared_gz": 131684,
+   "route_gz": 136211,
+   "total_raw": 872993,
+   "total_gz": 267895,
+   "total_br": 232186,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/[airport]/shop-dine",
+   "chunks": 15,
+   "shared_gz": 131684,
+   "route_gz": 136133,
+   "total_raw": 870707,
+   "total_gz": 267817,
+   "total_br": 232133,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/concierge",
+   "chunks": 15,
+   "shared_gz": 131684,
+   "route_gz": 135756,
+   "total_raw": 873038,
+   "total_gz": 267440,
+   "total_br": 231726,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/[airport]/shop-dine/[outlet]",
+   "chunks": 15,
+   "shared_gz": 131684,
+   "route_gz": 133086,
+   "total_raw": 859979,
+   "total_gz": 264770,
+   "total_br": 229347,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/[airport]/transit",
+   "chunks": 15,
+   "shared_gz": 131684,
+   "route_gz": 132968,
+   "total_raw": 861876,
+   "total_gz": 264652,
+   "total_br": 229237,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/[airport]/facilities",
+   "chunks": 15,
+   "shared_gz": 131684,
+   "route_gz": 131511,
+   "total_raw": 854660,
+   "total_gz": 263195,
+   "total_br": 227922,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/help/[topic]",
+   "chunks": 14,
+   "shared_gz": 131684,
+   "route_gz": 131074,
+   "total_raw": 852436,
+   "total_gz": 262758,
+   "total_br": 227546,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/[airport]/lounges",
+   "chunks": 15,
+   "shared_gz": 131684,
+   "route_gz": 131055,
+   "total_raw": 850773,
+   "total_gz": 262739,
+   "total_br": 227525,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/airports",
+   "chunks": 14,
+   "shared_gz": 131684,
+   "route_gz": 128451,
+   "total_raw": 844339,
+   "total_gz": 260135,
+   "total_br": 225217,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/notices",
+   "chunks": 14,
+   "shared_gz": 131684,
+   "route_gz": 128161,
+   "total_raw": 844856,
+   "total_gz": 259845,
+   "total_br": 224943,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/guides",
+   "chunks": 14,
+   "shared_gz": 131684,
+   "route_gz": 126604,
+   "total_raw": 839482,
+   "total_gz": 258288,
+   "total_br": 223563,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/offline",
+   "chunks": 14,
+   "shared_gz": 131684,
+   "route_gz": 126588,
+   "total_raw": 839327,
+   "total_gz": 258272,
+   "total_br": 223522,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/privacy",
+   "chunks": 14,
+   "shared_gz": 131684,
+   "route_gz": 126368,
+   "total_raw": 838088,
+   "total_gz": 258052,
+   "total_br": 223317,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/guides/[topic]",
+   "chunks": 14,
+   "shared_gz": 131684,
+   "route_gz": 126199,
+   "total_raw": 837991,
+   "total_gz": 257883,
+   "total_br": 223169,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/help",
+   "chunks": 14,
+   "shared_gz": 131684,
+   "route_gz": 125710,
+   "total_raw": 835759,
+   "total_gz": 257394,
+   "total_br": 222729,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/corporate/business",
+   "chunks": 14,
+   "shared_gz": 131684,
+   "route_gz": 124884,
+   "total_raw": 833610,
+   "total_gz": 256568,
+   "total_br": 222018,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/accessibility",
+   "chunks": 14,
+   "shared_gz": 131684,
+   "route_gz": 124875,
+   "total_raw": 833358,
+   "total_gz": 256559,
+   "total_br": 222005,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/corporate/about",
+   "chunks": 14,
+   "shared_gz": 131684,
+   "route_gz": 124651,
+   "total_raw": 832596,
+   "total_gz": 256335,
+   "total_br": 221797,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/corporate/careers",
+   "chunks": 14,
+   "shared_gz": 131684,
+   "route_gz": 124651,
+   "total_raw": 832596,
+   "total_gz": 256335,
+   "total_br": 221797,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/corporate/contact",
+   "chunks": 14,
+   "shared_gz": 131684,
+   "route_gz": 124651,
+   "total_raw": 832596,
+   "total_gz": 256335,
+   "total_br": 221797,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/corporate/governance",
+   "chunks": 14,
+   "shared_gz": 131684,
+   "route_gz": 124651,
+   "total_raw": 832596,
+   "total_gz": 256335,
+   "total_br": 221797,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/corporate/network",
+   "chunks": 14,
+   "shared_gz": 131684,
+   "route_gz": 124651,
+   "total_raw": 832596,
+   "total_gz": 256335,
+   "total_br": 221797,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/corporate/news/[slug]",
+   "chunks": 14,
+   "shared_gz": 131684,
+   "route_gz": 124651,
+   "total_raw": 832596,
+   "total_gz": 256335,
+   "total_br": 221797,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/corporate/news",
+   "chunks": 14,
+   "shared_gz": 131684,
+   "route_gz": 124651,
+   "total_raw": 832596,
+   "total_gz": 256335,
+   "total_br": 221797,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/corporate",
+   "chunks": 14,
+   "shared_gz": 131684,
+   "route_gz": 124651,
+   "total_raw": 832596,
+   "total_gz": 256335,
+   "total_br": 221797,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/corporate/sustainability",
+   "chunks": 14,
+   "shared_gz": 131684,
+   "route_gz": 124651,
+   "total_raw": 832596,
+   "total_gz": 256335,
+   "total_br": 221797,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/about-this-prototype",
+   "chunks": 14,
+   "shared_gz": 131684,
+   "route_gz": 124443,
+   "total_raw": 831986,
+   "total_gz": 256127,
+   "total_br": 221623,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/terms",
+   "chunks": 14,
+   "shared_gz": 131684,
+   "route_gz": 123805,
+   "total_raw": 830112,
+   "total_gz": 255489,
+   "total_br": 221062,
+   "css_gz": 19323
+  },
+  {
+   "route": "/[lang]/[...rest]",
+   "chunks": 13,
+   "shared_gz": 131684,
+   "route_gz": 123106,
+   "total_raw": 828782,
+   "total_gz": 254790,
+   "total_br": 220440,
+   "css_gz": 19323
+  },
+  {
+   "route": "/_global-error",
+   "chunks": 5,
+   "shared_gz": 131684,
+   "route_gz": 0,
+   "total_raw": 444451,
+   "total_gz": 131684,
+   "total_br": 112694,
+   "css_gz": 0
+  },
+  {
+   "route": "/_not-found",
+   "chunks": 5,
+   "shared_gz": 131684,
+   "route_gz": 0,
+   "total_raw": 444451,
+   "total_gz": 131684,
+   "total_br": 112694,
+   "css_gz": 0
+  }
+ ],
+ "chunks": {
+  "static/chunks/310vm2bl3xxpt.js": {
+   "raw": 5364,
+   "gz": 1969,
+   "br": 1665
+  },
+  "static/chunks/3mwm0pfu8c8me.js": {
+   "raw": 29913,
+   "gz": 7712,
+   "br": 6814
+  },
+  "static/chunks/01t2i9pe5vz2-.js": {
+   "raw": 229318,
+   "gz": 71616,
+   "br": 61318
+  },
+  "static/chunks/0_z_ds2phu1oc.js": {
+   "raw": 169882,
+   "gz": 46482,
+   "br": 39413
+  },
+  "static/chunks/turbopack-2u1d16houkiyo.js": {
+   "raw": 9974,
+   "gz": 3905,
+   "br": 3484
+  },
+  "static/chunks/3diz016hpphtg.js": {
+   "raw": 382,
+   "gz": 251,
+   "br": 207
+  },
+  "static/chunks/15u7jvsixbpbh.js": {
+   "raw": 38173,
+   "gz": 13014,
+   "br": 11319
+  },
+  "static/chunks/2ocm0rsuz_94i.js": {
+   "raw": 28001,
+   "gz": 8599,
+   "br": 7538
+  },
+  "static/chunks/2ig0w-gcw1ov4.js": {
+   "raw": 28827,
+   "gz": 9877,
+   "br": 8856
+  },
+  "static/chunks/0to19dt37pvik.js": {
+   "raw": 72635,
+   "gz": 23275,
+   "br": 19512
+  },
+  "static/chunks/20zi65_zsmw1-.js": {
+   "raw": 58786,
+   "gz": 19867,
+   "br": 17762
+  },
+  "static/chunks/1-bh0-bkmho_q.js": {
+   "raw": 35498,
+   "gz": 13349,
+   "br": 12075
+  },
+  "static/chunks/3ja1rs91hq4qc.js": {
+   "raw": 122029,
+   "gz": 34874,
+   "br": 30477
+  },
+  "static/chunks/2blf4mykprvo-.css": {
+   "raw": 106576,
+   "gz": 19323,
+   "br": 15679
+  },
+  "static/chunks/3edb8mu_qjr2m.js": {
+   "raw": 5402,
+   "gz": 2180,
+   "br": 1895
+  },
+  "static/chunks/0j59bexy5gt-x.js": {
+   "raw": 20476,
+   "gz": 6225,
+   "br": 5587
+  },
+  "static/chunks/3oqputgcam7-l.js": {
+   "raw": 24040,
+   "gz": 7528,
+   "br": 6691
+  },
+  "static/chunks/1ucywv2t_uxn6.js": {
+   "raw": 59427,
+   "gz": 17395,
+   "br": 15239
+  },
+  "static/chunks/3m23krydpisup.js": {
+   "raw": 54206,
+   "gz": 16802,
+   "br": 14982
+  },
+  "static/chunks/09_ql8l-vvl6z.js": {
+   "raw": 16589,
+   "gz": 5769,
+   "br": 5190
+  },
+  "static/chunks/13w3cwxlnx1n8.js": {
+   "raw": 14869,
+   "gz": 4505,
+   "br": 4008
+  },
+  "static/chunks/1ynkioawhhnqw.js": {
+   "raw": 51564,
+   "gz": 15756,
+   "br": 14174
+  },
+  "static/chunks/0onn_c1ihoi42.js": {
+   "raw": 11958,
+   "gz": 3840,
+   "br": 3411
+  },
+  "static/chunks/3x-j7djd3ip1d.js": {
+   "raw": 35266,
+   "gz": 10007,
+   "br": 8911
+  },
+  "static/chunks/3rev5i8c6vf_-.js": {
+   "raw": 53839,
+   "gz": 13971,
+   "br": 12405
+  },
+  "static/chunks/44czysysgx3by.js": {
+   "raw": 25795,
+   "gz": 7800,
+   "br": 7012
+  },
+  "static/chunks/3_gxclf419y7h.js": {
+   "raw": 36523,
+   "gz": 10847,
+   "br": 9798
+  },
+  "static/chunks/0jvj0it05v_k1.js": {
+   "raw": 27692,
+   "gz": 7682,
+   "br": 6902
+  },
+  "static/chunks/02jz5y9m--zfw.js": {
+   "raw": 38809,
+   "gz": 10925,
+   "br": 9851
+  },
+  "static/chunks/42u1r9bxan4d_.js": {
+   "raw": 3204,
+   "gz": 1337,
+   "br": 1183
+  },
+  "static/chunks/0wi_bn_e6wdy-.js": {
+   "raw": 4576,
+   "gz": 1769,
+   "br": 1565
+  },
+  "static/chunks/2u5a0om9uxz6c.js": {
+   "raw": 15557,
+   "gz": 5345,
+   "br": 4777
+  },
+  "static/chunks/236agy1t6_9bl.js": {
+   "raw": 8264,
+   "gz": 2792,
+   "br": 2466
+  },
+  "static/chunks/1wa0s1wjlfjvg.js": {
+   "raw": 35992,
+   "gz": 9858,
+   "br": 8820
+  },
+  "static/chunks/3-p6i09q-8tvf.js": {
+   "raw": 3814,
+   "gz": 1545,
+   "br": 1357
+  },
+  "static/chunks/1gex931riiqbg.js": {
+   "raw": 4828,
+   "gz": 1778,
+   "br": 1578
+  },
+  "static/chunks/25vw2nf52e9x8.js": {
+   "raw": 52958,
+   "gz": 15712,
+   "br": 13989
+  },
+  "static/chunks/2231jwu0u6ru9.js": {
+   "raw": 9209,
+   "gz": 3093,
+   "br": 2729
+  },
+  "static/chunks/36iiu0cnw3tmo.js": {
+   "raw": 10700,
+   "gz": 3498,
+   "br": 3123
+  },
+  "static/chunks/1a2s3678_f92g.js": {
+   "raw": 23654,
+   "gz": 7968,
+   "br": 7106
+  },
+  "static/chunks/28h0b8jax88iq.js": {
+   "raw": 6977,
+   "gz": 2604,
+   "br": 2289
+  },
+  "static/chunks/0_10wl9los9y4.js": {
+   "raw": 28542,
+   "gz": 8285,
+   "br": 7399
+  },
+  "static/chunks/2lrd_0ckst003.js": {
+   "raw": 59468,
+   "gz": 17759,
+   "br": 15571
+  },
+  "static/chunks/379c2j2m64nh-.js": {
+   "raw": 16074,
+   "gz": 5055,
+   "br": 4503
+  },
+  "static/chunks/38f21ygqvxk_0.js": {
+   "raw": 10545,
+   "gz": 3482,
+   "br": 3082
+  },
+  "static/chunks/3przz6r55nmmg.js": {
+   "raw": 54085,
+   "gz": 14490,
+   "br": 12851
+  },
+  "static/chunks/1cifanyxaiggb.js": {
+   "raw": 9306,
+   "gz": 3262,
+   "br": 2877
+  },
+  "static/chunks/23nsx69o9qgjv.js": {
+   "raw": 21640,
+   "gz": 6548,
+   "br": 5814
+  },
+  "static/chunks/2jvh8m9bgnvol.js": {
+   "raw": 20680,
+   "gz": 7081,
+   "br": 6430
+  },
+  "static/chunks/0layme8svn8ny.js": {
+   "raw": 1330,
+   "gz": 699,
+   "br": 622
+  }
+ }
+}

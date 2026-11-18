@@ -1,0 +1,28 @@
+{
+ "home-en-my": {
+  "performance": 74,
+  "accessibility": 100,
+  "bestPractices": 100,
+  "seo": 63,
+  "fcp_ms": 549,
+  "lcp_ms": 1214,
+  "tbt_ms": 1539,
+  "cls": 0,
+  "si_ms": 1090,
+  "totalBytes": 667895,
+  "requests": 45
+ },
+ "flights-my": {
+  "performance": 77,
+  "accessibility": 100,
+  "bestPractices": 100,
+  "seo": 63,
+  "fcp_ms": 616,
+  "lcp_ms": 1167,
+  "tbt_ms": 1091,
+  "cls": 0.003,
+  "si_ms": 983,
+  "totalBytes": 599386,
+  "requests": 51
+ }
+}

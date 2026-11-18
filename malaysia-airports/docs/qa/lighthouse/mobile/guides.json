@@ -1,0 +1,333 @@
+{
+ "key": "guides",
+ "url": "http://localhost:3101/en/guides",
+ "preset": "mobile (Lighthouse default)",
+ "profile": null,
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-18T09:19:29.644Z",
+ "median": {
+  "performance": 91,
+  "accessibility": 100,
+  "bestPractices": 100,
+  "seo": 63,
+  "fcp_ms": 1063,
+  "lcp_ms": 1063,
+  "tbt_ms": 391,
+  "cls": 0,
+  "si_ms": 1063,
+  "totalBytes": 620452,
+  "requests": 43
+ },
+ "medianRunIndex": 1,
+ "diagnostics": {
+  "observed": {
+   "fcp": 175,
+   "lcp": 175,
+   "dcl": 187,
+   "load": 276,
+   "cls": 0
+  },
+  "tti_ms": 4468,
+  "maxPotentialFid_ms": 231,
+  "lcpElement": {
+   "selector": "div.mx-auto > div.grid > div.min-w-0 > p.type-body-lg",
+   "label": "Clear steps for every part of the trip, from packing to the arrival hall. Each …",
+   "snippet": "<p class=\"type-body-lg mt-4 max-w-reading text-ink-2\">"
+  },
+  "lcpPhases": {
+   "timeToFirstByte": 18,
+   "elementRenderDelay": 157
+  },
+  "renderBlocking": [
+   {
+    "url": "/_next/static/chunks/2blf4mykprvo-.css",
+    "bytes": 20494,
+    "ms": 154
+   }
+  ],
+  "layoutShifts": [],
+  "longTasks": [
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 3763,
+    "dur": 231
+   },
+   {
+    "url": "/en/guides",
+    "start": 1066,
+    "dur": 120
+   },
+   {
+    "url": "Unattributable",
+    "start": 904,
+    "dur": 108
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 3994,
+    "dur": 108
+   },
+   {
+    "url": "/_next/static/chunks/3przz6r55nmmg.js",
+    "start": 4543,
+    "dur": 85
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 4282,
+    "dur": 81
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 4102,
+    "dur": 75
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 4177,
+    "dur": 62
+   }
+  ],
+  "bootup": [
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "total": 930,
+    "scripting": 816,
+    "parse": 23
+   },
+   {
+    "url": "/en/guides",
+    "total": 511,
+    "scripting": 38,
+    "parse": 56
+   },
+   {
+    "url": "Unattributable",
+    "total": 310,
+    "scripting": 9,
+    "parse": 0
+   },
+   {
+    "url": "/_next/static/chunks/0_z_ds2phu1oc.js",
+    "total": 275,
+    "scripting": 170,
+    "parse": 17
+   },
+   {
+    "url": "/_next/static/chunks/3przz6r55nmmg.js",
+    "total": 73,
+    "scripting": 1,
+    "parse": 67
+   }
+  ],
+  "mainThread": {
+   "scriptEvaluation": 1066,
+   "other": 560,
+   "styleLayout": 264,
+   "scriptParseCompile": 224,
+   "paintCompositeRender": 47,
+   "parseHTML": 40,
+   "garbageCollection": 27
+  },
+  "resources": {
+   "total": {
+    "n": 42,
+    "bytes": 620452
+   },
+   "script": {
+    "n": 22,
+    "bytes": 338183
+   },
+   "font": {
+    "n": 3,
+    "bytes": 128158
+   },
+   "other": {
+    "n": 15,
+    "bytes": 71774
+   },
+   "document": {
+    "n": 1,
+    "bytes": 61843
+   },
+   "stylesheet": {
+    "n": 1,
+    "bytes": 20494
+   },
+   "image": {
+    "n": 0,
+    "bytes": 0
+   },
+   "media": {
+    "n": 0,
+    "bytes": 0
+   },
+   "third-party": {
+    "n": 0,
+    "bytes": 0
+   }
+  },
+  "topRequests": [
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "type": "Script",
+    "transfer": 72933,
+    "size": 229318
+   },
+   {
+    "url": "/_next/static/media/fraunces_latin_opsz_normal-s.17h97bimeg07z.woff2",
+    "type": "Font",
+    "transfer": 68312,
+    "size": 67304
+   },
+   {
+    "url": "/en/guides",
+    "type": "Document",
+    "transfer": 61843,
+    "size": 261078
+   },
+   {
+    "url": "/_next/static/chunks/0_z_ds2phu1oc.js",
+    "type": "Script",
+    "transfer": 47741,
+    "size": 169882
+   },
+   {
+    "url": "/_next/static/chunks/3ja1rs91hq4qc.js",
+    "type": "Script",
+    "transfer": 36099,
+    "size": 122029
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "type": "Font",
+    "transfer": 35711,
+    "size": 34704
+   },
+   {
+    "url": "/_next/static/chunks/0to19dt37pvik.js",
+    "type": "Script",
+    "transfer": 24592,
+    "size": 72635
+   },
+   {
+    "url": "/_next/static/media/geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+    "type": "Font",
+    "transfer": 24135,
+    "size": 23128
+   },
+   {
+    "url": "/_next/static/chunks/20zi65_zsmw1-.js",
+    "type": "Script",
+    "transfer": 20992,
+    "size": 58786
+   },
+   {
+    "url": "/_next/static/chunks/2blf4mykprvo-.css",
+    "type": "Stylesheet",
+    "transfer": 20494,
+    "size": 106576
+   }
+  ],
+  "fonts": [
+   {
+    "url": "hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "transfer": 35711,
+    "start": 43
+   },
+   {
+    "url": "fraunces_latin_opsz_normal-s.17h97bimeg07z.woff2",
+    "transfer": 68312,
+    "start": 152
+   },
+   {
+    "url": "geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+    "transfer": 24135,
+    "start": 155
+   }
+  ],
+  "prefetchFetches": 12,
+  "unusedJs": [
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "total": 71846,
+    "wasted": 27239
+   },
+   {
+    "url": "/_next/static/chunks/3ja1rs91hq4qc.js",
+    "total": 35012,
+    "wasted": 24396
+   }
+  ],
+  "domSize": [],
+  "a11yFailures": [],
+  "seoFailures": [
+   {
+    "id": "is-crawlable",
+    "n": 2,
+    "sample": [
+     "<meta name=\"robots\" content=\"noindex, nofollow\" />"
+    ]
+   }
+  ],
+  "bpFailures": []
+ },
+ "rows": [
+  {
+   "finalUrl": "/en/guides",
+   "runtimeError": null,
+   "performance": 92,
+   "accessibility": 100,
+   "bestPractices": 100,
+   "seo": 63,
+   "fcp_ms": 1066,
+   "lcp_ms": 1066,
+   "tbt_ms": 354,
+   "cls": 0,
+   "si_ms": 1066,
+   "totalBytes": 620452,
+   "requests": 43,
+   "benchmarkIndex": 2108.5,
+   "throttling": "simulate {\"rttMs\":150,\"throughputKbps\":1638.4,\"requestLatencyMs\":562.5,\"downloadThroughputKbps\":1474.5600000000002,\"uploadThroughputKbps\":675,\"cpuSlowdownMultiplier\":4}",
+   "formFactor": "mobile"
+  },
+  {
+   "finalUrl": "/en/guides",
+   "runtimeError": null,
+   "performance": 91,
+   "accessibility": 100,
+   "bestPractices": 100,
+   "seo": 63,
+   "fcp_ms": 1059,
+   "lcp_ms": 1059,
+   "tbt_ms": 391,
+   "cls": 0,
+   "si_ms": 1059,
+   "totalBytes": 620452,
+   "requests": 43,
+   "benchmarkIndex": 2143.5,
+   "throttling": "simulate {\"rttMs\":150,\"throughputKbps\":1638.4,\"requestLatencyMs\":562.5,\"downloadThroughputKbps\":1474.5600000000002,\"uploadThroughputKbps\":675,\"cpuSlowdownMultiplier\":4}",
+   "formFactor": "mobile"
+  },
+  {
+   "finalUrl": "/en/guides",
+   "runtimeError": null,
+   "performance": 90,
+   "accessibility": 100,
+   "bestPractices": 100,
+   "seo": 63,
+   "fcp_ms": 1063,
+   "lcp_ms": 1063,
+   "tbt_ms": 411,
+   "cls": 0,
+   "si_ms": 1063,
+   "totalBytes": 620452,
+   "requests": 43,
+   "benchmarkIndex": 2355,
+   "throttling": "simulate {\"rttMs\":150,\"throughputKbps\":1638.4,\"requestLatencyMs\":562.5,\"downloadThroughputKbps\":1474.5600000000002,\"uploadThroughputKbps\":675,\"cpuSlowdownMultiplier\":4}",
+   "formFactor": "mobile"
+  }
+ ],
+ "caveat": "Lab measurement (Lighthouse 13.6, headless Chromium 1243) against next start on localhost in a shared 4-vCPU cloud container; other evaluators used the same CPU. Not field data."
+}

@@ -1,0 +1,28 @@
+{
+ "home-en-desktop": {
+  "performance": 92,
+  "accessibility": 100,
+  "bestPractices": 100,
+  "seo": 63,
+  "fcp_ms": 311,
+  "lcp_ms": 314,
+  "tbt_ms": 228,
+  "cls": 0.002,
+  "si_ms": 467,
+  "totalBytes": 829916,
+  "requests": 63
+ },
+ "flights-desktop": {
+  "performance": 100,
+  "accessibility": 100,
+  "bestPractices": 100,
+  "seo": 63,
+  "fcp_ms": 293,
+  "lcp_ms": 293,
+  "tbt_ms": 34,
+  "cls": 0.002,
+  "si_ms": 500,
+  "totalBytes": 898043,
+  "requests": 83
+ }
+}

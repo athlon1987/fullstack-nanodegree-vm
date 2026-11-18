@@ -1,0 +1,28 @@
+{
+ "home-en-wifi": {
+  "performance": 63,
+  "accessibility": 100,
+  "bestPractices": 100,
+  "seo": 63,
+  "fcp_ms": 2423,
+  "lcp_ms": 2904,
+  "tbt_ms": 1956,
+  "cls": 0,
+  "si_ms": 3170,
+  "totalBytes": 668292,
+  "requests": 47
+ },
+ "flights-wifi": {
+  "performance": 69,
+  "accessibility": 100,
+  "bestPractices": 100,
+  "seo": 63,
+  "fcp_ms": 2444,
+  "lcp_ms": 2763,
+  "tbt_ms": 1264,
+  "cls": 0.003,
+  "si_ms": 2752,
+  "totalBytes": 599386,
+  "requests": 51
+ }
+}

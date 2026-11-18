@@ -1,0 +1,347 @@
+{
+ "/en": {
+  "busyMs": 2817,
+  "byUrl": [
+   [
+    "/_next/static/chunks/20zi65_zsmw1-.js",
+    822
+   ],
+   [
+    "((program))",
+    802
+   ],
+   [
+    "/_next/static/chunks/01t2i9pe5vz2-.js",
+    356
+   ],
+   [
+    "/_next/static/chunks/turbopack-2u1d16houkiyo.js",
+    243
+   ],
+   [
+    "/_next/static/chunks/0_z_ds2phu1oc.js",
+    157
+   ],
+   [
+    "/_next/static/chunks/15u7jvsixbpbh.js",
+    111
+   ],
+   [
+    "((garbage collector))",
+    58
+   ],
+   [
+    "/_next/static/chunks/0to19dt37pvik.js",
+    56
+   ],
+   [
+    "/_next/static/chunks/3ja1rs91hq4qc.js",
+    52
+   ],
+   [
+    "/_next/static/chunks/3przz6r55nmmg.js",
+    51
+   ]
+  ],
+  "byFn": [
+   [
+    "((program)) :: (program):-1:-1",
+    802
+   ],
+   [
+    "/_next/static/chunks/20zi65_zsmw1-.js :: o:0:55998",
+    653
+   ],
+   [
+    "/_next/static/chunks/turbopack-2u1d16houkiyo.js :: I:0:6194",
+    224
+   ],
+   [
+    "((garbage collector)) :: (garbage collector):-1:-1",
+    58
+   ],
+   [
+    "/_next/static/chunks/01t2i9pe5vz2-.js :: ax:0:75123",
+    41
+   ],
+   [
+    "/_next/static/chunks/01t2i9pe5vz2-.js :: ih:0:104948",
+    37
+   ],
+   [
+    "/_next/static/chunks/3przz6r55nmmg.js :: (anon):0:341",
+    35
+   ],
+   [
+    "/_next/static/chunks/15u7jvsixbpbh.js :: (anon):0:29417",
+    26
+   ],
+   [
+    "/_next/static/chunks/20zi65_zsmw1-.js :: count:0:51567",
+    26
+   ],
+   [
+    "/_next/static/chunks/0_z_ds2phu1oc.js :: ep:1:90925",
+    24
+   ]
+  ],
+  "longTasks": [
+   [
+    171,
+    93
+   ],
+   [
+    333,
+    224
+   ],
+   [
+    1046,
+    110
+   ],
+   [
+    1171,
+    75
+   ],
+   [
+    1332,
+    50
+   ],
+   [
+    1841,
+    959
+   ]
+  ],
+  "longTaskTotal": 1511,
+  "tbtProxy": 1211
+ },
+ "/en/kul/flights": {
+  "busyMs": 2732,
+  "byUrl": [
+   [
+    "((program))",
+    770
+   ],
+   [
+    "/_next/static/chunks/01t2i9pe5vz2-.js",
+    420
+   ],
+   [
+    "/_next/static/chunks/20zi65_zsmw1-.js",
+    355
+   ],
+   [
+    "((idle))",
+    269
+   ],
+   [
+    "/_next/static/chunks/turbopack-2u1d16houkiyo.js",
+    264
+   ],
+   [
+    "/_next/static/chunks/0_z_ds2phu1oc.js",
+    208
+   ],
+   [
+    "/_next/static/chunks/3edb8mu_qjr2m.js",
+    62
+   ],
+   [
+    "/_next/static/chunks/3ja1rs91hq4qc.js",
+    60
+   ],
+   [
+    "/_next/static/chunks/0to19dt37pvik.js",
+    59
+   ],
+   [
+    "/_next/static/chunks/15u7jvsixbpbh.js",
+    56
+   ]
+  ],
+  "byFn": [
+   [
+    "((program)) :: (program):-1:-1",
+    770
+   ],
+   [
+    "((idle)) :: (idle):-1:-1",
+    269
+   ],
+   [
+    "/_next/static/chunks/turbopack-2u1d16houkiyo.js :: I:0:6194",
+    229
+   ],
+   [
+    "/_next/static/chunks/20zi65_zsmw1-.js :: o:0:55998",
+    150
+   ],
+   [
+    "/_next/static/chunks/20zi65_zsmw1-.js :: u:0:5419",
+    103
+   ],
+   [
+    "/_next/static/chunks/01t2i9pe5vz2-.js :: ax:0:75123",
+    61
+   ],
+   [
+    "/_next/static/chunks/3edb8mu_qjr2m.js :: (anon):0:4690",
+    50
+   ],
+   [
+    "((garbage collector)) :: (garbage collector):-1:-1",
+    37
+   ],
+   [
+    "(appendChild) :: appendChild:-1:-1",
+    28
+   ],
+   [
+    "/_next/static/chunks/0_z_ds2phu1oc.js :: ep:1:90925",
+    24
+   ]
+  ],
+  "longTasks": [
+   [
+    317,
+    166
+   ],
+   [
+    516,
+    51
+   ],
+   [
+    962,
+    115
+   ],
+   [
+    1088,
+    74
+   ],
+   [
+    1505,
+    131
+   ],
+   [
+    1842,
+    581
+   ],
+   [
+    2424,
+    67
+   ]
+  ],
+  "longTaskTotal": 1185,
+  "tbtProxy": 835
+ },
+ "/en/guides": {
+  "busyMs": 4025,
+  "byUrl": [
+   [
+    "((idle))",
+    2550
+   ],
+   [
+    "((program))",
+    509
+   ],
+   [
+    "/_next/static/chunks/01t2i9pe5vz2-.js",
+    238
+   ],
+   [
+    "/_next/static/chunks/turbopack-2u1d16houkiyo.js",
+    223
+   ],
+   [
+    "/_next/static/chunks/0_z_ds2phu1oc.js",
+    172
+   ],
+   [
+    "/_next/static/chunks/20zi65_zsmw1-.js",
+    111
+   ],
+   [
+    "/_next/static/chunks/3ja1rs91hq4qc.js",
+    62
+   ],
+   [
+    "/_next/static/chunks/0to19dt37pvik.js",
+    44
+   ],
+   [
+    "((garbage collector))",
+    22
+   ],
+   [
+    "/_next/static/chunks/3mwm0pfu8c8me.js",
+    16
+   ]
+  ],
+  "byFn": [
+   [
+    "((idle)) :: (idle):-1:-1",
+    2550
+   ],
+   [
+    "((program)) :: (program):-1:-1",
+    509
+   ],
+   [
+    "/_next/static/chunks/turbopack-2u1d16houkiyo.js :: I:0:6194",
+    199
+   ],
+   [
+    "/_next/static/chunks/20zi65_zsmw1-.js :: count:0:51567",
+    61
+   ],
+   [
+    "/_next/static/chunks/01t2i9pe5vz2-.js :: ax:0:75123",
+    29
+   ],
+   [
+    "((garbage collector)) :: (garbage collector):-1:-1",
+    22
+   ],
+   [
+    "/_next/static/chunks/01t2i9pe5vz2-.js :: ih:0:104948",
+    18
+   ],
+   [
+    "/_next/static/chunks/0_z_ds2phu1oc.js :: ep:1:90925",
+    15
+   ],
+   [
+    "/_next/static/chunks/0_z_ds2phu1oc.js :: e:1:90948",
+    13
+   ],
+   [
+    "/_next/static/chunks/3ja1rs91hq4qc.js :: a:0:13868",
+    12
+   ]
+  ],
+  "longTasks": [
+   [
+    147,
+    52
+   ],
+   [
+    283,
+    176
+   ],
+   [
+    764,
+    123
+   ],
+   [
+    899,
+    80
+   ],
+   [
+    1313,
+    66
+   ]
+  ],
+  "longTaskTotal": 497,
+  "tbtProxy": 247
+ }
+}

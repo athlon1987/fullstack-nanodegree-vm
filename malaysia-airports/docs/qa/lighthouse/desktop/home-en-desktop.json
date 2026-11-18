@@ -1,0 +1,320 @@
+{
+ "key": "home-en-desktop",
+ "url": "http://localhost:3101/en",
+ "preset": "desktop",
+ "profile": null,
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-18T09:22:53.996Z",
+ "median": {
+  "performance": 92,
+  "accessibility": 100,
+  "bestPractices": 100,
+  "seo": 63,
+  "fcp_ms": 311,
+  "lcp_ms": 314,
+  "tbt_ms": 228,
+  "cls": 0.002,
+  "si_ms": 467,
+  "totalBytes": 829916,
+  "requests": 63
+ },
+ "medianRunIndex": 1,
+ "diagnostics": {
+  "observed": {
+   "fcp": 299,
+   "lcp": 299,
+   "dcl": 364,
+   "load": 381,
+   "cls": 0.0017011202136314784
+  },
+  "tti_ms": 1163,
+  "maxPotentialFid_ms": 301,
+  "lcpElement": {
+   "selector": "div.mx-auto > div.flex > div.min-w-0 > h1#home-title",
+   "label": "Your journey, beautifully connected.",
+   "snippet": "<h1 id=\"home-title\" class=\"type-display-lg text-ink max-sm:text-[1.625rem] max-xs:text-2xl\">"
+  },
+  "lcpPhases": {
+   "timeToFirstByte": 25,
+   "elementRenderDelay": 274
+  },
+  "renderBlocking": [
+   {
+    "url": "/_next/static/chunks/2blf4mykprvo-.css",
+    "bytes": 20494,
+    "ms": 0
+   }
+  ],
+  "layoutShifts": [
+   {
+    "score": 0.001,
+    "node": "div.flex > div.min-w-0 > h1#home-title > em.text-primary-ink",
+    "label": "beautifully connected.",
+    "cause": ""
+   },
+   {
+    "score": 0.0007,
+    "node": "body.flex > main#main > section.py-12",
+    "label": "01\nFLIGHT BOARD\n\nDEMONSTRATION DATA\n\nFlight times, gates and status on this pag…",
+    "cause": ""
+   }
+  ],
+  "longTasks": [
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 884,
+    "dur": 301
+   },
+   {
+    "url": "/en",
+    "start": 284,
+    "dur": 66
+   },
+   {
+    "url": "/_next/static/chunks/0_z_ds2phu1oc.js",
+    "start": 733,
+    "dur": 51
+   }
+  ],
+  "bootup": [
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "total": 522,
+    "scripting": 433,
+    "parse": 5
+   },
+   {
+    "url": "/en",
+    "total": 276,
+    "scripting": 14,
+    "parse": 15
+   },
+   {
+    "url": "/_next/static/chunks/0_z_ds2phu1oc.js",
+    "total": 184,
+    "scripting": 149,
+    "parse": 5
+   },
+   {
+    "url": "Unattributable",
+    "total": 136,
+    "scripting": 8,
+    "parse": 0
+   }
+  ],
+  "mainThread": {
+   "scriptEvaluation": 611,
+   "other": 259,
+   "styleLayout": 152,
+   "scriptParseCompile": 49,
+   "paintCompositeRender": 41,
+   "garbageCollection": 32,
+   "parseHTML": 14
+  },
+  "resources": {
+   "total": {
+    "n": 59,
+    "bytes": 829916
+   },
+   "script": {
+    "n": 25,
+    "bytes": 355576
+   },
+   "font": {
+    "n": 4,
+    "bytes": 210686
+   },
+   "other": {
+    "n": 28,
+    "bytes": 162384
+   },
+   "document": {
+    "n": 1,
+    "bytes": 80776
+   },
+   "stylesheet": {
+    "n": 1,
+    "bytes": 20494
+   },
+   "image": {
+    "n": 0,
+    "bytes": 0
+   },
+   "media": {
+    "n": 0,
+    "bytes": 0
+   },
+   "third-party": {
+    "n": 0,
+    "bytes": 0
+   }
+  },
+  "topRequests": [
+   {
+    "url": "/_next/static/media/fraunces_latin_opsz_italic-s.09l6e6sk-66_f.woff2",
+    "type": "Font",
+    "transfer": 82528,
+    "size": 81520
+   },
+   {
+    "url": "/en",
+    "type": "Document",
+    "transfer": 80776,
+    "size": 370389
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "type": "Script",
+    "transfer": 72933,
+    "size": 229318
+   },
+   {
+    "url": "/_next/static/media/fraunces_latin_opsz_normal-s.17h97bimeg07z.woff2",
+    "type": "Font",
+    "transfer": 68312,
+    "size": 67304
+   },
+   {
+    "url": "/_next/static/chunks/0_z_ds2phu1oc.js",
+    "type": "Script",
+    "transfer": 47741,
+    "size": 169882
+   },
+   {
+    "url": "/ms?_rsc=_O151lDcRMVWBHgN",
+    "type": "Fetch",
+    "transfer": 47322,
+    "size": 165954
+   },
+   {
+    "url": "/_next/static/chunks/3ja1rs91hq4qc.js",
+    "type": "Script",
+    "transfer": 36099,
+    "size": 122029
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "type": "Font",
+    "transfer": 35711,
+    "size": 34704
+   },
+   {
+    "url": "/_next/static/chunks/0to19dt37pvik.js",
+    "type": "Script",
+    "transfer": 24592,
+    "size": 72635
+   },
+   {
+    "url": "/_next/static/media/geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+    "type": "Font",
+    "transfer": 24135,
+    "size": 23128
+   }
+  ],
+  "fonts": [
+   {
+    "url": "hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "transfer": 35711,
+    "start": 48
+   },
+   {
+    "url": "geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+    "transfer": 24135,
+    "start": 233
+   },
+   {
+    "url": "fraunces_latin_opsz_normal-s.17h97bimeg07z.woff2",
+    "transfer": 68312,
+    "start": 233
+   },
+   {
+    "url": "fraunces_latin_opsz_italic-s.09l6e6sk-66_f.woff2",
+    "transfer": 82528,
+    "start": 233
+   }
+  ],
+  "prefetchFetches": 25,
+  "unusedJs": [
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "total": 71846,
+    "wasted": 25539
+   },
+   {
+    "url": "/_next/static/chunks/3ja1rs91hq4qc.js",
+    "total": 35012,
+    "wasted": 24396
+   }
+  ],
+  "domSize": [],
+  "a11yFailures": [],
+  "seoFailures": [
+   {
+    "id": "is-crawlable",
+    "n": 2,
+    "sample": [
+     "<meta name=\"robots\" content=\"noindex, nofollow\" />"
+    ]
+   }
+  ],
+  "bpFailures": []
+ },
+ "rows": [
+  {
+   "finalUrl": "/en",
+   "runtimeError": null,
+   "performance": 76,
+   "accessibility": 100,
+   "bestPractices": 100,
+   "seo": 63,
+   "fcp_ms": 300,
+   "lcp_ms": 941,
+   "tbt_ms": 231,
+   "cls": 0.295,
+   "si_ms": 467,
+   "totalBytes": 824261,
+   "requests": 59,
+   "benchmarkIndex": 2328,
+   "throttling": "simulate {\"rttMs\":40,\"throughputKbps\":10240,\"requestLatencyMs\":0,\"downloadThroughputKbps\":0,\"uploadThroughputKbps\":0,\"cpuSlowdownMultiplier\":1}",
+   "formFactor": "desktop"
+  },
+  {
+   "finalUrl": "/en",
+   "runtimeError": null,
+   "performance": 92,
+   "accessibility": 100,
+   "bestPractices": 100,
+   "seo": 63,
+   "fcp_ms": 311,
+   "lcp_ms": 311,
+   "tbt_ms": 228,
+   "cls": 0.002,
+   "si_ms": 532,
+   "totalBytes": 829916,
+   "requests": 63,
+   "benchmarkIndex": 2152,
+   "throttling": "simulate {\"rttMs\":40,\"throughputKbps\":10240,\"requestLatencyMs\":0,\"downloadThroughputKbps\":0,\"uploadThroughputKbps\":0,\"cpuSlowdownMultiplier\":1}",
+   "formFactor": "desktop"
+  },
+  {
+   "finalUrl": "/en",
+   "runtimeError": null,
+   "performance": 94,
+   "accessibility": 100,
+   "bestPractices": 100,
+   "seo": 63,
+   "fcp_ms": 314,
+   "lcp_ms": 314,
+   "tbt_ms": 199,
+   "cls": 0.002,
+   "si_ms": 390,
+   "totalBytes": 829916,
+   "requests": 63,
+   "benchmarkIndex": 2120,
+   "throttling": "simulate {\"rttMs\":40,\"throughputKbps\":10240,\"requestLatencyMs\":0,\"downloadThroughputKbps\":0,\"uploadThroughputKbps\":0,\"cpuSlowdownMultiplier\":1}",
+   "formFactor": "desktop"
+  }
+ ],
+ "caveat": "Lab measurement (Lighthouse 13.6, headless Chromium 1243) against next start on localhost in a shared 4-vCPU cloud container; other evaluators used the same CPU. Not field data."
+}

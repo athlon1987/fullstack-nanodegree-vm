@@ -1,0 +1,337 @@
+{
+  "role": "exec-commerce",
+  "panel": [
+    "chief digital officer (A)",
+    "digital commerce specialist (B)"
+  ],
+  "date": "2026-11-18",
+  "report": "docs/qa/panel/exec-commerce.md",
+  "scores": {
+    "ui": {
+      "score": 4,
+      "confidence": "medium"
+    },
+    "ux": {
+      "score": 4,
+      "confidence": "medium"
+    },
+    "info": {
+      "score": 3,
+      "confidence": "high"
+    },
+    "flight": {
+      "score": 4,
+      "confidence": "medium"
+    },
+    "mobile": {
+      "score": 3.5,
+      "confidence": "medium"
+    },
+    "nav": {
+      "score": 4,
+      "confidence": "medium"
+    },
+    "ai": {
+      "score": 3.5,
+      "confidence": "medium"
+    },
+    "commerce": {
+      "score": 2,
+      "confidence": "high"
+    },
+    "perf": {
+      "score": 3.5,
+      "confidence": "high"
+    },
+    "weightedPercent": 72.5,
+    "projectedWithProductionDataPercent": 79.5
+  },
+  "findings": [
+    {
+      "id": "exec-commerce-01",
+      "title": "Fast Track is absent from the whole product, though MAHB sells it today",
+      "severity": "high",
+      "area": "commerce",
+      "url": "/en/search?q=fast%20track",
+      "evidence": "[measured] Site search \"fast track\": \"0 results\". POST /api/concierge {\"question\":\"Can I buy fast track at KLIA?\",\"lang\":\"en\",\"airport\":\"kul\"} returns intent \"unknown\". The departing flight page (/en/kul/flights/mh939-20261118-d) has no security-time product in its timeline. grep of src/ finds \"fast-track\" only in the legacy redirect map, which sends /en/klia1/air-travel/services/fast-track (307) to /en/kul?t=T1, a page that does not mention Fast Track. Product strategy section 8 records Fast Track as sold today on myairportfasttrack.com and places it on the departing flight page after the timeline.",
+      "expected": "Fast Track is findable through search, the concierge and the KLIA overview, and is offered as one labelled, non-preselected option after the \"Go through immigration and security\" step on departing flight pages, linking to the official seller with the flight date and terminal.",
+      "suggested_fix": "Add a Fast Track service record (source: the official seller, identity to confirm per strategy Q3) to the KUL content, index it in search, map the legacy fast-track path to it with a 308, add a concierge intent, and add an optional action to the security step of the departing timeline.",
+      "files": [
+        "src/lib/seo/legacy-redirects.ts",
+        "src/lib/journey/index.ts",
+        "src/content/airports/kul.ts",
+        "src/lib/search/documents.ts",
+        "src/lib/concierge/engine.ts"
+      ]
+    },
+    {
+      "id": "exec-commerce-02",
+      "title": "Parking cannot be priced or booked in context (BR-10 fails)",
+      "severity": "high",
+      "area": "parking",
+      "url": "/en/kul/parking",
+      "evidence": "[measured] All 4 KLIA car parks show \"Rates: Not verified\". The \"3 days\" quick stay gives \"At most RM 96\" for the Long Term Car Park only (an upper bound from the RM32 daily maximum); other car parks get no estimate. \"Book parking online\" opens https://airports.malaysiaairports.com.my/en/klia1/parking with no product, dates or referral. On the phone (390 x 664 CSS viewport) the Book link is at y=657 px and the estimate figure at y=2,206 px (3.3 screens). The flight page \"See parking\" link is /en/kul/parking with no terminal or dates.",
+      "expected": "For a typed stay, the total for each product is visible without scrolling, from the same tariff source as the barrier; the booking action sits next to the total and carries product, entry and exit times (prefilled from a saved or viewed flight) and a referral code.",
+      "suggested_fix": "Connect the official tariff (content model with validFrom/validTo); show per-product totals above the car-park list; build the booking URL from product and dates; make the flight timeline link /<airport>/parking?t=<terminal>&from=<ISO>&to=<ISO>.",
+      "files": [
+        "src/content/airports/kul.ts",
+        "src/components/parking/car-park-card.tsx",
+        "src/lib/journey/index.ts"
+      ]
+    },
+    {
+      "id": "exec-commerce-03",
+      "title": "No feed-failure or last-known-data state; the official flight provider is a stub",
+      "severity": "high",
+      "area": "platform",
+      "url": "/en/kul/flights",
+      "evidence": "[measured] src/lib/providers/official-flights.ts line 96: \"Stub that documents the live integration. Every data method throws ProviderNotConfiguredError.\" PROVIDER_MODES sets flights, waitTimes and parkingAvailability to \"demo\" (src/lib/providers/index.ts). grep for last-known, stale, retry or error states in src/components/flights finds none outside the alerts panel. docs/qa/performance.md reports that demonstration flights are generated in the browser during hydration, so no network failure can occur today and none is handled.",
+      "expected": "With the flight source failing, every flight surface shows last-known values with their age within 2 seconds, offers a retry, and no spinner lasts more than 10 seconds (BR-05).",
+      "suggested_fix": "Serve flights from the server through the provider interface with a cache; add stale and failed states to the board, flight page and home search; add a contract test against the official provider and a chaos test in CI.",
+      "files": [
+        "src/lib/providers/official-flights.ts",
+        "src/lib/providers/index.ts",
+        "src/components/flights"
+      ]
+    },
+    {
+      "id": "exec-commerce-04",
+      "title": "No operational status layer or queue times; notices need a code deploy",
+      "severity": "high",
+      "area": "flights",
+      "url": "/en/notices",
+      "evidence": "[measured] /api/health reports a demo waitTimes provider, but grep shows no page renders wait times (the design-system page only has a note). The departing timeline says \"allow at least 45 minutes for immigration and security together\" as static text. Notices are TypeScript content in src/content/notices.ts compiled at build time; docs/engineering/architecture.md states \"There is no database and no CMS\". The planned Aerotrain notice reads \"we found no confirmation of the final dates\".",
+      "expected": "A status component (Aerotrain, Terminal 1 to Terminal 2 link, immigration, rail) with state, time and source on affected pages (BR-08); queue times with trend on the flight page where data exists (BR-09); notices published by operations staff through a CMS with approvals in minutes.",
+      "suggested_fix": "Build the BR-08 status framework against the existing provider pattern; surface DemoWaitTimeProvider on the flight timeline and airport overview under the demo label; move notices to the planned headless CMS with signed publish webhooks and revalidateTag.",
+      "files": [
+        "src/lib/providers/demo-operations.ts",
+        "src/content/notices.ts",
+        "src/lib/journey/index.ts",
+        "docs/engineering/architecture.md"
+      ]
+    },
+    {
+      "id": "exec-commerce-05",
+      "title": "Information completeness well below the benchmark (scored on what is there)",
+      "severity": "high",
+      "area": "content",
+      "url": "/en/kul/facilities",
+      "evidence": "[measured] Rendered page counts: KLIA facilities 21 \"Not published\", lounges 9, transport 14; 7 lounge listings \"undated\"; shop and dine 8 outlets with hours 0 of 8 and price 0 of 8; parking rates unverified at all 4 KLIA car parks. In the sitemap only KUL, PEN and BKI have pages beyond overview and flights; /en/kch/parking and /en/lgk/transport answer 404. Content file sizes: kul.ts 1,946 lines, pen.ts 560, bki.ts 424, kch.ts 148, lgk.ts 47. Sources cited include news sites, travel blogs, trip.com, threads.com and x.com.",
+      "expected": "At launch every international airport plus Kuching and Kota Kinabalu has transport, parking, facilities (with hours and location) and lounges, sourced from MAHB-owned or contracted data.",
+      "suggested_fix": "Agree data feeds (tariffs, concessionaire directory, facility register) with MAHB; set a content minimum per airport tier; track \"Not published\" counts per airport as a launch metric.",
+      "files": [
+        "src/content/airports/kul.ts",
+        "src/content/airports/kch.ts",
+        "src/content/airports/lgk.ts"
+      ]
+    },
+    {
+      "id": "exec-commerce-06",
+      "title": "A stale \"not verified\" note contradicts the shop and dine and lounges pages",
+      "severity": "medium",
+      "area": "content",
+      "url": "/en/kul/flights/mh939-20261118-d",
+      "evidence": "[measured] The note \"What this prototype has not verified at KLIA\" (guide note kul-content-gaps) appears on the departing flight page and /en/kul/transport and lists \"shops and restaurants in either terminal\" and \"Terminal 2 facilities\" as unverified, while /en/kul/shop-dine lists 8 outlets confirmed by a named source (2 in Terminal 2) and /en/kul/lounges lists Travel Club Lounge in Terminal 2. The commerce hand-off asked for this note to be refreshed; the integration hand-off section 4 records it as not done.",
+      "expected": "Gap notes match what the product publishes, so a passenger never reads two contradictory statements.",
+      "suggested_fix": "Update kul-content-gaps and the file header; better, generate the gap list from the content coverage data so it cannot drift.",
+      "files": [
+        "src/content/airports/kul.ts"
+      ]
+    },
+    {
+      "id": "exec-commerce-07",
+      "title": "Flight-page commerce links drop the flight's gate, terminal and dates",
+      "severity": "medium",
+      "area": "commerce",
+      "url": "/en/kul/flights/mh570-20261118-d",
+      "evidence": "[measured] For MH 570 with gate C27 assigned, \"Find the gate on the map\" links /en/kul/map?gate=C27&t=T1, but \"Browse food and shops\" links /en/kul/shop-dine (the directory supports gate=T1-C27 and t=T1) and \"See parking\" links /en/kul/parking. The departing timeline has no lounge suggestion. The shop link is built at src/lib/journey/index.ts line 504 and parking at line 287 without parameters.",
+      "expected": "Every contextual link from a flight carries what the destination can use: gate and terminal to shop and dine and lounges, terminal and dates to parking and transport.",
+      "suggested_fix": "Pass gate=<terminal>-<gate>&t=<terminal> to shop-dine, t= and dates to parking; add an optional lounge action to the before-boarding step when dwell time is long, filtered to the passenger side of security.",
+      "files": [
+        "src/lib/journey/index.ts"
+      ]
+    },
+    {
+      "id": "exec-commerce-08",
+      "title": "Phone first screen on airport sub-pages is two-thirds repeated chrome",
+      "severity": "medium",
+      "area": "shell",
+      "url": "/en/kul/parking",
+      "evidence": "[measured] Playwright iPhone 14 emulation (390 x 664 CSS viewport): the h1 starts at 440 px on every airport sub-page (concept banner, header, airport banner with airport time, terminal chips, section tabs, breadcrumb). KLIA board: search field at 623 px, first flight row at 1,185 px. Page heights: facilities 14,786 px, transport 11,148 px, transit 10,336 px. Screenshot docs/qa/panel/exec-commerce/kul-parking-phone.jpg.",
+      "expected": "The first phone screen of a task page shows the task: the first flights on the board, the flight status on a flight page, the price and booking action on parking.",
+      "suggested_fix": "On sub-pages collapse the airport banner and terminal chips into one compact sticky bar; move the breadcrumb into it; keep the full banner on the airport overview only.",
+      "files": [
+        "src/components/airport",
+        "src/components/shell"
+      ]
+    },
+    {
+      "id": "exec-commerce-09",
+      "title": "Lounges and day rooms are listed but cannot be priced or booked",
+      "severity": "medium",
+      "area": "commerce",
+      "url": "/en/kul/lounges",
+      "evidence": "[measured] 6 KLIA lounges, 1 hotel and 2 rest services. Plaza Premium Lounge: \"Listed by lounge-network directories, not by the operator\", no operator or booking link; \"who may use it\" Not published for Plaza Premium First and the Malaysia Airlines lounges; no price on any card. DaySleeper offer quoted as dated text; booking.com appears only as a cited source for Sama-Sama Express. No lounge or day-room action on the flight page or when a transfer is long.",
+      "expected": "Pay-in lounges and rest services show access rules, price and a booking action from the operator, and are suggested on long dwells on the right side of security.",
+      "suggested_fix": "Obtain access rules, prices and booking links from each listed operator; add price and booking fields to the facility model; add the dwell-time suggestion to departing and transit timelines.",
+      "files": [
+        "src/content/airports/kul.ts",
+        "src/components/commerce/lounge-card.tsx",
+        "src/lib/journey/index.ts"
+      ]
+    },
+    {
+      "id": "exec-commerce-10",
+      "title": "Retail discovery dead-ends; no reserve-and-collect, imagery or offers",
+      "severity": "medium",
+      "area": "commerce",
+      "url": "/en/kul/shop-dine?filters=open-now",
+      "evidence": "[measured] The home strip offers \"Open now\", \"Halal\", \"Before security\", \"After security\"; /en/kul/shop-dine?filters=open-now shows \"0 of 8. Outlets without published hours are left out\". Hours 0 of 8, price bands 0 of 8, no outlet images; Eraman duty-free outlets in both terminals have no pre-order or online-shop link. No labelled offer or advertising slot exists anywhere in the passenger product.",
+      "expected": "Discovery returns useful results for every filter it offers, outlets have hours, images and price bands, and duty-free offers reserve-and-collect where the concession allows.",
+      "suggested_fix": "Hide filters that cannot return results until data exists; agree a concessionaire directory feed; scope reserve-and-collect with Malaysia Airports (Niaga); design one labelled first-party offer slot per strategy principle 10.",
+      "files": [
+        "src/components/home/shop-dine-strip.tsx",
+        "src/components/commerce/outlet-directory.tsx",
+        "src/content/airports/kul.ts"
+      ]
+    },
+    {
+      "id": "exec-commerce-11",
+      "title": "Copy and sourcing would not pass an operator's brand and legal governance",
+      "severity": "medium",
+      "area": "content",
+      "url": "/en/kul/parking",
+      "evidence": "[measured] Callout title \"Parking for more than a day? Avoid Preferred Parking\" with \"In January 2025 paultan.org reported a bill of RM2,084\" (src/content/airports/kul.ts line 1404), shown on the parking page and every KLIA departing flight page; the planned Aerotrain notice says \"we found no confirmation of the final dates\"; facts cite blogs, trip.com, threads.com and x.com. Malay copy is a draft pending native review (integration hand-off, remaining issue 4).",
+      "expected": "On an operator site every fact comes from the operator or a contracted source, warnings are framed with the official tariff, and both languages pass brand, legal and native review.",
+      "suggested_fix": "Keep the BR-10 long-stay warning but reword it around the official rates (for example, \"Preferred Parking is priced for short stays; for three days or more the Long Term Car Park costs at most RM32 a day\"); set a source policy; add brand, legal and native-language review to the CMS workflow.",
+      "files": [
+        "src/content/airports/kul.ts",
+        "src/content/notices.ts"
+      ]
+    },
+    {
+      "id": "exec-commerce-12",
+      "title": "Commercial outcomes cannot be measured: no analytics, no attribution",
+      "severity": "medium",
+      "area": "platform",
+      "url": "/en/kul/parking",
+      "evidence": "[measured] 58 page loads (29 URLs, desktop and phone) made zero third-party requests and no first-party analytics calls; outbound commercial links carry no referral or campaign parameter (for example \"Book parking online\" → https://airports.malaysiaairports.com.my/en/klia1/parking). Strategy section 7 measures commercial metrics through partner-confirmed bookings with a referral code.",
+      "expected": "The north-star metric (answered journey rate) and the commercial metrics (parking pre-booking share, ancillary hand-off rate, Fast Track and lounge attach) are measurable from launch day without personal data.",
+      "suggested_fix": "Add first-party, consent-aware, aggregate analytics; add a referral code to every commercial hand-off; define the answer state for each top task as an event.",
+      "files": [
+        "src/components/platform",
+        "src/content/airports/kul.ts"
+      ]
+    },
+    {
+      "id": "exec-commerce-13",
+      "title": "Flight alerts arrive only while the page is open",
+      "severity": "medium",
+      "area": "flights",
+      "url": "/en/kul/flights/mh939-20261118-d",
+      "evidence": "[measured] The flight page says: \"Alerts in this prototype are demonstrations made from simulated data. They only arrive while this page is open.\" There is no web push subscription or e-mail option.",
+      "expected": "Follow a flight without an account and receive gate and time changes by web push and e-mail when the page is closed, within 60 seconds in staging (BR-04 Must).",
+      "suggested_fix": "Add a push subscription endpoint and an e-mail opt-in behind the provider interface; keep the no-account rule; test with a simulated gate change.",
+      "files": [
+        "src/components/flights/flight-alerts.ts",
+        "src/components/flights/flight-alerts-panel.tsx"
+      ]
+    },
+    {
+      "id": "exec-commerce-14",
+      "title": "Header policy will block checkout integrations; CSP keeps unsafe-inline",
+      "severity": "medium",
+      "area": "security",
+      "url": "/en",
+      "evidence": "[measured] curl -I http://localhost:3106/en: Permissions-Policy includes payment=(); Content-Security-Policy has script-src 'self' 'unsafe-inline', connect-src 'self' and no frame-src. Source: src/lib/seo/security-headers.ts line 71.",
+      "expected": "Checkout and partner widgets work on the pages that need them without loosening the policy site-wide, and the CSP meets BR-24 (no unsafe-inline).",
+      "suggested_fix": "Plan per-route headers for checkout (payment=(self) plus the named payment origin, frame-src and connect-src for contracted partners only); move to a nonce-based script policy.",
+      "files": [
+        "src/lib/seo/security-headers.ts"
+      ]
+    },
+    {
+      "id": "exec-commerce-15",
+      "title": "Airport section tabs are clipped at every desktop width",
+      "severity": "low",
+      "area": "design-system",
+      "url": "/en/kul/flights/mh939-20261118-d",
+      "evidence": "[measured] The \"KLIA sections\" navigation has scrollWidth 1,347 px inside a 1,240 px container at 1280, 1440 and 1920 px. Screenshots show \"Connections anc\" cut at the right (flight page) and \"rview\" cut at the left (shop and dine). Files: docs/qa/panel/exec-commerce/flight-mh939-desktop.jpg, kul-shop-dine-desktop.jpg.",
+      "expected": "All nine section tabs fit at 1280 px and wider, or the overflow is signalled with a fade and scroll buttons.",
+      "suggested_fix": "Shorten labels (\"Transit\" instead of \"Connections and transit\", \"Getting here\") or reduce gaps; add an edge fade where scrolling remains.",
+      "files": [
+        "src/components/shell/sections.ts",
+        "src/components/airport"
+      ]
+    },
+    {
+      "id": "exec-commerce-16",
+      "title": "No rail ticket path; no anti-touting message on the transport comparison",
+      "severity": "low",
+      "area": "transport",
+      "url": "/en/kul/transport",
+      "evidence": "[measured] KLIA Ekspres fares are shown with dates (RM55 until 31 December 2026, RM65 from 1 January 2027) but the page offers \"check kliaekspres.com\" as plain text, with no ticket link. The anti-touting advice (\"Decline rides offered by people who approach you in the arrival hall\") exists in the arriving guide (src/content/guides.ts line 211) but not on the transport comparison, which BR-11 requires.",
+      "expected": "Each mode with an operator ticket channel has a link to it; the comparison carries the anti-touting message next to taxi and e-hailing.",
+      "suggested_fix": "Add operator ticket links (official channels only) and reuse the guide statement and its sources on the transport page.",
+      "files": [
+        "src/content/airports/kul.ts",
+        "src/content/guides.ts",
+        "src/components/transport/transport-planner.tsx"
+      ]
+    },
+    {
+      "id": "exec-commerce-17",
+      "title": "Concierge does not recognise commerce intents",
+      "severity": "low",
+      "area": "concierge",
+      "url": "/en/concierge",
+      "evidence": "[measured] POST /api/concierge (lang en, airport kul): \"Can I buy fast track at KLIA?\" and \"Where can I buy duty free chocolate?\" return intent \"unknown\" with related items; \"Is the Aerotrain running?\" returns intent \"gate\" (its statements do include the planned closure notice).",
+      "expected": "Commerce and status questions map to their intents and answer with the relevant service, outlet or status item first.",
+      "suggested_fix": "Add fast-track, duty-free, lounge-access and status intents with Malay synonyms; add them to the 100-question evaluation set (BR-20).",
+      "files": [
+        "src/lib/concierge/engine.ts"
+      ]
+    },
+    {
+      "id": "exec-commerce-18",
+      "title": "Missing airport sections answer 200 on the first request, 404 afterwards",
+      "severity": "low",
+      "area": "platform",
+      "url": "/en/kch/parking",
+      "evidence": "[measured] With curl, the first requests to /en/kch/parking, /en/lgk/transport and /en/bki/shop-dine (and /en/lgk/parking, /en/pen/shop-dine) returned 200 with \"Page not found\" content; repeated requests returned 404.",
+      "expected": "A section an airport does not have answers 404 on every request.",
+      "suggested_fix": "Reject unknown airport and section pairs before rendering (generateStaticParams with dynamicParams false for section routes, or a proxy check).",
+      "files": [
+        "src/app/[lang]/[airport]"
+      ]
+    },
+    {
+      "id": "exec-commerce-19",
+      "title": "Mobile lab performance below target on home and flight pages",
+      "severity": "low",
+      "area": "performance",
+      "url": "/en/kul/flights/mh939-20261118-d",
+      "evidence": "[measured] Lighthouse 13 mobile, single run each, shared container: home 77 (LCP 1.27 s, TBT 1,076 ms), flight page 67 (LCP 4.84 s, TBT 621 ms), parking 89, shop and dine 91; 718 to 779 KB, 45 to 58 requests, CLS 0 to 0.003. Consistent with docs/qa/performance.md (56 to 92, three-run medians).",
+      "expected": "Lighthouse mobile at least 95, LCP 2.5 s or less, TBT within the INP budget on home and flight pages.",
+      "suggested_fix": "Follow docs/qa/performance.md: generate flights on the server, avoid Suspense fallbacks that delay the largest paint, trim shell JavaScript.",
+      "files": [
+        "src/app/[lang]/page.tsx",
+        "src/app/[lang]/[airport]/flights/[flightId]/page.tsx"
+      ]
+    },
+    {
+      "id": "exec-commerce-20",
+      "title": "Business-to-business revenue channels (advertising, retail space) have no enquiry path",
+      "severity": "low",
+      "area": "corporate",
+      "url": "/en/corporate/business",
+      "evidence": "[measured] The advertising block reads \"Nothing further is published that we could verify. Dedicated channel: Not published\"; retail and commercial space names Malaysia Airports (Niaga) Sdn Bhd but offers no enquiry route; there is no form or contact per area.",
+      "expected": "Each business area (advertising, retail space, cargo, airlines) has a verified contact or enquiry form owned by the responsible MAHB unit.",
+      "suggested_fix": "Obtain verified channels from MAHB commercial and media sales; add an enquiry form per area routed to its owner.",
+      "files": [
+        "src/app/[lang]/corporate/business/page.tsx",
+        "src/content/corporate.ts"
+      ]
+    }
+  ]
+}

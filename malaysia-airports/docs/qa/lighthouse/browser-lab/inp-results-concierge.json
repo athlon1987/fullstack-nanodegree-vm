@@ -1,0 +1,351 @@
+{
+ "measured": "2026-11-18T09:38:21.158Z",
+ "method": "Playwright Chromium (headless shell), Pixel 7 emulation, CDP Emulation.setCPUThrottlingRate 4, no network throttling, localhost next start; Event Timing type=event durationThreshold=16 buffered; interactions grouped by interactionId, worst per page reported",
+ "out": {
+  "concierge": {
+   "url": "/en/concierge",
+   "runs": [
+    {
+     "loadMs": 1987,
+     "steps": [
+      {
+       "label": "accept concierge consent (\"Agree and start\")",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 96,
+        "name": "click",
+        "target": null,
+        "inDelay": 28,
+        "proc": 29,
+        "pres": 40,
+        "start": 3665
+       },
+       "all": [
+        96
+       ]
+      },
+      {
+       "label": "type concierge question",
+       "err": null,
+       "interactions": 25,
+       "worst": {
+        "dur": 64,
+        "name": "click",
+        "target": "input#_r_2_[W]",
+        "inDelay": 14,
+        "proc": 0,
+        "pres": 50,
+        "start": 4644
+       },
+       "all": [
+        64,
+        40,
+        32,
+        32,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16
+       ]
+      },
+      {
+       "label": "submit concierge question (Enter)",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 48,
+        "name": "keydown",
+        "target": "input#_r_2_",
+        "inDelay": 1,
+        "proc": 1,
+        "pres": 47,
+        "start": 8893
+       },
+       "all": [
+        48
+       ]
+      }
+     ],
+     "worst": {
+      "label": "accept concierge consent (\"Agree and start\")",
+      "dur": 96,
+      "name": "click",
+      "target": null,
+      "inDelay": 28,
+      "proc": 29,
+      "pres": 40,
+      "start": 3665
+     },
+     "loafAtWorst": [
+      {
+       "start": 3687.3000000000466,
+       "dur": 54.5,
+       "block": 4.5,
+       "scripts": [
+        {
+         "src": "/_next/static/chunks/01t2i9pe5vz2-.js",
+         "fn": "fQ",
+         "inv": "#document.onclick",
+         "dur": 29
+        }
+       ]
+      }
+     ],
+     "cls": 0.1399,
+     "layoutShifts": [
+      {
+       "t": 1529,
+       "v": 0.1399,
+       "src": [
+        "aside[How answers are put together].flex.min-w-0.flex-col"
+       ]
+      }
+     ],
+     "loafCount": 9,
+     "loafBlockingTotal": 380
+    },
+    {
+     "loadMs": 1740,
+     "steps": [
+      {
+       "label": "accept concierge consent (\"Agree and start\")",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 72,
+        "name": "click",
+        "target": null,
+        "inDelay": 25,
+        "proc": 18,
+        "pres": 29,
+        "start": 3378
+       },
+       "all": [
+        72
+       ]
+      },
+      {
+       "label": "type concierge question",
+       "err": null,
+       "interactions": 26,
+       "worst": {
+        "dur": 72,
+        "name": "click",
+        "target": "input#_r_2_[W]",
+        "inDelay": 21,
+        "proc": 0,
+        "pres": 51,
+        "start": 4309
+       },
+       "all": [
+        72,
+        48,
+        32,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16
+       ]
+      },
+      {
+       "label": "submit concierge question (Enter)",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 64,
+        "name": "keydown",
+        "target": "input#_r_2_",
+        "inDelay": 0,
+        "proc": 2,
+        "pres": 62,
+        "start": 8561
+       },
+       "all": [
+        64
+       ]
+      }
+     ],
+     "worst": {
+      "label": "accept concierge consent (\"Agree and start\")",
+      "dur": 72,
+      "name": "click",
+      "target": null,
+      "inDelay": 25,
+      "proc": 18,
+      "pres": 29,
+      "start": 3378
+     },
+     "loafAtWorst": [],
+     "cls": 0.1399,
+     "layoutShifts": [
+      {
+       "t": 1277,
+       "v": 0.1399,
+       "src": [
+        "aside[How answers are put together].flex.min-w-0.flex-col"
+       ]
+      }
+     ],
+     "loafCount": 7,
+     "loafBlockingTotal": 270
+    },
+    {
+     "loadMs": 812,
+     "steps": [
+      {
+       "label": "accept concierge consent (\"Agree and start\")",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 96,
+        "name": "click",
+        "target": null,
+        "inDelay": 32,
+        "proc": 28,
+        "pres": 36,
+        "start": 2438
+       },
+       "all": [
+        96
+       ]
+      },
+      {
+       "label": "type concierge question",
+       "err": null,
+       "interactions": 25,
+       "worst": {
+        "dur": 40,
+        "name": "keydown",
+        "target": "input#_r_2_[W]",
+        "inDelay": 1,
+        "proc": 1,
+        "pres": 38,
+        "start": 3447
+       },
+       "all": [
+        40,
+        32,
+        32,
+        32,
+        24,
+        24,
+        24,
+        24,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16
+       ]
+      },
+      {
+       "label": "submit concierge question (Enter)",
+       "err": null,
+       "interactions": 1,
+       "worst": {
+        "dur": 64,
+        "name": "keydown",
+        "target": "input#_r_2_",
+        "inDelay": 5,
+        "proc": 1,
+        "pres": 59,
+        "start": 7662
+       },
+       "all": [
+        64
+       ]
+      }
+     ],
+     "worst": {
+      "label": "accept concierge consent (\"Agree and start\")",
+      "dur": 96,
+      "name": "click",
+      "target": null,
+      "inDelay": 32,
+      "proc": 28,
+      "pres": 36,
+      "start": 2438
+     },
+     "loafAtWorst": [
+      {
+       "start": 2464.4000000001397,
+       "dur": 52.300000000046566,
+       "block": 2.2,
+       "scripts": [
+        {
+         "src": "/_next/static/chunks/01t2i9pe5vz2-.js",
+         "fn": "fQ",
+         "inv": "#document.onclick",
+         "dur": 28
+        }
+       ]
+      }
+     ],
+     "cls": 0.1399,
+     "layoutShifts": [
+      {
+       "t": 1379,
+       "v": 0.1399,
+       "src": [
+        "aside[How answers are put together].flex.min-w-0.flex-col"
+       ]
+      }
+     ],
+     "loafCount": 9,
+     "loafBlockingTotal": 329
+    }
+   ],
+   "medianWorst": 96,
+   "maxWorst": 96
+  }
+ }
+}

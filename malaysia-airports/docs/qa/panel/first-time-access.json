@@ -1,0 +1,358 @@
+{
+  "role": "first-time-access",
+  "panel": [
+    "first-time international traveller with an elderly parent, Malay-first, mid-range Android (A)",
+    "wheelchair user with low vision, magnification and screen reader (B)"
+  ],
+  "date": "2026-11-18",
+  "report": "docs/qa/panel/first-time-access.md",
+  "evidence_dir": "docs/qa/panel/first-time-access/",
+  "scores": {
+    "ui": {
+      "score": 4,
+      "confidence": "medium"
+    },
+    "ux": {
+      "score": 3.5,
+      "confidence": "medium"
+    },
+    "info": {
+      "score": 3,
+      "confidence": "high"
+    },
+    "flight": {
+      "score": 4,
+      "confidence": "medium"
+    },
+    "mobile": {
+      "score": 3.5,
+      "confidence": "medium"
+    },
+    "nav": {
+      "score": 3.5,
+      "confidence": "medium"
+    },
+    "ai": {
+      "score": 3,
+      "confidence": "medium"
+    },
+    "commerce": {
+      "score": 2,
+      "confidence": "medium"
+    },
+    "perf": {
+      "score": 3.5,
+      "confidence": "low"
+    },
+    "weightedPercent": 68.5,
+    "projectedWithProductionDataPercent": 78,
+    "projectionBasis": {
+      "ui": 4,
+      "ux": 4,
+      "info": 4,
+      "flight": 4.5,
+      "mobile": 3.5,
+      "nav": 4,
+      "ai": 3.5,
+      "commerce": 3,
+      "perf": 3.5
+    }
+  },
+  "findings": [
+    {
+      "id": "first-time-access-01",
+      "title": "Assistance needs can never be set, so the journey timeline never shows the assistance step",
+      "severity": "high",
+      "area": "accessibility",
+      "url": "/en/kul/flights/mh2072-20261118-d and /en/journey",
+      "evidence": "[source, measured] src/lib/journey/index.ts defines JourneyPreferences.reducedMobility (line 35) and pushes assistanceStep() for departing (line 392) and arriving (line 604) journeys. grep of src for reducedMobility finds no other non-test use: the two callers, src/components/flights/journey-timeline.tsx:63 and src/components/flights/my-journey.tsx:75, call buildJourney({ flight, mode, airportContent, now }) without preferences. [observed] The departing timeline for MH 2072 (8 steps) and the arriving timeline for MH 2073 (6 steps) contain no assistance step; no control on the flight page, My journey, Display settings or the accessibility hub asks about needs.",
+      "expected": "BR-18: needs chosen once (wheelchair, step-free, older traveller) are remembered on the device and change every flight timeline without an account.",
+      "suggested_fix": "Add a \"My needs\" preference (device storage, same store pattern as preferences), expose it on the accessibility hub and as a toggle on the flight page, and pass it as preferences to buildJourney in both callers. Make the assistance step carry the operating airline's lead time and the airport service, and switch map links to sf=1.",
+      "files": [
+        "src/lib/journey/index.ts",
+        "src/components/flights/journey-timeline.tsx",
+        "src/components/flights/my-journey.tsx",
+        "src/lib/preferences.ts"
+      ]
+    },
+    {
+      "id": "first-time-access-02",
+      "title": "Accessibility facts a wheelchair user travels on are missing (toilets, lifts, step-free transport, accessible parking, airport assistance service, non-MH airlines)",
+      "severity": "high",
+      "area": "content",
+      "url": "/en/accessibility, /en/kul/map, /en/kul/transport, /en/kul/parking",
+      "evidence": "[measured, text extraction at 390 px] Map: \"Not on this map yet: Accessible toilets, Nursing rooms, Food and drink, Shops\". Transport: \"Step-free access not confirmed\" on all six KLIA modes (KLIA Ekspres, KLIA Transit, buses, taxi, e-hailing, inter-terminal shuttle) and \"The station level is not verified in this prototype\". Parking: each KLIA car park \"Not published: ... accessible bays ...\". Hub: \"Malaysia Airports lists a special assistance page for KLIA Terminal 1. We could not capture its content\". Hub and reduced-mobility guide: 0 mentions of AirAsia (main T2 carrier) or any airline other than Malaysia Airlines. Live chat \"on a daily schedule\", hours not given. Concierge \"Where is the accessible toilet near gate C12?\": \"Our sources do not publish accessible toilet for KLIA yet.\" Integration hand-off section 6 item 3 confirms no facility has accessible=true and there is no Terminal 2 map.",
+      "expected": "A wheelchair user can plan kerb to gate and arrival to taxi with confidence: located accessible toilets and lifts, step-free status per transport mode and station, accessible parking bays, the airport assistance service with its request channel and lead time, and the rules of the main airlines at both terminals (BR-12, BR-13, BR-18).",
+      "suggested_fix": "Treat accessibility data as launch-blocking content: obtain from MAHB the locations of accessible toilets, lifts, wheelchair and buggy points and accessible bays for T1 and T2, step-free status of rail, bus, taxi and pick-up points, and the special-assistance service; add AirAsia, AirAsia X, Batik Air and the top international carriers' assistance rules with sources; state live-chat hours.",
+      "files": [
+        "src/content/airports/kul.ts",
+        "src/app/[lang]/accessibility/page.tsx",
+        "src/content/guides.ts"
+      ]
+    },
+    {
+      "id": "first-time-access-03",
+      "title": "On a phone at 125 per cent text the flight page hides the flight under the bottom bar and puts \"arrive by\" on the eighth screen",
+      "severity": "high",
+      "area": "flights",
+      "url": "/ms/kul/flights/mh2072-20261118-d",
+      "evidence": "[measured, 360 x 780, Malay, text 125%] Page height 13,303 px. h1 \"MH 2072 ke London\" top at 724 px, under the fixed bottom navigation (about 700 to 780 px), so the first screen shows only the prototype banner, header, airport hero (name, KUL, airport time, three terminal chips) and tab strip (screenshot first-time-access/flight-mh2072-ms-360-text125.jpg). Flight status heading at 1,267 px, Save at 2,354 px, timeline at 2,662 px, \"Tiba di lapangan terbang sebelum 19:30\" at 6,010 px, check-in at 6,434 px, gate at 7,961 px, boarding at 8,756 px. At 320 x 568 the h1 is at 724 px as well. On desktop (1440 x 900) the h1 is at 415 px and \"arrive by\" at 2,363 px. No \"leave home by\" time anywhere, although the transport page knows KLIA Ekspres takes 28 min.",
+      "expected": "Design principle 3 \"Answer before asking\": the first phone screen of a flight page names the flight and states the next action and time (for example \"Be at KLIA T1 by 19:30 · Check in Row H · Boarding 21:45\"), at every text size the product offers.",
+      "suggested_fix": "On airport sub-pages use a compact airport header (code, terminal, clock in one line) instead of the full hero; add a sticky or top summary of the next step and arrive-by time to the flight page; add an optional leave-home-by line using the chosen transport mode's published journey time.",
+      "files": [
+        "src/app/[lang]/[airport]/flights/[flightId]/page.tsx",
+        "src/components/flights/journey-timeline.tsx",
+        "src/app/[lang]/[airport]/layout.tsx"
+      ]
+    },
+    {
+      "id": "first-time-access-04",
+      "title": "Hub link \"Accessible toilets: Show on the map\" leads to a map that says accessible toilets are not on it",
+      "severity": "medium",
+      "area": "accessibility",
+      "url": "/en/accessibility#facilities -> /en/kul/map?cat=accessible-toilets",
+      "evidence": "[measured] src/app/[lang]/accessibility/page.tsx:37 links the toilets card to /kul/map?cat=accessible-toilets with the action \"Show on the map\". The KLIA T1 map lists \"Accessible toilets\" under \"Not on this map yet\". The card body itself says \"Positions are not yet verified\".",
+      "expected": "A link promises only what the destination delivers; for missing data, say so on the hub and point to the nearest useful source (information counters, the official page).",
+      "suggested_fix": "Until accessible toilets exist as map points, change the action to \"Ask at an information counter\" or the official special-assistance page, and hide the map link; restore it when the data exists.",
+      "files": [
+        "src/app/[lang]/accessibility/page.tsx"
+      ]
+    },
+    {
+      "id": "first-time-access-05",
+      "title": "Prototype caveats and a parking-bill warning sit inside every departing journey, raising anxiety for first-time travellers",
+      "severity": "medium",
+      "area": "journey",
+      "url": "/ms/kul/flights/mh2072-20261118-d",
+      "evidence": "[measured] Step 1 \"Pergi ke KLIA Terminal 1\" contains the note \"Perkara yang belum disahkan oleh prototaip ini di KLIA\" (13 unverified items, about 90 words: trains, taxi fares, parking rates, autogates, Lost & Found, Wi-Fi). Step 2 contains \"Parkir lebih daripada sehari? Elakkan Preferred Parking ... bil RM2,084\". The same unverified-items paragraph appears on /en/kul/facilities, /en/kul/transport and /en/kul/parking. [judgement] An anxious traveller taking the train reads the first step as \"the airport does not know\".",
+      "expected": "Journey steps carry only what helps that step; caveats about the prototype live on the about page and next to the specific missing value.",
+      "suggested_fix": "Remove the generic content-gaps note from journey steps (keep per-value \"Not published\" labels); show the Preferred Parking warning only when the visitor chooses to drive or opens parking.",
+      "files": [
+        "src/lib/journey/index.ts",
+        "src/content/airports/kul.ts"
+      ]
+    },
+    {
+      "id": "first-time-access-06",
+      "title": "Header airport switcher fails Label in Name (WCAG 2.5.3, Level A)",
+      "severity": "medium",
+      "area": "shell",
+      "url": "/en/kul/map, /ms/kul/flights/mh2072-20261118-d, /en/kul/transport, /ms/kul/flights",
+      "evidence": "[measured, axe-core rule label-content-name-mismatch, tagged experimental by axe] 1 node on every airport page tested, in all three combinations (high contrast light 125% 390 px; high contrast dark 125% 360 px; dark 112% 1440 px): <button data-airport-switcher=\"header\" aria-label=\"Change airport. Currently KLIA Terminal 1\"> whose visible text is \"KUL\" plus the \"T1\" badge. Keyboard pass on the flight page confirms the accessible name \"Change airport. Currently KLIA\". Voice-control users who say \"click KUL\" do not reach it.",
+      "expected": "The accessible name contains the visible label text, e.g. \"KUL T1, change airport\".",
+      "suggested_fix": "Build the name as \"{code} {terminal}, change airport (currently {airport})\" or drop aria-label and add visually hidden text after the visible label.",
+      "files": [
+        "src/components/shell/airport-switcher.tsx",
+        "src/lib/i18n/en.ts",
+        "src/lib/i18n/ms.ts"
+      ]
+    },
+    {
+      "id": "first-time-access-07",
+      "title": "Step-free arrival route omits the lift and immigration, has a vague \"Walk on\" step and stops short of the taxi",
+      "severity": "medium",
+      "area": "map",
+      "url": "/en/kul/map?t=T1&from=g-gates-c&to=l3-kerb&sf=1",
+      "evidence": "[measured] Summary: \"Typical walking pace About 14 min / Slower pace About 19 min ... Step-free, About 760 m\". Steps: 1 Start at Gates C; 2 Walk to Aerotrain station (Satellite) 70 m; 3 Take the train ... about 3 min ride; 4 \"Walk on\" 70 m; 5 \"Continue through to Level 3: arrivals\" 200 m (no lift named, no immigration); 6 \"Walk to Arrivals pick-up, Passing Baggage reclaim, Customs and Arrival hall meeting point\" 420 m; 7 Arrive. The map has an \"Arrival immigration\" place (l3-immigration) and lift places, but the route does not name them. The taxi coupon counters (\"International Arrival Hall\", transport page) are not a map place. The departing route kerb to Gates C (210, 120, 70 m, train, 70 m) is clear.",
+      "expected": "A step-free route names every level change (\"Take the lift to Level 3\"), every checkpoint (immigration, customs) and ends at the chosen transport point (taxi counter, rail platform, pick-up bay).",
+      "suggested_fix": "Emit a named \"change level\" step for every level transition, with the lift used when sf=1; include checkpoint nodes as named steps; add taxi counter, rail entrance and e-hailing pick-up as map places and offer them as route ends from the arrival timeline.",
+      "files": [
+        "src/components/map/map-logic.ts",
+        "src/content/airports/kul.ts"
+      ]
+    },
+    {
+      "id": "first-time-access-08",
+      "title": "Transport page scrolls sideways at 320 px with 125 per cent text (WCAG 1.4.10 Reflow)",
+      "severity": "medium",
+      "area": "transport",
+      "url": "/en/kul/transport",
+      "evidence": "[measured, 320 x 568, text 125%, high contrast] document scrollWidth 350 px against clientWidth 320 px (30 px sideways scroll), reproduced twice; the unclipped overflowing elements are provenance tags (span.type-caption ... h-6 shrink-0 ... whitespace-nowrap), right edge 342 to 350 px. Six other pages (/ms, /en/accessibility, map, flight, board, facilities) do not overflow.",
+      "expected": "No horizontal scrolling at 320 CSS px at any text size the product offers.",
+      "suggested_fix": "Allow provenance tags to wrap or shrink (remove shrink-0 and whitespace-nowrap below a container width, or use max-w-full with text truncation plus a full accessible name); add 320 px at 125% to the e2e reflow check.",
+      "files": [
+        "src/components/common/provenance-tag.tsx",
+        "src/components/transport/transport-planner.tsx"
+      ]
+    },
+    {
+      "id": "first-time-access-09",
+      "title": "Concierge ignores qualifiers such as \"accessible\" and cannot answer autogate questions",
+      "severity": "medium",
+      "area": "concierge",
+      "url": "/api/concierge (and /en/concierge)",
+      "evidence": "[measured, POST /api/concierge, airport kul] \"Where do I get an accessible taxi when I arrive?\" -> intent transport, text \"To get to and from KLIA, our sources list Long Term Car Park shuttle, buses and coaches, KLIA Ekspres, KLIA Transit, airport taxi and e-hailing.\" with statements about changing terminals and the car-park shuttle. \"Is there step-free access to KLIA Ekspres at Terminal 1?\" -> the same generic transport answer. \"Boleh ibu saya guna autogate?\" (ms) -> intent unknown. \"Saya pertama kali ke luar negara dengan ibu yang sudah tua. Pukul berapa perlu sampai?\" -> asks for the flight number instead of giving the published 3-hour guidance. Positive: \"Ibu saya perlukan kerusi roda\" -> assistance with 9 sources; \"accessible toilet near gate C12\" -> honest \"do not publish ... yet\".",
+      "expected": "BR-20: answers come from the content layer, honour the qualifier (accessible, step-free, elderly) and say \"not published\" when the specific fact is missing, rather than a generic list.",
+      "suggested_fix": "Add accessibility qualifiers as intent modifiers that filter cards and statements to step-free fields and fall back to an explicit \"not published, ask ...\" answer; add an immigration/autogate intent; answer \"how early\" with the 3-hour/2-hour guidance and offer the flight lookup.",
+      "files": [
+        "src/lib/concierge/engine.ts"
+      ]
+    },
+    {
+      "id": "first-time-access-10",
+      "title": "No immigration or autogate guidance for departing Malaysian citizens and older travellers",
+      "severity": "medium",
+      "area": "guides",
+      "url": "/ms/guides/first-time, /ms/guides/departing, /ms/kul/flights/mh2072-20261118-d",
+      "evidence": "[measured] First-time guide step \"2. Kawalan pasport\" is one sentence tagged Cadangan: \"Pegang pasport dan pas masuk anda dan peruntukkan masa untuk beratur.\" Flight timeline: \"Sediakan pasport dan pas masuk ... sekurang-kurangnya 45 minit\". The arriving-side autogate note covers foreign visitors only; the content-gaps note lists \"the official list of nationalities that may use the autogates\" as unverified. Concierge intent unknown for the autogate question.",
+      "expected": "A Malaysian flying out for the first time learns whether to use the autogate or a counter, what it needs (passport, MyKad), and what to do with an older or less mobile companion.",
+      "suggested_fix": "Add a sourced departing-immigration note for Malaysian citizens (autogate eligibility, counters for assisted passengers) from the Immigration Department of Malaysia, in both languages, to the guide, the timeline step and the concierge.",
+      "files": [
+        "src/content/guides.ts",
+        "src/lib/journey/index.ts",
+        "src/content/airports/kul.ts"
+      ]
+    },
+    {
+      "id": "first-time-access-11",
+      "title": "Home page blocks the main thread for 1.4 s and shifts layout on slow phones",
+      "severity": "medium",
+      "area": "performance",
+      "url": "/ms",
+      "evidence": "[measured] Lighthouse mobile (1 run, local server shared with other evaluators): /ms performance 68, TBT 1,434 ms, CLS 0.161, LCP 1,354 ms, 720 KB, 45 requests; flight page performance 68, LCP 4,381 ms, TBT 648 ms; /en/accessibility performance 77, LCP 4,019 ms. Playwright with 4x CPU slowdown at 412 px: one layout shift of 0.158 at about 0.9 s in which the search card, the journey-stage tabs and the operations notice move up 27 px; without throttling CLS 0.000 on /en and /ms. Summaries in docs/qa/panel/first-time-access/lighthouse-*.json.",
+      "expected": "BR-07: CLS 0.1 or better, INP 200 ms; a mid-range Android must not lose the first taps on the home search.",
+      "suggested_fix": "Find the element above the search card that changes height at hydration (reserve its space or render it on the server), and split or defer non-critical client components on the home page; re-measure with 5 runs on an unshared server.",
+      "files": [
+        "src/app/[lang]/page.tsx"
+      ]
+    },
+    {
+      "id": "first-time-access-12",
+      "title": "Fixed chrome takes 28 per cent of a magnified screen, and the floating search button covers body text",
+      "severity": "medium",
+      "area": "shell",
+      "url": "/ms/kul/flights, /en/kul/map, /en/accessibility",
+      "evidence": "[measured, 320 x 568, text 125%] sticky header 85 px plus bottom navigation 71 to 74 px = about 159 px (28%) of the viewport on every page; h1 of map, transport, facilities, board and flight pages at 645 to 724 px, below the first screen. [observed in screenshots] At 390 px the round search button overlaps the board intro (\"Waktu ialah waktu lapangan terbang\"), the map intro (\"directions written out step by step\") and the hub's fifth chip (first-time-access/board-kul-ms-390-text125.jpg, map-kul-390-hc-text125-first-screen.jpg, accessibility-en-390-hc-text125.jpg).",
+      "expected": "Users of magnification keep most of the screen for content; persistent overlays never cover text.",
+      "suggested_fix": "Hide the header on scroll down and show on scroll up when text size is 112 or 125 per cent; let the bottom bar collapse at large text or at heights under 640 px; add bottom padding equal to the bar plus the button overhang, and keep the button inside the bar.",
+      "files": [
+        "src/components/shell/site-header.tsx",
+        "src/components/shell/mobile-bar.tsx"
+      ]
+    },
+    {
+      "id": "first-time-access-13",
+      "title": "Physical-access and first-timer words return nothing or wrong results in site search",
+      "severity": "medium",
+      "area": "search",
+      "url": "/en/search?q=lift, /ms/search?q=troli",
+      "evidence": "[measured, /{lang}/search] 0 results: \"lift\", \"buggy\" (en); \"troli\", \"tukar wang\" (ms). Wrong or weak: \"hearing loop\" -> inter-terminal shuttle and Kota Kinabalu bus routes; \"accessible parking\" -> Penang standard parking first; \"surau\" -> second result is the news item \"Ladang solar dan storan bateri KLIA Aeropolis dilancarkan\". Good: \"kerusi roda\", \"imigresen\", \"cecair\", \"teksi\", \"warga emas\", \"MH2072\" all rank the right item first.",
+      "expected": "BR-19: physical-access terms resolve to facility or guidance records; unknown items say so with a next step rather than unrelated matches.",
+      "suggested_fix": "Index map places (lifts, information counters) as search documents; add synonyms (lift/lif/elevator, buggy, troli, pengurup wang/tukar wang); demote news for facility-type queries; return an explicit \"not published\" card for accessible parking and hearing loops.",
+      "files": [
+        "src/lib/search/documents.ts"
+      ]
+    },
+    {
+      "id": "first-time-access-14",
+      "title": "Duplicate option names in the map route From/To lists",
+      "severity": "medium",
+      "area": "map",
+      "url": "/en/kul/map",
+      "evidence": "[measured] The From and To selects (40 options each) contain \"Aerotrain station · Gates\" twice (Main Terminal Building and Satellite Building) and \"Malaysia Airlines Golden Lounge · Gates\" three times (Domestic, Regional, Satellite). The qualifiers exist in the place names (e.g. \"Aerotrain station (Satellite Building)\") but are dropped in the option text.",
+      "expected": "Every option is uniquely named so a screen-reader or magnifier user can pick the right start and end.",
+      "suggested_fix": "Use the full place name (or append the building) in option labels; add a unit test that option labels are unique per terminal.",
+      "files": [
+        "src/components/map/map-explorer.tsx",
+        "src/components/map/map-logic.ts"
+      ]
+    },
+    {
+      "id": "first-time-access-15",
+      "title": "English text on Malay flight pages",
+      "severity": "low",
+      "area": "content",
+      "url": "/ms/kul/flights/mh2072-20261118-d",
+      "evidence": "[measured] The \"Malaysia Airlines di KLIA\" card shows the check-in detail in English (\"Level 5. International Economy: Row H, counters 1 to 18. International Business: Row D ...\") and the line \"Setakat Page undated\". AsOfText renders free-text asOf values verbatim (src/components/commerce/fact-rows.tsx:69-79); kul.ts uses asOf: 'Page undated' (lines 1069, 1238) and 'Listing undated'. A scan of 8 Malay pages found English text only here and in one airline service name in the older-travellers guide.",
+      "expected": "BR-16: every interface and content string in Bahasa Malaysia, or a visible fallback notice.",
+      "suggested_fix": "Make the airline check-in field LocalizedText; replace free-text asOf values with a code (undated, listing-undated) translated in the dictionary.",
+      "files": [
+        "src/components/flights/airline-facts.tsx",
+        "src/components/commerce/fact-rows.tsx",
+        "src/content/airports/kul.ts",
+        "src/content/airports/bki.ts"
+      ]
+    },
+    {
+      "id": "first-time-access-16",
+      "title": "Malay wording to review: \"pelepasan\" for departures and untranslated \"Lounge\"",
+      "severity": "low",
+      "area": "content",
+      "url": "/ms",
+      "evidence": "[observed] Home helper text \"Mencari pelepasan di 21 lapangan terbang\"; airport tab \"Lounge dan hotel\". [judgement] \"pelepasan\" reads as release or discharge to an everyday reader; \"penerbangan berlepas\" is the usual phrase. The accessibility statement already says the Malay is a draft awaiting a native editor.",
+      "expected": "Plain, everyday Malay in the first sentence a first-time traveller reads.",
+      "suggested_fix": "Native-speaker review of the shell and home dictionary first; e.g. \"Mencari penerbangan berlepas di 21 lapangan terbang\", \"Ruang menunggu (lounge) dan hotel\".",
+      "files": [
+        "src/lib/i18n/ms.ts"
+      ]
+    },
+    {
+      "id": "first-time-access-17",
+      "title": "Enter in the home flight search does not open a single exact match",
+      "severity": "low",
+      "area": "home",
+      "url": "/ms",
+      "evidence": "[measured, 360 px] Typed \"MH2072\" in the home search; the inline result showed \"1 penerbangan ditemui\". Pressing Enter left the URL at /ms; tapping the result card opened /ms/kul/flights/mh2072-20261118-d (3 interactions, 4.9 s). [source] This is deliberate: flight-search-box.tsx onSubmit (line 162) prevents navigation and keeps focus so the live region announces the results. [judgement] For a sighted, anxious user nothing visibly happens on Enter.",
+      "expected": "Enter on an exact single flight-number match opens that flight; otherwise keep the current behaviour.",
+      "suggested_fix": "On submit, navigate to the single exact match, otherwise to /search?q=.",
+      "files": [
+        "src/components/flights/flight-search-box.tsx"
+      ]
+    },
+    {
+      "id": "first-time-access-18",
+      "title": "Status card and timeline disagree about check-in",
+      "severity": "low",
+      "area": "flights",
+      "url": "/en/kul/flights/mh2072-20261118-d",
+      "evidence": "[observed] Status card: \"CHECK-IN Shown nearer the time\" (Malay: \"Ditunjukkan lebih dekat dengan waktunya\"). Timeline and airline card on the same page: \"Malaysia Airlines lists international Economy at Row H (counters 1 to 18)\".",
+      "expected": "One answer: when the feed has no row, the status card falls back to the airline's published row with its provenance.",
+      "suggested_fix": "Feed the airline check-in note into the status card when the flight has no checkInRow.",
+      "files": [
+        "src/components/flights/flight-status-hero.tsx",
+        "src/lib/i18n/features/flights.ts"
+      ]
+    },
+    {
+      "id": "first-time-access-19",
+      "title": "Assistance is not in the desktop header",
+      "severity": "low",
+      "area": "shell",
+      "url": "/en (1440 px)",
+      "evidence": "[measured] Desktop header items: Flights, Plan your journey, At the airport, Shop & dine, Transport & parking, Help, plus Display settings in the top bar. /accessibility is linked from the phone Menu panel (src/components/shell/panels.tsx:84) and the footer (site-footer.tsx:78, 95); the Help section marks it active (sections.ts:179).",
+      "expected": "Product strategy section 4: \"Assistance is in the header and Help on every page\"; BR-18: one interaction from any page.",
+      "suggested_fix": "Add \"Assistance\" next to Display settings in the desktop top bar and as a direct item in the phone Menu's first group.",
+      "files": [
+        "src/components/shell/site-header.tsx",
+        "src/components/shell/sections.ts"
+      ]
+    },
+    {
+      "id": "first-time-access-20",
+      "title": "Aerotrain night-closure notice is silent on wheelchair access to the replacement buses",
+      "severity": "low",
+      "area": "transport",
+      "url": "/en/notices",
+      "evidence": "[observed] Notice \"Planned: no Aerotrain between midnight and 5am, 28 November to 1 December\": \"Shuttle buses replace it: follow the signs to the bus lounge or ask ground staff, and allow extra time to reach a C gate.\" No mention of step-free boarding or assistance. The demonstration schedule has no departures between 23:00 and 05:00, so the route planner's behaviour during a closure could not be tested.",
+      "expected": "Disruption notices state the accessible alternative (accessible bus or escorted transfer) and extra time for assisted passengers.",
+      "suggested_fix": "Add an accessibility line to operational notices (source from MAHB), and make the step-free route switch to the bus lounge when a closure is active.",
+      "files": [
+        "src/content/notices.ts",
+        "src/components/map/map-logic.ts"
+      ]
+    },
+    {
+      "id": "first-time-access-21",
+      "title": "Home flight-preview links are 26 px tall",
+      "severity": "low",
+      "area": "home",
+      "url": "/ms",
+      "evidence": "[measured, 360 px, text 125%] 20 visible targets under 44 px high on the home page; destination links in the home flight preview (Melbourne, Shanghai, Sibu, Penang ...) are 26 px tall, terminal shortcuts 30 to 34 px. They meet WCAG 2.2 AA 2.5.8 (24 px) but not the product's own 44 px goal (BR-17, strategy section 6).",
+      "expected": "44 px touch targets on phones for an older or anxious user.",
+      "suggested_fix": "Make the whole preview row the link with min-height 44 px.",
+      "files": [
+        "src/app/[lang]/page.tsx"
+      ]
+    }
+  ]
+}

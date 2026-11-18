@@ -1,0 +1,234 @@
+{
+  "role": "content-integrity",
+  "method": "Production build served with next start -p 3104 on 2026-11-18. Playwright Chromium crawl of all 240 sitemap URLs plus 8 extra (journey, search, offline, design system) at 1280x900 and 390x844 after hydration; regex extraction of 9 value types from <main>; tracing against a tsx dump of src/content (validateAllContent) plus raw src/content text, interface copy (src/lib/i18n), code and demo providers; per-row demo-label in-view measurement; scripted flight detail, My journey, concierge (11 questions), search and command palette; page.clock at 8 instants for notices and fares; concierge engine run with tsx at 3 instants; Malay pages scanned for English fragments and lang attributes.",
+  "coverage": {
+    "pagesRendered": 248,
+    "renders": 496,
+    "httpErrors": 0,
+    "pageErrors": 0,
+    "textBlocks": 25929,
+    "uniqueValues": 544,
+    "valueOccurrences": 6835,
+    "contentRecordsWithSources": 289,
+    "sources": 251,
+    "clockInstants": 8,
+    "conciergeQuestions": 11
+  },
+  "results": {
+    "fabricatedValuesFound": 0,
+    "demoSurfacesPassing": [
+      "concierge flight answers (desktop, phone, en, ms)",
+      "My journey saved flight (desktop, phone)",
+      "parking availability (10/10 values)",
+      "command palette (desktop)",
+      "flight detail (desktop)",
+      "home, airport and search previews (desktop)"
+    ],
+    "demoSurfacesFailing": [
+      "full flight boards (desktop and phone)",
+      "home, airport and search previews (phone)",
+      "flight detail gate, belt and counters (phone)"
+    ],
+    "officialTagOnNonAuthoritativeSources": 9,
+    "timeSensitivity": "fare switch and notice states correct on the client clock; concierge correct on the server clock (engine test)"
+  },
+  "findings": [
+    {
+      "id": "content-integrity-01",
+      "title": "Full flight boards: most rows show no demonstration label in view (desktop and phone)",
+      "severity": "high",
+      "area": "flights",
+      "url": "http://localhost:3104/en/kul/flights",
+      "evidence": "Measured (Playwright, each visible [data-status] chip scrolled to the viewport centre, then counted visible [data-demo-banner] or [data-provenance=\"demo\"] elements inside the viewport): /en/kul/flights desktop 1280x900: 47 of 53 rows have no demo label in view; phone 390x844: 52 of 53. /ms/kul/flights: same (47/53, 52/53). /en/pen/flights: 7 of 12 (desktop), 11 of 12 (phone). The only label is the DemoDataBanner attached above the board; it is not sticky and rows carry no per-row demo marker. Screenshot board-phone-row20.jpg shows MH 1662 Shanghai, Gate C35, \"Boarding\" and four more realistic rows with no label anywhere on screen; board-desktop-row25.jpg shows 15 rows (incl. KL 885 Amsterdam, AI 387 Delhi) with no label. A screenshot or a scrolled view is indistinguishable from a real board. Steps: open /en/kul/flights, scroll to the 10th row.",
+      "expected": "Build spec rule 1: a \"Demonstration data\" label is visible wherever a flight row, gate or status appears, so every scrolled view of the board shows one.",
+      "suggested_fix": "Make the board header (with the demo label) sticky inside the board, or add a compact demo marker to each time-group header (\"From 19:00 · 14 flights · Demo\"), or repeat the compact banner every N rows. Re-run the in-view measurement as an e2e check.",
+      "files": [
+        "src/components/flights/flight-board.tsx",
+        "src/components/flights/flight-row.tsx",
+        "src/components/common/demo-data-banner.tsx"
+      ]
+    },
+    {
+      "id": "content-integrity-02",
+      "title": "Home and airport board previews and search results: rows out of sight of the demo label on phone",
+      "severity": "high",
+      "area": "home",
+      "url": "http://localhost:3104/en",
+      "evidence": "Measured (same in-view method, phone 390x844): / home board preview 6 of 8 rows with no demo label in view (/ms the same); /en/kul overview board 4 of 6; /en/search?q=MH and /en/search?q=AK 4 of 8 flight results each. Desktop passes on these surfaces (8/8, 6/6, 8/8). Screenshot home-phone-row5.jpg: five rows (OD 2219 Kuching Gate B9 \"Final call\", MH 1901 Johor Bahru \"Boarding\", AK 6563 \"Delayed\") with no label on screen; the only label sits above the preview.",
+      "expected": "A demo label in the same view as any demo flight row on phone as well as desktop.",
+      "suggested_fix": "Same pattern as content-integrity-01: a sticky or repeated compact label inside the preview card and the flight result group; or add the short \"Demo\" provenance tag to each preview row on narrow screens.",
+      "files": [
+        "src/components/home/board-preview.tsx",
+        "src/components/search/search-results.tsx",
+        "src/components/flights/flight-row.tsx"
+      ]
+    },
+    {
+      "id": "content-integrity-03",
+      "title": "Flight detail on phone: check-in counters, gate and baggage belt appear with no demo label in view",
+      "severity": "high",
+      "area": "flights",
+      "url": "http://localhost:3104/en/kul/flights/ak6340-20261118-d",
+      "evidence": "Measured (labels Gate, Check-in, Baggage belt scrolled to centre; demo markers counted in viewport): phone 390x844 /en/kul/flights/ak6340-20261118-d: \"CHECK-IN Row X · Counters 5-10\" NO label, \"GATE K15\" NO label; /ms version \"DAFTAR MASUK Baris X · Kaunter 5-10\" and \"PINTU K15\" NO label; /en/kul/flights/mh2627-20261118-a \"BAGGAGE BELT 2\" NO label. Desktop passes for all values. The banner sits at y=550 (detail-phone.jpg) and the gate value at y=1252, more than one viewport below it, with no repeat until y=1733.",
+      "expected": "Gate, belt and check-in counter values are demo data and need a label in the same phone view.",
+      "suggested_fix": "Put the short demo tag next to the gate, belt and counter values in the status hero (or make the hero banner sticky while the hero is on screen).",
+      "files": [
+        "src/components/flights/flight-status-hero.tsx",
+        "src/components/flights/flight-detail.tsx"
+      ]
+    },
+    {
+      "id": "content-integrity-04",
+      "title": "\"Official\" tag on facts that rest only on news reports and travel blogs (fares, closures, refund rights, curfew)",
+      "severity": "high",
+      "area": "content",
+      "url": "http://localhost:3104/en/kul/transport",
+      "evidence": "Measured (content dump via tsx of src/content/index.ts; every record with provenance \"official\" whose sources are all of kind news, aggregator or other; rendered tag checked in the crawl). Rendered with an \"Official\" tag: (1) KLIA Ekspres card on /en/kul/transport \"Official instruction · FARE TODAY RM 55 · JOURNEY TIME 28 min\": sources thestar, businesstoday, soyacincau (news) and wego (aggregator); the 28 min comes from the blog (\"A travel guide gives the non-stop journey as about 28 minutes\"); the concierge repeats \"Journey time: 28 min\" under Official with the hedge dropped. (2) Notice \"KLIA Ekspres adult fare rises to RM65 on 1 January 2027\" on /en/kul and /en/notices: 3 news sources. (3) Notice \"Planned: no Aerotrain between midnight and 5am, 28 November to 1 December\" on /en, /en/kul, /en/notices: 2 news sources; the body itself says \"we found no confirmation of the final dates\". (4) FAQ \"Can I get a refund if my flight is delayed by five hours or more?\" on /en/help/flights and /en/kul/transit: The Star and Malay Mail only. (5) Penang e-hailing pick-up on /en/pen/transport and /en/guides/arriving: BusinessToday and OnPenang. (6) \"Subang has a night curfew\" on /en/guides/first-time: two Edge articles. The registry header (sources.ts lines 8-10) says such facts \"are published with provenance: estimated\", and the on-page legend defines Estimated as \"a detail reported only by third parties\". 9 distinct records, 12 including duplicates.",
+      "expected": "Official only when an official, government or operator source supports the value (build spec rule 3; sources.ts header).",
+      "suggested_fix": "Retag these records \"estimated\", or add the operator or government source (kliaekspres.com fare page, Mavcom notice, MAHB notice) and keep \"official\". Add a validateContent rule that rejects provenance \"official\" when no cited source is official, government or operator.",
+      "files": [
+        "src/content/airports/kul.ts",
+        "src/content/faqs.ts",
+        "src/content/airports/pen.ts",
+        "src/content/airports/szb.ts",
+        "src/content/types.ts",
+        "src/content/sources.ts"
+      ]
+    },
+    {
+      "id": "content-integrity-05",
+      "title": "Statements about the prototype itself are tagged \"Official instruction\"",
+      "severity": "medium",
+      "area": "help",
+      "url": "http://localhost:3104/en/help/about-this-site",
+      "evidence": "Measured (disclosures expanded, [data-provenance] read): /en/help/about-this-site answer \"No. This is an independent concept prototype...\" carries \"Official\"; /en/help/privacy answers \"Saved flights, places, your parking note... are kept in your browser\" and \"Use Clear my journey...\" carry \"Official\". Their only source is prototype-method (kind other, publisher \"This prototype (not an official source)\"). The legend on the same page defines Official as \"An instruction or fact from the airport, an airline or a government body\".",
+      "expected": "The prototype is none of those; these answers should not carry the Official tag.",
+      "suggested_fix": "Tag them \"suggestion\" or give them no provenance tag with an \"About this prototype\" note; extend the validation rule from content-integrity-04 so prototype-method cannot back an official record.",
+      "files": [
+        "src/content/faqs.ts"
+      ]
+    },
+    {
+      "id": "content-integrity-06",
+      "title": "Sources hosted by third parties are registered as official or operator",
+      "severity": "medium",
+      "area": "content",
+      "url": "http://localhost:3104/en/corporate/news",
+      "evidence": "Measured (registry scan: kind official, government or operator with a URL host outside the authority's own domains): five corp-routes-* sources on routesonline.com are kind \"official\"; routesonline-calm-room-t2 is kind \"operator\" (Routes is not the operator; it backs KLIA facilities records kul.ts lines 123, 142, 188); corp-edge-solar-advertorial on theedgemalaysia.com is \"official\"; ana-kuala-lumpur-guide (All Nippon Airways) is \"operator\" yet backs the KLIA T1 \"Level 1: buses\" level, tagged official with klia2.info (aggregator) as the only other source. The publisher labels are honest (\"release published on Routesonline\"), but the kind lets the records render as Official.",
+      "expected": "kind official only for pages published by Malaysia Airports or the authority itself; relays and advertorials kind news or aggregator (or official with a recorded first-party URL).",
+      "suggested_fix": "Reclassify these 8 sources, or add the first-party URL of each release; re-run the provenance check.",
+      "files": [
+        "src/content/sources.ts",
+        "src/content/corporate.ts",
+        "src/content/airports/kul.ts"
+      ]
+    },
+    {
+      "id": "content-integrity-07",
+      "title": "KLIA Ekspres fare-rise notice reads \"Ended\" once the new fare starts; card text goes stale after 1 January 2027",
+      "severity": "medium",
+      "area": "transport",
+      "url": "http://localhost:3104/en/notices",
+      "evidence": "Measured (page.clock.install at eight instants from 2026-11-18 to 2027-01-15, Asia/Kuala_Lumpur). Fare switching on /en/kul/transport and /ms/kul/transport is correct: RM 55 \"Applies today · Until 31 December 2026\" through 2026-12-31T23:00, RM 65 from 2027-01-01T00:10. But the notice (validTo 2026-12-31T23:59:59, no validFrom) shows \"In effect now\" from today and \"Ended\" from 1 January: on 15 January /en/notices reads \"KLIA Ekspres adult fare rises to RM65 on 1 January 2027 ... Ended Until 31 Dec 2026\" (/ms: \"Tamat\"), and it leaves /en/kul and the home notice strip on the day the change takes effect. After 1 January the card description still says \"The adult fare rises on 1 January 2027, so both fares are listed with their dates\" while only RM 65 is listed.",
+      "expected": "A fare-change notice stays in effect over the change and states the new fare as current; card copy matches what is shown.",
+      "suggested_fix": "Give the notice validFrom (announcement) and a validTo some weeks after 1 January, with title variants before and after; move the \"both fares are listed\" sentence into the fare-period UI or make it conditional (needs validFrom/validUntil on TransportDestination, known issue 6).",
+      "files": [
+        "src/content/airports/kul.ts",
+        "src/components/airport/notice-list.tsx",
+        "src/components/transport/transport-logic.ts"
+      ]
+    },
+    {
+      "id": "content-integrity-08",
+      "title": "Aerotrain closure notice keeps the \"Planned:\" title while in effect and after it ends; route steps do not point to it",
+      "severity": "low",
+      "area": "transit",
+      "url": "http://localhost:3104/en/kul/transit",
+      "evidence": "Measured (page.clock at 2026-11-29T02:00+08:00): /en/notices and /en/kul show \"In effect now\" next to the title \"Planned: no Aerotrain between midnight and 5am...\"; at 2027-01-15 the same title shows \"Ended\". At 02:00 on 29 November /en/kul/transit step 3 still says \"Take the Aerotrain from the Main Terminal Building to the Satellite Building. The ride takes under three minutes\" with only the generic fallback sentence, and no link to the notice that is in effect. Date logic itself is correct: shown as upcoming before 28 Nov, in effect during, dropped from /en/kul and the home strip after 1 Dec 05:00.",
+      "expected": "Title that does not contradict the state chip; route guidance that surfaces an in-effect notice affecting that step.",
+      "suggested_fix": "Drop \"Planned:\" from the stored title (the state chip already says it), and have the transit and route steps that mention the Aerotrain read current notices for kul T1.",
+      "files": [
+        "src/content/airports/kul.ts",
+        "src/components/guides/transit-data.server.ts"
+      ]
+    },
+    {
+      "id": "content-integrity-09",
+      "title": "Malay pages: airport names, states and place names stay in English (native review needed)",
+      "severity": "medium",
+      "area": "content",
+      "url": "http://localhost:3104/ms/pen",
+      "evidence": "Measured (crawl of 123 Malay pages): the H1 and <title> of all 39 Malay airport overview pages are English names, e.g. /ms/pen \"Penang International Airport\", /ms/kul \"Kuala Lumpur International Airport\", /ms/lbu \"Labuan Airport\". State names render untranslated: \"Labuan, Federal Territory of Labuan\" on /ms/airports and /ms/lbu, \"Bayan Lepas, Penang\" on /ms/airports and /ms/pen, although airports.ts already has STATE_MS ('Wilayah Persekutuan Labuan', 'Pulau Pinang') used only in the summary sentence. \"Singapore\" appears as a destination on 15 Malay pages (Malay: Singapura) and \"Penang\" on 17. Flag for native review; not rewritten here.",
+      "expected": "Malay pages use the Malay forms the operator uses (for example Lapangan Terbang Antarabangsa Pulau Pinang, Wilayah Persekutuan Labuan, Singapura), or carry the translation notice.",
+      "suggested_fix": "Make Airport.name, shortName and state LocalizedText (or apply STATE_MS everywhere the state is shown) and localise demo destination city names; have a native speaker confirm the official Malay airport names.",
+      "files": [
+        "src/content/airports.ts",
+        "src/lib/providers/demo-routes.ts"
+      ]
+    },
+    {
+      "id": "content-integrity-10",
+      "title": "English citation titles on 77 of 123 Malay pages lack lang=\"en\"; the translation notice never shows",
+      "severity": "medium",
+      "area": "content",
+      "url": "http://localhost:3104/ms/kul",
+      "evidence": "Measured (each visible text block on /ms pages, nearest [lang] ancestor): 77 of 123 Malay pages show English source titles inside lang=\"ms\", e.g. \"Malaysia Airports: Full Annual Report (text copy of the Annual Report 2023)\" on 23 pages, \"KLIA Ekspres and Transit adult fares to hit RM65 starting 1 January 2027\" on /ms/kul and /ms/notices. Only 2 blocks on all Malay pages carry lang=\"en\" (both on /ms/corporate). The TranslationNotice (\"Sebahagian kandungan dalam bahasa Inggeris\") rendered on 0 Malay pages. Overlaps accessibility-12 (rated low on 2 measured pages); this measurement shows the scope is site-wide. Expert judgement: WCAG 3.1.2 (AA) applies to these phrases; rated medium because they are citation lines, not instructions.",
+      "expected": "English titles wrapped in lang=\"en\"; pages with English fragments carry the translation notice or a per-citation \"in English\" marker.",
+      "suggested_fix": "In SourceNote, wrap source.title and source.publisher in <span lang=\"en\"> unless the source has a Malay title; show the translation notice once per page when any English citation is present, or add a small \"EN\" marker per citation.",
+      "files": [
+        "src/components/common/source-note.tsx",
+        "src/components/common/translation-notice.tsx"
+      ]
+    },
+    {
+      "id": "content-integrity-11",
+      "title": "Team-written English strings on Malay pages: registry annotations, as-of text and a payment list",
+      "severity": "medium",
+      "area": "content",
+      "url": "http://localhost:3104/ms/notices",
+      "evidence": "Measured (text scan of Malay pages, citations excluded except team-written parts): \"How this concept prototype estimates and labels guidance\" and \"Diterbitkan oleh This prototype (not an official source)\" on 22 Malay pages (/ms/notices, /ms/accessibility...); \"(third-party guide)\" on 14; \"(as summarised in search results)\" on 20; \"as quoted in search results on 17 November 2026; exact link not recorded\" on 12; \"(... observed first hand)\" on 9; \"(listed in the official sitemap; content not captured)\" on 4. Free-text as-of values print in English: \"Source undated; checked 16 November 2026\" (/ms/kul/facilities, /ms/kul/lounges), \"As indexed in November 2026\", \"Launch coverage, 2020 to 2021\", \"Checked 16 November 2026\" (5 Malay pages). /ms/bki/transport: \"ManjaLink or ManjaPay, Concession card, Visa or Mastercard debit or credit card dan DuitNow QR\" (only \"dan\" is Malay). These are our own words, not titles of English publications.",
+      "expected": "Text the team writes is translated in both languages (LocalizedText), and dates are formatted per language.",
+      "suggested_fix": "Move the annotation out of Source.title into a localised note field; make Source.publisher for prototype-method and the \"(third-party guide)\" suffix localised; turn asOf into an ISO date plus an optional localised qualifier; make BUS_PAYMENT in bki.ts LocalizedText. Native review of the Malay versions.",
+      "files": [
+        "src/content/sources.ts",
+        "src/content/airports/kul.ts",
+        "src/content/airports/bki.ts",
+        "src/content/airports/kch.ts",
+        "src/content/airports/pen.ts",
+        "src/content/types.ts"
+      ]
+    },
+    {
+      "id": "content-integrity-12",
+      "title": "As-of dates are missing on many records and are free text where present",
+      "severity": "low",
+      "area": "content",
+      "url": "http://localhost:3104/en/help",
+      "evidence": "Measured (content dump): 108 of 251 sources have no asOf (39 official, 31 aggregator, 18 other, 9 operator, 6 government, 3 news); 15 of 28 FAQs have no asOf and 14 of them cite only sources without asOf; 91 guide steps have none (their guides do). Every source has retrieved=2026-11-16/17 and pages show \"Retrieved 16 Nov 2026\", so no value is undated on screen. asOf is z.string() and holds mixed forms: \"2026-10-07\", \"2026-08\", \"2026\", \"Retrieved 2026-11-16\", \"Checked 16 November 2026\", \"Source undated; checked 16 November 2026\", which cannot be compared to a date for staleness checks.",
+      "expected": "Every published record has a machine-readable as-of date (or an explicit \"undated\" flag) so stale facts can be found automatically.",
+      "suggested_fix": "Split asOf into asOfDate (ISO, required) and asOfNote (LocalizedText, optional); backfill FAQs; add a stale-content check in content.test.ts (for example older than 12 months).",
+      "files": [
+        "src/content/types.ts",
+        "src/content/faqs.ts",
+        "src/content/sources.ts",
+        "src/content/content.test.ts"
+      ]
+    },
+    {
+      "id": "content-integrity-13",
+      "title": "Some planning guidance lives in interface copy and code instead of the sourced content layer",
+      "severity": "low",
+      "area": "content",
+      "url": "http://localhost:3104/en",
+      "evidence": "Measured (value tracing): home \"Be at the airport by 18:00 · Estimated guidance · About 3 hours before an international flight and 2 hours before a domestic one\" comes from src/lib/i18n/en.ts line 816 (and ms.ts), duplicating guides.ts line 40 without a source id; connection ranges on /en/kul/transit (\"10 min-25 min\", \"15 min-40 min\", \"55 min to 1 h 50 min\") come from transit-logic.ts lines 116-127. Both are correctly tagged Estimated and the transit card says \"built from our own planning assumptions\", so this is drift risk, not mislabelling.",
+      "expected": "Published numbers live in src/content with a source (prototype-method for our own assumptions) so one edit updates every surface.",
+      "suggested_fix": "Read the arrival rule from the guide record; move the transit assumptions into a content record citing prototype-method.",
+      "files": [
+        "src/lib/i18n/en.ts",
+        "src/lib/i18n/ms.ts",
+        "src/components/guides/transit-logic.ts",
+        "src/content/guides.ts"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+ "home-en-applied": {
+  "performance": 74,
+  "accessibility": 100,
+  "bestPractices": 100,
+  "seo": 63,
+  "fcp_ms": 1944,
+  "lcp_ms": 1944,
+  "tbt_ms": 1344,
+  "cls": 0,
+  "si_ms": 2288,
+  "totalBytes": 668292,
+  "requests": 47
+ },
+ "map-applied": {
+  "performance": 78,
+  "accessibility": 100,
+  "bestPractices": 100,
+  "seo": 63,
+  "fcp_ms": 1976,
+  "lcp_ms": 2011,
+  "tbt_ms": 1118,
+  "cls": 0.003,
+  "si_ms": 2128,
+  "totalBytes": 614937,
+  "requests": 51
+ },
+ "journey-applied": {
+  "performance": 50,
+  "accessibility": 100,
+  "bestPractices": 100,
+  "seo": 63,
+  "fcp_ms": 1732,
+  "lcp_ms": 5622,
+  "tbt_ms": 1027,
+  "cls": 0.211,
+  "si_ms": 2830,
+  "totalBytes": 574861,
+  "requests": 38
+ }
+}
