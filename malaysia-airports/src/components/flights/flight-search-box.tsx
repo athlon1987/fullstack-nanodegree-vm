@@ -1,6 +1,7 @@
 'use client';
 
-import { useId, useMemo, useState, type FormEvent } from 'react';
+import { useRouter } from 'next/navigation';
+import { Suspense, lazy, startTransition, useDeferredValue, useEffect, useId, useMemo, useState, type FormEvent } from 'react';
 import { getAirport, terminalLabel } from '@/content/airports';
 import type { TerminalId } from '@/content/types';
 import { cn } from '@/lib/cn';
@@ -8,10 +9,11 @@ import { formatFlightNumber, parseFlightQuery, remotePlace, searchFlights, type 
 import { useAirportContext, useFlightProvider } from '@/lib/hooks';
 import { useLang, useT } from '@/lib/i18n/client';
 import type { TKey } from '@/lib/i18n/translate';
+import { localeHref } from '@/lib/locale';
 import { DEMO_AIRPORT_SLUGS, hasDemoRoutes } from '@/lib/providers';
 import { RebungRule } from '@/components/art/patterns';
 import { LocaleLink } from '@/components/common/locale-link';
-import { ProvenanceTag } from '@/components/common/provenance-tag';
+import { DemoTag } from '@/components/common/demo-tag';
 import { AirportSwitcherButton } from '@/components/shell/airport-switcher';
 import { overlays } from '@/components/shell/overlay-store';
 import { rich } from '@/components/shell/rich';
@@ -19,9 +21,21 @@ import { sectionPath } from '@/components/shell/sections';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { SearchField } from '@/components/ui/search-field';
-import { SegmentedControl } from '@/components/ui/segmented-control';
 import { useFlightDirection } from './flight-direction';
-import { FlightRow } from './flight-row';
+import { FlightRow, flightHref } from './flight-row';
+
+// Site results (and the search engine) load only once someone searches (A-03, A-09).
+const InlineSiteResults = lazy(() => import('@/components/search/inline-site-results').then((module) => ({ default: module.InlineSiteResults })));
+
+/** Run `work` when the browser is idle (or soon after), never during hydration. */
+function whenIdle(work: () => void): () => void {
+  if (typeof window.requestIdleCallback === 'function') {
+    const handle = window.requestIdleCallback(work, { timeout: 3000 });
+    return () => window.cancelIdleCallback(handle);
+  }
+  const handle = window.setTimeout(work, 1500);
+  return () => window.clearTimeout(handle);
+}
 
 const VISIBLE_RESULTS = 5;
 
@@ -84,10 +98,17 @@ export interface FlightSearchBoxProps {
 export function FlightSearchBox({ airport, terminal, showAirportSelector = false, id, className }: FlightSearchBoxProps) {
   const t = useT();
   const lang = useLang();
+  const router = useRouter();
   const provider = useFlightProvider();
   const context = useAirportContext();
   const { direction, setDirection } = useFlightDirection();
   const [query, setQuery] = useState('');
+  // The flight pool is built on first use, never during hydration (A-09): on focus or the first
+  // keystroke, or when the browser is idle on an airport page (for that airport's examples).
+  const [active, setActive] = useState(false);
+  const activate = () => {
+    if (!active) startTransition(() => setActive(true));
+  };
   const generatedId = useId();
   const inputId = id ? `${id}-input` : `${generatedId}-input`;
   const resultsId = `${generatedId}-results`;
@@ -98,21 +119,25 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
   const scopeSlug = scope?.slug;
   const hasBoard = scopeSlug ? hasDemoRoutes(scopeSlug) : true;
   const text = query.trim();
+  // Typing stays responsive: matching follows the field at a lower priority.
+  const deferredText = useDeferredValue(text);
   const searching = text.length >= 2;
+
+  useEffect(() => (scopeSlug && !active ? whenIdle(() => startTransition(() => setActive(true))) : undefined), [scopeSlug, active]);
 
   /* Today's flights in scope: one airport, or every airport with a demo board. */
   const pool = useMemo<Flight[] | null>(() => {
-    if (!provider) return null;
+    if (!provider || !active) return null;
     const slugs = scopeSlug ? [scopeSlug] : DEMO_AIRPORT_SLUGS;
     return slugs
       .flatMap((slug) => provider.listFlightsSync({ airport: slug, direction }))
       .filter((flight) => !scopeTerminal || !scopeSlug || flight.terminal === scopeTerminal);
-  }, [provider, scopeSlug, scopeTerminal, direction]);
+  }, [provider, active, scopeSlug, scopeTerminal, direction]);
 
   const results = useMemo<Flight[] | null>(() => {
-    if (!pool || !provider || !searching) return null;
-    return searchFlights(pool, text, { now: provider.meta().generatedAt, limit: 40 });
-  }, [pool, provider, searching, text]);
+    if (!pool || !provider || deferredText.length < 2) return null;
+    return searchFlights(pool, deferredText, { now: provider.meta().generatedAt, limit: 40 });
+  }, [pool, provider, deferredText]);
 
   const examples = useMemo<Example[]>(() => {
     const fallback: Example[] = [
@@ -154,15 +179,28 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
         count: <strong className="tabular font-semibold text-ink">{DEMO_AIRPORT_SLUGS.length}</strong>,
       });
 
-  const kind = results ? readQuery(text, results, direction) : null;
+  const kind = results ? readQuery(deferredText, results, direction) : null;
   const shown = results?.slice(0, VISIBLE_RESULTS) ?? [];
   const more = results ? results.length - shown.length : 0;
   const boardHref = scopeSlug ? `${sectionPath(scopeSlug, 'flights', scopeTerminal)}${scopeTerminal ? '&' : '?'}dir=${direction}${text ? `&q=${encodeURIComponent(text)}` : ''}` : null;
+  const settled = results !== null && deferredText === text;
 
+  /**
+   * Enter (A-03): one exact flight-number match opens that flight; anything else opens the site
+   * search for the words typed, where flights, places, services and pages are all searched.
+   */
   const onSubmit = (event: FormEvent) => {
     event.preventDefault();
-    // Results are already on screen: keep the keyboard where it is and let the live region speak.
-    focusInput();
+    if (!text) {
+      focusInput();
+      return;
+    }
+    const parsed = parseFlightQuery(text);
+    if (parsed.kind === 'flight-number' && settled && results.length === 1) {
+      router.push(localeHref(lang, flightHref(results[0])));
+      return;
+    }
+    router.push(localeHref(lang, `/search?q=${encodeURIComponent(text)}`));
   };
 
   const clear = () => {
@@ -174,25 +212,24 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
     <section id={id} aria-label={t('home.deskLabel')} className={cn('group/desk relative scroll-mt-24', className)}>
       <div className="relative overflow-hidden rounded-xl border border-line-strong bg-surface shadow-md">
         <div className="flex flex-col gap-2 p-2 sm:gap-2.5 sm:p-3">
-          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 px-1">
             {showAirportSelector ? <AirportSwitcherButton variant="desk" className="w-full sm:w-auto sm:min-w-72 sm:flex-none" /> : null}
-            <SegmentedControl<FlightDirection>
-              label={t('flights.filters.direction')}
-              value={direction}
-              onValueChange={setDirection}
-              className="sm:w-auto sm:flex-none"
-              block
-              options={[
-                { value: 'd', label: t('common.labels.departures'), icon: 'plane-takeoff' },
-                { value: 'a', label: t('common.labels.arrivals'), icon: 'plane-landing' },
-              ]}
-            />
-            <p className="type-body-sm min-w-0 flex-1 basis-56 px-1 text-ink-2 max-sm:text-[0.8125rem] max-sm:leading-snug sm:text-right" data-flight-scope="">
+            {/* The journey mode sets the direction (A-17); one small link switches it. */}
+            <p className="type-body-sm min-w-0 flex-1 text-ink-2 max-sm:text-[0.8125rem] max-sm:leading-snug" data-flight-scope="">
               {scopeSentence}
             </p>
+            <button
+              type="button"
+              onClick={() => setDirection(direction === 'd' ? 'a' : 'd')}
+              className="link-action type-body-sm shrink-0 text-ink-2 hover:text-ink"
+            >
+              <Icon name={direction === 'd' ? 'plane-landing' : 'plane-takeoff'} size="sm" strokeWidth={1.75} />
+              {direction === 'd' ? t('shellExtras.homeSearch.arrivalsInstead') : t('shellExtras.homeSearch.departuresInstead')}
+            </button>
           </div>
 
-          <form role="search" onSubmit={onSubmit} aria-label={t('flights.search.label')}>
+          {/* Without JavaScript (or before hydration) the form still submits to the site search. */}
+          <form role="search" action={localeHref(lang, '/search')} method="get" onSubmit={onSubmit} onFocus={activate} onInput={activate} aria-label={t('flights.search.label')}>
             <SearchField
               label={t('flights.search.label')}
               size="lg"
@@ -238,7 +275,7 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
                       }}
                       className="inline-flex h-8 items-center gap-2 rounded-md border border-line-strong bg-surface px-2.5 text-sm whitespace-nowrap text-ink transition-colors duration-fast hover:border-ink hover:bg-page-subtle touch:h-11"
                     >
-                      <span className="type-data-xs text-ink-2 uppercase">{t(kindLabels[example.kind])}</span>
+                      <span className="type-caption text-ink-2">{t(kindLabels[example.kind])}</span>
                       <span className="font-semibold">{example.label}</span>
                     </button>
                   </li>
@@ -261,12 +298,12 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
                 {kind ? (
                   <span className="inline-flex items-center gap-1.5 text-ink-2">
                     {t('flights.search.readingAs')}
-                    <span className="type-data-xs rounded-xs border border-line-control px-1.5 py-0.5 font-semibold text-ink uppercase">{t(kindLabels[kind])}</span>
+                    <span className="type-caption rounded-xs border border-line-control px-1.5 py-0.5 font-semibold text-ink">{t(kindLabels[kind])}</span>
                   </span>
                 ) : null}
               </p>
               <div className="flex items-center gap-2">
-                <ProvenanceTag provenance="demo" length="short" />
+                <DemoTag size="md" />
                 <Button variant="quiet" size="sm" iconStart="x" onClick={clear}>
                   {t('common.actions.clear')}
                 </Button>
@@ -282,7 +319,7 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
                 </ul>
                 <div className="flex flex-wrap items-center justify-between gap-x-5 gap-y-1 border-t border-line px-4 py-2.5 sm:px-5">
                   <p className="type-body-sm text-ink-2">
-                    {t('flights.search.demoNote')} <strong className="font-semibold text-ink">{t('demo.doNotPlan')}</strong>
+                    {t('flights.search.demoNote')} <strong className="font-semibold text-ink">{t('shellExtras.homeSearch.doNotPlan')}</strong>
                     {more > 0 ? <> {t.count('flights.search.moreOnBoard', more)}.</> : null}
                   </p>
                   {boardHref && scope ? (
@@ -298,11 +335,13 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
                   )}
                 </div>
               </div>
-            ) : results ? (
-              <div className="rounded-lg border border-line bg-page-subtle p-4">
-                <p className="type-body font-semibold text-ink">{t('flights.search.noResults', { query: text })}</p>
-                <p className="type-body-sm mt-1 text-ink-2">{t('flights.search.noResultsHint')}</p>
-              </div>
+            ) : null}
+
+            {/* Not only flights (A-03): places, services and pages that match, after any flights. */}
+            {searching ? (
+              <Suspense fallback={null}>
+                <InlineSiteResults query={deferredText} airport={scopeSlug} noFlights={results !== null && results.length === 0} />
+              </Suspense>
             ) : null}
           </div>
         </div>

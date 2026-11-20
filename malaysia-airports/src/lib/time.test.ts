@@ -10,6 +10,7 @@ import {
   isOpenAt,
   minutesBetween,
   nowInAirport,
+  offsetCacheStats,
   offsetMinutes,
   shiftDateKey,
   timezoneDiffers,
@@ -99,5 +100,32 @@ describe('time: opening hours', () => {
     expect(isOpenAt({ kind: '24h' }, at('03:00'))).toBe(true);
     expect(isOpenAt({ kind: 'text', text: { en: 'Varies' } }, at('03:00'))).toBeUndefined();
     expect(isOpenAt(undefined, at('03:00'))).toBeUndefined();
+  });
+});
+
+describe('time: cached zone offsets (performance-02)', () => {
+  it('agrees with Intl.DateTimeFormat on every quarter hour across a daylight-saving change', () => {
+    const exact = (ms: number, zone: string): string =>
+      new Intl.DateTimeFormat('en-GB', { timeZone: zone, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }).format(new Date(ms));
+    const fields = (ms: number, zone: string): string => {
+      const p = zonedParts(ms, zone);
+      const pad = (n: number) => String(n).padStart(2, '0');
+      return `${pad(p.day)}/${pad(p.month)}/${p.year}, ${pad(p.hour)}:${pad(p.minute)}`;
+    };
+    // 29 March 2026: Europe/London moves from UTC+0 to UTC+1 at 01:00 UTC.
+    for (const zone of ['Europe/London', 'Australia/Adelaide', 'Asia/Kuala_Lumpur']) {
+      for (let ms = Date.UTC(2026, 2, 28, 12); ms < Date.UTC(2026, 2, 30, 12); ms += 15 * 60000) {
+        expect(fields(ms, zone)).toBe(exact(ms, zone));
+      }
+    }
+  });
+
+  it('computes an airport offset once per day, not once per value', () => {
+    const before = offsetCacheStats().exactLookups;
+    const start = Date.UTC(2031, 4, 4, 0, 0);
+    for (let minute = 0; minute < 24 * 60; minute += 1) formatTime(start + minute * 60000);
+    const used = offsetCacheStats().exactLookups - before;
+    // One UTC day boundary is crossed: at most two days, two exact lookups each.
+    expect(used).toBeLessThanOrEqual(4);
   });
 });

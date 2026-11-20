@@ -42,6 +42,15 @@ export function SiteHeader({ lang }: { lang: Lang }) {
             <span className="underline decoration-transparent underline-offset-4 group-hover:decoration-current max-sm:hidden">{t('shell.prototypeMarker')}</span>
           </LocaleLink>
           <div className="flex shrink-0 items-center gap-3 max-md:hidden">
+            {/* Assistance, one interaction from any page (A-15, BR-18). */}
+            <LocaleLink
+              href="/accessibility"
+              className="type-caption inline-flex h-7 items-center gap-1.5 rounded-xs px-1.5 font-semibold text-on-inverse transition-colors duration-fast hover:text-on-inverse-dim"
+            >
+              <Icon name="accessibility" size="xs" strokeWidth={2} />
+              {t('shellExtras.nav.assistance')}
+            </LocaleLink>
+            <span aria-hidden="true" className="h-3.5 w-px bg-on-inverse-dim opacity-40" />
             <LocaleLink
               href="/corporate"
               className="type-caption inline-flex h-7 items-center gap-1 rounded-xs px-1.5 font-semibold text-on-inverse-dim transition-colors duration-fast hover:text-on-inverse"
@@ -57,7 +66,7 @@ export function SiteHeader({ lang }: { lang: Lang }) {
         </div>
       </div>
 
-      <header data-print="hidden" className="sticky top-0 z-40 h-header border-b border-line bg-page">
+      <header data-print="hidden" data-site-header="" className="sticky top-0 z-40 h-header border-b border-line bg-page">
         <div className="@container mx-auto h-full max-w-wide px-4 sm:px-6">
           <div className="flex h-full items-center gap-2 sm:gap-3">
             <LocaleLink href="/" aria-label={t('shell.homeLabel', { name: t('common.appName') })} className="shrink-0 rounded-sm">

@@ -94,7 +94,6 @@ export function AirportSwitcherButton({ variant = 'header', then, labelClassName
     <button
       {...common}
       data-airport-switcher="header"
-      aria-label={choice ? t('shell.switcher.changeFrom', { airport: label }) : undefined}
       className={cn(
         'inline-flex min-h-11 max-w-full min-w-0 items-center gap-2 rounded-md border px-2.5 text-left text-sm font-semibold transition-colors duration-fast sm:px-3',
         unset
@@ -105,14 +104,18 @@ export function AirportSwitcherButton({ variant = 'header', then, labelClassName
     >
       {choice ? (
         <>
+          {/* Label in Name (WCAG 2.5.3): the accessible name starts with exactly what is shown
+              ("KUL T1"), then a visually hidden "change airport (currently KLIA Terminal 1)". */}
           <AirportCode code={choice.code} size="sm" className="font-bold" />
-          {terminal ? <TerminalBadge terminal={terminal} size="sm" /> : null}
+          {terminal ? <TerminalBadge terminal={terminal} size="sm" announce="visible" /> : null}
           <span className={cn('min-w-0 leading-tight', labelClassName ?? 'hidden sm:inline')}>{label}</span>
+          <span className="sr-only">{t('shellExtras.switcher.changeSuffix', { airport: label })}</span>
         </>
       ) : (
         <>
-          <Icon name="map-pin" size="sm" strokeWidth={2} />
-          <span className="min-w-0 leading-tight max-xs:text-xs">{label}</span>
+          <Icon name="map-pin" size="sm" strokeWidth={2} className="shrink-0" />
+          {/* Wraps inside the button at 320 px and 125% text instead of spilling out (A-16). */}
+          <span className="min-w-0 leading-tight [overflow-wrap:anywhere] max-xs:text-xs">{label}</span>
         </>
       )}
       <Icon name="chevron-down" size="sm" strokeWidth={2} className="shrink-0 opacity-70 max-xs:hidden" />
@@ -201,9 +204,11 @@ export function AirportSwitcherDialog() {
       : path === '/airports'
         ? sectionPath(next.airport, 'overview', next.terminal)
         : sameSectionPath(path, next, availability);
+    // Choices made before the airport (home shop and dine filters) travel with the visitor (A-29).
+    const carried = then && dialog.payload.thenQuery && destination && !destination.startsWith('/airports') ? `${destination}${destination.includes('?') ? '&' : '?'}${dialog.payload.thenQuery}` : destination;
     setQuery('');
     closeOverlay('airport');
-    if (destination) router.push(localeHref(lang, destination));
+    if (carried) router.push(localeHref(lang, carried));
   };
 
   const optionButtons = (): HTMLButtonElement[] => Array.from(listRef.current?.querySelectorAll<HTMLButtonElement>('[data-airport-option]') ?? []);

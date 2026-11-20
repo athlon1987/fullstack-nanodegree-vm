@@ -8,7 +8,7 @@
  */
 import { useSyncExternalStore } from 'react';
 import type { FlightDirection } from '@/lib/flights';
-import { useJourneyMode } from '@/lib/hooks';
+import { useJourneyMode } from '@/lib/hooks/use-journey-mode';
 import type { JourneyMode } from '@/lib/journey/modes';
 
 /** The board a journey mode starts with. */

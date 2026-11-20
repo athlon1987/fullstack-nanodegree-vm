@@ -1,11 +1,13 @@
 'use client';
 
-import { useState } from 'react';
-import { hasTranslation, pick, type Source } from '@/content/types';
+import { useMemo, useState } from 'react';
+import { hasTranslation, pick, type Notice, type Source } from '@/content/types';
 import type { Flight } from '@/lib/flights';
-import { useJourneyMode } from '@/lib/hooks';
+import { useJourneyMode } from '@/lib/hooks/use-journey-mode';
 import { useLang, useT } from '@/lib/i18n/client';
-import { buildJourney, type JourneyAirportContent, type JourneyMode } from '@/lib/journey';
+import { buildJourney, type JourneyAirportContent, type JourneyMode, type JourneyPreferences } from '@/lib/journey';
+import { useTripOptions } from '@/lib/journey/trip-options';
+import { needsToPreferences, useNeeds } from '@/lib/needs';
 import { formatTime, type Instant } from '@/lib/time';
 import { LocaleLink } from '@/components/common/locale-link';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
@@ -16,6 +18,21 @@ import { AIRPORT_SECTIONS, hasSection } from '@/components/shell/sections';
 import { Icon } from '@/components/ui/icon';
 import { SegmentedControl } from '@/components/ui/segmented-control';
 import { Timeline, TimelineItem } from '@/components/ui/timeline';
+import { stepAnchor } from './flight-summary';
+import { OpsStatus } from './ops-status';
+
+/**
+ * The visitor's needs (`ma:needs:v1`) and trip options (`ma:trip-options:v1`) as journey
+ * preferences. Both callers of `buildJourney` (flight page, My journey) use it (B-11, B-13).
+ */
+export function useJourneyPreferences(): JourneyPreferences {
+  const { needs } = useNeeds();
+  const { options } = useTripOptions();
+  return useMemo(
+    () => ({ ...needsToPreferences(needs), handLuggageOnly: options.handLuggageOnly, loungeAccess: options.loungeAccess }),
+    [needs, options.handLuggageOnly, options.loungeAccess],
+  );
+}
 
 /** The journey modes that make sense for a flight: a departure is a departure; an arrival can be met or connected from. */
 export function modesForFlight(flight: Pick<Flight, 'direction'>): JourneyMode[] {
@@ -29,6 +46,8 @@ export interface JourneyTimelineProps {
   /** Sources cited by the airport's notes, by id. */
   sources: Readonly<Record<string, Source>>;
   now: Instant;
+  /** The airport's notices, for the status lines of the C-gate, immigration and transfer steps (B-01). */
+  notices?: readonly Notice[];
   /** Heading of the section (an `h2`); steps are `h3`. */
   title: string;
   headingId: string;
@@ -43,7 +62,7 @@ export interface JourneyTimelineProps {
  * a provenance tag, the airport's sourced notes, and links onward. Links to sections an airport
  * does not have are left out.
  */
-export function JourneyTimeline({ flight, content, sources, now, title, headingId, preferredMode, intro = true, className }: JourneyTimelineProps) {
+export function JourneyTimeline({ flight, content, sources, now, notices, title, headingId, preferredMode, intro = true, className }: JourneyTimelineProps) {
   const t = useT();
   const lang = useLang();
   const availability = useSectionAvailability();
@@ -60,7 +79,8 @@ export function JourneyTimeline({ flight, content, sources, now, title, headingI
           : modes[0];
   const zone = content.airport.timezone;
 
-  const steps = buildJourney({ flight, mode, airportContent: content, now });
+  const preferences = useJourneyPreferences();
+  const steps = buildJourney({ flight, mode, airportContent: content, now, preferences });
   const untranslated = lang !== 'en' && steps.some((step) => step.notes.some((note) => !hasTranslation(note.body, lang) || !hasTranslation(note.title, lang)));
 
   const resolve = (ids: readonly string[] | undefined): Source[] => (ids ?? []).map((id) => sources[id]).filter((source): source is Source => Boolean(source));
@@ -97,12 +117,21 @@ export function JourneyTimeline({ flight, content, sources, now, title, headingI
           return (
             <TimelineItem
               key={step.id}
+              id={stepAnchor(step.id)}
+              tabIndex={-1}
+              data-step={step.id}
+              className="scroll-mt-28 focus-visible:focus-ring"
               state={step.state}
               stateLabel={stateLabel[step.state]}
               time={step.time ? <time dateTime={step.time}>{formatTime(step.time, zone)}</time> : undefined}
               eyebrow={step.relative ? t(step.relative) : undefined}
               title={pick(step.title, lang)}
-              meta={<ProvenanceTag provenance={step.provenance} length="short" />}
+              meta={
+                <>
+                  {step.optional ? <span className="type-caption rounded-xs border border-dashed border-line-control px-1.5 py-0.5 font-semibold text-ink-2">{t('flightPages.timeline.optional')}</span> : null}
+                  <ProvenanceTag provenance={step.provenance} length="short" />
+                </>
+              }
               actions={
                 actions.length > 0
                   ? actions.map((action) => (
@@ -116,6 +145,31 @@ export function JourneyTimeline({ flight, content, sources, now, title, headingI
             >
               <p>{pick(step.body, lang)}</p>
               {stepSources.length > 0 ? <SourceNote sources={stepSources} className="mt-1" /> : null}
+              {step.places && step.places.length > 0 ? (
+                <ul aria-label={t('flightPages.timeline.placesLabel')} className="mt-3 flex flex-col gap-1.5">
+                  {step.places.map((place) => (
+                    <li key={place.id} className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                      <Icon name={place.kind === 'lounge' ? 'armchair' : 'utensils'} size="sm" className="text-ink-2" />
+                      <LocaleLink href={place.href} className="link type-body-sm" lang={hasTranslation(place.name, lang) ? undefined : 'en'}>
+                        {pick(place.name, lang)}
+                      </LocaleLink>
+                      {place.location ? <span className="type-caption text-ink-2">{pick(place.location, lang)}</span> : null}
+                      <ProvenanceTag provenance={place.provenance} length="short" />
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+              {step.ops && notices ? (
+                <OpsStatus
+                  variant="inline"
+                  airport={content.airport.slug}
+                  notices={notices}
+                  sources={sources}
+                  services={step.ops}
+                  terminal={flight.terminal}
+                  checkpoints={flight.direction === 'd' ? ['security', 'immigration-departure'] : ['immigration-arrival']}
+                />
+              ) : null}
               {step.notes.length > 0 ? (
                 <ul aria-label={t('flightPages.timeline.notesLabel')} className="mt-3 flex flex-col gap-2">
                   {step.notes.map((note) => (

@@ -1,9 +1,9 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useDeferredValue, useMemo } from 'react';
 import { FEATURED_AIRPORT_SLUGS, getAirport, terminalLabel } from '@/content/airports';
 import type { TerminalId } from '@/content/types';
-import { isFinalStatus, sortFlights, type Flight } from '@/lib/flights';
+import type { Flight } from '@/lib/flights';
 import { useAirportContext, useFlightProvider } from '@/lib/hooks';
 import { useLang, useT } from '@/lib/i18n/client';
 import { boardWindow, hasDemoRoutes } from '@/lib/providers';
@@ -15,6 +15,7 @@ import { useFlightDirection } from '@/components/flights/flight-direction';
 import { overlays } from '@/components/shell/overlay-store';
 import { sectionPath } from '@/components/shell/sections';
 import { Icon } from '@/components/ui/icon';
+import { previewFlights } from './preview-filter';
 
 export interface BoardPreviewProps {
   /** Fix the preview to this airport (airport pages). Omit it to follow the remembered airport. */
@@ -36,7 +37,10 @@ export function BoardPreview({ airport, terminal, rows = 8, headingLevel = 2, cl
   const lang = useLang();
   const provider = useFlightProvider();
   const context = useAirportContext();
-  const { direction } = useFlightDirection();
+  const { direction: liveDirection } = useFlightDirection();
+  // The board follows the mode and direction switches at a lower priority, so the switches
+  // themselves answer at once (A-09); the rows catch up a moment later.
+  const direction = useDeferredValue(liveDirection);
 
   const scope = airport ? getAirport(airport) : context.airport;
   const scopeTerminal = airport ? terminal : context.selection?.terminal;
@@ -50,10 +54,9 @@ export function BoardPreview({ airport, terminal, rows = 8, headingLevel = 2, cl
     const range = boardWindow(now, 24, 10);
     const slugs = scopeSlug ? [scopeSlug] : FEATURED_AIRPORT_SLUGS.filter((slug) => hasDemoRoutes(slug));
     const all = slugs.flatMap((slug) => provider.listFlightsSync({ airport: slug, direction, terminal: scopeSlug ? scopeTerminal : undefined, ...range }));
-    // Lead with flights that are still to come; finished ones only fill the gap on a quiet board.
-    const open = all.filter((flight) => !isFinalStatus(flight.status));
-    const list = open.length >= rows ? open : all;
-    return sortFlights(list, 'estimated').slice(0, rows);
+    // Only flights that can still be caught or met: departures from 15 minutes ahead, never
+    // gate-closed or departed (A-20).
+    return previewFlights(all, Date.parse(now), rows);
   }, [provider, scopeSlug, scopeTerminal, direction, rows]);
 
   const title = direction === 'd' ? t('flights.board.departuresTitle') : t('flights.board.arrivalsTitle');

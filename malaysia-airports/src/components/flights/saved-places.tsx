@@ -2,7 +2,7 @@
 
 import { useId } from 'react';
 import { getAirport } from '@/content/airports';
-import { useSavedJourney } from '@/lib/hooks';
+import { useSavedJourney } from '@/lib/hooks/use-saved-journey';
 import { useT } from '@/lib/i18n/client';
 import type { TKey } from '@/lib/i18n/translate';
 import type { SavedPlace } from '@/lib/stores';

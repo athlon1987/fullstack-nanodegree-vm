@@ -716,12 +716,13 @@
   line-height: 1.4;
   letter-spacing: 0.005em;
 }
+/* Sentence case (A-14): upper-case tracking is kept for data labels on the board only, so the
+   page reads as editorial guidance rather than an information system. */
 @utility type-eyebrow {
-  font-size: 0.75rem;
-  line-height: 1.2;
-  letter-spacing: 0.14em;
+  font-size: 0.8125rem;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
   font-weight: 600;
-  text-transform: uppercase;
 }
 @utility type-data-xl {
   font-family: var(--font-mono);
@@ -988,5 +989,54 @@ html:where([data-motion='reduce'], [data-motion='reduced'])::view-transition-new
   @media (forced-colors: active) {
     color: LinkText;
     text-decoration-color: LinkText;
+  }
+}
+
+/* ------------------------------------------------------------------------------------------
+ * Fixed chrome on phones, short windows and large text (A-01, A-11)
+ * --------------------------------------------------------------------------------------- */
+
+/* Phones: a 56 px header (the wordmark and the 44 px airport control fit), so the page's own
+   heading starts higher. Scroll padding and every `h-header` / `top-header` follow the token. */
+@media (width < 40rem) {
+  :root {
+    --spacing-header: 3.5rem;
+  }
+}
+
+/* `ScrollChrome` sets these attributes. The header slides up and the bottom bar slides down
+   while the visitor scrolls down; scrolling up brings the header back; stopping brings the bar
+   back. Only on windows under 40rem high or at 112% and 125% text. */
+[data-site-header],
+[data-mobile-bar] {
+  transition: transform var(--duration-base) var(--ease-out);
+}
+html[data-scroll-chrome='hidden'] [data-site-header] {
+  transform: translateY(-100%);
+}
+html[data-scroll-chrome] [data-mobile-bar] {
+  transform: translateY(100%);
+}
+/* Collapsed bar: a 44 px icon row; the labels stay for assistive technology. */
+html[data-compact-chrome] [data-mobile-bar] li > * {
+  min-height: 2.75rem;
+}
+html[data-compact-chrome] [data-mobile-bar] [data-bar-label] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Airport section pages on phones: the compact airport bar already links back to the airport,
+   so the one-item breadcrumb ("< KLIA") is not repeated above the page heading. */
+@media (width < 40rem) {
+  [data-airport-page] [data-page-breadcrumbs] {
+    display: none;
   }
 }

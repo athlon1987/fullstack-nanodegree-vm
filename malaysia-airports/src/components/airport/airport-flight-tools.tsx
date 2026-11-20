@@ -1,6 +1,7 @@
 'use client';
 
 import { Suspense } from 'react';
+import { DemoMarkedList } from '@/components/common/demo-tag';
 import type { TerminalId } from '@/content/types';
 import { useT } from '@/lib/i18n/client';
 import { FlightSearchBox } from '@/components/flights/flight-search-box';
@@ -41,7 +42,11 @@ function Tools({ slug, name, hasFlights, terminal }: AirportFlightToolsProps & {
         </div>
       </section>
 
-      {hasFlights ? <BoardPreview airport={slug} terminal={terminal} rows={6} headingLevel={2} /> : null}
+      {hasFlights ? (
+        <DemoMarkedList>
+          <BoardPreview airport={slug} terminal={terminal} rows={6} headingLevel={2} />
+        </DemoMarkedList>
+      ) : null}
     </div>
   );
 }

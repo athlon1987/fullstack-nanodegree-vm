@@ -6,3 +6,4 @@ export * from './types';
 export * from './status';
 export * from './id';
 export * from './query';
+export * from './check-in';

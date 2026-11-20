@@ -12,7 +12,8 @@ import { expect, test, type Page } from '@playwright/test';
  *   `src/lib/i18n/*.ts`, update the matching expectation here.
  */
 
-const AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'];
+/** wcag21a was missing, which hid a Level A failure (A-02). E publishes the shared list in e2e/support/axe.ts (E-06). */
+const AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'];
 
 /**
  * `@axe-core/playwright` is typed against a newer `playwright-core` than the one `@playwright/test`
@@ -52,7 +53,9 @@ test.describe('home', () => {
     const main = page.getByRole('main');
     await expect(main.getByRole('searchbox', { name: 'Search flights' })).toBeInViewport();
     await expect(main.getByRole('group', { name: 'What are you doing today?' })).toBeInViewport({ ratio: 1 });
-    await expect(main.getByRole('button', { name: /Airport or terminal/ })).toBeInViewport({ ratio: 1 });
+    // The airport is chosen once, in the header (A-17); the search card no longer repeats it.
+    await expect(page.getByRole('banner').getByRole('button', { name: 'Choose airport' })).toBeInViewport({ ratio: 1 });
+    await expect(main.getByRole('button', { name: /Airport or terminal/ })).toHaveCount(0);
     await expect(main.getByRole('link', { name: /^Details:/ })).toBeInViewport({ ratio: 1 });
     const actions = main.getByRole('list', { name: 'Quick actions' });
     await expect(actions).toBeInViewport({ ratio: 1 });
@@ -73,16 +76,20 @@ test.describe('home', () => {
     await page.goto('/en');
     const main = page.getByRole('main');
     await main.getByRole('radio', { name: /^Arriving/ }).check();
-    await expect(main.getByRole('radio', { name: 'Arrivals', exact: true })).toBeChecked();
-    await expect(main.getByRole('list', { name: 'Quick actions' }).getByRole('link').first()).toHaveAccessibleName(/Follow your flight in/);
+    // The mode drives the search direction; one small link switches it (A-17).
+    await expect(main.locator('[data-flight-scope]')).toContainText('arrivals');
+    await expect(main.getByRole('button', { name: 'Search departures instead' })).toBeVisible();
+    // Tiles are titled with the section noun (A-21); the mode wording moved to the hint.
+    await expect(main.getByRole('list', { name: 'Quick actions' })).toHaveAttribute('data-journey-mode', 'arriving');
+    await expect(main.getByRole('list', { name: 'Quick actions' }).getByRole('link').first()).toHaveAccessibleName(/^Flights/);
     await expect(main.getByRole('group', { name: 'What are you doing today?' }).getByRole('status')).toContainText('Arriving selected');
   });
 
   test('flight search shows demo-labelled results inline', async ({ page }) => {
     await page.goto('/en');
     const desk = page.getByRole('main').getByRole('region', { name: 'Flight search' });
+    // Results appear as you type; Enter now opens the site search (A-03), covered in shell.spec.ts.
     await desk.getByRole('searchbox', { name: 'Search flights' }).fill('MH');
-    await desk.getByRole('button', { name: 'Search flights' }).click();
     const results = desk.getByRole('list', { name: 'Matching flights' });
     await expect(results.getByRole('link', { name: /^View flight MH \d+/ }).first()).toBeVisible();
     await expect(desk.getByText('Demo', { exact: true })).toBeVisible();
@@ -101,7 +108,8 @@ test.describe('airport context', () => {
     await dialog.getByRole('button', { name: /^PEN Penang/ }).click();
     await expect(dialog).toBeHidden();
 
-    const current = page.getByRole('banner').getByRole('button', { name: /Currently Penang/ });
+    // The name starts with the visible "PEN", then "change airport (currently Penang)" (A-02).
+    const current = page.getByRole('banner').getByRole('button', { name: /^PEN.*currently Penang/ });
     await expect(current).toBeVisible();
     await page.reload();
     await expect(current).toBeVisible();
@@ -114,7 +122,7 @@ test.describe('airport context', () => {
   test('choosing from an airport page keeps the section', async ({ page }) => {
     await page.goto('/en/kul');
     await expect(page.getByRole('heading', { level: 1, name: 'Kuala Lumpur International Airport' })).toBeVisible();
-    await page.getByRole('banner').getByRole('button', { name: /Currently KLIA|KUL/ }).click();
+    await page.getByRole('banner').getByRole('button', { name: /^KUL/ }).click();
     await page.getByRole('dialog').getByRole('button', { name: /^PEN Penang/ }).click();
     await expect(page).toHaveURL(/\/en\/pen$/);
     await expect(page.getByRole('heading', { level: 1, name: 'Penang International Airport' })).toBeVisible();
@@ -145,8 +153,9 @@ test.describe('shell', () => {
     await page.goto('/en');
     const dialog = page.getByRole('dialog', { name: 'Search' });
     // The shortcut listens once the page has hydrated: retry the key press until it is heard.
+    // Ctrl+K only: the single-key "/" shortcut was removed (WCAG 2.1.4, A-23).
     await expect(async () => {
-      await page.keyboard.press('/');
+      await page.keyboard.press('Control+K');
       await expect(dialog).toBeVisible({ timeout: 1_000 });
     }).toPass({ timeout: 15_000 });
     const box = dialog.getByRole('combobox', { name: 'Search the site' });

@@ -1,7 +1,9 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { useT } from '@/lib/i18n/client';
+import { GROUP_CONTACTS } from '@/content/airports';
+import { pick } from '@/content/types';
+import { useLang, useT } from '@/lib/i18n/client';
 import { LocaleLink } from '@/components/common/locale-link';
 import { Sheet, SheetContent } from '@/components/ui/dialog';
 import { Icon, type IconName } from '@/components/ui/icon';
@@ -51,8 +53,12 @@ function MenuLink({ href, icon, children }: { href: string; icon: IconName; chil
  * settings (theme, text size, contrast, motion). Full screen on phones, a side panel on tablets
  * and narrow desktops where the navigation row does not fit.
  */
+/** The group phone line from the content layer (client-safe registry), one tap from the menu. */
+const GROUP_PHONE = GROUP_CONTACTS.find((contact) => contact.kind === 'phone' && contact.href);
+
 export function MenuPanel() {
   const t = useT();
+  const lang = useLang();
   const dialog = useOverlayDialog('menu');
   return (
     <Sheet open={dialog.open} onOpenChange={dialog.onOpenChange}>
@@ -66,7 +72,22 @@ export function MenuPanel() {
 
           <section>
             <MenuHeading>{t('shell.menu.explore')}</MenuHeading>
+            {/* Includes Assistance (A-15). */}
             <PrimaryNav variant="list" className="-mx-2" />
+            {GROUP_PHONE?.href ? (
+              // A verified number one tap from the menu (package D hand-off, D-15).
+              <div className="-mx-2 mt-1">
+                <a href={GROUP_PHONE.href} className={ROW}>
+                  <Icon name="phone" className="text-primary-ink" />
+                  <span className="min-w-0 flex-1">
+                    <span className="block font-semibold">{t('shellExtras.nav.callLabel')}</span>
+                    <span className="type-caption block text-ink-2">
+                      {GROUP_PHONE.value} · {pick(GROUP_PHONE.label, lang)}
+                    </span>
+                  </span>
+                </a>
+              </div>
+            ) : null}
           </section>
 
           <section>
@@ -80,9 +101,6 @@ export function MenuPanel() {
               </MenuLink>
               <MenuLink href="/airports" icon="tower-control">
                 {t('nav.airports')}
-              </MenuLink>
-              <MenuLink href="/accessibility" icon="accessibility">
-                {t('nav.accessibility')}
               </MenuLink>
               <li>
                 <button type="button" onClick={() => overlays.openConcierge()} className={ROW}>

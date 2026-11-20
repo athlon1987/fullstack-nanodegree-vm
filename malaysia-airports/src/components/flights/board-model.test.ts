@@ -6,6 +6,7 @@ import {
   boardQueryString,
   boardRange,
   countByGroup,
+  datesInRange,
   flightAvailability,
   isSearching,
   readBoardParams,
@@ -13,6 +14,7 @@ import {
   sameFlightOn,
   searchRange,
   selectBoardFlights,
+  setAsideFinished,
   statusGroupOf,
 } from './board-model';
 
@@ -69,13 +71,29 @@ describe('URL filters', () => {
 });
 
 describe('time window', () => {
-  it('starts 45 minutes back and 6 hours ahead, and moves in 3-hour steps', () => {
+  // Intended change (B-16, ux-frequent-10): departures open 10 minutes back, not 45.
+  it('starts 10 minutes back for departures, 45 for arrivals, 6 hours ahead, and moves in 3-hour steps', () => {
     const base = boardRange(NOW);
-    expect(base.from.toISOString()).toBe('2026-11-17T01:15:00.000Z');
+    expect(base.from.toISOString()).toBe('2026-11-17T01:50:00.000Z');
     expect(base.to.toISOString()).toBe('2026-11-17T08:00:00.000Z');
+    expect(boardRange(NOW, 0, 0, 'a').from.toISOString()).toBe('2026-11-17T01:15:00.000Z');
     const moved = boardRange(NOW, 1, 2);
-    expect(moved.from.toISOString()).toBe('2026-11-16T22:15:00.000Z');
+    expect(moved.from.toISOString()).toBe('2026-11-16T22:50:00.000Z');
     expect(moved.to.toISOString()).toBe('2026-11-17T14:00:00.000Z');
+  });
+
+  it('sets departed departures and completed arrivals aside in the default view', () => {
+    const gone = makeFlight({ status: 'departed' });
+    const leaving = makeFlight({ digits: '7', status: 'boarding' });
+    expect(setAsideFinished([gone, leaving], 'd')).toEqual({ shown: [leaving], finished: 1 });
+    const done = makeFlight({ direction: 'a', status: 'completed' });
+    const landed = makeFlight({ direction: 'a', digits: '9', status: 'landed' });
+    expect(setAsideFinished([done, landed], 'a')).toEqual({ shown: [landed], finished: 1 });
+  });
+
+  it('lists the local dates a window touches, with the day before just after midnight', () => {
+    expect(datesInRange(boardRange(NOW), ZONE)).toEqual(['2026-11-17']);
+    expect(datesInRange(searchRange(NOW, ZONE), ZONE)).toEqual(['2026-11-16', '2026-11-17', '2026-11-18']);
   });
 
   it('caps the steps', () => {

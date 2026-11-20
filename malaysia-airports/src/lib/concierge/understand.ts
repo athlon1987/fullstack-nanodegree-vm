@@ -46,6 +46,11 @@ const RULES: readonly Rule[] = [
   ['parking', 4, ['park', 'parking', 'car park', 'carpark', 'parkir', 'letak kereta', 'tempat letak']],
   ['lost-property', 4, ['lost', 'lose', 'left behind', 'left my', 'forgot', 'forgotten', 'missing', 'did not arrive', 'didnt arrive', 'not arrived', 'hilang', 'tertinggal', 'tercicir', 'keciciran', 'tidak sampai']],
   ['assistance', 4, ['wheelchair', 'wheel chair', 'reduced mobility', 'mobility', 'disabled', 'disability', 'disabilities', 'special assistance', 'assistance', 'oku', 'kerusi roda', 'autism', 'autistic', 'adhd', 'hidden disability', 'butterfly effect', 'elderly', 'warga emas', 'blind', 'deaf', 'cacat', 'bantuan khas']],
+  // B-08: direct-answer intents. Weights beat the general topics they overlap with.
+  ['fast-track', 9, ['fast track', 'fasttrack', 'laluan pantas', 'priority lane', 'express lane', 'express immigration', 'express security']],
+  ['duty-free', 8, ['duty free', 'dutyfree', 'bebas cukai', 'eraman', 'tax free']],
+  ['immigration', 6, ['autogate', 'autogates', 'auto gate', 'auto gates', 'immigration', 'imigresen', 'passport control', 'kawalan pasport', 'kaunter imigresen']],
+  ['arrival-time', 7, ['how early', 'what time should i arrive', 'what time should i be', 'when should i arrive', 'when should i get to the airport', 'how long before', 'how many hours before', 'perlu sampai', 'berapa awal', 'bila perlu sampai', 'pukul berapa perlu', 'berapa jam sebelum', 'awal mana']],
   ['layover', 4, ['layover', 'lay over', 'stopover', 'stop over', 'connection', 'connecting', 'spare time', 'kill time', 'to spare', 'things to do', 'singgah', 'persinggahan', 'menunggu', 'apa boleh buat', 'apa yang boleh saya buat']],
   ['transport', 2, ['get to', 'go to', 'travel to', 'get into', 'into town', 'into the city', 'city centre', 'train', 'trains', 'bus', 'buses', 'taxi', 'taxis', 'grab', 'e hailing', 'ehailing', 'ekspres', 'shuttle', 'fare', 'fares', 'transport', 'pergi ke', 'tambang', 'teksi', 'kereta api', 'pengangkutan', 'cheapest', 'termurah', 'murah', 'fastest', 'quickest', 'terpantas']],
   ['gate', 3, ['gate', 'gates', 'boarding gate', 'pintu', 'pintu berlepas', 'aerotrain', 'satellite', 'satelit', 'pier']],
@@ -56,6 +61,14 @@ const RULES: readonly Rule[] = [
 
 /** When scores tie, the earlier intent wins. */
 const PRIORITY: readonly ConciergeIntent[] = [
+  'fast-track',
+  'service-status',
+  'airline-terminal',
+  'fare',
+  'duty-free',
+  'arrival-time',
+  'immigration',
+  'lounge',
   'flight-delay',
   'terminal-transfer',
   'check-in',
@@ -188,6 +201,15 @@ function airlineNamed(text: string, raw: string, knowledge: ConciergeKnowledge):
   return undefined;
 }
 
+/** The airline named in "which terminal does <airline> use/fly from" as typed, at most four words. */
+function airlineAsTyped(raw: string): string | undefined {
+  const match =
+    /\b(?:does|do|is|for)\s+((?:[A-Z][\w&-]*\s?){1,4}?)\s*(?:use|fly|flies|leave|depart|operate|go|at|in|from|\?|$)/.exec(raw) ??
+    /\b(?:untuk|bagi)\s+((?:[A-Z][\w&-]*\s?){1,4})/.exec(raw);
+  const name = match?.[1]?.trim();
+  return name && !/^(?:KLIA|Terminal|T1|T2)$/i.test(name) ? name : undefined;
+}
+
 /**
  * Detect the intent and slots of a question.
  *
@@ -205,6 +227,18 @@ export function understand(question: string, knowledge: ConciergeKnowledge, cont
     if (hits > 0) bump(intent, weight + Math.min(hits - 1, 2));
   }
 
+  // "Is the Aerotrain running?", "Adakah tren antara terminal beroperasi?" (B-08).
+  const serviceNamed = ['aerotrain', 'inter terminal train', 'inter terminal shuttle', 'shuttle', 'klia transit', 'klia ekspres', 'ekspres', 'erl', 'train', 'tren', 'kereta api'].some((item) => hasPhrase(text, item));
+  const statusAsked = ['running', 'operating', 'working', 'open now', 'closed', 'suspended', 'disrupted', 'status', 'beroperasi', 'berjalan', 'ditutup', 'tergendala'].some((item) => hasPhrase(text, item));
+  if (serviceNamed && statusAsked) bump('service-status', 8);
+  // A fare for a named way of travelling: "How much is the KLIA Ekspres?", "Berapa tambang KLIA Ekspres?".
+  const fareAsked = ['how much', 'fare', 'fares', 'price', 'prices', 'cost', 'costs', 'ticket', 'tickets', 'berapa', 'tambang', 'harga', 'kos', 'tiket'].some((item) => hasPhrase(text, item));
+  const modeNamed = ['ekspres', 'express', 'klia transit', 'train', 'tren', 'bus', 'bas', 'coach', 'taxi', 'teksi', 'grab', 'e hailing', 'ehailing', 'shuttle'].some((item) => hasPhrase(text, item));
+  if (fareAsked && modeNamed && !['park', 'parking', 'parkir', 'letak kereta'].some((item) => hasPhrase(text, item))) bump('fare', 7);
+  // "Which terminal does Emirates use?", "Terminal mana untuk AirAsia?".
+  const whichTerminal = /\b(?:which|what) terminal\b|\bterminal (?:mana|apa|yang mana)\b|\bterminal (?:for|does)\b/.test(text) && !/\b(?:between|change|transfer|antara|tukar)\b/.test(text);
+  if (whichTerminal) bump('airline-terminal', 8);
+
   const terminals = terminalMentions(text);
   const flight = flightDesignator(raw, knowledge);
   let category = categoryOf(text);
@@ -219,6 +253,9 @@ export function understand(question: string, knowledge: ConciergeKnowledge, cont
   if (category === 'lost-property') {
     bump('lost-property', 4);
     category = undefined;
+  } else if (category === 'lounge') {
+    // Lounges get their own answer: ranked by the gate (B-08, ux-frequent-11).
+    bump('lounge', 5);
   } else if (category) {
     bump('facility', 4);
   }
@@ -279,6 +316,8 @@ export function understand(question: string, knowledge: ConciergeKnowledge, cont
     myFlight: ['my flight', 'our flight', 'penerbangan saya', 'penerbangan kami'].some((item) => hasPhrase(text, item)),
     leave: ['leave the airport', 'go into the city', 'go into town', 'go out', 'visit the city', 'see the city', 'keluar'].some((item) => hasPhrase(text, item)),
     baggage: ['bag', 'bags', 'baggage', 'luggage', 'suitcase', 'bagasi', 'beg'].some((item) => hasPhrase(text, item)),
+    accessible: ['accessible', 'step free', 'wheelchair', 'wheel chair', 'elderly', 'older', 'warga emas', 'tua', 'mesra oku', 'oku', 'kerusi roda', 'disabled', 'reduced mobility'].some((item) => hasPhrase(text, item)),
+    airlineName: whichTerminal ? airlineAsTyped(raw) : undefined,
   };
   return { intent, score, slots };
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useAirportContext } from '@/lib/hooks';
+import { useAirportContext } from '@/lib/hooks/use-airport-context';
 import { useT } from '@/lib/i18n/client';
 import { LocaleLink } from '@/components/common/locale-link';
 import { useSectionAvailability } from '@/components/shell/shell-context';

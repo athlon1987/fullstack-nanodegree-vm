@@ -21,7 +21,17 @@ export {
   demoFlightsForDate,
   type DemoTimetableEntry,
 } from './demo-flights';
-export { DemoParkingAvailabilityProvider, DemoWaitTimeProvider, demoBusyness } from './demo-operations';
+export {
+  DemoParkingAvailabilityProvider,
+  DemoWaitTimeProvider,
+  OPS_SERVICE_IDS,
+  demoBusyness,
+  opsServicesFor,
+  opsStatus,
+  type OpsServiceId,
+  type OpsState,
+  type OpsStatusLine,
+} from './demo-operations';
 export { OfficialFlightProvider, OFFICIAL_FLIGHTS_ENDPOINT, toOfficialParams } from './official-flights';
 export { DEMO_AIRPORT_SLUGS, hasDemoRoutes } from './demo-routes';
 

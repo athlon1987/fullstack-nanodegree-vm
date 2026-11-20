@@ -6,7 +6,7 @@ import { cn } from '@/lib/cn';
 import { useAirportContext, useJourneyMode } from '@/lib/hooks';
 import { useT } from '@/lib/i18n/client';
 import { QuickAction } from '@/components/common/quick-action';
-import { hasSection, sectionHref } from '@/components/shell/sections';
+import { hasSection, isSectionMissing, sectionHref } from '@/components/shell/sections';
 import { useSectionAvailability } from '@/components/shell/shell-context';
 import { JOURNEY_ACTIONS, actionHintKey, actionTitleKey } from './journey-actions';
 
@@ -53,20 +53,26 @@ export function ModeQuickActions({ airport, terminal, className }: ModeQuickActi
       data-journey-mode={effectiveMode}
       className={cn('grid grid-cols-3 gap-2 sm:gap-2.5', LG_COLUMNS[Math.min(actions.length, 6)], className)}
     >
-      {actions.map((action, index) => (
-        <li key={action.copy} className="flex min-w-0">
-          <QuickAction
-            icon={action.icon}
-            title={t(actionTitleKey(action.copy))}
-            hint={t(actionHintKey(action.copy))}
-            href={sectionHref(action.section, selection, availability)}
-            emphasis={index === 0}
-            emphasisLabel={t('home.actions.startHere')}
-            /* Compact tiles for the first screen: on phones the hint is hidden and the type is smaller. */
-            className={TILE}
-          />
-        </li>
-      ))}
+      {actions.map((action, index) => {
+        // A section the chosen airport does not publish says so on the tile itself (the hint is
+        // hidden on phones) and leads to the "not published" state, not the overview (A-07).
+        const missing = isSectionMissing(action.section, selection, availability) && context.airport;
+        const title = t(actionTitleKey(action.copy));
+        return (
+          <li key={action.copy} className="flex min-w-0">
+            <QuickAction
+              icon={action.icon}
+              title={missing ? t('shellExtras.notPublished.navSuffix', { section: title, airport: context.airport!.shortName }) : title}
+              hint={missing ? undefined : t(actionHintKey(action.copy))}
+              href={sectionHref(action.section, selection, availability)}
+              emphasis={index === 0 && !missing}
+              emphasisLabel={t('home.actions.startHere')}
+              /* Compact tiles for the first screen: on phones the hint is hidden and the type is smaller. */
+              className={cn(TILE, missing && 'border-dashed')}
+            />
+          </li>
+        );
+      })}
     </ul>
   );
 }

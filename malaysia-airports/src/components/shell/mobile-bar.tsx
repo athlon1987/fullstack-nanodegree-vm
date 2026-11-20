@@ -10,12 +10,13 @@ import { stripLocale } from '@/lib/locale';
 import { LocaleLink } from '@/components/common/locale-link';
 import { Icon, type IconName } from '@/components/ui/icon';
 import { useSavedCount } from './header-tools';
+import { ScrollChrome } from './scroll-chrome';
 import { overlays, useOverlayState } from './overlay-store';
 import { sectionHref } from './sections';
 import { useSectionAvailability } from './shell-context';
 
 const ITEM =
-  'relative flex min-h-14 w-full min-w-11 flex-col items-center justify-center gap-0.5 rounded-md text-xs font-semibold text-ink-2 transition-colors duration-fast aria-[current]:text-ink';
+  'relative flex min-h-14 w-full min-w-11 flex-col items-center justify-center gap-0.5 rounded-md text-xs leading-tight font-semibold text-ink-2 transition-colors duration-fast aria-[current]:text-ink';
 
 function Label({ icon, children, badge }: { icon: IconName; children: ReactNode; badge?: number }) {
   return (
@@ -28,7 +29,9 @@ function Label({ icon, children, badge }: { icon: IconName; children: ReactNode;
           </span>
         ) : null}
       </span>
-      <span>{children}</span>
+      <span data-bar-label="" className="whitespace-nowrap">
+        {children}
+      </span>
     </>
   );
 }
@@ -48,16 +51,19 @@ function Bar({ pathname }: { pathname: string | null }) {
     <nav
       aria-label={t('shell.bottomBar.label')}
       data-print="hidden"
+      data-mobile-bar=""
       className="fixed inset-x-0 bottom-0 z-40 border-t border-line-strong bg-surface pb-[env(safe-area-inset-bottom)] md:hidden"
     >
-      <ul className="mx-auto grid max-w-lg grid-cols-5 items-end px-1.5">
+      {/* Flights and Journey get the widest columns: their Malay labels are the longest. */}
+      <ul className="mx-auto grid max-w-lg grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)_minmax(0,0.85fr)_minmax(0,1.3fr)_minmax(0,0.85fr)] items-end px-1">
         <li>
           <LocaleLink href="/" aria-current={onHome ? 'page' : undefined} className={ITEM}>
-            <Label icon="home">{t('nav.home')}</Label>
+            <Label icon="home">{t('shellExtras.bottomBar.home')}</Label>
           </LocaleLink>
         </li>
         <li>
-          <LocaleLink href={sectionHref('flights', selection, availability)} aria-current={onFlights ? 'true' : undefined} className={ITEM}>
+          {/* One of the few likely next steps that is prefetched before the click (A-19). */}
+          <LocaleLink prefetch="auto" href={sectionHref('flights', selection, availability)} aria-current={onFlights ? 'true' : undefined} className={ITEM}>
             <Label icon="plane-takeoff">{t('nav.flights')}</Label>
           </LocaleLink>
         </li>
@@ -69,14 +75,19 @@ function Bar({ pathname }: { pathname: string | null }) {
             onClick={() => overlays.openSearch()}
             className={cn(ITEM, 'text-ink')}
           >
-            <span className="-mt-6 flex size-13 items-center justify-center rounded-full bg-primary text-on-primary shadow-md ring-4 ring-surface">
-              <Icon name="search" size="lg" strokeWidth={1.75} />
+            {/* Inside the bar, not raised above it: an overhang covered tile labels on the home
+                first screen (A-11). */}
+            <span className="flex size-8 items-center justify-center rounded-full bg-primary text-on-primary">
+              <Icon name="search" size="md" strokeWidth={2} />
             </span>
-            <span>{t('nav.search')}</span>
+            <span data-bar-label="" className="whitespace-nowrap">
+              {t('nav.search')}
+            </span>
           </button>
         </li>
         <li>
           <LocaleLink
+            prefetch="auto"
             href="/journey"
             aria-current={onJourney ? 'page' : undefined}
             aria-label={saved > 0 ? t.count('shell.journey.count', saved) : undefined}
@@ -102,13 +113,17 @@ function BarForPath() {
 }
 
 /**
- * The phone bottom bar: Home, Flights, a raised Search, Journey and Menu. Targets are at least
- * 44px and the bar pads itself for the home indicator. Hidden from `md` up.
+ * The phone bottom bar: Home, Flights, Search, Journey and Menu. Targets are at least 44px and
+ * the bar pads itself for the home indicator. Hidden from `md` up. On short windows and at large
+ * text it collapses to icons and gives way while scrolling (`ScrollChrome`).
  */
 export function MobileBar() {
   return (
-    <Suspense fallback={<Bar pathname={null} />}>
-      <BarForPath />
-    </Suspense>
+    <>
+      <ScrollChrome />
+      <Suspense fallback={<Bar pathname={null} />}>
+        <BarForPath />
+      </Suspense>
+    </>
   );
 }

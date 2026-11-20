@@ -1,0 +1,109 @@
+'use client';
+
+import { getAirport, terminalLabel } from '@/content/airports';
+import { pick } from '@/content/types';
+import { checkInLines, type Flight } from '@/lib/flights';
+import { useLang, useT } from '@/lib/i18n/client';
+import type { JourneyStep } from '@/lib/journey';
+import { formatTime } from '@/lib/time';
+import { Icon } from '@/components/ui/icon';
+import { Skeleton } from '@/components/ui/skeleton';
+import { DemoMark } from './demo-mark';
+
+/** Anchor id of a timeline step, shared with `JourneyTimeline`. */
+export const stepAnchor = (id: string): string => `journey-step-${id}`;
+
+export interface FlightSummaryProps {
+  flight: Flight;
+  /** The journey steps as built for this flight and the visitor's needs and options. */
+  steps: readonly JourneyStep[];
+  now: number;
+}
+
+/**
+ * The answer first (first-time-access-03, usability-10): one line under the title with the next
+ * action and its time, for example "Be at KLIA Terminal 1 by 19:30 (estimate) · Check in:
+ * Economy: Row H, counters 1-18 · Boarding 21:45", linking to that step of the timeline. A
+ * departed or cancelled flight shows its terminal state instead.
+ */
+export function FlightSummary({ flight, steps, now }: FlightSummaryProps) {
+  const t = useT();
+  const lang = useLang();
+  const airport = getAirport(flight.airport);
+  const zone = airport?.timezone;
+  const terminal = steps.find((step) => step.terminal);
+  const current = steps.find((step) => step.state === 'current');
+  const parts: string[] = [];
+  let lead: string;
+  let anchor: string;
+  let estimate = false;
+
+  if (terminal) {
+    lead = pick(terminal.title, lang);
+    anchor = terminal.id;
+  } else if (flight.direction === 'd') {
+    const arrive = steps.find((item) => item.id === 'arrive');
+    lead = '';
+    anchor = 'arrive';
+    if (arrive?.time && Date.parse(arrive.time) > now) {
+      const place = airport ? terminalLabel(airport, flight.terminal, lang) : flight.terminal;
+      lead = t('flightPages.summary.beAt', { place, time: formatTime(arrive.time, zone) });
+      anchor = arrive.id;
+      estimate = arrive.provenance === 'estimated';
+    }
+    const closed = flight.checkInClosesAt !== undefined && Date.parse(flight.checkInClosesAt) <= now;
+    const desk = checkInLines(flight)[0];
+    const step = current ?? steps.find((item) => item.state === 'upcoming') ?? steps[steps.length - 1];
+    let deskLeads = false;
+    if (!(arrive?.time && Date.parse(arrive.time) > now)) {
+      // Past the arrive-by time, the current step leads; at check-in, the desk itself is the answer.
+      deskLeads = step.id === 'check-in' && Boolean(desk) && !closed;
+      lead = deskLeads && desk ? t('flightPages.summary.checkIn', { where: pick(desk, lang) }) : pick(step.title, lang);
+      anchor = step.id;
+    }
+    if (desk && !closed && !deskLeads) parts.push(t('flightPages.summary.checkIn', { where: pick(desk, lang) }));
+    if (flight.gate) parts.push(t('flightPages.summary.gate', { gate: flight.gate }));
+    if (flight.boardingAt && flight.status !== 'cancelled') parts.push(t('flightPages.summary.boarding', { time: formatTime(flight.boardingAt, zone) }));
+  } else {
+    const landed = flight.actual !== undefined;
+    lead = landed ? t('flightPages.summary.landed', { time: formatTime(flight.actual ?? flight.estimated, zone) }) : t('flightPages.summary.lands', { time: formatTime(flight.estimated, zone) });
+    anchor = (current ?? steps[0])?.id ?? 'landing';
+    if (flight.belt) parts.push(t('flightPages.summary.belt', { belt: flight.belt }));
+  }
+
+  return (
+    <div data-flight-summary="" className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-lg border border-line-strong bg-surface px-4 py-3">
+      <p className="type-body min-w-0 flex-1 basis-64 text-ink">
+        <span className="type-eyebrow mr-2 text-ink-2">{t('flightPages.summary.label')}</span>
+        <strong className="font-semibold">{lead}</strong>
+        {estimate ? <span className="text-ink-2"> ({t('flightPages.summary.estimate')})</span> : null}
+        {parts.map((part) => (
+          <span key={part}>
+            <span aria-hidden="true" className="mx-1.5 text-ink-3">
+              ·
+            </span>
+            {part}
+          </span>
+        ))}
+      </p>
+      <span className="flex items-center gap-3">
+        <DemoMark />
+        <a href={`#${stepAnchor(anchor)}`} className="link-action type-body-sm text-ink">
+          {t('flightPages.summary.seeStep')}
+          <Icon name="arrow-down" size="sm" strokeWidth={1.75} />
+        </a>
+      </span>
+    </div>
+  );
+}
+
+/** Placeholder of the same size while the flight loads (no layout shift). */
+export function FlightSummarySkeleton() {
+  const t = useT();
+  return (
+    <div role="status" className="flex min-h-14 items-center rounded-lg border border-line px-4 py-3">
+      <span className="sr-only">{t('flightPages.summary.loading')}</span>
+      <Skeleton className="h-5 w-full max-w-md" />
+    </div>
+  );
+}

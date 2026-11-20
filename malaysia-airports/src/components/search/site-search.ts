@@ -103,7 +103,7 @@ export function useSiteSearch(lang: Lang, query: string, { airport, limit = 5, f
   const text = query.trim();
   return useMemo(() => {
     const active = enabled && text.length >= 2;
-    const flights = active && provider ? provider.searchSync({ q: text, airport, limit: flightLimit }) : [];
+    const flights = active && provider && flightLimit > 0 ? provider.searchSync({ q: text, airport, limit: flightLimit }) : [];
     const content = active && state.status === 'ready' ? searchAll(state.index, text, { airport, limit }) : null;
     return {
       query: text,

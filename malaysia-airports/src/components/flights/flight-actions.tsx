@@ -2,11 +2,12 @@
 
 import { useState } from 'react';
 import type { Flight } from '@/lib/flights';
-import { useSavedJourney } from '@/lib/hooks';
+import { useSavedJourney } from '@/lib/hooks/use-saved-journey';
 import { useLang, useT } from '@/lib/i18n/client';
 import { LocaleLink } from '@/components/common/locale-link';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
+import { FOLLOW_PANEL_ID, FollowPanel, useIsFollowing } from './flight-alerts-panel';
 import { buildIcs, flightCalendarEvent, icsFileName } from './ics';
 import { toSavedFlight } from './saved-flight';
 
@@ -20,14 +21,17 @@ export interface FlightActionsProps {
 const pageUrl = (): string => window.location.href.split('#')[0];
 
 /**
- * Save to My journey, share (the system share sheet where there is one, otherwise copy the
- * link) and add to calendar (an .ics file made in the browser and marked as demonstration data).
+ * Save to My journey, Follow (opens the follow panel right here, ux-frequent-03), share (the
+ * system share sheet where there is one, otherwise copy the link) and add to calendar (an .ics
+ * file made in the browser and marked as demonstration data).
  */
 export function FlightActions({ flight, title }: FlightActionsProps) {
   const t = useT();
   const lang = useLang();
   const { isFlightSaved, saveFlight, removeFlight } = useSavedJourney();
   const saved = isFlightSaved(flight.id);
+  const following = useIsFollowing(flight.id);
+  const [followOpen, setFollowOpen] = useState(false);
   const [message, setMessage] = useState('');
 
   const share = async () => {
@@ -75,6 +79,15 @@ export function FlightActions({ flight, title }: FlightActionsProps) {
         >
           {t('flightPages.detail.save')}
         </Button>
+        <Button
+          variant="secondary"
+          iconStart={following ? 'bell-ring' : 'bell'}
+          aria-expanded={followOpen}
+          aria-controls={FOLLOW_PANEL_ID}
+          onClick={() => setFollowOpen((value) => !value)}
+        >
+          {following ? t('flightPages.follow.following') : t('flightPages.follow.button')}
+        </Button>
         <Button variant="secondary" iconStart="share-2" onClick={share}>
           {t('flightPages.detail.share')}
         </Button>
@@ -96,6 +109,7 @@ export function FlightActions({ flight, title }: FlightActionsProps) {
         ) : null}
         {message ? <span>{message}</span> : null}
       </p>
+      {followOpen ? <FollowPanel flight={flight} /> : null}
     </div>
   );
 }

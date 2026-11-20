@@ -1,11 +1,12 @@
 'use client';
 
-import { Suspense, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { Suspense, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { getAirport, terminalLabel } from '@/content/airports';
 import type { Airport, TerminalId } from '@/content/types';
 import type { Flight, FlightDirection } from '@/lib/flights';
-import { useFlightProvider, useSavedJourney } from '@/lib/hooks';
+import { useSavedJourney } from '@/lib/hooks/use-saved-journey';
+import { useFlightFeed, type FeedRequest } from '@/lib/providers/use-flight-feed';
 import { useLang, useT } from '@/lib/i18n/client';
 import { dateKey, formatDate, formatTime, shiftDateKey, timezoneLabel, zonedDateTime } from '@/lib/time';
 import { AirportCode } from '@/components/common/airport-code';
@@ -15,20 +16,24 @@ import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
+  BOARD_ROW_LIMIT,
   MAX_EARLIER_STEPS,
   MAX_LATER_STEPS,
   STATUS_GROUPS,
   boardQueryString,
   boardRange,
   countByGroup,
+  datesInRange,
   isSearching,
   readBoardParams,
   searchRange,
   selectBoardFlights,
+  setAsideFinished,
   type BoardParams,
   type StatusGroupId,
 } from './board-model';
 import { BoardToolbar } from './board-toolbar';
+import { FeedNotice } from './feed-notice';
 import { FlightBoard } from './flight-board';
 import { useFlightDirection } from './flight-direction';
 import { FlightWatcher } from './flight-watcher';
@@ -44,8 +49,13 @@ const NO_PARAMS: BoardParams = { q: '', groups: [] };
 /**
  * The full departures and arrivals board of one airport: tabs synced to `?dir=d|a`, the terminal
  * filter (`?t=`), search within the board (`?q=`), status filters (`?s=`), a time window with
- * earlier and later steps, rows grouped by hour, and save toggles. Rows are computed on the
- * client after hydration; the static HTML holds the same layout with a skeleton board.
+ * earlier and later steps, rows grouped by hour, and save toggles. Rows come from the server
+ * flight feed after hydration (last-known data with its age if a refresh fails); the static HTML
+ * holds the same layout with a skeleton board.
+ *
+ * Responsiveness (performance-02): the typed query is deferred, so the field never waits for the
+ * list; at most `BOARD_ROW_LIMIT` rows render until "Show more". Refreshing can be paused, and
+ * waits while a row has focus or the pointer (WCAG 2.2.2).
  */
 export function FlightBoardExplorer({ airport }: FlightBoardExplorerProps) {
   const record = getAirport(airport);
@@ -71,14 +81,25 @@ function BoardFromUrl({ airport }: { airport: Airport }) {
 function BoardView({ airport, params }: { airport: Airport; params: BoardParams }) {
   const t = useT();
   const lang = useLang();
-  const provider = useFlightProvider();
   const { journey, saveFlight, removeFlight } = useSavedJourney();
   const { direction: modeDirection, setDirection } = useFlightDirection();
   const direction = params.direction ?? modeDirection;
   const zone = airport.timezone;
   const [draft, setDraft] = useState(params.q);
+  const query = useDeferredValue(draft);
   const [shift, setShift] = useState({ earlier: 0, later: 0 });
-  const searching = isSearching(draft);
+  const [userPaused, setUserPaused] = useState(false);
+  const [held, setHeld] = useState({ focus: false, pointer: false });
+  const [announcement, setAnnouncement] = useState('');
+  const searching = isSearching(query);
+
+  const rangeAt = (at: number, dir: FlightDirection) => (searching ? searchRange(at, zone) : boardRange(at, shift.earlier, shift.later, dir));
+  const feed = useFlightFeed(
+    (at): FeedRequest[] =>
+      (['d', 'a'] as const).flatMap((dir) => datesInRange(rangeAt(at, dir), zone).map((date) => ({ airport: airport.slug, date, direction: dir }))),
+    { paused: userPaused || held.focus || held.pointer },
+  );
+  const provider = feed.provider;
 
   /** Write the filters to the URL without a navigation, so the view can be shared and reloaded. */
   const write = (changes: Partial<{ direction: FlightDirection; terminal: TerminalId | undefined; q: string; groups: StatusGroupId[] }>) => {
@@ -88,29 +109,35 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
 
   const range = useMemo(() => {
     if (!provider) return null;
-    return searching ? searchRange(provider.now, zone) : boardRange(provider.now, shift.earlier, shift.later);
-  }, [provider, searching, shift, zone]);
+    return searching ? searchRange(provider.now, zone) : boardRange(provider.now, shift.earlier, shift.later, direction);
+  }, [provider, searching, shift, zone, direction]);
 
-  /* Both boards for the window, before search and status filters. */
+  /* Both boards for their windows, before search and status filters. */
   const pools = useMemo(() => {
-    if (!provider || !range) return null;
-    const query = { airport: airport.slug, terminal: params.terminal, from: range.from, to: range.to };
-    return { d: provider.listFlightsSync({ ...query, direction: 'd' }), a: provider.listFlightsSync({ ...query, direction: 'a' }) };
-  }, [provider, range, airport.slug, params.terminal]);
+    if (!provider) return null;
+    const pool = (dir: FlightDirection) => {
+      const window = searching ? searchRange(provider.now, zone) : boardRange(provider.now, shift.earlier, shift.later, dir);
+      return provider.listFlightsSync({ airport: airport.slug, terminal: params.terminal, from: window.from, to: window.to, direction: dir });
+    };
+    return { d: pool('d'), a: pool('a') };
+  }, [provider, searching, shift, zone, airport.slug, params.terminal]);
 
   const now = provider?.now;
   const searched = useMemo(() => {
     if (!pools) return null;
     return {
-      d: selectBoardFlights(pools.d, { q: draft, groups: [], direction: 'd', now }),
-      a: selectBoardFlights(pools.a, { q: draft, groups: [], direction: 'a', now }),
+      d: selectBoardFlights(pools.d, { q: query, groups: [], direction: 'd', now }),
+      a: selectBoardFlights(pools.a, { q: query, groups: [], direction: 'a', now }),
     };
-  }, [pools, draft, now]);
+  }, [pools, query, now]);
   const counts = useMemo(() => (searched ? countByGroup(searched[direction], direction) : null), [searched, direction]);
-  const shown = useMemo<Flight[] | null>(
-    () => (searched ? selectBoardFlights(searched[direction], { q: '', groups: params.groups, direction }) : null),
-    [searched, direction, params.groups],
-  );
+  /* The default view leads with flights still to come; Earlier brings the finished ones back (ux-frequent-10). */
+  const selected = useMemo(() => {
+    if (!searched) return null;
+    const list = selectBoardFlights(searched[direction], { q: '', groups: params.groups, direction });
+    return searching || shift.earlier > 0 || params.groups.length > 0 ? { shown: list, finished: 0 } : setAsideFinished(list, direction);
+  }, [searched, direction, params.groups, searching, shift.earlier]);
+  const shown: Flight[] | null = selected?.shown ?? null;
 
   /* Saved flights at this airport, looked up wherever they sit in time, for the announcer. */
   const savedIds = useMemo(() => new Set(journey.flights.map((flight) => flight.id)), [journey.flights]);
@@ -129,7 +156,12 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
   useEffect(() => {
     latestCount.current = countText;
   });
-  const filterKey = `${direction}|${params.terminal ?? ''}|${draft.trim()}|${params.groups.join(',')}|${shift.earlier}|${shift.later}`;
+  const filterKey = `${direction}|${params.terminal ?? ''}|${query.trim()}|${params.groups.join(',')}|${shift.earlier}|${shift.later}`;
+  /* Rows rendered at once; reset whenever the filters change. */
+  const [cap, setCap] = useState({ key: filterKey, limit: BOARD_ROW_LIMIT });
+  const limit = cap.key === filterKey ? cap.limit : BOARD_ROW_LIMIT;
+  const visible = useMemo(() => (shown ? shown.slice(0, limit) : null), [shown, limit]);
+  const more = shown ? shown.length - (visible?.length ?? 0) : 0;
   const initialKey = useRef(filterKey);
   const countRegion = useRef<HTMLParagraphElement>(null);
   useEffect(() => {
@@ -144,6 +176,10 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
     setDraft(value);
     write({ q: value });
   };
+  const togglePause = () => {
+    setUserPaused((value) => !value);
+    setAnnouncement(userPaused ? t('flightPages.feed.resumed') : t('flightPages.feed.paused'));
+  };
   const onDirectionChange = (value: string) => {
     if (value !== 'd' && value !== 'a') return;
     setDirection(value);
@@ -154,11 +190,11 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
   const subtitle = !range
     ? airport.name
     : searching
-      ? t('flightPages.board.searchWindow', { query: draft.trim() })
+      ? t('flightPages.board.searchWindow', { query: query.trim() })
       : params.terminal
         ? t('flightPages.board.windowTerminal', { terminal: terminalLabel(airport, params.terminal, lang), from: formatTime(range.from, zone), to: formatTime(range.to, zone) })
         : t('flightPages.board.window', { from: formatTime(range.from, zone), to: formatTime(range.to, zone) });
-  const generatedAt = provider?.meta().generatedAt ?? null;
+  const generatedAt = feed.updatedAt;
 
   const earlierButton = (
     <Button variant="quiet" size="sm" iconStart="arrow-up" onClick={() => setShift((current) => ({ ...current, earlier: current.earlier + 1 }))}>
@@ -180,7 +216,7 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
         <EmptyState
           variant="plain"
           icon="search-x"
-          title={t('flightPages.board.noResultsTitle', { query: draft.trim() })}
+          title={t('flightPages.board.noResultsTitle', { query: query.trim() })}
           action={
             <Button variant="secondary" size="sm" iconStart="x" onClick={() => onQueryChange('')}>
               {t('flightPages.board.clearSearch')}
@@ -234,6 +270,8 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
         counts={counts}
       />
 
+      <FeedNotice feed={feed} timeZone={zone} />
+
       {savedOnBoard > 0 ? (
         <p className="type-body-sm flex flex-wrap items-center gap-x-3 gap-y-0.5 rounded-md border border-line bg-page-subtle py-1 pr-1 pl-3 text-ink-2">
           <Icon name="bookmark-check" size="sm" className="text-ink" />
@@ -248,14 +286,31 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
         </p>
       ) : null}
 
+      <div
+        onFocusCapture={(event) => {
+          if ((event.target as HTMLElement).closest('li, tr')) setHeld((value) => ({ ...value, focus: true }));
+        }}
+        onBlurCapture={() => setHeld((value) => ({ ...value, focus: false }))}
+        onPointerEnter={(event) => {
+          if (event.pointerType === 'mouse') setHeld((value) => ({ ...value, pointer: true }));
+        }}
+        onPointerLeave={() => setHeld((value) => ({ ...value, pointer: false }))}
+      >
       <FlightBoard
-        flights={shown}
+        flights={visible}
         direction={direction}
         title={title}
         subtitle={subtitle}
         headingLevel={2}
         updatedAt={generatedAt}
-        refreshSeconds={provider?.meta().refreshSeconds}
+        refreshSeconds={feed.paused ? undefined : feed.refreshSeconds}
+        headerActions={
+          provider ? (
+            <Button variant="quiet" size="sm" aria-pressed={userPaused} onClick={togglePause} className="shrink-0">
+              {userPaused ? t('flightPages.feed.resume') : t('flightPages.feed.pause')}
+            </Button>
+          ) : undefined
+        }
         context={
           generatedAt ? (
             <>
@@ -277,17 +332,46 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
         skeletonRows={8}
         savedIds={savedIds}
         onSaveChange={(flight, saved) => (saved ? saveFlight(toSavedFlight(flight, t)) : removeFlight(flight.id))}
-        before={searching ? undefined : edge(shift.earlier < MAX_EARLIER_STEPS, earlierButton, t('flightPages.board.earlierLimit'))}
-        after={searching || (shown?.length ?? 0) === 0 ? undefined : edge(shift.later < MAX_LATER_STEPS, laterButton, t('flightPages.board.laterLimit'))}
+        before={
+          searching ? undefined : (
+            <>
+              {selected && selected.finished > 0 ? (
+                <p className="type-body-sm px-4 pt-2 text-center text-ink-2 sm:px-5">{t.count('flightPages.rows.departedHidden', selected.finished)}</p>
+              ) : null}
+              {edge(shift.earlier < MAX_EARLIER_STEPS, earlierButton, t('flightPages.board.earlierLimit'))}
+            </>
+          )
+        }
+        after={
+          (shown?.length ?? 0) === 0 ? undefined : (
+            <>
+              {more > 0 ? (
+                <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 px-4 py-2 sm:px-5">
+                  <span className="type-body-sm text-ink-2">{t('flightPages.rows.shownOf', { shown: visible?.length ?? 0, total: shown?.length ?? 0 })}</span>
+                  <Button variant="secondary" size="sm" iconStart="chevron-down" onClick={() => setCap({ key: filterKey, limit: limit + BOARD_ROW_LIMIT })}>
+                    {t.count('flightPages.rows.showMore', Math.min(more, BOARD_ROW_LIMIT))}
+                  </Button>
+                </div>
+              ) : null}
+              {searching || more > 0 ? null : edge(shift.later < MAX_LATER_STEPS, laterButton, t('flightPages.board.laterLimit'))}
+            </>
+          )
+        }
         empty={empty}
         footer={
           shown && now ? (
             <p className="type-body-sm text-ink-2">
+              {feed.paused ? (
+                <>
+                  <strong className="font-semibold text-ink">{userPaused ? t('flightPages.feed.paused') : t('flightPages.feed.heldForFocus')}</strong>{' '}
+                </>
+              ) : null}
               <strong className="font-semibold text-ink">{countText}</strong> <span aria-hidden="true">·</span> {t('flightPages.board.timesNote', { zone: timezoneLabel(now, zone) })}
             </p>
           ) : undefined
         }
       />
+      </div>
     </div>
   );
 
@@ -313,6 +397,9 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
         <TabsContent value="a">{direction === 'a' ? panel : null}</TabsContent>
       </Tabs>
       <p ref={countRegion} role="status" aria-live="polite" aria-atomic="true" className="sr-only" />
+      <p role="status" aria-live="polite" className="sr-only">
+        {announcement}
+      </p>
       <FlightWatcher flights={savedHere} timeZone={zone} />
     </div>
   );

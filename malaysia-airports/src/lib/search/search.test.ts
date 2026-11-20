@@ -108,3 +108,64 @@ describe('searchAll', () => {
     expect(looksLikeFlightQuery('surau')).toBe(false);
   });
 });
+
+describe('vocabulary and ranking (A-12)', () => {
+  const first = (searchIndex: typeof index, query: string) =>
+    searchAll(searchIndex, query, { limit: 5 })
+      .groups.flatMap((group) => group.hits)
+      .sort((a, b) => b.score - a.score)[0]?.id;
+
+  // Query -> the record that must come first, in English and on the Malay site.
+  const EXPECTED: Record<string, string> = {
+    surau: 'facility:kul-t1-prayer-rooms',
+    'prayer room': 'facility:kul-t1-prayer-rooms',
+    lift: 'place:kul-t1-schematic:l5-lifts',
+    lif: 'place:kul-t1-schematic:l5-lifts',
+    elevator: 'place:kul-t1-schematic:l5-lifts',
+    troli: 'unpublished:trolley',
+    trolley: 'unpublished:trolley',
+    'tukar wang': 'unpublished:moneyChanger',
+    'pengurup wang': 'unpublished:moneyChanger',
+    'money changer': 'unpublished:moneyChanger',
+    halal: 'outlet:kul-t1-paul-le-cafe',
+    'hearing loop': 'unpublished:hearingLoop',
+    'accessible parking': 'unpublished:accessibleParking',
+    AirAsia: 'airline:kul:ak',
+    'information counter': 'facility:kul-t1-information-counter',
+    atm: 'facility:kul-t1-atms',
+    aerotrain: 'transport:kul-t1-aerotrain',
+    buggy: 'guide:reduced-mobility',
+  };
+
+  it('puts the right record first for at least 15 queries, in both languages', () => {
+    expect(Object.keys(EXPECTED).length).toBeGreaterThanOrEqual(15);
+    for (const [query, id] of Object.entries(EXPECTED)) {
+      expect(first(index, query), `en "${query}"`).toBe(id);
+    }
+    for (const query of ['surau', 'lif', 'troli', 'tukar wang', 'halal', 'hearing loop', 'AirAsia']) {
+      expect(first(malayIndex, query), `ms "${query}"`).toBe(EXPECTED[query]);
+    }
+  });
+
+  it('finds an airline record, not only its flights', () => {
+    const hit = first(index, 'Malaysia Airlines');
+    expect(hit?.startsWith('airline:'), hit).toBe(true);
+  });
+
+  it('never ranks news above the place for a facility query', () => {
+    for (const query of ['surau', 'toilet', 'atm', 'halal']) {
+      const hits = searchAll(index, query, { limit: 10 }).groups.flatMap((group) => group.hits).sort((a, b) => b.score - a.score);
+      const news = hits.findIndex((hit) => hit.type === 'corporate');
+      const place = hits.findIndex((hit) => hit.type === 'facility' || hit.type === 'outlet' || hit.type === 'place');
+      expect(place, query).toBeGreaterThanOrEqual(0);
+      if (news >= 0) expect(news, query).toBeGreaterThan(place);
+    }
+  });
+
+  it('answers "fast track" with the Fast Track record once the content layer publishes it', () => {
+    const record = english.find((document) => /fast track/i.test(document.title));
+    if (!record) return; // Package D adds the record (D-02); until then there is nothing to find.
+    expect(first(index, 'fast track')).toBe(record.id);
+    expect(first(malayIndex, 'laluan pantas')).toBe(record.id);
+  });
+});

@@ -7,6 +7,7 @@ import { useAirportContext } from '@/lib/hooks';
 import { useLang, useT } from '@/lib/i18n/client';
 import type { SearchDocType } from '@/lib/search/engine';
 import { DemoDataBanner } from '@/components/common/demo-data-banner';
+import { DemoMarkedList } from '@/components/common/demo-tag';
 import { EmptyState } from '@/components/common/empty-state';
 import { FlightRow } from '@/components/flights/flight-row';
 import { overlays } from '@/components/shell/overlay-store';
@@ -54,13 +55,16 @@ export function SearchResults() {
           <span className="type-data-sm text-ink-2">{results.flights.length}</span>
         </h2>
         <DemoDataBanner compact attached />
-        <div className="surface-board @container overflow-hidden rounded-b-lg border border-t-0 border-line">
-          <ul aria-label={t('search.types.flight')}>
-            {results.flights.map((flight) => (
-              <FlightRow key={`${flight.airport}-${flight.id}`} flight={flight} showAirport={!scoped} onNavigate={() => rememberSearch(text)} />
-            ))}
-          </ul>
-        </div>
+        {/* A "Demo" marker stays in view while the rows scroll past on a phone (A-04). */}
+        <DemoMarkedList start="top-0">
+          <div className="surface-board @container overflow-hidden rounded-b-lg border border-t-0 border-line">
+            <ul aria-label={t('search.types.flight')}>
+              {results.flights.map((flight) => (
+                <FlightRow key={`${flight.airport}-${flight.id}`} flight={flight} showAirport={!scoped} onNavigate={() => rememberSearch(text)} />
+              ))}
+            </ul>
+          </div>
+        </DemoMarkedList>
       </section>
     ) : null;
 

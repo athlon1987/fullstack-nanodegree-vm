@@ -25,7 +25,7 @@ export function SearchButton({ className }: { className?: string }) {
       side="bottom"
       content={
         <span className="inline-flex items-center gap-2">
-          {t('search.label')} <Kbd>/</Kbd>
+          {t('search.label')} <Kbd>Ctrl K</Kbd>
         </span>
       }
     >
@@ -34,7 +34,7 @@ export function SearchButton({ className }: { className?: string }) {
         label={t('search.open')}
         aria-haspopup="dialog"
         aria-expanded={open === 'search'}
-        aria-keyshortcuts="/ Control+K Meta+K"
+        aria-keyshortcuts="Control+K Meta+K"
         onClick={() => overlays.openSearch()}
         className={className}
       />

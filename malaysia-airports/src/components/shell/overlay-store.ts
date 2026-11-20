@@ -24,6 +24,8 @@ export interface OverlayPayload {
   question?: string;
   /** Airport switcher: after choosing, continue to this section. */
   then?: AirportSectionId;
+  /** Airport switcher: query string carried into that section (`filters=halal`), without `?`. */
+  thenQuery?: string;
 }
 
 /** What is open right now. */
@@ -108,7 +110,7 @@ export const overlays = {
   openSearch: (query?: string) => openOverlay('search', query ? { query } : {}),
   openConcierge: (question?: string) => openOverlay('concierge', question ? { question } : {}),
   openPreferences: () => openOverlay('preferences'),
-  openAirportSwitcher: (then?: AirportSectionId) => openOverlay('airport', then ? { then } : {}),
+  openAirportSwitcher: (then?: AirportSectionId, thenQuery?: string) => openOverlay('airport', then ? { then, ...(thenQuery ? { thenQuery } : {}) } : {}),
   openMenu: () => openOverlay('menu'),
   close: () => closeOverlay(),
 };

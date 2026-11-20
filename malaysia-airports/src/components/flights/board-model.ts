@@ -14,7 +14,7 @@ import {
   type FlightStatus,
 } from '@/lib/flights';
 import type { TKey } from '@/lib/i18n/translate';
-import { addMinutes, dateKey, shiftDateKey, zonedDateTime, type Instant } from '@/lib/time';
+import { addMinutes, dateKey, minutesOfDay, shiftDateKey, zonedDateTime, type Instant } from '@/lib/time';
 
 /** A status filter: several statuses that mean the same thing to a passenger. */
 export type StatusGroupId = 'scheduled' | 'check-in' | 'boarding' | 'delayed' | 'cancelled' | 'departed' | 'en-route' | 'landed' | 'completed';
@@ -125,13 +125,47 @@ export interface BoardRange {
 }
 
 /**
- * The default window is 45 minutes back to 6 hours ahead (`boardWindow` in the providers);
- * each Earlier step adds 3 hours before it, each Later step 3 hours after it.
+ * How far back the default window opens (ux-frequent-10): departures 10 minutes, so the board
+ * leads with flights still to leave; arrivals 45 minutes, because people meeting a flight that
+ * landed half an hour ago still need it.
  */
-export function boardRange(now: Instant, earlier = 0, later = 0): BoardRange {
-  const back = 45 + Math.min(Math.max(earlier, 0), MAX_EARLIER_STEPS) * WINDOW_STEP_HOURS * 60;
+export const DEFAULT_BEHIND_MINUTES: Readonly<Record<FlightDirection, number>> = { d: 10, a: 45 };
+
+/**
+ * The default window runs from `DEFAULT_BEHIND_MINUTES` back to 6 hours ahead; each Earlier step
+ * adds 3 hours before it, each Later step 3 hours after it.
+ */
+export function boardRange(now: Instant, earlier = 0, later = 0, direction: FlightDirection = 'd'): BoardRange {
+  const back = DEFAULT_BEHIND_MINUTES[direction] + Math.min(Math.max(earlier, 0), MAX_EARLIER_STEPS) * WINDOW_STEP_HOURS * 60;
   const ahead = 6 * 60 + Math.min(Math.max(later, 0), MAX_LATER_STEPS) * WINDOW_STEP_HOURS * 60;
   return { from: addMinutes(now, -back), to: addMinutes(now, ahead) };
+}
+
+/**
+ * In the default view (no Earlier steps, no search), flights that are over do not lead the board:
+ * departed departures and completed arrivals are set aside and counted, and Earlier shows them.
+ */
+export function setAsideFinished(flights: readonly Flight[], direction: FlightDirection): { shown: Flight[]; finished: number } {
+  const over: FlightStatus = direction === 'd' ? 'departed' : 'completed';
+  const shown = flights.filter((flight) => flight.status !== over);
+  return { shown, finished: flights.length - shown.length };
+}
+
+/** Rows rendered at once; "Show more" adds the same again (performance-02). */
+export const BOARD_ROW_LIMIT = 40;
+
+/**
+ * The local dates a time range touches at an airport, for fetching boards. Shortly after
+ * midnight the previous day's late flights are still on the board, so that day is included.
+ */
+export function datesInRange(range: BoardRange, timeZone: string): string[] {
+  let first = dateKey(range.from, timeZone);
+  if (minutesOfDay(range.from, timeZone) < 180) first = shiftDateKey(first, -1);
+  // `to` is exclusive: a window ending at midnight does not need the next day.
+  const last = dateKey(new Date(range.to.getTime() - 1), timeZone);
+  const dates: string[] = [];
+  for (let date = first; date <= last && dates.length < 4; date = shiftDateKey(date, 1)) dates.push(date);
+  return dates;
 }
 
 /** The range a search covers: the whole of today and tomorrow at the airport. */

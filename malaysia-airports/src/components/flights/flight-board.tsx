@@ -10,6 +10,7 @@ import { DemoDataBanner } from '@/components/common/demo-data-banner';
 import { Freshness } from '@/components/common/freshness';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Table, TableScroll, TBody, Th, THead, Tr } from '@/components/ui/table';
+import { DemoMark } from './demo-mark';
 import { FlightRow } from './flight-row';
 
 export interface FlightBoardProps {
@@ -26,6 +27,8 @@ export interface FlightBoardProps {
   refreshSeconds?: number;
   /** Shown before the freshness time: the airport code and the day. */
   context?: ReactNode;
+  /** Controls beside the freshness row, for example "Pause live updates". */
+  headerActions?: ReactNode;
   /** Announce refreshes politely (full boards) or not at all (previews). Default `off`. */
   live?: 'polite' | 'off';
   /** Add an Airport column: for lists that span several airports. */
@@ -79,6 +82,7 @@ export function FlightBoard({
   updatedAt,
   refreshSeconds,
   context,
+  headerActions,
   live = 'off',
   showAirport = false,
   emptyMessage,
@@ -122,14 +126,18 @@ export function FlightBoard({
   return (
     <div className={className}>
       {hideBanner ? null : <DemoDataBanner attached />}
-      <div className={cn('surface-board @container relative overflow-hidden border border-line', hideBanner ? 'rounded-lg' : 'rounded-b-lg border-t-0')}>
+      {/* overflow-clip (not hidden) keeps the rounded corners without breaking the sticky hour headers. */}
+      <div className={cn('surface-board @container relative overflow-clip border border-line', hideBanner ? 'rounded-lg' : 'rounded-b-lg border-t-0')}>
         <WeaveTexture className="absolute right-0 bottom-0 h-14 w-2/5 max-sm:hidden" />
         <div className="relative flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-b border-line px-4 py-4 sm:px-5">
           <div className="min-w-0">
             <Heading className="type-title-lg text-ink">{title}</Heading>
             {subtitle ? <p className="type-body-sm mt-0.5 text-ink-2">{subtitle}</p> : null}
           </div>
-          <Freshness live={live} updatedAt={updatedAt} refreshSeconds={refreshSeconds} context={context} />
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <Freshness live={live} updatedAt={updatedAt} refreshSeconds={refreshSeconds} context={context} />
+            {headerActions}
+          </div>
         </div>
 
         {flights === null ? (
@@ -158,9 +166,13 @@ export function FlightBoard({
                   const id = `board-${direction}-${group.date}-${group.hour}`;
                   return (
                     <section key={id} aria-labelledby={id}>
-                      <GroupHeading id={id} className="flex items-baseline justify-between gap-3 border-b border-line bg-board-raised px-4 py-1.5 sm:px-5">
+                      {/* Sticky, with a demo label: every scrolled view of the board shows one (content-integrity-01). */}
+                      <GroupHeading id={id} className="sticky top-header z-20 flex items-center justify-between gap-3 border-b border-line bg-board-raised px-4 py-1.5 sm:px-5">
                         <span className="type-data-sm text-ink">{groupLabel(group)}</span>
-                        <span className="type-caption text-ink-2">{groupCount(group)}</span>
+                        <span className="flex items-center gap-2">
+                          <span className="type-caption text-ink-2">{groupCount(group)}</span>
+                          <DemoMark />
+                        </span>
                       </GroupHeading>
                       <ul aria-labelledby={id}>{group.flights.map((flight) => row(flight, 'card'))}</ul>
                     </section>
@@ -172,7 +184,9 @@ export function FlightBoard({
                 {flights.map((flight) => row(flight, 'card'))}
               </ul>
             )}
-            <TableScroll label={title} className="relative @max-4xl:hidden">
+            {/* The table only shows when the board is wide enough for it, so it never needs to scroll
+                sideways; visible overflow lets its hour headers stick while the page scrolls. */}
+            <TableScroll label={title} className="relative overflow-x-visible @max-4xl:hidden">
               <Table density="default">
                 <caption className="sr-only">
                   {title}
@@ -199,9 +213,12 @@ export function FlightBoard({
                     <Fragment key={`${group.date}-${group.hour}`}>
                       <TBody>
                         <tr className="border-b border-line bg-board-raised">
-                          <th scope="rowgroup" colSpan={columns} className="px-4 py-1.5 text-left font-normal sm:px-5">
-                            <span className="type-data-sm text-ink">{groupLabel(group)}</span>{' '}
-                            <span className="type-caption ml-2 text-ink-2">{groupCount(group)}</span>
+                          <th scope="rowgroup" colSpan={columns} className="sticky top-header z-20 bg-board-raised px-4 py-1.5 text-left font-normal sm:px-5">
+                            <span className="flex items-center gap-2">
+                              <span className="type-data-sm text-ink">{groupLabel(group)}</span>
+                              <span className="type-caption text-ink-2">{groupCount(group)}</span>
+                              <DemoMark className="ml-auto" />
+                            </span>
                           </th>
                         </tr>
                         {group.flights.map((flight) => row(flight, 'table'))}

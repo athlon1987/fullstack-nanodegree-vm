@@ -8,6 +8,11 @@ export interface TerminalBadgeProps {
   terminal: TerminalId;
   /** sm 20px, md 24px (default). */
   size?: 'sm' | 'md';
+  /**
+   * `expanded` (default): read as "Terminal 1". `visible`: read exactly as shown ("T1"), for
+   * controls whose accessible name must start with their visible text (WCAG 2.5.3).
+   */
+  announce?: 'expanded' | 'visible';
   className?: string;
 }
 
@@ -17,7 +22,7 @@ export interface TerminalBadgeProps {
  *
  * @example <TerminalBadge terminal={flight.terminal} />
  */
-export function TerminalBadge({ terminal, size = 'md', className }: TerminalBadgeProps) {
+export function TerminalBadge({ terminal, size = 'md', announce = 'expanded', className }: TerminalBadgeProps) {
   const t = useT();
   if (terminal === 'MAIN') return null;
   const number = terminal.slice(1);
@@ -31,10 +36,16 @@ export function TerminalBadge({ terminal, size = 'md', className }: TerminalBadg
         className,
       )}
     >
-      <span aria-hidden="true">{terminal}</span>
-      <span className="sr-only">
-        {t('common.labels.terminal')} {number}
-      </span>
+      {announce === 'visible' ? (
+        terminal
+      ) : (
+        <>
+          <span aria-hidden="true">{terminal}</span>
+          <span className="sr-only">
+            {t('common.labels.terminal')} {number}
+          </span>
+        </>
+      )}
     </span>
   );
 }

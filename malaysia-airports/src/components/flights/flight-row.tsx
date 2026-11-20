@@ -37,7 +37,8 @@ export interface FlightRowProps {
 
 /**
  * One flight. Times are mono and tabular; a delayed flight shows the old time struck through
- * beside the new one; a cancelled flight is dimmed and its time struck. The airline is always
+ * beside the new one; a cancelled flight is dimmed and its time struck. Assistive technology
+ * hears the times in words ("Scheduled 17:25, now 18:20"; "Cancelled, was 17:25"). The airline is always
  * shown, in both layouts. Place it on the board surface (`FlightBoard` does).
  *
  * Every flight in this prototype is simulated: whatever lists these rows must carry the
@@ -54,6 +55,12 @@ export function FlightRow({ flight, layout = 'card', showAirport = false, onNavi
   const notAssigned = flight.direction === 'd' ? t('flights.board.gateNotAssigned') : t('flights.board.beltNotAssigned');
   const boardAirport = showAirport ? getAirport(flight.airport) : undefined;
   const linkLabel = `${t('flights.search.viewFlight', { number })}, ${place.city}`;
+  // The time in words for assistive technology: <s> is not announced (accessibility-03).
+  const timeWords = cancelled
+    ? t('flightPages.times.cancelled', { scheduled: formatTime(flight.scheduled) })
+    : moved
+      ? t('flightPages.times.moved', { scheduled: formatTime(flight.scheduled), estimated: formatTime(flight.estimated) })
+      : t('flightPages.times.onTime', { scheduled: formatTime(flight.scheduled) });
 
   const saveButton = onSaveChange ? (
     <IconButton
@@ -78,16 +85,19 @@ export function FlightRow({ flight, layout = 'card', showAirport = false, onNavi
     return (
       <Tr muted={cancelled} className={className}>
         <Td mono className="whitespace-nowrap">
-          {moved && !cancelled ? (
-            <>
-              <s className="type-data-md text-ink-2">{formatTime(flight.scheduled)}</s>{' '}
-              <span className="type-data-lg text-board-accent">{formatTime(flight.estimated)}</span>
-            </>
-          ) : cancelled ? (
-            <s className="type-data-lg">{formatTime(flight.scheduled)}</s>
-          ) : (
-            <span className="type-data-lg text-board-accent">{formatTime(flight.scheduled)}</span>
-          )}
+          <span aria-hidden="true">
+            {moved && !cancelled ? (
+              <>
+                <s className="type-data-md text-ink-2">{formatTime(flight.scheduled)}</s>{' '}
+                <span className="type-data-lg text-board-accent">{formatTime(flight.estimated)}</span>
+              </>
+            ) : cancelled ? (
+              <s className="type-data-lg">{formatTime(flight.scheduled)}</s>
+            ) : (
+              <span className="type-data-lg text-board-accent">{formatTime(flight.scheduled)}</span>
+            )}
+          </span>
+          <span className="sr-only">{timeWords}</span>
         </Td>
         <Td mono className="whitespace-nowrap">
           <LocaleLink
@@ -132,12 +142,20 @@ export function FlightRow({ flight, layout = 'card', showAirport = false, onNavi
       )}
     >
       <p className="flex w-[4.25rem] shrink-0 flex-col">
-        <span className="sr-only">{t('common.labels.time')}: </span>
-        {moved && !cancelled ? <s className="type-data-sm text-ink-2">{formatTime(flight.scheduled)}</s> : null}
+        <span className="sr-only">{timeWords}</span>
+        {moved && !cancelled ? (
+          <s aria-hidden="true" className="type-data-sm text-ink-2">
+            {formatTime(flight.scheduled)}
+          </s>
+        ) : null}
         {cancelled ? (
-          <s className="type-data-lg">{formatTime(flight.scheduled)}</s>
+          <s aria-hidden="true" className="type-data-lg">
+            {formatTime(flight.scheduled)}
+          </s>
         ) : (
-          <span className="type-data-lg text-board-accent">{formatTime(moved ? flight.estimated : flight.scheduled)}</span>
+          <span aria-hidden="true" className="type-data-lg text-board-accent">
+            {formatTime(moved ? flight.estimated : flight.scheduled)}
+          </span>
         )}
       </p>
       <div className="flex min-w-0 flex-1 flex-wrap items-center justify-between gap-x-5 gap-y-2">

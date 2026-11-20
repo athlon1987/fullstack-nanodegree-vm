@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useSelectedLayoutSegment } from 'next/navigation';
-import { Suspense, useEffect, useRef } from 'react';
+import { Suspense, useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 import { getAirport, type AirportSelection } from '@/content/airports';
 import type { TerminalId } from '@/content/types';
 import { cn } from '@/lib/cn';
@@ -27,18 +27,58 @@ function NavList({ slug, name, sections, segment, terminal }: SectionNavProps & 
   const t = useT();
   const lang = useLang();
   const list = useRef<HTMLUListElement>(null);
+  const [edges, setEdges] = useState({ start: false, end: false });
   const currentId: AirportSectionId | undefined = segment === undefined ? undefined : (AIRPORT_SECTIONS.find((section) => section.segment === (segment ?? ''))?.id ?? undefined);
 
-  // Bring the current section into view inside the scroller (never scrolling the page itself).
+  // Overflow cues: an edge fade and a scroll button on each side that has more tabs (A-13).
+  const measure = useCallback(() => {
+    const scroller = list.current;
+    if (!scroller) return;
+    const start = scroller.scrollLeft > 2;
+    const end = scroller.scrollLeft + scroller.clientWidth < scroller.scrollWidth - 2;
+    setEdges((current) => (current.start === start && current.end === end ? current : { start, end }));
+  }, []);
+
+  useEffect(() => {
+    const scroller = list.current;
+    if (!scroller) return;
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(scroller);
+    scroller.addEventListener('scroll', measure, { passive: true });
+    return () => {
+      observer.disconnect();
+      scroller.removeEventListener('scroll', measure);
+    };
+  }, [measure]);
+
+  // Bring the current tab fully into view inside the scroller, with room for the fade and the
+  // button, without scrolling the page itself.
   useEffect(() => {
     const scroller = list.current;
     const current = scroller?.querySelector<HTMLElement>('[aria-current]');
-    if (scroller && current) scroller.scrollLeft = current.offsetLeft - (scroller.clientWidth - current.clientWidth) / 2;
-  }, [currentId]);
+    if (!scroller || !current) return;
+    const box = scroller.getBoundingClientRect();
+    const tab = current.getBoundingClientRect();
+    const pad = 48;
+    if (tab.left < box.left + pad) scroller.scrollLeft -= box.left + pad - tab.left;
+    else if (tab.right > box.right - pad) scroller.scrollLeft += tab.right - (box.right - pad);
+    measure();
+  }, [currentId, measure]);
+
+  const scrollBy = (direction: 1 | -1) => {
+    const scroller = list.current;
+    if (!scroller) return;
+    scroller.scrollBy({ left: direction * Math.max(160, scroller.clientWidth * 0.7), behavior: 'smooth' });
+  };
 
   return (
-    <nav aria-label={t('airportPage.sectionsLabel', { airport: name })} className="-mx-gutter">
-      <ul ref={list} className="flex gap-1 overflow-x-auto px-gutter [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+    <nav aria-label={t('airportPage.sectionsLabel', { airport: name })} className="relative -mx-gutter">
+      <ul
+        ref={list}
+        style={{ '--fade-start': edges.start ? '3rem' : '0px', '--fade-end': edges.end ? '3rem' : '0px' } as CSSProperties}
+        className="scroll-fade-x flex gap-1 overflow-x-auto scroll-px-12 px-gutter [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
         {AIRPORT_SECTIONS.filter((section) => sections.includes(section.id)).map((section) => {
           const current = section.id === currentId;
           return (
@@ -52,13 +92,37 @@ function NavList({ slug, name, sections, segment, terminal }: SectionNavProps & 
                   'aria-[current]:font-semibold aria-[current]:text-ink aria-[current]:after:bg-primary',
                 )}
               >
-                <Icon name={section.icon} size="sm" className={current ? 'text-primary-ink' : 'text-ink-3'} />
+                {/* Labels only: without icons all nine tabs fit at 1280 px and up in both
+                    languages (A-13); the phone "Sections" panel keeps the icons. */}
                 {t(section.labelKey)}
               </Link>
             </li>
           );
         })}
       </ul>
+      {/* Pointer users get buttons; keyboard users reach every tab with Tab, and touch users swipe. */}
+      {edges.start ? (
+        <button
+          type="button"
+          tabIndex={-1}
+          aria-hidden="true"
+          onClick={() => scrollBy(-1)}
+          className="absolute inset-y-0 left-0 flex w-10 items-center justify-center bg-page-subtle text-ink-2 hover:text-ink touch:hidden"
+        >
+          <Icon name="chevron-left" size="sm" strokeWidth={2} />
+        </button>
+      ) : null}
+      {edges.end ? (
+        <button
+          type="button"
+          tabIndex={-1}
+          aria-hidden="true"
+          onClick={() => scrollBy(1)}
+          className="absolute inset-y-0 right-0 flex w-10 items-center justify-center bg-page-subtle text-ink-2 hover:text-ink touch:hidden"
+        >
+          <Icon name="chevron-right" size="sm" strokeWidth={2} />
+        </button>
+      ) : null}
     </nav>
   );
 }

@@ -14,7 +14,7 @@ import { formatTime } from '@/lib/time';
 import { AirportCode } from '@/components/common/airport-code';
 import { FlightStatusChip } from '@/components/common/flight-status-chip';
 import { LocaleLink } from '@/components/common/locale-link';
-import { ProvenanceTag } from '@/components/common/provenance-tag';
+import { DemoTag } from '@/components/common/demo-tag';
 import { flightHref } from '@/components/flights/flight-row';
 import { closeOverlay, overlays, useOverlayDialog } from '@/components/shell/overlay-store';
 import { sectionHref } from '@/components/shell/sections';
@@ -39,8 +39,15 @@ interface Group {
   items: Item[];
 }
 
+/**
+ * The active option is marked by more than its tint (1.03:1 to 1.22:1 against its neighbours):
+ * a 2 px focus-colour outline and a 4 px inset bar on the leading edge, both at least 3:1 in every
+ * theme (WCAG 1.4.11), because DOM focus stays in the combobox.
+ */
 const OPTION =
-  'flex min-h-12 w-full cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-left text-ink outline-none aria-selected:bg-primary-soft aria-selected:text-primary-ink forced-colors:aria-selected:outline-2 forced-colors:aria-selected:outline-[Highlight]';
+  'relative flex min-h-12 w-full cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-left text-ink outline-none ' +
+  'aria-selected:bg-primary-soft aria-selected:text-primary-ink aria-selected:outline-2 aria-selected:outline-solid aria-selected:-outline-offset-2 aria-selected:outline-focus aria-selected:shadow-[inset_4px_0_0_0_var(--color-focus)] ' +
+  'forced-colors:aria-selected:outline-[Highlight]';
 
 /**
  * The command palette: one search over the whole site. Opens from the header, the phone bottom
@@ -94,6 +101,9 @@ export function CommandPalette() {
         { kind: 'link', id: 'quick-parking', href: sectionHref('parking', selection, availability), label: t('nav.parking'), icon: 'square-parking' },
         { kind: 'link', id: 'quick-notices', href: '/notices', label: t('nav.notices'), icon: 'megaphone' },
         { kind: 'link', id: 'quick-airports', href: '/airports', label: t('nav.airports'), icon: 'tower-control' },
+        // The concierge is offered from the phone Search sheet too (package B hand-off, B-15).
+        { kind: 'link', id: 'quick-concierge', href: '/concierge', label: t('concierge.open'), icon: 'sparkles' },
+        { kind: 'link', id: 'quick-assistance', href: '/accessibility', label: t('shellExtras.nav.assistance'), icon: 'accessibility' },
       ],
     });
   } else {
@@ -102,7 +112,7 @@ export function CommandPalette() {
         ? {
             id: 'flights',
             title: t('search.types.flight'),
-            aside: <ProvenanceTag provenance="demo" length="short" />,
+            aside: <DemoTag size="md" />,
             items: results.flights.map((flight) => ({ kind: 'flight', id: `flight-${flight.airport}-${flight.id}`, href: flightHref(flight), flight })),
           }
         : null;
@@ -216,6 +226,7 @@ export function CommandPalette() {
           </span>
           {boardAirport ? <AirportCode code={boardAirport.code} name={boardAirport.name} size="sm" className="text-ink-2 max-sm:hidden" /> : null}
           <FlightStatusChip status={flight.status} size="sm" />
+          <DemoTag className="max-sm:hidden" />
         </LocaleLink>
       );
     }
@@ -245,7 +256,8 @@ export function CommandPalette() {
         >
           <DialogPrimitive.Title className="sr-only">{t('search.title')}</DialogPrimitive.Title>
 
-          <div className="flex items-center gap-1 border-b border-line py-1.5 pr-1.5 pl-4">
+          {/* DOM focus lives in the text field: its row shows the standard focus ring (WCAG 2.4.7). */}
+          <div className="flex items-center gap-1 border-b border-line py-1.5 pr-1.5 pl-4 has-[input:focus-visible]:focus-ring-inset">
             <Icon name="search" className="shrink-0 text-ink-3" />
             <input
               role="combobox"

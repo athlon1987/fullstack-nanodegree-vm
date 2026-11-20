@@ -16,10 +16,13 @@
  */
 import { lt, type AirportContent, type GuideNote, type GuideNoteTopic, type LocalizedText, type Provenance, type TerminalId } from '@/content/types';
 import { isMultiTerminal, terminalLabel } from '@/content/airports';
+import { checkInLines } from '@/lib/flights/check-in';
 import { formatFlightNumber, isInternationalFlight, remotePlace } from '@/lib/flights/query';
 import { flightStatusLabel } from '@/lib/flights/status';
 import type { Flight } from '@/lib/flights/types';
 import type { TKey } from '@/lib/i18n/translate';
+import type { TravellerNeed } from '@/lib/needs';
+import type { OpsServiceId } from '@/lib/providers/demo-operations';
 import { addMinutes, formatTime, minutesBetween, toDate, toIsoWithOffset, type Instant } from '@/lib/time';
 import { formatDuration } from '@/lib/format';
 import type { JourneyMode } from './modes';
@@ -31,8 +34,16 @@ export const RECOMMENDED_ARRIVAL_MINUTES = { international: 180, domestic: 120 }
 
 /** Optional traveller details that adjust the steps. */
 export interface JourneyPreferences {
-  /** Adds an assistance step and step-free wording. */
+  /** Adds an assistance step and step-free wording. Set by any need in `needs`. */
   reducedMobility?: boolean;
+  /** The needs chosen in "My needs" (`@/lib/needs`); any need adds the assistance step. */
+  needs?: readonly TravellerNeed[];
+  /** Map links ask for step-free routes (`sf=1`). */
+  stepFree?: boolean;
+  /** Hand luggage only: check in online, no bag drop; the arrive-by time moves later (estimated). */
+  handLuggageOnly?: boolean;
+  /** Business class or a lounge pass: suggest the lounge nearest the gate. */
+  loungeAccess?: boolean;
   /** Adds family-friendly pointers. */
   withChildren?: boolean;
   /** False when travelling with hand luggage only: bag drop and baggage reclaim are skipped. */
@@ -89,6 +100,32 @@ export type JourneyStepKind =
   | 'parking'
   | 'wait';
 
+/** A lounge or outlet the timeline can suggest near a gate (built on the server from the content). */
+export interface JourneyPlace {
+  id: string;
+  kind: 'lounge' | 'outlet';
+  name: LocalizedText;
+  terminal?: TerminalId;
+  /** True when it is after security (where a departing passenger waits). */
+  airside: boolean;
+  /** Gate letters it is near, from its published location ("near Gate G" gives `['G']`). */
+  gatePrefixes: string[];
+  /** Its published location, in words. */
+  location?: LocalizedText;
+  href: string;
+  provenance: Provenance;
+  sources: string[];
+}
+
+/** A sourced line about a service (the airline's assistance notice period, Fast Track). */
+export interface JourneyService {
+  title: LocalizedText;
+  body: LocalizedText;
+  href?: string;
+  provenance: Provenance;
+  sources: string[];
+}
+
 /** One step of a journey timeline. */
 export interface JourneyStep {
   /** Stable within a timeline: `check-in`, `gate`, `onward-gate`, ... */
@@ -96,6 +133,10 @@ export interface JourneyStep {
   kind: JourneyStepKind;
   /** When the step happens, as an ISO instant with the airport offset, if it can be timed. */
   time?: string;
+  /** When the step stops applying (check-in closes, the gate closes, the flight lands). */
+  endTime?: string;
+  /** When the step starts to apply, for untimed steps whose start can be estimated (not shown). */
+  startsAt?: string;
   /** Dictionary key describing when the step happens relative to the journey, for untimed steps. */
   relative?: TKey;
   title: LocalizedText;
@@ -107,12 +148,27 @@ export interface JourneyStep {
   sources?: string[];
   /** Sourced airport facts relevant to this step. */
   notes: JourneyNote[];
+  /** Operational status lines to show with the step (Aerotrain for C gates, immigration queues). */
+  ops?: OpsServiceId[];
+  /** Places near the gate on the passenger's side of security. */
+  places?: JourneyPlace[];
+  /** An optional extra the passenger may choose (never preselected), such as Fast Track. */
+  optional?: boolean;
+  /** The flight has departed, been cancelled or finished: this step ends the journey. */
+  terminal?: boolean;
   /** Where the step stands at `now`. Without timed steps in the past, everything is `upcoming`. */
   state: 'done' | 'current' | 'upcoming';
 }
 
 /** The slice of airport content the builder needs (an `AirportContent` fits). */
-export type JourneyAirportContent = Pick<AirportContent, 'airport' | 'guidesNotes'>;
+export type JourneyAirportContent = Pick<AirportContent, 'airport' | 'guidesNotes'> & {
+  /** Lounges and outlets with a published location near a gate. */
+  places?: readonly JourneyPlace[];
+  /** Each airline's published assistance notice period, by IATA code. */
+  airlineAssistance?: Readonly<Record<string, JourneyService>>;
+  /** The airport's Fast Track service, when the content layer publishes it. */
+  fastTrack?: JourneyService;
+};
 
 /** Input of `buildJourney`. */
 export interface BuildJourneyInput {
@@ -133,6 +189,8 @@ interface Context {
   zone: string;
   flight: Flight | null;
   preferences: JourneyPreferences;
+  /** Epoch milliseconds of `now`. */
+  time: number;
 }
 
 const clock = (context: Context, value: Instant): string => formatTime(value, context.zone);
@@ -171,18 +229,64 @@ function notesFor(
     .map(toNote);
 }
 
+/**
+ * Work out each step's state from its start, its end and the flight (usability-04,
+ * ux-frequent-01). The current step is the last one that has started, unless it has also ended,
+ * in which case the journey has moved on to the next step. A terminal step (departed, cancelled)
+ * is always the current one.
+ */
 function finalise(drafts: Draft[], now: Instant): JourneyStep[] {
   const time = toDate(now).getTime();
+  const startOf = (draft: Draft): number | undefined => {
+    const value = draft.time ?? draft.startsAt;
+    return value ? Date.parse(value) : undefined;
+  };
   let current = -1;
-  drafts.forEach((draft, index) => {
-    if (draft.time && Date.parse(draft.time) <= time) current = index;
-  });
+  const terminal = drafts.findIndex((draft) => draft.terminal);
+  if (terminal >= 0) {
+    current = terminal;
+  } else {
+    drafts.forEach((draft, index) => {
+      const start = startOf(draft);
+      if (start !== undefined && start <= time) current = index;
+    });
+    const started = current >= 0 ? drafts[current] : undefined;
+    if (started?.endTime && Date.parse(started.endTime) <= time) {
+      // The step is over: the next one is now current; past the last step, all are done.
+      current = current + 1 < drafts.length ? current + 1 : drafts.length;
+    }
+  }
   return drafts.map((draft, index) => ({
     ...draft,
     actions: draft.actions ?? [],
     notes: draft.notes ?? [],
     state: index < current ? 'done' : index === current ? 'current' : 'upcoming',
   }));
+}
+
+/** Query string helpers for links that carry the flight's context (exec-commerce-07). */
+function withQuery(path: string, params: Record<string, string | undefined>): string {
+  const query = Object.entries(params)
+    .filter((entry): entry is [string, string] => Boolean(entry[1]))
+    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+    .join('&');
+  return query ? `${path}?${query}` : path;
+}
+
+function transportHref(context: Context): string {
+  return withQuery(`/${context.slug}/transport`, { t: context.flight?.terminal });
+}
+
+function parkingHref(context: Context, from?: Instant, to?: Instant): string {
+  return withQuery(`/${context.slug}/parking`, {
+    t: context.flight?.terminal,
+    from: from === undefined ? undefined : iso(context, from),
+    to: to === undefined ? undefined : iso(context, to),
+  });
+}
+
+function mapHref(context: Context, params: Record<string, string | undefined> = {}): string {
+  return withQuery(`/${context.slug}/map`, { ...params, sf: context.preferences.stepFree ? '1' : undefined });
 }
 
 /* ------------------------------------------------------------------------------------------
@@ -194,10 +298,11 @@ function disruptionStep(flight: Flight): Draft {
   return {
     id: 'disruption',
     kind: 'disruption',
+    terminal: true,
     title: lt(`Flight ${number} is shown as cancelled`, `Penerbangan ${number} dipaparkan sebagai dibatalkan`),
     body: lt(
-      'Contact your airline before you travel to the airport. It can rebook you or explain your options.',
-      'Hubungi syarikat penerbangan anda sebelum ke lapangan terbang. Ia boleh menempah semula penerbangan atau menerangkan pilihan anda.',
+      `Contact ${flight.airline.name} before you travel to the airport. It can rebook you or explain your options.`,
+      `Hubungi ${flight.airline.name} sebelum ke lapangan terbang. Ia boleh menempah semula penerbangan atau menerangkan pilihan anda.`,
     ),
     provenance: flightProvenance(flight),
     actions: [
@@ -271,7 +376,7 @@ function terminalStep(context: Context, direction: 'departing' | 'arriving'): Dr
   };
 }
 
-function travelStep(context: Context): Draft {
+function travelStep(context: Context, arriveBy?: Date): Draft {
   return {
     id: 'travel',
     kind: 'travel',
@@ -283,26 +388,55 @@ function travelStep(context: Context): Draft {
     ),
     provenance: 'suggestion',
     actions: [
-      { labelKey: 'journey.actions.viewTransport', href: `/${context.slug}/transport` },
-      { labelKey: 'journey.actions.viewParking', href: `/${context.slug}/parking` },
+      { labelKey: 'journey.actions.viewTransport', href: transportHref(context) },
+      { labelKey: 'journey.actions.viewParking', href: parkingHref(context, arriveBy) },
     ],
     notes: notesFor(context, 'getting-there', 'departing'),
   };
 }
 
+const NEED_WORDS: Record<TravellerNeed, LocalizedText> = {
+  wheelchair: lt('a wheelchair', 'kerusi roda'),
+  'step-free': lt('step-free routes', 'laluan tanpa tangga'),
+  older: lt('an older traveller', 'warga emas'),
+  companion: lt('travelling with someone who needs help', 'menemani seseorang yang memerlukan bantuan'),
+};
+
 function assistanceStep(context: Context, direction: 'departing' | 'arriving'): Draft {
+  const { flight, preferences, content } = context;
+  const needs = preferences.needs ?? [];
+  const listed = needs.length > 0 ? lt(needs.map((need) => NEED_WORDS[need].en).join(', '), needs.map((need) => NEED_WORDS[need].ms).join(', ')) : null;
+  const airlineNote = flight ? content.airlineAssistance?.[flight.airline.code] : undefined;
+  const airline = flight?.airline.name;
+  const notes: JourneyNote[] = [];
+  if (airlineNote) {
+    notes.push({ id: `assistance-${flight?.airline.code.toLowerCase()}`, title: airlineNote.title, body: airlineNote.body, provenance: airlineNote.provenance, sources: airlineNote.sources });
+  }
+  notes.push(...notesFor(context, 'assistance', direction));
+  const ask = airline
+    ? airlineNote
+      ? lt(`Ask ${airline} for help when you book: its notice period is below.`, `Minta bantuan daripada ${airline} semasa menempah: tempoh notisnya di bawah.`)
+      : lt(
+          `Ask ${airline} for help as early as you can, ideally when you book. We have not published its notice period: check with the airline.`,
+          `Minta bantuan daripada ${airline} seawal mungkin, sebaik-baiknya semasa menempah. Kami belum menerbitkan tempoh notisnya: semak dengan syarikat penerbangan.`,
+        )
+    : lt('Ask your airline for help as early as you can, ideally when you book.', 'Minta bantuan daripada syarikat penerbangan seawal mungkin, sebaik-baiknya semasa menempah.');
   return {
     id: 'assistance',
     kind: 'assistance',
     relative: 'journey.relative.beforeYouLeave',
-    title: lt('Arrange any assistance you need', 'Aturkan bantuan yang anda perlukan'),
+    title: airline ? lt(`Arrange assistance with ${airline}`, `Aturkan bantuan dengan ${airline}`) : lt('Arrange any assistance you need', 'Aturkan bantuan yang anda perlukan'),
     body: lt(
-      'Ask your airline for assistance as early as you can, ideally when you book. See what the airport offers.',
-      'Minta bantuan daripada syarikat penerbangan seawal mungkin, sebaik-baiknya semasa menempah. Lihat perkhidmatan yang ditawarkan oleh lapangan terbang.',
+      `${listed ? `You told us you plan for ${listed.en}. ` : ''}${ask.en} At the airport, the airline's staff provide the help; see what the airport offers too.`,
+      `${listed ? `Anda memaklumkan keperluan: ${listed.ms}. ` : ''}${ask.ms} Di lapangan terbang, kakitangan syarikat penerbangan memberikan bantuan; lihat juga perkhidmatan lapangan terbang.`,
     ),
-    provenance: 'suggestion',
-    actions: [{ labelKey: 'journey.actions.viewAssistance', href: '/accessibility' }],
-    notes: notesFor(context, 'assistance', direction),
+    provenance: airlineNote ? airlineNote.provenance : 'suggestion',
+    ...(airlineNote ? { sources: airlineNote.sources } : {}),
+    actions: [
+      { labelKey: 'journey.actions.viewAssistance', href: '/accessibility' },
+      ...(flight ? [{ labelKey: 'journey.actions.contactAirline' as TKey, href: '/help/flights' }] : []),
+    ],
+    notes,
   };
 }
 
@@ -322,9 +456,10 @@ function gateStep(context: Context, flight: Flight | null, id = 'gate'): Draft {
       actions: [
         {
           labelKey: 'journey.actions.viewGateOnMap',
-          href: `/${context.slug}/map?gate=${encodeURIComponent(flight.gate)}&t=${flight.terminal}`,
+          href: mapHref(context, { gate: flight.gate, t: flight.terminal }),
         },
       ],
+      ...(context.slug === 'kul' && flight.terminal === 'T1' && /^C/i.test(flight.gate) ? { ops: ['aerotrain' as OpsServiceId] } : {}),
       notes,
     };
   }
@@ -338,7 +473,7 @@ function gateStep(context: Context, flight: Flight | null, id = 'gate'): Draft {
       'Pintu anda belum ditetapkan. Pintu biasanya dipaparkan kira-kira 90 minit sebelum berlepas: semak skrin selepas pemeriksaan keselamatan.',
     ),
     provenance: 'estimated',
-    actions: [{ labelKey: 'journey.actions.viewMap', href: `/${context.slug}/map` }],
+    actions: [{ labelKey: 'journey.actions.viewMap', href: mapHref(context, { t: flight?.terminal }) }],
     notes,
   };
 }
@@ -352,6 +487,7 @@ function boardingStep(context: Context, flight: Flight | null, id = 'boarding'):
       id,
       kind: 'boarding',
       time: flight.boardingAt,
+      endTime: flight.gateClosesAt,
       title: lt(`Board from ${from}`, `Naik pesawat mulai ${from}`),
       body: lt(
         `Boarding is expected from ${from} and the gate closes at ${closes}. Be at the gate before then with your boarding pass and passport or identity card ready.`,
@@ -379,27 +515,65 @@ function boardingStep(context: Context, flight: Flight | null, id = 'boarding'):
  * Departing
  * --------------------------------------------------------------------------------------- */
 
+/** The terminal state of a departed flight: nothing left to do at the airport. */
+function departedStep(context: Context, flight: Flight): Draft {
+  const number = formatFlightNumber(flight);
+  const at = clock(context, flight.actual ?? flight.estimated);
+  return {
+    id: 'departed',
+    kind: 'status',
+    terminal: true,
+    time: flight.actual ?? flight.estimated,
+    title: lt(`Flight ${number} departed at ${at}`, `Penerbangan ${number} berlepas pada ${at}`),
+    body: lt(
+      `This flight has left. If you were booked on it and did not travel, contact ${flight.airline.name}.`,
+      `Penerbangan ini telah berlepas. Jika anda ditempah pada penerbangan ini dan tidak terbang, hubungi ${flight.airline.name}.`,
+    ),
+    provenance: flightProvenance(flight),
+    actions: [{ labelKey: 'journey.actions.contactAirline', href: '/help/flights' }],
+  };
+}
+
+/** Places on the passenger's side of security near the gate: lounges first with lounge access. */
+function placesNearGate(context: Context, flight: Flight | null): JourneyPlace[] {
+  const places = context.content.places ?? [];
+  if (!flight || places.length === 0) return [];
+  const gate = flight.gate?.toUpperCase();
+  const candidates = places.filter((place) => place.airside && (!place.terminal || place.terminal === flight.terminal));
+  const near = gate ? candidates.filter((place) => place.gatePrefixes.some((prefix) => gate.startsWith(prefix.toUpperCase()))) : [];
+  const pool = near.length > 0 ? near : [];
+  const wantLounge = context.preferences.loungeAccess === true;
+  const lounges = pool.filter((place) => place.kind === 'lounge');
+  const outlets = pool.filter((place) => place.kind === 'outlet');
+  return (wantLounge ? [...lounges, ...outlets] : [...outlets, ...lounges]).slice(0, 3);
+}
+
 function departingSteps(context: Context): Draft[] {
   const { flight, preferences } = context;
   if (flight?.status === 'cancelled') return [disruptionStep(flight)];
+  if (flight && (flight.status === 'departed' || (flight.actual && Date.parse(flight.actual) <= context.time))) return [departedStep(context, flight)];
 
   const international = flight ? isInternationalFlight(flight) : undefined;
   const lead = international === false ? RECOMMENDED_ARRIVAL_MINUTES.domestic : RECOMMENDED_ARRIVAL_MINUTES.international;
+  // Hand luggage only and checked in online: no bag drop, so the estimate moves an hour later.
+  const handOnly = preferences.handLuggageOnly === true;
+  const leadMinutes = handOnly ? lead - 60 : lead;
   const steps: Draft[] = [];
+  const arriveBy = flight ? addMinutes(flight.scheduled, -leadMinutes) : undefined;
 
   if (flight?.status === 'delayed') steps.push(delayStep(context, flight));
   steps.push(terminalStep(context, 'departing'));
-  if (preferences.reducedMobility) steps.push(assistanceStep(context, 'departing'));
-  steps.push(travelStep(context));
+  if (preferences.reducedMobility || (preferences.needs?.length ?? 0) > 0) steps.push(assistanceStep(context, 'departing'));
+  steps.push(travelStep(context, arriveBy));
 
   // Recommended arrival time: estimated unless the airport's content carries an official rule.
   const officialRule = context.content.guidesNotes.find((note) => note.topic === 'arrival-time' && note.provenance === 'official');
   const otherArrivalNotes = notesFor(context, 'arrival-time', 'departing').filter((note) => note.id !== officialRule?.id);
-  const arriveBy = flight ? addMinutes(flight.scheduled, -lead) : undefined;
   const generalRule = lt(
     'As a guide, be at the terminal at least 3 hours before an international flight and at least 2 hours before a domestic flight. Your airline sets the check-in deadline: follow its advice.',
     'Sebagai panduan, berada di terminal sekurang-kurangnya 3 jam sebelum penerbangan antarabangsa dan 2 jam sebelum penerbangan domestik. Syarikat penerbangan menetapkan had masa daftar masuk: ikut nasihatnya.',
   );
+  const leadWords = lt(handOnly ? (international ? '2 hours' : '1 hour') : international ? '3 hours' : '2 hours', handOnly ? (international ? '2 jam' : '1 jam') : international ? '3 jam' : '2 jam');
   steps.push({
     id: 'arrive',
     kind: 'arrive',
@@ -407,42 +581,64 @@ function departingSteps(context: Context): Draft[] {
     title: arriveBy
       ? lt(`Arrive at the airport by ${clock(context, arriveBy)}`, `Tiba di lapangan terbang sebelum ${clock(context, arriveBy)}`)
       : lt('Arrive in good time', 'Tiba lebih awal'),
-    body: officialRule
+    body: officialRule && !handOnly
       ? officialRule.body
       : arriveBy && international !== undefined
-        ? international
+        ? handOnly
           ? lt(
-              `That is 3 hours before your international flight, our recommended minimum. Your airline sets the check-in deadline: follow its advice, especially in peak periods.`,
-              `Itu 3 jam sebelum penerbangan antarabangsa anda, iaitu tempoh minimum yang kami sarankan. Syarikat penerbangan menetapkan had masa daftar masuk: ikut nasihatnya, terutama pada musim puncak.`,
+              `That is ${leadWords.en} before your ${international ? 'international' : 'domestic'} flight: our estimate with hand luggage only and online check-in. If you need a counter, allow the full ${international ? '3' : '2'} hours. Your airline sets the deadlines: follow its advice.`,
+              `Itu ${leadWords.ms} sebelum penerbangan ${international ? 'antarabangsa' : 'domestik'} anda: anggaran kami dengan bagasi tangan sahaja dan daftar masuk dalam talian. Jika anda perlu ke kaunter, peruntukkan ${international ? '3' : '2'} jam penuh. Syarikat penerbangan menetapkan had masa: ikut nasihatnya.`,
             )
-          : lt(
-              `That is 2 hours before your domestic flight, our recommended minimum. Your airline sets the check-in deadline: follow its advice, especially in peak periods.`,
-              `Itu 2 jam sebelum penerbangan domestik anda, iaitu tempoh minimum yang kami sarankan. Syarikat penerbangan menetapkan had masa daftar masuk: ikut nasihatnya, terutama pada musim puncak.`,
-            )
+          : international
+            ? lt(
+                `That is 3 hours before your international flight, our recommended minimum. Your airline sets the check-in deadline: follow its advice, especially in peak periods.`,
+                `Itu 3 jam sebelum penerbangan antarabangsa anda, iaitu tempoh minimum yang kami sarankan. Syarikat penerbangan menetapkan had masa daftar masuk: ikut nasihatnya, terutama pada musim puncak.`,
+              )
+            : lt(
+                `That is 2 hours before your domestic flight, our recommended minimum. Your airline sets the check-in deadline: follow its advice, especially in peak periods.`,
+                `Itu 2 jam sebelum penerbangan domestik anda, iaitu tempoh minimum yang kami sarankan. Syarikat penerbangan menetapkan had masa daftar masuk: ikut nasihatnya, terutama pada musim puncak.`,
+              )
         : generalRule,
-    provenance: officialRule ? 'official' : 'estimated',
-    ...(officialRule ? { sources: officialRule.sources } : {}),
+    provenance: officialRule && !handOnly ? 'official' : 'estimated',
+    ...(officialRule && !handOnly ? { sources: officialRule.sources } : {}),
     notes: otherArrivalNotes,
   });
 
   // Check-in
   const checkInNotes = notesFor(context, 'check-in', 'departing');
-  const noBags = preferences.checkedBags === false;
-  if (flight && (flight.checkInRow || flight.checkInCounters) && flight.checkInClosesAt) {
-    const where = [
-      flight.checkInRow ? { en: `Row ${flight.checkInRow}`, ms: `Barisan ${flight.checkInRow}` } : null,
-      flight.checkInCounters ? { en: `counters ${flight.checkInCounters}`, ms: `kaunter ${flight.checkInCounters}` } : null,
-    ].filter((part): part is { en: string; ms: string } => part !== null);
-    const closes = clock(context, flight.checkInClosesAt);
+  const noBags = preferences.checkedBags === false || handOnly;
+  const desks = flight ? checkInLines(flight) : [];
+  const closesAt = flight?.checkInClosesAt;
+  const closed = closesAt !== undefined && Date.parse(closesAt) <= context.time;
+  if (flight && closesAt && closed) {
+    // Check-in has closed (usability-04): say so, and move the journey on.
+    const closes = clock(context, closesAt);
+    steps.push({
+      id: 'check-in',
+      kind: 'check-in',
+      time: flight.checkInOpensAt ?? closesAt,
+      endTime: closesAt,
+      title: lt(`Check-in closed at ${closes}`, `Daftar masuk ditutup pada ${closes}`),
+      body: lt(
+        `If you have not checked in, contact ${flight.airline.name} now: only the airline can say whether it can still take you. If you have checked in, carry on to security.`,
+        `Jika anda belum daftar masuk, hubungi ${flight.airline.name} sekarang: hanya syarikat penerbangan boleh menentukan sama ada anda masih boleh terbang. Jika sudah daftar masuk, teruskan ke pemeriksaan keselamatan.`,
+      ),
+      provenance: flightProvenance(flight),
+      actions: [{ labelKey: 'journey.actions.contactAirline', href: '/help/flights' }],
+      notes: checkInNotes,
+    });
+  } else if (flight && desks.length > 0 && closesAt) {
+    const closes = clock(context, closesAt);
     const number = formatFlightNumber(flight);
     steps.push({
       id: 'check-in',
       kind: 'check-in',
       time: flight.checkInOpensAt,
-      title: noBags ? lt('Check in', 'Daftar masuk') : lt('Check in and drop your bags', 'Daftar masuk dan serahkan bagasi'),
+      endTime: closesAt,
+      title: handOnly ? lt('Check in online, or at the counter', 'Daftar masuk dalam talian, atau di kaunter') : noBags ? lt('Check in', 'Daftar masuk') : lt('Check in and drop your bags', 'Daftar masuk dan serahkan bagasi'),
       body: lt(
-        `Check-in for ${number} is at ${where.map((part) => part.en).join(', ')} and closes at ${closes}.${noBags ? ' If you have checked in online and have no bags to drop, go straight to security.' : ''}`,
-        `Daftar masuk untuk ${number} di ${where.map((part) => part.ms).join(', ')} dan ditutup pada ${closes}.${noBags ? ' Jika anda telah daftar masuk dalam talian dan tiada bagasi untuk diserahkan, terus ke pemeriksaan keselamatan.' : ''}`,
+        `Check-in for ${number} closes at ${closes}. ${desks.map((line) => line.en).join('. ')}.${noBags ? ' If you have checked in online and have no bags to drop, go straight to security.' : ''}`,
+        `Daftar masuk untuk ${number} ditutup pada ${closes}. ${desks.map((line) => line.ms).join('. ')}.${noBags ? ' Jika anda telah daftar masuk dalam talian dan tiada bagasi untuk diserahkan, terus ke pemeriksaan keselamatan.' : ''}`,
       ),
       provenance: flightProvenance(flight),
       notes: checkInNotes,
@@ -453,12 +649,13 @@ function departingSteps(context: Context): Draft[] {
       id: 'check-in',
       kind: 'check-in',
       ...(opens ? { time: opens } : { relative: 'journey.relative.atTheAirport' as TKey }),
-      title: noBags ? lt('Check in', 'Daftar masuk') : lt('Check in and drop your bags', 'Daftar masuk dan serahkan bagasi'),
+      ...(closesAt ? { endTime: closesAt } : {}),
+      title: handOnly ? lt('Check in online, or at the counter', 'Daftar masuk dalam talian, atau di kaunter') : noBags ? lt('Check in', 'Daftar masuk') : lt('Check in and drop your bags', 'Daftar masuk dan serahkan bagasi'),
       body: lt(
-        `Check-in usually opens 2 to 3 hours before departure and closes 45 to 60 minutes before. Check the screens in the departure hall for your row.${noBags ? ' If you have checked in online and have no bags to drop, go straight to security.' : ''}`,
-        `Daftar masuk biasanya dibuka 2 hingga 3 jam sebelum berlepas dan ditutup 45 hingga 60 minit sebelum itu. Semak skrin di balai berlepas untuk barisan anda.${noBags ? ' Jika anda telah daftar masuk dalam talian dan tiada bagasi untuk diserahkan, terus ke pemeriksaan keselamatan.' : ''}`,
+        `${closesAt ? `Check-in closes at ${clock(context, closesAt)}. ` : ''}Your row is shown on the screens in the departure hall when check-in opens.${noBags ? ' If you have checked in online and have no bags to drop, go straight to security.' : ''}`,
+        `${closesAt ? `Daftar masuk ditutup pada ${clock(context, closesAt)}. ` : ''}Barisan anda dipaparkan pada skrin di balai berlepas apabila daftar masuk dibuka.${noBags ? ' Jika anda telah daftar masuk dalam talian dan tiada bagasi untuk diserahkan, terus ke pemeriksaan keselamatan.' : ''}`,
       ),
-      provenance: 'estimated',
+      provenance: flight ? flightProvenance(flight) : 'estimated',
       notes: checkInNotes,
     });
   }
@@ -483,30 +680,80 @@ function departingSteps(context: Context): Draft[] {
             'Sediakan pasport dan pas masuk. Tempoh beratur berbeza-beza: peruntukkan sekurang-kurangnya 45 minit untuk imigresen dan pemeriksaan keselamatan.',
           ),
     provenance: 'estimated',
+    ops: ['immigration'],
     notes: [...notesFor(context, 'security', 'departing'), ...notesFor(context, 'immigration', 'departing')],
   });
 
+  // Optional Fast Track, never preselected (closes with D-02 once the service record is published).
+  const fastTrack = context.content.fastTrack;
+  if (fastTrack && international !== false) {
+    steps.push({
+      id: 'fast-track',
+      kind: 'security',
+      relative: 'journey.relative.afterCheckIn',
+      optional: true,
+      title: fastTrack.title,
+      body: fastTrack.body,
+      provenance: fastTrack.provenance,
+      sources: fastTrack.sources,
+      actions: fastTrack.href ? [{ labelKey: 'flightPages.timeline.viewFastTrack', href: fastTrack.href }] : [],
+    });
+  }
+
   steps.push(gateStep(context, flight));
 
+  const near = placesNearGate(context, flight);
+  const gate = flight?.gate;
+  const shopHref = withQuery(`/${context.slug}/shop-dine`, { gate: gate && flight ? `${flight.terminal}-${gate}` : undefined, t: flight?.terminal });
   steps.push({
     id: 'food',
     kind: 'food',
     relative: 'journey.relative.beforeBoarding',
-    title: lt('Time to spare? Eat or shop near your gate', 'Ada masa terluang? Makan atau beli-belah berhampiran pintu anda'),
-    body: preferences.withChildren
+    title: lt('Time to spare? Eat, shop or rest near your gate', 'Ada masa terluang? Makan, membeli-belah atau berehat berhampiran pintu anda'),
+    body: near.length > 0
       ? lt(
-          'Stay close to your gate and keep an eye on the boarding time. Look for family facilities on the way.',
-          'Berada berhampiran pintu anda dan perhatikan waktu menaiki pesawat. Cari kemudahan keluarga di sepanjang laluan.',
+          `Near gate ${gate}, after security: ${near.map((place) => place.name.en).join(', ')}. Keep an eye on the boarding time.`,
+          `Berhampiran pintu ${gate}, selepas pemeriksaan keselamatan: ${near.map((place) => place.name.ms ?? place.name.en).join(', ')}. Perhatikan waktu menaiki pesawat.`,
         )
-      : lt('Stay close to your gate and keep an eye on the boarding time.', 'Berada berhampiran pintu anda dan perhatikan waktu menaiki pesawat.'),
+      : preferences.withChildren
+        ? lt(
+            'Stay close to your gate and keep an eye on the boarding time. Look for family facilities on the way.',
+            'Berada berhampiran pintu anda dan perhatikan waktu menaiki pesawat. Cari kemudahan keluarga di sepanjang laluan.',
+          )
+        : lt('Stay close to your gate and keep an eye on the boarding time.', 'Berada berhampiran pintu anda dan perhatikan waktu menaiki pesawat.'),
     provenance: 'suggestion',
+    ...(near.length > 0 ? { places: near } : {}),
     actions: [
-      { labelKey: 'journey.actions.viewShopDine', href: `/${context.slug}/shop-dine` },
-      { labelKey: 'journey.actions.viewFacilities', href: `/${context.slug}/facilities` },
+      { labelKey: 'journey.actions.viewShopDine', href: shopHref },
+      ...(preferences.loungeAccess
+        ? [{ labelKey: 'flightPages.timeline.viewLounges' as TKey, href: withQuery(`/${context.slug}/lounges`, { t: flight?.terminal }) }]
+        : [{ labelKey: 'journey.actions.viewFacilities' as TKey, href: withQuery(`/${context.slug}/facilities`, { t: flight?.terminal }) }]),
     ],
   });
 
   steps.push(boardingStep(context, flight));
+
+  if (flight && flight.gateClosesAt) {
+    const closesAt = flight.gateClosesAt;
+    const gateClosed = Date.parse(closesAt) <= context.time;
+    const departs = clock(context, flight.estimated);
+    steps.push({
+      id: 'departure',
+      kind: 'status',
+      time: flight.estimated,
+      title: gateClosed
+        ? lt(`Gate closed at ${clock(context, closesAt)}: departs ${departs}`, `Pintu ditutup pada ${clock(context, closesAt)}: berlepas ${departs}`)
+        : lt(`Departs at ${departs}`, `Berlepas pada ${departs}`),
+      body: gateClosed
+        ? lt(
+            `Boarding has finished. If you are not on board, speak to ${flight.airline.name} staff straight away.`,
+            `Penumpang telah selesai menaiki pesawat. Jika anda belum menaiki pesawat, segera hubungi kakitangan ${flight.airline.name}.`,
+          )
+        : lt('The gate closes before this time. Times can change: keep checking the screens.', 'Pintu ditutup sebelum masa ini. Masa boleh berubah: terus semak skrin.'),
+      provenance: flightProvenance(flight),
+      ...(gateClosed ? { actions: [{ labelKey: 'journey.actions.contactAirline' as TKey, href: '/help/flights' }] } : {}),
+    });
+  }
   return steps;
 }
 
@@ -535,6 +782,7 @@ function landingStep(context: Context, flight: Flight | null): Draft {
     id: 'landing',
     kind: 'landing',
     time: flight.estimated,
+    endTime: flight.actual ?? flight.estimated,
     title: landed
       ? lt(`Flight ${number} landed at ${time}`, `Penerbangan ${number} mendarat pada ${time}`)
       : lt(`Flight ${number} is expected at ${time}`, `Penerbangan ${number} dijangka tiba pada ${time}`),
@@ -559,6 +807,7 @@ function arrivalImmigrationStep(context: Context): Draft {
       'Sediakan pasport anda. Syarat kemasukan bergantung pada kewarganegaraan: semak dengan Jabatan Imigresen Malaysia sebelum anda terbang.',
     ),
     provenance: 'estimated',
+    ops: ['immigration'],
     notes: notesFor(context, 'immigration', 'arriving'),
   };
 }
@@ -601,7 +850,7 @@ function arrivingSteps(context: Context): Draft[] {
   const steps: Draft[] = [];
 
   if (flight?.status === 'delayed') steps.push(delayStep(context, flight));
-  if (preferences.reducedMobility) steps.push(assistanceStep(context, 'arriving'));
+  if (preferences.reducedMobility || (preferences.needs?.length ?? 0) > 0) steps.push(assistanceStep(context, 'arriving'));
   steps.push(landingStep(context, flight));
   if (international !== false) steps.push(arrivalImmigrationStep(context));
   if (preferences.checkedBags !== false) steps.push(baggageStep(context, flight, international));
@@ -623,6 +872,8 @@ function arrivingSteps(context: Context): Draft[] {
     id: 'onward',
     kind: 'onward',
     relative: 'journey.relative.whenReady',
+    // Once passengers are normally through immigration, baggage and customs, this is the step.
+    ...(flight ? { startsAt: iso(context, addMinutes(flight.estimated, international === false ? 30 : 60)) } : {}),
     title: lt('Continue your journey', 'Teruskan perjalanan anda'),
     body: lt(
       'Compare the ways to leave the airport. Use the official counters and ranks, and ignore anyone who approaches you offering a ride.',
@@ -630,8 +881,8 @@ function arrivingSteps(context: Context): Draft[] {
     ),
     provenance: 'suggestion',
     actions: [
-      { labelKey: 'journey.actions.viewTransport', href: `/${context.slug}/transport` },
-      { labelKey: 'journey.actions.viewParking', href: `/${context.slug}/parking` },
+      { labelKey: 'journey.actions.viewTransport', href: transportHref(context) },
+      { labelKey: 'journey.actions.viewParking', href: parkingHref(context) },
     ],
     notes: notesFor(context, 'onward-transport', 'arriving'),
   });
@@ -645,7 +896,7 @@ function arrivingSteps(context: Context): Draft[] {
       'Tetapkan tempat bertemu di balai ketibaan sebelum anda terbang, dan kongsi nombor penerbangan supaya mereka boleh mengikuti statusnya.',
     ),
     provenance: 'suggestion',
-    actions: [{ labelKey: 'journey.actions.viewMap', href: `/${context.slug}/map` }],
+    actions: [{ labelKey: 'journey.actions.viewMap', href: mapHref(context, { t: flight?.terminal }) }],
     notes: notesFor(context, 'meeting', 'arriving'),
   });
   return steps;
@@ -718,9 +969,10 @@ function transitingSteps(context: Context): Draft[] {
       ),
       provenance: 'estimated',
       actions: [
-        { labelKey: 'journey.actions.viewTransport', href: `/${context.slug}/transport` },
+        { labelKey: 'journey.actions.viewTransport', href: transportHref(context) },
         { labelKey: 'journey.actions.viewTransitGuide', href: `/${context.slug}/transit` },
       ],
+      ops: ['inter-terminal-train', 'inter-terminal-shuttle'],
       notes: notesFor(context, 'transit', 'arriving'),
     });
   } else if (selfTransfer) {
@@ -813,6 +1065,7 @@ function meetingSteps(context: Context): Draft[] {
       id: 'status',
       kind: 'status',
       time: flight.estimated,
+      endTime: flight.actual ?? flight.estimated,
       title: lt(
         `Flight ${number} from ${flight.origin.city}: ${flightStatusLabel(flight.status, 'en')}`,
         `Penerbangan ${number} dari ${flight.origin.city}: ${flightStatusLabel(flight.status, 'ms')}`,
@@ -842,35 +1095,41 @@ function meetingSteps(context: Context): Draft[] {
     });
   }
 
-  steps.push({
-    id: 'parking',
-    kind: 'parking',
-    relative: 'journey.relative.beforeTheyLand',
-    title: lt('Decide where to park or wait', 'Tentukan tempat meletak kenderaan atau menunggu'),
-    body: lt(
-      'Check the car parks before you set off. Do not wait at the kerb: it is for picking up and dropping off only.',
-      'Semak tempat letak kereta sebelum bertolak. Jangan menunggu di tepi laluan: ia hanya untuk mengambil dan menurunkan penumpang.',
-    ),
-    provenance: 'suggestion',
-    actions: [
-      { labelKey: 'journey.actions.viewParking', href: `/${context.slug}/parking` },
-      { labelKey: 'journey.actions.viewTransport', href: `/${context.slug}/transport` },
-    ],
-    notes: notesFor(context, 'getting-there', 'arriving'),
-  });
-
+  // Greeters first need where to wait and where to pick up (usability-09).
+  const meetingNotes = notesFor(context, 'meeting', 'arriving');
+  const pickUpPublished = meetingNotes.some((note) => /pick.?up|e-?hailing|grab/i.test(`${note.id} ${note.title.en}`));
   steps.push({
     id: 'wait',
     kind: 'wait',
     relative: 'journey.relative.whileYouWait',
-    title: lt('Wait in the arrival hall', 'Tunggu di balai ketibaan'),
+    title: lt('Where to wait and pick up', 'Tempat menunggu dan mengambil penumpang'),
     body: lt(
-      'Passengers come out into the public arrival hall after baggage reclaim and customs. Agree a meeting point in advance.',
-      'Penumpang keluar ke balai ketibaan awam selepas mengambil bagasi dan melalui kastam. Tetapkan tempat bertemu lebih awal.',
+      `Passengers come out into the public arrival hall after baggage reclaim and customs: wait there and agree a meeting point in advance. Do not wait at the kerb: it is for picking up and dropping off only.${pickUpPublished ? '' : ' The e-hailing pick-up area and any entry fee are not published in our sources yet: follow the signs or the app.'}`,
+      `Penumpang keluar ke balai ketibaan awam selepas mengambil bagasi dan melalui kastam: tunggu di sana dan tetapkan tempat bertemu lebih awal. Jangan menunggu di tepi laluan: ia hanya untuk mengambil dan menurunkan penumpang.${pickUpPublished ? '' : ' Kawasan pengambilan e-hailing dan sebarang bayaran masuk belum diterbitkan dalam sumber kami: ikut papan tanda atau aplikasi.'}`,
     ),
     provenance: 'suggestion',
-    actions: [{ labelKey: 'journey.actions.viewMap', href: `/${context.slug}/map` }],
-    notes: notesFor(context, 'meeting', 'arriving'),
+    actions: [
+      { labelKey: 'journey.actions.viewMap', href: mapHref(context, { t: flight?.terminal }) },
+      { labelKey: 'journey.actions.viewTransport', href: transportHref(context) },
+    ],
+    notes: meetingNotes,
+  });
+
+  // Short-stay parking with a 3-hour preset around the landing time; long-stay advice is for travellers.
+  const landing = flight ? toDate(flight.estimated) : undefined;
+  const shortStayNotes = notesFor(context, 'getting-there', 'arriving').filter((note) => !/long|preferred|ltcp|more than a day/i.test(`${note.id} ${note.title.en}`));
+  steps.push({
+    id: 'parking',
+    kind: 'parking',
+    relative: 'journey.relative.beforeTheyLand',
+    title: lt('Short-stay parking', 'Letak kereta jangka pendek'),
+    body: lt(
+      'If you drive, park for a short stay close to the arrival hall. The parking page opens with three hours from shortly before the landing time.',
+      'Jika memandu, letak kereta jangka pendek berhampiran balai ketibaan. Halaman letak kereta dibuka dengan tempoh tiga jam bermula sebelum waktu mendarat.',
+    ),
+    provenance: 'suggestion',
+    actions: [{ labelKey: 'journey.actions.viewParking', href: landing ? parkingHref(context, addMinutes(landing, -30), addMinutes(landing, 150)) : parkingHref(context) }],
+    notes: shortStayNotes,
   });
 
   if (flight) {
@@ -881,6 +1140,7 @@ function meetingSteps(context: Context): Draft[] {
       id: 'expect',
       kind: 'meeting',
       time: iso(context, earliest),
+      endTime: iso(context, addMinutes(flight.estimated, to + 30)),
       title: lt(`Expect them from about ${clock(context, earliest)}`, `Jangkakan mereka keluar mulai kira-kira ${clock(context, earliest)}`),
       body: international
         ? lt(
@@ -905,9 +1165,12 @@ function meetingSteps(context: Context): Draft[] {
  * - `arriving`: landing, immigration, baggage belt, customs, onward transport, meeting point.
  * - `transiting`: connection type, landing, transfer route (same terminal or Terminal 1 to
  *   Terminal 2), connection-time guidance, rest, onward gate and boarding.
- * - `meeting`: live status, parking, where to wait, when to expect them.
+ * - `meeting`: live status, where to wait and pick up, short-stay parking, when to expect them.
  *
- * A cancelled flight returns a single `disruption` step. Timed steps are in chronological
+ * Steps carry an end where one is known (check-in closes, the gate closes, the flight lands), and
+ * the current step follows start, end and flight status: a step that has ended hands over to the
+ * next one. A cancelled flight returns a single `disruption` step and a departed flight a single
+ * `departed` step; both are terminal (`terminal: true`) and tell nobody to go anywhere. Timed steps are in chronological
  * order; untimed steps sit where they logically belong.
  *
  * @example
@@ -920,6 +1183,7 @@ export function buildJourney(input: BuildJourneyInput): JourneyStep[] {
     zone: input.airportContent.airport.timezone,
     flight: input.flight ?? null,
     preferences: input.preferences ?? {},
+    time: toDate(input.now).getTime(),
   };
   const drafts =
     input.mode === 'departing'

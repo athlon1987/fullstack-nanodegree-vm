@@ -2,6 +2,7 @@ import {
   AIRPORTS,
   FEATURED_AIRPORTS,
   GROUP_CONTACTS,
+  GUIDES,
   airportsByClassification,
   airportsWithContent,
   getAirportContent,
@@ -13,6 +14,7 @@ import {
   type Lang,
   type Terminal,
 } from '@/content';
+import { cn } from '@/lib/cn';
 import { getT } from '@/lib/i18n';
 import { AirportVignette } from '@/components/art/airport-vignette';
 import { RebungRule, TaburField } from '@/components/art/patterns';
@@ -30,13 +32,16 @@ import { Card, CardLink } from '@/components/ui/card';
 import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
 import { Section } from '@/components/ui/section';
+import { DemoMarkedList } from '@/components/common/demo-tag';
+import { ArrivalChecklist, type ArrivalChecklistItem } from './arrival-checklist';
 import { BoardPreview } from './board-preview';
 import { ConciergeQuestions } from './concierge-questions';
 import { JourneyModeGuidance, JourneyModes } from './journey-modes';
 import { JourneyTeaser, type TeaserOfficialFact } from './journey-teaser';
 import { ModeQuickActions } from './mode-quick-actions';
 import { NoticeStrip } from './notice-strip';
-import { ShopDineStrip } from './shop-dine-strip';
+import { SavedFlightFlag, SavedFlightSlot } from './saved-flight-slot';
+import { ShopDineStrip, type ShopDineFilter } from './shop-dine-strip';
 
 /* ---- First screen ---------------------------------------------------------------------------- */
 
@@ -45,8 +50,28 @@ import { ShopDineStrip } from './shop-dine-strip';
  * actions, and one notice with the getting-there and terminal-guidance strip. Vertical spacing
  * scales with the height of the window so all of it sits above the fold at 1280 by 720.
  */
+/** The arrival-card step of the Arriving guide, for the home's Arriving mode (A-18). */
+function arrivalChecklist(lang: Lang): ArrivalChecklistItem | null {
+  const guide = GUIDES.find((item) => item.slug === 'arriving');
+  const section = guide?.sections.find((item) => item.id === 'before-you-land');
+  const step = section?.steps.find((item) => item.id === 'mdac');
+  if (!guide || !section || !step) return null;
+  const action = step.actions?.[0];
+  return {
+    heading: pick(section.title, lang),
+    title: pick(step.title, lang),
+    body: pick(step.body, lang),
+    provenance: step.provenance,
+    sources: resolveSources(step.sources),
+    ...(guide.asOf ? { asOf: guide.asOf } : {}),
+    ...(action ? { action: { label: pick(action.label, lang), href: action.href } } : {}),
+    guideHref: `/guides/${guide.slug}`,
+  };
+}
+
 export function HomeHero({ lang, notices }: { lang: Lang; notices: readonly NoticeView[] }) {
   const t = getT(lang);
+  const arrival = arrivalChecklist(lang);
   return (
     <section aria-labelledby="home-title" className="relative isolate overflow-hidden border-b border-line">
       <TaburField fade className="absolute top-0 right-0 -z-10 h-52 w-[44rem] max-w-[65%] opacity-45 max-md:hidden" />
@@ -60,13 +85,20 @@ export function HomeHero({ lang, notices }: { lang: Lang; notices: readonly Noti
               <span>{t('home.eyebrow', { count: AIRPORTS.length })}</span>
             </p>
             <h1 id="home-title" className="type-display-lg text-ink max-sm:text-[1.625rem] max-xs:text-2xl">
-              {t('home.headlineLead')} <em className="text-primary-ink">{t('home.headlineAccent')}</em>
+              {/* Upright, in colour: the italic face (81 KB) is no longer loaded (A-10). */}
+              {t('home.headlineLead')} <span className="text-primary-ink">{t('home.headlineAccent')}</span>
             </h1>
           </div>
           <p className="type-body-sm max-w-80 shrink-0 pb-1 text-ink-2 max-xl:hidden">{t('home.lead')}</p>
         </div>
 
-        <FlightSearchBox id="flight-search" showAirportSelector />
+        {/* The airport is chosen once, in the header (A-17). */}
+        <FlightSearchBox id="flight-search" />
+
+        {/* The visitor's saved flight, above the journey modes (A-08). The flag runs during HTML
+            parsing so the slot reserves its height before first paint. */}
+        <SavedFlightFlag />
+        <SavedFlightSlot />
 
         <div className="flex flex-col gap-[clamp(0.5rem,1.3vh,0.875rem)] max-sm:gap-2.5">
           <JourneyModes />
@@ -75,6 +107,7 @@ export function HomeHero({ lang, notices }: { lang: Lang; notices: readonly Noti
         </div>
 
         <NoticeStrip notices={notices} />
+        {arrival ? <ArrivalChecklist item={arrival} /> : null}
       </Container>
     </section>
   );
@@ -91,7 +124,10 @@ export function HomeBoard({ lang }: { lang: Lang }) {
         <span className="tabular font-medium text-ink-3">01</span>
         {t('home.board.eyebrow')}
       </p>
-      <BoardPreview rows={8} />
+      {/* A "Demo" marker stays in view while the rows scroll past on a phone (A-04). */}
+      <DemoMarkedList>
+        <BoardPreview rows={8} />
+      </DemoMarkedList>
     </Section>
   );
 }
@@ -148,8 +184,9 @@ function AirportCard({ airport, terminal, lang, large = false }: { airport: Airp
         <AirportVignette code={airport.code} terminal={terminal?.id} ground="sunken" className={large ? 'aspect-[16/7] object-cover' : undefined} />
       </div>
       <div className={large ? 'flex flex-1 flex-col gap-1.5 p-5 sm:p-6' : 'flex flex-1 flex-col gap-1 p-4'}>
-        <div className="flex items-start justify-between gap-3">
-          <h3 className={large ? 'type-display-sm text-ink' : 'type-title-md text-ink'}>
+        {/* Wraps at 320 px and 125% text instead of pushing the code out of the card (A-16). */}
+        <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-1">
+          <h3 className={cn('min-w-0', large ? 'type-display-sm text-ink' : 'type-title-md text-ink')}>
             <CardLink href={sectionPath(airport.slug, 'overview', terminal?.id)}>{title}</CardLink>
           </h3>
           <AirportCode code={airport.code} name={airport.name} variant="boxed" size="sm" className="mt-0.5 shrink-0" />
@@ -193,7 +230,7 @@ export function HomeNetwork({ lang }: { lang: Lang }) {
       <ul aria-label={t('home.network.featuredLabel')} className="grid gap-4 sm:grid-cols-2 lg:gap-5">
         {multi.flatMap((airport) => airport.terminals.map((terminal) => <AirportCard key={`${airport.slug}-${terminal.id}`} airport={airport} terminal={terminal} lang={lang} large />))}
       </ul>
-      <ul aria-label={t('home.network.featuredLabel')} className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:mt-5 lg:grid-cols-5 lg:gap-5">
+      <ul aria-label={t('home.network.featuredLabel')} className="mt-4 grid grid-cols-[repeat(auto-fill,minmax(min(100%,9rem),1fr))] gap-4 sm:grid-cols-3 lg:mt-5 lg:grid-cols-5 lg:gap-5">
         {single.map((airport) => (
           <AirportCard key={airport.slug} airport={airport} lang={lang} />
         ))}
@@ -237,11 +274,23 @@ export function HomeShopDine({ lang }: { lang: Lang }) {
       return count > 0 ? [[slug, count] as const] : [];
     }),
   );
+  // Filters that can return at least one published outlet at each airport (C-05 hand-off).
+  const usableFilters = Object.fromEntries(
+    airportsWithContent().map((slug) => {
+      const outlets = getAirportContent(slug)?.outlets ?? [];
+      const usable: ShopDineFilter[] = [];
+      if (outlets.some((outlet) => outlet.hours && outlet.hours.kind !== 'text')) usable.push('open-now');
+      if (outlets.some((outlet) => outlet.halal === 'certified')) usable.push('halal');
+      if (outlets.some((outlet) => outlet.zone === 'landside')) usable.push('landside');
+      if (outlets.some((outlet) => outlet.zone === 'airside')) usable.push('airside');
+      return [slug, usable] as const;
+    }),
+  );
   return (
     <Section tone="subtle" aria-labelledby="home-shop-title">
       <div className="grid items-end gap-x-14 gap-y-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)]">
         <SectionHeading id="home-shop-title" number={4} eyebrow={t('home.shop.eyebrow')} title={t('home.shop.title')} lead={t('home.shop.lead')} className="mb-0 sm:mb-0" />
-        <ShopDineStrip outletCounts={outletCounts} />
+        <ShopDineStrip outletCounts={outletCounts} usableFilters={usableFilters} />
       </div>
     </Section>
   );

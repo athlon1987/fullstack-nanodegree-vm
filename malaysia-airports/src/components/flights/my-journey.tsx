@@ -1,33 +1,59 @@
 'use client';
 
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { getAirport } from '@/content/airports';
-import type { GuideNote, Source } from '@/content/types';
+import type { Notice, Source } from '@/content/types';
 import type { Flight } from '@/lib/flights';
-import { useFlightProvider, useSavedJourney } from '@/lib/hooks';
-import { useT } from '@/lib/i18n/client';
+import { useSavedJourney } from '@/lib/hooks/use-saved-journey';
+import { useLang, useT } from '@/lib/i18n/client';
 import { buildJourney, type JourneyAirportContent, type JourneyStep } from '@/lib/journey';
+import { useFlightFeed, type FeedRequest } from '@/lib/providers/use-flight-feed';
 import type { SavedFlight } from '@/lib/stores';
 import { DemoDataBanner } from '@/components/common/demo-data-banner';
 import { Freshness } from '@/components/common/freshness';
 import { Skeleton } from '@/components/ui/skeleton';
 import { flightAvailability } from './board-model';
 import { ClearJourney } from './clear-journey';
+import { FeedNotice } from './feed-notice';
 import { useFlightAlerts } from './flight-alerts';
 import { FlightWatcher } from './flight-watcher';
 import { flightTitle } from './identify-flight';
 import { JOURNEY_EMPTY_HEADING_ID, JourneyEmpty } from './journey-empty';
-import { JourneyTimeline, modesForFlight } from './journey-timeline';
+import { JourneyTimeline, modesForFlight, useJourneyPreferences } from './journey-timeline';
 import { ParkedCarCard, type CarParkOption } from './parked-car-card';
 import { SavedFlightCard } from './saved-flight-card';
 import { SavedPlaces } from './saved-places';
 
 export interface MyJourneyProps {
-  /** Sourced airport notes for the journey timeline, by airport slug (airports with content only). */
-  notes: Readonly<Record<string, readonly GuideNote[]>>;
-  /** Sources cited by those notes, by id. */
-  sources: Readonly<Record<string, Source>>;
   carParks: readonly CarParkOption[];
+}
+
+/** One airport's journey content, as `/[lang]/journey/content/[airport]` serves it. */
+type LoadedContent = Omit<JourneyAirportContent, 'airport'> & { slug: string; notices: Notice[]; sources: Record<string, Source> };
+
+/* Loaded once per airport and language for the tab; shared by every render. */
+const contentCache = new Map<string, LoadedContent | 'loading' | 'failed'>();
+const contentListeners = new Set<() => void>();
+let contentVersion = 0;
+const subscribeContent = (listener: () => void) => {
+  contentListeners.add(listener);
+  return () => {
+    contentListeners.delete(listener);
+  };
+};
+
+function loadContent(lang: string, slug: string): void {
+  const key = `${lang}|${slug}`;
+  if (contentCache.has(key)) return;
+  contentCache.set(key, 'loading');
+  fetch(`/${lang}/journey/content/${slug}`)
+    .then((response) => (response.ok ? (response.json() as Promise<LoadedContent>) : Promise.reject(new Error(String(response.status)))))
+    .then((body) => contentCache.set(key, body))
+    .catch(() => contentCache.set(key, 'failed'))
+    .finally(() => {
+      contentVersion += 1;
+      for (const listener of [...contentListeners]) listener();
+    });
 }
 
 interface Entry {
@@ -43,26 +69,54 @@ const STEPS_HEADING_ID = 'journey-steps-title';
 /**
  * My journey: saved flights with live demo status, the selected flight's timeline, the parked-car
  * note, saved places and clear-all. Everything comes from this device's storage; status comes
- * from the demonstration provider and is labelled as such.
+ * from the flight feed and is labelled as such.
+ *
+ * Loading without layout shift (performance-06): the server HTML holds the empty state (the
+ * storage hook's server snapshot is an empty journey), and saved flights replace it in place
+ * once storage is read. The top section keeps a minimum height, so what sits below it is already
+ * out of the first screen and does not move. Each airport's notes and sources are fetched only
+ * when a saved flight needs them.
  */
-export function MyJourney({ notes, sources, carParks }: MyJourneyProps) {
+export function MyJourney({ carParks }: MyJourneyProps) {
   const t = useT();
-  const provider = useFlightProvider();
-  const { journey, hydrated, removeFlight } = useSavedJourney();
+  const lang = useLang();
+  const { journey, removeFlight } = useSavedJourney();
+  const preferences = useJourneyPreferences();
+  const loaded = useSyncExternalStore(
+    subscribeContent,
+    () => contentVersion,
+    () => 0,
+  );
+  const slugs = useMemo(() => [...new Set(journey.flights.map((flight) => flight.airport))], [journey.flights]);
+  useEffect(() => {
+    for (const slug of slugs) loadContent(lang, slug);
+  }, [slugs, lang]);
+  const feed = useFlightFeed((at): FeedRequest[] =>
+    journey.flights
+      .filter((saved) => {
+        const airport = getAirport(saved.airport);
+        return airport ? flightAvailability(saved.date, at, airport.timezone) === 'current' : false;
+      })
+      .map((saved) => ({ airport: saved.airport, date: saved.date, direction: saved.id.endsWith('-a') ? 'a' : 'd' })),
+  );
+  const provider = journey.flights.length > 0 ? feed.provider : null;
   const alerts = useFlightAlerts();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [announcement, setAnnouncement] = useState('');
   const savedHeading = useRef<HTMLHeadingElement>(null);
 
-  /* The airport slice each saved flight's timeline needs, built once per change of the list. */
+  /* The airport slice each saved flight's timeline needs: notes once loaded, none until then. */
   const contents = useMemo(() => {
-    const map = new Map<string, JourneyAirportContent>();
-    for (const saved of journey.flights) {
-      const airport = map.has(saved.airport) ? undefined : getAirport(saved.airport);
-      if (airport) map.set(saved.airport, { airport, guidesNotes: [...(notes[saved.airport] ?? [])] });
+    void loaded;
+    const map = new Map<string, JourneyAirportContent & { notices?: Notice[]; sources?: Record<string, Source> }>();
+    for (const slug of slugs) {
+      const airport = getAirport(slug);
+      if (!airport) continue;
+      const entry = contentCache.get(`${lang}|${slug}`);
+      map.set(slug, typeof entry === 'object' ? { ...entry, airport } : { airport, guidesNotes: [] });
     }
     return map;
-  }, [journey.flights, notes]);
+  }, [slugs, lang, loaded]);
 
   const entries = useMemo<Entry[]>(() => {
     const list = journey.flights.map((saved): Entry => {
@@ -72,7 +126,9 @@ export function MyJourney({ notes, sources, carParks }: MyJourneyProps) {
       const flight = provider.getFlightSync(saved.id, saved.airport);
       if (!flight) return { saved, flight: null };
       const mode = saved.mode && modesForFlight(flight).includes(saved.mode) ? saved.mode : modesForFlight(flight)[0];
-      const next = buildJourney({ flight, mode, airportContent: content, now: provider.now }).find((step) => step.state !== 'done' && step.kind !== 'status');
+      const next = buildJourney({ flight, mode, airportContent: content, now: provider.now, preferences }).find(
+        (step) => step.state === 'current' || (step.state === 'upcoming' && step.kind !== 'status'),
+      );
       return { saved, flight, next };
     });
     if (!provider) return list;
@@ -81,7 +137,7 @@ export function MyJourney({ notes, sources, carParks }: MyJourneyProps) {
       if (!a.flight || !b.flight) return a.flight ? -1 : b.flight ? 1 : 0;
       return Date.parse(a.flight.estimated) - Date.parse(b.flight.estimated);
     });
-  }, [journey.flights, provider, contents]);
+  }, [journey.flights, provider, contents, preferences]);
 
   const live = useMemo(() => entries.flatMap((entry) => (entry.flight ? [entry.flight] : [])), [entries]);
   const selected = entries.find((entry) => entry.flight && entry.saved.id === selectedId) ?? entries.find((entry) => entry.flight);
@@ -101,20 +157,12 @@ export function MyJourney({ notes, sources, carParks }: MyJourneyProps) {
     window.requestAnimationFrame(() => (savedHeading.current ?? document.getElementById(JOURNEY_EMPTY_HEADING_ID))?.focus());
   };
 
-  if (!hydrated) {
-    return (
-      <div role="status" className="flex flex-col gap-4">
-        <span className="sr-only">{t('common.labels.loading')}</span>
-        <Skeleton className="h-10 w-64" />
-        <Skeleton className="h-48 w-full" />
-      </div>
-    );
-  }
-
   const nothingSaved = journey.flights.length === 0 && journey.places.length === 0 && !journey.parkedCar;
 
   return (
     <div className="flex flex-col gap-12 lg:gap-16">
+      {/* A first-screen minimum: swapping the empty state for saved flights moves nothing in view. */}
+      <div className="min-h-[70svh]">
       {journey.flights.length === 0 ? (
         <JourneyEmpty />
       ) : (
@@ -126,9 +174,10 @@ export function MyJourney({ notes, sources, carParks }: MyJourneyProps) {
               </h2>
               <p className="type-body-sm mt-1 text-ink-2">{t.count('flightPages.journey.flightsCount', journey.flights.length)}</p>
             </div>
-            <Freshness live="off" updatedAt={provider?.meta().generatedAt ?? null} refreshSeconds={provider?.meta().refreshSeconds} />
+            <Freshness live="off" updatedAt={feed.updatedAt} refreshSeconds={feed.refreshSeconds} />
           </div>
           <DemoDataBanner />
+          <FeedNotice feed={feed} />
           <div className="grid items-start gap-x-12 gap-y-10 lg:grid-cols-[minmax(0,25rem)_minmax(0,1fr)]">
             <ul aria-labelledby={SAVED_FLIGHTS_HEADING_ID} className="flex flex-col gap-3">
               {entries.map((entry) => (
@@ -150,7 +199,8 @@ export function MyJourney({ notes, sources, carParks }: MyJourneyProps) {
                 key={selected.flight.id}
                 flight={selected.flight}
                 content={selectedContent}
-                sources={sources}
+                sources={selectedContent.sources ?? {}}
+                notices={selectedContent.notices}
                 now={provider.now}
                 title={t('flightPages.journey.journeyFor', { flight: flightTitle(selected.flight, t) })}
                 headingId={STEPS_HEADING_ID}
@@ -163,6 +213,7 @@ export function MyJourney({ notes, sources, carParks }: MyJourneyProps) {
           </div>
         </section>
       )}
+      </div>
 
       <div className="grid items-start gap-6 lg:grid-cols-2">
         <ParkedCarCard carParks={carParks} />

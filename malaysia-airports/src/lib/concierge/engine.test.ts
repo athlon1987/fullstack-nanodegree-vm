@@ -270,6 +270,21 @@ const QUESTIONS = [
   'Apakah cara termurah ke KL Sentral?',
   'Di mana surau terdekat?',
   'Telefon saya hilang',
+  // Fix round B (B-08): every question quoted in ux-frequent-11, exec-commerce-17, first-time-access-09, usability-13, docs-03.
+  'How much is the KLIA Ekspres?',
+  'Berapa tambang KLIA Ekspres?',
+  'Which terminal does Emirates use?',
+  'Which terminal does AirAsia use?',
+  'Which terminal does AirAsia use at KLIA?',
+  'Which lounge can I use near gate G6 in business class?',
+  'Can I buy fast track at KLIA?',
+  'Is there fast track at KLIA?',
+  'Where can I buy duty free chocolate?',
+  'Where do I get an accessible taxi when I arrive?',
+  'Is there step-free access to KLIA Ekspres at Terminal 1?',
+  'Boleh ibu saya guna autogate?',
+  'Saya pertama kali ke luar negara dengan ibu yang sudah tua. Pukul berapa perlu sampai?',
+  'How early should I get to the airport?',
 ];
 const CONTEXTS: ConciergeContext[] = [{}, { airport: 'kul' }, { airport: 'kul', terminal: 'T2' }, { airport: 'pen' }, { airport: 'bki' }, { airport: 'lgk' }, { airport: 'iph' }];
 
@@ -334,5 +349,118 @@ describe('property: answers contain no invented numbers or names', () => {
     }
     expect(failures).toEqual([]);
     expect(checked).toBe(2 * CONTEXTS.length * QUESTIONS.length);
+  });
+});
+
+/* ------------------------------------------------------------------------------------------
+ * Fix round B (B-08): direct answers whose first statement is the answer, with its source
+ * --------------------------------------------------------------------------------------- */
+
+describe('direct answers (B-08)', () => {
+  const kul = { airport: 'kul' } as const;
+  const first = (answer: ConciergeAnswer) => answer.statements[0];
+
+  it('a fare for a named mode leads with the fare and its source, then the dated fare change (EN and MS)', () => {
+    for (const [question, lang] of [
+      ['How much is the KLIA Ekspres?', 'en'],
+      ['Berapa tambang KLIA Ekspres?', 'ms'],
+    ] as const) {
+      const answer = ask(question, kul, lang);
+      expect(answer.intent).toBe('fare');
+      expect(answer.text).toMatch(/RM\s?55/);
+      expect(first(answer).text).toMatch(/KLIA Ekspres.*RM\s?55/);
+      expect(first(answer).sourceIds.length).toBeGreaterThan(0);
+      expect(answer.statements.some((statement) => /RM\s?65/.test(statement.text) && /2027/.test(statement.text))).toBe(true);
+      expect(answer.statements.some((statement) => /shuttle/i.test(statement.text) && !/Ekspres/.test(statement.text))).toBe(false);
+    }
+  });
+
+  it('airline to terminal at KLIA, with "confirm on your booking" when only third-party guides say so', () => {
+    const airAsia = ask('Which terminal does AirAsia use at KLIA?');
+    expect(airAsia.intent).toBe('airline-terminal');
+    expect(first(airAsia).text).toBe('AirAsia flies from KLIA Terminal 2.');
+    expect(first(airAsia).sourceIds.length).toBeGreaterThan(0);
+    expect(ask('Which terminal does AirAsia use?', kul).intent).toBe('airline-terminal');
+    const emirates = ask('Which terminal does Emirates use?', kul);
+    expect(emirates.intent).toBe('airline-terminal');
+    expect(first(emirates).text).toMatch(/^Emirates flies from KLIA Terminal 1\.$/);
+    if (first(emirates).provenance === 'estimated') expect(emirates.statements[1].text).toMatch(/confirm the terminal on your booking/);
+    const unknown = ask('Which terminal does Zed Air use?', kul);
+    expect(unknown.intent).toBe('airline-terminal');
+    expect(first(unknown).text).toMatch(/We have not published which terminal Zed Air uses at KLIA/);
+    expect(unknown.escalation).toBeDefined();
+  });
+
+  it('the lounge nearest a gate, ranked by the flight context, with access rules honestly unpublished', () => {
+    const answer = ask('Which lounge can I use near gate G6 in business class?', { airport: 'kul', flightId: departure.airport === 'kul' ? departure.id : undefined });
+    expect(answer.intent).toBe('lounge');
+    expect(answer.text).toMatch(/^Nearest to gate G6: Plaza Premium Lounge/);
+    expect(first(answer).title).toBe('Plaza Premium Lounge');
+    expect(first(answer).sourceIds.length).toBeGreaterThan(0);
+    const lounges = answer.cards.filter((card) => card.type === 'facility').map((card) => card.name);
+    expect(lounges[0]).toBe('Plaza Premium Lounge');
+    expect(lounges.indexOf('Malaysia Airlines Golden Lounge (Domestic)')).not.toBe(0);
+    expect(answer.limits.join(' ')).toMatch(/not published here/);
+  });
+
+  it('Fast Track: an honest "not published" with contacts, never a hidden-disability programme', () => {
+    for (const question of ['Can I buy fast track at KLIA?', 'Is there fast track at KLIA?']) {
+      const answer = ask(question);
+      expect(answer.intent).toBe('fast-track');
+      expect(JSON.stringify(answer.statements)).not.toMatch(/Butterfly/);
+      // When the content layer publishes the Fast Track record (D-02), it leads instead.
+      if (answer.escalation) expect(first(answer).text).toMatch(/Fast Track/);
+      else expect(sourced(answer).length).toBeGreaterThan(0);
+    }
+  });
+
+  it('duty free: the duty-free shops, the best match for the question first, with its source', () => {
+    const answer = ask('Where can I buy duty free chocolate?', kul);
+    expect(answer.intent).toBe('duty-free');
+    expect(first(answer).title).toMatch(/Chocolate/);
+    expect(first(answer).sourceIds.length).toBeGreaterThan(0);
+  });
+
+  it('Aerotrain status: reads the current notices, says when nothing is reported, never claims live data', () => {
+    const answer = ask('Is the Aerotrain running?', kul);
+    expect(answer.intent).toBe('service-status');
+    expect(answer.limits.join(' ')).toMatch(/no live operations feed/);
+    expect(answer.text).toMatch(/Aerotrain/);
+    const later = answerQuestion({ question: 'Is the Aerotrain running?', lang: 'en', context: kul }, { knowledge: en, now: Date.parse('2027-03-01T10:00:00+08:00'), flights });
+    expect(later.text).toBe('No disruption to the Aerotrain to the C gates is reported in our sources; check the signs at the airport.');
+    const during = answerQuestion({ question: 'Is the Aerotrain running?', lang: 'en', context: kul }, { knowledge: en, now: Date.parse('2026-11-29T01:00:00+08:00'), flights });
+    expect(during.text).toMatch(/^A notice about the Aerotrain to the C gates is in effect/);
+    expect(first(during).sourceIds.length).toBeGreaterThan(0);
+  });
+
+  it('accessible qualifiers keep to step-free facts and say "not published, ask" when there are none', () => {
+    for (const question of ['Where do I get an accessible taxi when I arrive?', 'Is there step-free access to KLIA Ekspres at Terminal 1?']) {
+      const answer = ask(question, kul);
+      expect(first(answer).text, question).toMatch(/^Step-free access for .* is not published in our sources\. Ask/);
+      expect(answer.escalation).toBeDefined();
+      expect(JSON.stringify(answer.statements)).not.toMatch(/Long Term Car Park shuttle/);
+    }
+  });
+
+  it('autogates (Malay) answer from the immigration notes', () => {
+    const answer = ask('Boleh ibu saya guna autogate?', kul, 'ms');
+    expect(answer.intent).toBe('immigration');
+    expect(first(answer).text).toMatch(/autogate/i);
+    expect(first(answer).sourceIds.length).toBeGreaterThan(0);
+  });
+
+  it('"how early" gives the 3-hour and 2-hour guidance first, then offers the flight lookup', () => {
+    const malay = ask('Saya pertama kali ke luar negara dengan ibu yang sudah tua. Pukul berapa perlu sampai?', kul, 'ms');
+    expect(malay.intent).toBe('arrival-time');
+    expect(malay.text).toMatch(/3 jam/);
+    expect(first(malay).text).toMatch(/3 jam/);
+    expect(malay.hint).toMatch(/nombor penerbangan/);
+    const english = ask('How early should I get to the airport?', kul);
+    expect(english.intent).toBe('arrival-time');
+    expect(english.text).toMatch(/at least 3 hours before an international flight/);
+  });
+
+  it('writes the transfer answer with articles (A-28 hand-off)', () => {
+    expect(ask('How do I get from Terminal 1 to Terminal 2?', kul).text).toMatch(/our sources list the train between Terminal 1 and Terminal 2 and the free shuttle bus/);
   });
 });

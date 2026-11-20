@@ -16,7 +16,9 @@ import { z } from 'zod';
 import type { Lang } from '@/content/types';
 import { CONCIERGE_CLIENT_TIMEOUT_MS } from '@/lib/concierge/constants';
 import type { ConciergeAnswer, ConciergeContext, ConciergeKnowledge, ConciergeMode, ConciergeResponse } from '@/lib/concierge/types';
-import { useAirportContext, useSavedJourney, useStore } from '@/lib/hooks';
+import { useAirportContext } from '@/lib/hooks/use-airport-context';
+import { useSavedJourney } from '@/lib/hooks/use-saved-journey';
+import { useStore } from '@/lib/hooks/use-store';
 import { localeHref } from '@/lib/locale';
 import { createStore, type StorageLike } from '@/lib/storage';
 

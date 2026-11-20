@@ -15,7 +15,10 @@ export default function AirportLayout({ children, params }: LayoutProps<'/[lang]
       <Suspense fallback={<HeaderSkeleton />}>
         <Header params={params} />
       </Suspense>
-      {children}
+      {/* Marks airport pages for styles that depend on the airport chrome (phone breadcrumbs). */}
+      <div data-airport-page="" className="contents">
+        {children}
+      </div>
     </>
   );
 }
@@ -25,13 +28,14 @@ async function Header({ params }: { params: AirportPageParams }) {
   return <AirportHeader airport={airport} lang={lang} sections={sections} />;
 }
 
+/** The size of the compact airport bar, the chrome of most airport pages (no layout shift). */
 function HeaderSkeleton() {
   return (
     <div className="border-b border-line bg-page-subtle" aria-hidden="true">
-      <Container className="py-6">
-        <Skeleton className="h-3.5 w-48" />
-        <Skeleton className="mt-4 h-10 w-full max-w-lg" />
-        <Skeleton className="mt-5 h-8 w-72" />
+      <Container className="flex min-h-[3.4375rem] items-center gap-3 py-1 md:min-h-13">
+        <Skeleton className="h-6 w-24" />
+        <Skeleton className="h-5 w-14" />
+        <Skeleton className="ml-auto h-9 w-28 md:hidden" />
       </Container>
     </div>
   );

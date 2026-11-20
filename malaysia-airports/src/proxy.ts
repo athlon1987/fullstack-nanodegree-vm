@@ -1,6 +1,8 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { isLang } from '@/content/types';
 import { negotiateLang } from '@/lib/locale';
+// Package B (fix round, B-14): flight pages get a cheap 404 or a codeshare 308 before rendering.
+import { flightRouteResponse } from '@/lib/providers/flight-route';
 
 /**
  * Every page lives under `/en` or `/ms`. This proxy sends any path WITHOUT a locale to the
@@ -14,6 +16,8 @@ import { negotiateLang } from '@/lib/locale';
  */
 export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
+  const flight = flightRouteResponse(request);
+  if (flight) return flight;
   if (isLang(pathname.split('/')[1])) return NextResponse.next();
 
   const cookie = request.cookies.get('lang')?.value;
@@ -31,5 +35,6 @@ export function proxy(request: NextRequest) {
 
 export const config = {
   // Everything except: localised pages, API routes, Next.js internals, and files with an extension.
-  matcher: ['/((?!en(?:/|$)|ms(?:/|$)|api(?:/|$)|_next/|.*\\.[^/]+$).*)'],
+  // Plus flight pages (B-14), which the proxy answers cheaply when the id is unknown or a codeshare.
+  matcher: ['/((?!en(?:/|$)|ms(?:/|$)|api(?:/|$)|_next/|.*\\.[^/]+$).*)', '/(en|ms)/:airport/flights/:id'],
 };

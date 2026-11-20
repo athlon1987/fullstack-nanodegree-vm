@@ -111,12 +111,23 @@ export function chooseAirportPath(section: AirportSectionId = 'overview'): strin
 }
 
 /**
+ * The honest state for a section an airport does not have (A-07): it says the section is not
+ * published for that airport and points to the official site and phone. A link named after a
+ * section never silently lands on the airport overview.
+ */
+export function notPublishedPath(airport: string, section: AirportSectionId): string {
+  const slug = getAirport(airport)?.slug ?? airport.toLowerCase();
+  return `/airports/not-published?airport=${slug}&section=${section}`;
+}
+
+/**
  * The link for an airport-scoped destination.
  *
  * @param section      Where the visitor wants to go.
  * @param selection    The remembered airport (`useAirportContext().selection`), an airport slug, or nothing.
  * @param availability Sections per airport (`useSectionAvailability()`); when the chosen airport
- *                     lacks the section the link goes to that airport's home instead of a 404.
+ *                     lacks the section the link goes to the "not published" state for it
+ *                     (`notPublishedPath`), never to a 404 and never silently to the overview.
  *
  * @example sectionHref('parking', selection, availability) // '/kul/parking?t=T1' or '/airports?then=parking'
  */
@@ -128,27 +139,41 @@ export function sectionHref(
   const chosen = typeof selection === 'string' ? { airport: selection } : selection;
   const airport = chosen ? getAirport(chosen.airport) : undefined;
   if (!chosen || !airport) return chooseAirportPath(section);
-  const target = hasSection(availability, airport.slug, section) ? section : 'overview';
-  return sectionPath(airport.slug, target, chosen.terminal);
+  if (!hasSection(availability, airport.slug, section)) return notPublishedPath(airport.slug, section);
+  return sectionPath(airport.slug, section, chosen.terminal);
+}
+
+/** True when `sectionHref` would lead to the "not published" state for the chosen airport. */
+export function isSectionMissing(
+  section: AirportSectionId,
+  selection: AirportSelection | string | null | undefined,
+  availability?: SectionAvailability,
+): boolean {
+  const chosen = typeof selection === 'string' ? { airport: selection } : selection;
+  const airport = chosen ? getAirport(chosen.airport) : undefined;
+  return Boolean(airport) && !hasSection(availability, airport!.slug, section);
 }
 
 /**
  * Where choosing an airport should lead, given the page the visitor is on (`pathname` without
  * the locale): the same section at the new airport when it exists there, otherwise that
- * airport's home. Returns `null` when the current page is not airport-scoped (stay where you are).
+ * airport's home (the visitor chose an airport, not a section). Returns `null` when the current
+ * page is not airport-scoped (stay where you are).
  */
 export function sameSectionPath(pathname: string, next: AirportSelection, availability?: SectionAvailability): string | null {
   const [first, second] = pathname.split(/[?#]/)[0].split('/').filter(Boolean);
   if (!first || !getAirport(first)) return null;
   const section: AirportSectionId = isAirportSection(second) ? second : 'overview';
-  return sectionHref(section, next, availability);
+  const airport = getAirport(next.airport);
+  if (!airport) return null;
+  return sectionPath(airport.slug, hasSection(availability, airport.slug, section) ? section : 'overview', next.terminal);
 }
 
 /* ---- Primary navigation --------------------------------------------------------------------- */
 
 /** One item of the primary navigation. */
 export interface PrimaryNavItem {
-  id: 'flights' | 'plan' | 'at-airport' | 'shop-dine' | 'transport' | 'help';
+  id: 'flights' | 'plan' | 'at-airport' | 'shop-dine' | 'transport' | 'help' | 'assistance';
   labelKey: TKey;
   icon: IconKey;
   /** Airport-scoped items name their section; the others have a fixed path. */
@@ -162,7 +187,7 @@ export interface PrimaryNavItem {
   activePrefixes?: readonly string[];
 }
 
-/** Flights, Plan your journey, At the airport, Shop & dine, Transport & parking, Help. */
+/** Flights, Plan your journey, At the airport, Shops and food, Transport and parking, Help, Assistance. */
 export const PRIMARY_NAV: readonly PrimaryNavItem[] = [
   { id: 'flights', labelKey: 'nav.flights', icon: 'plane-takeoff', section: 'flights', activeSections: ['flights'] },
   { id: 'plan', labelKey: 'nav.plan', icon: 'route', href: '/guides', activePrefixes: ['/guides', '/journey'] },
@@ -176,16 +201,25 @@ export const PRIMARY_NAV: readonly PrimaryNavItem[] = [
   },
   { id: 'shop-dine', labelKey: 'nav.shopDine', icon: 'utensils', section: 'shop-dine', activeSections: ['shop-dine'] },
   { id: 'transport', labelKey: 'nav.transport', icon: 'train-front', section: 'transport', fallbacks: ['parking'], activeSections: ['transport', 'parking'] },
-  { id: 'help', labelKey: 'nav.help', icon: 'circle-help', href: '/help', activePrefixes: ['/help', '/accessibility', '/notices'] },
+  { id: 'help', labelKey: 'nav.help', icon: 'circle-help', href: '/help', activePrefixes: ['/help', '/notices'] },
+  // Assistance in the header, one interaction from any page (A-15, BR-18).
+  { id: 'assistance', labelKey: 'shellExtras.nav.assistance', icon: 'accessibility', href: '/accessibility', activePrefixes: ['/accessibility'] },
 ];
+
+/** The section a primary navigation item leads to at the chosen airport, or `null` when none of its sections exists there. */
+export function primaryNavSection(item: PrimaryNavItem, selection: AirportSelection | null | undefined, availability?: SectionAvailability): AirportSectionId | null {
+  if (!item.section) return null;
+  if (!selection) return item.section;
+  const candidates = [item.section, ...(item.fallbacks ?? [])];
+  return candidates.find((candidate) => hasSection(availability, selection.airport, candidate)) ?? null;
+}
 
 /** The link of a primary navigation item for the current airport context. */
 export function primaryNavHref(item: PrimaryNavItem, selection: AirportSelection | null | undefined, availability?: SectionAvailability): string {
   if (!item.section) return item.href ?? '/';
   if (!selection) return chooseAirportPath(item.section);
-  const candidates = [item.section, ...(item.fallbacks ?? [])];
-  const section = candidates.find((candidate) => hasSection(availability, selection.airport, candidate)) ?? 'overview';
-  return sectionHref(section, selection, availability);
+  const section = primaryNavSection(item, selection, availability);
+  return section ? sectionHref(section, selection, availability) : notPublishedPath(selection.airport, item.section);
 }
 
 /** Is this item the current one for a pathname (without the locale)? */

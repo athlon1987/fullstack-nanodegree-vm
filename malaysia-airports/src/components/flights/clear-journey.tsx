@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { useSavedJourney } from '@/lib/hooks';
+import { useSavedJourney } from '@/lib/hooks/use-saved-journey';
 import { useT } from '@/lib/i18n/client';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogTrigger } from '@/components/ui/dialog';

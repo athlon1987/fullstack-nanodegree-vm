@@ -1,7 +1,10 @@
 'use client';
 
 import { cn } from '@/lib/cn';
-import { useT } from '@/lib/i18n/client';
+import { useLang, useT } from '@/lib/i18n/client';
+import { localeHref } from '@/lib/locale';
+import { JsonLd } from '@/lib/seo/json-ld';
+import { absoluteUrl } from '@/lib/seo/site';
 import { Icon } from '@/components/ui/icon';
 import { LocaleLink } from './locale-link';
 
@@ -27,10 +30,25 @@ export interface BreadcrumbsProps {
  */
 export function Breadcrumbs({ items, hideHome = false, className }: BreadcrumbsProps) {
   const t = useT();
+  const lang = useLang();
   const trail: BreadcrumbItem[] = hideHome ? [...items] : [{ label: t('nav.home'), href: '/' }, ...items];
   const parentIndex = trail.length - 2;
+  // The matching schema.org BreadcrumbList (A-30), built like `breadcrumbJsonLd` in
+  // `@/lib/seo/schemas` (which imports all content, so it cannot run in this Client Component).
+  // The current page, last, has no link of its own and is listed without one.
+  const structured = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: trail.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.label,
+      ...(item.href ? { item: absoluteUrl(localeHref(lang, item.href)) } : {}),
+    })),
+  };
   return (
-    <nav aria-label={t('nav.breadcrumbLabel')} className={cn('min-w-0', className)}>
+    <nav aria-label={t('nav.breadcrumbLabel')} data-breadcrumbs="" className={cn('min-w-0', className)}>
+      <JsonLd data={structured} />
       <ol className="type-body-sm flex flex-wrap items-center gap-x-1 text-ink-2">
         {trail.map((item, index) => {
           const current = index === trail.length - 1;

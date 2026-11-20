@@ -17,7 +17,9 @@ export interface LanguageSwitchProps {
 
 /** Remember the choice for the `/` redirect in `src/proxy.ts`. */
 function rememberLanguage(lang: Lang): void {
-  document.cookie = `lang=${lang}; path=/; max-age=31536000; samesite=lax`;
+  // Secure on https (the site's only cookie; plain http only in local development).
+  const secure = window.location.protocol === 'https:' ? '; secure' : '';
+  document.cookie = `lang=${lang}; path=/; max-age=31536000; samesite=lax${secure}`;
 }
 
 function Links({ variant, pathname, className }: LanguageSwitchProps & { pathname: string | null }) {

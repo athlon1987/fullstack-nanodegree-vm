@@ -1,20 +1,23 @@
 'use client';
 
 import { useMemo, type ReactNode } from 'react';
-import type { Source } from '@/content/types';
+import type { Notice, Source } from '@/content/types';
 import { decodeFlightId } from '@/lib/flights';
-import { useFlightProvider, useSavedJourney } from '@/lib/hooks';
+import { useSavedJourney } from '@/lib/hooks/use-saved-journey';
 import { useT } from '@/lib/i18n/client';
-import type { JourneyAirportContent } from '@/lib/journey';
+import { buildJourney, type JourneyAirportContent } from '@/lib/journey';
+import { useFlightFeed, type FeedRequest } from '@/lib/providers/use-flight-feed';
 import { dateKey } from '@/lib/time';
 import { flightAvailability, sameFlightOn } from './board-model';
+import { FeedNotice } from './feed-notice';
 import { FlightActions } from './flight-actions';
 import { useFlightAlerts } from './flight-alerts';
-import { FlightAlertsPanel } from './flight-alerts-panel';
 import { FlightNotFound } from './flight-not-found';
-import { FlightStatusHero, FlightStatusHeroSkeleton } from './flight-status-hero';
+import { FlightStatusHero, FlightStatusHeroSkeleton, type PublishedCheckIn } from './flight-status-hero';
+import { FlightSummary, FlightSummarySkeleton } from './flight-summary';
 import { FlightWatcher } from './flight-watcher';
-import { JourneyTimeline } from './journey-timeline';
+import { JourneyTimeline, modesForFlight, useJourneyPreferences } from './journey-timeline';
+import { NeedsControl } from './needs-control';
 
 export interface FlightDetailProps {
   flightId: string;
@@ -23,6 +26,10 @@ export interface FlightDetailProps {
   title: string;
   journeyContent: JourneyAirportContent;
   sources: Readonly<Record<string, Source>>;
+  /** The airport's notices, for the status lines in the timeline (B-01). */
+  notices?: readonly Notice[];
+  /** The airline's published check-in area, for the card before the flight has a row (B-12). */
+  publishedCheckIn?: PublishedCheckIn;
   /** "If your flight is delayed or cancelled", rendered on the server. Moves to the top when it applies. */
   disruption: ReactNode;
   /** Published facts about the airline at this airport, rendered on the server. */
@@ -30,24 +37,51 @@ export interface FlightDetailProps {
 }
 
 /**
- * The live part of a flight page, computed after hydration from the demo provider: the status
- * hero, actions, the journey timeline, demo alerts and help. Unknown, finished or far-future
- * flights get a helpful not-found state instead.
+ * The live part of a flight page, from the server flight feed after hydration: the next-step
+ * summary, the status card with Save and Follow, the journey timeline (with the visitor's needs
+ * and trip options, and status lines), help and the airline's published facts. If the feed
+ * fails, last-known data stays on screen with its age and a retry. Unknown, finished or
+ * far-future flights get a helpful not-found state instead.
  */
-export function FlightDetail({ flightId, airport, title, journeyContent, sources, disruption, airlineFacts }: FlightDetailProps) {
+export function FlightDetail({ flightId, airport, title, journeyContent, sources, notices, publishedCheckIn, disruption, airlineFacts }: FlightDetailProps) {
   const t = useT();
-  const provider = useFlightProvider();
   const zone = journeyContent.airport.timezone;
+  const parts = decodeFlightId(flightId);
+  const feed = useFlightFeed((at): FeedRequest[] => {
+    if (!parts) return [];
+    const today = dateKey(at, zone);
+    return [
+      { airport, date: parts.date, direction: parts.direction },
+      ...(today !== parts.date ? [{ airport, date: today, direction: parts.direction }] : []),
+    ];
+  });
+  const provider = feed.provider;
   const flight = useMemo(() => provider?.getFlightSync(flightId, airport) ?? null, [provider, flightId, airport]);
   const { isFlightSaved } = useSavedJourney();
   const alerts = useFlightAlerts();
+  const preferences = useJourneyPreferences();
   const saved = flight ? isFlightSaved(flight.id) : false;
   const alerted = flight ? alerts.ids.has(flight.id) : false;
   const watched = useMemo(() => (flight && (saved || alerted) ? [flight] : []), [flight, saved, alerted]);
+  const summarySteps = useMemo(
+    () => (flight && provider ? buildJourney({ flight, mode: modesForFlight(flight)[0], airportContent: journeyContent, now: provider.now, preferences }) : null),
+    [flight, provider, journeyContent, preferences],
+  );
 
-  if (!provider) return <FlightStatusHeroSkeleton />;
+  if (!provider) {
+    return (
+      <div className="flex flex-col gap-4">
+        <FeedNotice feed={feed} timeZone={zone} />
+        {feed.status === 'error' ? null : (
+          <>
+            <FlightSummarySkeleton />
+            <FlightStatusHeroSkeleton />
+          </>
+        )}
+      </div>
+    );
+  }
 
-  const parts = decodeFlightId(flightId);
   const availability = parts ? flightAvailability(parts.date, provider.now, zone) : 'expired';
   if (!flight || availability !== 'current') {
     const todayId = sameFlightOn(flightId, dateKey(provider.now, zone));
@@ -60,7 +94,14 @@ export function FlightDetail({ flightId, airport, title, journeyContent, sources
   return (
     <div className="flex flex-col gap-10 lg:gap-14">
       <div className="flex flex-col gap-4">
-        <FlightStatusHero flight={flight} updatedAt={provider.meta().generatedAt} refreshSeconds={provider.meta().refreshSeconds} />
+        {summarySteps ? <FlightSummary flight={flight} steps={summarySteps} now={provider.now.getTime()} /> : null}
+        <FeedNotice feed={feed} timeZone={zone} />
+        <FlightStatusHero
+          flight={flight}
+          updatedAt={feed.updatedAt}
+          refreshSeconds={feed.refreshSeconds}
+          publishedCheckIn={publishedCheckIn}
+        />
         <FlightActions flight={flight} title={title} />
       </div>
       {disrupted ? disruption : null}
@@ -69,12 +110,13 @@ export function FlightDetail({ flightId, airport, title, journeyContent, sources
           flight={flight}
           content={journeyContent}
           sources={sources}
+          notices={notices}
           now={provider.now}
           title={t('journey.timeline.title')}
           headingId="flight-journey-title"
         />
         <div className="flex flex-col gap-5">
-          <FlightAlertsPanel flight={flight} />
+          <NeedsControl tripOptions={flight.direction === 'd'} />
           {disrupted ? null : disruption}
           {airlineFacts}
         </div>

@@ -10,6 +10,7 @@ import {
   FACILITY_CATEGORY_META,
   FAQS,
   GUIDES,
+  MAP_POI_KIND_LABELS,
   MEDIA_ITEMS,
   NEWS_ITEMS,
   TRANSPORT_MODE_LABELS,
@@ -25,6 +26,14 @@ import { CORPORATE_SECTIONS } from '@/components/corporate/corporate-sections';
 import type { SearchDocument } from './engine';
 
 const both = (text: LocalizedText): string[] => (text.ms ? [text.en, text.ms] : [text.en]);
+
+/** Topics people search for that the content layer does not publish yet (needs MAHB data). */
+const UNPUBLISHED_TOPICS = [
+  { id: 'accessibleParking', href: '/accessibility', keywords: ['accessible parking', 'disabled parking', 'oku parking', 'parkir oku', 'blue badge', 'accessible', 'parking'] },
+  { id: 'hearingLoop', href: '/accessibility', keywords: ['hearing loop', 'hearing loops', 'induction loop', 'hearing', 'deaf', 'pekak', 'gelung pendengaran'] },
+  { id: 'moneyChanger', href: '/help', keywords: ['money changer', 'money changers', 'currency exchange', 'forex', 'pengurup wang', 'tukar wang', 'tukaran wang', 'changer', 'currency'] },
+  { id: 'trolley', href: '/help', keywords: ['trolley', 'trolleys', 'troli', 'baggage trolley', 'luggage cart'] },
+] as const;
 const clip = (text: string, length = 220): string => (text.length > length ? `${text.slice(0, length - 1).trimEnd()}…` : text);
 
 /**
@@ -86,7 +95,7 @@ export function buildSearchDocuments(lang: Lang): SearchDocument[] {
         summary: clip([outlet.category, outlet.locationNote ? pick(outlet.locationNote, lang) : '', outlet.description ? pick(outlet.description, lang) : ''].filter(Boolean).join('. ')),
         href: `/${airport.slug}/shop-dine/${outlet.slug}`,
         airport: airport.slug,
-        keywords: [outlet.category, outlet.cuisine ?? '', outlet.kind, airport.code, airport.shortName].filter(Boolean),
+        keywords: [outlet.category, outlet.cuisine ?? '', outlet.kind, outlet.halal === 'certified' ? 'halal' : '', outlet.halal === 'certified' ? 'halal certified' : '', airport.code, airport.shortName].filter(Boolean),
       });
     }
     for (const option of content.transport) {
@@ -99,6 +108,37 @@ export function buildSearchDocuments(lang: Lang): SearchDocument[] {
         href: `/${airport.slug}/transport#transport-${option.id}`,
         airport: airport.slug,
         keywords: [...both(TRANSPORT_MODE_LABELS[option.mode]), ...both(option.name), option.mode.replace(/-/g, ' '), option.operator ?? '', ...option.destinations.flatMap((destination) => both(destination.name)), airport.code, airport.shortName].filter(Boolean),
+      });
+    }
+    // Places on the schematic maps that no other record covers (lifts, information points,
+    // meeting points): "lift" and "lif" find them (A-12). Positions are illustrative and the map
+    // page says so; the search result only names the place and its level.
+    for (const map of content.maps) {
+      for (const poi of map.pois) {
+        if (poi.ref || poi.kind === 'gate') continue;
+        const kindLabel = (MAP_POI_KIND_LABELS as Partial<Record<string, LocalizedText>>)[poi.kind];
+        documents.push({
+          id: `place:${map.id}:${poi.id}`,
+          type: 'place',
+          title: pick(poi.name, lang),
+          summary: `${pick(map.name, lang)} · ${poi.level}`,
+          href: `/${airport.slug}/map?t=${map.terminal}&level=${encodeURIComponent(poi.level)}&poi=${encodeURIComponent(poi.id)}`,
+          airport: airport.slug,
+          keywords: [...(kindLabel ? both(kindLabel) : []), poi.kind.replace(/-/g, ' '), ...both(poi.name), map.terminal, airport.code, airport.shortName],
+        });
+      }
+    }
+    // Airlines with a published terminal and check-in: "AirAsia" finds the airline, not only its flights.
+    for (const airline of content.airlines) {
+      const terminal = airline.terminal && isMultiTerminal(airport) ? airport.terminals.find((item) => item.id === airline.terminal) : undefined;
+      documents.push({
+        id: `airline:${airport.slug}:${airline.code.toLowerCase()}`,
+        type: 'airline',
+        title: `${airline.name} (${airline.code})`,
+        summary: clip([terminal ? pick(terminal.name, lang) : airport.shortName, airline.checkIn ?? '', airline.note ? pick(airline.note, lang) : ''].filter(Boolean).join(' · ')),
+        href: `/${airport.slug}/flights?q=${encodeURIComponent(airline.code)}${terminal ? `&t=${terminal.id}` : ''}`,
+        airport: airport.slug,
+        keywords: [airline.code, airline.name, ...airline.name.split(/[\s()]+/).filter((word) => word.length > 2), airline.terminal ?? '', airport.code, airport.shortName].filter(Boolean),
       });
     }
     for (const carPark of content.carParks) {
@@ -184,6 +224,18 @@ export function buildSearchDocuments(lang: Lang): SearchDocument[] {
     });
   }
   const t = getT(lang);
+  // Known gaps answer honestly instead of returning the nearest unrelated record (A-12). These
+  // say only that nothing is published; they state no fact about the airports.
+  for (const gap of UNPUBLISHED_TOPICS) {
+    documents.push({
+      id: `unpublished:${gap.id}`,
+      type: 'unpublished',
+      title: t(`shellExtras.searchGaps.${gap.id}.title`),
+      summary: t(`shellExtras.searchGaps.${gap.id}.summary`),
+      href: gap.href,
+      keywords: [...gap.keywords],
+    });
+  }
   for (const section of CORPORATE_SECTIONS) {
     if (indexed.has(section.href)) continue;
     documents.push({

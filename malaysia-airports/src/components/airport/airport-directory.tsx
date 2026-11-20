@@ -117,6 +117,12 @@ export function AirportDirectoryView({ then }: AirportDirectoryViewProps) {
     );
   };
 
+  // The choices most visitors want, as large buttons above the filters (A-26): KLIA Terminal 1,
+  // KLIA Terminal 2 and the last airport used on this device.
+  const pinned = AIRPORT_CHOICES.filter((choice) => choice.airport === 'kul' && choice.terminal);
+  const last = selection ? AIRPORT_CHOICES.find((choice) => choice.airport === selection.airport && (choice.terminal ?? undefined) === selection.terminal) : undefined;
+  const quick = last && !pinned.some((choice) => choice.id === last.id) ? [last, ...pinned] : pinned;
+
   return (
     <div className="flex flex-col gap-8 lg:gap-10">
       {targetLabel ? (
@@ -124,6 +130,33 @@ export function AirportDirectoryView({ then }: AirportDirectoryViewProps) {
           {t('airportsPage.thenBanner', { section: targetLabel })}
         </Callout>
       ) : null}
+
+      <section aria-labelledby="airports-quick-title" className="-mt-2 lg:-mt-4">
+        <h2 id="airports-quick-title" className="type-eyebrow mb-2 text-ink-2">
+          {t('shellExtras.directory.pinnedTitle')}
+        </h2>
+        <ul className="grid gap-2 sm:grid-cols-3">
+          {quick.map((choice) => {
+            const isLast = choice.id === last?.id;
+            return (
+              <li key={choice.id} className="flex min-w-0">
+                <LocaleLink
+                  href={sectionHref(target, { airport: choice.airport, terminal: choice.terminal }, availability)}
+                  onClick={() => set(choice.terminal ? { airport: choice.airport, terminal: choice.terminal } : { airport: choice.airport })}
+                  className="flex min-h-14 w-full min-w-0 items-center gap-3 rounded-lg border border-line-strong bg-surface px-3 py-2 text-ink transition-colors duration-fast hover:border-ink hover:bg-page-subtle"
+                >
+                  <AirportCode code={choice.code} variant="boxed" className="w-13 shrink-0 justify-center text-center" />
+                  <span className="min-w-0 flex-1">
+                    <span className="type-title-sm block">{pick(choice.label, lang)}</span>
+                    {isLast ? <span className="type-caption block text-ink-2">{t('shellExtras.directory.lastUsed')}</span> : null}
+                  </span>
+                  <Icon name="arrow-right" size="sm" strokeWidth={1.75} className="shrink-0 text-ink-3" />
+                </LocaleLink>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
 
       <div className="grid gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:items-start">
         <form role="search" aria-label={t('airportsPage.filtersLabel')} onSubmit={(event) => event.preventDefault()} className="flex min-w-0 flex-col gap-4">

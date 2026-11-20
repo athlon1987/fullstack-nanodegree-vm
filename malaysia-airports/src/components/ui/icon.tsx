@@ -393,6 +393,9 @@ const ALIASES: Record<string, IconName> = {
   faq: 'circle-help',
   notice: 'megaphone',
   corporate: 'landmark',
+  place: 'map-pin',
+  airline: 'plane',
+  unpublished: 'circle-dashed',
   // Product concepts
   journey: 'bookmark',
   concierge: 'sparkles',

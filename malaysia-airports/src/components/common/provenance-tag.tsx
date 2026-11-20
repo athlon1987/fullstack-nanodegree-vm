@@ -23,7 +23,10 @@ export const PROVENANCE_ICONS: Record<Provenance, IconName> = {
 
 export interface ProvenanceTagProps extends HTMLAttributes<HTMLSpanElement> {
   provenance: Provenance;
-  /** `full` (default): "Official instruction". `short`: "Official", for dense rows. */
+  /**
+   * One tag set in both languages (A-14): Official, Estimated, Suggestion, Demo. `full` and
+   * `short` now read the same for the first three; `full` spells out "Demonstration data".
+   */
   length?: 'full' | 'short';
 }
 
@@ -40,16 +43,18 @@ export function ProvenanceTag({ provenance, length = 'full', className, ...rest 
   return (
     <span
       data-provenance={provenance}
+      data-demo-marker={provenance === 'demo' ? '' : undefined}
       className={cn(
-        'type-caption relative inline-flex h-6 shrink-0 items-center gap-1.5 overflow-hidden rounded-sm border pr-2 pl-1.5 font-semibold whitespace-nowrap',
-        provenance === 'demo' && 'pl-4',
+        // Wraps instead of widening the page at 320 px and 125% text (A-16); 20 px tall otherwise.
+        'type-caption relative inline-flex min-h-5 max-w-full items-center gap-1 overflow-hidden rounded-xs border py-px pr-1.5 pl-1 leading-tight font-semibold',
+        provenance === 'demo' && 'pl-3.5',
         form.box,
         className,
       )}
       {...rest}
     >
-      {provenance === 'demo' ? <span aria-hidden="true" className="hazard-stripes absolute inset-y-0 left-0 w-2.5" /> : null}
-      <Icon name={form.icon} size="xs" strokeWidth={2} />
+      {provenance === 'demo' ? <span aria-hidden="true" className="hazard-stripes absolute inset-y-0 left-0 w-2" /> : null}
+      <Icon name={form.icon} size="xs" strokeWidth={2} className="shrink-0" />
       {t(`provenance.${provenance}.${length === 'short' ? 'short' : 'label'}`)}
     </span>
   );

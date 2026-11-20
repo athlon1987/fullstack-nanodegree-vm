@@ -116,6 +116,15 @@ export const CONCIERGE_INTENTS = [
   'gate',
   'notices',
   'contact',
+  // Slot-specific intents whose first statement is the direct answer (B-08).
+  'fare',
+  'airline-terminal',
+  'lounge',
+  'fast-track',
+  'duty-free',
+  'service-status',
+  'immigration',
+  'arrival-time',
   'greeting',
   'unknown',
 ] as const;
@@ -148,6 +157,10 @@ export interface ConciergeSlots {
   leave: boolean;
   /** Mentions bags or luggage. */
   baggage: boolean;
+  /** "accessible", "step-free", "wheelchair", "elderly", "warga emas": answers keep to step-free facts (B-08). */
+  accessible: boolean;
+  /** An airline named in words that is not in our airline records ("Emirates"), as typed. */
+  airlineName?: string;
 }
 
 export interface Understanding {

@@ -3,7 +3,8 @@
 import { useId, useRef, useState, type FormEvent } from 'react';
 import { AIRPORTS, getAirport } from '@/content/airports';
 import type { Provenance } from '@/content/types';
-import { useAirportContext, useSavedJourney } from '@/lib/hooks';
+import { useAirportContext } from '@/lib/hooks/use-airport-context';
+import { useSavedJourney } from '@/lib/hooks/use-saved-journey';
 import { useLang, useT } from '@/lib/i18n/client';
 import { formatDateTime } from '@/lib/time';
 import { LocaleLink } from '@/components/common/locale-link';

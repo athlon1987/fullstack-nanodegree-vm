@@ -7,6 +7,8 @@ import { LocaleLink } from '@/components/common/locale-link';
 import type { AirportSectionId } from '@/components/shell/sections';
 import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
+import { AirportBar } from './airport-bar';
+import { AirportChrome } from './airport-chrome';
 import { AirportTitle, SyncAirportContext } from './airport-title';
 import { SectionNav, TerminalChips } from './section-nav';
 
@@ -18,16 +20,21 @@ export interface AirportHeaderProps {
 }
 
 /**
- * The header of every page under an airport: its classification and place, the name (the `h1`
- * on the overview), its code, the local time, terminal chips at KLIA, its line-drawn vignette,
- * and the section navigation.
+ * The header of every page under an airport.
+ *
+ * - On the overview: the full banner (classification and place, the name as the `h1`, its code,
+ *   the local time, terminal chips at KLIA, its line-drawn vignette) and the section tabs.
+ * - On every section page: one compact row (at most 56 px on phones) with the airport, its
+ *   terminal and clock, and the sections behind one control, so the page's own `h1` and answer
+ *   start in the first phone screen (A-01). From `md` up the section tabs stay visible under it.
  */
 export function AirportHeader({ airport, lang, sections }: AirportHeaderProps) {
   const t = getT(lang);
   const place = airport.city === airport.state ? airport.city : `${airport.city}, ${airport.state}`;
-  return (
-    <div className="border-b border-line bg-page-subtle">
-      <SyncAirportContext slug={airport.slug} />
+  const terminals = isMultiTerminal(airport) ? airport.terminals.map((terminal) => ({ id: terminal.id, label: pick(terminal.shortName, lang) })) : [];
+
+  const full = (
+    <div data-airport-chrome="full" className="border-b border-line bg-page-subtle">
       <Container>
         <div className="grid items-end gap-x-10 pt-4 sm:pt-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,16rem)]">
           <div className="min-w-0 pb-4 sm:pb-5">
@@ -44,9 +51,7 @@ export function AirportHeader({ airport, lang, sections }: AirportHeaderProps) {
             <div className="mt-3.5 flex flex-wrap items-center gap-x-5 gap-y-2.5">
               <AirportCode code={airport.code} name={airport.name} variant="boxed" />
               <LocalTime showLabel timeZone={airport.timezone} className="flex-wrap whitespace-normal" />
-              {isMultiTerminal(airport) ? (
-                <TerminalChips slug={airport.slug} terminals={airport.terminals.map((terminal) => ({ id: terminal.id, label: pick(terminal.shortName, lang) }))} />
-              ) : null}
+              {terminals.length > 0 ? <TerminalChips slug={airport.slug} terminals={terminals} /> : null}
               <LocaleLink href="/airports" className="link-action type-body-sm text-ink-2 max-sm:hidden">
                 <Icon name="tower-control" size="sm" />
                 {t('nav.airports')}
@@ -60,5 +65,29 @@ export function AirportHeader({ airport, lang, sections }: AirportHeaderProps) {
         <SectionNav slug={airport.slug} name={airport.shortName} sections={sections} />
       </Container>
     </div>
+  );
+
+  const compact = (
+    <div data-airport-chrome="compact" className="border-b border-line bg-page-subtle">
+      <AirportBar
+        slug={airport.slug}
+        name={airport.shortName}
+        fullName={airport.name}
+        code={airport.code}
+        timeZone={airport.timezone}
+        terminals={terminals}
+        sections={sections}
+      />
+      <Container className="max-md:hidden">
+        <SectionNav slug={airport.slug} name={airport.shortName} sections={sections} />
+      </Container>
+    </div>
+  );
+
+  return (
+    <>
+      <SyncAirportContext slug={airport.slug} />
+      <AirportChrome full={full} compact={compact} />
+    </>
   );
 }

@@ -45,6 +45,18 @@ export interface FlightAirline {
   name: string;
 }
 
+/** A cabin a check-in row can be reserved for. */
+export type CheckInCabin = 'economy' | 'business' | 'first';
+
+/** One check-in area of a flight: a row and its counters, for one cabin when the source says so. */
+export interface CheckInDesk {
+  /** The cabin the row serves. Omitted when the row serves the whole flight (or the source does not say). */
+  cabin?: CheckInCabin;
+  row: string;
+  /** Counter range, for example `1-18`. */
+  counters?: string;
+}
+
 /** One flight on a board. Times are ISO strings with the airport's UTC offset. */
 export interface Flight {
   /** `<airline><number>-<yyyymmdd>-<d|a>`, for example `mh2610-20261117-d`. See `decodeFlightId`. */
@@ -73,10 +85,17 @@ export interface Flight {
   statusDetail?: LocalizedText;
   /** Known delay in minutes (0 when on time or not yet announced). */
   delayMinutes: number;
-  /** Check-in row, shown only while check-in is relevant (departures). */
+  /**
+   * Check-in row of the first (main) desk, shown only while check-in is relevant (departures).
+   * Kept for simple lists; when `checkInDesks` has several cabins, show those instead.
+   */
   checkInRow?: string;
-  /** Check-in counter range, for example `1-18` (departures). */
+  /** Counter range of the first desk, for example `1-18` (departures). */
   checkInCounters?: string;
+  /** Every check-in desk for the flight, by cabin when known (departures). Use `checkInLines()`. */
+  checkInDesks?: CheckInDesk[];
+  /** Self-service bag drop rows, when known (departures): `['F', 'G']`. */
+  bagDrop?: string[];
   checkInOpensAt?: string;
   checkInClosesAt?: string;
   /** Gate. Undefined until it is assigned: show `flights.board.gateNotAssigned`. */

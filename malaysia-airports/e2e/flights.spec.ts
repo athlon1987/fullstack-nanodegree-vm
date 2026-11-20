@@ -127,12 +127,16 @@ test.describe('flight page', () => {
     await expect(page.getByRole('main').getByText(/Calendar file downloaded/)).toBeVisible();
   });
 
-  test('an unknown flight gets a helpful page with a search', async ({ page }) => {
-    await page.goto('/en/kul/flights/zz9999-20261118-d');
+  // Intended change (B-14, security-05): unknown ids get a real 404 with a small page, before any
+  // flight data is built; it still searches the board and links to it.
+  test('an unknown flight gets a small 404 page with a search', async ({ page }) => {
+    const response = await page.goto('/en/kul/flights/zz9999-20261118-d');
+    expect(response?.status()).toBe(404);
+    expect((await response?.body())?.length ?? 0).toBeLessThan(30_000);
     const main = page.getByRole('main');
     await expect(main.getByRole('heading', { level: 1, name: 'We could not find this flight' })).toBeVisible();
-    await expect(main.getByRole('searchbox', { name: 'Search flights' })).toBeVisible();
-    await expect(main.getByRole('link', { name: 'Open the KLIA board' })).toBeVisible();
+    await expect(main.getByRole('searchbox', { name: 'Search the board' })).toBeVisible();
+    await expect(main.getByRole('link', { name: 'See all flights' })).toHaveAttribute('href', '/en/kul/flights');
     await expectNoAxeViolations(page);
   });
 
@@ -172,5 +176,211 @@ test.describe('my journey', () => {
     await dialog.getByRole('button', { name: 'Clear everything' }).click();
     await expect(main.getByRole('heading', { name: 'Keep your whole journey in one place' })).toBeVisible();
     await expect(main.getByRole('button', { name: 'Note where you parked' })).toBeVisible();
+  });
+});
+
+/* ------------------------------------------------------------------------------------------
+ * Fix round B
+ * --------------------------------------------------------------------------------------- */
+
+/** Scroll each matching element to the middle of the screen and count those with no demo label in view. */
+async function unlabelledInView(page: Page, selector: string): Promise<{ total: number; unlabelled: string[] }> {
+  return page.evaluate(async (sel) => {
+    const items = [...document.querySelectorAll<HTMLElement>(sel)].filter((item) => item.getClientRects().length > 0);
+    const unlabelled: string[] = [];
+    for (const item of items) {
+      item.scrollIntoView({ block: 'center' });
+      await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+      const visible = [...document.querySelectorAll<HTMLElement>('[data-demo-banner], [data-provenance="demo"]')].some((marker) => {
+        const box = marker.getBoundingClientRect();
+        return box.height > 0 && box.bottom > 0 && box.top < window.innerHeight && getComputedStyle(marker).visibility !== 'hidden';
+      });
+      if (!visible) unlabelled.push((item.closest('li, tr, div') as HTMLElement | null)?.innerText.slice(0, 60) ?? sel);
+    }
+    return { total: items.length, unlabelled };
+  }, selector);
+}
+
+test.describe('fix round B: flight board', () => {
+  for (const path of ['/en/kul/flights?dir=d', '/ms/kul/flights?dir=d', '/en/pen/flights?dir=d']) {
+    test(`every board row has a demo label in view (${path})`, async ({ page }) => {
+      await page.goto(path);
+      await expect(page.getByRole('main').locator('[data-status]').filter({ visible: true }).first()).toBeVisible();
+      const result = await unlabelledInView(page, 'main [data-status]');
+      expect(result.total).toBeGreaterThan(5);
+      expect(result.unlabelled).toEqual([]);
+    });
+  }
+
+  test('leads with flights still to leave, and Earlier brings the departed ones back', async ({ page }) => {
+    await page.goto('/en/kul/flights?dir=d');
+    const main = page.getByRole('main');
+    const first = main.locator('[data-status]').filter({ visible: true }).first();
+    await expect(first).toBeVisible();
+    await expect(first).not.toHaveAttribute('data-status', 'departed');
+    await main.getByRole('button', { name: 'Show earlier flights' }).click();
+    await expect(main.locator('[data-status="departed"]').filter({ visible: true }).first()).toBeVisible();
+  });
+
+  test('renders at most 40 rows until Show more, and typing stays responsive', async ({ page }) => {
+    await page.goto('/en/kul/flights?dir=d&q=MH');
+    const main = page.getByRole('main');
+    await expect(main.locator('[data-status]').filter({ visible: true }).first()).toBeVisible();
+    expect(await main.locator('[data-status]').filter({ visible: true }).count()).toBeLessThanOrEqual(40);
+    const more = main.getByRole('button', { name: /^Show \d+ more flights?$/ });
+    if (await more.isVisible()) {
+      await more.click();
+      expect(await main.locator('[data-status]').filter({ visible: true }).count()).toBeGreaterThan(40);
+    }
+    const field = main.getByRole('searchbox', { name: 'Search this board' });
+    await field.fill('');
+    const started = Date.now();
+    await field.pressSequentially('AK', { delay: 20 });
+    await expect(field).toHaveValue('AK');
+    expect(Date.now() - started).toBeLessThan(2_000);
+  });
+
+  test('says when the scheduled time has changed, in words, for assistive technology', async ({ page }) => {
+    await page.goto('/en/kul/flights?dir=d&s=delayed');
+    const main = page.getByRole('main');
+    await expect(main.locator('[data-status="delayed"]').filter({ visible: true }).first()).toBeVisible();
+    await expect(main.getByText(/^Scheduled \d\d:\d\d, now \d\d:\d\d$/).first()).toBeAttached();
+  });
+
+  test('live updates can be paused and resumed, and the change is announced', async ({ page }) => {
+    await page.goto('/en/kul/flights?dir=d');
+    const main = page.getByRole('main');
+    const pause = main.getByRole('button', { name: 'Pause live updates' });
+    await pause.click();
+    const resume = main.getByRole('button', { name: 'Resume live updates' });
+    await expect(resume).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByRole('status').filter({ hasText: 'Live updates paused.' }).first()).toBeAttached();
+    await resume.click();
+    await expect(main.getByRole('button', { name: 'Pause live updates' })).toHaveAttribute('aria-pressed', 'false');
+  });
+
+  test('keeps last-known flights with their age when a refresh fails, and fails clearly with nothing to show', async ({ page }) => {
+    await page.clock.install({ time: MORNING });
+    await page.goto('/en/kul/flights?dir=d');
+    const main = page.getByRole('main');
+    await expect(main.locator('[data-status]').filter({ visible: true }).first()).toBeVisible();
+    await page.route('**/flights/feed?**', (route) => route.abort());
+    await page.clock.runFor(31_000);
+    await expect(main.locator('[data-feed-state="stale"]')).toBeVisible({ timeout: 2_000 });
+    await expect(main.locator('[data-status]').filter({ visible: true }).first()).toBeVisible();
+
+    const fresh = await page.context().newPage();
+    await fresh.clock.setFixedTime(MORNING);
+    await fresh.route('**/flights/feed?**', (route) => route.abort());
+    await fresh.goto('/en/kul/flights?dir=d');
+    await expect(fresh.getByRole('main').locator('[data-feed-state="error"]')).toBeVisible({ timeout: 10_000 });
+    await fresh.unroute('**/flights/feed?**');
+    await fresh.getByRole('main').getByRole('button', { name: 'Try again' }).click();
+    await expect(fresh.getByRole('main').locator('[data-status]').filter({ visible: true }).first()).toBeVisible();
+  });
+
+  test('announces a change to a saved flight once, politely', async ({ page }) => {
+    // 10 seconds before MH 2626 starts boarding (11:15 on this timetable, after its delay).
+    await page.clock.install({ time: new Date('2026-11-18T11:14:50+08:00') });
+    await page.goto(FLIGHT);
+    await page.getByRole('main').getByRole('button', { name: 'Save flight' }).click();
+    await page.goto('/en/kul/flights?dir=d&q=MH2626');
+    await expect(page.getByRole('main').getByRole('link', { name: /^View flight MH 2626/ }).first()).toBeVisible();
+    await page.clock.runFor(31_000);
+    await expect(page.getByRole('status').filter({ hasText: /MH 2626 to Singapore: now Boarding/ })).toBeAttached({ timeout: 5_000 });
+  });
+});
+
+test.describe('fix round B: flight page', () => {
+  for (const [lang, textSize] of [
+    ['en', 100],
+    ['en', 125],
+    ['ms', 100],
+    ['ms', 125],
+  ] as const) {
+    test(`answers first on a 360 px phone (${lang}, ${textSize}% text)`, async ({ page }) => {
+      await page.setViewportSize({ width: 360, height: 780 });
+      await page.addInitScript((size) => localStorage.setItem('ma:preferences:v1', JSON.stringify({ theme: 'light', textSize: size, highContrast: false, reducedMotion: false })), textSize);
+      await page.goto(`/${lang}/kul/flights/mh2626-20261118-d`);
+      const summary = page.locator('[data-flight-summary]');
+      await expect(summary).toBeVisible();
+      const box = await summary.boundingBox();
+      // Inside the first screen, above the fixed bottom bar (about 64 px).
+      expect(box && box.y + Math.min(box.height, 80)).toBeLessThan(780 - 64);
+      await expect(summary.getByRole('link', { name: /See this step|Lihat langkah ini/ })).toHaveAttribute('href', /#journey-step-/);
+    });
+  }
+
+  test('labels the gate, belt and check-in values as demo data in the same view', async ({ page }) => {
+    for (const path of [FLIGHT, '/en/kul/flights/mh2627-20261118-a']) {
+      await page.goto(path);
+      await expect(page.locator('#flight-status-title')).toBeVisible();
+      const result = await unlabelledInView(page, 'main section[aria-labelledby="flight-status-title"] dd');
+      expect(result.unlabelled, path).toEqual([]);
+    }
+  });
+
+  test('offers Follow next to Save with an e-mail option and says what is delivered', async ({ page }) => {
+    await page.goto(FLIGHT);
+    const main = page.getByRole('main');
+    const follow = main.getByRole('button', { name: 'Follow' });
+    await expect(follow).toHaveAttribute('aria-expanded', 'false');
+    await follow.click();
+    const panel = main.getByRole('region', { name: 'Follow this flight' });
+    await expect(panel.getByText(/only while a page of this site is open/)).toBeVisible();
+    await panel.getByRole('textbox', { name: 'E-mail address' }).fill('not-an-address');
+    await panel.getByRole('button', { name: 'Follow by e-mail' }).click();
+    await expect(panel.getByText('Enter an e-mail address, for example name@example.com.')).toBeVisible();
+    await panel.getByRole('textbox', { name: 'E-mail address' }).fill('traveller@example.com');
+    await panel.getByRole('button', { name: 'Follow by e-mail' }).click();
+    await expect(panel.getByText('traveller@example.com')).toBeVisible();
+    await expect(main.getByRole('button', { name: 'Following' })).toBeVisible();
+    await expectNoAxeViolations(page);
+  });
+
+  test('without browser notifications, explains the alternatives instead of a dead end', async ({ page }) => {
+    await page.addInitScript(() => {
+      // Safari on iPhone outside a Home Screen app has no Notification API.
+      delete (window as unknown as { Notification?: unknown }).Notification;
+    });
+    await page.goto(FLIGHT);
+    await page.getByRole('main').getByRole('button', { name: 'Follow' }).click();
+    const panel = page.getByRole('main').getByRole('region', { name: 'Follow this flight' });
+    await expect(panel.getByText('This browser cannot show notifications from a web page.')).toBeVisible();
+    await expect(panel.getByRole('textbox', { name: 'E-mail address' })).toBeVisible();
+  });
+
+  test('My needs adds the assistance step and step-free map links', async ({ page }) => {
+    await page.goto(FLIGHT);
+    const main = page.getByRole('main');
+    await expect(main.locator('[data-step="assistance"]')).toHaveCount(0);
+    await main.getByRole('button', { name: 'Wheelchair' }).click();
+    await expect(main.getByRole('heading', { level: 3, name: 'Arrange assistance with Malaysia Airlines' })).toBeVisible();
+    await expect(main.locator('[data-step="assistance"]').getByText(/48 hours/)).toBeVisible();
+    const mapLinks = main.locator('section[aria-labelledby="flight-journey-title"] a[href*="/kul/map"]');
+    expect(await mapLinks.count()).toBeGreaterThan(0);
+    for (const href of await mapLinks.evaluateAll((links) => links.map((link) => link.getAttribute('href')))) expect(href).toContain('sf=1');
+    // Remembered on this device, and used by My journey too.
+    await main.getByRole('button', { name: 'Save flight' }).click();
+    await page.goto('/en/journey');
+    await expect(page.getByRole('main').getByRole('heading', { level: 3, name: 'Arrange assistance with Malaysia Airlines' })).toBeVisible();
+  });
+
+  test('a codeshare number opens the operating flight', async ({ request }) => {
+    const feed = await request.get(`/en/kul/flights/feed?date=2026-11-18&dir=d&at=${MORNING.getTime()}`);
+    const body = (await feed.json()) as { flights: { id: string; codeshares?: string[] }[] };
+    const shared = body.flights.find((flight) => flight.codeshares && flight.codeshares.length > 0);
+    expect(shared).toBeDefined();
+    const [airline, digits] = (shared?.codeshares?.[0] ?? '').split(' ');
+    const response = await request.get(`/en/kul/flights/${airline.toLowerCase()}${digits}-20261118-d`, { maxRedirects: 0 });
+    expect(response.status()).toBe(308);
+    expect(response.headers().location).toContain(`/en/kul/flights/${shared?.id}`);
+  });
+});
+
+test.describe('fix round B: my journey', () => {
+  test('the empty state is in the server HTML', async ({ request }) => {
+    const html = await (await request.get('/en/journey')).text();
+    expect(html).toContain('Keep your whole journey in one place');
   });
 });

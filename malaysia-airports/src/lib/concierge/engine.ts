@@ -15,10 +15,12 @@
  */
 import type { CarPark, Contact, Facility, Hours, Lang, Notice, Outlet, Provenance, TerminalId, TransportOption } from '@/content/types';
 import { formatCurrency } from '@/lib/format';
-import { formatFlightNumber } from '@/lib/flights/query';
+import { gatePrefixesOf } from '@/lib/flights/gates';
+import { formatFlightNumber, isInternationalFlight } from '@/lib/flights/query';
 import { flightStatusLabel } from '@/lib/flights/status';
 import type { Flight } from '@/lib/flights/types';
 import { calculateParking } from '@/lib/parking';
+import { OPS_SERVICES } from '@/lib/providers/ops-services';
 import { formatTime } from '@/lib/time';
 import { ANSWER_LIMITS, CONCIERGE_MAX_QUESTION } from './constants';
 import { hrefFor, retrievePassages, searchKnowledge, type PassageQuery } from './retrieve';
@@ -56,6 +58,8 @@ class Builder {
   escalation?: AnswerEscalation;
   demo = false;
   fallback = false;
+  /** The answer is complete and honest as it is: do not add loosely related passages (B-08). */
+  direct = false;
   private seen = new Set<string>();
   private said: Set<string>[] = [];
 
@@ -476,7 +480,8 @@ const terminalTransfer: Handler = (s) => {
     s.b.text = s.b.say('transfer', {
       terminals: list(airport.terminals.map((terminal) => s.b.pick(terminal.shortName)), s.lang),
       airport: airport.shortName,
-      options: list(options.map((option) => midSentence(s.b.pick(option.name), s.lang)), s.lang),
+      // "our sources list the train … and the free shuttle bus …" (A-28 hand-off: articles).
+      options: list(options.map((option) => `${s.lang === 'en' ? 'the ' : ''}${midSentence(s.b.pick(option.name), s.lang)}`), s.lang),
     });
   }
   const later = normalise(airport.terminals[airport.terminals.length - 1].shortName.en);
@@ -490,10 +495,53 @@ const terminalTransfer: Handler = (s) => {
   s.b.link(s.b.say('actionTransportPlanner'), sectionHref({ ...s, terminal: undefined }, 'transport'), 'train-front');
 };
 
+/** Ways of travelling a question names: by name ("KLIA Ekspres") or by mode ("taxi"). */
+function namedOptions(s: Scope, options: readonly TransportOption[]): TransportOption[] {
+  const text = normalise(s.question);
+  const byName = options.filter((option) => mentions(text, shortName(option.name.en)) || (option.name.ms ? mentions(text, shortName(option.name.ms)) : false));
+  if (byName.length > 0) return byName;
+  const modeWords: Partial<Record<TransportOption['mode'], string[]>> = {
+    rail: ['train', 'trains', 'tren', 'kereta api', 'rail'],
+    bus: ['bus', 'buses', 'bas', 'coach'],
+    taxi: ['taxi', 'taxis', 'teksi', 'cab'],
+    'e-hailing': ['grab', 'e hailing', 'ehailing'],
+    shuttle: ['shuttle'],
+    'car-rental': ['car rental', 'hire car', 'sewa kereta'],
+  };
+  return options.filter((option) => (modeWords[option.mode] ?? []).some((word) => ` ${text} `.includes(` ${word} `)));
+}
+
+/** "accessible taxi", "step-free access to KLIA Ekspres": only step-free facts, or "not published, ask" (B-08). */
+function accessibleTransport(s: Scope, options: readonly TransportOption[]): void {
+  const shown = options.slice(0, ANSWER_LIMITS.cards);
+  const names = list(shown.map((option) => midSentence(shortName(s.b.pick(option.name)), s.lang)), s.lang);
+  const known = shown.filter((option) => option.accessibility && (option.accessibility.stepFree !== undefined || option.accessibility.note));
+  if (known.length > 0) {
+    s.b.text = s.b.say('accessibleTransport', { options: names });
+    for (const option of known) {
+      const note = option.accessibility?.note ? s.b.pick(option.accessibility.note) : '';
+      s.b.statement({ title: s.b.pick(option.name), text: note || s.b.say('accessibleTransport', { options: shortName(s.b.pick(option.name)) }), provenance: option.provenance, sourceIds: option.sources }, `access:${option.id}`);
+    }
+  } else {
+    s.b.text = s.b.say('accessibleNotPublished', { options: names });
+    s.b.statement({ text: s.b.text, provenance: 'suggestion', sourceIds: [] }, 'access-unpublished');
+    escalate(s, 'missing');
+  }
+  passages(s, { text: `${s.question} step free wheelchair assistance`, terminal: undefined, topics: ['accessibility', 'assistance', 'reduced-mobility', 'older-travellers'], limit: 2, minScore: 4 });
+  for (const option of shown) transportCard(s, option, option.destinations);
+  s.b.direct = true;
+}
+
 const transport: Handler = (s) => {
   if (needAirport(s)) return;
   const airport = s.airport as KnowledgeAirport;
   const all = s.k.transport.filter((option) => option.airport === airport.slug && option.mode !== 'inter-terminal');
+  if (s.u.slots.accessible && all.length > 0) {
+    const named = namedOptions(s, all);
+    accessibleTransport(s, named.length > 0 ? named : all);
+    s.b.link(s.b.say('actionCompareAllTransport'), sectionHref({ ...s, terminal: undefined }, 'transport'), 'train-front');
+    return;
+  }
   if (all.length === 0) {
     s.b.text = s.b.say('transportNone', { airport: airport.shortName });
     escalate(s, 'missing');
@@ -803,6 +851,232 @@ function fallback(s: Scope): void {
   }
 }
 
+/* ---- direct answers (B-08) ------------------------------------------------------------------ */
+
+const fare: Handler = (s) => {
+  if (needAirport(s)) return;
+  const airport = s.airport as KnowledgeAirport;
+  const options = namedOptions(s, s.k.transport.filter((option) => option.airport === airport.slug));
+  if (options.length === 0) return transport(s);
+  if (s.u.slots.accessible) return accessibleTransport(s, options);
+  const wanted = s.u.slots.destination;
+  const priced = options
+    .flatMap((option) => option.destinations.filter((row) => row.fare && (!wanted || normalise(row.name.en).includes(wanted))).map((row) => ({ option, row })))
+    .sort((a, b) => (a.row.fare?.amount ?? 0) - (b.row.fare?.amount ?? 0));
+  if (priced.length > 0) {
+    const first = priced[0];
+    // The direct answer first, with its source; the dated fare change follows from the notices.
+    s.b.text = s.b.say('fareLead', { option: shortName(s.b.pick(first.option.name)), destination: s.b.pick(first.row.name), fare: first.row.fare ? fareText(s, first.row.fare) : '' });
+    for (const { option, row } of priced) {
+      s.b.statement(
+        { text: s.b.say('destinationFare', { option: shortName(s.b.pick(option.name)), destination: s.b.pick(row.name), fare: row.fare ? fareText(s, row.fare) : '' }), provenance: option.provenance, sourceIds: option.sources, href: hrefFor(s.k, 'transport', option.id) },
+        `fare:${option.id}:${row.name.en}`,
+      );
+    }
+  } else {
+    s.b.text = s.b.say('fareNone', { option: list(options.map((option) => shortName(s.b.pick(option.name))), s.lang) });
+    escalate(s, 'missing');
+  }
+  for (const option of options.slice(0, 2)) {
+    transportCard(s, option, option.destinations);
+    // A dated fare change always follows the fare, even though it repeats some of its words.
+    for (const notice of liveNotices(s, (notice) => mentions(`${notice.title.en} ${notice.body.en}`, shortName(option.name.en)))) {
+      const state = noticeState(notice, s.now);
+      const label = s.b.say(state === 'upcoming' ? 'noticeUpcoming' : 'noticeActive');
+      if (s.b.statements.length < ANSWER_LIMITS.statements && s.b.once(`s:notice:${notice.id}`)) {
+        s.b.statements.push({ title: `${label}: ${s.b.pick(notice.title)}`, text: s.b.pick(notice.body), provenance: notice.provenance, sourceIds: notice.sources, href: hrefFor(s.k, 'notice', notice.id) });
+      }
+    }
+  }
+  s.b.direct = true;
+  s.b.link(s.b.say('actionCompareAllTransport'), sectionHref({ ...s, terminal: undefined }, 'transport'), 'train-front');
+};
+
+const airlineTerminal: Handler = (s) => {
+  if (needAirport(s)) return;
+  const airport = s.airport as KnowledgeAirport;
+  const code = s.flight?.airline.code ?? s.u.slots.airline;
+  const fact = code ? s.k.airlines.find((airline) => airline.airport === airport.slug && airline.code === code) : undefined;
+  const name = fact?.name ?? s.flight?.airline.name ?? s.u.slots.airlineName;
+  if (s.flight) flightCard(s, s.flight);
+  if (airport.terminals.length < 2) {
+    s.b.text = s.b.say('airlineTerminalSingle', { airport: airport.shortName });
+    s.b.statement({ text: s.b.text, provenance: 'official', sourceIds: airport.sources }, 'single-terminal');
+  } else if (!name) {
+    s.b.text = s.b.say('airlineTerminalAsk');
+    passages(s, { text: 'one airport two terminals airlines', terminal: undefined, topics: ['terminal'], limit: 1, minScore: 2 });
+    escalate(s, 'missing', true);
+  } else if (fact?.terminal) {
+    const provenance: Provenance = fact.basis === 'third-party' ? 'estimated' : 'official';
+    s.b.text = s.b.say('airlineTerminal', { airline: name, terminal: terminalName(s, fact.terminal) ?? '', airport: airport.shortName });
+    s.b.statement({ title: name, text: s.b.text, provenance, sourceIds: fact.sources }, `airline-terminal:${fact.code}`);
+    if (provenance === 'estimated') s.b.statement({ text: s.b.say('airlineTerminalConfirm'), provenance: 'suggestion', sourceIds: [] }, 'confirm-booking');
+    if (fact.checkIn) {
+      if (s.lang === 'ms') s.b.fallback = true;
+      s.b.statement({ title: s.b.say('checkInAirline', { airline: name, airport: airport.shortName }), text: fact.checkIn, provenance, sourceIds: fact.sources }, `airline-checkin:${fact.code}`);
+    }
+  } else {
+    s.b.text = s.b.say('airlineTerminalMissing', { airline: name, airport: airport.shortName });
+    s.b.statement({ text: s.b.text, provenance: 'suggestion', sourceIds: [] }, 'airline-terminal-missing');
+    passages(s, { text: 'one airport two terminals airlines full service', terminal: undefined, topics: ['terminal'], limit: 1, minScore: 2 });
+    escalate(s, 'missing', true);
+  }
+  s.b.direct = true;
+  s.b.link(s.b.say('actionDeparturesBoard'), sectionHref({ ...s, terminal: undefined }, 'flights'), 'plane-takeoff');
+};
+
+const lounge: Handler = (s) => {
+  if (needAirport(s)) return;
+  const airport = s.airport as KnowledgeAirport;
+  const flight = s.flight && s.flight.airport === airport.slug && s.flight.direction === 'd' ? s.flight : null;
+  const gateSlot = s.u.slots.gate ?? flight?.gate;
+  const terminal = s.terminal ?? flight?.terminal;
+  const international = flight ? isInternationalFlight(flight) : undefined;
+  const all = s.k.facilities.filter((item) => item.airport === airport.slug && item.category === 'lounge' && (!terminal || item.terminal === terminal));
+  const near = (item: Facility): boolean => Boolean(gateSlot && gatePrefixesOf(item.locationNote?.en).includes(gateSlot[0].toUpperCase()));
+  const domestic = (item: Facility): boolean => /domestic/i.test(`${item.name.en} ${item.locationNote?.en ?? ''}`);
+  // A first-class lounge only leads when the question asks for first class.
+  const firstClass = /\bfirst class\b|\bkelas pertama\b/.test(normalise(s.question));
+  const first = (item: Facility): boolean => /\bfirst\b/i.test(item.name.en);
+  const ranked = [...all].sort((a, b) => {
+    const score = (item: Facility) =>
+      (near(item) ? 0 : 4) + (international && domestic(item) ? 4 : 0) + (item.zone === 'airside' ? 0 : 2) + (first(item) && !firstClass ? 1 : 0);
+    return score(a) - score(b) || s.b.pick(a.name).localeCompare(s.b.pick(b.name));
+  });
+  const best = ranked[0];
+  if (gateSlot && best && near(best)) {
+    s.b.text = s.b.say('loungeNearGate', { gate: gateSlot, lounge: s.b.pick(best.name), location: best.locationNote ? s.b.pick(best.locationNote) : '' }).trim();
+    s.b.statement({ title: s.b.pick(best.name), text: best.locationNote ? s.b.pick(best.locationNote) : s.b.pick(best.description), provenance: best.provenance, sourceIds: best.sources, href: hrefFor(s.k, 'facility', best.id) }, `facility:${best.id}`);
+  } else if (ranked.length > 0) {
+    if (gateSlot) s.b.limit(s.b.say('loungeNoneNear', { gate: gateSlot }));
+    const label = s.b.pick(s.k.labels.categories.lounge);
+    s.b.text = s.b.say('facility', { category: label, place: placeName({ ...s, terminal }), names: list(ranked.slice(0, 5).map((item) => s.b.pick(item.name)), s.lang) });
+    facilityStatement(s, ranked[0]);
+  } else {
+    s.b.text = s.b.say('facilityNone', { category: s.b.pick(s.k.labels.categories.lounge), place: placeName(s) });
+    escalate(s, 'missing');
+  }
+  for (const item of ranked) facilityCard(s, item);
+  if (flight) flightCard(s, flight);
+  s.b.limit(s.b.say('loungeAccess'));
+  s.b.direct = true;
+  s.b.link(s.b.say('actionLoungesAndRest'), sectionHref(s, 'lounges'), 'layers');
+};
+
+const fastTrack: Handler = (s) => {
+  if (needAirport(s)) return;
+  const airport = s.airport as KnowledgeAirport;
+  const pattern = /fast[\s-]?track|laluan pantas/i;
+  const records = s.k.facilities.filter((item) => item.airport === airport.slug && pattern.test(`${item.id} ${item.name.en} ${item.name.ms ?? ''}`));
+  const found = s.k.passages.filter((item) => (item.airports.length === 0 || item.airports.includes(airport.slug)) && pattern.test(`${item.title.en} ${item.body.en}`));
+  if (records.length > 0 || found.length > 0) {
+    s.b.text = s.b.say('fastTrack', { airport: airport.shortName });
+    for (const item of records) {
+      facilityStatement(s, item);
+      facilityCard(s, item);
+    }
+    for (const item of found.slice(0, 2)) s.b.passage(item);
+  } else {
+    // Honest, and never a loosely related programme instead (exec-commerce-17).
+    s.b.text = s.b.say('fastTrackMissing', { airport: airport.shortName });
+    s.b.statement({ text: s.b.text, provenance: 'suggestion', sourceIds: [] }, 'fast-track-missing');
+    escalate(s, 'missing');
+  }
+  s.b.direct = true;
+  s.b.link(s.b.say('actionFastTrackSearch'), `/search?q=${encodeURIComponent('fast track')}`, 'search');
+};
+
+const dutyFree: Handler = (s) => {
+  if (needAirport(s)) return;
+  const airport = s.airport as KnowledgeAirport;
+  const words = tokens(s.question).filter((word) => word.length > 3 && !['duty', 'free', 'where', 'shop', 'shops', 'kedai', 'bebas', 'cukai'].includes(word));
+  const outlets = s.k.outlets
+    .filter((outlet) => outlet.airport === airport.slug && /duty.?free/i.test(`${outlet.category} ${outlet.name}`) && (!s.terminal || outlet.terminal === s.terminal))
+    .sort((a, b) => {
+      const hits = (outlet: Outlet) => words.filter((word) => normalise(`${outlet.name} ${outlet.description?.en ?? ''}`).includes(word)).length;
+      return hits(b) - hits(a) || a.name.localeCompare(b.name);
+    });
+  if (outlets.length > 0) {
+    s.b.text = s.b.say('dutyFree', { place: placeName(s), names: list(outlets.slice(0, 4).map((outlet) => outlet.name), s.lang) });
+    const first = outlets[0];
+    const where = first.locationNote ? s.b.pick(first.locationNote) : first.description ? s.b.pick(first.description) : '';
+    if (where) s.b.statement({ title: first.name, text: where, provenance: 'official', sourceIds: first.sources, href: hrefFor(s.k, 'outlet', first.id) }, `outlet:${first.id}`);
+    for (const outlet of outlets) outletCard(s, outlet);
+  } else {
+    s.b.text = s.b.say('dutyFreeNone', { place: placeName(s) });
+    escalate(s, 'missing');
+  }
+  s.b.direct = true;
+  s.b.link(s.b.say('actionShopAndDine'), sectionHref(s, 'shop-dine'), 'shopping-bag');
+};
+
+const serviceStatus: Handler = (s) => {
+  if (needAirport(s)) return;
+  const airport = s.airport as KnowledgeAirport;
+  const text = normalise(s.question);
+  const id = /\baerotrain\b/.test(text)
+    ? 'aerotrain'
+    : /\bshuttle\b/.test(text)
+      ? 'inter-terminal-shuttle'
+      : /\b(?:train|tren|kereta api|transit|ekspres|erl)\b/.test(text)
+        ? 'inter-terminal-train'
+        : undefined;
+  const service = OPS_SERVICES.find((item) => item.id === id && item.airports.includes(airport.slug));
+  if (!service) {
+    s.b.text = s.b.say('serviceStatusUnknown');
+    for (const notice of liveNotices(s).slice(0, 2)) addNotice(s, notice);
+    if (s.b.statements.length === 0) escalate(s, 'missing');
+  } else {
+    const label = s.b.pick(service.name);
+    // "the train between …", but "the Aerotrain …".
+    const name = s.lang === 'en' && /^(Train|Shuttle)\b/.test(label) ? label.charAt(0).toLowerCase() + label.slice(1) : label;
+    const relevant = liveNotices(s, (notice) => service.pattern.test(notice.id) || service.pattern.test(notice.title.en));
+    const active = relevant.find((notice) => noticeState(notice, s.now) === 'active');
+    const planned = relevant.find((notice) => noticeState(notice, s.now) === 'upcoming');
+    if (active) {
+      s.b.text = s.b.say('serviceStatusNotice', { service: name, title: s.b.pick(active.title) });
+      addNotice(s, active);
+    } else if (planned) {
+      s.b.text = s.b.say('serviceStatusPlanned', { service: name, title: s.b.pick(planned.title) });
+      addNotice(s, planned);
+    } else {
+      s.b.text = s.b.say('serviceStatusClear', { service: name });
+    }
+    // What the service is, from its published record (grounds the answer either way).
+    const record = s.k.transport.find((option) => option.airport === airport.slug && (service.pattern.test(option.id) || service.pattern.test(option.name.en)));
+    if (record?.description) s.b.statement({ title: s.b.pick(record.name), text: s.b.pick(record.description), provenance: record.provenance, sourceIds: record.sources, href: hrefFor(s.k, 'transport', record.id) }, `transport:${record.id}`);
+    s.b.limit(s.b.say('serviceStatusLive'));
+  }
+  s.b.direct = true;
+  s.b.link(s.b.say('actionAllNotices'), '/notices', 'megaphone');
+};
+
+const immigration: Handler = (s) => {
+  const where = s.airport ? placeName(s) : '';
+  s.b.text = s.airport ? s.b.say('immigration', { airport: where }) : s.b.say('immigration', { airport: s.k.featured[0]?.label ?? '' });
+  passages(s, { text: `${s.question} autogate autogates immigration passport`, terminal: undefined, require: ['autogate', 'autogates', 'immigration', 'imigresen', 'passport', 'pasport'], limit: 3, minScore: 3 });
+  if (s.u.slots.accessible) passages(s, { text: `${s.question} older travellers assistance`, terminal: undefined, topics: ['older-travellers', 'assistance', 'accessibility', 'reduced-mobility'], limit: 1, minScore: 3 });
+  if (s.b.statements.length === 0) {
+    s.b.text = s.b.say('immigrationMissing');
+    escalate(s, 'missing');
+  }
+  s.b.direct = true;
+  if (s.k.guides.includes('immigration-customs')) s.b.link(s.b.say('actionImmigrationGuide'), '/guides/immigration-customs', 'file-text');
+};
+
+const arrivalTime: Handler = (s) => {
+  // The published guidance first, then the flight lookup (first-time-access-09).
+  s.b.text = s.b.say('arrivalTime');
+  passages(s, { text: 'aim to be at the airport at least 3 hours before an international flight 2 hours domestic airline deadlines', terminal: undefined, require: ['hours', 'jam'], limit: 1, minScore: 3 });
+  if (s.b.statements.length === 0) s.b.statement({ text: s.b.text, provenance: 'estimated', sourceIds: [] }, 'arrival-guide');
+  if (s.u.slots.accessible) s.b.statement({ text: s.b.say('arrivalTimeHelp'), provenance: 'suggestion', sourceIds: [] }, 'arrival-help');
+  if (s.flight) flightCard(s, s.flight);
+  else s.b.hint = s.b.say('arrivalTimeAsk');
+  s.b.direct = true;
+  s.b.link(s.b.say('actionDeparturesBoard'), s.airport ? sectionHref({ ...s, terminal: undefined }, 'flights') : undefined, 'plane-takeoff');
+  if (s.u.slots.accessible) s.b.link(s.b.say('actionAssistanceAndAccessibility'), '/accessibility', 'accessibility');
+};
+
 const HANDLERS: Record<ConciergeIntent, Handler> = {
   'check-in': checkIn,
   'terminal-transfer': terminalTransfer,
@@ -818,6 +1092,14 @@ const HANDLERS: Record<ConciergeIntent, Handler> = {
   gate,
   notices,
   contact,
+  fare,
+  'airline-terminal': airlineTerminal,
+  lounge,
+  'fast-track': fastTrack,
+  'duty-free': dutyFree,
+  'service-status': serviceStatus,
+  immigration,
+  'arrival-time': arrivalTime,
   greeting,
   unknown: fallback,
 };
@@ -871,8 +1153,9 @@ export function answerQuestion(input: ConciergeInput, deps: ConciergeDeps): Conc
   const scope: Scope = { b, k, lang, now, question, u, airport, terminal, flight, missingFlight: missing, context };
   HANDLERS[u.intent](scope);
 
-  // Nothing grounded and nothing to clarify: try the passages and the search engine.
-  if (!b.clarify && !b.grounded && u.intent !== 'greeting' && u.intent !== 'unknown') {
+  // Nothing grounded and nothing to clarify: try the passages and the search engine (not after a
+  // direct answer, which is complete or honestly says what is not published).
+  if (!b.clarify && !b.grounded && !b.direct && u.intent !== 'greeting' && u.intent !== 'unknown') {
     const text = b.text;
     fallback(scope);
     if (b.statements.length > 0 && text) b.text = text;

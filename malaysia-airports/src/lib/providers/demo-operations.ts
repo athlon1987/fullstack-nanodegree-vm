@@ -6,8 +6,9 @@
  * must be shown with the demonstration label. Neither reads the clock: pass `now` in.
  */
 import { getAirport } from '@/content/airports';
-import { lt, type TerminalId } from '@/content/types';
+import { lt, type LocalizedText, type Notice, type TerminalId } from '@/content/types';
 import { dateKey, minutesOfDay, toDate, toIsoWithOffset, type Instant } from '@/lib/time';
+import { OPS_SERVICES, type OpsServiceId } from './ops-services';
 import { seededRandom } from './random';
 import type {
   ParkingAvailability,
@@ -145,4 +146,118 @@ export class DemoParkingAvailabilityProvider implements ParkingAvailabilityProvi
   async getAvailability(query: { airport: string; carParks: readonly { id: string; bays?: number }[] }): Promise<ParkingAvailability[]> {
     return this.getAvailabilitySync(query);
   }
+}
+
+/* ------------------------------------------------------------------------------------------
+ * Operational status lines (BR-08): Aerotrain, inter-terminal train, shuttle, immigration
+ * --------------------------------------------------------------------------------------- */
+
+export { OPS_SERVICE_IDS, type OpsServiceId } from './ops-services';
+
+/** The services that exist at an airport, in display order. */
+export function opsServicesFor(airport: string): OpsServiceId[] {
+  return OPS_SERVICES.filter((service) => service.airports.includes(airport)).map((service) => service.id);
+}
+
+/** Where a service stands in our sources at an instant. */
+export type OpsState =
+  /** A notice about the service is in effect now. */
+  | 'notice'
+  /** A notice about the service starts within the next 14 days. */
+  | 'planned'
+  /** No notice in our sources: "No disruption reported in our sources as of hh:mm; check the signs". */
+  | 'clear';
+
+/** One status line. */
+export interface OpsStatusLine {
+  service: OpsServiceId;
+  name: LocalizedText;
+  terminal?: TerminalId;
+  state: OpsState;
+  /** The notice behind a `notice` or `planned` state. */
+  notice?: Pick<Notice, 'id' | 'title' | 'body' | 'validFrom' | 'validTo' | 'provenance' | 'sources' | 'asOf'>;
+  /** The instant the line was worked out (ISO with the airport offset). */
+  checkedAt: string;
+  /** Demo queue estimates for the service's checkpoints (always `isDemo`). */
+  waits: WaitTime[];
+}
+
+const PLANNED_HORIZON_MS = 14 * 24 * 60 * 60 * 1000;
+
+/**
+ * Status lines for an airport's services at `now`, fed by its notices (pass `getNotices(airport)`
+ * from the content layer) until a live operations feed exists. Pure.
+ *
+ * @example opsStatus({ airport: 'kul', notices, now, services: ['aerotrain'] })
+ */
+export function opsStatus(input: {
+  airport: string;
+  notices: readonly Notice[];
+  now: Instant;
+  /** Limit to these services (in this order). Default: every service at the airport. */
+  services?: readonly OpsServiceId[];
+  /** Only services of this terminal (and those not tied to one). */
+  terminal?: TerminalId;
+  /** Add demo queue estimates. Default true. */
+  waits?: boolean;
+}): OpsStatusLine[] {
+  const airport = getAirport(input.airport);
+  if (!airport) return [];
+  const now = toDate(input.now);
+  const time = now.getTime();
+  const zone = airport.timezone;
+  const wanted = input.services ?? opsServicesFor(airport.slug);
+  const waitProvider = input.waits === false ? null : new DemoWaitTimeProvider(now);
+  const lines: OpsStatusLine[] = [];
+  for (const id of wanted) {
+    const service = OPS_SERVICES.find((item) => item.id === id);
+    if (!service || !service.airports.includes(airport.slug)) continue;
+    if (input.terminal && service.terminal && service.terminal !== input.terminal) continue;
+    const relevant = input.notices.filter((notice) => {
+      if (notice.airport && notice.airport !== airport.slug) return false;
+      if (notice.provenance === 'demo' && notice.id === 'prototype-demo-data') return false;
+      return service.pattern.test(notice.id) || service.pattern.test(notice.title.en);
+    });
+    const active = relevant.find((notice) => {
+      const from = notice.validFrom ? Date.parse(notice.validFrom) : -Infinity;
+      const to = notice.validTo ? Date.parse(notice.validTo) : Infinity;
+      return time >= from && time <= to;
+    });
+    const planned = active
+      ? undefined
+      : relevant
+          .filter((notice) => notice.validFrom && Date.parse(notice.validFrom) > time && Date.parse(notice.validFrom) - time <= PLANNED_HORIZON_MS)
+          .sort((a, b) => Date.parse(a.validFrom as string) - Date.parse(b.validFrom as string))[0];
+    const notice = active ?? planned;
+    const terminals = service.terminal ? [service.terminal] : input.terminal ? [input.terminal] : airport.terminals.map((item) => item.id);
+    const waits =
+      waitProvider && service.waits
+        ? waitProvider
+            .getWaitTimesSync({ airport: airport.slug })
+            .filter((wait) => service.waits?.includes(wait.checkpoint) && terminals.includes(wait.terminal))
+        : [];
+    lines.push({
+      service: service.id,
+      name: service.name,
+      ...(service.terminal ? { terminal: service.terminal } : {}),
+      state: active ? 'notice' : planned ? 'planned' : 'clear',
+      ...(notice
+        ? {
+            notice: {
+              id: notice.id,
+              title: notice.title,
+              body: notice.body,
+              validFrom: notice.validFrom,
+              validTo: notice.validTo,
+              provenance: notice.provenance,
+              sources: notice.sources,
+              asOf: notice.asOf,
+            },
+          }
+        : {}),
+      checkedAt: toIsoWithOffset(now, zone),
+      waits,
+    });
+  }
+  return lines;
 }

@@ -22,7 +22,7 @@ import { getAirport } from '@/content/airports';
 import { lt, type Airport, type LocalizedText, type TerminalId } from '@/content/types';
 import { decodeFlightId, encodeFlightId, flightDesignator } from '@/lib/flights/id';
 import { filterFlights, searchFlights, sortFlights } from '@/lib/flights/query';
-import type { DemoFlight, FlightDirection, FlightPlace, FlightStatus } from '@/lib/flights/types';
+import type { CheckInDesk, DemoFlight, FlightDirection, FlightPlace, FlightStatus } from '@/lib/flights/types';
 import {
   addMinutes,
   dateKey,
@@ -167,18 +167,33 @@ function beltFor(airport: Airport, random: () => number): string {
   return String(intWith(random, 1, belts));
 }
 
-function checkInFor(entry: DemoTimetableEntry, airport: Airport, random: () => number): { row?: string; counters: string } {
+interface DemoCheckIn {
+  desks: CheckInDesk[];
+  bagDrop?: string[];
+}
+
+function checkInFor(entry: DemoTimetableEntry, airport: Airport, random: () => number): DemoCheckIn {
   const first = intWith(random, 1, 9);
   if (airport.slug !== 'kul') {
     const start = intWith(random, 1, airport.depth === 'full' ? 20 : 6);
-    return { counters: `${start}-${start + 3}` };
+    return { desks: [{ row: '', counters: `${start}-${start + 3}` }] };
   }
   if (entry.terminal === 'T1' && entry.airlineCode === 'MH') {
-    // Mirrors the rows Malaysia Airlines publishes; still demo data, since counters vary daily.
-    return { row: entry.international ? 'H' : 'B', counters: '1-18' };
+    // Mirrors the rows Malaysia Airlines publishes for Terminal 1 (src/content/airports/kul.ts),
+    // so that the status card, the timeline and the airline's own note agree. Still demo data:
+    // the airport assigns counters daily.
+    return entry.international
+      ? {
+          desks: [
+            { cabin: 'economy', row: 'H', counters: '1-18' },
+            { cabin: 'business', row: 'D', counters: '4-12' },
+          ],
+          bagDrop: ['F', 'G'],
+        }
+      : { desks: [{ cabin: 'economy', row: 'B', counters: '1-18' }], bagDrop: ['F', 'G'] };
   }
   const rows = entry.terminal === 'T1' ? T1_ROWS : T2_ROWS;
-  return { row: rows[hashString(entry.airlineCode) % rows.length], counters: `${first}-${first + 5}` };
+  return { desks: [{ row: rows[hashString(entry.airlineCode) % rows.length], counters: `${first}-${first + 5}` }] };
 }
 
 /* ------------------------------------------------------------------------------------------
@@ -212,13 +227,33 @@ const detail = {
   belt: (belt: string): LocalizedText => lt(`Belt ${belt}`, `Karusel ${belt}`),
 };
 
-function buildFlight(entry: DemoTimetableEntry, airport: Airport, date: string, now: Date): DemoFlight {
-  const zone = airport.timezone;
-  const scheduled = zonedDateTime(date, entry.minuteOfDay, zone);
+/**
+ * Everything about one flight on one day that does not depend on the current time: drawn once
+ * per airport, date and direction and cached (performance-02). The status is derived from it
+ * for each instant by `deriveFlight`, which only does arithmetic and formatting.
+ */
+interface FlightPlan {
+  entry: DemoTimetableEntry;
+  date: string;
+  id: string;
+  designator: string;
+  scheduledMs: number;
+  cancelled: boolean;
+  delay: number;
+  announceLead: number;
+  gateLead: number;
+  gate: string;
+  belt: string;
+  checkIn: DemoCheckIn;
+  codeshares?: string[];
+}
+
+function planFlight(entry: DemoTimetableEntry, airport: Airport, date: string): FlightPlan {
+  const scheduled = zonedDateTime(date, entry.minuteOfDay, airport.timezone);
   const designator = flightDesignator(entry.airlineCode, entry.digits);
   const random = seededRandom(`${airport.slug}|${date}|${entry.direction}|${designator}`);
 
-  // Draw every day-specific value up front so that adding a field never shifts the others.
+  // Draw every day-specific value in a fixed order so that adding a field never shifts the others.
   const cancelRoll = random();
   const delayRoll = random();
   const delayAmountRoll = random();
@@ -234,17 +269,43 @@ function buildFlight(entry: DemoTimetableEntry, airport: Airport, date: string, 
   const codeshareNumber = 5000 + Math.floor(random() * 999);
   const partners = DEMO_AIRLINES[entry.airlineCode].codesharePartners;
 
+  const plan: FlightPlan = {
+    entry,
+    date,
+    id: encodeFlightId({ airlineCode: entry.airlineCode, number: entry.digits, date, direction: entry.direction }),
+    designator,
+    scheduledMs: scheduled.getTime(),
+    cancelled,
+    delay,
+    announceLead,
+    gateLead,
+    gate,
+    belt,
+    checkIn,
+  };
+  if (partners && entry.international && codeshareRoll < 0.3) {
+    plan.codeshares = [`${partners[Math.floor(codeshareRoll * 1000) % partners.length]} ${codeshareNumber}`];
+  }
+  return plan;
+}
+
+function deriveFlight(plan: FlightPlan, airport: Airport, time: number): DemoFlight {
+  const { entry, date } = plan;
+  const zone = airport.timezone;
+  const scheduled = new Date(plan.scheduledMs);
+  const { cancelled, delay, announceLead, gateLead, gate, belt, checkIn } = plan;
+  const delayed = delay > 0;
+
   const local = localPlace(airport);
   const iso = (value: Date): string => toIsoWithOffset(value, zone);
   const clock = (value: Date): string => formatTime(value, zone);
-  const time = now.getTime();
   const minutesBefore = (anchor: Date, minutes: number): number => anchor.getTime() - minutes * 60000;
   const minutesAfter = (anchor: Date, minutes: number): number => anchor.getTime() + minutes * 60000;
 
   const flight: DemoFlight = {
-    id: encodeFlightId({ airlineCode: entry.airlineCode, number: entry.digits, date, direction: entry.direction }),
+    id: plan.id,
     airline: { code: entry.airlineCode, name: entry.airlineName },
-    number: designator,
+    number: plan.designator,
     direction: entry.direction,
     airport: airport.slug,
     terminal: entry.terminal,
@@ -259,9 +320,7 @@ function buildFlight(entry: DemoTimetableEntry, airport: Airport, date: string, 
     aircraft: entry.aircraft,
     isDemo: true,
   };
-  if (partners && entry.international && codeshareRoll < 0.3) {
-    flight.codeshares = [`${partners[Math.floor(codeshareRoll * 1000) % partners.length]} ${codeshareNumber}`];
-  }
+  if (plan.codeshares) flight.codeshares = [...plan.codeshares];
 
   if (entry.direction === 'd') {
     const timing = departureTiming(entry.international);
@@ -294,8 +353,12 @@ function buildFlight(entry: DemoTimetableEntry, airport: Airport, date: string, 
     const checkInKnown = time >= checkInOpens.getTime();
     if (gateKnown) flight.gate = gate;
     if (checkInKnown && time < estimated.getTime()) {
-      if (checkIn.row) flight.checkInRow = checkIn.row;
-      flight.checkInCounters = checkIn.counters;
+      const desks = checkIn.desks.map((desk) => ({ ...desk }));
+      const main = desks[0];
+      if (main?.row) flight.checkInRow = main.row;
+      if (main?.counters) flight.checkInCounters = main.counters;
+      flight.checkInDesks = desks.filter((desk) => desk.row || desk.counters);
+      if (checkIn.bagDrop) flight.bagDrop = [...checkIn.bagDrop];
     }
 
     let status: FlightStatus;
@@ -373,18 +436,105 @@ function buildFlight(entry: DemoTimetableEntry, airport: Airport, date: string, 
   return flight;
 }
 
+/* ------------------------------------------------------------------------------------------
+ * Caches shared by every provider instance (performance-02)
+ * --------------------------------------------------------------------------------------- */
+
+/** A small least-recently-used map. */
+class Lru<V> {
+  private readonly map = new Map<string, V>();
+  constructor(private readonly max: number) {}
+  get(key: string): V | undefined {
+    const value = this.map.get(key);
+    if (value !== undefined) {
+      this.map.delete(key);
+      this.map.set(key, value);
+    }
+    return value;
+  }
+  set(key: string, value: V): void {
+    this.map.delete(key);
+    this.map.set(key, value);
+    if (this.map.size > this.max) this.map.delete(this.map.keys().next().value as string);
+  }
+  clear(): void {
+    this.map.clear();
+  }
+  get size(): number {
+    return this.map.size;
+  }
+}
+
+/** Day plans: airport, local date and direction. Independent of the time of day. */
+const planCache = new Lru<FlightPlan[]>(96);
+/** Flights as they stand at one instant: shared by every provider created for that instant. */
+const flightCache = new Lru<DemoFlight[]>(48);
+let planBuilds = 0;
+let flightBuilds = 0;
+
+/** How often day plans and per-instant boards were built. For tests of the cache. */
+export function demoCacheStats(): { planBuilds: number; flightBuilds: number; plans: number; boards: number } {
+  return { planBuilds, flightBuilds, plans: planCache.size, boards: flightCache.size };
+}
+
+/** Forget every cached plan and board (tests only). */
+export function clearDemoCaches(): void {
+  planCache.clear();
+  flightCache.clear();
+}
+
+function dayPlan(airport: Airport, date: string, direction: FlightDirection): FlightPlan[] {
+  const key = `${airport.slug}|${date}|${direction}`;
+  let plans = planCache.get(key);
+  if (!plans) {
+    planBuilds += 1;
+    const weekday = zonedParts(zonedDateTime(date, 720, airport.timezone), airport.timezone).weekday;
+    plans = buildDemoTimetable(airport.slug, direction)
+      .filter((entry) => !entry.days || entry.days.includes(weekday))
+      .map((entry) => planFlight(entry, airport, date));
+    planCache.set(key, plans);
+  }
+  return plans;
+}
+
 /**
  * The demo flights of one airport, local date and direction, as they stand at `now`.
  * Pure and deterministic. Returns an empty list for airports without demo routes.
+ * Results are cached per instant, so several providers built for the same tick share them;
+ * treat the returned flights as read-only.
  */
 export function demoFlightsForDate(airportSlug: string, date: string, direction: FlightDirection, now: Instant): DemoFlight[] {
   const airport = getAirport(airportSlug);
   if (!airport || !isDateKey(date)) return [];
-  const weekday = zonedParts(zonedDateTime(date, 720, airport.timezone), airport.timezone).weekday;
-  const moment = toDate(now);
-  return buildDemoTimetable(airport.slug, direction)
-    .filter((entry) => !entry.days || entry.days.includes(weekday))
-    .map((entry) => buildFlight(entry, airport, date, moment));
+  const time = toDate(now).getTime();
+  const key = `${airport.slug}|${date}|${direction}|${time}`;
+  let flights = flightCache.get(key);
+  if (!flights) {
+    flightBuilds += 1;
+    flights = dayPlan(airport, date, direction).map((plan) => deriveFlight(plan, airport, time));
+    flightCache.set(key, flights);
+  }
+  return flights;
+}
+
+/**
+ * The flight sold under a codeshare designator (`QR 5700`) at an airport on a local date, or
+ * `null`. Identity only: the operating flight's id, whatever the time of day.
+ */
+export function demoFlightIdForCodeshare(airportSlug: string, date: string, direction: FlightDirection, designator: string): string | null {
+  const airport = getAirport(airportSlug);
+  if (!airport || !isDateKey(date)) return null;
+  const wanted = designator.replace(/\s+/g, '').toUpperCase();
+  const match = dayPlan(airport, date, direction).find((plan) => plan.codeshares?.some((code) => code.replace(/\s+/g, '').toUpperCase() === wanted));
+  return match ? match.id : null;
+}
+
+/** True when a flight id names a flight in the demo timetable of that airport (any time of day). */
+export function demoFlightExists(airportSlug: string, date: string, direction: FlightDirection, id: string): boolean {
+  const airport = getAirport(airportSlug);
+  if (!airport || !isDateKey(date)) return false;
+  const wanted = id.trim().toLowerCase();
+  return dayPlan(airport, date, direction).some((plan) => plan.id === wanted);
 }
 
 /** A sensible default window for a live board: from 45 minutes ago to `hoursAhead` hours ahead. */

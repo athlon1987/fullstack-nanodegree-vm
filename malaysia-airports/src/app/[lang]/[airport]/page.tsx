@@ -73,6 +73,18 @@ async function Overview({ params }: { params: AirportPageParams }) {
   return (
     <>
       <JsonLd data={airportJsonLd(airport, lang)} />
+      {/* Operational notices first, directly under the airport header, inside the first phone
+          screen (A-20, BR-08). */}
+      <Section tone="subtle" spacing="sm" aria-labelledby="airport-notices-title">
+        <SectionHeading id="airport-notices-title" eyebrow={t('nav.notices')} title={t('airportPage.noticesTitle', { airport: airport.shortName })} variant="title" />
+        <NoticeList
+          notices={notices}
+          emptyText={t('notices.none')}
+          linkToAll
+          listClassName={notices.length > 1 ? 'grid items-start lg:grid-cols-2' : 'max-w-narrow'}
+        />
+      </Section>
+
       <Section spacing="md">
         <div className="flex flex-col gap-10">
           {limited ? (
@@ -83,16 +95,6 @@ async function Overview({ params }: { params: AirportPageParams }) {
           ) : null}
           <AirportFlightTools slug={airport.slug} name={airport.shortName} hasFlights={sections.includes('flights')} />
         </div>
-      </Section>
-
-      <Section tone="subtle" spacing="md" aria-labelledby="airport-notices-title">
-        <SectionHeading id="airport-notices-title" eyebrow={t('nav.notices')} title={t('airportPage.noticesTitle', { airport: airport.shortName })} variant="title" />
-        <NoticeList
-          notices={notices}
-          emptyText={t('notices.none')}
-          linkToAll
-          listClassName={notices.length > 1 ? 'grid items-start lg:grid-cols-2' : 'max-w-narrow'}
-        />
       </Section>
 
       {explore.length > 0 ? (

@@ -10,7 +10,7 @@
 import MiniSearch from 'minisearch';
 
 /** Kinds of things the site search can find. Flights are looked up live, not indexed. */
-export const SEARCH_DOC_TYPES = ['airport', 'facility', 'outlet', 'transport', 'parking', 'guide', 'faq', 'notice', 'corporate'] as const;
+export const SEARCH_DOC_TYPES = ['airport', 'facility', 'outlet', 'transport', 'parking', 'guide', 'faq', 'notice', 'corporate', 'place', 'airline', 'unpublished'] as const;
 export type SearchDocType = (typeof SEARCH_DOC_TYPES)[number];
 
 /** One searchable item. */
@@ -70,10 +70,10 @@ export const SEARCH_SYNONYMS: readonly (readonly string[])[] = [
   ['toilet', 'toilets', 'washroom', 'restroom', 'bathroom', 'tandas', 'wc'],
   ['wifi', 'wi-fi', 'internet', 'wireless'],
   ['sim', 'sim card', 'esim', 'telco', 'prepaid', 'kad sim', 'mobile data'],
-  ['money changer', 'currency exchange', 'forex', 'pengurup wang', 'pengurup', 'currency', 'exchange'],
+  ['money changer', 'currency exchange', 'forex', 'pengurup wang', 'pengurup', 'currency', 'exchange', 'tukar wang', 'tukaran wang', 'penukaran wang', 'changer'],
   ['atm', 'cash machine', 'cash'],
   ['baby', 'nursing', 'nursing room', 'baby care', 'breastfeeding', 'bayi', 'diaper'],
-  ['wheelchair', 'prm', 'oku', 'reduced mobility', 'disabled', 'disability', 'assistance', 'accessible', 'kerusi roda'],
+  ['wheelchair', 'prm', 'oku', 'reduced mobility', 'disabled', 'disability', 'assistance', 'accessible', 'kerusi roda', 'buggy', 'buggies', 'mobility cart'],
   ['hidden disability', 'autism', 'sensory', 'calm', 'butterfly'],
   ['taxi', 'teksi', 'cab'],
   ['grab', 'e-hailing', 'ehailing', 'ride hailing'],
@@ -90,7 +90,26 @@ export const SEARCH_SYNONYMS: readonly (readonly string[])[] = [
   ['smoking', 'smoke', 'merokok'],
   ['shower', 'showers', 'mandi'],
   ['aerotrain', 'satellite', 'satelit'],
+  ['lift', 'lifts', 'lif', 'elevator', 'elevators'],
+  ['trolley', 'trolleys', 'troli', 'baggage trolley', 'luggage cart'],
+  ['fast track', 'fasttrack', 'laluan pantas', 'priority lane', 'lorong keutamaan', 'express lane'],
+  ['hearing loop', 'hearing loops', 'induction loop', 'gelung pendengaran', 'gelung aruhan'],
+  ['halal', 'muslim friendly', 'muslim-friendly', 'mesra muslim'],
+  ['information', 'information counter', 'information desk', 'kaunter pertanyaan', 'pertanyaan', 'help desk'],
 ];
+
+/**
+ * Words that mean the visitor is looking for a place or service in a terminal. For these queries
+ * news and corporate pages are demoted and places are lifted, so "surau" never ranks a solar
+ * farm press release above the prayer room (A-12).
+ */
+const FACILITY_INTENT = new Set([
+  'surau', 'prayer', 'pray', 'musolla', 'solat', 'toilet', 'toilets', 'tandas', 'washroom', 'restroom', 'wifi', 'sim', 'esim',
+  'atm', 'cash', 'forex', 'currency', 'changer', 'pengurup', 'baby', 'nursing', 'bayi', 'wheelchair', 'oku', 'buggy', 'calm',
+  'sensory', 'autism', 'smoking', 'merokok', 'shower', 'mandi', 'lift', 'lifts', 'lif', 'elevator', 'trolley', 'troli', 'halal',
+  'clinic', 'klinik', 'pharmacy', 'farmasi', 'lounge', 'lounges', 'hotel', 'food', 'makan', 'cafe', 'coffee', 'shop', 'kedai',
+  'information', 'pertanyaan', 'lost', 'luggage', 'bagasi', 'hearing', 'parking', 'parkir', 'fasttrack',
+]);
 
 const TYPE_WEIGHT: Record<SearchDocType, number> = {
   facility: 1.3,
@@ -99,9 +118,25 @@ const TYPE_WEIGHT: Record<SearchDocType, number> = {
   parking: 1.2,
   outlet: 1.15,
   guide: 1.1,
+  // An airline's own record (terminal, check-in) before lounges that carry its name.
+  airline: 1.6,
+  place: 1,
   faq: 1,
   notice: 1,
+  // An honest "not published" answer for a known gap: only wins on a close title match.
+  unpublished: 1,
   corporate: 0.7,
+};
+
+/** Extra weights when the query is about a place or service in a terminal (see `FACILITY_INTENT`). */
+const FACILITY_WEIGHT: Partial<Record<SearchDocType, number>> = {
+  facility: 1.4,
+  outlet: 1.3,
+  place: 1.2,
+  parking: 1.1,
+  faq: 0.75,
+  notice: 0.6,
+  corporate: 0.25,
 };
 
 function normalise(value: string): string {
@@ -171,8 +206,10 @@ export function searchAll(index: SearchIndex, query: string, options: SearchOpti
   if (!text) return { query, total: 0, groups: [] };
   const limit = options.limit ?? 5;
   const typed = new Set(text.split(/[^a-z0-9]+/).filter(Boolean));
+  const expanded = expandQuery(query);
+  const facilityIntent = expanded.split(/[^a-z0-9]+/).some((word) => FACILITY_INTENT.has(word));
 
-  const raw = index.mini.search(expandQuery(query), {
+  const raw = index.mini.search(expanded, {
     filter: (result) => {
       const stored = result as unknown as SearchDocument;
       if (options.types && !options.types.includes(stored.type)) return false;
@@ -182,7 +219,8 @@ export function searchAll(index: SearchIndex, query: string, options: SearchOpti
       const document = stored as unknown as SearchDocument | undefined;
       if (!document) return 1;
       const local = options.airport && document.airport === options.airport ? 1.3 : 1;
-      return TYPE_WEIGHT[document.type] * local;
+      const intent = facilityIntent ? (FACILITY_WEIGHT[document.type] ?? 1) : 1;
+      return TYPE_WEIGHT[document.type] * local * intent;
     },
     boostTerm: (term) => (typed.has(term) ? 1 : 0.6),
   });

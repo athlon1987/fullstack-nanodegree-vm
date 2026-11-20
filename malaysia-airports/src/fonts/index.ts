@@ -12,16 +12,19 @@
 import localFont from 'next/font/local';
 
 export const fontDisplay = localFont({
-  src: [
-    { path: './fraunces-latin-opsz-normal.woff2', weight: '100 900', style: 'normal' },
-    { path: './fraunces-latin-opsz-italic.woff2', weight: '100 900', style: 'italic' },
-  ],
-  display: 'swap',
+  // Upright only: the italic file (81 KB) carried one phrase on the home page, which now uses the
+  // upright face in colour (A-10). Any remaining `italic` is synthesised by the browser.
+  src: './fraunces-latin-opsz-normal.woff2',
+  weight: '100 900',
+  style: 'normal',
+  // Every page's `h1` is set in Fraunces, so it is preloaded. `optional` never swaps the face
+  // after first paint: a heading cannot rewrap and shift the page (CLS 0.16 on /ms before).
+  // When the file is not ready in time the fallback is kept for that view; it is cached for the next.
+  display: 'optional',
   variable: '--font-fraunces',
   fallback: ['Iowan Old Style', 'Palatino Linotype', 'Georgia', 'serif'],
   adjustFontFallback: 'Times New Roman',
-  // Display type is below the fold on most pages: do not compete with the interface face.
-  preload: false,
+  preload: true,
 });
 
 export const fontSans = localFont({

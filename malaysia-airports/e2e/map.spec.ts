@@ -129,7 +129,7 @@ test.describe('facilities directory', () => {
   test('filters by type and area, and links to the map', async ({ page }) => {
     await page.goto('/en/kul/facilities');
     const main = page.getByRole('main');
-    await expect(main.getByRole('heading', { level: 1, name: 'Facilities and services' })).toBeVisible();
+    await expect(main.getByRole('heading', { level: 1, name: 'Facilities' })).toBeVisible();
     await expect(main.getByText('20 facilities')).toBeVisible();
 
     const toggle = main.getByRole('button', { name: 'Filter facilities' });

@@ -9,7 +9,7 @@ import { stripLocale } from '@/lib/locale';
 import { LocaleLink } from '@/components/common/locale-link';
 import { Icon } from '@/components/ui/icon';
 import { closeOverlay } from './overlay-store';
-import { PRIMARY_NAV, isPrimaryNavActive, primaryNavHref } from './sections';
+import { PRIMARY_NAV, isPrimaryNavActive, primaryNavHref, primaryNavSection } from './sections';
 import { useSectionAvailability } from './shell-context';
 
 export interface PrimaryNavProps {
@@ -20,14 +20,19 @@ export interface PrimaryNavProps {
 
 function NavLinks({ variant = 'bar', className, pathname }: PrimaryNavProps & { pathname: string | null }) {
   const t = useT();
-  const { selection } = useAirportContext();
+  const { selection, airport } = useAirportContext();
   const availability = useSectionAvailability();
   const path = pathname ? stripLocale(pathname) : null;
 
   return (
     <ul className={cn(variant === 'bar' ? 'flex items-center' : 'flex flex-col', className)}>
-      {PRIMARY_NAV.map((item) => {
+      {/* Assistance sits in the utility bar on desktop (always visible there, in both languages)
+          and in this list in the phone menu (A-15). */}
+      {PRIMARY_NAV.filter((item) => variant === 'list' || item.id !== 'assistance').map((item) => {
         const active = path !== null && isPrimaryNavActive(item, path);
+        // None of the item's sections exists at the chosen airport: the link leads to the "not
+        // published" state, and says so (A-07).
+        const missing = Boolean(item.section && selection && airport && primaryNavSection(item, selection, availability) === null);
         return (
           <li key={item.id}>
             <LocaleLink
@@ -47,7 +52,16 @@ function NavLinks({ variant = 'bar', className, pathname }: PrimaryNavProps & { 
               }
             >
               {variant === 'list' ? <Icon name={item.icon} className="text-primary-ink" /> : null}
-              <span className={variant === 'list' ? 'min-w-0 flex-1' : undefined}>{t(item.labelKey)}</span>
+              <span className={variant === 'list' ? 'min-w-0 flex-1' : undefined}>
+                {t(item.labelKey)}
+                {missing && airport ? (
+                  variant === 'list' ? (
+                    <span className="type-caption block font-medium text-ink-2">{t('shellExtras.notPublished.tileHint', { airport: airport.shortName })}</span>
+                  ) : (
+                    <span className="sr-only">, {t('shellExtras.notPublished.tileHint', { airport: airport.shortName })}</span>
+                  )
+                ) : null}
+              </span>
               {variant === 'list' ? <Icon name="chevron-right" size="sm" className="text-ink-3" /> : null}
             </LocaleLink>
           </li>
@@ -62,9 +76,9 @@ function NavLinksForPath(props: PrimaryNavProps) {
 }
 
 /**
- * Primary navigation: Flights, Plan your journey, At the airport, Shop & dine, Transport &
- * parking, Help. Airport-scoped items follow the remembered airport (`sectionHref`); with none
- * they lead to the airport chooser first.
+ * Primary navigation: Flights, Plan your journey, At the airport, Shops and food, Transport and
+ * parking, Help, Assistance. Airport-scoped items follow the remembered airport (`sectionHref`);
+ * with none they lead to the airport chooser first.
  */
 export function PrimaryNav({ variant = 'bar', className }: PrimaryNavProps) {
   const t = useT();

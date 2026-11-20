@@ -36,7 +36,11 @@ export function PageHeader({ eyebrow, title, lead, breadcrumbs, actions, meta, a
   return (
     <header className={cn(tone === 'subtle' && 'border-b border-line bg-page-subtle', className)}>
       <Container size={width} className={cn('pb-8 sm:pb-10', breadcrumbs ? 'pt-3 sm:pt-4' : 'pt-8 sm:pt-12')}>
-        {breadcrumbs ? <div className="mb-4 sm:mb-6">{breadcrumbs}</div> : null}
+        {breadcrumbs ? (
+          <div data-page-breadcrumbs="" className="mb-4 sm:mb-6">
+            {breadcrumbs}
+          </div>
+        ) : null}
         <div className={cn('grid items-end gap-x-12 gap-y-6', art && 'lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]')}>
           <div className="min-w-0">
             {eyebrow ? (

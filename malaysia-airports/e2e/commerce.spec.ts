@@ -38,8 +38,8 @@ test.describe('shop and dine', () => {
   test('discovery lists published outlets with an honest note and the official directory', async ({ page }) => {
     await page.goto('/en/kul/shop-dine', { timeout: 90_000 });
     const main = page.getByRole('main');
-    await expect(main.getByRole('heading', { level: 1, name: 'Shop & dine' })).toBeVisible();
-    await expect(page).toHaveTitle(/Shop & dine: KLIA/);
+    await expect(main.getByRole('heading', { level: 1, name: 'Shops and food' })).toBeVisible();
+    await expect(page).toHaveTitle(/Shops and food: KLIA/);
     await expect(main.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('link', { name: 'KLIA' })).toBeVisible();
 
     const note = main.getByRole('complementary', { name: 'Only what we could confirm' });
@@ -111,7 +111,7 @@ test.describe('shop and dine', () => {
   test('fits a 360 pixel screen without sideways scrolling', async ({ page }) => {
     await page.setViewportSize({ width: 360, height: 780 });
     await page.goto('/ms/kul/shop-dine', { timeout: 90_000 });
-    await expect(page.getByRole('main').getByRole('heading', { level: 1, name: 'Beli-belah & makan' })).toBeVisible();
+    await expect(page.getByRole('main').getByRole('heading', { level: 1, name: 'Kedai dan makanan' })).toBeVisible();
     await expectNoHorizontalOverflow(page);
   });
 });
@@ -122,7 +122,7 @@ test.describe('outlet page', () => {
     const main = page.getByRole('main');
     await expect(main.getByRole('heading', { level: 1, name: 'PAUL Le Cafe' })).toBeVisible();
     await expect(page).toHaveTitle(/PAUL Le Cafe, KLIA Terminal 1/);
-    await expect(main.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('link', { name: 'Shop & dine' })).toBeVisible();
+    await expect(main.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('link', { name: 'Shops and food' })).toBeVisible();
     await expect(main.getByRole('heading', { level: 2, name: 'Where to find it' })).toBeVisible();
     await expect(main.getByText('Not published').first()).toBeVisible();
     await expect(main.getByText('Halal certified').first()).toBeVisible();
@@ -149,7 +149,7 @@ test.describe('lounges and rest', () => {
   test('lists lounges by terminal and side of security, with the transit explainer', async ({ page }) => {
     await page.goto('/en/kul/lounges', { timeout: 90_000 });
     const main = page.getByRole('main');
-    await expect(main.getByRole('heading', { level: 1, name: 'Lounges and hotels' })).toBeVisible();
+    await expect(main.getByRole('heading', { level: 1, name: 'Lounges' })).toBeVisible();
     await expect(main.getByRole('heading', { level: 2, name: 'KLIA Terminal 1' })).toBeVisible();
     await expect(main.getByRole('heading', { level: 2, name: 'KLIA Terminal 2' })).toBeVisible();
     await expect(main.getByRole('heading', { name: 'Plaza Premium Lounge', exact: true })).toBeVisible();
@@ -166,7 +166,7 @@ test.describe('lounges and rest', () => {
   test('works for a single-terminal airport with operator links', async ({ page }) => {
     await page.goto('/en/pen/lounges', { timeout: 90_000 });
     const main = page.getByRole('main');
-    await expect(main.getByRole('heading', { level: 1, name: 'Lounges and hotels' })).toBeVisible();
+    await expect(main.getByRole('heading', { level: 1, name: 'Lounges' })).toBeVisible();
     await expect(main.getByRole('link', { name: /Operator’s page/ }).first()).toHaveAttribute('href', /plazapremiumlounge\.com/);
     await expectNoAxeViolations(page);
   });

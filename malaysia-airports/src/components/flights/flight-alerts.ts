@@ -8,7 +8,7 @@
  */
 import { useCallback, useMemo, useSyncExternalStore } from 'react';
 import { z } from 'zod';
-import { useStore } from '@/lib/hooks';
+import { useStore } from '@/lib/hooks/use-store';
 import { createStore } from '@/lib/storage';
 
 /** Flight ids with demo alerts turned on (`ma:flight-alerts:v1`). */

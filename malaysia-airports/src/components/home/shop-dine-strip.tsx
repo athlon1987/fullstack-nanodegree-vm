@@ -33,6 +33,11 @@ const FILTER_META: Record<ShopDineFilter, { label: TKey; icon: IconKey }> = {
 export interface ShopDineStripProps {
   /** Number of published outlets per airport slug (airports with none are left out). */
   outletCounts: Readonly<Record<string, number>>;
+  /**
+   * Filters that can return at least one outlet, per airport slug, from the published data. A
+   * filter that cannot return anything is not offered (C-05 hand-off): no "0 of 8".
+   */
+  usableFilters: Readonly<Record<string, readonly ShopDineFilter[]>>;
 }
 
 /**
@@ -40,7 +45,7 @@ export interface ShopDineStripProps {
  * continue to the chosen airport's listing with those filters applied. With no airport chosen
  * the button opens the airport switcher first.
  */
-export function ShopDineStrip({ outletCounts }: ShopDineStripProps) {
+export function ShopDineStrip({ outletCounts, usableFilters }: ShopDineStripProps) {
   const t = useT();
   const { airport, selection } = useAirportContext();
   const availability = useSectionAvailability();
@@ -56,18 +61,22 @@ export function ShopDineStrip({ outletCounts }: ShopDineStripProps) {
   };
 
   const count = airport ? (outletCounts[airport.slug] ?? 0) : 0;
+  // With an airport: its usable filters. Without one: those usable somewhere in the network.
+  const usable = airport ? (usableFilters[airport.slug] ?? []) : [...new Set(Object.values(usableFilters).flat())];
+  const offered = SHOP_DINE_FILTERS.filter((filter) => usable.includes(filter));
+  const chosen = active.filter((filter) => offered.includes(filter));
   const hasListing = airport ? hasSection(availability, airport.slug, 'shop-dine') : false;
-  const query = active.length > 0 ? `filters=${SHOP_DINE_FILTERS.filter((filter) => active.includes(filter)).join(',')}` : '';
+  const query = chosen.length > 0 ? `filters=${SHOP_DINE_FILTERS.filter((filter) => chosen.includes(filter)).join(',')}` : '';
   const base = airport ? sectionPath(airport.slug, 'shop-dine', selection?.terminal) : '';
   const href = airport ? `${base}${query ? `${base.includes('?') ? '&' : '?'}${query}` : ''}` : '';
 
   return (
     <div className="flex flex-col gap-5">
-      <div role="group" aria-label={t('home.shop.filtersLabel')} className="flex flex-wrap gap-2">
-        {SHOP_DINE_FILTERS.map((filter) => (
+      <div role="group" aria-label={t('home.shop.filtersLabel')} className="flex flex-wrap gap-2 empty:hidden">
+        {offered.map((filter) => (
           <FilterChip
             key={filter}
-            pressed={active.includes(filter)}
+            pressed={chosen.includes(filter)}
             onPressedChange={(pressed) => toggle(filter, pressed)}
             icon={FILTER_META[filter].icon}
             // Long Malay labels at a large text size wrap inside the chip instead of widening the page.
@@ -83,11 +92,11 @@ export function ShopDineStrip({ outletCounts }: ShopDineStripProps) {
             <LocaleLink href={href}>{t('home.shop.browseAt', { airport: airport.shortName })}</LocaleLink>
           </Button>
         ) : airport ? (
-          <Button variant="secondary" iconEnd="chevrons-up-down" className={WRAP_BUTTON} onClick={() => overlays.openAirportSwitcher('shop-dine')}>
+          <Button variant="secondary" iconEnd="chevrons-up-down" className={WRAP_BUTTON} onClick={() => overlays.openAirportSwitcher('shop-dine', query)}>
             {t('common.actions.change')}: {airport.shortName}
           </Button>
         ) : (
-          <Button iconStart="map-pin" className={WRAP_BUTTON} onClick={() => overlays.openAirportSwitcher('shop-dine')}>
+          <Button iconStart="map-pin" className={WRAP_BUTTON} onClick={() => overlays.openAirportSwitcher('shop-dine', query)}>
             {t('home.shop.chooseAirport')}
           </Button>
         )}

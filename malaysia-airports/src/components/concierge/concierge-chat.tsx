@@ -5,7 +5,7 @@ import { getAirport, terminalLabel } from '@/content/airports';
 import { CONCIERGE_MAX_QUESTION } from '@/lib/concierge/constants';
 import type { ConciergeContext } from '@/lib/concierge/types';
 import { cn } from '@/lib/cn';
-import { useHydrated } from '@/lib/hooks';
+import { useHydrated } from '@/lib/hooks/use-store';
 import { useLang, useT } from '@/lib/i18n/client';
 import { LocaleLink } from '@/components/common/locale-link';
 import { Button } from '@/components/ui/button';

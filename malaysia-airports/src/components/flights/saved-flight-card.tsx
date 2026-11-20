@@ -99,9 +99,19 @@ export function SavedFlightCard({ saved, flight, now, next, selected, alertsOn, 
           <p className="type-body-sm mt-0.5 text-ink-2">{flight.airline.name}</p>
         </div>
         <p className="flex shrink-0 flex-col items-end">
-          <span className="sr-only">{t('common.labels.time')}: </span>
-          {moved ? <s className="type-data-sm text-ink-2">{formatTime(flight.scheduled, zone)}</s> : null}
-          <span className={cn('type-data-lg', flight.status === 'cancelled' ? 'text-ink-2 line-through' : 'text-ink')}>
+          <span className="sr-only">
+            {flight.status === 'cancelled'
+              ? t('flightPages.times.cancelled', { scheduled: formatTime(flight.scheduled, zone) })
+              : moved
+                ? t('flightPages.times.moved', { scheduled: formatTime(flight.scheduled, zone), estimated: formatTime(flight.estimated, zone) })
+                : t('flightPages.times.onTime', { scheduled: formatTime(flight.scheduled, zone) })}
+          </span>
+          {moved ? (
+            <s aria-hidden="true" className="type-data-sm text-ink-2">
+              {formatTime(flight.scheduled, zone)}
+            </s>
+          ) : null}
+          <span aria-hidden="true" className={cn('type-data-lg', flight.status === 'cancelled' ? 'text-ink-2 line-through' : 'text-ink')}>
             {formatTime(moved ? flight.estimated : flight.scheduled, zone)}
           </span>
         </p>

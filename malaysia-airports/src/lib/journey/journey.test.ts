@@ -50,7 +50,7 @@ const timesInOrder = (steps: JourneyStep[]): boolean => {
 describe('buildJourney: departing', () => {
   it('orders the steps from terminal to boarding with times that never go backwards', () => {
     const steps = buildJourney({ flight: international(), mode: 'departing', airportContent: kul, now: at('08:00') });
-    expect(ids(steps)).toEqual(['terminal', 'travel', 'arrive', 'check-in', 'security', 'gate', 'food', 'boarding']);
+    expect(ids(steps)).toEqual(['terminal', 'travel', 'arrive', 'check-in', 'security', 'gate', 'food', 'boarding', 'departure']);
     expect(timesInOrder(steps)).toBe(true);
     expect(steps.every((item) => item.state === 'upcoming')).toBe(true);
   });
@@ -100,12 +100,15 @@ describe('buildJourney: departing', () => {
     const steps = buildJourney({ flight: international({ checkInRow: 'H', checkInCounters: '1-18' }), mode: 'departing', airportContent: kul, now: at('11:30') });
     const checkIn = step(steps, 'check-in');
     expect(checkIn.body.en).toContain('Row H, counters 1-18');
-    expect(checkIn.body.ms).toContain('Barisan H, kaunter 1-18');
+    expect(checkIn.body.ms).toContain('Baris H, kaunter 1-18');
     expect(checkIn.notes.map((note) => note.id)).toEqual(['kul-t1-check-in-level', 'kul-t1-mh-check-in-rows']);
     expect(checkIn.notes.every((note) => note.provenance === 'official' && note.sources.length > 0)).toBe(true);
 
+    // Before the row is shown, the step still states the flight's own close time: demo data (B-02).
     const generic = step(buildJourney({ flight: international(), mode: 'departing', airportContent: kul, now: at('08:00') }), 'check-in');
-    expect(generic.provenance).toBe('estimated');
+    expect(generic.provenance).toBe('demo');
+    expect(generic.body.en).toMatch(/Check-in closes at 13:00/);
+    expect(step(buildJourney({ flight: null, mode: 'departing', airportContent: kul, now: at('08:00') }), 'check-in').provenance).toBe('estimated');
     const otherAirline = step(buildJourney({ flight: international({ airline: { code: 'BA', name: 'British Airways' } }), mode: 'departing', airportContent: kul, now: at('08:00') }), 'check-in');
     expect(otherAirline.notes.map((note) => note.id)).toEqual(['kul-t1-check-in-level']);
   });
@@ -149,7 +152,8 @@ describe('buildJourney: departing', () => {
   it('replaces the timeline with one clear step when the flight is cancelled, and leads with a delay', () => {
     const cancelled = buildJourney({ flight: international({ status: 'cancelled' }), mode: 'departing', airportContent: kul, now: at('08:00') });
     expect(ids(cancelled)).toEqual(['disruption']);
-    expect(cancelled[0].body.en).toMatch(/Contact your airline/);
+    expect(cancelled[0].body.en).toMatch(/Contact Malaysia Airlines/);
+    expect(cancelled[0]).toMatchObject({ state: 'current', terminal: true });
     const delayed = buildJourney({
       flight: international({ status: 'delayed', estimated: '2026-11-17T15:10:00+08:00', delayMinutes: 70 }),
       mode: 'departing',
@@ -221,11 +225,11 @@ describe('buildJourney: arriving, transiting, meeting', () => {
 
   it('helps someone meeting a passenger: status, parking, where to wait, when to expect them', () => {
     const steps = buildJourney({ flight: arrival(), mode: 'meeting', airportContent: kul, now: at('16:00') });
-    expect(ids(steps)).toEqual(['status', 'parking', 'wait', 'expect']);
+    expect(ids(steps)).toEqual(['status', 'wait', 'parking', 'expect']);
     expect(step(steps, 'status').provenance).toBe('demo');
     expect(step(steps, 'expect')).toMatchObject({ time: '2026-11-17T18:05:00+08:00', provenance: 'estimated' });
     expect(step(steps, 'wait').notes.map((note) => note.id)).toEqual(['kul-t1-arrival-hall-level']);
-    expect(step(steps, 'parking').actions[0].href).toBe('/kul/parking');
+    expect(step(steps, 'parking').actions[0].href).toBe(`/kul/parking?t=T1&from=${encodeURIComponent('2026-11-17T17:05:00+08:00')}&to=${encodeURIComponent('2026-11-17T20:05:00+08:00')}`);
     expect(timesInOrder(steps)).toBe(true);
   });
 });
@@ -254,5 +258,194 @@ describe('buildJourney: contract for the UI', () => {
         }
       }
     }
+  });
+});
+
+/* ------------------------------------------------------------------------------------------
+ * Fix round B: states from start, end and status (B-02), needs (B-11), context (B-13),
+ * greeters (B-17), operational status hints (B-01) and check-in desks (B-12)
+ * --------------------------------------------------------------------------------------- */
+
+const current = (steps: JourneyStep[]): string[] => steps.filter((item) => item.state === 'current').map((item) => item.id);
+const departing = (flight: ReturnType<typeof international>, clock: string, preferences = {}) =>
+  buildJourney({ flight, mode: 'departing', airportContent: kul, now: at(clock), preferences });
+
+describe('buildJourney: the current step follows start, end and flight status (B-02)', () => {
+  it('moves on from check-in one minute after it closes and says check-in has closed', () => {
+    const steps = departing(international({ status: 'check-in-closed', checkInRow: 'H', checkInCounters: '1-18' }), '13:01');
+    expect(current(steps)).toEqual(['security']);
+    const checkIn = step(steps, 'check-in');
+    expect(checkIn.state).toBe('done');
+    expect(checkIn.title.en).toBe('Check-in closed at 13:00');
+    expect(checkIn.body.en).toMatch(/contact Malaysia Airlines now/);
+    expect(checkIn.body.en).toMatch(/If you have checked in, carry on to security/);
+  });
+
+  it('keeps check-in current while it is open', () => {
+    expect(current(departing(international({ status: 'check-in-open', checkInRow: 'H' }), '12:59'))).toEqual(['check-in']);
+  });
+
+  it('makes boarding current while boarding, then the departure once the gate has closed', () => {
+    expect(current(departing(international({ status: 'boarding', gate: 'C12' }), '13:20'))).toEqual(['boarding']);
+    const closed = departing(international({ status: 'gate-closed', gate: 'C12' }), '13:46');
+    expect(current(closed)).toEqual(['departure']);
+    expect(step(closed, 'boarding').state).toBe('done');
+    expect(step(closed, 'departure').title.en).toBe('Gate closed at 13:45: departs 14:00');
+  });
+
+  it('ends a departed flight with one terminal step that sends nobody anywhere (departure + 1 min)', () => {
+    const steps = departing(international({ status: 'departed', actual: '2026-11-17T14:00:00+08:00' }), '14:01');
+    expect(ids(steps)).toEqual(['departed']);
+    expect(steps[0]).toMatchObject({ state: 'current', terminal: true, title: { en: 'Flight MH 2 departed at 14:00' } });
+    expect(steps[0].body.en).not.toMatch(/go to|gate|board/i);
+  });
+
+  it('ends a cancelled flight with one terminal step for departing, arriving and meeting journeys', () => {
+    for (const [mode, flight] of [
+      ['departing', international({ status: 'cancelled' })],
+      ['arriving', arrival({ status: 'cancelled' })],
+      ['meeting', arrival({ status: 'cancelled' })],
+    ] as const) {
+      const steps = buildJourney({ flight, mode, airportContent: kul, now: at('12:00') });
+      expect(ids(steps), mode).toEqual(['disruption']);
+      expect(steps[0].state, mode).toBe('current');
+    }
+  });
+
+  it('marks landing done once an arrival has landed and makes the next step current', () => {
+    const landed = arrival({ status: 'landed', actual: '2026-11-17T17:35:00+08:00' });
+    const steps = buildJourney({ flight: landed, mode: 'arriving', airportContent: kul, now: at('17:36') });
+    expect(step(steps, 'landing')).toMatchObject({ state: 'done', title: { en: 'Flight MH 1 landed at 17:35' } });
+    expect(current(steps)).toEqual(['immigration']);
+    const later = buildJourney({ flight: landed, mode: 'arriving', airportContent: kul, now: at('18:40') });
+    expect(current(later)).toEqual(['onward']);
+  });
+
+  it('keeps the landing upcoming before an arrival lands', () => {
+    const steps = buildJourney({ flight: arrival({ status: 'en-route' }), mode: 'arriving', airportContent: kul, now: at('16:00') });
+    expect(step(steps, 'landing').state).toBe('upcoming');
+    expect(current(steps)).toEqual([]);
+  });
+});
+
+describe('buildJourney: needs (B-11)', () => {
+  const airlineAssistance = {
+    MH: { title: { en: 'Malaysia Airlines assistance' }, body: { en: 'Malaysia Airlines asks for wheelchair requests at least 48 hours before departure.' }, provenance: 'official' as const, sources: ['mh-special-assistance'] },
+  };
+  const content = { ...kul, airlineAssistance };
+
+  it('adds the assistance step with the airline notice period and the airport service, departing and arriving', () => {
+    const preferences = { needs: ['wheelchair', 'older'] as const, reducedMobility: true, stepFree: true };
+    const dep = buildJourney({ flight: international({ gate: 'C12' }), mode: 'departing', airportContent: content, now: at('08:00'), preferences: { ...preferences, needs: [...preferences.needs] } });
+    const assistance = step(dep, 'assistance');
+    expect(assistance.title.en).toBe('Arrange assistance with Malaysia Airlines');
+    expect(assistance.body.en).toMatch(/a wheelchair, an older traveller/);
+    expect(assistance.notes.map((note) => note.id)).toEqual(['assistance-mh', 'kul-butterfly-effect-note']);
+    expect(assistance.notes[0].body.en).toMatch(/48 hours/);
+    expect(assistance.actions.map((action) => action.href)).toContain('/accessibility');
+    // Map links ask for step-free routes.
+    expect(step(dep, 'gate').actions[0].href).toBe('/kul/map?gate=C12&t=T1&sf=1');
+
+    const arr = buildJourney({ flight: arrival(), mode: 'arriving', airportContent: content, now: at('08:00'), preferences: { needs: ['companion'] } });
+    expect(ids(arr)).toContain('assistance');
+  });
+
+  it('says honestly when the airline notice period is not published', () => {
+    const steps = buildJourney({ flight: international({ airline: { code: 'BA', name: 'British Airways' } }), mode: 'departing', airportContent: content, now: at('08:00'), preferences: { needs: ['wheelchair'] } });
+    expect(step(steps, 'assistance').body.en).toMatch(/We have not published its notice period/);
+  });
+
+  it('leaves the assistance step out without needs', () => {
+    expect(ids(departing(international(), '08:00'))).not.toContain('assistance');
+  });
+});
+
+describe('buildJourney: links that keep the flight context (B-13)', () => {
+  const lounge = {
+    id: 'kul-t1-plaza-premium-g',
+    kind: 'lounge' as const,
+    name: { en: 'Plaza Premium Lounge', ms: 'Plaza Premium Lounge' },
+    terminal: 'T1' as const,
+    airside: true,
+    gatePrefixes: ['G'],
+    href: '/kul/lounges#kul-t1-plaza-premium-g',
+    provenance: 'official' as const,
+    sources: ['mahb-klia-t1-home'],
+  };
+  const content = { ...kul, places: [lounge] };
+
+  it('passes gate and terminal to shop and dine, terminal and arrival time to parking, terminal to transport', () => {
+    const steps = departing(international({ gate: 'G6' }), '08:00');
+    expect(step(steps, 'food').actions[0].href).toBe('/kul/shop-dine?gate=T1-G6&t=T1');
+    expect(step(steps, 'travel').actions.map((action) => action.href)).toEqual([
+      '/kul/transport?t=T1',
+      `/kul/parking?t=T1&from=${encodeURIComponent('2026-11-17T11:00:00+08:00')}`,
+    ]);
+  });
+
+  it('suggests the lounge near the gate after security, first when the passenger has lounge access', () => {
+    const steps = buildJourney({ flight: international({ gate: 'G6' }), mode: 'departing', airportContent: content, now: at('08:00'), preferences: { loungeAccess: true } });
+    const food = step(steps, 'food');
+    expect(food.places?.map((place) => place.id)).toEqual(['kul-t1-plaza-premium-g']);
+    expect(food.body.en).toMatch(/Near gate G6, after security: Plaza Premium Lounge/);
+    expect(food.actions[1].href).toBe('/kul/lounges?t=T1');
+    // A C gate is not near the G pier.
+    expect(step(buildJourney({ flight: international({ gate: 'C12' }), mode: 'departing', airportContent: content, now: at('08:00') }), 'food').places).toBeUndefined();
+  });
+
+  it('moves the arrive-by time later with hand luggage only, as an estimate', () => {
+    const arrive = step(departing(international(), '08:00', { handLuggageOnly: true }), 'arrive');
+    expect(arrive.title.en).toBe('Arrive at the airport by 12:00');
+    expect(arrive.provenance).toBe('estimated');
+    expect(arrive.body.en).toMatch(/hand luggage only/);
+  });
+
+  it('offers Fast Track only as an optional step after security, when the content publishes it', () => {
+    expect(ids(departing(international(), '08:00'))).not.toContain('fast-track');
+    const fastTrack = { title: { en: 'Optional: Fast Track' }, body: { en: 'A paid lane.' }, href: '/kul/fast-track', provenance: 'official' as const, sources: ['mahb-klia-t1-home'] };
+    const steps = buildJourney({ flight: international(), mode: 'departing', airportContent: { ...kul, fastTrack }, now: at('08:00') });
+    const order = ids(steps);
+    expect(order.indexOf('fast-track')).toBe(order.indexOf('security') + 1);
+    expect(step(steps, 'fast-track').optional).toBe(true);
+  });
+});
+
+describe('buildJourney: meeting someone (B-17)', () => {
+  it('leads with where to wait and pick up, offers short-stay parking with a 3-hour preset and drops long-stay warnings', () => {
+    const steps = buildJourney({ flight: arrival(), mode: 'meeting', airportContent: kul, now: at('16:00') });
+    expect(ids(steps).slice(0, 3)).toEqual(['status', 'wait', 'parking']);
+    expect(step(steps, 'wait').body.en).toMatch(/Do not wait at the kerb/);
+    expect(step(steps, 'wait').body.en).toMatch(/e-hailing pick-up area and any entry fee are not published/);
+    const parking = step(steps, 'parking');
+    expect(parking.title.en).toBe('Short-stay parking');
+    expect(parking.notes.map((note) => note.id)).not.toContain('kul-ltcp-shuttle-note');
+    expect(parking.notes.map((note) => note.id)).not.toContain('kul-preferred-parking-warning');
+    const all = JSON.stringify(steps);
+    expect(all).not.toMatch(/Avoid Preferred Parking|longer trip/);
+  });
+});
+
+describe('buildJourney: status lines and check-in desks (B-01, B-12)', () => {
+  it('asks for the Aerotrain line at a C gate and the immigration line at security', () => {
+    const steps = departing(international({ gate: 'C12' }), '08:00');
+    expect(step(steps, 'gate').ops).toEqual(['aerotrain']);
+    expect(step(steps, 'security').ops).toEqual(['immigration']);
+    expect(step(departing(international({ gate: 'G6' }), '08:00'), 'gate').ops).toBeUndefined();
+  });
+
+  it('lists every cabin desk and the bag drop in the check-in step', () => {
+    const flight = international({
+      checkInRow: 'H',
+      checkInCounters: '1-18',
+      checkInDesks: [
+        { cabin: 'economy', row: 'H', counters: '1-18' },
+        { cabin: 'business', row: 'D', counters: '4-12' },
+      ],
+      bagDrop: ['F', 'G'],
+    });
+    const body = step(departing(flight, '11:30'), 'check-in').body.en;
+    expect(body).toContain('Economy: Row H, counters 1-18');
+    expect(body).toContain('Business: Row D, counters 4-12');
+    expect(body).toContain('Bag drop: F, G');
   });
 });

@@ -56,10 +56,10 @@ function partsFormatter(timeZone: string): Intl.DateTimeFormat {
 
 const WEEKDAYS: Record<string, number> = { Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6, Sun: 7 };
 
-/** Break an instant into calendar fields in the given timezone. */
-export function zonedParts(value: Instant, timeZone: string = DEFAULT_TIMEZONE): ZonedParts {
+/** The slow, exact path: `Intl.DateTimeFormat.formatToParts`. Used once per zone and period. */
+function intlParts(date: Date, timeZone: string): ZonedParts {
   const fields: Record<string, string> = {};
-  for (const part of partsFormatter(timeZone).formatToParts(toDate(value))) fields[part.type] = part.value;
+  for (const part of partsFormatter(timeZone).formatToParts(date)) fields[part.type] = part.value;
   return {
     year: Number(fields.year),
     month: Number(fields.month),
@@ -71,12 +71,88 @@ export function zonedParts(value: Instant, timeZone: string = DEFAULT_TIMEZONE):
   };
 }
 
+function intlOffset(ms: number, timeZone: string): number {
+  const parts = intlParts(new Date(ms), timeZone);
+  const asUtc = Date.UTC(parts.year, parts.month - 1, parts.day, parts.hour, parts.minute, parts.second);
+  return Math.round((asUtc - Math.floor(ms / 1000) * 1000) / 60000);
+}
+
+const DAY_MS = 86_400_000;
+/** Every real timezone transition happens on a quarter hour (UTC). */
+const QUARTER_MS = 900_000;
+const MAX_OFFSET_ENTRIES = 4096;
+
+/**
+ * Offsets are cached per zone and UTC day: when the offset at the start and at the end of a day
+ * agree (every day in Malaysia, and every day without a transition elsewhere), one value serves
+ * the whole day. A day with a daylight-saving transition falls back to quarter-hour buckets.
+ * The cache only grows by one entry per zone and day in use, and is cleared if it ever gets large.
+ */
+const dayOffsets = new Map<string, number | null>();
+const quarterOffsets = new Map<string, number>();
+let offsetLookups = 0;
+
+/** How many times the exact (slow) offset path ran. For tests of the cache. */
+export function offsetCacheStats(): { exactLookups: number; cachedDays: number } {
+  return { exactLookups: offsetLookups, cachedDays: dayOffsets.size };
+}
+
+function cachedOffset(ms: number, timeZone: string): number {
+  if (timeZone === 'UTC' || timeZone === 'Etc/UTC') return 0;
+  const day = Math.floor(ms / DAY_MS);
+  const dayKey = `${timeZone}|${day}`;
+  let whole = dayOffsets.get(dayKey);
+  if (whole === undefined) {
+    if (dayOffsets.size > MAX_OFFSET_ENTRIES) {
+      dayOffsets.clear();
+      quarterOffsets.clear();
+    }
+    offsetLookups += 2;
+    const start = intlOffset(day * DAY_MS, timeZone);
+    const end = intlOffset((day + 1) * DAY_MS - 1000, timeZone);
+    whole = start === end ? start : null;
+    dayOffsets.set(dayKey, whole);
+  }
+  if (whole !== null) return whole;
+  const quarter = Math.floor(ms / QUARTER_MS);
+  const quarterKey = `${timeZone}|q${quarter}`;
+  let offset = quarterOffsets.get(quarterKey);
+  if (offset === undefined) {
+    offsetLookups += 1;
+    offset = intlOffset(quarter * QUARTER_MS, timeZone);
+    quarterOffsets.set(quarterKey, offset);
+  }
+  return offset;
+}
+
+/**
+ * Break an instant into calendar fields in the given timezone.
+ *
+ * Fast: the zone's offset comes from a per-day cache, and the fields are read with plain UTC
+ * arithmetic, so formatting hundreds of flight times does not call `formatToParts` per value.
+ */
+export function zonedParts(value: Instant, timeZone: string = DEFAULT_TIMEZONE): ZonedParts {
+  const date = toDate(value);
+  const ms = date.getTime();
+  if (!Number.isFinite(ms)) return intlParts(date, timeZone);
+  const shifted = new Date(ms + cachedOffset(ms, timeZone) * 60_000);
+  const weekday = shifted.getUTCDay();
+  return {
+    year: shifted.getUTCFullYear(),
+    month: shifted.getUTCMonth() + 1,
+    day: shifted.getUTCDate(),
+    hour: shifted.getUTCHours(),
+    minute: shifted.getUTCMinutes(),
+    second: shifted.getUTCSeconds(),
+    weekday: weekday === 0 ? 7 : weekday,
+  };
+}
+
 /** Offset of a timezone from UTC at an instant, in minutes (480 for Malaysia). */
 export function offsetMinutes(value: Instant, timeZone: string = DEFAULT_TIMEZONE): number {
-  const date = toDate(value);
-  const parts = zonedParts(date, timeZone);
-  const asUtc = Date.UTC(parts.year, parts.month - 1, parts.day, parts.hour, parts.minute, parts.second);
-  return Math.round((asUtc - Math.floor(date.getTime() / 1000) * 1000) / 60000);
+  const ms = toDate(value).getTime();
+  if (!Number.isFinite(ms)) return intlOffset(ms, timeZone);
+  return cachedOffset(ms, timeZone);
 }
 
 const pad = (value: number): string => String(value).padStart(2, '0');
