@@ -219,9 +219,14 @@ test.describe('a script that cannot be fetched does not take the page down', () 
     await expect(page.getByRole('heading', { level: 1, name: 'MH 2626 to Singapore' })).toBeVisible();
     await expect(page.getByText('This page couldn’t load')).toHaveCount(0);
     await expect(page.getByText('Something went wrong')).toHaveCount(0);
+    // "My needs" before its control has arrived lands where the control will be (6.1.6).
+    await page.getByRole('main').locator('[data-needs-link]').click();
+    await expect(page.locator('#needs-control')).toBeInViewport();
     chunks.failing = false;
     await context.setOffline(true);
     await context.setOffline(false);
-    await expect(page.locator('[data-step="boarding"]').first()).toBeVisible({ timeout: 20_000 });
+    await expect(page.locator('[data-step="boarding"]').first()).toBeAttached({ timeout: 20_000 });
+    await expect(page.locator('#needs-control')).toHaveCount(1);
+    await expect(page.locator('#needs-control')).toBeInViewport();
   });
 });

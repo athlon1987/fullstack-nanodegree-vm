@@ -78,10 +78,14 @@ export interface FlightDetailProps {
   airlineFacts?: ReactNode;
 }
 
-/** Room for the needs control and the timeline while they load, so the footer does not jump up and back. */
+/**
+ * Room for the needs control and the timeline while they load, so the footer does not jump up and
+ * back. It carries the needs control's anchor until the control arrives (verification, round 5): a
+ * tap on "My needs" before then lands where the control will be, instead of on nothing.
+ */
 function LowerPlaceholder() {
   return (
-    <div aria-hidden="true" className="grid items-start gap-x-14 gap-y-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,23rem)]">
+    <div id={NEEDS_CONTROL_ID} aria-hidden="true" className="grid scroll-mt-28 items-start gap-x-14 gap-y-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,23rem)]">
       <Skeleton className="h-96 w-full rounded-lg lg:col-start-1 lg:row-start-1" />
       <Skeleton className="h-56 w-full rounded-lg max-lg:hidden lg:col-start-2 lg:row-start-1" />
     </div>
