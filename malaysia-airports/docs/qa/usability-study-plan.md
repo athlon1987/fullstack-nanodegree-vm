@@ -1,6 +1,7 @@
 # Moderated usability study: plan
 
-Owner: head of quality. Date: 21 November 2026. Status: **plan, not run.** No participant has used the product yet.
+Owner: head of quality. Date: 21 November 2026; build references updated for round five on 22 November 2026.
+Status: **plan, not run.** No participant has used the product yet.
 
 This plan answers the review panel's item 6.1.13 ([`panel/re-review.md`](panel/re-review.md)) and backlog dependency
 OOS-15 ([`fix-backlog.md`](fix-backlog.md)): a moderated study on phones in English and Malay, including screen-reader
@@ -11,8 +12,9 @@ and signs off the results**.
 Sources for the tasks: the critical journeys and top 15 tasks in
 [`../strategy/product-strategy.md`](../strategy/product-strategy.md), sections 4.1 and 4.2; the simulated walkthrough
 in [`usability.md`](usability.md), sections 2 and 3 (one expert, 18 tasks, 36 runs, no users); and the round-four
-state of the build ([`verification.md`](verification.md), Round four). Figures marked [proposal] are this plan's
-choices, to be confirmed with MAHB.
+state of the build ([`verification.md`](verification.md), Round four); round five's verification (G4) re-verified
+the status lines, day-of-travel states, parking rate lines and answer placement these tasks rely on. Figures marked
+[proposal] are this plan's choices, to be confirmed with MAHB.
 
 ---
 
@@ -34,7 +36,7 @@ Out of scope: the accuracy of operational data (the build uses demonstration fli
 | Stage | When | Build | Purpose |
 |---|---|---|---|
 | 1. Pilot | Week 1 | The current build on staging | 2 internal and 3 external sessions: debug the scripts, timings, answer key, Malay wording and recording |
-| 2. Formative | Weeks 2 to 3 | The current build (round four, `ygqxXIFcmSWq51rkxYSGE`, or later), demonstration data stated to every participant | O1, O3, O4: think-aloud, issue list |
+| 2. Formative | Weeks 2 to 3 | The current build (round five, `b4AW-Kxsx1vSRiJq7KWD0`, or later), demonstration data stated to every participant | O1, O3, O4: think-aloud, issue list |
 | 3. Summative | Weeks 5 to 6 | The launch candidate with the **official flight feed on staging** (OOS-01) | O2, O3, O4: timed, no think-aloud |
 | Baseline | Weeks 5 to 6 | The current MAHB site | O5: the same tasks, a matched group |
 
@@ -238,7 +240,7 @@ the summative round depends on OOS-01. After launch, repeat the study every six 
    to the package that owns the files, with an acceptance criterion taken from the task's success criterion.
 4. **Content failures** (for example no pick-up point, no Subang parking price) go to MAHB as data requests, with the
    number of participants they stopped, so that MAHB can rank its data work.
-5. **Fixes** are verified as in the four fix rounds: a test that fails without the fix, then an independent check on
+5. **Fixes** are verified as in the five fix rounds: a test that fails without the fix, then an independent check on
    a production build. Each fixed issue is retested in the next study round.
 6. **Reporting.** The summative results replace "not measurable in a prototype" in the task rows of
    [`qa-report.md`](qa-report.md), section 2, and give the strategy its missing baselines (section 7). Deliverables:

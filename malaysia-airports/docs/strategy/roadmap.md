@@ -1,7 +1,9 @@
 # Implementation roadmap: from concept prototype to MAHB's network platform
 
-Deliverable 8 of the concept redesign. Date: 21 November 2026. Audience: MAHB board and executive committee;
-digital, operations, commercial, IT, legal and customer-experience leadership; the delivery team.
+Deliverable 8 of the concept redesign. Date: 21 November 2026; the starting point (section 1, the summary's first
+two points) and Appendix A updated on 22 November 2026 after fix round five and the third panel review. Audience:
+MAHB board and executive committee; digital, operations, commercial, IT, legal and customer-experience leadership; the
+delivery team.
 
 This is an independent concept plan, not an MAHB document. The project has had no access to MAHB's operational
 systems, analytics, contracts, budgets or staff. Every effort figure, duration and date below is an **estimate** that
@@ -12,7 +14,7 @@ would hold each responsibility.
 
 | Tag | Meaning |
 |---|---|
-| [measured] | Measured by this project: on the prototype's production build (VER, rounds three and four, 21 November 2026) or on MAHB's current site (AUD). Lab figures, not field data. |
+| [measured] | Measured by this project: on the prototype's production build (VER, rounds three to five, 21 and 22 November 2026) or on MAHB's current site (AUD). Lab figures, not field data. |
 | [judgement] | Expert judgement: sequencing, risk ratings, panel scores and projections. |
 | [estimate] | Effort, duration or cost-driver range. The basis is in section 2.3. |
 | [assumption] | Taken as true for planning; to be confirmed with MAHB. |
@@ -24,21 +26,24 @@ Source shorthand: **PS** `docs/strategy/product-strategy.md` (questions Q1 to Q1
 `docs/strategy/benchmark-report.md` section 6.3 (requirements BR-01 to BR-25); **SM** `docs/strategy/sitemap.md`;
 **ARCH** `docs/engineering/architecture.md` ("ARCH §9.n" is dependency n, "ARCH §10.n" is gap n); **FB**
 `docs/qa/fix-backlog.md` (items A-01 to E-25; out-of-scope items OOS-01 to OOS-15); **VER** `docs/qa/verification.md`
-("T5-n" is round three's ranked open issue n, "F8-n" round four's; "F4" is round four's acceptance of RR 6.1); **RR** `docs/qa/panel/re-review.md`; **PNL**
-`docs/qa/panel/panel-summary.md`; **AUD** `docs/research/audit/mahb-audit.md`.
+("T5-n" is round three's ranked open issue n, "F8-n" round four's, "G8-n" round five's; "F4" and "G4" are rounds four
+and five's acceptance checks); **RR** `docs/qa/panel/re-review.md` (the second panel review); **R3**
+`docs/qa/panel/review-3.md` (the third panel review, after round five); **PNL** `docs/qa/panel/panel-summary.md`;
+**AUD** `docs/research/audit/mahb-audit.md`.
 
 ---
 
 ## Summary for the board
 
-1. **Where it starts.** [measured] On its production build the concept prototype passes 554 unit tests and 428
-   end-to-end tests, with zero axe violations and zero broken links; 85 of the 101 P0 and P1 backlog items are
-   verified, 16 are not, none has regressed (VER F5); of the panel's 13 team items, 9 are verified, 1 is partly met
-   and 3 are open (VER F4). [judgement] The review panel scores it 74.5% on the benchmark
-   rubric, against 42.5% for MAHB's current site and 79.0% for Heathrow, and finds it not ready for public launch:
-   it runs on demonstration data (RR).
+1. **Where it starts.** [measured] On its round-five production build the concept prototype passes 581 unit tests
+   and 512 of 526 end-to-end tests (0 failed, 14 deliberate skips), with zero axe violations and zero broken links;
+   85 of the 101 P0 and P1 backlog items are verified, 16 are not, none has regressed (VER G5). [judgement] The third
+   review panel scores it 75.5% on the benchmark rubric (second review 74.5%), against 42.5% for MAHB's current site
+   and 79.0% for Heathrow. It finds it ready now for stakeholder demonstrations and a moderated usability study, not
+   yet ready for a closed KLIA pilot, and not ready for public launch: it runs on demonstration data, 3 of the second
+   review's 7 pilot conditions are open, and the panel adds three team conditions (R3 sections 4 and 8).
 2. **What stands between it and launch is mostly MAHB's, not code.** The gap to Heathrow is information
-   completeness, commerce and live flight data (RR section 2.1). Twelve public-launch gates need MAHB data, systems or
+   completeness, commerce and live flight data (R3 section 2.1). Twelve public-launch gates need MAHB data, systems or
    partners (FB, out of scope), led by the official flight feed and a named owner for notices.
 3. **Three phases over about 36 months** [estimate]. **Phase A, digital foundation** (about 15 months): one platform
    for 39 airports and the corporate site, the official flight feed, notices, essential services, release gates and
@@ -64,47 +69,73 @@ Source shorthand: **PS** `docs/strategy/product-strategy.md` (questions Q1 to Q1
 
 ### 1.1 Measured
 
+Round five's production build (`b4AW-Kxsx1vSRiJq7KWD0`, verified 22 November 2026). Round four's figures are in
+brackets where they moved.
+
 | Area | Result | Source |
 |---|---|---|
-| Code checks | Types, lint, 554 unit tests, `npm audit` (0 production, 0 all), build with 0 warnings | [measured] VER F2.1 |
-| End-to-end and accessibility | 434 Playwright tests: 428 passed, 0 failed, 6 skipped; axe 0 violations (desktop 1440x900 and Pixel 7) | [measured] VER F2.2 |
-| Links and canonical | 0 broken links, 0 missing anchors; exactly one canonical per response on 276 of 276 | [measured] VER F2.3 |
-| Backlog acceptance | 85 of 101 P0 and P1 items verified, 16 not verified, 0 regressed (unchanged in round four) | [measured] VER F5 |
-| Panel team items (RR 6.1.1 to 6.1.10) | 9 verified, 1 partly (6.1.7 density), 0 not verified, 0 regressed | [measured] VER F4 |
-| Lighthouse mobile (lab, median of 3) | Performance 95 or more on 7 of 10 pages; LCP 2.5 s or less on 10 of 10; CLS at most 0.003; TBT 200 ms or less on only 3 of 10. A flight page: performance 68 to 75, LCP 4.2 to 4.9 s | [measured] VER F2.4 |
-| Congested airport Wi-Fi profile | LCP 2.57 s on the home and 2.68 s on the board (target 2.5 s); round three, not re-measured | [measured] VER T2.4 |
-| Budgets | First-load JavaScript on `/en` 229.5 KB gzip and the flight page 249.1 KB (budget 250, pass); content pages 198.8 to 227.9 KB (target 170, fail); guidance pages 548 to 609 KB (budget 500, fail); Lighthouse CI budgets, run locally: 14 assertion failures | [measured] VER F2.4, F2.5, F7 |
-| Not yet run | CI workflow on a runner, and WebKit (its jobs were run locally, VER F7); any test on a real phone, iPhone Safari or a physical screen reader; any test with passengers | [measured] VER F8-3; RR |
+| Code checks | Types, lint, 581 unit tests in 41 files (554), `npm audit` (0 production, 0 all), build with 0 warnings (363 static pages) | [measured] VER G2.1 |
+| End-to-end and accessibility | 526 Playwright tests: 512 passed, 0 failed, 14 skipped, with the real clock, with the browser clock at night and in CI mode (434: 428 passed, 6 skipped); axe 0 violations at 60 call sites plus 68 scans of the states round five added (desktop 1440x900 and Pixel 7) | [measured] VER G2.2 |
+| Links and canonical | 0 broken links, 0 missing anchors; exactly one canonical per response and in the head on 276 of 276 (152 in the head) | [measured] VER G2.3 |
+| Backlog acceptance | 85 of 101 P0 and P1 items verified, 16 not verified, 0 regressed (unchanged in rounds four and five) | [measured] VER G5 |
+| Panel team items (RR 6.1.1 to 6.1.10) and round five's claims | 9 verified, 1 partly (6.1.7 density); of round five's 18 claims, 16 verified and 2 partly (TBT; the home's type sizes with a saved flight) | [measured] VER G4 |
+| Lighthouse mobile (lab, median of 3) | Performance 95 or more on 8 of 10 pages in one set and 7 of 10 in another (7 of 10); LCP 2.5 s or less on 10 of 10 (at most 1.15 s); CLS at most 0.003; TBT 200 ms or less on only 2 to 4 of 10 (3 of 10). A flight page: performance 94 and 96, LCP 1.22 s (68 to 75, 4.2 to 4.9 s); the empty night board LCP 0.92 s (4.7 s) | [measured] VER G2.4 |
+| Congested airport Wi-Fi profile | LCP 2.57 s on the home and 2.65 s on the board (target 2.5 s), re-measured in round five (round three 2.57 and 2.68) | [measured] VER G2.4 |
+| Budgets | First-load JavaScript: shared shell 33.0 KB gzip (70.1); `/en` 195.7 KB and the flight page 198.3 KB (budget 250, pass); 18 of 39 routes at 170 KB or less (0) and 21 over, 170.3 to 212.2 KB (target 170, fail); guidance pages 539 to 605 KB (budget 500 to 512, fail); HTML over 40 KB gzip on 15 of 22 measured pages; Lighthouse CI budgets, run locally: 10 assertion failures (14) | [measured] VER G2.4 to G2.6, G7 |
+| Resilience | With a saved flight, one lazy script that fails to download on the home or My journey replaces the page's main area with "Something went wrong", and "Try again" does not recover once the connection returns. Round five fixed the same failure for the platform runtime and the flight page | [measured] VER G3 item 1, G8-2; R3 section 1.4 (chair's check) |
+| Not yet run | CI workflow on a runner, and WebKit (its jobs were run locally again, VER G7); any test on a real phone, iPhone Safari or a physical screen reader; any test with passengers | [measured] VER G8-3; R3 |
 
 Lab figures come from an unloaded container with no CDN or real traffic. They are not field Core Web Vitals.
 
 ### 1.2 Judgement
 
-- Panel median 74.5% (reviewers 74.5 to 75.5) against MAHB today 42.5%, Heathrow 79.0%, the best-of-each-dimension
-  composite 83.0% and the strategy's target 90.5% [judgement, RR section 2].
-- Panel projections with MAHB's launch gates closed: about 79% to 85% [judgement, RR section 2.2]. None reaches
-  90.5%. This roadmap therefore treats Phase A as the route to parity with Heathrow, and Phases B and C as the route
-  to the target.
-- Order of work [judgement, RR section 6.2]: the team's items RR 6.1.1 to 6.1.3 plus the official flight feed and a
-  notices CMS with a named owner are the conditions for a closed KLIA pilot; everything else in RR section 6 stands
-  between a pilot and a public launch.
-- **Closed since this plan was drafted** [measured, VER F4]: the fourth fix round verified RR 6.1.1 to 6.1.6 and
+- Panel median 75.5% (reviewers 74.0 to 79.5; second review 74.5%, round one 70.8%) against MAHB today 42.5%,
+  Heathrow 79.0%, the best-of-each-dimension composite 83.0% and the strategy's target 90.5% [judgement, R3 section
+  2]. The 1.0 point since the second review comes from the AI concierge alone (3.5 to 4.0); the whole remaining gap to
+  Heathrow is in information completeness, commerce and live flight data.
+- Panel projections with MAHB's launch gates closed and the team's fixes: about 80% (business and inclusion lenses,
+  R3 section 2.2; the design lens projected about 80% with team fixes and about 85% with MAHB data in the second
+  review). None reaches 90.5%. This roadmap therefore treats Phase A as the route to parity with Heathrow, and Phases
+  B and C as the route to the target.
+- Readiness and order of work [judgement, R3 section 8, which supersedes RR section 6.2]: ready now for stakeholder
+  demonstrations and for a moderated usability study on phones in English and Malay, with assistive-technology users
+  and MAHB recruiting (OOS-15). Conditions for a closed KLIA pilot: still open from the second review, CI on a runner
+  with TBT budgets met or agreed anew (team), the official flight feed (MAHB) and a named notices owner (MAHB); added by
+  the third review, all team work, no lazy part may replace a page after a failed download and "Try again" must
+  recover, the concierge's sticky question box must not hide the focused suggestion, and the accessibility statement
+  must be true and dated after those fixes (R3 section 9.1, items 1 to 3). Epic A1 and Gate 0 criterion 5 (section 9)
+  should be read as including these three. Everything else in R3 section 9 stands between a pilot and a public launch.
+- **Closed in round four** [measured, VER F4]: the fourth fix round verified RR 6.1.1 to 6.1.6 and
   6.1.8 to 6.1.10 on a production build, including the three pilot conditions on the team's side (status-line
   semantics, day-of-travel residuals, one fact one answer) and the defects A1 names ("Checked hh:mm", a past time as
-  "Next", "Done: Arrange assistance", the map chip over its disclaimer), and the four gallery defects. RR 6.1.7
-  (density, A-14) is partly met (VER F8-5). Open: RR 6.1.11, performance and release gates (VER F8-1 to F8-4);
-  RR 6.1.12, the checkout security policy, now a documented plan (`docs/engineering/security.md`, section 3) but not
-  built; RR 6.1.13, the usability study, planned (`docs/qa/usability-study-plan.md`) but not run. Where an item also
-  needs MAHB data, only the team's part is closed (Appendix A). The epics and estimates below are unchanged.
+  "Next", "Done: Arrange assistance", the map chip over its disclaimer), and the four gallery defects. Where an item
+  also needs MAHB data, only the team's part is closed (Appendix A).
+- **Closed in round five** [measured, VER G4, G2.4 to G2.6]: the flight page's slow LCP (F8-2: 1.22 s, was 4.2 to
+  4.9 s) and the empty night board's (0.92 s, was 4.7 s); the concierge's on-device flights (F8-9, the team's part of
+  B-09: it now reads the server feed; the contract and chaos tests in CI remain, G8-3); the catch-all 404s, now full
+  pages with the site shell (F8-7); density on the parking and flight pages (part of F8-5); and round four's low items
+  (F8-10) except E-09, E-17 and D-14: desktop layout shift on section pages and transport, the rate-limit-sensitive
+  A-03 test, the Malay fare at 125% text, the airports-map label, "[object Object]" in the search index, and the
+  canonical in the head on every page (hreflang alternates still only in the `Link` header on 124 routes, G8-9).
+  Improved but open: TBT and performance (G8-1), first-load JavaScript (G8-4), bytes, HTML and the service worker
+  (G8-6), type sizes (G8-5, RR 6.1.7 partly met), congested Wi-Fi LCP (G8-7). Newly found: G8-2 (a failed lazy script on
+  the home or My journey, there since rounds two and three; page-level by R3's check) and G8-8 (the offline toast
+  waits for the runtime's script, a side effect of round five).
+- **The third review's account** [judgement, R3 sections 4 and 5]: 4 of the second review's 7 pilot conditions met
+  (the four team trust items); of its 13 team launch blockers, 6 met, 4 partly met (concierge, answer-first and
+  placement, density, the accessibility statement and Malay copy) and 3 not met (RR 6.1.11 performance and release
+  gates, 6.1.12 the checkout security policy, now a documented plan in `docs/engineering/security.md` section 3 but
+  not built, and 6.1.13 the usability study, planned in `docs/qa/usability-study-plan.md` but not run); none of its 10
+  MAHB blockers met. The epics and estimates below are unchanged.
 
 ### 1.3 What carries into production and what is prototype-only
 
-| Carries over [code, per ARCH section 1] | Prototype-only [prototype-only, per RR section 6 and ARCH §10] |
+| Carries over [code, per ARCH section 1] | Prototype-only [prototype-only, per RR section 6, R3 section 9 and ARCH §10] |
 |---|---|
 | Typed, validated content model with provenance on every fact (254 registered sources) | Demonstration flights, gates, belts, check-in rows, queues and alerts |
 | Provider interfaces (`FlightDataProvider`, `WaitTimeProvider`, `ParkingAvailabilityProvider`) and the failure and last-known states | Illustrative map positions and demonstration lifts; no Terminal 2 map |
 | Static-first rendering: guidance readable with JavaScript off and every API down | Unverified KLIA parking rates; "Not published" placeholders for missing facts |
-| 300 legacy redirect rules, tested against all 276 URLs in MAHB's sitemap | Content held in git and published by engineers |
+| 300 legacy redirect rules, tested against all 276 URLs in MAHB's sitemap | Content held in git and published by engineers; the concierge's fixed knowledge file |
 | Design tokens and components; English and Malay at interface parity (Malay still a draft) | In-memory rate limits (the metric store is durable since round four: a file, or a Redis-compatible store, VER F4 item 9); `noindex` everywhere |
 | Deterministic concierge engine with on-device fallback; the optional AI wording path, kept switched off until C1 (section 5) | The "Concept prototype, not official" banner and all unapproved use of MAHB names |
 | Security headers, service worker, test suites, CI workflow definition | Demonstration alerts that fire only while a page is open (ARCH section 5.10) |
@@ -862,40 +893,40 @@ assumptions; "gate" is the point by which it must be closed.
 
 | # | Open issue | References | Owner at MAHB [assumption] | Closed in | Gate |
 |---|---|---|---|---|---|
-| 1 | Official flight feed (AODB or FIDS), agreement, test feed, data dictionary, codeshares; failure states proven against it | OOS-01, B-09, VER T5-7, F8-9, RR 6.2.1, PNL list 2, ARCH §9.1, Q1 | Airport operations (OCC); IT integration | A5 | Closed pilot |
+| 1 | Official flight feed (AODB or FIDS), agreement, test feed, data dictionary, codeshares; failure states proven against it | OOS-01, B-09, VER T5-7, F8-9, G8-11, RR 6.2.1, R3 4.1 row 6 (not met) and 9.2.1, PNL list 2, ARCH §9.1, Q1; team part closed in round five: every flight surface, the concierge included, reads the server feed through the provider interface (VER G4, G5); the contract and chaos tests still have to run in CI (G8-3) | Airport operations (OCC); IT integration | A5 | Closed pilot |
 | 2 | Coverage of the 39 airports by the AODB (sets which boards exist) | New question from this plan; ARCH section 5.2 | Airport operations; IT | First 90 days; A4, A14 | Gate 0 |
-| 3 | Notices CMS with bilingual approvals, scheduling, audit; a notice live in under 5 minutes; a named operations owner | OOS-02, B-01, RR 6.2.2, ARCH §9.6; team part closed: status lines say "Status not available" with the notices' date (VER F4, RR 6.1.1) | OCC; corporate communications | A3, A6 | Closed pilot |
+| 3 | Notices CMS with bilingual approvals, scheduling, audit; a notice live in under 5 minutes; a named operations owner | OOS-02, B-01, RR 6.2.2, R3 4.1 row 7 (not met) and 9.2.2, ARCH §9.6, VER G8-11; team part closed: status lines say "Status not available" with the notices' date (VER F4, G4, RR 6.1.1) | OCC; corporate communications | A3, A6 | Closed pilot |
 | 4 | Status of the Aerotrain, inter-terminal train and shuttle; whether the inter-terminal link has launched and its official times | OOS-02, B-01, Q6, Q16, ARCH §9.10 | Operations; engineering | A6 (OCC-published status), B5 (machine feeds) | Public launch (manual); Phase B (feeds) |
 | 5 | Queue data for security and immigration | B-01, BR-09, Q16, ARCH §9.10 | Operations; Immigration liaison | C3 | Phase C |
-| 6 | Official parking tariff from the barrier's rate source; dated booking deep link with product, dates and referral code | OOS-03, C-01, VER T5-15, F8-12, RR 6.2.3, ARCH §9.7, Q2; team part closed: page, concierge and FAQ give the same unverified-rate answer (VER F4, RR 6.1.3) | Car park operations | A7 | Public launch |
+| 6 | Official parking tariff from the barrier's rate source; dated booking deep link with product, dates and referral code | OOS-03, C-01, VER T5-15, F8-12, G8-11, RR 6.2.3, R3 9.2.3, ARCH §9.7, Q2; team part closed: page, concierge and FAQ give the same unverified-rate answer (VER F4, G4, RR 6.1.3; R3 notes the concierge's long-stay card still lacks the qualifier) | Car park operations | A7 | Public launch |
 | 7 | Car-park occupancy feed and booking interface | ARCH §9.7, ARCH section 5.5 | Car park operations | B5, B6 | Phase B |
-| 8 | Fast Track seller, price, hours and checkpoints; operator identity and terms | D-02, VER T5-15, F8-12, RR 6.2.4, Q3 | Commercial; Fast Track operator | A7 (facts, deep link), B6 (purchase) | Public launch (facts) |
-| 9 | Lounge access rules, prices and booking | OOS-04, C-11 (P2), RR 6.2.4 | Lounge operators; commercial | A7, B6 | Public launch (rules and prices) |
-| 10 | Partner referral codes and partner-confirmed bookings | OOS-13, E-17, VER T5-10, F8-10, RR 6.2.4; team part closed: every listed hand-off marked, with campaign parameters and a durable aggregate store (VER F4, RR 6.1.9) | Commercial; partners | A13, B6 | Not a launch gate |
+| 8 | Fast Track seller, price, hours and checkpoints; operator identity and terms | D-02, VER T5-15, F8-12, G8-11, RR 6.2.4, R3 9.2.4, Q3 | Commercial; Fast Track operator | A7 (facts, deep link), B6 (purchase) | Public launch (facts) |
+| 9 | Lounge access rules, prices and booking | OOS-04, C-11 (P2), RR 6.2.4, R3 9.2.4 | Lounge operators; commercial | A7, B6 | Public launch (rules and prices) |
+| 10 | Partner referral codes and partner-confirmed bookings | OOS-13, E-17, VER T5-10, F8-10, G8-9, RR 6.2.4, R3 4.1 row 2 (met, team part); team part closed: every listed hand-off marked, with campaign parameters and a durable aggregate store (VER F4, G4, RR 6.1.9) | Commercial; partners | A13, B6 | Not a launch gate |
 | 11 | Concessionaire directory, hours, price bands, images, offers; reserve-and-collect | OOS-05, C-05, ARCH §9.8 | Commercial; Niaga | A7 (directory), B6 (offers, reserve-and-collect) | Not a launch gate |
 | 12 | Duty-free concession review timetable and scope | Q14 | Commercial; Niaga | B6 | Phase B |
-| 13 | Content minimum for every international airport (Kuching and Langkawi thinnest); airport classification confirmed | OOS-06, D-16 (P2), RR 6.2.5 | Airport management; content owners | A7, A4 | Public launch |
-| 14 | Content for the 17 domestic airports and the STOLports | D-16, RR 6.1.8, ARCH §10.3, VER F8-12; team part closed: depth labels, and "Not published" for the operating airline and own contact of 33 airports (VER F4, RR 6.1.8) | Airport management; regional coordinator | A14 | Phase A exit |
+| 13 | Content minimum for every international airport (Kuching and Langkawi thinnest); airport classification confirmed | OOS-06, D-16 (P2), RR 6.2.5, R3 9.2.5 | Airport management; content owners | A7, A4 | Public launch |
+| 14 | Content for the 17 domestic airports and the STOLports | D-16, RR 6.1.8, ARCH §10.3, VER F8-12, G8-11, R3 9.2.5; team part closed: depth labels, and "Not published" for the operating airline and own contact of 33 airports (VER F4, G4, RR 6.1.8) | Airport management; regional coordinator | A14 | Phase A exit |
 | 15 | Official network register of the 39 airports | ARCH §9.18, Q7 | Corporate; operations | A4 | Public launch |
-| 16 | Located accessibility facts for KLIA Terminals 1 and 2: accessible toilets, lifts, wheelchair and buggy points, accessible bays, step-free status of every transport mode | OOS-07, D-04, VER T5-15, F8-12, RR 6.2.6 | Facilities management; special assistance | A7 | Public launch |
-| 17 | The airport's assistance service, request process and lead time, Butterfly registration, CARE chat hours | Q8, RR 6.2.6 | Customer experience; special assistance | A7 | Public launch |
-| 18 | Assistance rules for AirAsia, AirAsia X, Batik Air and the other main carriers | D-04, VER T5-15, F8-12, RR 6.2.6, PNL list 1; Malaysia Airlines' 48-hour notice is sourced and used, other carriers shown as not published (VER F4, RR 6.1.2; F5) | Airline relations; the airlines | A7 | Public launch |
-| 19 | The Immigration Department's wording for departing citizens; autogate guidance | D-07, VER T5-15, F8-12, RR 6.2.6 | Government liaison; Immigration Department | A7 | Public launch |
-| 20 | Taxi counter, rail entrance and e-hailing places on a surveyed map | C-08, VER T5-15, F8-12, RR 6.2.6 | Landside operations; facilities management | A7 (located points), B3 (routes) | Public launch (points) |
+| 16 | Located accessibility facts for KLIA Terminals 1 and 2: accessible toilets, lifts, wheelchair and buggy points, accessible bays, step-free status of every transport mode | OOS-07, D-04, VER T5-15, F8-12, G8-11, RR 6.2.6, R3 9.2.6 | Facilities management; special assistance | A7 | Public launch |
+| 17 | The airport's assistance service, request process and lead time, Butterfly registration, CARE chat hours | Q8, RR 6.2.6, R3 9.2.6 | Customer experience; special assistance | A7 | Public launch |
+| 18 | Assistance rules for AirAsia, AirAsia X, Batik Air and the other main carriers | D-04, VER T5-15, F8-12, G8-11, RR 6.2.6, R3 9.2.7, PNL list 1; Malaysia Airlines' 48-hour notice is sourced and used, other carriers shown as not published (VER F4, G4, RR 6.1.2; F5) | Airline relations; the airlines | A7 | Public launch |
+| 19 | The Immigration Department's wording for departing citizens; autogate guidance | D-07, VER T5-15, F8-12, G8-11, RR 6.2.6, R3 9.2.7 | Government liaison; Immigration Department | A7 | Public launch |
+| 20 | Taxi counter, rail entrance and e-hailing places on a surveyed map | C-08, VER T5-15, F8-12, G8-11, RR 6.2.6, R3 9.2.6 | Landside operations; facilities management | A7 (located points), B3 (routes) | Public launch (points) |
 | 21 | Greeter pick-up point and fee | B-17, VER T5-15 | Landside operations | A7 | Public launch [judgement] |
 | 22 | Floor-plan licence and CAD or GIS export | ARCH section 5.4 | Facilities management; engineering | B3 | Phase B |
 | 23 | Ground transport data agreements: Express Rail Link, coach operators, taxi counters, e-hailing rules | ARCH §9.9 | Commercial; landside operations | A7 (fares), B4 (timetables, disruptions, tickets) | Public launch (fares) |
-| 24 | Operator-grade sourcing with MAHB as the source for its own services; brand and legal review of warnings; approval of the concept brand line | OOS-08, D-06, RR 6.2.7, PNL list 2 | Brand; legal; content owners | A2, A3 | Public launch |
-| 25 | Native Malay review of interface and content; official Malay airport names | OOS-14, A-25, D-03, D-09, VER T5-12, F8-12, ARCH §9.19, Q9; team part of RR 6.1.10 closed: Malay home `h1`, "Tanya Kami", shorter placeholder, drafts pending this review (VER F4) | Corporate communications | A3 | Public launch |
+| 24 | Operator-grade sourcing with MAHB as the source for its own services; brand and legal review of warnings; approval of the concept brand line | OOS-08, D-06, RR 6.2.7, R3 9.2.9, PNL list 2 | Brand; legal; content owners | A2, A3 | Public launch |
+| 25 | Native Malay review of interface and content; official Malay airport names | OOS-14, A-25, D-03, D-09, VER T5-12, F8-12, G8-11, R3 9.2.9, ARCH §9.19, Q9; team part of RR 6.1.10 closed: Malay home `h1`, "Tanya Kami", shorter placeholder, drafts pending this review (VER F4, G4); R3 lists Malay residuals for the team (mid-word breaks, one name for Pulau Pinang, R3 9.1.8) | Corporate communications | A3 | Public launch |
 | 26 | Languages beyond English and Malay | Q9, BR-16 | Corporate communications; marketing | B8 | Phase B |
-| 27 | Alerts delivered when the page is closed (web push including iOS, e-mail); hosting and data-protection review; sending domain | OOS-10, B-04, RR 6.2.8, ARCH §9.13 | Digital; IT; DPO | A8 | Public launch |
+| 27 | Alerts delivered when the page is closed (web push including iOS, e-mail); hosting and data-protection review; sending domain | OOS-10, B-04, RR 6.2.8, R3 9.2.8, ARCH §9.13 | Digital; IT; DPO | A8 | Public launch |
 | 28 | WhatsApp Business account and SMS sender | ARCH §9.13, BR-04 | Marketing; IT | B2 | Phase B |
-| 29 | Verified B2B enquiry channels: retail space, advertising, route development, cargo, airlines, Aeropolis | OOS-09, D-17 (P2), RR 6.2.9 | Commercial; media sales; airline marketing | A12 | Not a launch gate |
+| 29 | Verified B2B enquiry channels: retail space, advertising, route development, cargo, airlines, Aeropolis | OOS-09, D-17 (P2), RR 6.2.9, R3 9.2.10 | Commercial; media sales; airline marketing | A12 | Not a launch gate |
 | 30 | Corporate disclosure after delisting | Q11 | Corporate communications; legal | A12 | Public launch |
-| 31 | Edge and WAF rules on the chosen host; client-address header declared (`TRUSTED_CLIENT_IP_HEADER` or `TRUSTED_PROXY_HOPS`) | OOS-11, E-08, VER T5-14, F8-11, RR 6.2.10, ARCH §9.3 | IT; CISO | A10 | Closed pilot (header); public launch (edge rules) |
-| 32 | `security.txt` with a real disclosure contact and policy | OOS-12, E-25 (P2), RR 6.2.10 | CISO | A10 | Public launch |
-| 33 | Field Core Web Vitals on a mid-range Android over Malaysian networks | RR 6.2.10, PNL list 3 | Digital (needs hosting) | A9 | Before launch (field test); three months after (field data) |
-| 34 | Moderated usability study in both languages with screen-reader and magnifier users; participants recruited in Malaysia | OOS-15, RR 6.1.13, Q12; plan in `docs/qa/usability-study-plan.md`, not yet run | Digital; customer experience | A13 | Public launch |
+| 31 | Edge and WAF rules on the chosen host; client-address header declared (`TRUSTED_CLIENT_IP_HEADER` or `TRUSTED_PROXY_HOPS`) | OOS-11, E-08, VER T5-14, F8-11, G8-10, RR 6.2.10, R3 9.2.10, ARCH §9.3 | IT; CISO | A10 | Closed pilot (header); public launch (edge rules) |
+| 32 | `security.txt` with a real disclosure contact and policy | OOS-12, E-25 (P2), RR 6.2.10, R3 9.2.10 | CISO | A10 | Public launch |
+| 33 | Field Core Web Vitals on a mid-range Android over Malaysian networks | RR 6.2.10, R3 9.2.10, PNL list 3 | Digital (needs hosting) | A9 | Before launch (field test); three months after (field data) |
+| 34 | Moderated usability study in both languages with screen-reader and magnifier users; participants recruited in Malaysia | OOS-15, RR 6.1.13, R3 section 8 and 9.1.12, Q12; plan in `docs/qa/usability-study-plan.md`, not yet run; R3 judges the prototype ready now for this study and calls it the most valuable next step | Digital; customer experience | A13 | Public launch |
 | 35 | Brand marks, domains, DNS and TLS | ARCH §9.2, Q13 | Corporate communications; IT | A2, A11 | Closed pilot (domains); public launch (marks) |
 | 36 | Staff identity provider, roles, joiner and leaver process | ARCH §9.4 | IT security | A3, A10 | Closed pilot |
 | 37 | CMS decision, licences, named editors and domain owners | ARCH §9.5 | Digital; corporate communications | Decision 4; A3 | Gate 0 (decision) |
@@ -908,12 +939,15 @@ assumptions; "gate" is the point by which it must be closed.
 | 44 | Current CMS and content API: product, ownership, export of content and media | ARCH §9.20 | Digital; IT | A11 | Gate 0 |
 | 45 | Legacy redirect map approval; old-URL traffic, server logs and search console; decisions on old paths with no destination; corporate host map | ARCH §9.21, SM sections 8.4 and 8.5, E-16 | Digital | A11 | Public launch |
 | 46 | The future of the MYairports app | Q10 | Digital; executive committee | Decision 8 | Gate 0 |
-| 47 | An accessibility contact and response time for the accessibility statement (the rest of the statement was brought up to date in round four) | RR 6.1.10, VER F4, F8-12 | Customer experience; digital | A9 | Public launch |
+| 47 | An accessibility contact and response time for the accessibility statement. The rest of the statement was brought up to date in round four, but R3 found two of its sentences untrue on the round-five build (focus hidden behind the concierge's sticky composer; in-page links that do not move focus) and its review date older than round five: a team fix and a pilot condition (R3 9.1.3), separate from MAHB's contact | RR 6.1.10, R3 4.2 row 10, VER F4, F8-12, G8-11 | Customer experience; digital | A9 | Public launch |
 
-Team-fixable open issues are closed in A1, with A9 for the performance gates. After the fourth fix round they are
-VER F8-1 to F8-10 (for F8-9, the team's part: the concierge's on-device flights) and RR 6.1.7 (partly met), 6.1.11 and
-6.1.12. RR 6.1.1 to 6.1.6 and 6.1.8 to 6.1.10 were closed in that round and verified on a production build (VER F4);
-round three's list (VER T5) is superseded by F8.
+Team-fixable open issues are closed in A1, with A9 for the performance gates. After the fifth fix round and the third
+review they are VER G8-1 to G8-9 and R3 section 9.1, including its pilot conditions 9.1.1 (the saved-flight
+failure), 9.1.2 (CI and budgets, carried from the second review) and 9.1.3 (the concierge focus defect and the
+accessibility statement), and RR 6.1.7 (partly met), 6.1.11 and 6.1.12. RR 6.1.1 to 6.1.6 and 6.1.8 to
+6.1.10 were closed in round four and re-verified in round five (VER F4, G4); R3 marks some of them only partly met on
+broader evidence (section 1.2). Round five closed F8-2, F8-7, the team's part of F8-9 and most of F8-10 (section
+1.2). Round four's list (VER F8) is superseded by G8, as round three's (T5) was by F8.
 
 ## Appendix B. Benchmark requirements by phase
 
@@ -938,7 +972,8 @@ round three's list (VER T5) is superseded by F8.
 
 ---
 
-*Prepared from the project's documents as they stood on 21 November 2026. Measured results come from
-`docs/qa/verification.md` (rounds three and four) and `docs/research/audit/mahb-audit.md`; scores and projections are the
+*Prepared from the project's documents as they stood on 21 November 2026; section 1, the summary's first two points
+and Appendix A as they stood on 22 November 2026. Measured results come from
+`docs/qa/verification.md` (rounds three to five) and `docs/research/audit/mahb-audit.md`; scores and projections are the
 panel's judgement; effort, durations, dates and budget ranges are this plan's estimates and must be re-baselined with
 MAHB at Gate 0.*

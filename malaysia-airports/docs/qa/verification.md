@@ -1339,7 +1339,7 @@ unchanged.
 **Result.** Types, lint, **581 unit tests** (577 as delivered, 7 of 7 runs; 4 added here), `npm audit` (0 and 0),
 the build (0 warnings, 363 static pages), **526 end-to-end tests: 512 passed, 0 failed, 14 skipped** on the final
 build with the real clock, in CI mode and with the browser clock at night, the axe scans (**0
-violations** in 60 call sites in 13 specs, plus 68 scans of the states round five added; one intermittent
+violations** in 55 call sites in 14 specs, plus 68 scans of the states round five added; one intermittent
 `target-size` result in one night run, not reproduced in 236 repeats, G3 item 5), the link crawls (**0 broken
 links, 0 missing anchors**, 0 redirects), **exactly one canonical per response and one in the head on 276 of 276**
 (152 in round four), and **0 of 276** pages with the `h1` revealed by `$RC`. **One regression was found and fixed**:
@@ -1416,9 +1416,10 @@ and `polish-round5.spec.ts` 42, on both projects. The spec changes the logs decl
 None removes an assertion. A-03 with `--repeat-each=5`: **30 of 30**, both projects. The two regression tests of G3:
 12 of 12 on repeat; 6.1.6's "My needs" test 20 of 20 after G3 item 2.
 
-**Axe: 0 violations** in every run except one intermittent result in run 5 (G3 item 5). 60 scan call sites in 13
-specs (round four 59 in 12), all with the shared tag list (wcag2a, wcag2aa, wcag21a, wcag21aa, wcag22aa), on both
-projects. The new speed and flight specs scan nothing, so the states round five added were scanned here
+**Axe: 0 violations** in every run except one intermittent result in run 5 (G3 item 5). 55 scan call sites in 14
+specs (round four 54 in 13; first reported as 60 in 13 and 59 in 12, a count that included six local helper
+definitions and missed `shell.spec.ts`'s own helper), all with the shared tag list (wcag2a, wcag2aa, wcag21a,
+wcag21aa, wcag22aa), on both projects. The new speed and flight specs scan nothing, so the states round five added were scanned here
 (`acceptance-round5.mjs axe`, the same tags): the night board (en, ms), the flight page before the feed answers
 and after, the catch-all 404s (en, ms), parking and transport (en, ms), `/en/airports`, `/en`, `/ms`, `/en/kul`,
 My journey with a saved flight, the concierge's "could not be loaded" answer, each in light and dark at 390 and
@@ -1527,7 +1528,7 @@ LCP **2.57 s** (2.570/2.556/2.582; round three 2.57), performance 85, TBT 357 ms
 | Desktop CLS, board and flight page (clock 18 November 09:40) | board 0.039 | board **0.008**; flight page **0.009** (0.097 on the flight package's baseline) |
 | Night board (clock 23:30), CLS | not measured | 0 on phones (en, ms); **0.023 (en), 0.041 (ms) at 1440**: the board header, the status row and the empty-state title move sideways when the feed answers |
 | Service worker, first visit to `/en` at an 18:00 clock (round four's `sw.cjs`) | 62 requests, 691 KB, Cache Storage 1,588 KB (24 entries), `/en` twice | **61 requests, 643 KB, Cache Storage 1,376 KB** (23 entries), `/en` twice |
-| HTML, gzip KB (round four's `htmlsize.py`) | `/en` 61.6, `/ms` 63.1, `/en/kul` 58.8, board 38.9, flight page 96.7; sections 49.5 to 63.7; guides 45.8 to 56.6; help 56.9; concierge 38.5; journey 38.5; airports 39.8; notices 42.1; corporate 47.0; privacy 45.9 | `/en` **53.5**, `/ms` 54.8, `/en/kul` 49.4, board 32.1, flight page **85.6**; sections 41.6 to 57.0; guides 38.1 to 48.8; help 48.3; concierge 36.9; journey 32.0; airports 33.3; notices 35.6; corporate 39.3; privacy 38.8 (7 of 22 pages at 40 or less) |
+| HTML, gzip KB (round four's `htmlsize.py`) | `/en` 61.6, `/ms` 63.1, `/en/kul` 58.8, board 38.9, flight page 96.7; sections 49.5 to 63.7; guides 45.8 to 56.6; help 56.9; concierge 38.5; journey 38.5; airports 39.8; notices 42.1; corporate 47.0; privacy 45.9 | `/en` **53.5**, `/ms` 54.8, `/en/kul` 49.4, board 32.1, flight page **85.6**; sections 41.6 to 57.0; guides 38.1 to 48.8; help 48.3; concierge 36.9; journey 32.0; airports 33.3; notices 35.6; corporate 39.3; privacy 38.8 (8 of 22 pages at 40 or less) |
 | Placement (`acceptance-round4.mjs placement`) | Transport fare 433 / 495 px (en / ms), warning 711 / 774; Malay at 125% 881 px (warning 1,211); first taxi option 2,766 px | Fare **431 / 493**, warning 736 / 798; **Malay at 125% 717 px** (warning 1,266), English at 125% 616 px; first taxi option 2,791 px (C-02 holds); board first row, Follow, My needs and the needs control **identical** to round four |
 | Density at 390 px (`acceptance-round4.mjs density`) | Facilities 8 tags, 11 toggles, 7 sizes; Transport 5, 4, 8; Parking 8 tags, 8 toggles, 4 Demo labels | Facilities and Transport identical; Transit 20, 6, 6; Map 19, 1, 7; **Parking 4 tags, 3 toggles, 0 Demo labels on cards (1 banner), 7 sizes** |
 | A-14 type sizes on every sitemap page plus My journey and a flight page, MH 2626 saved (`type-sizes.mjs`, new) | not measured | **390 px: 272 of 280 pages at 8 or fewer**; 9 on `/en` and `/ms` (with a saved flight, its card adds 12 px), the corporate hub, corporate news and about-this-prototype (both languages). 1440 px: 269 of 280; 9 or 10 on the home, My journey, the corporate hub and about, about-this-prototype and the terminal map (its scaled SVG labels) |
@@ -1592,7 +1593,8 @@ The round-five logs' own open questions, answered:
   CLS at 390 px is 0 and the Lighthouse runs show 0 to 0.003.
 - **Speed log, the platform test that "can race with the worker's installation"**: it passed in all seven full runs.
 
-Wrong-way numbers, not fixed (none crosses a target that was met in round four):
+Wrong-way numbers, not fixed (`/ms` performance, the map's in set 2, parking's TBT and two interaction runs now miss
+targets they met in round four):
 
 - Lighthouse TBT medians on the map (205 → 257 and 288 ms), transport (219 → 268, then 183) and parking (188 → 221
   and 273), and `/ms` performance 95 → 94 and 91 (one run at 86, TBT 541): within this container's spread (G2.4), not
@@ -1685,9 +1687,9 @@ No item changes state. Movement inside the 16:
 | E-03 | P0 | Closer: shell 70.1 → 33.0 KB; 18 of 39 routes at 170 KB or less (0); still 21 over, from 170.3 to 212.2 KB |
 | A-09, E-01 | P0 | Unchanged state. TBT `/en` 257 and 272 ms, `/ms` 293 and 377 (target 200, median of 3); performance 95 or more on 8 and 7 of 10 pages; the concierge now 97 to 98 with TBT 169 to 209; the flight page 94 to 96 with LCP 1.22 s (was 68 to 75 and 4.2 to 4.9 s) and the empty night board LCP 0.92 s (was 4.7); the budget step fails 10 assertions (14); interaction latency 2 of 30 runs over 200 ms |
 | E-02 | P0 | Unchanged: congested Wi-Fi LCP 2.57 s (`/en`) and 2.65 s (board), the first paint |
-| E-11 | P1 | Closer: HTML 6 to 11 KB smaller per page; 7 of 22 measured pages at 40 KB gzip or less; the root dictionary still carries `flightPages` (15 KB) |
+| E-11 | P1 | Closer: HTML 6.5 to 11.1 KB smaller per page (the concierge 1.6); 8 of 22 measured pages at 40 KB gzip or less; the root dictionary still carries `flightPages` (15 KB) |
 | E-12 | P1 | Closer: 61 requests (target 60), 643 KB (600), Cache Storage 1,376 KB (1 MB), `/en` still downloaded twice |
-| E-14 | P1 | Closer: one canonical in the head on 276 of 276; but `pageMetadata` is still not used on 124 routes, whose hreflang alternates are in the `Link` header only |
+| E-14 | P1 | Closer: one canonical in the head on 276 of 276; but `pageMetadata` is still not used on 124 pages, whose hreflang alternates are in the `Link` header only |
 | E-06, D-04, D-07, C-08, D-14, E-09, E-17 | P0/P1 | Unchanged |
 
 The 16 not verified: P0 A-09, A-14, B-09, D-04, D-07, E-01, E-02, E-03, E-06; P1 C-08, D-14, E-09, E-11, E-12, E-14,
@@ -1761,7 +1763,7 @@ journey);
    flight, the corporate hub, corporate news and about-this-prototype (both languages); at 1440 px, 11 pages over 8,
    including the home and My journey. Parking and the flight page are done.
 6. **Byte, request and HTML budgets** (E-01, E-11, E-12). Team. Guidance pages 539 to 605 KB (target 500 to 512),
-   parking 43 requests; HTML gzip over 40 KB on 15 of 22 measured pages (`/en` 53.5, flight page 85.6); the worker's
+   parking 43 requests; HTML gzip over 40 KB on 14 of 22 measured pages (`/en` 53.5, flight page 85.6); the worker's
    first visit 61 requests and 643 KB (60, 600), Cache Storage 1,376 KB (1 MB), and `/en` still downloaded twice. The
    A-19
    prefetch and the idle overlays (about 130 KB) are a product decision (speed log).
@@ -1776,7 +1778,7 @@ journey);
    a saved flight once" shares its worker's client address and meets the feed's rate limit when repeated (give it its
    own address, as A-03 now has); one intermittent axe `target-size` result on the concierge's privacy-row button in a
    full night run, not reproduced in 236 repeats; hreflang alternates in the head on 152 of 276 pages (`pageMetadata`
-   not used on 124 routes; the `Link` header has them on all, E-14); the header's airport switcher shifts 0.0004 to
+   not used on 124 pages; the `Link` header has them on all, E-14); the header's airport switcher shifts 0.0004 to
    0.005
    after hydration; unknown paths' 404 renders are kept in Next.js's route cache (bound it in the deployment); answer
    states for the other top tasks (E-17); the enforced CSP keeps `'unsafe-inline'` (E-09); reading level (D-14).

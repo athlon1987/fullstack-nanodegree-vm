@@ -1,7 +1,9 @@
 # Security, privacy and resilience
 
 Owner: platform. Applies to the concept prototype as built (updated 21 Nov 2026 after the QA fix
-rounds; the checkout policy plan in section 3 added after round four) and states what a production deployment by Malaysia Airports would need on top.
+rounds; the checkout policy plan in section 3 added after round four; sections 3, 8 and 9 updated on 22 Nov 2026
+for what fix round five changed: the tooltip, canonicals, 404 renders, the service worker's precache and failed
+script downloads) and states what a production deployment by Malaysia Airports would need on top.
 Implementation: `next.config.ts`, `src/proxy.ts`, `src/lib/seo/security-headers.ts`,
 `src/lib/concierge/{rate-limit,request,fact-guard,rephrase.server}.ts`, `src/app/api/**`,
 `src/components/platform/**`, `.github/workflows/malaysia-airports-ci.yml`.
@@ -54,7 +56,7 @@ and CDN-cacheable; nonces would force per-request rendering: Next.js notes, sect
 |---|---|---|
 | CSP `default-src` | `'self'` | Nothing loads from another origin unless listed below (and nothing is) |
 | `script-src` | `'self' 'unsafe-inline'` (+ `'unsafe-eval'` in `next dev` only) | Our bundles, plus the framework's inline flight data and the theme script that runs before first paint. Inline is the documented cost of static CSP |
-| `style-src` | `'self' 'unsafe-inline'` | Our stylesheet; React and Radix set inline `style` attributes |
+| `style-src` | `'self' 'unsafe-inline'` | Our stylesheet; React, the Radix dialogs and popover, and the project's own tooltip (no longer Radix since round five; it positions itself with an inline `position: fixed`) set inline `style` attributes |
 | `img-src` | `'self' data: blob:` | Our images and icons; `data:` for CSS pattern masks; `blob:` for generated files |
 | `font-src` | `'self'` (+ `data:` in dev) | Self-hosted fonts via `next/font/local`; no font CDN |
 | `connect-src` | `'self'` (+ `ws: wss:` in dev) | `fetch` to our API and static JSON only; hot reload in development |
@@ -74,7 +76,7 @@ and CDN-cacheable; nonces would force per-request rendering: Next.js notes, sect
 | `X-Robots-Tag` | `noindex, nofollow` unless `SITE_INDEXING=allow` | The prototype must not appear in search results; covers JSON, images and the sitemap |
 | `Content-Security-Policy-Report-Only` | The enforced policy with `script-src 'self' 'sha256-<preferences script>' 'report-sample'`, `require-trusted-types-for 'script'`, `report-uri /api/csp-report`, `report-to csp` | Measures what the stricter policy would block (security-07). Reports are aggregated by `/api/csp-report` (directive, blocked kind, page section, 40-character sample; framework flight-data scripts labelled as such) and read by monitoring through `/api/health` |
 | `Reporting-Endpoints` | `csp="/api/csp-report"` | The Reporting API endpoint for `report-to` |
-| `Link` (pages under `/en` and `/ms`) | canonical, `hreflang` en, ms and x-default | Every page names its canonical URL and both languages even where its `generateMetadata` does not yet call `pageMetadata` (docs-02) |
+| `Link` (pages under `/en` and `/ms`) | canonical, `hreflang` en, ms and x-default | Every page names its canonical URL and both languages even where its `generateMetadata` does not yet call `pageMetadata` (docs-02). Since round five the root layout also puts the same canonical in the head of every page (`INHERITED_ALTERNATES`, `src/lib/seo/metadata.ts`): one distinct canonical per response on 276 of 276; hreflang alternates stay in the header only on the 124 routes without `pageMetadata` (`docs/qa/verification.md`, G2.3) |
 | (removed) `X-Powered-By` | `poweredByHeader: false` | No framework fingerprint |
 
 Not used, on purpose: COEP (no need for cross-origin isolation, would complicate images),
@@ -165,6 +167,16 @@ Not-found responses carry `s-maxage=60` (round 2: the proxy's flight 404 too, wh
 `public, max-age=300`; it now sends `public, max-age=0, s-maxage=60`) (the not-found pages render a `cacheLife('minutes')`
 marker, `src/components/platform/short-cache.tsx`), so a CDN cannot keep a 404 for a year and
 arbitrary URLs cannot fill it (security-12). To be confirmed with `curl -I` on a production build.
+
+**Round five: 404 renders kept by the server.** The `[lang]/[...rest]` catch-all now renders the
+site's 404 page (`MissingPage`, with `ensureStatic = 'navigation'`) instead of Next.js's bare error
+document. As it already did for an unknown `/en/<anything>` (another `MissingPage` route), Next.js
+keeps each unknown path's rendered 404 in its own route cache with a one-minute revalidation, so a
+client requesting many distinct unknown paths makes that store grow, now for deeper paths too. The
+CDN limit above does not cover it. A deployment should bound it: a cache handler with a size limit,
+or a check in `src/proxy.ts` that answers obviously unknown paths before rendering, together with the
+per-route request limits and the edge rules (`docs/qa/verification.md`, G8 item 9;
+`docs/qa/fixes/round5-polish.md`, "Open").
 
 The zod `new Function` probe noted in the first review no longer applies: zod 4 is configured
 jitless where schemas are built, and client storage validation no longer uses zod at all
@@ -322,6 +334,19 @@ operative obligations and dates with MAHB's counsel; this section is design guid
 - Offline: the service worker keeps the shell, the offline page and every guidance page the
   visitor opened (stale-while-revalidate); other pages are network-first with a 3.5 s timeout and
   fall back to the saved copy, with a polite "You are offline: showing saved information" notice.
+  Since round five the worker no longer stores the legacy `noModule` polyfill bundle and stores the
+  icon sprite once (first visit to `/en`: 61 requests, 643 KB, Cache Storage 1,376 KB). The notice
+  is drawn by the platform runtime, now a separate script: if the connection drops before that
+  script arrives, the offline page's card is right but the notice waits for the connection
+  (`docs/qa/verification.md`, G8 item 8).
+- **A script that cannot be downloaded** (round five). `React.lazy` keeps a failed import, so one
+  chunk lost to a dropped connection could replace a page with an error screen that stays after the
+  connection returns. The platform runtime and the flight page's lazy parts now load through
+  `src/lib/retrying-import.ts`, which fetches again when the browser is back online or after a
+  pause, and keep the server's HTML meanwhile. The home's saved-flight card and My journey's
+  controls do not yet: with a saved flight, one failed download replaces the page's main area and
+  "Try again" does not recover (G8 item 2; `docs/qa/panel/review-3.md`, section 1.4). Fixing it is
+  a condition for a closed pilot.
 - **Recovery.** Build artefacts are immutable and versioned; rollback is a redeploy of the
   previous build (RTO 15 minutes). All content is in git (RPO zero for content); there is no
   server state to back up today. DNS and TLS managed with documented owners; multi-region CDN.
@@ -339,8 +364,8 @@ operative obligations and dates with MAHB's counsel; this section is design guid
   access reviews quarterly.
 - **Automated on every pull request that touches the app** (`.github/workflows/malaysia-airports-ci.yml`,
   repository root; also runnable by hand; not yet run on a GitHub runner, and WebKit has never run:
-  in round four its jobs were run locally as far as a container allows, without CodeQL and gitleaks,
-  `docs/qa/verification.md`, F7): `npm ci`; `npm audit --omit=dev --audit-level=high` as a
+  in rounds four and five its jobs were run locally as far as a container allows, without CodeQL and
+  gitleaks, `docs/qa/verification.md`, F7 and G7): `npm ci`; `npm audit --omit=dev --audit-level=high` as a
   gate (all dependencies are audited too, report only); `next typegen` and `tsc`; ESLint; Vitest
   (headers, redirects, sitemap, limits, body reading, origin checks, fact guard, storage
   validation, the worker's caching rules); a production build; Playwright on desktop, phone and a
@@ -348,8 +373,8 @@ operative obligations and dates with MAHB's counsel; this section is design guid
   wcag21a, wcag21aa, wcag22aa); Lighthouse CI budgets (`lighthouserc.json`); CodeQL
   (javascript-typescript); gitleaks over the full history. Dependabot (`.github/dependabot.yml`)
   opens weekly update pull requests for the app's npm dependencies and the workflow actions.
-- **Dependency risk accepted.** `npm audit` on 21 November 2026 reports 0 advisories for production
-  and development dependencies. The picomatch ReDoS advisory (GHSA-fc5q-39xc-vjpf, development
+- **Dependency risk accepted.** `npm audit` on 21 November 2026, and again in round five on 22
+  November, reports 0 advisories for production and development dependencies. The picomatch ReDoS advisory (GHSA-fc5q-39xc-vjpf, development
   tooling only: Vitest and eslint-config-next, patterns are ours, never user input) reported by
   the first review is no longer returned by the registry; picomatch 4.0.7 is still in the tree and
   no patched release exists. Accepted as development-only risk; review by 21 February 2027 or

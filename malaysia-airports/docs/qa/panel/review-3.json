@@ -1,0 +1,685 @@
+{
+ "title": "Review panel, round three: consolidated verdict",
+ "date": "2026-11-22 (Kuala Lumpur time; 2026-11-21 UTC)",
+ "report": "docs/qa/panel/review-3.md",
+ "build": "b4AW-Kxsx1vSRiJq7KWD0 (final round-five production build in .next)",
+ "verdict": "Not ready for public launch. Ready now for stakeholder demonstrations (as a labelled concept on demonstration data) and for a moderated phone usability study in English and Malay with assistive-technology users (MAHB recruits, OOS-15). Not yet ready for a closed KLIA pilot: 4 of the second review's 7 pilot conditions are met (status-line semantics, day-of-travel residuals, one fact one answer, durable commercial measurement); CI on a runner with TBT budgets met or agreed anew, the official flight feed and a named notices owner are not. The panel adds three team conditions for the pilot: no lazy part may replace a page after a failed script fetch and 'Try again' must recover (the saved-flight failure, chair confirmed page-level); the concierge's sticky question box must not hide the focused suggestion (chair confirmed); and the accessibility statement must be true and dated after the fixes. Panel median 75.5% (reviewers 74.0 to 79.5), up 1.0 from 74.5%, all from ai; 3.5 points below Heathrow (79.0%) and 7.5 below the composite (83.0%); the remaining gap is in info, commerce and flight, which depend mainly on MAHB.",
+ "caveat": "Expert judgement by three independent lenses on a working prototype with demonstration data (no official flight, operations or notices feed); not a user study. No passengers, disabled participants or physical screen readers; Chromium only; no WebKit or real device; one clock time per session (05:46 to 06:47 Kuala Lumpur time, 22 November 2026). ux, flight, mobile, nav, ai and ui are scored as if production data were connected; info and commerce on what exists. Performance is lab data from verification.md round five, not re-measured by any reviewer or the chair (shared machine) and not field data.",
+ "method": "Median per dimension across three independent third reviews (business, design, inclusion) of the round-five production build; weights ui 10, ux 20, info 15, flight 15, mobile 10, nav 10, ai 10, commerce 5, perf 5; percent = sum(weight x score) / 5. Each reviewer served the build on its own port (3302, 3303, 3304) and did not read the others' third reviews. The chair served it on port 3305 (06:39 to 06:47 MYT), checked points reported by one lens or reported differently, and changed no median.",
+ "weights": {
+  "ui": 10,
+  "ux": 20,
+  "info": 15,
+  "flight": 15,
+  "mobile": 10,
+  "nav": 10,
+  "ai": 10,
+  "commerce": 5,
+  "perf": 5
+ },
+ "scores": {
+  "ui": 4,
+  "ux": 4,
+  "info": 3,
+  "flight": 4,
+  "mobile": 4,
+  "nav": 4,
+  "ai": 4,
+  "commerce": 2.5,
+  "perf": 4
+ },
+ "per_reviewer": {
+  "business": {
+   "lens": "Airport digital executive",
+   "report": "docs/qa/panel/review-3-business.md",
+   "session_myt": "05:46 to about 06:10, port 3302",
+   "scores": {
+    "ui": 4,
+    "ux": 4,
+    "info": 3,
+    "flight": 4,
+    "mobile": 4,
+    "nav": 4,
+    "ai": 3.5,
+    "commerce": 2.5,
+    "perf": 3.5
+   },
+   "weighted_pct": 74.0,
+   "second_review_pct": 74.5,
+   "change": -0.5,
+   "moved": {
+    "perf": -0.5
+   },
+   "projection_judgement": "about 80% with MAHB's launch gates closed and the team's reliability and CI fixes"
+  },
+  "design": {
+   "lens": "UX and visual design director",
+   "report": "docs/qa/panel/review-3-design.md",
+   "session_myt": "06:04 to 06:25, port 3303",
+   "scores": {
+    "ui": 4,
+    "ux": 4.5,
+    "info": 3,
+    "flight": 4,
+    "mobile": 4.5,
+    "nav": 4.5,
+    "ai": 4,
+    "commerce": 2.5,
+    "perf": 4
+   },
+   "weighted_pct": 79.5,
+   "second_review_pct": 75.5,
+   "change": 4.0,
+   "moved": {
+    "ux": 0.5,
+    "mobile": 0.5,
+    "ai": 0.5
+   },
+   "projection_judgement": "none given this round (second round: about 80% with team fixes, about 85% with MAHB data)"
+  },
+  "inclusion": {
+   "lens": "Accessibility specialist (WCAG 2.2 AA) and Malay-speaking first-time traveller",
+   "report": "docs/qa/panel/review-3-inclusion.md",
+   "session_myt": "06:07 to 06:35, port 3304",
+   "scores": {
+    "ui": 4,
+    "ux": 4,
+    "info": 3,
+    "flight": 4,
+    "mobile": 4,
+    "nav": 4,
+    "ai": 4,
+    "commerce": 2.5,
+    "perf": 4
+   },
+   "weighted_pct": 75.5,
+   "second_review_pct": 74.5,
+   "change": 1.0,
+   "moved": {
+    "ai": 0.5
+   },
+   "projection_judgement": "about 80% with MAHB's accessibility facts, the assistive-technology study and the team items"
+  }
+ },
+ "weighted_pct": 75.5,
+ "weighted_pct_mean_of_reviewers": 76.3,
+ "disagreements": [
+  {
+   "dimension": "ux",
+   "range": [
+    4,
+    4.5
+   ],
+   "note": "Half a point (design 4.5). Chair: overview flight search at 2,236 px on a phone; the saved-flight failure blanks the home. Evidence supports 4.0."
+  },
+  {
+   "dimension": "mobile",
+   "range": [
+    4,
+    4.5
+   ],
+   "note": "Half a point (design 4.5). Same chair evidence; supports 4.0."
+  },
+  {
+   "dimension": "nav",
+   "range": [
+    4,
+    4.5
+   ],
+   "note": "Half a point (design 4.5). Chair: 'pharmacy' 0 results with no 'not published' line; 'kuching parking' led by KLIA, Penang and Kota Kinabalu parking; 'lift' led by three unmarked demonstration lifts; 'charging' returns the inter-terminal train and shuttle. Supports 4.0."
+  },
+  {
+   "dimension": "ai",
+   "range": [
+    3.5,
+    4
+   ],
+   "note": "Half a point (business 3.5). Chair confirmed three misses (immigration queue 'right now', 'book me a taxi', Malay departure-autogate ordering in the page) and one honest answer ('pharmacy'). Mixed; 4.0 is the upper edge of the evidence; median unchanged."
+  },
+  {
+   "dimension": "perf",
+   "range": [
+    3.5,
+    4
+   ],
+   "note": "Half a point (business 3.5 on first-hand reliability). Chair confirmed the failure and found it page-level, more severe than verification G8 item 2 describes. Median 4.0 stands; reliability is the weakest part of this dimension."
+  }
+ ],
+ "chair_checks": [
+  {
+   "point": "Failed script fetch with a saved flight",
+   "finding": "Saved MH 785. On /en, 2 of 14 lazy chunks aborted one at a time each replaced the whole <main> (5,019 to 97 characters, 'Something went wrong'); after unblocking, 'Try again' left the error. On /en/journey, 2 of 10 did the same (4,162 to 97).",
+   "supports": "business; more severe than verification's card-level description"
+  },
+  {
+   "point": "Concierge focus at 1280 x 720",
+   "finding": "Focused suggestion 'What is the cheapest way to get to KL Sentral?' at 649 to 720 px; sticky form starts at 651 px. axe not run by the chair.",
+   "supports": "inclusion"
+  },
+  {
+   "point": "Future fare badge",
+   "finding": "/en/kul: 'KLIA Ekspres adult fare: RM65 from 1 January 2027 ... In effect now · 1 Oct 2026 to 31 Jan 2027'; 'Estimated' chip on the same card at 390 and 1440 px (fact-check).",
+   "supports": "business and design"
+  },
+  {
+   "point": "Overview flight search",
+   "finding": "'Find a flight at KLIA' at 2,236 px at 390 x 844.",
+   "supports": "design"
+  },
+  {
+   "point": "Desktop board fold",
+   "finding": "1440 x 900: first three flight links at 813, 865 and 917 px; one full row and most of a second above the fold.",
+   "supports": "design (in substance)"
+  },
+  {
+   "point": "Search gaps",
+   "finding": "'pharmacy' 0 results; 'kuching parking' 22 results led by KLIA, Penang, Kota Kinabalu parking; 'lift' 3 unmarked demonstration lifts; 'charging' train and shuttle.",
+   "supports": "design, business, inclusion"
+  },
+  {
+   "point": "Concierge intents",
+   "finding": "Immigration queue 'right now': generic lead and visitor autogate eligibility, no queue data. 'Book me a taxi': six transport modes, Long Term Car Park shuttle first. Malay departure-autogate question in /ms/concierge: visitor/MDAC card first, arrival card second, departing-citizen content behind 'Tunjuk 3 lagi' (through the API with airport KLIA the departing-citizen statement came first).",
+   "supports": "business, design, inclusion"
+  },
+  {
+   "point": "Headers, feed, missing sections",
+   "finding": "script-src 'self' 'unsafe-inline'; payment=(); /api/flights?airport=kul mode demo; /en/kch/parking and /en/lgk/transport 404.",
+   "supports": "business"
+  }
+ ],
+ "comparison": {
+  "round_one_panel_avg_pct": 70.8,
+  "round_one_source": "docs/qa/panel/panel-summary.md (mean of three reviews; not stored in matrix.json)",
+  "second_review_median_pct": 74.5,
+  "second_review_mean_pct": 74.8,
+  "second_review_source": "docs/qa/panel/re-review.json",
+  "third_review_median_pct": 75.5,
+  "third_review_mean_pct": 76.3,
+  "change_since_second_review_points": 1.0,
+  "change_since_round_one_points_median": 4.7,
+  "change_since_round_one_points_mean_like_for_like": 5.5,
+  "mahb_today_pct": 42.5,
+  "heathrow_pct": 79.0,
+  "composite_best_per_dimension_pct": 83.0,
+  "composite_note": "Computed by the chair from matrix.json per-dimension scores (maximum over the ten benchmark airports, MAHB excluded); the matrix does not store it.",
+  "target_pct": 90.5,
+  "figures_checked_against_matrix": "MAHB 42.5 and Heathrow 79.0 match airports[].weighted_pct and recompute from the per-dimension scores; composite 83.0 recomputed; round one 70.8 in panel-summary.md; second review 74.5 in re-review.json. No correction needed.",
+  "matrix_position": "Level with Hong Kong (75.5); behind Heathrow 79.0, Haneda 77.5, Schiphol 77.0, Istanbul 76.5, Changi 76.5; ahead of Incheon 74.5, Dubai 71.0, Hamad 69.0, Munich 66.5, MAHB 42.5. Differences up to about 3 points are within the method uncertainty; only Heathrow's lead (3.5) exceeds it.",
+  "gap_to_heathrow_points": {
+   "ui": 1.0,
+   "info": -3.0,
+   "flight": -1.5,
+   "nav": 1.0,
+   "commerce": -2.0,
+   "perf": 1.0,
+   "net": -3.5
+  },
+  "gap_to_composite_points": {
+   "info": -4.5,
+   "flight": -1.5,
+   "commerce": -2.0,
+   "perf": 0.5,
+   "net": -7.5
+  },
+  "per_dimension": {
+   "ui": {
+    "median": 4,
+    "range": [
+     4,
+     4
+    ],
+    "second_review": 4,
+    "change_since_second": 0,
+    "round_one": 4,
+    "mahb": 2.5,
+    "heathrow": 3.5,
+    "best": 4,
+    "best_who": [
+     "Tokyo Haneda",
+     "Amsterdam Schiphol",
+     "Singapore Changi",
+     "Dubai International",
+     "Hamad International, Doha"
+    ]
+   },
+   "ux": {
+    "median": 4,
+    "range": [
+     4,
+     4.5
+    ],
+    "second_review": 4,
+    "change_since_second": 0,
+    "round_one": 3.83,
+    "mahb": 2,
+    "heathrow": 4,
+    "best": 4,
+    "best_who": [
+     "London Heathrow",
+     "Tokyo Haneda",
+     "Amsterdam Schiphol",
+     "Istanbul (iGA)",
+     "Singapore Changi",
+     "Hong Kong International",
+     "Seoul Incheon"
+    ]
+   },
+   "info": {
+    "median": 3,
+    "range": [
+     3,
+     3
+    ],
+    "second_review": 3,
+    "change_since_second": 0,
+    "round_one": 3,
+    "mahb": 2,
+    "heathrow": 4,
+    "best": 4.5,
+    "best_who": [
+     "Hong Kong International",
+     "Seoul Incheon"
+    ]
+   },
+   "flight": {
+    "median": 4,
+    "range": [
+     4,
+     4
+    ],
+    "second_review": 4,
+    "change_since_second": 0,
+    "round_one": 4,
+    "mahb": 2.5,
+    "heathrow": 4.5,
+    "best": 4.5,
+    "best_who": [
+     "London Heathrow",
+     "Tokyo Haneda",
+     "Amsterdam Schiphol",
+     "Istanbul (iGA)",
+     "Seoul Incheon",
+     "Hamad International, Doha"
+    ]
+   },
+   "mobile": {
+    "median": 4,
+    "range": [
+     4,
+     4.5
+    ],
+    "second_review": 4,
+    "change_since_second": 0,
+    "round_one": 3.5,
+    "mahb": 2,
+    "heathrow": 4,
+    "best": 4,
+    "best_who": [
+     "London Heathrow",
+     "Amsterdam Schiphol",
+     "Singapore Changi"
+    ]
+   },
+   "nav": {
+    "median": 4,
+    "range": [
+     4,
+     4.5
+    ],
+    "second_review": 4,
+    "change_since_second": 0,
+    "round_one": 3.83,
+    "mahb": 2,
+    "heathrow": 3.5,
+    "best": 4,
+    "best_who": [
+     "Hong Kong International"
+    ]
+   },
+   "ai": {
+    "median": 4,
+    "range": [
+     3.5,
+     4
+    ],
+    "second_review": 3.5,
+    "change_since_second": 0.5,
+    "round_one": 3.17,
+    "mahb": 2,
+    "heathrow": 4,
+    "best": 4,
+    "best_who": [
+     "London Heathrow",
+     "Istanbul (iGA)"
+    ]
+   },
+   "commerce": {
+    "median": 2.5,
+    "range": [
+     2.5,
+     2.5
+    ],
+    "second_review": 2.5,
+    "change_since_second": 0.0,
+    "round_one": 2,
+    "mahb": 2.5,
+    "heathrow": 4.5,
+    "best": 4.5,
+    "best_who": [
+     "London Heathrow",
+     "Singapore Changi"
+    ]
+   },
+   "perf": {
+    "median": 4,
+    "range": [
+     3.5,
+     4
+    ],
+    "second_review": 4,
+    "change_since_second": 0,
+    "round_one": 3.5,
+    "mahb": 1.5,
+    "heathrow": 3,
+    "best": 3.5,
+    "best_who": [
+     "Dubai International"
+    ]
+   }
+  }
+ },
+ "pilot_conditions": [
+  {
+   "id": "P1 CI with TBT budgets met or agreed anew (team)",
+   "status": "not met",
+   "evidence": "CI and WebKit never run on a runner (verification G7); budget step fails 10 assertions (round four 14); pooled TBT /en 260, /ms 300, /en/kul 308, board 227, parking 241, flight page 268 ms; no revised budget recorded."
+  },
+  {
+   "id": "P2 Commercial measurement durable, E-17 team part (team)",
+   "status": "met",
+   "evidence": "Business clicked 5 of 5 hand-offs: utm_campaign and a handoff beacon each, written to the file store; durable across restart (verification F2.6). Partner referral codes are MAHB's; E-17 as a whole not verified."
+  },
+  {
+   "id": "P3 Status-line semantics (team)",
+   "status": "met",
+   "evidence": "All three lenses: 0 'Checked hh:mm', 0 'No disruption', 'Status not available', 'From notices published up to 7 Oct 2026. No live operations feed is connected yet.'; verification 6.1.1."
+  },
+  {
+   "id": "P4 Day-of-travel residuals (team)",
+   "status": "met",
+   "evidence": "Home card 'Check-in closes 06:30 · Now' after the arrive-by time passed; AK 6336 'Delayed: now 07:50 · Check-in closes 07:05 · Boarding 07:20'; 0 'Done:' on 10 departure loads; 'Act now'; AirAsia notice period not invented; verification 6.1.2."
+  },
+  {
+   "id": "P5 One fact, one answer (team)",
+   "status": "met",
+   "evidence": "Parking page, concierge and help: 'Rates not verified: our sources give a daily maximum of RM 32 ...'; content test passes (verification 6.1.3). Low residual: the concierge's long-stay card states RM 32 without the qualifier."
+  },
+  {
+   "id": "P6 Official flight feed (MAHB, OOS-01)",
+   "status": "not met",
+   "evidence": "Provider stub throws (official-flights.ts lines 96 to 111); /api/flights?airport=kul mode demo [chair]."
+  },
+  {
+   "id": "P7 Named notices owner, with operations feed or notices CMS (MAHB, OOS-02)",
+   "status": "not met",
+   "evidence": "Notices are src/content/notices.ts; no owner named."
+  },
+  {
+   "id": "P8 (added by this panel) No lazy part replaces a page; 'Try again' recovers (team)",
+   "status": "not met",
+   "evidence": "Business measured; chair confirmed: with a saved flight 2 of 14 lazy chunks on /en and 2 of 10 on /en/journey each replace the whole <main>; 'Try again' does not recover after unblocking (verification G8 item 2)."
+  },
+  {
+   "id": "P9 (added by this panel) Concierge focus not hidden by the sticky question box (team)",
+   "status": "not met",
+   "evidence": "Inclusion measured at 1280 x 720 and 1440 x 900; chair confirmed at 1280 x 720 (button 649 to 720 px, form from 651 px)."
+  },
+  {
+   "id": "P10 (added by this panel) Accessibility statement true and dated after the fixes (team)",
+   "status": "not met",
+   "evidence": "Statement claims sticky bars do not hide the focused item when the page is magnified and that section links move focus; neither holds on this build (inclusion; fact-check: the first fails at 125% zoom of a 1440 x 900 window, while at the 200% and 400% zoom of its test sentence nothing focused was hidden); review date 21 November 2026 predates round five."
+  }
+ ],
+ "second_review_launch_blockers": [
+  {
+   "id": "6.1.1 Status-line semantics",
+   "owner": "team",
+   "status": "met",
+   "evidence": "See pilot condition P3."
+  },
+  {
+   "id": "6.1.2 Day-of-travel residuals and corrected English",
+   "owner": "team",
+   "status": "met",
+   "evidence": "See P4; 'Your needs: wheelchair.' / 'Keperluan anda: kerusi roda, warga emas.'"
+  },
+  {
+   "id": "6.1.3 One fact, one answer",
+   "owner": "team",
+   "status": "met",
+   "evidence": "See P5."
+  },
+  {
+   "id": "6.1.4 Concierge fallback, qualifiers, airline, grammar, 'In effect', phone length",
+   "owner": "team",
+   "status": "partly met",
+   "evidence": "Fallback, qualifiers, airline and grammar fixed (0 grammar errors in 17 answers); answers still 500 to 1,163 px on a phone; 'In effect now' remains on the overview notice card [chair]; intent misses (taxi, 'now', Malay autogates) [chair]."
+  },
+  {
+   "id": "6.1.5 Search relevance, named queries (A-12)",
+   "owner": "team",
+   "status": "met",
+   "evidence": "Fast Track by terminal, smoking, wifi, taxi, accessible toilet, home 'parking' suggestion, no '0 flights found'. New gaps beyond the named list: pharmacy, cross-airport, charging, lift [chair]."
+  },
+  {
+   "id": "6.1.6 Answer-first and placement",
+   "owner": "team",
+   "status": "partly met",
+   "evidence": "Transport fare 431 px, transit verdict 454 px sticky, map controls above the drawing, sticky offsets at 400% zoom, chips wrap, desktop first row 798 to 850 px. Not met: Malay mid-word breaks on 4 pages (16 words); 'My needs' at 1,870 to 2,142 px at 125% text. New: overview flight search at 2,236 px [chair]."
+  },
+  {
+   "id": "6.1.7 Density (A-14)",
+   "owner": "team",
+   "status": "partly met",
+   "evidence": "Flight page and parking done; filtered board repeats a Demo chip per hour group; 9 type sizes on 8 of 280 pages at 390 px, 11 pages over 8 at 1440 px (verification G5)."
+  },
+  {
+   "id": "6.1.8 Thin and directory-only airports",
+   "owner": "team",
+   "status": "met",
+   "evidence": "Lawas without a journey switcher; 'Airlines: Not published'; depth chips 3 / 18 / 18."
+  },
+  {
+   "id": "6.1.9 Measurement (E-17)",
+   "owner": "team",
+   "status": "met",
+   "evidence": "See P2."
+  },
+  {
+   "id": "6.1.10 Accessibility statement and Malay copy pass",
+   "owner": "team",
+   "status": "partly met",
+   "evidence": "Malay h1, 'Tanya Kami', placeholder fixed; statement in both languages but two sentences untrue on this build, review date before round five, no accessibility contact (MAHB)."
+  },
+  {
+   "id": "6.1.11 Performance and release gates",
+   "owner": "team",
+   "status": "not met",
+   "evidence": "See P1; congested Wi-Fi LCP 2.57 / 2.65 s; first-load JS over 170 KB on 21 of 39 routes; HTML over 40 KB gzip on 14 of 22 pages; worker first visit 61 requests, 643 KB."
+  },
+  {
+   "id": "6.1.12 Per-route CSP and payment policy (E-09)",
+   "owner": "team",
+   "status": "not met",
+   "evidence": "'unsafe-inline' and payment=() [chair]."
+  },
+  {
+   "id": "6.1.13 Moderated usability study",
+   "owner": "team with MAHB",
+   "status": "not met",
+   "evidence": "Plan in docs/qa/usability-study-plan.md; not run."
+  },
+  {
+   "id": "6.2.1 Official flight feed (OOS-01)",
+   "owner": "MAHB",
+   "status": "not met",
+   "evidence": "See P6."
+  },
+  {
+   "id": "6.2.2 Operations feed and notices CMS with owner (OOS-02)",
+   "owner": "MAHB",
+   "status": "not met",
+   "evidence": "See P7; queue estimates are demonstration data."
+  },
+  {
+   "id": "6.2.3 Parking tariff and dated booking link (OOS-03)",
+   "owner": "MAHB",
+   "status": "not met",
+   "evidence": "0 of 4 KLIA car parks verified; booking link does not take dates."
+  },
+  {
+   "id": "6.2.4 Fast Track, lounges, referral agreements (D-02, OOS-04, OOS-13)",
+   "owner": "MAHB and partners",
+   "status": "not met",
+   "evidence": "Fast Track details not published; 9 'Not published' on lounges; no referral codes."
+  },
+  {
+   "id": "6.2.5 Content minimum per international airport; concessionaire feed (OOS-05, OOS-06)",
+   "owner": "MAHB",
+   "status": "not met",
+   "evidence": "KUL 17, PEN 6, BKI 6 URLs, others 1 or 2; /en/kch/parking and /en/lgk/transport 404 [chair]; 8 outlets at KLIA."
+  },
+  {
+   "id": "6.2.6 Located accessibility facts, assistance service, airline rules, Immigration wording, map places (OOS-07, D-04, D-07, C-08)",
+   "owner": "MAHB, airlines, Immigration",
+   "status": "not met",
+   "evidence": "Listed as not published in both languages; map lifts are demonstration points."
+  },
+  {
+   "id": "6.2.7 Operator-grade sourcing; brand, legal, native-Malay review (OOS-08, OOS-14)",
+   "owner": "MAHB",
+   "status": "not met",
+   "evidence": "Aerotrain notice 'we found no confirmation of the final dates'; third-party guides for Terminal 1."
+  },
+  {
+   "id": "6.2.8 Alert delivery (OOS-10)",
+   "owner": "MAHB and partners",
+   "status": "not met",
+   "evidence": "'Nothing reaches you when the browser is closed yet'; e-mail a demonstration."
+  },
+  {
+   "id": "6.2.9 B2B channels (D-17)",
+   "owner": "MAHB",
+   "status": "not met",
+   "evidence": "Every dedicated channel 'Not published'."
+  },
+  {
+   "id": "6.2.10 Hosting edge limits, client-address header, security.txt, field Core Web Vitals (OOS-11, OOS-12, OOS-15)",
+   "owner": "MAHB",
+   "status": "not met",
+   "evidence": "Verification G8 item 10; no field data."
+  }
+ ],
+ "second_review_blocker_counts": {
+  "team": {
+   "met": 6,
+   "partly_met": 4,
+   "not_met": 3
+  },
+  "mahb": {
+   "met": 0,
+   "partly_met": 0,
+   "not_met": 10
+  }
+ },
+ "second_review_weaknesses_status": [
+  {
+   "id": "W1 No live data; status lines overstate freshness",
+   "status": "freshness fixed; data unchanged (MAHB)"
+  },
+  {
+   "id": "W2 Content depth and operator-grade sourcing",
+   "status": "unchanged (depth labelling improved)"
+  },
+  {
+   "id": "W3 Nothing can be bought; measurement partial",
+   "status": "measurement fixed; commerce unchanged"
+  },
+  {
+   "id": "W4 Assisted travellers lack facts; assistance flow misleads",
+   "status": "flow fixed; facts unchanged (MAHB, airlines)"
+  },
+  {
+   "id": "W5 Day-of-travel residuals",
+   "status": "fixed"
+  },
+  {
+   "id": "W6 Concierge and search miss the question; surfaces disagree",
+   "status": "surfaces agree; concierge and search improved with new gaps"
+  },
+  {
+   "id": "W7 Alerts do not reach a closed browser",
+   "status": "unchanged (MAHB)"
+  },
+  {
+   "id": "W8 Density and label noise",
+   "status": "improved, not finished"
+  },
+  {
+   "id": "W9 Answer-first unfinished; layout defects at zoom",
+   "status": "fixed on phones and at zoom; residuals elsewhere; new desktop concierge focus defect"
+  },
+  {
+   "id": "W10 Release engineering and performance unproven",
+   "status": "improved, not met; resilience defect exposed"
+  }
+ ],
+ "weaknesses": [
+  "1. No live operational data and no alert delivery (MAHB: OOS-01, OOS-02, OOS-10). Provider stub; /api/flights mode demo [chair]; notices in code; queue estimates demonstration data; Follow only while a page is open; e-mail a demonstration. Caps info and flight.",
+  "2. Content depth, verified prices and operator-grade sourcing (MAHB: OOS-03, 05, 06, 08, 14). 0 of 4 KLIA car-park rates verified; 3 of 39 airports beyond an overview and a board; /en/kch/parking and /en/lgk/transport 404 [chair]; 8 outlets; lounges from third-party sites; MAHB's building described from third-party guides; Malay not natively reviewed.",
+  "3. Nothing can be bought (MAHB and partners; team for E-09). Commerce 2.5, level with MAHB today; payment=() and 'unsafe-inline' would block a partner checkout [chair].",
+  "4. A failed script fetch blanks the returning passenger's home (team). With a saved flight, 2 of 14 lazy chunks on /en and 2 of 10 on /en/journey each replace the whole <main> with 'Something went wrong'; 'Try again' does not recover after the connection returns [chair]. Verification describes it as card-level.",
+  "5. Assisted-travel facts missing and no assistive-technology evidence (MAHB, airlines, Immigration; team with MAHB recruiting). No located accessible toilets, surveyed lifts or step-free status of transport; no assistance service, CARE hours or accessibility contact; no AirAsia, AirAsia X or Batik Air rules; no screen reader, WebKit or disabled participant.",
+  "6. The concierge and search still miss intents (team). 'Book me a taxi' lists six modes; 'now' questions ignore queue data; 'Here is what our sources say' leads; departure-autogate questions lead with visitor and arrival-card content in Malay [chair]; turns 500 to 1,163 px. Search: 'pharmacy' 0 results, 'kuching parking' other airports, 'charging' trains, 'lost and found' 39 options, unmarked demonstration lifts lead 'lift' [chair].",
+  "7. Release engineering and speed budgets unproven (team) [verification]. CI and WebKit never run on a runner; budget step fails 10 assertions; pooled TBT 227 to 308 ms on eight pages; congested Wi-Fi LCP 2.57 / 2.65 s; first-load JS over 170 KB on 21 of 39 routes; HTML over 40 KB gzip on 14 of 22 pages; worker first visit 61 requests, 643 KB; offline toast waits for the runtime script.",
+  "8. Focus defects that contradict the accessibility statement (team). Concierge sticky box covers the focused suggestion at 1280 x 720 [chair] and 1440 x 900 (inclusion); in-page links and palette selections leave focus on <body> or the Search button; statement claims otherwise and predates round five; text-only enlargement beyond 125% breaks the header and bottom bar.",
+  "9. Hierarchy, length and density residuals (team). Overview flight search at 2,236 px under a 100-word notice [chair]; about two desktop board rows above a 900 px fold [chair]; facilities 15,451 px and hub up to 19,186 px on a phone; Demo chip per hour group on a filtered board; 9 type sizes on 8 of 280 pages at 390 px; English home h1 a brand line; map route chip over a label.",
+  "10. Notice, copy and Malay residuals (team; native review MAHB). 2027 fare badged 'In effect now' and an 'Estimated' chip on a notice [chair]; concierge long-stay card without qualifier; 'no notices right now' on a directory-only airport; Malay mid-word breaks on four pages; 'Penang' versus 'Pulau Pinang'; 'penerbangan simpanan'."
+ ],
+ "launch_blockers": [
+  "TEAM [pilot]: Resilience of lazy parts: retryingImport for every React.lazy rendered on load (home saved-flight card, My journey), card-scoped error boundaries, a 'Try again' that re-imports, the saved-flight state in the failed-chunk e2e test; offline toast listener in the shell.",
+  "TEAM [pilot]: CI on a runner with WebKit and the chaos and contract tests; TBT budgets met or revised and recorded; then congested Wi-Fi LCP, first-load JS, HTML, byte and worker budgets (A-09, E-01, E-02, E-03, E-06, E-11, E-12).",
+  "TEAM [pilot]: Concierge composer must not hide the focused suggestion (re-test at 1280 x 720 and 1440 x 900 with axe); focus to the target for in-page links and palette selections; accessibility statement refreshed, true and dated after the fixes, in both languages.",
+  "TEAM: Concierge intent and length: requests it cannot perform, 'now' questions from status and queue lines or 'no live data', lead with the answer, departure-autogate routing in both languages, out-of-scope questions away from the support line, gate letter implies KLIA, B2B 'not published', one lead line and at most two cards on a phone.",
+  "TEAM: Search: 'not published for <airport>' with the official link before other airports' pages; vocabulary for pharmacy, charging, ATM, lost and found; down-rank unrelated results; every demonstration place, lifts included, marked illustrative in results and From/To lists.",
+  "TEAM: Notice and copy semantics: future-dated changes 'Announced; applies from ...'; no 'Estimated' chip on notices; qualifier on the concierge long-stay card; 'No notices in our sources' for directory-only airports; readable terminal labels.",
+  "TEAM: Hierarchy and density: overview flight search above notices on phones; at least five board rows above a 900 px desktop fold; one Demo marker per board view; at most 8 type sizes on every page; shorter facilities, hub and transport pages; map drawing into view on route choice, chip off labels; task-based English h1 (brand owner, OOS-08); 'Saved' state label; filter-strip overflow cue; Fast Track link in the international flight summary.",
+  "TEAM: Malay residuals: no mid-word breaks in controls, chips and headings; non-breaking ranges; one name for Pulau Pinang; 'penerbangan yang disimpan'. Recommended: header and bottom bar that survive 200% device text.",
+  "TEAM: Low items from verification G8 item 9 (night-board CLS at 1440 px, interaction latency, rate-limit-sensitive e2e test, hreflang in head on 152 of 276, header switcher shift, D-14); per-route CSP and payment policy for any partner checkout (E-09).",
+  "TEAM with MAHB: Moderated phone usability study in English and Malay with NVDA, VoiceOver on iOS, TalkBack and magnifier users; MAHB recruits and signs off (OOS-15).",
+  "MAHB [pilot]: Official flight feed behind the provider interface, proven against the failure states (OOS-01).",
+  "MAHB [pilot: named owner]: Operations status and queue feeds and a notices CMS with bilingual approval, a notice live in under 5 minutes without a deploy, and a named duty owner (OOS-02).",
+  "MAHB: Official parking tariff and a booking deep link accepting product, dates and a referral code (OOS-03).",
+  "MAHB and partners: Fast Track seller, price, hours and checkpoints; lounge access rules, prices and booking; referral agreements and confirmed conversions (D-02, OOS-04, OOS-13).",
+  "MAHB: Content minimum for every international airport, Kuching and Langkawi first; concessionaire directory feed; operating airline and contact for 33 airports (OOS-05, OOS-06).",
+  "MAHB: Located accessibility facts for KLIA T1 and T2, the airport assistance service, CARE hours, an accessibility contact with a response time (OOS-07, C-08).",
+  "Airlines and Immigration via MAHB: assistance rules for AirAsia, AirAsia X, Batik Air and other carriers (D-04); departure-autogate wording for citizens and counters for older travellers (D-07).",
+  "MAHB and partners: Alert delivery by web push including iOS, and by e-mail (OOS-10).",
+  "MAHB: Operator-grade sourcing with MAHB as the source for its own building and services; brand, legal and native-Malay review (OOS-08, OOS-14).",
+  "MAHB: B2B channels (D-17); hosting edge limits and client-address header, security.txt, field Core Web Vitals on a mid-range Android (OOS-11, OOS-12, OOS-15)."
+ ],
+ "readiness": {
+  "stakeholder_demo": "ready, as a labelled concept on demonstration data (avoid or explain the night window, about 22:55 to 05:05 Kuala Lumpur time)",
+  "moderated_study": "ready; the most valuable next step; MAHB recruits (OOS-15)",
+  "public_launch": "not ready",
+  "closed_klia_pilot": "not yet: pilot conditions P1, P6, P7 from the second review and P8 to P10 added by this panel are open"
+ },
+ "prototype_only": [
+  "Demonstration flights, gates, check-in rows, queues and alerts",
+  "Illustrative map positions and demonstration lifts (their labelling is a product defect)",
+  "Unverified parking rates",
+  "'Not published' facts",
+  "The concierge's fixed knowledge file",
+  "The 'Concept prototype, not official' banner"
+ ]
+}

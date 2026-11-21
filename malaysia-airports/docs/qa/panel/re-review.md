@@ -750,3 +750,12 @@ browser's own date fields) and 6 (advice to presenters on the clock) are observa
   6.1.1, 6.1.2, 6.1.3 and 6.1.9 are verified; the CI and TBT parts of 6.1.11 are not met; MAHB items 6.2.1 (the
   official flight feed) and 6.2.2 (an operations feed, a notices CMS and a named owner) are not met. The conditions
   for the closed KLIA pilot that the panel adopted are therefore not yet all met.
+
+**The third review.** After fix round five, the panel scored the round-five build in
+[`review-3.md`](review-3.md) ([`review-3.json`](review-3.json); 22 November 2026, Kuala Lumpur time). Its median is
+75.5% (74.0 to 79.5), up 1.0 point from this review's 74.5%, all of it from the AI concierge. It finds 4 of this
+review's 7 pilot conditions met and 6 of the 13 team launch blockers met (4 partly), none of the 10 MAHB blockers
+met, and adds three team conditions for the closed KLIA pilot: a failed script fetch must not blank the home or My
+journey of a passenger with a saved flight, the concierge's question box must not hide the focused suggestion, and
+the accessibility statement must be true and dated after those fixes. Its verdict: not ready for public launch,
+and not yet ready for a closed KLIA pilot. The status statements above describe round four and are kept as history.
