@@ -457,7 +457,7 @@
         "id": "6.1.6",
         "title": "Answer-first and placement",
         "status": "verified",
-        "evidence": "Transport fare 433 px (ms 495); transit verdict 454 px; map From 544 px, 0 overlaps on the disclaimer; desktop first board row 798-850 px (ms 819-871); Follow 1,321 px, My needs 1,375 px; nothing sticks at 400% zoom; 0 clipped chips; 0 Malay mid-word breaks. Residual: Malay fare at 125% text at 881 px.",
+        "evidence": "Transport fare 433 px (ms 495); transit verdict 454 px; map From 544 px, 0 overlaps on the disclaimer; desktop first board row 798-850 px (ms 819-871); Follow 1,321 px, My needs 1,375 px; sticky offsets follow the header at 400% zoom (0 px once it slides away) and the concierge form does not stick; 0 clipped chips; 0 Malay mid-word breaks. Residual: Malay fare at 125% text at 881 px.",
         "links": [
           "docs/qa/verification.md#f4-acceptance-re-review-61-and-the-gallery-notes"
         ]
@@ -518,11 +518,12 @@
       {
         "id": "6.1.12",
         "title": "Per-route CSP and payment policy (E-09)",
-        "status": "not_started",
-        "evidence": "E-09 not verified; enforced CSP keeps 'unsafe-inline'.",
+        "status": "not_met",
+        "evidence": "No checkout exists. The per-route override mechanism has existed since round one, with no override configured; a checkout policy plan is in docs/engineering/security.md, section 3. E-09 not verified; enforced CSP keeps 'unsafe-inline'.",
         "links": [
           "docs/qa/verification.md#f5-acceptance-all-101-p0-and-p1-items",
-          "docs/qa/verification.md#f8-open-issues-ranked"
+          "docs/qa/verification.md#f8-open-issues-ranked",
+          "docs/engineering/security.md"
         ]
       },
       {
@@ -575,7 +576,7 @@
         "note": 4,
         "title": "Search for \"MH 2\"",
         "status": "verified",
-        "evidence": "9 results, all demonstration flights; no result on the digit alone.",
+        "evidence": "9 results: demonstration flights and two \"Malaysia Airlines (MH)\" airline entries; no result on the digit alone. The KLIA entry's summary shows \"[object Object]\", a separate display defect (verification F8 item 10).",
         "links": [
           "docs/qa/verification.md#f4-acceptance-re-review-61-and-the-gallery-notes"
         ]

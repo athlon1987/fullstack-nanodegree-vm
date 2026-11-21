@@ -339,7 +339,8 @@ operative obligations and dates with MAHB's counsel; this section is design guid
   access reviews quarterly.
 - **Automated on every pull request that touches the app** (`.github/workflows/malaysia-airports-ci.yml`,
   repository root; also runnable by hand; not yet run on a GitHub runner, and WebKit has never run:
-  its jobs were run locally in round four, `docs/qa/verification.md`, F7): `npm ci`; `npm audit --omit=dev --audit-level=high` as a
+  in round four its jobs were run locally as far as a container allows, without CodeQL and gitleaks,
+  `docs/qa/verification.md`, F7): `npm ci`; `npm audit --omit=dev --audit-level=high` as a
   gate (all dependencies are audited too, report only); `next typegen` and `tsc`; ESLint; Vitest
   (headers, redirects, sitemap, limits, body reading, origin checks, fact guard, storage
   validation, the worker's caching rules); a production build; Playwright on desktop, phone and a

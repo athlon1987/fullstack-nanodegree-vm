@@ -1052,9 +1052,9 @@ over 500 KB (548 to 609); requests at most 40 now pass on transport (40) and fai
 A second set with diagnostics on the final build (`docs/qa/lighthouse-round4/diagnostics/`): concierge **95** (TBT
 207/262/353), `/en` **96** (224/231/334), `/en/kul` **93** (325/229/309). Pooled over the six runs, `/en` TBT has a
 median of 264 ms (round three 261) and `/en/kul` 295 ms (round three 329): no change beyond the container's spread.
-The concierge's six runs (207 to 375, median 287 ms) are all above round three's three (140 to 220), so its rise is
-probably real, by roughly 80 to 100 ms; its first-load JavaScript grew 1.0 KB and its longest tasks are React DOM's
-chunk (201 ms) and the HTML document (139 ms). It is recorded as a wrong-way number (F3) and in open issue 1.
+The concierge's six runs (207 to 375, median 287 ms) are all above round three's median (186) and five of the six
+above its highest run (its three were 140 to 220), so its rise is probably real, by roughly 80 to 100 ms; its
+first-load JavaScript grew 1.0 KB and its longest tasks are React DOM's chunk (201 ms) and the HTML document (139 ms). It is recorded as a wrong-way number (F3) and in open issue 1.
 
 The CI budget step, run locally (F7), also measured two pages this table does not: **a flight page (performance 68 to
 75, LCP 4.2 to 4.9 s, its streamed `h1`)** and the board **at 23:17, when its window held no departures (76 to 78, LCP
@@ -1177,12 +1177,13 @@ card 390; flight summary and delay step 390; board 1440; transport 390; map 390;
 | 1 React #419 on three 404s | **Verified** | `/en/no-such-page`, `/ms/tiada-halaman`, `/en/guides/no-such-guide`: **404** on `next start`, the `h1` in the server HTML, 0 failed boundaries outside `<noscript>`, **0 console errors** (screenshot of the first in dark mode) |
 | 2 Next-day rows without a date | **Verified** | Ipoh at 11:00 on 18 November: 15:30 (no label), "09:25 Tomorrow", "10:45 Tomorrow" (screenshot) |
 | 3 Offline page against its toast | **Verified, on the production worker** (the trust log could not run it) | Offline at DOMContentLoaded, before the worker was ready: card "Nothing is saved on this device yet: the connection dropped before offline saving was ready …" and toast "You are offline: nothing is saved on this device yet" (screenshot); back online, the registration was retried and the worker controls the page; offline after it was ready: card "Pages you open are saved …" and toast "You are offline: showing saved information" |
-| 4 "MH 2" | **Verified** | 9 results, all demonstration flights; no result on the digit alone |
+| 4 "MH 2" | **Verified** | 9 results: demonstration flights and two "Malaysia Airlines (MH)" airline entries (Penang; KLIA Terminal 1); no result on the digit alone (a fact-check re-run with the clock at 09:40 on 18 November and at 00:15 on 22 November gave 10, made up the same way). The KLIA entry's summary reads "KLIA Terminal 1 · [object Object] · …" (found in that fact-check; open issue 10) |
 
 **The round-four logs' own numbers.** Every number re-measured here matched, except: Follow, My needs and the needs
 control are 4 px higher than the trust log's (1,321 / 1,375 / 1,871 px against 1,325 / 1,379 / 1,875), and parking
-shows 4 Demo labels against the layout log's 5 (a different count of the same page). "The home's first JavaScript is
-unchanged" is true of the lazily loaded `TopicStatus` only (F2.5). The layout log's "the production status code
+shows 4 Demo labels against the layout log's 5 (a different count of the same page), and the ask log gives
+`e2e/ask-round4.spec.ts` 10 tests where the file has 9 (with `concierge.spec.ts`'s 11, its "20 of 20"). "The
+home's first JavaScript is unchanged" is true of the lazily loaded `TopicStatus` only (F2.5). The layout log's "the production status code
 needs a production run": the three 404s answer 404 on `next start`.
 
 **Round-three items a round-four change could touch**, re-checked: A-01, A-04 and A-27 (e2e), A-08 (CLS 0), A-10
@@ -1288,8 +1289,10 @@ until WebKit runs once, nobody knows whether the WebKit project passes. The CI b
     0.045 to 0.049 on transport; e2e A-03 sensitive to rate limiting of its worker's address (give each test its own
     address, or wait for the field rather than network idle); the Malay transport fare at 881 px at 125% text; the
     "LGK" label clipped at the left edge of the `/en/airports` schematic map at 1440 px; `.lighthouseci/` is not
-    git-ignored; canonical in the HTML on 124 routes (E-14), answer states for the other top tasks (E-17), enforced
-    CSP keeps `'unsafe-inline'` (E-09), reading level (D-14).
+    git-ignored; two search-index airline summaries show "[object Object]" in both languages (`airline:kul:mh`,
+    `airline:pen:cx`: the check-in text is passed unpicked in `src/lib/search/documents.ts`; found in the
+    documentation fact-check); no canonical in the HTML on 124 routes (E-14), answer states for the other top
+    tasks (E-17), enforced CSP keeps `'unsafe-inline'` (E-09), reading level (D-14).
 11. **Rate limits behind an undeclared CDN** (deployment). MAHB: set `TRUSTED_CLIENT_IP_HEADER` or
     `TRUSTED_PROXY_HOPS` and deploy the edge rules (OOS-11).
 12. **Facts only MAHB, airlines or partners can supply**: assistance rules and notice periods for AirAsia, AirAsia X,
