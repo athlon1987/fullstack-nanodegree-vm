@@ -681,3 +681,72 @@ else in sections 6.1 and 6.2 stands between a pilot and a public launch.
   - the sitemap per airport.
 
   Flight-specific observations depend on the clock time, because flights are generated around it.
+
+---
+
+## After the re-review: round four
+
+Added on 21 November 2026 by the head of quality, after the panel reported. **The panel has not re-scored.** It has
+not reviewed the round-four build or re-run its checks, so its scores (panel median 74.5%), its verdict and sections
+1 to 7 above remain its judgement of the round-three build, unchanged. This section records verification status only;
+nothing in it implies a score change.
+
+After the panel reported, the delivery team ran a fourth fix round against section 6.1 and the four gallery defects
+(`docs/prototype/README.md`, "Observations made while capturing", notes 1 to 4), in three packages:
+[`../fixes/round4-trust.md`](../fixes/round4-trust.md), [`../fixes/round4-ask.md`](../fixes/round4-ask.md) and
+[`../fixes/round4-layout.md`](../fixes/round4-layout.md). Each claim was checked independently on a production build
+(build `ygqxXIFcmSWq51rkxYSGE`; [`../verification.md`, Round four](../verification.md#round-four)). Statuses below are
+from that verification [verification]; figures are at 390 x 844 unless stated.
+
+### Section 6.1, the delivery team's items
+
+| 6.1 item | Status after round four | Evidence |
+|---|---|---|
+| 1. Status-line semantics | **Verified** (the concierge's own status sentence was aligned during verification) | 0 "Checked hh:mm" and 0 "No disruption" on the KLIA overview, flight page and transit page in English and Malay; lines without a notice say "Status not available"; the notice line says "Notice dated 7 Oct 2026"; the lead says "From notices published up to 7 Oct 2026. No live operations feed is connected yet.", with a link to the official contacts. [F4](../verification.md#f4-acceptance-re-review-61-and-the-gallery-notes), [F3 item 2](../verification.md#f3-regressions-defects-and-changes-in-this-round) |
+| 2. Day-of-travel residuals | **Verified**; other airlines' notice periods need airline data | MH 2626 delayed to 12:00, at 09:40: home card "Check-in closes 11:00 · Now"; flight summary "Delayed: now 12:00"; 0 "Done:", 4 "Past:"; one time basis; Malaysia Airlines' 48-hour warning and "Act now"; for AirAsia "we do not know how much notice AirAsia needs". [F4](../verification.md#f4-acceptance-re-review-61-and-the-gallery-notes) |
+| 3. One fact, one answer | **Verified**; the tariff itself needs MAHB (OOS-03) | The parking page, the concierge and the help FAQ give the same sentence per car park ("Rates not verified: our sources give a daily maximum of RM 32; …"); the content test "one fact, one answer" passes. [F4](../verification.md#f4-acceptance-re-review-61-and-the-gallery-notes) |
+| 4. Concierge | **Verified** | Unanswerable questions: "I can’t answer that from our verified content", with the group line, and no unrelated cards; wheelchair on AirAsia: AirAsia's rules not published, no Calm Room card; one grammatical "not published" phrase; the 2027 fare change not "In effect"; collapsed phone answers 788 to 1,181 px (was up to 2,301) with "Show N more items". [F4](../verification.md#f4-acceptance-re-review-61-and-the-gallery-notes) |
+| 5. Search relevance | **Verified** | "Fast Track (Terminal 1)" and "(Terminal 2)"; "smoking" and "merokok" 1 honest result; "wifi" honest result first; "taxi" 1 result, no liquids rule; "accessible toilet" and "tandas OKU" lead with "not published yet"; "parking" leads with the KLIA parking page; the home field no longer announces "0 flights found". [F4](../verification.md#f4-acceptance-re-review-61-and-the-gallery-notes) |
+| 6. Answer-first and placement | **Verified**, one residual | Transport fare at 433 px (Malay 495; re-review 1,821), above the warning; transit verdict at 454 px (re-review 1,186); map From at 544 px with 0 elements over the disclaimer; desktop first board row 798 to 850 px (Malay 819 to 871; re-review 938); Follow at 1,321 px and My needs at 1,375 px; at 320 x 256 nothing sticks; 0 clipped chips; 0 Malay mid-word breaks. Residual: the Malay fare at 125% text is at 881 px. [F4](../verification.md#f4-acceptance-re-review-61-and-the-gallery-notes) |
+| 7. Density (A-14) | **Partly met** | Source toggles: facilities 21 → 11, transport 9 → 4, transit 16 → 6; map tags 42 → 19, Demo labels 18 → 4. Not met: parking unchanged (8 toggles, 4 Demo labels); the flight page 21 tags, 7 toggles, 8 Demo labels; 9 type sizes on the home, `/ms`, the overview and the flight page (limit 8). [F4](../verification.md#f4-acceptance-re-review-61-and-the-gallery-notes), [F8 item 5](../verification.md#f8-open-issues-ranked) |
+| 8. Thin and directory-only airports | **Verified** (team part); the operating airline and own contact of 33 airports need MAHB data | Lawas: no journey-mode switcher, "This airport's own phone number: Not published"; KLIA lists its airlines; `/en/airports` and `/ms/airports` show a depth chip on all 39 airports (3 / 18 / 18) with a legend. [F4](../verification.md#f4-acceptance-re-review-61-and-the-gallery-notes) |
+| 9. Measurement (E-17) | **Verified** | `data-handoff` and a campaign parameter on parking booking, Fast Track (facilities, overview, flight timeline), lounge operators and rail tickets, with the beacon (e2e); the counts survived a server restart. Backlog item E-17 as a whole is not verified: answer states exist for three tasks only. [F4](../verification.md#f4-acceptance-re-review-61-and-the-gallery-notes), [F2.6](../verification.md#f26-other-production-measurements-playwright-pixel-7-unless-stated) |
+| 10. Statement and Malay copy | **Verified**; an accessibility contact and response time need MAHB | Statement in English and Malay: "Last reviewed 21 November 2026", current focus behaviour, 200% and 400% zoom, WebKit not tested, official channels. Malay home `h1` "Semak penerbangan, rancang perjalanan anda."; "Tanya Kami" in the title, `h1`, navigation and (after a verification fix) the privacy, terms and offline copy; the short placeholder fits. [F4](../verification.md#f4-acceptance-re-review-61-and-the-gallery-notes), [F3 item 3](../verification.md#f3-regressions-defects-and-changes-in-this-round) |
+| 11. Performance and release gates | **Not met.** Not a round-four package item; verification ran the CI jobs locally | TBT over 200 ms on 7 of 10 pages; performance under 95 on 3 of 10 (the concierge 97 → 93, TBT up about 80 to 100 ms); a flight page 68 to 75 with LCP 4.2 to 4.9 s; content-page JavaScript 198.8 to 227.9 KB. The CI jobs pass locally except the Lighthouse step, whose configuration error was fixed and which now fails 14 assertions; CI has not run on a runner and WebKit has not run. [F2.4](../verification.md#f24-lighthouse-mobile-3-runs-median-scriptsqalighthousemjs-lighthouse-136-moto-g-power-simulated-slow-4g-4x-cpu), [F2.5](../verification.md#f25-first-load-javascript-and-rc-reveals), [F7](../verification.md#f7-ci-run-locally-githubworkflowsmalaysia-airports-ciyml), [F8 items 1 to 4](../verification.md#f8-open-issues-ranked) |
+| 12. Per-route CSP and payment policy (E-09) | **Not started** | E-09 not verified; the enforced CSP keeps `'unsafe-inline'`. [F5](../verification.md#f5-acceptance-all-101-p0-and-p1-items), [F8 item 10](../verification.md#f8-open-issues-ranked) |
+| 13. Moderated usability study | **Not run**; a plan is written | [`../usability-study-plan.md`](../usability-study-plan.md): the team runs it; MAHB recruits and signs it off (OOS-15) |
+
+Items 1 to 10, as verified: **9 verified, 1 partly met, 0 not verified, 0 regressed.** Every number in the round-four
+logs that verification re-measured matched, except Follow and My needs (4 px higher than logged) and the parking
+page's Demo labels (4, not 5).
+
+Section 6.2 (MAHB data, systems and partners): no item changed; none was in round four's scope.
+[F8 item 12](../verification.md#f8-open-issues-ranked) lists the facts still needed.
+
+### The gallery defects
+
+| Gallery note | Status | Evidence |
+|---|---|---|
+| 1. React error #419 on three 404s | **Verified** | `/en/no-such-page`, `/ms/tiada-halaman` and `/en/guides/no-such-guide` answer 404 on `next start` with the `h1` in the server HTML, 0 failed boundaries and 0 console errors. A different route still falls short: the `[lang]/[...rest]` catch-all 404s send Next's empty error document ([F8 item 7](../verification.md#f8-open-issues-ranked)) |
+| 2. Next-day rows without a date | **Verified** | Ipoh at 11:00 on 18 November: "15:30", "09:25 Tomorrow", "10:45 Tomorrow" |
+| 3. Offline page against its toast | **Verified**, on the production service worker | Offline before the worker was ready: the card and the toast both say nothing is saved yet; back online, registration is retried; offline after it was ready: both say saved information is shown |
+| 4. "MH 2" | **Verified** | 9 results, all demonstration flights; no result on the digit alone |
+
+Evidence for all four: [F4](../verification.md#f4-acceptance-re-review-61-and-the-gallery-notes). Notes 5 (the
+browser's own date fields) and 6 (advice to presenters on the clock) are observations, not product defects.
+
+### Backlog, and what the panel has not seen
+
+- **Backlog acceptance** [verification, round four]: unchanged at 85 of 101 P0 and P1 items verified, 16 not
+  verified, 0 regressed. A-14, D-04, E-17 and E-06 moved closer and are still not verified
+  ([F5](../verification.md#f5-acceptance-all-101-p0-and-p1-items)). End-to-end: 434 tests, 428 passed, 0 failed, 6
+  skipped; axe 0 violations at 59 call sites.
+- **Found by verification after the panel reported** (not assessed by the panel): the concierge's Lighthouse score
+  fell from 97 to 93; a flight page measured 68 to 75 with LCP 4.2 to 4.9 s, and the board's LCP was 4.7 s at night
+  with an empty window; the catch-all 404s above; the "LGK" label clipped on the `/en/airports` map at 1440 px
+  ([F3](../verification.md#f3-regressions-defects-and-changes-in-this-round),
+  [F8](../verification.md#f8-open-issues-ranked)).
+- **The pilot conditions in "Order of work"** (section 6) [judgement, head of quality, not the panel]: team items
+  6.1.1, 6.1.2, 6.1.3 and 6.1.9 are verified; the CI and TBT parts of 6.1.11 are not met; MAHB items 6.2.1 (the
+  official flight feed) and 6.2.2 (an operations feed, a notices CMS and a named owner) are not met. The conditions
+  for the closed KLIA pilot that the panel adopted are therefore not yet all met.

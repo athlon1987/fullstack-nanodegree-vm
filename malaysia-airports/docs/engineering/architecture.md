@@ -5,6 +5,7 @@ Malaysia Airports passenger and corporate platform, concept prototype. Phase 7 o
 | | |
 |---|---|
 | Written | 18 November 2026 |
+| Updated | 21 November 2026, after the fourth fix round: sections 1, 2.2 to 2.4, 3.1, 3.3, 3.5, 5.2, 5.3, 5.11, 6.2, 6.6, 6.9, 7.1, 7.4 and 10 checked against the code and `docs/qa/verification.md` (round four, "VER F…") |
 | For | MAHB digital leadership, enterprise and solution architects, delivery vendors |
 | Covers | The prototype as it is in this repository, and what a production service run by Malaysia Airports would need |
 | Related | [Build specification](build-spec.md), [Security, privacy and resilience](security.md), [Next.js 16 notes](next16-notes.md), [hand-off notes](handoffs/), [product strategy](../strategy/product-strategy.md), [MAHB audit](../research/audit/mahb-audit.md), [first-hand observations](../research/audit/firsthand-observations.md), [content provenance](../research/content-provenance.md) |
@@ -26,9 +27,9 @@ The prototype is an independent concept. It has no access to any MAHB system, an
 
 ## Summary
 
-1. **The prototype is a static-first Next.js 16 application.** Pages are prerendered in English and Bahasa Malaysia from a typed, validated content layer; everything that depends on the clock or the visitor runs in the browser after load. Static guidance stays readable with JavaScript off and with every API down. [code]
+1. **The prototype is a static-first Next.js 16 application.** Pages are prerendered in English and Bahasa Malaysia from a typed, validated content layer. Flight boards come from a server feed, requested by the browser after load; everything else that depends on the clock or the visitor is worked out in the browser. Static guidance stays readable with JavaScript off and with every API down. [code]
 2. **Operational data sits behind provider interfaces** (`FlightDataProvider`, `WaitTimeProvider`, `ParkingAvailabilityProvider`). Only demo implementations exist. An `OfficialFlightProvider` stub documents the mapping to MAHB's public flight endpoint and throws by design. [code]
-3. **Every published fact carries its source and retrieval date** (251 registered sources), and every piece of guidance carries one of four provenance tags. Bad content fails the unit tests. [code, measured]
+3. **Every published fact carries its source and retrieval date** (254 registered sources on 21 November 2026), and every piece of guidance carries one of four provenance tags. Bad content fails the unit tests. [code, measured]
 4. **Production needs four things the prototype cannot supply:** agreements and feeds for operational data (flights first), a headless CMS with approvals in both languages, an integration layer that keeps passenger information available when an upstream fails, and the operating disciplines around them (observability, incident response, privacy and cyber-security compliance). [proposed]
 5. **The most important design rule carries over unchanged:** no page depends on an API to show static guidance. MAHB's current passenger site renders empty pages when its content API is unavailable [observed]; this design does not.
 
@@ -52,18 +53,21 @@ flowchart LR
     Proxy["proxy.ts<br/>locale redirect for paths without /en or /ms"]
     Static["Prerendered pages en + ms<br/>sitemap, robots, manifest, icons"]
     Json["Static JSON per language<br/>search index, concierge knowledge pack"]
-    ApiF["GET /api/flights (demo)"]
+    Feed["GET /[lang]/[airport]/flights/feed<br/>and /[lang]/flights/feed (several airports)<br/>demo generator, cache, timeout, last-known"]
+    ApiF["GET /api/flights (demo contract)"]
     ApiH["GET /api/health"]
     ApiC["POST /api/concierge"]
+    ApiM["POST /api/metrics, /api/csp-report"]
+    Metrics[("Metric store<br/>.data/metrics.json or KV")]
   end
 
   subgraph Browser["Visitor's browser"]
     Html["HTML + React hydration"]
-    Hooks["Client components<br/>useNow(), stores"]
-    Demo["Demo providers in the browser<br/>flights, car park space"]
+    Hooks["Client components<br/>useNow(), useFlightFeed(), stores"]
+    Demo["Demo in the browser<br/>car park space; status lines from notices"]
     Store[("localStorage / sessionStorage<br/>ma:* keys, lang cookie")]
     SW["Service worker<br/>Cache Storage ma-v1-*"]
-    Local["Concierge engine on device<br/>(fallback)"]
+    Local["Concierge engine on device<br/>(before consent, or fallback),<br/>with demo flights"]
   end
 
   LLM[("Anthropic Messages API<br/>optional, only with ANTHROPIC_API_KEY")]
@@ -72,8 +76,11 @@ flowchart LR
   Build --> Json
   Static --> Html
   Html --> Hooks
+  Hooks -- "boards, every 30 s" --> Feed
   Hooks --> Demo
   Hooks --> Store
+  Hooks -- "aggregate counts" --> ApiM
+  ApiM --> Metrics
   Html -.-> SW
   Hooks -- "question" --> ApiC
   ApiC -- "grounded draft only" --> LLM
@@ -85,9 +92,11 @@ What the diagram says [code]:
 
 - Content is TypeScript modules under `src/content/`, validated by zod schemas and cross-reference checks, imported at build time. There is no database and no CMS.
 - Pages are prerendered for both languages. The proxy (`src/proxy.ts`) only redirects paths that have no locale; it never runs for localised pages, API routes or files.
-- Flight boards and car park space are generated **in the browser** by the demo providers, as pure functions of the airport, the local date and the current instant. The pages do not call `/api/flights`; that route exists to demonstrate the integration contract. A demo queue-time provider exists and is reported by `/api/health`, but no page displays queue times.
+- Flights come from the **server**. Since the third fix round (E-03, B-09) the demo generator runs behind the flight feed routes (`src/lib/providers/feed-server.ts`: a process-wide cache with a timeout and last-known fallback); the board, the flight pages, My journey and the home and overview previews read it through `useFlightFeed()` and look flights up in the `SnapshotFlightProvider` it returns. The generator is in the first-load JavaScript of no route (VER F2.5). The one exception is the concierge's on-device engine, which still generates demonstration flights in the browser (B-09, VER F8-9). The pages do not call `/api/flights`; that route exists to demonstrate the integration contract.
+- Car park space is still generated **in the browser** by `DemoParkingAvailabilityProvider`, as a pure function of the airport and the current instant. Service status lines are worked out in the browser from the notices in the build (section 5.3). A demo queue-time provider is reported by `/api/health` and supplies the security and immigration "Queue estimates", labelled Demo, on status lines such as the flight timeline's immigration step.
 - Personal state (saved flights and places, parked-car note, preferences, recent searches, concierge consent and conversation) stays in browser storage. Nothing personal is stored on the server.
 - The concierge asks `/api/concierge`; if that fails it runs the same engine in the browser with a static knowledge pack. An AI model is used only to reword a grounded answer, and only if the server has an API key.
+- Aggregate measurement (hand-offs followed and answer states, per section and day) is posted to `/api/metrics` and kept in a durable store behind the `MetricsStore` interface: a JSON file by default, or a Redis-compatible store for several instances (round four, E-17; section 6.9). Nothing personal is stored.
 
 ### 1.2 The production target
 
@@ -127,11 +136,11 @@ flowchart TB
 | Concern | Prototype [code] | Production [proposed] |
 |---|---|---|
 | Published content | TypeScript modules in git, reviewed as code | Headless CMS with editorial roles, approvals and scheduling; the same typed model as the contract |
-| Operational data | Demo providers in the browser | Provider implementations that read the BFF; the BFF reads MAHB's systems under agreement |
-| API layer | Three route handlers in the Next.js app; in-memory rate limit | Route handlers as the public contract, a separate integration service behind them, edge and shared rate limits |
+| Operational data | Demo flight feed on the server, read by every flight surface except the on-device concierge; car park space and status lines worked out in the browser | Provider implementations that read the BFF; the BFF reads MAHB's systems under agreement |
+| API layer | Route handlers in the Next.js app (flight feeds, concierge, health, metrics, CSP reports, the `/api/flights` contract); in-memory rate limits; metric counts in a file or KV store | Route handlers as the public contract, a separate integration service behind them, edge and shared rate limits |
 | Personal data | Browser storage only | Browser storage by default; a small server-side store only for opt-in alerts and bookings |
 | Commerce | Links to official booking pages | Deep links first, then checkout through a licensed payment gateway |
-| Operations | Health endpoint, tests run by hand | CI/CD, observability, alerting, disaster recovery, security testing |
+| Operations | Health endpoint, aggregate metrics, CSP reports; a CI workflow run locally but never on a runner (VER F7) | CI/CD, observability, alerting, disaster recovery, security testing |
 
 ---
 
@@ -170,7 +179,7 @@ Assumed, not validated [assumption]: the hosting platform (none is chosen; the h
 - There is no root `loading.tsx` (removed in the fix round, performance-04 and -07): it wrapped every page in a fallback that was revealed late, which shifted the layout and delayed LCP. Fallbacks now exist only where a segment really waits (each dynamic page's own `<Suspense>` around its `params`). The not-found pages render a `cacheLife('minutes')` marker so a 404 is shared-cached for 60 s at most.
 
 *Verified against the code on 21 November 2026 (fix round, package E).*
-- Server Components never read the clock or random values (it is a build error under Cache Components). On the client, `useNow()` returns `null` on the server and until the first tick, then the epoch time every 30 seconds by default; components render a placeholder while it is `null`. Providers are immutable snapshots of one instant (`getFlightProvider(now)`). Since round 3 (E-03) the demo flight generator runs only on the server: Client Components read its boards from the flight feed routes through `useFlightFeed()` (`src/lib/providers/use-flight-feed.ts`), refreshed every 30 seconds, and look flights up in the `SnapshotFlightProvider` it returns.
+- Server Components never read the clock or random values (it is a build error under Cache Components). On the client, `useNow()` returns `null` on the server and until the first tick, then the epoch time every 30 seconds by default; components render a placeholder while it is `null`. Providers are immutable snapshots of one instant (`getFlightProvider(now)`). Since round 3 (E-03) the demo flight generator runs only on the server, except in the concierge's on-device engine (B-09): Client Components read its boards from the flight feed routes through `useFlightFeed()` (`src/lib/providers/use-flight-feed.ts`), refreshed every 30 seconds, and look flights up in the `SnapshotFlightProvider` it returns.
 
 **Why time-dependent data is computed on the client:**
 
@@ -212,6 +221,8 @@ For comparison, MAHB's current homepage moved 32.7 to 34.3 MB over about 171 req
 2. Remove the demo flight generator and the illustrative route table from client bundles in production; live data arrives as JSON.
 3. Measure with Lighthouse in CI on mobile emulation and enforce the budgets (section 3.5). No Lighthouse run of the prototype is recorded in this repository; the targets on the transparency page (LCP under 2.5 s, INP under 200 ms, CLS under 0.1) are design targets, not results.
 
+**Where it stands after the fix rounds** [measured, VER F2.4 and F2.5, 21 November 2026]: changes 1 and 2 are done (zod is in no client chunk; the demo generator is in the first load of no route), and Lighthouse runs are recorded in `docs/qa/lighthouse-round4/`. First-load JavaScript is 229.5 KB gzip on `/en` and 249.1 KB on the flight page (budget 250, met with 0.9 KB to spare) and 198.8 to 227.9 KB on content and guidance pages (target 170, not met); 128.7 KB of every route is the framework, and the icon registry (22.8 KB) is in all 39 routes. TBT is 200 ms or less on 3 of 10 measured pages, and a flight page has LCP 4.2 to 4.9 s because its `h1` streams (VER F8-1, F8-2, F8-4).
+
 ### 2.4 Offline service worker
 
 [code: `src/components/platform/service-worker.ts`, `sw-routes.ts`, `sw-client.ts`]
@@ -219,7 +230,7 @@ For comparison, MAHB's current homepage moved 32.7 to 34.3 MB over about 171 req
 | Aspect | Behaviour |
 |---|---|
 | Registration | Production builds only; scope `/`; `updateViaCache: 'none'`. Development removes stale registrations |
-| Registration timing | After `load` and once the network has been quiet for 1.5 s (at most 10 s), in an idle period, so the precache never competes with the page or its prefetches |
+| Registration timing | After `load` and once the network has been quiet for 1.5 s (at most 10 s), in an idle period, so the precache never competes with the page or its prefetches. A registration that failed because the connection dropped is retried when the connection returns (round four) |
 | Install | Precaches the visitor's language only: `/<lang>` and `/<lang>/offline`, one after the other, and the bundles and fonts they reference. Pages are fetched with `cache: 'no-cache'` (a page the browser has just loaded revalidates as a `304`), bundles with `force-cache` (content-hashed), and concurrent saves share one fetch per asset. On activate, the page the visitor is on is saved unless the install already saved it |
 | Caches | `ma-v1-static` (400 entries), `ma-v1-pages` (60), `ma-v1-data` (8). Names carry a storage-format version (`v1`), deliberately not the build, so pages a visitor saved survive a deployment; on activate, any `ma-*` cache with another name is deleted. The build version (`__MA_BUILD__`) is compiled into the worker, so every deploy installs a new worker, and it is recorded on each saved page (`x-ma-build`) |
 | Static assets | Cache first (hashed bundles, fonts, icons) |
@@ -228,7 +239,7 @@ For comparison, MAHB's current homepage moved 32.7 to 34.3 MB over about 171 req
 | Other pages | Network first with a 3.5 s timeout, then the saved copy; otherwise `/[lang]/offline?from=<path>` |
 | Never stored | `/api/*`, React Server Component requests, search results, non-GET, other origins |
 | Storage rules | Only `200`, same-origin, not redirected, not `no-store` or `private`; pages keyed by path only, so query strings (search terms, filters) are never written to the device |
-| User interface | "You are offline: showing saved information" indicator; update prompt (Reload or Later, no forced reload); offline page lists saved pages and can remove them |
+| User interface | One function, `savingState()` in `sw-client.ts`, drives both the offline page's status card and the toast, so they cannot disagree (round four): "You are offline: showing saved information" only when the worker controls the page, otherwise "You are offline: nothing is saved on this device yet". Verified on the production worker (VER F4, gallery note 3). Update prompt (Reload or Later, no forced reload); offline page lists saved pages and can remove them |
 | Recovery | Kill switch documented in `security.md` section 8 |
 
 Tested by unit tests of the routing rules and an end-to-end test that saves pages and serves them offline (`e2e/platform.spec.ts`) [code].
@@ -245,7 +256,7 @@ Production additions [proposed]: when live flights arrive, the worker must keep 
 |---|---|---|---|
 | Content | `src/content/` | `types.ts` (every schema and type, `validateContent`), `airports.ts` (39-airport registry), `airports/<code>.ts` (six per-airport files), `guides.ts`, `faqs.ts`, `notices.ts`, `corporate.ts`, `sources.ts`, `index.ts` (entry point) | Only `@/content/types` and `@/content/airports`. `@/content` pulls in every airport and is for the server |
 | Domain logic | `src/lib/flights`, `journey`, `map`, `search`, `i18n`, and `time.ts`, `format.ts`, `parking.ts`, `transport.ts`, `locale.ts`, `storage.ts`, `stores.ts`, `preferences.ts`, `hooks/` | Pure functions that take `now` explicitly; client stores over `localStorage` with versioned `ma:` keys | Yes, except `@/lib/i18n` (server translator) and `@/lib/search` (document builder) |
-| Providers | `src/lib/providers/` | Interfaces, demo implementations, the official-flight stub, pure handlers for the API routes | Yes (the demo runs in the browser) |
+| Providers | `src/lib/providers/` | Interfaces, demo implementations, the official-flight stub, the flight feed (`feed-server.ts` and `resilient.ts` on the server; `use-flight-feed.ts` and `snapshot.ts` in the browser), pure handlers for the API routes | `use-flight-feed`, `snapshot`, the operations and parking demos and the types. `feed-server.ts` and the demo flight generator are for the server (the generator reaches the browser only in the on-device concierge's lazy chunk) |
 | Concierge | `src/lib/concierge/` | Understanding, retrieval, answer engine, request schema, rate limiter, fact guard; `*.server.ts` for the knowledge builder and AI wording | Engine yes; `*.server.ts` no |
 | SEO and platform | `src/lib/seo/`, `src/components/platform/` | Headers, redirects, sitemap registry, JSON-LD; service worker and offline UI | Platform UI yes |
 | Design system | `src/app/globals.css`, `src/components/ui/`, `common/`, `art/`, `src/fonts/`, `scripts/design-tokens.mjs`, `/[lang]/design-system` | Tokens, primitives, domain-aware shared components (`ProvenanceTag`, `DemoDataBanner`, `Freshness`, `NotPublished`, `FlightStatusChip`) | Yes |
@@ -277,14 +288,14 @@ Recommended [proposed]: a `CODEOWNERS` file that encodes this table, so pull req
 
 | Level | Tooling [code] | What it covers | Current result |
 |---|---|---|---|
-| Unit | Vitest in a Node environment, `src/**/*.test.ts` next to the code | Pure logic: providers and status rules, flight search and ids, journey timeline, parking calculator, transport ranking, map routing, search, i18n parity, storage, time and formatting, headers, redirects, service-worker rules, concierge engine and server, commerce and corporate view logic | **29 files, 363 tests passing** [measured, 18 Nov] |
+| Unit | Vitest in a Node environment, `src/**/*.test.ts` next to the code | Pure logic: providers and status rules, flight search and ids, journey timeline, parking calculator, transport ranking, map routing, search, i18n parity, storage, time and formatting, headers, redirects, service-worker rules, concierge engine and server, commerce and corporate view logic, the metric store's adapters | **36 files, 554 tests passing**, 7 of 7 runs [measured, VER F2.1, 21 Nov] (18 Nov: 29 files, 363) |
 | Content | `validateAllContent()` inside `src/content/content.test.ts`; `src/components/corporate/corporate-content.test.ts` | Every record against its schema; unique ids; every source id resolves; items point at real airports and terminals; map graphs connected; published rates present when claimed; corporate facts dated, sourced and bilingual | Passing; zero issues [measured] |
-| End to end | Playwright, `e2e/*.spec.ts` (9 specs), against `next build` + `next start` on port 3100 | One or more journeys per feature, headers, CSP violations, every sitemap URL answering 200, redirects, offline behaviour, the designed 404 | 176 passed, 2 skipped, of 178 (desktop and phone projects; integration hand-off, 17 Nov) |
-| Accessibility | `@axe-core/playwright` with tags `wcag2a`, `wcag2aa`, `wcag21aa`, `wcag22aa` inside the journeys | Automated WCAG checks at 41 scan points across the 9 specs, on the desktop and phone projects | Zero violations [integration hand-off] |
+| End to end | Playwright, `e2e/*.spec.ts` (14 specs), against `next build` + `next start` on port 3100 | One or more journeys per feature, headers, CSP violations, every sitemap URL answering 200, redirects, offline behaviour, the designed 404, and the round-four acceptance checks (`trust`, `ask-round4`, `layout-round4`) | 434: 428 passed, 0 failed, 6 skipped (desktop and phone projects) [measured, VER F2.2] (17 Nov: 176 of 178) |
+| Accessibility | `@axe-core/playwright` with tags `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa`, `wcag22aa` (`e2e/support/axe.ts`) inside the journeys | Automated WCAG checks at 59 scan call sites in 12 specs, on the desktop and phone projects | Zero violations [measured, VER F2.2] |
 | Design tokens | `node scripts/design-tokens.mjs` | Contrast of every text and boundary pair in every theme; exits 1 on failure | 95 pairs, 6 themes, no failures [design-system hand-off] |
-| Links | Crawl scripts run outside the repository | Static and rendered internal links, fragments, search-index links | 0 broken [integration hand-off]; scripts not kept in the repository |
+| Links and measurement | `scripts/qa/` (README there): static and rendered crawls, search-index, canonical and `$RC` checks, first-load JavaScript, a Lighthouse harness, interaction latency, layout shift | Static and rendered internal links, fragments, search-index links; the numbers behind each verification round | 0 broken, 0 missing anchors [measured, VER F2.3]; in the repository since round four, run by hand, not in CI |
 
-Gaps [code]: React hooks are not unit-tested in a DOM (no jsdom); there is no WebKit or Firefox project; no Lighthouse run; no visual regression; no load test; the link crawler is not in `scripts/`.
+Gaps [code]: React hooks are not unit-tested in a DOM (no jsdom); a WebKit project is defined but has never run, and there is no Firefox project; Lighthouse CI has run only locally (VER F7); no visual regression; no load test; the crawls are not in CI.
 
 ### 3.4 What the tests do not replace
 
@@ -313,6 +324,8 @@ Target GitHub Actions pipeline [proposed]:
 | `security` | Dependency review on pull requests, `npm audit --omit=dev`, CodeQL, secret scanning | install | High and critical findings block |
 | `preview` | Deploy every pull request to an access-protected preview: demo providers, `SITE_INDEXING` unset (so `X-Robots-Tag: noindex`), preview-only secrets, a unique `APP_VERSION`; post the URL on the pull request; run the smoke spec and Lighthouse against it | build | No |
 | `release` | On merge to `main`: deploy to staging, run smoke and synthetic checks. Production deploy from a tagged release with a manual approval; post-deploy smoke; automatic rollback on failed smoke | all | n/a |
+
+**Run so far** [measured, VER F7]: the workflow has never run on a GitHub runner. In round four its jobs were run locally as far as a container allows: install, both audits, route types, type check, lint, unit tests and the production build pass; end-to-end passes on the desktop and phone projects (428 passed, 0 failed, 0 flaky, 6 skipped); WebKit could not run (no WebKit browser installed); CodeQL and gitleaks could not run (GitHub-hosted action; no Docker, and no history access). The Lighthouse step was broken by its configuration (`aggregationMethod` beside `assertMatrix`) and is fixed; it now evaluates and fails on 14 assertions, as the budgets predict. On a runner the workflow would therefore fail at the budgets until the performance work in section 2.3 lands.
 
 Rollback is a redeploy of the previous immutable build (RTO 15 minutes in `security.md`, section 8). Each deploy ships a new service worker version, so visitors see the update prompt once per release.
 
@@ -435,7 +448,7 @@ Privacy classes used below [proposed]: **Public** (no personal data); **Internal
 | Integration | Prototype now [code] | Likely source and owner at MAHB [assumption] | Freshness target [proposed] | Authorisation needed | Failure mode and fallback [proposed] | Privacy |
 |---|---|---|---|---|---|---|
 | Flight information | `DemoFlightProvider` in the browser; `OfficialFlightProvider` stub; `/api/flights` (demo) | AODB and FIDS; airport operations / operations control centre with IT | Status, gate, belt on screen within 60 s of the AODB update (95th percentile) | Data-sharing agreement; service credentials to the integration platform; airline publication terms where they apply | Last good snapshot with its age; withhold gates and statuses when older than 15 min; point to the airline and airport screens | Public |
-| Operational data and notices | `Notice` in content files; a demo queue-time provider that no page displays | Operations control centre, corporate communications; asset systems for Aerotrain and shuttle; queue sensors or Immigration | Notices live within 2 min of publish; status and queues within 5 min | Publishing authority; access to status and queue data | Notices from the last published build; emergency banner path; queues hidden when stale | Public |
+| Operational data and notices | `Notice` in content files; a demo queue-time provider whose estimates status lines show, labelled Demo | Operations control centre, corporate communications; asset systems for Aerotrain and shuttle; queue sensors or Immigration | Notices live within 2 min of publish; status and queues within 5 min | Publishing authority; access to status and queue data | Notices from the last published build; emergency banner path; queues hidden when stale | Public |
 | Terminal and facility data | `Facility`, `MapModel` (schematic, KLIA T1 only) | Terminal operations, facilities management, GIS or CAD | Daily; closures through notices | Licence to use floor plans; export from spatial systems | Last published data; closures as notices | Public |
 | Parking | `CarPark` content; `calculateParking`; demo occupancy; links to the official booking page | Car park operations: parking access and revenue control system, tariff tables, booking engine | Tariffs on change with validity dates; occupancy within 5 min | Agreement with the car park operation; booking API terms; payment set-up | Hide occupancy; keep tariffs with their date; booking shows "unavailable, pay on exit" | Public; bookings Personal and Payment |
 | Retail and dining | `Outlet` content (8 at KLIA); no hours, prices or offers | Commercial (retail and F&B) leasing systems; tenants; duty-free operator | Daily; offers with validity dates | Tenant data agreements; brand use | Directory without hours or offers | Public |
@@ -449,7 +462,7 @@ Privacy classes used below [proposed]: **Public** (no personal data); **Internal
 
 **Prototype** [code]. `FlightDataProvider` (`src/lib/providers/types.ts`) defines `meta()`, `listFlights(query)`, `getFlight(id, airport?)` and `search(query)`. `meta()` returns `mode` (`demo` or `live`), label, `generatedAt`, `refreshSeconds`, source and disclaimer, and the UI shows the label and disclaimer wherever flights appear. `DemoFlightProvider` builds a stable daily timetable for 21 airports from an illustrative route table and derives statuses from the current instant (about 14% of flights delayed and about 1% cancelled per day, seeded). Flight ids are `<airline><number>-<yyyymmdd>-<d|a>`, for example `mh2610-20261117-d`, so saved flights would survive a switch to live data.
 
-Client components call the demo provider's synchronous methods (`listFlightsSync`, `getFlightSync`, `searchSync`) in about a dozen files. A live provider is asynchronous and remote, so production needs a client data hook that fetches the BFF with stale-while-revalidate behaviour and the same `Flight` shape. The seam is in the right place, but the comment in `types.ts` that "nothing in the UI would need to change" understates this work.
+*Updated 21 November 2026.* The client data hook this section once called for exists since the third fix round (E-03, B-09). The demo generator runs on the server behind `serverFlightFeed()` (`src/lib/providers/feed-server.ts`), a `ResilientFlightFeed` that caches each airport, local date and direction, times out and serves the last good answer with `stale: true` and its age. Two route handlers serve it: `/[lang]/[airport]/flights/feed` (one board) and `/[lang]/flights/feed` (several airports in one request, for the home search). In the browser, `useFlightFeed()` fetches boards every 30 seconds, keeps the last good answer, reports `loading`, `live`, `stale` or `error`, and returns a `SnapshotFlightProvider` whose synchronous lookups (`listFlightsSync`, `getFlightSync`) the components call on that snapshot. A live provider therefore replaces the demo inside `serverFlightFeed()`; the client code does not change. The exception is the concierge's on-device engine, which still builds its own demo provider in the browser (B-09; VER F8-9).
 
 **What the audit observed about MAHB's public endpoint** [observed]:
 
@@ -493,7 +506,7 @@ Status text from the source maps to the 14 keys of `FLIGHT_STATUSES` through a l
 
 ### 5.3 Airport operational data and notices
 
-**Prototype** [code]: notices are content records with severity, optional terminal and validity window; the client decides whether each is upcoming, active or expired. One network notice exists to explain the demonstration data; five airport notices are sourced (for example the Aerotrain software update from 28 November to 1 December 2026, published as scheduled "subject to an independent safety assessment"). `DemoWaitTimeProvider` simulates queues at six checkpoints (check-in, security, departure and arrival immigration, customs, taxi queue) and `/api/health` reports it, but no page displays queue times. Aerotrain, train and shuttle status are not available.
+**Prototype** [code]: notices are content records with severity, optional terminal and validity window; the client decides whether each is upcoming, active or expired. Service status lines (Aerotrain, inter-terminal train, inter-terminal shuttle, immigration; `opsStatus()` in `src/lib/providers/demo-operations.ts`) are worked out from those notices only, and since round four say so (re-review 6.1.1, VER F4): a service with a notice shows the notice's own date ("Notice dated 7 Oct 2026"); a service without one shows "Status not available" and where to check; the lead gives the date of the latest notice (`noticesPublishedUpTo()`: "From notices published up to 7 Oct 2026. No live operations feed is connected yet."). No line carries a checked time or says "No disruption"; the concierge also answers "Status not available", without the notices' date. A checked time comes back only with a live status feed. One network notice exists to explain the demonstration data; five airport notices are sourced (for example the Aerotrain software update from 28 November to 1 December 2026, published as scheduled "subject to an independent safety assessment"). `DemoWaitTimeProvider` simulates queues at six checkpoints (check-in, security, departure and arrival immigration, customs, taxi queue) and `/api/health` reports it; status lines show its security and departure-immigration estimates as "Queue estimates", labelled Demo (for example the flight timeline's immigration step). Aerotrain, train and shuttle status are not available.
 
 **Production** [proposed]: notices authored in the CMS by the operations control centre and corporate communications, with the duty-editor path in section 4.6. A machine-readable status feed for the Aerotrain, the inter-terminal train and the shuttle from the systems that run them (product strategy, Q6 and Q16). Queue estimates only from a measured source (MAHB sensors or Immigration data); until then, none are shown. `WaitTimeProvider` is the contract: `{ airport, terminal, checkpoint, minutes, level, trend, updatedAt }`.
 
@@ -585,7 +598,7 @@ flowchart LR
 2. **Checkout** with partners as merchant of record, or MAHB as merchant through a licensed Malaysian payment gateway that offers FPX and DuitNow (both operated by PayNet), cards with 3-D Secure, and e-wallets such as Touch 'n Go eWallet, GrabPay, Boost and ShopeePay [prior].
 3. **One basket** across parking, Fast Track, lounges and transport, only if research shows passengers want it.
 
-Design rules: a hosted payment page or redirect so card data never touches MAHB's servers (keeps PCI DSS scope small); idempotency keys on every order; signed and verified gateway webhooks; reconciliation and refund flows owned by finance; prices include mandatory fees. Each step changes the CSP (`form-action`, possibly `frame-src` and `connect-src` for the gateway's hosts) and, if the Payment Request API is used, the `payment` permission: these are deliberate security reviews, not configuration details. **Failure**: no partial bookings; a clear message; fall back to the deep link. **Privacy**: personal and payment data; the gateway is a processor.
+Design rules: a hosted payment page or redirect so card data never touches MAHB's servers (keeps PCI DSS scope small); idempotency keys on every order; signed and verified gateway webhooks; reconciliation and refund flows owned by finance; prices include mandatory fees. Each step changes the CSP (`form-action`, possibly `frame-src` and `connect-src` for the gateway's hosts) and, if the Payment Request API is used, the `payment` permission: these are deliberate security reviews, not configuration details. The per-route mechanism exists (`RouteSecurityOverride`, empty), and the plan for using it, by integration type, is in `security.md`, section 3 (re-review 6.1.12, E-09). **Failure**: no partial bookings; a clear message; fall back to the deep link. **Privacy**: personal and payment data; the gateway is a processor.
 
 ---
 
@@ -608,7 +621,8 @@ Design rules: a hosted payment page or redirect so card data never touches MAHB'
 | Prerendered pages | CDN, service worker | Cached until the next deploy or a tag revalidation; purge on deploy | Static; service worker as in section 2.4 |
 | CMS-driven content | Web tier (`"use cache"`, shared cache handler), CDN | Tagged, revalidated on publish; `cacheLife('hours')` as a safety net | Not applicable (content in modules) |
 | `/api/flights` | CDN | `s-maxage=15, stale-while-revalidate=30, stale-if-error=600`, cache key normalised from `airport`, `direction`, `terminal`, `date`, `limit`; free-text `q` searches served from the board snapshot in the browser rather than cached per query | `Cache-Control: no-store` (demo data generated per request) |
-| Flight snapshots | BFF shared store | Last good board per airport and direction, with its source timestamp | Not applicable |
+| Flight feed (`/[lang]/[airport]/flights/feed`, `/[lang]/flights/feed`) | Web tier, CDN, browser | As `/api/flights` above; the web tier's feed keeps the last good board | A successful answer is `public, max-age=0, s-maxage=30, stale-while-revalidate=30`, errors `no-store`; instants rounded to 30 s so answers can be shared; per-process cache with timeout and last-known fallback (section 5.2) |
+| Flight snapshots | BFF shared store | Last good board per airport and direction, with its source timestamp | In the web tier's process only (`ResilientFlightFeed`) |
 | Search index, knowledge pack | CDN, service worker | Rebuilt on publish; stale-while-revalidate | Static per build; stale-while-revalidate in the worker |
 | `/api/concierge`, alert and booking endpoints | Nowhere | `no-store`, `private` | `no-store` |
 | Locale redirect | Nowhere | `private, no-store`, `Vary: Accept-Language, Cookie` | As proposed |
@@ -661,6 +675,7 @@ Critical passenger information (where to go, how to get there, what to do if del
 - **Metrics**: rate, errors and duration per route and per upstream; flight data age per airport (the key freshness signal); CDN hit ratio; `429` volume; breaker state; service-worker version adoption; model spend.
 - **Traces**: OpenTelemetry through the Next.js instrumentation hook and in the BFF, propagated to MAHB's integration platform where it supports it.
 - **Real-user monitoring**: Core Web Vitals (LCP, INP, CLS) from Next.js's web-vitals reporting to a first-party collection endpoint (allowed by the current `connect-src 'self'`), sampled and aggregated, with no identifiers. Whether consent is needed is part of MAHB's analytics decision (product strategy, Q15).
+- **What exists today** [code]: `/api/health` (status and build publicly; with `HEALTH_TOKEN`, provider modes, runtime, model budget, CSP-report counters, metric counts and the metric store's state, `measurementStore`); first-party aggregate measurement through `/api/metrics` into a durable `MetricsStore` (file or KV, section 6.9; `security.md`, section 6); CSP violation reports aggregated by `/api/csp-report`. No logs pipeline, traces, RUM or alerting.
 - **Synthetic checks**: uptime of `/en`, `/ms` and `/api/health` from two regions; the Playwright smoke spec every 15 minutes against production (`security.md`, section 7).
 - **Service levels**: static pages 99.95% monthly (product strategy); `/api/flights` 99.9%; 95% of flight changes visible within 60 s.
 
@@ -731,6 +746,8 @@ A `kv` setting without both variables falls back to the file store; a file store
 - The concierge question is never logged; the AI provider receives only the redacted, escaped question (in its own block), the draft and the retrieved statements, and its wording must pass the fact guard (no new number, name, URL, domain, e-mail or phone, no changed document or security claim). `server-only` guards the modules that read the key.
 - A privacy page that lists every storage key and clears them all.
 - Known compromise: `'unsafe-inline'` in `script-src`, the documented cost of a static CSP (nonces would force per-request rendering).
+- Per-route overrides (`RouteSecurityOverride` in `src/lib/seo/security-headers.ts`, none in force) can widen the CSP and `payment` for one route group, such as a future checkout, and nothing else; the plan is in `security.md`, section 3.
+- Aggregate measurement only, stored without personal data in a file or KV store (section 6.9; `security.md`, section 6).
 
 ### 7.2 Authentication and authorisation
 
@@ -746,7 +763,7 @@ TLS for every connection (HSTS already sent; preload is a domain-wide decision f
 
 ### 7.4 Consent management
 
-Today [code]: the concierge asks for consent on first use and explains what is sent; notifications use the browser's permission prompt; the only cookie is `lang`. First-party aggregate measurement (`/api/metrics`: answer state per top task and hand-off followed, per site section and day; no identifier) is off when the browser sends Global Privacy Control or Do Not Track or the visitor switches it off (`ma:measurement:v1`); the privacy page must describe it (package D).
+Today [code]: the concierge asks for consent on first use and explains what is sent; notifications use the browser's permission prompt; the only cookie is `lang`. First-party aggregate measurement (`/api/metrics`: answer state per top task and hand-off followed, per site section and day; no identifier) is off when the browser sends Global Privacy Control or Do Not Track or the visitor switches it off (`ma:measurement:v1`); the privacy page describes it and offers the switch (round 2, `src/components/corporate/measurement-switch.tsx`). Counts are durable since round four (section 6.9).
 
 Production [proposed]: separate, recorded opt-ins for analytics (if MAHB's analytics needs consent), each notification channel, and any marketing, each withdrawable in one step and from every message. Consent records keep the text version and time. The PDPA requires the written notice in both the national language and English [prior]; the platform's bilingual model supports that directly.
 
@@ -926,11 +943,11 @@ Size: S (days), M (weeks), L (a month or more for a team). "Launch" marks what m
 
 | # | Area | Prototype today [code] | Production requires [proposed] | Size | Launch |
 |---|---|---|---|---|---|
-| 1 | Flight data | Demo provider in the browser; official stub throws | Agreement, AODB adapter in the BFF, live provider, async client hook replacing the `*Sync` calls, freshness rules | L | Yes |
+| 1 | Flight data | Demo generator behind a server feed with cache, timeout and last-known fallback; the browser reads snapshots through `useFlightFeed()`; the on-device concierge still generates flights; official stub throws | Agreement, AODB adapter in the BFF, live provider behind the feed, freshness rules | L | Yes |
 | 2 | Content management | Typed modules in git; engineers publish | CMS with the same model, bilingual workflow, approvals, audit, pre-publish validation, webhooks, `"use cache"` delivery, shared cache handler | L | Yes |
 | 3 | Content coverage | 6 of 39 airports have content files, KLIA only in depth; KLIA rates unverified; no outlet hours; Terminal 2 map missing; most map points illustrative | Content from MAHB's owners for every airport, at least at listing depth; official rate cards; tenant data; spatial data | L | Yes |
 | 4 | Model fields | No `validFrom`/`validUntil` on fares, no `reviewBy`, no `Outlet.provenance`, no `Offer`; corporate extensions have no zod schemas | Add the fields and schemas; migrate content | S | Yes |
-| 5 | Integration layer | Three route handlers; `/api/flights` `no-store`; in-memory rate limit | BFF service, shared store, breakers, CDN caching, edge and shared rate limits | M | Yes |
+| 5 | Integration layer | Route handlers for the flight feeds, concierge, health, metrics and CSP reports; feed answers shared-cacheable for 30 s; `/api/flights` `no-store`; in-memory rate limits | BFF service, shared store, breakers, CDN caching, edge and shared rate limits | M | Yes |
 | 6 | Notices | Content records; no emergency path | CMS notices with duty-editor role; emergency banner path; status feeds | M | Yes |
 | 7 | Parking | Rates unverified at KLIA; demo occupancy; booking links out | Single tariff source with validity; occupancy feed; booking API later | M | Rates yes |
 | 8 | Transport | Static fares with dates in names; no disruptions | Operator data agreements; timetables; disruptions | M | Fares yes |
@@ -938,21 +955,21 @@ Size: S (days), M (weeks), L (a month or more for a team). "Launch" marks what m
 | 10 | Commerce and payments | None | Deep links, then gateway checkout with CSP and PCI review | L | No |
 | 11 | Customer service | Contacts and escalation guidance | CRM case API, lost property, agent hand-off | M | No |
 | 12 | Concierge | Grounded engine, optional rewording, per-process rate limit | Evaluation set and gates, redaction, processor agreement, spend caps, CMS-driven retrieval | M | If launched |
-| 13 | CI/CD | None in the repository | Pipeline in section 3.5, previews, protected releases, `CODEOWNERS` | M | Yes |
-| 14 | Test coverage | Chromium only; no Lighthouse, load or visual tests; hooks not unit-tested in a DOM; crawler not in repository | WebKit project, Lighthouse budgets, load test of the API layer, crawler in `scripts/` | M | Yes |
-| 15 | Performance | JavaScript 294 to 312 KB gzip per page (budget 250 KB); no field data | Remove zod and the demo generator from client bundles; RUM for Core Web Vitals | S–M | Yes |
-| 16 | Hydration gaps | Suspense fallbacks drop input before the client render on URL-driven directories; focus not moved to the `h1` after client navigation (integration hand-off, medium issues 1 and 2) | URL state through `useSyncExternalStore`; focus management in the shell; tests | S | Yes |
-| 17 | Layer enforcement | Conventions only; no `server-only`; one layer inversion | `server-only`, import-boundary lint rules, move `CORPORATE_SECTIONS` | S | No |
-| 18 | Observability and operations | `/api/health` only | Logs, metrics, traces, RUM, synthetic checks, alerting, runbooks, on-call | M | Yes |
+| 13 | CI/CD | A workflow in the repository (verify, CodeQL, secrets) and Dependabot; run locally in round four, never on a runner (VER F7) | Pipeline in section 3.5, previews, protected releases, `CODEOWNERS` | M | Yes |
+| 14 | Test coverage | Chromium only (the WebKit project has never run); Lighthouse budgets run locally only; no load or visual tests; hooks not unit-tested in a DOM; crawl and measurement scripts in `scripts/qa/`, run by hand | WebKit project run, Lighthouse budgets met, load test of the API layer, crawls in CI | M | Yes |
+| 15 | Performance | First-load JavaScript 198.8 to 249.1 KB gzip per route (zod and the demo generator removed; content pages over the 170 KB target); TBT over 200 ms on 7 of 10 pages; flight page LCP 4.2 to 4.9 s; no field data (VER F2.4, F2.5) | Remove zod and the demo generator from client bundles; RUM for Core Web Vitals | S–M | Yes |
+| 16 | Hydration gaps | Closed in the fix rounds: input before hydration is kept (0 of 10 lost per case, VER F2.6) and focus moves to the new `h1` after client navigation (A-05, VER section 5) | URL state through `useSyncExternalStore`; focus management in the shell; tests | S | Yes |
+| 17 | Layer enforcement | Conventions; `server-only` only in the modules that read secrets; one layer inversion | `server-only`, import-boundary lint rules, move `CORPORATE_SECTIONS` | S | No |
+| 18 | Observability and operations | `/api/health`, aggregate metrics in a durable store, CSP reports | Logs, metrics, traces, RUM, synthetic checks, alerting, runbooks, on-call | M | Yes |
 | 19 | Disaster recovery | Immutable builds; content in git | Two-region web tier, backups, drills, documented RPO and RTO | M | Yes |
 | 20 | Security | Strong static headers; `'unsafe-inline'` scripts; no SAST or DAST | Dependency and code scanning, penetration test by a licensed provider, WAF, HSTS preload decision, CSP reporting endpoint | M | Yes |
 | 21 | Privacy and compliance | No server-side personal data; privacy page with device data and a clear button; PDPA intentions | DPO-approved notice in both languages, retention, transfer assessments, breach runbook, NCII scope confirmed | M | Yes |
 | 22 | Staff access | None | SSO, MFA, roles, access reviews | S | Yes |
-| 23 | Analytics | None | First-party, aggregate, consent-aware measurement of the strategy's metrics | M | Yes |
+| 23 | Analytics | First-party aggregate counts of hand-offs and of answer states on the board, flight page and parking prices, durable (file or KV); no baselines | First-party, aggregate, consent-aware measurement of the strategy's metrics | M | Yes |
 | 24 | Languages | English and Malay; Malay copy and content are drafts | Native review of Malay; further languages after research | M | Malay review yes |
 | 25 | Indexing and launch | `noindex` everywhere; prototype labels; legacy redirects implemented and tested | Approval of redirects, indexing switched on, labels removed only for live data | S | Yes |
-| 26 | Flight detail for unknown ids | Answers 200 with `noindex` and the not-found content (render per request) | A real 404 through a proxy check if it matters for search engines | S | No |
+| 26 | Flight detail for unknown ids | The proxy answers malformed ids, unknown airports and flights not on that day's timetable with a small 404 page, and codeshare numbers with a 308 to the operating flight (`src/lib/providers/flight-route.ts`) | The same check against the live feed's timetable | S | No |
 
 ---
 
-*Prepared from the repository as it stood on 18 November 2026. Facts about MAHB's current websites come from the audit files; statements about standards, law and vendor products marked [prior] should be confirmed before they are relied on.*
+*Prepared from the repository as it stood on 18 November 2026; the sections listed under "Updated" were checked again on 21 November 2026, after the fourth fix round. Facts about MAHB's current websites come from the audit files; statements about standards, law and vendor products marked [prior] should be confirmed before they are relied on.*

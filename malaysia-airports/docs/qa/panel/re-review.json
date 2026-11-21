@@ -389,5 +389,222 @@
       "status": "confirmed",
       "evidence": "curl -I /en: script-src 'self' 'unsafe-inline'; Permissions-Policy payment=(). /en/kch/parking and /en/lgk/transport 404. Sitemap: KUL 17, PEN 6, BKI 6, others 2 or fewer."
     }
-  ]
+  ],
+  "post_review": {
+    "title": "After the re-review: round four",
+    "date": "2026-11-21",
+    "added_by": "head of quality (not the panel)",
+    "panel_rescored": false,
+    "note": "The panel has not re-scored or reviewed the round-four build. Its scores, verdict and the rest of this file are its judgement of the round-three build and are unchanged; this object records verification status only and implies no score change.",
+    "report_section": "docs/qa/panel/re-review.md, \"After the re-review: round four\"",
+    "verification": "docs/qa/verification.md#round-four",
+    "build_id": "ygqxXIFcmSWq51rkxYSGE",
+    "fix_logs": [
+      "docs/qa/fixes/round4-trust.md",
+      "docs/qa/fixes/round4-ask.md",
+      "docs/qa/fixes/round4-layout.md"
+    ],
+    "section_6_1": [
+      {
+        "id": "6.1.1",
+        "title": "Status-line semantics",
+        "status": "verified",
+        "evidence": "0 \"Checked hh:mm\" and 0 \"No disruption\" on the KLIA overview, flight page and transit page (en, ms); \"Status not available\" where no notice exists; notices dated (\"From notices published up to 7 Oct 2026. No live operations feed is connected yet.\"); the concierge's sentence aligned during verification.",
+        "links": [
+          "docs/qa/verification.md#f4-acceptance-re-review-61-and-the-gallery-notes",
+          "docs/qa/verification.md#f3-regressions-defects-and-changes-in-this-round"
+        ]
+      },
+      {
+        "id": "6.1.2",
+        "title": "Day-of-travel residuals",
+        "status": "verified",
+        "evidence": "MH 2626 delayed to 12:00: home card \"Check-in closes 11:00 · Now\"; \"Delayed: now 12:00\"; 0 \"Done:\", 4 \"Past:\"; Malaysia Airlines 48-hour warning; AirAsia notice period \"not published\".",
+        "links": [
+          "docs/qa/verification.md#f4-acceptance-re-review-61-and-the-gallery-notes"
+        ],
+        "needs": "Notice periods of airlines other than Malaysia Airlines (airline data)"
+      },
+      {
+        "id": "6.1.3",
+        "title": "One fact, one answer",
+        "status": "verified",
+        "evidence": "Parking page, concierge and help FAQ give the same sentence per car park; content test \"one fact, one answer\" passes.",
+        "links": [
+          "docs/qa/verification.md#f4-acceptance-re-review-61-and-the-gallery-notes"
+        ],
+        "needs": "Official parking tariff (MAHB, OOS-03)"
+      },
+      {
+        "id": "6.1.4",
+        "title": "Concierge",
+        "status": "verified",
+        "evidence": "Fallback names the official contact with no unrelated cards; access qualifiers and named airline honoured (en, ms); grammar and \"In effect\" fixed; collapsed phone answers 788 to 1,181 px (was up to 2,301).",
+        "links": [
+          "docs/qa/verification.md#f4-acceptance-re-review-61-and-the-gallery-notes"
+        ]
+      },
+      {
+        "id": "6.1.5",
+        "title": "Search relevance",
+        "status": "verified",
+        "evidence": "Terminal in Fast Track titles; \"smoking\"/\"merokok\" 1 honest result; \"wifi\" honest first; \"taxi\" 1 result; accessible-toilet queries lead with \"not published yet\"; \"parking\" leads with the parking page; no \"0 flights found\" for topic queries.",
+        "links": [
+          "docs/qa/verification.md#f4-acceptance-re-review-61-and-the-gallery-notes"
+        ]
+      },
+      {
+        "id": "6.1.6",
+        "title": "Answer-first and placement",
+        "status": "verified",
+        "evidence": "Transport fare 433 px (ms 495); transit verdict 454 px; map From 544 px, 0 overlaps on the disclaimer; desktop first board row 798-850 px (ms 819-871); Follow 1,321 px, My needs 1,375 px; nothing sticks at 400% zoom; 0 clipped chips; 0 Malay mid-word breaks. Residual: Malay fare at 125% text at 881 px.",
+        "links": [
+          "docs/qa/verification.md#f4-acceptance-re-review-61-and-the-gallery-notes"
+        ]
+      },
+      {
+        "id": "6.1.7",
+        "title": "Density (A-14)",
+        "status": "partly",
+        "evidence": "Toggles facilities 21 -> 11, transport 9 -> 4, transit 16 -> 6; map tags 42 -> 19. Not met: parking unchanged; flight page 21 tags, 7 toggles, 8 Demo labels; 9 type sizes on the home, /ms, the overview and the flight page (limit 8).",
+        "links": [
+          "docs/qa/verification.md#f4-acceptance-re-review-61-and-the-gallery-notes",
+          "docs/qa/verification.md#f8-open-issues-ranked"
+        ]
+      },
+      {
+        "id": "6.1.8",
+        "title": "Thin and directory-only airports",
+        "status": "verified",
+        "evidence": "Lawas without the journey-mode switcher and with its own phone \"Not published\"; depth chips on 39 airports (3 / 18 / 18) with a legend.",
+        "links": [
+          "docs/qa/verification.md#f4-acceptance-re-review-61-and-the-gallery-notes"
+        ],
+        "needs": "Operating airline and own contact for 33 airports (MAHB)"
+      },
+      {
+        "id": "6.1.9",
+        "title": "Measurement (E-17)",
+        "status": "verified",
+        "evidence": "data-handoff and campaign parameter on parking booking, Fast Track (facilities, overview, timeline), lounge operators and rail tickets; counts survive a server restart. Backlog E-17 still not verified (answer states for other top tasks).",
+        "links": [
+          "docs/qa/verification.md#f4-acceptance-re-review-61-and-the-gallery-notes",
+          "docs/qa/verification.md#f26-other-production-measurements-playwright-pixel-7-unless-stated"
+        ]
+      },
+      {
+        "id": "6.1.10",
+        "title": "Accessibility statement and Malay copy",
+        "status": "verified",
+        "evidence": "Statement (en, ms) last reviewed 21 November 2026, focus behaviour, 200% and 400% zoom, WebKit not tested; Malay h1 \"Semak penerbangan, rancang perjalanan anda.\"; \"Tanya Kami\" throughout after a verification fix; short placeholder fits.",
+        "links": [
+          "docs/qa/verification.md#f4-acceptance-re-review-61-and-the-gallery-notes",
+          "docs/qa/verification.md#f3-regressions-defects-and-changes-in-this-round"
+        ],
+        "needs": "Accessibility contact and response time (MAHB)"
+      },
+      {
+        "id": "6.1.11",
+        "title": "Performance and release gates",
+        "status": "not_met",
+        "evidence": "Not a round-four package item. TBT over 200 ms on 7 of 10 pages; performance under 95 on 3 of 10 (concierge 97 -> 93); flight page 68 to 75, LCP 4.2 to 4.9 s; content-page JS 198.8 to 227.9 KB; CI jobs run locally only, Lighthouse step fails 14 assertions; WebKit not run.",
+        "links": [
+          "docs/qa/verification.md#f24-lighthouse-mobile-3-runs-median-scriptsqalighthousemjs-lighthouse-136-moto-g-power-simulated-slow-4g-4x-cpu",
+          "docs/qa/verification.md#f25-first-load-javascript-and-rc-reveals",
+          "docs/qa/verification.md#f7-ci-run-locally-githubworkflowsmalaysia-airports-ciyml",
+          "docs/qa/verification.md#f8-open-issues-ranked"
+        ]
+      },
+      {
+        "id": "6.1.12",
+        "title": "Per-route CSP and payment policy (E-09)",
+        "status": "not_started",
+        "evidence": "E-09 not verified; enforced CSP keeps 'unsafe-inline'.",
+        "links": [
+          "docs/qa/verification.md#f5-acceptance-all-101-p0-and-p1-items",
+          "docs/qa/verification.md#f8-open-issues-ranked"
+        ]
+      },
+      {
+        "id": "6.1.13",
+        "title": "Moderated usability study",
+        "status": "not_run",
+        "evidence": "Plan written: docs/qa/usability-study-plan.md. The team runs it; MAHB recruits and signs it off (OOS-15).",
+        "links": [
+          "docs/qa/usability-study-plan.md"
+        ]
+      }
+    ],
+    "section_6_1_items_1_to_10": {
+      "verified": 9,
+      "partly": 1,
+      "not_verified": 0,
+      "regressed": 0
+    },
+    "section_6_2": "No change; no MAHB item was in round four's scope (verification F8 item 12).",
+    "gallery_defects": [
+      {
+        "note": 1,
+        "title": "React error #419 on three 404s",
+        "status": "verified",
+        "evidence": "/en/no-such-page, /ms/tiada-halaman, /en/guides/no-such-guide: 404 on next start, h1 in the server HTML, 0 failed boundaries, 0 console errors. The [lang]/[...rest] catch-all 404s still send Next's empty error document (open issue 7).",
+        "links": [
+          "docs/qa/verification.md#f4-acceptance-re-review-61-and-the-gallery-notes",
+          "docs/qa/verification.md#f8-open-issues-ranked"
+        ]
+      },
+      {
+        "note": 2,
+        "title": "Next-day rows without a date",
+        "status": "verified",
+        "evidence": "Ipoh at 11:00 on 18 November: \"09:25 Tomorrow\", \"10:45 Tomorrow\".",
+        "links": [
+          "docs/qa/verification.md#f4-acceptance-re-review-61-and-the-gallery-notes"
+        ]
+      },
+      {
+        "note": 3,
+        "title": "Offline page against its toast",
+        "status": "verified",
+        "evidence": "On the production service worker: card and toast agree before the worker is ready; registration retried on reconnect.",
+        "links": [
+          "docs/qa/verification.md#f4-acceptance-re-review-61-and-the-gallery-notes"
+        ]
+      },
+      {
+        "note": 4,
+        "title": "Search for \"MH 2\"",
+        "status": "verified",
+        "evidence": "9 results, all demonstration flights; no result on the digit alone.",
+        "links": [
+          "docs/qa/verification.md#f4-acceptance-re-review-61-and-the-gallery-notes"
+        ]
+      }
+    ],
+    "backlog": {
+      "of": 101,
+      "verified": 85,
+      "not_verified": 16,
+      "regressed": 0,
+      "moved_closer": [
+        "A-14",
+        "D-04",
+        "E-17",
+        "E-06"
+      ],
+      "link": "docs/qa/verification.md#f5-acceptance-all-101-p0-and-p1-items"
+    },
+    "tests": {
+      "unit": "554 of 554 (7 of 7 runs)",
+      "e2e": "434 tests: 428 passed, 0 failed, 6 skipped",
+      "axe": "0 violations at 59 call sites in 12 specs"
+    },
+    "found_after_panel": [
+      "Concierge Lighthouse performance 97 -> 93 (TBT about +80 to 100 ms)",
+      "Flight page performance 68 to 75, LCP 4.2 to 4.9 s; board LCP 4.7 s at night with an empty window",
+      "[lang]/[...rest] catch-all 404s send Next's empty error document",
+      "\"LGK\" label clipped on the /en/airports map at 1440 px"
+    ],
+    "pilot_conditions_judgement": "Head of quality, not the panel: team items 6.1.1, 6.1.2, 6.1.3 and 6.1.9 verified; the CI and TBT parts of 6.1.11 not met; MAHB items 6.2.1 and 6.2.2 not met. The closed-pilot conditions are not yet all met."
+  }
 }

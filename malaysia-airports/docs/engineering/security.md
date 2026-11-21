@@ -1,7 +1,7 @@
 # Security, privacy and resilience
 
 Owner: platform. Applies to the concept prototype as built (updated 21 Nov 2026 after the QA fix
-round) and states what a production deployment by Malaysia Airports would need on top.
+rounds; the checkout policy plan in section 3 added after round four) and states what a production deployment by Malaysia Airports would need on top.
 Implementation: `next.config.ts`, `src/proxy.ts`, `src/lib/seo/security-headers.ts`,
 `src/lib/concierge/{rate-limit,request,fact-guard,rephrase.server}.ts`, `src/app/api/**`,
 `src/components/platform/**`, `.github/workflows/malaysia-airports-ci.yml`.
@@ -91,7 +91,8 @@ their strings so `next.config.ts` can hash them), nonces on the per-request rout
 Types. Step 3: per-route overrides (`RouteSecurityOverride` in `security-headers.ts`) let a
 checkout route allow `payment=(self "<payment origin>")` and partner `frame-src`, `connect-src`,
 `script-src` and `form-action` origins without loosening any other route. The list is empty
-until MAHB and a payment partner name the origins (needs partner data).
+until MAHB and a payment partner name the origins (needs partner data); the plan for using it is
+below.
 
 **Round 2 (21 November 2026, verification issue 8, E-09): why the enforced policy keeps
 `'unsafe-inline'`, and what moved.** Verified on a production build that day.
@@ -112,6 +113,53 @@ until MAHB and a payment partner name the origins (needs partner data).
   this origin (no third-party script, `object-src 'none'`, `base-uri 'none'`), and the
   report-only policy with Trusted Types keeps measuring. Revisit when Next.js can emit per-route
   inline-script hashes at build time.
+
+**Per-route CSP and payment policy for a future checkout** (plan; re-review 6.1.12, E-09; added
+21 November 2026 after round four). Nothing here is built beyond the mechanism; E-09 stays "not
+verified" (VER F5) because the enforced policy keeps `'unsafe-inline'`.
+
+- *Today* [code]: no checkout exists and `ROUTE_SECURITY_OVERRIDES` is empty, so every route sends
+  the closed defaults (`payment=()`, `frame-src 'none'`, `connect-src 'self'`, `form-action
+  'self'`). The mechanism is built: `overrideHeaders()` replaces the CSP, the report-only CSP and
+  `Permissions-Policy` on one `source` pattern only (`next.config.ts`, rule after the site-wide
+  one). `security-headers.test.ts` checks that an override widens only its own routes, keeps
+  `frame-ancestors 'none'`, leaves other routes closed and refuses wildcard and plain-http origins.
+- *The integration decides the change* [proposed]. Only the checkout's own route group is widened:
+
+  | Integration | Added on the checkout routes only |
+  |---|---|
+  | Redirect to the gateway's hosted payment page (preferred: card data never touches MAHB's pages; `architecture.md` section 5.11) | `form-action` the gateway origin, if the page posts to it (browsers also apply `form-action` to a redirect that follows a form post [prior]); nothing else |
+  | Gateway fields or a 3-D Secure challenge in a frame | Also `frame-src`, and `script-src` and `connect-src` for the gateway's script if it needs one |
+  | Payment Request API or a wallet button | Also `Permissions-Policy: payment=(self "<gateway origin>")` |
+
+  Origins are exact `https://` origins from the partner's documentation (the code refuses
+  anything else). If a wallet's pop-up must report back to the page, COOP may have to relax to
+  `same-origin-allow-popups` on that route only [prior]; test it with the partner.
+- *Route shape* [proposed]: one group, `/:lang(en|ms)/checkout/:path*`, as one override. A partner
+  widget elsewhere (a lounge booking frame, say) gets its own group, never the site-wide policy.
+- *Scripts* [proposed]: checkout pages show a personal basket and current prices, so they render
+  per request anyway. That lets them carry a per-request nonce and drop `'unsafe-inline'` on the
+  checkout routes while static pages keep it (section 3 above), with Trusted Types enforced there
+  once the report-only window is clean. Next.js 16 sets nonces in the proxy, on dynamically
+  rendered pages, not through `headers()` (its CSP guide:
+  `node_modules/next/dist/docs/01-app/02-guides/content-security-policy.md`); the static rule must
+  then not send a second CSP on those routes. Which header reaches
+  the browser must be tested on the chosen host before launch.
+- *Other headers on those routes* [proposed]: `Cache-Control: private, no-store`; everything else
+  as the site-wide set.
+- *Card-data rules* [prior; MAHB's qualified security assessor decides]: PCI DSS v4.0.1 adds
+  controls on scripts in payment pages and pages that lead to them (an authorised inventory of
+  scripts, requirement 6.4.3; detection of changes to their headers and scripts, 11.6.1). Which
+  apply depends on the integration and the self-assessment questionnaire. A per-route CSP with
+  reporting gives both an enforced script list and change signals (`/api/csp-report` counts by
+  page section).
+- *Change control and tests* [proposed]: each origin added is a security review against the
+  partner's documentation, with a change record; a unit case for the real override (its exact
+  headers, and the defaults unchanged elsewhere); an end-to-end header check on a checkout URL and
+  on one ordinary page; checkout-section CSP reports watched after launch (section 7).
+- *Needs MAHB and a partner*: the gateway or merchant of record, its exact origins and
+  integration type, merchant accounts and PCI DSS responsibilities (`architecture.md` section 9,
+  item 12; roadmap epic B6).
 
 Not-found responses carry `s-maxage=60` (round 2: the proxy's flight 404 too, which sent
 `public, max-age=300`; it now sends `public, max-age=0, s-maxage=60`) (the not-found pages render a `cacheLife('minutes')`
@@ -218,8 +266,8 @@ operative obligations and dates with MAHB's counsel; this section is design guid
   site section. No cookie, identifier, address, user agent, query or search term is read or kept.
   Nothing is sent when the browser signals Global Privacy Control or Do Not Track, or when the
   visitor switches measurement off (`ma:measurement:v1`). Outbound links marked as commercial
-  hand-offs carry `utm_source`, `utm_medium` and `utm_campaign`. The privacy page must describe it
-  and offer the switch (hand-off to package D). Partner referral codes and partner-confirmed
+  hand-offs carry `utm_source`, `utm_medium` and `utm_campaign`. The privacy page describes it and
+  offers the switch (`src/app/[lang]/privacy/page.tsx`). Partner referral codes and partner-confirmed
   bookings need partner agreements (OOS-13).
 - **Measurement storage** (E-17, round 4, layout package). The counts are durable and aggregate,
   behind one interface (`MetricsStore`, `src/components/platform/metrics-store.ts`):

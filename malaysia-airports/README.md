@@ -25,7 +25,8 @@ Contents: [What this is](#what-this-is) · [Product tour](#product-tour) · [Run
 The project ran in phases between 16 and 21 November 2026: research and an audit of the current MAHB sites, a
 benchmark of ten airport websites, strategy and information architecture, three homepage concepts and a design
 system, the build, five QA evaluations (performance, accessibility, usability, content integrity, security), a review
-panel, three fix rounds, each verified on a production build, and a second panel review.
+panel, three fix rounds, a second panel review, and a fourth fix round on that review's findings. Each fix round
+was verified on a production build.
 
 What is real, what is simulated and what does not exist:
 
@@ -89,8 +90,8 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000 npm run build
 npm start                                   # next start, port 3000; add -- -p <port> to change it
 ```
 
-`.next` is not in git. This working copy holds the build verified in round three (build ID
-`MtgRkGApHKutmCFmH-yix`, built for `http://localhost:3100`), which `npx next start -p 3100` serves as is; a fresh
+`.next` is not in git. This working copy holds the final build verified in round four (build ID
+`ygqxXIFcmSWq51rkxYSGE`, built for `http://localhost:3100`), which `npx next start -p 3100` serves as is; a fresh
 clone must build first. When presenting, remember that flight statuses follow the server clock and timelines follow
 the browser clock: change both or neither ([gallery](docs/prototype/README.md#observations-made-while-capturing),
 item 6).
@@ -105,7 +106,7 @@ item 6).
 | `npm run check` | `next typegen`, type check, lint and unit tests in one go |
 | `npm run e2e` | Playwright on a desktop (1440 x 900) and a phone (Pixel 7, 390 x 844) Chromium project. It builds and serves on port 3100, or reuses a server already there (not on CI). axe-core scans run inside the specs with the tags `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa`, `wcag22aa` (`e2e/support/axe.ts`) |
 | `npm run audit:prod` | `npm audit` of production dependencies at high severity |
-| `npm run budgets` | Lighthouse CI against `lighthouserc.json` (starts `next start -p 3100`; the port must be free). It has never been run; on the manual Lighthouse results it would fail as configured (see [Key results](#key-results)) |
+| `npm run budgets` | Lighthouse CI against `lighthouserc.json` (starts `next start -p 3100`; the port must be free). Run locally once, in round four, after a configuration fix: it fails with 14 assertion failures, as the budgets predict (see [Key results](#key-results)). It has not run on a CI runner |
 | `node scripts/design-tokens.mjs` | Contrast audit of the colour tokens in every theme; rewrites `src/components/design-system/token-data.ts` and exits 1 below threshold or if the no-JavaScript dark fallback has drifted |
 
 To run the end-to-end suite against a server you start yourself, start it with the trusted test header, or every
@@ -118,8 +119,11 @@ npx playwright test --trace off
 PLAYWRIGHT_WEBKIT=1 npx playwright test --project=webkit-phone   # after `npx playwright install webkit`; never run yet
 ```
 
-The full reproduction recipe used for verification is in [`docs/qa/verification.md`](docs/qa/verification.md),
-section T6, and [`docs/qa/qa-report.md`](docs/qa/qa-report.md), section 3.3.
+The measurement scripts verification uses (static and rendered link crawls, search-index, canonical and `$RC` checks,
+first-load JavaScript, the Lighthouse harness, interaction latency and layout shift) are in `scripts/qa/`; how to run
+each against a local build is in [`scripts/qa/README.md`](scripts/qa/README.md). The full reproduction recipe used
+for verification is in [`docs/qa/verification.md`](docs/qa/verification.md), section F9, and
+[`docs/qa/qa-report.md`](docs/qa/qa-report.md), section 3.3.
 
 ## Environment variables
 
@@ -137,7 +141,10 @@ Checked against the code on 21 November 2026. None is required for local use. "B
 | `ANTHROPIC_API_KEY` | Server | unset | Optional. Turns on AI rewording of concierge answers: the server sends the question, the deterministic answer and its source statements (no flight id, no client details) to the Anthropic Messages API. The reply must pass a fact guard (no number or name absent from the context); any failure, refusal or timeout (8 s) keeps the deterministic text. Secret: never commit it |
 | `CONCIERGE_MODEL` | Server | `claude-opus-5-5` | Model id for that rewording |
 | `CONCIERGE_MAX_CALLS_PER_MINUTE`, `_PER_DAY`, `_PER_MONTH` | Server | 30, 2,000, 40,000 | Site-wide caps on paid model calls (per process); a circuit breaker opens after 5 consecutive failures for 60 s |
-| `HEALTH_TOKEN` | Server | unset | Secret of at least 16 characters. A request to `/api/health` with `Authorization: Bearer <token>` gets the detailed body (provider modes, runtime, model-budget, CSP-report and metrics counters); others get `{ status, build }` |
+| `HEALTH_TOKEN` | Server | unset | Secret of at least 16 characters. A request to `/api/health` with `Authorization: Bearer <token>` gets the detailed body (provider modes, runtime, model-budget, CSP-report and metrics counters, and the metric store's state, `measurementStore`); others get `{ status, build }` |
+| `METRICS_STORE` | Server | `file` | Where `/api/metrics` keeps its aggregate counts: `file` (one `next start` instance), `kv` (several instances or a serverless host) or `memory` (tests) |
+| `METRICS_STORE_FILE` | Server | `.data/metrics.json` | The file store's path (git-ignored). Put it on a persistent volume, or the counts last only as long as the container. If it cannot be written, counting continues in memory and the health body reports `degraded: true` |
+| `METRICS_KV_URL`, `METRICS_KV_TOKEN` | Server | unset | With `kv`: a Redis-compatible REST endpoint (https only) and its token. Secret: never commit the token. Without both, the file store is used ([`architecture.md`](docs/engineering/architecture.md), section 6.9) |
 | `GIT_COMMIT`, `VERCEL_GIT_COMMIT_SHA` | Server | unset | Commit shown in the detailed health body |
 
 Test-only: `PLAYWRIGHT_BASE_URL` (run the suite against a running server; no server is started), `PLAYWRIGHT_WEBKIT=1`
@@ -162,8 +169,10 @@ malaysia-airports/
 │   ├── fonts/                Self-hosted Fraunces, Hanken Grotesk and Geist Mono (woff2) and their definitions
 │   ├── proxy.ts              Locale redirects and per-route request limits
 │   └── instrumentation.ts    Start-up warning when no trusted client-address source is configured
-├── e2e/                      Playwright specs (11) and the shared axe helper (support/axe.ts)
+├── e2e/                      Playwright specs (14) and the shared axe helper (support/axe.ts)
 ├── scripts/design-tokens.mjs Contrast audit of the colour tokens
+├── scripts/qa/               Verification's measurement scripts (crawls, canonical, $RC, first-load JS,
+│                             Lighthouse, interaction latency, layout shift) and their README
 ├── docs/                     Research, strategy, design, engineering, prototype gallery and QA (indexed below)
 ├── next.config.ts            Security headers, CSP, indexing switch, build version
 ├── playwright.config.ts      vitest.config.ts  eslint.config.mjs  lighthouserc.json  tsconfig.json
@@ -208,7 +217,7 @@ documents themselves; the placement of 4, 6, 7 and Phase 10 follows the project'
 | 4 | Design system, direction and concepts | [`docs/design/design-system.md`](docs/design/design-system.md); [`docs/design/direction.md`](docs/design/direction.md) | The three homepage concepts, each an `index.html` with screenshots: [`a-tenun`](docs/design/concepts/a-tenun/), [`b-rimba`](docs/design/concepts/b-rimba/), [`c-laluan`](docs/design/concepts/c-laluan/); the panel's [`evaluation.md`](docs/design/concepts/evaluation.md); the living style guide at `/en/design-system`; [`handoffs/design-system.md`](docs/engineering/handoffs/design-system.md) |
 | 5 | Prototype of the critical journeys | [`docs/prototype/README.md`](docs/prototype/README.md) (27 journeys, 99 screenshots) | [`docs/prototype/screenshots/`](docs/prototype/screenshots/) |
 | 6 | Working implementation | This folder: `src/`, `e2e/`, the configuration and this README | [`build-spec.md`](docs/engineering/build-spec.md), [`next16-notes.md`](docs/engineering/next16-notes.md), [`handoffs/`](docs/engineering/handoffs/) (integration log: [`integration.md`](docs/engineering/handoffs/integration.md)) |
-| 7 | Quality assurance report | [`docs/qa/qa-report.md`](docs/qa/qa-report.md) | Audits: [`accessibility.md`](docs/qa/accessibility.md), [`performance.md`](docs/qa/performance.md), [`usability.md`](docs/qa/usability.md), [`content-integrity.md`](docs/qa/content-integrity.md), [`security.md`](docs/qa/security.md) (each with a `.json` of findings). Backlog: [`fix-backlog.md`](docs/qa/fix-backlog.md). Fix logs: [`docs/qa/fixes/`](docs/qa/fixes/). Verification, one section per round: [`verification.md`](docs/qa/verification.md). Panel: [`panel-summary.md`](docs/qa/panel/panel-summary.md) (round one), [`re-review.md`](docs/qa/panel/re-review.md) (round two) and the lens reports in [`docs/qa/panel/`](docs/qa/panel/). Lighthouse summaries: [`lighthouse/`](docs/qa/lighthouse/), [`lighthouse-after/`](docs/qa/lighthouse-after/), [`lighthouse-round2/`](docs/qa/lighthouse-round2/), [`lighthouse-round3/`](docs/qa/lighthouse-round3/) |
+| 7 | Quality assurance report | [`docs/qa/qa-report.md`](docs/qa/qa-report.md) | Audits: [`accessibility.md`](docs/qa/accessibility.md), [`performance.md`](docs/qa/performance.md), [`usability.md`](docs/qa/usability.md), [`content-integrity.md`](docs/qa/content-integrity.md), [`security.md`](docs/qa/security.md) (each with a `.json` of findings). Backlog: [`fix-backlog.md`](docs/qa/fix-backlog.md). Fix logs: [`docs/qa/fixes/`](docs/qa/fixes/). Verification, one section per round (four rounds): [`verification.md`](docs/qa/verification.md). Panel: [`panel-summary.md`](docs/qa/panel/panel-summary.md) (round one), [`re-review.md`](docs/qa/panel/re-review.md) (round two) and the lens reports in [`docs/qa/panel/`](docs/qa/panel/). Moderated usability study plan (re-review 6.1.13, not yet run): [`usability-study-plan.md`](docs/qa/usability-study-plan.md). Lighthouse summaries: [`lighthouse/`](docs/qa/lighthouse/), [`lighthouse-after/`](docs/qa/lighthouse-after/), [`lighthouse-round2/`](docs/qa/lighthouse-round2/), [`lighthouse-round3/`](docs/qa/lighthouse-round3/), [`lighthouse-round4/`](docs/qa/lighthouse-round4/). Measurement scripts: [`scripts/qa/README.md`](scripts/qa/README.md) |
 | 8 | Implementation roadmap | [`docs/strategy/roadmap.md`](docs/strategy/roadmap.md) | |
 | Phase 7 | Technical architecture and integration | [`docs/engineering/architecture.md`](docs/engineering/architecture.md) | |
 | Phase 10 | Security, privacy and resilience | [`docs/engineering/security.md`](docs/engineering/security.md) | Edge rules in [`docs/engineering/edge/`](docs/engineering/edge/); the independent review [`docs/qa/security.md`](docs/qa/security.md); the [CI workflow](../.github/workflows/malaysia-airports-ci.yml) |
@@ -218,32 +227,34 @@ Research inputs behind the content: fact files in [`docs/research/facts/`](docs/
 
 ## Key results
 
-Figures are copied from [`docs/qa/verification.md`](docs/qa/verification.md) (round three, 21 November 2026) and
+Figures are copied from [`docs/qa/verification.md`](docs/qa/verification.md) (round four, 21 November 2026) and
 [`docs/qa/qa-report.md`](docs/qa/qa-report.md); "before" is the QA evaluations of 18 November (tests: integration,
 17 November). All browser figures are lab results in Chromium on a production build: no field data, no real devices,
 no Safari.
 
 **Measured**
 
-| Check | Before | After (round three) | Target | Met? |
+| Check | Before | After (round four) | Target | Met? |
 |---|---|---|---|---|
-| Types, lint, build | 0 errors, 0 problems | 0 errors, 0 problems, build with 0 warnings | Clean | Yes |
-| Unit tests (Vitest) | 363 passed | 504 passed in 32 files, 0 failed | All pass | Yes |
-| End-to-end tests (Playwright, desktop and phone) | 178: 176 passed, 2 skipped | 354: 348 passed, 0 failed, 6 deliberate skips | All pass | Yes |
-| axe-core | 41 call sites, incomplete tag lists | 0 violations at 50 call sites in 11 specs, both projects | 0 | Yes (automated) |
+| Types, lint, build | 0 errors, 0 problems | 0 errors, 0 problems, build with 0 warnings (365 static pages) | Clean | Yes |
+| Unit tests (Vitest) | 363 passed | 554 passed in 36 files, 0 failed, in 7 of 7 runs | All pass | Yes |
+| End-to-end tests (Playwright, desktop and phone) | 178: 176 passed, 2 skipped | 434: 428 passed, 0 failed, 6 deliberate skips (final build) | All pass | Yes |
+| axe-core | 41 call sites, incomplete tag lists | 0 violations at 59 call sites in 12 specs, both projects | 0 | Yes (automated) |
 | WCAG 2.2 A and AA (manual audit) | 8 of 55 criteria failing | All 8 fixed and verified; no known open AA failure in the tested scope | AA | Partly: conformance cannot be claimed without screen-reader and WebKit testing |
-| Lighthouse accessibility | 100 | 100 on all 42 runs | 95 or more | Yes |
-| Broken internal links | 0 (380 pages) | 0 broken, 0 missing anchors: 438 static pages (1,154 links), 285 rendered pages (1,516 links), 434 search-index documents | None | Yes |
-| LCP, Lighthouse mobile, simulated slow 4G | 9 of 15 pages pass; 6 at 4.1 to 4.8 s | 10 of 10 pages at 0.92 to 1.11 s | 2.5 s or less | Yes (lab) on the 10 re-measured; flight page, shop and dine and transit (4.1 to 4.4 s before) not re-measured |
-| LCP, congested airport Wi-Fi profile | 2.8 to 2.9 s | 2.57 s (`/en`), 2.68 s (board) | 2.5 s or less | No |
-| CLS | Up to 0.29 (desktop) | At most 0.003 (Lighthouse, 10 of 10) | 0.1 or less | Yes (lab) |
-| Interaction latency (Pixel 7 profile, 4x CPU) | Worst interaction per page: home 408 ms, board 784 ms; 4 of 6 pages over 200 ms | Every measured interaction under 200 ms except the `/en/kul` airport switcher (224 ms in 2 of 9 runs) | 200 ms or less | Partly (lab) |
-| Total blocking time (load-time proxy for INP) | 338 to 1,978 ms; 0 of 15 pages at 200 ms or less | 200 ms or less on 3 of 10 pages (largest 353 ms) | 200 ms or less | No |
-| Lighthouse performance (mobile) | 0 of 15 at 95 or more (56 to 92) | 7 of 10 (92 to 99) | 95 or more | No |
-| First-load JavaScript (gzip) | 250 to 275 KB on every route | `/en` 228.7 KB (budget 250); content and guidance pages about 199 to 227 KB (budget 170); no route over 250 KB | Budgets | Partly |
+| Lighthouse accessibility | 100 | 100 on all 39 runs | 95 or more | Yes |
+| Broken internal links | 0 (380 pages) | 0 broken, 0 missing anchors: 438 static pages (1,170 links), 285 rendered pages (1,535 links), 446 search-index documents | None | Yes |
+| LCP, Lighthouse mobile, simulated slow 4G | 9 of 15 pages pass; 6 at 4.1 to 4.8 s | 10 of 10 compared pages at 0.91 to 1.12 s. A flight page 4.2 to 4.9 s, and the board 4.7 s at night with an empty window (Lighthouse CI run) | 2.5 s or less | Partly (lab): the flight page fails, as it did before (4.4 s); shop and dine and transit not re-measured |
+| LCP, congested airport Wi-Fi profile | 2.8 to 2.9 s | 2.57 s (`/en`), 2.68 s (board), measured in round three; not re-measured | 2.5 s or less | No |
+| CLS | Up to 0.29 (desktop) | At most 0.003 (Lighthouse mobile, 10 of 10); desktop at most 0.049 (transport) | 0.1 or less | Yes (lab) |
+| Interaction latency (Pixel 7 profile, 4x CPU) | Worst interaction per page: home 408 ms, board 784 ms; 4 of 6 pages over 200 ms | All five measured interactions under 200 ms in 3 runs (worst 176 ms, the `/en/kul` airport switcher) | 200 ms or less | Yes (lab, five interactions) |
+| Total blocking time (load-time proxy for INP) | 338 to 1,978 ms; 0 of 15 pages at 200 ms or less | 200 ms or less on 3 of 10 pages (largest 311 ms, the concierge) | 200 ms or less | No |
+| Lighthouse performance (mobile) | 0 of 15 at 95 or more (56 to 92) | 7 of 10 (93 to 98); a flight page 68 to 75 | 95 or more | No |
+| First-load JavaScript (gzip) | 250 to 275 KB on every route | `/en` 229.5 KB (budget 250); flight page 249.1 KB, 0.9 KB under 250; content and guidance pages 198.8 to 227.9 KB (target 170); no route over 250 KB | Budgets | Partly |
+| Lighthouse CI budgets (`npm run budgets`, run locally) | Never run | 14 assertion failures: TBT on five URLs; script bytes on `/en` and `/ms`; performance and LCP on the board and the flight page; bytes or requests on two guidance pages | All pass | No |
 | Sideways scroll at 320 px, 112% and 125% text, three themes | Present on two pages | 0 in 108 loads on 18 pages | None | Yes |
 | Known vulnerabilities (`npm audit`) | 0 in production dependencies; 16 high in development tooling (one advisory) | 0 in production dependencies, 0 in all | 0 | Yes |
-| QA backlog, P0 and P1 items | 101 open | 85 verified, 16 not verified (9 of them P0), 0 regressed | All P0 before any public pilot | No |
+| QA backlog, P0 and P1 items | 101 open | 85 verified, 16 not verified (9 of them P0), 0 regressed; unchanged in round four | All P0 before any public pilot | No |
+| Second panel review, team items 6.1.1 to 6.1.10 | Raised by the re-review | 9 verified, 1 partly (6.1.7 density), 0 not verified, 0 regressed; the four gallery defects verified fixed | All | Partly |
 
 The backlog merged 164 findings (86 from QA, 64 from the panels, 14 from a documentation review) into 105 items.
 
@@ -254,44 +265,56 @@ The backlog merged 164 findings (86 from QA, 64 from the panels, 14 from a docum
   1 to 5 rubric, with about 3 points of uncertainty, not measurements. All three round-two lenses judged it not ready
   for public launch (the business lens in those words, the other two through their launch blockers); the business
   lens supports a closed pilot at KLIA once its conditions are met
-  ([`docs/qa/panel/re-review.md`](docs/qa/panel/re-review.md), section 6).
+  ([`docs/qa/panel/re-review.md`](docs/qa/panel/re-review.md), section 6). The panel has not scored the prototype
+  again since the fourth fix round.
 - Task success: a simulated walkthrough by one expert evaluator (no users) gave 78% task completion and 72% unaided
   success before the fixes, against the brief's 95% and 90%. It was not re-measured; only a study with real
-  passengers can test those targets ([`docs/qa/qa-report.md`](docs/qa/qa-report.md), section 6).
+  passengers can test those targets ([`docs/qa/qa-report.md`](docs/qa/qa-report.md), section 6). The plan for that
+  study is in [`docs/qa/usability-study-plan.md`](docs/qa/usability-study-plan.md); it has not been run.
 - Content: the content audit found no fabricated value; every extracted figure traced to a sourced record or to
   labelled demonstration or estimated data.
 
 ## Known limitations
 
-Ranked in full, with owners, in [`docs/qa/qa-report.md`](docs/qa/qa-report.md), section 11. In brief:
+Ranked in full, with owners, in [`docs/qa/qa-report.md`](docs/qa/qa-report.md), section 11, and as they stand
+after round four in [`docs/qa/verification.md`](docs/qa/verification.md), section F8. In brief:
 
-1. **No live operational data** (prototype-only). There is no flight or operations feed; status lines stamp the
-   current time and default to "No disruption reported", which overstates freshness. The concierge still generates
-   demonstration flights on the device.
-2. **Day-of-travel errors remain**: a past arrive-by time shown as "Next", a delayed flight mixing two time bases,
-   and "Done: Arrange assistance" when nothing was arranged.
-3. **No evidence from real users, assistive technology, Safari or the field.** No usability study, no physical
-   screen reader, no WebKit or iPhone run, no real device, no field Core Web Vitals.
+1. **No live operational data** (prototype-only). There is no flight or operations feed. Since round four, status
+   lines say "Status not available" and give the date of the latest notice instead of a checked time; they can show
+   a current state only once a live operations feed exists (OOS-02). The concierge still generates demonstration
+   flights on the device (B-09).
+2. **Day of travel**: the errors the second panel review found (a past time shown as "Next", two time bases on a
+   delayed flight, "Done" for steps nobody confirmed) were fixed and verified in round four. Only Malaysia Airlines' assistance
+   notice period is sourced; for other airlines the timeline says it does not know (D-04, needs airline data).
+3. **No evidence from real users, assistive technology, Safari or the field.** No usability study (a plan exists:
+   [`docs/qa/usability-study-plan.md`](docs/qa/usability-study-plan.md)), no physical screen reader, no WebKit or
+   iPhone run, no real device, no field Core Web Vitals.
 4. **Facts for assisted travellers are missing**: accessible toilets, lifts, step-free routes per mode, airline
    assistance rules. These need MAHB, airlines and government sources.
 5. **Performance budgets are not met**: total blocking time, congested Wi-Fi LCP, JavaScript and byte budgets (see
-   above). The Lighthouse CI step would fail as configured.
-6. **CI has never run**, and the QA crawl and measurement scripts used for verification live outside the
-   repository, so another team cannot yet rerun every check in the QA report.
+   above). A flight page has LCP 4.2 to 4.9 s (its `h1` is streamed), and the concierge's TBT probably rose by about
+   80 to 100 ms in round four. The Lighthouse CI step, run locally, fails on 14 assertions.
+6. **CI has never run on a runner, and WebKit has never run.** The workflow's jobs were run locally in round four:
+   every step a container can run passes except the Lighthouse budgets; CodeQL and the secret scan could not run
+   there. The measurement scripts are now in `scripts/qa/`; a few older one-off checks are not
+   ([`verification.md`](docs/qa/verification.md), F6 and F7).
 7. **Content depth**: six of 39 airports have a content file; Kuching and Langkawi transport and parking pages
-   return 404; terminal car-park rates are unverified; the Malay text is a draft.
-8. **Concierge and search** sometimes miss the question, and surfaces can disagree (for example a parking rate
-   marked unverified in the concierge but not on the page).
-9. **No commerce or accounts**; metrics are held in memory; the enforced CSP still allows `'unsafe-inline'`.
+   return 404; the operating airline and the airport's own phone line are not published for 33 airports; terminal
+   car-park rates are unverified; the Malay text is a draft.
+8. **Concierge and search** are rule-based. The disagreements and misses the second panel review found were fixed and
+   verified in round four, but neither has been tested with real passengers' questions.
+9. **No commerce or accounts**; the enforced CSP still allows `'unsafe-inline'`. Per-route headers for a future checkout
+   exist as an unused mechanism; how to use them is a documented plan
+   ([`security.md`](docs/engineering/security.md), section 3). Measurement counts are now kept in a file or a
+   Redis-compatible store and survive a restart.
 10. **Deployment configuration**: rate limits and the model budget live in one process's memory; production must
-    set a trusted client-address source; the edge and WAF rules in `docs/engineering/edge/` are not deployed; there
-    is no `security.txt`.
-11. **Smaller items seen while capturing the gallery**: React error #419 logged on not-found pages; next-day flights
-    in short previews carry no date marker; an offline-status message before the service worker is ready
-    ([gallery](docs/prototype/README.md#observations-made-while-capturing)).
-12. **Documentation drift**: [`architecture.md`](docs/engineering/architecture.md), section 1.1, still describes
-    flight boards generated in the browser; since the fix rounds the board, flight pages and My journey read the
-    server feed. The fix logs were more optimistic than verification in every round; treat
+    set a trusted client-address source and, with more than one instance, `METRICS_STORE=kv`; the edge and WAF rules
+    in `docs/engineering/edge/` are not deployed; there is no `security.txt`.
+11. **Smaller items**: density on the parking and flight pages, and 9 type sizes on four pages (re-review 6.1.7,
+    partly met); the `[lang]/[...rest]` catch-all 404s send Next.js's empty error document without the site shell;
+    one end-to-end test can time out when its worker's address is rate-limited (low).
+12. **Fix logs and verification**: in rounds one to three the fix logs were more optimistic than verification; in
+    round four every re-measured number matched except a 4 px difference and one label count (F4). Treat
     [`verification.md`](docs/qa/verification.md) as the record.
 
 ## Credits and licences
