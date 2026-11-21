@@ -18,8 +18,10 @@ echo $! > /tmp/next-start.pid          # stop it afterwards: kill $(cat /tmp/nex
 OUT=/tmp/qa && mkdir -p "$OUT"          # anywhere outside the repository
 ```
 
-Every script takes the base URL as an argument (default `http://localhost:3100`) and writes its output
-where you tell it; nothing is written inside the repository unless you point it there.
+Every script that needs a server takes the base URL as an argument (default `http://localhost:3100`;
+`first-load-js.mjs` reads the build folder instead). Pass an output path outside the repository: without
+one, `crawl-static.py`, `crawl-rendered.mjs`, `canonical.py`, `rc-scan.py` and `first-load-js.mjs` write
+a default `<name>.json` into the current folder, which is inside the repository.
 
 | Script | Measures | Run | Pass |
 |---|---|---|---|
