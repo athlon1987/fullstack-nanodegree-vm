@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { lang as routeLang } from 'next/root-params';
 import { getNotices } from '@/content';
 import { getT, toLang } from '@/lib/i18n';
@@ -27,11 +28,24 @@ export default async function HomePage() {
       <>
         <JsonLd data={[websiteJsonLd(lang), organizationJsonLd(lang)]} />
         <HomeHero lang={lang} notices={toNoticeViews(getNotices(), lang, 'compact')} />
-        <HomeBoard lang={lang} />
-        <HomeJourney lang={lang} />
-        <HomeNetwork lang={lang} />
-        <HomeShopDine lang={lang} />
-        <HomeConcierge lang={lang} />
+        {/* Round 5 (A-09, E-01): each section below the first screen hydrates in its own boundary,
+            after the first screen and in small slices, instead of in one long task. Nothing in
+            them suspends: the server HTML and the static shell are unchanged (no `$RC` reveal). */}
+        <Suspense>
+          <HomeBoard lang={lang} />
+        </Suspense>
+        <Suspense>
+          <HomeJourney lang={lang} />
+        </Suspense>
+        <Suspense>
+          <HomeNetwork lang={lang} />
+        </Suspense>
+        <Suspense>
+          <HomeShopDine lang={lang} />
+        </Suspense>
+        <Suspense>
+          <HomeConcierge lang={lang} />
+        </Suspense>
       </>
     </I18nPageScope>
   );

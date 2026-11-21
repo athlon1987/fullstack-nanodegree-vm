@@ -13,12 +13,17 @@
  * - A question goes to `/api/concierge`. If that fails (offline, rate-limited, timeout, server
  *   error) the same engine runs in the browser with the knowledge pack loaded from
  *   `/<lang>/concierge/knowledge.json`, so the concierge keeps working in deterministic mode.
- *   The engine and the pack are loaded only when needed (or prefetched once consent is given).
+ *   The engine and the pack are loaded only when needed, or when the visitor shows intent
+ *   (round 5: no longer at the first idle moment of every visit; see `concierge-chat.tsx`).
+ * - Flights in on-device answers come from the server flight feed (round 5, B-09), the boards the
+ *   departures board, flight pages and My journey show: the demonstration generator no longer
+ *   runs in the browser. Offline, the answer says flight information could not be loaded.
  */
 import { useCallback, useMemo } from 'react';
 import type { Lang } from '@/content/types';
 import { CONCIERGE_CLIENT_TIMEOUT_MS } from '@/lib/concierge/constants';
-import type { ConciergeAnswer, ConciergeContext, ConciergeKnowledge, ConciergeMode, ConciergeResponse } from '@/lib/concierge/types';
+import type { ConciergeAnswer, ConciergeContext, ConciergeFlightSource, ConciergeKnowledge, ConciergeMode, ConciergeResponse } from '@/lib/concierge/types';
+import { useSectionAvailability } from '@/components/shell/shell-context';
 import { useAirportContext } from '@/lib/hooks/use-airport-context';
 import { useSavedJourney } from '@/lib/hooks/use-saved-journey';
 import { useStore } from '@/lib/hooks/use-store';
@@ -150,29 +155,40 @@ export function loadKnowledge(lang: Lang): Promise<ConciergeKnowledge> {
   return pending;
 }
 
-/** Load the engine and the knowledge pack ahead of the first question (on idle), so on-device answers are immediate. */
+/** Load the engine and the knowledge pack ahead of the first question, so on-device answers are immediate. */
 export function prepareOnDevice(lang: Lang): void {
-  void Promise.all([import('@/lib/concierge/engine'), import('@/lib/concierge/flights'), import('@/lib/providers'), loadKnowledge(lang)]).catch(
+  void Promise.all([import('@/lib/concierge/engine'), import('@/lib/concierge/flights'), import('@/lib/providers/use-flight-feed'), loadKnowledge(lang)]).catch(
     () => undefined,
   );
 }
 
-async function answerOnDevice(question: string, lang: Lang, context: ConciergeContext): Promise<ConciergeAnswer> {
-  const [engine, adapters, providers, knowledge] = await Promise.all([
+/** What the browser knows that the engine needs to look a flight up. */
+export interface OnDeviceFlights {
+  /** Airports with a departures board (the shell's section list). */
+  hasBoard: (airport: string) => boolean;
+  /** The saved flight's own airport, for a question about it. */
+  flightAirport?: string;
+}
+
+async function answerOnDevice(question: string, lang: Lang, context: ConciergeContext, device: OnDeviceFlights): Promise<ConciergeAnswer> {
+  const [engine, adapters, feed, knowledge] = await Promise.all([
     import('@/lib/concierge/engine'),
     import('@/lib/concierge/flights'),
-    import('@/lib/providers'),
+    import('@/lib/providers/use-flight-feed'),
     loadKnowledge(lang),
   ]);
   const now = Date.now();
-  return engine.answerQuestion(
-    { question, lang, context },
-    {
-      knowledge,
-      now,
-      flights: adapters.flightSourceFromProvider(providers.getFlightProvider(now)),
-    },
-  );
+  // The boards this question can need, from the flight feed (one batched request per date and
+  // direction); none for a question that names no flight.
+  const boards = adapters.flightBoardsFor(question, knowledge, context, now, device.hasBoard, device.flightAirport);
+  let flights: ConciergeFlightSource | null = null;
+  if (boards.length > 0) {
+    const results = await Promise.allSettled(adapters.groupBoards(boards).map((group) => feed.fetchFeedDays(lang, group, now)));
+    const days = results.flatMap((result) => (result.status === 'fulfilled' ? result.value : []));
+    const failed = results.some((result) => result.status === 'rejected');
+    flights = days.length === 0 ? adapters.unavailableFlightSource() : { ...adapters.flightSourceFromDays(days, now), unavailable: failed };
+  }
+  return engine.answerQuestion({ question, lang, context }, { knowledge, now, flights });
 }
 
 type ApiResult = { ok: true; data: ConciergeResponse } | { ok: false; reason: 'offline' | 'rate-limited' | 'private' };
@@ -214,7 +230,7 @@ function update(id: string, patch: Partial<ConciergeTurn>): void {
  * Ask a question. Resolves with the finished turn (for the live announcement). With `useServer`
  * false (no consent yet) the answer is put together on this device and nothing is sent.
  */
-async function runAsk(question: string, lang: Lang, context: ConciergeContext, useServer: boolean, replaceId?: string): Promise<ConciergeTurn> {
+async function runAsk(question: string, lang: Lang, context: ConciergeContext, useServer: boolean, device: OnDeviceFlights, replaceId?: string): Promise<ConciergeTurn> {
   counter += 1;
   const id = replaceId ?? `turn-${Date.now().toString(36)}-${counter}`;
   inflight.add(id);
@@ -234,7 +250,7 @@ async function runAsk(question: string, lang: Lang, context: ConciergeContext, u
         mode: result.data.mode,
       };
     } else {
-      const answer = await answerOnDevice(question, lang, context);
+      const answer = await answerOnDevice(question, lang, context, device);
       finished = {
         ...pending,
         status: 'done',
@@ -266,6 +282,11 @@ export function useConcierge(lang: Lang) {
   const { selection } = useAirportContext();
   const { journey } = useSavedJourney();
   const savedFlight = journey.flights.at(-1);
+  const availability = useSectionAvailability();
+  const device = useMemo<OnDeviceFlights>(
+    () => ({ hasBoard: (airport) => availability[airport]?.includes('flights') ?? false, flightAirport: savedFlight?.airport }),
+    [availability, savedFlight?.airport],
+  );
 
   const scope = useMemo(() => state.scope ?? (selection ? { airport: selection.airport, terminal: selection.terminal } : {}), [state.scope, selection]);
 
@@ -286,13 +307,13 @@ export function useConcierge(lang: Lang) {
   );
 
   const ask = useCallback(
-    (question: string, override?: ConciergeContext) => runAsk(question.trim(), lang, contextFor(override), consent),
-    [lang, contextFor, consent],
+    (question: string, override?: ConciergeContext) => runAsk(question.trim(), lang, contextFor(override), consent, device),
+    [lang, contextFor, consent, device],
   );
   const retry = useCallback(
     (turn: ConciergeTurn) =>
-      runAsk(turn.question, lang, consent ? (turn.context ?? contextFor()) : { ...(turn.context ?? contextFor()), flightId: undefined }, consent, turn.id),
-    [lang, contextFor, consent],
+      runAsk(turn.question, lang, consent ? (turn.context ?? contextFor()) : { ...(turn.context ?? contextFor()), flightId: undefined }, consent, device, turn.id),
+    [lang, contextFor, consent, device],
   );
   const clear = useCallback(() => conversationStore.set((current) => ({ ...current, turns: [] })), []);
   const clearScope = useCallback(() => conversationStore.set((current) => ({ ...current, scope: {} })), []);

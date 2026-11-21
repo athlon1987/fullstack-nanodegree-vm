@@ -50,15 +50,31 @@ export const SCOPED_NAMESPACES = [
 ] as const satisfies readonly (keyof Dictionary)[];
 
 /**
- * The dictionary the root layout sends to the browser: every namespace except the scoped ones.
- * Cached per language so the object identity is stable.
+ * Round 5 (E-11, E-01): namespaces of which the root provider sends only the keys the shell reads.
+ * The concierge's copy (about 17 KB of every page's HTML) is needed in full only by the concierge
+ * page, which sends it with `I18nPageScope`, and by the concierge panel, which loads it with its
+ * conversation when first opened (`concierge-panel.tsx`); the panel's own frame needs three keys.
+ * `i18n.test.ts` checks that no other Client Component reads the rest.
+ */
+export const PARTIAL_NAMESPACES = {
+  conciergePage: ['title', 'panelDescription', 'openFullPage'],
+} as const satisfies Partial<Record<keyof Dictionary, readonly string[]>>;
+
+/**
+ * The dictionary the root layout sends to the browser: every namespace except the scoped ones,
+ * and only the listed keys of the partial ones. Cached per language so the object identity is stable.
  */
 const CLIENT_DICTIONARIES = new Map<Lang, PartialDictionary>();
 export function clientDictionary(lang: Lang): PartialDictionary {
   let dictionary = CLIENT_DICTIONARIES.get(lang);
   if (!dictionary) {
     const scoped = new Set<string>(SCOPED_NAMESPACES);
-    dictionary = Object.fromEntries(Object.entries(DICTIONARIES[lang]).filter(([name]) => !scoped.has(name))) as PartialDictionary;
+    const partial: Record<string, readonly string[]> = PARTIAL_NAMESPACES;
+    dictionary = Object.fromEntries(
+      Object.entries(DICTIONARIES[lang])
+        .filter(([name]) => !scoped.has(name))
+        .map(([name, value]) => [name, partial[name] ? Object.fromEntries(partial[name].map((key) => [key, (value as Record<string, unknown>)[key]])) : value]),
+    ) as PartialDictionary;
     CLIENT_DICTIONARIES.set(lang, dictionary);
   }
   return dictionary;

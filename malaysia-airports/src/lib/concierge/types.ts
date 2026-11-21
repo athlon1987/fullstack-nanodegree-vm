@@ -198,10 +198,12 @@ export interface ConciergeInput {
   context?: ConciergeContext;
 }
 
-/** Where flights come from. The demo provider in this prototype. */
+/** Where flights come from: the server flight feed (demonstration data in this prototype; round 5). */
 export interface ConciergeFlightSource {
   /** ISO instant the data was generated for. */
   generatedAt: string;
+  /** The boards could not be loaded (offline, the feed failing): say so instead of "not found". */
+  unavailable?: boolean;
   get(id: string, airport?: string): Flight | null;
   /** Flights matching a designator such as `MH2610`, best first. */
   find(designator: string, airport?: string): Flight[];

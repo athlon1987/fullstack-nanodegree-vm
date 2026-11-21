@@ -327,12 +327,31 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
         variant="plain"
         icon={direction === 'd' ? 'plane-takeoff' : 'plane-landing'}
         title={direction === 'd' ? t('flightPages.board.emptyTitleDepartures', vars) : t('flightPages.board.emptyTitleArrivals', vars)}
-        action={shift.earlier < MAX_EARLIER_STEPS ? earlierButton : undefined}
+        // Round 5: both steps, as the message says (only Earlier was offered, under a line that
+        // also suggests later flights).
+        action={
+          shift.earlier < MAX_EARLIER_STEPS || shift.later < MAX_LATER_STEPS ? (
+            <>
+              {shift.earlier < MAX_EARLIER_STEPS ? earlierButton : null}
+              {shift.later < MAX_LATER_STEPS ? laterButton : null}
+            </>
+          ) : undefined
+        }
       >
         {t('flightPages.board.emptyBody')}
       </EmptyState>
     );
   })();
+
+  // Round 5 (E-01/E-02): server-rendered in the board's frame until the feed answers, in the same
+  // block and the same `EmptyState` as the empty board, so at night the "No departures" message
+  // fills what is already on screen (it painted as a new block after the feed: LCP 4.7 s). It
+  // says what the board will hold, not that anything is live.
+  const loading = (
+    <EmptyState variant="plain" icon={direction === 'd' ? 'plane-takeoff' : 'plane-landing'} title={t('flightPages.board.loadingTitle')}>
+      {t('flightPages.board.loadingBody')}
+    </EmptyState>
+  );
 
   // Tighter on phones so the first rows reach the first screen (A-01, round 2).
   const panel = (
@@ -418,6 +437,7 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
             return formatDate(zonedDateTime(date, 720, zone), lang, 'weekday', zone);
           }}
           skeletonRows={8}
+          loading={loading}
           savedIds={savedIds}
           onSaveChange={(flight, saved) => (saved ? saveFlight(toSavedFlight(flight, t)) : removeFlight(flight.id))}
           before={

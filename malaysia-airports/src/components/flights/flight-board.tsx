@@ -41,6 +41,13 @@ export interface FlightBoardProps {
   footer?: ReactNode;
   /** Rows of the loading skeleton. */
   skeletonRows?: number;
+  /**
+   * Round 5 (E-01/E-02): a message to show while the rows load, instead of the skeleton rows. Pass
+   * an `EmptyState`, like `empty`: the loading message and the empty state then share one block of
+   * the skeleton's height, so at night the "No departures" message fills the block already
+   * painted in the first flush instead of appearing as a new one after the feed.
+   */
+  loading?: ReactNode;
   /** Leave out the demonstration banner. Only when the same view already shows one directly above. */
   hideBanner?: boolean;
   /**
@@ -68,6 +75,9 @@ export interface FlightBoardProps {
   onSaveChange?: (flight: Flight, saved: boolean) => void;
   className?: string;
 }
+
+/** The block that holds the loading message or the empty state (one element for both, see `loading`). */
+const STATE_BLOCK = 'relative flex flex-col justify-center';
 
 /**
  * The flight board: the hazard-striped demonstration banner, then a neutral dark surface (the
@@ -98,6 +108,7 @@ export function FlightBoard({
   empty,
   footer,
   skeletonRows = 6,
+  loading,
   hideBanner = false,
   compactHeader = false,
   groupByHour = false,
@@ -165,7 +176,11 @@ export function FlightBoard({
           </div>
         </div>
 
-        {flights === null ? (
+        {flights === null && loading ? (
+          <div role="status" className={STATE_BLOCK} style={{ minHeight: `calc(var(--spacing-row) * ${skeletonRows})` }}>
+            {loading}
+          </div>
+        ) : flights === null ? (
           <div role="status" className="relative flex flex-col">
             <span className="sr-only">{t('common.labels.loading')}</span>
             {Array.from({ length: skeletonRows }, (_, index) => (
@@ -178,7 +193,9 @@ export function FlightBoard({
           </div>
         ) : flights.length === 0 ? (
           empty ? (
-            <div className="relative">{empty}</div>
+            <div className={STATE_BLOCK} style={loading ? { minHeight: `calc(var(--spacing-row) * ${skeletonRows})` } : undefined}>
+              {empty}
+            </div>
           ) : (
             <p className="type-body relative px-4 py-8 text-ink-2 sm:px-5">{emptyMessage ?? t('flights.board.noFlights')}</p>
           )

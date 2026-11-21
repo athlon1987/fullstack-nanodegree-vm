@@ -19,6 +19,8 @@ import { isInterrupted, prepareOnDevice, useConcierge, type ConciergeTurn } from
 
 const EXAMPLE_KEYS = ['checkIn', 'transfer', 'sentral', 'eat', 'delay', 'prayer', 'layover', 'parking', 'lost', 'wheelchair', 'wifi'] as const;
 const PANEL_EXAMPLES = ['transfer', 'sentral', 'delay', 'prayer', 'layover', 'parking'] as const;
+/** Without intent, the on-device engine loads this long after the page has loaded (round 5). */
+const ON_DEVICE_WARM_DELAY_MS = 8_000;
 
 function prefersReducedMotion(): boolean {
   if (typeof window === 'undefined') return true;
@@ -236,15 +238,34 @@ export function ConciergeChat({ variant, initialQuestion, toolbarEnd }: Concierg
     askInitial();
   }, []);
 
-  // Load the engine and the knowledge pack when the browser is idle, so the first on-device
-  // answer is immediate and later ones keep working offline.
+  // Load the engine and the knowledge pack (about 125 KB) before the first on-device answer, so
+  // it is immediate and later ones keep working offline. Round 5 (A-09, E-01): on the page this
+  // ran at the first idle moment, inside the page's start-up, and its parsing was most of the
+  // concierge's TBT rise in round four. Now it starts when the visitor shows intent (pointer or
+  // focus in the concierge, below), or after the page has been loaded and idle for a while. The
+  // panel is opened on purpose, so it starts at once there.
+  const prepared = useRef(false);
+  const prepare = () => {
+    if (prepared.current) return;
+    prepared.current = true;
+    prepareOnDevice(lang);
+  };
+  const prepareSoon = useEffectEvent(prepare);
   useEffect(() => {
-    const idle = window.requestIdleCallback ?? ((callback: () => void) => window.setTimeout(callback, 1500));
-    const handle = idle(() => prepareOnDevice(lang));
+    if (variant === 'panel') {
+      prepareSoon();
+      return;
+    }
+    let idle: number | undefined;
+    const timer = window.setTimeout(() => {
+      if (typeof window.requestIdleCallback === 'function') idle = window.requestIdleCallback(() => prepareSoon(), { timeout: 5000 });
+      else prepareSoon();
+    }, ON_DEVICE_WARM_DELAY_MS);
     return () => {
-      if (window.cancelIdleCallback && typeof handle === 'number') window.cancelIdleCallback(handle);
+      window.clearTimeout(timer);
+      if (idle !== undefined) window.cancelIdleCallback(idle);
     };
-  }, [lang]);
+  }, [variant]);
 
   const onSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -283,7 +304,7 @@ export function ConciergeChat({ variant, initialQuestion, toolbarEnd }: Concierg
   const length = draft.length;
 
   return (
-    <div className={cn('@container flex flex-col', variant === 'panel' ? 'h-full min-h-0 gap-4' : 'gap-8')}>
+    <div className={cn('@container flex flex-col', variant === 'panel' ? 'h-full min-h-0 gap-4' : 'gap-8')} onPointerEnter={prepare} onPointerDown={prepare} onFocus={prepare}>
       <p role="status" aria-live="polite" aria-atomic="true" className="sr-only">
         {announcement}
       </p>

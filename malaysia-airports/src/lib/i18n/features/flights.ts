@@ -48,6 +48,9 @@ export const flightPagesEn = {
     emptyTitleDepartures: 'No departures between {from} and {to}',
     emptyTitleArrivals: 'No arrivals between {from} and {to}',
     emptyBody: 'Show later flights to look further ahead, or earlier ones to see what has gone.',
+    // Round 5: shown in the board's frame until the feed answers (server-rendered, the same block as the empty state).
+    loadingTitle: 'Loading the board',
+    loadingBody: 'Departures and arrivals from the last hour to six hours ahead, in airport time.',
     noResultsTitle: 'No flights match “{query}”',
     noFilterResultsTitle: 'No flights match these filters',
     noFilterResultsBody: 'Clear the filters to see every flight in this window.',
@@ -412,6 +415,8 @@ export const flightPagesMs: typeof flightPagesEn = {
     emptyTitleDepartures: 'Tiada penerbangan berlepas antara {from} dan {to}',
     emptyTitleArrivals: 'Tiada ketibaan antara {from} dan {to}',
     emptyBody: 'Tunjuk penerbangan seterusnya untuk melihat lebih jauh, atau yang lebih awal untuk melihat yang telah berlalu.',
+    loadingTitle: 'Memuatkan papan',
+    loadingBody: 'Penerbangan berlepas dan ketibaan dari sejam yang lalu hingga enam jam ke hadapan, dalam waktu lapangan terbang.',
     noResultsTitle: 'Tiada penerbangan sepadan dengan “{query}”',
     noFilterResultsTitle: 'Tiada penerbangan sepadan dengan penapis ini',
     noFilterResultsBody: 'Kosongkan penapis untuk melihat semua penerbangan dalam tempoh ini.',

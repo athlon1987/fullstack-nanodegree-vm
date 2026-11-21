@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
 import { GROUP_CONTACTS, pick, resolveSources } from '@/content';
+import { Suspense } from 'react';
 import { getT, toLang } from '@/lib/i18n';
+import { I18nPageScope } from '@/lib/i18n/page-scope';
 import { ConciergeChat } from '@/components/concierge/concierge-chat';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { ExternalLink } from '@/components/common/external-link';
@@ -43,7 +45,14 @@ export default async function ConciergePage() {
           <noscript>
             <p className="type-body mb-4 text-ink-2">{t('conciergePage.noScript')}</p>
           </noscript>
-          <ConciergeChat variant="page" />
+          {/* Round 5: the concierge copy comes with this page only (`PARTIAL_NAMESPACES`), and the
+              conversation hydrates in its own boundary, after the page's first hydration task
+              (nothing in it suspends; a tap or key press in it before then hydrates it at once). */}
+          <I18nPageScope namespaces={['conciergePage']}>
+            <Suspense>
+              <ConciergeChat variant="page" />
+            </Suspense>
+          </I18nPageScope>
         </section>
 
         <aside className="flex min-w-0 flex-col gap-10" aria-label={t('conciergePage.aside.howTitle')}>

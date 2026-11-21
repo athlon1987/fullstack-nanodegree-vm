@@ -181,6 +181,8 @@ export const conciergePageEn = {
     routeFrom: 'from {place}',
     flightNotFound: 'I could not find {flight} on the demonstration boards.',
     flightAsk: 'Tell me your flight number to see it here.',
+    // Round 5 (B-09): the flight feed could not be reached, so the boards were not searched.
+    flightUnavailable: 'Flight information could not be loaded just now, so I cannot check {flight}. If you are offline, try again when you are back online, or check with your airline.',
     statusText: '{flight} shows as {status} in the demonstration data. Your airline has the real status.',
     delayFlight: '{flight} shows as {status} in the demonstration data. Your airline has the real status. Here is what our sources say about delays.',
     delayGeneral: 'Your airline has the definite information about a delay. Here is what our sources say about delays and your options.',
@@ -464,6 +466,7 @@ export const conciergePageMs: typeof conciergePageEn = {
     routeFrom: 'dari {place}',
     flightNotFound: 'Saya tidak menemui {flight} pada papan demonstrasi.',
     flightAsk: 'Beritahu saya nombor penerbangan anda untuk melihatnya di sini.',
+    flightUnavailable: 'Maklumat penerbangan tidak dapat dimuatkan sekarang, jadi saya tidak dapat menyemak {flight}. Jika anda di luar talian, cuba lagi apabila anda kembali dalam talian, atau semak dengan syarikat penerbangan anda.',
     statusText: '{flight} dipaparkan sebagai {status} dalam data demonstrasi. Syarikat penerbangan anda mempunyai status sebenar.',
     delayFlight: '{flight} dipaparkan sebagai {status} dalam data demonstrasi. Syarikat penerbangan anda mempunyai status sebenar. Inilah yang dinyatakan sumber kami tentang kelewatan.',
     delayGeneral: 'Syarikat penerbangan anda mempunyai maklumat yang pasti tentang kelewatan. Inilah yang dinyatakan sumber kami tentang kelewatan dan pilihan anda.',

@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import {
   AIRPORTS,
   FEATURED_AIRPORTS,
@@ -118,8 +119,12 @@ export function HomeHero({ lang, notices }: { lang: Lang; notices: readonly Noti
           <ModeQuickActions />
         </div>
 
-        <NoticeStrip notices={notices} status={<HomeOpsStatus {...kliaStatusData()} />} />
-        {arrival ? <ArrivalChecklist item={arrival} /> : null}
+        {/* Round 5 (A-09): below the search and the modes, so they hydrate after them, in their own
+            boundary (nothing here suspends; the server HTML is unchanged). */}
+        <Suspense>
+          <NoticeStrip notices={notices} status={<HomeOpsStatus {...kliaStatusData()} />} />
+          {arrival ? <ArrivalChecklist item={arrival} /> : null}
+        </Suspense>
       </Container>
     </section>
   );

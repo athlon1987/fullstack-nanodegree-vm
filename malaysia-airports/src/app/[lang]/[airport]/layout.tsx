@@ -33,7 +33,12 @@ async function Header({ params }: { params: AirportPageParams }) {
   return <AirportHeader airport={airport} lang={lang} sections={sections} />;
 }
 
-/** The size of the compact airport bar, the chrome of most airport pages (no layout shift). */
+/**
+ * The size of the compact airport bar, the chrome of most airport pages (no layout shift). From
+ * `md` up it includes the row of section tabs (48 px) that `AirportHeader` shows under the bar:
+ * without it, every section page moved down by 48 px when the header was revealed (desktop CLS
+ * 0.025 to 0.026, round 4; round 5 fix). The tab placeholders are as tall as the tabs.
+ */
 function HeaderSkeleton() {
   return (
     <div data-airport-header-skeleton="" className="border-b border-line bg-page-subtle" aria-hidden="true">
@@ -42,6 +47,13 @@ function HeaderSkeleton() {
         <Skeleton className="h-5 w-14" />
         <Skeleton className="ml-auto h-9 w-28 md:hidden" />
       </Container>
+      <Container data-airport-tabs-skeleton="" className="flex h-12 items-center gap-6 max-md:hidden">
+        {TAB_WIDTHS.map((width, index) => (
+          <Skeleton key={index} className={`h-4 ${width}`} />
+        ))}
+      </Container>
     </div>
   );
 }
+
+const TAB_WIDTHS = ['w-16', 'w-14', 'w-24', 'w-20', 'w-16', 'w-28'] as const;

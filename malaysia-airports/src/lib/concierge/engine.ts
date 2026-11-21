@@ -17,6 +17,7 @@ import type { CarPark, Contact, Facility, Hours, Lang, Notice, Outlet, Provenanc
 import { isAuthoritativeSource } from '@/content/values';
 import { formatCurrency } from '@/lib/format';
 import { gatePrefixesOf } from '@/lib/flights/gates';
+import { decodeFlightId } from '@/lib/flights/id';
 import { formatFlightNumber, isInternationalFlight } from '@/lib/flights/query';
 import { flightStatusLabel } from '@/lib/flights/status';
 import type { Flight } from '@/lib/flights/types';
@@ -159,8 +160,13 @@ interface Scope {
   flight: Flight | null;
   /** A flight number was asked about but not found. */
   missingFlight?: string;
+  /** The flight boards could not be loaded (round 5: offline, or the feed failed). */
+  flightsUnavailable?: boolean;
   context: ConciergeContext;
 }
+
+/** "Not found" only when the boards were searched; otherwise say they could not be loaded. */
+const flightMissingText = (s: Scope, flight: string) => s.b.say(s.flightsUnavailable ? 'flightUnavailable' : 'flightNotFound', { flight });
 
 const getAirport = (k: ConciergeKnowledge, slug: string | undefined): KnowledgeAirport | undefined =>
   slug ? k.airports.find((airport) => airport.slug === slug) : undefined;
@@ -817,7 +823,7 @@ const flightDelay: Handler = (s) => {
     s.b.link(s.b.say('actionFlightDetails'), `/${s.flight.airport}/flights/${s.flight.id}`, 'plane');
   } else {
     s.b.text = s.b.say('delayGeneral');
-    if (s.missingFlight) s.b.limit(s.b.say('flightNotFound', { flight: s.missingFlight }));
+    if (s.missingFlight) s.b.limit(flightMissingText(s, s.missingFlight));
     else s.b.hint = s.b.say('flightAsk');
   }
   passages(s, { text: `${s.question} delay delayed airline`, terminal: undefined, topics: ['flights'], limit: 3, minScore: 4 });
@@ -833,7 +839,7 @@ const flightStatus: Handler = (s) => {
     s.b.text = s.b.say('statusText', { flight: formatFlightNumber(s.flight), status: flightStatusLabel(s.flight.status, s.lang).toLowerCase() });
     s.b.link(s.b.say('actionFlightDetails'), `/${s.flight.airport}/flights/${s.flight.id}`, 'plane');
   } else {
-    s.b.text = s.missingFlight ? s.b.say('flightNotFound', { flight: s.missingFlight }) : s.b.say('flightAsk');
+    s.b.text = s.missingFlight ? flightMissingText(s, s.missingFlight) : s.b.say('flightAsk');
     escalate(s, 'missing', true);
   }
   passages(s, { text: `${s.question} real status flight`, terminal: undefined, topics: ['flights'], limit: 1, minScore: 4 });
@@ -1242,17 +1248,31 @@ const HANDLERS: Record<ConciergeIntent, Handler> = {
  * Entry point
  * ---------------------------------------------------------------------------------------- */
 
-function resolveFlight(u: Understanding, context: ConciergeContext, deps: ConciergeDeps, airport: string | undefined): { flight: Flight | null; missing?: string } {
+function resolveFlight(
+  u: Understanding,
+  context: ConciergeContext,
+  deps: ConciergeDeps,
+  airport: string | undefined,
+): { flight: Flight | null; missing?: string; unavailable?: boolean } {
   const source = deps.flights;
+  const unavailable = source?.unavailable === true;
   const designator = u.slots.flight ? `${u.slots.flight.airline}${u.slots.flight.number}` : undefined;
   if (designator) {
     const label = formatFlightNumber(designator);
     if (!source) return { flight: null, missing: label };
     const found = (airport ? source.find(designator, airport) : []).concat(source.find(designator));
     const best = found.find((flight) => flight.direction === 'd') ?? found[0];
-    return best ? { flight: best } : { flight: null, missing: label };
+    return best ? { flight: best } : { flight: null, missing: label, unavailable };
   }
-  if (context.flightId && source) return { flight: source.get(context.flightId, context.airport) };
+  if (context.flightId && source) {
+    const flight = source.get(context.flightId, context.airport);
+    // The saved flight's board could not be loaded: name it, so the answer can say why.
+    if (!flight && unavailable) {
+      const parts = decodeFlightId(context.flightId);
+      return { flight: null, missing: parts ? formatFlightNumber(`${parts.airlineCode}${parts.number}`) : undefined, unavailable };
+    }
+    return { flight };
+  }
   return { flight: null };
 }
 
@@ -1273,7 +1293,7 @@ export function answerQuestion(input: ConciergeInput, deps: ConciergeDeps): Conc
   const multiTerminal = k.airports.filter((airport) => airport.terminals.length > 1);
   let airportSlug = u.slots.airport;
   if (!airportSlug && u.slots.terminals.length > 0 && multiTerminal.length === 1) airportSlug = multiTerminal[0].slug;
-  const { flight, missing } = resolveFlight(u, context, deps, airportSlug ?? context.airport);
+  const { flight, missing, unavailable } = resolveFlight(u, context, deps, airportSlug ?? context.airport);
   if (!airportSlug && flight && u.intent !== 'flight-delay') airportSlug = flight.airport;
   airportSlug ??= context.airport;
   const airport = getAirport(k, airportSlug);
@@ -1284,7 +1304,7 @@ export function answerQuestion(input: ConciergeInput, deps: ConciergeDeps): Conc
     if (u.intent === 'terminal-transfer') terminal = undefined;
   }
 
-  const scope: Scope = { b, k, lang, now, question, u, airport, terminal, flight, missingFlight: missing, context };
+  const scope: Scope = { b, k, lang, now, question, u, airport, terminal, flight, missingFlight: missing, flightsUnavailable: unavailable, context };
   HANDLERS[u.intent](scope);
 
   // Nothing grounded and nothing to clarify: try the passages and the search engine (not after a

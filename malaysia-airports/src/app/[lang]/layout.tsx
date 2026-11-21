@@ -79,9 +79,18 @@ export default async function RootLayout({ children }: LayoutProps<'/[lang]'>) {
               {children}
             </main>
             <SiteFooter lang={lang} />
-            <MobileBar />
+            {/* Round 5 (A-09, E-01): the phone bar and the offline and update notices hydrate in
+                their own boundaries, after the page's first hydration task and in small slices.
+                Nothing in them suspends, so the server HTML is unchanged; a tap on the bar before
+                then hydrates it at once (React's selective hydration). The overlays stay in the
+                first task: they replay taps made before hydration (A-09). */}
+            <Suspense>
+              <MobileBar />
+            </Suspense>
             <GlobalOverlays />
-            <PlatformRuntime />
+            <Suspense>
+              <PlatformRuntime />
+            </Suspense>
             {/* Tells the URL hooks in `use-url.ts` about client-side navigations (round 2). */}
             <Suspense fallback={null}>
               <UrlSync />

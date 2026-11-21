@@ -1,313 +1,25 @@
-import {
-  Accessibility,
-  ALargeSmall,
-  Armchair,
-  ArrowDown,
-  ArrowLeft,
-  ArrowLeftRight,
-  ArrowRight,
-  ArrowUp,
-  ArrowUpRight,
-  Baby,
-  BadgeCheck,
-  BaggageClaim,
-  Ban,
-  Banknote,
-  Bed,
-  Bell,
-  BellRing,
-  Binoculars,
-  Blocks,
-  Bookmark,
-  BookmarkCheck,
-  BriefcaseMedical,
-  Building2,
-  BusFront,
-  Calculator,
-  CalendarDays,
-  Car,
-  CarFront,
-  CarTaxiFront,
-  CardSim,
-  Check,
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  ChevronUp,
-  ChevronsUpDown,
-  Cigarette,
-  Circle,
-  CircleAlert,
-  CircleCheck,
-  CircleDashed,
-  CircleDot,
-  CircleHelp,
-  CircleParking,
-  CircleX,
-  Clock,
-  ClockAlert,
-  Coins,
-  Compass,
-  Contrast,
-  Copy,
-  DoorClosed,
-  DoorOpen,
-  Ellipsis,
-  ExternalLink,
-  Eye,
-  FileText,
-  FlaskConical,
-  Footprints,
-  GlassWater,
-  Globe,
-  HandHelping,
-  History,
-  Home,
-  Hotel,
-  Hourglass,
-  IdCard,
-  Info,
-  KeyRound,
-  Landmark,
-  Languages,
-  Layers,
-  Leaf,
-  Lightbulb,
-  ListFilter,
-  LoaderCircle,
-  LocateFixed,
-  Luggage,
-  Mail,
-  Map as MapIcon,
-  MapPin,
-  MapPinCheck,
-  Megaphone,
-  Menu,
-  MessagesSquare,
-  Minus,
-  Monitor,
-  Moon,
-  MoonStar,
-  MoveVertical,
-  Navigation,
-  Newspaper,
-  OctagonAlert,
-  PackageSearch,
-  Palette,
-  Pencil,
-  PersonStanding,
-  Phone,
-  Pill,
-  Plane,
-  PlaneLanding,
-  PlaneTakeoff,
-  PlugZap,
-  Plus,
-  RefreshCw,
-  Route,
-  Ruler,
-  ScanLine,
-  Search,
-  SearchX,
-  Send,
-  Settings2,
-  Share2,
-  ShieldCheck,
-  ShoppingBag,
-  ShowerHead,
-  Signpost,
-  SlidersHorizontal,
-  Smartphone,
-  Sofa,
-  Sparkles,
-  SquareParking,
-  Stamp,
-  Star,
-  Sun,
-  Tag,
-  Ticket,
-  TicketCheck,
-  TicketX,
-  Timer,
-  Toilet,
-  TowerControl,
-  TrainFront,
-  TramFront,
-  Trash2,
-  TriangleAlert,
-  Type,
-  Users,
-  Utensils,
-  WifiOff,
-  Wifi,
-  X,
-  ZoomIn,
-  ZoomOut,
-  type LucideIcon,
-} from 'lucide-react';
-import type { SVGAttributes } from 'react';
-import { cn } from '@/lib/cn';
+import { createElement, type SVGAttributes } from 'react';
+import { ICON_DATA } from './icon-data';
 
-/**
- * The icon registry: the only place that imports from `lucide-react`.
+/*
+ * The icon registry. Round 5 (E-03, A-09): the geometry is plain data generated from lucide-react
+ * (`icon-data.ts`, `icon-data.generate.mjs`) and `Icon` renders ordinary SVG. It has no
+ * `'use client'` and no hooks, so icons in Server Components are static HTML: no client
+ * reference, no geometry in the RSC payload and nothing to hydrate (lucide-react 1.x renders
+ * every icon through a Client Component). Client Components still import it as before.
+ *
  * Names are lucide's own kebab-case names, so they stay serialisable across the server and
  * client boundary (a string prop, never a component prop).
  */
-const ICONS = {
-  accessibility: Accessibility,
-  'a-large-small': ALargeSmall,
-  armchair: Armchair,
-  'arrow-down': ArrowDown,
-  'arrow-left': ArrowLeft,
-  'arrow-left-right': ArrowLeftRight,
-  'arrow-right': ArrowRight,
-  'arrow-up': ArrowUp,
-  'arrow-up-right': ArrowUpRight,
-  baby: Baby,
-  'badge-check': BadgeCheck,
-  'baggage-claim': BaggageClaim,
-  ban: Ban,
-  banknote: Banknote,
-  bed: Bed,
-  bell: Bell,
-  'bell-ring': BellRing,
-  binoculars: Binoculars,
-  blocks: Blocks,
-  bookmark: Bookmark,
-  'bookmark-check': BookmarkCheck,
-  'briefcase-medical': BriefcaseMedical,
-  'building-2': Building2,
-  'bus-front': BusFront,
-  calculator: Calculator,
-  'calendar-days': CalendarDays,
-  car: Car,
-  'car-front': CarFront,
-  'car-taxi-front': CarTaxiFront,
-  'card-sim': CardSim,
-  check: Check,
-  'chevron-down': ChevronDown,
-  'chevron-left': ChevronLeft,
-  'chevron-right': ChevronRight,
-  'chevron-up': ChevronUp,
-  'chevrons-up-down': ChevronsUpDown,
-  cigarette: Cigarette,
-  circle: Circle,
-  'circle-alert': CircleAlert,
-  'circle-check': CircleCheck,
-  'circle-dashed': CircleDashed,
-  'circle-dot': CircleDot,
-  'circle-help': CircleHelp,
-  'circle-parking': CircleParking,
-  'circle-x': CircleX,
-  clock: Clock,
-  'clock-alert': ClockAlert,
-  coins: Coins,
-  compass: Compass,
-  contrast: Contrast,
-  copy: Copy,
-  'door-closed': DoorClosed,
-  'door-open': DoorOpen,
-  ellipsis: Ellipsis,
-  'external-link': ExternalLink,
-  eye: Eye,
-  'file-text': FileText,
-  'flask-conical': FlaskConical,
-  footprints: Footprints,
-  'glass-water': GlassWater,
-  globe: Globe,
-  'hand-helping': HandHelping,
-  history: History,
-  home: Home,
-  hotel: Hotel,
-  hourglass: Hourglass,
-  'id-card': IdCard,
-  info: Info,
-  'key-round': KeyRound,
-  landmark: Landmark,
-  languages: Languages,
-  layers: Layers,
-  leaf: Leaf,
-  lightbulb: Lightbulb,
-  'list-filter': ListFilter,
-  'loader-circle': LoaderCircle,
-  'locate-fixed': LocateFixed,
-  luggage: Luggage,
-  mail: Mail,
-  map: MapIcon,
-  'map-pin': MapPin,
-  'map-pin-check': MapPinCheck,
-  megaphone: Megaphone,
-  menu: Menu,
-  'messages-square': MessagesSquare,
-  minus: Minus,
-  monitor: Monitor,
-  moon: Moon,
-  'moon-star': MoonStar,
-  'move-vertical': MoveVertical,
-  navigation: Navigation,
-  newspaper: Newspaper,
-  'octagon-alert': OctagonAlert,
-  'package-search': PackageSearch,
-  palette: Palette,
-  pencil: Pencil,
-  'person-standing': PersonStanding,
-  phone: Phone,
-  pill: Pill,
-  plane: Plane,
-  'plane-landing': PlaneLanding,
-  'plane-takeoff': PlaneTakeoff,
-  'plug-zap': PlugZap,
-  plus: Plus,
-  'refresh-cw': RefreshCw,
-  route: Route,
-  ruler: Ruler,
-  'scan-line': ScanLine,
-  search: Search,
-  'search-x': SearchX,
-  send: Send,
-  'settings-2': Settings2,
-  'share-2': Share2,
-  'shield-check': ShieldCheck,
-  'shopping-bag': ShoppingBag,
-  'shower-head': ShowerHead,
-  signpost: Signpost,
-  'sliders-horizontal': SlidersHorizontal,
-  smartphone: Smartphone,
-  sofa: Sofa,
-  sparkles: Sparkles,
-  'square-parking': SquareParking,
-  stamp: Stamp,
-  star: Star,
-  sun: Sun,
-  tag: Tag,
-  ticket: Ticket,
-  'ticket-check': TicketCheck,
-  'ticket-x': TicketX,
-  timer: Timer,
-  toilet: Toilet,
-  'tower-control': TowerControl,
-  'train-front': TrainFront,
-  'tram-front': TramFront,
-  'trash-2': Trash2,
-  'triangle-alert': TriangleAlert,
-  type: Type,
-  users: Users,
-  utensils: Utensils,
-  wifi: Wifi,
-  'wifi-off': WifiOff,
-  x: X,
-  'zoom-in': ZoomIn,
-  'zoom-out': ZoomOut,
-} satisfies Record<string, LucideIcon>;
 
 /** Every icon the system ships. */
-export type IconName = keyof typeof ICONS;
+export type IconName = keyof typeof ICON_DATA;
 
 /** A registry name or a semantic key from the domain layer (`prayer-room`, `rail`, `departing`). Unknown keys fall back to a circle. */
 export type IconKey = IconName | (string & {});
 
 /** All icon names, for the style guide. */
-export const ICON_NAMES = Object.keys(ICONS) as IconName[];
+export const ICON_NAMES = Object.keys(ICON_DATA) as IconName[];
 
 /**
  * Semantic keys used by the domain layer (facility categories, map points, transport modes,
@@ -408,8 +120,8 @@ const ALIASES: Record<string, IconName> = {
 
 /** Resolve any icon key (a registry name or a domain key) to a registry name. */
 export function resolveIconName(key: string): IconName {
-  if (key in ICONS) return key as IconName;
-  return ALIASES[key] ?? 'circle';
+  if (Object.prototype.hasOwnProperty.call(ICON_DATA, key)) return key as IconName;
+  return Object.prototype.hasOwnProperty.call(ALIASES, key) ? ALIASES[key] : 'circle';
 }
 
 const SIZES = {
@@ -430,6 +142,20 @@ export interface IconProps extends Omit<SVGAttributes<SVGSVGElement>, 'name'> {
   strokeWidth?: number;
 }
 
+/** Size classes a caller's `className` overrides (tailwind-merge keeps the last `size-*`). */
+const SIZE_OVERRIDE = /^!?size-/;
+
+/**
+ * The icon's class list without tailwind-merge (round 5: `cn` on every icon was measurable at
+ * hydration). Same result for the classes icons are given: an unprefixed `size-*`
+ * replaces the size class, and a repeated class appears once.
+ */
+export function iconClassName(size: keyof typeof SIZES, className?: string): string {
+  const extra = className ? className.split(/\s+/).filter(Boolean) : [];
+  const classes = ['shrink-0', ...(extra.some((name) => SIZE_OVERRIDE.test(name)) ? [] : [SIZES[size]]), ...extra];
+  return [...new Set(classes)].join(' ');
+}
+
 /**
  * The one icon component. Decorative by default (`aria-hidden`); pass `label` only when the icon
  * is the sole carrier of meaning.
@@ -437,14 +163,24 @@ export interface IconProps extends Omit<SVGAttributes<SVGSVGElement>, 'name'> {
  * @example <Icon name="plane-takeoff" size="sm" />
  */
 export function Icon({ name, size = 'md', label, strokeWidth = 1.5, className, ...rest }: IconProps) {
-  const Glyph = ICONS[resolveIconName(name)];
+  const parts = ICON_DATA[resolveIconName(name)];
   return (
-    <Glyph
-      className={cn('shrink-0', SIZES[size], className)}
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
       strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={iconClassName(size, className)}
       focusable="false"
       {...(label ? { role: 'img', 'aria-label': label } : { 'aria-hidden': true })}
       {...rest}
-    />
+    >
+      {parts.map((part, index) => (typeof part === 'string' ? <path key={index} d={part} /> : createElement(part[0], { key: index, ...part[1] })))}
+    </svg>
   );
 }

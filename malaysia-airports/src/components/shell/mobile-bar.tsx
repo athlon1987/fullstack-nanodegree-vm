@@ -1,6 +1,6 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { getAirport } from '@/content/airports';
 import { cn } from '@/lib/cn';
 import { useAirportContext } from '@/lib/hooks';
@@ -39,8 +39,35 @@ function Label({ icon, children, badge }: { icon: IconName; children: ReactNode;
   );
 }
 
+/**
+ * True once the page has loaded and the browser has been idle (round 5, E-01/E-12). The bar's
+ * two prefetched links (A-19) start prefetching then, instead of during start-up, where the
+ * journey route's scripts (about 55 KB) competed with the page's own loading and hydration.
+ */
+function useAfterLoadIdle(): boolean {
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    let idle: number | undefined;
+    const go = () => {
+      if (typeof window.requestIdleCallback === 'function') idle = window.requestIdleCallback(() => setReady(true), { timeout: 3000 });
+      else idle = window.setTimeout(() => setReady(true), 1000);
+    };
+    if (document.readyState === 'complete') go();
+    else window.addEventListener('load', go, { once: true });
+    return () => {
+      window.removeEventListener('load', go);
+      if (idle !== undefined) {
+        if (typeof window.cancelIdleCallback === 'function') window.cancelIdleCallback(idle);
+        window.clearTimeout(idle);
+      }
+    };
+  }, []);
+  return ready;
+}
+
 function Bar() {
   const t = useT();
+  const prefetch = useAfterLoadIdle() ? 'auto' : undefined;
   // From `useUrlPathname` (round 2): `null` on the server and during hydration, so the bar is
   // part of the prerendered page and hydrates in place on every route (no Suspense fallback to
   // be swapped out under a tap); the current item is marked right after hydration.
@@ -70,8 +97,9 @@ function Bar() {
           </LocaleLink>
         </li>
         <li>
-          {/* One of the few likely next steps that is prefetched before the click (A-19). */}
-          <LocaleLink prefetch="auto" href={sectionHref('flights', selection, availability)} aria-current={onFlights ? 'true' : undefined} className={ITEM}>
+          {/* One of the few likely next steps that is prefetched before the click (A-19), once the
+              page has loaded; until then on intent, like every other link. */}
+          <LocaleLink prefetch={prefetch} href={sectionHref('flights', selection, availability)} aria-current={onFlights ? 'true' : undefined} className={ITEM}>
             <Label icon="plane-takeoff">{t('nav.flights')}</Label>
           </LocaleLink>
         </li>
@@ -96,7 +124,7 @@ function Bar() {
         </li>
         <li>
           <LocaleLink
-            prefetch="auto"
+            prefetch={prefetch}
             href="/journey"
             aria-current={onJourney ? 'page' : undefined}
             aria-label={saved > 0 ? t.count('shell.bottomBar.journeyCount', saved) : undefined}

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, type ComponentProps, type FocusEvent, type MouseEvent, type TouchEvent } from 'react';
+import { Suspense, useState, type ComponentProps, type FocusEvent, type MouseEvent, type TouchEvent } from 'react';
 import type { Lang } from '@/content/types';
 import { useLang } from '@/lib/i18n/client';
 import { localeHref } from '@/lib/locale';
@@ -34,6 +34,12 @@ function constrainedNetwork(): boolean {
  * connection. Pass `prefetch` explicitly (`true` or `"auto"`) for the few likely next steps that
  * must be ready before the click; that still respects a constrained network.
  *
+ * Round 5 (A-09, E-01): the link sits in its own `<Suspense>` boundary. Nothing in it suspends, so
+ * the server HTML is the same, but React hydrates a dehydrated boundary separately, at low priority
+ * and in small slices, instead of inside the page's first hydration task. A page has 20 to 35 of
+ * these links, often around whole cards. A click or key press on one before then hydrates that
+ * link at once and is handled as usual (React's selective hydration).
+ *
  * @example <LocaleLink href="/kul/flights">{t('nav.flights')}</LocaleLink>
  */
 export function LocaleLink({ href, lang, prefetch, onMouseEnter, onFocus, onTouchStart, ...rest }: LocaleLinkProps) {
@@ -45,22 +51,24 @@ export function LocaleLink({ href, lang, prefetch, onMouseEnter, onFocus, onTouc
   // `false` stops both viewport and hover prefetching in the App Router; `null` restores the default.
   const resolved = prefetch === undefined ? (intent ? null : false) : prefetch && typeof navigator !== 'undefined' && constrainedNetwork() ? false : prefetch;
   return (
-    <Link
-      href={localeHref(lang ?? current, href)}
-      prefetch={resolved}
-      onMouseEnter={(event: MouseEvent<HTMLAnchorElement>) => {
-        wantIntent();
-        onMouseEnter?.(event);
-      }}
-      onFocus={(event: FocusEvent<HTMLAnchorElement>) => {
-        wantIntent();
-        onFocus?.(event);
-      }}
-      onTouchStart={(event: TouchEvent<HTMLAnchorElement>) => {
-        wantIntent();
-        onTouchStart?.(event);
-      }}
-      {...rest}
-    />
+    <Suspense>
+      <Link
+        href={localeHref(lang ?? current, href)}
+        prefetch={resolved}
+        onMouseEnter={(event: MouseEvent<HTMLAnchorElement>) => {
+          wantIntent();
+          onMouseEnter?.(event);
+        }}
+        onFocus={(event: FocusEvent<HTMLAnchorElement>) => {
+          wantIntent();
+          onFocus?.(event);
+        }}
+        onTouchStart={(event: TouchEvent<HTMLAnchorElement>) => {
+          wantIntent();
+          onTouchStart?.(event);
+        }}
+        {...rest}
+      />
+    </Suspense>
   );
 }

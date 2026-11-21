@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import { UNDATED_LABEL, formatAsOf, pick, sourcePublisher, sourcePublisherIsForeign, sourceTitle, sourceTitleIsForeign } from '@/content/values';
 import type { Source } from '@/content/types';
 import { cn } from '@/lib/cn';
@@ -39,7 +40,6 @@ export interface SourceNoteProps {
  */
 export function SourceNote({ sources, defaultOpen = false, citedBy, label, className }: SourceNoteProps) {
   const t = useT();
-  const lang = useLang();
   if (sources.length === 0) return null;
   const count = t.count('shellExtras.sources.count', sources.length);
   return (
@@ -56,55 +56,69 @@ export function SourceNote({ sources, defaultOpen = false, citedBy, label, class
         <span className="sr-only">{label ? `${label}: ${count}` : count}</span>
         <Icon name="chevron-down" size="xs" strokeWidth={2} className="transition-transform duration-fast group-open/src:rotate-180" />
       </summary>
-      <ul className="mt-1 border-l border-line-strong pl-3">
-        {sources.map((source) => {
-          const internal = source.url.startsWith('/');
-          // Our own pages are translated; everyone else's titles stay as published (D-03).
-          const title = sourceTitle(source, lang);
-          const titleForeign = sourceTitleIsForeign(source, lang);
-          const publisher = sourcePublisher(source, lang);
-          const publisherForeign = sourcePublisherIsForeign(source, lang);
-          return (
-            <li key={source.id} className="type-caption py-1.5 text-ink-2">
-              {internal ? (
-                <LocaleLink href={source.url} className="link text-ink">
-                  <span lang={titleForeign ? 'en' : undefined}>{title}</span>
-                </LocaleLink>
-              ) : (
-                <ExternalLink href={source.url} className="text-ink">
-                  <span lang={titleForeign ? 'en' : undefined}>{title}</span>
-                </ExternalLink>
-              )}
-              {/* Every title in the registry is English, our own pages' included. */}
-              {titleForeign ? (
-                <span className="ml-1.5 inline-flex h-4 items-center rounded-xs border border-line-control px-1 align-middle text-[0.6875rem] font-semibold text-ink-2">
-                  <span aria-hidden="true">{t('shellExtras.sources.english')}</span>
-                  <span className="sr-only">({t('shellExtras.sources.inEnglish')})</span>
-                </span>
-              ) : null}
-              <span className="block">
-                {publisherForeign ? (
-                  <>
-                    {t('provenance.publishedBy', { publisher: '' }).trim()} <span lang="en">{publisher}</span>
-                  </>
-                ) : (
-                  t('provenance.publishedBy', { publisher })
-                )}
-                {' · '}
-                {t('freshness.retrieved', { date: formatDate(source.retrieved, lang) })}
-                {source.asOf ? ` · ${t('freshness.asOf', { date: formatAsOf(source.asOf, lang) })}` : source.undated ? ` · ${pick(UNDATED_LABEL, lang)}` : null}
-                {source.asOfNote ? ` (${pick(source.asOfNote, lang)})` : null}
-              </span>
-              {source.note ? <span className="block italic">{pick(source.note, lang)}</span> : null}
-              {citedBy?.[source.id]?.length ? (
-                <span data-source-cited-by="" className="block">
-                  {t('shellExtras.sourceLists.citedBy', { items: formatList(citedBy[source.id], lang) })}
-                </span>
-              ) : null}
-            </li>
-          );
-        })}
-      </ul>
+      {/* Round 5 (A-09): the list is hidden until opened and formats a date per source (the
+          first Intl formatter of a page is the slow part), so it hydrates in its own boundary,
+          after the page's first hydration task and in small slices. */}
+      <Suspense>
+        <SourceItems sources={sources} citedBy={citedBy} />
+      </Suspense>
     </details>
+  );
+}
+
+/** The sources inside a `SourceNote`. */
+function SourceItems({ sources, citedBy }: Pick<SourceNoteProps, 'sources' | 'citedBy'>) {
+  const t = useT();
+  const lang = useLang();
+  return (
+    <ul className="mt-1 border-l border-line-strong pl-3">
+      {sources.map((source) => {
+        const internal = source.url.startsWith('/');
+        // Our own pages are translated; everyone else's titles stay as published (D-03).
+        const title = sourceTitle(source, lang);
+        const titleForeign = sourceTitleIsForeign(source, lang);
+        const publisher = sourcePublisher(source, lang);
+        const publisherForeign = sourcePublisherIsForeign(source, lang);
+        return (
+          <li key={source.id} className="type-caption py-1.5 text-ink-2">
+            {internal ? (
+              <LocaleLink href={source.url} className="link text-ink">
+                <span lang={titleForeign ? 'en' : undefined}>{title}</span>
+              </LocaleLink>
+            ) : (
+              <ExternalLink href={source.url} className="text-ink">
+                <span lang={titleForeign ? 'en' : undefined}>{title}</span>
+              </ExternalLink>
+            )}
+            {/* Every title in the registry is English, our own pages' included. */}
+            {titleForeign ? (
+              <span className="ml-1.5 inline-flex h-4 items-center rounded-xs border border-line-control px-1 align-middle text-[0.6875rem] font-semibold text-ink-2">
+                <span aria-hidden="true">{t('shellExtras.sources.english')}</span>
+                <span className="sr-only">({t('shellExtras.sources.inEnglish')})</span>
+              </span>
+            ) : null}
+            <span className="block">
+              {publisherForeign ? (
+                <>
+                  {t('provenance.publishedBy', { publisher: '' }).trim()} <span lang="en">{publisher}</span>
+                </>
+              ) : (
+                t('provenance.publishedBy', { publisher })
+              )}
+              {' · '}
+              {t('freshness.retrieved', { date: formatDate(source.retrieved, lang) })}
+              {source.asOf ? ` · ${t('freshness.asOf', { date: formatAsOf(source.asOf, lang) })}` : source.undated ? ` · ${pick(UNDATED_LABEL, lang)}` : null}
+              {source.asOfNote ? ` (${pick(source.asOfNote, lang)})` : null}
+            </span>
+            {source.note ? <span className="block italic">{pick(source.note, lang)}</span> : null}
+            {citedBy?.[source.id]?.length ? (
+              <span data-source-cited-by="" className="block">
+                {t('shellExtras.sourceLists.citedBy', { items: formatList(citedBy[source.id], lang) })}
+              </span>
+            ) : null}
+          </li>
+        );
+      })}
+    </ul>
   );
 }

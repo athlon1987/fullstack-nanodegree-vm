@@ -1,19 +1,18 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
+import { cn } from '@/lib/cn';
 import { hasTranslation, pick } from '@/content/values';
 import type { Notice, Source } from '@/content/types';
 import type { Flight } from '@/lib/flights';
 import { useJourneyMode } from '@/lib/hooks/use-journey-mode';
 import { useLang, useT } from '@/lib/i18n/client';
-import { buildJourney, type JourneyAirportContent, type JourneyMode, type JourneyPreferences } from '@/lib/journey';
-import { useTripOptions } from '@/lib/journey/trip-options';
-import { needsToPreferences, useNeeds } from '@/lib/needs';
+import { buildJourney, type JourneyAirportContent, type JourneyMode } from '@/lib/journey';
 import { formatTime, type Instant } from '@/lib/time';
 import { ExternalLink } from '@/components/common/external-link';
 import { LocaleLink } from '@/components/common/locale-link';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
-import { SourceNote } from '@/components/common/source-note';
+import { SectionSourceList } from '@/components/common/section-source-list';
 import { TranslationNotice } from '@/components/common/translation-notice';
 import { useSectionAvailability } from '@/components/shell/shell-context';
 import { AIRPORT_SECTIONS, hasSection } from '@/components/shell/sections';
@@ -23,23 +22,9 @@ import { Timeline, TimelineItem } from '@/components/ui/timeline';
 import { stepAnchor } from './flight-summary';
 import { OpsStatus } from './ops-status';
 
-/**
- * The visitor's needs (`ma:needs:v1`) and trip options (`ma:trip-options:v1`) as journey
- * preferences. Both callers of `buildJourney` (flight page, My journey) use it (B-11, B-13).
- */
-export function useJourneyPreferences(): JourneyPreferences {
-  const { needs } = useNeeds();
-  const { options } = useTripOptions();
-  return useMemo(
-    () => ({ ...needsToPreferences(needs), handLuggageOnly: options.handLuggageOnly, loungeAccess: options.loungeAccess }),
-    [needs, options.handLuggageOnly, options.loungeAccess],
-  );
-}
-
-/** The journey modes that make sense for a flight: a departure is a departure; an arrival can be met or connected from. */
-export function modesForFlight(flight: Pick<Flight, 'direction'>): JourneyMode[] {
-  return flight.direction === 'd' ? ['departing'] : ['arriving', 'meeting', 'transiting'];
-}
+// Moved to `journey-preferences.ts` in round 5 (the flight page needs them before this module loads).
+import { modesForFlight, useJourneyPreferences } from './journey-preferences';
+export { modesForFlight, useJourneyPreferences };
 
 export interface JourneyTimelineProps {
   flight: Flight;
@@ -56,6 +41,8 @@ export interface JourneyTimelineProps {
   /** The mode to start in when the visitor's journey mode does not fit this flight (a saved flight's own mode). */
   preferredMode?: JourneyMode;
   intro?: boolean;
+  /** `md` where the page's other section headings are `type-title-md` (the flight page, A-14 type sizes). */
+  headingSize?: 'md' | 'lg';
   className?: string;
 }
 
@@ -64,7 +51,7 @@ export interface JourneyTimelineProps {
  * a provenance tag, the airport's sourced notes, and links onward. Links to sections an airport
  * does not have are left out.
  */
-export function JourneyTimeline({ flight, content, sources, now, notices, title, headingId, preferredMode, intro = true, className }: JourneyTimelineProps) {
+export function JourneyTimeline({ flight, content, sources, now, notices, title, headingId, preferredMode, intro = true, headingSize = 'lg', className }: JourneyTimelineProps) {
   const t = useT();
   const lang = useLang();
   const availability = useSectionAvailability();
@@ -98,7 +85,7 @@ export function JourneyTimeline({ flight, content, sources, now, notices, title,
 
   return (
     <section aria-labelledby={headingId} className={className}>
-      <h2 id={headingId} className="type-title-lg text-ink">
+      <h2 id={headingId} className={cn(headingSize === 'md' ? 'type-title-md' : 'type-title-lg', 'text-ink')}>
         {title}
       </h2>
       {intro ? <p className="type-body-sm mt-1.5 max-w-reading text-ink-2">{t('journey.timeline.intro')}</p> : null}
@@ -115,9 +102,11 @@ export function JourneyTimeline({ flight, content, sources, now, notices, title,
       {untranslated ? <TranslationNotice className="mt-4" /> : null}
 
       <Timeline className="mt-6">
-        {steps.map((step) => {
+        {steps.map((step, index) => {
           const actions = step.actions.filter((action) => allowed(action.href));
-          const stepSources = resolve(step.sources);
+          // Round 5 (A-14, one Demo label per view): a run of simulated steps (boarding, then
+          // departure) shares the label of its first step, a few lines above in the same view.
+          const demoAbove = step.provenance === 'demo' && index > 0 && steps[index - 1].provenance === 'demo';
           return (
             <TimelineItem
               key={step.id}
@@ -133,7 +122,7 @@ export function JourneyTimeline({ flight, content, sources, now, notices, title,
               meta={
                 <>
                   {step.optional ? <span className="type-caption rounded-xs border border-dashed border-line-control px-1.5 py-0.5 font-semibold text-ink-2">{t('flightPages.timeline.optional')}</span> : null}
-                  <ProvenanceTag provenance={step.provenance} length="short" />
+                  {demoAbove ? null : <ProvenanceTag provenance={step.provenance} length="short" />}
                 </>
               }
               actions={
@@ -163,7 +152,6 @@ export function JourneyTimeline({ flight, content, sources, now, notices, title,
                   </span>
                 </p>
               ) : null}
-              {stepSources.length > 0 ? <SourceNote sources={stepSources} className="mt-1" /> : null}
               {step.places && step.places.length > 0 ? (
                 <ul aria-label={t('flightPages.timeline.placesLabel')} className="mt-3 flex flex-col gap-1.5">
                   {step.places.map((place) => (
@@ -202,7 +190,6 @@ export function JourneyTimeline({ flight, content, sources, now, notices, title,
                       <p className="type-body-sm mt-1 text-ink-2" lang={hasTranslation(note.body, lang) ? undefined : 'en'}>
                         {pick(note.body, lang)}
                       </p>
-                      <SourceNote sources={resolve(note.sources)} />
                     </li>
                   ))}
                 </ul>
@@ -211,6 +198,15 @@ export function JourneyTimeline({ flight, content, sources, now, notices, title,
           );
         })}
       </Timeline>
+      {/* Round 5 (A-14): one source list for the timeline instead of a toggle on every step and
+          note; each source names the steps and notes it supports. */}
+      <SectionSourceList
+        className="mt-6"
+        items={steps.flatMap((step) => [
+          { name: pick(step.title, lang), sources: resolve(step.sources) },
+          ...step.notes.map((note) => ({ name: pick(note.title, lang), sources: resolve(note.sources) })),
+        ])}
+      />
     </section>
   );
 }

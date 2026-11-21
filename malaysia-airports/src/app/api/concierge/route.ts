@@ -1,11 +1,10 @@
 import { answerQuestion } from '@/lib/concierge/engine';
-import { flightSourceFromProvider } from '@/lib/concierge/flights';
+import { serverFlightSource } from '@/lib/concierge/flights.server';
 import { buildConciergeKnowledge } from '@/lib/concierge/knowledge.server';
 import { ceilingPolicy, createTokenBucket, limitKey, sharedModelBudget, type RateLimitStore } from '@/lib/concierge/rate-limit';
 import { rephraseAnswer } from '@/lib/concierge/rephrase.server';
 import { ConciergeRequestSchema, isJsonMediaType, isSameOriginRequest, readBodyWithLimit, siteOrigins } from '@/lib/concierge/request';
 import type { ConciergeResponse } from '@/lib/concierge/types';
-import { getFlightProvider } from '@/lib/providers';
 
 /**
  * POST /api/concierge
@@ -90,21 +89,17 @@ export async function POST(request: Request) {
 
   const input = parsed.data;
   const knowledge = buildConciergeKnowledge(input.lang);
-  const answer = answerQuestion(
-    {
-      question: input.question,
-      lang: input.lang,
-      context: {
-        airport: input.airport,
-        terminal: input.terminal,
-        flightId: input.flightId,
-        intent: input.intent,
-        category: input.category,
-        destination: input.destination,
-      },
-    },
-    { knowledge, now, flights: flightSourceFromProvider(getFlightProvider(now)) },
-  );
+  const context = {
+    airport: input.airport,
+    terminal: input.terminal,
+    flightId: input.flightId,
+    intent: input.intent,
+    category: input.category,
+    destination: input.destination,
+  };
+  // Flights from the flight feed, as every page shows them (round 5, B-09).
+  const flights = await serverFlightSource(input.question, knowledge, context, now);
+  const answer = answerQuestion({ question: input.question, lang: input.lang, context }, { knowledge, now, flights });
 
   let mode: ConciergeResponse['mode'] = 'grounded';
   const apiKey = process.env.ANTHROPIC_API_KEY;

@@ -9,7 +9,6 @@ import { LocaleLink } from '@/components/common/locale-link';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { FOLLOW_PANEL_ID, useIsFollowing } from './follow-state';
-import { buildIcs, flightCalendarEvent, icsFileName } from './ics';
 import { toSavedFlight } from './saved-flight';
 
 export interface FlightActionsProps {
@@ -21,6 +20,8 @@ export interface FlightActionsProps {
 // The follow panel is opened by few visitors: it loads when the page is idle, or when it is opened
 // before that (round 2, E-03), instead of with the flight page.
 const loadFollowPanel = () => import('./flight-alerts-panel');
+/** The calendar file builder, fetched at idle or on first use (round 5, E-03). */
+const loadIcs = () => import('./ics');
 
 /** Anchor of the "My needs" control on the flight page (`NeedsControl`'s section). */
 export const NEEDS_CONTROL_ID = 'needs-control';
@@ -46,10 +47,10 @@ export function FlightActions({ flight, title }: FlightActionsProps) {
   useEffect(() => {
     const idle = typeof window.requestIdleCallback === 'function';
     const handle = idle
-      ? window.requestIdleCallback(() => void loadFollowPanel(), {
+      ? window.requestIdleCallback(() => void Promise.all([loadFollowPanel(), loadIcs()]), {
           timeout: 5000,
         })
-      : window.setTimeout(() => void loadFollowPanel(), 3000);
+      : window.setTimeout(() => void Promise.all([loadFollowPanel(), loadIcs()]), 3000);
     return () => (idle ? window.cancelIdleCallback(handle) : window.clearTimeout(handle));
   }, []);
 
@@ -77,7 +78,8 @@ export function FlightActions({ flight, title }: FlightActionsProps) {
     }
   };
 
-  const addToCalendar = () => {
+  const addToCalendar = async () => {
+    const { buildIcs, flightCalendarEvent, icsFileName } = await loadIcs();
     const ics = buildIcs(
       flightCalendarEvent(flight, {
         t,
@@ -121,7 +123,7 @@ export function FlightActions({ flight, title }: FlightActionsProps) {
         <Button variant="secondary" iconStart="share-2" onClick={share}>
           {t('flightPages.detail.share')}
         </Button>
-        <Button variant="secondary" iconStart="calendar-days" onClick={addToCalendar}>
+        <Button variant="secondary" iconStart="calendar-days" onClick={() => void addToCalendar()}>
           {t('flightPages.detail.calendar')}
         </Button>
         {/* Round 4 (re-review 6.1.6, inclusion weakness 10): "My needs" from the first phone

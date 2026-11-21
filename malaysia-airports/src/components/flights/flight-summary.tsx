@@ -8,18 +8,23 @@ import { nextDeadline, nextStepSummary, type JourneyStep } from '@/lib/journey';
 import { formatTime } from '@/lib/time';
 import { Icon } from '@/components/ui/icon';
 import { Skeleton } from '@/components/ui/skeleton';
-import { DemoMark } from './demo-mark';
 import { DEADLINE_KEYS } from './step-line';
 
 /** Anchor id of a timeline step, shared with `JourneyTimeline`. */
 export const stepAnchor = (id: string): string => `journey-step-${id}`;
 
 export interface FlightSummaryProps {
-  flight: Flight;
+  /** `null` until the flight feed has answered: the frame and its label are already there. */
+  flight: Flight | null;
   /** The journey steps as built for this flight and the visitor's needs and options. */
-  steps: readonly JourneyStep[];
+  steps: readonly JourneyStep[] | null;
   now: number;
 }
+
+const FRAME =
+  // Round 5: the frame is the same while the feed loads and after, so the answer is filled in
+  // place (no new block, no jump); placeholders keep room for two lines and the step link.
+  'flex min-h-14 flex-wrap items-center gap-x-4 gap-y-2 rounded-lg border border-line-strong bg-surface px-4 py-3';
 
 /**
  * The answer first (first-time-access-03, usability-10): one line under the title with the next
@@ -34,6 +39,25 @@ export interface FlightSummaryProps {
 export function FlightSummary({ flight, steps, now }: FlightSummaryProps) {
   const t = useT();
   const lang = useLang();
+  // Both branches return the same root element and paragraph, so React fills them in place.
+  if (!flight || !steps) {
+    return (
+      <div data-flight-summary="" data-pending="" className={FRAME}>
+        <p className="type-body min-w-0 flex-1 basis-64 text-ink">
+          <span className="type-eyebrow mr-2 text-ink-2">{t('flightPages.summary.label')}</span>
+          <span role="status">
+            <Skeleton className="inline-block h-4 w-48 max-w-full align-middle" />
+            <span className="sr-only">{t('flightPages.summary.loading')}</span>
+          </span>
+          <Skeleton className="mt-2 h-4 w-3/4 sm:hidden" />
+        </p>
+        {/* Where the "See this step" link goes. */}
+        <span className="flex items-center gap-3">
+          <Skeleton className="h-5 w-28" />
+        </span>
+      </div>
+    );
+  }
   const airport = getAirport(flight.airport);
   const zone = airport?.timezone;
   const terminal = steps.find((step) => step.terminal);
@@ -90,7 +114,7 @@ export function FlightSummary({ flight, steps, now }: FlightSummaryProps) {
   }
 
   return (
-    <div data-flight-summary="" className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-lg border border-line-strong bg-surface px-4 py-3">
+    <div data-flight-summary="" className={FRAME}>
       <p className="type-body min-w-0 flex-1 basis-64 text-ink">
         <span className="type-eyebrow mr-2 text-ink-2">{t('flightPages.summary.label')}</span>
         {delayed ? (
@@ -113,8 +137,9 @@ export function FlightSummary({ flight, steps, now }: FlightSummaryProps) {
           </span>
         ))}
       </p>
+      {/* Round 5 (A-14): no Demo label of its own; the demonstration banner that caps the status
+          card directly below is in the same view on every screen size. */}
       <span className="flex items-center gap-3">
-        <DemoMark />
         <a href={`#${stepAnchor(anchor)}`} className="link-action type-body-sm text-ink">
           {t('flightPages.summary.seeStep')}
           <Icon name="arrow-down" size="sm" strokeWidth={1.75} />
@@ -124,13 +149,3 @@ export function FlightSummary({ flight, steps, now }: FlightSummaryProps) {
   );
 }
 
-/** Placeholder of the same size while the flight loads (no layout shift). */
-export function FlightSummarySkeleton() {
-  const t = useT();
-  return (
-    <div role="status" className="flex min-h-14 items-center rounded-lg border border-line px-4 py-3">
-      <span className="sr-only">{t('flightPages.summary.loading')}</span>
-      <Skeleton className="h-5 w-full max-w-md" />
-    </div>
-  );
-}

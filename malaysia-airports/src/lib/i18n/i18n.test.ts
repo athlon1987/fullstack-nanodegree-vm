@@ -4,7 +4,7 @@ import { en } from './en';
 import { ms } from './ms';
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
-import { SCOPED_NAMESPACES, clientDictionary, getDictionary, getT, interpolate, langParams, numberFormat, pickDictionary, plural, toLang, type TKey } from './index';
+import { PARTIAL_NAMESPACES, SCOPED_NAMESPACES, clientDictionary, getDictionary, getT, interpolate, langParams, numberFormat, pickDictionary, plural, toLang, type TKey } from './index';
 
 function leaves(node: unknown, prefix = ''): Map<string, string> {
   const out = new Map<string, string>();
@@ -196,5 +196,43 @@ describe('client dictionary (performance-09)', () => {
     expect(numberFormat('en')).toBe(numberFormat('en'));
     expect(numberFormat('ms')).not.toBe(numberFormat('en'));
     expect(getT('en').count('search.resultsCount', 1234)).toContain('1,234');
+  });
+});
+
+describe('partial namespaces in the root dictionary (round 5, E-11)', () => {
+  it('sends only the listed concierge keys to every page', () => {
+    for (const lang of ['en', 'ms'] as const) {
+      const dictionary = clientDictionary(lang);
+      expect(Object.keys(dictionary.conciergePage as object).sort()).toEqual([...PARTIAL_NAMESPACES.conciergePage].sort());
+      expect(dictionary.conciergePage).toEqual(pickDictionary(lang, PARTIAL_NAMESPACES.conciergePage.map((key) => `conciergePage.${key}`)).conciergePage);
+      // About 17 KB of copy no longer in each page's HTML.
+      expect(JSON.stringify(getDictionary(lang).conciergePage).length - JSON.stringify(dictionary.conciergePage).length).toBeGreaterThan(15_000);
+    }
+  });
+
+  it('only the concierge reads the rest, and its page and panel bring it', () => {
+    const root = join(__dirname, '..', '..');
+    const shared = new Set(PARTIAL_NAMESPACES.conciergePage.map((key) => `conciergePage.${key}`));
+    const offenders: string[] = [];
+    const walk = (dir: string) => {
+      for (const name of readdirSync(dir)) {
+        const path = join(dir, name);
+        if (statSync(path).isDirectory()) walk(path);
+        else if (/\.tsx?$/.test(name) && !/\.test\./.test(name)) {
+          const source = readFileSync(path, 'utf8');
+          const file = relative(root, path).split('\\').join('/');
+          const client = /^['"]use client['"]/m.test(source) || source.includes('useT()');
+          if (!client || file.startsWith('components/concierge/') || file.startsWith('lib/i18n/')) continue;
+          for (const match of source.matchAll(/['`"](conciergePage\.[\w.]+)/g)) if (!shared.has(match[1])) offenders.push(`${file}: ${match[1]}`);
+        }
+      }
+    };
+    walk(root);
+    expect(offenders).toEqual([]);
+    expect(readFileSync(join(root, 'app', '[lang]', 'concierge', 'page.tsx'), 'utf8')).toMatch(/<I18nPageScope namespaces=\{\['conciergePage'\]\}>/);
+    const panel = readFileSync(join(root, 'components', 'concierge', 'concierge-panel.tsx'), 'utf8');
+    expect(panel).toMatch(/import\('@\/lib\/i18n\/features\/concierge'\)/);
+    // The panel's own frame reads only the shared keys.
+    for (const match of panel.matchAll(/t\('(conciergePage\.[\w.]+)'/g)) expect(shared.has(match[1])).toBe(true);
   });
 });
