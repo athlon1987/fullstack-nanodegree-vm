@@ -27,11 +27,13 @@ type FlightPageProps = PageProps<'/[lang]/[airport]/flights/[flightId]'>;
  * (`src/lib/providers/flight-route.ts`, called from `src/proxy.ts`).
  *
  * Round 5 (E-01, E-02): no page-level `<Suspense>`. Inside one, React sent the whole page as a
- * hidden segment after the shell and revealed it with its throttled `$RC` script, so the `h1`
- * painted late (LCP 4.2 to 5.3 s on a slow phone, performance 56 to 75). Without one, the page
- * waits for `params` and renders in the first flush: the `h1`, the eyebrow and the status card's
- * timetable facts are in the HTML; the status and times follow from the feed. Nothing here
- * reads the clock or request data, so the render is quick and the same for everyone.
+ * hidden segment at the end of the document and revealed it with its throttled `$RC` script, so
+ * the `h1` painted late (LCP 4.2 to 5.3 s on a slow phone, performance 56 to 75). Without one,
+ * Next.js sends the static start of the document at once (site and airport chrome) and the page
+ * follows in document order, not hidden: the `h1`, the eyebrow, the summary frame and the status
+ * card's timetable facts are in the HTML about 20 KB in; the status and times follow from the
+ * feed. Nothing here reads the clock or request data, so the render is quick (tens of
+ * milliseconds) and the same for everyone.
  *
  * `instant = false` is what allows that (Next.js 16.4, `instant`, "Disabling static shell
  * validation"): without it the build rejects `params` read outside `<Suspense>` on a route with
@@ -69,8 +71,11 @@ export default function FlightPage({ params }: FlightPageProps) {
 
 async function Flight({ params }: { params: FlightPageProps['params'] }) {
   const { airport: slug, flightId } = await params;
-  // An airport without a board, or a flight the timetable does not know (the proxy answers most
-  // of these first): the not-found page with the site shell and a 404 (round 3's `MissingPage`).
+  // An airport without a board, or a flight the timetable does not know: `src/proxy.ts` answers
+  // these with a 404 before this page runs (`flight-route.ts`). This page cannot set the status
+  // itself: Next.js sends the static start of the document (◐ in the build) before the page
+  // renders, so a `notFound()` here arrived after a 200 and left Next's error document. Should
+  // one get through, it gets `MissingPage` (the not-found body in the site shell, `noindex`).
   if (!sectionStaticParams('flights').some((listed) => listed.airport === slug)) return <MissingPage />;
   const { lang, t, airport, content } = await loadAirportPage(params, 'flights');
   const flight = identifyFlight(flightId, airport.slug);

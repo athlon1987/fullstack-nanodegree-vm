@@ -216,6 +216,9 @@ export function MyJourney({ carParks }: MyJourneyProps) {
                   title={t('flightPages.journey.journeyFor', { flight: flightTitle(selected.flight, t) })}
                   headingId={STEPS_HEADING_ID}
                   preferredMode={selected.saved.mode}
+                  // Round 5 (A-14): from lg up the timeline sits beside the saved flights, directly
+                  // under the demonstration banner, so its first simulated step needs no tag of its own.
+                  leadingDemoTagClassName="lg:hidden"
                   className="scroll-mt-24 rounded-xl border border-line-strong bg-surface p-5 sm:p-7"
                 />
               ) : provider === null ? (

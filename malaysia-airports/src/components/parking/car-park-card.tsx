@@ -10,7 +10,6 @@ import { NotPublished } from '@/components/common/not-published';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { SourceNote } from '@/components/common/source-note';
 import { TerminalBadge } from '@/components/common/terminal-badge';
-import { Chip } from '@/components/ui/chip';
 import { Icon } from '@/components/ui/icon';
 import { sourcesFor, type NoteView } from '@/components/transport/transport-types';
 import { AsOf, Fact } from '@/components/transport/transport-values';
@@ -28,14 +27,22 @@ export interface CarParkCardProps {
   premiumWarning?: NoteView;
   /** The list states this provenance once (`ProvenanceDefault`): no tag of its own when it matches (A-14). */
   defaultProvenance?: CarParkView['provenance'];
+  /** The list gives one source list for all its cards (`SectionSourceList`): no source toggle of its own (round 5, A-14). */
+  groupedSources?: boolean;
 }
 
 /**
  * One car park: what it is, space now (simulated, labelled), bays, access, features, accessible
  * bays, EV charging, payment, and its rates by `rateStatus`. Unverified rates are quoted from
  * the content with their sources and a link to the official page; nothing is calculated from them.
+ *
+ * Round 5 (A-14, 6.1.7, the layout log's recommendation): fewer marks per card. The simulated
+ * space is labelled "Simulated space" in words (the list's banner is the one "Demo" marker); the
+ * features are a plain list, not chips; the rate status is said once, by the shared rate line
+ * (6.1.3), with an icon, not again by a chip; and with `groupedSources` the sources are in the
+ * list's one source list.
  */
-export function CarParkCard({ carPark, sources, timezone, availability, showTerminal, premiumWarning, defaultProvenance }: CarParkCardProps) {
+export function CarParkCard({ carPark, sources, timezone, availability, showTerminal, premiumWarning, defaultProvenance, groupedSources = false }: CarParkCardProps) {
   const t = useT();
   const lang = useLang();
   const titleId = `car-park-${carPark.id}-title`;
@@ -50,6 +57,8 @@ export function CarParkCard({ carPark, sources, timezone, availability, showTerm
     carPark.payment?.length ? undefined : t('transportPages.parking.missingNames.payment'),
   ].filter((item): item is string => item !== undefined);
   const notVerified = carPark.rateStatus !== 'published';
+  const booking = carPark.bookingUrl && carPark.bookingUrl !== carPark.officialUrl ? carPark.bookingUrl : undefined;
+  const footer = !groupedSources || Boolean(carPark.asOf) || Boolean(booking);
 
   return (
     <article
@@ -90,7 +99,7 @@ export function CarParkCard({ carPark, sources, timezone, availability, showTerm
 
         {availability !== undefined ? (
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-            <span className="type-eyebrow text-ink-3">{t('transportPages.availability.title')}</span>
+            <span className="type-eyebrow text-ink-3">{t('transportPages.availability.simulatedTitle')}</span>
             <AvailabilityValue availability={availability} />
           </div>
         ) : null}
@@ -123,10 +132,11 @@ export function CarParkCard({ carPark, sources, timezone, availability, showTerm
           ) : null}
           {carPark.features.length > 0 ? (
             <Fact label={t('transportPages.parking.fields.features')} className="@md:col-span-2">
-              <ul className="flex flex-wrap gap-2">
+              <ul className="flex flex-col gap-1">
                 {carPark.features.map((feature) => (
-                  <li key={feature}>
-                    <Chip icon="check">{feature}</Chip>
+                  <li key={feature} className="type-body-sm flex items-start gap-2 text-ink">
+                    <Icon name="check" size="sm" className="mt-0.5 shrink-0 text-ink-2" />
+                    {feature}
                   </li>
                 ))}
               </ul>
@@ -136,22 +146,15 @@ export function CarParkCard({ carPark, sources, timezone, availability, showTerm
         {missing.length > 0 ? <NotPublished label={t('transportPages.fields.missing', { facts: formatList(missing, lang) })} /> : null}
 
         <div className={cn('rounded-lg border p-4', notVerified ? 'border-line-strong bg-page-subtle' : 'border-line bg-surface')}>
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <h4 className="type-title-sm text-ink">{t('transportPages.parking.fields.rates')}</h4>
-            {notVerified ? (
-              <Chip tone="warning" icon="circle-alert">
-                {t('transportPages.parking.ratesNotVerified')}
-              </Chip>
-            ) : (
-              <Chip tone="positive" icon="badge-check">
-                {t('transportPages.parking.ratesPublished')}
-              </Chip>
-            )}
+          <h4 className="type-title-sm text-ink">{t('transportPages.parking.fields.rates')}</h4>
+          {/* One fact, one answer (round 4, 6.1.3): the same sentence as the price table, the concierge and the help FAQ.
+              Round 5: the status chip beside the heading said the sentence's first words again; the icon keeps its cue. */}
+          <div className="mt-2 flex items-start gap-2">
+            <Icon name={notVerified ? 'circle-alert' : 'badge-check'} size="sm" className={cn('mt-0.5 shrink-0', notVerified ? 'text-warning-fg' : 'text-positive-fg')} />
+            <p className="type-body-sm font-semibold text-ink" data-rate-line="">
+              {carPark.rateLine}
+            </p>
           </div>
-          {/* One fact, one answer (round 4, 6.1.3): the same sentence as the price table, the concierge and the help FAQ. */}
-          <p className="type-body-sm mt-2 font-semibold text-ink" data-rate-line="">
-            {carPark.rateLine}
-          </p>
           {carPark.dailyMax !== undefined && !notVerified ? (
             <p className="mt-3 flex flex-wrap items-baseline gap-x-2">
               <span className="type-body-sm text-ink-2">{t('transportPages.parking.fields.dailyMax')}</span>
@@ -190,15 +193,17 @@ export function CarParkCard({ carPark, sources, timezone, availability, showTerm
         </div>
       </div>
 
-      <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-line px-4 py-1.5 sm:px-5">
-        <SourceNote sources={sourcesFor(carPark.sourceIds, sources)} />
-        {carPark.asOf ? <AsOf value={carPark.asOf} timeZone={timezone} /> : null}
-        {carPark.bookingUrl && carPark.bookingUrl !== carPark.officialUrl ? (
-          <ExternalLink href={carPark.bookingUrl} variant="action" className="type-body-sm ml-auto" data-handoff="parking-booking">
-            {t('common.actions.bookOnOfficialSite')}
-          </ExternalLink>
-        ) : null}
-      </div>
+      {footer ? (
+        <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-line px-4 py-1.5 sm:px-5">
+          {groupedSources ? null : <SourceNote sources={sourcesFor(carPark.sourceIds, sources)} />}
+          {carPark.asOf ? <AsOf value={carPark.asOf} timeZone={timezone} /> : null}
+          {booking ? (
+            <ExternalLink href={booking} variant="action" className="type-body-sm ml-auto" data-handoff="parking-booking">
+              {t('common.actions.bookOnOfficialSite')}
+            </ExternalLink>
+          ) : null}
+        </div>
+      ) : null}
     </article>
   );
 }

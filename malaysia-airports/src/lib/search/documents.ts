@@ -74,6 +74,12 @@ function disambiguateTitles(documents: SearchDocument[], places: ReadonlyMap<str
 const clip = (text: string, length = 220): string => (text.length > length ? `${text.slice(0, length - 1).trimEnd()}…` : text);
 
 /**
+ * Joins the present parts of a summary. Typed to plain strings so that a localized field passed
+ * without `pick` is a type error, not "[object Object]" in the index (round 5).
+ */
+const joinParts = (separator: string, parts: readonly (string | undefined)[]): string => parts.filter((part): part is string => Boolean(part)).join(separator);
+
+/**
  * Every searchable item in one language: airports (and KLIA's terminals), facilities, outlets,
  * transport options, car parks, guides, FAQs, notices, corporate pages and news.
  *
@@ -140,7 +146,7 @@ export function buildSearchDocuments(lang: Lang): SearchDocument[] {
         id: `facility:${facility.id}`,
         type: 'facility',
         title: pick(facility.name, lang),
-        summary: clip([facility.locationNote ? pick(facility.locationNote, lang) : '', pick(facility.description, lang)].filter(Boolean).join(' ')),
+        summary: clip(joinParts(' ', [facility.locationNote ? pick(facility.locationNote, lang) : undefined, pick(facility.description, lang)])),
         href: `/${airport.slug}/${page}#${facility.id}`,
         airport: airport.slug,
         keywords: [...both(meta.label), ...both(facility.name), facility.category.replace(/-/g, ' '), facility.operator ?? '', airport.code, airport.shortName].filter(Boolean),
@@ -152,7 +158,7 @@ export function buildSearchDocuments(lang: Lang): SearchDocument[] {
         id: `outlet:${outlet.id}`,
         type: 'outlet',
         title: outlet.name,
-        summary: clip([outlet.category, outlet.locationNote ? pick(outlet.locationNote, lang) : '', outlet.description ? pick(outlet.description, lang) : ''].filter(Boolean).join('. ')),
+        summary: clip(joinParts('. ', [outlet.category, outlet.locationNote ? pick(outlet.locationNote, lang) : undefined, outlet.description ? pick(outlet.description, lang) : undefined])),
         href: `/${airport.slug}/shop-dine/${outlet.slug}`,
         airport: airport.slug,
         keywords: [outlet.category, outlet.cuisine ?? '', outlet.kind, outlet.halal === 'certified' ? 'halal' : '', outlet.halal === 'certified' ? 'halal certified' : '', airport.code, airport.shortName].filter(Boolean),
@@ -198,7 +204,9 @@ export function buildSearchDocuments(lang: Lang): SearchDocument[] {
         id: `airline:${airport.slug}:${airline.code.toLowerCase()}`,
         type: 'airline',
         title: `${airline.name} (${airline.code})`,
-        summary: clip([terminal ? pick(terminal.name, lang) : airport.shortName, airline.checkIn ?? '', airline.note ? pick(airline.note, lang) : ''].filter(Boolean).join(' · ')),
+        // Every localized field through `pick` (round 5): `checkIn` is localized text, and joining
+        // it unpicked printed "[object Object]" in both languages (airline:kul:mh, airline:pen:cx).
+        summary: clip(joinParts(' · ', [terminal ? pick(terminal.name, lang) : airport.shortName, airline.checkIn ? pick(airline.checkIn, lang) : undefined, airline.note ? pick(airline.note, lang) : undefined])),
         href: `/${airport.slug}/flights?q=${encodeURIComponent(airline.code)}${terminal ? `&t=${terminal.id}` : ''}`,
         airport: airport.slug,
         keywords: [airline.code, airline.name, ...airline.name.split(/[\s()]+/).filter((word) => word.length > 2), airline.terminal ?? '', airport.code, airport.shortName].filter(Boolean),

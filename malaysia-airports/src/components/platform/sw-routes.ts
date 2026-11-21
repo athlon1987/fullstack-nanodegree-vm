@@ -130,7 +130,11 @@ export function offlinePagePath(lang: SwLang, from?: string): string {
 export function extractAssetUrls(text: string, baseUrl: string): string[] {
   const base = new URL(baseUrl);
   const found = new Set<string>();
-  for (const match of text.matchAll(/\/_next\/static\/[^"'\\\s)<>]+/g)) found.add(match[0]);
+  // Round 5 (E-12): the legacy polyfills (`<script noModule>`, about 40 KB gzip) run only in
+  // browsers without modules, which cannot run this worker either: never store them.
+  const legacy = new Set([...text.matchAll(/<script\b[^>]*\bnomodule\b[^>]*>/gi)].flatMap((tag) => tag[0].match(/\/_next\/static\/[^"'\s>]+/)?.[0] ?? []));
+  // `#` ends a URL here: the icon sprite is referenced once per icon (`icons.<hash>.svg#plane`).
+  for (const match of text.matchAll(/\/_next\/static\/[^"'\\\s)<>#]+/g)) if (!legacy.has(match[0])) found.add(match[0]);
   // Stylesheets refer to fonts relatively: url(../media/x.woff2).
   for (const match of text.matchAll(/url\(\s*['"]?([^'")]+)['"]?\s*\)/g)) {
     const ref = match[1];

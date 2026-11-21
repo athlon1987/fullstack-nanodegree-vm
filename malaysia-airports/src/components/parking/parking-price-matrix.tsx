@@ -5,7 +5,7 @@ import { formatCurrency } from '@/lib/format';
 import type { Translator } from '@/lib/i18n/translate';
 import { ExternalLink } from '@/components/common/external-link';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
-import { SourceNote } from '@/components/common/source-note';
+import { SectionSourceList } from '@/components/common/section-source-list';
 import { TerminalBadge } from '@/components/common/terminal-badge';
 import { sourcesFor } from '@/components/transport/transport-types';
 import { Icon } from '@/components/ui/icon';
@@ -104,6 +104,10 @@ export function ParkingPriceMatrix({ data, t, lang, transportLink }: ParkingPric
         </table>
       </TableScroll>
 
+      {/* Round 5 (A-14, 6.1.7): one source list for the table (each source names its car parks),
+          instead of a toggle under every row. */}
+      <SectionSourceList items={rows.filter(({ carPark }) => carPark.type !== 'preferred' || !data.premiumWarning).map(({ carPark, cells }) => ({ name: carPark.name, sources: rowSources(carPark, cells, data) }))} />
+
       <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
         {/* Measurement (round 4, 6.1.9): the main booking hand-off, like the car-park cards' links. */}
         <ExternalLink href={data.officialUrl} variant="action" className="type-body-sm font-semibold" data-handoff="parking-booking">
@@ -147,7 +151,6 @@ function MatrixCell({ cell, money, t }: { cell: PriceCell; money: (amount: numbe
 function RowNote({ carPark, cells, data, t }: { carPark: CarParkView; cells: PriceCell[]; data: ParkingPageData; t: Translator }) {
   const warning = carPark.type === 'preferred' ? data.premiumWarning : undefined;
   const kind = cells[0]?.kind ?? 'none';
-  const reported = carPark.reported ?? [];
 
   if (warning) {
     return (
@@ -164,15 +167,12 @@ function RowNote({ carPark, cells, data, t }: { carPark: CarParkView; cells: Pri
   }
 
   // One fact, one answer (round 4, 6.1.3): the record's rate status in the words the concierge
-  // and the help FAQ use; the source note beside it gives who says so and when.
-  const sources = kind === 'reported' ? sourcesFor(reported.map((figure) => figure.sourceId), data.sources) : sourcesFor(carPark.sourceIds, data.sources);
-
+  // and the help FAQ use; who says so and when is in the table's source list (round 5).
   return (
     <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5">
       <p className="type-caption min-w-0 text-ink-2" data-rate-line="">
         {carPark.rateLine}
       </p>
-      <SourceNote sources={sources} />
       {kind !== 'estimate' ? (
         <ExternalLink href={carPark.officialUrl} variant="action" className="type-caption">
           {t('transportPages.matrix.check')}
@@ -180,4 +180,10 @@ function RowNote({ carPark, cells, data, t }: { carPark: CarParkView; cells: Pri
       ) : null}
     </div>
   );
+}
+
+/** The sources behind a row's figures: the reported figures' own sources, else the car park's. */
+function rowSources(carPark: CarParkView, cells: PriceCell[], data: ParkingPageData) {
+  const reported = carPark.reported ?? [];
+  return (cells[0]?.kind ?? 'none') === 'reported' ? sourcesFor(reported.map((figure) => figure.sourceId), data.sources) : sourcesFor(carPark.sourceIds, data.sources);
 }

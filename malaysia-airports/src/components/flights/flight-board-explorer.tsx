@@ -15,6 +15,7 @@ import { EmptyState } from '@/components/common/empty-state';
 import { LocaleLink } from '@/components/common/locale-link';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   BOARD_ROW_LIMIT,
@@ -259,7 +260,15 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
 
   const title = direction === 'd' ? t('flights.board.departuresTitle') : t('flights.board.arrivalsTitle');
   const subtitle = !range
-    ? localizeAirport(airport, lang).name // verification round two (D-09): Malay on /ms before hydration
+    ? // Verification round two (D-09): the airport's name in the page language before hydration.
+      // Round 5: read out only, with a placeholder the size of the time window that replaces it,
+      // so the board's header keeps its height when the feed answers (night CLS).
+      (
+        <>
+          <span className="sr-only">{localizeAirport(airport, lang).name}</span>
+          <Skeleton className="inline-block h-3.5 w-28 align-middle" />
+        </>
+      )
     : searching
       ? t('flightPages.board.searchWindow', { query: query.trim() })
       : params.terminal
@@ -412,7 +421,10 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
               <Button variant="quiet" size="sm" aria-pressed={userPaused} onClick={togglePause} className="shrink-0">
                 {userPaused ? t('flightPages.feed.resume') : t('flightPages.feed.pause')}
               </Button>
-            ) : undefined
+            ) : (
+              // Round 5: the size of the Pause button, so the header does not grow when it appears.
+              <Skeleton className="h-9 w-36 shrink-0 rounded-md touch:h-11" />
+            )
           }
           context={
             generatedAt ? (

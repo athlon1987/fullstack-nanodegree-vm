@@ -4,7 +4,9 @@ import sitemap from '@/app/sitemap';
 import robots from '@/app/robots';
 import manifest from '@/app/manifest';
 import { serializeJsonLd } from './json-ld';
-import { pageMetadata } from './metadata';
+import { resolveAbsoluteUrlWithPathname } from 'next/dist/lib/metadata/resolvers/resolve-url';
+import { alternateLinkValue } from './link-headers';
+import { INHERITED_ALTERNATES, pageMetadata } from './metadata';
 import { airportJsonLd, breadcrumbJsonLd, organizationJsonLd } from './schemas';
 import { SITEMAP_EXCLUDED, sitemapPaths, staticRoutePaths } from './site-routes';
 
@@ -116,6 +118,35 @@ describe('page metadata helper', () => {
     expect(meta.alternates?.languages).toMatchObject({ en: '/en/kul/parking', ms: '/ms/kul/parking', 'x-default': '/en/kul/parking' });
     expect(meta).not.toHaveProperty('robots');
     expect(pageMetadata({ lang: 'en', path: '/offline', title: 't', description: 'd', noindex: true }).robots).toMatchObject({ index: false });
+  });
+});
+
+describe('inherited canonical (round 5, E-14)', () => {
+  const base = new URL('https://www.example.my');
+  const linkCanonical = (lang: string, rest: string) => /^<([^>]+)>; rel="canonical"/.exec(alternateLinkValue(base.origin, lang, rest))?.[1];
+
+  it('resolves to the same URL the Link header names, for every kind of page', () => {
+    expect(INHERITED_ALTERNATES.canonical).toBe('./');
+    expect(Object.keys(INHERITED_ALTERNATES)).toEqual(['canonical']);
+    for (const [lang, rest] of [
+      ['en', ''],
+      ['ms', ''],
+      ['en', '/guides/baggage'],
+      ['ms', '/help/lost-and-found'],
+      ['en', '/corporate/news/a-story'],
+      ['en', '/kul/flights/mh2626-20261118-d'],
+      ['ms', '/kul/zzz'],
+    ]) {
+      const resolved = resolveAbsoluteUrlWithPathname('./', base, `/${lang}${rest}`, { trailingSlash: false, isStaticMetadataRouteFile: false });
+      expect(new URL(resolved).pathname).toBe(new URL(linkCanonical(lang, rest)!).pathname);
+      expect(new URL(resolved).origin).toBe(base.origin);
+    }
+  });
+
+  it('is replaced whole by a page that calls pageMetadata, so the head keeps one canonical', () => {
+    const page = pageMetadata({ lang: 'ms', path: '/kul/parking', title: 'Parkir', description: 'Parkir di KLIA' });
+    expect(page.alternates?.canonical).toBe('/ms/kul/parking');
+    expect(page.alternates?.languages).toBeDefined();
   });
 });
 

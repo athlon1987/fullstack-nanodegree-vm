@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
 import { GROUP_CONTACTS, pick, resolveSources } from '@/content';
-import { Suspense } from 'react';
 import { getT, toLang } from '@/lib/i18n';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
 import { ConciergeChat } from '@/components/concierge/concierge-chat';
@@ -45,13 +44,9 @@ export default async function ConciergePage() {
           <noscript>
             <p className="type-body mb-4 text-ink-2">{t('conciergePage.noScript')}</p>
           </noscript>
-          {/* Round 5: the concierge copy comes with this page only (`PARTIAL_NAMESPACES`), and the
-              conversation hydrates in its own boundary, after the page's first hydration task
-              (nothing in it suspends; a tap or key press in it before then hydrates it at once). */}
+          {/* Round 5 (E-11): the concierge copy comes with this page only (`PARTIAL_NAMESPACES`). */}
           <I18nPageScope namespaces={['conciergePage']}>
-            <Suspense>
-              <ConciergeChat variant="page" />
-            </Suspense>
+            <ConciergeChat variant="page" />
           </I18nPageScope>
         </section>
 
@@ -63,7 +58,10 @@ export default async function ConciergePage() {
             <ol className="flex flex-col gap-4">
               {how.map((text, index) => (
                 <li key={text} className="flex items-start gap-3">
-                  <span aria-hidden="true" className="type-data-sm flex size-7 shrink-0 items-center justify-center rounded-pill border border-line-strong text-ink-2">
+                  <span
+                    aria-hidden="true"
+                    className="type-data-sm flex size-7 shrink-0 items-center justify-center rounded-pill border border-line-strong text-ink-2"
+                  >
                     {index + 1}
                   </span>
                   <p className="type-body text-ink-2">{text}</p>

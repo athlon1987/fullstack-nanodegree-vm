@@ -1,4 +1,3 @@
-import { Suspense } from 'react';
 import {
   AIRPORTS,
   FEATURED_AIRPORTS,
@@ -119,12 +118,8 @@ export function HomeHero({ lang, notices }: { lang: Lang; notices: readonly Noti
           <ModeQuickActions />
         </div>
 
-        {/* Round 5 (A-09): below the search and the modes, so they hydrate after them, in their own
-            boundary (nothing here suspends; the server HTML is unchanged). */}
-        <Suspense>
-          <NoticeStrip notices={notices} status={<HomeOpsStatus {...kliaStatusData()} />} />
-          {arrival ? <ArrivalChecklist item={arrival} /> : null}
-        </Suspense>
+        <NoticeStrip notices={notices} status={<HomeOpsStatus {...kliaStatusData()} />} />
+        {arrival ? <ArrivalChecklist item={arrival} /> : null}
       </Container>
     </section>
   );
@@ -214,7 +209,7 @@ function AirportCard({ airport: record, terminal, lang, large = false }: { airpo
       <div className={large ? 'flex flex-1 flex-col gap-1.5 p-5 sm:p-6' : 'flex flex-1 flex-col gap-1 p-4'}>
         {/* Wraps at 320 px and 125% text instead of pushing the code out of the card (A-16). */}
         <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-1">
-          <h3 className={cn('min-w-0', large ? 'type-display-sm text-ink' : 'type-title-md text-ink')}>
+          <h3 className={cn('min-w-0', large ? 'type-title-lg text-ink' : 'type-title-md text-ink')}>
             <CardLink href={sectionPath(airport.slug, 'overview', terminal?.id)}>{title}</CardLink>
           </h3>
           <AirportCode code={airport.code} name={airport.name} variant="boxed" size="sm" className="mt-0.5 shrink-0" />
@@ -274,7 +269,7 @@ export function HomeNetwork({ lang }: { lang: Lang }) {
               {stats.map((stat) => (
                 <div key={stat.label} className="flex flex-col-reverse gap-1 border-t border-on-inverse-dim/40 pt-3">
                   <dt className="type-caption text-on-inverse-dim">{stat.label}</dt>
-                  <dd className="type-data-xl">{stat.value}</dd>
+                  <dd className="type-data-lg">{stat.value}</dd>
                 </div>
               ))}
             </dl>

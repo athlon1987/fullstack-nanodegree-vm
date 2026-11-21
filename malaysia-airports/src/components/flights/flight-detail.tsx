@@ -150,7 +150,8 @@ export function FlightDetail({ flightId, airport, title, identity, journeyConten
   const disrupted = live ? live.status === 'delayed' || live.status === 'cancelled' : false;
 
   return (
-    <div className="flex flex-col gap-10 lg:gap-14" data-answer-task="flight-status" data-answer-state={live ? 'demo' : 'loading'}>
+    // The answer is declared once there is one (E-17), as before round 5.
+    <div className="flex flex-col gap-10 lg:gap-14" data-answer-task={live ? 'flight-status' : undefined} data-answer-state={live ? 'demo' : undefined}>
       <div className="flex flex-col gap-4">
         {failed ? null : <FlightSummary flight={live} steps={live ? summarySteps : null} now={now?.getTime() ?? 0} />}
         <FeedNotice feed={feed} timeZone={zone} />

@@ -54,3 +54,18 @@ export function pageMetadata({ lang, path, title, description, noindex, type = '
     ...(noindex ? { robots: { index: false, follow: true } } : {}),
   };
 }
+
+/**
+ * Round 5 (E-14): the canonical every page inherits from the root layout, so that each page names
+ * its canonical URL in the HTML head as well as in the `Link` header (`link-headers.ts`). 124 of
+ * 276 pages relied on the header alone because their `generateMetadata` does not call
+ * `pageMetadata`.
+ *
+ * `./` is resolved by Next.js against the path being rendered, with `metadataBase`: the same URL
+ * the `Link` header names (origin, locale and path, no query string), so a response still carries
+ * one distinct canonical. A page that calls `pageMetadata` replaces this with its own complete
+ * `alternates` (segments merge shallowly), so no page gets two. Only the canonical is inherited:
+ * the hreflang alternates need the other locale's path, which a relative URL cannot express; the
+ * `Link` header gives them on every page.
+ */
+export const INHERITED_ALTERNATES: NonNullable<Metadata['alternates']> = { canonical: './' };

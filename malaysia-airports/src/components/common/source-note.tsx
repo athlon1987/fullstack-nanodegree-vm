@@ -1,6 +1,5 @@
 'use client';
 
-import { Suspense } from 'react';
 import { UNDATED_LABEL, formatAsOf, pick, sourcePublisher, sourcePublisherIsForeign, sourceTitle, sourceTitleIsForeign } from '@/content/values';
 import type { Source } from '@/content/types';
 import { cn } from '@/lib/cn';
@@ -56,12 +55,7 @@ export function SourceNote({ sources, defaultOpen = false, citedBy, label, class
         <span className="sr-only">{label ? `${label}: ${count}` : count}</span>
         <Icon name="chevron-down" size="xs" strokeWidth={2} className="transition-transform duration-fast group-open/src:rotate-180" />
       </summary>
-      {/* Round 5 (A-09): the list is hidden until opened and formats a date per source (the
-          first Intl formatter of a page is the slow part), so it hydrates in its own boundary,
-          after the page's first hydration task and in small slices. */}
-      <Suspense>
-        <SourceItems sources={sources} citedBy={citedBy} />
-      </Suspense>
+      <SourceItems sources={sources} citedBy={citedBy} />
     </details>
   );
 }

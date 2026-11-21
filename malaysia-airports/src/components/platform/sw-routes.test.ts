@@ -72,6 +72,10 @@ describe('page parsing', () => {
     const html = `<link rel="stylesheet" href="/_next/static/css/app.css"/><script src="/_next/static/chunks/main.js" async></script>
       <script>self.__next_f.push([1,"2:I[\\"/_next/static/chunks/client.js\\",[]]"])</script><img src="https://other.example/x.png">`;
     expect(extractAssetUrls(html, `${ORIGIN}/en`)).toEqual([`${ORIGIN}/_next/static/css/app.css`, `${ORIGIN}/_next/static/chunks/main.js`, `${ORIGIN}/_next/static/chunks/client.js`]);
+    // Round 5: the icon sprite is stored once, without the fragment of each icon.
+    expect(extractAssetUrls('<svg><use href="/_next/static/media/icons.abc.svg#plane"></use></svg><svg><use href="/_next/static/media/icons.abc.svg#x"></use></svg>', `${ORIGIN}/en`)).toEqual([`${ORIGIN}/_next/static/media/icons.abc.svg`]);
+    // Round 5 (E-12): the legacy polyfill bundle is never stored.
+    expect(extractAssetUrls('<script src="/_next/static/chunks/polyfills.js" noModule=""></script><script src="/_next/static/chunks/main.js" async=""></script>', `${ORIGIN}/en`)).toEqual([`${ORIGIN}/_next/static/chunks/main.js`]);
     const css = '@font-face{src:url(../media/hanken.woff2) format("woff2")}.m{mask:url("data:image/svg+xml,x")}';
     expect(extractAssetUrls(css, `${ORIGIN}/_next/static/css/app.css`)).toEqual([`${ORIGIN}/_next/static/media/hanken.woff2`]);
   });

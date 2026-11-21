@@ -11,6 +11,7 @@ import type { ParkingAvailability } from '@/lib/providers/types';
 import { DemoDataBanner } from '@/components/common/demo-data-banner';
 import { Freshness } from '@/components/common/freshness';
 import { NotPublished } from '@/components/common/not-published';
+import { SectionSourceList } from '@/components/common/section-source-list';
 import { TerminalBadge } from '@/components/common/terminal-badge';
 import { ProvenanceDefault } from '@/components/common/provenance-tag';
 import { sharedProvenance } from '@/components/common/shared-provenance';
@@ -18,6 +19,7 @@ import { Chip } from '@/components/ui/chip';
 import { Icon } from '@/components/ui/icon';
 import { SegmentedControl } from '@/components/ui/segmented-control';
 import { Table, TableScroll, TBody, Th, THead, Tr } from '@/components/ui/table';
+import { sourcesFor } from '@/components/transport/transport-types';
 import { CarParkCard } from './car-park-card';
 import { AvailabilityValue, baysText, walkText, YesNo } from './car-park-values';
 import type { ParkingPageData } from './parking-types';
@@ -36,6 +38,10 @@ const REFRESH_MS = 60_000;
 /**
  * The car parks, as cards or a comparison table, with simulated space from the
  * ParkingAvailabilityProvider under the demo banner. Honours the airport's terminal filter.
+ *
+ * Round 5 (A-14, 6.1.7): one source list under the list, for either view, instead of a toggle on
+ * every card (each source names the car parks it supports), and the banner is the view's one
+ * "Demo" marker.
  */
 export function CarParkList({ data, terminal, allHref }: CarParkListProps) {
   const t = useT();
@@ -104,7 +110,7 @@ export function CarParkList({ data, terminal, allHref }: CarParkListProps) {
                 <Th>{t('transportPages.parking.fields.ev')}</Th>
                 <Th>{t('transportPages.parking.fields.payment')}</Th>
                 <Th>{t('transportPages.parking.fields.rates')}</Th>
-                <Th>{t('transportPages.availability.title')}</Th>
+                <Th>{t('transportPages.availability.simulatedTitle')}</Th>
               </Tr>
             </THead>
             <TBody>
@@ -173,12 +179,14 @@ export function CarParkList({ data, terminal, allHref }: CarParkListProps) {
                   showTerminal={multi}
                   premiumWarning={data.premiumWarning}
                   defaultProvenance={listProvenance}
+                  groupedSources
                 />
               </li>
             ))}
           </ul>
         </>
       )}
+      <SectionSourceList items={carParks.map((carPark) => ({ name: carPark.name, sources: sourcesFor(carPark.sourceIds, data.sources) }))} />
     </div>
   );
 }

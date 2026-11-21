@@ -75,7 +75,7 @@ export function NoticeStrip({ notices, status, className }: { notices: readonly 
               <span className="text-ink-2">{notice.scope ?? t('home.notice.network')}</span>
               {notice.provenance === 'demo' ? <ProvenanceTag provenance="demo" length="short" className="ml-1" /> : null}
             </h2>
-            <p className="type-body-sm mt-1 font-semibold text-ink sm:text-[0.9375rem]">{notice.title}</p>
+            <p className="type-body-sm mt-1 font-semibold text-ink">{notice.title}</p>
             {period ? <p className="type-caption mt-0.5 text-ink-2 max-sm:hidden [@media(max-height:50rem)]:hidden">{period}</p> : null}
           </div>
           <LocaleLink
@@ -100,7 +100,7 @@ export function NoticeStrip({ notices, status, className }: { notices: readonly 
         <LocaleLink href={sectionHref(mode.section, selection, availability)} className={cn(LINK, 'lg:border-l lg:border-line')}>
           <Icon name={mode.icon} className="text-primary-ink max-xs:hidden" />
           <span className="min-w-0 flex-1">
-            <span className="type-body-sm block font-semibold sm:text-[0.9375rem]">{t(`home.strip.${effectiveMode}.title`, { airport: airportName })}</span>
+            <span className="type-body-sm block font-semibold">{t(`home.strip.${effectiveMode}.title`, { airport: airportName })}</span>
             <span className="type-caption block text-ink-2 max-sm:hidden">{t(`home.strip.${effectiveMode}.body`)}</span>
           </span>
           <Icon name="arrow-right" size="sm" strokeWidth={1.75} className="text-ink-3 transition-transform duration-base group-hover:translate-x-0.5 max-sm:hidden" />
@@ -108,7 +108,7 @@ export function NoticeStrip({ notices, status, className }: { notices: readonly 
         <LocaleLink href={klia ? '/help/terminals' : sectionHref('overview', selection, availability)} className={cn(LINK, 'lg:border-l lg:border-line')}>
           <Icon name="building-2" className="text-primary-ink max-xs:hidden" />
           <span className="min-w-0 flex-1">
-            <span className="type-body-sm block font-semibold sm:text-[0.9375rem]">{t('home.strip.terminalTitle')}</span>
+            <span className="type-body-sm block font-semibold">{t('home.strip.terminalTitle')}</span>
             <span className="type-caption block text-ink-2 max-sm:hidden">
               {klia ? t('home.strip.terminalKlia') : t('home.strip.terminalAirport', { airport: airportName })}
             </span>

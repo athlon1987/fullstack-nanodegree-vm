@@ -43,6 +43,11 @@ export interface JourneyTimelineProps {
   intro?: boolean;
   /** `md` where the page's other section headings are `type-title-md` (the flight page, A-14 type sizes). */
   headingSize?: 'md' | 'lg';
+  /**
+   * Classes for the Demo tag of the simulated steps at the top of the timeline, for a page that
+   * shows a demonstration banner directly above them at some widths (My journey: `lg:hidden`).
+   */
+  leadingDemoTagClassName?: string;
   className?: string;
 }
 
@@ -51,7 +56,7 @@ export interface JourneyTimelineProps {
  * a provenance tag, the airport's sourced notes, and links onward. Links to sections an airport
  * does not have are left out.
  */
-export function JourneyTimeline({ flight, content, sources, now, notices, title, headingId, preferredMode, intro = true, headingSize = 'lg', className }: JourneyTimelineProps) {
+export function JourneyTimeline({ flight, content, sources, now, notices, title, headingId, preferredMode, intro = true, headingSize = 'lg', leadingDemoTagClassName, className }: JourneyTimelineProps) {
   const t = useT();
   const lang = useLang();
   const availability = useSectionAvailability();
@@ -107,6 +112,7 @@ export function JourneyTimeline({ flight, content, sources, now, notices, title,
           // Round 5 (A-14, one Demo label per view): a run of simulated steps (boarding, then
           // departure) shares the label of its first step, a few lines above in the same view.
           const demoAbove = step.provenance === 'demo' && index > 0 && steps[index - 1].provenance === 'demo';
+          const leading = steps.slice(0, index + 1).every((item) => item.provenance === 'demo');
           return (
             <TimelineItem
               key={step.id}
@@ -122,7 +128,7 @@ export function JourneyTimeline({ flight, content, sources, now, notices, title,
               meta={
                 <>
                   {step.optional ? <span className="type-caption rounded-xs border border-dashed border-line-control px-1.5 py-0.5 font-semibold text-ink-2">{t('flightPages.timeline.optional')}</span> : null}
-                  {demoAbove ? null : <ProvenanceTag provenance={step.provenance} length="short" />}
+                  {demoAbove ? null : <ProvenanceTag provenance={step.provenance} length="short" className={leading ? leadingDemoTagClassName : undefined} />}
                 </>
               }
               actions={

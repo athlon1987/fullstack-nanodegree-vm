@@ -285,3 +285,37 @@ describe('search relevance (round 4, 6.1.5)', () => {
     expect(ranked(index, 'terminal 2', { airport: 'kul' }).slice(0, 5).map((hit) => hit.id)).toContain('airport:kul:t2');
   });
 });
+
+describe('every search document field is plain text in its language (round 5)', () => {
+  /** Paths of values that are not strings, numbers or arrays of strings: an unpicked `{ en, ms }` object, for one. */
+  function objectsIn(value: unknown, path: string): string[] {
+    if (value === undefined || typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') return [];
+    if (Array.isArray(value)) return value.flatMap((item, index) => (typeof item === 'string' ? [] : [`${path}[${index}]`]));
+    return [path];
+  }
+
+  for (const [lang, documents] of [
+    ['en', english],
+    ['ms', malay],
+  ] as const) {
+    it(`has no "[object Object]" and no localized object in any field (${lang})`, () => {
+      expect(documents.length).toBeGreaterThan(100);
+      const printed = documents.filter((document) => JSON.stringify(document).includes('[object Object]')).map((document) => document.id);
+      expect(printed).toEqual([]);
+      const objects = documents.flatMap((document) => Object.entries(document).flatMap(([field, value]) => objectsIn(value, `${document.id}.${field}`)));
+      expect(objects).toEqual([]);
+    });
+  }
+
+  it('summarises airlines with their check-in text in each language (airline:kul:mh, airline:pen:cx)', () => {
+    for (const id of ['airline:kul:mh', 'airline:pen:cx']) {
+      const en = english.find((document) => document.id === id);
+      const ms = malay.find((document) => document.id === id);
+      expect(en, id).toBeDefined();
+      expect(ms, id).toBeDefined();
+      expect(en!.summary.length, id).toBeGreaterThan(0);
+      expect(en!.summary).not.toContain('[object');
+      expect(ms!.summary).not.toContain('[object');
+    }
+  });
+});

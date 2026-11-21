@@ -49,10 +49,13 @@ export function FlightSummary({ flight, steps, now }: FlightSummaryProps) {
             <Skeleton className="inline-block h-4 w-48 max-w-full align-middle" />
             <span className="sr-only">{t('flightPages.summary.loading')}</span>
           </span>
+          {/* Phones: room for the lines the answer usually takes (Malay runs a line longer). */}
           <Skeleton className="mt-2 h-4 w-3/4 sm:hidden" />
+          {lang === 'ms' ? <Skeleton className="mt-2 h-4 w-1/2 sm:hidden" /> : null}
         </p>
-        {/* Where the "See this step" link goes. */}
-        <span className="flex items-center gap-3">
+        {/* Where the "See this step" link goes, as tall as that link (`link-action`: 44 px on
+            phones and touch screens, 32 px otherwise). */}
+        <span className="flex min-h-8 items-center gap-3 max-md:min-h-11 touch:min-h-11">
           <Skeleton className="h-5 w-28" />
         </span>
       </div>

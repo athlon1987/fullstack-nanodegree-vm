@@ -66,6 +66,67 @@ function panelOf(airport: Airport): Panel {
   return airport.region === 'peninsular' ? PANELS[0] : PANELS[1];
 }
 
+const panelWidth = (panel: Panel): number => Math.round((panel.east - panel.west) * SCALE);
+const panelHeight = (panel: Panel): number => Math.round((panel.north - panel.south) * SCALE);
+
+/** Label type size in drawing units (the drawing scales, so this is 11 px at 1:1). */
+const LABEL_SIZE = 11;
+/** Gap between a marker's centre and its label. */
+const LABEL_GAP = 9;
+/** Labels drawn to the right of their marker by preference; the rest go to the left. */
+const LABEL_RIGHT = new Set(['kch', 'kul']);
+/** Baseline below the marker's centre (default 4, centred on it): KUL sits under its marker, LGK clear of Alor Setar's. */
+const LABEL_DROP: Readonly<Record<string, number>> = { kul: 14, lgk: 1 };
+
+/** A marker's centre and radius in drawing units (the island disc where there is one), for checks. */
+export function markerCircle(airport: Airport): { x: number; y: number; r: number } {
+  const panel = panelOf(airport);
+  const r = ISLAND_AIRPORTS.has(airport.slug) ? 7 : airport.classification === 'international' ? 5 : 3.6;
+  return { x: x(panel, airport.coordinates.lon), y: y(panel, airport.coordinates.lat), r };
+}
+
+/** A label's width in drawing units: the data face's monospaced advance (about 0.6 em) plus room for its halo. */
+export const labelWidth = (text: string): number => text.length * LABEL_SIZE * 0.62 + 2;
+
+export interface LabelPlacement {
+  slug: string;
+  text: string;
+  x: number;
+  y: number;
+  anchor: 'start' | 'end';
+  /** The panel's drawing size, for checks. */
+  panelWidth: number;
+  panelHeight: number;
+}
+
+/**
+ * Where an international airport's code label goes. Round 5: "LGK" was drawn to the left of
+ * Langkawi, which sits 24 units from the panel's west edge, so 4 units of it fell outside the
+ * drawing and were clipped at every width and zoom (the drawing scales as a whole). A label that
+ * would cross an edge now goes to the other side of its marker, and its baseline stays inside.
+ */
+export function labelPlacement(airport: Airport): LabelPlacement {
+  const panel = panelOf(airport);
+  const width = panelWidth(panel);
+  const height = panelHeight(panel);
+  const cx = x(panel, airport.coordinates.lon);
+  const cy = y(panel, airport.coordinates.lat);
+  const size = labelWidth(airport.code);
+  let anchor: LabelPlacement['anchor'] = LABEL_RIGHT.has(airport.slug) ? 'start' : 'end';
+  if (anchor === 'end' && cx - LABEL_GAP - size < 0) anchor = 'start';
+  else if (anchor === 'start' && cx + LABEL_GAP + size > width) anchor = 'end';
+  const baseline = cy + (LABEL_DROP[airport.slug] ?? 4);
+  return {
+    slug: airport.slug,
+    text: airport.code,
+    x: anchor === 'start' ? cx + LABEL_GAP : cx - LABEL_GAP,
+    y: Math.min(Math.max(baseline, LABEL_SIZE), height - 3),
+    anchor,
+    panelWidth: width,
+    panelHeight: height,
+  };
+}
+
 export interface NetworkMapProps {
   /** Panel titles, in page order: Peninsular Malaysia, then Sabah, Sarawak and Labuan. */
   titles: { peninsular: string; borneo: string };
@@ -81,8 +142,8 @@ export function NetworkMap({ titles, alt, highlight, className }: NetworkMapProp
   return (
     <div className={cn('grid gap-x-8 gap-y-6 sm:grid-cols-[minmax(0,0.53fr)_minmax(0,1fr)] sm:items-end', className)}>
       {PANELS.map((panel) => {
-        const width = Math.round((panel.east - panel.west) * SCALE);
-        const height = Math.round((panel.north - panel.south) * SCALE);
+        const width = panelWidth(panel);
+        const height = panelHeight(panel);
         const airports = AIRPORTS.filter((airport) => panelOf(airport) === panel);
         return (
           <div key={panel.id} className={cn('min-w-0', panel.id === 'peninsular' && 'max-sm:max-w-64')}>
@@ -111,6 +172,7 @@ export function NetworkMap({ titles, alt, highlight, className }: NetworkMapProp
                 const cy = y(panel, airport.coordinates.lat);
                 const dim = highlight ? !highlight.has(airport.slug) : false;
                 const international = airport.classification === 'international';
+                const label = international ? labelPlacement(airport) : undefined;
                 return (
                   <g key={airport.slug} opacity={dim ? 0.22 : 1}>
                     {international ? (
@@ -120,15 +182,9 @@ export function NetworkMap({ titles, alt, highlight, className }: NetworkMapProp
                     ) : (
                       <rect x={cx - 2.3} y={cy - 2.3} width={4.6} height={4.6} transform={`rotate(45 ${cx} ${cy})`} className="fill-ink-2" />
                     )}
-                    {international ? (
-                      <text
-                        x={cx + (airport.slug === 'kch' || airport.slug === 'kul' ? 9 : -9)}
-                        y={cy + (airport.slug === 'kul' ? 14 : 4)}
-                        textAnchor={airport.slug === 'kch' || airport.slug === 'kul' ? 'start' : 'end'}
-                        className="fill-ink font-mono text-[11px] font-semibold"
-                        style={{ paintOrder: 'stroke' }}
-                      >
-                        {airport.code}
+                    {label ? (
+                      <text x={label.x} y={label.y} textAnchor={label.anchor} className="fill-ink font-mono text-[11px] font-semibold" style={{ paintOrder: 'stroke' }}>
+                        {label.text}
                       </text>
                     ) : null}
                   </g>

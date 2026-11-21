@@ -76,8 +76,8 @@ export interface FlightBoardProps {
   className?: string;
 }
 
-/** The block that holds the loading message or the empty state (one element for both, see `loading`). */
-const STATE_BLOCK = 'relative flex flex-col justify-center';
+/** The block that holds the loading message or the empty state (one element for both, see `loading`); top-aligned, so a longer message grows downwards. */
+const STATE_BLOCK = 'relative flex flex-col';
 
 /**
  * The flight board: the hazard-striped demonstration banner, then a neutral dark surface (the
@@ -177,7 +177,7 @@ export function FlightBoard({
         </div>
 
         {flights === null && loading ? (
-          <div role="status" className={STATE_BLOCK} style={{ minHeight: `calc(var(--spacing-row) * ${skeletonRows})` }}>
+          <div role="status" data-board-state="loading" className={STATE_BLOCK} style={{ minHeight: `calc(var(--spacing-row) * ${skeletonRows})` }}>
             {loading}
           </div>
         ) : flights === null ? (
@@ -193,7 +193,7 @@ export function FlightBoard({
           </div>
         ) : flights.length === 0 ? (
           empty ? (
-            <div className={STATE_BLOCK} style={loading ? { minHeight: `calc(var(--spacing-row) * ${skeletonRows})` } : undefined}>
+            <div data-board-state="empty" className={STATE_BLOCK} style={loading ? { minHeight: `calc(var(--spacing-row) * ${skeletonRows})` } : undefined}>
               {empty}
             </div>
           ) : (

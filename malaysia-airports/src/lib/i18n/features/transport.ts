@@ -208,6 +208,8 @@ export const transportPagesEn = {
     percentFull: '{percent}% full',
     freeBays: { one: 'about {count} bay free', other: 'about {count} bays free' },
     context: 'Simulated car park space',
+    // Round 5 (A-14): the value's label on cards and in the table, now that it carries no Demo tag of its own.
+    simulatedTitle: 'Simulated space',
   },
   calculator: {
     title: 'Estimate your stay',
@@ -250,6 +252,9 @@ export const transportPagesEn = {
     title: 'Published fares to {destination}',
     time: 'Journey',
     note: 'Trains and coaches, cheapest first. Taxis, e-hailing, sources and dates are below.',
+    // Round 5: one line per dated fare, the same lines before and after the date is known.
+    periodUntil: '{amount} until {date}',
+    periodEnded: '{amount} until {date}, ended',
   },
   touts: {
     title: 'Book taxis only at the coupon counters; ignore anyone offering a ride',
@@ -500,6 +505,7 @@ export const transportPagesMs: typeof transportPagesEn = {
     percentFull: '{percent}% penuh',
     freeBays: { one: 'kira-kira {count} petak kosong', other: 'kira-kira {count} petak kosong' },
     context: 'Ruang tempat letak kereta simulasi',
+    simulatedTitle: 'Ruang simulasi',
   },
   calculator: {
     title: 'Anggarkan tempoh anda',
@@ -541,6 +547,8 @@ export const transportPagesMs: typeof transportPagesEn = {
     title: 'Tambang terbitan ke {destination}',
     time: 'Perjalanan',
     note: 'Kereta api dan bas, termurah dahulu. Teksi, e-hailing, sumber dan tarikh ada di bawah.',
+    periodUntil: '{amount} hingga {date}',
+    periodEnded: '{amount} hingga {date}, telah tamat',
   },
   touts: {
     title: 'Tempah teksi hanya di kaunter kupon; abaikan sesiapa yang menawarkan tumpangan',

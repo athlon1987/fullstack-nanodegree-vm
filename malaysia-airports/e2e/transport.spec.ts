@@ -203,9 +203,10 @@ test.describe('parking', () => {
     await main.getByRole('combobox', { name: 'Car park' }).first().selectOption('kul-t1-car-park');
     await expect(main.getByRole('status').filter({ hasText: 'No estimate: rates not verified' })).toBeVisible();
 
-    // Simulated space is labelled.
+    // Simulated space is labelled: the list's banner, and each card's label in words (round 5, A-14:
+    // the per-card "Demo" tag became the label "Simulated space"; the banner is the one Demo marker).
     await expect(main.getByRole('note', { name: 'Demonstration data' }).first()).toBeVisible();
-    await expect(main.getByRole('article', { name: 'Preferred Parking' })).toContainText('Demo');
+    await expect(main.getByRole('article', { name: 'Preferred Parking' })).toContainText('Simulated space');
     await expectNoHorizontalOverflow(page);
     await expectNoAxeViolations(page);
   });

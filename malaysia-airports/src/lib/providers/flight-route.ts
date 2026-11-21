@@ -2,8 +2,8 @@
  * The cheap first answer for flight pages (ux-frequent-09, security-05), called from
  * `src/proxy.ts` before any page is rendered:
  *
- *  - a malformed id, an unknown airport or a flight number that is not on that airport's
- *    timetable: `404` with a small, self-contained page (no app shell, well under 30 KB) that
+ *  - a malformed id, an unknown airport, an airport without a board (round 5) or a flight
+ *    number that is not on that airport's timetable: `404` with a small, self-contained page (no app shell, well under 30 KB) that
  *    still helps: it searches the board and links to it;
  *  - a codeshare number (`qr5700-20261118-d`): `308` to the operating flight's page that day;
  *  - a real flight: through to the page, marked cacheable for a short time.
@@ -41,8 +41,10 @@ export function decideFlightRoute(pathname: string): FlightRouteDecision | null 
   }
   const airport = getAirport(slug);
   if (!airport || airport.slug !== slug) return { kind: 'not-found', lang };
-  // Airports without flights: the page answers with its own section-missing state.
-  if (!hasDemoRoutes(airport.slug)) return { kind: 'page' };
+  // Airports without a board (round 5): the same small 404, without a board to search. The page
+  // can no longer answer these with a 404 itself: since round 5 it streams after a static start,
+  // so the status is sent before it knows.
+  if (!hasDemoRoutes(airport.slug)) return { kind: 'not-found', lang };
   const parts = id.length <= MAX_ID_LENGTH ? decodeFlightId(id) : null;
   if (!parts) return { kind: 'not-found', lang, airport: airport.slug };
   if (demoFlightExists(airport.slug, parts.date, parts.direction, id)) return { kind: 'page' };

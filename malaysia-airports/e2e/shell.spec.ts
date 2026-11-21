@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Locator, type Page, type TestInfo } from '@playwright/test';
 import { AXE_TAGS as SHARED_AXE_TAGS } from './support/axe';
 
 /**
@@ -121,7 +121,31 @@ test.describe('A-02 label in name', () => {
   });
 });
 
+/**
+ * Round 5 (open issue 10, verification round four): A-03 waited for network idle, which never came
+ * when its worker's shared client address had been rate-limited on the board feed (429s and
+ * retries). Each A-03 test now sends its own client address through the header the e2e server
+ * trusts (`TRUSTED_CLIENT_IP_HEADER`, as in `playwright.config.ts`), so other tests' requests
+ * cannot use up its limits, and it waits for the search field itself to be hydrated (React has
+ * attached to it) instead of for an idle network. The assertions are unchanged.
+ */
+async function ownClientAddress(page: Page, testInfo: TestInfo) {
+  const key = `${testInfo.project.name}|${testInfo.titlePath.join('|')}|${testInfo.repeatEachIndex}|${testInfo.retry}`;
+  let hash = 0;
+  for (const char of key) hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
+  await page.setExtraHTTPHeaders({ 'x-e2e-client-ip': `10.203.${(hash >>> 8) % 250}.${(hash % 250) + 1}` });
+}
+
+async function waitForHydratedField(field: Locator) {
+  await expect(field).toBeVisible();
+  await expect.poll(() => field.evaluate((element) => Object.keys(element).some((key) => key.startsWith('__reactFiber')))).toBe(true);
+}
+
 test.describe('A-03 the home search is not flights-only', () => {
+  test.beforeEach(async ({ page }, testInfo) => {
+    await ownClientAddress(page, testInfo);
+  });
+
   test('a topic shows site results and a link to all results; Enter opens the site search', async ({ page }) => {
     for (const [lang, query, label] of [
       ['en', 'parking', 'See all results for "parking"'],
@@ -145,8 +169,8 @@ test.describe('A-03 the home search is not flights-only', () => {
   ] as const) {
     test(`a route opens the site search; one exact flight number opens that flight (${lang})`, async ({ page }) => {
       await page.goto(`/${lang}`);
-      await page.waitForLoadState('networkidle');
       const box = page.getByRole('search').first().getByRole('searchbox');
+      await waitForHydratedField(box);
       await box.fill('KUL-PEN');
       await box.press('Enter');
       await expect(page).toHaveURL(new RegExp(`/${lang}/search\\?q=KUL-PEN`));
@@ -154,11 +178,11 @@ test.describe('A-03 the home search is not flights-only', () => {
       // A flight number from the KLIA board's own examples (the demo board changes every day, so
       // a fixed number such as MH2072 is not always on it).
       await page.goto(`/${lang}/kul`);
-      // As above: this checks search routing, so wait until the page is live. Focus or text given
+      // As above: this checks search routing, so wait until the field is live. Focus or text given
       // to the overview's search before hydration is still lost, because its Suspense fallback is
       // replaced rather than hydrated (open issue in docs/qa/verification.md, verification round).
-      await page.waitForLoadState('networkidle');
       const kulBox = page.locator('#flight-search').getByRole('searchbox');
+      await waitForHydratedField(kulBox);
       await kulBox.focus();
       const example = page.locator('#flight-search').getByRole('button', { name: kindLabel }).first();
       await expect(example).toBeVisible();

@@ -60,11 +60,13 @@ export function BoardToolbar({ airport, direction, query, initialQuery, searchKe
         </form>
       </div>
 
-      {/* One row that scrolls sideways on phones, so the board stays near the top of the screen. */}
+      {/* One row that scrolls sideways on phones, so the board stays near the top of the screen.
+          Round 5: as tall as a chip even when no status has flights (at night), so the board under
+          it does not move up when the feed answers. */}
       <div
         role="group"
         aria-labelledby={statusLabelId}
-        className="flex items-center gap-2 max-sm:-mx-gutter max-sm:overflow-x-auto max-sm:px-gutter max-sm:pb-1 sm:flex-wrap"
+        className="flex min-h-9 items-center gap-2 max-sm:-mx-gutter max-sm:min-h-10 max-sm:overflow-x-auto max-sm:px-gutter max-sm:pb-1 sm:flex-wrap touch:min-h-11 max-sm:touch:min-h-12"
       >
         <span id={statusLabelId} className="type-eyebrow mr-1 shrink-0 text-ink-2">
           {t('flightPages.board.statusLabel')}

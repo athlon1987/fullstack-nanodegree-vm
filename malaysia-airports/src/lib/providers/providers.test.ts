@@ -536,6 +536,10 @@ describe('flight route guard (B-14)', () => {
     expect(decideFlightRoute('/ms/kul/flights/%3Cimg%20src%3Dx%3E')).toEqual({ kind: 'not-found', lang: 'ms', airport: 'kul' });
     expect(decideFlightRoute(`/en/kul/flights/${'x'.repeat(1600)}`)).toMatchObject({ kind: 'not-found' });
     expect(decideFlightRoute('/en/zzz/flights/mh1-20261117-d')).toEqual({ kind: 'not-found', lang: 'en' });
+    // Round 5: an airport without a board is answered here too (the page streams after a static
+    // start, so it could no longer send the 404 itself).
+    expect(decideFlightRoute('/en/bbn/flights/mh1-20261117-d')).toEqual({ kind: 'not-found', lang: 'en' });
+    expect(decideFlightRoute('/ms/tod/flights/mh1-20261117-d')).toEqual({ kind: 'not-found', lang: 'ms' });
     expect(decideFlightRoute(`/en/kul/flights/${real.id}`)).toEqual({ kind: 'page' });
     expect(decideFlightRoute('/en/kul/flights/feed')).toBeNull();
     expect(decideFlightRoute('/en/kul/flights')).toBeNull();

@@ -173,7 +173,9 @@ export function FlightStatusHero({ flight, pending = false, updatedAt, refreshSe
             </Fact>
             {departure ? (
               <>
-                <Fact label={t('common.labels.checkIn')} wide demo={checkIn.length > 0}>
+                {/* While pending, the labels the values will carry are already there, so the timetable
+                    facts around them are labelled in every view (content-integrity-03). */}
+                <Fact label={t('common.labels.checkIn')} wide demo={pending || checkIn.length > 0}>
                   {!live ? (
                     waiting('h-6 w-48')
                   ) : checkIn.length > 0 ? (
@@ -201,7 +203,7 @@ export function FlightStatusHero({ flight, pending = false, updatedAt, refreshSe
                     notAssigned(t('flightPages.detail.checkInNotShown'))
                   )}
                 </Fact>
-                <Fact label={t('common.labels.gate')} wide demo={Boolean(live?.gate)}>
+                <Fact label={t('common.labels.gate')} wide demo={pending || Boolean(live?.gate)}>
                   {!live ? waiting('h-8 w-16') : live.gate ? <span className="type-data-xl text-board-accent">{live.gate}</span> : notAssigned(t('flights.board.gateNotAssigned'))}
                 </Fact>
                 {live?.boardingAt && !cancelled ? (
@@ -241,21 +243,5 @@ export function FlightStatusHero({ flight, pending = false, updatedAt, refreshSe
         ) : null}
       </div>
     </section>
-  );
-}
-
-/** Placeholder while the clock is not available (before hydration). */
-export function FlightStatusHeroSkeleton() {
-  const t = useT();
-  return (
-    <div role="status" className="flex flex-col">
-      <span className="sr-only">{t('flightPages.detail.loading')}</span>
-      <DemoDataBanner attached />
-      <div className="surface-board rounded-b-lg border border-t-0 border-line px-4 py-6 sm:px-6">
-        <Skeleton className="h-8 w-40" />
-        <Skeleton className="mt-6 h-10 w-full max-w-md" />
-        <Skeleton className="mt-6 h-16 w-full" />
-      </div>
-    </div>
   );
 }

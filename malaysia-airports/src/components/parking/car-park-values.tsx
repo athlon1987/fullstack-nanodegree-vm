@@ -6,7 +6,6 @@ import type { Translator } from '@/lib/i18n/translate';
 import { formatCurrency, formatDuration, formatQualifiedNumber } from '@/lib/format';
 import { useT } from '@/lib/i18n/client';
 import type { ParkingAvailability } from '@/lib/providers';
-import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { Chip, type ChipTone } from '@/components/ui/chip';
 import type { IconKey } from '@/components/ui/icon';
 import type { CarParkView } from './parking-types';
@@ -18,7 +17,13 @@ const LEVEL_FORM: Record<ParkingAvailability['level'], { tone: ChipTone; icon: I
   full: { tone: 'critical', icon: 'circle-x' },
 };
 
-/** Simulated space in a car park: level in words with an icon, free bays or percent full, and the demo tag. */
+/**
+ * Simulated space in a car park: level in words with an icon, free bays or percent full.
+ *
+ * Round 5 (A-14, 6.1.7): no "Demo" tag of its own. The list's demonstration-data banner marks the
+ * view once, and the value's label says "Simulated space" in words wherever it is shown (card and
+ * table), so it is never read as live.
+ */
 export function AvailabilityValue({ availability }: { availability: ParkingAvailability | null | undefined }) {
   const t = useT();
   if (availability === undefined) return null;
@@ -35,12 +40,9 @@ export function AvailabilityValue({ availability }: { availability: ParkingAvail
       ? t.count('transportPages.availability.freeBays', availability.availableBays)
       : t('transportPages.availability.percentFull', { percent: availability.percentFull });
   return (
-    <span className="flex flex-wrap items-center gap-2">
-      <Chip tone={form.tone} icon={form.icon}>
-        {t(`transportPages.availability.levels.${availability.level}`)} · {detail}
-      </Chip>
-      <ProvenanceTag provenance="demo" length="short" />
-    </span>
+    <Chip tone={form.tone} icon={form.icon}>
+      {t(`transportPages.availability.levels.${availability.level}`)} · {detail}
+    </Chip>
   );
 }
 

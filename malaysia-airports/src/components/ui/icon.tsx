@@ -1,25 +1,32 @@
-import { createElement, type SVGAttributes } from 'react';
-import { ICON_DATA } from './icon-data';
+import type { SVGAttributes } from 'react';
+import { ICON_NAMES as NAMES } from './icon-names';
+import sprite from './icons.svg';
 
 /*
- * The icon registry. Round 5 (E-03, A-09): the geometry is plain data generated from lucide-react
- * (`icon-data.ts`, `icon-data.generate.mjs`) and `Icon` renders ordinary SVG. It has no
- * `'use client'` and no hooks, so icons in Server Components are static HTML: no client
- * reference, no geometry in the RSC payload and nothing to hydrate (lucide-react 1.x renders
- * every icon through a Client Component). Client Components still import it as before.
+ * The icon registry. Round 5 (E-03, A-09, E-11): no script carries icon geometry. Every icon is
+ * `<svg><use href="icons.svg#name"/></svg>`, pointing at one sprite generated from lucide-react
+ * (`icons.svg`, `icon-data.generate.mjs`), a content-hashed static file (about 8 KB gzip) the
+ * browser and the service worker keep. `Icon` has no `'use client'` and no hooks, so icons in
+ * Server Components are static HTML: no client reference, no geometry in the RSC payload and
+ * nothing to hydrate (lucide-react 1.x rendered every icon through a Client Component, and its
+ * registry was in the first load of all 39 routes). Client Components import it as before.
  *
  * Names are lucide's own kebab-case names, so they stay serialisable across the server and
  * client boundary (a string prop, never a component prop).
  */
 
+/** The sprite's URL (a string in unit tests, where `.svg` imports are plain URLs). */
+const SPRITE_URL: string = typeof sprite === 'string' ? sprite : (sprite as { src: string }).src;
+
 /** Every icon the system ships. */
-export type IconName = keyof typeof ICON_DATA;
+export type IconName = (typeof NAMES)[number];
 
 /** A registry name or a semantic key from the domain layer (`prayer-room`, `rail`, `departing`). Unknown keys fall back to a circle. */
 export type IconKey = IconName | (string & {});
 
 /** All icon names, for the style guide. */
-export const ICON_NAMES = Object.keys(ICON_DATA) as IconName[];
+export const ICON_NAMES: readonly IconName[] = NAMES;
+const NAME_SET: ReadonlySet<string> = new Set(NAMES);
 
 /**
  * Semantic keys used by the domain layer (facility categories, map points, transport modes,
@@ -120,7 +127,7 @@ const ALIASES: Record<string, IconName> = {
 
 /** Resolve any icon key (a registry name or a domain key) to a registry name. */
 export function resolveIconName(key: string): IconName {
-  if (Object.prototype.hasOwnProperty.call(ICON_DATA, key)) return key as IconName;
+  if (NAME_SET.has(key)) return key as IconName;
   return Object.prototype.hasOwnProperty.call(ALIASES, key) ? ALIASES[key] : 'circle';
 }
 
@@ -163,7 +170,6 @@ export function iconClassName(size: keyof typeof SIZES, className?: string): str
  * @example <Icon name="plane-takeoff" size="sm" />
  */
 export function Icon({ name, size = 'md', label, strokeWidth = 1.5, className, ...rest }: IconProps) {
-  const parts = ICON_DATA[resolveIconName(name)];
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -180,7 +186,7 @@ export function Icon({ name, size = 'md', label, strokeWidth = 1.5, className, .
       {...(label ? { role: 'img', 'aria-label': label } : { 'aria-hidden': true })}
       {...rest}
     >
-      {parts.map((part, index) => (typeof part === 'string' ? <path key={index} d={part} /> : createElement(part[0], { key: index, ...part[1] })))}
+      <use href={`${SPRITE_URL}#${resolveIconName(name)}`} />
     </svg>
   );
 }

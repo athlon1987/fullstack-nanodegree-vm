@@ -6,7 +6,7 @@ import { getSource } from '@/content';
 import { SkipLink } from '@/components/common/skip-link';
 import { GlobalOverlays } from '@/components/shell/global-overlays';
 import { MobileBar } from '@/components/shell/mobile-bar';
-import { PlatformRuntime } from '@/components/platform/platform-runtime';
+import { PlatformRuntimeLazy } from '@/components/platform/platform-runtime-lazy';
 import { sectionAvailability } from '@/components/shell/sections.server';
 import { ShellProvider } from '@/components/shell/shell-context';
 import { SiteFooter } from '@/components/shell/site-footer';
@@ -16,7 +16,7 @@ import { UrlSync } from '@/lib/hooks/use-url';
 import { clientDictionary, getT, isLang, langParams } from '@/lib/i18n';
 import { I18nProvider } from '@/lib/i18n/client';
 import { PREFERENCES_INIT_SCRIPT } from '@/lib/preferences';
-import { SITE_INDEXABLE } from '@/lib/seo';
+import { INHERITED_ALTERNATES, SITE_INDEXABLE } from '@/lib/seo';
 import '../globals.css';
 
 /** Both locales are prerendered; `[lang]` is a root param, so this is required under Cache Components. */
@@ -32,6 +32,8 @@ export async function generateMetadata(): Promise<Metadata> {
     title: { default: `${t('common.appName')}: ${t('common.tagline')}`, template: `%s | ${t('common.appName')}` },
     description: t('footer.disclaimer'),
     applicationName: t('common.appName'),
+    // Round 5 (E-14, polish package): every page's own canonical in the head too (`./`, see `INHERITED_ALTERNATES`).
+    alternates: INHERITED_ALTERNATES,
     // A concept prototype must not be mistaken for the official site in search results; the
     // owner opts in with SITE_INDEXING=allow (the same switch as the X-Robots-Tag header).
     robots: SITE_INDEXABLE ? undefined : { index: false, follow: false },
@@ -79,18 +81,11 @@ export default async function RootLayout({ children }: LayoutProps<'/[lang]'>) {
               {children}
             </main>
             <SiteFooter lang={lang} />
-            {/* Round 5 (A-09, E-01): the phone bar and the offline and update notices hydrate in
-                their own boundaries, after the page's first hydration task and in small slices.
-                Nothing in them suspends, so the server HTML is unchanged; a tap on the bar before
-                then hydrates it at once (React's selective hydration). The overlays stay in the
-                first task: they replay taps made before hydration (A-09). */}
-            <Suspense>
-              <MobileBar />
-            </Suspense>
+            {/* Round 5 (E-03): the offline and update notices' script loads on its own, not in the
+                first load (`PlatformRuntimeLazy`). */}
+            <MobileBar />
             <GlobalOverlays />
-            <Suspense>
-              <PlatformRuntime />
-            </Suspense>
+            <PlatformRuntimeLazy />
             {/* Tells the URL hooks in `use-url.ts` about client-side navigations (round 2). */}
             <Suspense fallback={null}>
               <UrlSync />
