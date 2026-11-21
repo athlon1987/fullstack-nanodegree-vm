@@ -190,11 +190,12 @@ async function Overview({ params }: { params: AirportPageParams }) {
       <Section tone={explore.length > 0 ? 'subtle' : 'page'} spacing="md" aria-labelledby="airport-facts-title">
         <SectionHeading id="airport-facts-title" title={t('airportPage.factsTitle')} lead={t('airportPage.factsLead')} variant="title" />
         <div className="grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
-          <KeyFact label={t('airportPage.facts.iata')} value={airport.code} mono provenance={tag('code')} hint={hint('code')} />
+          {/* Round 5 (A-14, at most 8 type sizes): the two codes in the data face at the step the
+              page already uses for times (20 px), not a 24 px step of their own. */}
+          <KeyFact label={t('airportPage.facts.iata')} value={<span className="type-data-lg">{airport.code}</span>} provenance={tag('code')} hint={hint('code')} />
           <KeyFact
             label={t('airportPage.facts.icao')}
-            value={airport.icao ?? <NotPublished />}
-            mono={Boolean(airport.icao)}
+            value={airport.icao ? <span className="type-data-lg">{airport.icao}</span> : <NotPublished />}
             provenance={airport.icao ? tag('icao') : undefined}
             hint={airport.icao ? (unverified('icao') ? t('airportPage.facts.icaoUnverified') : undefined) : t('airportPage.facts.icaoMissing')}
           />
