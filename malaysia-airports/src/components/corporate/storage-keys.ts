@@ -23,6 +23,8 @@ export const DEVICE_KEYS: readonly DeviceKey[] = [
   { key: storageKey('flight-alerts', 1), area: 'local', label: 'corporatePages.privacy.stored.keys.flightAlerts' },
   { key: storageKey('concierge-consent', 1), area: 'local', label: 'corporatePages.privacy.stored.keys.conciergeConsent' },
   { key: storageKey('concierge-conversation', 1), area: 'session', label: 'corporatePages.privacy.stored.keys.conciergeConversation' },
+  // Round 2 (E-17): the measurement switch (`measurementStore` in components/platform/analytics.ts).
+  { key: storageKey('measurement', 1), area: 'local', label: 'corporatePages.privacy.stored.keys.measurement' },
   { key: 'lang', area: 'cookie', label: 'corporatePages.privacy.stored.keys.lang' },
 ];
 

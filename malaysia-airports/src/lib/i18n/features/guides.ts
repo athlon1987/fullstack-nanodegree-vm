@@ -67,9 +67,10 @@ export const guidePagesEn = {
     helpAction: 'Visit the help centre',
   },
   transit: {
-    metaTitle: 'Connections and transit: {airport}',
+    metaTitle: 'Transit and connections: {airport}',
     metaDescription: 'Plan a connection at {airport}: the steps for your terminals and tickets, time guidance and what to do if your first flight is late.',
-    title: 'Connecting at {airport}',
+    // A-21 hand-off (round 2): the page title uses the section noun.
+    title: 'Transit and connections at {airport}',
     lead: 'Tell us how you arrive and leave. We show the steps for your case, a rough time estimate, and what to do if things run late.',
     leadSimple: 'What we know about changing flights at {airport}, and who to ask.',
     planner: {
@@ -440,9 +441,10 @@ export const guidePagesMs: typeof guidePagesEn = {
     helpAction: 'Lawati pusat bantuan',
   },
   transit: {
-    metaTitle: 'Sambungan dan transit: {airport}',
+    metaTitle: 'Transit dan sambungan: {airport}',
     metaDescription: 'Rancang sambungan penerbangan di {airport}: langkah mengikut terminal dan tiket anda, panduan masa dan apa yang perlu dilakukan jika penerbangan pertama lewat.',
-    title: 'Sambungan di {airport}',
+    // A-21 hand-off (round 2): the page title uses the section noun.
+    title: 'Transit dan sambungan di {airport}',
     lead: 'Nyatakan cara anda tiba dan berlepas. Kami tunjukkan langkah bagi keadaan anda, anggaran masa kasar, dan apa yang perlu dilakukan jika berlaku kelewatan.',
     leadSimple: 'Apa yang kami tahu tentang menukar penerbangan di {airport}, dan siapa yang perlu ditanya.',
     planner: {

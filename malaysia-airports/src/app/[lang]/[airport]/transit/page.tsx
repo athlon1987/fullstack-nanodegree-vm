@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
-import { airportsWithContent, getAirport, getSource, pick, resolveSources } from '@/content';
+import { airportsWithContent, getSource, pick, resolveSources } from '@/content';
 import { getT, toLang } from '@/lib/i18n';
-import { airportSectionMetadata, loadAirportPageFor, type AirportPageParams } from '@/components/airport/section-page';
+import { localAirport, airportSectionMetadata, loadAirportPageFor, type AirportPageParams } from '@/components/airport/section-page';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { EmptyState } from '@/components/common/empty-state';
 import { ExternalLink } from '@/components/common/external-link';
@@ -38,7 +38,7 @@ const transitEmptyState = (_sections: readonly unknown[], slug: string) => airpo
 
 export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/transit'>) {
   const { lang, airport: slug } = await params;
-  const airport = getAirport(slug);
+  const airport = localAirport(slug, lang);
   const t = getT(toLang(lang));
   return airportSectionMetadata(
     params,

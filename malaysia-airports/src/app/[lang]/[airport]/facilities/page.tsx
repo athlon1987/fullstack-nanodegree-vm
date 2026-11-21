@@ -1,13 +1,11 @@
 import { Suspense } from 'react';
-import { getAirport, pick, resolveSources, terminalLabel } from '@/content';
+import { terminalLabel } from '@/content';
 import { getT, toLang } from '@/lib/i18n';
-import { airportSectionMetadata, loadAirportPage, sectionStaticParams, type AirportPageParams } from '@/components/airport/section-page';
+import { localAirport, airportSectionMetadata, loadAirportPage, sectionStaticParams, type AirportPageParams } from '@/components/airport/section-page';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
-import { ExternalLink } from '@/components/common/external-link';
 import { LocaleLink } from '@/components/common/locale-link';
-import { ProvenanceTag } from '@/components/common/provenance-tag';
-import { SourceNote } from '@/components/common/source-note';
 import { PageHeader } from '@/components/common/page-header';
+import { PrototypeGapsLink } from '@/components/common/prototype-gaps-link';
 import { TranslationNotice } from '@/components/common/translation-notice';
 import { FacilitiesDirectory } from '@/components/facilities/facilities-directory';
 import { facilityViews, needsTranslationNotice, officialPages, sourceLookup } from '@/components/map/map-view.server';
@@ -23,7 +21,7 @@ export const ensureStatic = 'navigation';
 
 export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/facilities'>) {
   const { lang, airport: slug } = await params;
-  const airport = getAirport(slug);
+  const airport = localAirport(slug, lang);
   const t = getT(toLang(lang));
   return airportSectionMetadata(params, 'facilities', airport ? { description: t('mapPages.facilities.metaDescription', { airport: airport.name }) } : {});
 }
@@ -50,7 +48,6 @@ export default function FacilitiesPage({ params }: PageProps<'/[lang]/[airport]/
 async function Facilities({ params }: { params: AirportPageParams }) {
   const { lang, t, airport, content, sections } = await loadAirportPage(params, 'facilities');
   const items = facilityViews(content, lang);
-  const gaps = content.guidesNotes.find((note) => note.id === `${airport.slug}-content-gaps`);
   const official = officialPages(content);
   const translationMissing = needsTranslationNotice(
     content.facilities.flatMap((facility) => [facility.name, facility.description, facility.locationNote, facility.access]),
@@ -82,29 +79,16 @@ async function Facilities({ params }: { params: AirportPageParams }) {
           airportName={airport.shortName}
         />
 
-        <section aria-labelledby="facility-gaps-title" className="mt-14 grid gap-6 border-t border-line pt-10 lg:grid-cols-[minmax(0,17.5rem)_minmax(0,1fr)] lg:gap-10">
-          <h2 id="facility-gaps-title" className="type-title-lg text-ink">
-            {t('mapPages.facilities.gapsTitle')}
-          </h2>
-          <div className="min-w-0 max-w-reading">
-            {gaps ? (
-              <>
-                <div className="flex flex-wrap items-center gap-3">
-                  <p className="type-title-sm text-ink">{pick(gaps.title, lang)}</p>
-                  <ProvenanceTag provenance={gaps.provenance} />
-                </div>
-                <p className="type-body mt-2 text-ink-2">{pick(gaps.body, lang)}</p>
-                <SourceNote sources={resolveSources(gaps.sources)} className="mt-1" />
-              </>
-            ) : (
-              <p className="type-body text-ink-2">{t('empty.officialPointer')}</p>
-            )}
-            <p className="type-body-sm mt-4 text-ink-2">{t('mapPages.facilities.sourcesNote')}</p>
-            <ExternalLink href={official.airport} variant="action" className="type-body-sm mt-1">
-              {t('mapPages.officialAirportPage')}
-            </ExternalLink>
-          </div>
-        </section>
+        {/* D-05 hand-off (round 2): one line to the single list on About this prototype. */}
+        <PrototypeGapsLink
+          lang={lang}
+          airport={airport.slug}
+          airportName={airport.shortName}
+          id="facility-gaps-title"
+          title={t('mapPages.facilities.gapsTitle')}
+          officialHref={official.airport}
+          officialLabel={t('mapPages.officialAirportPage')}
+        />
       </Container>
     </>
   );

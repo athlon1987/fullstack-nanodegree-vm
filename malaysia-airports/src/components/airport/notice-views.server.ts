@@ -2,14 +2,14 @@
  * Server-side: turn content-layer notices into `NoticeView`s for one language.
  * Imports `@/content`, so never import this file from a Client Component.
  */
-import { getAirport, hasTranslation, pick, resolveSources, terminalLabel, type Lang, type Notice } from '@/content';
+import { getAirport, hasTranslation, localizeAirport, pick, resolveSources, terminalLabel, type Lang, type Notice } from '@/content';
 import type { NoticeView } from './notice-utils';
 
 /** Where a notice applies: "KLIA Terminal 1", "Penang", or undefined for the whole network. */
 function scopeOf(notice: Notice, lang: Lang): string | undefined {
   const airport = notice.airport ? getAirport(notice.airport) : undefined;
   if (!airport) return undefined;
-  return notice.terminal ? terminalLabel(airport, notice.terminal, lang) : airport.shortName;
+  return notice.terminal ? terminalLabel(airport, notice.terminal, lang) : localizeAirport(airport, lang).shortName;
 }
 
 /**

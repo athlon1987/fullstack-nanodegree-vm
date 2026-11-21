@@ -133,7 +133,7 @@ What changed for every team, and what we ask of you. Details: `docs/qa/fixes/E.m
 **Limits and environment**
 
 - Request limits per route (`ROUTE_POLICIES` in `src/lib/concierge/rate-limit.ts`): flights API 60 burst then 1/s, health 10, reports 30, other API 60, per-request pages 60, concierge 10 then 1 every 6 s.
-- Production must set `TRUSTED_PROXY_HOPS` or `TRUSTED_CLIENT_IP_HEADER`; otherwise every client shares one bucket. Optional: `HEALTH_TOKEN` (detailed health), `CONCIERGE_MAX_CALLS_PER_MINUTE`, `_PER_DAY`, `_PER_MONTH`.
+- Production must set `TRUSTED_PROXY_HOPS` or `TRUSTED_CLIENT_IP_HEADER`; otherwise the server logs a `[rate-limit]` warning at start-up and falls back to an untrusted per-address key with a site-wide ceiling (round 2; `security.md` section 4). Optional: `HEALTH_TOKEN` (detailed health), `CONCIERGE_MAX_CALLS_PER_MINUTE`, `_PER_DAY`, `_PER_MONTH`.
 - `/api/flights` refuses repeated parameters and dates outside yesterday to the day after tomorrow.
 
 **Inline scripts and the CSP.** A report-only policy without `'unsafe-inline'` now runs. Inline scripts other than the preferences script will be reported. Package A: export `EARLY_TAP_SCRIPT`, `EARLY_MODE_SCRIPT` and `SAVED_FLIGHT_FLAG_SCRIPT` (or move them to one module) so `next.config.ts` can hash them before the policy is enforced.

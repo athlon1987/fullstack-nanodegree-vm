@@ -111,6 +111,33 @@ test.describe('API hardening (fix round)', () => {
     }
   });
 
+  // Verification round two: Next.js copied the response's `Link` value (canonical included) into
+  // regenerated pages, so the shared flight-page shell named other flights as canonical and static
+  // pages gained one more canonical per regeneration. Each page must name exactly one: itself.
+  // The copy happened only when React added its own preload entries to `Link` (next.config.ts,
+  // `reactMaxHeadersLength`), and a regeneration needs a minute, so the first check is on the cause.
+  test('a flight page names only itself as canonical, whichever flight pages were served before', async ({ request }) => {
+    for (const path of ['/en', '/ms/kul/parking', '/en/guides/baggage', '/en/kul/flights']) {
+      const link = (await request.get(path, { maxRedirects: 0 })).headers().link ?? '';
+      expect(link, `${path}: preload entries in Link`).not.toContain('rel=preload');
+    }
+    const board = await request.get('/api/flights?airport=kul&dir=d&limit=12');
+    const { flights } = (await board.json()) as { flights: { id: string }[] };
+    let checked = 0;
+    for (const { id } of flights) {
+      const response = await request.get(`/en/kul/flights/${id}`, { maxRedirects: 0 });
+      if (response.status() !== 200) continue; // a codeshare redirects to its operating flight
+      const canonicals = (response.headers().link ?? '').match(/<[^>]*>; rel="canonical"/g) ?? [];
+      expect(canonicals, id).toEqual([expect.stringContaining(`/en/kul/flights/${id}>`)]);
+      checked += 1;
+    }
+    expect(checked).toBeGreaterThanOrEqual(3);
+    for (const path of ['/en', '/ms/kul/parking', '/en/guides/baggage']) {
+      const link = (await request.get(path, { maxRedirects: 0 })).headers().link ?? '';
+      expect(link.match(/rel="canonical"/g), path).toHaveLength(1);
+    }
+  });
+
   test('a stricter report-only policy reports to this site', async ({ request }) => {
     const headers = (await request.get('/en')).headers();
     expect(headers['content-security-policy-report-only']).toContain("require-trusted-types-for 'script'");
@@ -125,12 +152,16 @@ test.describe('API hardening (fix round)', () => {
 
   test('404 responses are not kept in shared caches for long (production)', async ({ request }) => {
     test.skip(await isDevServer(request), 'The dev server never caches; judge against a production build.');
-    for (const path of ['/en/nope-xyz', '/xyz.txt', '/en/a/b/c']) {
+    // Round 2: the proxy's flight 404 is checked too, and a shared cache falls back to max-age
+    // when there is no s-maxage, so that is held to the same 60 seconds.
+    for (const path of ['/en/nope-xyz', '/xyz.txt', '/en/a/b/c', '/en/kul/flights/zz9999-20990101-d']) {
       await request.get(path);
       const response = await request.get(path);
+      expect(response.status(), path).toBe(404);
       const cacheControl = response.headers()['cache-control'] ?? '';
       const sMaxAge = /s-maxage=(\d+)/.exec(cacheControl);
-      expect(!sMaxAge || Number(sMaxAge[1]) <= 60, `${path}: ${cacheControl}`).toBe(true);
+      const maxAge = /(?:^|[\s,])max-age=(\d+)/.exec(cacheControl);
+      expect(sMaxAge ? Number(sMaxAge[1]) <= 60 : !maxAge || Number(maxAge[1]) <= 60, `${path}: ${cacheControl}`).toBe(true);
     }
   });
 });

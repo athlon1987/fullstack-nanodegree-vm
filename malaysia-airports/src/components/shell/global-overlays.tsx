@@ -1,5 +1,6 @@
 'use client';
 
+import { EARLY_TAP_SCRIPT } from '@/lib/inline-scripts';
 import { usePathname } from 'next/navigation';
 import { Suspense, lazy, useEffect, useRef, useState, type ReactNode } from 'react';
 import { usePreferencesSync } from '@/lib/hooks';
@@ -35,7 +36,6 @@ function Deferred({ name, ready, children }: { name: OverlayName; ready: boolean
  * not attached its handlers yet) are remembered here, during HTML parsing, and replayed once the
  * shell has hydrated (A-09: early taps took no effect).
  */
-const EARLY_TAP_SCRIPT = `(function(){try{document.addEventListener('click',function(e){if(window.__maHydrated)return;var t=e.target&&e.target.closest?e.target.closest('[data-early-overlay]'):null;if(t)window.__maEarlyOverlay=t.getAttribute('data-early-overlay')},true)}catch(e){}})()`;
 
 type EarlyWindow = Window & { __maHydrated?: boolean; __maEarlyOverlay?: string };
 

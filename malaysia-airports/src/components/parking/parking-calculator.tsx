@@ -235,7 +235,7 @@ export function ParkingCalculator({ data, initial }: { data: ParkingPageData; in
         {carPark.bookingUrl ? (
           // The official site takes no product or dates in its link, so the dates go beside it (C-01).
           <div className="flex flex-col gap-1 border-t border-line pt-3">
-            <ExternalLink href={carPark.bookingUrl} variant="action" className="type-body-sm self-start font-semibold">
+            <ExternalLink href={carPark.bookingUrl} variant="action" className="type-body-sm self-start font-semibold" data-handoff="parking-booking">
               {t('transportPages.calculator.bookAction', { carPark: carPark.name })}
             </ExternalLink>
             {entryAt && exitAt && minutes !== null && minutes > 0 ? (

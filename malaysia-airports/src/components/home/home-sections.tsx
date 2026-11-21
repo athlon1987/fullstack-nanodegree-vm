@@ -6,14 +6,18 @@ import {
   airportsByClassification,
   airportsWithContent,
   getAirportContent,
+  getNotices,
   isMultiTerminal,
+  localizeAirport,
   pick,
   resolveSources,
   type Airport,
   type GuideNote,
   type Lang,
+  type Source,
   type Terminal,
 } from '@/content';
+import { ARRIVAL_TIME_RULE } from '@/content/planning-rules';
 import { cn } from '@/lib/cn';
 import { getT } from '@/lib/i18n';
 import { AirportVignette } from '@/components/art/airport-vignette';
@@ -39,6 +43,7 @@ import { ConciergeQuestions } from './concierge-questions';
 import { JourneyModeGuidance, JourneyModes } from './journey-modes';
 import { JourneyTeaser, type TeaserOfficialFact } from './journey-teaser';
 import { ModeQuickActions } from './mode-quick-actions';
+import { HomeOpsStatus } from './home-ops-status';
 import { NoticeStrip } from './notice-strip';
 import { SavedFlightFlag, SavedFlightSlot } from './saved-flight-slot';
 import { ShopDineStrip, type ShopDineFilter } from './shop-dine-strip';
@@ -67,6 +72,13 @@ function arrivalChecklist(lang: Lang): ArrivalChecklistItem | null {
     ...(action ? { action: { label: pick(action.label, lang), href: action.href } } : {}),
     guideHref: `/guides/${guide.slug}`,
   };
+}
+
+/** KLIA's notices and their sources for the home status row (B-01 hand-off, round 2). */
+function kliaStatusData() {
+  const notices = getNotices('kul');
+  const sources: Record<string, Source> = Object.fromEntries(resolveSources([...new Set(notices.flatMap((notice) => notice.sources))]).map((source) => [source.id, source]));
+  return { notices, sources };
 }
 
 export function HomeHero({ lang, notices }: { lang: Lang; notices: readonly NoticeView[] }) {
@@ -106,7 +118,7 @@ export function HomeHero({ lang, notices }: { lang: Lang; notices: readonly Noti
           <ModeQuickActions />
         </div>
 
-        <NoticeStrip notices={notices} />
+        <NoticeStrip notices={notices} status={<HomeOpsStatus {...kliaStatusData()} />} />
         {arrival ? <ArrivalChecklist item={arrival} /> : null}
       </Container>
     </section>
@@ -166,7 +178,16 @@ export function HomeJourney({ lang }: { lang: Lang }) {
           <ProvenanceLegend kinds={['official', 'estimated', 'suggestion']} />
           <p className="type-caption mt-3 text-ink-2">{t('journey.timeline.intro')}</p>
         </div>
-        <JourneyTeaser facts={facts} fallback={phone ? { value: phone.value, sources: resolveSources(phone.sources) } : undefined} />
+        <JourneyTeaser
+          facts={facts}
+          arrival={{
+            minutesBefore: ARRIVAL_TIME_RULE.minutesBefore,
+            text: pick(ARRIVAL_TIME_RULE.text, lang),
+            provenance: ARRIVAL_TIME_RULE.provenance,
+            sources: resolveSources(ARRIVAL_TIME_RULE.sources),
+          }}
+          fallback={phone ? { value: phone.value, sources: resolveSources(phone.sources) } : undefined}
+        />
       </div>
     </Section>
   );
@@ -174,8 +195,10 @@ export function HomeJourney({ lang }: { lang: Lang }) {
 
 /* ---- The network ----------------------------------------------------------------------------- */
 
-function AirportCard({ airport, terminal, lang, large = false }: { airport: Airport; terminal?: Terminal; lang: Lang; large?: boolean }) {
+function AirportCard({ airport: record, terminal, lang, large = false }: { airport: Airport; terminal?: Terminal; lang: Lang; large?: boolean }) {
   const t = getT(lang);
+  // Names, city and state in the page language (D-09 hand-off, round 2).
+  const airport = localizeAirport(record, lang);
   const title = terminal ? pick(terminal.name, lang) : airport.shortName;
   const place = airport.city === airport.state ? airport.city : `${airport.city}, ${airport.state}`;
   return (

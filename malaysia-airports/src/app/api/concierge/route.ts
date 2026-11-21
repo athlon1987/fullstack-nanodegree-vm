@@ -1,7 +1,7 @@
 import { answerQuestion } from '@/lib/concierge/engine';
 import { flightSourceFromProvider } from '@/lib/concierge/flights';
 import { buildConciergeKnowledge } from '@/lib/concierge/knowledge.server';
-import { clientKey, createTokenBucket, sharedModelBudget, type RateLimitStore } from '@/lib/concierge/rate-limit';
+import { ceilingPolicy, createTokenBucket, limitKey, sharedModelBudget, type RateLimitStore } from '@/lib/concierge/rate-limit';
 import { rephraseAnswer } from '@/lib/concierge/rephrase.server';
 import { ConciergeRequestSchema, isJsonMediaType, isSameOriginRequest, readBodyWithLimit, siteOrigins } from '@/lib/concierge/request';
 import type { ConciergeResponse } from '@/lib/concierge/types';
@@ -32,7 +32,10 @@ import { getFlightProvider } from '@/lib/providers';
  * only: see rate-limit.ts). In memory here; a shared `RateLimitStore` replaces it with several
  * instances.
  */
-const bucket: RateLimitStore = createTokenBucket({ capacity: 10, refillPerSecond: 1 / 6 });
+const CONCIERGE_POLICY = { name: 'concierge', capacity: 10, refillPerSecond: 1 / 6 };
+const bucket: RateLimitStore = createTokenBucket(CONCIERGE_POLICY);
+/** Round 2: without a trusted address source, all untrusted keys together share this ceiling. */
+const ceiling: RateLimitStore = createTokenBucket(ceilingPolicy(CONCIERGE_POLICY));
 
 const json = (body: unknown, status = 200, headers: Record<string, string> = {}) =>
   Response.json(body, { status, headers: { 'Cache-Control': 'no-store', ...headers } });
@@ -52,7 +55,10 @@ export async function POST(request: Request) {
 
   // The clock is read only after the request, as the framework requires for dynamic handlers.
   const now = Date.now();
-  const limit = await bucket.take(clientKey(request.headers), now);
+  const key = limitKey(request.headers);
+  const own = await bucket.take(key.key, now);
+  const shared = own.allowed && !key.trusted ? await ceiling.take('*untrusted*', now) : null;
+  const limit = shared && !shared.allowed ? shared : own;
   const limitHeaders = { 'X-RateLimit-Remaining': String(limit.remaining) };
   if (!limit.allowed) {
     await request.body?.cancel().catch(() => undefined);

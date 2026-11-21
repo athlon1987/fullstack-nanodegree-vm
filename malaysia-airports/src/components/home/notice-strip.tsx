@@ -1,5 +1,6 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import { terminalLabel } from '@/content/airports';
 import type { NoticeSeverity } from '@/content/types';
 import { cn } from '@/lib/cn';
@@ -34,9 +35,10 @@ const LINK =
 /**
  * The strip that closes the first screen: one operational notice (the most serious one that is
  * current for the chosen airport, or for the network), then "getting there" and "terminal
- * guidance" links that are rewritten for the journey mode and the chosen airport.
+ * guidance" links that are rewritten for the journey mode and the chosen airport, and an
+ * optional status row (`status`: the KLIA service lines on the home page).
  */
-export function NoticeStrip({ notices, className }: { notices: readonly NoticeView[]; className?: string }) {
+export function NoticeStrip({ notices, status, className }: { notices: readonly NoticeView[]; status?: ReactNode; className?: string }) {
   const t = useT();
   const lang = useLang();
   const now = useNow();
@@ -111,6 +113,8 @@ export function NoticeStrip({ notices, className }: { notices: readonly NoticeVi
           <Icon name="arrow-right" size="sm" strokeWidth={1.75} className="text-ink-3 transition-transform duration-base group-hover:translate-x-0.5 max-sm:hidden" />
         </LocaleLink>
       </div>
+      {/* KLIA service status lines (B-01 hand-off, round 2). */}
+      {status}
     </section>
   );
 }

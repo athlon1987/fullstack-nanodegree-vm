@@ -11,8 +11,13 @@
  *    anything in `X-Forwarded-For`, so the first entry is never used. Deployments say where the
  *    real address is: `TRUSTED_CLIENT_IP_HEADER` (a header the CDN overwrites, such as
  *    `cf-connecting-ip`) or `TRUSTED_PROXY_HOPS` (how many proxies of ours append to
- *    `X-Forwarded-For`; the client is that many entries from the right). With neither set, every
- *    client shares one bucket: limits then fail safe (spend stays bounded) instead of failing open.
+ *    `X-Forwarded-For`; the client is that many entries from the right). With neither set,
+ *    `limitKey` falls back to the address nearest the server (round 2: the last `X-Forwarded-For`
+ *    entry, which `next start` fills from the socket when nothing in front of it does), marked
+ *    untrusted, and every untrusted key also draws on one site-wide ceiling per route group
+ *    (`UNTRUSTED_CEILING_FACTOR` times the per-client limit). Visitors are then not throttled
+ *    together, and a client that invents addresses is still bounded (spend and load stay capped).
+ *    `src/instrumentation.ts` warns at start-up in production when neither variable is set.
  *  - `ModelBudget`: a site-wide budget of paid model calls per minute, per day and per month,
  *    with a circuit breaker that stops calling the model after repeated failures.
  *
@@ -116,6 +121,49 @@ export function clientKey(headers: Headers, config: ClientTrustConfig = trustCon
   return UNIDENTIFIED_CLIENT;
 }
 
+/** A rate-limit key and whether it comes from a configured, trusted source. */
+export interface LimitKey {
+  key: string;
+  trusted: boolean;
+}
+
+/**
+ * The key the limiters use (round 2, verification issue 5). With a trusted source configured it
+ * is `clientKey`. Without one, it is the LAST `X-Forwarded-For` entry (the address nearest this
+ * server: a proxy of ours, or the socket address `next start` adds when the request has no such
+ * header), prefixed `untrusted:`. A visitor who sends the header directly can choose that value,
+ * so untrusted keys are also counted against a site-wide ceiling (`createRouteLimiter`).
+ */
+export function limitKey(headers: Headers, config: ClientTrustConfig = trustConfigFromEnv()): LimitKey {
+  if (isTrustConfigured(config)) return { key: clientKey(headers, config), trusted: true };
+  const entries = (headers.get('x-forwarded-for') ?? '').split(',').map((entry) => entry.trim()).filter(Boolean);
+  const nearest = entries[entries.length - 1];
+  return { key: nearest && ADDRESS.test(nearest) ? `untrusted:${nearest}` : UNIDENTIFIED_CLIENT, trusted: false };
+}
+
+/** True when the deployment says where the real client address is. */
+export function isTrustConfigured(config: ClientTrustConfig): boolean {
+  return Boolean(config.clientIpHeader) || config.trustedProxyHops > 0;
+}
+
+/**
+ * The start-up warning for a production server whose client address source is missing or
+ * unreadable, or `null` when the configuration is complete. Printed by `src/instrumentation.ts`.
+ */
+export function trustConfigWarning(env: Record<string, string | undefined> = process.env): string | null {
+  const config = trustConfigFromEnv(env);
+  const badHeader = Boolean(env.TRUSTED_CLIENT_IP_HEADER?.trim()) && !config.clientIpHeader;
+  const badHops = Boolean(env.TRUSTED_PROXY_HOPS?.trim()) && config.trustedProxyHops === 0;
+  if (isTrustConfigured(config) && !badHeader && !badHops) return null;
+  const problem = badHeader || badHops
+    ? `${badHeader ? 'TRUSTED_CLIENT_IP_HEADER is not a valid header name' : ''}${badHeader && badHops ? '; ' : ''}${badHops ? 'TRUSTED_PROXY_HOPS is not a whole number from 1 to 9' : ''}, so it is ignored`
+    : 'neither TRUSTED_CLIENT_IP_HEADER nor TRUSTED_PROXY_HOPS is set';
+  const fallback = isTrustConfigured(config)
+    ? 'The other setting is used.'
+    : `Rate limits fall back to the address nearest this server (the last X-Forwarded-For entry), which a client can forge, with a site-wide ceiling of ${UNTRUSTED_CEILING_FACTOR} times each per-client limit. Behind a CDN or load balancer every visitor may then share a few addresses.`;
+  return `[rate-limit] Client address source: ${problem}. ${fallback} Set TRUSTED_CLIENT_IP_HEADER (a header your CDN overwrites, such as cf-connecting-ip) or TRUSTED_PROXY_HOPS (how many of your proxies append to X-Forwarded-For). See docs/engineering/security.md, section 4.`;
+}
+
 /* ---- Per-route limits ----------------------------------------------------------------------- */
 
 /** A named limit for a group of routes. */
@@ -147,6 +195,8 @@ export type RoutePolicyName = keyof typeof ROUTE_POLICIES;
 
 const FLIGHT_PAGE = /^\/(?:en|ms)\/[a-z]{3}\/flights\/[^/]+\/?$/;
 const JOURNEY_CONTENT = /^\/(?:en|ms)\/journey\/content\/[^/]+\/?$/;
+/** Several airports' boards in one request (round 2, the home flight search). */
+const NETWORK_FEED = /^\/(?:en|ms)\/flights\/feed\/?$/;
 
 /** The policy for a path, or `undefined` for paths that are not limited here (static pages, the concierge). */
 export function policyFor(pathname: string): RoutePolicyName | undefined {
@@ -155,21 +205,47 @@ export function policyFor(pathname: string): RoutePolicyName | undefined {
   if (pathname === '/api/health') return 'health';
   if (pathname === '/api/csp-report' || pathname === '/api/metrics') return 'reports';
   if (pathname === '/api' || pathname.startsWith('/api/')) return 'api';
-  if (FLIGHT_PAGE.test(pathname) || JOURNEY_CONTENT.test(pathname)) return 'dynamic';
+  if (FLIGHT_PAGE.test(pathname) || JOURNEY_CONTENT.test(pathname) || NETWORK_FEED.test(pathname)) return 'dynamic';
   return undefined;
 }
 
-/** One store per policy. Pass a factory to back them with a shared store. */
+/**
+ * Without a trusted address source, all untrusted keys of a route group together may use this
+ * many times one client's limit (for flights: 600 in a burst, then 10 a second, site-wide).
+ */
+export const UNTRUSTED_CEILING_FACTOR = 10;
+
+/** The key of the site-wide ceiling bucket for untrusted keys. */
+const CEILING_KEY = '*untrusted*';
+
+/** The ceiling policy for a route group: `UNTRUSTED_CEILING_FACTOR` times its per-client limit. */
+export function ceilingPolicy(policy: RoutePolicy): RoutePolicy {
+  return { name: `${policy.name}-ceiling`, capacity: policy.capacity * UNTRUSTED_CEILING_FACTOR, refillPerSecond: policy.refillPerSecond * UNTRUSTED_CEILING_FACTOR };
+}
+
+/**
+ * One store per policy. Pass a factory to back them with a shared store. A `LimitKey` that is not
+ * trusted also draws on the route group's site-wide ceiling (`ceilingPolicy`); a plain string key
+ * is treated as trusted.
+ */
 export function createRouteLimiter(factory: (policy: RoutePolicy) => RateLimitStore = (policy) => createTokenBucket(policy)) {
-  const stores = new Map<RoutePolicyName, RateLimitStore>();
+  const stores = new Map<string, RateLimitStore>();
+  const storeFor = (policy: RoutePolicy) => {
+    let store = stores.get(policy.name);
+    if (!store) {
+      store = factory(policy);
+      stores.set(policy.name, store);
+    }
+    return store;
+  };
   return {
-    async take(name: RoutePolicyName, key: string, nowMs: number): Promise<TakeResult> {
-      let store = stores.get(name);
-      if (!store) {
-        store = factory(ROUTE_POLICIES[name]);
-        stores.set(name, store);
-      }
-      return store.take(`${name}:${key}`, nowMs);
+    async take(name: RoutePolicyName, key: string | LimitKey, nowMs: number): Promise<TakeResult> {
+      const { key: id, trusted } = typeof key === 'string' ? { key, trusted: true } : key;
+      const policy = ROUTE_POLICIES[name];
+      const own = await storeFor(policy).take(`${name}:${id}`, nowMs);
+      if (!own.allowed || trusted) return own;
+      const ceiling = await storeFor(ceilingPolicy(policy)).take(`${name}:${CEILING_KEY}`, nowMs);
+      return ceiling.allowed ? own : ceiling;
     },
   };
 }

@@ -2,7 +2,7 @@
  * Server-only builder for the parking page: picks the page language, resolves sources and finds
  * the advice that goes with premium parking, so Client Components never import `@/content`.
  */
-import { pick, type AirportContent, type Lang } from '@/content';
+import { localizeAirport, pick, type AirportContent, type Lang } from '@/content';
 import { needsTranslationNotice, noteView, officialSite, sourceLookup, terminalInfo } from '@/components/transport/transport-data.server';
 import { officialSourceUrl, type NoteView } from '@/components/transport/transport-types';
 import type { CarParkView, ParkingPageData, ReportedFigure } from './parking-types';
@@ -67,7 +67,7 @@ export function parkingPageModel(content: AirportContent, lang: Lang): ParkingPa
 
   const data: ParkingPageData = {
     slug: content.airport.slug,
-    airportName: content.airport.shortName,
+    airportName: localizeAirport(content.airport, lang).shortName,
     timezone: content.airport.timezone,
     terminals: terminalInfo(content, lang),
     carParks,

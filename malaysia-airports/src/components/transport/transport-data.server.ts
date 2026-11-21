@@ -3,7 +3,7 @@
  * page language and resolve sources, so Client Components receive small, serialisable props and
  * never import `@/content`.
  */
-import { FAQS, getGuide, getSource, hasTranslation, pick, resolveSources, terminalLabel, type AirportContent, type GuideNote, type Lang, type LocalizedText, type Source } from '@/content';
+import { FAQS, getGuide, getSource, hasTranslation, localizeAirport, pick, resolveSources, terminalLabel, type AirportContent, type GuideNote, type Lang, type LocalizedText, type Source } from '@/content';
 import { PLANNER_MODES } from './transport-logic';
 import type { NoteView, TerminalInfo, ToutsView, TransportContext } from './transport-types';
 
@@ -117,7 +117,7 @@ export function transportPageModel(content: AirportContent, lang: Lang): Transpo
   const model: TransportPageModel = {
     context: {
       slug: content.airport.slug,
-      airportName: content.airport.shortName,
+      airportName: localizeAirport(content.airport, lang).shortName,
       timezone: content.airport.timezone,
       terminals: terminalInfo(content, lang),
       sources: sourceLookup(sourceIds),

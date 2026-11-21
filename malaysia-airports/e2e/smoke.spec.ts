@@ -94,7 +94,9 @@ test.describe('home', () => {
     const results = desk.getByRole('list', { name: 'Matching flights' });
     await expect(results.getByRole('link', { name: /^View flight MH \d+/ }).first()).toBeVisible();
     await expect(desk.getByText('Demo', { exact: true })).toBeVisible();
-    await expect(desk.getByRole('status')).toContainText('flights found');
+    // Round 2 (B-09 hand-off): the search reads the flight feed, so the desk also holds the feed's
+    // (empty) status region; the results count is the status that names the flights found.
+    await expect(desk.getByRole('status').filter({ hasText: 'flights found' })).toBeVisible();
   });
 });
 

@@ -32,11 +32,14 @@ export interface ParkingPriceMatrixProps {
 export function ParkingPriceMatrix({ data, t, lang, transportLink }: ParkingPriceMatrixProps) {
   const rows = data.carParks.map((carPark) => ({ carPark, cells: priceRow(carPark) }));
   const allPublished = rows.every(({ cells }) => cells.every((cell) => cell.kind === 'estimate'));
+  // E-17 hand-off (round 2): the answer state of the "parking price" top task, for the aggregate measurement.
+  const noneKnown = rows.every(({ cells }) => cells.every((cell) => cell.kind === 'none'));
+  const answerState = allPublished ? 'answered' : noneKnown ? 'not-published' : 'partial';
   const multi = data.terminals.length > 1;
   const money = (amount: number) => formatCurrency(amount, lang, { alwaysShowSen: !Number.isInteger(amount) });
 
   return (
-    <section aria-labelledby="parking-prices-title" data-parking-matrix="" className="flex flex-col gap-3">
+    <section aria-labelledby="parking-prices-title" data-parking-matrix="" data-answer-task="parking-price" data-answer-state={answerState} className="flex flex-col gap-3">
       <div>
         <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
           <h2 id="parking-prices-title" className="type-title-lg text-ink">

@@ -9,16 +9,7 @@ import { Icon } from '@/components/ui/icon';
 import { Input } from '@/components/ui/input';
 import { DemoMark } from './demo-mark';
 import { requestAlertPermission, showDemoNotification, useAlertPermission, useFlightAlerts } from './flight-alerts';
-
-export const FOLLOW_PANEL_ID = 'follow-panel';
-
-/** True when the flight is followed on any channel on this device. */
-export function useIsFollowing(flightId: string): boolean {
-  const permission = useAlertPermission();
-  const { ids } = useFlightAlerts();
-  const emails = useSyncExternalStore(emailFollowStore.subscribe, emailFollowStore.getSnapshot, emailFollowStore.getServerSnapshot);
-  return (permission === 'granted' && ids.has(flightId)) || Boolean(emails[flightId]);
-}
+import { FOLLOW_PANEL_ID } from './follow-state';
 
 /**
  * "Follow this flight" (BR-04): opened from the Follow button beside Save. It says exactly what
@@ -99,7 +90,12 @@ export function FollowPanel({ flight }: { flight: Flight }) {
               {t('flightPages.alerts.on', { number })}
             </p>
             <div className="flex flex-wrap gap-2">
-              <Button variant="secondary" size="sm" iconStart="send" onClick={() => showDemoNotification(t('flightPages.alerts.testTitle', { number }), t('flightPages.alerts.notificationBody'), tag)}>
+              <Button
+                variant="secondary"
+                size="sm"
+                iconStart="send"
+                onClick={() => showDemoNotification(t('flightPages.alerts.testTitle', { number }), t('flightPages.alerts.notificationBody'), tag)}
+              >
                 {t('flightPages.alerts.sendTest')}
               </Button>
               <Button

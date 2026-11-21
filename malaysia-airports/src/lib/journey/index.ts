@@ -15,6 +15,7 @@
  * keys; `href`s have no locale prefix (use `localeHref`).
  */
 import { lt } from '@/content/values';
+import { ARRIVAL_TIME_RULE } from '@/content/planning-rules';
 import type { AirportContent, GuideNote, GuideNoteTopic, LocalizedText, Provenance, TerminalId } from '@/content/types';
 import { isMultiTerminal, terminalLabel } from '@/content/airports';
 import { checkInLines } from '@/lib/flights/check-in';
@@ -31,7 +32,8 @@ import type { JourneyMode } from './modes';
 export { DEFAULT_JOURNEY_MODE, JOURNEY_MODES, isJourneyMode, type JourneyMode } from './modes';
 
 /** Recommended minutes to be at the airport before departure. Estimated guidance, not a rule. */
-export const RECOMMENDED_ARRIVAL_MINUTES = { international: 180, domestic: 120 } as const;
+// Round 2 (D-13 hand-off): read from the sourced content record, so one edit updates every surface.
+export const RECOMMENDED_ARRIVAL_MINUTES = ARRIVAL_TIME_RULE.minutesBefore;
 
 /** Optional traveller details that adjust the steps. */
 export interface JourneyPreferences {
@@ -169,6 +171,8 @@ export type JourneyAirportContent = Pick<AirportContent, 'airport' | 'guidesNote
   airlineAssistance?: Readonly<Record<string, JourneyService>>;
   /** The airport's Fast Track service, when the content layer publishes it. */
   fastTrack?: JourneyService;
+  /** Fast Track per terminal where each has its own record (KLIA; D-02 hand-off, round 2). */
+  fastTrackByTerminal?: Readonly<Partial<Record<TerminalId, JourneyService>>>;
 };
 
 /** Input of `buildJourney`. */
@@ -687,7 +691,8 @@ function departingSteps(context: Context): Draft[] {
   });
 
   // Optional Fast Track, never preselected (closes with D-02 once the service record is published).
-  const fastTrack = context.content.fastTrack;
+  // The record for the flight's own terminal when there is one (D-02 hand-off, round 2).
+  const fastTrack = (flight?.terminal ? context.content.fastTrackByTerminal?.[flight.terminal] : undefined) ?? context.content.fastTrack;
   if (fastTrack && international !== false) {
     steps.push({
       id: 'fast-track',

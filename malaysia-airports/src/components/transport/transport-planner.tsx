@@ -8,7 +8,8 @@ import { useNow } from '@/lib/hooks';
 import { useLang, useT } from '@/lib/i18n/client';
 import { dateKey } from '@/lib/time';
 import { compareTransport, type TransportPriority } from '@/lib/transport';
-import { ProvenanceTag } from '@/components/common/provenance-tag';
+import { ProvenanceDefault, ProvenanceTag } from '@/components/common/provenance-tag';
+import { sharedProvenance } from '@/components/common/shared-provenance';
 import { Icon } from '@/components/ui/icon';
 import { NativeSelect } from '@/components/ui/native-select';
 import { SegmentedControl } from '@/components/ui/segmented-control';
@@ -80,6 +81,7 @@ export function TransportPlanner({ context, options, state, onStateChange, termi
     };
   }, [options, day, place?.value, state.priority]);
 
+  const listProvenance = sharedProvenance(ranked.map(({ option }) => option));
   const priorityLabel = t(PRIORITY_LABEL[state.priority]);
   const placeLabel = place ? pick(place.name, lang) : '';
   const terminalLabel = terminal ? context.terminals.find((item) => item.id === terminal)?.label : undefined;
@@ -164,13 +166,17 @@ export function TransportPlanner({ context, options, state, onStateChange, termi
           caption={t('transportPages.planner.tableCaption', { airport: context.airportName, destination: placeLabel, priority: priorityLabel })}
         />
       ) : (
-        <ol className="flex flex-col gap-4" aria-label={t('transportPages.planner.tableCaption', { airport: context.airportName, destination: placeLabel, priority: priorityLabel })}>
-          {ranked.map(({ option, rank, highlights }) => (
-            <li key={option.id}>
-              <TransportOptionCard option={option} placeKey={key} context={context} day={day} terminal={terminal} rank={rank} highlights={highlights} />
-            </li>
-          ))}
-        </ol>
+        <>
+          {/* Round 2 (A-14): the provenance most options share, said once; the others keep their tag. */}
+          {listProvenance ? <ProvenanceDefault provenance={listProvenance} className="-mb-2" /> : null}
+          <ol className="flex flex-col gap-4" aria-label={t('transportPages.planner.tableCaption', { airport: context.airportName, destination: placeLabel, priority: priorityLabel })}>
+            {ranked.map(({ option, rank, highlights }) => (
+              <li key={option.id}>
+                <TransportOptionCard option={option} placeKey={key} context={context} day={day} terminal={terminal} rank={rank} highlights={highlights} defaultProvenance={listProvenance} />
+              </li>
+            ))}
+          </ol>
+        </>
       )}
 
       {unlisted.length > 0 ? (

@@ -16,7 +16,6 @@
  *   The engine and the pack are loaded only when needed (or prefetched once consent is given).
  */
 import { useCallback, useMemo } from 'react';
-import { z } from 'zod';
 import type { Lang } from '@/content/types';
 import { CONCIERGE_CLIENT_TIMEOUT_MS } from '@/lib/concierge/constants';
 import type { ConciergeAnswer, ConciergeContext, ConciergeKnowledge, ConciergeMode, ConciergeResponse } from '@/lib/concierge/types';
@@ -24,12 +23,7 @@ import { useAirportContext } from '@/lib/hooks/use-airport-context';
 import { useSavedJourney } from '@/lib/hooks/use-saved-journey';
 import { useStore } from '@/lib/hooks/use-store';
 import { localeHref } from '@/lib/locale';
-import { createStore, type StorageLike } from '@/lib/storage';
-
-// The concierge is now the only client code that uses zod (round 2, E-03), and `@/content/types`
-// (which used to set this for every page) no longer loads in the browser. Without it zod probes
-// `new Function`, which the CSP blocks (a `script-src` report in production consoles).
-z.config({ jitless: true });
+import { check, createStore, validator, type StorageLike, type Validator } from '@/lib/storage';
 
 export interface ConciergeTurn {
   id: string;
@@ -79,24 +73,38 @@ const sessionStorageLike: StorageLike = {
 const isAnswer = (value: unknown): value is ConciergeAnswer =>
   typeof value === 'object' && value !== null && typeof (value as ConciergeAnswer).text === 'string' && Array.isArray((value as ConciergeAnswer).statements);
 
-const ContextSchema = z
-  .object({ airport: z.string().optional(), terminal: z.enum(['T1', 'T2', 'MAIN']).optional(), flightId: z.string().optional(), intent: z.string().optional(), category: z.string().optional(), destination: z.string().optional() })
-  .transform((value) => value as ConciergeContext);
+// zod-free validation (round 2, E-03): zod left the concierge page and panel too; it now loads
+// only on the server.
+const TERMINALS = ['T1', 'T2', 'MAIN'] as const;
 
-const ConversationSchema = z.object({
-  turns: z.array(
-    z.object({
-      id: z.string(),
-      question: z.string(),
-      status: z.enum(['pending', 'done', 'error']),
-      answer: z.custom<ConciergeAnswer>(isAnswer).optional(),
-      mode: z.enum(['grounded', 'grounded-rephrased', 'local']).optional(),
-      note: z.enum(['offline', 'rate-limited', 'private']).optional(),
-      context: ContextSchema.optional(),
+const contextCheck = check.object({
+  airport: check.optional(check.string()),
+  terminal: check.optional(check.oneOf(TERMINALS)),
+  flightId: check.optional(check.string()),
+  intent: check.optional(check.string()),
+  category: check.optional(check.string()),
+  destination: check.optional(check.string()),
+});
+
+const conversationCheck = check.object({
+  turns: check.array(
+    check.object({
+      id: check.string(),
+      question: check.string(),
+      status: check.oneOf(['pending', 'done', 'error'] as const),
+      answer: check.optional(check.custom(isAnswer)),
+      mode: check.optional(check.oneOf(['grounded', 'grounded-rephrased', 'local'] as const)),
+      note: check.optional(check.oneOf(['offline', 'rate-limited', 'private'] as const)),
+      context: check.optional(contextCheck),
     }),
   ),
-  scope: z.object({ airport: z.string().optional(), terminal: z.enum(['T1', 'T2', 'MAIN']).optional() }).nullable(),
-  useFlight: z.boolean(),
+  scope: check.nullable(
+    check.object({
+      airport: check.optional(check.string()),
+      terminal: check.optional(check.oneOf(TERMINALS)),
+    }),
+  ),
+  useFlight: check.boolean(),
 });
 
 const EMPTY: ConversationState = { turns: [], scope: null, useFlight: false };
@@ -104,12 +112,17 @@ const EMPTY: ConversationState = { turns: [], scope: null, useFlight: false };
 export const conversationStore = createStore<ConversationState>({
   name: 'concierge-conversation',
   version: 1,
-  schema: ConversationSchema as unknown as z.ZodType<ConversationState>,
+  schema: validator(conversationCheck) as Validator<ConversationState>,
   defaultValue: EMPTY,
   storage: sessionStorageLike,
 });
 
-export const consentStore = createStore<boolean>({ name: 'concierge-consent', version: 1, schema: z.boolean(), defaultValue: false });
+export const consentStore = createStore<boolean>({
+  name: 'concierge-consent',
+  version: 1,
+  schema: validator(check.boolean()),
+  defaultValue: false,
+});
 
 /** Requests in flight in this tab. A pending turn that is not here was interrupted by a reload. */
 const inflight = new Set<string>();
@@ -139,7 +152,9 @@ export function loadKnowledge(lang: Lang): Promise<ConciergeKnowledge> {
 
 /** Load the engine and the knowledge pack ahead of the first question (on idle), so on-device answers are immediate. */
 export function prepareOnDevice(lang: Lang): void {
-  void Promise.all([import('@/lib/concierge/engine'), import('@/lib/concierge/flights'), import('@/lib/providers'), loadKnowledge(lang)]).catch(() => undefined);
+  void Promise.all([import('@/lib/concierge/engine'), import('@/lib/concierge/flights'), import('@/lib/providers'), loadKnowledge(lang)]).catch(
+    () => undefined,
+  );
 }
 
 async function answerOnDevice(question: string, lang: Lang, context: ConciergeContext): Promise<ConciergeAnswer> {
@@ -150,7 +165,14 @@ async function answerOnDevice(question: string, lang: Lang, context: ConciergeCo
     loadKnowledge(lang),
   ]);
   const now = Date.now();
-  return engine.answerQuestion({ question, lang, context }, { knowledge, now, flights: adapters.flightSourceFromProvider(providers.getFlightProvider(now)) });
+  return engine.answerQuestion(
+    { question, lang, context },
+    {
+      knowledge,
+      now,
+      flights: adapters.flightSourceFromProvider(providers.getFlightProvider(now)),
+    },
+  );
 }
 
 type ApiResult = { ok: true; data: ConciergeResponse } | { ok: false; reason: 'offline' | 'rate-limited' | 'private' };
@@ -159,7 +181,11 @@ async function askServer(question: string, lang: Lang, context: ConciergeContext
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), CONCIERGE_CLIENT_TIMEOUT_MS);
   try {
-    const body = { question, lang, ...Object.fromEntries(Object.entries(context).filter(([, value]) => value !== undefined)) };
+    const body = {
+      question,
+      lang,
+      ...Object.fromEntries(Object.entries(context).filter(([, value]) => value !== undefined)),
+    };
     const response = await fetch('/api/concierge', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -178,7 +204,10 @@ async function askServer(question: string, lang: Lang, context: ConciergeContext
 }
 
 function update(id: string, patch: Partial<ConciergeTurn>): void {
-  conversationStore.set((state) => ({ ...state, turns: state.turns.map((turn) => (turn.id === id ? { ...turn, ...patch } : turn)) }));
+  conversationStore.set((state) => ({
+    ...state,
+    turns: state.turns.map((turn) => (turn.id === id ? { ...turn, ...patch } : turn)),
+  }));
 }
 
 /**
@@ -198,10 +227,21 @@ async function runAsk(question: string, lang: Lang, context: ConciergeContext, u
   try {
     const result: ApiResult = useServer ? await askServer(question, lang, context) : { ok: false, reason: 'private' };
     if (result.ok) {
-      finished = { ...pending, status: 'done', answer: result.data.answer, mode: result.data.mode };
+      finished = {
+        ...pending,
+        status: 'done',
+        answer: result.data.answer,
+        mode: result.data.mode,
+      };
     } else {
       const answer = await answerOnDevice(question, lang, context);
-      finished = { ...pending, status: 'done', answer, mode: 'local', note: result.reason };
+      finished = {
+        ...pending,
+        status: 'done',
+        answer,
+        mode: 'local',
+        note: result.reason,
+      };
     }
   } catch {
     finished = { ...pending, status: 'error' };
@@ -210,7 +250,11 @@ async function runAsk(question: string, lang: Lang, context: ConciergeContext, u
   }
   update(id, finished);
   const scope = finished.answer?.context;
-  if (scope?.airport) conversationStore.set((state) => ({ ...state, scope: { airport: scope.airport, terminal: scope.terminal } }));
+  if (scope?.airport)
+    conversationStore.set((state) => ({
+      ...state,
+      scope: { airport: scope.airport, terminal: scope.terminal },
+    }));
   return finished;
 }
 
@@ -241,9 +285,13 @@ export function useConcierge(lang: Lang) {
     [scope, state.turns, state.useFlight, savedFlight, consent],
   );
 
-  const ask = useCallback((question: string, override?: ConciergeContext) => runAsk(question.trim(), lang, contextFor(override), consent), [lang, contextFor, consent]);
+  const ask = useCallback(
+    (question: string, override?: ConciergeContext) => runAsk(question.trim(), lang, contextFor(override), consent),
+    [lang, contextFor, consent],
+  );
   const retry = useCallback(
-    (turn: ConciergeTurn) => runAsk(turn.question, lang, consent ? (turn.context ?? contextFor()) : { ...(turn.context ?? contextFor()), flightId: undefined }, consent, turn.id),
+    (turn: ConciergeTurn) =>
+      runAsk(turn.question, lang, consent ? (turn.context ?? contextFor()) : { ...(turn.context ?? contextFor()), flightId: undefined }, consent, turn.id),
     [lang, contextFor, consent],
   );
   const clear = useCallback(() => conversationStore.set((current) => ({ ...current, turns: [] })), []);

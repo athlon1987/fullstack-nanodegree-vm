@@ -17,6 +17,7 @@ import {
   getAirportContent,
   getNotices,
   isMultiTerminal,
+  localizeAirport,
   pick,
   type Lang,
   type LocalizedText,
@@ -49,14 +50,24 @@ export function buildSearchDocuments(lang: Lang): SearchDocument[] {
   const documents: SearchDocument[] = [];
 
   for (const airport of AIRPORTS) {
+    // The airport's own result in the page language (D-09, round 2); both forms stay searchable.
+    const local = localizeAirport(airport, lang);
     documents.push({
       id: `airport:${airport.slug}`,
       type: 'airport',
-      title: `${airport.name} (${airport.code})`,
+      title: `${local.name} (${airport.code})`,
       summary: pick(airport.summary, lang),
       href: `/${airport.slug}`,
       airport: airport.slug,
-      keywords: [airport.code, airport.icao ?? '', airport.shortName, airport.city, airport.state, ...both(CLASSIFICATION_LABELS[airport.classification])].filter(Boolean),
+      keywords: [
+        airport.code,
+        airport.icao ?? '',
+        airport.shortName,
+        airport.city,
+        airport.state,
+        ...(lang === 'en' ? [] : [local.name, local.shortName, local.city, local.state]),
+        ...both(CLASSIFICATION_LABELS[airport.classification]),
+      ].filter(Boolean),
     });
     if (isMultiTerminal(airport)) {
       for (const terminal of airport.terminals) {

@@ -1,0 +1,72 @@
+{
+ "key": "en-kul-flights",
+ "url": "http://localhost:3100/en/kul/flights",
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-21T07:26:13.476Z",
+ "median": {
+  "performance": 95,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 920,
+  "lcp_ms": 920,
+  "tbt_ms": 257,
+  "cls": 0.003,
+  "si_ms": 920,
+  "totalBytes": 584185,
+  "requests": 39
+ },
+ "a11yFailures": [],
+ "rows": [
+  {
+   "finalUrl": "http://localhost:3100/en/kul/flights",
+   "runtimeError": null,
+   "performance": 95,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 920,
+   "lcp_ms": 920,
+   "tbt_ms": 257,
+   "cls": 0.003,
+   "si_ms": 920,
+   "totalBytes": 584187,
+   "requests": 39,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "http://localhost:3100/en/kul/flights",
+   "runtimeError": null,
+   "performance": 95,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 919,
+   "lcp_ms": 919,
+   "tbt_ms": 272,
+   "cls": 0.003,
+   "si_ms": 919,
+   "totalBytes": 584185,
+   "requests": 39,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "http://localhost:3100/en/kul/flights",
+   "runtimeError": null,
+   "performance": 95,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 922,
+   "lcp_ms": 922,
+   "tbt_ms": 249,
+   "cls": 0.003,
+   "si_ms": 922,
+   "totalBytes": 584176,
+   "requests": 39,
+   "a11yFailures": []
+  }
+ ],
+ "caveat": "Lab measurement: Lighthouse mobile emulation with simulated throttling, run from a shared cloud container; hosts outside the session allowlist (analytics, some CDNs) were blocked, which changes page weight and timings. Indicative only; not field data and not comparable to CrUX."
+}

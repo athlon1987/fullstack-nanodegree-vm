@@ -1,5 +1,6 @@
 'use client';
 
+import { EARLY_MODE_SCRIPT } from '@/lib/inline-scripts';
 import { useEffect, useId, useState } from 'react';
 import { cn } from '@/lib/cn';
 import { useJourneyMode } from '@/lib/hooks';
@@ -14,7 +15,6 @@ import { JOURNEY_ACTIONS, actionTitleKey } from './journey-actions';
  * hydrates, so an early tap was silently undone (A-09: taps 0 to 600 ms after the HTML arrived).
  * This listener runs during HTML parsing; `JourneyModes` applies the tap once it has hydrated.
  */
-const EARLY_MODE_SCRIPT = `(function(){try{document.addEventListener('change',function(e){var t=e.target;if(t&&t.hasAttribute&&t.hasAttribute('data-journey-radio')&&t.checked){window.__maEarlyJourneyMode=t.value}},true)}catch(e){}})()`;
 
 function EarlyModeCapture() {
   return (

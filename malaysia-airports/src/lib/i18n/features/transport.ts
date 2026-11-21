@@ -11,10 +11,11 @@
 export const transportPagesEn = {
   title: 'Getting here',
   transport: {
-    metaTitle: 'Getting to and from {airport}',
+    metaTitle: 'Transport to and from {airport}',
     metaDescription:
       'Compare the ways to get to and from {airport}: published fares with their dates, journey times, boarding points and sources. Where we have no verified figure, we say so.',
-    title: 'Getting to and from {airport}',
+    // A-21 hand-off (round 2): the page title uses the section noun.
+    title: 'Transport to and from {airport}',
     lead: 'Choose where you are going and what matters most. Every fare and time here comes from a named source, with its date. Where we have no verified figure, we say so.',
     parkingAction: 'Driving? See parking',
     jumpToTerminals: 'Changing terminals',
@@ -129,6 +130,9 @@ export const transportPagesEn = {
     title: 'What we have not verified',
     officialSite: 'Malaysia Airports website',
     lead: 'If you need a detail that is not shown here, the official website or an information counter has it.',
+    // Round 2 (D-05 hand-off): one line instead of the whole note (server only).
+    line: 'What this prototype has not verified at {airport} is listed in one place.',
+    link: 'See the gaps at {airport}',
   },
   parking: {
     metaTitle: 'Parking at {airport}',
@@ -292,10 +296,11 @@ export const transportPagesEn = {
 export const transportPagesMs: typeof transportPagesEn = {
   title: 'Cara ke sini',
   transport: {
-    metaTitle: 'Ke dan dari {airport}',
+    metaTitle: 'Pengangkutan ke dan dari {airport}',
     metaDescription:
       'Bandingkan cara ke dan dari {airport}: tambang yang diterbitkan bersama tarikhnya, tempoh perjalanan, tempat menaiki dan sumbernya. Jika tiada angka yang disahkan, kami nyatakannya.',
-    title: 'Ke dan dari {airport}',
+    // A-21 hand-off (round 2): the page title uses the section noun.
+    title: 'Pengangkutan ke dan dari {airport}',
     lead: 'Pilih destinasi anda dan perkara yang paling penting. Setiap tambang dan masa di sini datang daripada sumber yang dinamakan, bersama tarikhnya. Jika tiada angka yang disahkan, kami nyatakannya.',
     parkingAction: 'Memandu? Lihat parkir',
     jumpToTerminals: 'Bertukar terminal',
@@ -410,6 +415,9 @@ export const transportPagesMs: typeof transportPagesEn = {
     title: 'Perkara yang belum kami sahkan',
     officialSite: 'Laman web Malaysia Airports',
     lead: 'Jika anda memerlukan butiran yang tiada di sini, laman web rasmi atau kaunter pertanyaan boleh membantu.',
+    // Round 2 (D-05 hand-off): one line instead of the whole note (server only).
+    line: 'Perkara yang belum disahkan oleh prototaip ini di {airport} disenaraikan di satu tempat.',
+    link: 'Lihat jurang maklumat di {airport}',
   },
   parking: {
     metaTitle: 'Parkir di {airport}',

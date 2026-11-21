@@ -5,6 +5,8 @@
 import {
   getFaq,
   getGuide,
+  getNotices,
+  localizeAirport,
   pick,
   resolveSources,
   terminalLabel,
@@ -13,6 +15,7 @@ import {
   type Facility,
   type GuideNote,
   type Lang,
+  type Notice,
   type Source,
   type TerminalId,
   type TransportOption,
@@ -51,6 +54,19 @@ export interface TransitData {
   late: FactView[];
   /** Sources for steps that are this prototype's own guidance. */
   methodSources: Source[];
+  /**
+   * Notices about the Aerotrain to the Terminal 1 C gates, with their sources (D-08 hand-off,
+   * round 2): the gate step reads them through `OpsStatus`, which says whether one is in effect
+   * or planned and links to it. Absent at airports without an Aerotrain.
+   */
+  aerotrain?: { notices: Notice[]; sources: Record<string, Source> };
+}
+
+function aerotrainNotices(slug: string): TransitData['aerotrain'] {
+  if (slug !== 'kul') return undefined;
+  const notices = getNotices(slug).filter((notice) => /aerotrain/i.test(notice.id) || /aerotrain/i.test(notice.title.en));
+  const sources = Object.fromEntries(resolveSources([...new Set(notices.flatMap((notice) => notice.sources))]).map((source) => [source.id, source]));
+  return { notices, sources };
 }
 
 function noteFact(note: GuideNote, lang: Lang): FactView {
@@ -128,7 +144,7 @@ export function transitData(content: AirportContent, lang: Lang, t: Translator, 
     }));
 
   return {
-    airportName: content.airport.shortName,
+    airportName: localizeAirport(content.airport, lang).shortName,
     airportSlug: content.airport.slug,
     hasLounges,
     interTerminal: interTerminalNote ? noteFact(interTerminalNote, lang) : undefined,
@@ -144,5 +160,6 @@ export function transitData(content: AirportContent, lang: Lang, t: Translator, 
     rest,
     late: ['missed-connection', 'flight-delay-care', 'flight-delay-refund'].map((id) => faqFact(getFaq(id), lang)).filter((fact): fact is FactView => Boolean(fact)),
     methodSources: resolveSources(['prototype-method']),
+    aerotrain: aerotrainNotices(content.airport.slug),
   };
 }

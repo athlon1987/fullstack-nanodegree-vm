@@ -1,22 +1,20 @@
 import { Suspense } from 'react';
-import { getAirport, pick, TRANSPORT_MODE_LABELS } from '@/content';
+import { pick, TRANSPORT_MODE_LABELS } from '@/content';
 import { getT, toLang } from '@/lib/i18n';
-import { airportSectionMetadata, loadAirportPage, sectionStaticParams, type AirportPageParams } from '@/components/airport/section-page';
+import { localAirport, airportSectionMetadata, loadAirportPage, sectionStaticParams, type AirportPageParams } from '@/components/airport/section-page';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { ExternalLink } from '@/components/common/external-link';
 import { LocaleLink } from '@/components/common/locale-link';
 import { NotPublished } from '@/components/common/not-published';
 import { PageHeader } from '@/components/common/page-header';
-import { ProvenanceTag } from '@/components/common/provenance-tag';
+import { PrototypeGapsLink } from '@/components/common/prototype-gaps-link';
 import { SectionHeading } from '@/components/common/section-heading';
-import { SourceNote } from '@/components/common/source-note';
 import { TranslationNotice } from '@/components/common/translation-notice';
 import { TerminalTransfers } from '@/components/transport/terminal-transfers';
 import { ToutsWarning } from '@/components/transport/touts-warning';
 import { transportPageModel } from '@/components/transport/transport-data.server';
 import { DEFAULT_PLANNER_STATE, TransportPlanner } from '@/components/transport/transport-planner';
 import { TransportPlannerFromUrl } from '@/components/transport/transport-planner-url';
-import { sourcesFor } from '@/components/transport/transport-types';
 import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
@@ -30,7 +28,7 @@ export const ensureStatic = 'navigation';
 
 export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/transport'>) {
   const { lang, airport: slug } = await params;
-  const airport = getAirport(slug);
+  const airport = localAirport(slug, lang);
   const t = getT(toLang(lang));
   return airportSectionMetadata(
     params,
@@ -151,27 +149,16 @@ async function Transport({ params }: { params: AirportPageParams }) {
 
         <TerminalTransfers t={t} context={model.context} between={model.between} inside={model.inside} notes={model.transferNotes} />
 
-        <section aria-labelledby="transport-gaps-title" className="grid gap-6 border-t border-line pt-10 lg:grid-cols-[minmax(0,17.5rem)_minmax(0,1fr)] lg:gap-10">
-          <h2 id="transport-gaps-title" className="type-title-lg text-ink">
-            {t('transportPages.gaps.title')}
-          </h2>
-          <div className="min-w-0 max-w-reading">
-            {model.gaps ? (
-              <>
-                <div className="flex flex-wrap items-center gap-3">
-                  <p className="type-title-sm text-ink">{model.gaps.title}</p>
-                  <ProvenanceTag provenance={model.gaps.provenance} />
-                </div>
-                <p className="type-body mt-2 text-ink-2">{model.gaps.body}</p>
-                <SourceNote sources={sourcesFor(model.gaps.sourceIds, model.context.sources)} className="mt-1" />
-              </>
-            ) : null}
-            <p className="type-body-sm mt-4 text-ink-2">{t('transportPages.gaps.lead')}</p>
-            <ExternalLink href={model.context.officialUrl} variant="action" className="type-body-sm mt-1">
-              {t('transportPages.gaps.officialSite')}
-            </ExternalLink>
-          </div>
-        </section>
+        {/* D-05 hand-off (round 2): one line to the single list on About this prototype. */}
+        <PrototypeGapsLink
+          lang={lang}
+          airport={airport.slug}
+          airportName={airport.shortName}
+          id="transport-gaps-title"
+          title={t('transportPages.gaps.title')}
+          officialHref={model.context.officialUrl}
+          officialLabel={t('transportPages.gaps.officialSite')}
+        />
       </Container>
     </>
   );

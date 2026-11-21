@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
 import type { Flight } from '@/lib/flights';
 import { useSavedJourney } from '@/lib/hooks/use-saved-journey';
 import { useLang, useT } from '@/lib/i18n/client';
 import { LocaleLink } from '@/components/common/locale-link';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
-import { FOLLOW_PANEL_ID, FollowPanel, useIsFollowing } from './flight-alerts-panel';
+import { FOLLOW_PANEL_ID, useIsFollowing } from './follow-state';
 import { buildIcs, flightCalendarEvent, icsFileName } from './ics';
 import { toSavedFlight } from './saved-flight';
 
@@ -16,6 +16,11 @@ export interface FlightActionsProps {
   /** The page title, for the share sheet: "MH 2610 to London". */
   title: string;
 }
+
+// The follow panel is opened by few visitors: it loads when the page is idle, or when it is opened
+// before that (round 2, E-03), instead of with the flight page.
+const loadFollowPanel = () => import('./flight-alerts-panel');
+const FollowPanel = lazy(() => loadFollowPanel().then((module) => ({ default: module.FollowPanel })));
 
 /** The current page without its hash, for sharing and for the calendar entry. */
 const pageUrl = (): string => window.location.href.split('#')[0];
@@ -33,12 +38,25 @@ export function FlightActions({ flight, title }: FlightActionsProps) {
   const following = useIsFollowing(flight.id);
   const [followOpen, setFollowOpen] = useState(false);
   const [message, setMessage] = useState('');
+  useEffect(() => {
+    const idle = typeof window.requestIdleCallback === 'function';
+    const handle = idle
+      ? window.requestIdleCallback(() => void loadFollowPanel(), {
+          timeout: 5000,
+        })
+      : window.setTimeout(() => void loadFollowPanel(), 3000);
+    return () => (idle ? window.cancelIdleCallback(handle) : window.clearTimeout(handle));
+  }, []);
 
   const share = async () => {
     const url = pageUrl();
     if (typeof navigator.share === 'function') {
       try {
-        await navigator.share({ title, text: t('flightPages.detail.shareText', { title }), url });
+        await navigator.share({
+          title,
+          text: t('flightPages.detail.shareText', { title }),
+          url,
+        });
         setMessage('');
         return;
       } catch (error) {
@@ -55,7 +73,14 @@ export function FlightActions({ flight, title }: FlightActionsProps) {
   };
 
   const addToCalendar = () => {
-    const ics = buildIcs(flightCalendarEvent(flight, { t, lang, url: pageUrl(), stamp: Date.now() }));
+    const ics = buildIcs(
+      flightCalendarEvent(flight, {
+        t,
+        lang,
+        url: pageUrl(),
+        stamp: Date.now(),
+      }),
+    );
     const href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar;charset=utf-8' }));
     const link = document.createElement('a');
     link.href = href;
@@ -109,7 +134,11 @@ export function FlightActions({ flight, title }: FlightActionsProps) {
         ) : null}
         {message ? <span>{message}</span> : null}
       </p>
-      {followOpen ? <FollowPanel flight={flight} /> : null}
+      {followOpen ? (
+        <Suspense fallback={null}>
+          <FollowPanel flight={flight} />
+        </Suspense>
+      ) : null}
     </div>
   );
 }

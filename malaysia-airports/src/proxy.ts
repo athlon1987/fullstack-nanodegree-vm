@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { isLang } from '@/content/values';
-import { clientKey, createRouteLimiter, policyFor, tooManyRequests } from '@/lib/concierge/rate-limit';
+import { createRouteLimiter, limitKey, policyFor, tooManyRequests } from '@/lib/concierge/rate-limit';
 import { negotiateLang } from '@/lib/locale';
 // Package B (fix round, B-14): flight pages get a cheap 404 or a codeshare 308 before rendering.
 import { flightRouteResponse } from '@/lib/providers/flight-route';
@@ -18,7 +18,9 @@ import { flightRouteResponse } from '@/lib/providers/flight-route';
  * `src/lib/concierge/rate-limit.ts`. The concierge applies its own, stricter limit in its route,
  * so the proxy never buffers its body. The buckets live in this process's memory; with several
  * instances, `createRouteLimiter` takes a shared store, and the edge rules in
- * docs/engineering/edge/ apply the same limits before requests reach the app.
+ * docs/engineering/edge/ apply the same limits before requests reach the app. Without a
+ * configured client address source, `limitKey` falls back to an untrusted per-address key with a
+ * site-wide ceiling (round 2), and `src/instrumentation.ts` warns at start-up.
  *
  * It never runs for static localised pages, Next.js assets or files.
  */
@@ -28,7 +30,7 @@ export async function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
   const policy = policyFor(pathname);
   if (policy) {
-    const result = await limiter.take(policy, clientKey(request.headers), Date.now());
+    const result = await limiter.take(policy, limitKey(request.headers), Date.now());
     if (!result.allowed) return tooManyRequests(result);
   }
   if (pathname === '/api' || pathname.startsWith('/api/')) return NextResponse.next();
@@ -57,6 +59,8 @@ export const config = {
     '/((?!en(?:/|$)|ms(?:/|$)|api(?:/|$)|_next/|.*\\.[^/]+$).*)',
     '/(en|ms)/:airport/flights/:id',
     '/(en|ms)/journey/content/:airport',
+    // Round 2: the network flight feed (several boards in one request) is limited like the board feed.
+    '/(en|ms)/flights/feed',
     '/api',
     '/api/((?!concierge(?:/|$)).*)',
   ],

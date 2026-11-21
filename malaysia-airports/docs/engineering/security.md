@@ -93,7 +93,28 @@ checkout route allow `payment=(self "<payment origin>")` and partner `frame-src`
 `script-src` and `form-action` origins without loosening any other route. The list is empty
 until MAHB and a payment partner name the origins (needs partner data).
 
-Not-found responses carry `s-maxage=60` (the not-found pages render a `cacheLife('minutes')`
+**Round 2 (21 November 2026, verification issue 8, E-09): why the enforced policy keeps
+`'unsafe-inline'`, and what moved.** Verified on a production build that day.
+- *Moved:* our four inline scripts (preferences, early tap, early journey mode, saved-flight flag)
+  now live as plain strings in `src/lib/inline-scripts.ts` and `src/lib/preferences.ts`, and
+  `next.config.ts` puts all four SHA-256 hashes in the report-only policy. Reports now name only
+  the framework's scripts.
+- *Why not enforce hashes:* every prerendered page also carries the framework's own inline
+  scripts: the RSC payload chunks (`self.__next_f.push([...])`, which embed that page's data), the
+  bootstrap, and the `$RC`/`$RS` reveal scripts on pages with streamed boundaries. Their text
+  differs per page, per language and per build (measured: 57 inline scripts on `/en/kul`, 40 of them payload chunks and 10 reveal scripts; 56 on `/en`). A static,
+  nonce-free policy would need a different list of hashes for each of the 276 sitemap URLs (and
+  every prefetchable variant), regenerated after each build and content change, sent from
+  `headers()` by exact path. Next.js 16.4 has no supported way to emit those hashes
+  (`experimental.sri` covers external chunk files only), and nonces need per-request rendering,
+  which would end static rendering and CDN caching (Next.js notes, section 7, and Do/Don't 12).
+- *So:* `'unsafe-inline'` stays in the enforced `script-src`; everything else stays locked to
+  this origin (no third-party script, `object-src 'none'`, `base-uri 'none'`), and the
+  report-only policy with Trusted Types keeps measuring. Revisit when Next.js can emit per-route
+  inline-script hashes at build time.
+
+Not-found responses carry `s-maxage=60` (round 2: the proxy's flight 404 too, which sent
+`public, max-age=300`; it now sends `public, max-age=0, s-maxage=60`) (the not-found pages render a `cacheLife('minutes')`
 marker, `src/components/platform/short-cache.tsx`), so a CDN cannot keep a 404 for a year and
 arbitrary URLs cannot fill it (security-12). To be confirmed with `curl -I` on a production build.
 
@@ -115,14 +136,34 @@ jitless where schemas are built, and client storage validation no longer uses zo
 | `/api/health` | 10, then 1 every 6 s | Proxy |
 | `/api/csp-report`, `/api/metrics` | 30, then 1 every 2 s | Proxy |
 | Any other `/api/*` (they answer a JSON 404) | 60, then 1 per second | Proxy |
-| Per-request pages: flight detail, board feed, journey content | 60, then 1 per second | Proxy |
+| Per-request pages: flight detail, board feed, network feed (round 2), journey content | 60, then 1 per second | Proxy |
 
 - **Client identity (the trust model).** The key is the client address from a trusted source only:
   `TRUSTED_CLIENT_IP_HEADER` (a header the CDN overwrites, such as `cf-connecting-ip`) or
   `TRUSTED_PROXY_HOPS` (how many of our proxies append to `X-Forwarded-For`; the client is that
   many entries from the right). The first `X-Forwarded-For` entry is never used: a visitor sets
-  it. With neither variable set, every client shares one bucket per route: the limits fail safe
-  (spend and load stay bounded) rather than open. **Production must set one of the two.**
+  it. **Production must set one of the two.**
+- **When neither is set (round 2, 21 November 2026; verified against the code that day).** The
+  server still starts, and is safe but visible about it:
+  - **Start-up warning.** `src/instrumentation.ts` prints one `[rate-limit] Client address source:
+    …` line to the server log when a production server starts without a usable setting (also
+    when a value is set but unreadable, such as `TRUSTED_PROXY_HOPS=two`). Not printed during
+    `next build` or in development. Treat it as a deployment error.
+  - **Fallback key.** `limitKey()` uses the address nearest the server, the last `X-Forwarded-For`
+    entry, marked untrusted (`untrusted:<address>`). With nothing in front of the app that is
+    the socket address (`next start` adds it when the request has no such header); behind one
+    proxy it is the proxy's view of the client. Visitors are therefore no longer throttled
+    together, as they were before (one shared bucket for the whole site).
+  - **Site-wide ceiling.** A visitor talking to the app directly can send that header and choose
+    the value, so every untrusted key also draws on one ceiling per route group: 10 times the
+    per-client limit (`UNTRUSTED_CEILING_FACTOR`; for `/api/flights` 600 in a burst, then 10 a
+    second; for the concierge 100, then 1 every 0.6 s, under the separate model budget). A client
+    inventing addresses is bounded by the ceiling, not by its own limit.
+  - **Known limit of the fallback.** Behind a CDN that is not declared, the nearest address is a
+    CDN edge, so many visitors share a few keys, and the ceiling applies to all of them. Only the
+    configured header or hop count gives one bucket per visitor.
+  - Unit tests: `src/lib/concierge/server.test.ts` ("rate limits without a configured client
+    address source" and the concierge route tests).
 - **Everything counts.** Invalid requests (400, 413) are counted; only requests refused as
   cross-site (403) or with the wrong media type (415) are refused before counting, so another
   site cannot drain a visitor's allowance.

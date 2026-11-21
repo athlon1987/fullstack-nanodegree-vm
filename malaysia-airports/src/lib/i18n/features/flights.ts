@@ -11,9 +11,10 @@
 export const flightPagesEn = {
   title: 'Flights',
   board: {
-    title: 'Departures and arrivals',
-    lead: 'Search, filter and save flights at {airport}. Times are airport time.',
-    metaTitle: 'Departures and arrivals: {airport}',
+    // A-21 hand-off (round 2): the page title uses the section noun.
+    title: 'Flights',
+    lead: 'Departures and arrivals at {airport}: search, filter and save flights. Times are airport time.',
+    metaTitle: 'Flights: {airport}',
     metaDescription:
       'Departures and arrivals at {airport}: search by flight, airline, city or route, and filter by terminal and status. Flight information in this prototype is demonstration data.',
     tabsLabel: 'Departures or arrivals',
@@ -316,9 +317,10 @@ export const flightPagesEn = {
 export const flightPagesMs: typeof flightPagesEn = {
   title: 'Penerbangan',
   board: {
-    title: 'Berlepas dan ketibaan',
-    lead: 'Cari, tapis dan simpan penerbangan di {airport}. Waktu ialah waktu lapangan terbang.',
-    metaTitle: 'Berlepas dan ketibaan: {airport}',
+    // A-21 hand-off (round 2): the page title uses the section noun.
+    title: 'Penerbangan',
+    lead: 'Berlepas dan ketibaan di {airport}: cari, tapis dan simpan penerbangan. Waktu ialah waktu lapangan terbang.',
+    metaTitle: 'Penerbangan: {airport}',
     metaDescription:
       'Berlepas dan ketibaan di {airport}: cari mengikut penerbangan, syarikat penerbangan, bandar atau laluan, dan tapis mengikut terminal dan status. Maklumat penerbangan dalam prototaip ini ialah data demonstrasi.',
     tabsLabel: 'Berlepas atau ketibaan',

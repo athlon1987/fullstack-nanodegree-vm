@@ -1,6 +1,7 @@
 import type { TransportOption } from '@/content/types';
 import type { Translator } from '@/lib/i18n/translate';
-import { ProvenanceTag } from '@/components/common/provenance-tag';
+import { ProvenanceDefault, ProvenanceTag } from '@/components/common/provenance-tag';
+import { sharedProvenance } from '@/components/common/shared-provenance';
 import { SectionHeading } from '@/components/common/section-heading';
 import { SourceNote } from '@/components/common/source-note';
 import { Callout } from '@/components/ui/callout';
@@ -21,6 +22,7 @@ export interface TerminalTransfersProps {
  * because changing terminals means clearing immigration and checking in again.
  */
 export function TerminalTransfers({ t, context, between, inside, notes }: TerminalTransfersProps) {
+  const betweenProvenance = sharedProvenance(between);
   return (
     <>
       {between.length > 0 ? (
@@ -36,10 +38,12 @@ export function TerminalTransfers({ t, context, between, inside, notes }: Termin
                 </div>
               </Callout>
             ))}
+            {/* Round 2 (A-14): the provenance the options share, said once; the others keep their tag. */}
+            {betweenProvenance ? <ProvenanceDefault provenance={betweenProvenance} className="-mb-2" /> : null}
             <ul className="grid items-start gap-4 xl:grid-cols-2">
               {between.map((option) => (
                 <li key={option.id} className="min-w-0">
-                  <TransportOptionCard option={option} context={context} day={null} />
+                  <TransportOptionCard option={option} context={context} day={null} defaultProvenance={betweenProvenance} />
                 </li>
               ))}
             </ul>

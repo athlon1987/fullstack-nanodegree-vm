@@ -14,6 +14,7 @@ import { NativeSelect } from '@/components/ui/native-select';
 import { SegmentedControl } from '@/components/ui/segmented-control';
 import { Timeline, TimelineItem } from '@/components/ui/timeline';
 import { FactCard, type FactView } from './fact-card';
+import { OpsStatus } from '@/components/flights/ops-status';
 import type { TransitData } from './transit-data.server';
 import {
   LAYOVER_OPTIONS,
@@ -243,6 +244,11 @@ export function TransitPlanner({ data, initial }: TransitPlannerProps) {
                         </a>
                       </li>
                     </ul>
+                  ) : null}
+                  {/* D-08 hand-off (round 2): reaching a Terminal 1 gate may use the Aerotrain, so the
+                      step reads the current Aerotrain notices and links to them. */}
+                  {step === 'gate' && input.to === 'T1' && data.aerotrain ? (
+                    <OpsStatus airport={data.airportSlug} notices={data.aerotrain.notices} sources={data.aerotrain.sources} services={['aerotrain']} variant="inline" />
                   ) : null}
                   {facts.length > 0 ? (
                     <div className="mt-3 flex flex-col gap-3 border-l-2 border-line-strong pl-4">

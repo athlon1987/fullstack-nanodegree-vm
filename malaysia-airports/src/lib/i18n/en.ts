@@ -335,6 +335,8 @@ export const en = {
   },
   provenance: {
     title: 'How to read this guidance',
+    // Round 2 (A-14): one statement for a list whose items share a provenance; exceptions keep their tag.
+    unlessMarked: 'unless marked otherwise',
     official: {
       label: 'Official',
       short: 'Official',
@@ -807,6 +809,10 @@ export const en = {
       terminalTitle: 'Terminal guidance',
       terminalKlia: 'KLIA has two terminals. Check your booking, or search your flight.',
       terminalAirport: 'Maps, facilities and what to expect at {airport}.',
+      // Round 2 (B-01 hand-off): the KLIA status row under the strip.
+      opsTitle: 'Services at KLIA now:',
+      opsClear: 'no disruption reported in our sources',
+      opsAffected: { one: '{count} service has a notice', other: '{count} services have a notice' },
     },
     board: {
       eyebrow: 'Flight board',
@@ -822,7 +828,6 @@ export const en = {
       sampleNote: 'A demonstration flight, used here to show how a journey is built.',
       arriveBy: 'Be at the airport by {time}',
       arriveGeneric: 'Be at the airport in good time',
-      arriveBody: 'About 3 hours before an international flight and 2 hours before a domestic one. Your airline sets the real deadline.',
       officialFallbackTitle: 'Help on the day',
       officialFallbackBody: 'Malaysia Airports customer support: {value}.',
       suggestionTitle: 'Eat and rest near your gate',
@@ -907,6 +912,12 @@ export const en = {
     },
     exploreTitle: 'Explore {airport}',
     exploreLead: 'Only sections with verified content are shown.',
+    // Round 2 (D-02 hand-off): bookable services on the KLIA overview.
+    servicesTitle: 'Services you can book',
+    servicesLead: 'Optional services listed by Malaysia Airports. You can travel without them.',
+    fastTrackSummary: 'Booked on a separate website, myairportfasttrack.com. Not published in our sources: price, hours, which checkpoints it covers and the seller.',
+    fastTrackDetails: 'Fast Track details',
+    fastTrackBook: 'Booking site',
     sections: {
       flights: 'Departures and arrivals, with search and filters.',
       map: 'A schematic terminal map with step-free routes.',

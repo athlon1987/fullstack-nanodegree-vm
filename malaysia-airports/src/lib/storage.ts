@@ -35,9 +35,15 @@ type Invalid = typeof INVALID;
 /** A check returns the (cleaned) value, or `INVALID`. */
 export type Check<T> = (input: unknown) => T | Invalid;
 type Out<C> = C extends Check<infer T> ? T : never;
-type OptionalKeys<S> = { [K in keyof S]: undefined extends Out<S[K]> ? K : never }[keyof S];
+type OptionalKeys<S> = {
+  [K in keyof S]: undefined extends Out<S[K]> ? K : never;
+}[keyof S];
 type Simplify<T> = { [K in keyof T]: T[K] } & {};
-type ObjectOut<S> = Simplify<{ [K in Exclude<keyof S, OptionalKeys<S>>]: Out<S[K]> } & { [K in OptionalKeys<S>]?: Exclude<Out<S[K]>, undefined> }>;
+type ObjectOut<S> = Simplify<
+  { [K in Exclude<keyof S, OptionalKeys<S>>]: Out<S[K]> } & {
+    [K in OptionalKeys<S>]?: Exclude<Out<S[K]>, undefined>;
+  }
+>;
 
 /** The value type a check or validator accepts. */
 export type Infer<C> = C extends Validator<infer T> ? T : Out<C>;
@@ -49,7 +55,10 @@ export const check = {
   string:
     (options: { min?: number; max?: number; pattern?: RegExp } = {}): Check<string> =>
     (input) =>
-      typeof input === 'string' && input.length >= (options.min ?? 0) && input.length <= (options.max ?? Number.POSITIVE_INFINITY) && (!options.pattern || options.pattern.test(input))
+      typeof input === 'string' &&
+      input.length >= (options.min ?? 0) &&
+      input.length <= (options.max ?? Number.POSITIVE_INFINITY) &&
+      (!options.pattern || options.pattern.test(input))
         ? input
         : INVALID,
   boolean: (): Check<boolean> => (input) => (typeof input === 'boolean' ? input : INVALID),
@@ -96,6 +105,11 @@ export const check = {
       }
       return output;
     },
+  /** Any value the predicate accepts, kept as it is (round 2: the concierge's stored answers). */
+  custom:
+    <T>(accept: (input: unknown) => input is T): Check<T> =>
+    (input) =>
+      accept(input) ? input : INVALID,
   /** A plain object of string keys to values, each key and value checked (round 2: `follow.ts`). */
   record:
     <V>(key: Check<string>, value: Check<V>): Check<Record<string, V>> =>
@@ -104,7 +118,8 @@ export const check = {
       const output: Record<string, V> = {};
       for (const [name, entry] of Object.entries(input)) {
         const checked = value(entry);
-        if (key(name) === INVALID || checked === INVALID) return INVALID;
+        // `__proto__` would set the result's prototype instead of a key: refuse it outright.
+        if (name === '__proto__' || key(name) === INVALID || checked === INVALID) return INVALID;
         output[name] = checked;
       }
       return output;

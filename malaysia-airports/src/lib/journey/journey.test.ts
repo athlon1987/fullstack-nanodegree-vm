@@ -410,6 +410,15 @@ describe('buildJourney: links that keep the flight context (B-13)', () => {
     expect(order.indexOf('fast-track')).toBe(order.indexOf('security') + 1);
     expect(step(steps, 'fast-track').optional).toBe(true);
   });
+
+  // Round 2 (D-02 hand-off): a Terminal 2 flight links to the Terminal 2 record, not the first one.
+  it("picks the Fast Track record for the flight's terminal", () => {
+    const record = (terminal: string) => ({ title: { en: 'Optional: Fast Track' }, body: { en: 'A paid lane.' }, href: `/kul/facilities#kul-${terminal}-fast-track`, provenance: 'official' as const, sources: ['mahb-klia-t1-home'] });
+    const airportContent = { ...kul, fastTrack: record('t1'), fastTrackByTerminal: { T1: record('t1'), T2: record('t2') } };
+    const href = (terminal: 'T1' | 'T2') => step(buildJourney({ flight: { ...international(), terminal }, mode: 'departing', airportContent, now: at('08:00') }), 'fast-track').actions?.[0]?.href;
+    expect(href('T2')).toBe('/kul/facilities#kul-t2-fast-track');
+    expect(href('T1')).toBe('/kul/facilities#kul-t1-fast-track');
+  });
 });
 
 describe('buildJourney: meeting someone (B-17)', () => {

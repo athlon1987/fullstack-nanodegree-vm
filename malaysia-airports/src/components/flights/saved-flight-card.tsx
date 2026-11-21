@@ -136,7 +136,8 @@ export function SavedFlightCard({ saved, flight, now, next, selected, alertsOn, 
           <span className="type-eyebrow text-ink-2">{t('flightPages.journey.next')}</span>
           <span className="min-w-0">
             {pick(next.title, lang)}
-            {next.time ? <span className="type-data-sm ml-2 text-ink-2">{formatTime(next.time, zone)}</span> : null}
+            {/* Round 2: no second time when the step title already says it ("Board from 10:50"). */}
+            {next.time && !pick(next.title, lang).includes(formatTime(next.time, zone)) ? <span className="type-data-sm ml-2 text-ink-2">{formatTime(next.time, zone)}</span> : null}
           </span>
         </p>
       ) : null}

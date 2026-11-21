@@ -1,8 +1,8 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
-import { AIRPORTS, AIRPORT_CHOICES, CLASSIFICATION_LABELS } from '@/content/airports';
+import { useMemo, useState } from 'react';
+import { AIRPORTS, AIRPORT_CHOICES, CLASSIFICATION_LABELS, localizeAirport } from '@/content/airports';
 import { AIRPORT_CLASSIFICATIONS, pick } from '@/content/values';
 import type { Airport, AirportClassification } from '@/content/types';
 import { useAirportContext } from '@/lib/hooks';
@@ -36,7 +36,6 @@ const normalise = (value: string): string =>
     .normalize('NFD')
     .replace(/[̀-ͯ]/g, '');
 
-const STATES = [...new Set(AIRPORTS.map((airport) => airport.state))].sort((a, b) => a.localeCompare(b));
 
 export interface AirportDirectoryViewProps {
   /** The section to continue to after choosing (`?then=`), when there is one. */
@@ -57,11 +56,21 @@ export function AirportDirectoryView({ then }: AirportDirectoryViewProps) {
   const [state, setState] = useState('');
   const [type, setType] = useState<TypeFilter>('all');
 
+  // Names, cities and states in the page language (D-09 hand-off, round 2); the search also
+  // matches the English forms.
+  const { airports, states, english } = useMemo(() => {
+    const local = AIRPORTS.map((airport) => localizeAirport(airport, lang));
+    return {
+      airports: local,
+      states: [...new Set(local.map((airport) => airport.state))].sort((a, b) => a.localeCompare(b, lang)),
+      english: new Map(AIRPORTS.map((airport) => [airport.slug, [airport.name, airport.shortName, airport.city, airport.state].join(' ')])),
+    };
+  }, [lang]);
   const terms = normalise(query).split(/\s+/).filter(Boolean);
-  const shown = AIRPORTS.filter((airport) => {
+  const shown = airports.filter((airport) => {
     if (state && airport.state !== state) return false;
     if (type !== 'all' && airport.classification !== type) return false;
-    const haystack = normalise([airport.name, airport.shortName, airport.city, airport.state, airport.code, airport.icao ?? ''].join(' '));
+    const haystack = normalise([airport.name, airport.shortName, airport.city, airport.state, english.get(airport.slug) ?? '', airport.code, airport.icao ?? ''].join(' '));
     return terms.every((term) => haystack.includes(term));
   });
   const highlight = new Set(shown.map((airport) => airport.slug));
@@ -164,7 +173,7 @@ export function AirportDirectoryView({ then }: AirportDirectoryViewProps) {
           <SearchField label={t('shell.switcher.searchLabel')} hideLabel={false} placeholder={t('airportSwitcher.searchPlaceholder')} placeholderShort={t('shell.switcher.searchLabel')} value={query} onValueChange={setQuery} />
           <NativeSelect label={t('airportsPage.state')} value={state} onChange={(event) => setState(event.target.value)} iconStart="map-pin">
             <option value="">{t('airportsPage.allStates')}</option>
-            {STATES.map((item) => (
+            {states.map((item) => (
               <option key={item} value={item}>
                 {item}
               </option>

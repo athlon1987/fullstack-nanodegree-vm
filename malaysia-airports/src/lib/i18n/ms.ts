@@ -335,6 +335,8 @@ export const ms: Dictionary = {
   },
   provenance: {
     title: 'Cara membaca panduan ini',
+    // Round 2 (A-14): one statement for a list whose items share a provenance; exceptions keep their tag.
+    unlessMarked: 'melainkan ditanda sebaliknya',
     official: {
       label: 'Rasmi',
       short: 'Rasmi',
@@ -806,6 +808,10 @@ export const ms: Dictionary = {
       terminalTitle: 'Panduan terminal',
       terminalKlia: 'KLIA mempunyai dua terminal. Semak tempahan anda, atau cari penerbangan anda.',
       terminalAirport: 'Peta, kemudahan dan apa yang perlu dijangka di {airport}.',
+      // Round 2 (B-01 hand-off): the KLIA status row under the strip.
+      opsTitle: 'Perkhidmatan di KLIA sekarang:',
+      opsClear: 'tiada gangguan dilaporkan dalam sumber kami',
+      opsAffected: { one: '{count} perkhidmatan ada notis', other: '{count} perkhidmatan ada notis' },
     },
     board: {
       eyebrow: 'Papan penerbangan',
@@ -821,7 +827,6 @@ export const ms: Dictionary = {
       sampleNote: 'Penerbangan demonstrasi, digunakan di sini untuk menunjukkan cara perjalanan dibina.',
       arriveBy: 'Tiba di lapangan terbang sebelum {time}',
       arriveGeneric: 'Tiba di lapangan terbang lebih awal',
-      arriveBody: 'Kira-kira 3 jam sebelum penerbangan antarabangsa dan 2 jam sebelum penerbangan domestik. Syarikat penerbangan anda menetapkan had masa sebenar.',
       officialFallbackTitle: 'Bantuan pada hari perjalanan',
       officialFallbackBody: 'Khidmat pelanggan Malaysia Airports: {value}.',
       suggestionTitle: 'Makan dan berehat berhampiran pintu anda',
@@ -906,6 +911,12 @@ export const ms: Dictionary = {
     },
     exploreTitle: 'Teroka {airport}',
     exploreLead: 'Hanya bahagian dengan kandungan yang disahkan dipaparkan.',
+    // Round 2 (D-02 hand-off): bookable services on the KLIA overview.
+    servicesTitle: 'Perkhidmatan yang boleh ditempah',
+    servicesLead: 'Perkhidmatan pilihan yang disenaraikan oleh Malaysia Airports. Anda boleh melakukan perjalanan tanpanya.',
+    fastTrackSummary: 'Ditempah di laman web berasingan, myairportfasttrack.com. Tidak diterbitkan dalam sumber kami: harga, waktu operasi, pemeriksaan yang diliputi dan penjualnya.',
+    fastTrackDetails: 'Butiran Fast Track',
+    fastTrackBook: 'Laman tempahan',
     sections: {
       flights: 'Penerbangan berlepas dan tiba, dengan carian dan penapis.',
       map: 'Peta terminal skematik dengan laluan tanpa tangga.',

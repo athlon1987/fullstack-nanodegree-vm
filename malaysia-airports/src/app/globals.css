@@ -1067,9 +1067,11 @@ main:has([data-airport-chrome='full']) :is([data-airport-chrome='compact'], [dat
 }
 
 /* Airport section pages on phones: the compact airport bar already links back to the airport,
-   so the one-item breadcrumb ("< KLIA") is not repeated above the page heading. */
+   so the one-item breadcrumb ("< KLIA") is not repeated above the page heading. Deeper trails
+   (an outlet: Home, KLIA, Shops and food, outlet) keep their "< Shops and food" back link, the
+   only way back to the directory on a phone (round 2, package C hand-off). */
 @media (width < 40rem) {
-  [data-airport-page] [data-page-breadcrumbs] {
+  [data-airport-page] [data-page-breadcrumbs]:not(:has(li:nth-child(4))) {
     display: none;
   }
 }

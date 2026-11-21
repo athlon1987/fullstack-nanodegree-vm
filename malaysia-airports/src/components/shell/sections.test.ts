@@ -90,11 +90,9 @@ describe('section glossary (A-21): one noun per section', () => {
     lounges: 'nav.lounges',
     transit: 'guidePages.transit.title',
   };
-  const AWAITING_HANDOFF: Partial<Record<keyof typeof PAGE_TITLE_KEYS, string>> = {
-    flights: 'B: "Departures and arrivals" (flightPages.board.title)',
-    transport: 'C: "Getting to and from {airport}" (transportPages.transport.title)',
-    transit: 'D: "Connecting at {airport}" (guidePages.transit.title)',
-  };
+  // Round 2: the flights, transport and transit titles now use their section noun, so every
+  // section is guarded (the list of open hand-offs is empty).
+  const AWAITING_HANDOFF: Partial<Record<keyof typeof PAGE_TITLE_KEYS, string>> = {};
 
   it('uses the tab noun in each section page title', () => {
     for (const dictionary of [en, ms]) {

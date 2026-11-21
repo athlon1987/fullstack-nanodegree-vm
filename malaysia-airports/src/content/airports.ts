@@ -176,21 +176,24 @@ function malayAirportName(name: string): string {
 
 function summaryFor(row: Row, classification: AirportClassification): LocalizedText {
   const stateMs = STATE_MS[row.state] ?? row.state;
+  // Malay names in the Malay sentence (D-09, round 2).
+  const nameMs = malayAirportName(row.name);
+  const cityMs = PLACE_MS[row.city] ?? row.city;
   if (classification === 'international') {
     return lt(
       `${row.name} (${row.code}) in ${row.city}, ${row.state}, is one of the five international airports operated by Malaysia Airports.`,
-      `${row.name} (${row.code}) di ${row.city}, ${stateMs}, ialah satu daripada lima lapangan terbang antarabangsa kendalian Malaysia Airports.`,
+      `${nameMs} (${row.code}) di ${cityMs}, ${stateMs}, ialah satu daripada lima lapangan terbang antarabangsa kendalian Malaysia Airports.`,
     );
   }
   if (classification === 'domestic') {
     return lt(
       `${row.name} (${row.code}) in ${row.city}, ${row.state}, is one of the 17 airports Malaysia Airports classifies as domestic.`,
-      `${row.name} (${row.code}) di ${row.city}, ${stateMs}, ialah satu daripada 17 lapangan terbang yang dikelaskan sebagai domestik oleh Malaysia Airports.`,
+      `${nameMs} (${row.code}) di ${cityMs}, ${stateMs}, ialah satu daripada 17 lapangan terbang yang dikelaskan sebagai domestik oleh Malaysia Airports.`,
     );
   }
   return lt(
     `${row.name} (${row.code}) is a short take-off and landing airport (STOLport) at ${row.city}, ${row.state}.`,
-    `${row.name} (${row.code}) ialah lapangan terbang berlepas dan mendarat pendek (STOLport) di ${row.city}, ${stateMs}.`,
+    `${nameMs} (${row.code}) ialah lapangan terbang berlepas dan mendarat pendek (STOLport) di ${cityMs}, ${stateMs}.`,
   );
 }
 
@@ -386,7 +389,7 @@ export function terminalLabel(
   if (!record) return '';
   const item = getTerminal(record, terminal) ?? defaultTerminal(record);
   if (!isMultiTerminal(record)) {
-    return options.short ? pick(item.shortName, lang) : record.shortName;
+    return options.short ? pick(item.shortName, lang) : localizeAirport(record, lang).shortName;
   }
   return pick(options.short ? item.shortName : item.name, lang);
 }
@@ -406,15 +409,19 @@ export interface AirportChoice extends AirportSelection {
   /** IATA code for the badge. */
   code: string;
   label: LocalizedText;
-  /** City and state, for the second line. */
-  detail: string;
+  /** City and state, for the second line, in both languages (D-09, round 2). */
+  detail: LocalizedText;
   classification: AirportClassification;
   featured: boolean;
 }
 
 function choiceFor(airport: Airport, terminal?: Terminal): AirportChoice {
   const featured = (FEATURED_AIRPORT_SLUGS as readonly string[]).includes(airport.slug);
-  const detail = airport.city === airport.state ? airport.city : `${airport.city}, ${airport.state}`;
+  const place = (lang: Lang) => {
+    const local = localizeAirport(airport, lang);
+    return local.city === local.state ? local.city : `${local.city}, ${local.state}`;
+  };
+  const detail = lt(place('en'), place('ms'));
   if (terminal) {
     return {
       id: `${airport.slug}-${terminal.id.toLowerCase()}`,
@@ -431,7 +438,7 @@ function choiceFor(airport: Airport, terminal?: Terminal): AirportChoice {
     id: airport.slug,
     airport: airport.slug,
     code: airport.code,
-    label: lt(airport.shortName),
+    label: airport.localShortName ?? lt(airport.shortName),
     detail,
     classification: airport.classification,
     featured,
@@ -472,4 +479,10 @@ export function localizeAirport(airport: Airport, lang: Lang): Airport {
     ...(airport.localCity ? { city: pick(airport.localCity, lang) } : {}),
     ...(airport.localState ? { state: pick(airport.localState, lang) } : {}),
   };
+}
+
+/** The short name of an airport by slug in the page language, or `undefined` (D-09, round 2). */
+export function localName(slug: string, lang: Lang): string | undefined {
+  const airport = getAirport(slug);
+  return airport ? localizeAirport(airport, lang).shortName : undefined;
 }

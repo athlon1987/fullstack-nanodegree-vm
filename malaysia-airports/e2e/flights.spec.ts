@@ -41,7 +41,7 @@ test.describe('flight board', () => {
   test('honours ?dir= and ?q=, keeps the URL in step, and passes axe', async ({ page }) => {
     await page.goto('/en/kul/flights?dir=a&q=MH');
     const main = page.getByRole('main');
-    await expect(main.getByRole('heading', { level: 1, name: 'Departures and arrivals' })).toBeVisible();
+    await expect(main.getByRole('heading', { level: 1, name: 'Flights' })).toBeVisible();
     await expect(main.getByRole('tab', { name: /Arrivals/ })).toHaveAttribute('aria-selected', 'true');
     await expect(main.getByRole('searchbox', { name: 'Search this board' })).toHaveValue('MH');
     await expect(main.getByRole('heading', { level: 2, name: 'Arrivals' })).toBeVisible();

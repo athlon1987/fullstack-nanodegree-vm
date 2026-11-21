@@ -19,10 +19,14 @@ export interface FacilityCardProps {
   showTerminal: boolean;
   /** Airport slug: shows a toggle that saves the facility to My journey's saved places. */
   airport?: string;
+  /** The list states this provenance once (`ProvenanceDefault`): no tag of its own when it matches (A-14). */
+  defaultProvenance?: FacilityView['provenance'];
+  /** The section shows the shared sources and date once: none on the card (A-14). */
+  groupedSources?: boolean;
 }
 
 /** One facility: what it is, where, when, for whom, how sure we are and where that comes from. */
-export function FacilityCard({ facility, sources, showTerminal, airport }: FacilityCardProps) {
+export function FacilityCard({ facility, sources, showTerminal, airport, defaultProvenance, groupedSources = false }: FacilityCardProps) {
   const t = useT();
   return (
     <article
@@ -38,10 +42,12 @@ export function FacilityCard({ facility, sources, showTerminal, airport }: Facil
           <h3 id={`${facility.id}-title`} className="type-title-md text-ink">
             {facility.name}
           </h3>
-          <div className="mt-1.5 flex flex-wrap items-center gap-2">
-            <ProvenanceTag provenance={facility.provenance} />
-            {showTerminal ? <Badge size="sm">{facility.terminalLabel}</Badge> : null}
-          </div>
+          {facility.provenance !== defaultProvenance || showTerminal ? (
+            <div className="mt-1.5 flex flex-wrap items-center gap-2">
+              {facility.provenance !== defaultProvenance ? <ProvenanceTag provenance={facility.provenance} /> : null}
+              {showTerminal ? <Badge size="sm">{facility.terminalLabel}</Badge> : null}
+            </div>
+          ) : null}
         </div>
         {airport ? <SaveFacility airport={airport} facility={facility} /> : null}
       </div>
@@ -78,10 +84,12 @@ export function FacilityCard({ facility, sources, showTerminal, airport }: Facil
           </ExternalLink>
         ) : null}
       </div>
-      <div className="mt-1 flex flex-wrap items-center gap-x-4">
-        <SourceNote sources={sourcesFor(facility.sourceIds, sources)} />
-        {facility.asOf ? <AsOf value={facility.asOf} /> : null}
-      </div>
+      {groupedSources ? null : (
+        <div className="mt-1 flex flex-wrap items-center gap-x-4">
+          <SourceNote sources={sourcesFor(facility.sourceIds, sources)} />
+          {facility.asOf ? <AsOf value={facility.asOf} /> : null}
+        </div>
+      )}
     </article>
   );
 }

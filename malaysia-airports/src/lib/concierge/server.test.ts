@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { POST } from '@/app/api/concierge/route';
 import { checkGrounded, checkRewording, contactsIn, namesIn, numbersIn } from './fact-guard';
-import { UNIDENTIFIED_CLIENT, clientKey, createModelBudget, createRouteLimiter, createTokenBucket, policyFor, trustConfigFromEnv } from './rate-limit';
+import { UNIDENTIFIED_CLIENT, UNTRUSTED_CEILING_FACTOR, clientKey, createModelBudget, createRouteLimiter, createTokenBucket, limitKey, policyFor, trustConfigFromEnv, trustConfigWarning } from './rate-limit';
 import { REPHRASE_MAX_TOKENS, escapeTags, groundingReference, redactQuestion, rephraseAnswer } from './rephrase.server';
 import { ConciergeRequestSchema, MAX_BODY_BYTES, isJsonMediaType, isSameOriginRequest, readBodyWithLimit, siteOrigins } from './request';
 import type { ConciergeAnswer } from './types';
@@ -47,6 +47,41 @@ describe('token bucket', () => {
   });
 });
 
+// Round 2 (verification issue 5): without a trusted source, visitors are not throttled together.
+describe('rate limits without a configured client address source', () => {
+  const none = { trustedProxyHops: 0 };
+
+  it('keys on the address nearest the server, marked untrusted, and on the trusted source when configured', () => {
+    expect(limitKey(new Headers({ 'x-forwarded-for': '198.51.100.7, 203.0.113.9' }), none)).toEqual({ key: 'untrusted:203.0.113.9', trusted: false });
+    expect(limitKey(new Headers({ 'x-forwarded-for': '192.0.2.10' }), none)).toEqual({ key: 'untrusted:192.0.2.10', trusted: false });
+    expect(limitKey(new Headers(), none)).toEqual({ key: UNIDENTIFIED_CLIENT, trusted: false });
+    expect(limitKey(new Headers({ 'x-forwarded-for': 'not an address' }), none)).toEqual({ key: UNIDENTIFIED_CLIENT, trusted: false });
+    expect(limitKey(new Headers({ 'x-forwarded-for': '198.51.100.7, 203.0.113.9' }), { trustedProxyHops: 1 })).toEqual({ key: '203.0.113.9', trusted: true });
+  });
+
+  it('gives two visitors their own buckets, and caps invented addresses with a site-wide ceiling', async () => {
+    const limiter = createRouteLimiter();
+    const take = (address: string) => limiter.take('flights', limitKey(new Headers({ 'x-forwarded-for': address }), none), 0);
+    const first: boolean[] = [];
+    for (let index = 0; index < 61; index += 1) first.push((await take('192.0.2.1')).allowed);
+    expect(first.filter(Boolean)).toHaveLength(60);
+    // A second visitor is not affected by the first one's burst.
+    expect((await take('192.0.2.2')).allowed).toBe(true);
+    // A client rotating forged addresses stops at the ceiling: 10 times one client's burst in all.
+    const rotated: boolean[] = [];
+    for (let index = 0; index < 700; index += 1) rotated.push((await take(`10.1.${Math.floor(index / 250)}.${index % 250}`)).allowed);
+    expect(first.filter(Boolean).length + 1 + rotated.filter(Boolean).length).toBe(60 * UNTRUSTED_CEILING_FACTOR);
+  });
+
+  it('warns in the log when the source is missing or unreadable, and not when it is set', () => {
+    expect(trustConfigWarning({})).toMatch(/neither TRUSTED_CLIENT_IP_HEADER nor TRUSTED_PROXY_HOPS is set/);
+    expect(trustConfigWarning({ TRUSTED_PROXY_HOPS: 'two' })).toMatch(/TRUSTED_PROXY_HOPS is not a whole number/);
+    expect(trustConfigWarning({ TRUSTED_CLIENT_IP_HEADER: 'bad header!', TRUSTED_PROXY_HOPS: '1' })).toMatch(/not a valid header name.*The other setting is used/);
+    expect(trustConfigWarning({ TRUSTED_CLIENT_IP_HEADER: 'cf-connecting-ip' })).toBeNull();
+    expect(trustConfigWarning({ TRUSTED_PROXY_HOPS: '2' })).toBeNull();
+  });
+});
+
 describe('per-route limits (security-06)', () => {
   it('maps paths to policies and leaves static pages and the concierge alone', () => {
     expect(policyFor('/api/flights')).toBe('flights');
@@ -55,6 +90,7 @@ describe('per-route limits (security-06)', () => {
     expect(policyFor('/api/nope')).toBe('api');
     expect(policyFor('/en/kul/flights/mh2610-20261117-d')).toBe('dynamic');
     expect(policyFor('/ms/journey/content/kul')).toBe('dynamic');
+    expect(policyFor('/en/flights/feed')).toBe('dynamic');
     expect(policyFor('/api/concierge')).toBeUndefined();
     expect(policyFor('/en/kul/parking')).toBeUndefined();
   });
@@ -151,11 +187,26 @@ describe('POST /api/concierge', () => {
     expect(noCors.status).toBe(415);
   });
 
+  // Round 2 (verification issue 5): this test now configures the trusted proxy production must
+  // set; before, it relied on every unconfigured client sharing one bucket. The client still
+  // rotates the X-Forwarded-For entries it controls. The unconfigured case is the next test.
   it('counts invalid requests, and rotating X-Forwarded-For gets 429 after 10', async () => {
+    vi.stubEnv('TRUSTED_PROXY_HOPS', '1');
     const statuses: number[] = [];
-    for (let index = 0; index < 12; index += 1) statuses.push((await post('{"question":""}', { 'x-forwarded-for': `198.51.100.${index}` })).status);
+    for (let index = 0; index < 12; index += 1) statuses.push((await post('{"question":""}', { 'x-forwarded-for': `198.51.100.${index}, 203.0.113.9` })).status);
+    vi.unstubAllEnvs();
     expect(statuses.slice(0, 10).every((status) => status === 400)).toBe(true);
     expect(statuses.slice(10)).toEqual([429, 429]);
+  });
+
+  it('without a trusted source, visitors have their own limit and invented addresses stop at the site-wide ceiling', async () => {
+    vi.stubEnv('TRUSTED_PROXY_HOPS', '');
+    vi.stubEnv('TRUSTED_CLIENT_IP_HEADER', '');
+    const statuses: number[] = [];
+    for (let index = 0; index < 110; index += 1) statuses.push((await post('{"question":""}', { 'x-forwarded-for': `10.2.0.${index}` })).status);
+    vi.unstubAllEnvs();
+    expect(statuses.slice(0, 10 * UNTRUSTED_CEILING_FACTOR).every((status) => status === 400)).toBe(true);
+    expect(statuses.at(-1)).toBe(429);
   });
 });
 

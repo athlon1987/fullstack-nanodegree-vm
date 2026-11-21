@@ -122,13 +122,14 @@ test.describe('shop and dine', () => {
 });
 
 test.describe('outlet page', () => {
-  test('shows where, hours or "not published", sources and related outlets, and saves to my journey', async ({ page, isMobile }) => {
+  test('shows where, hours or "not published", sources and related outlets, and saves to my journey', async ({ page }) => {
     await page.goto('/en/kul/shop-dine/paul-le-cafe', { timeout: 90_000 });
     const main = page.getByRole('main');
     await expect(main.getByRole('heading', { level: 1, name: 'PAUL Le Cafe' })).toBeVisible();
     await expect(page).toHaveTitle(/PAUL Le Cafe, KLIA Terminal 1/);
-    // Phones hide page breadcrumbs under the compact airport bar (package A, A-01).
-    if (!isMobile) await expect(main.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('link', { name: 'Shops and food' })).toBeVisible();
+    // Round 2: phones keep an outlet's "< Shops and food" back link; only the one-item trail of a
+    // section page gives way to the compact airport bar (package A, A-01).
+    await expect(main.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('link', { name: 'Shops and food' })).toBeVisible();
     await expect(main.getByRole('heading', { level: 2, name: 'Where to find it' })).toBeVisible();
     await expect(main.getByText('Not published').first()).toBeVisible();
     await expect(main.getByText('Halal certified').first()).toBeVisible();

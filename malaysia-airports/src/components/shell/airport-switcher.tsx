@@ -1,6 +1,6 @@
 'use client';
 
-import { getAirport } from '@/content/airports';
+import { getAirport, localizeAirport } from '@/content/airports';
 import { pick } from '@/content/values';
 import { cn } from '@/lib/cn';
 import { useAirportContext } from '@/lib/hooks';
@@ -39,7 +39,7 @@ export function AirportSwitcherButton({ variant = 'header', then, labelClassName
   const airport = choice ? getAirport(choice.airport) : undefined;
   // KLIA without a chosen terminal is just "KLIA": never imply Terminal 1.
   const terminal = selection?.terminal;
-  const label = choice ? (terminal || !airport ? pick(choice.label, lang) : airport.shortName) : t('airportSwitcher.none');
+  const label = choice ? (terminal || !airport ? pick(choice.label, lang) : localizeAirport(airport, lang).shortName) : t('airportSwitcher.none');
   const unset = hydrated && !choice;
   const common = {
     type: 'button' as const,

@@ -59,6 +59,27 @@ test.describe('A-01 airport chrome on a phone', () => {
     });
   }
 
+  // Verification round two: A-01 names the flight page too. Round 2's outlet back link (globals.css)
+  // also showed "< Flights" above this h1 on phones (244 px), which the section loop above missed.
+  test('a flight page starts with its own heading on a phone', async ({ page, request }) => {
+    const board = await request.get('/api/flights?airport=kul&dir=d&limit=1');
+    const { flights } = (await board.json()) as { flights: { id: string }[] };
+    for (const [width, height] of [
+      [360, 800],
+      [390, 664],
+      [390, 844],
+    ] as const) {
+      await page.setViewportSize({ width, height });
+      for (const lang of ['en', 'ms']) {
+        await page.goto(`/${lang}/kul/flights/${flights[0].id}`);
+        const h1 = page.locator('main h1').first();
+        await expect(h1).toBeVisible();
+        const top = await h1.evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
+        expect(top, `${lang} flight page h1 at ${width}x${height}`).toBeLessThanOrEqual(200);
+      }
+    }
+  });
+
   test('the full airport banner stays on the overview only', async ({ page }) => {
     await page.goto('/en/kul');
     await expect(page.locator('[data-airport-chrome="full"]')).toBeVisible();
@@ -71,8 +92,9 @@ test.describe('A-01 airport chrome on a phone', () => {
   // The first board row also depends on the board's own toolbar and banner (package B, B-03 and
   // B-16). It was `fixme` after the verification round (first row at 864 px on the phone project,
   // 893 px on the desktop project). Round 2 (docs/qa/fixes/round2-performance.md): on phones the
-  // lead is left to screen readers, the board header is one row of window and Pause plus one row
-  // of freshness, and the gaps are tighter: first row at 643 px on both projects.
+  // lead and the "N flights have already left" note are left to screen readers, the board header
+  // is one row of window and Pause plus one row of freshness, and the gaps are tighter: first row
+  // at 614 px in English and Malay at 390x664 (643 and 664 before the note moved).
   test('the first board row is inside the first 664 px', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 664 });
     await page.goto('/en/kul/flights');

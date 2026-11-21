@@ -1,11 +1,16 @@
 import { CLASSIFICATION_LABELS, airportSlugs, getNotices, getSource, pick, resolveSources, type Provenance } from '@/content';
+import { terminalLabel } from '@/content/airports';
 import { AirportFlightTools } from '@/components/airport/airport-flight-tools';
 import { AirportBanner } from '@/components/airport/airport-header';
+import { MissingAirportPage } from '@/components/airport/missing-airport-page';
 import { NoticeList } from '@/components/airport/notice-list';
+import { OpsStatusSection } from '@/components/flights/ops-status-section';
 import { toNoticeViews } from '@/components/airport/notice-views.server';
 import { airportSectionMetadata, loadAirportPage, type AirportPageParams } from '@/components/airport/section-page';
 import { ExternalLink } from '@/components/common/external-link';
 import { KeyFact } from '@/components/common/key-fact';
+import { LocaleLink } from '@/components/common/locale-link';
+import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { NotPublished } from '@/components/common/not-published';
 import { SectionHeading } from '@/components/common/section-heading';
 import { SourceNote } from '@/components/common/source-note';
@@ -53,6 +58,7 @@ export default function AirportPage({ params }: PageProps<'/[lang]/[airport]'>) 
 }
 
 async function Overview({ params }: { params: AirportPageParams }) {
+  if (!airportSlugs().includes((await params).airport)) return <MissingAirportPage />;
   const { lang, t, airport, content, sections } = await loadAirportPage(params);
   const place = airport.city === airport.state ? airport.city : `${airport.city}, ${airport.state}`;
   const unverified = (field: (typeof airport.unverifiedFields)[number]): boolean => airport.unverifiedFields.includes(field);
@@ -69,6 +75,10 @@ async function Overview({ params }: { params: AirportPageParams }) {
     lounges: content.facilities.filter((facility) => facility.category === 'lounge' || facility.category === 'hotel').length,
   };
   const explore = AIRPORT_SECTIONS.filter((section) => section.id !== 'overview' && sections.includes(section.id));
+  // Fast Track, one record per KLIA terminal (D-02 hand-off, round 2). The records share their
+  // provenance and sources, so both are shown once for the group (A-14).
+  const bookable = content.facilities.filter((facility) => facility.id.endsWith('-fast-track') && facility.bookingUrl);
+  const bookableSources = resolveSources([...new Set(bookable.flatMap((facility) => facility.sources))]);
 
   return (
     <>
@@ -77,13 +87,21 @@ async function Overview({ params }: { params: AirportPageParams }) {
       {/* Operational notices first, directly under the airport header, inside the first phone
           screen (A-20, BR-08). */}
       <Section tone="subtle" spacing="sm" aria-labelledby="airport-notices-title">
-        <SectionHeading id="airport-notices-title" eyebrow={t('nav.notices')} title={t('airportPage.noticesTitle', { airport: airport.shortName })} variant="title" />
+        <SectionHeading
+          id="airport-notices-title"
+          eyebrow={t('nav.notices')}
+          title={t('airportPage.noticesTitle', { airport: airport.shortName })}
+          variant="title"
+        />
         <NoticeList
           notices={notices}
           emptyText={t('notices.none')}
           linkToAll
           listClassName={notices.length > 1 ? 'grid items-start lg:grid-cols-2' : 'max-w-narrow'}
         />
+        {/* Service status lines with demo queue estimates, under the notices (B-01 hand-off, round 2).
+            Renders nothing for an airport without any of the services. */}
+        <OpsStatusSection airport={airport.slug} headingLevel={3} className="mt-6 max-w-narrow" />
       </Section>
 
       <Section spacing="md">
@@ -100,7 +118,14 @@ async function Overview({ params }: { params: AirportPageParams }) {
 
       {explore.length > 0 ? (
         <Section spacing="md" aria-labelledby="airport-explore-title">
-          <SectionHeading id="airport-explore-title" title={t('airportPage.exploreTitle', { airport: airport.shortName })} lead={t('airportPage.exploreLead')} variant="title" />
+          <SectionHeading
+            id="airport-explore-title"
+            title={t('airportPage.exploreTitle', {
+              airport: airport.shortName,
+            })}
+            lead={t('airportPage.exploreLead')}
+            variant="title"
+          />
           <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {explore.map((section) => {
               const count = counts[section.id];
@@ -118,6 +143,38 @@ async function Overview({ params }: { params: AirportPageParams }) {
               );
             })}
           </ul>
+        </Section>
+      ) : null}
+
+      {bookable.length > 0 ? (
+        <Section spacing="md" aria-labelledby="airport-services-title" className="pt-0">
+          <SectionHeading id="airport-services-title" title={t('airportPage.servicesTitle')} lead={t('airportPage.servicesLead')} variant="title" />
+          <ul className="grid gap-3 sm:grid-cols-2">
+            {bookable.map((facility) => (
+              <Card as="li" key={facility.id} padding="md" className="flex min-w-0 flex-col gap-2">
+                <h3 className="type-title-md text-ink">
+                  {pick(facility.name, lang)}
+                  {facility.terminal ? <span className="type-body-sm ml-2 font-normal text-ink-2">{terminalLabel(airport, facility.terminal, lang)}</span> : null}
+                </h3>
+                <p className="type-body-sm text-ink-2">{t('airportPage.fastTrackSummary')}</p>
+                <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-1 pt-1">
+                  <LocaleLink href={`${sectionPath(airport.slug, 'facilities')}#${facility.id}`} className="link-action type-body-sm text-ink">
+                    {t('airportPage.fastTrackDetails')}
+                    <Icon name="arrow-right" size="sm" strokeWidth={1.75} />
+                  </LocaleLink>
+                  {facility.bookingUrl ? (
+                    <ExternalLink href={facility.bookingUrl} variant="action" className="type-body-sm text-ink" data-handoff="fast-track-booking">
+                      {t('airportPage.fastTrackBook')}
+                    </ExternalLink>
+                  ) : null}
+                </div>
+              </Card>
+            ))}
+          </ul>
+          <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1">
+            <ProvenanceTag provenance={bookable[0].provenance} length="short" />
+            <SourceNote sources={bookableSources} />
+          </div>
         </Section>
       ) : null}
 

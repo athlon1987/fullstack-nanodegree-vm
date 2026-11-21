@@ -1,0 +1,72 @@
+{
+ "key": "en-kul-transport",
+ "url": "http://localhost:3100/en/kul/transport",
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-21T07:27:31.597Z",
+ "median": {
+  "performance": 81,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1069,
+  "lcp_ms": 4268,
+  "tbt_ms": 291,
+  "cls": 0.003,
+  "si_ms": 1580,
+  "totalBytes": 610855,
+  "requests": 40
+ },
+ "a11yFailures": [],
+ "rows": [
+  {
+   "finalUrl": "http://localhost:3100/en/kul/transport",
+   "runtimeError": null,
+   "performance": 81,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1069,
+   "lcp_ms": 4268,
+   "tbt_ms": 248,
+   "cls": 0.003,
+   "si_ms": 1870,
+   "totalBytes": 608425,
+   "requests": 39,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "http://localhost:3100/en/kul/transport",
+   "runtimeError": null,
+   "performance": 94,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1069,
+   "lcp_ms": 1069,
+   "tbt_ms": 291,
+   "cls": 0.003,
+   "si_ms": 1069,
+   "totalBytes": 610855,
+   "requests": 40,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "http://localhost:3100/en/kul/transport",
+   "runtimeError": null,
+   "performance": 79,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1063,
+   "lcp_ms": 4375,
+   "tbt_ms": 294,
+   "cls": 0.003,
+   "si_ms": 1580,
+   "totalBytes": 610855,
+   "requests": 40,
+   "a11yFailures": []
+  }
+ ],
+ "caveat": "Lab measurement: Lighthouse mobile emulation with simulated throttling, run from a shared cloud container; hosts outside the session allowlist (analytics, some CDNs) were blocked, which changes page weight and timings. Indicative only; not field data and not comparable to CrUX."
+}

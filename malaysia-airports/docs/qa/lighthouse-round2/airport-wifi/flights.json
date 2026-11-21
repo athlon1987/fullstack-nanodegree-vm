@@ -1,0 +1,1134 @@
+{
+ "key": "flights",
+ "url": "http://localhost:3100/en/kul/flights",
+ "preset": "mobile (Lighthouse default)",
+ "profile": {
+  "name": "airport-wifi",
+  "rtt": 250,
+  "down": 1500,
+  "up": 500,
+  "cpu": 4
+ },
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-21T07:34:13.619Z",
+ "median": {
+  "performance": 82,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 2557,
+  "lcp_ms": 2689,
+  "tbt_ms": 414,
+  "cls": 0.012,
+  "si_ms": 3567,
+  "totalBytes": 525027,
+  "requests": 32
+ },
+ "medianRunIndex": 1,
+ "diagnostics": {
+  "observed": {
+   "fcp": 2689,
+   "lcp": 2689,
+   "dcl": 2933,
+   "load": 6362,
+   "cls": 0.01161034991714385
+  },
+  "tti_ms": 8545,
+  "maxPotentialFid_ms": 240,
+  "lcpElement": {
+   "selector": "div.surface-board > div.relative > div.min-w-0 > p.type-body-sm",
+   "label": "15:23 to 21:33",
+   "snippet": "<p class=\"type-body-sm mt-0.5 text-ink-2 max-sm:mt-0\">"
+  },
+  "lcpPhases": {
+   "timeToFirstByte": 14,
+   "elementRenderDelay": 2675
+  },
+  "renderBlocking": [
+   {
+    "url": "http://localhost:3100/_next/static/chunks/3tjiej68zqkri.css",
+    "bytes": 22525,
+    "ms": 1217
+   }
+  ],
+  "layoutShifts": [
+   {
+    "score": 0.0116,
+    "node": "div.surface-board > div.relative > div.flex > p.type-data-sm",
+    "label": "KUL · 21 Nov\nUpdated 15:33\nRefreshes every 30 seconds",
+    "cause": ""
+   },
+   {
+    "score": 0.0025,
+    "node": "header.sticky > div.group/hdr > div.flex > div.ml-auto",
+    "label": "KUL\n, change airport (currently KLIA)",
+    "cause": ""
+   }
+  ],
+  "longTasks": [
+   {
+    "url": "http://localhost:3100/en/kul/flights",
+    "start": 2400,
+    "dur": 268
+   },
+   {
+    "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 4330,
+    "dur": 240
+   },
+   {
+    "url": "http://localhost:3100/en/kul/flights",
+    "start": 8407,
+    "dur": 138
+   },
+   {
+    "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 6224,
+    "dur": 112
+   },
+   {
+    "url": "http://localhost:3100/en/kul/flights",
+    "start": 2698,
+    "dur": 74
+   },
+   {
+    "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 8063,
+    "dur": 70
+   },
+   {
+    "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 8339,
+    "dur": 68
+   },
+   {
+    "url": "Unattributable",
+    "start": 976,
+    "dur": 62
+   }
+  ],
+  "bootup": [
+   {
+    "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+    "total": 1350,
+    "scripting": 1216,
+    "parse": 17
+   },
+   {
+    "url": "http://localhost:3100/en/kul/flights",
+    "total": 979,
+    "scripting": 40,
+    "parse": 30
+   },
+   {
+    "url": "Unattributable",
+    "total": 329,
+    "scripting": 6,
+    "parse": 0
+   }
+  ],
+  "mainThread": {
+   "scriptEvaluation": 1351,
+   "other": 646,
+   "styleLayout": 475,
+   "paintCompositeRender": 161,
+   "scriptParseCompile": 102,
+   "parseHTML": 69,
+   "garbageCollection": 27
+  },
+  "resources": {
+   "total": {
+    "n": 31,
+    "bytes": 525022
+   },
+   "script": {
+    "n": 20,
+    "bytes": 299168
+   },
+   "font": {
+    "n": 3,
+    "bytes": 130216
+   },
+   "document": {
+    "n": 1,
+    "bytes": 40958
+   },
+   "other": {
+    "n": 6,
+    "bytes": 32155
+   },
+   "stylesheet": {
+    "n": 1,
+    "bytes": 22525
+   },
+   "image": {
+    "n": 0,
+    "bytes": 0
+   },
+   "media": {
+    "n": 0,
+    "bytes": 0
+   },
+   "third-party": {
+    "n": 0,
+    "bytes": 0
+   }
+  },
+  "topRequests": [
+   {
+    "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+    "type": "Script",
+    "transfer": 73619,
+    "size": 229318
+   },
+   {
+    "url": "http://localhost:3100/_next/static/media/fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+    "type": "Font",
+    "transfer": 68998,
+    "size": 67304
+   },
+   {
+    "url": "http://localhost:3100/_next/static/chunks/0_z_ds2phu1oc.js",
+    "type": "Script",
+    "transfer": 48427,
+    "size": 169882
+   },
+   {
+    "url": "http://localhost:3100/en/kul/flights",
+    "type": "Document",
+    "transfer": 40958,
+    "size": 195425
+   },
+   {
+    "url": "http://localhost:3100/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "type": "Font",
+    "transfer": 36397,
+    "size": 34704
+   },
+   {
+    "url": "http://localhost:3100/_next/static/chunks/1yboimee1ysi-.js",
+    "type": "Script",
+    "transfer": 25303,
+    "size": 72695
+   },
+   {
+    "url": "http://localhost:3100/_next/static/media/geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+    "type": "Font",
+    "transfer": 24821,
+    "size": 23128
+   },
+   {
+    "url": "http://localhost:3100/_next/static/chunks/3tjiej68zqkri.css",
+    "type": "Stylesheet",
+    "transfer": 22525,
+    "size": 113912
+   },
+   {
+    "url": "http://localhost:3100/_next/static/chunks/1q755ulk5uo6s.js",
+    "type": "Script",
+    "transfer": 19372,
+    "size": 51374
+   },
+   {
+    "url": "http://localhost:3100/_next/static/chunks/3xy0u3d0ro4j9.js",
+    "type": "Script",
+    "transfer": 17440,
+    "size": 42686
+   }
+  ],
+  "fonts": [
+   {
+    "url": "http://localhost:3100fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+    "transfer": 68998,
+    "start": 1021
+   },
+   {
+    "url": "http://localhost:3100hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "transfer": 36397,
+    "start": 1023
+   },
+   {
+    "url": "http://localhost:3100geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+    "transfer": 24821,
+    "start": 2667
+   }
+  ],
+  "prefetchFetches": 0,
+  "unusedJs": [
+   {
+    "url": "http://localhost:3100/_next/static/chunks/0_z_ds2phu1oc.js",
+    "total": 46654,
+    "wasted": 23166
+   },
+   {
+    "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+    "total": 71846,
+    "wasted": 22009
+   }
+  ],
+  "domSize": [],
+  "a11yFailures": [],
+  "seoFailures": [
+   {
+    "id": "is-crawlable",
+    "n": 2,
+    "sample": [
+     "<meta name=\"robots\" content=\"noindex, nofollow\" />"
+    ]
+   }
+  ],
+  "bpFailures": [
+   {
+    "id": "inspector-issues",
+    "n": 1,
+    "sample": []
+   }
+  ]
+ },
+ "allDiagnostics": [
+  {
+   "observed": {
+    "fcp": 2557,
+    "lcp": 2690,
+    "dcl": 2806,
+    "load": 6324,
+    "cls": 0.01161034991714385
+   },
+   "tti_ms": 8487,
+   "maxPotentialFid_ms": 151,
+   "lcpElement": {
+    "selector": "div.surface-board > div.relative > div.min-w-0 > p.type-body-sm",
+    "label": "15:22 to 21:32",
+    "snippet": "<p class=\"type-body-sm mt-0.5 text-ink-2 max-sm:mt-0\">"
+   },
+   "lcpPhases": {
+    "timeToFirstByte": 19,
+    "elementRenderDelay": 2671
+   },
+   "renderBlocking": [
+    {
+     "url": "http://localhost:3100/_next/static/chunks/3tjiej68zqkri.css",
+     "bytes": 22525,
+     "ms": 1211
+    }
+   ],
+   "layoutShifts": [
+    {
+     "score": 0.0116,
+     "node": "div.surface-board > div.relative > div.flex > p.type-data-sm",
+     "label": "KUL · 21 Nov\nUpdated 15:32\nRefreshes every 30 seconds",
+     "cause": ""
+    },
+    {
+     "score": 0.0025,
+     "node": "header.sticky > div.group/hdr > div.flex > div.ml-auto",
+     "label": "KUL\n, change airport (currently KLIA)",
+     "cause": ""
+    }
+   ],
+   "longTasks": [
+    {
+     "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+     "start": 4345,
+     "dur": 151
+    },
+    {
+     "url": "http://localhost:3100/en/kul/flights",
+     "start": 8346,
+     "dur": 141
+    },
+    {
+     "url": "http://localhost:3100/en/kul/flights",
+     "start": 2419,
+     "dur": 128
+    },
+    {
+     "url": "http://localhost:3100/en/kul/flights",
+     "start": 2567,
+     "dur": 97
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+     "start": 8268,
+     "dur": 78
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+     "start": 6228,
+     "dur": 77
+    },
+    {
+     "url": "Unattributable",
+     "start": 979,
+     "dur": 76
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+     "start": 6395,
+     "dur": 65
+    }
+   ],
+   "bootup": [
+    {
+     "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+     "total": 1180,
+     "scripting": 1069,
+     "parse": 15
+    },
+    {
+     "url": "http://localhost:3100/en/kul/flights",
+     "total": 841,
+     "scripting": 21,
+     "parse": 28
+    },
+    {
+     "url": "Unattributable",
+     "total": 316,
+     "scripting": 11,
+     "parse": 0
+    }
+   ],
+   "mainThread": {
+    "scriptEvaluation": 1188,
+    "other": 576,
+    "styleLayout": 426,
+    "paintCompositeRender": 115,
+    "scriptParseCompile": 103,
+    "parseHTML": 76,
+    "garbageCollection": 28
+   },
+   "resources": {
+    "total": {
+     "n": 31,
+     "bytes": 525027
+    },
+    "script": {
+     "n": 20,
+     "bytes": 299168
+    },
+    "font": {
+     "n": 3,
+     "bytes": 130216
+    },
+    "document": {
+     "n": 1,
+     "bytes": 40960
+    },
+    "other": {
+     "n": 6,
+     "bytes": 32158
+    },
+    "stylesheet": {
+     "n": 1,
+     "bytes": 22525
+    },
+    "image": {
+     "n": 0,
+     "bytes": 0
+    },
+    "media": {
+     "n": 0,
+     "bytes": 0
+    },
+    "third-party": {
+     "n": 0,
+     "bytes": 0
+    }
+   },
+   "topRequests": [
+    {
+     "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+     "type": "Script",
+     "transfer": 73619,
+     "size": 229318
+    },
+    {
+     "url": "http://localhost:3100/_next/static/media/fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+     "type": "Font",
+     "transfer": 68998,
+     "size": 67304
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/0_z_ds2phu1oc.js",
+     "type": "Script",
+     "transfer": 48427,
+     "size": 169882
+    },
+    {
+     "url": "http://localhost:3100/en/kul/flights",
+     "type": "Document",
+     "transfer": 40960,
+     "size": 195425
+    },
+    {
+     "url": "http://localhost:3100/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+     "type": "Font",
+     "transfer": 36397,
+     "size": 34704
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/1yboimee1ysi-.js",
+     "type": "Script",
+     "transfer": 25303,
+     "size": 72695
+    },
+    {
+     "url": "http://localhost:3100/_next/static/media/geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+     "type": "Font",
+     "transfer": 24821,
+     "size": 23128
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/3tjiej68zqkri.css",
+     "type": "Stylesheet",
+     "transfer": 22525,
+     "size": 113912
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/1q755ulk5uo6s.js",
+     "type": "Script",
+     "transfer": 19372,
+     "size": 51374
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/3xy0u3d0ro4j9.js",
+     "type": "Script",
+     "transfer": 17440,
+     "size": 42686
+    }
+   ],
+   "fonts": [
+    {
+     "url": "http://localhost:3100fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+     "transfer": 68998,
+     "start": 1031
+    },
+    {
+     "url": "http://localhost:3100hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+     "transfer": 36397,
+     "start": 1034
+    },
+    {
+     "url": "http://localhost:3100geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+     "transfer": 24821,
+     "start": 2664
+    }
+   ],
+   "prefetchFetches": 0,
+   "unusedJs": [
+    {
+     "url": "http://localhost:3100/_next/static/chunks/0_z_ds2phu1oc.js",
+     "total": 46654,
+     "wasted": 23166
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+     "total": 71846,
+     "wasted": 22009
+    }
+   ],
+   "domSize": [],
+   "a11yFailures": [],
+   "seoFailures": [
+    {
+     "id": "is-crawlable",
+     "n": 2,
+     "sample": [
+      "<meta name=\"robots\" content=\"noindex, nofollow\" />"
+     ]
+    }
+   ],
+   "bpFailures": [
+    {
+     "id": "inspector-issues",
+     "n": 1,
+     "sample": []
+    }
+   ]
+  },
+  {
+   "observed": {
+    "fcp": 2689,
+    "lcp": 2689,
+    "dcl": 2933,
+    "load": 6362,
+    "cls": 0.01161034991714385
+   },
+   "tti_ms": 8545,
+   "maxPotentialFid_ms": 240,
+   "lcpElement": {
+    "selector": "div.surface-board > div.relative > div.min-w-0 > p.type-body-sm",
+    "label": "15:23 to 21:33",
+    "snippet": "<p class=\"type-body-sm mt-0.5 text-ink-2 max-sm:mt-0\">"
+   },
+   "lcpPhases": {
+    "timeToFirstByte": 14,
+    "elementRenderDelay": 2675
+   },
+   "renderBlocking": [
+    {
+     "url": "http://localhost:3100/_next/static/chunks/3tjiej68zqkri.css",
+     "bytes": 22525,
+     "ms": 1217
+    }
+   ],
+   "layoutShifts": [
+    {
+     "score": 0.0116,
+     "node": "div.surface-board > div.relative > div.flex > p.type-data-sm",
+     "label": "KUL · 21 Nov\nUpdated 15:33\nRefreshes every 30 seconds",
+     "cause": ""
+    },
+    {
+     "score": 0.0025,
+     "node": "header.sticky > div.group/hdr > div.flex > div.ml-auto",
+     "label": "KUL\n, change airport (currently KLIA)",
+     "cause": ""
+    }
+   ],
+   "longTasks": [
+    {
+     "url": "http://localhost:3100/en/kul/flights",
+     "start": 2400,
+     "dur": 268
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+     "start": 4330,
+     "dur": 240
+    },
+    {
+     "url": "http://localhost:3100/en/kul/flights",
+     "start": 8407,
+     "dur": 138
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+     "start": 6224,
+     "dur": 112
+    },
+    {
+     "url": "http://localhost:3100/en/kul/flights",
+     "start": 2698,
+     "dur": 74
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+     "start": 8063,
+     "dur": 70
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+     "start": 8339,
+     "dur": 68
+    },
+    {
+     "url": "Unattributable",
+     "start": 976,
+     "dur": 62
+    }
+   ],
+   "bootup": [
+    {
+     "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+     "total": 1350,
+     "scripting": 1216,
+     "parse": 17
+    },
+    {
+     "url": "http://localhost:3100/en/kul/flights",
+     "total": 979,
+     "scripting": 40,
+     "parse": 30
+    },
+    {
+     "url": "Unattributable",
+     "total": 329,
+     "scripting": 6,
+     "parse": 0
+    }
+   ],
+   "mainThread": {
+    "scriptEvaluation": 1351,
+    "other": 646,
+    "styleLayout": 475,
+    "paintCompositeRender": 161,
+    "scriptParseCompile": 102,
+    "parseHTML": 69,
+    "garbageCollection": 27
+   },
+   "resources": {
+    "total": {
+     "n": 31,
+     "bytes": 525022
+    },
+    "script": {
+     "n": 20,
+     "bytes": 299168
+    },
+    "font": {
+     "n": 3,
+     "bytes": 130216
+    },
+    "document": {
+     "n": 1,
+     "bytes": 40958
+    },
+    "other": {
+     "n": 6,
+     "bytes": 32155
+    },
+    "stylesheet": {
+     "n": 1,
+     "bytes": 22525
+    },
+    "image": {
+     "n": 0,
+     "bytes": 0
+    },
+    "media": {
+     "n": 0,
+     "bytes": 0
+    },
+    "third-party": {
+     "n": 0,
+     "bytes": 0
+    }
+   },
+   "topRequests": [
+    {
+     "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+     "type": "Script",
+     "transfer": 73619,
+     "size": 229318
+    },
+    {
+     "url": "http://localhost:3100/_next/static/media/fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+     "type": "Font",
+     "transfer": 68998,
+     "size": 67304
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/0_z_ds2phu1oc.js",
+     "type": "Script",
+     "transfer": 48427,
+     "size": 169882
+    },
+    {
+     "url": "http://localhost:3100/en/kul/flights",
+     "type": "Document",
+     "transfer": 40958,
+     "size": 195425
+    },
+    {
+     "url": "http://localhost:3100/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+     "type": "Font",
+     "transfer": 36397,
+     "size": 34704
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/1yboimee1ysi-.js",
+     "type": "Script",
+     "transfer": 25303,
+     "size": 72695
+    },
+    {
+     "url": "http://localhost:3100/_next/static/media/geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+     "type": "Font",
+     "transfer": 24821,
+     "size": 23128
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/3tjiej68zqkri.css",
+     "type": "Stylesheet",
+     "transfer": 22525,
+     "size": 113912
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/1q755ulk5uo6s.js",
+     "type": "Script",
+     "transfer": 19372,
+     "size": 51374
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/3xy0u3d0ro4j9.js",
+     "type": "Script",
+     "transfer": 17440,
+     "size": 42686
+    }
+   ],
+   "fonts": [
+    {
+     "url": "http://localhost:3100fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+     "transfer": 68998,
+     "start": 1021
+    },
+    {
+     "url": "http://localhost:3100hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+     "transfer": 36397,
+     "start": 1023
+    },
+    {
+     "url": "http://localhost:3100geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+     "transfer": 24821,
+     "start": 2667
+    }
+   ],
+   "prefetchFetches": 0,
+   "unusedJs": [
+    {
+     "url": "http://localhost:3100/_next/static/chunks/0_z_ds2phu1oc.js",
+     "total": 46654,
+     "wasted": 23166
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+     "total": 71846,
+     "wasted": 22009
+    }
+   ],
+   "domSize": [],
+   "a11yFailures": [],
+   "seoFailures": [
+    {
+     "id": "is-crawlable",
+     "n": 2,
+     "sample": [
+      "<meta name=\"robots\" content=\"noindex, nofollow\" />"
+     ]
+    }
+   ],
+   "bpFailures": [
+    {
+     "id": "inspector-issues",
+     "n": 1,
+     "sample": []
+    }
+   ]
+  },
+  {
+   "observed": {
+    "fcp": 2456,
+    "lcp": 2656,
+    "dcl": 2970,
+    "load": 6353,
+    "cls": 0.01161034991714385
+   },
+   "tti_ms": 8469,
+   "maxPotentialFid_ms": 209,
+   "lcpElement": {
+    "selector": "div.surface-board > div.relative > div.min-w-0 > p.type-body-sm",
+    "label": "15:23 to 21:33",
+    "snippet": "<p class=\"type-body-sm mt-0.5 text-ink-2 max-sm:mt-0\">"
+   },
+   "lcpPhases": {
+    "timeToFirstByte": 18,
+    "elementRenderDelay": 2639
+   },
+   "renderBlocking": [
+    {
+     "url": "http://localhost:3100/_next/static/chunks/3tjiej68zqkri.css",
+     "bytes": 22525,
+     "ms": 1220
+    }
+   ],
+   "layoutShifts": [
+    {
+     "score": 0.0116,
+     "node": "div.surface-board > div.relative > div.flex > p.type-data-sm",
+     "label": "KUL · 21 Nov\nUpdated 15:33\nRefreshes every 30 seconds",
+     "cause": ""
+    },
+    {
+     "score": 0.0025,
+     "node": "header.sticky > div.group/hdr > div.flex > div.ml-auto",
+     "label": "KUL\n, change airport (currently KLIA)",
+     "cause": ""
+    }
+   ],
+   "longTasks": [
+    {
+     "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+     "start": 4328,
+     "dur": 209
+    },
+    {
+     "url": "http://localhost:3100/en/kul/flights",
+     "start": 2462,
+     "dur": 177
+    },
+    {
+     "url": "http://localhost:3100/en/kul/flights",
+     "start": 8337,
+     "dur": 132
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+     "start": 6213,
+     "dur": 120
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+     "start": 7935,
+     "dur": 87
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+     "start": 8262,
+     "dur": 75
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+     "start": 6765,
+     "dur": 65
+    },
+    {
+     "url": "http://localhost:3100/en/kul/flights",
+     "start": 2914,
+     "dur": 55
+    }
+   ],
+   "bootup": [
+    {
+     "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+     "total": 1314,
+     "scripting": 1190,
+     "parse": 19
+    },
+    {
+     "url": "http://localhost:3100/en/kul/flights",
+     "total": 938,
+     "scripting": 35,
+     "parse": 41
+    },
+    {
+     "url": "Unattributable",
+     "total": 347,
+     "scripting": 9,
+     "parse": 0
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/0csn7y580ebwl.js",
+     "total": 51,
+     "scripting": 41,
+     "parse": 3
+    }
+   ],
+   "mainThread": {
+    "scriptEvaluation": 1321,
+    "other": 610,
+    "styleLayout": 466,
+    "paintCompositeRender": 130,
+    "scriptParseCompile": 118,
+    "parseHTML": 111,
+    "garbageCollection": 28
+   },
+   "resources": {
+    "total": {
+     "n": 31,
+     "bytes": 525028
+    },
+    "script": {
+     "n": 20,
+     "bytes": 299168
+    },
+    "font": {
+     "n": 3,
+     "bytes": 130216
+    },
+    "document": {
+     "n": 1,
+     "bytes": 40960
+    },
+    "other": {
+     "n": 6,
+     "bytes": 32159
+    },
+    "stylesheet": {
+     "n": 1,
+     "bytes": 22525
+    },
+    "image": {
+     "n": 0,
+     "bytes": 0
+    },
+    "media": {
+     "n": 0,
+     "bytes": 0
+    },
+    "third-party": {
+     "n": 0,
+     "bytes": 0
+    }
+   },
+   "topRequests": [
+    {
+     "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+     "type": "Script",
+     "transfer": 73619,
+     "size": 229318
+    },
+    {
+     "url": "http://localhost:3100/_next/static/media/fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+     "type": "Font",
+     "transfer": 68998,
+     "size": 67304
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/0_z_ds2phu1oc.js",
+     "type": "Script",
+     "transfer": 48427,
+     "size": 169882
+    },
+    {
+     "url": "http://localhost:3100/en/kul/flights",
+     "type": "Document",
+     "transfer": 40960,
+     "size": 195425
+    },
+    {
+     "url": "http://localhost:3100/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+     "type": "Font",
+     "transfer": 36397,
+     "size": 34704
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/1yboimee1ysi-.js",
+     "type": "Script",
+     "transfer": 25303,
+     "size": 72695
+    },
+    {
+     "url": "http://localhost:3100/_next/static/media/geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+     "type": "Font",
+     "transfer": 24821,
+     "size": 23128
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/3tjiej68zqkri.css",
+     "type": "Stylesheet",
+     "transfer": 22525,
+     "size": 113912
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/1q755ulk5uo6s.js",
+     "type": "Script",
+     "transfer": 19372,
+     "size": 51374
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/3xy0u3d0ro4j9.js",
+     "type": "Script",
+     "transfer": 17440,
+     "size": 42686
+    }
+   ],
+   "fonts": [
+    {
+     "url": "http://localhost:3100fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+     "transfer": 68998,
+     "start": 1017
+    },
+    {
+     "url": "http://localhost:3100hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+     "transfer": 36397,
+     "start": 1017
+    },
+    {
+     "url": "http://localhost:3100geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+     "transfer": 24821,
+     "start": 2640
+    }
+   ],
+   "prefetchFetches": 0,
+   "unusedJs": [
+    {
+     "url": "http://localhost:3100/_next/static/chunks/0_z_ds2phu1oc.js",
+     "total": 46654,
+     "wasted": 23166
+    },
+    {
+     "url": "http://localhost:3100/_next/static/chunks/01t2i9pe5vz2-.js",
+     "total": 71846,
+     "wasted": 22009
+    }
+   ],
+   "domSize": [],
+   "a11yFailures": [],
+   "seoFailures": [
+    {
+     "id": "is-crawlable",
+     "n": 2,
+     "sample": [
+      "<meta name=\"robots\" content=\"noindex, nofollow\" />"
+     ]
+    }
+   ],
+   "bpFailures": [
+    {
+     "id": "inspector-issues",
+     "n": 1,
+     "sample": []
+    }
+   ]
+  }
+ ],
+ "rows": [
+  {
+   "finalUrl": "http://localhost:3100/en/kul/flights",
+   "runtimeError": null,
+   "performance": 84,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 2557,
+   "lcp_ms": 2690,
+   "tbt_ms": 330,
+   "cls": 0.012,
+   "si_ms": 3567,
+   "totalBytes": 525027,
+   "requests": 32,
+   "benchmarkIndex": 2417.5,
+   "throttling": "devtools {\"rttMs\":250,\"throughputKbps\":1500,\"requestLatencyMs\":937.5,\"downloadThroughputKbps\":1350,\"uploadThroughputKbps\":450,\"cpuSlowdownMultiplier\":4}",
+   "formFactor": "mobile"
+  },
+  {
+   "finalUrl": "http://localhost:3100/en/kul/flights",
+   "runtimeError": null,
+   "performance": 82,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 2689,
+   "lcp_ms": 2689,
+   "tbt_ms": 414,
+   "cls": 0.012,
+   "si_ms": 3219,
+   "totalBytes": 525022,
+   "requests": 32,
+   "benchmarkIndex": 2493,
+   "throttling": "devtools {\"rttMs\":250,\"throughputKbps\":1500,\"requestLatencyMs\":937.5,\"downloadThroughputKbps\":1350,\"uploadThroughputKbps\":450,\"cpuSlowdownMultiplier\":4}",
+   "formFactor": "mobile"
+  },
+  {
+   "finalUrl": "http://localhost:3100/en/kul/flights",
+   "runtimeError": null,
+   "performance": 79,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 2456,
+   "lcp_ms": 2656,
+   "tbt_ms": 522,
+   "cls": 0.012,
+   "si_ms": 3578,
+   "totalBytes": 525028,
+   "requests": 32,
+   "benchmarkIndex": 2502.5,
+   "throttling": "devtools {\"rttMs\":250,\"throughputKbps\":1500,\"requestLatencyMs\":937.5,\"downloadThroughputKbps\":1350,\"uploadThroughputKbps\":450,\"cpuSlowdownMultiplier\":4}",
+   "formFactor": "mobile"
+  }
+ ],
+ "caveat": "Lab measurement (Lighthouse 13.6, headless Chromium 1243) against next start on localhost in a shared 4-vCPU cloud container; other evaluators used the same CPU. Not field data."
+}

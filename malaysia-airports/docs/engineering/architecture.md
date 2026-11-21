@@ -617,7 +617,7 @@ Design rules: a hosted payment page or redirect so card data never touches MAHB'
 
 *Verified against the code on 21 November 2026 (fix round, package E).*
 
-Today [code]: token buckets behind a `RateLimitStore` interface (in memory per process by default): the concierge route (10 in a burst, then one every 6 seconds) and, in `src/proxy.ts`, `/api/flights` (60, then 1 per second), `/api/health` (10), the report endpoints (30), other `/api/*` (60) and the per-request pages (60). The client key comes only from a trusted source (`TRUSTED_CLIENT_IP_HEADER` or `TRUSTED_PROXY_HOPS`), never the first `X-Forwarded-For` entry; unconfigured, all clients share one bucket (fail safe). Invalid requests count; cross-site and wrong-media-type requests are refused before counting. Paid model calls have site-wide per-minute, daily and monthly caps and a circuit breaker. Edge rules as configuration: `docs/engineering/edge/`. Production follows `security.md` section 4 [proposed]: edge rules first (for example 60 requests per minute per client on `/api/flights`, 10 on `/api/concierge`, body size limits); a shared sliding-window limiter keyed by the client address as seen by the trusted edge plus a short-lived anonymous session id; `429` with `Retry-After` and a message the interface already handles calmly; budget caps on the model provider.
+Today [code]: token buckets behind a `RateLimitStore` interface (in memory per process by default): the concierge route (10 in a burst, then one every 6 seconds) and, in `src/proxy.ts`, `/api/flights` (60, then 1 per second), `/api/health` (10), the report endpoints (30), other `/api/*` (60) and the per-request pages (60). The client key comes only from a trusted source (`TRUSTED_CLIENT_IP_HEADER` or `TRUSTED_PROXY_HOPS`), never the first `X-Forwarded-For` entry; unconfigured (round 2), the server warns at start-up and keys on the address nearest it, marked untrusted, with a site-wide ceiling of 10 times each limit (deployment checklist in section 6.9). Invalid requests count; cross-site and wrong-media-type requests are refused before counting. Paid model calls have site-wide per-minute, daily and monthly caps and a circuit breaker. Edge rules as configuration: `docs/engineering/edge/`. Production follows `security.md` section 4 [proposed]: edge rules first (for example 60 requests per minute per client on `/api/flights`, 10 on `/api/concierge`, body size limits); a shared sliding-window limiter keyed by the client address as seen by the trusted edge plus a short-lived anonymous session id; `429` with `Retry-After` and a message the interface already handles calmly; budget caps on the model provider.
 
 **Shared networks.** MAHB's content API stopped serving this project's network after about 15 page loads at roughly one per second, and one load showed a WAF block page [observed]. Airport Wi-Fi, hotels and mobile carriers put many travellers behind one address. Limits must be generous per address, challenge before blocking, and never affect static guidance, which does not depend on the API.
 
@@ -692,6 +692,15 @@ Severity levels and routing follow `security.md` section 7: P1 (site or a langua
 | Production | Passengers | Live providers; CMS production | Indexed (`SITE_INDEXING=allow`) | Public |
 
 Each environment has its own secrets, its own `NEXT_PUBLIC_SITE_URL` and an `APP_VERSION` set to the commit. `PROVIDER_MODES` is a constant today (`src/lib/providers/index.ts`, all `demo`); production makes it per environment.
+
+**Deployment checklist: client address for rate limits** (round 2). Every environment that serves the public (preview, staging, production) sets exactly one of:
+
+| Variable | Set it to | When |
+|---|---|---|
+| `TRUSTED_CLIENT_IP_HEADER` | A header the CDN or load balancer always overwrites with the client address, e.g. `cf-connecting-ip` | A CDN or load balancer that sets such a header |
+| `TRUSTED_PROXY_HOPS` | How many proxies of ours append to `X-Forwarded-For` (1 to 9) | Plain reverse proxies |
+
+Without either, the server logs a `[rate-limit]` warning at start-up and falls back to an untrusted per-address key with a site-wide ceiling (`security.md`, section 4): visitors are not throttled together, but behind an undeclared CDN many share one key. The e2e harness and CI set `TRUSTED_CLIENT_IP_HEADER=x-e2e-client-ip`.
 
 ---
 

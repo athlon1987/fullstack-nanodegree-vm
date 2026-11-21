@@ -83,7 +83,7 @@ export function LoungeCard({ item, lang, showTerminal, headingLevel = 4 }: Loung
             </ExternalLink>
           ) : null}
           {item.bookingUrl ? (
-            <ExternalLink href={item.bookingUrl} variant="action" className="type-body-sm">
+            <ExternalLink href={item.bookingUrl} variant="action" className="type-body-sm" data-handoff="lounge-booking">
               {t('commercePages.lounges.book')}
             </ExternalLink>
           ) : null}

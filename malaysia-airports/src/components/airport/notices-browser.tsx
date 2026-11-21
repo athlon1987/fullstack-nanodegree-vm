@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { getAirport } from '@/content/airports';
+import { getAirport, localizeAirport } from '@/content/airports';
 import { NOTICE_SEVERITIES } from '@/content/values';
 import type { NoticeSeverity } from '@/content/types';
-import { useT } from '@/lib/i18n/client';
+import { useLang, useT } from '@/lib/i18n/client';
 import { FilterChip } from '@/components/ui/filter-chip';
 import { NativeSelect } from '@/components/ui/native-select';
 import { NoticeList } from './notice-list';
@@ -16,6 +16,7 @@ import type { NoticeView } from './notice-utils';
  */
 export function NoticesBrowser({ notices }: { notices: readonly NoticeView[] }) {
   const t = useT();
+  const lang = useLang();
   const [airport, setAirport] = useState('');
   const [severities, setSeverities] = useState<readonly NoticeSeverity[]>([]);
   const airports = [...new Set(notices.flatMap((notice) => (notice.airport ? [notice.airport] : [])))];
@@ -28,7 +29,8 @@ export function NoticesBrowser({ notices }: { notices: readonly NoticeView[] }) 
           <option value="">{t('search.everywhere')}</option>
           <option value="network">{t('noticesPage.network')}</option>
           {airports.map((slug) => {
-            const record = getAirport(slug);
+            const found = getAirport(slug);
+            const record = found ? localizeAirport(found, lang) : undefined;
             return (
               <option key={slug} value={slug}>
                 {record ? `${record.shortName} (${record.code})` : slug.toUpperCase()}

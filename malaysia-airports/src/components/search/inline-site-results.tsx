@@ -1,6 +1,6 @@
 'use client';
 
-import { getAirport } from '@/content/airports';
+import { localName } from '@/content/airports';
 import { useLang, useT } from '@/lib/i18n/client';
 import { LocaleLink } from '@/components/common/locale-link';
 import { Icon } from '@/components/ui/icon';
@@ -43,7 +43,7 @@ export function InlineSiteResults({ query, airport, noFlights }: InlineSiteResul
           </h3>
           <ul className="mt-2 flex flex-col gap-1">
             {hits.map((hit) => {
-              const place = hit.airport ? getAirport(hit.airport)?.shortName : undefined;
+              const place = hit.airport ? localName(hit.airport, lang) : undefined;
               return (
                 <li key={hit.id}>
                   <LocaleLink

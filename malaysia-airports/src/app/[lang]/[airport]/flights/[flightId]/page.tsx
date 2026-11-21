@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
-import { getAirport, getNotices, resolveSources, type Source } from '@/content';
+import { getNotices, resolveSources, type Source } from '@/content';
 import { formatFlightNumber } from '@/lib/flights';
 import { getT } from '@/lib/i18n';
 import { formatDate } from '@/lib/time';
-import { loadAirportPage } from '@/components/airport/section-page';
+import { localAirport, loadAirportPage } from '@/components/airport/section-page';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { PageHeader } from '@/components/common/page-header';
 import { AirlineFacts, hasAirlineFacts } from '@/components/flights/airline-facts';
@@ -31,7 +31,7 @@ type FlightPageProps = PageProps<'/[lang]/[airport]/flights/[flightId]'>;
 export async function generateMetadata({ params }: FlightPageProps): Promise<Metadata> {
   const { lang, airport: slug, flightId } = await params;
   const t = getT(lang);
-  const airport = getAirport(slug);
+  const airport = localAirport(slug, lang);
   const flight = airport ? identifyFlight(flightId, airport.slug) : null;
   // Demonstration flights change every day: keep them out of search engines.
   if (!airport || !flight) return { title: t('flightPages.notFound.title'), robots: { index: false } };
@@ -117,7 +117,10 @@ async function Flight({ params }: { params: FlightPageProps['params'] }) {
         // Lining, tabular figures for the flight number in the display face (ux-frequent-20).
         title={<span className="lining-nums tabular-nums">{title}</span>}
         breadcrumbs={<Breadcrumbs items={[...crumbs, { label: formatFlightNumber(flight) }]} />}
-        className="[&>div]:pb-5 sm:[&>div]:pb-6"
+        // Verification round two: on phones the trail stays hidden here, as before round 2's outlet
+        // change (globals.css keeps four-item trails for outlets). Its "< Flights" line put this h1
+        // at 244 px (A-01: at most 200); the compact airport bar and the bottom bar lead to the board.
+        className="[&>div]:pb-5 sm:[&>div]:pb-6 max-sm:[&_[data-page-breadcrumbs]]:hidden"
       />
       <Container className="pb-section">
         <FlightDetail

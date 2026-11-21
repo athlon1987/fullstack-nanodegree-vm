@@ -1,7 +1,7 @@
 'use client';
 
 import { useDeferredValue, useEffect, useMemo, useRef, useState, useTransition, type ReactNode } from 'react';
-import { getAirport, terminalLabel } from '@/content/airports';
+import { getAirport, localizeAirport, terminalLabel } from '@/content/airports';
 import type { Airport, TerminalId } from '@/content/types';
 import type { Flight, FlightDirection } from '@/lib/flights';
 import { useSavedJourney } from '@/lib/hooks/use-saved-journey';
@@ -109,15 +109,34 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
   const rangeAt = (at: number, dir: FlightDirection) => (searching ? searchRange(at, zone) : boardRange(at, shift.earlier, shift.later, dir));
   const feed = useFlightFeed(
     (at): FeedRequest[] =>
-      (['d', 'a'] as const).flatMap((dir) => datesInRange(rangeAt(at, dir), zone).map((date) => ({ airport: airport.slug, date, direction: dir }))),
+      (['d', 'a'] as const).flatMap((dir) =>
+        datesInRange(rangeAt(at, dir), zone).map((date) => ({
+          airport: airport.slug,
+          date,
+          direction: dir,
+        })),
+      ),
     { paused: userPaused || held.focus || held.pointer },
   );
   const provider = feed.provider;
 
   /** Write the filters to the URL without a navigation, so the view can be shared and reloaded. */
-  const write = (changes: Partial<{ direction: FlightDirection; terminal: TerminalId | undefined; q: string; groups: StatusGroupId[] }>) => {
+  const write = (
+    changes: Partial<{
+      direction: FlightDirection;
+      terminal: TerminalId | undefined;
+      q: string;
+      groups: StatusGroupId[];
+    }>,
+  ) => {
     clearTimeout(urlTimer.current);
-    const next = { direction: chosenDirection, terminal: params.terminal, q: query, groups: params.groups, ...changes };
+    const next = {
+      direction: chosenDirection,
+      terminal: params.terminal,
+      q: query,
+      groups: params.groups,
+      ...changes,
+    };
     window.history.replaceState(null, '', `${window.location.pathname}${boardQueryString(next)}${window.location.hash}`);
   };
 
@@ -131,7 +150,13 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
     if (!provider) return null;
     const pool = (dir: FlightDirection) => {
       const window = searching ? searchRange(provider.now, zone) : boardRange(provider.now, shift.earlier, shift.later, dir);
-      return provider.listFlightsSync({ airport: airport.slug, terminal: params.terminal, from: window.from, to: window.to, direction: dir });
+      return provider.listFlightsSync({
+        airport: airport.slug,
+        terminal: params.terminal,
+        from: window.from,
+        to: window.to,
+        direction: dir,
+      });
     };
     return { d: pool('d'), a: pool('a') };
   }, [provider, searching, shift, zone, airport.slug, params.terminal]);
@@ -140,15 +165,29 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
   const searched = useMemo(() => {
     if (!pools) return null;
     return {
-      d: selectBoardFlights(pools.d, { q: query, groups: [], direction: 'd', now }),
-      a: selectBoardFlights(pools.a, { q: query, groups: [], direction: 'a', now }),
+      d: selectBoardFlights(pools.d, {
+        q: query,
+        groups: [],
+        direction: 'd',
+        now,
+      }),
+      a: selectBoardFlights(pools.a, {
+        q: query,
+        groups: [],
+        direction: 'a',
+        now,
+      }),
     };
   }, [pools, query, now]);
   const counts = useMemo(() => (searched ? countByGroup(searched[direction], direction) : null), [searched, direction]);
   /* The default view leads with flights still to come; Earlier brings the finished ones back (ux-frequent-10). */
   const selected = useMemo(() => {
     if (!searched) return null;
-    const list = selectBoardFlights(searched[direction], { q: '', groups: params.groups, direction });
+    const list = selectBoardFlights(searched[direction], {
+      q: '',
+      groups: params.groups,
+      direction,
+    });
     return searching || shift.earlier > 0 || params.groups.length > 0 ? { shown: list, finished: 0 } : setAsideFinished(list, direction);
   }, [searched, direction, params.groups, searching, shift.earlier]);
   const shown: Flight[] | null = selected?.shown ?? null;
@@ -212,17 +251,27 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
   const onDirectionChange = (value: string) => {
     if (value !== 'd' && value !== 'a') return;
     setDirection(value);
-    write({ direction: value, groups: params.groups.filter((group) => STATUS_GROUPS[value].some((item) => item.id === group)) });
+    write({
+      direction: value,
+      groups: params.groups.filter((group) => STATUS_GROUPS[value].some((item) => item.id === group)),
+    });
   };
 
   const title = direction === 'd' ? t('flights.board.departuresTitle') : t('flights.board.arrivalsTitle');
   const subtitle = !range
-    ? airport.name
+    ? localizeAirport(airport, lang).name // verification round two (D-09): Malay on /ms before hydration
     : searching
       ? t('flightPages.board.searchWindow', { query: query.trim() })
       : params.terminal
-        ? t('flightPages.board.windowTerminal', { terminal: terminalLabel(airport, params.terminal, lang), from: formatTime(range.from, zone), to: formatTime(range.to, zone) })
-        : t('flightPages.board.window', { from: formatTime(range.from, zone), to: formatTime(range.to, zone) });
+        ? t('flightPages.board.windowTerminal', {
+            terminal: terminalLabel(airport, params.terminal, lang),
+            from: formatTime(range.from, zone),
+            to: formatTime(range.to, zone),
+          })
+        : t('flightPages.board.window', {
+            from: formatTime(range.from, zone),
+            to: formatTime(range.to, zone),
+          });
   const generatedAt = feed.updatedAt;
 
   const earlierButton = (
@@ -331,85 +380,107 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
         }}
         onPointerLeave={() => setHeld((value) => (value.pointer ? { ...value, pointer: false } : value))}
       >
-      <FlightBoard
-        flights={visible}
-        direction={direction}
-        title={title}
-        subtitle={subtitle}
-        headingLevel={2}
-        updatedAt={generatedAt}
-        refreshSeconds={feed.paused ? undefined : feed.refreshSeconds}
-        headerActions={
-          provider ? (
-            <Button variant="quiet" size="sm" aria-pressed={userPaused} onClick={togglePause} className="shrink-0">
-              {userPaused ? t('flightPages.feed.resume') : t('flightPages.feed.pause')}
-            </Button>
-          ) : undefined
-        }
-        context={
-          generatedAt ? (
-            <>
-              <AirportCode code={airport.code} name={airport.name} size="sm" /> <span aria-hidden="true">·</span>{' '}
-              {/* The short date on phones keeps the freshness line to one row (A-01, round 2). */}
-              <span className="sm:hidden">{formatDate(generatedAt, lang, 'short')}</span>
-              <span className="max-sm:hidden">{formatDate(generatedAt, lang, 'weekday')}</span>
-            </>
-          ) : undefined
-        }
-        live="off"
-        compactHeader
-        groupByHour
-        timeZone={zone}
-        dayLabel={(date) => {
-          if (!now) return undefined;
-          const today = dateKey(now, zone);
-          if (date === today) return undefined;
-          if (date === shiftDateKey(today, 1)) return t('common.labels.tomorrow');
-          if (date === shiftDateKey(today, -1)) return t('common.labels.yesterday');
-          return formatDate(zonedDateTime(date, 720, zone), lang, 'weekday', zone);
-        }}
-        skeletonRows={8}
-        savedIds={savedIds}
-        onSaveChange={(flight, saved) => (saved ? saveFlight(toSavedFlight(flight, t)) : removeFlight(flight.id))}
-        before={
-          searching ? undefined : (
-            <>
-              {selected && selected.finished > 0 ? (
-                <p className="type-body-sm px-4 pt-2 text-center text-ink-2 sm:px-5">{t.count('flightPages.rows.departedHidden', selected.finished)}</p>
-              ) : null}
-              {edge(shift.earlier < MAX_EARLIER_STEPS, earlierButton, t('flightPages.board.earlierLimit'))}
-            </>
-          )
-        }
-        after={
-          (shown?.length ?? 0) === 0 ? undefined : (
-            <>
-              {more > 0 ? (
-                <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 px-4 py-2 sm:px-5">
-                  <span className="type-body-sm text-ink-2">{t('flightPages.rows.shownOf', { shown: visible?.length ?? 0, total: shown?.length ?? 0 })}</span>
-                  <Button variant="secondary" size="sm" iconStart="chevron-down" onClick={() => setCap({ key: filterKey, limit: limit + BOARD_ROW_LIMIT })}>
-                    {t.count('flightPages.rows.showMore', Math.min(more, BOARD_ROW_LIMIT))}
-                  </Button>
-                </div>
-              ) : null}
-              {searching || more > 0 ? null : edge(shift.later < MAX_LATER_STEPS, laterButton, t('flightPages.board.laterLimit'))}
-            </>
-          )
-        }
-        empty={empty}
-        footer={
-          shown && now ? (
-            <p className="type-body-sm text-ink-2">
-              {feed.paused ? (
-                <>
-                  <strong className="font-semibold text-ink">{userPaused ? t('flightPages.feed.paused') : t('flightPages.feed.heldForFocus')}</strong>{' '}
-                </>
-              ) : null}
-              <strong className="font-semibold text-ink">{countText}</strong> <span aria-hidden="true">·</span> {t('flightPages.board.timesNote', { zone: timezoneLabel(now, zone) })}
-            </p>
-          ) : undefined
-        }
-      />
+        <FlightBoard
+          flights={visible}
+          direction={direction}
+          title={title}
+          subtitle={subtitle}
+          headingLevel={2}
+          updatedAt={generatedAt}
+          refreshSeconds={feed.paused ? undefined : feed.refreshSeconds}
+          headerActions={
+            provider ? (
+              <Button variant="quiet" size="sm" aria-pressed={userPaused} onClick={togglePause} className="shrink-0">
+                {userPaused ? t('flightPages.feed.resume') : t('flightPages.feed.pause')}
+              </Button>
+            ) : undefined
+          }
+          context={
+            generatedAt ? (
+              <>
+                <AirportCode code={airport.code} name={airport.name} size="sm" /> <span aria-hidden="true">·</span>{' '}
+                {/* The short date on phones keeps the freshness line to one row (A-01, round 2). */}
+                <span className="sm:hidden">{formatDate(generatedAt, lang, 'short')}</span>
+                <span className="max-sm:hidden">{formatDate(generatedAt, lang, 'weekday')}</span>
+              </>
+            ) : undefined
+          }
+          live="off"
+          compactHeader
+          groupByHour
+          timeZone={zone}
+          dayLabel={(date) => {
+            if (!now) return undefined;
+            const today = dateKey(now, zone);
+            if (date === today) return undefined;
+            if (date === shiftDateKey(today, 1)) return t('common.labels.tomorrow');
+            if (date === shiftDateKey(today, -1)) return t('common.labels.yesterday');
+            return formatDate(zonedDateTime(date, 720, zone), lang, 'weekday', zone);
+          }}
+          skeletonRows={8}
+          savedIds={savedIds}
+          onSaveChange={(flight, saved) => (saved ? saveFlight(toSavedFlight(flight, t)) : removeFlight(flight.id))}
+          before={
+            searching ? undefined : (
+              <>
+                {/* On phones the note is left to screen readers and "Show earlier flights" stays, so
+                  the first row reaches the first 664 px in both languages (A-01, round 2). */}
+                {selected && selected.finished > 0 ? (
+                  <p className="type-body-sm px-4 pt-2 text-center text-ink-2 max-sm:sr-only sm:px-5">
+                    {t.count('flightPages.rows.departedHidden', selected.finished)}
+                  </p>
+                ) : null}
+                {edge(shift.earlier < MAX_EARLIER_STEPS, earlierButton, t('flightPages.board.earlierLimit'))}
+              </>
+            )
+          }
+          after={
+            (shown?.length ?? 0) === 0 ? undefined : (
+              <>
+                {more > 0 ? (
+                  <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 px-4 py-2 sm:px-5">
+                    <span className="type-body-sm text-ink-2">
+                      {t('flightPages.rows.shownOf', {
+                        shown: visible?.length ?? 0,
+                        total: shown?.length ?? 0,
+                      })}
+                    </span>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      iconStart="chevron-down"
+                      onClick={() =>
+                        setCap({
+                          key: filterKey,
+                          limit: limit + BOARD_ROW_LIMIT,
+                        })
+                      }
+                    >
+                      {t.count('flightPages.rows.showMore', Math.min(more, BOARD_ROW_LIMIT))}
+                    </Button>
+                  </div>
+                ) : null}
+                {searching || more > 0 ? null : edge(shift.later < MAX_LATER_STEPS, laterButton, t('flightPages.board.laterLimit'))}
+              </>
+            )
+          }
+          empty={empty}
+          footer={
+            shown && now ? (
+              <p className="type-body-sm text-ink-2">
+                {feed.paused ? (
+                  <>
+                    <strong className="font-semibold text-ink">{userPaused ? t('flightPages.feed.paused') : t('flightPages.feed.heldForFocus')}</strong>{' '}
+                  </>
+                ) : null}
+                <strong className="font-semibold text-ink">{countText}</strong> <span aria-hidden="true">·</span>{' '}
+                {t('flightPages.board.timesNote', {
+                  zone: timezoneLabel(now, zone),
+                })}
+              </p>
+            ) : undefined
+          }
+        />
       </div>
     </div>
   );
@@ -426,7 +497,8 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
   };
 
   return (
-    <div className="flex flex-col">
+    // E-17 hand-off (round 2): the flight board answers with demonstration data.
+    <div className="flex flex-col" data-answer-task="flight-board" data-answer-state="demo">
       <Tabs value={chosenDirection} onValueChange={onDirectionChange}>
         <TabsList aria-label={t('flightPages.board.tabsLabel')}>
           {tab('d')}

@@ -446,6 +446,7 @@ export const corporatePagesEn = {
       summary: 'In short',
       stored: 'Stored on this device',
       concierge: 'The concierge',
+      measurement: 'Measurement',
       clear: 'Clear your data',
       production: 'In production',
     },
@@ -477,6 +478,7 @@ export const corporatePagesEn = {
         flightAlerts: 'Flights with demonstration alerts turned on',
         conciergeConsent: 'That you accepted the concierge notice',
         conciergeConversation: 'This tab’s concierge conversation',
+        measurement: 'Whether you turned measurement off (only stored once you change it)',
         lang: 'Your language, so the home address opens in it. Set only when you switch language.',
       },
       deviceTitle: 'On this device now',
@@ -499,6 +501,20 @@ export const corporatePagesEn = {
       },
       notificationsTitle: 'Notifications',
       notificationsBody: 'Demonstration flight alerts use your browser’s permission prompt. They are created on your device while the site is open; no server sends them.',
+    },
+    // Round 2 (E-17 hand-off): the first-party measurement, described and switchable.
+    measurement: {
+      title: 'What we measure, and how to turn it off',
+      lead: 'To see whether the main tasks work, this site counts a few anonymous events on its own server. No third party, no cookie, no identifier.',
+      items: {
+        s1: 'When a page answers a main task (for example a parking price), the browser reports whether the answer was complete, partial, not published or demonstration data, with the site section.',
+        s2: 'When you follow a link to a booking or ticket partner, it reports the name of that hand-off and the partner’s web address, and adds campaign parameters to the link.',
+        s3: 'Nothing else is sent: no flight, no search words, no network address and nothing that identifies you or this device. The server keeps only totals.',
+        s4: 'Nothing is sent if your browser asks sites not to track (Global Privacy Control or Do Not Track), or if you turn it off below.',
+      },
+      switchLabel: 'Count my visits in the anonymous totals',
+      switchHint: 'Kept on this device. Turning it off takes effect at once.',
+      blocked: 'Your browser asks sites not to track, so nothing is sent whatever this setting says.',
     },
     clear: {
       title: 'Clear your data',
@@ -1017,6 +1033,7 @@ export const corporatePagesMs: typeof corporatePagesEn = {
       summary: 'Ringkasnya',
       stored: 'Disimpan pada peranti ini',
       concierge: 'Concierge',
+      measurement: 'Pengukuran',
       clear: 'Padam data anda',
       production: 'Dalam pengeluaran',
     },
@@ -1048,6 +1065,7 @@ export const corporatePagesMs: typeof corporatePagesEn = {
         flightAlerts: 'Penerbangan yang amaran demonstrasinya dihidupkan',
         conciergeConsent: 'Bahawa anda menerima notis concierge',
         conciergeConversation: 'Perbualan concierge dalam tab ini',
+        measurement: 'Sama ada anda mematikan pengukuran (hanya disimpan selepas anda mengubahnya)',
         lang: 'Bahasa anda, supaya alamat utama dibuka dalam bahasa itu. Ditetapkan hanya apabila anda menukar bahasa.',
       },
       deviceTitle: 'Pada peranti ini sekarang',
@@ -1070,6 +1088,20 @@ export const corporatePagesMs: typeof corporatePagesEn = {
       },
       notificationsTitle: 'Pemberitahuan',
       notificationsBody: 'Amaran penerbangan demonstrasi menggunakan gesaan kebenaran pelayar anda. Ia dicipta pada peranti anda semasa laman dibuka; tiada pelayan yang menghantarnya.',
+    },
+    // Round 2 (E-17 hand-off): the first-party measurement, described and switchable.
+    measurement: {
+      title: 'Apa yang kami ukur, dan cara mematikannya',
+      lead: 'Untuk melihat sama ada tugas utama berfungsi, laman ini mengira beberapa peristiwa tanpa nama pada pelayannya sendiri. Tiada pihak ketiga, tiada kuki, tiada pengecam.',
+      items: {
+        s1: 'Apabila halaman menjawab tugas utama (contohnya harga parkir), pelayar melaporkan sama ada jawapannya lengkap, separa, tidak diterbitkan atau data demonstrasi, bersama bahagian laman.',
+        s2: 'Apabila anda mengikut pautan ke rakan tempahan atau tiket, ia melaporkan nama serahan itu dan alamat web rakan tersebut, dan menambah parameter kempen pada pautan.',
+        s3: 'Tiada apa-apa lagi dihantar: tiada penerbangan, tiada kata carian, tiada alamat rangkaian dan tiada apa-apa yang mengenal pasti anda atau peranti ini. Pelayan hanya menyimpan jumlah.',
+        s4: 'Tiada apa-apa dihantar jika pelayar anda meminta laman tidak menjejak (Global Privacy Control atau Do Not Track), atau jika anda mematikannya di bawah.',
+      },
+      switchLabel: 'Kira lawatan saya dalam jumlah tanpa nama',
+      switchHint: 'Disimpan pada peranti ini. Mematikannya berkuat kuasa serta-merta.',
+      blocked: 'Pelayar anda meminta laman tidak menjejak, jadi tiada apa-apa dihantar walau apa pun tetapan ini.',
     },
     clear: {
       title: 'Padam data anda',

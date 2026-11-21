@@ -111,7 +111,8 @@ describe('client dictionary (performance-09)', () => {
     // Per namespace since round 2 (more namespaces are scoped; see `SCOPED_NAMESPACES`): the
     // folders whose Client Components are only rendered on pages that scope that namespace.
     const allowed: Record<(typeof SCOPED_NAMESPACES)[number], RegExp[]> = {
-      corporatePages: [/^components\/corporate\/device-data\.tsx$/],
+      // Round 2: the measurement switch is scoped like device-data (privacy page, I18nScope).
+      corporatePages: [/^components\/corporate\/device-data\.tsx$/, /^components\/corporate\/measurement-switch\.tsx$/],
       designSystem: [/^components\/design-system\//],
       guidePages: [/^components\/(guides|help)\//],
       transportPages: [/^components\/(transport|parking)\//, /^components\/guides\/transit-planner\.tsx$/],

@@ -2,15 +2,17 @@
 
 import { useRouter } from 'next/navigation';
 import { Suspense, lazy, startTransition, useDeferredValue, useEffect, useId, useMemo, useState, type FormEvent } from 'react';
-import { getAirport, terminalLabel } from '@/content/airports';
+import { getAirport, localizeAirport, terminalLabel } from '@/content/airports';
 import type { TerminalId } from '@/content/types';
 import { cn } from '@/lib/cn';
-import { formatFlightNumber, parseFlightQuery, remotePlace, searchFlights, type Flight, type FlightDirection } from '@/lib/flights';
-import { useAirportContext, useFlightProvider } from '@/lib/hooks';
+import { formatFlightNumber, parseFlightQuery, placeCity, remotePlace, searchFlights, type Flight, type FlightDirection } from '@/lib/flights';
+import { useAirportContext } from '@/lib/hooks';
 import { useLang, useT } from '@/lib/i18n/client';
 import type { TKey } from '@/lib/i18n/translate';
 import { localeHref } from '@/lib/locale';
-import { DEMO_AIRPORT_SLUGS, hasDemoRoutes } from '@/lib/providers';
+import { DEMO_AIRPORT_SLUGS, hasDemoRoutes } from '@/lib/providers/demo-routes';
+import { useFlightFeed, type FeedRequest } from '@/lib/providers/use-flight-feed';
+import { dateKey } from '@/lib/time';
 import { RebungRule } from '@/components/art/patterns';
 import { LocaleLink } from '@/components/common/locale-link';
 import { DemoTag } from '@/components/common/demo-tag';
@@ -21,6 +23,7 @@ import { sectionPath } from '@/components/shell/sections';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { SearchField } from '@/components/ui/search-field';
+import { FeedNotice } from './feed-notice';
 import { useFlightDirection } from './flight-direction';
 import { FlightRow, flightHref } from './flight-row';
 
@@ -66,7 +69,7 @@ function readQuery(query: string, results: readonly Flight[], direction: FlightD
   const text = normalise(query);
   if (normalise(top.airline.name).includes(text) || top.airline.code.toLowerCase() === text) return 'airline';
   const place = remotePlace(top);
-  if (normalise(place.city).includes(text) || place.code.toLowerCase() === text || normalise(place.country).includes(text)) {
+  if (normalise(place.city).includes(text) || normalise(placeCity(place, 'ms')).includes(text) || place.code.toLowerCase() === text || normalise(place.country).includes(text)) {
     return direction === 'd' ? 'destination' : 'origin';
   }
   return 'place';
@@ -99,7 +102,6 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
   const t = useT();
   const lang = useLang();
   const router = useRouter();
-  const provider = useFlightProvider();
   const context = useAirportContext();
   const { direction, setDirection } = useFlightDirection();
   const [query, setQuery] = useState('');
@@ -114,7 +116,8 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
   const resultsId = `${generatedId}-results`;
   const focusInput = () => document.getElementById(inputId)?.focus();
 
-  const scope = airport ? getAirport(airport) : context.airport;
+  const record = airport ? getAirport(airport) : undefined;
+  const scope = record ? localizeAirport(record, lang) : airport ? undefined : context.airport;
   const scopeTerminal = airport ? terminal : context.selection?.terminal;
   const scopeSlug = scope?.slug;
   const hasBoard = scopeSlug ? hasDemoRoutes(scopeSlug) : true;
@@ -131,18 +134,27 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
   /* Today's flights in scope: one airport, or every airport with a demo board. */
   // Typing also asks for the pool, in the deferred render: a query typed before hydration (when
   // the focus handler was not attached yet) still gets its results instead of "Loading" forever.
+  //
+  // Round 2 (B-09 hand-off): the boards come from the server feed, as on the board and flight
+  // pages, so the search shows last-known data with its age, or an error with a retry, when the
+  // feed fails, and the demo generator stays on the server. One airport asks for its board when
+  // the field is first used (or at idle, for its examples); the whole network asks for its boards
+  // only while a query is typed.
   const wanted = active || deferredText.length >= 2;
+  const boards = useMemo<readonly string[]>(() => (scopeSlug ? (hasBoard ? [scopeSlug] : []) : DEMO_AIRPORT_SLUGS), [scopeSlug, hasBoard]);
+  const wantBoards = scopeSlug ? wanted : deferredText.length >= 2;
+  const feed = useFlightFeed((at): FeedRequest[] => (wantBoards ? boards.map((slug) => ({ airport: slug, date: dateKey(at), direction: poolDirection })) : []));
+  const provider = feed.provider;
   const pool = useMemo<Flight[] | null>(() => {
     if (!provider || !wanted) return null;
-    const slugs = scopeSlug ? [scopeSlug] : DEMO_AIRPORT_SLUGS;
-    return slugs
+    return boards
       .flatMap((slug) => provider.listFlightsSync({ airport: slug, direction: poolDirection }))
       .filter((flight) => !scopeTerminal || !scopeSlug || flight.terminal === scopeTerminal);
-  }, [provider, wanted, scopeSlug, scopeTerminal, poolDirection]);
+  }, [provider, wanted, boards, scopeSlug, scopeTerminal, poolDirection]);
 
   const results = useMemo<Flight[] | null>(() => {
     if (!pool || !provider || deferredText.length < 2) return null;
-    return searchFlights(pool, deferredText, { now: provider.meta().generatedAt, limit: 40 });
+    return searchFlights(pool, deferredText, { now: provider.now, limit: 40 });
   }, [pool, provider, deferredText]);
 
   const examples = useMemo<Example[]>(() => {
@@ -161,11 +173,11 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
     const otherAirline = pool.find((flight) => flight.airline.code !== first.airline.code) ?? first;
     return [
       { kind: 'flightNumber', label: formatFlightNumber(first), query: formatFlightNumber(first) },
-      { kind: direction === 'd' ? 'destination' : 'origin', label: remotePlace(otherPlace).city, query: remotePlace(otherPlace).city },
+      { kind: direction === 'd' ? 'destination' : 'origin', label: placeCity(remotePlace(otherPlace), lang), query: placeCity(remotePlace(otherPlace), lang) },
       { kind: 'airline', label: otherAirline.airline.name, query: otherAirline.airline.name },
       { kind: 'route', label: `${first.origin.code}-${first.destination.code}`, query: `${first.origin.code}-${first.destination.code}` },
     ];
-  }, [pool, scopeSlug, direction, t]);
+  }, [pool, scopeSlug, direction, t, lang]);
 
   const kindLabels: Record<QueryKind, TKey> = {
     flightNumber: 'flights.search.kinds.flightNumber',
@@ -300,7 +312,7 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
           <div id={resultsId} className={searching ? 'flex flex-col gap-2' : 'hidden'}>
             <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1.5 px-1">
               <p role="status" className="type-body-sm flex flex-wrap items-center gap-x-2.5 gap-y-1 text-ink">
-                <strong className="font-semibold">{results ? t.count('flights.search.resultsCount', results.length) : t('common.labels.loading')}</strong>
+                <strong className="font-semibold">{results ? t.count('flights.search.resultsCount', results.length) : feed.status === 'error' ? null : t('common.labels.loading')}</strong>
                 {kind ? (
                   <span className="inline-flex items-center gap-1.5 text-ink-2">
                     {t('flights.search.readingAs')}
@@ -315,6 +327,10 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
                 </Button>
               </div>
             </div>
+
+            {/* Last-known flights with their age, or nothing loaded, each with a retry (B-09). Always
+                mounted (an empty polite status region) so the change is announced once. */}
+            <FeedNotice feed={feed} className="empty:hidden" />
 
             {results && results.length > 0 ? (
               <div className="surface-board @container overflow-hidden rounded-lg border border-line">

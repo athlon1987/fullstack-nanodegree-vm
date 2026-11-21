@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
-import { getAirport, terminalLabel } from '@/content';
+import { terminalLabel } from '@/content';
 import { getT, toLang } from '@/lib/i18n';
-import { airportSectionMetadata, loadAirportPage, sectionStaticParams, type AirportPageParams } from '@/components/airport/section-page';
+import { localAirport, airportSectionMetadata, loadAirportPage, sectionStaticParams, type AirportPageParams } from '@/components/airport/section-page';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { LocaleLink } from '@/components/common/locale-link';
 import { PageHeader } from '@/components/common/page-header';
@@ -23,7 +23,7 @@ export const ensureStatic = 'navigation';
 
 export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/shop-dine'>) {
   const { lang, airport: slug } = await params;
-  const airport = getAirport(slug);
+  const airport = localAirport(slug, lang);
   const t = getT(toLang(lang));
   return airportSectionMetadata(params, 'shop-dine', airport ? { description: t('commercePages.metaDescription', { airport: airport.name }) } : {});
 }

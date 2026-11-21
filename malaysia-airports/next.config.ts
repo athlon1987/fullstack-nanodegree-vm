@@ -4,6 +4,7 @@ import type { NextConfig } from 'next';
 import { legacyRedirects } from './src/lib/seo/legacy-redirects';
 import { alternateLinkRules } from './src/lib/seo/link-headers';
 import { API_HEADERS, NOINDEX_HEADERS, ROUTE_SECURITY_OVERRIDES, overrideHeaders, securityHeaders } from './src/lib/seo/security-headers';
+import { EARLY_MODE_SCRIPT, EARLY_TAP_SCRIPT, SAVED_FLIGHT_FLAG_SCRIPT } from './src/lib/inline-scripts';
 import { PREFERENCES_INIT_SCRIPT } from './src/lib/preferences';
 
 /**
@@ -19,11 +20,14 @@ const indexable = process.env.SITE_INDEXING === 'allow';
  * the "new version" prompt. Set APP_VERSION (for example the commit) in CI for repeatable builds.
  */
 const appVersion = process.env.APP_VERSION ?? new Date().toISOString().replace(/\D/g, '').slice(0, 12);
-/** Hash of the inline preferences script, allowed by the report-only CSP (security-07). */
+/**
+ * Hashes of our own inline scripts, allowed by the report-only CSP (security-07): the preferences
+ * script and, since round 2 (E-09 hand-off), the early-tap, early-mode and saved-flight scripts.
+ */
 const headerOptions = {
   dev: isDev,
   https: siteUrl.startsWith('https://'),
-  scriptHashes: [createHash('sha256').update(PREFERENCES_INIT_SCRIPT).digest('base64')],
+  scriptHashes: [PREFERENCES_INIT_SCRIPT, EARLY_TAP_SCRIPT, EARLY_MODE_SCRIPT, SAVED_FLIGHT_FLAG_SCRIPT].map((script) => createHash('sha256').update(script).digest('base64')),
 };
 
 const nextConfig: NextConfig = {
@@ -55,6 +59,13 @@ const nextConfig: NextConfig = {
     globalNotFound: true,
   },
   poweredByHeader: false,
+  // Verification round two: React's own `Link` preload header (the fonts) made Next.js copy the
+  // response's whole `Link` value, including the canonical and hreflang links set below, into the
+  // cached page each time it was regenerated. Served pages then carried one more copy of their
+  // canonical per regeneration (8 to 11 within minutes, without limit), and the shared flight-page
+  // shell carried other visitors' flight URLs as canonical. With 0, React puts the font preloads
+  // in the HTML head instead, and only the rules below set `Link`.
+  reactMaxHeadersLength: 0,
   async headers() {
     return [
       { source: '/:path*', headers: securityHeaders(headerOptions) },

@@ -26,6 +26,8 @@ export interface CarParkCardProps {
   showTerminal: boolean;
   /** Advice for premium car parks, shown as a warning band on them. */
   premiumWarning?: NoteView;
+  /** The list states this provenance once (`ProvenanceDefault`): no tag of its own when it matches (A-14). */
+  defaultProvenance?: CarParkView['provenance'];
 }
 
 /**
@@ -33,7 +35,7 @@ export interface CarParkCardProps {
  * bays, EV charging, payment, and its rates by `rateStatus`. Unverified rates are quoted from
  * the content with their sources and a link to the official page; nothing is calculated from them.
  */
-export function CarParkCard({ carPark, sources, timezone, availability, showTerminal, premiumWarning }: CarParkCardProps) {
+export function CarParkCard({ carPark, sources, timezone, availability, showTerminal, premiumWarning, defaultProvenance }: CarParkCardProps) {
   const t = useT();
   const lang = useLang();
   const titleId = `car-park-${carPark.id}-title`;
@@ -78,9 +80,11 @@ export function CarParkCard({ carPark, sources, timezone, availability, showTerm
               {t(`transportPages.parking.types.${carPark.type}`)}
               {showTerminal && carPark.terminal ? <TerminalBadge terminal={carPark.terminal} size="sm" /> : null}
             </p>
-            <div className="mt-2 flex flex-wrap items-center gap-2">
-              <ProvenanceTag provenance={carPark.provenance} />
-            </div>
+            {carPark.provenance !== defaultProvenance ? (
+              <div className="mt-2 flex flex-wrap items-center gap-2">
+                <ProvenanceTag provenance={carPark.provenance} />
+              </div>
+            ) : null}
           </div>
         </div>
 
@@ -187,7 +191,7 @@ export function CarParkCard({ carPark, sources, timezone, availability, showTerm
         <SourceNote sources={sourcesFor(carPark.sourceIds, sources)} />
         {carPark.asOf ? <AsOf value={carPark.asOf} timeZone={timezone} /> : null}
         {carPark.bookingUrl && carPark.bookingUrl !== carPark.officialUrl ? (
-          <ExternalLink href={carPark.bookingUrl} variant="action" className="type-body-sm ml-auto">
+          <ExternalLink href={carPark.bookingUrl} variant="action" className="type-body-sm ml-auto" data-handoff="parking-booking">
             {t('common.actions.bookOnOfficialSite')}
           </ExternalLink>
         ) : null}

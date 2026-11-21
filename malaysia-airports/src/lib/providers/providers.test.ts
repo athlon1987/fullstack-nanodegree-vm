@@ -528,3 +528,28 @@ describe('flight route guard (B-14)', () => {
     expect(flightNotFoundHtml('ms', 'kul')).toContain('lang="ms"');
   });
 });
+
+// Round 2 (B-09 hand-off): the home search asks for every airport's board in one request.
+describe('network feed (several boards in one request)', () => {
+  const day = (airport: string) => ({ airport, date: '2026-11-18', direction: 'd' as const, flights: [], meta: { mode: 'demo' as const, label: { en: 'Demo' }, disclaimer: { en: '' }, refreshSeconds: 30, source: 'demo', generatedAt: '2026-11-18T01:40:00.000Z' }, stale: false, ageSeconds: 0 });
+
+  it('asks once for all airports of one date and direction, and returns the boards it got', async () => {
+    const { fetchFeedDays } = await import('./use-flight-feed');
+    const urls: string[] = [];
+    const fetcher = (async (url: string) => {
+      urls.push(url);
+      return new Response(JSON.stringify({ days: [day('kul'), day('pen')] }), { status: 200 });
+    }) as unknown as typeof fetch;
+    const requests = ['kul', 'pen', 'bki'].map((airport) => ({ airport, date: '2026-11-18', direction: 'd' as const }));
+    const days = await fetchFeedDays('en', requests, 1_779_000_000_000, fetcher);
+    expect(urls).toEqual(['/en/flights/feed?date=2026-11-18&dir=d&at=1779000000000&airports=kul,pen,bki']);
+    expect(days.map((item) => item.airport)).toEqual(['kul', 'pen']);
+  });
+
+  it('fails clearly on an error status or a malformed answer', async () => {
+    const { fetchFeedDays } = await import('./use-flight-feed');
+    const requests = [{ airport: 'kul', date: '2026-11-18', direction: 'd' as const }];
+    await expect(fetchFeedDays('en', requests, 0, (async () => new Response('no', { status: 503 })) as unknown as typeof fetch)).rejects.toThrow('feed 503');
+    await expect(fetchFeedDays('en', requests, 0, (async () => new Response('{"days":[{}]}', { status: 200 })) as unknown as typeof fetch)).rejects.toThrow('malformed');
+  });
+});

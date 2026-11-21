@@ -11,6 +11,8 @@ import { DemoDataBanner } from '@/components/common/demo-data-banner';
 import { Freshness } from '@/components/common/freshness';
 import { NotPublished } from '@/components/common/not-published';
 import { TerminalBadge } from '@/components/common/terminal-badge';
+import { ProvenanceDefault } from '@/components/common/provenance-tag';
+import { sharedProvenance } from '@/components/common/shared-provenance';
 import { Chip } from '@/components/ui/chip';
 import { Icon } from '@/components/ui/icon';
 import { SegmentedControl } from '@/components/ui/segmented-control';
@@ -41,6 +43,7 @@ export function CarParkList({ data, terminal, allHref }: CarParkListProps) {
   const [view, setView] = useState<'cards' | 'table'>('cards');
   const now = useNow(REFRESH_MS);
   const carParks = terminal ? data.carParks.filter((carPark) => !carPark.terminal || carPark.terminal === terminal) : data.carParks;
+  const listProvenance = sharedProvenance(carParks);
   const multi = data.terminals.length > 1;
   const terminalLabel = terminal ? data.terminals.find((item) => item.id === terminal)?.label : undefined;
 
@@ -155,20 +158,25 @@ export function CarParkList({ data, terminal, allHref }: CarParkListProps) {
           </Table>
         </TableScroll>
       ) : (
-        <ul className="grid items-start gap-4 lg:grid-cols-2">
-          {carParks.map((carPark) => (
-            <li key={carPark.id} className="min-w-0">
-              <CarParkCard
-                carPark={carPark}
-                sources={data.sources}
-                timezone={data.timezone}
-                availability={spaceFor(carPark.id)}
-                showTerminal={multi}
-                premiumWarning={data.premiumWarning}
-              />
-            </li>
-          ))}
-        </ul>
+        <>
+          {/* Round 2 (A-14): the provenance most car parks share, said once; the others keep their tag. */}
+          {listProvenance ? <ProvenanceDefault provenance={listProvenance} className="-mt-1 mb-3" /> : null}
+          <ul className="grid items-start gap-4 lg:grid-cols-2">
+            {carParks.map((carPark) => (
+              <li key={carPark.id} className="min-w-0">
+                <CarParkCard
+                  carPark={carPark}
+                  sources={data.sources}
+                  timezone={data.timezone}
+                  availability={spaceFor(carPark.id)}
+                  showTerminal={multi}
+                  premiumWarning={data.premiumWarning}
+                  defaultProvenance={listProvenance}
+                />
+              </li>
+            ))}
+          </ul>
+        </>
       )}
     </div>
   );

@@ -59,3 +59,14 @@ export function ProvenanceTag({ provenance, length = 'full', className, ...rest 
     </span>
   );
 }
+
+/** "[Official] unless marked otherwise": the shared provenance of a list, said once (round 2, A-14). */
+export function ProvenanceDefault({ provenance, className }: { provenance: Provenance; className?: string }) {
+  const t = useT();
+  return (
+    <p data-provenance-default={provenance} className={cn('type-caption flex flex-wrap items-center gap-x-1.5 gap-y-1 text-ink-2', className)}>
+      <ProvenanceTag provenance={provenance} length="short" />
+      <span>{t('provenance.unlessMarked')}</span>
+    </p>
+  );
+}

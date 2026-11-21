@@ -40,7 +40,7 @@ test.describe('transport planner', () => {
     await page.clock.setFixedTime(BEFORE_RISE);
     await page.goto('/en/kul/transport');
     const main = page.getByRole('main');
-    await expect(main.getByRole('heading', { level: 1, name: 'Getting to and from KLIA' })).toBeVisible();
+    await expect(main.getByRole('heading', { level: 1, name: 'Transport to and from KLIA' })).toBeVisible();
     await expect(main.getByRole('combobox', { name: /Going to or from/ })).toHaveValue('KL Sentral');
     await expect(main.getByRole('radio', { name: 'Lowest price' })).toBeChecked();
 
@@ -110,7 +110,7 @@ test.describe('transport planner', () => {
   test('renders in Bahasa Malaysia', async ({ page }) => {
     await page.goto('/ms/kul/transport');
     await expect(page.locator('html')).toHaveAttribute('lang', 'ms');
-    await expect(page.getByRole('heading', { level: 1, name: 'Ke dan dari KLIA' })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: 'Pengangkutan ke dan dari KLIA' })).toBeVisible();
     // C-02: the anti-touting advice is at the top in Malay too, with the Help answer.
     const warning = page.getByRole('main').getByRole('note').filter({ hasText: 'Tempah teksi hanya di kaunter kupon; abaikan sesiapa yang menawarkan tumpangan' });
     await expect(warning).toBeVisible();

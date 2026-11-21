@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
-import { getAirport } from '@/content/airports';
 import { getT } from '@/lib/i18n';
-import { loadAirportPage, sectionStaticParams, type AirportPageParams } from '@/components/airport/section-page';
+import { airportSectionMetadata, localAirport, loadAirportPage, sectionStaticParams, type AirportPageParams } from '@/components/airport/section-page';
+import { MissingAirportPage } from '@/components/airport/missing-airport-page';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { PageHeader } from '@/components/common/page-header';
 import { FlightBoardExplorer } from '@/components/flights/flight-board-explorer';
@@ -21,12 +21,13 @@ export const ensureStatic = 'navigation';
 export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/flights'>): Promise<Metadata> {
   const { lang, airport: slug } = await params;
   const t = getT(lang);
-  const airport = getAirport(slug);
-  if (!airport) return { title: t('errors.notFoundTitle') };
-  return {
-    title: t('flightPages.board.metaTitle', { airport: airport.shortName }),
-    description: t('flightPages.board.metaDescription', { airport: airport.name }),
-  };
+  const airport = localAirport(slug, lang);
+  // Through the shared helper (round 2, E-14): canonical, alternates and the not-found title.
+  return airportSectionMetadata(
+    params,
+    'flights',
+    airport ? { title: t('flightPages.board.metaTitle', { airport: airport.shortName }), description: t('flightPages.board.metaDescription', { airport: airport.name }) } : {},
+  );
 }
 
 /**
@@ -42,6 +43,8 @@ export default function FlightsPage({ params }: PageProps<'/[lang]/[airport]/fli
 }
 
 async function Flights({ params }: { params: AirportPageParams }) {
+  const { airport: slug } = await params;
+  if (!generateStaticParams().some((listed) => listed.airport === slug)) return <MissingAirportPage />;
   const { t, airport } = await loadAirportPage(params, 'flights');
   return (
     <>

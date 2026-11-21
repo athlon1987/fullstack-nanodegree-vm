@@ -1,9 +1,9 @@
 'use client';
 
 import { useMemo } from 'react';
-import { getAirport } from '@/content/airports';
+import { getAirport, localName } from '@/content/airports';
 import { pick } from '@/content/values';
-import { formatFlightNumber, isFinalStatus, isInternationalFlight, type Flight } from '@/lib/flights';
+import { formatFlightNumber, isFinalStatus, isInternationalFlight, placeCity, type Flight } from '@/lib/flights';
 import { useFlightProvider } from '@/lib/hooks';
 import { useLang, useT } from '@/lib/i18n/client';
 import { RECOMMENDED_ARRIVAL_MINUTES, buildJourney } from '@/lib/journey';
@@ -64,7 +64,7 @@ export function SavedFlightCard({ flights }: { flights: readonly SavedFlight[] }
     departing && !isFinalStatus(flight.status)
       ? formatTime(addMinutes(flight.scheduled, -(isInternationalFlight(flight) ? RECOMMENDED_ARRIVAL_MINUTES.international : RECOMMENDED_ARRIVAL_MINUTES.domestic)))
       : null;
-  const place = departing ? flight.destination.city : flight.origin.city;
+  const place = placeCity(departing ? flight.destination : flight.origin, lang);
 
   return (
     <section
@@ -94,7 +94,7 @@ export function SavedFlightCard({ flights }: { flights: readonly SavedFlight[] }
         <div className="flex items-center gap-1.5">
           <dt className="sr-only">{t('common.labels.terminal')}</dt>
           <dd>
-            {flight.terminal === 'MAIN' ? <span className="text-ink">{getAirport(flight.airport)?.shortName}</span> : <TerminalBadge terminal={flight.terminal} size="sm" />}
+            {flight.terminal === 'MAIN' ? <span className="text-ink">{localName(flight.airport, lang)}</span> : <TerminalBadge terminal={flight.terminal} size="sm" />}
           </dd>
         </div>
         <div className="flex items-baseline gap-1.5">
@@ -114,7 +114,8 @@ export function SavedFlightCard({ flights }: { flights: readonly SavedFlight[] }
             ) : next ? (
               <>
                 {pick(next.title, lang)}
-                {next.time ? <span className="type-data-md ml-1.5 font-normal text-ink-2">{formatTime(next.time)}</span> : null}
+                {/* Round 2: no second time when the step title already says it ("Board from 10:50"). */}
+                {next.time && !pick(next.title, lang).includes(formatTime(next.time)) ? <span className="type-data-md ml-1.5 font-normal text-ink-2">{formatTime(next.time)}</span> : null}
               </>
             ) : (
               '—'
@@ -125,7 +126,7 @@ export function SavedFlightCard({ flights }: { flights: readonly SavedFlight[] }
       {arriveBy && next ? (
         <p className="type-caption text-ink-2">
           {t('shellExtras.savedFlight.next')}: <span className="font-semibold text-ink">{pick(next.title, lang)}</span>
-          {next.time ? <span className="tabular"> {formatTime(next.time)}</span> : null}
+          {next.time && !pick(next.title, lang).includes(formatTime(next.time)) ? <span className="tabular"> {formatTime(next.time)}</span> : null}
         </p>
       ) : null}
     </section>

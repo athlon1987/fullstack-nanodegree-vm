@@ -1,9 +1,9 @@
 'use client';
 
 import { memo } from 'react';
-import { getAirport } from '@/content/airports';
+import { getAirport, localizeAirport } from '@/content/airports';
 import { cn } from '@/lib/cn';
-import { formatFlightNumber, remotePlace, type Flight } from '@/lib/flights';
+import { formatFlightNumber, placeCity, remotePlace, type Flight } from '@/lib/flights';
 import { useT } from '@/lib/i18n/client';
 import { formatTime } from '@/lib/time';
 import { AirportCode } from '@/components/common/airport-code';
@@ -47,14 +47,17 @@ export interface FlightRowProps {
  */
 function FlightRowView({ flight, layout = 'card', showAirport = false, onNavigate, saved = false, onSaveChange, className }: FlightRowProps) {
   const t = useT();
-  const place = remotePlace(flight);
+  const remote = remotePlace(flight);
+  // City in the page language (D-09, round 2).
+  const place = { ...remote, city: placeCity(remote, t.lang) };
   const moved = flight.estimated !== flight.scheduled;
   const cancelled = flight.status === 'cancelled';
   const number = formatFlightNumber(flight);
   const stand = flight.direction === 'd' ? flight.gate : flight.belt;
   const standLabel = flight.direction === 'd' ? t('common.labels.gate') : t('common.labels.belt');
   const notAssigned = flight.direction === 'd' ? t('flights.board.gateNotAssigned') : t('flights.board.beltNotAssigned');
-  const boardAirport = showAirport ? getAirport(flight.airport) : undefined;
+  const boardRecord = showAirport ? getAirport(flight.airport) : undefined;
+  const boardAirport = boardRecord ? localizeAirport(boardRecord, t.lang) : undefined;
   const linkLabel = `${t('flights.search.viewFlight', { number })}, ${place.city}`;
   // The time in words for assistive technology: <s> is not announced (accessibility-03).
   const timeWords = cancelled

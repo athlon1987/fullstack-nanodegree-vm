@@ -5,7 +5,7 @@ import { getAirport, terminalLabel } from '@/content/airports';
 import { pick } from '@/content/values';
 import type { Provenance, Source } from '@/content/types';
 import { cn } from '@/lib/cn';
-import { checkInLines, formatFlightNumber, type Flight } from '@/lib/flights';
+import { checkInLines, formatFlightNumber, placeCity, type Flight } from '@/lib/flights';
 import { formatDuration } from '@/lib/format';
 import { useLang, useT } from '@/lib/i18n/client';
 import { formatDate, formatTime, minutesBetween, type Instant } from '@/lib/time';
@@ -101,7 +101,7 @@ export function FlightStatusHero({ flight, updatedAt, refreshSeconds, publishedC
               </span>
             </div>
 
-            <p className="sr-only">{t('flights.detail.route', { origin: `${flight.origin.city} (${flight.origin.code})`, destination: `${flight.destination.city} (${flight.destination.code})` })}</p>
+            <p className="sr-only">{t('flights.detail.route', { origin: `${placeCity(flight.origin, lang)} (${flight.origin.code})`, destination: `${placeCity(flight.destination, lang)} (${flight.destination.code})` })}</p>
             <div aria-hidden="true" className="grid grid-cols-[auto_minmax(2rem,1fr)_auto] items-center gap-x-3 sm:gap-x-5">
               <span className="type-data-xl text-ink">{flight.origin.code}</span>
               <span className="relative flex items-center">
@@ -109,9 +109,9 @@ export function FlightStatusHero({ flight, updatedAt, refreshSeconds, publishedC
                 <Icon name="plane" className="absolute left-1/2 box-content -translate-x-1/2 bg-board px-1.5 text-ink-2" />
               </span>
               <span className="type-data-xl text-right text-ink">{flight.destination.code}</span>
-              <span className={cn('type-body-sm text-ink-2', cancelled && 'line-through')}>{flight.origin.city}</span>
+              <span className={cn('type-body-sm text-ink-2', cancelled && 'line-through')}>{placeCity(flight.origin, lang)}</span>
               <span />
-              <span className={cn('type-body-sm text-right text-ink-2', cancelled && 'line-through')}>{flight.destination.city}</span>
+              <span className={cn('type-body-sm text-right text-ink-2', cancelled && 'line-through')}>{placeCity(flight.destination, lang)}</span>
             </div>
 
             <dl className="grid grid-cols-2 gap-x-6 gap-y-4 border-t border-line pt-5 xs:grid-cols-3">

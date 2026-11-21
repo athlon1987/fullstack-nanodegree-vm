@@ -204,7 +204,9 @@ test.describe('facilities directory', () => {
       await expect(page).toHaveURL(/cat=nursing-room/, { timeout: 2_000 });
     }).toPass();
     const card = main.getByRole('article', { name: 'Nursing and baby care room' });
-    await expect(card).toContainText('Not published: location, level and opening hours');
+    // Round 2 (A-14): what is not published is said once for the placeholder section, not on each card.
+    await expect(main.locator('[data-facility-placeholders]')).toContainText('Not published: location, level and opening hours');
+    await expect(main.locator('[data-facility-placeholders]').getByRole('article', { name: 'Nursing and baby care room' })).toBeVisible();
     await expect(card.getByRole('link', { name: /Find an information counter/ })).toHaveAttribute('href', '#kul-t1-information-counter');
     await expect(main.getByRole('heading', { name: 'No facilities match these filters' })).toHaveCount(0);
     await expectNoAxeViolations(page);
@@ -224,9 +226,9 @@ test.describe('missing airport sections (C-06)', () => {
     expect(airports).toHaveLength(39);
     // Airports with a content file (src/content/index.ts) get transit's simple page.
     const withContent = new Set(['kul', 'pen', 'bki', 'kch', 'lgk', 'szb']);
-    // The overview is checked below; flights (package B's page) is left out until it declares
-    // `ensureStatic` too: today an airport without demo flights may answer 200 on the first request.
-    const sections = ['map', 'facilities', 'transport', 'parking', 'shop-dine', 'lounges', 'transit'] as const;
+    // The overview is checked below. Round 2: flights declares `ensureStatic` too (the C-06
+    // hand-off), so it is checked like the other sections.
+    const sections = ['flights', 'map', 'facilities', 'transport', 'parking', 'shop-dine', 'lounges', 'transit'] as const;
     const failures: string[] = [];
     for (const airport of airports) {
       // The overview always exists; its section navigation links only the sections the airport has.

@@ -2,8 +2,8 @@
 
 import { useMemo } from 'react';
 import { getAirport } from '@/content/airports';
-import type { Source, TerminalId } from '@/content/types';
-import { formatFlightNumber, isFinalStatus, isInternationalFlight, type Flight } from '@/lib/flights';
+import type { Provenance, Source, TerminalId } from '@/content/types';
+import { formatFlightNumber, isFinalStatus, isInternationalFlight, placeCity, type Flight } from '@/lib/flights';
 import { useAirportContext, useFlightProvider, useSavedJourney } from '@/lib/hooks';
 import { useT } from '@/lib/i18n/client';
 import { boardWindow, hasDemoRoutes } from '@/lib/providers';
@@ -26,22 +26,29 @@ export interface TeaserOfficialFact {
   sources: Source[];
 }
 
+/** The arrive-by rule (`ARRIVAL_TIME_RULE`, D-13), localised on the server with its sources. */
+export interface TeaserArrivalRule {
+  minutesBefore: { international: number; domestic: number };
+  text: string;
+  provenance: Provenance;
+  sources: Source[];
+}
+
 export interface JourneyTeaserProps {
   /** One official fact per airport that has one, by slug. */
   facts: Readonly<Record<string, TeaserOfficialFact>>;
+  /** How early to be at the airport: the content record, not interface copy (D-13 hand-off, round 2). */
+  arrival: TeaserArrivalRule;
   /** Used when the airport has no fact of its own: the group support line, with its sources. */
   fallback?: { value: string; sources: Source[] };
 }
-
-/** Minutes before departure we suggest being at the airport (the journey builder uses the same rule of thumb). */
-const ARRIVE_BEFORE = { international: 180, domestic: 120 } as const;
 
 /**
  * A three-step sample of the journey timeline, one step for each kind of guidance: estimated
  * (our rule of thumb), official (a sourced fact about the airport) and suggestion. It hangs on a
  * sample demonstration flight, which the visitor can save to "My journey" for later.
  */
-export function JourneyTeaser({ facts, fallback }: JourneyTeaserProps) {
+export function JourneyTeaser({ facts, arrival, fallback }: JourneyTeaserProps) {
   const t = useT();
   const provider = useFlightProvider();
   const context = useAirportContext();
@@ -62,7 +69,7 @@ export function JourneyTeaser({ facts, fallback }: JourneyTeaserProps) {
     return candidates.find((item) => !factTerminal || item.terminal === factTerminal) ?? candidates[0] ?? null;
   }, [provider, sampleAirport, factTerminal]);
 
-  const arriveBy = flight ? formatTime(addMinutes(flight.scheduled, -(isInternationalFlight(flight) ? ARRIVE_BEFORE.international : ARRIVE_BEFORE.domestic))) : null;
+  const arriveBy = flight ? formatTime(addMinutes(flight.scheduled, -(isInternationalFlight(flight) ? arrival.minutesBefore.international : arrival.minutesBefore.domestic))) : null;
   const saved = flight ? isFlightSaved(flight.id) : false;
 
   const toggle = () => {
@@ -77,7 +84,7 @@ export function JourneyTeaser({ facts, fallback }: JourneyTeaserProps) {
       number: flight.number,
       direction: flight.direction,
       date: flight.date,
-      route: t('flights.detail.route', { origin: flight.origin.city, destination: flight.destination.city }),
+      route: t('flights.detail.route', { origin: placeCity(flight.origin, t.lang), destination: placeCity(flight.destination, t.lang) }),
       mode: 'departing',
     });
   };
@@ -95,7 +102,7 @@ export function JourneyTeaser({ facts, fallback }: JourneyTeaserProps) {
               <LocaleLink href={flightHref(flight)} className="type-data-lg link inline-flex min-h-11 items-center">
                 {formatFlightNumber(flight)}
               </LocaleLink>
-              <span className="type-title-sm">{t('flights.detail.route', { origin: flight.origin.city, destination: flight.destination.city })}</span>
+              <span className="type-title-sm">{t('flights.detail.route', { origin: placeCity(flight.origin, t.lang), destination: placeCity(flight.destination, t.lang) })}</span>
               <span className="type-data-md text-ink-2">{formatTime(flight.scheduled)}</span>
             </p>
           ) : (
@@ -111,9 +118,10 @@ export function JourneyTeaser({ facts, fallback }: JourneyTeaserProps) {
             eyebrow={t('journey.relative.beforeYouLeave')}
             time={arriveBy ?? undefined}
             title={arriveBy ? t('home.journey.arriveBy', { time: arriveBy }) : t('home.journey.arriveGeneric')}
-            meta={<ProvenanceTag provenance="estimated" />}
+            meta={<ProvenanceTag provenance={arrival.provenance} />}
+            actions={<SourceNote sources={arrival.sources} />}
           >
-            {t('home.journey.arriveBody')}
+            {arrival.text}
           </TimelineItem>
           <TimelineItem
             eyebrow={t('journey.relative.atTheAirport')}

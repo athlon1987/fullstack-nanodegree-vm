@@ -65,7 +65,7 @@ test.describe('transit planner', () => {
   test('changing terminals switches to the landside steps and grades the time', async ({ page }) => {
     await page.goto('/en/kul/transit');
     const main = page.getByRole('main');
-    await expect(main.getByRole('heading', { level: 1, name: 'Connecting at KLIA' })).toBeVisible();
+    await expect(main.getByRole('heading', { level: 1, name: 'Transit and connections at KLIA' })).toBeVisible();
     await expect(main.getByRole('heading', { name: 'You stay in the secure area' })).toBeVisible();
 
     await expect(async () => {
@@ -96,7 +96,7 @@ test.describe('transit planner', () => {
   test('another airport gets an honest page', async ({ page }) => {
     await page.goto('/en/pen/transit');
     const main = page.getByRole('main');
-    await expect(main.getByRole('heading', { level: 1, name: 'Connecting at Penang' })).toBeVisible();
+    await expect(main.getByRole('heading', { level: 1, name: 'Transit and connections at Penang' })).toBeVisible();
     await expect(main.getByRole('heading', { name: 'No verified transfer information for Penang yet' })).toBeVisible();
     await expect(main.getByRole('link', { name: 'Open the KLIA transit planner' })).toBeVisible();
     await expectNoAxeViolations(page);

@@ -1,7 +1,7 @@
 'use client';
 
 import { useDeferredValue, useMemo } from 'react';
-import { FEATURED_AIRPORT_SLUGS, getAirport, terminalLabel } from '@/content/airports';
+import { FEATURED_AIRPORT_SLUGS, getAirport, localizeAirport, terminalLabel } from '@/content/airports';
 import type { TerminalId } from '@/content/types';
 import type { Flight } from '@/lib/flights';
 import { useAirportContext, useFlightProvider } from '@/lib/hooks';
@@ -42,7 +42,10 @@ export function BoardPreview({ airport, terminal, rows = 8, headingLevel = 2, cl
   // themselves answer at once (A-09); the rows catch up a moment later.
   const direction = useDeferredValue(liveDirection);
 
-  const scope = airport ? getAirport(airport) : context.airport;
+  // Verification round two (D-09): a fixed airport (the overview's preview) is named in the page
+  // language too; the remembered airport from `useAirportContext` already is.
+  const fixed = airport ? getAirport(airport) : undefined;
+  const scope = fixed ? localizeAirport(fixed, lang) : airport ? undefined : context.airport;
   const scopeTerminal = airport ? terminal : context.selection?.terminal;
   const scopeSlug = scope?.slug;
   const generatedAt = provider?.meta().generatedAt ?? null;

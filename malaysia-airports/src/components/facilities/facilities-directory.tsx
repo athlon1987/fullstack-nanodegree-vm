@@ -6,6 +6,9 @@ import { facilityCategoryLabel } from '@/content/values';
 import type { FacilityCategory, Source, TerminalId } from '@/content/types';
 import { useLang, useT } from '@/lib/i18n/client';
 import { NotPublished } from '@/components/common/not-published';
+import { ProvenanceDefault } from '@/components/common/provenance-tag';
+import { sharedProvenance } from '@/components/common/shared-provenance';
+import { SourceNote } from '@/components/common/source-note';
 import { Icon } from '@/components/ui/icon';
 import { EmptyState } from '@/components/common/empty-state';
 import { Button } from '@/components/ui/button';
@@ -13,6 +16,7 @@ import { cn } from '@/lib/cn';
 import { FilterChip } from '@/components/ui/filter-chip';
 import { Switch } from '@/components/ui/switch';
 import { FacilityCard } from './facility-card';
+import { AsOf, sourcesFor } from './facility-values';
 import {
   EMPTY_FACILITY_FILTERS,
   activeFilterCount,
@@ -102,6 +106,8 @@ function Directory({
     return [...seen.entries()].map(([id, entry]) => ({ id, ...entry }));
   }, [items]);
   const shown = filterFacilities(items, filters);
+  // Round 2 (A-14): the provenance most shown facilities share, stated once above the list.
+  const defaultProvenance = sharedProvenance(shown);
   const groups = categories
     .map((category) => ({ ...category, items: shown.filter((item) => item.category === category.id) }))
     .filter((group) => group.items.length > 0);
@@ -211,9 +217,13 @@ function Directory({
       </section>
 
       <div className="min-w-0">
-        <p className="type-data-sm mb-4 text-ink-2" aria-live="polite">
-          {t.count('mapPages.facilities.results', shown.length)}
-        </p>
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+          <p className="type-data-sm text-ink-2" aria-live="polite">
+            {t.count('mapPages.facilities.results', shown.length)}
+          </p>
+          {/* Round 2 (A-14): the provenance most facilities share, said once; the others keep their tag. */}
+          {defaultProvenance ? <ProvenanceDefault provenance={defaultProvenance} /> : null}
+        </div>
         {groups.length === 0 && placeholders.length === 0 ? (
           <EmptyState
             icon="search-x"
@@ -229,25 +239,48 @@ function Directory({
           </EmptyState>
         ) : (
           <div className="flex flex-col gap-10 @container">
-            {groups.map((group) => (
-              <section key={group.id} aria-labelledby={`facility-group-${group.id}`}>
-                <h2 id={`facility-group-${group.id}`} className="type-title-lg mb-4 flex items-baseline gap-3 border-b border-line pb-2 text-ink">
-                  {group.label}
-                  <span className="type-data-sm text-ink-3">{group.items.length}</span>
-                </h2>
-                <div className="grid gap-4 @3xl:grid-cols-2">
-                  {group.items.map((item) => (
-                    <FacilityCard key={item.id} facility={item} sources={sources} showTerminal={multiTerminal} airport={airport} />
-                  ))}
-                </div>
-              </section>
-            ))}
+            {groups.map((group) => {
+              // Round 2 (A-14): items of a section that share their sources and date show them once.
+              const first = group.items[0];
+              const shared =
+                group.items.length > 1 && group.items.every((item) => item.sourceIds.join('+') === first.sourceIds.join('+') && item.asOf === first.asOf);
+              return (
+                <section key={group.id} aria-labelledby={`facility-group-${group.id}`}>
+                  <h2 id={`facility-group-${group.id}`} className="type-title-lg mb-4 flex items-baseline gap-3 border-b border-line pb-2 text-ink">
+                    {group.label}
+                    <span className="type-data-sm text-ink-3">{group.items.length}</span>
+                  </h2>
+                  <div className="grid gap-4 @3xl:grid-cols-2">
+                    {group.items.map((item) => (
+                      <FacilityCard
+                        key={item.id}
+                        facility={item}
+                        sources={sources}
+                        showTerminal={multiTerminal}
+                        airport={airport}
+                        defaultProvenance={defaultProvenance}
+                        groupedSources={shared}
+                      />
+                    ))}
+                  </div>
+                  {shared ? (
+                    <div className="mt-2 flex flex-wrap items-center gap-x-4">
+                      <SourceNote sources={sourcesFor(first.sourceIds, sources)} />
+                      {first.asOf ? <AsOf value={first.asOf} /> : null}
+                    </div>
+                  ) : null}
+                </section>
+              );
+            })}
             {placeholders.length > 0 ? (
               <section aria-labelledby="facility-group-unpublished" data-facility-placeholders="">
                 <h2 id="facility-group-unpublished" className="type-title-lg mb-1 border-b border-line pb-2 text-ink">
                   {t('mapPages.facilities.placeholderTitle')}
                 </h2>
-                <p className="type-body-sm mb-4 text-ink-2">{t('mapPages.facilities.placeholderLead', { airport: airportName ?? '' })}</p>
+                <p className="type-body-sm text-ink-2">{t('mapPages.facilities.placeholderLead', { airport: airportName ?? '' })}</p>
+                {/* Round 2 (A-14): what is missing and what to do, once for the section instead of on every card. */}
+                <NotPublished label={t('mapPages.facilities.placeholderFields')} className="mt-2" />
+                <p className="type-body-sm mt-1 mb-4 text-ink-2">{t('mapPages.facilities.placeholderBody', { airport: airportName ?? '' })}</p>
                 <div className="grid gap-4 @3xl:grid-cols-2">
                   {placeholders.map((category) => (
                     <article
@@ -264,8 +297,6 @@ function Directory({
                           {facilityCategoryLabel(category, lang)}
                         </h3>
                       </div>
-                      <NotPublished label={t('mapPages.facilities.placeholderFields')} />
-                      <p className="type-body-sm text-ink-2">{t('mapPages.facilities.placeholderBody', { airport: airportName ?? '' })}</p>
                       {information ? (
                         <a href={`#${information.id}`} className="link-action type-body-sm self-start text-ink">
                           {t('mapPages.facilities.placeholderAction')}

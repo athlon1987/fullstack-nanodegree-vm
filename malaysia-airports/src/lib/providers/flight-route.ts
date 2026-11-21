@@ -91,7 +91,9 @@ export function flightRouteResponse(request: NextRequest): NextResponse | null {
   if (decision.kind === 'not-found') {
     return new NextResponse(flightNotFoundHtml(decision.lang, decision.airport), {
       status: 404,
-      headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'public, max-age=300', 'X-Robots-Tag': 'noindex' },
+      // Round 2 (E-22): the same short shared cache as every other 404 (s-maxage=60), not five
+      // minutes in browsers: a flight that appears later is not hidden by a cached 404.
+      headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'public, max-age=0, s-maxage=60', 'X-Robots-Tag': 'noindex' },
     });
   }
   const response = NextResponse.next();

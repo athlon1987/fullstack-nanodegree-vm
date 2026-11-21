@@ -13,7 +13,7 @@ import type { PublishedCheckIn } from './flight-status-hero';
 const AIRLINE_ASSISTANCE_FAQS: Readonly<Record<string, string>> = { MH: 'wheelchair-request' };
 
 /** Places near gates, airline assistance notes and Fast Track for an airport's journeys. */
-export function journeyExtras(content: AirportContent, lang: Lang): Pick<JourneyAirportContent, 'places' | 'airlineAssistance' | 'fastTrack'> {
+export function journeyExtras(content: AirportContent, lang: Lang): Pick<JourneyAirportContent, 'places' | 'airlineAssistance' | 'fastTrack' | 'fastTrackByTerminal'> {
   const slug = content.airport.slug;
   const places: JourneyPlace[] = [];
   for (const facility of content.facilities) {
@@ -58,19 +58,21 @@ export function journeyExtras(content: AirportContent, lang: Lang): Pick<Journey
     airlineAssistance[code] = { title: faq.question, body: faq.answer, provenance: faq.provenance, sources: faq.sources, href: `/help/${faq.topic}#${faq.id}` };
   }
 
-  // Fast Track: only when the content layer publishes a record for it (closes with D-02).
-  const record = content.facilities.find((facility) => /fast[\s-]?track/i.test(`${facility.id} ${facility.name.en}`));
-  const fastTrack: JourneyService | undefined = record
-    ? {
-        title: { en: `Optional: ${record.name.en}`, ms: `Pilihan: ${pick(record.name, 'ms')}` } satisfies LocalizedText,
-        body: record.description,
-        href: `/${slug}/facilities#${record.id}`,
-        provenance: record.provenance,
-        sources: record.sources,
-      }
-    : undefined;
+  // Fast Track: only when the content layer publishes a record for it (closes with D-02). Each
+  // terminal with its own record gets it, so a Terminal 2 flight links to the Terminal 2 record
+  // (D-02 hand-off, round 2).
+  const records = content.facilities.filter((facility) => /fast[\s-]?track/i.test(`${facility.id} ${facility.name.en}`));
+  const service = (record: (typeof records)[number]): JourneyService => ({
+    title: { en: `Optional: ${record.name.en}`, ms: `Pilihan: ${pick(record.name, 'ms')}` } satisfies LocalizedText,
+    body: record.description,
+    href: `/${slug}/facilities#${record.id}`,
+    provenance: record.provenance,
+    sources: record.sources,
+  });
+  const fastTrack = records[0] ? service(records[0]) : undefined;
+  const fastTrackByTerminal = Object.fromEntries(records.flatMap((record) => (record.terminal ? [[record.terminal, service(record)] as const] : [])));
   void lang;
-  return { places, airlineAssistance, ...(fastTrack ? { fastTrack } : {}) };
+  return { places, airlineAssistance, ...(fastTrack ? { fastTrack } : {}), ...(Object.keys(fastTrackByTerminal).length > 0 ? { fastTrackByTerminal } : {}) };
 }
 
 /** Read a field that is plain text today and may become `LocalizedText` (D-03 hand-off). */

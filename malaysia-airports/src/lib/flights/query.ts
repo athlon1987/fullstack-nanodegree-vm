@@ -125,19 +125,35 @@ function wordStarts(haystack: string, needle: string): boolean {
 }
 
 /**
+ * Malay forms of the demo destinations' city names that differ from English (D-09 hand-off,
+ * round 2; draft pending native review, OOS-14). Flights keep the English name in `city`.
+ */
+const CITY_MS: Readonly<Record<string, string>> = {
+  Penang: 'Pulau Pinang',
+  Singapore: 'Singapura',
+  'Singapore (Seletar)': 'Singapura (Seletar)',
+};
+
+/** A flight place's city in the page language. */
+export function placeCity(place: Pick<FlightPlace, 'city'>, lang: 'en' | 'ms'): string {
+  return lang === 'ms' ? (CITY_MS[place.city] ?? place.city) : place.city;
+}
+
+/**
  * How well a place matches a term, from 0 (no match) to 1 (exact airport code).
- * Matches the IATA code, the city (prefix or word start) and the country.
+ * Matches the IATA code, the city in English or Malay (prefix or word start) and the country.
  */
 export function placeMatchScore(place: FlightPlace, term: string): number {
   const needle = normaliseText(term);
   if (!needle) return 0;
   const code = place.code.toLowerCase();
   const city = normaliseText(place.city);
+  const cityMs = normaliseText(placeCity(place, 'ms'));
   const country = normaliseText(place.country);
   if (needle === code) return 1;
-  if (city === needle) return 0.95;
-  if (city.startsWith(needle)) return 0.9;
-  if (needle.length >= 3 && wordStarts(city, needle)) return 0.8;
+  if (city === needle || cityMs === needle) return 0.95;
+  if (city.startsWith(needle) || cityMs.startsWith(needle)) return 0.9;
+  if (needle.length >= 3 && (wordStarts(city, needle) || wordStarts(cityMs, needle))) return 0.8;
   if (country === needle) return 0.6;
   if (needle.length >= 3 && wordStarts(country, needle)) return 0.5;
   return 0;

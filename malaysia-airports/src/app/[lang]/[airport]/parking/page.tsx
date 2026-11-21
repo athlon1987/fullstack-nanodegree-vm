@@ -1,14 +1,11 @@
 import { Suspense } from 'react';
-import { getAirport } from '@/content';
 import { getT, toLang } from '@/lib/i18n';
-import { airportSectionMetadata, loadAirportPage, sectionStaticParams, type AirportPageParams } from '@/components/airport/section-page';
+import { localAirport, airportSectionMetadata, loadAirportPage, sectionStaticParams, type AirportPageParams } from '@/components/airport/section-page';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
-import { ExternalLink } from '@/components/common/external-link';
 import { LocaleLink } from '@/components/common/locale-link';
 import { PageHeader } from '@/components/common/page-header';
-import { ProvenanceTag } from '@/components/common/provenance-tag';
+import { PrototypeGapsLink } from '@/components/common/prototype-gaps-link';
 import { SectionHeading } from '@/components/common/section-heading';
-import { SourceNote } from '@/components/common/source-note';
 import { TranslationNotice } from '@/components/common/translation-notice';
 import { CarParkList } from '@/components/parking/car-park-list';
 import { CarParkListFromUrl } from '@/components/parking/car-park-list-url';
@@ -17,7 +14,6 @@ import { ParkedCarControl } from '@/components/parking/parked-car-control';
 import { ParkingCalculator } from '@/components/parking/parking-calculator';
 import { ParkingCalculatorFromUrl } from '@/components/parking/parking-calculator-url';
 import { ParkingPriceMatrix } from '@/components/parking/parking-price-matrix';
-import { sourcesFor } from '@/components/transport/transport-types';
 import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -30,7 +26,7 @@ export const ensureStatic = 'navigation';
 
 export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/parking'>) {
   const { lang, airport: slug } = await params;
-  const airport = getAirport(slug);
+  const airport = localAirport(slug, lang);
   const t = getT(toLang(lang));
   return airportSectionMetadata(
     params,
@@ -70,7 +66,7 @@ export default function ParkingPage({ params }: PageProps<'/[lang]/[airport]/par
 
 async function Parking({ params }: { params: AirportPageParams }) {
   const { lang, t, airport, sections, content } = await loadAirportPage(params, 'parking');
-  const { data, gaps, translationMissing } = parkingPageModel(content, lang);
+  const { data, translationMissing } = parkingPageModel(content, lang);
   const warning = data.premiumWarning;
 
   return (
@@ -118,25 +114,16 @@ async function Parking({ params }: { params: AirportPageParams }) {
           <ParkedCarControl slug={airport.slug} timezone={airport.timezone} carParks={data.carParks.map(({ id, name, type }) => ({ id, name, type }))} premiumWarning={warning?.title} />
         </section>
 
-        {gaps ? (
-          <section aria-labelledby="parking-gaps-title" className="grid gap-6 border-t border-line pt-10 lg:grid-cols-[minmax(0,17.5rem)_minmax(0,1fr)] lg:gap-10">
-            <h2 id="parking-gaps-title" className="type-title-lg text-ink">
-              {t('transportPages.gaps.title')}
-            </h2>
-            <div className="min-w-0 max-w-reading">
-              <div className="flex flex-wrap items-center gap-3">
-                <p className="type-title-sm text-ink">{gaps.title}</p>
-                <ProvenanceTag provenance={gaps.provenance} />
-              </div>
-              <p className="type-body mt-2 text-ink-2">{gaps.body}</p>
-              <SourceNote sources={sourcesFor(gaps.sourceIds, data.sources)} className="mt-1" />
-              <p className="type-body-sm mt-4 text-ink-2">{t('transportPages.gaps.lead')}</p>
-              <ExternalLink href={data.officialUrl} variant="action" className="type-body-sm mt-1">
-                {t('transportPages.parking.officialPage')}
-              </ExternalLink>
-            </div>
-          </section>
-        ) : null}
+        {/* D-05 hand-off (round 2): one line to the single list on About this prototype. */}
+        <PrototypeGapsLink
+          lang={lang}
+          airport={airport.slug}
+          airportName={airport.shortName}
+          id="parking-gaps-title"
+          title={t('transportPages.gaps.title')}
+          officialHref={data.officialUrl}
+          officialLabel={t('transportPages.parking.officialPage')}
+        />
       </Container>
     </>
   );

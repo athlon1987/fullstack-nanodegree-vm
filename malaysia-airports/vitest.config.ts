@@ -13,6 +13,8 @@ export default defineConfig({
       // `server-only` throws outside a React Server Components build; unit tests run server
       // modules directly, so they get an empty stand-in. The real guard still applies to builds.
       'server-only': fileURLToPath(new URL('./src/lib/testing/server-only.ts', import.meta.url)),
+      // `next/root-params` is likewise replaced by the compiler (round 2: `I18nPageScope`).
+      'next/root-params': fileURLToPath(new URL('./src/lib/testing/root-params.ts', import.meta.url)),
     },
   },
   test: {

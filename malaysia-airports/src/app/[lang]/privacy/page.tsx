@@ -7,6 +7,7 @@ import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { CorporateHeader } from '@/components/corporate/corporate-header';
 import { resolveCorporateSources } from '@/components/corporate/corporate-data.server';
 import { DeviceData } from '@/components/corporate/device-data';
+import { MeasurementSwitch } from '@/components/corporate/measurement-switch';
 import { FactMeta } from '@/components/corporate/fact-meta';
 import { JumpNav } from '@/components/corporate/jump-nav';
 import { PageSection } from '@/components/corporate/page-section';
@@ -29,7 +30,7 @@ export default async function PrivacyPage() {
   const lang = toLang(await routeLang());
   const t = getT(lang);
   const copy = getDictionary(lang).corporatePages.privacy;
-  const jump = (['summary', 'stored', 'concierge', 'clear', 'production'] as const).map((id) => ({ id, label: t(`corporatePages.privacy.jump.${id}`) }));
+  const jump = (['summary', 'stored', 'concierge', 'measurement', 'clear', 'production'] as const).map((id) => ({ id, label: t(`corporatePages.privacy.jump.${id}`) }));
 
   return (
     <>
@@ -111,7 +112,24 @@ export default async function PrivacyPage() {
           </div>
         </PageSection>
 
-        <PageSection id="clear" number={4} title={t('corporatePages.privacy.clear.title')} lead={t('corporatePages.privacy.clear.lead')}>
+        <PageSection id="measurement" number={4} title={t('corporatePages.privacy.measurement.title')} lead={t('corporatePages.privacy.measurement.lead')}>
+          <div className="grid gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,1fr)_20rem]">
+            <ul className="flex flex-col border-t border-line">
+              {Object.values(copy.measurement.items).map((item) => (
+                <li key={item} className="border-b border-line py-4">
+                  <p className="type-body text-ink-2">{item}</p>
+                </li>
+              ))}
+            </ul>
+            <div className="self-start">
+              <I18nScope lang={lang} namespaces={['corporatePages.privacy.measurement']}>
+                <MeasurementSwitch />
+              </I18nScope>
+            </div>
+          </div>
+        </PageSection>
+
+        <PageSection id="clear" number={5} title={t('corporatePages.privacy.clear.title')} lead={t('corporatePages.privacy.clear.lead')}>
           <div className="grid gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,1fr)_20rem]">
             {/* Package E (fix round, performance-09): corporate copy is no longer in the root dictionary. */}
             <I18nScope lang={lang} namespaces={['corporatePages.privacy']}>
@@ -124,7 +142,7 @@ export default async function PrivacyPage() {
           </div>
         </PageSection>
 
-        <PageSection id="production" number={5} title={t('corporatePages.privacy.production.title')} lead={t('corporatePages.privacy.production.lead')}>
+        <PageSection id="production" number={6} title={t('corporatePages.privacy.production.title')} lead={t('corporatePages.privacy.production.lead')}>
           <Callout tone="info" title={t('corporatePages.privacy.production.disclaimerTitle')} className="mb-8">
             {t('corporatePages.privacy.production.disclaimer')}
           </Callout>

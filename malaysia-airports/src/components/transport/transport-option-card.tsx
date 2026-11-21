@@ -32,6 +32,8 @@ export interface TransportOptionCardProps {
   /** Position in the ranked list (shown, and announced by the surrounding `<ol>`). */
   rank?: number;
   highlights?: readonly TransportHighlight[];
+  /** The list states this provenance once (`ProvenanceDefault`): no tag of its own when it matches (A-14). */
+  defaultProvenance?: TransportOption['provenance'];
   headingLevel?: 2 | 3;
   className?: string;
 }
@@ -41,7 +43,7 @@ export interface TransportOptionCardProps {
  * frequency, hours, where to board, payment, accessibility, provenance and sources. Anything not
  * published says so.
  */
-export function TransportOptionCard({ option, placeKey, context, day, terminal, rank, highlights = [], headingLevel = 3, className }: TransportOptionCardProps) {
+export function TransportOptionCard({ option, placeKey, context, day, terminal, rank, highlights = [], defaultProvenance, headingLevel = 3, className }: TransportOptionCardProps) {
   const t = useT();
   const lang = useLang();
   const Heading = `h${headingLevel}` as const;
@@ -85,7 +87,7 @@ export function TransportOptionCard({ option, placeKey, context, day, terminal, 
               {option.operator ? ` · ${option.operator}` : null}
             </p>
             <div className="mt-2 flex flex-wrap items-center gap-2">
-              <ProvenanceTag provenance={option.provenance} />
+              {option.provenance !== defaultProvenance ? <ProvenanceTag provenance={option.provenance} /> : null}
               {highlights.includes('lowest-fare') ? (
                 <Chip tone="positive" icon="coins">
                   {t('transportPages.planner.lowestFare')}
@@ -160,7 +162,7 @@ export function TransportOptionCard({ option, placeKey, context, day, terminal, 
         {option.asOf ? <AsOf value={option.asOf} timeZone={context.timezone} /> : null}
         <span className="ml-auto flex flex-wrap items-center gap-x-5">
           {option.bookingUrl ? (
-            <ExternalLink href={option.bookingUrl} variant="action" className="type-body-sm">
+            <ExternalLink href={option.bookingUrl} variant="action" className="type-body-sm" data-handoff="transport-ticket">
               {t('transportPages.planner.bookOnline')}
             </ExternalLink>
           ) : tickets ? (

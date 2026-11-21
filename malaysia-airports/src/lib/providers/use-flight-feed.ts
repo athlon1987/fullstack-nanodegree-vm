@@ -15,7 +15,7 @@
  *
  * Imports neither the demo generator nor the content layer.
  */
-import { useCallback, useEffect, useMemo, useState, useSyncExternalStore } from 'react';
+import { useCallback, useDeferredValue, useEffect, useMemo, useState, useSyncExternalStore } from 'react';
 import type { FlightDirection } from '@/lib/flights/types';
 import { useNow } from '@/lib/hooks/use-now';
 import { useLang } from '@/lib/i18n/client';
@@ -88,7 +88,10 @@ export async function fetchFeedDay(
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
     const url = `/${lang}/${request.airport}/flights/feed?date=${request.date}&dir=${request.direction}&at=${at}`;
-    const response = await fetcher(url, { signal: controller.signal, headers: { Accept: 'application/json' } });
+    const response = await fetcher(url, {
+      signal: controller.signal,
+      headers: { Accept: 'application/json' },
+    });
     if (!response.ok) throw new Error(`feed ${response.status}`);
     const body = (await response.json()) as FeedDay;
     if (!body || !Array.isArray(body.flights) || !body.meta) throw new Error('feed: malformed answer');
@@ -97,6 +100,37 @@ export async function fetchFeedDay(
     clearTimeout(timer);
   }
 }
+
+/**
+ * Fetch several airports' boards for one date and direction in one request (round 2): the home
+ * search looks across every airport with a board, and one request per airport used up a
+ * visitor's request allowance. Boards the server could not serve are missing from the answer.
+ */
+export async function fetchFeedDays(
+  lang: string,
+  requests: readonly FeedRequest[],
+  at: number,
+  fetcher: typeof fetch = fetch,
+  timeoutMs = FEED_TIMEOUT_MS,
+): Promise<FeedDay[]> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const [first] = requests;
+    const airports = requests.map((request) => request.airport).join(',');
+    const url = `/${lang}/flights/feed?date=${first.date}&dir=${first.direction}&at=${at}&airports=${airports}`;
+    const response = await fetcher(url, { signal: controller.signal, headers: { Accept: 'application/json' } });
+    if (!response.ok) throw new Error(`feed ${response.status}`);
+    const body = (await response.json()) as { days?: FeedDay[] };
+    if (!body || !Array.isArray(body.days) || body.days.some((day) => !day || !Array.isArray(day.flights) || !day.meta)) throw new Error('feed: malformed answer');
+    return body.days;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+/** Boards of one date and direction asked for together are fetched in one request from this many. */
+const BATCH_FROM = 3;
 
 /** Forget every held board (tests). */
 export function clearFeedMemory(): void {
@@ -151,14 +185,24 @@ export function useFlightFeed(
     });
     if (pending.length === 0) return;
     for (const request of pending) inFlight.add(`${feedKey(request.airport, request.date, request.direction)}|${bucket}`);
-    Promise.allSettled(pending.map((request) => fetchFeedDay(lang, request, bucket))).then((results) => {
+    // Boards of the same date and direction go in one request when there are several (round 2).
+    const groups = new Map<string, FeedRequest[]>();
+    for (const request of pending) groups.set(`${request.date}|${request.direction}`, [...(groups.get(`${request.date}|${request.direction}`) ?? []), request]);
+    const jobs = [...groups.values()].flatMap((list) =>
+      list.length >= BATCH_FROM
+        ? [{ list, run: () => fetchFeedDays(lang, list, bucket) }]
+        : list.map((request) => ({ list: [request], run: () => fetchFeedDay(lang, request, bucket).then((day) => [day]) })),
+    );
+    Promise.allSettled(jobs.map((job) => job.run())).then((results) => {
       let failed: string | null = null;
       results.forEach((result, index) => {
-        const request = pending[index];
-        const key = feedKey(request.airport, request.date, request.direction);
-        inFlight.delete(`${key}|${bucket}`);
-        if (result.status === 'fulfilled') memory.set(key, { day: result.value, at: bucket });
-        else failed = result.reason instanceof Error && result.reason.name === 'AbortError' ? 'timeout' : 'error';
+        for (const request of jobs[index].list) {
+          const key = feedKey(request.airport, request.date, request.direction);
+          inFlight.delete(`${key}|${bucket}`);
+          const day = result.status === 'fulfilled' ? result.value.find((item) => item.airport === request.airport) : undefined;
+          if (day) memory.set(key, { day, at: bucket });
+          else failed = result.status === 'rejected' && result.reason instanceof Error && result.reason.name === 'AbortError' ? 'timeout' : 'error';
+        }
       });
       bump();
       if (!cancelled) setFailure(failed);
@@ -179,7 +223,10 @@ export function useFlightFeed(
   }, [signature, held]);
 
   const provider = useMemo(() => (days.length > 0 && now !== null ? new SnapshotFlightProvider(days, now) : null), [days, now]);
-  const oldest = days.reduce<string | null>((found, day) => (found === null || Date.parse(day.meta.generatedAt) < Date.parse(found) ? day.meta.generatedAt : found), null);
+  const oldest = days.reduce<string | null>(
+    (found, day) => (found === null || Date.parse(day.meta.generatedAt) < Date.parse(found) ? day.meta.generatedAt : found),
+    null,
+  );
   const refreshSeconds = days[0]?.meta.refreshSeconds ?? 30;
   const ageSeconds = oldest && now !== null ? Math.max(0, Math.round((now - Date.parse(oldest)) / 1000)) : null;
   const missing = days.length < (signature === '' ? 0 : signature.split(',').length);
@@ -197,5 +244,22 @@ export function useFlightFeed(
     setAttempt((value) => value + 1);
   }, []);
 
-  return { provider, status, updatedAt: oldest, ageSeconds, refreshSeconds, retry, paused, now };
+  const state = useMemo<FlightFeedState>(
+    () => ({
+      provider,
+      status,
+      updatedAt: oldest,
+      ageSeconds,
+      refreshSeconds,
+      retry,
+      paused,
+      now,
+    }),
+    [provider, status, oldest, ageSeconds, refreshSeconds, retry, paused, now],
+  );
+  // Round 2 (TBT, E-01): the clock and the held boards are external stores, and React renders a
+  // store change synchronously, in one task (the first tick right after hydration, then each new
+  // board). Pages get the state as a deferred value: that render stays small, and the rows follow
+  // in an interruptible background render.
+  return useDeferredValue(state);
 }

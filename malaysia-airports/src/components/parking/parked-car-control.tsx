@@ -1,7 +1,7 @@
 'use client';
 
 import { useId, useRef, useState, type FormEvent } from 'react';
-import { getAirport } from '@/content/airports';
+import { localName } from '@/content/airports';
 import { cn } from '@/lib/cn';
 import { useSavedJourney } from '@/lib/hooks';
 import { useLang, useT } from '@/lib/i18n/client';
@@ -84,7 +84,7 @@ export function ParkedCarControl({ slug, timezone, carParks, premiumWarning }: P
             {elsewhere && hydrated ? (
               <p className="type-body-sm flex items-start gap-2 text-ink-2">
                 <Icon name="info" size="sm" className="mt-0.5 shrink-0" />
-                {t('transportPages.parked.otherAirport', { airport: getAirport(elsewhere.airport ?? '')?.shortName ?? elsewhere.airport ?? '' })}
+                {t('transportPages.parked.otherAirport', { airport: localName(elsewhere.airport ?? '', lang) ?? elsewhere.airport ?? '' })}
               </p>
             ) : null}
             <NativeSelect label={t('transportPages.parked.carPark')} name="carPark" value={carParkId} onChange={(event) => setChosen(event.target.value)}>

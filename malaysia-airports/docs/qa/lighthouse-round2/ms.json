@@ -1,0 +1,72 @@
+{
+ "key": "ms",
+ "url": "http://localhost:3100/ms",
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-21T07:24:54.354Z",
+ "median": {
+  "performance": 96,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1088,
+  "lcp_ms": 1088,
+  "tbt_ms": 227,
+  "cls": 0.025,
+  "si_ms": 1163,
+  "totalBytes": 591754,
+  "requests": 40
+ },
+ "a11yFailures": [],
+ "rows": [
+  {
+   "finalUrl": "http://localhost:3100/ms",
+   "runtimeError": null,
+   "performance": 94,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1119,
+   "lcp_ms": 1119,
+   "tbt_ms": 297,
+   "cls": 0,
+   "si_ms": 1260,
+   "totalBytes": 591756,
+   "requests": 40,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "http://localhost:3100/ms",
+   "runtimeError": null,
+   "performance": 98,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1063,
+   "lcp_ms": 1063,
+   "tbt_ms": 177,
+   "cls": 0.025,
+   "si_ms": 1097,
+   "totalBytes": 591754,
+   "requests": 40,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "http://localhost:3100/ms",
+   "runtimeError": null,
+   "performance": 96,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1088,
+   "lcp_ms": 1088,
+   "tbt_ms": 227,
+   "cls": 0.025,
+   "si_ms": 1163,
+   "totalBytes": 591754,
+   "requests": 40,
+   "a11yFailures": []
+  }
+ ],
+ "caveat": "Lab measurement: Lighthouse mobile emulation with simulated throttling, run from a shared cloud container; hosts outside the session allowlist (analytics, some CDNs) were blocked, which changes page weight and timings. Indicative only; not field data and not comparable to CrUX."
+}

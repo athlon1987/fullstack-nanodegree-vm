@@ -92,7 +92,7 @@ export function FlightDetail({ flightId, airport, title, journeyContent, sources
   const disrupted = flight.status === 'delayed' || flight.status === 'cancelled';
 
   return (
-    <div className="flex flex-col gap-10 lg:gap-14">
+    <div className="flex flex-col gap-10 lg:gap-14" data-answer-task="flight-status" data-answer-state="demo">
       <div className="flex flex-col gap-4">
         {summarySteps ? <FlightSummary flight={flight} steps={summarySteps} now={provider.now.getTime()} /> : null}
         <FeedNotice feed={feed} timeZone={zone} />

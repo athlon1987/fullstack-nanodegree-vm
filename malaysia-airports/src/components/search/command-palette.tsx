@@ -3,9 +3,9 @@
 import { useRouter } from 'next/navigation';
 import { Dialog as DialogPrimitive } from 'radix-ui';
 import { useEffect, useId, useState, type KeyboardEvent, type ReactNode } from 'react';
-import { getAirport } from '@/content/airports';
+import { getAirport, localName } from '@/content/airports';
 import { cn } from '@/lib/cn';
-import { formatFlightNumber, type Flight } from '@/lib/flights';
+import { formatFlightNumber, placeCity, type Flight } from '@/lib/flights';
 import { useAirportContext } from '@/lib/hooks';
 import { useLang, useT } from '@/lib/i18n/client';
 import { localeHref } from '@/lib/locale';
@@ -124,7 +124,7 @@ export function CommandPalette() {
         id: `hit-${hit.id.replace(/[^a-zA-Z0-9_-]/g, '-')}`,
         href: hit.href,
         label: hit.title,
-        meta: hit.airport ? getAirport(hit.airport)?.shortName : undefined,
+        meta: hit.airport ? localName(hit.airport, lang) : undefined,
         icon: hit.type,
       })),
     }));
@@ -220,7 +220,7 @@ export function CommandPalette() {
           <span className="min-w-0 flex-1">
             <span className="type-title-sm block">
               <span className="type-data-md mr-2">{formatFlightNumber(flight)}</span>
-              {t('flights.detail.route', { origin: flight.origin.city, destination: flight.destination.city })}
+              {t('flights.detail.route', { origin: placeCity(flight.origin, lang), destination: placeCity(flight.destination, lang) })}
             </span>
             <span className="type-caption block text-ink-2">{flight.airline.name}</span>
           </span>
