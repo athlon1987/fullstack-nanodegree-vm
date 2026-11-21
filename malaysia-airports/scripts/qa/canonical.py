@@ -4,12 +4,15 @@
 For each sitemap URL: the canonical in the HTML <head> and in the Link response header(s), the en and
 ms alternates, whether the page names itself canonical, and how many distinct canonical URLs the
 response carries across head and header. "One canonical per response" means that last number is 1.
-Paths given after the output file are checked the same way (for example flight pages and a 404).
+Since round five every page must also carry exactly one canonical <link> in its <head> (E-14) and
+none elsewhere in the document. Paths given after the output file are checked the same way (for
+example flight pages and a 404).
 
 Usage:  python3 scripts/qa/canonical.py [BASE_URL] [OUT_JSON] [extra paths ...]
         (defaults: http://localhost:3100 and canonical.json)
-Exit code 1 when a sitemap URL lacks a self-canonical with both alternates, or carries more than one
-distinct canonical. Standard library only.
+Exit code 1 when a sitemap URL lacks a self-canonical with both alternates, carries more than one
+distinct canonical, or does not have exactly one canonical <link> in its <head> and in the whole
+document. Standard library only.
 """
 import json
 import random
@@ -43,6 +46,7 @@ def check(path):
     head = html[:html.find('</head>')]
     link = ' , '.join(headers.get_all('Link') or [])
     canon_html = re.findall(r'<link rel="canonical" href="([^"]+)"', head)
+    canon_doc = re.findall(r'<link[^>]*rel="canonical"', html)
     alt_html = set(re.findall(r'<link rel="alternate" hrefLang="([a-z-]+)"', head, re.I))
     canon_hdr = re.findall(r'<([^>]+)>; rel="canonical"', link)
     alt_hdr = set(re.findall(r'rel="alternate"; hreflang="([a-z-]+)"', link))
@@ -52,7 +56,7 @@ def check(path):
         'has': bool(canon_html or canon_hdr),
         'alts': {'en', 'ms'} <= (alt_html | alt_hdr),
         'self': any(c.endswith(path.split('?')[0]) for c in canon_html + canon_hdr),
-        'html': len(canon_html), 'hdr': len(canon_hdr), 'distinct': len(distinct),
+        'html': len(canon_html), 'doc': len(canon_doc), 'hdr': len(canon_hdr), 'distinct': len(distinct),
         'linkHeaders': len(headers.get_all('Link') or []),
         'preloadInLink': 'rel=preload' in link or 'rel="preload"' in link,
     }
@@ -67,9 +71,10 @@ def main():
     print('canonical in html head on', sum(1 for r in rows if r['html']), '; in Link header on', sum(1 for r in rows if r['hdr']))
     print('Link header canonical count per response:', dict(Counter(r['hdr'] for r in rows)))
     print('html head canonical count per response:', dict(Counter(r['html'] for r in rows)))
+    print('canonical <link> count in the whole document:', dict(Counter(r['doc'] for r in rows)))
     print('distinct canonical URLs per response:', dict(Counter(r['distinct'] for r in rows)))
     print('Link headers per response:', dict(Counter(r['linkHeaders'] for r in rows)), '; preload in Link on', sum(1 for r in rows if r['preloadInLink']))
-    bad = [r for r in rows if r not in ok or r['distinct'] != 1]
+    bad = [r for r in rows if r not in ok or r['distinct'] != 1 or r['html'] != 1 or r['doc'] != 1]
     print('bad sample', bad[:5])
     extra = [check(p) for p in EXTRA]
     for r in extra:

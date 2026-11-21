@@ -1,6 +1,6 @@
 # Fix log: round five, polish and small defects
 
-Round five, 21 November 2026 (measurements 17:46 to 18:40 UTC, 01:46 to 02:40 Kuala Lumpur time, 22 November).
+Round five, 21 November 2026 (measurements 17:46 to 18:35 UTC, 01:46 to 02:35 Kuala Lumpur time, 22 November).
 Package: polish. Items from `docs/qa/verification.md`, round four, F8 items 5, 7 and 10 (and E-14), in the order
 given. Owned paths only, except **one cross-package change of two lines in `src/app/[lang]/layout.tsx`** (item 6,
 below) and one updated assertion in `e2e/transport.spec.ts` (item 3, an intended change).
@@ -10,19 +10,19 @@ below) and one updated assertion in `e2e/transport.spec.ts` (item 3, an intended
 | 1 | `[lang]/[...rest]` 404s (F8 item 7) | **Fixed**: `/en/kul/zzz`, `/en/nothing/here`, `/en/a/b/c`, `/ms/kul/zzz`, `/ms/tiada/halaman` answer **404 with the site shell, the title and the "Page not found" / "Halaman tidak ditemui" `h1` in the server HTML** (was Next.js's empty `__next_error__` document), first and repeat request; 0 console errors besides the document's own 404 line |
 | 2 | Search index "[object Object]" (F8 item 10) | **Fixed**: 2 → **0** documents per language (`airline:kul:mh`, `airline:pen:cx`); summaries now carry the check-in text in the page language; a typed `joinParts` makes an unpicked localized field a type error |
 | 3 | Density on the parking page (F8 item 5; A-14, 6.1.7) | **Fixed** (layout log recommendation applied): source toggles 8 → **3** (−63%), "Demo" tags 4 → **0** with the list's banner as the **one Demo marker** of the view, chips on the cards 13 → **4**, provenance tags 8 → **4**, type sizes **7 / 8** (390 / 1440 px, unchanged, at most 8); the one-fact-one-answer rate line and its test unchanged |
-| 4 | Transport desktop CLS and the Malay fare at 125% (F8 item 10) | **Fixed**: desktop CLS **0.0197 → 0.0006 (en), 0.0224 → 0.0014 (ms)**, all of the rest in the shared header (another package). Malay fare at 125% text on a 390 x 844 phone **881–931 px → 720–770 px**, inside the first screen (English 780–830 → 619–669). At 1440 x 900 and 125% the fare was already in the first screen in both languages (692–742 px before and after) |
+| 4 | Transport desktop CLS and the Malay fare at 125% (F8 item 10) | **Fixed**: desktop CLS **0.0197 → 0.0004 (en), 0.0224 → 0.0012 (ms)**; the fare row now shifts nothing (0 in every load, desktop and phone, also at 4x CPU); the rest is the shared header's airport switcher (another package). Malay fare at 125% text on a 390 x 844 phone **881–931 px → 720–770 px**, inside the first screen (English 780–830 → 619–669). At 1440 x 900 and 125% the fare was already in the first screen in both languages (692–742 px before and after) |
 | 5 | `/en/airports` map labels (F8 item 10) | **Fixed**: "LGK" 2 to 5 px outside the drawing at every width → **0 of 5 labels** outside at 320, 360, 390, 640, 768, 1024, 1280, 1440 and 1920 px and at 200% zoom; LGK also clear of the Alor Setar marker |
 | 6 | Canonical in the HTML head (E-14) | **Fixed**: canonical in the head on **152 → 276 of 276** sitemap pages; **1 distinct canonical per response on 276 of 276**, `Link` header unchanged (1 per response, no preload entries); flight pages and 404s also carry it in the head, matching the header |
-| 7 | `.gitignore` | **No change needed**: `/.lighthouseci/`, `/test-results/`, `/playwright-report/` and `/.data/` are all already ignored (the round-four note predates the line for `.lighthouseci`) |
+| 7 | `.gitignore` | **No change needed**: `/.lighthouseci/`, `/test-results/`, `/playwright-report/` and `/.data/` were all already ignored when this package started (F8's note about `.lighthouseci/` is out of date) |
 
 ## Method
 
-- **Builds.** Three production builds into `.next-r5polish-prod` (`NEXT_PUBLIC_SITE_URL=http://localhost:3253`),
+- **Builds.** Four production builds into `.next-r5polish-prod` (`NEXT_PUBLIC_SITE_URL=http://localhost:3253`),
   served by `NEXT_DIST_DIR=.next-r5polish-prod TRUSTED_CLIENT_IP_HEADER=x-e2e-client-ip npx next start -p 3253`:
-  build 1 the baseline (the tree as I found it, with the speed package's work in progress), build 2 with items 1 to 6,
-  build 3 the final tree after the speed package finished, plus two refinements found in measurement (item 4's figure
-  markup, item 5's LGK baseline); see "Builds" at the end for the fourth. All "before" numbers are mine on build 1, on
-  this machine, in this session. The dev server (`NEXT_DIST_DIR=.next-r5polish npx next dev -p 3243`) was used for
+  build 1 the baseline (the tree as I found it, with the speed package's work in progress), build 2 with items 1 to 6
+  (the "after" Lighthouse and first-load numbers), build 3 the tree after the speed package finished (one refinement:
+  the fare figure's box), build 4 final (the figure's amount as its own element, LGK's baseline). All "before" numbers
+  are mine on build 1, on this machine, in this session. The dev server (`NEXT_DIST_DIR=.next-r5polish npx next dev -p 3243`) was used for
   quick looks and one Playwright run.
 - **Noise.** A 4-vCPU container shared with two other engineers. My baseline Lighthouse ran while the speed package's
   Lighthouse was also running (load average 1.2 to 1.8; benchmark index 2,060 to 2,723); the "after" runs had the
@@ -34,7 +34,7 @@ below) and one updated assertion in `e2e/transport.spec.ts` (item 3, an intended
   `[data-demo-marker]`, chips, distinct font sizes of elements with their own text), layout shift (round four's
   `layout-shift.mjs` method: the sum of `layout-shift` entries without input for 3.5 s after `load`, 3 loads, with
   the shifted nodes), the fare's position and the map labels' boxes.
-- No git command was used.
+- Git: see "Builds and clean-up" (one read-only command by mistake).
 
 ## 1. The `[lang]/[...rest]` catch-all. Fixed
 
@@ -137,10 +137,10 @@ everything under them down (the shifted nodes in every load: `div "Book taxis on
 
 | Production | Before (build 1) | After |
 |---|---|---|
-| Desktop 1440 x 900, `/en/kul/transport`, 3 loads | 0.0197 / 0.0197 / 0.0197 | **0.0006** ×3 (build 2): header switcher 0.0004, figure 0.0002 |
-| Desktop 1440 x 900, `/ms/kul/transport`, 3 loads | 0.0224 ×3 | **0.0014** ×3 (build 2): header switcher 0.0012, figure 0.0002 |
+| Desktop 1440 x 900, `/en/kul/transport`, 3 loads | 0.0197 / 0.0197 / 0.0197 (fare row 0.0193) | build 2: 0.0006 (figure 0.0002); **final: 0.0004** ×3, all of it the header switcher |
+| Desktop 1440 x 900, `/ms/kul/transport`, 3 loads | 0.0224 ×3 (fare row 0.0212) | build 2: 0.0014 (figure 0.0002); **final: 0.0012** ×3, all of it the header switcher |
 | Phone 390 x 844, en and ms | 0 | 0 |
-| Pixel-sized 412 x 823 at 4x CPU (Lighthouse's case), en | – | build 2: 0.0036 (header 0.0025, figure 0.0011); build 3: 0.0032 (figure text 0.0007); build 4: see "Builds" |
+| 412 x 823 at 4x CPU (Lighthouse's case), 3 loads | not measured | build 2: 0.0036 (figure 0.0011: its right-aligned box narrowed); build 3: 0.0032 (figure text 0.0007); **final: fare row 0**; header 0.0025 (en), 0.0047 (ms) |
 | Fare figure, 390 x 844, 125% text, ms | **881–931 px** (screen 844) | **720–770 px** |
 | … en, 125% | 780–830 px | **619–669 px** |
 | … en / ms, 100% | 433 / 495 px | 433 / 495 px |
@@ -149,20 +149,28 @@ everything under them down (the shifted nodes in every load: `div "Book taxis on
 
 The task named 1440 x 900 for the Malay fare; there it was already in the first screen (742 px bottom, the same as
 English). Round four's 881 px was measured on a 390 x 844 phone (`verification.md`, F4 item 6), and that is what is
-fixed. The remaining desktop shift (0.0004 to 0.0012) is the header's airport switcher narrowing after hydration
-(`div.ml-auto "KLIA, change airport"`), outside this package; on the phone at 4x CPU it is 0.0025.
+fixed. The remaining shift is the header's airport switcher narrowing after hydration (`div.ml-auto "KLIA, change
+airport (currently KLIA)"`, 170 → 75 px wide on a phone), outside this package: 0.0004 (en) and 0.0012 (ms) at
+1440 px, 0.0025 and 0.0047 at 412 px with 4x CPU.
 
 Lighthouse mobile, 3 runs, median (runs in brackets):
 
-| `/en/kul/transport` | Before (build 1) | After (build 2) |
-|---|---|---|
-| Performance | 94 (94/88/95) | **97** (97/98/95) |
-| LCP | 1.08 s | 1.07 s |
-| TBT | 280 ms (280/484/274) | 188 ms (188/165/256) |
-| CLS | 0 (0/0/0) | 0.004 (0.004/0.004/0.001): the header switcher and the figure, see above |
-| Bytes / requests | 593.0 KB / 39 | 593.9 KB / 39 |
+| `/en/kul/transport` | Before (build 1) | Build 2 | Final (build 4) |
+|---|---|---|---|
+| Performance | 94 (94/88/95) | 97 (97/98/95) | **97** (96/97/97) |
+| LCP | 1.08 s | 1.07 s | 1.07 s |
+| TBT | 280 ms (280/484/274) | 188 ms (188/165/256) | 200 ms (219/191/200) |
+| CLS | 0 (0/0/0) | 0.004 (0.004/0.004/0.001) | 0.003 (×3): the header switcher only |
+| Bytes / requests | 593.0 KB / 39 | 593.9 KB / 39 | 594.0 KB / 39 |
 
-First-load JavaScript (gzip): transport 179.9 → **180.5 KB**.
+`/ms/kul/transport`, final: performance 96 (96/95/96), LCP 1.07 s, TBT 228 ms, CLS 0.005 (×3, the header switcher's
+longer Malay label). Lighthouse's CLS was 0 before and is 0.003 to 0.005 now although the fare row's shift is gone: the old shift
+happened only at desktop width, which Lighthouse's mobile run does not use, and the 0.003 to 0.005 now is the header
+switcher's (the only shift in my 412 px, 4x CPU loads of the final build). I did not measure that case on build 1, so
+whether the header's shift is new this round is not known; it is not in this package's code. The e2e budget and the
+layout-shift script are the measures for this item.
+
+First-load JavaScript (gzip): transport 179.9 → **180.6 KB** (final build).
 
 Tests: `e2e/polish-round5.spec.ts` "transport fare row": a CLS budget of **0.01** at 1440 x 900 in both languages
 (production only), the same number of dated lines with and without JavaScript, the fare inside the 844 px screen and
@@ -227,22 +235,42 @@ The existing canonical tests in `e2e/platform.spec.ts` pass.
 
 ## Regression checks (production, final build)
 
-- `$RC`: `rc-scan.py` on build 2: **0 of 276** pages with the `h1` in a hidden segment; 1,264 reveals in all, the same
-  distribution as round four.
-- First-load JavaScript, gzip KB (build 1 → build 2): catch-all 161.6 → 161.6; parking 187.6 → 187.9; transport
-  179.9 → 180.5; airports 170.6 → 170.7; home, flight page, guides, concierge unchanged.
-- Lighthouse mobile, 3 runs, median, parking: performance 96 (two valid runs, 96/92; the first run failed with
-  `NO_NAVSTART`) → **97** (97/97/98); LCP 1.13 → 1.09 s; TBT 360 → 197 ms; CLS 0.003 → 0.003; 601.8 → 602.3 KB; 43
-  requests. Airports: 97 (97/99/97) → **99** (99/99/98); LCP 0.92 → 0.91 s; TBT 181 → 125 ms; CLS 0 → 0.
-- Type sizes on parking unchanged (7 at 390 px, 8 at 1440 px).
+- `$RC`: `rc-scan.py` on builds 2 and 4: **0 of 276** pages with the `h1` in a hidden segment; 1,264 reveals in all,
+  the same distribution as round four.
+- `canonical.py` on build 4: the same as build 2 (276 of 276 in the head, 1 distinct per response, 0 preload entries).
+- First-load JavaScript, gzip KB (build 1 → build 4): catch-all 161.6 → 161.6; parking 187.6 → 187.9; transport
+  179.9 → 180.6; airports 170.6 → 170.8; home 195.5, flight page 198.1, search 186.0 unchanged; 0 of 39 routes over
+  250 (largest 212.0).
+- Lighthouse mobile, 3 runs, median, parking: performance 96 (two valid runs, 96/92; the first failed with
+  `NO_NAVSTART`) → **97** on build 2 (97/97/98) and on build 4 (95/99/97); LCP 1.13 → 1.09 s; TBT 360 → 197 and 183
+  ms; CLS 0.003 → 0.003 and 0; 601.8 → 602.3 KB; 43 requests. Airports (build 2): 97 (97/99/97) → **99** (99/99/98);
+  LCP 0.92 → 0.91 s; TBT 181 → 125 ms; CLS 0 → 0; 519.9 → 520.2 KB.
+- Type sizes on parking unchanged (7 at 390 px, 8 at 1440 px); C-06 (every airport and section pair answers 200 or
+  404 with a matching title, first and repeat request) passes on build 4 (`E2E_STATUS_CODES=1`).
 
 ## Tests and checks
 
-E2E_RESULTS_PLACEHOLDER
+- `npx tsc --noEmit`: clean. `npx eslint` on every owned path, the layout and the two specs: clean.
+- `npx vitest run`: **577 passed** (40 files), including the 9 new unit tests (search 3, SEO 2, network map 4).
+- Playwright, desktop project, `--trace off`, against the final production build (port 3253): `e2e/polish-round5.spec.ts`
+  (new, 21 tests) with `transport`, `layout-round4`, `ask-round4`, `platform`, `shell`, `map`, `commerce` and `smoke`:
+  **144 passed, 0 failed, 1 skipped** (C-06 in `map.spec.ts`, skipped whenever `PLAYWRIGHT_BASE_URL` is set; run
+  separately with `E2E_STATUS_CODES=1`: **passed**). Build 3 gave the same (144, 0, 1).
+- The new spec against the dev server (port 3243): **20 passed, 1 skipped** (the CLS budget, production only), twice.
+- Screens looked at (9): the 404 at 1440 px in dark mode (`/en/kul/zzz`) and at 390 px in Malay (`/ms/kul/zzz`); the
+  fare row at 1440 px (en), at 390 px with 125% text (ms), and without JavaScript at 1440 px (ms: "dari RM 55", both
+  dated lines); a parking card at 390 px (en) and the price table with its one source list at 1440 px (ms, dark); the
+  airports map at 1440 px and 320 px.
 
 ## Builds and clean-up
 
-BUILDS_PLACEHOLDER
+Four production builds (the limit), each 0 warnings. PIDs, all mine and all stopped: build 1 22912, server 24098 /
+24110 / 24111; build 2 13126, server 13768 / 13780 / 13781; build 3 21423, server 21582 / 21594 / 21595; build 4
+25591, server 25765 / 25777 / 25778; dev server 4609 / 4629 / 4630 / 4707; Lighthouse 31767 and 18944 (exited).
+`.next-r5polish` and `.next-r5polish-prod` are deleted, and the lines Next.js added for them are removed from
+`tsconfig.json` and `next-env.d.ts` (which now points at `.next`, the only build folder left). The measuring scripts
+copied into `scripts/qa/` while they ran (`zz-r5polish-*.mjs`) are removed. One read-only `git status` was run by
+mistake near the end (to list folders); no other git command was used.
 
 ## Open
 

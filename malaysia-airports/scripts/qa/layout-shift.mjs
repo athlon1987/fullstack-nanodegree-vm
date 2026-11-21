@@ -7,6 +7,8 @@
  *
  * Usage: node scripts/qa/layout-shift.mjs [BASE_URL] [runs=3] [verbose]
  * Environment: CPU=4 slows the CPU 4x; with it, NET=1 adds a slow network (150 ms, 1.6 Mbit/s down).
+ * PATHS=/en/kul/parking,/en/kul/transport measures other pages (default /en,/ms); VIEWPORTS=desktop
+ * (or a comma list of phone, pixel7, desktop) limits the viewports (default all three).
  * Target: 0.1 or less (the brief); the home has measured 0 since round three.
  */
 import { chromium, devices } from '@playwright/test';
@@ -16,11 +18,13 @@ const BASE = (baseArg || 'http://localhost:3100').replace(/\/$/, '');
 const RUNS = Number(runsArg || 3);
 const ip = () => `10.78.${Math.floor(Math.random() * 250)}.${Math.floor(Math.random() * 250)}`;
 
+const PATHS = (process.env.PATHS || '/en,/ms').split(',').filter(Boolean);
+const VIEWPORTS = new Set((process.env.VIEWPORTS || 'phone,pixel7,desktop').split(','));
 const cases = [];
-for (const path of ['/en', '/ms']) {
-  cases.push(['phone 390x844', { ...devices['Pixel 7'], viewport: { width: 390, height: 844 } }, path]);
-  cases.push(['Pixel 7 412x839', { ...devices['Pixel 7'] }, path]);
-  cases.push(['desktop 1440x900', { viewport: { width: 1440, height: 900 } }, path]);
+for (const path of PATHS) {
+  if (VIEWPORTS.has('phone')) cases.push(['phone 390x844', { ...devices['Pixel 7'], viewport: { width: 390, height: 844 } }, path]);
+  if (VIEWPORTS.has('pixel7')) cases.push(['Pixel 7 412x839', { ...devices['Pixel 7'] }, path]);
+  if (VIEWPORTS.has('desktop')) cases.push(['desktop 1440x900', { viewport: { width: 1440, height: 900 } }, path]);
 }
 
 const browser = await chromium.launch();

@@ -115,7 +115,10 @@ for (const target of targets) {
     const out = path.join(outDir, `${key}-run${r + 1}.full.json`);
     const flags = [CLI, url, '--quiet', '--output=json', `--output-path=${out}`,
       '--only-categories=performance,accessibility,best-practices,seo', '--max-wait-for-load=45000',
-      '--chrome-flags=--headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage'];
+      '--chrome-flags=--headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage',
+      // Its own client address per run, as every other script sends (README): against a server that
+      // trusts x-e2e-client-ip, requests without it share one "unidentified" rate-limit bucket.
+      `--extra-headers=${JSON.stringify({ 'x-e2e-client-ip': `10.${71 + (r % 50)}.${Math.floor(Math.random() * 250)}.${1 + Math.floor(Math.random() * 250)}` })}`];
     if (preset) flags.push(`--preset=${preset}`);
     if (profile) {
       flags.push('--throttling-method=devtools', `--throttling.rttMs=${profile.rtt}`, `--throttling.throughputKbps=${profile.down}`,

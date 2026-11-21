@@ -1,0 +1,28 @@
+{
+ "home": {
+  "performance": 85,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 2570,
+  "lcp_ms": 2570,
+  "tbt_ms": 357,
+  "cls": 0,
+  "si_ms": 2855,
+  "totalBytes": 549924,
+  "requests": 33
+ },
+ "board-night": {
+  "performance": 86,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 2642,
+  "lcp_ms": 2652,
+  "tbt_ms": 303,
+  "cls": 0.003,
+  "si_ms": 3505,
+  "totalBytes": 532381,
+  "requests": 35
+ }
+}
