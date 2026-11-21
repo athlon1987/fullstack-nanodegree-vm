@@ -148,7 +148,11 @@ export function CarParkCard({ carPark, sources, timezone, availability, showTerm
               </Chip>
             )}
           </div>
-          {carPark.dailyMax !== undefined ? (
+          {/* One fact, one answer (round 4, 6.1.3): the same sentence as the price table, the concierge and the help FAQ. */}
+          <p className="type-body-sm mt-2 font-semibold text-ink" data-rate-line="">
+            {carPark.rateLine}
+          </p>
+          {carPark.dailyMax !== undefined && !notVerified ? (
             <p className="mt-3 flex flex-wrap items-baseline gap-x-2">
               <span className="type-body-sm text-ink-2">{t('transportPages.parking.fields.dailyMax')}</span>
               <span className="type-data-md text-ink">{formatCurrency(carPark.dailyMax, lang)}</span>
@@ -156,7 +160,6 @@ export function CarParkCard({ carPark, sources, timezone, availability, showTerm
           ) : null}
           {notVerified ? (
             <>
-              <p className="type-body-sm mt-2 font-semibold text-ink">{t('transportPages.parking.sourcesDiffer')}</p>
               {carPark.description ? (
                 <>
                   <p className="type-eyebrow mt-3 text-ink-3">{t('transportPages.parking.fields.whatSourcesSay')}</p>

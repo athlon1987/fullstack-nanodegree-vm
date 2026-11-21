@@ -10,6 +10,7 @@ import { startAnalytics } from './analytics';
 import { listenForInstall } from './install-client';
 import {
   applyUpdate,
+  connectionNotice,
   dismissUpdate,
   getConnectivity,
   getServerConnectivity,
@@ -50,8 +51,10 @@ export function PlatformRuntime() {
 function ConnectionNotice() {
   const t = useT();
   const { online, justReconnected } = useSyncExternalStore(subscribeConnectivity, getConnectivity, getServerConnectivity);
-  const { servedFromCache } = useSyncExternalStore(subscribeWorker, getWorker, getServerWorker);
-  const state = !online ? 'offline' : servedFromCache ? 'unreachable' : justReconnected ? 'back' : null;
+  const { servedFromCache, status } = useSyncExternalStore(subscribeWorker, getWorker, getServerWorker);
+  // The same answer as the offline page's status card (round 4): "showing saved information"
+  // only when the worker controls the page; otherwise it says nothing is saved yet.
+  const state = connectionNotice({ online, justReconnected, servedFromCache, status });
 
   return (
     <div role="status" aria-live="polite" className="flex w-full justify-center">
@@ -64,7 +67,11 @@ function ConnectionNotice() {
         >
           <Icon name={state === 'back' ? 'wifi' : 'wifi-off'} size="sm" className="shrink-0" />
           <p className="type-body-sm min-w-0 flex-1 py-1.5 font-semibold">
-            {state === 'back' ? t('platformPages.indicator.backOnline') : t(state === 'offline' ? 'platformPages.indicator.offline' : 'platformPages.indicator.unreachable')}
+            {state === 'back'
+              ? t('platformPages.indicator.backOnline')
+              : state === 'offline-nothing-saved'
+                ? t('flightPages.offline.toastNothingSaved')
+                : t(state === 'offline' ? 'platformPages.indicator.offline' : 'platformPages.indicator.unreachable')}
           </p>
           {state === 'back' ? null : (
             <LocaleLink

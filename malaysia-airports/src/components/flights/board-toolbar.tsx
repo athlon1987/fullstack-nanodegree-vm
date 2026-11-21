@@ -51,8 +51,10 @@ export function BoardToolbar({ airport, direction, query, initialQuery, searchKe
   };
 
   return (
-    <div className="flex flex-col gap-3 sm:gap-4">
-      <div className="flex flex-wrap items-end gap-3">
+    // Round 4 (re-review 6.1.6): on wide screens the search and the status chips share a row, so
+    // the first board row is above the fold at 1440 x 900 in English and Malay.
+    <div className="flex flex-col gap-3 sm:gap-4 xl:flex-row xl:flex-wrap xl:items-center xl:gap-x-5">
+      <div className="flex flex-wrap items-end gap-3 xl:min-w-64 xl:flex-1">
         <form role="search" aria-label={t('flightPages.board.searchLabel')} className="min-w-0 flex-1 basis-80" onSubmit={(event: FormEvent) => event.preventDefault()}>
           <BoardSearchField key={searchKey} initial={initialQuery} onQueryChange={onQueryChange} />
         </form>
@@ -91,7 +93,7 @@ export function BoardToolbar({ airport, direction, query, initialQuery, searchKe
       </div>
 
       {reading ? (
-        <p className="type-body-sm flex flex-wrap items-center gap-x-2.5 gap-y-1 text-ink-2">
+        <p className="type-body-sm flex flex-wrap items-center gap-x-2.5 gap-y-1 text-ink-2 xl:basis-full">
           <span className="inline-flex items-center gap-1.5">
             {t('flightPages.board.readingAs')}
             <span className="type-data-xs rounded-xs border border-line-control px-1.5 py-0.5 font-semibold text-ink uppercase">{t(`flightPages.board.kinds.${reading}`)}</span>

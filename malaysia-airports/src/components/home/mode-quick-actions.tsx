@@ -51,7 +51,14 @@ export function ModeQuickActions({ airport, terminal, className }: ModeQuickActi
     <ul
       aria-label={t('home.actions.label')}
       data-journey-mode={effectiveMode}
-      className={cn('grid grid-cols-3 gap-2 sm:gap-2.5', LG_COLUMNS[Math.min(actions.length, 6)], className)}
+      className={cn(
+        // Round 4 (layout package): on phones, three tiles a row only while each is at least 6.25rem
+        // wide (rem follows the text size), so Malay titles and 125% text drop to two a row instead of
+        // breaking mid-word ("Pengangk|utan").
+        'grid grid-cols-3 gap-2 max-sm:grid-cols-[repeat(auto-fill,minmax(min(100%,6.25rem),1fr))] sm:gap-2.5',
+        LG_COLUMNS[Math.min(actions.length, 6)],
+        className,
+      )}
     >
       {actions.map((action, index) => {
         // A section the chosen airport does not publish says so on the tile itself (the hint is

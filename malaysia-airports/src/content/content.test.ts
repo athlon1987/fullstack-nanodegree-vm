@@ -499,3 +499,78 @@ describe('Malay airport names (D-09) and planning rules (D-13)', () => {
     expect(TRANSIT_ASSUMPTIONS.provenance).toBe('estimated');
   });
 });
+
+/* -------------------------------------------------------------------------------------------
+ * One fact, one answer (round 4, re-review 6.1.3; package ask): the parking page, the concierge
+ * and the help FAQ read a car park's rates from the same record and say the same thing. Any
+ * surface that words a car park's rate status its own way fails this test.
+ * ---------------------------------------------------------------------------------------- */
+
+describe('one fact, one answer: parking rates (6.1.3)', async () => {
+  const { parkingPageModel } = await import('@/components/parking/parking-data.server');
+  const { priceRow } = await import('@/components/parking/parking-logic');
+  const { answerQuestion } = await import('@/lib/concierge/engine');
+  const { buildConciergeKnowledge } = await import('@/lib/concierge/knowledge.server');
+  const { rateFacts, rateStatusText } = await import('@/lib/parking');
+  const content = await import('./index');
+  const NOW = Date.parse('2026-11-21T10:00:00+08:00');
+  const publisher = (id: string) => content.getSource(id);
+  const withCarParks = content.airportsWithContent().map((slug) => content.getAirportContent(slug)).filter((item) => item !== undefined && item.carParks.length > 0);
+
+  it('covers every airport with car parks, and all four kinds of rate status', () => {
+    expect(withCarParks.map((item) => item?.airport.slug)).toEqual(expect.arrayContaining(['kul', 'pen', 'bki']));
+    const kinds = new Set(withCarParks.flatMap((item) => item?.carParks.map((carPark) => rateFacts(carPark).basis) ?? []));
+    expect([...kinds].sort()).toEqual(['daily-max', 'none', 'reported', 'tariff']);
+  });
+
+  for (const lang of ['en', 'ms'] as const) {
+    it(`the parking page, the concierge and the help FAQ agree on every car park (${lang})`, () => {
+      const knowledge = buildConciergeKnowledge(lang);
+      for (const airport of withCarParks) {
+        if (!airport) continue;
+        const slug = airport.airport.slug;
+        const page = parkingPageModel(airport, lang).data;
+        const question = lang === 'en' ? 'How much does parking cost?' : 'Berapakah kos parkir?';
+        const answer = answerQuestion({ question, lang, context: { airport: slug } }, { knowledge, now: NOW });
+        expect(answer.intent, slug).toBe('parking');
+        for (const carPark of airport.carParks) {
+          const line = content.pick(rateStatusText(carPark, publisher), lang);
+          const facts = rateFacts(carPark);
+          // The parking page: the price table's row note, the car-park card and the calculator all render `rateLine`.
+          const view = page.carParks.find((item) => item.id === carPark.id);
+          expect(view?.rateLine, `${slug} page ${carPark.id}`).toBe(line);
+          expect(view?.rateVerified, `${slug} page ${carPark.id}`).toBe(facts.verified);
+          // The price table marks a figure "not verified" exactly when the record has no tariff.
+          const cells = view ? priceRow(view) : [];
+          expect(cells.every((cell) => cell.kind === 'estimate'), `${slug} table ${carPark.id}`).toBe(facts.verified);
+          // The concierge: the car park's card carries the same sentence.
+          const card = answer.cards.find((item) => item.type === 'car-park' && item.id === carPark.id);
+          expect(card && card.type === 'car-park' ? card.rateText : undefined, `${slug} concierge ${carPark.id}`).toBe(line);
+          expect(card && card.type === 'car-park' ? card.ratesPublished : undefined, `${slug} concierge ${carPark.id}`).toBe(facts.verified);
+          // The help FAQ: any answer that names this car park and talks about its rates says the same.
+          const name = content.pick(carPark.name, lang).split(' (')[0];
+          for (const faq of content.FAQS) {
+            const text = content.pick(faq.answer, lang);
+            if (!text.includes(name) || !/\brates?\b|\bkadar\b|RM\s?\d/i.test(text)) continue;
+            expect(text, `${faq.id} on ${carPark.id}`).toContain(line);
+          }
+        }
+        // The concierge's lead agrees with the records: no "verified" claim without a tariff.
+        const verified = airport.carParks.some((carPark) => rateFacts(carPark).verified);
+        if (!verified) expect(answer.text, slug).not.toMatch(/publishes its rates|menerbitkan kadarnya/);
+      }
+    });
+  }
+
+  it('the help centre has a parking-rate answer, and it is the record’s own sentence', () => {
+    const faq = content.FAQS.find((item) => item.id === 'klia-long-term-parking-shuttle');
+    const ltcp = content.getAirportContent('kul')?.carParks.find((carPark) => carPark.id === 'kul-long-term-car-park');
+    expect(faq && ltcp).toBeTruthy();
+    if (!faq || !ltcp) return;
+    expect(faq.answer.en).toContain(rateStatusText(ltcp, publisher).en);
+    expect(faq.answer.ms).toContain(rateStatusText(ltcp, publisher).ms);
+    expect(faq.answer.en).not.toMatch(/not yet verified in this prototype/);
+    // Every source behind the figures is cited by the answer.
+    for (const id of ltcp.sources) expect(faq.sources, id).toContain(id);
+  });
+});

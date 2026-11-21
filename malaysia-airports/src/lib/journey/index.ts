@@ -15,12 +15,12 @@
  * keys; `href`s have no locale prefix (use `localeHref`).
  */
 import { lt } from '@/content/values';
-import { ARRIVAL_TIME_RULE } from '@/content/planning-rules';
+import { AIRLINE_ASSISTANCE_NOTICE, ARRIVAL_TIME_RULE } from '@/content/planning-rules';
 import type { AirportContent, GuideNote, GuideNoteTopic, LocalizedText, Provenance, TerminalId } from '@/content/types';
 import { isMultiTerminal, terminalLabel } from '@/content/airports';
 import { checkInLines } from '@/lib/flights/check-in';
 import { formatFlightNumber, isInternationalFlight, remotePlace } from '@/lib/flights/query';
-import { flightStatusLabel } from '@/lib/flights/status';
+import { flightStatusLabel, isFinalStatus } from '@/lib/flights/status';
 import type { Flight } from '@/lib/flights/types';
 import type { TKey } from '@/lib/i18n/translate';
 import type { TravellerNeed } from '@/lib/needs';
@@ -66,6 +66,12 @@ export interface JourneyPreferences {
 export interface JourneyAction {
   labelKey: TKey;
   href: string;
+  /**
+   * A commercial hand-off to another site (round 4, re-review 6.1.9): `href` is absolute, and the
+   * link carries `data-handoff` with this name, so it is counted and gets campaign parameters
+   * when followed (`@/components/platform/analytics`).
+   */
+  handoff?: string;
 }
 
 /** A sourced airport fact attached to a step. */
@@ -125,6 +131,8 @@ export interface JourneyService {
   title: LocalizedText;
   body: LocalizedText;
   href?: string;
+  /** The operator's booking site, when the content publishes one (an absolute URL). */
+  bookingUrl?: string;
   provenance: Provenance;
   sources: string[];
 }
@@ -159,8 +167,24 @@ export interface JourneyStep {
   optional?: boolean;
   /** The flight has departed, been cancelled or finished: this step ends the journey. */
   terminal?: boolean;
-  /** Where the step stands at `now`. Without timed steps in the past, everything is `upcoming`. */
-  state: 'done' | 'current' | 'upcoming';
+  /**
+   * The step reports something the flight feed confirms has happened (the flight landed). Only
+   * such a step is ever `done`; a past step the traveller had to do is `past` (round 4).
+   */
+  confirmed?: boolean;
+  /** The flight's own status (delayed), not a step to do: its state words say "Flight status". */
+  flightStatus?: boolean;
+  /**
+   * Something the traveller must act on now, shown as a warning with the step: the airline's
+   * assistance notice period has started, or a step they had to do has passed (round 4, 6.1.2).
+   */
+  warning?: LocalizedText;
+  /**
+   * Where the step stands at `now`. `done`: confirmed by the flight feed (landed). `past`: its
+   * time has gone, but nobody has confirmed the traveller did it, so it is never called done
+   * (round 4, inclusion weakness 2). Without timed steps in the past, everything is `upcoming`.
+   */
+  state: 'done' | 'past' | 'current' | 'upcoming';
 }
 
 /** The slice of airport content the builder needs (an `AirportContent` fits). */
@@ -186,7 +210,12 @@ export interface BuildJourneyInput {
   preferences?: JourneyPreferences;
 }
 
-type Draft = Omit<JourneyStep, 'state' | 'notes' | 'actions'> & { notes?: JourneyNote[]; actions?: JourneyAction[] };
+type Draft = Omit<JourneyStep, 'state' | 'notes' | 'actions'> & {
+  notes?: JourneyNote[];
+  actions?: JourneyAction[];
+  /** Replaces `warning` once the step is `past`: what to do if it was not done. */
+  pastWarning?: LocalizedText;
+};
 
 interface Context {
   content: JourneyAirportContent;
@@ -261,12 +290,93 @@ function finalise(drafts: Draft[], now: Instant): JourneyStep[] {
       current = current + 1 < drafts.length ? current + 1 : drafts.length;
     }
   }
-  return drafts.map((draft, index) => ({
-    ...draft,
-    actions: draft.actions ?? [],
-    notes: draft.notes ?? [],
-    state: index < current ? 'done' : index === current ? 'current' : 'upcoming',
-  }));
+  return drafts.map(({ pastWarning, ...draft }, index) => {
+    const state: JourneyStep['state'] = index < current ? (draft.confirmed ? 'done' : 'past') : index === current ? 'current' : 'upcoming';
+    const warning = state === 'past' && pastWarning ? pastWarning : draft.warning;
+    return { ...draft, ...(warning ? { warning } : {}), actions: draft.actions ?? [], notes: draft.notes ?? [], state };
+  });
+}
+
+/* ------------------------------------------------------------------------------------------
+ * Day of travel: one time basis, the deadline that still matters, and the next step
+ * (round 4, re-review 6.1.2)
+ * --------------------------------------------------------------------------------------- */
+
+/**
+ * When to be at the airport for a departure: the recommended lead before the flight's
+ * **estimated** time, the same basis as the feed's check-in, boarding and gate times, so a delayed
+ * flight moves every time together (round 4: the home card used the scheduled time while the
+ * timeline used the new one). Hand luggage only moves it an hour later. Estimated guidance.
+ */
+export function arriveByFor(flight: Pick<Flight, 'estimated' | 'origin' | 'destination'>, preferences: Pick<JourneyPreferences, 'handLuggageOnly'> = {}): Date {
+  const international = isInternationalFlight(flight);
+  const lead = international ? RECOMMENDED_ARRIVAL_MINUTES.international : RECOMMENDED_ARRIVAL_MINUTES.domestic;
+  return addMinutes(flight.estimated, -(preferences.handLuggageOnly ? lead - 60 : lead));
+}
+
+/** A deadline of a departure that is still ahead. */
+export interface TravelDeadline {
+  kind: 'arrive-by' | 'check-in-closes' | 'boarding' | 'gate-closes';
+  /** ISO instant. Always after `now`. */
+  time: string;
+  /** `estimated` for our arrive-by rule; the flight's own provenance for the feed's times. */
+  provenance: Provenance;
+}
+
+/**
+ * The deadline that still matters for a departure at `now`: be at the airport by, then check-in
+ * closes, then boarding, then the gate closes. Never a time in the past; `null` once the gate has
+ * closed, for arrivals and for finished or cancelled flights. Pure.
+ *
+ * @example nextDeadline(flight, now) // { kind: 'check-in-closes', time: '2026-11-21T19:00:00+08:00', provenance: 'demo' }
+ */
+export function nextDeadline(flight: Flight, now: Instant, preferences: Pick<JourneyPreferences, 'handLuggageOnly'> = {}): TravelDeadline | null {
+  if (flight.direction !== 'd' || flight.status === 'cancelled' || isFinalStatus(flight.status) || flight.actual) return null;
+  const time = toDate(now).getTime();
+  const zone = 'Asia/Kuala_Lumpur';
+  const own: Provenance = flight.isDemo ? 'demo' : 'official';
+  const candidates: [TravelDeadline['kind'], string | undefined, Provenance][] = [
+    ['arrive-by', toIsoWithOffset(arriveByFor(flight, preferences), zone), 'estimated'],
+    ['check-in-closes', flight.checkInClosesAt, own],
+    ['boarding', flight.boardingAt, own],
+    ['gate-closes', flight.gateClosesAt, own],
+  ];
+  for (const [kind, at, provenance] of candidates) {
+    if (at && Date.parse(at) > time) return { kind, time: at, provenance };
+  }
+  return null;
+}
+
+/** The step to name on a card ("Now: …" or "Next: …") and the one time worth showing with it. */
+export interface StepSummary {
+  step: JourneyStep;
+  /** `now`: the step has started. `next`: it is still to come. */
+  when: 'now' | 'next';
+  /** ISO instant, never in the past: the start of a step to come, or the end of a step under way. */
+  time?: string;
+  /** `starts` for a start time, `ends` for the end of a step under way ("until 19:00"). */
+  timeRole?: 'starts' | 'ends';
+}
+
+/**
+ * The step a card should name at `now`, with a time only when that time is still ahead (round 4,
+ * 6.1.2: "Next: Check in 16:30" at 18:35 named a past time). Flight-status steps (delayed) and
+ * optional extras are skipped; a terminal step (departed, cancelled) is named with no time. Pure.
+ */
+export function nextStepSummary(steps: readonly JourneyStep[], now: Instant): StepSummary | null {
+  const time = toDate(now).getTime();
+  const ahead = (value: string | undefined): value is string => value !== undefined && Date.parse(value) > time;
+  const current = steps.find((step) => step.state === 'current');
+  if (current?.terminal) return { step: current, when: 'now' };
+  if (current && !current.flightStatus) {
+    // Current but not started (the arrive-by time has passed and check-in opens later): "Next".
+    if (ahead(current.time)) return { step: current, when: 'next', time: current.time, timeRole: 'starts' };
+    if (ahead(current.endTime)) return { step: current, when: 'now', time: current.endTime, timeRole: 'ends' };
+    return { step: current, when: 'now' };
+  }
+  const next = steps.find((step) => step.state === 'upcoming' && !step.flightStatus && !step.optional);
+  if (!next) return null;
+  return ahead(next.time) ? { step: next, when: 'next', time: next.time, timeRole: 'starts' } : { step: next, when: 'next' };
 }
 
 /** Query string helpers for links that carry the flight's context (exec-commerce-07). */
@@ -327,12 +437,16 @@ function delayStep(context: Context, flight: Flight): Draft {
     title: departing
       ? lt(`Flight ${number} is delayed: new time ${time}`, `Penerbangan ${number} lewat: masa baharu ${time}`)
       : lt(`Flight ${number} is delayed: expected ${time}`, `Penerbangan ${number} lewat: dijangka ${time}`),
+    // One time basis (round 4, 6.1.2): every time on this timeline, the summary card and the
+    // saved-flight cards follows the new departure time, as the feed's check-in, boarding and gate
+    // times do. It used to say "keep to the original check-in times" above steps on the new time.
     body: departing
       ? lt(
-          'Keep to the original check-in times unless your airline tells you otherwise. Times can change again.',
-          'Patuhi waktu daftar masuk asal melainkan diberitahu sebaliknya oleh syarikat penerbangan. Masa boleh berubah lagi.',
+          `The times below follow the new departure time, ${time}. Times can change again: if ${flight.airline.name} tells you to keep to the original check-in time, do that.`,
+          `Masa di bawah mengikut masa berlepas baharu, ${time}. Masa boleh berubah lagi: jika ${flight.airline.name} meminta anda mematuhi waktu daftar masuk asal, ikut arahan itu.`,
         )
       : lt('The arrival time can change again. Check the status before you set off.', 'Waktu ketibaan boleh berubah lagi. Semak status sebelum bertolak.'),
+    flightStatus: true,
     provenance: flightProvenance(flight),
     actions: [{ labelKey: 'journey.actions.viewFlight', href: `/${context.slug}/flights/${flight.id}` }],
   };
@@ -400,12 +514,17 @@ function travelStep(context: Context, arriveBy?: Date): Draft {
   };
 }
 
+/** The needs as the "My needs" control names them, for "Your needs: wheelchair, older traveller." */
 const NEED_WORDS: Record<TravellerNeed, LocalizedText> = {
-  wheelchair: lt('a wheelchair', 'kerusi roda'),
+  wheelchair: lt('wheelchair', 'kerusi roda'),
   'step-free': lt('step-free routes', 'laluan tanpa tangga'),
-  older: lt('an older traveller', 'warga emas'),
+  older: lt('older traveller', 'warga emas'),
   companion: lt('travelling with someone who needs help', 'menemani seseorang yang memerlukan bantuan'),
 };
+
+const HOUR_MS = 60 * 60 * 1000;
+/** How soon a flight must be before we tell a traveller to ask an airline with no published notice period now. */
+const UNKNOWN_NOTICE_URGENT_HOURS = 48;
 
 function assistanceStep(context: Context, direction: 'departing' | 'arriving'): Draft {
   const { flight, preferences, content } = context;
@@ -418,10 +537,33 @@ function assistanceStep(context: Context, direction: 'departing' | 'arriving'): 
     notes.push({ id: `assistance-${flight?.airline.code.toLowerCase()}`, title: airlineNote.title, body: airlineNote.body, provenance: airlineNote.provenance, sources: airlineNote.sources });
   }
   notes.push(...notesFor(context, 'assistance', direction));
+  // The airline's notice period, from the planning rules when one is sourced (round 4, 6.1.2):
+  // inside it, or once the step has passed, the step warns and says what to do now.
+  const rule = flight ? AIRLINE_ASSISTANCE_NOTICE[flight.airline.code as keyof typeof AIRLINE_ASSISTANCE_NOTICE] : undefined;
+  const hoursLeft = flight ? (Date.parse(flight.scheduled) - context.time) / HOUR_MS : undefined;
+  let warning: LocalizedText | undefined;
+  if (flight && airline && hoursLeft !== undefined && hoursLeft > 0) {
+    if (rule && hoursLeft < rule.hours) {
+      warning = lt(
+        `${airline} asks for ${rule.hours} hours' notice, and your flight leaves in less than that. If nobody has arranged assistance yet, ask ${airline} now: ${rule.late.en}`,
+        `${airline} meminta notis ${rule.hours} jam, dan penerbangan anda berlepas dalam tempoh kurang daripada itu. Jika belum ada sesiapa yang mengatur bantuan, minta daripada ${airline} sekarang: ${rule.late.ms}`,
+      );
+    } else if (!rule && hoursLeft < UNKNOWN_NOTICE_URGENT_HOURS) {
+      warning = lt(
+        `Your flight leaves in less than 2 days, and we do not know how much notice ${airline} needs. If nobody has arranged assistance yet, ask ${airline} now.`,
+        `Penerbangan anda berlepas dalam tempoh kurang daripada 2 hari, dan kami tidak tahu berapa lama notis yang diperlukan oleh ${airline}. Jika belum ada sesiapa yang mengatur bantuan, minta daripada ${airline} sekarang.`,
+      );
+    }
+  }
   const ask = airline
     ? airlineNote
       ? lt(`Ask ${airline} for help when you book: its notice period is below.`, `Minta bantuan daripada ${airline} semasa menempah: tempoh notisnya di bawah.`)
-      : lt(
+      : rule
+        ? lt(
+            `Ask ${airline} for help when you book: it asks for at least ${rule.hours} hours' notice.`,
+            `Minta bantuan daripada ${airline} semasa menempah: ia meminta notis sekurang-kurangnya ${rule.hours} jam.`,
+          )
+        : lt(
           `Ask ${airline} for help as early as you can, ideally when you book. We have not published its notice period: check with the airline.`,
           `Minta bantuan daripada ${airline} seawal mungkin, sebaik-baiknya semasa menempah. Kami belum menerbitkan tempoh notisnya: semak dengan syarikat penerbangan.`,
         )
@@ -431,12 +573,23 @@ function assistanceStep(context: Context, direction: 'departing' | 'arriving'): 
     kind: 'assistance',
     relative: 'journey.relative.beforeYouLeave',
     title: airline ? lt(`Arrange assistance with ${airline}`, `Aturkan bantuan dengan ${airline}`) : lt('Arrange any assistance you need', 'Aturkan bantuan yang anda perlukan'),
+    // Round 4: "You told us you plan for a wheelchair, an older traveller" was not English.
     body: lt(
-      `${listed ? `You told us you plan for ${listed.en}. ` : ''}${ask.en} At the airport, the airline's staff provide the help; see what the airport offers too.`,
-      `${listed ? `Anda memaklumkan keperluan: ${listed.ms}. ` : ''}${ask.ms} Di lapangan terbang, kakitangan syarikat penerbangan memberikan bantuan; lihat juga perkhidmatan lapangan terbang.`,
+      `${listed ? `Your needs: ${listed.en}. ` : ''}${ask.en} At the airport, the airline's staff provide the help; see what the airport offers too.`,
+      `${listed ? `Keperluan anda: ${listed.ms}. ` : ''}${ask.ms} Di lapangan terbang, kakitangan syarikat penerbangan memberikan bantuan; lihat juga perkhidmatan lapangan terbang.`,
     ),
-    provenance: airlineNote ? airlineNote.provenance : 'suggestion',
-    ...(airlineNote ? { sources: airlineNote.sources } : {}),
+    ...(warning ? { warning } : {}),
+    pastWarning: airline
+      ? lt(
+          `If nobody has arranged assistance yet, contact ${airline} now, and tell its staff as soon as you reach the airport.`,
+          `Jika belum ada sesiapa yang mengatur bantuan, hubungi ${airline} sekarang, dan maklumkan kakitangannya sebaik tiba di lapangan terbang.`,
+        )
+      : lt(
+          'If nobody has arranged assistance yet, contact your airline now, and tell its staff as soon as you reach the airport.',
+          'Jika belum ada sesiapa yang mengatur bantuan, hubungi syarikat penerbangan anda sekarang, dan maklumkan kakitangannya sebaik tiba di lapangan terbang.',
+        ),
+    provenance: airlineNote ? airlineNote.provenance : rule ? rule.provenance : 'suggestion',
+    ...(airlineNote ? { sources: airlineNote.sources } : rule ? { sources: [...rule.sources] } : {}),
     actions: [
       { labelKey: 'journey.actions.viewAssistance', href: '/accessibility' },
       ...(flight ? [{ labelKey: 'journey.actions.contactAirline' as TKey, href: '/help/flights' }] : []),
@@ -559,12 +712,11 @@ function departingSteps(context: Context): Draft[] {
   if (flight && (flight.status === 'departed' || (flight.actual && Date.parse(flight.actual) <= context.time))) return [departedStep(context, flight)];
 
   const international = flight ? isInternationalFlight(flight) : undefined;
-  const lead = international === false ? RECOMMENDED_ARRIVAL_MINUTES.domestic : RECOMMENDED_ARRIVAL_MINUTES.international;
   // Hand luggage only and checked in online: no bag drop, so the estimate moves an hour later.
   const handOnly = preferences.handLuggageOnly === true;
-  const leadMinutes = handOnly ? lead - 60 : lead;
   const steps: Draft[] = [];
-  const arriveBy = flight ? addMinutes(flight.scheduled, -leadMinutes) : undefined;
+  // On the estimated time, like every other time here (round 4, one time basis).
+  const arriveBy = flight ? arriveByFor(flight, preferences) : undefined;
 
   if (flight?.status === 'delayed') steps.push(delayStep(context, flight));
   steps.push(terminalStep(context, 'departing'));
@@ -582,7 +734,9 @@ function departingSteps(context: Context): Draft[] {
   steps.push({
     id: 'arrive',
     kind: 'arrive',
-    ...(arriveBy ? { time: iso(context, arriveBy) } : { relative: 'journey.relative.atTheAirport' as TKey }),
+    // Ends at its own time: once the arrive-by time has passed, the journey moves on to the
+    // deadline that still matters (check-in) instead of naming a past time as "Now" (round 4).
+    ...(arriveBy ? { time: iso(context, arriveBy), endTime: iso(context, arriveBy) } : { relative: 'journey.relative.atTheAirport' as TKey }),
     title: arriveBy
       ? lt(`Arrive at the airport by ${clock(context, arriveBy)}`, `Tiba di lapangan terbang sebelum ${clock(context, arriveBy)}`)
       : lt('Arrive in good time', 'Tiba lebih awal'),
@@ -615,13 +769,17 @@ function departingSteps(context: Context): Draft[] {
   const desks = flight ? checkInLines(flight) : [];
   const closesAt = flight?.checkInClosesAt;
   const closed = closesAt !== undefined && Date.parse(closesAt) <= context.time;
+  // One time basis (round 4): counters open on the original schedule, but the plan follows the new
+  // time, so on a delayed flight the step is timed when the traveller arrives (never before the
+  // arrive-by step, which made the timeline run 18:25 then 16:45).
+  const opensAt = flight?.checkInOpensAt && arriveBy && Date.parse(flight.checkInOpensAt) < arriveBy.getTime() ? iso(context, arriveBy) : flight?.checkInOpensAt;
   if (flight && closesAt && closed) {
     // Check-in has closed (usability-04): say so, and move the journey on.
     const closes = clock(context, closesAt);
     steps.push({
       id: 'check-in',
       kind: 'check-in',
-      time: flight.checkInOpensAt ?? closesAt,
+      time: opensAt ?? closesAt,
       endTime: closesAt,
       title: lt(`Check-in closed at ${closes}`, `Daftar masuk ditutup pada ${closes}`),
       body: lt(
@@ -638,7 +796,7 @@ function departingSteps(context: Context): Draft[] {
     steps.push({
       id: 'check-in',
       kind: 'check-in',
-      time: flight.checkInOpensAt,
+      time: opensAt,
       endTime: closesAt,
       title: handOnly ? lt('Check in online, or at the counter', 'Daftar masuk dalam talian, atau di kaunter') : noBags ? lt('Check in', 'Daftar masuk') : lt('Check in and drop your bags', 'Daftar masuk dan serahkan bagasi'),
       body: lt(
@@ -649,7 +807,7 @@ function departingSteps(context: Context): Draft[] {
       notes: checkInNotes,
     });
   } else {
-    const opens = flight?.checkInOpensAt;
+    const opens = opensAt;
     steps.push({
       id: 'check-in',
       kind: 'check-in',
@@ -703,7 +861,11 @@ function departingSteps(context: Context): Draft[] {
       body: fastTrack.body,
       provenance: fastTrack.provenance,
       sources: fastTrack.sources,
-      actions: fastTrack.href ? [{ labelKey: 'flightPages.timeline.viewFastTrack', href: fastTrack.href }] : [],
+      actions: [
+        ...(fastTrack.href ? [{ labelKey: 'flightPages.timeline.viewFastTrack' as TKey, href: fastTrack.href }] : []),
+        // The booking site as a measured hand-off, like the overview's (round 4, 6.1.9).
+        ...(fastTrack.bookingUrl ? [{ labelKey: 'airportPage.fastTrackBook' as TKey, href: fastTrack.bookingUrl, handoff: 'fast-track-booking' }] : []),
+      ],
     });
   }
 
@@ -790,6 +952,8 @@ function landingStep(context: Context, flight: Flight | null): Draft {
     kind: 'landing',
     time: flight.estimated,
     endTime: flight.actual ?? flight.estimated,
+    // The feed says it landed: the one kind of past step that is "done" (round 4).
+    ...(landed ? { confirmed: true } : {}),
     title: landed
       ? lt(`Flight ${number} landed at ${time}`, `Penerbangan ${number} mendarat pada ${time}`)
       : lt(`Flight ${number} is expected at ${time}`, `Penerbangan ${number} dijangka tiba pada ${time}`),

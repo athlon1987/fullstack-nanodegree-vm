@@ -52,7 +52,7 @@ export function DemoMarkedList({ children, start = 'top-12', className }: { chil
     <div className={cn('relative', className)}>
       {children}
       <div aria-hidden="true" data-demo-track="" className={cn('pointer-events-none absolute inset-x-0 bottom-0 md:hidden', start)}>
-        <div className="sticky top-[calc(var(--spacing-header)+0.5rem)] z-10 h-0">
+        <div className="sticky top-[calc(var(--spacing-sticky)+0.5rem)] z-10 h-0">
           <DemoTag size="md" className="absolute top-0 right-2 shadow-sm" />
         </div>
       </div>

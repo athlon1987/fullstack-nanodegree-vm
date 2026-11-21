@@ -4,6 +4,7 @@ import { Suspense, lazy, useEffect, useState } from 'react';
 import type { Flight } from '@/lib/flights';
 import { useSavedJourney } from '@/lib/hooks/use-saved-journey';
 import { useLang, useT } from '@/lib/i18n/client';
+import { useNeeds } from '@/lib/needs';
 import { LocaleLink } from '@/components/common/locale-link';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
@@ -20,6 +21,9 @@ export interface FlightActionsProps {
 // The follow panel is opened by few visitors: it loads when the page is idle, or when it is opened
 // before that (round 2, E-03), instead of with the flight page.
 const loadFollowPanel = () => import('./flight-alerts-panel');
+
+/** Anchor of the "My needs" control on the flight page (`NeedsControl`'s section). */
+export const NEEDS_CONTROL_ID = 'needs-control';
 const FollowPanel = lazy(() => loadFollowPanel().then((module) => ({ default: module.FollowPanel })));
 
 /** The current page without its hash, for sharing and for the calendar entry. */
@@ -36,6 +40,7 @@ export function FlightActions({ flight, title }: FlightActionsProps) {
   const { isFlightSaved, saveFlight, removeFlight } = useSavedJourney();
   const saved = isFlightSaved(flight.id);
   const following = useIsFollowing(flight.id);
+  const { needs } = useNeeds();
   const [followOpen, setFollowOpen] = useState(false);
   const [message, setMessage] = useState('');
   useEffect(() => {
@@ -118,6 +123,14 @@ export function FlightActions({ flight, title }: FlightActionsProps) {
         </Button>
         <Button variant="secondary" iconStart="calendar-days" onClick={addToCalendar}>
           {t('flightPages.detail.calendar')}
+        </Button>
+        {/* Round 4 (re-review 6.1.6, inclusion weakness 10): "My needs" from the first phone
+            screens, beside Follow; it jumps to the control, which on phones now sits above the
+            timeline. */}
+        <Button asChild variant="secondary" iconStart="accessibility">
+          <a href={`#${NEEDS_CONTROL_ID}`} data-needs-link="">
+            {needs.length > 0 ? t('flightPages.needs.linkCount', { count: needs.length }) : t('flightPages.needs.title')}
+          </a>
         </Button>
       </div>
       <p role="status" className="type-body-sm flex min-h-6 flex-wrap items-center gap-x-3 gap-y-1 text-ink-2">

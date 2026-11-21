@@ -25,6 +25,45 @@ export interface ConnectivityState {
   justReconnected: boolean;
 }
 
+/**
+ * One answer to "what is saved on this device", shared by the offline page's status card and the
+ * connection toast so they never disagree (round 4, gallery note 3: with the connection cut before
+ * the worker had registered, the card said saving was "not switched on in this version" while the
+ * toast said "showing saved information"). Pure.
+ *
+ * - `on`: the worker controls the page; saved copies can be shown.
+ * - `checking`: not known yet (before the first client snapshot, or before registration).
+ * - `starting`: the worker is installing; nothing may be saved yet.
+ * - `not-ready`: offline before saving was ready (or registration failed offline): nothing saved yet;
+ *   it is tried again when the connection returns.
+ * - `failed`: registration failed while online.
+ * - `off`: this build or browser does not save pages (development builds; no service worker support).
+ */
+export type SavingState = 'on' | 'checking' | 'starting' | 'not-ready' | 'failed' | 'off';
+
+export function savingState(status: WorkerStatus, online: boolean): SavingState {
+  switch (status) {
+    case 'active':
+      return 'on';
+    case 'unknown':
+      return online ? 'checking' : 'not-ready';
+    case 'installing':
+      return online ? 'starting' : 'not-ready';
+    case 'error':
+      return online ? 'failed' : 'not-ready';
+    case 'disabled':
+    case 'unsupported':
+      return 'off';
+  }
+}
+
+/** The connection toast: `offline` (saved copies can be shown), `offline-nothing-saved`, `unreachable`, `back`, or nothing. Pure. */
+export function connectionNotice(input: { online: boolean; justReconnected: boolean; servedFromCache: boolean; status: WorkerStatus }): 'offline' | 'offline-nothing-saved' | 'unreachable' | 'back' | null {
+  if (!input.online) return savingState(input.status, false) === 'on' ? 'offline' : 'offline-nothing-saved';
+  if (input.servedFromCache) return 'unreachable';
+  return input.justReconnected ? 'back' : null;
+}
+
 const SERVER_WORKER: WorkerState = { status: 'unknown', updateReady: false, servedFromCache: false };
 const SERVER_CONNECTIVITY: ConnectivityState = { online: true, justReconnected: false };
 
@@ -76,6 +115,11 @@ export function startServiceWorker(): void {
       .then(track)
       .catch(() => worker.set({ status: 'error' }));
   };
+  // Registration fails without a connection (the script cannot be fetched): try again once the
+  // connection returns, so "pages you open from now on will be kept" stays true (round 4).
+  window.addEventListener('online', () => {
+    if (worker.get().status === 'error') register();
+  });
   // Let the page and its prefetches finish first: the worker's precache must not compete with
   // them (performance-11).
   const start = () => afterNetworkIdle(register);

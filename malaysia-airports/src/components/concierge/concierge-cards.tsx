@@ -187,7 +187,14 @@ function CarPark({ card }: { card: CarParkCard }) {
       <CardHead icon="square-parking" title={card.name} meta={<><ProvenanceTag provenance={card.estimate ? 'estimated' : card.provenance} length="short" /><Badge size="sm">{card.place}</Badge></>} />
       <dl className="grid gap-2">
         <Fact label={card.estimate ? t('conciergePage.answer.estimate') : t('conciergePage.answer.rates')}>
-          {card.estimate ? <span className="type-data-md">{card.estimate}</span> : card.ratesPublished ? t('conciergePage.engine.actionParkingAndCalculator') : <NotPublished officialUrl={card.officialUrl} label={t('conciergePage.answer.ratesNotPublished')} />}
+          {/* One fact, one answer (round 4, 6.1.3): the rate status in the parking page's words. */}
+          {card.estimate ? (
+            <span className="type-data-md">{card.estimate}</span>
+          ) : card.rateMissing ? (
+            <NotPublished officialUrl={card.officialUrl} label={card.rateText} />
+          ) : (
+            <span data-rate-line="">{card.rateText}</span>
+          )}
         </Fact>
       </dl>
       <div className="mt-auto">

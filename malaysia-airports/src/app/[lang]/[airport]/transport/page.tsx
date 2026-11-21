@@ -13,10 +13,10 @@ import { SectionHeading } from '@/components/common/section-heading';
 import { TranslationNotice } from '@/components/common/translation-notice';
 import { TerminalTransfers } from '@/components/transport/terminal-transfers';
 import { ToutsWarning } from '@/components/transport/touts-warning';
+import { TransportGlance } from '@/components/transport/transport-glance';
 import { transportPageModel } from '@/components/transport/transport-data.server';
 import { DEFAULT_PLANNER_STATE, TransportPlanner } from '@/components/transport/transport-planner';
 import { TransportPlannerFromUrl } from '@/components/transport/transport-planner-url';
-import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
@@ -73,25 +73,35 @@ async function Transport({ params }: { params: AirportPageParams }) {
         title={t('transportPages.transport.title', { airport: airport.shortName })}
         lead={t('transportPages.transport.lead')}
         breadcrumbs={<Breadcrumbs items={[{ label: airport.shortName, href: `/${airport.slug}` }, { label: t('nav.groundTransport') }]} />}
-        actions={
-          <>
-            {model.between.length > 0 ? (
-              <Button asChild variant="secondary" iconStart="arrow-left-right">
-                <a href="#between-terminals">{t('transportPages.transport.jumpToTerminals')}</a>
-              </Button>
-            ) : null}
-            {hasParking ? (
-              <Button asChild variant="secondary" iconStart="square-parking">
-                <LocaleLink href={`/${airport.slug}/parking`}>{t('transportPages.transport.parkingAction')}</LocaleLink>
-              </Button>
-            ) : null}
-          </>
-        }
       />
       <Container className="flex flex-col gap-14 pb-section">
         {model.translationMissing ? <TranslationNotice /> : null}
 
-        {/* Before any option: book rides only through official channels (C-02). */}
+        {/* Round 4 (6.1.6, answer first): the cheapest published train and coach fares, above the
+            warning. Scheduled services only, so the warning still comes before any taxi or
+            e-hailing option (C-02). */}
+        {model.planner.length > 0 ? <TransportGlance {...plannerData} /> : null}
+
+        {/* Round 4: the two jumps sit under the answer as links (they were two stacked buttons
+            above it, 130 px on a phone). */}
+        {model.between.length > 0 || hasParking ? (
+          <nav aria-label={t('transportPages.transport.jumpsLabel')} className="-my-8 flex flex-wrap gap-x-6 gap-y-1">
+            {model.between.length > 0 ? (
+              <a href="#between-terminals" className="link-action type-body-sm text-ink">
+                <Icon name="arrow-left-right" size="sm" />
+                {t('transportPages.transport.jumpToTerminals')}
+              </a>
+            ) : null}
+            {hasParking ? (
+              <LocaleLink href={`/${airport.slug}/parking`} className="link-action type-body-sm text-ink">
+                <Icon name="square-parking" size="sm" />
+                {t('transportPages.transport.parkingAction')}
+              </LocaleLink>
+            ) : null}
+          </nav>
+        ) : null}
+
+        {/* Before any taxi or e-hailing option: book rides only through official channels (C-02). */}
         <ToutsWarning context={model.context} className="-mb-6" />
 
         <section aria-labelledby="planner-title">
@@ -145,7 +155,7 @@ async function Transport({ params }: { params: AirportPageParams }) {
           </section>
         ) : null}
 
-        <TerminalTransfers t={t} context={model.context} between={model.between} inside={model.inside} notes={model.transferNotes} />
+        <TerminalTransfers t={t} lang={lang} context={model.context} between={model.between} inside={model.inside} notes={model.transferNotes} />
 
         {/* D-05 hand-off (round 2): one line to the single list on About this prototype. */}
         <PrototypeGapsLink

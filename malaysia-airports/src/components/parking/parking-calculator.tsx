@@ -224,7 +224,10 @@ export function ParkingCalculator({ data, initial }: { data: ParkingPageData; in
                 <SourceNote sources={sourcesFor(carPark.sourceIds, data.sources)} className="mt-1" />
               </div>
             ) : null}
-            <p className="type-body-sm font-semibold text-ink">{t('transportPages.parking.sourcesDiffer')}</p>
+            {/* The same sentence as the price table, the cards, the concierge and the help FAQ (round 4, 6.1.3). */}
+            <p className="type-body-sm font-semibold text-ink" data-rate-line="">
+              {carPark.rateLine}
+            </p>
           </div>
         ) : null}
 

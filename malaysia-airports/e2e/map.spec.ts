@@ -54,7 +54,8 @@ test.describe('terminal map', () => {
 
     await details.getByRole('button', { name: 'Route here', exact: true }).click();
     await expect(page).toHaveURL(/to=l5-prayer-room/);
-    const directions = main.getByRole('region', { name: 'Directions' });
+    // Round 4 (6.1.6): the time and the steps are their own region under the map ("Your route").
+    const directions = main.getByRole('region', { name: 'Your route' });
     await expect(directions.getByRole('heading', { name: 'Step by step' })).toBeVisible();
     await expect(directions.getByRole('listitem').first()).toContainText('Start at');
     await expect(directions.getByText('Typical walking pace')).toBeVisible();
@@ -66,13 +67,14 @@ test.describe('terminal map', () => {
 
   test('deep link to a route across levels, with step-free routing and keyboard zoom', async ({ page }) => {
     await page.goto('/en/kul/map?from=l5-kerb&to=g-gates-c');
-    const directions = page.getByRole('main').getByRole('region', { name: 'Directions' });
+    const directions = page.getByRole('main').getByRole('region', { name: 'Your route' });
+    const controls = page.getByRole('main').getByRole('region', { name: 'Directions' });
     await expect(directions.getByRole('button', { name: /Take the train to Aerotrain station \(Satellite Building\)/ })).toBeVisible();
     await expect(directions.getByText('Arrive at Gates C (Satellite Building)')).toBeVisible();
 
     await page.goto('/en/kul/map?from=l5-row-b&to=l3-toilets');
     await expect(directions.getByText('Includes an escalator or stairs')).toBeVisible();
-    await directions.getByRole('switch', { name: 'Step-free route only' }).click();
+    await controls.getByRole('switch', { name: 'Step-free route only' }).click();
     await expect(directions.getByText('Step-free', { exact: true })).toBeVisible();
     await expect(directions.getByRole('button', { name: /Take the lift down to Level 3/ })).toBeVisible();
     await expect(page).toHaveURL(/sf=1/);
@@ -130,9 +132,10 @@ test.describe('terminal map', () => {
 
   test('From and To options are unique, and a step-free arrival route names the level change, immigration and customs (C-08, C-09)', async ({ page }) => {
     await page.goto('/en/kul/map?from=g-gates-c&to=l3-kerb&sf=1');
-    const directions = page.getByRole('main').getByRole('region', { name: 'Directions' });
+    const directions = page.getByRole('main').getByRole('region', { name: 'Your route' });
     await expect(directions.getByText('Arrive at Arrivals pick-up')).toBeVisible();
-    const labels = await directions.getByRole('combobox', { name: 'From' }).locator('option').allTextContents();
+    const controls = page.getByRole('main').getByRole('region', { name: 'Directions' });
+    const labels = await controls.getByRole('combobox', { name: 'From' }).locator('option').allTextContents();
     const places = labels.filter((label) => label.includes(' · '));
     expect(places.length).toBeGreaterThan(30);
     expect(new Set(places).size, 'duplicate option labels').toBe(places.length);

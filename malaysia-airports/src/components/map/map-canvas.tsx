@@ -283,6 +283,12 @@ export function MapCanvas({
 
   return (
     <div className="overflow-hidden rounded-xl border border-line-strong bg-surface shadow-xs">
+      {/* Round 4 (6.1.6): the disclaimer is a strip above the drawing, not an overlay on it, so no
+          level chip, pin or label can ever cover it (on phones the "To Gates" chip did). */}
+      <p data-map-disclaimer="" className="type-caption flex items-center gap-1.5 border-b border-line bg-inverse px-3 py-1.5 font-semibold text-on-inverse">
+        <Icon name="flask-conical" size="xs" strokeWidth={2} className="shrink-0" />
+        {t('mapPages.schematicLabel')}
+      </p>
       <div
         ref={frameRef}
         onKeyDown={onKeyDown}
@@ -427,13 +433,6 @@ export function MapCanvas({
           </g>
         </svg>
 
-        <div className="pointer-events-none absolute inset-x-3 top-3 flex flex-wrap items-start justify-between gap-2">
-          <p className="type-caption pointer-events-auto inline-flex max-w-full items-center gap-1.5 rounded-pill bg-inverse px-3 py-1.5 font-semibold text-on-inverse shadow-sm">
-            <Icon name="flask-conical" size="xs" strokeWidth={2} />
-            {t('mapPages.schematicLabel')}
-          </p>
-        </div>
-
         {connectors.map((connector) => {
           const point = toScreen(connector.x, connector.y);
           if (point.x < 0 || point.y < 0 || point.x > frame.width || point.y > frame.height) return null;
@@ -442,7 +441,8 @@ export function MapCanvas({
               key={connector.key}
               type="button"
               onClick={() => onLevelChange(connector.toLevel)}
-              style={{ left: point.x, top: Math.max(point.y - radius - 10, 44) }}
+              // The chip hangs above its point (translate -100%): keep its top edge inside the drawing.
+              style={{ left: point.x, top: Math.max(point.y - radius - 10, 48) }}
               className="type-caption absolute inline-flex min-h-8 -translate-x-1/2 -translate-y-full items-center gap-1 rounded-pill border border-primary bg-surface px-2.5 font-semibold whitespace-nowrap text-primary-ink shadow-md hover:bg-primary-soft touch:min-h-11"
             >
               <Icon name={connector.direction === 'up' ? 'arrow-up' : 'arrow-down'} size="xs" strokeWidth={2.25} />

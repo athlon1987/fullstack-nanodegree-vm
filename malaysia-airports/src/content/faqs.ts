@@ -4,7 +4,20 @@
  * Content authors: add entries to `FAQS` (or spread in arrays from new files). Each answer needs
  * `sources` and a `provenance` tag; answers must not state anything the sources do not support.
  */
+import { rateStatusText } from '@/lib/parking';
+import { KUL_CONTENT } from './airports/kul';
+import { CORE_SOURCES } from './sources';
 import { lt, type Faq, type LocalizedText } from './types';
+
+/**
+ * One fact, one answer (round 4, re-review 6.1.3): the Long Term Car Park answer states its rates
+ * from the car park's own record, in the sentence the parking page and the concierge use, so the
+ * help centre cannot drift from them. `content.test.ts` fails if any of the three disagree.
+ */
+const KLIA_LONG_TERM_CAR_PARK = KUL_CONTENT.carParks.find((carPark) => carPark.id === 'kul-long-term-car-park');
+if (!KLIA_LONG_TERM_CAR_PARK) throw new Error('faqs.ts: the KLIA Long Term Car Park record is missing');
+const sourceOf = (id: string) => [...KUL_CONTENT.sources, ...CORE_SOURCES].find((source) => source.id === id);
+const LTCP_RATES = rateStatusText(KLIA_LONG_TERM_CAR_PARK, sourceOf);
 
 /** A help-centre topic (`/help/[topic]`). */
 export interface HelpTopic {
@@ -95,13 +108,14 @@ export const FAQS: Faq[] = [
       'Bagaimana untuk ke terminal dari Tempat Letak Kereta Jangka Panjang di KLIA?',
     ),
     answer: lt(
-      'A complimentary shuttle runs between the Long Term Car Park and the terminals every 10 minutes. Parking rates are not yet verified in this prototype: see the official parking page for current rates and online booking.',
-      'Bas ulang-alik percuma beroperasi antara Tempat Letak Kereta Jangka Panjang dan terminal setiap 10 minit. Kadar parkir belum disahkan dalam prototaip ini: rujuk halaman parkir rasmi untuk kadar semasa dan tempahan dalam talian.',
+      `A complimentary shuttle runs between the Long Term Car Park and the terminals every 10 minutes. ${LTCP_RATES.en} Check the official parking page before you park; online booking is offered there.`,
+      `Bas ulang-alik percuma beroperasi antara Tempat Letak Kereta Jangka Panjang dan terminal setiap 10 minit. ${LTCP_RATES.ms ?? LTCP_RATES.en} Semak halaman parkir rasmi sebelum meletak kereta; tempahan dalam talian ditawarkan di sana.`,
     ),
     airports: ['kul'],
     provenance: 'official',
     asOf: '2026-11-16',
-    sources: ['mahb-klia-t1-parking'],
+    // The car park's own sources, which carry the rate figures the answer states.
+    sources: [...new Set(['mahb-klia-t1-parking', ...KLIA_LONG_TERM_CAR_PARK.sources])],
   },
   {
     id: 'contact-malaysia-airports',

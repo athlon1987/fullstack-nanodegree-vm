@@ -19,6 +19,7 @@ export const transportPagesEn = {
     lead: 'Choose where you are going and what matters most. Every fare and time here comes from a named source, with its date. Where we have no verified figure, we say so.',
     parkingAction: 'Driving? See parking',
     jumpToTerminals: 'Changing terminals',
+    jumpsLabel: 'On this page',
   },
   planner: {
     title: 'Compare your options',
@@ -244,6 +245,12 @@ export const transportPagesEn = {
     tightAction: 'If it is tight: what to do',
     announce: '{updated} {verdict}.',
   },
+  // Round 4 (6.1.6): the answer-first fare row above the warning and the planner.
+  glance: {
+    title: 'Published fares to {destination}',
+    time: 'Journey',
+    note: 'Trains and coaches, cheapest first. Taxis, e-hailing, sources and dates are below.',
+  },
   touts: {
     title: 'Book taxis only at the coupon counters; ignore anyone offering a ride',
     taxi: 'Book taxis only at the coupon counters; ignore anyone offering a ride.',
@@ -304,6 +311,7 @@ export const transportPagesMs: typeof transportPagesEn = {
     lead: 'Pilih destinasi anda dan perkara yang paling penting. Setiap tambang dan masa di sini datang daripada sumber yang dinamakan, bersama tarikhnya. Jika tiada angka yang disahkan, kami nyatakannya.',
     parkingAction: 'Memandu? Lihat parkir',
     jumpToTerminals: 'Bertukar terminal',
+    jumpsLabel: 'Dalam halaman ini',
   },
   planner: {
     title: 'Bandingkan pilihan anda',
@@ -528,6 +536,11 @@ export const transportPagesMs: typeof transportPagesEn = {
   transitVerdict: {
     tightAction: 'Jika masa terlalu suntuk: apa yang perlu dilakukan',
     announce: '{updated} {verdict}.',
+  },
+  glance: {
+    title: 'Tambang terbitan ke {destination}',
+    time: 'Perjalanan',
+    note: 'Kereta api dan bas, termurah dahulu. Teksi, e-hailing, sumber dan tarikh ada di bawah.',
   },
   touts: {
     title: 'Tempah teksi hanya di kaunter kupon; abaikan sesiapa yang menawarkan tumpangan',

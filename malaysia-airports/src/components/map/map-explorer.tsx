@@ -375,8 +375,12 @@ function MapWorkspace({ map, query, sources, facilitiesHref, officialMapUrl, off
 
   return (
     <div className="flex flex-col gap-14">
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,23rem)_minmax(0,1fr)] lg:grid-rows-[auto_1fr] lg:gap-x-8">
-        <div className="flex min-w-0 flex-col gap-4 lg:col-start-1 lg:row-start-1">
+      {/* Round 4 (6.1.6): on phones the order is search, From and To, the map, then the directions
+          and the filters, so a chosen route is drawn just below the controls instead of 600 px
+          above them. DOM order is the visual order at every width; on desktop the map stays
+          sticky in the right column beside the same four blocks. */}
+      <div className="grid gap-5 lg:grid-cols-[minmax(0,23rem)_minmax(0,1fr)] lg:grid-rows-[auto_auto_auto_1fr] lg:gap-x-8">
+        <div className="min-w-0 lg:col-start-1 lg:row-start-1">
           <div role="search">
             <SearchField
               label={t('mapPages.search.label')}
@@ -418,7 +422,108 @@ function MapWorkspace({ map, query, sources, facilitiesHref, officialMapUrl, off
               </ul>
             ) : null}
           </div>
+        </div>
+        <div className="min-w-0 lg:col-start-1 lg:row-start-2">
+          <RoutePlanner
+            part="controls"
+            map={map}
+            levelsById={levelsById}
+            fromId={from?.id}
+            toId={to?.id}
+            stepFree={query.stepFree}
+            route={route}
+            steps={steps}
+            minutes={minutes}
+            activeStep={activeStepKey}
+            onFromChange={(id) => setRoute({ from: id })}
+            onToChange={(id) => setRoute({ to: id })}
+            onSwap={() => setRoute({ from: to?.id, to: from?.id })}
+            onStepFreeChange={(value) => setRoute({ stepFree: value })}
+            onClear={() => {
+              writeQuery({ from: null, to: null });
+              setActiveStep(null);
+              setStatus('');
+            }}
+            onStepSelect={selectStep}
+          />
+        </div>
 
+        <div className="min-w-0 lg:sticky lg:top-[calc(var(--spacing-sticky)+1rem)] lg:col-start-2 lg:row-span-4 lg:row-start-1 lg:self-start">
+          <SegmentedControl
+            label={t('mapPages.levels.label')}
+            value={level.id}
+            onValueChange={changeLevel}
+            block
+            stackOnPhone
+            options={map.levels.map((item) => ({
+              value: item.id,
+              label: item.label,
+              hint: item.hint,
+              icon: routeLevels.has(item.id) ? 'route' : 'layers',
+            }))}
+          />
+          {level.note ? <p className="type-body-sm mt-2 flex gap-2 text-ink-2"><Icon name="info" size="sm" className="mt-0.5" />{level.note}</p> : null}
+          <div className="mt-3">
+            <MapCanvas
+              map={map}
+              level={level}
+              pois={onLevel}
+              selectedId={selected?.id}
+              fromId={route ? from?.id : undefined}
+              toId={route ? to?.id : undefined}
+              routeLines={routeLines}
+              connectors={connectors}
+              stepActive={activeStepKey !== null}
+              view={view}
+              bounds={bounds}
+              onViewChange={(next, animate) => changeView(level.id, next, animate)}
+              onSelect={(id) => select(id, 'map')}
+              onLevelChange={changeLevel}
+              onEscape={clearSelection}
+            />
+          </div>
+          <MapLegend showRoute={Boolean(route)} />
+        </div>
+
+        <div className="flex min-w-0 flex-col gap-4 empty:hidden lg:col-start-1 lg:row-start-3">
+          {selected ? (
+            <PlaceDetails
+              poi={selected}
+              level={levelsById.get(selected.level)}
+              sources={sources}
+              facilitiesHref={facilitiesHref}
+              isDestination={to?.id === selected.id}
+              isStart={from?.id === selected.id}
+              onClose={clearSelection}
+              onRouteHere={() => routeHere(selected.id)}
+              onRouteFrom={() => routeFrom(selected.id)}
+            />
+          ) : null}
+          <RoutePlanner
+            part="result"
+            map={map}
+            levelsById={levelsById}
+            fromId={from?.id}
+            toId={to?.id}
+            stepFree={query.stepFree}
+            route={route}
+            steps={steps}
+            minutes={minutes}
+            activeStep={activeStepKey}
+            onFromChange={(id) => setRoute({ from: id })}
+            onToChange={(id) => setRoute({ to: id })}
+            onSwap={() => setRoute({ from: to?.id, to: from?.id })}
+            onStepFreeChange={(value) => setRoute({ stepFree: value })}
+            onClear={() => {
+              writeQuery({ from: null, to: null });
+              setActiveStep(null);
+              setStatus('');
+            }}
+            onStepSelect={selectStep}
+          />
+        </div>
+
+        <div className="min-w-0 lg:col-start-1 lg:row-start-4">
           <div role="group" aria-labelledby="map-filters-label">
             <p id="map-filters-label" className="type-body-sm mb-2 font-semibold text-ink">
               {t('mapPages.filters.label')}
@@ -460,80 +565,6 @@ function MapWorkspace({ map, query, sources, facilitiesHref, officialMapUrl, off
               </div>
             ) : null}
           </div>
-        </div>
-
-        <div className="min-w-0 lg:sticky lg:top-[calc(var(--spacing-header)+1rem)] lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-start">
-          <SegmentedControl
-            label={t('mapPages.levels.label')}
-            value={level.id}
-            onValueChange={changeLevel}
-            block
-            stackOnPhone
-            options={map.levels.map((item) => ({
-              value: item.id,
-              label: item.label,
-              hint: item.hint,
-              icon: routeLevels.has(item.id) ? 'route' : 'layers',
-            }))}
-          />
-          {level.note ? <p className="type-body-sm mt-2 flex gap-2 text-ink-2"><Icon name="info" size="sm" className="mt-0.5" />{level.note}</p> : null}
-          <div className="mt-3">
-            <MapCanvas
-              map={map}
-              level={level}
-              pois={onLevel}
-              selectedId={selected?.id}
-              fromId={route ? from?.id : undefined}
-              toId={route ? to?.id : undefined}
-              routeLines={routeLines}
-              connectors={connectors}
-              stepActive={activeStepKey !== null}
-              view={view}
-              bounds={bounds}
-              onViewChange={(next, animate) => changeView(level.id, next, animate)}
-              onSelect={(id) => select(id, 'map')}
-              onLevelChange={changeLevel}
-              onEscape={clearSelection}
-            />
-          </div>
-          <MapLegend showRoute={Boolean(route)} />
-        </div>
-
-        <div className="flex min-w-0 flex-col gap-4 lg:col-start-1 lg:row-start-2">
-          {selected ? (
-            <PlaceDetails
-              poi={selected}
-              level={levelsById.get(selected.level)}
-              sources={sources}
-              facilitiesHref={facilitiesHref}
-              isDestination={to?.id === selected.id}
-              isStart={from?.id === selected.id}
-              onClose={clearSelection}
-              onRouteHere={() => routeHere(selected.id)}
-              onRouteFrom={() => routeFrom(selected.id)}
-            />
-          ) : null}
-          <RoutePlanner
-            map={map}
-            levelsById={levelsById}
-            fromId={from?.id}
-            toId={to?.id}
-            stepFree={query.stepFree}
-            route={route}
-            steps={steps}
-            minutes={minutes}
-            activeStep={activeStepKey}
-            onFromChange={(id) => setRoute({ from: id })}
-            onToChange={(id) => setRoute({ to: id })}
-            onSwap={() => setRoute({ from: to?.id, to: from?.id })}
-            onStepFreeChange={(value) => setRoute({ stepFree: value })}
-            onClear={() => {
-              writeQuery({ from: null, to: null });
-              setActiveStep(null);
-              setStatus('');
-            }}
-            onStepSelect={selectStep}
-          />
         </div>
       </div>
 

@@ -110,6 +110,8 @@ export const mapPagesEn = {
   },
   route: {
     title: 'Directions',
+    // Round 4 (6.1.6): the time and the steps, in their own card under the map on phones.
+    resultTitle: 'Your route',
     lead: 'Choose where you start and where you are going. The steps are written out under the summary.',
     from: 'From',
     to: 'To',
@@ -301,6 +303,7 @@ export const mapPagesMs: typeof mapPagesEn = {
   },
   route: {
     title: 'Arah',
+    resultTitle: 'Laluan anda',
     lead: 'Pilih tempat anda bermula dan destinasi anda. Langkah-langkahnya ditulis di bawah ringkasan.',
     from: 'Dari',
     to: 'Ke',

@@ -28,6 +28,8 @@ export interface NeedsControlProps {
   headingLevel?: 2 | 3;
   /** Also show the two trip options (hand luggage only, lounge access) under the needs. */
   tripOptions?: boolean;
+  /** Anchor id for links to the control (the flight page's "My needs" button). */
+  id?: string;
   className?: string;
 }
 
@@ -39,7 +41,7 @@ export interface NeedsControlProps {
  *
  * Package D can render it on /accessibility: `<NeedsControl headingLevel={2} />`.
  */
-export function NeedsControl({ headingLevel = 3, tripOptions = false, className }: NeedsControlProps) {
+export function NeedsControl({ headingLevel = 3, tripOptions = false, id, className }: NeedsControlProps) {
   const t = useT();
   const { needs, setNeed } = useNeeds();
   const { options, setOption } = useTripOptions();
@@ -53,7 +55,7 @@ export function NeedsControl({ headingLevel = 3, tripOptions = false, className 
   };
 
   return (
-    <section aria-labelledby="needs-control-title" className={cn('rounded-lg border border-line-strong bg-surface p-5', className)}>
+    <section id={id} aria-labelledby="needs-control-title" className={cn('scroll-mt-28 rounded-lg border border-line-strong bg-surface p-5', className)}>
       <Heading id="needs-control-title" className="type-title-md text-ink">
         {t('flightPages.needs.title')}
       </Heading>

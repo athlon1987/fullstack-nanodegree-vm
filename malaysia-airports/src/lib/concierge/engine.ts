@@ -20,12 +20,12 @@ import { gatePrefixesOf } from '@/lib/flights/gates';
 import { formatFlightNumber, isInternationalFlight } from '@/lib/flights/query';
 import { flightStatusLabel } from '@/lib/flights/status';
 import type { Flight } from '@/lib/flights/types';
-import { calculateParking } from '@/lib/parking';
+import { calculateParking, rateFacts, rateStatusText } from '@/lib/parking';
 import { OPS_SERVICES } from '@/lib/providers/ops-services';
 import { formatTime } from '@/lib/time';
 import { ANSWER_LIMITS, CONCIERGE_MAX_QUESTION } from './constants';
 import { hrefFor, retrievePassages, searchKnowledge, type PassageQuery } from './retrieve';
-import { fellBack, list, minutesLabel, normalise, phrase, pickText, tokens, type EnginePhrase } from './text';
+import { fellBack, hasPhrase, list, minutesLabel, missingFacility, normalise, phrase, pickText, tokens, type EnginePhrase } from './text';
 import { understand } from './understand';
 import type {
   AnswerAction,
@@ -200,9 +200,13 @@ function noticeState(notice: Notice, now: number): 'upcoming' | 'active' | 'expi
 
 function addNotice(s: Scope, notice: Notice): void {
   const state = noticeState(notice, s.now);
-  const label = s.b.say(state === 'upcoming' ? 'noticeUpcoming' : state === 'active' ? 'noticeActive' : 'noticeEnded');
+  // Round 4 (6.1.4): a current notice is titled by itself. "In effect" read as if the change it
+  // announces had started ("In effect: … RM65 from 1 January 2027"); only upcoming and ended
+  // notices carry a label.
+  const label = state === 'upcoming' ? s.b.say('noticeUpcoming') : state === 'expired' ? s.b.say('noticeEnded') : undefined;
+  const title = s.b.pick(notice.title);
   s.b.statement(
-    { title: `${label}: ${s.b.pick(notice.title)}`, text: s.b.pick(notice.body), provenance: notice.provenance, sourceIds: notice.sources, href: hrefFor(s.k, 'notice', notice.id) },
+    { title: label ? `${label}: ${title}` : title, text: s.b.pick(notice.body), provenance: notice.provenance, sourceIds: notice.sources, href: hrefFor(s.k, 'notice', notice.id) },
     `notice:${notice.id}`,
   );
 }
@@ -236,11 +240,6 @@ const GENERIC_STARTS = new Set(['train', 'trains', 'free', 'bus', 'buses', 'shut
 function midSentence(name: string, lang: Lang): string {
   const first = name.split(' ')[0].toLowerCase();
   return lang === 'en' && GENERIC_STARTS.has(first) ? name.charAt(0).toLowerCase() + name.slice(1) : name;
-}
-
-/** "Toilets" becomes "toilets" mid-sentence; "Wi-Fi" and "ATM" keep their capitals. */
-function sentenceCase(label: string): string {
-  return /[A-Z]/.test(label.slice(1)) ? label : label.charAt(0).toLowerCase() + label.slice(1);
 }
 
 function mentions(text: string, name: string): boolean {
@@ -415,19 +414,29 @@ function transportCard(s: Scope, option: TransportOption, rows: TransportOption[
   });
 }
 
+/** A car park's rate status: the sentence the parking page and the help FAQ use (round 4, 6.1.3). */
+function rateLine(s: Scope, carPark: CarPark): string {
+  return s.b.pick(rateStatusText(carPark, (id) => s.k.sources.find((source) => source.id === id)));
+}
+
 function carParkCard(s: Scope, carPark: CarPark, estimate?: string): void {
   const officialUrl = carPark.bookingUrl ?? s.k.sources.find((source) => carPark.sources.includes(source.id) && source.url.startsWith('https:'))?.url;
   const airport = getAirport(s.k, carPark.airport);
   const terminal = airport?.terminals.find((item) => item.id === carPark.terminal);
+  const facts = rateFacts(carPark);
   s.b.card({
     type: 'car-park',
     id: carPark.id,
     name: s.b.pick(carPark.name),
     place: airport && airport.terminals.length > 1 && terminal ? s.b.pick(terminal.name) : (airport?.shortName ?? ''),
-    ratesPublished: carPark.rateStatus === 'published' && carPark.rates.length > 0,
+    ratesPublished: facts.verified,
+    rateText: rateLine(s, carPark),
+    rateMissing: facts.basis === 'none' ? true : undefined,
     estimate,
     officialUrl,
-    provenance: carPark.provenance,
+    // The card's fact is the rate: a figure that is not from a tariff is an estimate, as on the
+    // parking page's price table, even where the car park itself is on the official site.
+    provenance: facts.basis === 'daily-max' || facts.basis === 'reported' ? 'estimated' : carPark.provenance,
     sourceIds: carPark.sources,
     href: hrefFor(s.k, 'parking', carPark.id),
   });
@@ -521,6 +530,8 @@ function namedOptions(s: Scope, options: readonly TransportOption[]): TransportO
   return options.filter((option) => (modeWords[option.mode] ?? []).some((word) => ` ${text} `.includes(` ${word} `)));
 }
 
+const LIFT_WORDS = ['lift', 'lifts', 'lif', 'elevator', 'elevators', 'ramp'];
+
 /** "accessible taxi", "step-free access to KLIA Ekspres": only step-free facts, or "not published, ask" (B-08). */
 function accessibleTransport(s: Scope, options: readonly TransportOption[]): void {
   const shown = options.slice(0, ANSWER_LIMITS.cards);
@@ -549,6 +560,8 @@ const transport: Handler = (s) => {
   if (s.u.slots.accessible && all.length > 0) {
     const named = namedOptions(s, all);
     accessibleTransport(s, named.length > 0 ? named : all);
+    // "Is there a lift from arrivals to the train?" (round 4, 6.1.4): the map plans step-free routes.
+    if (LIFT_WORDS.some((word) => hasPhrase(normalise(s.question), word))) s.b.link(s.b.say('actionTerminalMap'), sectionHref(s, 'map'), 'map');
     s.b.link(s.b.say('actionCompareAllTransport'), sectionHref({ ...s, terminal: undefined }, 'transport'), 'train-front');
     return;
   }
@@ -657,11 +670,15 @@ const facility: Handler = (s) => {
     const mapped = chosen.find((item) => item.mapPoint && airport.sections.includes('map'));
     if (mapped) s.b.link(s.b.say('actionShowOnTheTerminal'), `/${airport.slug}/map?poi=${mapped.mapPoint}`, 'map');
   } else {
-    s.b.text = s.b.say('facilityNone', { category: s.lang === 'en' ? sentenceCase(label) : label, place: placeName(s) });
+    // Round 4 (6.1.4): a phrase written for each category, not the label slotted into a frame
+    // ("Our sources do not publish accessible toilet for KLIA yet").
+    s.b.text = s.b.say('facilityNone', { what: missingFacility(s.lang, category), place: placeName(s) });
     escalate(s, 'missing');
     passages(s, { text: `${s.k.labels.categories[category].en} not verified`, includeGaps: true, require: tokens(s.k.labels.categories[category].en).slice(0, 1), limit: 1, minScore: 1 });
     const info = s.k.facilities.find((item) => item.airport === airport.slug && item.category === 'information');
     if (info) facilityCard(s, info);
+    // The accessibility hub lists every access fact we have not published, with who to ask.
+    if (category === 'accessible-toilet') s.b.link(s.b.say('actionAccessibilityGaps'), '/accessibility#not-published', 'accessibility');
   }
   passages(s, { text: `${s.question} ${s.k.labels.categories[category].en}`, limit: 2, minScore: 5 });
   const page = category === 'lounge' || category === 'hotel' ? 'lounges' : 'facilities';
@@ -708,28 +725,37 @@ const parking: Handler = (s) => {
     escalate(s, 'missing');
     return;
   }
-  s.b.text = s.b.say('parking', { place: placeName(s) });
+  // One fact, one answer (round 4, 6.1.3): every car park's rate status comes from its record,
+  // in the words of the parking page and the help FAQ. The right car park leads: a captured
+  // tariff, then the lowest daily figure in our sources, then the rest (premium parking last).
+  const facts = new Map(parks.map((park) => [park.id, rateFacts(park)]));
+  const fact = (park: CarPark) => facts.get(park.id) ?? rateFacts(park);
+  const ranked = [...parks].sort((a, b) => {
+    const [fa, fb] = [fact(a), fact(b)];
+    if (fa.verified !== fb.verified) return fa.verified ? -1 : 1;
+    return (fa.lowestDaily ?? Infinity) - (fb.lowestDaily ?? Infinity);
+  });
   const duration = s.u.slots.durationMinutes;
-  const published = parks.filter((item) => item.rateStatus === 'published' && item.rates.length > 0);
-  const missing = parks.filter((item) => !published.includes(item));
-  for (const park of published) {
-    const result = duration ? calculateParking(park, duration) : undefined;
+  const published = ranked.filter((park) => fact(park).verified);
+  const lowest = ranked.find((park) => !fact(park).verified && fact(park).lowestDaily !== undefined);
+  for (const park of ranked) {
+    const result = fact(park).verified && duration ? calculateParking(park, duration) : undefined;
     if (result && !result.unavailable) {
       const total = formatCurrency(result.total, s.lang, { alwaysShowSen: !Number.isInteger(result.total) });
       s.b.statement({ text: s.b.say('parkingEstimate', { total, duration: minutesLabel(duration ?? 0, s.lang), carPark: s.b.pick(park.name) }), provenance: 'estimated', sourceIds: park.sources }, `estimate:${park.id}`);
       carParkCard(s, park, total);
     } else {
-      s.b.statement({ text: s.b.say('parkingRates', { carPark: s.b.pick(park.name) }), provenance: park.provenance, sourceIds: park.sources }, `rates:${park.id}`);
       carParkCard(s, park);
     }
-    if (park.description) s.b.statement({ title: s.b.pick(park.name), text: s.b.pick(park.description), provenance: park.provenance, sourceIds: park.sources }, `park:${park.id}`);
   }
-  if (missing.length > 0) {
-    s.b.limit(s.b.say('parkingMissing', { carParks: list(missing.map((item) => s.b.pick(item.name)), s.lang) }));
-    for (const park of missing) carParkCard(s, park);
-    if (published.length === 0) escalate(s, 'missing');
-  }
+  const estimate = s.b.statements[0];
+  if (estimate) s.b.text = estimate.text;
+  else if (published[0]) s.b.text = s.b.say('parkingRates', { carPark: s.b.pick(published[0].name) });
+  else if (lowest) s.b.text = s.b.say('parkingLowest', { place: placeName(s), amount: formatCurrency(fact(lowest).lowestDaily ?? 0, s.lang), carPark: s.b.pick(lowest.name) });
+  else s.b.text = s.b.say('parkingUnpublished', { place: placeName(s) });
+  if (published.length === 0) escalate(s, 'missing');
   passages(s, { text: `${s.question} car park`, topics: ['parking-transport', 'getting-there'], limit: 2, minScore: 4 });
+  s.b.direct = true;
   s.b.link(s.b.say('actionParkingAndCalculator'), sectionHref({ ...s, terminal: undefined }, 'parking'), 'square-parking');
 };
 
@@ -744,16 +770,44 @@ const lostProperty: Handler = (s) => {
   if (s.k.helpTopics.includes('lost-property')) s.b.link(s.b.say('actionLostPropertyHelp'), '/help/lost-property', 'package-search');
 };
 
+/** Words that ask about hidden disabilities: only these bring the calm room and sensory places. */
+const HIDDEN_DISABILITY_WORDS = ['autism', 'autistic', 'adhd', 'hidden', 'sensory', 'butterfly', 'calm', 'quiet', 'anxiety', 'anxious', 'dementia', 'neurodivergent', 'tersembunyi', 'autisme', 'deria', 'tenang'];
+
 const assistance: Handler = (s) => {
-  s.b.text = s.airport ? s.b.say('assistance', { airport: s.airport.shortName }) : s.b.say('assistanceGeneral');
-  passages(s, { text: s.question, terminal: undefined, topics: ['accessibility', 'assistance', 'reduced-mobility', 'neurodivergent', 'older-travellers'], limit: 6, minScore: 4 });
-  if (s.airport) {
+  const text = normalise(s.question);
+  const hidden = HIDDEN_DISABILITY_WORDS.some((word) => hasPhrase(text, word));
+  const code = s.u.slots.airline;
+  const airline = code ? (s.k.airlines.find((item) => item.code === code && item.airport === s.airport?.slug) ?? s.k.airlines.find((item) => item.code === code)) : undefined;
+  const otherAirlines = airline ? s.k.airlines.filter((item) => item.code !== airline.code).map((item) => normalise(item.name)) : [];
+  // Round 4 (6.1.4, B-08): a named airline leads, with its published rule or an honest "not published".
+  if (airline) {
+    const rule = s.k.assistanceNotice?.[airline.code];
+    if (rule) {
+      s.b.text = s.b.say('assistanceAirline', { airline: airline.name, hours: rule.hours, late: s.b.pick(rule.late) });
+      s.b.statement({ text: s.b.text, provenance: rule.provenance, sourceIds: [...rule.sources] }, `assist:${airline.code}`);
+    } else {
+      // No rule to cite: the lead says so, and the escalation names who to ask.
+      s.b.text = s.b.say('assistanceAirlineMissing', { airline: airline.name });
+    }
+  } else {
+    s.b.text = s.airport ? s.b.say('assistance', { airport: s.airport.shortName }) : s.b.say('assistanceGeneral');
+  }
+  const topics = hidden ? ['neurodivergent', 'assistance', 'accessibility'] : ['reduced-mobility', 'assistance', 'accessibility', 'older-travellers'];
+  for (const { passage } of retrievePassages(s.k, { text: s.question, airport: s.airport?.slug, topics, limit: 6, minScore: 4 })) {
+    const words = ` ${normalise(`${passage.title.en} ${passage.body.en}`)} `;
+    // Another airline's rule does not answer a question about this one.
+    if (otherAirlines.some((name) => name && words.includes(` ${name} `)) && !(airline && words.includes(` ${normalise(airline.name)} `))) continue;
+    if (!hidden && /\b(?:hidden disabilit|butterfly effect|autism|sensory)/.test(words)) continue;
+    s.b.passage(passage);
+  }
+  if (s.airport && hidden) {
     const related = s.k.facilities.filter((item) => item.airport === s.airport?.slug && (item.category === 'assistance' || item.category === 'calm-room'));
     for (const item of related.slice(0, 2)) facilityCard(s, item);
   }
   escalate(s, 'human', true);
+  s.b.direct = true;
   s.b.link(s.b.say('actionAssistanceAndAccessibility'), '/accessibility', 'accessibility');
-  if (s.k.guides.includes('reduced-mobility')) s.b.link(s.b.say('actionReducedMobilityGuide'), '/guides/reduced-mobility', 'person-standing');
+  if (s.k.guides.includes('reduced-mobility') && !hidden) s.b.link(s.b.say('actionReducedMobilityGuide'), '/guides/reduced-mobility', 'person-standing');
 };
 
 const flightDelay: Handler = (s) => {
@@ -825,40 +879,88 @@ const greeting: Handler = (s) => {
   s.b.text = s.b.say('greeting');
 };
 
-/** Structured retrieval found nothing to say: passages, then the site search engine. */
-function fallback(s: Scope): void {
-  passages(s, { text: s.question, limit: 3, minScore: 4 });
-  for (const hit of searchKnowledge(s.k, s.question, { airport: s.airport?.slug, limit: 4 })) {
-    const [type, id] = [hit.type, hit.id.slice(hit.id.indexOf(':') + 1)];
-    if (type === 'faq') {
-      const passage = s.k.passages.find((item) => item.id === `faq:${id}`);
-      if (passage) s.b.passage(passage);
-    } else if (type === 'facility') {
-      const item = s.k.facilities.find((entry) => entry.id === id);
-      if (item) facilityStatement(s, item);
-    } else if (type === 'transport') {
-      const option = s.k.transport.find((entry) => entry.id === id);
-      if (option?.description) s.b.statement({ title: s.b.pick(option.name), text: s.b.pick(option.description), provenance: option.provenance, sourceIds: option.sources, href: hit.href }, `transport:${option.id}`);
-    } else if (type === 'notice') {
-      const notice = s.k.notices.find((entry) => entry.id === id);
-      if (notice) addNotice(s, notice);
-    } else if (type === 'parking') {
-      const park = s.k.carParks.find((entry) => entry.id === id);
-      if (park?.description) s.b.statement({ title: s.b.pick(park.name), text: s.b.pick(park.description), provenance: park.provenance, sourceIds: park.sources, href: hit.href }, `park:${park.id}`);
-    } else if (type === 'guide') {
-      for (const { passage } of retrievePassages(s.k, { text: s.question, airport: s.airport?.slug, topics: [id], limit: 1, minScore: 4 })) s.b.passage(passage);
-      s.b.link(hit.title, hit.href, 'file-text');
-    } else {
-      s.b.link(hit.title, hit.href, 'arrow-right');
+const vocabularyCache = new WeakMap<ConciergeKnowledge, Set<string>>();
+
+/** Every word the knowledge uses: a question word outside it is a topic we cannot answer. */
+function vocabulary(k: ConciergeKnowledge): Set<string> {
+  let words = vocabularyCache.get(k);
+  if (!words) {
+    words = new Set<string>();
+    const add = (text: string | undefined) => {
+      for (const token of tokens(text ?? '')) words?.add(token);
+    };
+    for (const passage of k.passages) for (const text of [passage.title.en, passage.title.ms, passage.body.en, passage.body.ms]) add(text);
+    for (const doc of k.searchDocs) add(`${doc.title} ${doc.summary} ${doc.keywords.join(' ')}`);
+    vocabularyCache.set(k, words);
+  }
+  return words;
+}
+
+/** The first sentence of a passage, or two when the first is a bare "Yes." or "No.". */
+function leadSentence(text: string): string {
+  const sentences = text.match(/[^.!?]+[.!?]+(?:\s|$)/g)?.map((item) => item.trim()) ?? [text];
+  return (sentences[0].length < 40 && sentences[1] ? `${sentences[0]} ${sentences[1]}` : sentences[0]).trim();
+}
+
+/**
+ * Structured retrieval found nothing to say: passages, then the site search engine, keeping only
+ * items that cover the question (round 4, 6.1.4: "weather" no longer brings rail fares, nor
+ * "durian in hand luggage" the power-bank rule). When nothing covers it, the answer says plainly
+ * that it cannot answer and names the official contact from the content.
+ *
+ * `supplement`: called after a handler whose answer was not grounded; its lead stays.
+ */
+function fallback(s: Scope, supplement = false): void {
+  const wanted = [...new Set(tokens(s.question))];
+  const known = vocabulary(s.k);
+  // A word our content never uses is what the question is about: nothing we have answers it.
+  const outside = wanted.filter((word) => word.length >= 4 && !known.has(word));
+  const covers = (text: string) => {
+    const have = new Set(tokens(text));
+    return wanted.length > 0 && wanted.filter((word) => have.has(word)).length / wanted.length >= 0.6;
+  };
+  if (outside.length === 0) {
+    for (const { passage } of retrievePassages(s.k, { text: s.question, airport: s.airport?.slug, limit: 3, minScore: 4 })) {
+      if (covers([passage.title.en, passage.title.ms, passage.body.en, passage.body.ms].join(' '))) s.b.passage(passage);
+    }
+    for (const hit of searchKnowledge(s.k, s.question, { airport: s.airport?.slug, limit: 4 })) {
+      if (!covers(`${hit.title} ${hit.summary} ${Array.isArray(hit.keywords) ? hit.keywords.join(' ') : String(hit.keywords ?? '')}`)) continue;
+      const [type, id] = [hit.type, hit.id.slice(hit.id.indexOf(':') + 1)];
+      if (type === 'faq') {
+        const passage = s.k.passages.find((item) => item.id === `faq:${id}`);
+        if (passage) s.b.passage(passage);
+      } else if (type === 'facility') {
+        const item = s.k.facilities.find((entry) => entry.id === id);
+        if (item) facilityStatement(s, item);
+      } else if (type === 'transport') {
+        const option = s.k.transport.find((entry) => entry.id === id);
+        if (option?.description) s.b.statement({ title: s.b.pick(option.name), text: s.b.pick(option.description), provenance: option.provenance, sourceIds: option.sources, href: hit.href }, `transport:${option.id}`);
+      } else if (type === 'notice') {
+        const notice = s.k.notices.find((entry) => entry.id === id);
+        if (notice) addNotice(s, notice);
+      } else if (type === 'parking') {
+        const park = s.k.carParks.find((entry) => entry.id === id);
+        if (park) carParkCard(s, park);
+      } else {
+        s.b.link(hit.title, hit.href, type === 'guide' ? 'file-text' : 'arrow-right');
+      }
     }
   }
-  if (s.b.statements.length > 0) {
-    s.b.text = s.b.say('searchIntro');
-  } else {
-    s.b.text = s.airport ? s.b.say('noAnswerAt', { airport: s.airport.shortName }) : s.b.say('noAnswer');
-    escalate(s, 'missing');
-    s.b.link(s.b.say('actionSearchTheSite'), `/search?q=${encodeURIComponent(s.question.slice(0, 80))}`, 'search');
+  if (supplement) {
+    if (s.b.statements.length === 0 && !s.b.grounded) escalate(s, 'missing');
+    return;
   }
+  const first = s.b.statements[0];
+  if (first) {
+    s.b.text = leadSentence(first.text);
+    return;
+  }
+  // Round 4 (6.1.4, B-08): say plainly that this cannot be answered, and who can answer it.
+  const contacts = s.airport && s.airport.contacts.length > 0 ? s.airport.contacts : s.k.groupContacts;
+  const contact = contacts[0];
+  s.b.text = contact ? s.b.say('cannotAnswer', { contact: `${s.b.pick(contact.label)}, ${contact.value}` }) : s.b.say('cannotAnswerOfficial');
+  escalate(s, 'missing');
+  s.b.link(s.b.say('actionSearchTheSite'), `/search?q=${encodeURIComponent(s.question.slice(0, 80))}`, 'search');
 }
 
 /* ---- direct answers (B-08) ------------------------------------------------------------------ */
@@ -903,10 +1005,10 @@ const fare: Handler = (s) => {
     transportCard(s, option, option.destinations);
     // A dated fare change always follows the fare, even though it repeats some of its words.
     for (const notice of liveNotices(s, (notice) => mentions(`${notice.title.en} ${notice.body.en}`, shortName(option.name.en)))) {
-      const state = noticeState(notice, s.now);
-      const label = s.b.say(state === 'upcoming' ? 'noticeUpcoming' : 'noticeActive');
+      // Round 4 (6.1.4): no "In effect" label on a notice about a fare that changes later.
+      const title = noticeState(notice, s.now) === 'upcoming' ? `${s.b.say('noticeUpcoming')}: ${s.b.pick(notice.title)}` : s.b.pick(notice.title);
       if (s.b.statements.length < ANSWER_LIMITS.statements && s.b.once(`s:notice:${notice.id}`)) {
-        s.b.statements.push({ title: `${label}: ${s.b.pick(notice.title)}`, text: s.b.pick(notice.body), provenance: notice.provenance, sourceIds: notice.sources, href: hrefFor(s.k, 'notice', notice.id) });
+        s.b.statements.push({ title, text: s.b.pick(notice.body), provenance: notice.provenance, sourceIds: notice.sources, href: hrefFor(s.k, 'notice', notice.id) });
       }
     }
   }
@@ -1188,9 +1290,7 @@ export function answerQuestion(input: ConciergeInput, deps: ConciergeDeps): Conc
   // Nothing grounded and nothing to clarify: try the passages and the search engine (not after a
   // direct answer, which is complete or honestly says what is not published).
   if (!b.clarify && !b.grounded && !b.direct && u.intent !== 'greeting' && u.intent !== 'unknown') {
-    const text = b.text;
-    fallback(scope);
-    if (b.statements.length > 0 && text) b.text = text;
+    fallback(scope, true);
   }
   if (!b.clarify && !b.grounded && u.intent !== 'greeting' && !b.escalation) escalate(scope, 'missing');
 

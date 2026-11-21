@@ -10,7 +10,7 @@ import { useFlightFeed, type FeedRequest } from '@/lib/providers/use-flight-feed
 import { dateKey } from '@/lib/time';
 import { flightAvailability, sameFlightOn } from './board-model';
 import { FeedNotice } from './feed-notice';
-import { FlightActions } from './flight-actions';
+import { FlightActions, NEEDS_CONTROL_ID } from './flight-actions';
 import { useFlightAlerts } from './flight-alerts';
 import { FlightNotFound } from './flight-not-found';
 import { FlightStatusHero, FlightStatusHeroSkeleton, type PublishedCheckIn } from './flight-status-hero';
@@ -105,7 +105,10 @@ export function FlightDetail({ flightId, airport, title, journeyContent, sources
         <FlightActions flight={flight} title={title} />
       </div>
       {disrupted ? disruption : null}
-      <div className="grid items-start gap-x-14 gap-y-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,23rem)]">
+      {/* Round 4 (re-review 6.1.6): on phones "My needs" comes before the timeline (it was eleven
+          screens down); on wide screens it heads the side column, as before. */}
+      <div className="grid items-start gap-x-14 gap-y-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,23rem)] lg:gap-y-5">
+        <NeedsControl id={NEEDS_CONTROL_ID} tripOptions={flight.direction === 'd'} className="lg:col-start-2 lg:row-start-1" />
         <JourneyTimeline
           flight={flight}
           content={journeyContent}
@@ -114,9 +117,9 @@ export function FlightDetail({ flightId, airport, title, journeyContent, sources
           now={provider.now}
           title={t('journey.timeline.title')}
           headingId="flight-journey-title"
+          className="lg:col-start-1 lg:row-span-2 lg:row-start-1"
         />
-        <div className="flex flex-col gap-5">
-          <NeedsControl tripOptions={flight.direction === 'd'} />
+        <div className="flex flex-col gap-5 lg:col-start-2 lg:row-start-2">
           {disrupted ? null : disruption}
           {airlineFacts}
         </div>

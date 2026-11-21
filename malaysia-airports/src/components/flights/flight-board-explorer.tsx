@@ -424,13 +424,17 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
             searching ? undefined : (
               <>
                 {/* On phones the note is left to screen readers and "Show earlier flights" stays, so
-                  the first row reaches the first 664 px in both languages (A-01, round 2). */}
-                {selected && selected.finished > 0 ? (
-                  <p className="type-body-sm px-4 pt-2 text-center text-ink-2 max-sm:sr-only sm:px-5">
-                    {t.count(direction === 'd' ? 'flightPages.rows.departedHidden' : 'flightPages.rows.arrivedHidden', selected.finished)}
-                  </p>
-                ) : null}
-                {edge(shift.earlier < MAX_EARLIER_STEPS, earlierButton, t('flightPages.board.earlierLimit'))}
+                  the first row reaches the first 664 px in both languages (A-01, round 2). From sm up
+                  the note and the button share one line, so on a 1440 x 900 screen the first row
+                  sits above the fold (round 4, re-review 6.1.6: it was at 935 px). */}
+                <div className="sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-2">
+                  {selected && selected.finished > 0 ? (
+                    <p className="type-body-sm px-4 text-center text-ink-2 max-sm:sr-only sm:pr-0 sm:pl-5">
+                      {t.count(direction === 'd' ? 'flightPages.rows.departedHidden' : 'flightPages.rows.arrivedHidden', selected.finished)}
+                    </p>
+                  ) : null}
+                  {edge(shift.earlier < MAX_EARLIER_STEPS, earlierButton, t('flightPages.board.earlierLimit'))}
+                </div>
               </>
             )
           }

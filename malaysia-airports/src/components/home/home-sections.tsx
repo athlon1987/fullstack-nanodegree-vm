@@ -98,7 +98,7 @@ export function HomeHero({ lang, notices }: { lang: Lang; notices: readonly Noti
             </p>
             <h1 id="home-title" className="type-display-lg text-ink max-sm:text-[1.625rem] max-xs:text-2xl">
               {/* Upright, in colour: the italic face (81 KB) is no longer loaded (A-10). */}
-              {t('home.headlineLead')} <span className="text-primary-ink">{t('home.headlineAccent')}</span>
+              {t('home.headlineTaskLead')} <span className="text-primary-ink">{t('home.headlineTaskAccent')}</span>
             </h1>
           </div>
           <p className="type-body-sm max-w-80 shrink-0 pb-1 text-ink-2 max-xl:hidden">{t('home.lead')}</p>
@@ -265,7 +265,7 @@ export function HomeNetwork({ lang }: { lang: Lang }) {
           <div className="min-w-0">
             <h3 className="type-display-md">{t('home.network.bandTitle', { count: AIRPORTS.length })}</h3>
             <p className="type-body mt-2 max-w-reading text-on-inverse-dim">{t('home.network.bandLead')}</p>
-            <dl className="mt-6 grid max-w-xl grid-cols-3 gap-x-6">
+            <dl className="mt-6 grid max-w-xl grid-cols-[repeat(auto-fit,minmax(min(100%,6.5rem),1fr))] gap-x-6 gap-y-4">
               {stats.map((stat) => (
                 <div key={stat.label} className="flex flex-col-reverse gap-1 border-t border-on-inverse-dim/40 pt-3">
                   <dt className="type-caption text-on-inverse-dim">{stat.label}</dt>

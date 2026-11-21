@@ -5,7 +5,7 @@ import { checkInLines } from '@/lib/flights/check-in';
 import { getT } from '@/lib/i18n';
 import { DemoFlightProvider } from '@/lib/providers/demo-flights';
 import { LHR, PEN, makeFlight, type FlightSeed } from '@/lib/testing/fixtures';
-import { JOURNEY_MODES, buildJourney, type JourneyStep } from './index';
+import { JOURNEY_MODES, arriveByFor, buildJourney, nextDeadline, nextStepSummary, type JourneyStep } from './index';
 
 const kul = getAirportContent('kul') as AirportContent;
 // Ipoh: a real MAHB airport with no content file yet.
@@ -133,8 +133,9 @@ describe('buildJourney: departing', () => {
   it('marks past, current and upcoming steps from the given time', () => {
     const steps = buildJourney({ flight: international(), mode: 'departing', airportContent: kul, now: at('13:20') });
     expect(step(steps, 'boarding').state).toBe('current');
-    expect(step(steps, 'check-in').state).toBe('done');
-    expect(step(steps, 'terminal').state).toBe('done');
+    // Round 4 (6.1.2), intended change: a past step the traveller had to do is "past", not "done".
+    expect(step(steps, 'check-in').state).toBe('past');
+    expect(step(steps, 'terminal').state).toBe('past');
   });
 
   it('adapts to a domestic flight, hand luggage and assistance needs', () => {
@@ -277,7 +278,7 @@ describe('buildJourney: the current step follows start, end and flight status (B
     const steps = departing(international({ status: 'check-in-closed', checkInRow: 'H', checkInCounters: '1-18' }), '13:01');
     expect(current(steps)).toEqual(['security']);
     const checkIn = step(steps, 'check-in');
-    expect(checkIn.state).toBe('done');
+    expect(checkIn.state).toBe('past');
     expect(checkIn.title.en).toBe('Check-in closed at 13:00');
     expect(checkIn.body.en).toMatch(/contact Malaysia Airlines now/);
     expect(checkIn.body.en).toMatch(/If you have checked in, carry on to security/);
@@ -291,7 +292,7 @@ describe('buildJourney: the current step follows start, end and flight status (B
     expect(current(departing(international({ status: 'boarding', gate: 'C12' }), '13:20'))).toEqual(['boarding']);
     const closed = departing(international({ status: 'gate-closed', gate: 'C12' }), '13:46');
     expect(current(closed)).toEqual(['departure']);
-    expect(step(closed, 'boarding').state).toBe('done');
+    expect(step(closed, 'boarding').state).toBe('past');
     expect(step(closed, 'departure').title.en).toBe('Gate closed at 13:45: departs 14:00');
   });
 
@@ -341,7 +342,9 @@ describe('buildJourney: needs (B-11)', () => {
     const dep = buildJourney({ flight: international({ gate: 'C12' }), mode: 'departing', airportContent: content, now: at('08:00'), preferences: { ...preferences, needs: [...preferences.needs] } });
     const assistance = step(dep, 'assistance');
     expect(assistance.title.en).toBe('Arrange assistance with Malaysia Airlines');
-    expect(assistance.body.en).toMatch(/a wheelchair, an older traveller/);
+    // Round 4: corrected English ("You told us you plan for a wheelchair, an older traveller" before).
+    expect(assistance.body.en).toMatch(/^Your needs: wheelchair, older traveller\. /);
+    expect(assistance.body.ms).toMatch(/^Keperluan anda: kerusi roda, warga emas\. /);
     expect(assistance.notes.map((note) => note.id)).toEqual(['assistance-mh', 'kul-butterfly-effect-note']);
     expect(assistance.notes[0].body.en).toMatch(/48 hours/);
     expect(assistance.actions.map((action) => action.href)).toContain('/accessibility');
@@ -491,5 +494,142 @@ describe('buildJourney: status lines and check-in desks (B-01, B-12)', () => {
     expect(body).toContain('Economy: Row H, counters 1-18');
     expect(body).toContain('Business: Row D, counters 4-12');
     expect(body).toContain('Bag drop: F, G');
+  });
+});
+
+/* ------------------------------------------------------------------------------------------
+ * Round 4 (re-review 6.1.2): one time basis, the deadline that still matters, no past "Next",
+ * past steps never "done", and the assistance notice period
+ * --------------------------------------------------------------------------------------- */
+
+describe('round 4: day of travel', () => {
+  // MH 1698 as the design reviewer saw it: domestic, scheduled 18:30, estimated 19:45.
+  const delayed = (extra: FlightSeed = {}) =>
+    domestic({
+      digits: '1698',
+      time: '18:30',
+      status: 'delayed',
+      estimated: '2026-11-17T19:45:00+08:00',
+      delayMinutes: 75,
+      checkInRow: 'B',
+      checkInCounters: '1-18',
+      checkInOpensAt: '2026-11-17T15:30:00+08:00',
+      checkInClosesAt: '2026-11-17T19:00:00+08:00',
+      boardingAt: '2026-11-17T19:15:00+08:00',
+      gateClosesAt: '2026-11-17T19:35:00+08:00',
+      ...extra,
+    });
+
+  it('puts arrive-by on the same (estimated) basis as check-in, and the delay step says so', () => {
+    const steps = departing(delayed(), '12:00');
+    expect(step(steps, 'arrive').title.en).toBe('Arrive at the airport by 17:45');
+    expect(arriveByFor(delayed()).toISOString()).toBe('2026-11-17T09:45:00.000Z');
+    const delay = step(steps, 'delay');
+    expect(delay.body.en).toMatch(/^The times below follow the new departure time, 19:45\./);
+    expect(delay.body.en).not.toMatch(/original check-in times unless/);
+    expect(delay.flightStatus).toBe(true);
+  });
+
+  it('names the deadline that still matters once the arrive-by time has passed, never a past time', () => {
+    const flight = delayed();
+    expect(nextDeadline(flight, at('17:00'))).toMatchObject({ kind: 'arrive-by', time: '2026-11-17T17:45:00+08:00', provenance: 'estimated' });
+    expect(nextDeadline(flight, at('18:35'))).toMatchObject({ kind: 'check-in-closes', time: '2026-11-17T19:00:00+08:00', provenance: 'demo' });
+    expect(nextDeadline(flight, at('19:05'))).toMatchObject({ kind: 'boarding', time: '2026-11-17T19:15:00+08:00' });
+    expect(nextDeadline(flight, at('19:20'))).toMatchObject({ kind: 'gate-closes' });
+    expect(nextDeadline(flight, at('19:40'))).toBeNull();
+    expect(nextDeadline(arrival(), at('12:00'))).toBeNull();
+
+    for (const clock of ['16:00', '17:50', '18:35', '19:05', '19:20']) {
+      const summary = nextStepSummary(departing(flight, clock), at(clock));
+      expect(summary, clock).not.toBeNull();
+      if (summary?.time) expect(Date.parse(summary.time), clock).toBeGreaterThan(at(clock).getTime());
+      expect(summary?.step.flightStatus, clock).toBeFalsy();
+    }
+    // At 18:35 (the reviewer's moment): check-in is under way until 19:00, not "Check in 16:30".
+    expect(nextStepSummary(departing(flight, '18:35'), at('18:35'))).toMatchObject({ when: 'now', step: { id: 'check-in' }, time: '2026-11-17T19:00:00+08:00', timeRole: 'ends' });
+  });
+
+  it('moves on from the arrive-by step once its time has passed', () => {
+    // International: arrive by 11:00; check-in opens 11:00 in the fixture, so use one opening later.
+    const steps = departing(international({ checkInOpensAt: '2026-11-17T11:30:00+08:00' }), '11:10');
+    expect(step(steps, 'arrive').state).toBe('past');
+    expect(nextStepSummary(steps, at('11:10'))).toMatchObject({ when: 'next', step: { id: 'check-in' }, time: '2026-11-17T11:30:00+08:00' });
+  });
+
+  it('never calls a past step done unless the feed confirms it, and calls the delay the flight status', () => {
+    const steps = departing(delayed(), '19:20', { needs: ['wheelchair'] });
+    for (const item of steps.filter((entry) => entry.state === 'past' || entry.state === 'done')) expect(item.state, item.id).toBe('past');
+    expect(step(steps, 'delay').state).toBe('past');
+    const landed = buildJourney({ flight: arrival({ status: 'landed', actual: '2026-11-17T17:35:00+08:00' }), mode: 'arriving', airportContent: kul, now: at('17:40') });
+    expect(step(landed, 'landing').state).toBe('done');
+  });
+
+  it('says what to do when the assistance step has passed and nobody may have arranged it', () => {
+    const steps = departing(delayed(), '18:35', { needs: ['wheelchair'] });
+    const assistance = step(steps, 'assistance');
+    expect(assistance.state).toBe('past');
+    expect(assistance.warning?.en).toBe('If nobody has arranged assistance yet, contact Malaysia Airlines now, and tell its staff as soon as you reach the airport.');
+    expect(assistance.warning?.ms).toMatch(/^Jika belum ada sesiapa yang mengatur bantuan/);
+  });
+
+  it('warns inside the sourced notice period (Malaysia Airlines, 48 hours) and not before it', () => {
+    const nextDay = (day: string) =>
+      international({
+        scheduled: `2026-11-${day}T19:00:00+08:00`,
+        estimated: `2026-11-${day}T19:00:00+08:00`,
+        checkInOpensAt: `2026-11-${day}T16:00:00+08:00`,
+        checkInClosesAt: `2026-11-${day}T18:00:00+08:00`,
+        boardingAt: `2026-11-${day}T18:15:00+08:00`,
+        gateClosesAt: `2026-11-${day}T18:45:00+08:00`,
+      });
+    const tomorrow = nextDay('18');
+    const inside = step(departing(tomorrow, '20:00', { needs: ['wheelchair'] }), 'assistance');
+    expect(inside.state).toBe('upcoming');
+    expect(inside.warning?.en).toMatch(/^Malaysia Airlines asks for 48 hours' notice, and your flight leaves in less than that\. If nobody has arranged assistance yet, ask Malaysia Airlines now: later requests depend on availability\.$/);
+    const later = nextDay('20');
+    expect(step(departing(later, '20:00', { needs: ['wheelchair'] }), 'assistance').warning).toBeUndefined();
+  });
+
+  it('does not invent a notice period for an airline without one, but still says to ask now when the flight is close', () => {
+    const ba = international({ airline: { code: 'BA', name: 'British Airways' } });
+    const assistance = step(departing(ba, '08:00', { needs: ['wheelchair'] }), 'assistance');
+    expect(assistance.warning?.en).toBe('Your flight leaves in less than 2 days, and we do not know how much notice British Airways needs. If nobody has arranged assistance yet, ask British Airways now.');
+    expect(assistance.warning?.en).not.toMatch(/\d+ hours/);
+    expect(assistance.body.en).toMatch(/We have not published its notice period/);
+  });
+});
+
+describe('round 4: a delayed flight keeps its timeline in time order', () => {
+  it('times check-in no earlier than the arrive-by step when counters opened on the original schedule', () => {
+    const flight = domestic({
+      digits: '1698',
+      time: '18:30',
+      status: 'delayed',
+      estimated: '2026-11-17T19:45:00+08:00',
+      delayMinutes: 75,
+      checkInRow: 'B',
+      checkInOpensAt: '2026-11-17T16:30:00+08:00',
+      checkInClosesAt: '2026-11-17T19:00:00+08:00',
+      boardingAt: '2026-11-17T19:15:00+08:00',
+      gateClosesAt: '2026-11-17T19:35:00+08:00',
+    });
+    const steps = departing(flight, '12:00');
+    expect(timesInOrder(steps)).toBe(true);
+    expect(step(steps, 'check-in').time).toBe(step(steps, 'arrive').time);
+    // An on-time flight keeps the feed's opening time.
+    expect(step(departing(international(), '08:00'), 'check-in').time).toBe('2026-11-17T11:00:00+08:00');
+  });
+});
+
+describe('round 4: the Fast Track booking link is a measured hand-off (re-review 6.1.9)', () => {
+  it('offers the booking site with data-handoff, beside the details page, for the flight terminal', async () => {
+    const { journeyExtras } = await import('@/components/flights/journey-content');
+    const content = { ...kul, ...journeyExtras(kul, 'en') };
+    const steps = buildJourney({ flight: international({ terminal: 'T1' }), mode: 'departing', airportContent: content, now: at('08:00') });
+    const fastTrack = step(steps, 'fast-track');
+    expect(fastTrack.actions).toEqual([
+      { labelKey: 'flightPages.timeline.viewFastTrack', href: '/kul/facilities#kul-t1-fast-track' },
+      { labelKey: 'airportPage.fastTrackBook', href: 'https://www.myairportfasttrack.com/', handoff: 'fast-track-booking' },
+    ]);
   });
 });

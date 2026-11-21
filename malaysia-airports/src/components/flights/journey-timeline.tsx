@@ -10,6 +10,7 @@ import { buildJourney, type JourneyAirportContent, type JourneyMode, type Journe
 import { useTripOptions } from '@/lib/journey/trip-options';
 import { needsToPreferences, useNeeds } from '@/lib/needs';
 import { formatTime, type Instant } from '@/lib/time';
+import { ExternalLink } from '@/components/common/external-link';
 import { LocaleLink } from '@/components/common/locale-link';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { SourceNote } from '@/components/common/source-note';
@@ -91,7 +92,9 @@ export function JourneyTimeline({ flight, content, sources, now, notices, title,
     const section = AIRPORT_SECTIONS.find((item) => item.segment === match[2]);
     return section ? hasSection(availability, match[1], section.id) : true;
   };
-  const stateLabel = { done: t('journey.timeline.done'), current: t('journey.timeline.current'), upcoming: t('journey.timeline.upcoming') };
+  // Round 4 (6.1.2): a past step is "Past", not "Done" (only a landing the feed confirms is done),
+  // and the delayed-flight step is the flight's status, not a step of the journey.
+  const stateLabel = { done: t('journey.timeline.done'), past: t('flightPages.timeline.past'), current: t('journey.timeline.current'), upcoming: t('journey.timeline.upcoming') };
 
   return (
     <section aria-labelledby={headingId} className={className}>
@@ -123,7 +126,7 @@ export function JourneyTimeline({ flight, content, sources, now, notices, title,
               data-step={step.id}
               className="scroll-mt-28 focus-visible:focus-ring"
               state={step.state}
-              stateLabel={stateLabel[step.state]}
+              stateLabel={step.flightStatus ? t('flightPages.timeline.flightStatus') : stateLabel[step.state]}
               time={step.time ? <time dateTime={step.time}>{formatTime(step.time, zone)}</time> : undefined}
               eyebrow={step.relative ? t(step.relative) : undefined}
               title={pick(step.title, lang)}
@@ -135,16 +138,31 @@ export function JourneyTimeline({ flight, content, sources, now, notices, title,
               }
               actions={
                 actions.length > 0
-                  ? actions.map((action) => (
-                      <LocaleLink key={`${action.labelKey}-${action.href}`} href={action.href} className="link-action type-body-sm text-ink">
-                        {t(action.labelKey)}
-                        <Icon name="arrow-right" size="sm" strokeWidth={1.75} />
-                      </LocaleLink>
-                    ))
+                  ? actions.map((action) =>
+                      action.handoff ? (
+                        // A measured hand-off to another site (round 4, re-review 6.1.9).
+                        <ExternalLink key={`${action.labelKey}-${action.href}`} href={action.href} variant="action" className="type-body-sm text-ink" data-handoff={action.handoff}>
+                          {t(action.labelKey)}
+                        </ExternalLink>
+                      ) : (
+                        <LocaleLink key={`${action.labelKey}-${action.href}`} href={action.href} className="link-action type-body-sm text-ink">
+                          {t(action.labelKey)}
+                          <Icon name="arrow-right" size="sm" strokeWidth={1.75} />
+                        </LocaleLink>
+                      ),
+                    )
                   : undefined
               }
             >
               <p>{pick(step.body, lang)}</p>
+              {step.warning ? (
+                <p data-step-warning="" className="type-body-sm mt-2 flex items-start gap-2 rounded-md border border-warning-border bg-warning-bg px-3 py-2 text-warning-fg">
+                  <Icon name="triangle-alert" size="sm" className="mt-0.5 shrink-0" />
+                  <span>
+                    <strong className="font-semibold">{t('flightPages.timeline.warning')}:</strong> {pick(step.warning, lang)}
+                  </span>
+                </p>
+              ) : null}
               {stepSources.length > 0 ? <SourceNote sources={stepSources} className="mt-1" /> : null}
               {step.places && step.places.length > 0 ? (
                 <ul aria-label={t('flightPages.timeline.placesLabel')} className="mt-3 flex flex-col gap-1.5">

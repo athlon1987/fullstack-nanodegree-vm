@@ -54,3 +54,6 @@ docs/research/screenshots/*.cjs
 docs/research/screenshots/*.js
 docs/research/screenshots/*-full.jpg
 docs/research/benchmarks/**/*.png
+
+# aggregate measurement counts written by the prototype (src/components/platform/metrics-store.ts)
+/.data/

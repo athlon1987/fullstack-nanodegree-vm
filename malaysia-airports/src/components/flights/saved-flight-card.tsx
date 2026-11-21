@@ -4,10 +4,9 @@ import { getAirport } from '@/content/airports';
 import { cn } from '@/lib/cn';
 import { formatFlightNumber, type Flight } from '@/lib/flights';
 import { useLang, useT } from '@/lib/i18n/client';
-import type { JourneyStep } from '@/lib/journey';
+import type { StepSummary, TravelDeadline } from '@/lib/journey';
 import type { SavedFlight } from '@/lib/stores';
 import { dateKey, formatDate, formatTime, shiftDateKey, type Instant } from '@/lib/time';
-import { pick } from '@/content/values';
 import { FlightStatusChip } from '@/components/common/flight-status-chip';
 import { LocaleLink } from '@/components/common/locale-link';
 import { TerminalBadge } from '@/components/common/terminal-badge';
@@ -18,14 +17,18 @@ import { IconButton } from '@/components/ui/icon-button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { flightHref } from './flight-row';
 import { flightTitle } from './flight-title';
+import { ProvenanceTag } from '@/components/common/provenance-tag';
+import { DEADLINE_KEYS, StepLine } from './step-line';
 
 export interface SavedFlightCardProps {
   saved: SavedFlight;
   /** The flight now, or `null` when it is off the demonstration board. `undefined` while loading. */
   flight: Flight | null | undefined;
   now: Instant | null;
-  /** The next step of its journey, when there is one. */
-  next?: JourneyStep;
+  /** The step to name ("Now" or "Next"), with a time only when it is still ahead (round 4). */
+  next?: StepSummary;
+  /** The deadline that still matters for a departure: be at the airport by, check-in closes, boarding (round 4). */
+  deadline?: TravelDeadline;
   selected: boolean;
   alertsOn: boolean;
   onSelect: () => void;
@@ -33,7 +36,7 @@ export interface SavedFlightCardProps {
 }
 
 /** A saved flight in My journey: demo status, time, where to go, the next step, and controls. */
-export function SavedFlightCard({ saved, flight, now, next, selected, alertsOn, onSelect, onRemove }: SavedFlightCardProps) {
+export function SavedFlightCard({ saved, flight, now, next, deadline, selected, alertsOn, onSelect, onRemove }: SavedFlightCardProps) {
   const t = useT();
   const lang = useLang();
   const airport = getAirport(saved.airport);
@@ -131,15 +134,24 @@ export function SavedFlightCard({ saved, flight, now, next, selected, alertsOn, 
         ) : null}
       </div>
 
-      {next ? (
-        <p className="type-body-sm mt-3 flex flex-wrap items-baseline gap-x-2 border-t border-line pt-3 text-ink">
-          <span className="type-eyebrow text-ink-2">{t('flightPages.journey.next')}</span>
-          <span className="min-w-0">
-            {pick(next.title, lang)}
-            {/* Round 2: no second time when the step title already says it ("Board from 10:50"). */}
-            {next.time && !pick(next.title, lang).includes(formatTime(next.time, zone)) ? <span className="type-data-sm ml-2 text-ink-2">{formatTime(next.time, zone)}</span> : null}
-          </span>
-        </p>
+      {deadline || next ? (
+        <div className="mt-3 flex flex-col gap-1 border-t border-line pt-3">
+          {deadline ? (
+            <p data-deadline={deadline.kind} className="type-body-sm flex flex-wrap items-center gap-x-2 gap-y-1 text-ink">
+              <span className="type-eyebrow text-ink-2">{t(DEADLINE_KEYS[deadline.kind])}</span>
+              <span className="type-data-md font-semibold">{formatTime(deadline.time, zone)}</span>
+              {deadline.provenance === 'estimated' ? <ProvenanceTag provenance="estimated" length="short" /> : null}
+            </p>
+          ) : null}
+          {next ? (
+            <p data-next-step={next.when} className="type-body-sm flex flex-wrap items-baseline gap-x-2 text-ink">
+              <span className="type-eyebrow text-ink-2">{next.when === 'now' ? t('flightPages.journey.now') : t('flightPages.journey.next')}</span>
+              <span className="min-w-0">
+                <StepLine summary={next} hideTime={Boolean(deadline && next.time === deadline.time)} />
+              </span>
+            </p>
+          ) : null}
+        </div>
       ) : null}
 
       <div className="mt-3 flex items-center justify-between gap-2">

@@ -18,11 +18,13 @@ export interface FactCardProps {
   headingLevel?: 3 | 4;
   /** `plain` drops the border, for facts nested inside another surface. */
   variant?: 'card' | 'plain';
+  /** Round 4 (A-14): the section lists the sources once (`SectionSourceList`): none on the card. */
+  groupedSources?: boolean;
   className?: string;
 }
 
 /** Title, body, optional detail rows, provenance tag and sources. Works in Server and Client Components. */
-export function FactCard({ fact, headingLevel = 3, variant = 'card', className }: FactCardProps) {
+export function FactCard({ fact, headingLevel = 3, variant = 'card', groupedSources = false, className }: FactCardProps) {
   const Heading = `h${headingLevel}` as 'h3' | 'h4';
   return (
     <div className={cn('flex min-w-0 flex-col gap-2', variant === 'card' && 'rounded-lg border border-line-strong bg-surface p-4', className)}>
@@ -41,7 +43,7 @@ export function FactCard({ fact, headingLevel = 3, variant = 'card', className }
           ))}
         </dl>
       ) : null}
-      <SourceNote sources={fact.sources} />
+      {groupedSources ? null : <SourceNote sources={fact.sources} />}
     </div>
   );
 }

@@ -66,6 +66,7 @@ export function journeyExtras(content: AirportContent, lang: Lang): Pick<Journey
     title: { en: `Optional: ${record.name.en}`, ms: `Pilihan: ${pick(record.name, 'ms')}` } satisfies LocalizedText,
     body: record.description,
     href: `/${slug}/facilities#${record.id}`,
+    ...(record.bookingUrl ? { bookingUrl: record.bookingUrl } : {}),
     provenance: record.provenance,
     sources: record.sources,
   });

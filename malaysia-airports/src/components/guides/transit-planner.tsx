@@ -6,7 +6,9 @@ import type { TKey } from '@/lib/i18n/translate';
 import { formatDuration } from '@/lib/format';
 import { cn } from '@/lib/cn';
 import { LocaleLink } from '@/components/common/locale-link';
-import { ProvenanceTag } from '@/components/common/provenance-tag';
+import { ProvenanceDefault, ProvenanceTag } from '@/components/common/provenance-tag';
+import { sectionSources } from '@/components/common/section-sources';
+import { sharedProvenance } from '@/components/common/shared-provenance';
 import { SourceNote } from '@/components/common/source-note';
 import { Callout } from '@/components/ui/callout';
 import { Icon, type IconKey } from '@/components/ui/icon';
@@ -134,6 +136,19 @@ export function TransitPlanner({ data, initial }: TransitPlannerProps) {
       ? { provenance: data.interTerminal.provenance, sources: data.interTerminal.sources }
       : { provenance: 'estimated' as const, sources: data.methodSources };
 
+  const stepViews = steps.map((step) => {
+    const copy = step === 'controls' && input.departing === 'domestic' ? { ...STEP_COPY.controls, title: 'guidePages.transit.steps.controlsDomestic' as const, body: 'guidePages.transit.steps.controlsDomesticBody' as const } : STEP_COPY[step];
+    const title = step === 'travel' ? t(copy.title, { number: input.to.slice(1) }) : t(copy.title);
+    return { step, copy, title, origin: stepProvenance(step) };
+  });
+  const stepsDefault = sharedProvenance(stepViews.map((view) => view.origin));
+  const stepSources = sectionSources(
+    stepViews,
+    (view) => view.origin.sources.map((source) => source.id),
+    (view) => view.title,
+    Object.fromEntries(stepViews.flatMap((view) => view.origin.sources.map((source) => [source.id, source]))),
+  );
+
   const legOptions = [
     { value: 'international' as const, label: t('common.labels.international'), icon: 'globe' as const },
     { value: 'domestic' as const, label: t('common.labels.domestic'), icon: 'route' as const },
@@ -145,11 +160,13 @@ export function TransitPlanner({ data, initial }: TransitPlannerProps) {
       <form
         aria-labelledby="transit-planner-title"
         onSubmit={(event) => event.preventDefault()}
-        className="flex min-w-0 flex-col gap-5 rounded-xl border border-line-strong bg-surface p-5 shadow-sm lg:sticky lg:top-[calc(var(--spacing-header)+1.5rem)]"
+        // The sticky verdict summary covers the top of the window on phones: focused fields keep clear of it (WCAG 2.4.11).
+        className="flex min-w-0 flex-col gap-5 rounded-xl border border-line-strong bg-surface p-5 shadow-sm max-lg:[@media(min-height:40rem)]:[&_:is(input,select,button)]:scroll-mt-40 lg:sticky lg:top-[calc(var(--spacing-sticky)+1.5rem)]"
       >
         <h2 id="transit-planner-title" className="type-title-lg text-ink">
           {t('guidePages.transit.planner.title')}
         </h2>
+        <VerdictSummary verdict={verdict} estimate={estimate} layover={input.layover} />
         <SegmentedControl<TransitTerminal> label={t('guidePages.transit.planner.arrive')} showLabel block options={terminalOptions} value={input.from} onValueChange={(from) => update({ from })} />
         <SegmentedControl<LegScope> label={t('guidePages.transit.planner.arrivingLeg')} showLabel block options={legOptions} value={input.arriving} onValueChange={(arriving) => update({ arriving })} />
         <div aria-hidden="true" className="h-px bg-line" />
@@ -213,19 +230,18 @@ export function TransitPlanner({ data, initial }: TransitPlannerProps) {
           <h3 id="transit-steps-title" className="type-title-md mb-5 text-ink">
             {t('guidePages.transit.planner.stepsTitle')}
           </h3>
+          {/* Round 4 (A-14): the tag most steps share is said once; one source list for the steps. */}
+          {stepsDefault ? <ProvenanceDefault provenance={stepsDefault} className="-mt-2 mb-4" /> : null}
           <Timeline aria-label={t('guidePages.transit.planner.stepsLabel')}>
-            {steps.map((step, index) => {
-              const copy = step === 'controls' && input.departing === 'domestic' ? { ...STEP_COPY.controls, title: 'guidePages.transit.steps.controlsDomestic' as const, body: 'guidePages.transit.steps.controlsDomesticBody' as const } : STEP_COPY[step];
-              const origin = stepProvenance(step);
+            {stepViews.map(({ step, copy, title, origin }, index) => {
               const facts = factsFor(step);
               return (
                 <TimelineItem
                   key={step}
                   state={index === 0 ? 'current' : 'upcoming'}
                   eyebrow={String(index + 1).padStart(2, '0')}
-                  title={step === 'travel' ? t(copy.title, { number: input.to.slice(1) }) : t(copy.title)}
-                  meta={<ProvenanceTag provenance={origin.provenance} length="short" />}
-                  actions={<SourceNote sources={origin.sources} />}
+                  title={title}
+                  meta={origin.provenance !== stepsDefault ? <ProvenanceTag provenance={origin.provenance} length="short" /> : undefined}
                 >
                   <p>{t(copy.body)}</p>
                   {step === 'travel' && data.options.length > 0 ? (
@@ -261,6 +277,11 @@ export function TransitPlanner({ data, initial }: TransitPlannerProps) {
               );
             })}
           </Timeline>
+          {stepSources.sources.length > 0 ? (
+            <div data-section-sources="" className="mt-2">
+              <SourceNote sources={stepSources.sources} citedBy={stepSources.citedBy} label={t('shellExtras.sourceLists.section')} />
+            </div>
+          ) : null}
         </section>
 
         <section aria-labelledby="transit-time-title" className="rounded-xl border border-line-strong bg-surface p-5">
@@ -334,6 +355,47 @@ export function TransitPlanner({ data, initial }: TransitPlannerProps) {
           </LocaleLink>
         </p>
       </div>
+    </div>
+  );
+}
+
+/**
+ * Round 4 (6.1.6, C-03): on phones the full verdict card sits under a five-question form, so this
+ * one-line summary stays at the top of the form while it is answered: the verdict word, our range
+ * against the traveller's time, and a link down to the plan. It sticks under the header while the
+ * form scrolls past, except on short windows (400% zoom), where nothing sticks. Hidden from `lg`,
+ * where the card is beside the form. Not a live region: the form's status line announces changes.
+ */
+function VerdictSummary({ verdict, estimate, layover }: { verdict: TimeVerdict; estimate: { min: number; max: number }; layover: number }) {
+  const t = useT();
+  const lang = useLang();
+  const copy = VERDICT[verdict];
+  const border = verdict === 'comfortable' ? 'border-positive-border' : verdict === 'tight' ? 'border-warning-border' : 'border-critical-border';
+  return (
+    <div
+      data-verdict-summary={verdict}
+      className={cn(
+        'z-10 -mx-2 flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 rounded-lg border-2 bg-surface px-3 py-2 shadow-sm lg:hidden',
+        '[@media(min-height:40rem)]:sticky [@media(min-height:40rem)]:top-[calc(var(--spacing-sticky)+0.5rem)]',
+        border,
+      )}
+    >
+      <p className="type-body-sm flex min-w-0 flex-1 basis-48 items-start gap-2 text-ink">
+        <Icon name={copy.icon} size="sm" className={cn('mt-0.5 shrink-0', TONE_TEXT[copy.tone])} />
+        <span className="min-w-0">
+          <strong className="font-semibold">{t(copy.title)}</strong>
+          <span aria-hidden="true"> · </span>
+          <span className="sr-only">. </span>
+          {t('guidePages.transit.time.summary', {
+            range: t('guidePages.transit.time.range', { min: formatDuration(estimate.min, lang), max: formatDuration(estimate.max, lang) }),
+            layover: formatDuration(layover, lang),
+          })}
+        </span>
+      </p>
+      <a href="#transit-verdict-title" className="link-action type-body-sm shrink-0 text-ink">
+        {t('guidePages.transit.time.summaryLink')}
+        <Icon name="arrow-down" size="sm" />
+      </a>
     </div>
   );
 }

@@ -346,7 +346,7 @@ describe('other providers', () => {
 
 import type { Notice } from '@/content/types';
 import { clearDemoCaches, demoCacheStats, demoFlightExists, demoFlightIdForCodeshare } from './demo-flights';
-import { opsStatus } from './demo-operations';
+import { noticesPublishedUpTo, opsStatus } from './demo-operations';
 import { serveFlightFeed } from './feed-server';
 import { FeedUnavailableError, ResilientFlightFeed } from './resilient';
 import { SnapshotFlightProvider } from './snapshot';
@@ -482,20 +482,37 @@ describe('opsStatus: status lines fed by notices (B-01)', () => {
     sources: ['malaymail-aerotrain-software-oct-2026'],
   };
 
-  it('reports an active notice, an upcoming one, and no disruption with the time it was checked', () => {
-    const active = opsStatus({ airport: 'kul', notices: [notice], now: new Date('2026-11-29T01:00:00+08:00'), services: ['aerotrain'] });
-    expect(active[0]).toMatchObject({ service: 'aerotrain', state: 'notice', notice: { id: 'kul-aerotrain-test' } });
-    const upcoming = opsStatus({ airport: 'kul', notices: [notice], now: new Date('2026-11-18T10:00:00+08:00'), services: ['aerotrain'] });
+  // Round 4 (re-review 6.1.1): intended behaviour changed. A service without a notice is
+  // `unknown` ("Status not available"), not `clear` ("No disruption reported"), and a line carries
+  // the notices' own as-of date instead of the clock time it was worked out ("Checked hh:mm").
+  it('reports an active notice, an upcoming one, and an unknown state with the notices as-of date, never the clock', () => {
+    const dated: Notice = { ...notice, asOf: '2026-10-07' };
+    const active = opsStatus({ airport: 'kul', notices: [dated], now: new Date('2026-11-29T01:00:00+08:00'), services: ['aerotrain'] });
+    expect(active[0]).toMatchObject({ service: 'aerotrain', state: 'notice', notice: { id: 'kul-aerotrain-test', asOf: '2026-10-07' }, basis: 'notices' });
+    const upcoming = opsStatus({ airport: 'kul', notices: [dated], now: new Date('2026-11-18T10:00:00+08:00'), services: ['aerotrain'] });
     expect(upcoming[0].state).toBe('planned');
-    const none = opsStatus({ airport: 'kul', notices: [notice], now: new Date('2026-12-20T10:00:00+08:00'), services: ['aerotrain', 'inter-terminal-train', 'inter-terminal-shuttle'] });
-    expect(none.map((line) => line.state)).toEqual(['clear', 'clear', 'clear']);
-    expect(none[0].checkedAt).toBe('2026-12-20T10:00:00+08:00');
+    const none = opsStatus({ airport: 'kul', notices: [dated], now: new Date('2026-12-20T10:00:00+08:00'), services: ['aerotrain', 'inter-terminal-train', 'inter-terminal-shuttle'] });
+    expect(none.map((line) => line.state)).toEqual(['unknown', 'unknown', 'unknown']);
+    expect(none[0].noticesAsOf).toBe('2026-10-07');
+    expect(none[0]).not.toHaveProperty('checkedAt');
+    // The same lines at another instant carry the same date: nothing depends on the clock time.
+    const later = opsStatus({ airport: 'kul', notices: [dated], now: new Date('2026-12-21T19:05:00+08:00'), services: ['aerotrain'] });
+    expect(later[0].noticesAsOf).toBe(none[0].noticesAsOf);
+  });
+
+  it('dates the notice set by its latest own notice, ignoring other airports and the prototype notice', () => {
+    const other: Notice = { ...notice, id: 'pen-test', airport: 'pen', asOf: '2026-11-20' };
+    const prototype: Notice = { ...notice, id: 'prototype-demo-data', airport: undefined, provenance: 'demo', asOf: '2026-11-21' };
+    const older: Notice = { ...notice, id: 'kul-older', asOf: '2026-09' };
+    const newer: Notice = { ...notice, id: 'kul-newer', asOf: '2026-10-01' };
+    expect(noticesPublishedUpTo([other, prototype, older, newer], 'kul')).toBe('2026-10-01');
+    expect(noticesPublishedUpTo([notice], 'kul')).toBeUndefined();
   });
 
   it('does not mistake a fare notice for a train disruption, and adds demo queue estimates to immigration', () => {
     const fare: Notice = { ...notice, id: 'kul-klia-ekspres-fare-rise-2027', title: { en: 'KLIA Ekspres adult fare rises to RM65' }, validFrom: undefined, validTo: undefined };
     const lines = opsStatus({ airport: 'kul', notices: [fare], now: new Date('2026-11-18T10:00:00+08:00'), services: ['inter-terminal-train', 'immigration'], terminal: 'T1' });
-    expect(lines[0].state).toBe('clear');
+    expect(lines[0].state).toBe('unknown');
     // Security and immigration when leaving, immigration when arriving (the arrival step shows its own).
     expect(lines[1].waits.map((wait) => wait.checkpoint)).toEqual(['security', 'immigration-departure', 'immigration-arrival']);
     expect(lines[1].waits.every((wait) => wait.isDemo && wait.terminal === 'T1')).toBe(true);

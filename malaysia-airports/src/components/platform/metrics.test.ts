@@ -27,14 +27,15 @@ describe('aggregate measurement (exec-commerce-12)', () => {
     expect(withCampaign('/en/kul', 'x')).toBe('/en/kul');
   });
 
-  it('counts per day and measurement, with a bounded number of keys', () => {
+  // Round 4 (E-17): the store interface is asynchronous (file and KV adapters); same counts.
+  it('counts per day and measurement, with a bounded number of keys', async () => {
     const store = createMetricsStore(2);
     const metric = { event: 'answer', name: 'parking-price', state: 'answered', section: '/en/kul/parking' } as const;
-    store.add(metric, '2026-11-21');
-    store.add(metric, '2026-11-21');
-    store.add({ ...metric, state: 'partial' }, '2026-11-21');
-    store.add({ ...metric, name: 'other' }, '2026-11-21');
-    expect(store.summary()).toEqual([
+    await store.add(metric, '2026-11-21');
+    await store.add(metric, '2026-11-21');
+    await store.add({ ...metric, state: 'partial' }, '2026-11-21');
+    await store.add({ ...metric, name: 'other' }, '2026-11-21');
+    expect(await store.summary()).toEqual([
       { key: '2026-11-21 | answer | parking-price | answered | /en/kul/parking', count: 2 },
       { key: '2026-11-21 | answer | parking-price | partial | /en/kul/parking', count: 1 },
     ]);

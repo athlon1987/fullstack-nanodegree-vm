@@ -1,6 +1,8 @@
 'use client';
 
+import { useId, useState } from 'react';
 import type { AnswerContact, ConciergeAnswer, ConciergeContext, ConciergeMode } from '@/lib/concierge/types';
+import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n/client';
 import { DemoDataBanner } from '@/components/common/demo-data-banner';
 import { ExternalLink } from '@/components/common/external-link';
@@ -63,6 +65,35 @@ function Escalation({ escalation }: { escalation: NonNullable<ConciergeAnswer['e
   );
 }
 
+/** The labelled details of an answer, each with its provenance and a link to the page. */
+function Statements({ statements }: { statements: ConciergeAnswer['statements'] }) {
+  const t = useT();
+  if (statements.length === 0) return null;
+  return (
+    <ul aria-label={t('conciergePage.answer.details')} className="flex flex-col divide-y divide-line overflow-hidden rounded-lg border border-line bg-surface">
+      {statements.map((statement, index) => (
+        <li key={`${index}:${statement.text.slice(0, 24)}`} className="flex flex-col gap-2 px-4 py-3.5">
+          {statement.title ? <p className="type-title-sm text-ink">{statement.title}</p> : null}
+          <p className="type-body text-ink-2">{statement.text}</p>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+            <ProvenanceTag provenance={statement.provenance} length="short" />
+            {statement.href ? (
+              <LocaleLink
+                href={statement.href}
+                aria-label={t('conciergePage.answer.detailsFor', { name: statement.title ?? statement.text.slice(0, 60) })}
+                className="link-action type-body-sm inline-flex items-center gap-1"
+              >
+                {t('conciergePage.answer.details_link')}
+                <Icon name="arrow-right" size="xs" />
+              </LocaleLink>
+            ) : null}
+          </div>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 const MODE_ICON: Record<ConciergeMode, IconName> = { grounded: 'badge-check', 'grounded-rephrased': 'sparkles', local: 'wifi-off' };
 
 export interface ConciergeAnswerViewProps {
@@ -73,9 +104,32 @@ export interface ConciergeAnswerViewProps {
   busy: boolean;
 }
 
-/** One answer: the short reply, then the labelled details, places, next steps, contacts and sources. */
+/** How many cards (or, without cards, detail statements) a phone shows before "More" (round 4, 6.1.4). */
+const PHONE_ITEMS = 2;
+
+/**
+ * One answer: the short reply, then the labelled details, places, next steps, contacts and sources.
+ *
+ * On a phone (an answer narrower than the `@lg` container size) the answer shows its lead line
+ * and two cards; everything else sits behind a "More" disclosure button (`aria-expanded`,
+ * `aria-controls`), so one turn no longer runs to 2,300 px and buries the next question (round 4,
+ * re-review 6.1.4). Wider answers show everything and hide the button. CSS decides, not the
+ * clock or `window`, so the server and the browser render the same markup.
+ */
 export function ConciergeAnswerView({ answer, mode, note, onAsk, busy }: ConciergeAnswerViewProps) {
   const t = useT();
+  const moreId = useId();
+  const [expanded, setExpanded] = useState(false);
+  const firstCards = answer.cards.slice(0, PHONE_ITEMS);
+  const moreCards = answer.cards.slice(PHONE_ITEMS);
+  const statementRoom = Math.max(0, PHONE_ITEMS - firstCards.length);
+  const firstStatements = answer.statements.slice(0, statementRoom);
+  const moreStatements = answer.statements.slice(statementRoom);
+  // With room to spare (no cards, at most one detail), the official contacts show at once: for
+  // "I can't answer that" they are the answer, with numbers to tap.
+  const escalationFirst = answer.escalation !== undefined && firstCards.length + firstStatements.length < PHONE_ITEMS;
+  const hiddenCount = moreCards.length + moreStatements.length + answer.limits.length + (answer.escalation && !escalationFirst ? 1 : 0) + (answer.actions.length > 0 ? 1 : 0);
+
   return (
     <div className="@container flex min-w-0 flex-col gap-4">
       <p className="type-body-lg text-ink">{answer.text}</p>
@@ -103,64 +157,64 @@ export function ConciergeAnswerView({ answer, mode, note, onAsk, busy }: Concier
         </div>
       ) : null}
 
-      {answer.limits.length > 0 ? (
-        <div className="rounded-lg border border-dashed border-line-strong bg-page-subtle px-4 py-3">
-          <p className="type-eyebrow mb-1.5 text-ink-2">{t('conciergePage.answer.limitsLabel')}</p>
-          <ul className="flex flex-col gap-1.5">
-            {answer.limits.map((limit) => (
-              <li key={limit} className="type-body flex items-start gap-2 text-ink">
-                <Icon name="info" size="sm" className="mt-1 shrink-0 text-ink-2" />
-                <span>{limit}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
+      <ConciergeCards cards={firstCards} />
+      <Statements statements={firstStatements} />
+      {answer.escalation && escalationFirst ? <Escalation escalation={answer.escalation} /> : null}
 
-      <ConciergeCards cards={answer.cards} />
+      {hiddenCount > 0 ? (
+        <>
+          <Button
+            variant="secondary"
+            size="sm"
+            className="self-start @lg:hidden"
+            iconEnd={expanded ? 'chevron-up' : 'chevron-down'}
+            aria-expanded={expanded}
+            aria-controls={moreId}
+            onClick={() => setExpanded((value) => !value)}
+          >
+            {expanded ? t('conciergePage.answer.less') : t.count('conciergePage.answer.more', hiddenCount)}
+          </Button>
 
-      {answer.statements.length > 0 ? (
-        <ul aria-label={t('conciergePage.answer.details')} className="flex flex-col divide-y divide-line overflow-hidden rounded-lg border border-line bg-surface">
-          {answer.statements.map((statement, index) => (
-            <li key={`${index}:${statement.text.slice(0, 24)}`} className="flex flex-col gap-2 px-4 py-3.5">
-              {statement.title ? <p className="type-title-sm text-ink">{statement.title}</p> : null}
-              <p className="type-body text-ink-2">{statement.text}</p>
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-                <ProvenanceTag provenance={statement.provenance} length="short" />
-                {statement.href ? (
-                  <LocaleLink
-                    href={statement.href}
-                    aria-label={t('conciergePage.answer.detailsFor', { name: statement.title ?? statement.text.slice(0, 60) })}
-                    className="link-action type-body-sm inline-flex items-center gap-1"
-                  >
-                    {t('conciergePage.answer.details_link')}
-                    <Icon name="arrow-right" size="xs" />
-                  </LocaleLink>
-                ) : null}
+          {/* Behind "More" on a phone; always shown on wider answers. */}
+          <div id={moreId} className={cn('flex-col gap-4', expanded ? 'flex' : 'hidden @lg:flex')}>
+            {answer.limits.length > 0 ? (
+              <div className="rounded-lg border border-dashed border-line-strong bg-page-subtle px-4 py-3">
+                <p className="type-eyebrow mb-1.5 text-ink-2">{t('conciergePage.answer.limitsLabel')}</p>
+                <ul className="flex flex-col gap-1.5">
+                  {answer.limits.map((limit) => (
+                    <li key={limit} className="type-body flex items-start gap-2 text-ink">
+                      <Icon name="info" size="sm" className="mt-1 shrink-0 text-ink-2" />
+                      <span>{limit}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </li>
-          ))}
-        </ul>
-      ) : null}
+            ) : null}
 
-      {answer.escalation ? <Escalation escalation={answer.escalation} /> : null}
+            <ConciergeCards cards={moreCards} />
+            <Statements statements={moreStatements} />
 
-      {answer.actions.length > 0 ? (
-        <ul aria-label={t('conciergePage.answer.nextSteps')} className="flex flex-wrap gap-2">
-          {answer.actions.map((action) => (
-            <li key={action.kind === 'link' ? action.href : action.question}>
-              {action.kind === 'link' ? (
-                <Button asChild variant="secondary" size="sm" iconStart={(action.icon as IconName | undefined) ?? 'arrow-right'}>
-                  <LocaleLink href={action.href}>{action.label}</LocaleLink>
-                </Button>
-              ) : (
-                <Button variant="secondary" size="sm" iconStart="messages-square" disabled={busy} onClick={() => onAsk(action.question, action.context)}>
-                  {action.label}
-                </Button>
-              )}
-            </li>
-          ))}
-        </ul>
+            {answer.escalation && !escalationFirst ? <Escalation escalation={answer.escalation} /> : null}
+
+            {answer.actions.length > 0 ? (
+              <ul aria-label={t('conciergePage.answer.nextSteps')} className="flex flex-wrap gap-2">
+                {answer.actions.map((action) => (
+                  <li key={action.kind === 'link' ? action.href : action.question}>
+                    {action.kind === 'link' ? (
+                      <Button asChild variant="secondary" size="sm" iconStart={(action.icon as IconName | undefined) ?? 'arrow-right'}>
+                        <LocaleLink href={action.href}>{action.label}</LocaleLink>
+                      </Button>
+                    ) : (
+                      <Button variant="secondary" size="sm" iconStart="messages-square" disabled={busy} onClick={() => onAsk(action.question, action.context)}>
+                        {action.label}
+                      </Button>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+        </>
       ) : null}
 
       <div className="flex flex-col gap-1.5 border-t border-line pt-3">

@@ -5,13 +5,30 @@ import { getAirport, localizeAirport } from '@/content/airports';
 import { cn } from '@/lib/cn';
 import { formatFlightNumber, placeCity, remotePlace, type Flight } from '@/lib/flights';
 import { useT } from '@/lib/i18n/client';
-import { formatTime } from '@/lib/time';
+import { dateKey, formatDate, formatTime, shiftDateKey, type Instant } from '@/lib/time';
+import type { Translator } from '@/lib/i18n/translate';
 import { AirportCode } from '@/components/common/airport-code';
 import { FlightStatusChip } from '@/components/common/flight-status-chip';
 import { LocaleLink } from '@/components/common/locale-link';
 import { TerminalBadge } from '@/components/common/terminal-badge';
 import { IconButton } from '@/components/ui/icon-button';
 import { Td, Tr } from '@/components/ui/table';
+
+/**
+ * The day of the time a row shows, when it is not today at the airport: "Tomorrow", "Yesterday"
+ * or the date (round 4, gallery note 2: Ipoh's preview listed 11:40, 15:30, then a 09:25 that was
+ * the next morning, with no date). `undefined` for today.
+ */
+export function rowDayLabel(flight: Pick<Flight, 'scheduled' | 'estimated' | 'status' | 'airport'>, now: Instant, t: Translator): string | undefined {
+  const zone = getAirport(flight.airport)?.timezone;
+  const shown = flight.status === 'cancelled' ? flight.scheduled : flight.estimated;
+  const day = dateKey(shown, zone);
+  const today = dateKey(now, zone);
+  if (day === today) return undefined;
+  if (day === shiftDateKey(today, 1)) return t('common.labels.tomorrow');
+  if (day === shiftDateKey(today, -1)) return t('common.labels.yesterday');
+  return formatDate(shown, t.lang, 'short', zone);
+}
 
 /** Path of a flight's detail page (no locale prefix): `/kul/flights/mh2610-20261117-d`. */
 export function flightHref(flight: Pick<Flight, 'airport' | 'id'>): string {
@@ -33,6 +50,8 @@ export interface FlightRowProps {
   saved?: boolean;
   /** Show a save toggle (a bookmark button) and report presses. Omit for rows without one. */
   onSaveChange?: (saved: boolean) => void;
+  /** The day of the time shown when it is not today ("Tomorrow"), from `rowDayLabel`. */
+  day?: string;
   className?: string;
 }
 
@@ -45,7 +64,7 @@ export interface FlightRowProps {
  * Every flight in this prototype is simulated: whatever lists these rows must carry the
  * demonstration label.
  */
-function FlightRowView({ flight, layout = 'card', showAirport = false, onNavigate, saved = false, onSaveChange, className }: FlightRowProps) {
+function FlightRowView({ flight, layout = 'card', showAirport = false, onNavigate, saved = false, onSaveChange, day, className }: FlightRowProps) {
   const t = useT();
   const remote = remotePlace(flight);
   // City in the page language (D-09, round 2).
@@ -65,6 +84,12 @@ function FlightRowView({ flight, layout = 'card', showAirport = false, onNavigat
     : moved
       ? t('flightPages.times.moved', { scheduled: formatTime(flight.scheduled), estimated: formatTime(flight.estimated) })
       : t('flightPages.times.onTime', { scheduled: formatTime(flight.scheduled) });
+  const timeWordsWithDay = day ? `${day}, ${timeWords}` : timeWords;
+  const dayMark = day ? (
+    <span aria-hidden="true" data-row-day="" className="type-caption block font-sans font-semibold whitespace-nowrap text-ink">
+      {day}
+    </span>
+  ) : null;
 
   const saveButton = onSaveChange ? (
     <IconButton
@@ -101,7 +126,8 @@ function FlightRowView({ flight, layout = 'card', showAirport = false, onNavigat
               <span className="type-data-lg text-board-accent">{formatTime(flight.scheduled)}</span>
             )}
           </span>
-          <span className="sr-only">{timeWords}</span>
+          {dayMark}
+          <span className="sr-only">{timeWordsWithDay}</span>
         </Td>
         <Td mono className="whitespace-nowrap">
           <LocaleLink
@@ -146,7 +172,7 @@ function FlightRowView({ flight, layout = 'card', showAirport = false, onNavigat
       )}
     >
       <p className="flex w-[4.25rem] shrink-0 flex-col">
-        <span className="sr-only">{timeWords}</span>
+        <span className="sr-only">{timeWordsWithDay}</span>
         {moved && !cancelled ? (
           <s aria-hidden="true" className="type-data-sm text-ink-2">
             {formatTime(flight.scheduled)}
@@ -161,6 +187,7 @@ function FlightRowView({ flight, layout = 'card', showAirport = false, onNavigat
             {formatTime(moved ? flight.estimated : flight.scheduled)}
           </span>
         )}
+        {dayMark}
       </p>
       <div className="flex min-w-0 flex-1 flex-wrap items-center justify-between gap-x-5 gap-y-2">
         <div className="min-w-0 grow basis-52">
@@ -211,6 +238,7 @@ export const FlightRow = memo(
     before.showAirport === after.showAirport &&
     before.saved === after.saved &&
     before.className === after.className &&
+    before.day === after.day &&
     before.onNavigate === after.onNavigate &&
     Boolean(before.onSaveChange) === Boolean(after.onSaveChange),
 );

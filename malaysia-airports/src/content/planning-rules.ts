@@ -47,3 +47,21 @@ export const TRANSIT_ASSUMPTIONS = {
   provenance: 'estimated',
   sources: ['prototype-method'],
 } as const satisfies { id: string; minutes: Record<string, number | readonly [number, number]>; provenance: Provenance; sources: readonly string[] };
+
+/**
+ * Airline assistance notice periods we can source (round 4, re-review 6.1.2): how many hours
+ * before departure each airline asks for an assistance (wheelchair) request, by IATA code, with
+ * what it says about later requests. The journey's assistance step warns once a flight is inside
+ * the period. Only airlines with a published period are listed: for any other, the step says we
+ * have not published it and to check with the airline, without inventing hours (AirAsia, AirAsia X,
+ * Batik Air and the other main carriers need MAHB or airline data, D-04).
+ */
+export const AIRLINE_ASSISTANCE_NOTICE = {
+  MH: {
+    hours: 48,
+    late: lt('later requests depend on availability.', 'permohonan lewat bergantung pada ketersediaan.'),
+    provenance: 'official',
+    // The same source as the help FAQ "wheelchair-request", which states the 48 hours.
+    sources: ['mh-special-assistance'],
+  },
+} as const satisfies Readonly<Record<string, { hours: number; late: LocalizedText; provenance: Provenance; sources: readonly string[] }>>;

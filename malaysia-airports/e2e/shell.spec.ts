@@ -36,6 +36,8 @@ async function seed(page: Page, { airport, textSize }: { airport?: string; textS
 }
 
 const SUB_PAGES = ['flights', 'transport', 'parking', 'facilities', 'map', 'transit', 'lounges', 'shop-dine'];
+/** Tests that need rows on the full board fix the browser clock here; the feed answers for that instant. */
+const BUSY_MORNING = new Date('2026-11-18T09:40:00+08:00');
 
 test.describe('A-01 airport chrome on a phone', () => {
   for (const [width, height] of [
@@ -96,6 +98,10 @@ test.describe('A-01 airport chrome on a phone', () => {
   // is one row of window and Pause plus one row of freshness, and the gaps are tighter: first row
   // at 614 px in English and Malay at 390x664 (643 and 664 before the note moved).
   test('the first board row is inside the first 664 px', async ({ page }) => {
+    // A busy morning (as in flights.spec.ts): with the real clock this failed from about 22:55 to
+    // 05:05 Kuala Lumpur time, when the board's window holds no demonstration departures
+    // (verification round four, CI run at 23:05).
+    await page.clock.setFixedTime(BUSY_MORNING);
     await page.setViewportSize({ width: 390, height: 664 });
     await page.goto('/en/kul/flights');
     const row = page.locator('main a[href*="/kul/flights/"]').first();
@@ -269,6 +275,8 @@ test.describe('A-07 sections an airport does not publish', () => {
 
 test.describe('A-08 the saved flight on the home', () => {
   test('a flight saved from the board appears above the journey modes', async ({ page }) => {
+    // A busy morning, for the same reason as the A-01 board test above.
+    await page.clock.setFixedTime(BUSY_MORNING);
     await page.goto('/en/kul/flights');
     const save = page.getByRole('main').getByRole('button', { name: /^Save/ }).first();
     await expect(save).toBeVisible();

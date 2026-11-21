@@ -20,6 +20,12 @@ export const ROUTE_FROM_ID = 'map-route-from';
 export const ROUTE_TO_ID = 'map-route-to';
 
 export interface RoutePlannerProps {
+  /**
+   * `controls`: the heading, From, To, step-free and the clear button. `result`: the time, the
+   * step-free answer and the written steps (nothing until there is a route). `all`: both in one
+   * card. Round 4 (6.1.6): the map puts the controls above the drawing and the steps below it.
+   */
+  part?: 'all' | 'controls' | 'result';
   map: MapView;
   levelsById: ReadonlyMap<string, LevelView>;
   fromId?: string;
@@ -97,6 +103,7 @@ const wholeMinutes = (value: number) => Math.max(1, Math.ceil(value - 1e-9));
  * steps, which are the primary way to follow a route (the line on the map illustrates them).
  */
 export function RoutePlanner({
+  part = 'all',
   map,
   levelsById,
   fromId,
@@ -134,8 +141,114 @@ export function RoutePlanner({
 
   const levelPath = route ? route.levels.map((id) => levelsById.get(id)?.label ?? id) : [];
 
+  const card = 'rounded-xl border border-line-strong bg-surface p-4 shadow-xs sm:p-5';
+  const result =
+    route && minutes ? (
+      <>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="rounded-lg bg-page-subtle p-3">
+            <p className="type-body-sm text-ink-2">{t('mapPages.route.standard')}</p>
+            <p className="type-title-lg tabular mt-1 text-ink">{t('mapPages.route.minutes', { minutes: minutes.standard })}</p>
+          </div>
+          <div className="rounded-lg bg-page-subtle p-3">
+            <p className="type-body-sm text-ink-2">{t('mapPages.route.reduced')}</p>
+            <p className="type-title-lg tabular mt-1 text-ink">{t('mapPages.route.minutes', { minutes: minutes.reduced })}</p>
+            <p className="type-caption mt-1 text-ink-2">{t('mapPages.route.reducedHint')}</p>
+          </div>
+        </div>
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <ProvenanceTag provenance="estimated" />
+          {route.accessible ? (
+            <Chip tone="positive" icon="accessibility">
+              {t('mapPages.route.stepFreeYes')}
+            </Chip>
+          ) : (
+            <Chip tone="warning" icon="triangle-alert">
+              {t('mapPages.route.stepFreeNo')}
+            </Chip>
+          )}
+          <span className="type-body-sm text-ink-2">{t('mapPages.route.distance', { distance: formatDistance(route.metres, lang) })}</span>
+        </div>
+        {levelPath.length > 1 ? (
+          <p className="type-body-sm mt-2 flex flex-wrap items-center gap-1.5 text-ink-2">
+            <Icon name="layers" size="sm" />
+            {levelPath.map((label, index) => (
+              <span key={`${label}-${index}`} className="inline-flex items-center gap-1.5">
+                {index > 0 ? <Icon name="arrow-right" size="xs" /> : null}
+                <span className="font-medium text-ink">{label}</span>
+              </span>
+            ))}
+          </p>
+        ) : null}
+        <p className="type-caption mt-3 text-ink-2">{t('mapPages.route.estimateNote')}</p>
+
+        <h3 className="type-title-md mt-6 text-ink">
+          {t('mapPages.route.stepsTitle')}
+        </h3>
+        <ol className="mt-3 flex flex-col">
+          {steps.map((step, index) => {
+            const instruction = stepInstruction(step, t, levelsById);
+            const level = levelsById.get(step.level);
+            const walkMeta = step.metres > 0 && (step.kind === 'walk' || step.kind === 'through' || step.kind === 'checkpoint');
+            const rideMeta = step.kind === 'ride' || step.kind === 'change-level';
+            const last = index === steps.length - 1;
+            return (
+              <li key={step.key} className="relative flex gap-3">
+                <div className="flex flex-col items-center">
+                  <span
+                    className={cn(
+                      'z-10 flex size-8 shrink-0 items-center justify-center rounded-pill border',
+                      step.kind === 'arrive' ? 'border-primary bg-primary text-on-primary' : step.kind === 'start' ? 'border-ink bg-ink text-page' : 'border-line-strong bg-surface text-ink',
+                    )}
+                  >
+                    <Icon name={stepIcon(step)} size="sm" strokeWidth={2} />
+                  </span>
+                  {!last ? <span aria-hidden="true" className="w-0.5 flex-1 bg-line-strong" /> : null}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => onStepSelect(step)}
+                  aria-pressed={activeStep === step.key}
+                  className={cn(
+                    'mb-2 min-w-0 flex-1 rounded-md px-2 py-1 text-left transition-colors duration-fast hover:bg-page-subtle',
+                    activeStep === step.key && 'bg-primary-soft hover:bg-primary-soft',
+                  )}
+                >
+                  <span className="sr-only">{t('mapPages.route.showStep', { number: index + 1 })}: </span>
+                  <span className="type-body block font-semibold text-ink">{instruction}</span>
+                  {step.via.length > 0 ? <span className="type-body-sm block text-ink-2">{t('mapPages.route.steps.passing', { list: formatList(step.via, lang) })}</span> : null}
+                  <span className="type-caption mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-ink-2">
+                    {level ? <Badge size="sm">{level.label}</Badge> : null}
+                    {walkMeta ? (
+                      <span>
+                        {t('mapPages.route.steps.walkMeta', { distance: formatDistance(step.metres, lang) })} · {formatDuration(wholeMinutes(step.minutes.standard), lang)}
+                      </span>
+                    ) : null}
+                    {rideMeta && step.minutes.standard > 0 ? <span>{t('mapPages.route.steps.rideMeta', { minutes: wholeMinutes(step.minutes.standard) })}</span> : null}
+                  </span>
+                  {step.note ? <span className="type-body-sm mt-1 block text-ink-2">{step.note}</span> : null}
+                </button>
+              </li>
+            );
+          })}
+        </ol>
+      </>
+    ) : null;
+
+  if (part === 'result') {
+    return result ? (
+      <section aria-labelledby="map-route-result-title" data-route-result="" className={card}>
+        <h2 id="map-route-result-title" className="type-title-lg mb-4 flex items-center gap-2 text-ink">
+          <Icon name="route" className="text-primary-ink" />
+          {t('mapPages.route.resultTitle')}
+        </h2>
+        {result}
+      </section>
+    ) : null;
+  }
+
   return (
-    <section aria-labelledby="map-route-title" className="rounded-xl border border-line-strong bg-surface p-4 shadow-xs sm:p-5">
+    <section aria-labelledby="map-route-title" className={card}>
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <h2 id="map-route-title" className="type-title-lg flex items-center gap-2 text-ink">
@@ -181,95 +294,7 @@ export function RoutePlanner({
         </Callout>
       ) : null}
 
-      {route && minutes ? (
-        <div className="mt-5 border-t border-line pt-5">
-          <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-lg bg-page-subtle p-3">
-              <p className="type-body-sm text-ink-2">{t('mapPages.route.standard')}</p>
-              <p className="type-title-lg tabular mt-1 text-ink">{t('mapPages.route.minutes', { minutes: minutes.standard })}</p>
-            </div>
-            <div className="rounded-lg bg-page-subtle p-3">
-              <p className="type-body-sm text-ink-2">{t('mapPages.route.reduced')}</p>
-              <p className="type-title-lg tabular mt-1 text-ink">{t('mapPages.route.minutes', { minutes: minutes.reduced })}</p>
-              <p className="type-caption mt-1 text-ink-2">{t('mapPages.route.reducedHint')}</p>
-            </div>
-          </div>
-          <div className="mt-3 flex flex-wrap items-center gap-2">
-            <ProvenanceTag provenance="estimated" />
-            {route.accessible ? (
-              <Chip tone="positive" icon="accessibility">
-                {t('mapPages.route.stepFreeYes')}
-              </Chip>
-            ) : (
-              <Chip tone="warning" icon="triangle-alert">
-                {t('mapPages.route.stepFreeNo')}
-              </Chip>
-            )}
-            <span className="type-body-sm text-ink-2">{t('mapPages.route.distance', { distance: formatDistance(route.metres, lang) })}</span>
-          </div>
-          {levelPath.length > 1 ? (
-            <p className="type-body-sm mt-2 flex flex-wrap items-center gap-1.5 text-ink-2">
-              <Icon name="layers" size="sm" />
-              {levelPath.map((label, index) => (
-                <span key={`${label}-${index}`} className="inline-flex items-center gap-1.5">
-                  {index > 0 ? <Icon name="arrow-right" size="xs" /> : null}
-                  <span className="font-medium text-ink">{label}</span>
-                </span>
-              ))}
-            </p>
-          ) : null}
-          <p className="type-caption mt-3 text-ink-2">{t('mapPages.route.estimateNote')}</p>
-
-          <h3 className="type-title-md mt-6 text-ink">{t('mapPages.route.stepsTitle')}</h3>
-          <ol className="mt-3 flex flex-col">
-            {steps.map((step, index) => {
-              const instruction = stepInstruction(step, t, levelsById);
-              const level = levelsById.get(step.level);
-              const walkMeta = step.metres > 0 && (step.kind === 'walk' || step.kind === 'through' || step.kind === 'checkpoint');
-              const rideMeta = step.kind === 'ride' || step.kind === 'change-level';
-              const last = index === steps.length - 1;
-              return (
-                <li key={step.key} className="relative flex gap-3">
-                  <div className="flex flex-col items-center">
-                    <span
-                      className={cn(
-                        'z-10 flex size-8 shrink-0 items-center justify-center rounded-pill border',
-                        step.kind === 'arrive' ? 'border-primary bg-primary text-on-primary' : step.kind === 'start' ? 'border-ink bg-ink text-page' : 'border-line-strong bg-surface text-ink',
-                      )}
-                    >
-                      <Icon name={stepIcon(step)} size="sm" strokeWidth={2} />
-                    </span>
-                    {!last ? <span aria-hidden="true" className="w-0.5 flex-1 bg-line-strong" /> : null}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => onStepSelect(step)}
-                    aria-pressed={activeStep === step.key}
-                    className={cn(
-                      'mb-2 min-w-0 flex-1 rounded-md px-2 py-1 text-left transition-colors duration-fast hover:bg-page-subtle',
-                      activeStep === step.key && 'bg-primary-soft hover:bg-primary-soft',
-                    )}
-                  >
-                    <span className="sr-only">{t('mapPages.route.showStep', { number: index + 1 })}: </span>
-                    <span className="type-body block font-semibold text-ink">{instruction}</span>
-                    {step.via.length > 0 ? <span className="type-body-sm block text-ink-2">{t('mapPages.route.steps.passing', { list: formatList(step.via, lang) })}</span> : null}
-                    <span className="type-caption mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-ink-2">
-                      {level ? <Badge size="sm">{level.label}</Badge> : null}
-                      {walkMeta ? (
-                        <span>
-                          {t('mapPages.route.steps.walkMeta', { distance: formatDistance(step.metres, lang) })} · {formatDuration(wholeMinutes(step.minutes.standard), lang)}
-                        </span>
-                      ) : null}
-                      {rideMeta && step.minutes.standard > 0 ? <span>{t('mapPages.route.steps.rideMeta', { minutes: wholeMinutes(step.minutes.standard) })}</span> : null}
-                    </span>
-                    {step.note ? <span className="type-body-sm mt-1 block text-ink-2">{step.note}</span> : null}
-                  </button>
-                </li>
-              );
-            })}
-          </ol>
-        </div>
-      ) : null}
+      {part === 'all' && result ? <div className="mt-5 border-t border-line pt-5">{result}</div> : null}
 
       {fromId || toId ? (
         <div className="mt-4 border-t border-line pt-3">

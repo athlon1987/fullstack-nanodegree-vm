@@ -280,12 +280,23 @@ test.describe('offline page', () => {
     await expect(page.getByText('/en/kul/lounges')).toBeVisible();
   });
 
-  test('the indicator appears when the connection drops', async ({ page, context }) => {
+  // Round 4 (gallery note 3), intended change: the toast and the status card give one answer.
+  // "Showing saved information" only when the worker controls the page (saving "on"); otherwise
+  // both say nothing is saved yet (the connection dropped before the worker was ready, or a
+  // development build, which never saves).
+  test('the indicator appears when the connection drops, and agrees with the status card', async ({ page, context }) => {
     await page.goto('/en/offline');
     await expect(page.getByText('You are online', { exact: true })).toBeVisible();
     await context.setOffline(true);
-    await expect(page.getByRole('status').filter({ hasText: 'You are offline: showing saved information' })).toBeVisible();
     await expect(page.getByText('You are offline', { exact: true })).toBeVisible();
+    const saving = await page.locator('[data-saving]').getAttribute('data-saving');
+    if (saving === 'on') {
+      await expect(page.getByRole('status').filter({ hasText: 'You are offline: showing saved information' })).toBeVisible();
+    } else {
+      await expect(page.getByRole('status').filter({ hasText: 'You are offline: nothing is saved on this device yet' })).toBeVisible();
+      await expect(page.getByRole('status').filter({ hasText: 'showing saved information' })).toHaveCount(0);
+      await expect(page.locator('[data-saving]')).not.toContainText('not switched on');
+    }
     await expectNoAxeViolations(page);
     await context.setOffline(false);
     await expect(page.getByRole('status').filter({ hasText: 'Back online' })).toBeVisible();

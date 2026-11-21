@@ -1,7 +1,7 @@
 'use client';
 
 import { useT } from '@/lib/i18n/client';
-import { ProvenanceTag } from '@/components/common/provenance-tag';
+import { ProvenanceDefault, ProvenanceTag } from '@/components/common/provenance-tag';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { MAP_FILTERS, placePosition, type LevelView, type MapFilterId, type PoiView } from './map-logic';
@@ -61,12 +61,16 @@ export function PlaceList({ levels, pois, total, filters, selectedId, onShow, on
           {levels.map((level) => {
             const items = pois.filter((poi) => poi.level === level.id);
             if (items.length === 0) return null;
+            // Round 4 (A-14): the tag most places on the level share, said once under its heading
+            // ("Demo unless marked": illustrative positions); only the other places keep a tag.
+            const shared = levelProvenance(items);
             return (
               <div key={level.id}>
                 <h3 className="type-title-md flex flex-wrap items-baseline gap-x-3 border-b border-line pb-2 text-ink">
                   {level.name}
                   <span className="type-data-sm text-ink-3">{items.length}</span>
                 </h3>
+                {shared ? <ProvenanceDefault provenance={shared} className="mt-2" /> : null}
                 <ul className="grid gap-x-6 @2xl:grid-cols-2 @5xl:grid-cols-3">
                   {items.map((poi) => (
                     <li key={poi.id} className="flex min-w-0 items-start gap-3 border-b border-line py-3" aria-current={poi.id === selectedId ? 'true' : undefined}>
@@ -80,7 +84,7 @@ export function PlaceList({ levels, pois, total, filters, selectedId, onShow, on
                           {poi.side !== 'unknown' && placePosition(poi).area ? ` · ${t(`mapPages.area.${poi.side}`)}` : null}
                         </p>
                         <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
-                          <ProvenanceTag provenance={poi.provenance} length="short" />
+                          {poi.provenance !== shared ? <ProvenanceTag provenance={poi.provenance} length="short" /> : null}
                           <button type="button" onClick={() => onShow(poi.id)} aria-label={`${t('mapPages.list.showOnMap')}: ${poi.name}`} className="link-action type-body-sm">
                             {t('mapPages.list.showOnMap')}
                           </button>
@@ -99,4 +103,16 @@ export function PlaceList({ levels, pois, total, filters, selectedId, onShow, on
       )}
     </section>
   );
+}
+
+/**
+ * The provenance most places on a level share (at least half, and more than one place). Unlike
+ * `sharedProvenance`, "Demo" counts: here it marks an illustrative pin position, not simulated
+ * flight data, and the map draws those pins dashed as well.
+ */
+function levelProvenance(items: readonly PoiView[]): PoiView['provenance'] | undefined {
+  const counts = new Map<PoiView['provenance'], number>();
+  for (const item of items) counts.set(item.provenance, (counts.get(item.provenance) ?? 0) + 1);
+  const [top, count] = [...counts].sort((a, b) => b[1] - a[1])[0] ?? [];
+  return top && count !== undefined && count > 1 && count * 2 >= items.length ? top : undefined;
 }

@@ -6,7 +6,7 @@ import type { Notice, Source } from '@/content/types';
 import type { Flight } from '@/lib/flights';
 import { useSavedJourney } from '@/lib/hooks/use-saved-journey';
 import { useLang, useT } from '@/lib/i18n/client';
-import { buildJourney, type JourneyAirportContent, type JourneyStep } from '@/lib/journey';
+import { buildJourney, nextDeadline, nextStepSummary, type JourneyAirportContent, type StepSummary, type TravelDeadline } from '@/lib/journey';
 import { useFlightFeed, type FeedRequest } from '@/lib/providers/use-flight-feed';
 import type { SavedFlight } from '@/lib/stores';
 import { DemoDataBanner } from '@/components/common/demo-data-banner';
@@ -65,7 +65,8 @@ interface Entry {
   saved: SavedFlight;
   /** `undefined` while loading, `null` when it is off the demonstration board. */
   flight: Flight | null | undefined;
-  next?: JourneyStep;
+  next?: StepSummary;
+  deadline?: TravelDeadline;
 }
 
 const SAVED_FLIGHTS_HEADING_ID = 'saved-flights-title';
@@ -131,10 +132,10 @@ export function MyJourney({ carParks }: MyJourneyProps) {
       const flight = provider.getFlightSync(saved.id, saved.airport);
       if (!flight) return { saved, flight: null };
       const mode = saved.mode && modesForFlight(flight).includes(saved.mode) ? saved.mode : modesForFlight(flight)[0];
-      const next = buildJourney({ flight, mode, airportContent: content, now: provider.now, preferences }).find(
-        (step) => step.state === 'current' || (step.state === 'upcoming' && step.kind !== 'status'),
-      );
-      return { saved, flight, next };
+      // Round 4 (6.1.2): the step named on the card never carries a past time, and the deadline
+      // that still matters (be at the airport by, check-in closes, boarding) sits beside it.
+      const steps = buildJourney({ flight, mode, airportContent: content, now: provider.now, preferences });
+      return { saved, flight, next: nextStepSummary(steps, provider.now) ?? undefined, deadline: nextDeadline(flight, provider.now, preferences) ?? undefined };
     });
     if (!provider) return list;
     // Flights still to come first, by expected time; flights off the board last.
@@ -193,6 +194,7 @@ export function MyJourney({ carParks }: MyJourneyProps) {
                       flight={entry.flight}
                       now={provider?.now ?? null}
                       next={entry.next}
+                      deadline={entry.deadline}
                       selected={Boolean(entry.flight) && selected?.saved.id === entry.saved.id}
                       alertsOn={alerts.ids.has(entry.saved.id)}
                       onSelect={() => select(entry.saved.id)}

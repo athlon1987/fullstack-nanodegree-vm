@@ -50,7 +50,18 @@ export default async function AccessibilityPage() {
   const lang = toLang(await routeLang());
   const t = getT(lang);
   const data = accessibilityData(lang);
-  const statementTested: TKey[] = ['guidePages.accessibility.statement.tested1', 'guidePages.accessibility.statement.tested2', 'guidePages.accessibility.statement.tested3', 'guidePages.accessibility.statement.tested4'];
+  const statementTested: TKey[] = [
+    'guidePages.accessibility.statement.tested1',
+    'guidePages.accessibility.statement.tested2',
+    'guidePages.accessibility.statement.tested3',
+    'guidePages.accessibility.statement.tested5',
+    'guidePages.accessibility.statement.tested6',
+    'guidePages.accessibility.statement.tested4',
+  ];
+  // Round 4 (6.1.10): the official general feedback channels from the content layer, since MAHB
+  // publishes no accessibility contact or response time in our sources (needs MAHB data).
+  const contacts = contactViews(lang, t);
+  const feedback = contacts.filter((contact) => contact.scope === t('common.appName') && (contact.kind === 'email' || contact.kind === 'phone'));
   const statementLimits: TKey[] = [
     'guidePages.accessibility.statement.limit1',
     'guidePages.accessibility.statement.limit2',
@@ -108,7 +119,7 @@ export default async function AccessibilityPage() {
             </div>
           </div>
           <h3 className="type-title-md mt-12 mb-4 text-ink">{t('guidePages.accessibility.assistance.contactsTitle')}</h3>
-          <ContactList contacts={contactViews(lang, t)} />
+          <ContactList contacts={contacts} />
           {/* B-11 hand-off: set the needs My journey plans for, here where people look for help. */}
           <div className="mt-12 max-w-reading">
             <p className="type-body mb-4 text-ink-2">{t('guidePages.accessibility.assistance.needsLead')}</p>
@@ -239,12 +250,17 @@ export default async function AccessibilityPage() {
           <div className="flex max-w-reading flex-col gap-8">
             <p className="type-body-lg text-ink">{t('guidePages.accessibility.statement.intro')}</p>
             <div>
+              <h3 className="type-title-md text-ink">{t('guidePages.accessibility.statement.focusTitle')}</h3>
+              <p className="type-body mt-2 text-ink-2">{t('guidePages.accessibility.statement.focus')}</p>
+            </div>
+            <div>
               <h3 className="type-title-md text-ink">{t('guidePages.accessibility.statement.testedTitle')}</h3>
               <ul className="type-body mt-2 flex list-disc flex-col gap-2 pl-5 text-ink-2">
                 {statementTested.map((key) => (
                   <li key={key}>{t(key)}</li>
                 ))}
               </ul>
+              <p className="type-body-sm mt-2 text-ink-2">{t('guidePages.accessibility.statement.testedBrowsers')}</p>
             </div>
             <div>
               <h3 className="type-title-md text-ink">{t('guidePages.accessibility.statement.limitsTitle')}</h3>
@@ -256,7 +272,27 @@ export default async function AccessibilityPage() {
             </div>
             <div>
               <h3 className="type-title-md text-ink">{t('guidePages.accessibility.statement.reportTitle')}</h3>
-              <p className="type-body mt-2 text-ink-2">{t('guidePages.accessibility.statement.report')}</p>
+              <p className="type-body mt-2 text-ink-2" data-accessibility-contact="">
+                {t('guidePages.accessibility.statement.contactNone')}
+              </p>
+              {feedback.length > 0 ? (
+                <ul className="type-body mt-2 flex flex-col gap-1.5">
+                  {feedback.map((contact) => (
+                    <li key={contact.id} className="flex min-w-0 flex-wrap items-baseline gap-x-2">
+                      <span className="text-ink-2">{contact.label}:</span>
+                      {contact.href ? (
+                        <a href={contact.href} className="link font-semibold break-words text-ink">
+                          {contact.value}
+                        </a>
+                      ) : (
+                        <span className="font-semibold text-ink">{contact.value}</span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+              <SourceNote sources={feedback.flatMap((contact) => contact.sources).filter((source, index, all) => all.findIndex((other) => other.id === source.id) === index)} className="mt-1" />
+              <p className="type-body mt-3 text-ink-2">{t('guidePages.accessibility.statement.report')}</p>
               <LocaleLink href="/help#contacts" className="link-action type-body-sm mt-1 text-ink">
                 {t('guidePages.help.contactsTitle')}
                 <Icon name="arrow-right" size="sm" />

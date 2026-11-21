@@ -702,6 +702,16 @@ Each environment has its own secrets, its own `NEXT_PUBLIC_SITE_URL` and an `APP
 
 Without either, the server logs a `[rate-limit]` warning at start-up and falls back to an untrusted per-address key with a site-wide ceiling (`security.md`, section 4): visitors are not throttled together, but behind an undeclared CDN many share one key. The e2e harness and CI set `TRUSTED_CLIENT_IP_HEADER=x-e2e-client-ip`.
 
+**Deployment checklist: measurement storage** (round 4, E-17). `/api/metrics` writes aggregate counts (no personal data; `security.md`, section 6) through the `MetricsStore` interface in `src/components/platform/metrics-store.ts`:
+
+| Variable | Set it to | When |
+|---|---|---|
+| `METRICS_STORE` | `file` (default), `kv` or `memory` | `file` for the prototype and a single `next start` instance; `kv` for production, previews on serverless hosts and any deployment with several instances; `memory` only in tests |
+| `METRICS_STORE_FILE` | A writable path, default `.data/metrics.json` (git-ignored) | With `file`; put it on a persistent volume, or the counts last only as long as the container |
+| `METRICS_KV_URL`, `METRICS_KV_TOKEN` | A Redis-compatible REST endpoint (Upstash's REST API and `/pipeline`), https only, and its token from the secret manager | With `kv`; one hash per day (`metrics:YYYY-MM-DD`), `HINCRBY` per count, `EXPIRE` 400 days |
+
+A `kv` setting without both variables falls back to the file store; a file store that cannot write (a read-only file system) keeps counting in memory and reports `degraded: true`. Check `measurementStore` in the authenticated `/api/health` body after each deploy: `errors` should stay at 0. The file store assumes one process per file; with several instances it would lose counts, so use `kv` there.
+
 ---
 
 ## 7. Security and privacy

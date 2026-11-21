@@ -45,15 +45,17 @@ export function ProvenanceTag({ provenance, length = 'full', className, ...rest 
       data-provenance={provenance}
       data-demo-marker={provenance === 'demo' ? '' : undefined}
       className={cn(
-        // Wraps instead of widening the page at 320 px and 125% text (A-16); 20 px tall otherwise.
-        'type-caption relative inline-flex min-h-5 max-w-full items-center gap-1 overflow-hidden rounded-xs border py-px pr-1.5 pl-1 leading-tight font-semibold',
+        // Wraps between words instead of widening the page at 320 px and 125% text (A-16); 20 px
+        // tall otherwise. Round 4: no `overflow-hidden`, so a label is never clipped ("Estimatec");
+        // the hazard stripe rounds its own corners instead.
+        'type-caption relative inline-flex min-h-5 max-w-full items-center gap-1 rounded-xs border py-px pr-1.5 pl-1 leading-tight font-semibold',
         provenance === 'demo' && 'pl-3.5',
         form.box,
         className,
       )}
       {...rest}
     >
-      {provenance === 'demo' ? <span aria-hidden="true" className="hazard-stripes absolute inset-y-0 left-0 w-2" /> : null}
+      {provenance === 'demo' ? <span aria-hidden="true" className="hazard-stripes absolute inset-y-0 left-0 w-2 rounded-l-xs" /> : null}
       <Icon name={form.icon} size="xs" strokeWidth={2} className="shrink-0" />
       {t(`provenance.${provenance}.${length === 'short' ? 'short' : 'label'}`)}
     </span>

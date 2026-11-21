@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import { airportSlugs } from '@/content';
 import { AirportHeader } from '@/components/airport/airport-header';
 import { loadAirportPage, type AirportPageParams } from '@/components/airport/section-page';
 import { Container } from '@/components/ui/container';
@@ -25,6 +26,9 @@ export default function AirportLayout({ children, params }: LayoutProps<'/[lang]
 }
 
 async function Header({ params }: { params: AirportPageParams }) {
+  // Round 4 (layout package): an unknown airport gets no airport bar, rather than a `notFound()`
+  // thrown inside this boundary (React error #419 in the browser); the page answers the 404.
+  if (!airportSlugs().includes((await params).airport)) return null;
   const { lang, airport, sections } = await loadAirportPage(params);
   return <AirportHeader airport={airport} lang={lang} sections={sections} />;
 }

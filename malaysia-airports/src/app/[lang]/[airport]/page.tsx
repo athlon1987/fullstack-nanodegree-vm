@@ -1,5 +1,5 @@
-import { CLASSIFICATION_LABELS, airportSlugs, getNotices, getSource, pick, resolveSources, type Provenance } from '@/content';
-import { terminalLabel } from '@/content/airports';
+import { CLASSIFICATION_LABELS, airportSlugs, formatAsOf, getNotices, getSource, pick, resolveSources, type Provenance } from '@/content';
+import { GROUP_CONTACTS, terminalLabel } from '@/content/airports';
 import { AirportFlightTools } from '@/components/airport/airport-flight-tools';
 import { AirportBanner } from '@/components/airport/airport-header';
 import { MissingPage } from '@/components/common/missing-page';
@@ -78,6 +78,15 @@ async function Overview({ params }: { params: AirportPageParams }) {
   // Fast Track, one record per KLIA terminal (D-02 hand-off, round 2). The records share their
   // provenance and sources, so both are shown once for the group (A-14).
   const bookable = content.facilities.filter((facility) => facility.id.endsWith('-fast-track') && facility.bookingUrl);
+  // Round 4 (re-review 6.1.8): the airlines and the airport's own contact, only as far as the
+  // content has them; otherwise "Not published", never a guess (needs MAHB data for most airports).
+  const airlineNames = content.airlines.map((airline) => airline.name);
+  const airlinesValue =
+    airlineNames.length > 3 ? t('flightPages.overview.airlinesMore', { names: airlineNames.slice(0, 3).join(', '), count: airlineNames.length - 3 }) : airlineNames.join(', ');
+  const airlinesOfficial = content.airlines.length > 0 && content.airlines.every((airline) => airline.basis !== 'third-party');
+  const airlineSources = resolveSources([...new Set(content.airlines.flatMap((airline) => airline.sources))]);
+  const groupValues = new Set(GROUP_CONTACTS.map((contact) => contact.value));
+  const ownContacts = airport.contacts.filter((contact) => !groupValues.has(contact.value));
   const bookableSources = resolveSources([...new Set(bookable.flatMap((facility) => facility.sources))]);
 
   return (
@@ -196,13 +205,31 @@ async function Overview({ params }: { params: AirportPageParams }) {
             hint={hint('network-membership')}
           />
           <KeyFact label={t('airportPage.facts.location')} value={place} provenance={tag('location')} hint={hint('location')} />
+          <KeyFact
+            label={t('flightPages.overview.airlines')}
+            value={airlineNames.length > 0 ? <span data-airlines="">{airlinesValue}</span> : <NotPublished />}
+            hint={airlineNames.length > 0 ? undefined : t('flightPages.overview.airlinesMissing')}
+            provenance={airlineNames.length > 0 ? (airlinesOfficial ? 'official' : 'estimated') : undefined}
+            sources={airlineNames.length > 0 ? airlineSources : undefined}
+            className="sm:col-span-2 lg:col-span-4"
+          />
         </div>
         <div className="mt-5 flex flex-wrap items-start gap-x-6 gap-y-1">
           <SourceNote sources={resolveSources(airport.sources)} />
-          {airport.asOf ? <p className="type-caption py-2 text-ink-2">{t('freshness.asOf', { date: airport.asOf })}</p> : null}
+          {airport.asOf ? <p className="type-caption py-2 text-ink-2">{t('freshness.asOf', { date: formatAsOf(airport.asOf, lang) })}</p> : null}
         </div>
 
-        <h3 className="type-title-md mt-10 mb-3 text-ink">{t('airportPage.contactsTitle')}</h3>
+        {/* Target of "Official contacts" on the status lines (round 4, 6.1.1). */}
+        <h3 id="airport-contacts" className="type-title-md mt-10 mb-3 scroll-mt-28 text-ink">
+          {t('airportPage.contactsTitle')}
+        </h3>
+        {ownContacts.length === 0 ? (
+          <p data-own-contact="missing" className="type-body-sm mb-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-ink-2">
+            <span className="font-semibold text-ink">{t('flightPages.overview.ownContact')}:</span>
+            <NotPublished />
+            <span>{t('flightPages.overview.ownContactMissing')}</span>
+          </p>
+        ) : null}
         <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {airport.contacts.map((contact) => (
             <li key={`${contact.kind}-${contact.value}`} className="flex min-w-0 gap-3 rounded-lg border border-line-strong bg-surface p-4">

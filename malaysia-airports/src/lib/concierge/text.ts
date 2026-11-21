@@ -2,7 +2,7 @@
  * Small text helpers for the concierge engine: normalising questions, picking a language from
  * bilingual content, filling phrase templates and tokenising for passage scoring.
  */
-import type { Lang, LocalizedText } from '@/content/types';
+import type { FacilityCategory, Lang, LocalizedText } from '@/content/types';
 import { conciergePageEn, conciergePageMs } from '@/lib/i18n/features/concierge';
 
 /** Lower case, accents removed, anything that is not a letter or digit becomes one space. */
@@ -39,6 +39,14 @@ export type EnginePhrase = keyof typeof conciergePageEn.engine;
 export function phrase(lang: Lang, key: EnginePhrase, vars: Record<string, string | number> = {}): string {
   const template = (lang === 'ms' ? conciergePageMs : conciergePageEn).engine[key] ?? conciergePageEn.engine[key] ?? '';
   return template.replace(/\{(\w+)\}/g, (match, name: string) => (name in vars ? String(vars[name]) : match));
+}
+
+/**
+ * What is missing when a facility category has no record, as a phrase written for the category
+ * (round 4, 6.1.4): "where the accessible toilets are", "Lokasi tandas OKU".
+ */
+export function missingFacility(lang: Lang, category: FacilityCategory): string {
+  return (lang === 'ms' ? conciergePageMs : conciergePageEn).facilityMissing[category] ?? conciergePageEn.facilityMissing[category];
 }
 
 /** "A, B and C" in the asked language. */

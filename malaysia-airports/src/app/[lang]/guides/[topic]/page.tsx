@@ -87,7 +87,7 @@ async function Guide({ params }: { params: PageProps<'/[lang]/guides/[topic]'>['
       <Container className="pb-section">
         {view.translationMissing ? <TranslationNotice className="mb-8" /> : null}
         <div className="grid gap-10 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-16">
-          <nav aria-labelledby="guide-toc-title" className="min-w-0 border-l border-line-strong pl-4 lg:sticky lg:top-header lg:self-start lg:pt-6">
+          <nav aria-labelledby="guide-toc-title" className="min-w-0 border-l border-line-strong pl-4 lg:sticky lg:top-sticky lg:self-start lg:pt-6">
             <p id="guide-toc-title" className="type-eyebrow mb-2 text-ink-3">
               {t('guidePages.guide.onThisPage')}
             </p>

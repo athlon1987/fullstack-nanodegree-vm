@@ -218,7 +218,7 @@ function Directory({
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] lg:gap-10">
-        <div className="flex min-w-0 flex-col gap-4 lg:sticky lg:top-[calc(var(--spacing-header)+1rem)] lg:self-start">
+        <div className="flex min-w-0 flex-col gap-4 lg:sticky lg:top-[calc(var(--spacing-sticky)+1rem)] lg:self-start">
           <GatePanel
             airport={airport}
             terminalLabels={terminalLabels}

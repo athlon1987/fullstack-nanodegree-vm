@@ -166,8 +166,12 @@ export type OpsState =
   | 'notice'
   /** A notice about the service starts within the next 14 days. */
   | 'planned'
-  /** No notice in our sources: "No disruption reported in our sources as of hh:mm; check the signs". */
-  | 'clear';
+  /**
+   * No notice about the service in our sources, and no live operations feed (OOS-02): its state
+   * cannot be known, so the line says "Status not available" and where to check (round 4,
+   * re-review 6.1.1). It is never "no disruption": a dated notice set is not a current source.
+   */
+  | 'unknown';
 
 /** One status line. */
 export interface OpsStatusLine {
@@ -177,13 +181,38 @@ export interface OpsStatusLine {
   state: OpsState;
   /** The notice behind a `notice` or `planned` state. */
   notice?: Pick<Notice, 'id' | 'title' | 'body' | 'validFrom' | 'validTo' | 'provenance' | 'sources' | 'asOf'>;
-  /** The instant the line was worked out (ISO with the airport offset). */
-  checkedAt: string;
+  /**
+   * What the line rests on. Always `notices` until a live operations feed exists: the line was
+   * worked out from dated notices in the build, not checked against anything live, so it carries
+   * no "checked hh:mm" time (round 4, re-review 6.1.1).
+   */
+  basis: 'notices';
+  /** The latest `asOf` among the airport's notices (`YYYY`, `YYYY-MM` or `YYYY-MM-DD`), when any has one. */
+  noticesAsOf?: string;
   /** Demo queue estimates for the service's checkpoints (always `isDemo`). */
   waits: WaitTime[];
 }
 
 const PLANNED_HORIZON_MS = 14 * 24 * 60 * 60 * 1000;
+
+/** The network notice that only says the prototype's data is simulated; it is about no service. */
+const PROTOTYPE_NOTICE_ID = 'prototype-demo-data';
+
+/**
+ * The latest `asOf` among an airport's own notices (and network notices about operations), for
+ * "Based on notices published up to …". `undefined` when none is dated. Pure.
+ */
+export function noticesPublishedUpTo(notices: readonly Notice[], airport: string): string | undefined {
+  const slug = getAirport(airport)?.slug ?? airport;
+  let latest: string | undefined;
+  for (const notice of notices) {
+    if (notice.id === PROTOTYPE_NOTICE_ID || !notice.asOf) continue;
+    if (notice.airport && notice.airport !== slug) continue;
+    // `asOf` values are ISO prefixes, so the string order is the date order.
+    if (latest === undefined || notice.asOf > latest) latest = notice.asOf;
+  }
+  return latest;
+}
 
 /**
  * Status lines for an airport's services at `now`, fed by its notices (pass `getNotices(airport)`
@@ -206,7 +235,7 @@ export function opsStatus(input: {
   if (!airport) return [];
   const now = toDate(input.now);
   const time = now.getTime();
-  const zone = airport.timezone;
+  const noticesAsOf = noticesPublishedUpTo(input.notices, airport.slug);
   const wanted = input.services ?? opsServicesFor(airport.slug);
   const waitProvider = input.waits === false ? null : new DemoWaitTimeProvider(now);
   const lines: OpsStatusLine[] = [];
@@ -216,7 +245,7 @@ export function opsStatus(input: {
     if (input.terminal && service.terminal && service.terminal !== input.terminal) continue;
     const relevant = input.notices.filter((notice) => {
       if (notice.airport && notice.airport !== airport.slug) return false;
-      if (notice.provenance === 'demo' && notice.id === 'prototype-demo-data') return false;
+      if (notice.provenance === 'demo' && notice.id === PROTOTYPE_NOTICE_ID) return false;
       return service.pattern.test(notice.id) || service.pattern.test(notice.title.en);
     });
     const active = relevant.find((notice) => {
@@ -241,7 +270,7 @@ export function opsStatus(input: {
       service: service.id,
       name: service.name,
       ...(service.terminal ? { terminal: service.terminal } : {}),
-      state: active ? 'notice' : planned ? 'planned' : 'clear',
+      state: active ? 'notice' : planned ? 'planned' : 'unknown',
       ...(notice
         ? {
             notice: {
@@ -256,7 +285,8 @@ export function opsStatus(input: {
             },
           }
         : {}),
-      checkedAt: toIsoWithOffset(now, zone),
+      basis: 'notices',
+      ...(noticesAsOf ? { noticesAsOf } : {}),
       waits,
     });
   }

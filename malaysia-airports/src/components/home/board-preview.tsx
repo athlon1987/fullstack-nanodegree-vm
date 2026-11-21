@@ -13,6 +13,7 @@ import { LocaleLink } from '@/components/common/locale-link';
 import { datesInRange } from '@/components/flights/board-model';
 import { FeedNotice } from '@/components/flights/feed-notice';
 import { FlightBoard } from '@/components/flights/flight-board';
+import { rowDayLabel } from '@/components/flights/flight-row';
 import { useFlightDirection } from '@/components/flights/flight-direction';
 import { overlays } from '@/components/shell/overlay-store';
 import { hasSection, sectionPath } from '@/components/shell/sections';
@@ -118,6 +119,9 @@ export function BoardPreview({ airport, terminal, rows = 8, headingLevel = 2, cl
         ) : undefined
       }
       showAirport={!scope}
+      // A flight on another day says so ("Tomorrow"), so a short preview at a quiet airport cannot
+      // be misread (round 4, gallery note 2).
+      rowDay={provider ? (flight) => rowDayLabel(flight, provider.now, t) : undefined}
       skeletonRows={rows}
       emptyMessage={noBoard ? t('flights.board.noDemoData') : undefined}
       // Nothing loaded: say so with a retry; last-known rows: say how old they are (BR-05).

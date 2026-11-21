@@ -8,6 +8,7 @@
  * few hundred documents takes a few milliseconds.
  */
 import MiniSearch from 'minisearch';
+import { parseFlightQuery } from '@/lib/flights/query';
 
 /** Kinds of things the site search can find. Flights are looked up live, not indexed. */
 export const SEARCH_DOC_TYPES = ['airport', 'facility', 'outlet', 'transport', 'parking', 'guide', 'faq', 'notice', 'corporate', 'place', 'airline', 'unpublished'] as const;
@@ -26,6 +27,14 @@ export interface SearchDocument {
   airport?: string;
   /** Extra words to match on: codes, categories in both languages, operators. */
   keywords: string[];
+  /**
+   * Relevance multiplier for this document on every query (default 1), set where the documents
+   * are built (round 4, A-12): news below tasks, an airport's parking page above its car parks,
+   * premium parking below long-stay parking.
+   */
+  rank?: number;
+  /** Apply `rank` only when the query (with its synonyms) has one of these words. Default: always. */
+  rankWhen?: string[];
 }
 
 /** A search hit: the document plus its relevance score. */
@@ -87,7 +96,7 @@ export const SEARCH_SYNONYMS: readonly (readonly string[])[] = [
   ['hotel', 'sleep', 'transit hotel', 'nap'],
   ['food', 'eat', 'restaurant', 'makan', 'dining', 'dine', 'cafe', 'coffee'],
   ['shop', 'shopping', 'duty free', 'kedai', 'beli-belah'],
-  ['smoking', 'smoke', 'merokok'],
+  ['smoking', 'smoke', 'merokok', 'rokok', 'smoking room', 'bilik merokok'],
   ['shower', 'showers', 'mandi'],
   ['aerotrain', 'satellite', 'satelit'],
   ['lift', 'lifts', 'lif', 'elevator', 'elevators'],
@@ -148,6 +157,18 @@ function normalise(value: string): string {
     .trim();
 }
 
+/** MiniSearch's own word boundaries (spaces and punctuation). */
+const SPACE_OR_PUNCTUATION = /[\n\r\p{Z}\p{P}]+/u;
+
+/**
+ * Words, with "Wi-Fi" and "wi fi" kept as one word ("wifi"): split in two, "wi" matched every
+ * word starting "wi" and "fi" every word starting "fi" (round 4, A-12: 55 results for "wifi").
+ * Used for the documents and the queries alike.
+ */
+function tokenize(text: string): string[] {
+  return text.replace(/\bwi[\s‐‑-]?fi\b/gi, 'wifi').split(SPACE_OR_PUNCTUATION);
+}
+
 /** The query plus the single-word synonyms of every group it touches. */
 export function expandQuery(query: string): string {
   const text = normalise(query);
@@ -164,6 +185,15 @@ export function expandQuery(query: string): string {
   return extra.size > 0 ? `${text} ${[...extra].join(' ')}` : text;
 }
 
+/** Stored keywords come back as one string (see `extractField`); normalised, space-padded. */
+function storedKeywords(document: SearchDocument): string {
+  const value = document.keywords as unknown;
+  return ` ${normalise(Array.isArray(value) ? value.join(' | ') : String(value ?? '')).replace(/[^a-z0-9| ]+/g, ' ')} `;
+}
+
+/** Multi-word topics an honest "not published" answer can be asked for by name. */
+const UNPUBLISHED_PHRASES = ['accessible toilet', 'accessible toilets', 'disabled toilet', 'tandas oku', 'oku toilet', 'smoking room', 'bilik merokok', 'accessible parking', 'parkir oku', 'hearing loop', 'money changer', 'pengurup wang', 'baggage trolley'];
+
 /** An index built by `createSearchIndex`. Treat it as opaque and pass it to `searchAll`. */
 export interface SearchIndex {
   mini: MiniSearch<SearchDocument>;
@@ -174,13 +204,15 @@ export interface SearchIndex {
 export function createSearchIndex(documents: readonly SearchDocument[]): SearchIndex {
   const mini = new MiniSearch<SearchDocument>({
     fields: ['title', 'keywords', 'summary'],
-    storeFields: ['id', 'type', 'title', 'summary', 'href', 'airport', 'keywords'],
+    storeFields: ['id', 'type', 'title', 'summary', 'href', 'airport', 'keywords', 'rank', 'rankWhen'],
     extractField: (document, fieldName) => {
       const value = (document as unknown as Record<string, unknown>)[fieldName];
       return Array.isArray(value) ? value.join(' ') : (value as string | undefined) ?? '';
     },
     processTerm: (term) => normalise(term) || null,
+    tokenize,
     searchOptions: {
+      tokenize,
       boost: { title: 3, keywords: 2 },
       prefix: (term) => term.length >= 2,
       fuzzy: (term) => (term.length > 4 ? 0.2 : false),
@@ -202,14 +234,24 @@ export function createSearchIndex(documents: readonly SearchDocument[]): SearchI
  * results.groups[0]?.hits[0]?.title; // 'Prayer rooms (surau)'
  */
 export function searchAll(index: SearchIndex, query: string, options: SearchOptions = {}): SearchResults {
-  const text = normalise(query);
+  // A flight number ("MH 2") is looked up on the boards; for the site's content its digits mean
+  // nothing, and "2" alone matched every "Terminal 2" item (round 4, A-12).
+  const flightNumber = parseFlightQuery(query).kind === 'flight-number';
+  const text = flightNumber ? normalise(query.replace(/\b\d+[a-z]?\b/gi, ' ')) : normalise(query);
   if (!text) return { query, total: 0, groups: [] };
   const limit = options.limit ?? 5;
   const typed = new Set(text.split(/[^a-z0-9]+/).filter(Boolean));
-  const expanded = expandQuery(query);
-  const facilityIntent = expanded.split(/[^a-z0-9]+/).some((word) => FACILITY_INTENT.has(word));
+  if (/\bwi[\s-]?fi\b/.test(text)) typed.add('wifi');
+  const expanded = expandQuery(text);
+  const asked = new Set(expanded.split(/[^a-z0-9]+/).filter(Boolean));
+  const facilityIntent = [...asked].some((word) => FACILITY_INTENT.has(word));
+  const phrase = ` ${text.replace(/[^a-z0-9]+/g, ' ').trim()} `;
 
   const raw = index.mini.search(expanded, {
+    // Only words the visitor typed match as prefixes or with typos; synonyms match whole words.
+    // "taxi" adds "cab", and "cab" as a prefix found "cabin bag" (the liquids rule) (round 4, A-12).
+    prefix: (term) => term.length >= 2 && typed.has(term),
+    fuzzy: (term) => (term.length > 4 && typed.has(term) ? 0.2 : false),
     filter: (result) => {
       const stored = result as unknown as SearchDocument;
       if (options.types && !options.types.includes(stored.type)) return false;
@@ -223,7 +265,14 @@ export function searchAll(index: SearchIndex, query: string, options: SearchOpti
       if (!document) return 1;
       const local = options.airport && document.airport === options.airport ? 1.3 : 1;
       const intent = facilityIntent ? (FACILITY_WEIGHT[document.type] ?? 1) : 1;
-      return TYPE_WEIGHT[document.type] * local * intent;
+      // The honest "not published" answer leads when the visitor typed its topic as a phrase:
+      // "accessible toilet" and "tandas OKU" put it above the general toilets (round 4, A-12).
+      const exact = document.type === 'unpublished' && UNPUBLISHED_PHRASES.some((keyword) => phrase.includes(` ${keyword} `) && storedKeywords(document).includes(keyword)) ? 4 : 1;
+      // Stored fields come back through `extractField`: a missing rank reads as '', a word list as one string.
+      const when = document.rankWhen as unknown;
+      const applies = !when || String(Array.isArray(when) ? when.join(' ') : when).split(' ').some((word) => asked.has(word));
+      const rank = typeof document.rank === 'number' && applies ? document.rank : 1;
+      return TYPE_WEIGHT[document.type] * local * intent * exact * rank;
     },
     boostTerm: (term) => (typed.has(term) ? 1 : 0.6),
   });

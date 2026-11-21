@@ -56,6 +56,8 @@ export interface FlightBoardProps {
   timeZone?: string;
   /** Names the day of an hour group ("Tomorrow") when it is not today; return `undefined` for today. */
   dayLabel?: (date: string) => string | undefined;
+  /** Names the day of a row's time when it is not today ("Tomorrow"; `rowDayLabel`), for boards without hour groups (round 4). */
+  rowDay?: (flight: Flight) => string | undefined;
   /** Inside the board, above the rows (for example "Show earlier flights"). Hidden while loading or empty. */
   before?: ReactNode;
   /** Inside the board, below the rows (for example "Show later flights"). Shown unless loading. */
@@ -101,6 +103,7 @@ export function FlightBoard({
   groupByHour = false,
   timeZone,
   dayLabel,
+  rowDay,
   before,
   after,
   savedIds,
@@ -123,6 +126,7 @@ export function FlightBoard({
       showAirport={showAirport}
       saved={savedIds?.has(flight.id) ?? false}
       onSaveChange={onSaveChange ? (saved) => onSaveChange(flight, saved) : undefined}
+      day={rowDay?.(flight)}
     />
   );
   const groupLabel = (group: FlightHourGroup) => {
@@ -188,7 +192,7 @@ export function FlightBoard({
                   return (
                     <section key={id} aria-labelledby={id}>
                       {/* Sticky, with a demo label: every scrolled view of the board shows one (content-integrity-01). */}
-                      <GroupHeading id={id} className="sticky top-header z-20 flex items-center justify-between gap-3 border-b border-line bg-board-raised px-4 py-1.5 sm:px-5">
+                      <GroupHeading id={id} className="sticky top-sticky z-20 flex items-center justify-between gap-3 border-b border-line bg-board-raised px-4 py-1.5 sm:px-5">
                         <span className="type-data-sm text-ink">{groupLabel(group)}</span>
                         <span className="flex items-center gap-2">
                           <span className="type-caption text-ink-2">{groupCount(group)}</span>
@@ -234,7 +238,7 @@ export function FlightBoard({
                     <Fragment key={`${group.date}-${group.hour}`}>
                       <TBody>
                         <tr className="border-b border-line bg-board-raised">
-                          <th scope="rowgroup" colSpan={columns} className="sticky top-header z-20 bg-board-raised px-4 py-1.5 text-left font-normal sm:px-5">
+                          <th scope="rowgroup" colSpan={columns} className="sticky top-sticky z-20 bg-board-raised px-4 py-1.5 text-left font-normal sm:px-5">
                             <span className="flex items-center gap-2">
                               <span className="type-data-sm text-ink">{groupLabel(group)}</span>
                               <span className="type-caption text-ink-2">{groupCount(group)}</span>

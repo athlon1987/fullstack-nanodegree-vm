@@ -221,6 +221,23 @@ operative obligations and dates with MAHB's counsel; this section is design guid
   hand-offs carry `utm_source`, `utm_medium` and `utm_campaign`. The privacy page must describe it
   and offer the switch (hand-off to package D). Partner referral codes and partner-confirmed
   bookings need partner agreements (OOS-13).
+- **Measurement storage** (E-17, round 4, layout package). The counts are durable and aggregate,
+  behind one interface (`MetricsStore`, `src/components/platform/metrics-store.ts`):
+  - What is stored: one integer per key `day | event | name | state-or-host | section`, for
+    example `2026-11-21 | handoff | fast-track-booking | www.myairportfasttrack.com |
+    /en/kul/facilities`. Only fields `parseMetric` accepts reach the store; there is no column for
+    a visitor, address, cookie, user agent, query, flight or a time finer than the day, so the
+    store holds no personal data and nothing in it can single out a visitor.
+  - Where: `METRICS_STORE=file` (the default; a JSON file, `METRICS_STORE_FILE`, default
+    `.data/metrics.json`, git-ignored, written atomically) for the prototype and any single
+    instance; `METRICS_STORE=kv` with `METRICS_KV_URL` (https only) and `METRICS_KV_TOKEN` (a
+    secret, section 5: never logged or returned) for production, one Redis-compatible hash per day
+    with `HINCRBY`, so instances never overwrite each other; `memory` for tests. A KV request
+    without both settings falls back to the file, and a file that cannot be written falls back to
+    memory; either way the request is answered and the failure is counted.
+  - Retention: 400 days (file: older days pruned on write; KV: `EXPIRE` on each day's hash).
+  - Access: the counts are read only through `/api/health` with `HEALTH_TOKEN`, together with
+    `measurementStore` (`kind`, `keys`, `errors`, `degraded`).
 - **Concierge.** The question and minimal context reach our server, and the optional model
   provider (a cross-border transfer). E-mail addresses, phone numbers, passport numbers and
   booking references are redacted before forwarding (`redactQuestion`). Production needs a notice

@@ -8,6 +8,7 @@ import { useLang, useT } from '@/lib/i18n/client';
 import { NotPublished } from '@/components/common/not-published';
 import { ProvenanceDefault } from '@/components/common/provenance-tag';
 import { sharedProvenance } from '@/components/common/shared-provenance';
+import { sectionSources } from '@/components/common/section-sources';
 import { SourceNote } from '@/components/common/source-note';
 import { Icon } from '@/components/ui/icon';
 import { EmptyState } from '@/components/common/empty-state';
@@ -16,7 +17,7 @@ import { cn } from '@/lib/cn';
 import { FilterChip } from '@/components/ui/filter-chip';
 import { Switch } from '@/components/ui/switch';
 import { FacilityCard } from './facility-card';
-import { AsOf, sourcesFor } from './facility-values';
+import { AsOf } from './facility-values';
 import {
   EMPTY_FACILITY_FILTERS,
   activeFilterCount,
@@ -116,7 +117,7 @@ function Directory({
 
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,17.5rem)_minmax(0,1fr)] lg:gap-10">
-      <section aria-labelledby="facility-filters-title" className="min-w-0 lg:sticky lg:top-[calc(var(--spacing-header)+1rem)] lg:self-start">
+      <section aria-labelledby="facility-filters-title" className="min-w-0 lg:sticky lg:top-[calc(var(--spacing-sticky)+1rem)] lg:self-start">
         <div className="flex items-center justify-between gap-3">
           <h2 id="facility-filters-title" className="type-title-md sr-only text-ink lg:not-sr-only">
             {t('mapPages.facilities.filtersTitle')}
@@ -240,10 +241,14 @@ function Directory({
         ) : (
           <div className="flex flex-col gap-10 @container">
             {groups.map((group) => {
-              // Round 2 (A-14): items of a section that share their sources and date show them once.
+              // Round 4 (A-14): one source list per section, not a toggle on every card. Each source
+              // names the facilities it supports. The date is said once when the cards share it;
+              // otherwise each card keeps its own "As of".
               const first = group.items[0];
-              const shared =
-                group.items.length > 1 && group.items.every((item) => item.sourceIds.join('+') === first.sourceIds.join('+') && item.asOf === first.asOf);
+              const sameDate = group.items.every((item) => item.asOf === first.asOf);
+              const label = (item: FacilityView) =>
+                group.items.some((other) => other !== item && other.name === item.name) ? `${item.name} (${item.terminalLabel})` : item.name;
+              const listed = sectionSources(group.items, (item) => item.sourceIds, label, sources);
               return (
                 <section key={group.id} aria-labelledby={`facility-group-${group.id}`}>
                   <h2 id={`facility-group-${group.id}`} className="type-title-lg mb-4 flex items-baseline gap-3 border-b border-line pb-2 text-ink">
@@ -259,14 +264,15 @@ function Directory({
                         showTerminal={multiTerminal}
                         airport={airport}
                         defaultProvenance={defaultProvenance}
-                        groupedSources={shared}
+                        groupedSources
+                        showAsOf={!sameDate}
                       />
                     ))}
                   </div>
-                  {shared ? (
-                    <div className="mt-2 flex flex-wrap items-center gap-x-4">
-                      <SourceNote sources={sourcesFor(first.sourceIds, sources)} />
-                      {first.asOf ? <AsOf value={first.asOf} /> : null}
+                  {listed.sources.length > 0 || (sameDate && first.asOf) ? (
+                    <div data-section-sources="" className="mt-2 flex flex-wrap items-center gap-x-4">
+                      <SourceNote sources={listed.sources} citedBy={group.items.length > 1 ? listed.citedBy : undefined} label={t('shellExtras.sourceLists.section')} />
+                      {sameDate && first.asOf ? <AsOf value={first.asOf} /> : null}
                     </div>
                   ) : null}
                 </section>

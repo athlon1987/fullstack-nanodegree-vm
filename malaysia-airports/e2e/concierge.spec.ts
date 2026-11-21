@@ -73,6 +73,9 @@ test.describe('concierge page', () => {
     const log = answerIn(page);
     await expect(log.getByRole('heading', { level: 3, name: /cheapest way to get to KL Sentral/ })).toBeVisible();
     await expect(log.getByText(/published fare|our sources list/).first()).toBeVisible({ timeout: 30_000 });
+    // Round 4 (6.1.4), intended change: on a phone the details sit behind "Show N more".
+    const more = log.getByRole('button', { name: /^Show \d+ more items?$/ });
+    if (await more.isVisible()) await more.click();
     await expect(log.getByRole('list', { name: 'Details' }).getByText(/Official|Estimated|Suggestion/).first()).toBeVisible();
     await expect(log.getByText(/\d+ sources?/).first()).toBeVisible();
     await expect(log.getByText('Answered on this device', { exact: true })).toBeVisible();
@@ -137,7 +140,8 @@ test.describe('concierge page', () => {
   test('works in Bahasa Malaysia', async ({ page }) => {
     await page.goto('/ms/concierge');
     await expect(page.locator('html')).toHaveAttribute('lang', 'ms');
-    await expect(page.getByRole('heading', { level: 1, name: 'Tanya concierge' })).toBeVisible();
+    // Round 4 (6.1.10), intended change: the concierge has a Malay name, "Tanya Kami".
+    await expect(page.getByRole('heading', { level: 1, name: 'Tanya Kami' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Susunan kata AI dan penerbangan simpanan' })).toBeVisible();
     await expect(async () => {
       await page.getByRole('button', { name: 'Bagaimana saya pergi dari Terminal 1 ke Terminal 2?' }).click({ timeout: 3000 });

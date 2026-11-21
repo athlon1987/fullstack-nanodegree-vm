@@ -34,6 +34,13 @@ export interface CarParkView extends Pick<CarPark, 'rates' | 'rateStatus' | 'dai
   officialUrl: string;
   /** Daily maximums individual sources quote when the rates are not verified (C-01). */
   reported?: ReportedFigure[];
+  /**
+   * The car park's rate status in one sentence, from `rateStatusText` in `@/lib/parking`: the
+   * same words the concierge and the help FAQ use (round 4, re-review 6.1.3).
+   */
+  rateLine: string;
+  /** True only for a captured tariff; every other figure is "not verified". */
+  rateVerified: boolean;
 }
 
 /** Everything the parking page passes to its Client Components. */

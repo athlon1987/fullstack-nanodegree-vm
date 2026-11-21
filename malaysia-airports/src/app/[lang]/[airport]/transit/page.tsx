@@ -11,8 +11,8 @@ import { PageHeader } from '@/components/common/page-header';
 import { ProvenanceLegend } from '@/components/common/provenance-legend';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { SectionHeading } from '@/components/common/section-heading';
-import { SourceNote } from '@/components/common/source-note';
 import { FactCard, type FactView } from '@/components/guides/fact-card';
+import { SectionSourceList } from '@/components/common/section-source-list';
 import { transitData, type RestView, type TransitData } from '@/components/guides/transit-data.server';
 import { DEFAULT_TRANSIT_INPUT } from '@/components/guides/transit-logic';
 import { TransitPlanner } from '@/components/guides/transit-planner';
@@ -166,15 +166,17 @@ async function Transit({ params }: { params: AirportPageParams }) {
           <div className="flex flex-col gap-4">
             {/* Whether the train and shuttle between terminals are running, from current notices (B-01 hand-off). */}
             <OpsStatusSection airport={airport.slug} services={['inter-terminal-train', 'inter-terminal-shuttle']} headingLevel={3} className="max-w-narrow" />
-            {data.interTerminal ? <FactCard fact={data.interTerminal} className="max-w-narrow border-ink" /> : null}
+            {data.interTerminal ? <FactCard fact={data.interTerminal} className="max-w-narrow border-ink" groupedSources /> : null}
             <h3 className="type-title-md mt-4 text-ink">{t('guidePages.transit.official.optionsTitle')}</h3>
             <ul className="grid items-start gap-4 lg:grid-cols-2">
               {data.options.map((option) => (
                 <li key={option.id} className="min-w-0">
-                  <FactCard fact={option} headingLevel={4} />
+                  <FactCard fact={option} headingLevel={4} groupedSources />
                 </li>
               ))}
             </ul>
+            {/* Round 4 (A-14): one source list for the section. */}
+            <SectionSourceList items={[...(data.interTerminal ? [data.interTerminal] : []), ...data.options].map((fact) => ({ name: fact.title, sources: fact.sources }))} />
           </div>
         </section>
 
@@ -243,7 +245,6 @@ function RestCard({ item, t }: { item: RestView; t: Translator }) {
         ) : null}
       </dl>
       <p className="type-body-sm text-ink-2">{item.description}</p>
-      <SourceNote sources={item.sources} />
     </div>
   );
 }
@@ -281,12 +282,17 @@ function RestSection({ t, data }: { t: Translator; data: TransitData }) {
           <ul className="grid items-start gap-4 lg:grid-cols-2">
             {leaving.map((fact) => (
               <li key={fact.id} className="min-w-0">
-                <FactCard fact={fact} headingLevel={4} />
+                <FactCard fact={fact} headingLevel={4} groupedSources />
               </li>
             ))}
           </ul>
         </>
       ) : null}
+      {/* Round 4 (A-14): one source list for the rest places and the entry facts. */}
+      <SectionSourceList
+        className="mt-3"
+        items={[...data.rest.map((item) => ({ name: item.name, sources: item.sources })), ...leaving.map((fact) => ({ name: fact.title, sources: fact.sources }))]}
+      />
     </section>
   );
 }
@@ -310,10 +316,11 @@ function LateSection({ t, facts }: { t: Translator; facts: readonly FactView[] }
       <ul className="grid items-start gap-4 lg:grid-cols-3">
         {facts.map((fact) => (
           <li key={fact.id} className="min-w-0">
-            <FactCard fact={fact} />
+            <FactCard fact={fact} groupedSources />
           </li>
         ))}
       </ul>
+      <SectionSourceList className="mt-3" items={facts.map((fact) => ({ name: fact.title, sources: fact.sources }))} />
       <LocaleLink href="/help/flights" className="link-action type-body-sm mt-4 text-ink">
         {t('guidePages.transit.late.rights')}
         <Icon name="arrow-right" size="sm" />

@@ -6,16 +6,17 @@ import { useT } from '@/lib/i18n/client';
 import { cn } from '@/lib/cn';
 import { Callout } from '@/components/ui/callout';
 import { Icon } from '@/components/ui/icon';
-import { getConnectivity, getServerConnectivity, getServerWorker, getWorker, subscribeConnectivity, subscribeWorker, type WorkerStatus } from './sw-client';
+import { getConnectivity, getServerConnectivity, getServerWorker, getWorker, savingState, subscribeConnectivity, subscribeWorker, type SavingState } from './sw-client';
 
+/** One message per saving state, the same states the connection toast uses (round 4). */
 const SAVING_KEY = {
-  unknown: 'platformPages.status.checking',
-  unsupported: 'platformPages.status.unsupported',
-  disabled: 'platformPages.status.savingOff',
-  error: 'platformPages.status.savingOff',
-  installing: 'platformPages.status.savingStarting',
-  active: 'platformPages.status.savingOn',
-} as const satisfies Record<WorkerStatus, string>;
+  on: 'platformPages.status.savingOn',
+  checking: 'platformPages.status.checking',
+  starting: 'platformPages.status.savingStarting',
+  'not-ready': 'flightPages.offline.notReady',
+  failed: 'flightPages.offline.failed',
+  off: 'flightPages.offline.off',
+} as const satisfies Record<SavingState, string>;
 
 /**
  * "Your connection": online or offline (icon and words, never colour alone), and whether this
@@ -39,7 +40,9 @@ export function ConnectionStatus() {
       <div className="min-w-0">
         <h2 className="type-eyebrow text-gold-ink">{t('platformPages.status.heading')}</h2>
         <p className="type-title-lg mt-1 text-ink">{known ? t(online ? 'platformPages.status.online' : 'platformPages.status.offline') : ' '}</p>
-        <p className="type-body mt-1 text-ink-2">{t(SAVING_KEY[status])}</p>
+        <p data-saving={savingState(status, online)} className="type-body mt-1 text-ink-2">
+          {status === 'unsupported' ? t('platformPages.status.unsupported') : t(SAVING_KEY[savingState(status, online)])}
+        </p>
       </div>
     </div>
   );

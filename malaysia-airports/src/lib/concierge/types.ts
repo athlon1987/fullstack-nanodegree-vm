@@ -95,6 +95,11 @@ export interface ConciergeKnowledge {
   helpTopics: string[];
   guides: string[];
   officialSiteUrl?: string;
+  /**
+   * Airline assistance notice periods we can source, by IATA code (round 4, 6.1.4). An airline
+   * that is not listed has no published rule: the concierge says so and never guesses one.
+   */
+  assistanceNotice?: Record<string, { hours: number; late: LocalizedText; provenance: Provenance; sources: readonly string[] }>;
 }
 
 /* -------------------------------------------------------------------------------------------
@@ -294,6 +299,13 @@ export interface CarParkCard {
   name: string;
   place: string;
   ratesPublished: boolean;
+  /**
+   * The car park's rate status in one sentence, from `rateStatusText` in `@/lib/parking`: the same
+   * words as the parking page and the help FAQ (round 4, re-review 6.1.3).
+   */
+  rateText: string;
+  /** No figure at all (`none` basis): shown as "not published" with the official link. */
+  rateMissing?: boolean;
   estimate?: string;
   officialUrl?: string;
   provenance: Provenance;

@@ -153,7 +153,7 @@ export const platformPagesMs: typeof platformPagesEn = {
   needs: {
     heading: 'Apa yang memerlukan sambungan',
     flights: 'Waktu penerbangan dan perubahan pintu. Papan penerbangan dalam prototaip ini memaparkan data demonstrasi.',
-    search: 'Carian dan concierge.',
+    search: 'Carian dan Tanya Kami.',
     newPages: 'Halaman yang belum pernah anda buka.',
   },
   install: {

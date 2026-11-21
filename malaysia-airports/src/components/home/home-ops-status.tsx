@@ -18,7 +18,8 @@ export interface HomeOpsStatusProps {
 /**
  * The KLIA status lines in the home notice strip (B-01 hand-off, round 2): Aerotrain, the train
  * and shuttle between terminals, and immigration with demo queue estimates. One row that says
- * how many notices are in effect, opening to the lines themselves (package B's `OpsStatus`), so
+ * how many services have a notice (or that the status is not available: there is no live feed),
+ * opening to the lines themselves (package B's `OpsStatus`), so
  * the first screen grows by a single row. Always about KLIA, whatever airport is chosen, so the
  * row never appears or disappears after hydration.
  */
@@ -29,10 +30,12 @@ export function HomeOpsStatus({ notices, sources }: HomeOpsStatusProps) {
   // so the closed row costs almost nothing at hydration (round 2, TBT).
   const lines = useMemo(() => (now === null ? null : opsStatus({ airport: 'kul', notices, now, waits: false })), [notices, now]);
   const [open, setOpen] = useState(false);
-  const affected = lines?.filter((line) => line.state !== 'clear').length ?? 0;
-  const current = lines === null ? null : affected > 0 ? `affected-${affected}` : 'clear';
+  const affected = lines?.filter((line) => line.state !== 'unknown').length ?? 0;
+  // Round 4 (re-review 6.1.1): with no notice in effect the row says the status is not available
+  // (there is no live feed), never "no disruption reported".
+  const current = lines === null ? null : affected > 0 ? `affected-${affected}` : 'unknown';
   const summaries = [
-    { key: 'clear', text: t('home.strip.opsClear') },
+    { key: 'unknown', text: t('flightPages.ops.homeUnknown') },
     ...opsServicesFor('kul').map((_, index) => ({ key: `affected-${index + 1}`, text: t.count('home.strip.opsAffected', index + 1) })),
   ];
   return (

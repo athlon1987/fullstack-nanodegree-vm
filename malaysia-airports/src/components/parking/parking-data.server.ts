@@ -5,6 +5,7 @@
 import { localizeAirport, pick, type AirportContent, type Lang } from '@/content';
 import { needsTranslationNotice, noteView, officialSite, sourceLookup, terminalInfo } from '@/components/transport/transport-data.server';
 import { officialSourceUrl, type NoteView } from '@/components/transport/transport-types';
+import { rateFacts, rateStatusText } from '@/lib/parking';
 import type { CarParkView, ParkingPageData, ReportedFigure } from './parking-types';
 
 /** The parking page model, plus the notes rendered on the server. */
@@ -35,6 +36,9 @@ export function parkingPageModel(content: AirportContent, lang: Lang): ParkingPa
       provenance: carPark.provenance,
       sourceIds: carPark.sources,
       officialUrl: carPark.bookingUrl ?? officialSourceUrl(carPark.sources, sources) ?? bookingPage ?? site,
+      // One fact, one answer (round 4, 6.1.3): the concierge and the help FAQ use the same sentence.
+      rateLine: pick(rateStatusText(carPark, (id) => sources[id]), lang),
+      rateVerified: rateFacts(carPark).verified,
     };
     if (carPark.terminal) view.terminal = carPark.terminal;
     if (carPark.description) view.description = pick(carPark.description, lang);

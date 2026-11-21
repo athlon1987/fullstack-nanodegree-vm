@@ -350,7 +350,7 @@ Type scale (each is one utility that sets family, size, leading, tracking and we
 | `type-eyebrow` | 12 | 1.2 | 0.14em, uppercase | 600 | Section eyebrows |
 | `type-data-xl` | 24 | 1.0 | -0.01em | 600 | The time on a flight detail |
 | `type-data-lg` | 20 | 1.1 | 0 | 600 | Board times |
-| `type-data-md` | 15 | 1.3 | 0 | 500 | Table figures, gates, flight numbers |
+| `type-data-md` | 14 (15 before round 4, A-14) | 1.3 | 0 | 500 | Table figures, gates, flight numbers |
 | `type-data-sm` | 13 | 1.3 | 0.01em | 500 | Freshness row, codes in running rows |
 | `type-data-xs` | 11 | 1.2 | 0.06em, uppercase | 500 | Table headers, specimen captions |
 

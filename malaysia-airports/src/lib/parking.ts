@@ -17,8 +17,8 @@
  * car park's rates are not verified the function says so instead of guessing.
  */
 import { lt } from '@/content/values';
-import type { CarPark, LocalizedText, RateBand } from '@/content/types';
-import { formatDuration } from './format';
+import type { CarPark, LocalizedText, RateBand, Source } from '@/content/types';
+import { formatCurrency, formatDuration } from './format';
 
 /** One line of the fee breakdown. */
 export interface ParkingBreakdownLine {
@@ -145,4 +145,91 @@ export function calculateParking(carPark: Pick<CarPark, 'rates' | 'rateStatus' |
 /** Minutes between an entry and an exit instant, for feeding the calculator. Negative if reversed. */
 export function parkingMinutes(entry: Date | string | number, exit: Date | string | number): number {
   return Math.ceil((new Date(exit).getTime() - new Date(entry).getTime()) / 60000);
+}
+
+/* -------------------------------------------------------------------------------------------
+ * Rate status: one fact, one answer (round 4, re-review 6.1.3)
+ *
+ * The parking page, the concierge and the help FAQ all describe a car park's rates with
+ * `rateStatusText`, read from the same record, so they cannot disagree. A content test
+ * (`src/content/content.test.ts`) fails when any of them words the status differently.
+ * ---------------------------------------------------------------------------------------- */
+
+/**
+ * What a car park's rates rest on:
+ * - `tariff`: a captured rate card (`rateStatus: 'published'` with bands): estimates are possible;
+ * - `daily-max`: rates not verified, but the record holds a daily maximum its sources agree on;
+ * - `reported`: rates not verified; individual sources quote a daily maximum;
+ * - `none`: no figure we can stand behind.
+ */
+export type RateBasis = 'tariff' | 'daily-max' | 'reported' | 'none';
+
+/** The rate facts of one car park, from its record alone. */
+export interface RateFacts {
+  basis: RateBasis;
+  /** True only for a captured tariff. Every other basis is "not verified". */
+  verified: boolean;
+  /** The daily maximum the record holds (`tariff` or `daily-max`). */
+  dailyMax?: number;
+  /** Daily maximums individual sources quote (`reported`), each with the car park's own source id. */
+  reported: readonly { amount: number; source: string }[];
+  /** The lowest daily figure the record gives (daily maximum or a reported figure), for ranking. */
+  lowestDaily?: number;
+}
+
+type RatedCarPark = Pick<CarPark, 'rates' | 'rateStatus' | 'dailyMax' | 'reportedDailyMax' | 'sources'>;
+
+/** What the rate sentence needs to know about a source: who publishes it and whether it is dated. */
+export type RateSource = Pick<Source, 'publisher' | 'asOf'>;
+
+/** Read a car park's rate facts. Pure: the record is the only input. */
+export function rateFacts(carPark: RatedCarPark): RateFacts {
+  // Only figures whose source the car park itself cites, as on the parking page.
+  const reported = (carPark.reportedDailyMax ?? []).filter((figure) => carPark.sources.includes(figure.source));
+  if (carPark.rateStatus === 'published' && carPark.rates.length > 0) {
+    return { basis: 'tariff', verified: true, dailyMax: carPark.dailyMax, reported: [], lowestDaily: carPark.dailyMax };
+  }
+  if (carPark.dailyMax !== undefined) return { basis: 'daily-max', verified: false, dailyMax: carPark.dailyMax, reported: [], lowestDaily: carPark.dailyMax };
+  if (reported.length > 0) return { basis: 'reported', verified: false, reported, lowestDaily: Math.min(...reported.map((figure) => figure.amount)) };
+  return { basis: 'none', verified: false, reported: [] };
+}
+
+const joinEn = (items: string[]): string => (items.length < 2 ? (items[0] ?? '') : `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}`);
+const joinMs = (items: string[]): string => (items.length < 2 ? (items[0] ?? '') : `${items.slice(0, -1).join(', ')} dan ${items[items.length - 1]}`);
+
+/**
+ * The one sentence every surface uses for a car park's rates, in both languages.
+ * `sourceOf` looks a source up by id (for `reported` figures: who gives the figure, and "undated"
+ * when its page carries no date); unknown ids read "one source".
+ *
+ * @example rateStatusText(longTermCarPark, getSource).en
+ *   // 'Rates not verified: our sources give a daily maximum of RM 32; the hourly rates are not confirmed.'
+ */
+export function rateStatusText(carPark: RatedCarPark, sourceOf: (sourceId: string) => RateSource | undefined = () => undefined): LocalizedText {
+  const facts = rateFacts(carPark);
+  const money = (amount: number, lang: 'en' | 'ms') => formatCurrency(amount, lang, { alwaysShowSen: !Number.isInteger(amount) });
+  switch (facts.basis) {
+    case 'tariff':
+      return facts.dailyMax !== undefined
+        ? lt(`Rates published, with a daily maximum of ${money(facts.dailyMax, 'en')}.`, `Kadar diterbitkan, dengan maksimum harian ${money(facts.dailyMax, 'ms')}.`)
+        : lt('Rates published.', 'Kadar diterbitkan.');
+    case 'daily-max':
+      return lt(
+        `Rates not verified: our sources give a daily maximum of ${money(facts.dailyMax ?? 0, 'en')}; the hourly rates are not confirmed.`,
+        `Kadar belum disahkan: sumber kami memberikan maksimum harian ${money(facts.dailyMax ?? 0, 'ms')}; kadar sejam belum dipastikan.`,
+      );
+    case 'reported': {
+      // Who says so, and whether their page carries a date: an undated figure is weaker evidence.
+      const who = (id: string, lang: 'en' | 'ms') => {
+        const source = sourceOf(id);
+        if (!source) return lang === 'en' ? 'one source' : 'satu sumber';
+        return source.asOf ? source.publisher : `${source.publisher} (${lang === 'en' ? 'undated' : 'tanpa tarikh'})`;
+      };
+      const en = facts.reported.map((figure) => `${who(figure.source, 'en')} gives ${money(figure.amount, 'en')} a day`);
+      const ms = facts.reported.map((figure) => `${who(figure.source, 'ms')} memberikan ${money(figure.amount, 'ms')} sehari`);
+      return lt(`Rates not verified: ${joinEn(en)}.`, `Kadar belum disahkan: ${joinMs(ms)}.`);
+    }
+    default:
+      return lt('No price published.', 'Tiada harga diterbitkan.');
+  }
 }

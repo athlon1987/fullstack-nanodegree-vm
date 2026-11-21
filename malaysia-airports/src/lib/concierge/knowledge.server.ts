@@ -6,6 +6,7 @@
 // Package E (fix round, security-17): importing this module from a Client Component fails the build.
 import 'server-only';
 import {
+  AIRLINE_ASSISTANCE_NOTICE,
   AIRPORTS,
   ALL_SOURCES,
   FACILITY_CATEGORY_META,
@@ -142,6 +143,7 @@ function build(lang: Lang): ConciergeKnowledge {
     helpTopics: HELP_TOPICS.map((topic) => topic.slug),
     guides: GUIDES.map((guide) => guide.slug),
     officialSiteUrl: getSource('mahb-airports-site')?.url,
+    assistanceNotice: { ...AIRLINE_ASSISTANCE_NOTICE },
   };
 }
 

@@ -1,0 +1,41 @@
+{
+ "en-concierge": {
+  "performance": 95,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 926,
+  "lcp_ms": 926,
+  "tbt_ms": 262,
+  "cls": 0,
+  "si_ms": 926,
+  "totalBytes": 721468,
+  "requests": 45
+ },
+ "en": {
+  "performance": 96,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1087,
+  "lcp_ms": 1087,
+  "tbt_ms": 231,
+  "cls": 0,
+  "si_ms": 1138,
+  "totalBytes": 642798,
+  "requests": 43
+ },
+ "en-kul": {
+  "performance": 93,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1082,
+  "lcp_ms": 1082,
+  "tbt_ms": 309,
+  "cls": 0,
+  "si_ms": 1407,
+  "totalBytes": 665241,
+  "requests": 48
+ }
+}

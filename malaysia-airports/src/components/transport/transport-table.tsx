@@ -5,11 +5,10 @@ import type { TerminalId, TransportOption } from '@/content/types';
 import { useLang, useT } from '@/lib/i18n/client';
 import { NotPublished } from '@/components/common/not-published';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
-import { SourceNote } from '@/components/common/source-note';
 import { Icon } from '@/components/ui/icon';
 import { Table, TableScroll, TBody, Td, Th, THead, Tr } from '@/components/ui/table';
 import { fareInfo } from './transport-logic';
-import { sourcesFor, type TransportContext } from './transport-types';
+import type { TransportContext } from './transport-types';
 import { AccessValue, AsOf, BoardingList, DurationValue, FareFigure, FareTimeline, FrequencyValue, HoursValue, PaymentValue } from './transport-values';
 
 export interface TransportTableRow {
@@ -74,7 +73,7 @@ export function TransportTable({ rows, placeKey, context, day, terminal, caption
                         {option.operator ? ` · ${option.operator}` : null}
                       </span>
                       <ProvenanceTag provenance={option.provenance} length="short" className="mt-1.5" />
-                      <SourceNote sources={sourcesFor(option.sources, context.sources)} className="mt-1" />
+                      {/* Round 4 (A-14): the sources are listed once under the table, with the options they back. */}
                       {option.asOf ? <AsOf value={option.asOf} timeZone={context.timezone} className="py-0" /> : null}
                     </span>
                   </span>

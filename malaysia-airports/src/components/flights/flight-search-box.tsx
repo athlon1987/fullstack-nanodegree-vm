@@ -25,10 +25,11 @@ import { Icon } from '@/components/ui/icon';
 import { SearchField } from '@/components/ui/search-field';
 import { FeedNotice } from './feed-notice';
 import { useFlightDirection } from './flight-direction';
-import { FlightRow, flightHref } from './flight-row';
+import { FlightRow, rowDayLabel, flightHref } from './flight-row';
 
 // Site results (and the search engine) load only once someone searches (A-03, A-09).
 const InlineSiteResults = lazy(() => import('@/components/search/inline-site-results').then((module) => ({ default: module.InlineSiteResults })));
+const TopicStatus = lazy(() => import('./topic-status').then((module) => ({ default: module.TopicStatus })));
 
 /** Run `work` when the browser is idle (or soon after), never during hydration. */
 function whenIdle(work: () => void): () => void {
@@ -237,7 +238,7 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 px-1">
             {showAirportSelector ? <AirportSwitcherButton variant="desk" className="w-full sm:w-auto sm:min-w-72 sm:flex-none" /> : null}
             {/* The journey mode sets the direction (A-17); one small link switches it. */}
-            <p className="type-body-sm min-w-0 flex-1 text-ink-2 max-sm:text-[0.8125rem] max-sm:leading-snug" data-flight-scope="">
+            <p className="type-body-sm min-w-0 flex-1 basis-44 text-ink-2 max-sm:text-[0.8125rem] max-sm:leading-snug" data-flight-scope="">
               {scopeSentence}
             </p>
             <button
@@ -316,7 +317,19 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
           <div id={resultsId} className={searching ? 'flex flex-col gap-2' : 'hidden'}>
             <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1.5 px-1">
               <p role="status" className="type-body-sm flex flex-wrap items-center gap-x-2.5 gap-y-1 text-ink">
-                <strong className="font-semibold">{results ? t.count('flights.search.resultsCount', results.length) : feed.status === 'error' ? null : t('common.labels.loading')}</strong>
+                {/* Round 4 (6.1.5): no "0 flights found" for a topic word such as "parking": the
+                    line names the page result offered below instead. */}
+                <strong className="font-semibold">
+                  {results && results.length === 0 ? (
+                    <Suspense fallback={t('flightPages.search.topicNoFlights', { query: deferredText.trim() })}>
+                      <TopicStatus query={deferredText} airport={scopeSlug} />
+                    </Suspense>
+                  ) : results ? (
+                    t.count('flights.search.resultsCount', results.length)
+                  ) : feed.status === 'error' ? null : (
+                    t('common.labels.loading')
+                  )}
+                </strong>
                 {kind ? (
                   <span className="inline-flex items-center gap-1.5 text-ink-2">
                     {t('flights.search.readingAs')}
@@ -340,7 +353,12 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
               <div className="surface-board @container overflow-hidden rounded-lg border border-line">
                 <ul aria-label={t('flights.search.resultsTitle')}>
                   {shown.map((flight) => (
-                    <FlightRow key={`${flight.airport}-${flight.id}`} flight={flight} showAirport={!scopeSlug} />
+                    <FlightRow
+                      key={`${flight.airport}-${flight.id}`}
+                      flight={flight}
+                      showAirport={!scopeSlug}
+                      day={provider ? rowDayLabel(flight, provider.now, t) : undefined}
+                    />
                   ))}
                 </ul>
                 <div className="flex flex-wrap items-center justify-between gap-x-5 gap-y-1 border-t border-line px-4 py-2.5 sm:px-5">

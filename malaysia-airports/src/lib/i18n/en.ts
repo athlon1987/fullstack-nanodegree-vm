@@ -753,6 +753,10 @@ export const en = {
     eyebrow: '{count} airports, one connected journey',
     headlineLead: 'Your journey,',
     headlineAccent: 'beautifully connected.',
+    // Round 4 (trust package, re-review 6.1.10): the home h1 reads these. English keeps the concept
+    // line pending brand review (OOS-14); Malay is task-based, written for a Malay reader.
+    headlineTaskLead: 'Your journey,',
+    headlineTaskAccent: 'beautifully connected.',
     lead: 'Find your flight, choose your airport, and this page arranges itself around your journey.',
     deskLabel: 'Flight search',
     /** Placeholders sized so they never clip in the flight search field, in either language. */
@@ -1017,8 +1021,27 @@ export const en = {
         title: 'Fast track: not published yet',
         summary: 'We have not published details of fast-track or priority lanes at any airport yet. Ask your airline or Malaysia Airports before you travel.',
       },
+      // Round 4 (A-12, re-review 6.1.5; package ask): honest answers for three more searched topics.
+      accessibleToilet: {
+        title: 'Accessible toilets: not published yet',
+        summary: 'Where the accessible toilets are is not published in our sources yet. Ask at an information counter or contact Malaysia Airports before you travel.',
+      },
+      wifi: {
+        title: 'Wi-Fi: not published yet',
+        summary: 'We have not verified Wi-Fi details at any airport. Ask at an information counter or check the official airport page.',
+      },
+      smoking: {
+        title: 'Smoking rooms: not published yet',
+        summary: 'We have not published where smoking rooms are at any airport. Ask at an information counter or check the official airport page.',
+      },
+    },
+    // Round 4 (A-12, package ask): an airport's parking page as one search result, so "parking" leads with it.
+    searchPages: {
+      parking: { title: 'Parking at {airport}: prices and car parks', summary: 'Compare the car parks and what 1, 3 or 7 days can cost, with where each figure comes from.' },
     },
     directory: { pinnedTitle: 'Start with', lastUsed: 'Your last choice' },
+    // Round 4 (A-14, package layout): one source list per section; each source names what it supports.
+    sourceLists: { citedBy: 'For: {items}', section: 'Sources for this section' },
   },
   flightPages: flightPagesEn,
   mapPages: mapPagesEn,

@@ -6,6 +6,10 @@ import { FlightSearchBox } from '@/components/flights/flight-search-box';
 import { BoardPreview } from '@/components/home/board-preview';
 import { JourneyModeGuidance, JourneyModes } from '@/components/home/journey-modes';
 import { ModeQuickActions } from '@/components/home/mode-quick-actions';
+import { JOURNEY_ACTIONS } from '@/components/home/journey-actions';
+import { hasSection } from '@/components/shell/sections';
+import { useSectionAvailability } from '@/components/shell/shell-context';
+import { JOURNEY_MODES } from '@/lib/journey/modes';
 import { useTerminalParam } from './use-terminal-filter';
 
 export interface AirportFlightToolsProps {
@@ -27,6 +31,11 @@ export interface AirportFlightToolsProps {
 export function AirportFlightTools({ slug, name, hasFlights }: AirportFlightToolsProps) {
   const t = useT();
   const terminal = useTerminalParam(slug);
+  const availability = useSectionAvailability();
+  // Round 4 (re-review 6.1.8): a directory-only airport (Lawas) has no task behind any journey
+  // mode, so the switcher is left out instead of offering four modes with nothing behind them.
+  const hasActions = JOURNEY_MODES.some((mode) => JOURNEY_ACTIONS[mode].some((action) => hasSection(availability, slug, action.section)));
+  if (!hasFlights && !hasActions) return null;
   return (
     <div className="flex flex-col gap-10">
       {hasFlights ? (
@@ -38,16 +47,18 @@ export function AirportFlightTools({ slug, name, hasFlights }: AirportFlightTool
         </section>
       ) : null}
 
-      <section aria-labelledby="airport-actions-title">
-        <h2 id="airport-actions-title" className="type-title-lg mb-3 text-ink">
-          {t('airportPage.quickTitle', { airport: name })}
-        </h2>
-        <div className="flex flex-col gap-3">
-          <JourneyModes />
-          <JourneyModeGuidance className="px-1" />
-          <ModeQuickActions airport={slug} terminal={terminal} />
-        </div>
-      </section>
+      {hasActions ? (
+        <section aria-labelledby="airport-actions-title">
+          <h2 id="airport-actions-title" className="type-title-lg mb-3 text-ink">
+            {t('airportPage.quickTitle', { airport: name })}
+          </h2>
+          <div className="flex flex-col gap-3">
+            <JourneyModes />
+            <JourneyModeGuidance className="px-1" />
+            <ModeQuickActions airport={slug} terminal={terminal} />
+          </div>
+        </section>
+      ) : null}
 
       {hasFlights ? (
         <DemoMarkedList>

@@ -4,7 +4,8 @@ import { Icon } from './icon';
 
 /**
  * An ordered list of journey steps. Each step shows its state by shape: a filled check (done),
- * a ringed dot (current) or an open circle (upcoming).
+ * a ringed dot (current), an open circle (upcoming) or a muted open circle on a solid thread
+ * (past: its time has gone but nothing confirms it was done; round 4, trust package).
  *
  * @example
  * <Timeline>
@@ -16,7 +17,7 @@ export function Timeline({ className, ...rest }: HTMLAttributes<HTMLOListElement
 }
 
 export interface TimelineItemProps extends Omit<LiHTMLAttributes<HTMLLIElement>, 'title'> {
-  state?: 'done' | 'current' | 'upcoming';
+  state?: 'done' | 'past' | 'current' | 'upcoming';
   /** The state in words for assistive technology: `t('journey.timeline.done')` and so on. */
   stateLabel?: string;
   /** Clock time, shown in mono figures. Omit for steps without a time. */
@@ -43,7 +44,7 @@ export function TimelineItem({ state = 'upcoming', stateLabel, time, eyebrow, ti
         aria-hidden="true"
         className={cn(
           'absolute top-7 bottom-1 left-[0.71875rem] w-px group-last/step:hidden',
-          state === 'done' ? 'bg-ink-3' : 'border-l border-dashed border-line-control',
+          state === 'done' || state === 'past' ? 'bg-ink-3' : 'border-l border-dashed border-line-control',
         )}
       />
       <span
@@ -53,6 +54,7 @@ export function TimelineItem({ state = 'upcoming', stateLabel, time, eyebrow, ti
           state === 'done' && 'border-ink bg-ink text-page',
           state === 'current' && 'border-2 border-ink bg-surface',
           state === 'upcoming' && 'border-line-control bg-surface',
+          state === 'past' && 'border-ink-3 bg-surface',
         )}
       >
         {state === 'done' ? <Icon name="check" size="xs" strokeWidth={2.5} /> : null}

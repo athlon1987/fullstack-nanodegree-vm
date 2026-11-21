@@ -182,3 +182,106 @@ describe('vocabulary and ranking (A-12)', () => {
     }
   });
 });
+
+/* -------------------------------------------------------------------------------------------
+ * Round 4 (A-12, re-review 6.1.5; package ask): the relevance gaps the panel quoted
+ * ---------------------------------------------------------------------------------------- */
+
+describe('search relevance (round 4, 6.1.5)', () => {
+  /** Every hit, best first, as one list (what the home field and the palette show first). */
+  const ranked = (searchIndex: typeof index, query: string, options: Parameters<typeof searchAll>[2] = {}) =>
+    searchAll(searchIndex, query, { limit: 50, ...options })
+      .groups.flatMap((group) => group.hits)
+      .sort((a, b) => b.score - a.score);
+
+  it('puts the terminal in titles that would otherwise repeat ("Fast Track" twice)', () => {
+    const fast = ranked(index, 'fast track', { airport: 'kul' });
+    expect(fast.slice(0, 2).map((hit) => hit.title).sort()).toEqual(['Fast Track (Terminal 1)', 'Fast Track (Terminal 2)']);
+    // No two results of one airport share a title, in either language.
+    for (const documents of [english, malay]) {
+      const seen = new Map<string, string>();
+      for (const document of documents) {
+        if (!document.airport || document.type === 'airport') continue;
+        const key = `${document.airport}|${document.type}|${document.title}`;
+        expect(seen.get(key), `${document.id} repeats ${seen.get(key)}`).toBeUndefined();
+        seen.set(key, document.id);
+      }
+    }
+    expect(english.find((document) => document.id === 'facility:kul-t1-sensory-walls')?.title).toBe('Sensory walls (Terminal 1)');
+  });
+
+  it('answers "smoking" and "merokok" honestly', () => {
+    expect(ranked(index, 'smoking')[0]?.id).toBe('unpublished:smoking');
+    expect(ranked(index, 'smoking room', { airport: 'kul' })[0]?.id).toBe('unpublished:smoking');
+    expect(ranked(malayIndex, 'merokok')[0]?.id).toBe('unpublished:smoking');
+    expect(ranked(malayIndex, 'merokok')[0]?.title).toBe('Bilik merokok: belum diterbitkan');
+  });
+
+  it('"wifi" leads with the honest answer, not guides that start with "wi" or "fi"', () => {
+    for (const query of ['wifi', 'Wi-Fi', 'wi fi', 'free wifi']) {
+      const hits = ranked(index, query, { airport: 'kul' });
+      expect(hits[0]?.id, query).toBe('unpublished:wifi');
+      // Before: 55 results for "wifi", led by a first-time-flyer guide and Firefly.
+      if (query !== 'free wifi') expect(hits.length, query).toBeLessThan(10);
+      expect(hits.some((hit) => hit.id === 'airline:kul:fy'), query).toBe(false);
+    }
+    expect(ranked(malayIndex, 'wifi')[0]?.title).toBe('Wi-Fi: belum diterbitkan');
+  });
+
+  it('"taxi" lists taxis, not the liquids rule ("cab" no longer matches "cabin")', () => {
+    for (const searchIndex of [index, malayIndex]) {
+      const hits = ranked(searchIndex, 'taxi', { airport: 'kul' });
+      expect(hits[0]?.type).toBe('transport');
+      expect(hits.map((hit) => hit.id)).not.toContain('faq:liquids-limit');
+    }
+    expect(ranked(malayIndex, 'teksi', { airport: 'kul' })[0]?.type).toBe('transport');
+  });
+
+  it('ranks the honest "not published" first for accessible-toilet queries (EN and MS)', () => {
+    expect(ranked(index, 'accessible toilet')[0]?.id).toBe('unpublished:accessibleToilet');
+    expect(ranked(index, 'accessible toilets', { airport: 'kul' })[0]?.id).toBe('unpublished:accessibleToilet');
+    expect(ranked(index, 'disabled toilet')[0]?.id).toBe('unpublished:accessibleToilet');
+    expect(ranked(malayIndex, 'tandas OKU')[0]?.id).toBe('unpublished:accessibleToilet');
+    expect(ranked(malayIndex, 'tandas OKU')[0]?.href).toBe('/accessibility#not-published');
+    // A plain "toilet" still finds the toilets first.
+    expect(ranked(index, 'toilet', { airport: 'kul' })[0]?.type).not.toBe('unpublished');
+  });
+
+  it('ranks news below tasks', () => {
+    const isNews = (hit: { id: string }) => hit.id.startsWith('corporate:news:') || hit.id.startsWith('corporate:media:');
+    for (const query of ['surau', 'parking', 'lift', 'klia ekspres', 'prayer room', 'taxi', 'wheelchair', 'lounge']) {
+      const hits = ranked(index, query, { airport: 'kul' });
+      // No news story among the first five results of a task question.
+      expect(hits.slice(0, 5).filter(isNews).map((hit) => hit.id), query).toEqual([]);
+    }
+    // "surau" ranked a solar-farm story second: every facility now comes first.
+    const surau = ranked(index, 'surau');
+    expect(surau[0]?.id).toBe('facility:kul-t1-prayer-rooms');
+    const firstNews = surau.findIndex(isNews);
+    if (firstNews >= 0) expect(firstNews).toBeGreaterThan(surau.findLastIndex((hit) => hit.type === 'facility'));
+  });
+
+  it('"parking" leads with the parking page, then the Long Term Car Park, never Preferred Parking', () => {
+    const kul = ranked(index, 'parking', { airport: 'kul' });
+    expect(kul.slice(0, 2).map((hit) => hit.id)).toEqual(['parking:kul', 'parking:kul-long-term-car-park']);
+    expect(kul[0]?.href).toBe('/kul/parking');
+    // The home field without an airport: the network's main airport's parking page first.
+    const network = ranked(index, 'parking');
+    expect(network[0]?.id).toBe('parking:kul');
+    expect(network.slice(0, 3).map((hit) => hit.id)).not.toContain('parking:kul-t1-preferred-parking');
+    expect(ranked(malayIndex, 'parkir', { airport: 'kul' })[0]?.id).toBe('parking:kul');
+    // The boost is for parking questions only: the airport still leads for its own name.
+    expect(top('penan')?.id).toBe('airport:pen');
+    // Asked by name, Preferred Parking is still found first.
+    expect(ranked(index, 'preferred parking', { airport: 'kul' })[0]?.id).toBe('parking:kul-t1-preferred-parking');
+  });
+
+  it('"MH 2" does not match items only on the digit 2', () => {
+    const hits = ranked(index, 'MH 2');
+    expect(hits.length).toBeGreaterThan(0);
+    expect(hits.every((hit) => hit.type === 'airline'), hits.map((hit) => hit.id).join(', ')).toBe(true);
+    expect(hits.map((hit) => hit.id)).not.toContain('facility:kul-t2-sensory-walls');
+    // Terminal 2 is still found when asked for.
+    expect(ranked(index, 'terminal 2', { airport: 'kul' }).slice(0, 5).map((hit) => hit.id)).toContain('airport:kul:t2');
+  });
+});

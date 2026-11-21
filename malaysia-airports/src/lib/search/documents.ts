@@ -22,6 +22,7 @@ import {
   type Lang,
   type LocalizedText,
 } from '@/content';
+import { FEATURED_AIRPORT_SLUGS } from '@/content/airports';
 import { getT } from '@/lib/i18n';
 import { CORPORATE_SECTIONS } from '@/components/corporate/corporate-sections';
 import type { SearchDocument } from './engine';
@@ -36,7 +37,40 @@ const UNPUBLISHED_TOPICS = [
   { id: 'trolley', href: '/help', keywords: ['trolley', 'trolleys', 'troli', 'baggage trolley', 'luggage cart'] },
   // Only until the content layer publishes a Fast Track record (D-02): see `buildSearchDocuments`.
   { id: 'fastTrack', href: '/help', keywords: ['fast track', 'fasttrack', 'laluan pantas', 'priority lane', 'lorong keutamaan', 'express lane'] },
+  // Round 4 (A-12, re-review 6.1.5): the content gaps list names these; no airport publishes them yet.
+  { id: 'accessibleToilet', href: '/accessibility#not-published', keywords: ['accessible toilet', 'accessible toilets', 'disabled toilet', 'tandas oku', 'oku toilet'] },
+  { id: 'wifi', href: '/help', keywords: ['wifi', 'wi-fi', 'internet', 'wireless', 'free wifi', 'wifi percuma'] },
+  { id: 'smoking', href: '/help', keywords: ['smoking', 'smoking room', 'smoking rooms', 'smoke', 'merokok', 'bilik merokok', 'rokok'] },
 ] as const;
+
+/** Car parks by how a long-stay driver should meet them: long-stay first, premium last (A-12). */
+const CAR_PARK_RANK: Readonly<Record<string, number>> = { 'long-term': 1.3, preferred: 0.6, premium: 0.6 };
+
+/**
+ * "Fast Track" twice, "Calm Room" beside "Calm Room (Terminal 2)": titles that repeat within one
+ * airport get the terminal (map places: the level) (round 4, A-12). Repeats across airports keep
+ * their titles: every results list already names the airport, and an airport name in a title
+ * would match searches for the airport itself. A title that already names its terminal stays.
+ */
+function disambiguateTitles(documents: SearchDocument[], places: ReadonlyMap<string, string>): void {
+  const named = /\((?:Terminal|T)\s?\d\)\s*$/i;
+  const base = (title: string) => title.replace(named, '').trim().toLowerCase();
+  const groups = new Map<string, SearchDocument[]>();
+  for (const document of documents) {
+    if (!document.airport || document.type === 'airport' || document.type === 'unpublished') continue;
+    const key = `${document.airport}|${document.type}|${base(document.title)}`;
+    groups.set(key, [...(groups.get(key) ?? []), document]);
+  }
+  for (const group of groups.values()) {
+    if (group.length < 2) continue;
+    for (const document of group) {
+      const label = places.get(document.id);
+      if (!label || named.test(document.title)) continue;
+      document.title = /\)\s*$/.test(document.title) ? document.title.replace(/\)\s*$/, `, ${label})`) : `${document.title} (${label})`;
+    }
+  }
+}
+
 const clip = (text: string, length = 220): string => (text.length > length ? `${text.slice(0, length - 1).trimEnd()}…` : text);
 
 /**
@@ -48,6 +82,9 @@ const clip = (text: string, length = 220): string => (text.length > length ? `${
  */
 export function buildSearchDocuments(lang: Lang): SearchDocument[] {
   const documents: SearchDocument[] = [];
+  // Where each record is in its airport, for telling repeated titles apart (see `disambiguateTitles`).
+  const places = new Map<string, string>();
+  const t = getT(lang);
 
   for (const airport of AIRPORTS) {
     // The airport's own result in the page language (D-09, round 2); both forms stay searchable.
@@ -85,8 +122,17 @@ export function buildSearchDocuments(lang: Lang): SearchDocument[] {
 
     const content = getAirportContent(airport.slug);
     if (!content?.hasContent) continue;
+    const terminalName = (id: string | undefined): string | undefined => {
+      const terminal = id && isMultiTerminal(airport) ? airport.terminals.find((item) => item.id === id) : undefined;
+      return terminal ? pick(terminal.name, lang).replace(new RegExp(`^${local.shortName}\\s+`), '') : undefined;
+    };
+    const place = (id: string, terminal?: string) => {
+      const name = terminalName(terminal);
+      if (name) places.set(id, name);
+    };
 
     for (const facility of content.facilities) {
+      place(`facility:${facility.id}`, facility.terminal);
       const meta = FACILITY_CATEGORY_META[facility.category];
       // The lounges page lists lounges, hotels, rest and shower facilities with `#<id>` anchors.
       const page = facility.category === 'lounge' || facility.category === 'hotel' || facility.category === 'rest' || facility.category === 'shower' ? 'lounges' : 'facilities';
@@ -101,6 +147,7 @@ export function buildSearchDocuments(lang: Lang): SearchDocument[] {
       });
     }
     for (const outlet of content.outlets) {
+      place(`outlet:${outlet.id}`, outlet.terminal);
       documents.push({
         id: `outlet:${outlet.id}`,
         type: 'outlet',
@@ -129,6 +176,9 @@ export function buildSearchDocuments(lang: Lang): SearchDocument[] {
     for (const map of content.maps) {
       for (const poi of map.pois) {
         if (poi.ref || poi.kind === 'gate') continue;
+        // Map places repeat by level ("Toilets" on Levels 5 and 3): the level tells them apart.
+        const levelName = map.levels.find((level) => level.id === poi.level)?.name;
+        places.set(`place:${map.id}:${poi.id}`, levelName ? pick(levelName, lang).split(':')[0].trim() : poi.level);
         const kindLabel = (MAP_POI_KIND_LABELS as Partial<Record<string, LocalizedText>>)[poi.kind];
         documents.push({
           id: `place:${map.id}:${poi.id}`,
@@ -154,8 +204,27 @@ export function buildSearchDocuments(lang: Lang): SearchDocument[] {
         keywords: [airline.code, airline.name, ...airline.name.split(/[\s()]+/).filter((word) => word.length > 2), airline.terminal ?? '', airport.code, airport.shortName].filter(Boolean),
       });
     }
-    for (const carPark of content.carParks) {
+    // The airport's parking page first (round 4, A-12): "parking" leads with prices for every car
+    // park, not with the premium product the page warns long-stay drivers about.
+    if (content.carParks.length > 0) {
       documents.push({
+        id: `parking:${airport.slug}`,
+        type: 'parking',
+        title: t('shellExtras.searchPages.parking.title', { airport: local.shortName }),
+        summary: t('shellExtras.searchPages.parking.summary'),
+        href: `/${airport.slug}/parking`,
+        airport: airport.slug,
+        keywords: ['parking', 'car park', 'parkir', 'tempat letak kereta', 'parking rates', 'kadar parkir', airport.code, airport.shortName],
+        // Above every single car park; the network's first featured airport (KLIA) first when the
+        // query names no airport.
+        rank: airport.slug === FEATURED_AIRPORT_SLUGS[0] ? 1.6 : 1.5,
+        // Only for parking questions: "penan" still finds Penang airport first.
+        rankWhen: ['parking', 'parkir', 'park', 'carpark'],
+      });
+    }
+    for (const carPark of content.carParks) {
+      place(`parking:${carPark.id}`, carPark.terminal);
+      const document: SearchDocument = {
         id: `parking:${carPark.id}`,
         type: 'parking',
         title: pick(carPark.name, lang),
@@ -164,7 +233,10 @@ export function buildSearchDocuments(lang: Lang): SearchDocument[] {
         href: `/${airport.slug}/parking#car-park-${carPark.id}`,
         airport: airport.slug,
         keywords: ['parking', 'car park', 'parkir', 'tempat letak kereta', ...both(carPark.name), carPark.type.replace(/-/g, ' '), airport.code, airport.shortName],
-      });
+      };
+      const rank = CAR_PARK_RANK[carPark.type];
+      if (rank !== undefined) document.rank = rank;
+      documents.push(document);
     }
   }
 
@@ -220,6 +292,8 @@ export function buildSearchDocuments(lang: Lang): SearchDocument[] {
       summary: clip(pick(item.summary, lang)),
       href: `/corporate/news/${item.slug}`,
       keywords: ['news', 'berita', item.date],
+      // News below tasks (round 4, A-12): "surau" ranked a solar-farm story second.
+      rank: 0.5,
     });
   }
   // The media centre's items and the corporate section pages (corporate-network hand-off).
@@ -234,9 +308,9 @@ export function buildSearchDocuments(lang: Lang): SearchDocument[] {
       summary: clip(pick(item.summary, lang)),
       href,
       keywords: ['news', 'berita', item.topic, item.date],
+      rank: 0.5,
     });
   }
-  const t = getT(lang);
   // Known gaps answer honestly instead of returning the nearest unrelated record (A-12). These
   // say only that nothing is published; they state no fact about the airports.
   // A gap closes by itself once a real record covers it: "fast track" then finds that record.
@@ -264,5 +338,6 @@ export function buildSearchDocuments(lang: Lang): SearchDocument[] {
     });
   }
 
+  disambiguateTitles(documents, places);
   return documents;
 }

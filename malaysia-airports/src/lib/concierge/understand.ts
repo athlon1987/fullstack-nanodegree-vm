@@ -6,7 +6,7 @@
  */
 import type { FacilityCategory, TerminalId } from '@/content/types';
 import { AIRLINE_ALIASES } from '@/lib/flights/query';
-import { hasPhrase, normalise } from './text';
+import { hasPhrase, normalise, tokens } from './text';
 import type { ConciergeContext, ConciergeIntent, ConciergeKnowledge, ConciergeSlots, Understanding } from './types';
 
 /** Phrases (normalised) that point to a facility category. Order matters: specific first. */
@@ -87,6 +87,11 @@ const PRIORITY: readonly ConciergeIntent[] = [
 ];
 
 const GREETINGS = ['hi', 'hello', 'hey', 'helo', 'hai', 'salam', 'assalamualaikum', 'good morning', 'good afternoon', 'good evening', 'selamat pagi', 'selamat petang', 'selamat malam', 'thanks', 'thank you', 'terima kasih'];
+
+/** Words a follow-up may hold besides a place, a terminal, a stay or a facility ("and for 3 days?"). */
+const FOLLOW_UP_WORDS = new Set(
+  tokens('and about also then instead there terminal hour hours day days night nights minute minutes week weeks jam hari malam minit minggu dan pula juga pula bagaimana kalau pula lagi satu one two'),
+);
 
 const NUMBER_WORDS: Readonly<Record<string, number>> = {
   one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12,
@@ -202,7 +207,11 @@ function airlineNamed(text: string, raw: string, knowledge: ConciergeKnowledge):
 }
 
 /** Qualifiers that ask for step-free facts (first-time-access-09), in both languages. */
-const ACCESS_WORDS = ['accessible', 'step free', 'wheelchair', 'wheel chair', 'elderly', 'older', 'warga emas', 'tua', 'mesra oku', 'oku', 'kerusi roda', 'disabled', 'reduced mobility', 'tanpa tangga', 'tiada tangga'];
+const ACCESS_WORDS = [
+  'accessible', 'step free', 'wheelchair', 'wheel chair', 'elderly', 'older', 'warga emas', 'tua', 'mesra oku', 'oku', 'kerusi roda', 'disabled', 'reduced mobility', 'tanpa tangga', 'tiada tangga',
+  // Round 4 (6.1.4): "Is there a lift from arrivals to the train?" asks for a step-free way.
+  'lift', 'lifts', 'lif', 'elevator', 'elevators', 'ramp',
+];
 
 /** The airline named in "which terminal does <airline> use/fly from" as typed, at most four words. */
 function airlineAsTyped(raw: string): string | undefined {
@@ -263,7 +272,8 @@ export function understand(question: string, knowledge: ConciergeKnowledge, cont
     // Lounges get their own answer: ranked by the gate (B-08, ux-frequent-11).
     bump('lounge', 5);
   } else if (category) {
-    bump('facility', 4);
+    // Round 4 (6.1.4): "tandas OKU", "accessible toilet" ask where a place is, not how to get help.
+    bump('facility', category === 'accessible-toilet' ? 6 : 4);
   }
   const duration = durationMinutes(text);
   if (duration !== undefined && (scores.get('layover') ?? 0) > 0) bump('layover', 2);
@@ -292,9 +302,14 @@ export function understand(question: string, knowledge: ConciergeKnowledge, cont
     airport ??= destinationHit.airport;
   }
 
-  // A follow-up such as "and at Terminal 2?" keeps the previous topic.
+  // A follow-up such as "and at Terminal 2?" keeps the previous topic. Only an elliptical one:
+  // "What will the weather be like tomorrow at KLIA?" names an airport too, but asks something
+  // new, and answering it with the previous topic misled (round 4, 6.1.4).
   let followUp = false;
-  if ((intent === 'unknown' || score < 2) && context.intent && context.intent !== 'greeting' && context.intent !== 'unknown') {
+  const aliasWords = new Set(knowledge.airports.flatMap((item) => item.aliases.flatMap((alias) => tokens(alias))));
+  const newWords = tokens(text).filter((word) => !FOLLOW_UP_WORDS.has(word) && !aliasWords.has(word) && !/^\d+$/.test(word) && !(word in NUMBER_WORDS));
+  const elliptical = newWords.length === 0 || (category !== undefined && newWords.every((word) => tokens(CATEGORY_PHRASES.find(([item]) => item === category)?.[1].join(' ') ?? '').includes(word)));
+  if (elliptical && (intent === 'unknown' || score < 2) && context.intent && context.intent !== 'greeting' && context.intent !== 'unknown') {
     if (airport || terminals.length > 0 || duration !== undefined || category) {
       intent = category ? 'facility' : context.intent;
       score = 1;

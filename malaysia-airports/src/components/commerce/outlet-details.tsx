@@ -107,7 +107,7 @@ export function OutletDetails({ outlet, terminalName, sources, officialUrl, mapP
         </section>
       </div>
 
-      <aside aria-labelledby="outlet-sources-title" className="flex min-w-0 flex-col gap-4 lg:sticky lg:top-[calc(var(--spacing-header)+1rem)] lg:self-start">
+      <aside aria-labelledby="outlet-sources-title" className="flex min-w-0 flex-col gap-4 lg:sticky lg:top-[calc(var(--spacing-sticky)+1rem)] lg:self-start">
         <div className="rounded-xl border border-line-strong bg-surface p-5">
           <h2 id="outlet-sources-title" className="type-title-md text-ink">
             {t('commercePages.outlet.sourcesTitle')}

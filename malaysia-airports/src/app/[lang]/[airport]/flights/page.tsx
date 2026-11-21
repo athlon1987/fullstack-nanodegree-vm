@@ -53,8 +53,11 @@ async function Flights({ params }: { params: AirportPageParams }) {
         lead={t('flightPages.board.lead', { airport: airport.shortName })}
         // A-01 (round 2): on phones the first screen goes to the board; the lead stays for screen
         // readers, and the board footer repeats that times are airport time.
-        leadClassName="max-sm:sr-only"
+        leadClassName="max-sm:sr-only lg:max-w-none"
         tightOnPhones
+        // Round 4 (re-review 6.1.6): a one-line lead and a shorter gap under it on desktop, so the
+        // first board row is above the fold at 1440 x 900 (it was at 935 px).
+        className="lg:[&>div]:pb-6"
         breadcrumbs={<Breadcrumbs items={[{ label: airport.shortName, href: `/${airport.slug}` }, { label: t('nav.flights') }]} />}
       />
       <Container className="pb-section">

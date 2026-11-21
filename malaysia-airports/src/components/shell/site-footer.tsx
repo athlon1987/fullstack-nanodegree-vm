@@ -102,8 +102,9 @@ export function SiteFooter({ lang }: { lang: Lang }) {
                 {contacts.map((contact) => (
                   <li key={contact.value} className="min-w-0">
                     <span className="type-caption block text-ink-2">{pick(contact.label, lang)}</span>
-                    <a href={contact.href} className="link inline-flex min-h-8 items-center break-all text-ink touch:min-h-11">
-                      {contact.value}
+                    {/* Round 4: a long address breaks after a dot or an @, never mid-word (it used break-all). */}
+                    <a href={contact.href} className="link inline-flex min-h-8 flex-wrap items-center text-ink touch:min-h-11">
+                      {breakable(contact.value)}
                     </a>
                   </li>
                 ))}
@@ -128,4 +129,14 @@ export function SiteFooter({ lang }: { lang: Lang }) {
       </Container>
     </footer>
   );
+}
+
+/** A web or e-mail address with a line-break opportunity after each dot, @ or slash. */
+function breakable(value: string) {
+  return value.split(/(?<=[.@/])/).map((part, index) => (
+    <span key={index} className="whitespace-nowrap">
+      {part}
+      <wbr />
+    </span>
+  ));
 }

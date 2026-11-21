@@ -929,7 +929,7 @@ export const corporatePagesMs: typeof corporatePagesEn = {
         waits: { area: 'Masa menunggu dan kekosongan tempat letak kereta', label: 'Label demonstrasi di sebelah setiap nilai' },
         maps: { area: 'Peta terminal', label: 'Setiap peta menyatakan ia skematik' },
         alerts: { area: 'Amaran penerbangan dan pemberitahuan', label: 'Setiap pemberitahuan dilabel sebagai demonstrasi' },
-        concierge: { area: 'Jawapan concierge', label: 'Setiap jawapan memetik sumber dan melabel panduannya' },
+        concierge: { area: 'Jawapan Tanya Kami', label: 'Setiap jawapan memetik sumber dan melabel panduannya' },
       },
     },
     sourcing: {
@@ -1027,12 +1027,12 @@ export const corporatePagesMs: typeof corporatePagesEn = {
   privacy: {
     title: 'Privasi',
     metaDescription:
-      'Apa yang disimpan prototaip ini pada peranti anda dan di bawah kunci apa, apa yang dihantar concierge dan bila, cara memadam semuanya, dan pendekatan perkhidmatan sebenar terhadap PDPA Malaysia.',
+      'Apa yang disimpan prototaip ini pada peranti anda dan di bawah kunci apa, apa yang dihantar Tanya Kami dan bila, cara memadam semuanya, dan pendekatan perkhidmatan sebenar terhadap PDPA Malaysia.',
     lead: 'Prototaip ini menyimpan apa yang diingatinya pada peranti anda. Tiada akaun, tiada analitik dan tiada penjejakan.',
     jump: {
       summary: 'Ringkasnya',
       stored: 'Disimpan pada peranti ini',
-      concierge: 'Concierge',
+      concierge: 'Tanya Kami',
       measurement: 'Pengukuran',
       clear: 'Padam data anda',
       production: 'Dalam pengeluaran',
@@ -1043,7 +1043,7 @@ export const corporatePagesMs: typeof corporatePagesEn = {
         s1: 'Tiada akaun, tiada log masuk dan tiada profil.',
         s2: 'Tiada analitik, pengiklanan, piksel penjejak atau skrip pihak ketiga. Fon disajikan dari laman ini.',
         s3: 'Apa yang anda simpan kekal dalam pelayar ini. Ia tidak dihantar ke pelayan.',
-        s4: 'Concierge menghantar soalan anda apabila anda bertanya, dan tiada apa-apa lagi tentang anda.',
+        s4: 'Tanya Kami menghantar soalan anda apabila anda bertanya, dan tiada apa-apa lagi tentang anda.',
       },
     },
     stored: {
@@ -1063,8 +1063,8 @@ export const corporatePagesMs: typeof corporatePagesEn = {
         journey: 'Penerbangan dan tempat yang disimpan, serta nota kereta anda',
         recentSearches: 'Beberapa carian terakhir anda',
         flightAlerts: 'Penerbangan yang amaran demonstrasinya dihidupkan',
-        conciergeConsent: 'Bahawa anda menerima notis concierge',
-        conciergeConversation: 'Perbualan concierge dalam tab ini',
+        conciergeConsent: 'Bahawa anda menerima notis Tanya Kami',
+        conciergeConversation: 'Perbualan Tanya Kami dalam tab ini',
         measurement: 'Sama ada anda mematikan pengukuran (hanya disimpan selepas anda mengubahnya)',
         lang: 'Bahasa anda, supaya alamat utama dibuka dalam bahasa itu. Ditetapkan hanya apabila anda menukar bahasa.',
       },
@@ -1076,7 +1076,7 @@ export const corporatePagesMs: typeof corporatePagesEn = {
       bytes: '{size} bait',
     },
     concierge: {
-      title: 'Apa yang dihantar concierge, dan bila',
+      title: 'Apa yang dihantar Tanya Kami, dan bila',
       lead: 'Tiada apa-apa meninggalkan peranti anda sehingga anda bertanya soalan.',
       items: {
         s1: 'Apabila anda bertanya, pelayar anda menghantar soalan, bahasa dan konteks jawapan: lapangan terbang dan terminal, topik perbualan dan, hanya jika anda menghidupkannya, penerbangan tersimpan yang anda perlukan bantuan.',
@@ -1105,7 +1105,7 @@ export const corporatePagesMs: typeof corporatePagesEn = {
     },
     clear: {
       title: 'Padam data anda',
-      lead: 'Buang semua yang disimpan laman ini dalam pelayar ini sekali gus: penerbangan dan tempat yang disimpan, nota kereta, lapangan terbang anda, tetapan paparan, carian terkini, amaran, perbualan concierge dan kuki bahasa.',
+      lead: 'Buang semua yang disimpan laman ini dalam pelayar ini sekali gus: penerbangan dan tempat yang disimpan, nota kereta, lapangan terbang anda, tetapan paparan, carian terkini, amaran, perbualan Tanya Kami dan kuki bahasa.',
       button: 'Padam semua data pada peranti ini',
       confirmTitle: 'Padam semua yang disimpan laman ini?',
       confirmBody: 'Ini membuang semua perkara di atas daripada pelayar ini. Ia tidak boleh dibatalkan. Tetapan paparan anda kembali kepada asal.',
@@ -1166,7 +1166,7 @@ export const corporatePagesMs: typeof corporatePagesEn = {
       },
       s7: {
         title: 'Menggunakan laman ini',
-        body: 'Gunakannya untuk meneroka konsep ini. Jangan cuba mengganggunya, membebankan concierge atau menggunakannya untuk mengelirukan sesiapa bahawa ia perkhidmatan rasmi.',
+        body: 'Gunakannya untuk meneroka konsep ini. Jangan cuba mengganggunya, membebankan Tanya Kami atau menggunakannya untuk mengelirukan sesiapa bahawa ia perkhidmatan rasmi.',
       },
       s8: {
         title: 'Data anda',

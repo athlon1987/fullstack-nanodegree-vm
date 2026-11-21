@@ -27,6 +27,7 @@ export {
   demoBusyness,
   opsServicesFor,
   opsStatus,
+  noticesPublishedUpTo,
   type OpsServiceId,
   type OpsState,
   type OpsStatusLine,

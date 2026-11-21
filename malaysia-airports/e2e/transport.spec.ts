@@ -177,8 +177,12 @@ test.describe('parking', () => {
     await expect(ltcp).toContainText('RM 32');
     await expect(ltcp).toContainText('RM 96');
     await expect(ltcp).toContainText('RM 224');
-    // Terminal 1 Car Park: not verified; the source's own figure, dated and attributed, with a link out.
-    await expect(table).toContainText('Not verified. RM 52 a day according to klia.info (undated, retrieved 17 Nov 2026).');
+    // Round 4 (6.1.3), intended change: every row states its rate status in the sentence the
+    // concierge and the help FAQ use, and the Long Term Car Park's figures are marked "not
+    // verified" like the others. Terminal 1 Car Park: the source's own figure, attributed and
+    // marked undated (its retrieval date is in the source note), with a link out.
+    await expect(table).toContainText('Rates not verified: klia.info (undated) gives RM 52 a day.');
+    await expect(table).toContainText('Rates not verified: our sources give a daily maximum of RM 32; the hourly rates are not confirmed.');
     await expect(table.getByRole('link', { name: /Check the official rates/ }).first()).toHaveAttribute('href', /malaysiaairports\.com\.my/);
     // Preferred Parking: no price, and its warning in its own row.
     await expect(table.getByRole('row', { name: /^Preferred Parking/ })).toContainText('No price published');

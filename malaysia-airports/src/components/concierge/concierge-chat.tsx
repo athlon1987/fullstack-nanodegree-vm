@@ -349,13 +349,16 @@ export function ConciergeChat({ variant, initialQuestion, toolbarEnd }: Concierg
       <form
         ref={formRef}
         onSubmit={onSubmit}
+        data-sticky-bottom={variant === 'page' ? '' : undefined}
         className={cn(
           'flex shrink-0 flex-col gap-1.5',
           variant === 'panel' && '-mx-5 border-t border-line px-5 pt-4 sm:-mx-6 sm:px-6',
           // On the page the composer sticks to the bottom of the screen (above the phone's bottom
           // bar), so the focused field stays in view after each answer (accessibility-14).
           variant === 'page' &&
-            'sticky bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-10 -mx-4 border-t border-line bg-page px-4 py-3 sm:-mx-7 sm:bg-surface sm:px-7 md:bottom-0',
+            // Round 4 (layout package, WCAG 2.4.11/2.4.12): the offset follows the bottom bar (0 while it is slid
+            // away), and on short windows `data-sticky-bottom` turns sticking off (globals.css).
+            'sticky bottom-[calc(var(--spacing-sticky-bottom)+env(safe-area-inset-bottom))] z-10 -mx-4 border-t border-line bg-page px-4 py-3 sm:-mx-7 sm:bg-surface sm:px-7 md:bottom-0',
           // Fills the strip between the composer and the phone's bottom bar, so answers do not show through.
           variant === 'page' && 'after:absolute after:inset-x-0 after:top-full after:h-6 after:bg-page sm:after:bg-surface md:after:hidden',
         )}

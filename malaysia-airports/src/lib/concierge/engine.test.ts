@@ -191,9 +191,13 @@ describe('answers to the passenger questions', () => {
     const kul = ask('How much does parking cost at KLIA?');
     const published = en.carParks.filter((park) => park.airport === 'kul' && park.rateStatus === 'published');
     if (published.length === 0) {
-      expect(kul.limits.length).toBeGreaterThan(0);
+      // Round 4 (6.1.3), intended change: instead of one blanket "rates are not published" line,
+      // the answer leads with the lowest daily figure the records give, says it is not verified,
+      // and states each car park's rate status on its card in the parking page's words.
+      expect(kul.text).toMatch(/^No parking rates at KLIA are verified\. The lowest daily maximum in our sources is RM\s32, at Long Term Car Park/);
       expect(kul.escalation?.contacts.length).toBeGreaterThan(0);
-      expect(kul.statements.some((statement) => statement.provenance === 'estimated')).toBe(false);
+      expect(kul.statements.some((statement) => /^About RM/.test(statement.text))).toBe(false);
+      expect(kul.cards[0]).toMatchObject({ type: 'car-park', id: 'kul-long-term-car-park', ratesPublished: false });
     }
   });
 
@@ -329,7 +333,8 @@ function derived(answer: ConciergeAnswer, knowledge: ConciergeKnowledge, context
 
 describe('property: answers contain no invented numbers or names', () => {
   it('holds for every question, context and language', () => {
-    const phrasebook = JSON.stringify([conciergePageEn.engine, conciergePageMs.engine]);
+    // Round 4: the per-category "not published" phrases are part of the phrasebook too.
+    const phrasebook = JSON.stringify([conciergePageEn.engine, conciergePageMs.engine, conciergePageEn.facilityMissing, conciergePageMs.facilityMissing]);
     const failures: string[] = [];
     let checked = 0;
     for (const lang of ['en', 'ms'] as const) {
@@ -441,7 +446,8 @@ describe('direct answers (B-08)', () => {
     expect(answer.limits.join(' ')).toMatch(/no live operations feed/);
     expect(answer.text).toMatch(/Aerotrain/);
     const later = answerQuestion({ question: 'Is the Aerotrain running?', lang: 'en', context: kul }, { knowledge: en, now: Date.parse('2027-03-01T10:00:00+08:00'), flights });
-    expect(later.text).toBe('No disruption to the Aerotrain to the C gates is reported in our sources; check the signs at the airport.');
+    // Round 4 verification (6.1.1), intended change: no notice and no live feed reads "Status not available", as on the status lines.
+    expect(later.text).toBe('Status not available for the Aerotrain to the C gates: our sources have no notice about it, and no live operations feed is connected. Check the signs at the airport or ask at an information counter.');
     const during = answerQuestion({ question: 'Is the Aerotrain running?', lang: 'en', context: kul }, { knowledge: en, now: Date.parse('2026-11-29T01:00:00+08:00'), flights });
     expect(during.text).toMatch(/^A notice about the Aerotrain to the C gates is in effect/);
     expect(first(during).sourceIds.length).toBeGreaterThan(0);
@@ -493,7 +499,7 @@ describe('direct answers (B-08)', () => {
     const answer = answerQuestion({ question: 'Is the shuttle bus between terminals running?', lang: 'en', context: kul }, { knowledge: en, now: later, flights });
     expect(answer.intent).toBe('service-status');
     expect(first(answer).text).toBe(answer.text);
-    expect(first(answer).text).toMatch(/^No disruption to the shuttle bus between terminals is reported in our sources/);
+    expect(first(answer).text).toMatch(/^Status not available for the shuttle bus between terminals: our sources have no notice about it/);
     expect(answer.statements[1].title).toMatch(/shuttle bus between the terminals/i);
     expect(answer.statements[1].sourceIds.length).toBeGreaterThan(0);
   });
@@ -525,5 +531,119 @@ describe('direct answers (B-08)', () => {
 
   it('writes the transfer answer with articles (A-28 hand-off)', () => {
     expect(ask('How do I get from Terminal 1 to Terminal 2?', kul).text).toMatch(/our sources list the train between Terminal 1 and Terminal 2 and the free shuttle bus/);
+  });
+});
+
+/* ------------------------------------------------------------------------------------------
+ * Round 4 (re-review 6.1.3 and 6.1.4, B-08): one answer for parking rates, an honest fallback,
+ * access qualifiers and a named airline in both languages, template grammar, notice labels
+ * --------------------------------------------------------------------------------------- */
+
+describe('round 4: fallback, access qualifiers, named airline, grammar (6.1.4)', () => {
+  const kul = { airport: 'kul' } as const;
+  const officialContact = (knowledge: ConciergeKnowledge) => {
+    const airport = knowledge.airports.find((item) => item.slug === 'kul');
+    return (airport && airport.contacts.length > 0 ? airport.contacts : knowledge.groupContacts)[0];
+  };
+
+  it('says plainly it cannot answer, and names the official contact from the content (EN and MS)', () => {
+    for (const [question, lang] of [
+      ['What will the weather be like tomorrow?', 'en'],
+      ['Can I bring durian in my hand luggage?', 'en'],
+      ['Bagaimana cuaca esok?', 'ms'],
+    ] as const) {
+      const answer = ask(question, kul, lang);
+      const contact = officialContact(lang === 'ms' ? ms : en);
+      expect(answer.intent, question).toBe('unknown');
+      expect(answer.text, question).toMatch(lang === 'en' ? /^I can’t answer that from our verified content\./ : /^Saya tidak dapat menjawabnya/);
+      expect(answer.text, question).toContain(contact.value);
+      // No loosely related cards dressed up as an answer (weather → rail fares, durian → power banks).
+      expect(answer.statements, question).toEqual([]);
+      expect(answer.cards, question).toEqual([]);
+      expect(answer.escalation?.reason, question).toBe('missing');
+      expect(answer.escalation?.contacts.map((item) => item.value), question).toContain(contact.value);
+    }
+  });
+
+  it('a new question that names the same airport is not a follow-up of the last topic', () => {
+    const first = ask('Where is the accessible toilet?', { airport: 'kul' });
+    const weather = ask('What will the weather be like tomorrow at KLIA?', first.context);
+    expect(weather.intent).toBe('unknown');
+    expect(weather.text).toMatch(/^I can’t answer that/);
+    // An elliptical follow-up still keeps the topic.
+    const parking = ask('How much does parking cost at KLIA?');
+    expect(ask('And at Penang?', parking.context).intent).toBe('parking');
+    expect(ask('Dan di Pulau Pinang?', parking.context, 'ms').intent).toBe('parking');
+  });
+
+  it('still answers a question a published item covers, leading with its answer', () => {
+    const answer = ask('Can I bring a power bank?');
+    expect(answer.statements[0]?.title).toBe('Can I bring a power bank?');
+    expect(answer.text).toBe(answer.statements[0]?.text.split('. ')[0] + '.');
+  });
+
+  it('a wheelchair on a named airline leads with that airline, never the Calm Room or another airline’s rule (EN and MS)', () => {
+    for (const [question, lang, context] of [
+      ['I need a wheelchair at the gate, I fly AirAsia', 'en', kul],
+      ['kerusi roda untuk penerbangan AirAsia di KLIA T2', 'ms', {}],
+    ] as const) {
+      const answer = ask(question, context, lang);
+      expect(answer.intent, question).toBe('assistance');
+      expect(answer.text, question).toMatch(lang === 'en' ? /^The assistance rules of AirAsia are not published in our sources\. Ask AirAsia/ : /^Peraturan bantuan AirAsia tidak diterbitkan dalam sumber kami\./);
+      expect(answer.cards.some((card) => card.type === 'facility' && card.category === 'calm-room'), question).toBe(false);
+      // Not Malaysia Airlines' 48-hour rule, which the reviewers found third in this answer.
+      expect(answer.statements.some((statement) => /\b48 (?:hours|jam)\b/.test(statement.text)), question).toBe(false);
+      expect(answer.escalation?.airline, question).toBe(true);
+    }
+  });
+
+  it('a wheelchair on an airline with a published rule leads with the rule and its source', () => {
+    const answer = ask('I need a wheelchair, I am flying Malaysia Airlines', kul);
+    expect(answer.text).toMatch(/^Malaysia Airlines asks for assistance requests at least 48 hours before departure; later requests depend on availability\./);
+    expect(answer.statements[0]?.sourceIds.length).toBeGreaterThan(0);
+  });
+
+  it('hidden disabilities still bring the calm room and the Butterfly Effect', () => {
+    const answer = ask('Is there support for my autistic son at KLIA?', kul);
+    expect(answer.cards.some((card) => card.type === 'facility' && (card.category === 'calm-room' || card.category === 'assistance'))).toBe(true);
+  });
+
+  it('"tandas OKU" and "accessible toilet" ask where the toilet is, and say it is not published, in natural grammar', () => {
+    const malay = ask('Di mana tandas OKU berhampiran pintu C?', kul, 'ms');
+    expect(malay.intent).toBe('facility');
+    expect(malay.text).toBe('Lokasi tandas OKU di KLIA belum diterbitkan dalam sumber kami.');
+    const english = ask('Where is the accessible toilet?', kul);
+    expect(english.text).toBe('Our sources do not publish where the accessible toilets are at KLIA yet.');
+    expect(english.actions.some((action) => action.kind === 'link' && action.href === '/accessibility#not-published')).toBe(true);
+    const smoking = ask('Where can I smoke?', kul);
+    expect(smoking.text).toBe('Our sources do not publish where the smoking rooms are at KLIA yet.');
+  });
+
+  it('every facility category has a "not published" phrase in both languages', () => {
+    for (const category of Object.keys(en.labels.categories) as (keyof typeof conciergePageEn.facilityMissing)[]) {
+      expect(conciergePageEn.facilityMissing[category], category).toBeTruthy();
+      expect(conciergePageMs.facilityMissing[category], category).toBeTruthy();
+    }
+  });
+
+  it('a lift question is a step-free question, answered honestly with the map', () => {
+    const answer = ask('Is there a lift from arrivals to the train?', kul);
+    expect(answer.intent).toBe('transport');
+    expect(answer.text).toMatch(/^Step-free access for KLIA Ekspres and KLIA Transit is not published in our sources\./);
+    expect(answer.actions.some((action) => action.kind === 'link' && action.href.startsWith('/kul/map'))).toBe(true);
+  });
+
+  it('never labels a notice "In effect" (the 2027 fare change read as if it had started)', () => {
+    for (const [question, lang] of [
+      ['How much is the KLIA Ekspres?', 'en'],
+      ['Are there any notices?', 'en'],
+      ['Berapa tambang KLIA Ekspres?', 'ms'],
+      ['Ada notis?', 'ms'],
+    ] as const) {
+      const answer = ask(question, kul, lang);
+      const titles = answer.statements.map((statement) => statement.title ?? '').join(' | ');
+      expect(titles, question).not.toMatch(/In effect|Berkuat kuasa/);
+      expect(titles, question).toMatch(/RM65 from 1 January 2027|RM65 mulai 1 Januari 2027/);
+    }
   });
 });

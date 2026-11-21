@@ -1,9 +1,8 @@
 import type { ReactNode } from 'react';
 import type { Lang } from '@/content/types';
 import { cn } from '@/lib/cn';
-import { formatCurrency, formatList } from '@/lib/format';
+import { formatCurrency } from '@/lib/format';
 import type { Translator } from '@/lib/i18n/translate';
-import { formatDate, isDateKey } from '@/lib/time';
 import { ExternalLink } from '@/components/common/external-link';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { SourceNote } from '@/components/common/source-note';
@@ -12,7 +11,7 @@ import { sourcesFor } from '@/components/transport/transport-types';
 import { Icon } from '@/components/ui/icon';
 import { TableScroll } from '@/components/ui/table';
 import { MATRIX_DAYS, priceRow, type PriceCell } from './parking-logic';
-import type { CarParkView, ParkingPageData, ReportedFigure } from './parking-types';
+import type { CarParkView, ParkingPageData } from './parking-types';
 
 export interface ParkingPriceMatrixProps {
   data: ParkingPageData;
@@ -25,8 +24,9 @@ export interface ParkingPriceMatrixProps {
 /**
  * Price first (C-01): each car park against stays of 1, 3 and 7 days, server-rendered so it
  * works without JavaScript and reads no clock. Cells come from `priceRow`: a published tariff
- * gives an estimate, a published daily maximum the most a stay can cost, and unverified rates
- * the range the sources' own daily maximums give, with who gives them and when. Premium parking
+ * gives an estimate, the record's daily maximum the most a stay can cost, and unverified rates
+ * the range the sources' own daily maximums give. Every figure that is not from a tariff is marked
+ * "not verified", and each row says so in the shared `rateLine` (round 4, 6.1.3). Premium parking
  * carries its warning in its own row. The booking link goes to the official parking page.
  */
 export function ParkingPriceMatrix({ data, t, lang, transportLink }: ParkingPriceMatrixProps) {
@@ -96,7 +96,7 @@ export function ParkingPriceMatrix({ data, t, lang, transportLink }: ParkingPric
               </tr>
               <tr>
                 <td colSpan={MATRIX_DAYS.length + 1} className="px-3 pb-2.5 sm:px-4">
-                  <RowNote carPark={carPark} cells={cells} data={data} t={t} lang={lang} money={money} />
+                  <RowNote carPark={carPark} cells={cells} data={data} t={t} />
                 </td>
               </tr>
             </tbody>
@@ -105,7 +105,8 @@ export function ParkingPriceMatrix({ data, t, lang, transportLink }: ParkingPric
       </TableScroll>
 
       <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-        <ExternalLink href={data.officialUrl} variant="action" className="type-body-sm font-semibold">
+        {/* Measurement (round 4, 6.1.9): the main booking hand-off, like the car-park cards' links. */}
+        <ExternalLink href={data.officialUrl} variant="action" className="type-body-sm font-semibold" data-handoff="parking-booking">
           {t('transportPages.parking.bookAction')}
         </ExternalLink>
         <a href="#parking-calculator-title" className="link-action type-body-sm text-ink">
@@ -130,38 +131,20 @@ function MatrixCell({ cell, money, t }: { cell: PriceCell; money: (amount: numbe
   }
   if (cell.kind === 'estimate') return <td className={cn(base, 'text-ink')}>{money(cell.amount)}</td>;
   const figure = cell.kind === 'ceiling' ? money(cell.amount) : cell.min === cell.max ? money(cell.max) : `${money(cell.min)}–${money(cell.max)}`;
+  // Round 4 (6.1.3): a daily maximum is as unverified as a reported figure, so both are marked
+  // alike; the row's note says so in words, with the sources.
   return (
-    <td className={cn(base, cell.kind === 'reported' ? 'text-ink-2' : 'text-ink')}>
+    <td className={cn(base, 'text-ink-2')} data-rate-verified="false">
       <span aria-hidden="true">≤ </span>
       <span className="sr-only">{t('transportPages.matrix.atMost')} </span>
       {figure}
-      {/* The row's note says "Not verified" in words, with the sources. */}
-      {cell.kind === 'reported' ? <span className="sr-only"> ({t('transportPages.matrix.notVerified')})</span> : null}
+      <span className="sr-only"> ({t('transportPages.matrix.notVerified')})</span>
     </td>
   );
 }
 
-function sourceDate(figure: ReportedFigure, t: Translator, lang: Lang): string {
-  if (figure.asOf) return isDateKey(figure.asOf) ? formatDate(figure.asOf, lang) : figure.asOf;
-  return t('transportPages.matrix.undated', { date: formatDate(figure.retrieved, lang) });
-}
-
 /** The line under a car park's figures: where they come from, or its warning. */
-function RowNote({
-  carPark,
-  cells,
-  data,
-  t,
-  lang,
-  money,
-}: {
-  carPark: CarParkView;
-  cells: PriceCell[];
-  data: ParkingPageData;
-  t: Translator;
-  lang: Lang;
-  money: (amount: number) => string;
-}) {
+function RowNote({ carPark, cells, data, t }: { carPark: CarParkView; cells: PriceCell[]; data: ParkingPageData; t: Translator }) {
   const warning = carPark.type === 'preferred' ? data.premiumWarning : undefined;
   const kind = cells[0]?.kind ?? 'none';
   const reported = carPark.reported ?? [];
@@ -180,24 +163,15 @@ function RowNote({
     );
   }
 
-  const text =
-    kind === 'ceiling' && carPark.dailyMax !== undefined
-      ? t('transportPages.matrix.dailyMaxNote', { amount: money(carPark.dailyMax) })
-      : kind === 'reported'
-        ? t('transportPages.matrix.reportedNote', {
-            figures: formatList(
-              reported.map((figure) => t('transportPages.matrix.reportedFigure', { amount: money(figure.amount), publisher: figure.publisher, date: sourceDate(figure, t, lang) })),
-              lang,
-            ),
-          })
-        : kind === 'none'
-          ? t('transportPages.matrix.noneNote')
-          : undefined;
+  // One fact, one answer (round 4, 6.1.3): the record's rate status in the words the concierge
+  // and the help FAQ use; the source note beside it gives who says so and when.
   const sources = kind === 'reported' ? sourcesFor(reported.map((figure) => figure.sourceId), data.sources) : sourcesFor(carPark.sourceIds, data.sources);
 
   return (
     <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5">
-      {text ? <p className="type-caption min-w-0 text-ink-2">{text}</p> : null}
+      <p className="type-caption min-w-0 text-ink-2" data-rate-line="">
+        {carPark.rateLine}
+      </p>
       <SourceNote sources={sources} />
       {kind !== 'estimate' ? (
         <ExternalLink href={carPark.officialUrl} variant="action" className="type-caption">

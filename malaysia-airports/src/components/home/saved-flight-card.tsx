@@ -2,13 +2,13 @@
 
 import { useMemo } from 'react';
 import { getAirport, localName } from '@/content/airports';
-import { pick } from '@/content/values';
-import { formatFlightNumber, isFinalStatus, isInternationalFlight, placeCity, type Flight } from '@/lib/flights';
+import { formatFlightNumber, placeCity, type Flight } from '@/lib/flights';
 import { useLang, useT } from '@/lib/i18n/client';
-import { RECOMMENDED_ARRIVAL_MINUTES, buildJourney } from '@/lib/journey';
+import { buildJourney, nextDeadline, nextStepSummary, type StepSummary, type TravelDeadline } from '@/lib/journey';
+import { DEADLINE_KEYS, StepLine } from '@/components/flights/step-line';
 import { useFlightFeed, type FeedRequest } from '@/lib/providers/use-flight-feed';
 import type { SavedFlight } from '@/lib/stores';
-import { addMinutes, dateKey, formatTime } from '@/lib/time';
+import { dateKey, formatTime } from '@/lib/time';
 import { DemoTag } from '@/components/common/demo-tag';
 import { FlightStatusChip } from '@/components/common/flight-status-chip';
 import { LocaleLink } from '@/components/common/locale-link';
@@ -27,7 +27,10 @@ interface Picked {
 
 /**
  * The visitor's saved flight on the home first screen (A-08): status, terminal, gate, the next
- * step of its timeline and, for departures, when to be at the airport. Demonstration data, and
+ * step of its timeline and, for departures, the deadline that still matters: be at the airport by,
+ * then check-in closes, then boarding (round 4, 6.1.2: at 18:21 it said "Be at the airport by
+ * 16:35 · Next: Check in 16:35"). No time shown is ever in the past, and every time follows the
+ * flight's estimated time, as the timeline does. Demonstration data, and
  * labelled so. Loaded only when a flight is saved (`SavedFlightSlot`). The flights come from the
  * server flight feed (round 3, E-03): one board per saved airport, date and direction.
  */
@@ -51,13 +54,13 @@ export function SavedFlightCard({ flights }: { flights: readonly SavedFlight[] }
     return head ? { flight: head.flight, saved: head.saved, others: found.length - 1 } : null;
   }, [provider, flights]);
 
-  const next = useMemo(() => {
-    if (!picked || !provider) return null;
+  const { next, deadline } = useMemo<{ next: StepSummary | null; deadline: TravelDeadline | null }>(() => {
+    if (!picked || !provider) return { next: null, deadline: null };
     const airport = getAirport(picked.flight.airport);
-    if (!airport) return null;
+    if (!airport) return { next: null, deadline: null };
     const mode = picked.saved.mode ?? (picked.flight.direction === 'd' ? 'departing' : 'arriving');
     const steps = buildJourney({ flight: picked.flight, mode, airportContent: { airport, guidesNotes: [] }, now: provider.now });
-    return steps.find((step) => step.state === 'current') ?? steps.find((step) => step.state === 'upcoming') ?? null;
+    return { next: nextStepSummary(steps, provider.now), deadline: nextDeadline(picked.flight, provider.now) };
   }, [picked, provider]);
 
   // Only past flights saved: nothing to fetch, so nothing to show (as before the feed).
@@ -68,11 +71,11 @@ export function SavedFlightCard({ flights }: { flights: readonly SavedFlight[] }
 
   const { flight, others } = picked;
   const departing = flight.direction === 'd';
-  const arriveBy =
-    departing && !isFinalStatus(flight.status)
-      ? formatTime(addMinutes(flight.scheduled, -(isInternationalFlight(flight) ? RECOMMENDED_ARRIVAL_MINUTES.international : RECOMMENDED_ARRIVAL_MINUTES.domestic)))
-      : null;
   const place = placeCity(departing ? flight.destination : flight.origin, lang);
+
+  function stepWhen(summary: StepSummary): string {
+    return summary.when === 'now' ? t('flightPages.journey.now') : t('shellExtras.savedFlight.next');
+  }
 
   return (
     <section
@@ -112,31 +115,27 @@ export function SavedFlightCard({ flights }: { flights: readonly SavedFlight[] }
           </dd>
         </div>
         <div className="flex min-w-0 items-baseline gap-1.5 max-xs:col-span-2">
-          <dt>{arriveBy ? t('shellExtras.savedFlight.arriveByLabel') : t('shellExtras.savedFlight.next')}</dt>
+          <dt>{deadline ? t(DEADLINE_KEYS[deadline.kind]) : next ? stepWhen(next) : t('shellExtras.savedFlight.next')}</dt>
           <dd className="min-w-0 font-semibold text-ink">
-            {arriveBy ? (
+            {deadline ? (
               <span className="inline-flex flex-wrap items-center gap-1.5">
-                <span className="type-data-md">{arriveBy}</span>
-                <ProvenanceTag provenance="estimated" length="short" />
+                <span className="type-data-md">{formatTime(deadline.time)}</span>
+                {deadline.provenance === 'estimated' ? <ProvenanceTag provenance="estimated" length="short" /> : null}
               </span>
             ) : next ? (
-              <>
-                {pick(next.title, lang)}
-                {/* Round 2: no second time when the step title already says it ("Board from 10:50"). */}
-                {next.time && !pick(next.title, lang).includes(formatTime(next.time)) ? <span className="type-data-md ml-1.5 font-normal text-ink-2">{formatTime(next.time)}</span> : null}
-              </>
+              <StepLine summary={next} />
             ) : (
               '—'
             )}
           </dd>
         </div>
       </dl>
-      {arriveBy && next ? (
+      {deadline && next ? (
         <p className="type-caption text-ink-2">
-          {t('shellExtras.savedFlight.next')}: <span className="font-semibold text-ink">{pick(next.title, lang)}</span>
-          {next.time && !pick(next.title, lang).includes(formatTime(next.time)) ? <span className="tabular"> {formatTime(next.time)}</span> : null}
+          {stepWhen(next)}: <StepLine summary={next} hideTime={next.time === deadline.time} />
         </p>
       ) : null}
     </section>
   );
 }
+

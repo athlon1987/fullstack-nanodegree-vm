@@ -21,6 +21,7 @@ import { NativeSelect } from '@/components/ui/native-select';
 import { SearchField } from '@/components/ui/search-field';
 import { SegmentedControl } from '@/components/ui/segmented-control';
 import { MapMarker, NetworkMap } from './network-map';
+import { DEPTH_COPY, DEPTH_ORDER, airportDepthLabel } from './airport-depth';
 
 type TypeFilter = 'all' | AirportClassification;
 
@@ -88,6 +89,7 @@ export function AirportDirectoryView({ then }: AirportDirectoryViewProps) {
     const place = airport.city === airport.state ? airport.city : `${airport.city}, ${airport.state}`;
     const terminals = AIRPORT_CHOICES.filter((choice) => choice.airport === airport.slug && choice.terminal);
     const reachable = hasSection(availability, airport.slug, target);
+    const depth = airportDepthLabel(availability, airport.slug);
     const current = selection?.airport === airport.slug;
     return (
       <Card as="li" key={airport.slug} interactive padding="sm" className="flex min-w-0 items-start gap-3.5" data-airport={airport.slug}>
@@ -109,7 +111,10 @@ export function AirportDirectoryView({ then }: AirportDirectoryViewProps) {
                 {t('shell.switcher.selected')}
               </Chip>
             ) : null}
-            {airport.depth === 'listing' ? <Chip>{t('airportsPage.listingOnly')}</Chip> : null}
+            {/* What this site has for the airport, from its real sections (round 4, 6.1.8). */}
+            <Chip icon={DEPTH_COPY[depth].icon} data-depth={depth}>
+              {t(DEPTH_COPY[depth].label)}
+            </Chip>
             {terminals.map((choice) => (
               <LocaleLink
                 key={choice.id}
@@ -200,6 +205,18 @@ export function AirportDirectoryView({ then }: AirportDirectoryViewProps) {
                 {t('flights.filters.clearFilters')}
               </Button>
             ) : null}
+          </div>
+          {/* The depth labels on the cards, explained once (round 4, re-review 6.1.8). */}
+          <div className="border-t border-line pt-3">
+            <h2 className="type-eyebrow text-ink-2">{t('flightPages.depth.legendTitle')}</h2>
+            <dl className="type-body-sm mt-2 grid gap-x-3 gap-y-1.5 text-ink-2 sm:grid-cols-[auto_minmax(0,1fr)]">
+              {DEPTH_ORDER.filter((depth) => depth !== 'guide-only' || AIRPORTS.some((airport) => airportDepthLabel(availability, airport.slug) === 'guide-only')).map((depth) => (
+                <div key={depth} className="contents">
+                  <dt className="font-semibold text-ink max-sm:mt-1">{t(DEPTH_COPY[depth].label)}</dt>
+                  <dd>{t(DEPTH_COPY[depth].hint)}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
         </form>
 

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { getAirportContent } from '@/content';
+import type { RateBand } from '@/content/types';
 import { calculateParking } from '@/lib/parking';
 import { parkingPageModel } from './parking-data.server';
 import { dailyMaxCeiling, defaultArrival, localInstant, MATRIX_DAYS, parseClock, priceCell, priceRow, shiftStamp, stampFromIso, stayMinutes } from './parking-logic';
@@ -116,5 +117,38 @@ describe('KLIA price matrix data (C-01)', () => {
     // Preferred Parking has no figure: its row carries the warning instead.
     expect(priceRow(byId.get('kul-t1-preferred-parking')!).every((cell) => cell.kind === 'none')).toBe(true);
     expect(data.premiumWarning).toBeDefined();
+  });
+});
+
+/* ---- Round 4 (re-review 6.1.3): one rate status for every surface ---------------------------- */
+
+describe('rateFacts and rateStatusText (6.1.3)', async () => {
+  const { rateFacts, rateStatusText } = await import('@/lib/parking');
+  const base: { rates: RateBand[]; sources: string[] } = { rates: [], sources: ['a', 'b'] };
+  // formatCurrency keeps "RM" and the figure together with a no-break space.
+  const plain = (text: { en: string; ms?: string }) => ({ en: text.en.replace(/\u00a0/g, ' '), ms: text.ms?.replace(/\u00a0/g, ' ') });
+  const sourceOf = (id: string) => (id === 'a' ? { publisher: 'klia.info' } : id === 'b' ? { publisher: 'The Rakyat Post', asOf: '2026-05-16' } : undefined);
+
+  it('reads the basis from the record alone', () => {
+    expect(rateFacts({ ...base, rateStatus: 'not-verified', dailyMax: 32 })).toMatchObject({ basis: 'daily-max', verified: false, lowestDaily: 32 });
+    expect(rateFacts({ ...base, rateStatus: 'not-verified', reportedDailyMax: [{ amount: 52, source: 'a' }, { amount: 40, source: 'x' }] })).toMatchObject({ basis: 'reported', verified: false, lowestDaily: 52 });
+    expect(rateFacts({ ...base, rateStatus: 'not-verified' })).toMatchObject({ basis: 'none', verified: false });
+    expect(rateFacts({ ...base, rateStatus: 'published', rates: [{ fromMinute: 0, kind: 'flat', amount: 4 }], dailyMax: 76 })).toMatchObject({ basis: 'tariff', verified: true, dailyMax: 76 });
+  });
+
+  it('words each basis the same way in English and Malay, never as verified unless it is', () => {
+    expect(plain(rateStatusText({ ...base, rateStatus: 'not-verified', dailyMax: 32 }, sourceOf))).toEqual({
+      en: 'Rates not verified: our sources give a daily maximum of RM 32; the hourly rates are not confirmed.',
+      ms: 'Kadar belum disahkan: sumber kami memberikan maksimum harian RM 32; kadar sejam belum dipastikan.',
+    });
+    expect(plain(rateStatusText({ ...base, rateStatus: 'not-verified', reportedDailyMax: [{ amount: 52, source: 'a' }] }, sourceOf))).toEqual({
+      en: 'Rates not verified: klia.info (undated) gives RM 52 a day.',
+      ms: 'Kadar belum disahkan: klia.info (tanpa tarikh) memberikan RM 52 sehari.',
+    });
+    expect(plain(rateStatusText({ ...base, rateStatus: 'not-verified', reportedDailyMax: [{ amount: 52, source: 'a' }, { amount: 50, source: 'b' }] }, sourceOf)).en).toBe(
+      'Rates not verified: klia.info (undated) gives RM 52 a day and The Rakyat Post gives RM 50 a day.',
+    );
+    expect(rateStatusText({ ...base, rateStatus: 'not-verified' })).toEqual({ en: 'No price published.', ms: 'Tiada harga diterbitkan.' });
+    expect(plain(rateStatusText({ ...base, rateStatus: 'published', rates: [{ fromMinute: 0, kind: 'flat', amount: 4 }], dailyMax: 76 })).en).toBe('Rates published, with a daily maximum of RM 76.');
   });
 });

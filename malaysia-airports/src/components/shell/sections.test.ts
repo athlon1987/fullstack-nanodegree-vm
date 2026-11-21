@@ -115,10 +115,14 @@ describe('Malay wording (A-25)', () => {
     typeof node === 'string' ? [node] : node && typeof node === 'object' ? Object.values(node).flatMap(strings) : [];
   const shell = strings({ ...ms, conciergePage: undefined, flightPages: undefined, mapPages: undefined, transportPages: undefined, commercePages: undefined, guidePages: undefined, corporatePages: undefined, platformPages: undefined });
 
-  it('uses one name for the concierge: "Concierge"', () => {
-    expect(shell.filter((value) => /konsierj/i.test(value))).toEqual([]);
-    expect(ms.concierge.title).toBe('Concierge');
-    expect(ms.nav.concierge).toBe('Concierge');
+  // Round 4 (re-review 6.1.10, package ask), intended change: the Malay name is "Tanya Kami", not
+  // the English word "Concierge" that most first-timers do not use.
+  it('uses one Malay name for the concierge: "Tanya Kami"', () => {
+    expect(shell.filter((value) => /konsierj|concierge/i.test(value))).toEqual([]);
+    expect(ms.concierge.title).toBe('Tanya Kami');
+    expect(ms.nav.concierge).toBe('Tanya Kami');
+    expect(ms.conciergePage.title).toBe('Tanya Kami');
+    expect(strings(ms.conciergePage).filter((value) => /\bconcierge\b/i.test(value))).toEqual([]);
   });
 
   it('uses everyday terms: no "pelepasan" and no bare "Lounge"', () => {

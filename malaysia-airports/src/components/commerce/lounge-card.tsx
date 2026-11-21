@@ -77,8 +77,9 @@ export function LoungeCard({ item, lang, showTerminal, headingLevel = 4 }: Loung
               {t('commercePages.outlet.showOnMap')}
             </LocaleLink>
           ) : null}
+          {/* E-17 (round 4): the operator's page is a commercial hand-off too (where lounge access is sold). */}
           {item.operatorUrl ? (
-            <ExternalLink href={item.operatorUrl} variant="action" className="type-body-sm">
+            <ExternalLink href={item.operatorUrl} variant="action" className="type-body-sm" data-handoff="lounge-operator">
               {t('commercePages.lounges.operatorPage')}
             </ExternalLink>
           ) : null}

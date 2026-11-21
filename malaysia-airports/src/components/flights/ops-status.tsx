@@ -1,14 +1,14 @@
 'use client';
 
 import { useMemo } from 'react';
-import { pick } from '@/content/values';
+import { formatAsOf, pick } from '@/content/values';
 import type { Notice, Source, TerminalId } from '@/content/types';
 import { cn } from '@/lib/cn';
 import { useNow } from '@/lib/hooks/use-now';
 import { useLang, useT } from '@/lib/i18n/client';
-import { opsStatus, type OpsServiceId, type OpsStatusLine } from '@/lib/providers/demo-operations';
+import { noticesPublishedUpTo, opsStatus, type OpsServiceId, type OpsStatusLine } from '@/lib/providers/demo-operations';
 import type { WaitCheckpoint } from '@/lib/providers/types';
-import { formatDate, formatTime } from '@/lib/time';
+import { formatDate } from '@/lib/time';
 import { LocaleLink } from '@/components/common/locale-link';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { SourceNote } from '@/components/common/source-note';
@@ -46,10 +46,12 @@ const CHECKPOINT_KEYS: Record<WaitCheckpoint, string> = {
 /**
  * Status lines for the services passengers ask about (BR-08, exec-commerce-04, usability-11):
  * Aerotrain, the train and shuttle between terminals, and immigration with demo queue estimates.
- * Each line gives a state, the time it was checked and its source. With no notice it says "No
- * disruption reported in our sources as of hh:mm; check the signs". Fed by dated notices until a
- * live operations feed exists (OOS-02). The clock is read with `useNow()`, so the server HTML
- * holds a skeleton of the same height.
+ * Fed by dated notices until a live operations feed exists (OOS-02), so (round 4, re-review
+ * 6.1.1) no line carries a "Checked hh:mm" time: a notice line shows the notice's own date, the
+ * block says which notices it rests on ("From notices published up to 7 Oct 2026; no live
+ * feed"), and a service with no notice says "Status not available", where to check and the
+ * official contacts, never "No disruption reported". The clock only decides whether a notice is
+ * in effect; it is read with `useNow()`, so the server HTML holds a skeleton of the same height.
  *
  * Other packages render it through `OpsStatusSection` (a Server Component that loads the notices).
  */
@@ -62,22 +64,24 @@ export function OpsStatus({ airport, notices, sources = {}, services, terminal, 
     [airport, notices, now, services, terminal],
   );
   const Heading = `h${headingLevel}` as 'h2' | 'h3';
+  // Content only (no clock), so the server HTML already has it.
+  const publishedUpTo = noticesPublishedUpTo(notices, airport);
+  const basis = publishedUpTo ? t('flightPages.ops.basisDated', { date: formatAsOf(publishedUpTo, lang) }) : t('flightPages.ops.basis');
 
   const line = (item: OpsStatusLine) => {
-    const tone = item.state === 'notice' ? 'warning' : item.state === 'planned' ? 'info' : 'neutral';
-    const checked = formatTime(item.checkedAt);
+    const tone = item.state === 'notice' ? 'warning' : 'info';
     const noticeSources = (item.notice?.sources ?? []).map((id) => sources[id]).filter((source): source is Source => Boolean(source));
     const waits = item.waits.filter((wait) => (checkpoints ?? ['security', 'immigration-departure']).includes(wait.checkpoint));
     return (
       <li key={item.service} data-ops-service={item.service} data-ops-state={item.state} className="flex flex-col gap-1 py-2.5 first:pt-0 last:pb-0">
         <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
           <p className="type-body-sm font-semibold text-ink">{pick(item.name, lang)}</p>
-          <p className="type-caption text-ink-2">{t('flightPages.ops.checked', { time: checked })}</p>
+          {item.notice?.asOf ? <p className="type-caption text-ink-2">{t('flightPages.ops.noticeDated', { date: formatAsOf(item.notice.asOf, lang) })}</p> : null}
         </div>
-        {item.state === 'clear' ? (
+        {item.state === 'unknown' ? (
           <p className="type-body-sm flex items-start gap-2 text-ink-2">
-            <Icon name="circle-check" size="sm" className="mt-0.5 shrink-0 text-ink" />
-            <span>{t('flightPages.ops.clear', { time: checked })}</span>
+            <Icon name="circle-help" size="sm" className="mt-0.5 shrink-0 text-ink" />
+            <span>{t('flightPages.ops.unknown')}</span>
           </p>
         ) : item.notice ? (
           <div className={cn('rounded-md border px-3 py-2', tone === 'warning' ? 'border-warning-border bg-warning-bg' : 'border-info-border bg-info-bg')}>
@@ -118,6 +122,16 @@ export function OpsStatus({ airport, notices, sources = {}, services, terminal, 
     );
   };
 
+  // Where to check, once under the lines rather than on each one (A-14 density).
+  const where = lines?.some((item) => item.state === 'unknown') ? (
+    <p data-ops-where="" className="type-caption mt-2 text-ink-2">
+      {t('flightPages.ops.unknownWhere')}{' '}
+      <LocaleLink href={`/${airport}#airport-contacts`} className="link">
+        {t('flightPages.ops.contacts')}
+      </LocaleLink>
+    </p>
+  ) : null;
+
   const body =
     lines === null ? (
       <div role="status" className="flex flex-col gap-2">
@@ -127,10 +141,19 @@ export function OpsStatus({ airport, notices, sources = {}, services, terminal, 
         ))}
       </div>
     ) : (
-      <ul className="flex flex-col divide-y divide-line">{lines.map(line)}</ul>
+      <>
+        <ul className="flex flex-col divide-y divide-line">{lines.map(line)}</ul>
+        {where}
+      </>
     );
 
-  if (variant === 'inline') return <div className={cn('mt-3 rounded-md border border-line bg-page-subtle px-3.5 py-3', className)}>{body}</div>;
+  if (variant === 'inline')
+    return (
+      <div className={cn('mt-3 rounded-md border border-line bg-page-subtle px-3.5 py-3', className)}>
+        {body}
+        <p className="type-caption mt-2 border-t border-line pt-2 text-ink-2">{basis}</p>
+      </div>
+    );
 
   return (
     <section aria-label={t('flightPages.ops.title')} className={cn('rounded-lg border border-line-strong bg-surface p-5', className)}>
@@ -140,7 +163,9 @@ export function OpsStatus({ airport, notices, sources = {}, services, terminal, 
           {t('flightPages.ops.allNotices')}
         </LocaleLink>
       </div>
-      <p className="type-caption mt-1 text-ink-2">{t('flightPages.ops.lead')}</p>
+      <p className="type-caption mt-1 text-ink-2">
+        {publishedUpTo ? t('flightPages.ops.leadDated', { date: formatAsOf(publishedUpTo, lang) }) : t('flightPages.ops.lead')}
+      </p>
       <div className="mt-3">{body}</div>
     </section>
   );

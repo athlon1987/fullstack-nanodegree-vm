@@ -88,7 +88,8 @@ export function JourneyTeaser({ facts, arrival, fallback }: JourneyTeaserProps) 
   }, [provider, sampleAirport, factTerminal]);
   if (!nextDay && provider && !flight) setNextDay(true);
 
-  const arriveBy = flight ? formatTime(addMinutes(flight.scheduled, -(isInternationalFlight(flight) ? arrival.minutesBefore.international : arrival.minutesBefore.domestic))) : null;
+  // On the estimated time, the basis every other day-of-travel time uses (round 4, 6.1.2).
+  const arriveBy = flight ? formatTime(addMinutes(flight.estimated, -(isInternationalFlight(flight) ? arrival.minutesBefore.international : arrival.minutesBefore.domestic))) : null;
   const saved = flight ? isFlightSaved(flight.id) : false;
 
   const toggle = () => {

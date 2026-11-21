@@ -35,6 +35,8 @@ export interface TransportOptionCardProps {
   /** The list states this provenance once (`ProvenanceDefault`): no tag of its own when it matches (A-14). */
   defaultProvenance?: TransportOption['provenance'];
   headingLevel?: 2 | 3;
+  /** Round 4 (A-14): the section lists the sources once, with what each supports: none on the card. */
+  groupedSources?: boolean;
   className?: string;
 }
 
@@ -43,7 +45,7 @@ export interface TransportOptionCardProps {
  * frequency, hours, where to board, payment, accessibility, provenance and sources. Anything not
  * published says so.
  */
-export function TransportOptionCard({ option, placeKey, context, day, terminal, rank, highlights = [], defaultProvenance, headingLevel = 3, className }: TransportOptionCardProps) {
+export function TransportOptionCard({ option, placeKey, context, day, terminal, rank, highlights = [], defaultProvenance, headingLevel = 3, groupedSources = false, className }: TransportOptionCardProps) {
   const t = useT();
   const lang = useLang();
   const Heading = `h${headingLevel}` as const;
@@ -158,7 +160,7 @@ export function TransportOptionCard({ option, placeKey, context, day, terminal, 
       </div>
 
       <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-line px-4 py-1.5 sm:px-5">
-        <SourceNote sources={sourcesFor(option.sources, context.sources)} />
+        {groupedSources ? null : <SourceNote sources={sourcesFor(option.sources, context.sources)} />}
         {option.asOf ? <AsOf value={option.asOf} timeZone={context.timezone} /> : null}
         <span className="ml-auto flex flex-wrap items-center gap-x-5">
           {option.bookingUrl ? (
@@ -166,7 +168,7 @@ export function TransportOptionCard({ option, placeKey, context, day, terminal, 
               {t('transportPages.planner.bookOnline')}
             </ExternalLink>
           ) : tickets ? (
-            <ExternalLink href={tickets} variant="action" className="type-body-sm font-semibold">
+            <ExternalLink href={tickets} variant="action" className="type-body-sm font-semibold" data-handoff={`${option.mode}-tickets`}>
               {t('transportPages.planner.tickets')}
             </ExternalLink>
           ) : null}

@@ -14,14 +14,15 @@ import type { NextRequest } from 'next/server';
 import { sharedModelBudget } from '@/lib/concierge/rate-limit';
 import { buildHealth, isMonitoringRequest, publicHealth } from '@/lib/providers/api';
 import { sharedCspReports } from '@/lib/seo/csp-reports';
-import { sharedMetrics } from '@/lib/seo/metrics-store';
+import { sharedMetrics } from '@/components/platform/metrics-store';
 
 const HEADERS = { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' } as const;
 
-function respond(request: NextRequest, withBody: boolean): Response {
+async function respond(request: NextRequest, withBody: boolean): Promise<Response> {
   // Reading the request makes the handler dynamic before the clock is read.
   const detailed = isMonitoringRequest(request.headers.get('authorization'), process.env.HEALTH_TOKEN);
   const pretty = request.nextUrl.searchParams.has('pretty');
+  const detailedMetrics = detailed && withBody;
   const body = detailed
     ? {
         ...buildHealth(new Date(), {
@@ -29,7 +30,13 @@ function respond(request: NextRequest, withBody: boolean): Response {
           VERCEL_GIT_COMMIT_SHA: process.env.VERCEL_GIT_COMMIT_SHA,
           GIT_COMMIT: process.env.GIT_COMMIT,
         }),
-        counters: { conciergeModel: sharedModelBudget().counters(), cspReportOnly: sharedCspReports().summary(), measurement: sharedMetrics().summary() },
+        counters: {
+          conciergeModel: sharedModelBudget().counters(),
+          cspReportOnly: sharedCspReports().summary(),
+          // Round 4 (E-17): durable aggregate counts, and where they are kept.
+          measurement: detailedMetrics ? await sharedMetrics().summary() : [],
+          measurementStore: sharedMetrics().status(),
+        },
       }
     : publicHealth(process.env.NEXT_PUBLIC_APP_VERSION);
   const headers = detailed ? { ...HEADERS, 'X-Data-Mode': 'demo', Vary: 'Authorization' } : { ...HEADERS, Vary: 'Authorization' };

@@ -201,7 +201,7 @@ const TYPE_SCALE = [
   { cls: 'type-eyebrow', name: 'type-eyebrow', spec: '12 / 1.2 / +0.14em / Hanken 600', numeric: false },
   { cls: 'type-data-xl', name: 'type-data-xl', spec: '24 / 1.0 / Geist Mono 600', numeric: true },
   { cls: 'type-data-lg', name: 'type-data-lg', spec: '20 / 1.1 / Geist Mono 600', numeric: true },
-  { cls: 'type-data-md', name: 'type-data-md', spec: '15 / 1.3 / Geist Mono 500', numeric: true },
+  { cls: 'type-data-md', name: 'type-data-md', spec: '14 / 1.3 / Geist Mono 500', numeric: true },
   { cls: 'type-data-sm', name: 'type-data-sm', spec: '13 / 1.3 / Geist Mono 500', numeric: true },
   { cls: 'type-data-xs', name: 'type-data-xs', spec: '11 / 1.2 / +0.06em / Geist Mono 500', numeric: true },
 ] as const;

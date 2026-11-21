@@ -45,7 +45,8 @@ test.describe('home', () => {
 
     await page.goto('/ms');
     await expect(page.locator('html')).toHaveAttribute('lang', 'ms');
-    await expect(page.getByRole('heading', { level: 1, name: 'Perjalanan anda, terhubung dengan indah.' })).toBeVisible();
+    // Round 4 (re-review 6.1.10), intended change: a task-based Malay h1, not a translation of the English line.
+    await expect(page.getByRole('heading', { level: 1, name: 'Semak penerbangan, rancang perjalanan anda.' })).toBeVisible();
     await expect(page.getByRole('list', { name: 'Tindakan pantas' })).toBeVisible();
   });
 
