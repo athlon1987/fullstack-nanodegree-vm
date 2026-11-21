@@ -29,6 +29,7 @@
  * domestic lounge hours; the full airline and destination list; terminal opening hours; whether
  * the airport telephone number in the aeronautical publication answers passenger enquiries.
  */
+import { NOTES } from '../source-notes';
 import {
   defineAirportContent,
   lt,
@@ -43,7 +44,8 @@ import {
 } from '../types';
 import { MAHB, RETRIEVED_16_NOV, contentGapsNote, source } from './_helpers';
 
-const CHECKED = 'Checked 16 November 2026';
+/** The day the research run checked these pages. */
+const CHECKED = '2026-11-16';
 const OFFICIAL_PAGE = 'https://airports.malaysiaairports.com.my/en/penang';
 
 /* -------------------------------------------------------------------------------------------
@@ -252,7 +254,7 @@ const transport: TransportOption[] = [
         ),
       },
     ],
-    provenance: 'official',
+    provenance: 'estimated',
     asOf: '2026-03-11',
     sources: ['businesstoday-penang-expansion-mar-2026', 'onpenang-grab'],
   },
@@ -361,7 +363,7 @@ const carParks: CarPark[] = [
     dailyMax: 76,
     features: [lt('Next to the link bridge to departures', 'Bersebelahan jambatan penghubung ke balai berlepas')],
     bookingUrl: OFFICIAL_PAGE,
-    provenance: 'official',
+    provenance: 'estimated',
     asOf: '2025-10-09',
     sources: ['mahb-x-penang-premium-parking', 'threads-penangfoodie-premium-parking'],
   },
@@ -393,7 +395,10 @@ const airlines: AirlineAtAirport[] = [
   {
     code: 'CX',
     name: 'Cathay Pacific',
-    checkIn: 'Counters open 2 hours 30 minutes before scheduled departure and close 40 minutes before it, according to Cathay Pacific.',
+    checkIn: lt(
+      'Counters open 2 hours 30 minutes before scheduled departure and close 40 minutes before it, according to Cathay Pacific.',
+      'Kaunter dibuka 2 jam 30 minit sebelum waktu berlepas berjadual dan ditutup 40 minit sebelum waktu itu, menurut Cathay Pacific.',
+    ),
     destinations: [],
     basis: 'airline',
     note: lt(
@@ -451,7 +456,7 @@ const guidesNotes: GuideNote[] = [
       'Premium Parking is on Level 3 of the multi-storey car park, next to the link bridge to the departure level. The maximum charge is RM76 for 24 hours, as announced in October 2025.',
       'Parkir Premium terletak di Aras 3 tempat letak kereta bertingkat, bersebelahan jambatan penghubung ke aras berlepas. Caj maksimum ialah RM76 bagi 24 jam, seperti diumumkan pada Oktober 2025.',
     ),
-    provenance: 'official',
+    provenance: 'estimated',
     asOf: '2025-10-09',
     sources: ['mahb-x-penang-premium-parking', 'threads-penangfoodie-premium-parking'],
   },
@@ -479,7 +484,7 @@ const guidesNotes: GuideNote[] = [
       'Jumpa pemandu e-hailing anda di tingkat bawah (Aras 1) tempat letak kereta bertingkat, di seberang jalan dari bangunan terminal utama.',
     ),
     appliesTo: { direction: 'arriving' },
-    provenance: 'official',
+    provenance: 'estimated',
     asOf: '2026-03-11',
     sources: ['businesstoday-penang-expansion-mar-2026', 'onpenang-grab'],
   },
@@ -506,6 +511,7 @@ const guidesNotes: GuideNote[] = [
     ),
     sources: ['prototype-method', 'mahb-penang-site', 'visitpenang-direct-flights'],
     asOf: RETRIEVED_16_NOV,
+    gaps: [{ area: 'outlets' }, { area: 'prayer-room' }, { area: 'wifi' }, { area: 'atm' }, { area: 'money-changer' }],
   }),
 ];
 
@@ -521,24 +527,24 @@ const sources: Source[] = [
   source('cathay-penang-airport', 'operator', 'Cathay Pacific', 'Penang International Airport', 'https://www.cathaypacific.com/cx/en_ZA/destinations/airports/penang-international-airport.html', R),
   source('viator-penang-plaza-premium', 'aggregator', 'Viator', 'Penang International Airport Plaza Premium Lounge', 'https://www.viator.com/en-MY/tours/Penang/Penang-International-Airport-Plaza-Premium-Lounge/d339-5079PENLOUNGE', R),
   source('prioritypass-penang-plaza-premium', 'other', 'Priority Pass', 'Plaza Premium Lounge, Penang International', 'https://www.prioritypass.com/en-GB/lounges/malaysia/penang-international/pen-plaza-premium-lounge', R),
-  source('taketours-penang-plaza-premium-domestic', 'aggregator', 'TakeTours', 'Plaza Premium Lounge, Penang airport (domestic departures)', 'https://www.taketours.com/page/experience/plaza-premium-lounge-penang-airport-domestic-departures-300-20731.html', R),
+  source('taketours-penang-plaza-premium-domestic', 'aggregator', 'TakeTours', 'Plaza Premium Lounge, Penang airport', 'https://www.taketours.com/page/experience/plaza-premium-lounge-penang-airport-domestic-departures-300-20731.html', R, undefined, { note: NOTES.domesticDepartures }),
   source('myrapid-rapid-penang-bus', 'operator', 'Rapid Penang (MyRapid, Prasarana)', 'Rapid Penang bus routes and fares', 'https://myrapid.com.my/bus-train/rapid-penang/rapid-pg-bus/', R, '2026'),
   source('visitpenang-bus-401', 'other', 'Visit Penang', 'Bus route 401', 'https://www.visitpenang.com/getting-around/bus-routes/401', R, '2026'),
   source('visitpenang-bus-routes', 'other', 'Visit Penang', 'Bus routes', 'https://www.visitpenang.com/getting-around/bus-routes', R, '2026'),
   source('visitpenang-direct-flights', 'other', 'Visit Penang', 'Direct flights to Penang', 'https://www.visitpenang.com/getting-there/direct-flights', R, '2026'),
-  source('holidaygogogo-penang-airport', 'other', 'HolidayGoGoGo', 'Penang International Airport (older guide)', 'https://www.holidaygogogo.com/penang-international-airport/', R),
-  source('travelswithsun-penang-airport-georgetown', 'other', 'Travels With Sun', 'Penang airport to George Town (older guide)', 'https://www.travelswithsun.com/penang-airport-to-georgetown/', R),
+  source('holidaygogogo-penang-airport', 'other', 'HolidayGoGoGo', 'Penang International Airport', 'https://www.holidaygogogo.com/penang-international-airport/', R, undefined, { note: NOTES.olderGuide }),
+  source('travelswithsun-penang-airport-georgetown', 'other', 'Travels With Sun', 'Penang airport to George Town', 'https://www.travelswithsun.com/penang-airport-to-georgetown/', R, undefined, { note: NOTES.olderGuide }),
   source('wikipedia-penang-bus-routes', 'other', 'Wikipedia', 'List of bus routes in Penang', 'https://en.wikipedia.org/wiki/List_of_bus_routes_in_Penang', R, '2025'),
   source('secretflying-penang-airports', 'other', 'Secret Flying', 'Penang airport guide', 'https://www.secretflying.com/guides/penang/airports/', R, '2026'),
   source('themalaysianguide-penang-transfer', 'other', 'The Malaysian Guide', 'Penang airport transfer', 'https://www.themalaysianguide.com/practical/penang-airport-transfer/', R, '2026'),
   source('onpenang-grab', 'other', 'OnPenang', 'Grab in Penang', 'https://onpenang.com/grab-in-penang/', R),
-  source('mahb-penang-rental-services', 'official', MAHB, 'Penang: rental services (as summarised in search results)', 'https://airports.malaysiaairports.com.my/en/penang/air-travel/rental-services', R),
-  source('mahb-x-penang-premium-parking', 'official', 'Malaysia Airports (post on X)', 'Premium Parking at Penang International Airport: location and rates', 'https://x.com/MY_Airports/status/1976208999856079058', R, '2025-10-09'),
-  source('threads-penangfoodie-premium-parking', 'other', 'Penang Foodie (Threads)', 'Repost of the Malaysia Airports Premium Parking announcement', 'https://www.threads.com/@penangfoodie/post/DP5y3q-k0OU/penang-international-airport-now-offers-premium-parking-the-premium-parking-is-l', R, '2025-10'),
+  source('mahb-penang-rental-services', 'official', MAHB, 'Penang: rental services', 'https://airports.malaysiaairports.com.my/en/penang/air-travel/rental-services', R, undefined, { note: NOTES.searchSummary }),
+  source('mahb-x-penang-premium-parking', 'official', 'Malaysia Airports', 'Premium Parking at Penang International Airport: location and rates', 'https://x.com/MY_Airports/status/1976208999856079058', R, '2025-10-09', { note: NOTES.postOnX }),
+  source('threads-penangfoodie-premium-parking', 'other', 'Penang Foodie', 'Repost of the Malaysia Airports Premium Parking announcement', 'https://www.threads.com/@penangfoodie/post/DP5y3q-k0OU/penang-international-airport-now-offers-premium-parking-the-premium-parking-is-l', R, '2025-10', { note: NOTES.postOnThreads }),
   source('klia2info-penang-airport', 'aggregator', 'klia2.info', 'Penang International Airport', 'https://www.klia2.info/airports/penang-international-airport/', R, '2025-10-01'),
   source('parkinginmalaysia-penang', 'aggregator', 'Parking in Malaysia', 'Penang International Airport parking info', 'https://parkinginmalaysia.com/penang-international-airport-parking-info/', R),
   source('parkingcommy-penang', 'aggregator', 'parking.com.my', 'Penang International Airport', 'https://parking.com.my/item/penang-international-airport/', R),
-  source('penangsentral-penang-parking', 'aggregator', 'penangsentral.com', 'Penang airport parking (older tariff)', 'https://penangsentral.com/penang_airport/parking.htm', R),
+  source('penangsentral-penang-parking', 'aggregator', 'penangsentral.com', 'Penang airport parking', 'https://penangsentral.com/penang_airport/parking.htm', R, undefined, { note: NOTES.olderTariff }),
   source('businesstoday-penang-expansion-mar-2026', 'news', 'BusinessToday', 'Penang airport expansion phase nears completion', 'https://www.businesstoday.com.my/2026/03/11/penang-airport-expansion-phase-nears-completion/', R, '2026-03-11'),
   source('bernama-penang-expansion-2025', 'news', 'Bernama', 'Penang airport expansion: capacity, cost and June 2028 target', 'https://bernama.com/en/news.php?id=2446593', R, '2025-07'),
   source('bernama-penang-traffic-2026', 'news', 'Bernama', 'Penang airport passenger traffic and expansion progress', 'https://www.bernama.com/en/region/news.php?id=2533015', R, '2026-03'),

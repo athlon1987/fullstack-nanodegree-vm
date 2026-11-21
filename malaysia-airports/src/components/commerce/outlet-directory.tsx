@@ -4,6 +4,7 @@ import { Suspense, useMemo, useState, type ReactNode } from 'react';
 import { useSearchParams } from 'next/navigation';
 import type { Source, TerminalId } from '@/content/types';
 import { cn } from '@/lib/cn';
+import { formatList } from '@/lib/format';
 import { useNow } from '@/lib/hooks';
 import { useLang, useT } from '@/lib/i18n/client';
 import { EmptyState } from '@/components/common/empty-state';
@@ -11,6 +12,7 @@ import { LocaleLink } from '@/components/common/locale-link';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { Button } from '@/components/ui/button';
 import { FilterChip } from '@/components/ui/filter-chip';
+import { Icon } from '@/components/ui/icon';
 import { NativeSelect } from '@/components/ui/native-select';
 import { SearchField } from '@/components/ui/search-field';
 import { Switch } from '@/components/ui/switch';
@@ -20,6 +22,7 @@ import {
   PROXIMITY_KINDS,
   activeFilterCount,
   effectiveSort,
+  filterAvailability,
   filterOutlets,
   gateAreasFor,
   gateContextFor,
@@ -27,12 +30,15 @@ import {
   hasMachineHours,
   parseOutletFilters,
   sortOutlets,
+  withoutUnavailable,
   writeOutletFilters,
+  type FilterAvailability,
   type OutletFilters,
   type OutletKind,
   type OutletSort,
   type OutletView,
   type PriceBand,
+  type UnavailableFilter,
 } from './commerce-view';
 import { GatePanel } from './gate-panel';
 import { KIND_ICONS, OutletCard } from './outlet-card';
@@ -56,7 +62,7 @@ export interface OutletDirectoryProps {
  */
 export function OutletDirectory(props: OutletDirectoryProps) {
   return (
-    <Suspense fallback={<Directory {...props} filters={EMPTY_OUTLET_FILTERS} live={false} />}>
+    <Suspense fallback={<Directory {...props} filters={EMPTY_OUTLET_FILTERS} dropped={[]} live={false} />}>
       <DirectoryFromUrl {...props} />
     </Suspense>
   );
@@ -74,8 +80,9 @@ function DirectoryFromUrl(props: OutletDirectoryProps) {
     }),
     [items, terminals, airport],
   );
-  const filters = useMemo(() => parseOutletFilters(params, options), [params, options]);
-  return <Directory {...props} filters={filters} live />;
+  // Filters the data cannot serve are dropped and named, so a link never lands on "0 of 8" (C-05).
+  const { filters, dropped } = useMemo(() => withoutUnavailable(parseOutletFilters(params, options), filterAvailability(items)), [params, options, items]);
+  return <Directory {...props} filters={filters} dropped={dropped} live />;
 }
 
 function write(filters: OutletFilters) {
@@ -93,9 +100,12 @@ function Directory({
   loungesHref,
   notice,
   filters,
+  dropped,
   live,
 }: OutletDirectoryProps & {
   filters: OutletFilters;
+  /** Filters asked for in the link that the data cannot serve (C-05). */
+  dropped: readonly UnavailableFilter[];
   /**
    * False in the Suspense fallback: that HTML is replaced, never hydrated, so its phone filter
    * toggle cannot work. It is shown disabled until the live directory takes over.
@@ -118,7 +128,11 @@ function Directory({
   const shown = sortOutlets(filterOutlets(items, current, now), sort, { query, gate, lang });
   const active = activeFilterCount(filters);
   const withHours = items.filter((item) => hasMachineHours(item.hours)).length;
-  const hasPrices = items.some((item) => item.priceBand !== undefined);
+  const available: FilterAvailability = useMemo(() => filterAvailability(items), [items]);
+  const hasPrices = available.price;
+  const zones = (['landside', 'airside'] as const).filter((zone) => available[zone]);
+  const unavailable = (['openNow', 'halal', 'landside', 'airside'] as const).filter((key) => !available[key]);
+  const unavailableText = (keys: readonly UnavailableFilter[]) => formatList(keys.map((key) => t(`commercePages.filters.unavailableNames.${key}`)), lang);
   const cuisines = [...new Set(items.flatMap((item) => (item.cuisine ? [item.cuisine] : [])))].sort((a, b) => a.localeCompare(b, lang));
   const categories = useMemo(() => {
     const seen = new Map<string, { label: string; kind: OutletKind }>();
@@ -293,8 +307,9 @@ function Directory({
                 </FilterGroup>
               ) : null}
 
+              {zones.length > 0 ? (
               <FilterGroup id="outlet-security" label={t('commercePages.filters.security')}>
-                {(['landside', 'airside'] as const).map((zone) => (
+                {zones.map((zone) => (
                   <FilterChip
                     key={zone}
                     icon={zone === 'airside' ? 'scan-line' : 'door-open'}
@@ -307,21 +322,36 @@ function Directory({
                   </FilterChip>
                 ))}
               </FilterGroup>
+              ) : null}
 
-              <div className="flex flex-col gap-4 py-4">
-                <Switch
-                  label={t('commercePages.filters.halal')}
-                  hint={t('commercePages.filters.halalHint')}
-                  checked={filters.halal}
-                  onCheckedChange={(checked) => update({ halal: checked })}
-                />
-                <Switch
-                  label={t('commercePages.filters.openNow')}
-                  hint={t('commercePages.filters.openNowHint', { count: withHours, total: items.length })}
-                  checked={filters.openNow}
-                  onCheckedChange={(checked) => update({ openNow: checked })}
-                />
-              </div>
+              {available.halal || available.openNow ? (
+                <div className="flex flex-col gap-4 py-4">
+                  {available.halal ? (
+                    <Switch
+                      label={t('commercePages.filters.halal')}
+                      hint={t('commercePages.filters.halalHint')}
+                      checked={filters.halal}
+                      onCheckedChange={(checked) => update({ halal: checked })}
+                    />
+                  ) : null}
+                  {available.openNow ? (
+                    <Switch
+                      label={t('commercePages.filters.openNow')}
+                      hint={t('commercePages.filters.openNowHint', { count: withHours, total: items.length })}
+                      checked={filters.openNow}
+                      onCheckedChange={(checked) => update({ openNow: checked })}
+                    />
+                  ) : null}
+                </div>
+              ) : null}
+
+              {unavailable.length > 0 ? (
+                // Filters the data cannot serve are not offered; say which and why (C-05).
+                <div data-unavailable-filters="" className="py-4">
+                  <p className="type-body-sm font-semibold text-ink">{t('commercePages.filters.unavailableTitle')}</p>
+                  <p className="type-body-sm mt-1 text-ink-2">{t('commercePages.filters.unavailableBody', { list: unavailableText(unavailable) })}</p>
+                </div>
+              ) : null}
 
               {hasPrices ? (
                 <FilterGroup id="outlet-price" label={t('commercePages.filters.price')}>
@@ -348,6 +378,12 @@ function Directory({
 
         <div className="min-w-0">
           {notice}
+          {dropped.length > 0 ? (
+            <p data-dropped-filters="" className="type-body-sm mb-3 flex gap-2 rounded-lg border border-line-strong bg-page-subtle p-3 text-ink">
+              <Icon name="info" size="sm" className="mt-0.5 shrink-0 text-ink-2" />
+              <span>{t('commercePages.filters.dropped', { list: unavailableText(dropped) })}</span>
+            </p>
+          ) : null}
           <p className="type-data-sm mb-4 text-ink-2" aria-live="polite" aria-atomic="true">
             {resultLine}
           </p>

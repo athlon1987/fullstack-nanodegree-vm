@@ -136,7 +136,8 @@ export function FlightStatusHero({ flight, updatedAt, refreshSeconds, publishedC
           </div>
 
           <dl className="grid min-w-0 grid-cols-2 content-start gap-x-6 gap-y-5 @3xl:border-l @3xl:border-line @3xl:pl-10">
-            <Fact label={t('common.labels.terminal')} wide>
+            {/* On an arrival the terminal heads the column with no gate or counters below it, so it carries the label. */}
+            <Fact label={t('common.labels.terminal')} wide demo={flight.isDemo && !departure}>
               <span className="inline-flex flex-wrap items-center gap-2">
                 <TerminalBadge terminal={flight.terminal} size="sm" />
                 <span className="type-body font-semibold">{airport ? terminalLabel(airport, flight.terminal, lang) : flight.terminal}</span>
@@ -185,7 +186,7 @@ export function FlightStatusHero({ flight, updatedAt, refreshSeconds, publishedC
                 ) : null}
               </>
             ) : (
-              <Fact label={t('common.labels.belt')} wide demo={Boolean(flight.belt)}>
+              <Fact label={t('common.labels.belt')} wide demo={flight.isDemo}>
                 {flight.belt ? <span className="type-data-xl text-board-accent">{flight.belt}</span> : notAssigned(t('flights.board.beltNotAssigned'))}
               </Fact>
             )}

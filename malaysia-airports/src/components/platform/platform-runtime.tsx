@@ -6,6 +6,7 @@ import { cn } from '@/lib/cn';
 import { LocaleLink } from '@/components/common/locale-link';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
+import { startAnalytics } from './analytics';
 import { listenForInstall } from './install-client';
 import {
   applyUpdate,
@@ -26,11 +27,14 @@ import {
  *    page came from the saved copy because the network failed; "Back online" briefly after;
  *  - "A new version is ready" with Reload and Later, when an update has been installed.
  * Neither takes focus or blocks the page. The live region always exists, so changes are announced.
+ * It also starts the first-party aggregate measurement (`analytics.ts`), which respects Global
+ * Privacy Control, Do Not Track and the visitor's measurement switch.
  */
 export function PlatformRuntime() {
   useEffect(() => {
     startServiceWorker();
     listenForInstall();
+    startAnalytics();
   }, []);
   return (
     <div

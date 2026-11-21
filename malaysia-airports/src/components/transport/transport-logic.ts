@@ -156,6 +156,15 @@ export function isDoorToDoor(option: TransportOption): boolean {
 }
 
 /**
+ * True for an option that takes you to any address (a taxi, e-hailing, your own or a hired car),
+ * whether or not its content lists example places. A coupon taxi whose only listed fare is for
+ * the city zone still goes to KL Sentral (C-02): it is offered for every place, without a fare.
+ */
+export function servesAnyPlace(option: TransportOption): boolean {
+  return DOOR_TO_DOOR_MODES.includes(option.mode);
+}
+
+/**
  * Door-to-door options list no places, so `compareTransport` would treat them as "not listed" for
  * every destination. For ranking only, give them an entry for the chosen place with no fare and no
  * time: they then sort with everything else, after the options that have the number. The UI
@@ -163,7 +172,15 @@ export function isDoorToDoor(option: TransportOption): boolean {
  */
 export function withDoorToDoorEntries(options: readonly TransportOption[], place: string | undefined): TransportOption[] {
   if (!place) return [...options];
-  return options.map((option) => (isDoorToDoor(option) ? { ...option, destinations: [{ name: { en: place } }] } : option));
+  const key = keyOf({ en: place });
+  return options.map((option) => {
+    if (isDoorToDoor(option)) return { ...option, destinations: [{ name: { en: place } }] };
+    // A door-to-door mode that lists other places: add the chosen one, without a fare or a time.
+    if (servesAnyPlace(option) && !option.destinations.some((destination) => keyOf(destination.name) === key)) {
+      return { ...option, destinations: [...option.destinations, { name: { en: place } }] };
+    }
+    return option;
+  });
 }
 
 /** Show an `asOf` value: date keys become dates in words, anything else is shown as written. */
@@ -195,9 +212,10 @@ export interface FareInfo {
  * option's first place is used. `day` is the airport-local date key, or null before the clock is read.
  */
 export function fareInfo(option: TransportOption, placeKey: string | undefined, day: string | null): FareInfo {
-  const doorToDoor = isDoorToDoor(option);
   const places = farePeriods(option);
   const place = placeKey ? places.find((item) => item.key === placeKey) : places[0];
+  // A taxi or e-hailing option still serves a place it does not list, without a fare for it.
+  const doorToDoor = isDoorToDoor(option) || (servesAnyPlace(option) && placeKey !== undefined && !place);
   if (!place) return { dated: false, doorToDoor };
   const dated = place.periods.some((period) => period.from || period.until);
   if (!dated || day === null) return { place, shown: place.periods[0].destination, dated, doorToDoor };

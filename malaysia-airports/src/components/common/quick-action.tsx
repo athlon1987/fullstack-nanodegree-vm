@@ -42,13 +42,18 @@ export function QuickAction({ icon, title, hint, href, emphasis = false, emphasi
     >
       <span className={cn('flex items-center justify-between gap-3', layout === 'row' && 'shrink-0')}>
         <Icon name={icon} size="lg" className={emphasis ? 'text-page' : 'text-primary-ink'} />
+        {/* Shown here, but announced after the title, so the link's name starts with what it
+            leads to ("Flights, … Start here"), not with the badge. */}
         {emphasis && emphasisLabel && layout === 'tile' ? (
-          <span className="type-data-xs rounded-xs border border-current px-1.5 py-0.5 font-semibold">{emphasisLabel}</span>
+          <span aria-hidden="true" data-emphasis-label="" className="type-caption rounded-xs border border-current px-1.5 py-0.5 font-semibold">
+            {emphasisLabel}
+          </span>
         ) : null}
       </span>
       <span className="min-w-0 flex-1">
         <span className="type-title-sm block sm:text-lg">{title}</span>
         {hint ? <span className={cn('type-body-sm mt-0.5 block', emphasis ? 'opacity-85' : 'text-ink-2')}>{hint}</span> : null}
+        {emphasis && emphasisLabel && layout === 'tile' ? <span className="sr-only">, {emphasisLabel}</span> : null}
         {children}
       </span>
       <Icon

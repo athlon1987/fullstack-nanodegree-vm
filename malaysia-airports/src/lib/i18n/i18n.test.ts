@@ -2,7 +2,9 @@ import { describe, expect, it } from 'vitest';
 import { FLIGHT_STATUS_META } from '@/lib/flights/status';
 import { en } from './en';
 import { ms } from './ms';
-import { getDictionary, getT, interpolate, langParams, plural, toLang, type TKey } from './index';
+import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { join, relative } from 'node:path';
+import { SCOPED_NAMESPACES, clientDictionary, getDictionary, getT, interpolate, langParams, numberFormat, pickDictionary, plural, toLang, type TKey } from './index';
 
 function leaves(node: unknown, prefix = ''): Map<string, string> {
   const out = new Map<string, string>();
@@ -84,5 +86,50 @@ describe('translator', () => {
     expect(toLang('ms')).toBe('ms');
     expect(toLang('de')).toBe('en');
     expect(langParams()).toEqual([{ lang: 'en' }, { lang: 'ms' }]);
+  });
+});
+
+describe('client dictionary (performance-09)', () => {
+  it('leaves corporate and design-system copy out of the root provider', () => {
+    for (const lang of ['en', 'ms'] as const) {
+      const dictionary = clientDictionary(lang);
+      for (const name of SCOPED_NAMESPACES) expect(dictionary).not.toHaveProperty(name);
+      expect(dictionary).toHaveProperty('common');
+      expect(clientDictionary(lang)).toBe(dictionary);
+      expect(JSON.stringify(dictionary).length).toBeLessThan(JSON.stringify(getDictionary(lang)).length - 30_000);
+    }
+  });
+
+  it('picks only the requested sub-trees', () => {
+    const picked = pickDictionary('ms', ['corporatePages.privacy', 'nope.nothing']);
+    expect(Object.keys(picked)).toEqual(['corporatePages']);
+    expect(picked.corporatePages).toEqual({ privacy: getDictionary('ms').corporatePages.privacy });
+  });
+
+  it('only the scoped places read scoped namespaces in Client Components', () => {
+    const root = join(__dirname, '..', '..');
+    const allowed = [/^components\/corporate\/device-data\.tsx$/, /^components\/design-system\//];
+    const offenders: string[] = [];
+    const walk = (dir: string) => {
+      for (const name of readdirSync(dir)) {
+        const path = join(dir, name);
+        if (statSync(path).isDirectory()) walk(path);
+        else if (/\.tsx?$/.test(name) && !/\.test\./.test(name)) {
+          const source = readFileSync(path, 'utf8');
+          const client = /^['"]use client['"]/m.test(source) || source.includes('useT()');
+          const file = relative(root, path).split('\\').join('/');
+          if (file.startsWith('lib/i18n/')) continue;
+          if (client && SCOPED_NAMESPACES.some((name) => new RegExp(`['\`"]${name}\\.`).test(source)) && !allowed.some((rule) => rule.test(file))) offenders.push(file);
+        }
+      }
+    };
+    walk(root);
+    expect(offenders).toEqual([]);
+  });
+
+  it('makes one number formatter per language (performance-16)', () => {
+    expect(numberFormat('en')).toBe(numberFormat('en'));
+    expect(numberFormat('ms')).not.toBe(numberFormat('en'));
+    expect(getT('en').count('search.resultsCount', 1234)).toContain('1,234');
   });
 });

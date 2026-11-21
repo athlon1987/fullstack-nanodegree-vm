@@ -146,7 +146,7 @@ function routes(code: string, list: RouteTuple[], terminal?: TerminalId, checkIn
     }),
   };
   if (terminal) template.terminal = terminal;
-  if (checkIn) template.checkIn = checkIn;
+  if (checkIn) template.checkIn = { en: checkIn };
   return template;
 }
 

@@ -162,10 +162,23 @@ describe('vocabulary and ranking (A-12)', () => {
     }
   });
 
-  it('answers "fast track" with the Fast Track record once the content layer publishes it', () => {
-    const record = english.find((document) => /fast track/i.test(document.title));
-    if (!record) return; // Package D adds the record (D-02); until then there is nothing to find.
-    expect(first(index, 'fast track')).toBe(record.id);
-    expect(first(malayIndex, 'laluan pantas')).toBe(record.id);
+  it('answers "fast track" with the Fast Track record, or an honest "not published" until it exists', () => {
+    // Package D adds the record (D-02). Until then the gap answers instead of 0 results, and it
+    // steps aside by itself once a real record is indexed.
+    const record = english.find((document) => /fast track/i.test(document.title) && document.type !== 'unpublished');
+    const expected = record ? record.id : 'unpublished:fastTrack';
+    expect(first(index, 'fast track')).toBe(expected);
+    expect(first(malayIndex, 'laluan pantas')).toBe(expected);
+    expect(first(malayIndex, 'fast track')).toBe(expected);
+    if (record) expect(english.some((document) => document.id === 'unpublished:fastTrack')).toBe(false);
+  });
+
+  it('never leads with a "not published" gap reached only through a synonym', () => {
+    // "wheelchair" and "buggy" expand to "accessible", which the accessible-parking gap carries.
+    for (const searchIndex of [index, malayIndex]) {
+      expect(first(searchIndex, 'wheelchair')).toBe('guide:reduced-mobility');
+      expect(first(searchIndex, 'buggy')).toBe('guide:reduced-mobility');
+      expect(first(searchIndex, 'kerusi roda')).not.toMatch(/^unpublished:/);
+    }
   });
 });

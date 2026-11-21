@@ -91,23 +91,152 @@ export const ProvenanceSchema = z.enum(PROVENANCES);
  */
 export type Provenance = z.infer<typeof ProvenanceSchema>;
 
+/**
+ * When a record or source was true, in a form code can compare (D-12): a full date
+ * (`2026-10-07`), a month (`2026-08`) or a year (`2025`). Qualifiers ("Annual Report 2023",
+ * "launch coverage") go in the localised `asOfNote`; a source that states no date says so with
+ * `undated: true` instead of free text, so nothing English leaks onto Malay pages (D-03).
+ */
+export const AsOfSchema = z.union([
+  IsoDateSchema,
+  z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/, 'Expected YYYY-MM'),
+  z.string().regex(/^\d{4}$/, 'Expected YYYY'),
+]);
+
 export const SOURCE_KINDS = ['official', 'government', 'operator', 'news', 'aggregator', 'other'] as const;
 export const SourceSchema = z.strictObject({
   id: IdSchema,
+  /** The source's own title, as published (usually English). Annotations go in `note`, never here. */
   title: z.string().min(1),
+  /** Who published it, as they name themselves. Our own descriptions go in `note`. */
   publisher: z.string().min(1),
+  /** Title in both languages, only for pages this prototype wrote itself (they are ours to translate). */
+  localTitle: LocalizedTextSchema.optional(),
+  /** Publisher in both languages, when the name is our own description (this prototype, an unnamed copy). */
+  localPublisher: LocalizedTextSchema.optional(),
+  /** Our annotation about the source: "As summarised in search results", "Third-party guide". */
+  note: LocalizedTextSchema.optional(),
   /** Absolute `https:` URL, or an internal path (`/about-this-prototype`) for the prototype's own method notes. */
   url: z.union([z.url(), z.string().regex(/^\/[a-z0-9\-/]*$/, 'Expected an absolute URL or an internal path')]),
   /** Date we retrieved or last checked the source. */
   retrieved: IsoDateSchema,
-  /** Date the source itself states, when it has one. */
-  asOf: z.string().min(1).optional(),
+  /** Date the source itself states. Every source has either `asOf` or `undated: true`. */
+  asOf: AsOfSchema.optional(),
+  /** The source states no date (or we did not record one). Exclusive with `asOf`. */
+  undated: z.literal(true).optional(),
+  /** Localised qualifier for the date, for example "Annual Report 2023". */
+  asOfNote: LocalizedTextSchema.optional(),
   /** Who is speaking: `official` is Malaysia Airports itself, `operator` an airline or service operator. */
   kind: z.enum(SOURCE_KINDS),
 });
 /** A citable source. Content refers to sources by `id`. */
 export type Source = z.infer<typeof SourceSchema>;
 export type SourceKind = Source['kind'];
+
+/* -------------------------------------------------------------------------------------------
+ * Source policy (D-01, D-06)
+ *
+ *  - `official` (the tag) needs at least one authoritative source: kind `official` (Malaysia
+ *    Airports on its own domains), `government` or `operator` (the airline or service operator
+ *    speaking about its own service). News, aggregators, blogs, relays and advertorials never
+ *    back it, and neither does this prototype's own method note.
+ *  - A social post (X, Threads, TikTok, Facebook, Instagram) never backs an `official` tag,
+ *    even when the airport posted it: cite the page it points to instead.
+ *  - A release republished by a third party (Routes, an advertorial) is filed under the third
+ *    party's kind (`news`, `other`), not `official`, until the first-party URL is found.
+ *  - `estimated` covers our calculations and facts that rest only on non-authoritative sources;
+ *    `suggestion` covers our own advice and statements about this prototype.
+ * `validateContent` enforces every rule above, so `content.test.ts` fails on a breach.
+ * ---------------------------------------------------------------------------------------- */
+
+/** Source kinds that can back an `official` tag. */
+export const AUTHORITATIVE_SOURCE_KINDS: readonly SourceKind[] = ['official', 'government', 'operator'];
+
+/** Social networks: posts there never back an `official` tag. */
+export const SOCIAL_HOSTS: readonly string[] = ['x.com', 'twitter.com', 'threads.com', 'threads.net', 'tiktok.com', 'facebook.com', 'instagram.com'];
+
+/** Third-party hosts that relay or advertise other organisations' statements. Never `official`, `government` or `operator`. */
+export const RELAY_HOSTS: readonly string[] = ['routesonline.com', 'theedgemalaysia.com', 'marketscreener.com'];
+
+/** Host name of a source URL, without `www.`; empty for internal paths. */
+export function sourceHost(source: Pick<Source, 'url'>): string {
+  if (source.url.startsWith('/')) return '';
+  try {
+    return new URL(source.url).hostname.replace(/^www\./, '');
+  } catch {
+    return '';
+  }
+}
+
+function onHost(host: string, list: readonly string[]): boolean {
+  return list.some((entry) => host === entry || host.endsWith(`.${entry}`));
+}
+
+/** True for a post on a social network. */
+export function isSocialSource(source: Pick<Source, 'url'>): boolean {
+  return onHost(sourceHost(source), SOCIAL_HOSTS);
+}
+
+/**
+ * True when a source can back an `official` tag: an authoritative kind, a public URL (not this
+ * prototype's own pages) and not a social post.
+ */
+export function isAuthoritativeSource(source: Pick<Source, 'kind' | 'url'>): boolean {
+  return AUTHORITATIVE_SOURCE_KINDS.includes(source.kind) && sourceHost(source) !== '' && !isSocialSource(source);
+}
+
+/** Source title in the reader's language: our own pages are translated, everyone else's stay as published. */
+export function sourceTitle(source: Source, lang: Lang): string {
+  return source.localTitle ? pick(source.localTitle, lang) : source.title;
+}
+
+/** Publisher in the reader's language (translated only for this prototype's own pages). */
+export function sourcePublisher(source: Source, lang: Lang): string {
+  return source.localPublisher ? pick(source.localPublisher, lang) : source.publisher;
+}
+
+/** True when the title is shown as published in English on a page in another language (mark it `lang="en"`). */
+export function sourceTitleIsForeign(source: Source, lang: Lang): boolean {
+  return lang !== 'en' && !(source.localTitle && hasTranslation(source.localTitle, lang));
+}
+
+/** True when the publisher name is shown in English on a page in another language. */
+export function sourcePublisherIsForeign(source: Source, lang: Lang): boolean {
+  return lang !== 'en' && !(source.localPublisher && hasTranslation(source.localPublisher, lang));
+}
+
+const MONTH_FORMAT: Record<Lang, Intl.DateTimeFormat> = {
+  en: new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' }),
+  ms: new Intl.DateTimeFormat('ms-MY', { month: 'long', year: 'numeric', timeZone: 'UTC' }),
+};
+const DAY_FORMAT: Record<Lang, Intl.DateTimeFormat> = {
+  en: new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }),
+  ms: new Intl.DateTimeFormat('ms-MY', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }),
+};
+
+/**
+ * An `asOf` value in words, without reading the clock: `16 Nov 2026`, `November 2026`, `2025`.
+ * Anything that is not a valid `AsOfSchema` value is returned unchanged.
+ */
+export function formatAsOf(value: string, lang: Lang): string {
+  const day = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (day) return DAY_FORMAT[lang].format(new Date(Date.UTC(Number(day[1]), Number(day[2]) - 1, Number(day[3]))));
+  const month = /^(\d{4})-(\d{2})$/.exec(value);
+  if (month) return MONTH_FORMAT[lang].format(new Date(Date.UTC(Number(month[1]), Number(month[2]) - 1, 1)));
+  return value;
+}
+
+/** Earliest day an `asOf` value can mean (`2026-08` is `2026-08-01`), for staleness checks. */
+export function asOfStartDate(value: string | undefined): string | undefined {
+  if (!value) return undefined;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
+  if (/^\d{4}-\d{2}$/.test(value)) return `${value}-01`;
+  if (/^\d{4}$/.test(value)) return `${value}-01-01`;
+  return undefined;
+}
+
+/** Shown in place of an as-of date when a source states none. */
+export const UNDATED_LABEL: LocalizedText = { en: 'Undated', ms: 'Tiada tarikh' };
 
 export const HoursSchema = z.discriminatedUnion('kind', [
   z.strictObject({ kind: z.literal('24h'), note: LocalizedTextSchema.optional() }),
@@ -142,7 +271,8 @@ export const ContactSchema = z.strictObject({
   /** Link target (`tel:`, `mailto:` or `https:`), when one is appropriate. */
   href: z.string().min(1).optional(),
   note: LocalizedTextSchema.optional(),
-  asOf: z.string().optional(),
+  asOf: AsOfSchema.optional(),
+  asOfNote: LocalizedTextSchema.optional(),
   sources: SourceIdsSchema,
 });
 /** An official contact channel. */
@@ -221,6 +351,15 @@ export const AirportSchema = z.strictObject({
   shortName: z.string().min(1),
   city: z.string().min(1),
   state: z.string().min(1),
+  /**
+   * Name, short name, city and state in both languages (D-09). `name`, `shortName`, `city` and
+   * `state` stay English for code that compares them; show these through `localizeAirport`.
+   * The Malay forms are drafts pending a native editor's check of the official names (OOS-14).
+   */
+  localName: LocalizedTextSchema.optional(),
+  localShortName: LocalizedTextSchema.optional(),
+  localCity: LocalizedTextSchema.optional(),
+  localState: LocalizedTextSchema.optional(),
   region: AirportRegionSchema,
   classification: AirportClassificationSchema,
   depth: AirportDepthSchema,
@@ -235,7 +374,8 @@ export const AirportSchema = z.strictObject({
   /** Which fields are not search-confirmed, for example `['icao']`. Empty when verified. */
   unverifiedFields: z.array(z.enum(['code', 'icao', 'name', 'location', 'network-membership'])),
   verificationNote: z.string().optional(),
-  asOf: z.string().optional(),
+  asOf: AsOfSchema.optional(),
+  asOfNote: LocalizedTextSchema.optional(),
   sources: SourceIdsSchema,
 });
 /** One of the 39 airports operated by Malaysia Airports in Malaysia. */
@@ -344,7 +484,8 @@ export const FacilitySchema = z.strictObject({
   /** Id of a `MapPoi` on one of the airport's maps. */
   mapPoint: z.string().optional(),
   provenance: ProvenanceSchema,
-  asOf: z.string().optional(),
+  asOf: AsOfSchema.optional(),
+  asOfNote: LocalizedTextSchema.optional(),
   sources: SourceIdsSchema,
 });
 /** A facility or service inside a terminal. Lounges and hotels are facilities too. */
@@ -376,7 +517,8 @@ export const OutletSchema = z.strictObject({
   halal: z.enum(['certified', 'pork-free', 'non-halal']).optional(),
   description: LocalizedTextSchema.optional(),
   mapPoint: z.string().optional(),
-  asOf: z.string().optional(),
+  asOf: AsOfSchema.optional(),
+  asOfNote: LocalizedTextSchema.optional(),
   sources: SourceIdsSchema,
 });
 /** A shop, restaurant or commercial service. Only outlets confirmed by an official source. */
@@ -441,8 +583,8 @@ export const TransportOptionSchema = z.strictObject({
       note: LocalizedTextSchema,
     }),
   ),
-  /** Accepted payment methods as published, for example `['Card', 'Touch n Go']`. */
-  payment: z.array(z.string().min(1)).optional(),
+  /** Accepted payment methods as published, in both languages (D-03): `[lt('Card', 'Kad'), lt('Touch n Go')]`. */
+  payment: z.array(LocalizedTextSchema).optional(),
   accessibility: z
     .strictObject({
       /** True or false only when a source says so. */
@@ -452,7 +594,8 @@ export const TransportOptionSchema = z.strictObject({
     .optional(),
   bookingUrl: z.url().optional(),
   provenance: ProvenanceSchema,
-  asOf: z.string().optional(),
+  asOf: AsOfSchema.optional(),
+  asOfNote: LocalizedTextSchema.optional(),
   sources: SourceIdsSchema,
 });
 /** A way to get to, from or around the airport. Compare options with `compareTransport`. */
@@ -506,6 +649,12 @@ export const CarParkSchema = z.strictObject({
   rateStatus: z.enum(['published', 'not-verified']),
   /** Maximum charge per 24-hour period in MYR. */
   dailyMax: z.number().positive().optional(),
+  /**
+   * Daily maximums quoted by individual sources when `rateStatus` is `not-verified` and no
+   * `dailyMax` can be confirmed (fix round, C-01). Each names one of `sources`; the parking
+   * page shows them as a dated range with the source, never as the fee.
+   */
+  reportedDailyMax: z.array(z.strictObject({ amount: z.number().positive(), source: z.string().min(1) })).optional(),
   /** Free period at the start of a stay, in minutes. */
   graceMinutes: z.number().int().nonnegative().optional(),
   payment: z.array(z.string().min(1)).optional(),
@@ -514,7 +663,8 @@ export const CarParkSchema = z.strictObject({
   evCharging: z.boolean().optional(),
   bookingUrl: z.url().optional(),
   provenance: ProvenanceSchema,
-  asOf: z.string().optional(),
+  asOf: AsOfSchema.optional(),
+  asOfNote: LocalizedTextSchema.optional(),
   sources: SourceIdsSchema,
 });
 /** A car park at an airport. */
@@ -537,14 +687,15 @@ export const AirlineAtAirportSchema = z.strictObject({
   code: z.string().regex(/^[A-Z0-9]{2}$/),
   name: z.string().min(1),
   terminal: TerminalIdSchema.optional(),
-  /** Check-in location in words, as far as a source supports it. */
-  checkIn: z.string().optional(),
+  /** Check-in location in words, as far as a source supports it, in both languages (D-03). */
+  checkIn: LocalizedTextSchema.optional(),
   /** Destinations we can source from this airport. Empty when none are verified. */
   destinations: z.array(AirlineDestinationSchema),
   /** Who says this airline is here: the airline, the airport, or third-party terminal guides. */
   basis: z.enum(['airline', 'airport', 'third-party']),
   note: LocalizedTextSchema.optional(),
-  asOf: z.string().optional(),
+  asOf: AsOfSchema.optional(),
+  asOfNote: LocalizedTextSchema.optional(),
   sources: SourceIdsSchema,
 });
 /**
@@ -607,7 +758,8 @@ export const GuideSchema = z.strictObject({
   sections: z.array(GuideSectionSchema).min(1),
   /** Airport slugs the guide is specific to. Omit for network-wide guides. */
   airports: z.array(z.string().regex(/^[a-z]{3}$/)).optional(),
-  asOf: z.string().optional(),
+  asOf: AsOfSchema.optional(),
+  asOfNote: LocalizedTextSchema.optional(),
   sources: SourceIdsSchema,
 });
 /** A "Plan your journey" guide. */
@@ -629,9 +781,33 @@ export const GUIDE_NOTE_TOPICS = [
   'meeting',
   'transit',
   'assistance',
+  /** Parking advice: shown on the parking page only, never in a journey step (D-05). */
+  'parking',
+  /** What the prototype has not verified for an airport: one place per airport, never a journey step (D-05). */
+  'coverage',
 ] as const;
+/** Topics that no journey timeline or guide step reads. */
+export const NON_JOURNEY_NOTE_TOPICS = ['parking', 'coverage'] as const;
 export const GuideNoteTopicSchema = z.enum(GUIDE_NOTE_TOPICS);
 export type GuideNoteTopic = z.infer<typeof GuideNoteTopicSchema>;
+
+/**
+ * Areas a `coverage` note can say are not published. Each maps to records a test can count
+ * (`coverageConflicts`): a facility category, or one of the collection-level areas below.
+ */
+export const COVERAGE_AREAS = [
+  'outlets',
+  'outlet-hours',
+  'facilities',
+  'transport',
+  'car-parks',
+  'parking-rates',
+  'airlines',
+  'maps',
+  ...FACILITY_CATEGORIES,
+] as const;
+export const CoverageAreaSchema = z.enum(COVERAGE_AREAS);
+export type CoverageArea = z.infer<typeof CoverageAreaSchema>;
 
 export const GuideNoteSchema = z.strictObject({
   id: IdSchema,
@@ -649,10 +825,18 @@ export const GuideNoteSchema = z.strictObject({
       gatePrefixes: z.array(z.string().min(1)).optional(),
       scope: z.enum(['international', 'domestic']).optional(),
       direction: z.enum(['departing', 'arriving']).optional(),
+      /** Who the note is for, when it differs by passport: `citizen` (Malaysian) or `visitor`. */
+      traveller: z.enum(['citizen', 'visitor']).optional(),
     })
     .optional(),
+  /**
+   * For a `coverage` note: the areas it says are not published, so a test can prove that none of
+   * them has published records (D-05). `terminal` narrows the claim to one terminal.
+   */
+  gaps: z.array(z.strictObject({ area: CoverageAreaSchema, terminal: TerminalIdSchema.optional() })).optional(),
   provenance: ProvenanceSchema,
-  asOf: z.string().optional(),
+  asOf: AsOfSchema.optional(),
+  asOfNote: LocalizedTextSchema.optional(),
   sources: SourceIdsSchema,
 });
 /**
@@ -669,7 +853,10 @@ export const FaqSchema = z.strictObject({
   answer: LocalizedTextSchema,
   airports: z.array(z.string().regex(/^[a-z]{3}$/)).optional(),
   provenance: ProvenanceSchema,
-  asOf: z.string().optional(),
+  asOf: AsOfSchema.optional(),
+  asOfNote: LocalizedTextSchema.optional(),
+  /** No source states a date. Every FAQ has either `asOf` or `undated: true` (D-12). */
+  undated: z.literal(true).optional(),
   sources: SourceIdsSchema,
 });
 export type Faq = z.infer<typeof FaqSchema>;
@@ -689,7 +876,8 @@ export const NoticeSchema = z.strictObject({
   validTo: IsoDateTimeSchema.optional(),
   /** `demo` marks a simulated notice that must carry the demonstration label. */
   provenance: ProvenanceSchema,
-  asOf: z.string().optional(),
+  asOf: AsOfSchema.optional(),
+  asOfNote: LocalizedTextSchema.optional(),
   sources: SourceIdsSchema,
 });
 /** A travel advisory or operational notice. Use `noticeState` from `@/content` with a clock value. */
@@ -724,7 +912,8 @@ export const ContentBlockSchema = z.discriminatedUnion('type', [
     type: z.literal('fact'),
     label: LocalizedTextSchema,
     value: LocalizedTextSchema,
-    asOf: z.string().optional(),
+    asOf: AsOfSchema.optional(),
+  asOfNote: LocalizedTextSchema.optional(),
     sources: SourceIdsSchema,
   }),
 ]);
@@ -738,7 +927,8 @@ export const CorporatePageSchema = z.strictObject({
   title: LocalizedTextSchema,
   summary: LocalizedTextSchema,
   body: z.array(ContentBlockSchema),
-  asOf: z.string().optional(),
+  asOf: AsOfSchema.optional(),
+  asOfNote: LocalizedTextSchema.optional(),
   sources: SourceIdsSchema,
 });
 export type CorporatePage = z.infer<typeof CorporatePageSchema>;
@@ -916,7 +1106,8 @@ export const MapModelSchema = z.strictObject({
   pois: z.array(MapPoiSchema),
   nodes: z.array(MapNodeSchema),
   edges: z.array(MapEdgeSchema),
-  asOf: z.string().optional(),
+  asOf: AsOfSchema.optional(),
+  asOfNote: LocalizedTextSchema.optional(),
   sources: SourceIdsSchema,
 });
 /**
@@ -1101,6 +1292,42 @@ function mapIssues(map: MapModel, refIds: Record<'facility' | 'outlet' | 'transp
 }
 
 /**
+ * Records in `content` that contradict a coverage note's claim that an area is not published
+ * (D-05). Empty means every gap the note lists is still a gap.
+ */
+export function coverageConflicts(note: GuideNote, content: AirportContentModule): string[] {
+  const conflicts: string[] = [];
+  for (const gap of note.gaps ?? []) {
+    const inTerminal = <T extends { terminal?: string }>(items: readonly T[]) =>
+      gap.terminal ? items.filter((item) => item.terminal === gap.terminal) : [...items];
+    const found: string[] = (() => {
+      switch (gap.area) {
+        case 'outlets':
+          return inTerminal(content.outlets).map((item) => item.id);
+        case 'outlet-hours':
+          return inTerminal(content.outlets).filter((item) => item.hours).map((item) => item.id);
+        case 'facilities':
+          return inTerminal(content.facilities).map((item) => item.id);
+        case 'transport':
+          return content.transport.map((item) => item.id);
+        case 'car-parks':
+          return inTerminal(content.carParks).map((item) => item.id);
+        case 'parking-rates':
+          return inTerminal(content.carParks).filter((item) => item.rateStatus === 'published').map((item) => item.id);
+        case 'airlines':
+          return inTerminal(content.airlines).map((item) => item.code);
+        case 'maps':
+          return inTerminal(content.maps).map((item) => item.id);
+        default:
+          return inTerminal(content.facilities).filter((item) => item.category === gap.area).map((item) => item.id);
+      }
+    })();
+    if (found.length > 0) conflicts.push(`${gap.area}${gap.terminal ? ` (${gap.terminal})` : ''}: ${found.join(', ')}`);
+  }
+  return conflicts;
+}
+
+/**
  * Validate the whole content layer. Returns an empty array when everything is sound.
  *
  * Checks: every record against its schema; unique ids; every `sources` id exists; every item
@@ -1121,6 +1348,38 @@ export function validateContent(bundle: ContentBundle): ContentIssue[] {
 
   const allSources = [...bundle.sources, ...bundle.airportContent.flatMap((content) => content.sources)];
   const sourceIds = new Set(allSources.map((source) => source.id));
+  const sourceById = new Map(allSources.map((source) => [source.id, source]));
+
+  // Source policy (see AUTHORITATIVE_SOURCE_KINDS): kinds must match where the source lives,
+  // and every source either states a date or says it has none (D-01, D-06, D-12).
+  for (const source of allSources) {
+    const where = `sources[${source.id}]`;
+    const host = sourceHost(source);
+    if (AUTHORITATIVE_SOURCE_KINDS.includes(source.kind) && onHost(host, RELAY_HOSTS)) {
+      issues.push({ path: where, message: `A source on ${host} relays someone else's statement and cannot be "${source.kind}"` });
+    }
+    if (host === '' && source.kind !== 'other') {
+      issues.push({ path: where, message: "The prototype's own pages are kind \"other\"" });
+    }
+    if (Boolean(source.asOf) === Boolean(source.undated)) {
+      issues.push({ path: where, message: 'A source needs exactly one of asOf (its own date) or undated: true' });
+    }
+    if (/\((as summarised|as summarized|third-party|as given|named in search|address as given)/i.test(`${source.title} ${source.publisher}`)) {
+      issues.push({ path: where, message: 'Annotations belong in the localised note, not in the title or publisher' });
+    }
+  }
+
+  // An `official` tag needs at least one authoritative source (D-01).
+  const checkOfficial = (path: string, provenance: Provenance | undefined, ids: readonly string[] | undefined): void => {
+    if (provenance !== 'official') return;
+    const resolved = (ids ?? []).map((id) => sourceById.get(id)).filter((source): source is Source => source !== undefined);
+    if (!resolved.some(isAuthoritativeSource)) {
+      issues.push({
+        path,
+        message: `Tagged official but cites no authoritative source (Malaysia Airports, a government body or the operator, not a social post or this prototype): ${resolved.map((source) => `${source.id} (${source.kind})`).join(', ')}`,
+      });
+    }
+  };
   issues.push(...duplicateIssues(allSources.map((s) => s.id), 'sources'));
   issues.push(...duplicateIssues(bundle.airports.map((a) => a.code), 'airports'));
   issues.push(...duplicateIssues(bundle.guides.map((g) => g.slug), 'guides'));
@@ -1159,7 +1418,10 @@ export function validateContent(bundle: ContentBundle): ContentIssue[] {
     }
     for (const contact of airport.contacts) checkSources(`${at}.contacts`, contact.sources);
     for (const terminal of airport.terminals) {
-      for (const level of terminal.levels) checkSources(`${at}.terminals[${terminal.id}].levels[${level.id}]`, level.sources);
+      for (const level of terminal.levels) {
+        checkSources(`${at}.terminals[${terminal.id}].levels[${level.id}]`, level.sources);
+        checkOfficial(`${at}.terminals[${terminal.id}].levels[${level.id}]`, level.provenance, level.sources);
+      }
     }
   }
 
@@ -1197,6 +1459,7 @@ export function validateContent(bundle: ContentBundle): ContentIssue[] {
     for (const facility of content.facilities) {
       const where = `${at}.facilities[${facility.id}]`;
       checkSources(where, facility.sources);
+      checkOfficial(where, facility.provenance, facility.sources);
       checkPlace(where, facility.airport, facility.terminal);
       if (facility.airport !== content.airport) issues.push({ path: where, message: 'Facility is filed under the wrong airport' });
       if (facility.level && !levelIds(facility.terminal).has(facility.level)) {
@@ -1217,15 +1480,21 @@ export function validateContent(bundle: ContentBundle): ContentIssue[] {
     for (const option of content.transport) {
       const where = `${at}.transport[${option.id}]`;
       checkSources(where, option.sources);
+      checkOfficial(where, option.provenance, option.sources);
       checkPlace(where, option.airport);
       for (const stop of option.boarding) checkPlace(where, option.airport, stop.terminal);
     }
     for (const carPark of content.carParks) {
       const where = `${at}.carParks[${carPark.id}]`;
       checkSources(where, carPark.sources);
+      checkOfficial(where, carPark.provenance, carPark.sources);
       checkPlace(where, carPark.airport, carPark.terminal);
       if (carPark.rateStatus === 'published' && carPark.rates.length === 0) {
         issues.push({ path: where, message: 'rateStatus is "published" but there are no rate bands' });
+      }
+      for (const figure of carPark.reportedDailyMax ?? []) {
+        // C-01 hand-off: a reported figure must cite one of the car park's own sources.
+        if (!carPark.sources.includes(figure.source)) issues.push({ path: where, message: `reportedDailyMax cites "${figure.source}", which is not among the car park's sources` });
       }
       if (carPark.rateStatus === 'not-verified' && carPark.rates.length > 0) {
         issues.push({ path: where, message: 'rateStatus is "not-verified" but rate bands are present' });
@@ -1247,7 +1516,18 @@ export function validateContent(bundle: ContentBundle): ContentIssue[] {
     for (const note of content.guidesNotes) {
       const where = `${at}.guidesNotes[${note.id}]`;
       checkSources(where, note.sources);
+      checkOfficial(where, note.provenance, note.sources);
       checkPlace(where, note.airport, note.appliesTo?.terminal);
+      if (note.topic === 'coverage') {
+        for (const conflict of coverageConflicts(note, content)) {
+          issues.push({ path: where, message: `Lists as not published an area that has published records: ${conflict}` });
+        }
+      } else if (note.gaps) {
+        issues.push({ path: where, message: 'Only a coverage note lists gaps' });
+      }
+      if (note.id.endsWith('-content-gaps') && note.topic !== 'coverage') {
+        issues.push({ path: where, message: 'A content-gaps note must use the coverage topic, never a journey step' });
+      }
     }
     const refIds = {
       facility: new Set(content.facilities.map((f) => f.id)),
@@ -1259,7 +1539,10 @@ export function validateContent(bundle: ContentBundle): ContentIssue[] {
       const where = `${at}.maps[${map.id}]`;
       checkSources(where, map.sources);
       checkPlace(where, map.airport, map.terminal);
-      for (const poi of map.pois) checkSources(`${where}.pois[${poi.id}]`, poi.sources);
+      for (const poi of map.pois) {
+        checkSources(`${where}.pois[${poi.id}]`, poi.sources);
+        checkOfficial(`${where}.pois[${poi.id}]`, poi.provenance, poi.sources);
+      }
       issues.push(...mapIssues(map, refIds));
     }
     allNotices.push(...content.notices);
@@ -1270,6 +1553,7 @@ export function validateContent(bundle: ContentBundle): ContentIssue[] {
   for (const notice of allNotices) {
     const where = `notices[${notice.id}]`;
     checkSources(where, notice.sources);
+    checkOfficial(where, notice.provenance, notice.sources);
     checkPlace(where, notice.airport, notice.terminal);
     if (notice.validFrom && notice.validTo && Date.parse(notice.validTo) <= Date.parse(notice.validFrom)) {
       issues.push({ path: where, message: 'validTo must be after validFrom' });
@@ -1282,6 +1566,7 @@ export function validateContent(bundle: ContentBundle): ContentIssue[] {
     for (const section of guide.sections) {
       for (const step of section.steps) {
         checkSources(`${where}.${step.id}`, step.sources);
+        checkOfficial(`${where}.${step.id}`, step.provenance, step.sources ?? guide.sources);
         if (step.provenance === 'official' && !(step.sources && step.sources.length > 0)) {
           issues.push({ path: `${where}.${step.id}`, message: 'An official step needs its own sources' });
         }
@@ -1290,6 +1575,10 @@ export function validateContent(bundle: ContentBundle): ContentIssue[] {
   }
   for (const faq of bundle.faqs) {
     checkSources(`faqs[${faq.id}]`, faq.sources);
+    checkOfficial(`faqs[${faq.id}]`, faq.provenance, faq.sources);
+    if (Boolean(faq.asOf) === Boolean(faq.undated)) {
+      issues.push({ path: `faqs[${faq.id}]`, message: 'An FAQ needs exactly one of asOf or undated: true' });
+    }
     for (const airport of faq.airports ?? []) checkPlace(`faqs[${faq.id}]`, airport);
   }
   for (const page of bundle.corporatePages) {

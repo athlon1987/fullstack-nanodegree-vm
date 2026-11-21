@@ -96,6 +96,45 @@ export function splitLevelName(name: string): { label: string; hint?: string } {
   return { label: name.slice(0, cut), hint: name.slice(cut + 2) };
 }
 
+/**
+ * What a place's details may say about where it is (C-04). An illustrative (`demo`) point that
+ * stands for a facility may not state a level or an area the facility's own record lacks: the
+ * directory says "not published", so the map must not say "Level 5, landside".
+ */
+export interface PlacePosition {
+  /** The level may be stated. */
+  level: boolean;
+  /** The area (before or after security) may be stated. */
+  area: boolean;
+  /** The drawn position stands in for a location that is not published. */
+  unpublished: boolean;
+}
+
+export function placePosition(poi: Pick<PoiView, 'provenance' | 'facility'>): PlacePosition {
+  const facility = poi.facility;
+  if (poi.provenance !== 'demo' || !facility) return { level: true, area: true, unpublished: false };
+  const level = facility.levelName !== undefined;
+  const area = facility.zone !== 'unknown';
+  return { level, area, unpublished: !level || !area };
+}
+
+/**
+ * Labels for the From and To lists, unique within a map (C-09): the short name and level, or the
+ * full name (with its qualifier, "Aerotrain station (Satellite Building)") where short names
+ * repeat on a level, or that plus the zone if even that repeats.
+ */
+export function placeOptionLabels(map: Pick<MapView, 'pois' | 'levels'>): Map<string, string> {
+  const levelLabel = new Map(map.levels.map((level) => [level.id, level.label]));
+  const label = (poi: PoiView, name: string, extra?: string) => [name, extra, levelLabel.get(poi.level) ?? poi.level].filter(Boolean).join(' · ');
+  const count = (labels: readonly string[]) => labels.reduce((seen, item) => seen.set(item, (seen.get(item) ?? 0) + 1), new Map<string, number>());
+  const first = map.pois.map((poi) => label(poi, poi.short));
+  const repeats = count(first);
+  const second = map.pois.map((poi, index) => (repeats.get(first[index])! > 1 ? label(poi, poi.name) : first[index]));
+  const still = count(second);
+  const third = map.pois.map((poi, index) => (still.get(second[index])! > 1 ? label(poi, poi.name, poi.zoneName ?? poi.id) : second[index]));
+  return new Map(map.pois.map((poi, index) => [poi.id, third[index]]));
+}
+
 export function zoneTone(kind: MapZone['kind']): ZoneTone {
   if (kind === 'airside' || kind === 'pier' || kind === 'satellite') return 'airside';
   if (kind === 'landside') return 'landside';
@@ -421,7 +460,8 @@ export type Conveyance = 'lift' | 'escalator' | 'stairs' | 'travelator' | 'train
 
 export interface RouteStep {
   key: string;
-  kind: 'start' | 'walk' | 'through' | 'change-level' | 'ride' | 'arrive';
+  /** `through`: a walkway that changes level, named for where it leads; `checkpoint`: immigration, customs or security. */
+  kind: 'start' | 'walk' | 'through' | 'checkpoint' | 'change-level' | 'ride' | 'arrive';
   conveyance?: Conveyance;
   direction?: 'up' | 'down';
   /** Level where the step starts. */
@@ -434,6 +474,10 @@ export interface RouteStep {
   approach?: 'lift' | 'escalator' | 'stairs';
   /** Named places passed on the way (at most three). */
   via: string[];
+  /** For `through`: up or down, by the levels' order. */
+  levelDirection?: 'up' | 'down';
+  /** For `through` on a step-free route: the level change is step-free (a lift or a ramp). */
+  stepFree?: boolean;
   metres: number;
   minutes: Record<WalkProfile, number>;
   note?: string;
@@ -446,7 +490,14 @@ export interface StepContext {
   placeByNode: ReadonlyMap<string, string>;
   levelOrder: ReadonlyMap<string, number>;
   edgeNotes?: Readonly<Record<string, string>>;
+  /** Nodes that are immigration, customs or security points: each gets its own named step (C-08). */
+  checkpoints?: ReadonlySet<string>;
+  /** The route was asked for step-free: level changes say so (C-08). */
+  stepFree?: boolean;
 }
+
+/** Map point kinds that are controls the traveller must pass, named as their own route step. */
+export const CHECKPOINT_KINDS: readonly MapPoiKind[] = ['immigration', 'customs', 'security'];
 
 const CONVEYANCES: readonly MapEdge['kind'][] = ['lift', 'escalator', 'stairs'];
 
@@ -469,7 +520,8 @@ export function routeMinutes(path: Pick<PathResult, 'legs'>): Record<WalkProfile
  * level, level changes merged per lift or escalator run, rides, and the arrival.
  */
 export function buildRouteSteps(path: PathResult, context: StepContext): RouteStep[] {
-  const { placeByNode, levelOrder, edgeNotes = {} } = context;
+  const { placeByNode, levelOrder, edgeNotes = {}, checkpoints = new Set<string>(), stepFree = false } = context;
+  const direction = (from: string, to: string): 'up' | 'down' => ((levelOrder.get(to) ?? 0) > (levelOrder.get(from) ?? 0) ? 'up' : 'down');
   const first = path.nodes[0];
   const last = path.nodes[path.nodes.length - 1];
   const steps: RouteStep[] = [
@@ -484,19 +536,47 @@ export function buildRouteSteps(path: PathResult, context: StepContext): RouteSt
 
     if (kind === 'walk' && sameLevel) {
       let end = index;
-      while (end + 1 < legs.length && legs[end + 1].edge.kind === 'walk' && legs[end + 1].from.level === leg.from.level && legs[end + 1].to.level === leg.from.level) end += 1;
+      // A walk stops at a checkpoint, so immigration and customs are steps of their own (C-08).
+      while (
+        !checkpoints.has(legs[end].to.id) &&
+        end + 1 < legs.length &&
+        legs[end + 1].edge.kind === 'walk' &&
+        legs[end + 1].from.level === leg.from.level &&
+        legs[end + 1].to.level === leg.from.level
+      )
+        end += 1;
       const run = legs.slice(index, end + 1);
       const target = run[run.length - 1].to;
+      const next = legs[end + 1];
+      // An unnamed corner before a walkway to another level: fold it into that level change
+      // rather than "Walk on" (C-08).
+      if (!placeByNode.has(target.id) && !checkpoints.has(target.id) && next && next.edge.kind === 'walk' && next.from.level !== next.to.level) {
+        const metres = run.reduce((sum, item) => sum + item.edge.metres, 0) + next.edge.metres;
+        steps.push({
+          key: `through-${index}`,
+          kind: checkpoints.has(next.to.id) ? 'checkpoint' : 'through',
+          level: leg.from.level,
+          toLevel: next.to.level,
+          levelDirection: direction(leg.from.level, next.to.level),
+          stepFree,
+          place: placeByNode.get(next.to.id),
+          via: [],
+          metres,
+          minutes: stepMinutes([...run.map((item) => item.edge), next.edge]),
+          nodes: [leg.from.id, ...run.map((item) => item.to.id), next.to.id],
+        });
+        index = end + 2;
+        continue;
+      }
       const via = run
         .slice(0, -1)
         .map((item) => placeByNode.get(item.to.id))
         .filter((name): name is string => Boolean(name))
         .slice(0, 3);
-      const next = legs[end + 1];
       const approach = !placeByNode.has(target.id) && next && CONVEYANCES.includes(next.edge.kind) ? (next.edge.kind as RouteStep['approach']) : undefined;
       steps.push({
         key: `walk-${index}`,
-        kind: 'walk',
+        kind: checkpoints.has(target.id) ? 'checkpoint' : 'walk',
         level: leg.from.level,
         place: placeByNode.get(target.id),
         approach,
@@ -512,9 +592,11 @@ export function buildRouteSteps(path: PathResult, context: StepContext): RouteSt
     if (kind === 'walk') {
       steps.push({
         key: `through-${index}`,
-        kind: 'through',
+        kind: checkpoints.has(leg.to.id) ? 'checkpoint' : 'through',
         level: leg.from.level,
         toLevel: leg.to.level,
+        levelDirection: direction(leg.from.level, leg.to.level),
+        stepFree,
         place: placeByNode.get(leg.to.id),
         via: [],
         metres: leg.edge.metres,

@@ -10,6 +10,7 @@ import {
   airportsByClassification,
   getAirport,
   getCorporatePage,
+  localizeAirport,
   pick,
   type CorporateFact,
 } from '@/content';
@@ -33,7 +34,13 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function CorporateNetworkPage() {
   const lang = toLang(await routeLang());
   const t = getT(lang);
-  const groups = airportsByClassification();
+  const byClass = airportsByClassification();
+  // Airport names in the page language (D-09).
+  const groups = {
+    international: byClass.international.map((airport) => localizeAirport(airport, lang)),
+    domestic: byClass.domestic.map((airport) => localizeAirport(airport, lang)),
+    stolport: byClass.stolport.map((airport) => localizeAirport(airport, lang)),
+  };
   const networkPage = getCorporatePage('network');
   const networkSources = resolveCorporateSources(networkPage?.sources);
   const notInNetwork = networkPage?.body.find((block) => block.type === 'paragraph');
@@ -124,10 +131,11 @@ export default async function CorporateNetworkPage() {
           <ul className="grid gap-5 lg:grid-cols-3">
             {NETWORK_PROJECTS.map((project) => {
               const airport = getAirport(project.airport);
+              const shown = airport ? localizeAirport(airport, lang) : undefined;
               return (
                 <li key={project.id} className="flex min-w-0 flex-col gap-4 rounded-lg border border-line-strong bg-surface p-5 sm:p-6">
                   <div>
-                    {airport ? <p className="type-eyebrow text-gold-ink">{airport.shortName}</p> : null}
+                    {shown ? <p className="type-eyebrow text-gold-ink">{shown.shortName}</p> : null}
                     <h3 className="type-title-md mt-1.5 text-ink">{pick(project.title, lang)}</h3>
                   </div>
                   <FactList facts={factViews(project.facts, lang)} t={t} layout="rows" className="[&>div]:md:grid-cols-1" />

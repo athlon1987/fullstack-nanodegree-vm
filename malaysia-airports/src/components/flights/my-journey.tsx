@@ -20,6 +20,7 @@ import { FlightWatcher } from './flight-watcher';
 import { flightTitle } from './identify-flight';
 import { JOURNEY_EMPTY_HEADING_ID, JourneyEmpty } from './journey-empty';
 import { JourneyTimeline, modesForFlight, useJourneyPreferences } from './journey-timeline';
+import { NeedsControl } from './needs-control';
 import { ParkedCarCard, type CarParkOption } from './parked-car-card';
 import { SavedFlightCard } from './saved-flight-card';
 import { SavedPlaces } from './saved-places';
@@ -163,56 +164,60 @@ export function MyJourney({ carParks }: MyJourneyProps) {
     <div className="flex flex-col gap-12 lg:gap-16">
       {/* A first-screen minimum: swapping the empty state for saved flights moves nothing in view. */}
       <div className="min-h-[70svh]">
-      {journey.flights.length === 0 ? (
-        <JourneyEmpty />
-      ) : (
-        <section aria-labelledby={SAVED_FLIGHTS_HEADING_ID} className="flex flex-col gap-5">
-          <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
-            <div>
-              <h2 id={SAVED_FLIGHTS_HEADING_ID} ref={savedHeading} tabIndex={-1} className="type-display-sm text-ink">
-                {t('journey.saved.flights')}
-              </h2>
-              <p className="type-body-sm mt-1 text-ink-2">{t.count('flightPages.journey.flightsCount', journey.flights.length)}</p>
+        {journey.flights.length === 0 ? (
+          <JourneyEmpty />
+        ) : (
+          <section aria-labelledby={SAVED_FLIGHTS_HEADING_ID} className="flex flex-col gap-5">
+            <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
+              <div>
+                <h2 id={SAVED_FLIGHTS_HEADING_ID} ref={savedHeading} tabIndex={-1} className="type-display-sm text-ink">
+                  {t('journey.saved.flights')}
+                </h2>
+                <p className="type-body-sm mt-1 text-ink-2">{t.count('flightPages.journey.flightsCount', journey.flights.length)}</p>
+              </div>
+              <Freshness live="off" updatedAt={feed.updatedAt} refreshSeconds={feed.refreshSeconds} />
             </div>
-            <Freshness live="off" updatedAt={feed.updatedAt} refreshSeconds={feed.refreshSeconds} />
-          </div>
-          <DemoDataBanner />
-          <FeedNotice feed={feed} />
-          <div className="grid items-start gap-x-12 gap-y-10 lg:grid-cols-[minmax(0,25rem)_minmax(0,1fr)]">
-            <ul aria-labelledby={SAVED_FLIGHTS_HEADING_ID} className="flex flex-col gap-3">
-              {entries.map((entry) => (
-                <SavedFlightCard
-                  key={entry.saved.id}
-                  saved={entry.saved}
-                  flight={entry.flight}
-                  now={provider?.now ?? null}
-                  next={entry.next}
-                  selected={Boolean(entry.flight) && selected?.saved.id === entry.saved.id}
-                  alertsOn={alerts.ids.has(entry.saved.id)}
-                  onSelect={() => select(entry.saved.id)}
-                  onRemove={() => remove(entry.saved.id)}
+            <DemoDataBanner />
+            <FeedNotice feed={feed} />
+            <div className="grid items-start gap-x-12 gap-y-10 lg:grid-cols-[minmax(0,25rem)_minmax(0,1fr)]">
+              <div className="flex flex-col gap-6">
+                <ul aria-labelledby={SAVED_FLIGHTS_HEADING_ID} className="flex flex-col gap-3">
+                  {entries.map((entry) => (
+                    <SavedFlightCard
+                      key={entry.saved.id}
+                      saved={entry.saved}
+                      flight={entry.flight}
+                      now={provider?.now ?? null}
+                      next={entry.next}
+                      selected={Boolean(entry.flight) && selected?.saved.id === entry.saved.id}
+                      alertsOn={alerts.ids.has(entry.saved.id)}
+                      onSelect={() => select(entry.saved.id)}
+                      onRemove={() => remove(entry.saved.id)}
+                    />
+                  ))}
+                </ul>
+                {/* "My needs" and the trip options shape every timeline here, as on the flight page (B-11). */}
+                <NeedsControl tripOptions={journey.flights.some((saved) => saved.id.endsWith('-d'))} />
+              </div>
+              {selected?.flight && selectedContent && provider ? (
+                <JourneyTimeline
+                  key={selected.flight.id}
+                  flight={selected.flight}
+                  content={selectedContent}
+                  sources={selectedContent.sources ?? {}}
+                  notices={selectedContent.notices}
+                  now={provider.now}
+                  title={t('flightPages.journey.journeyFor', { flight: flightTitle(selected.flight, t) })}
+                  headingId={STEPS_HEADING_ID}
+                  preferredMode={selected.saved.mode}
+                  className="scroll-mt-24 rounded-xl border border-line-strong bg-surface p-5 sm:p-7"
                 />
-              ))}
-            </ul>
-            {selected?.flight && selectedContent && provider ? (
-              <JourneyTimeline
-                key={selected.flight.id}
-                flight={selected.flight}
-                content={selectedContent}
-                sources={selectedContent.sources ?? {}}
-                notices={selectedContent.notices}
-                now={provider.now}
-                title={t('flightPages.journey.journeyFor', { flight: flightTitle(selected.flight, t) })}
-                headingId={STEPS_HEADING_ID}
-                preferredMode={selected.saved.mode}
-                className="scroll-mt-24 rounded-xl border border-line-strong bg-surface p-5 sm:p-7"
-              />
-            ) : provider === null ? (
-              <Skeleton className="h-96 w-full" />
-            ) : null}
-          </div>
-        </section>
-      )}
+              ) : provider === null ? (
+                <Skeleton className="h-96 w-full" />
+              ) : null}
+            </div>
+          </section>
+        )}
       </div>
 
       <div className="grid items-start gap-6 lg:grid-cols-2">

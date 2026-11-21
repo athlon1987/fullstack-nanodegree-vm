@@ -6,6 +6,7 @@ import {
   contextForGate,
   coverage,
   effectiveSort,
+  filterAvailability,
   filterOutlets,
   gateContextFor,
   gateProximity,
@@ -15,6 +16,7 @@ import {
   placeFromNote,
   relatedOutlets,
   sortOutlets,
+  withoutUnavailable,
   writeOutletFilters,
   type OutletView,
 } from './commerce-view';
@@ -185,5 +187,43 @@ describe('KLIA content as the pages see it', () => {
     expect(rest.some((item) => item.category === 'lounge')).toBe(true);
     expect(rest.some((item) => item.category === 'hotel')).toBe(true);
     expect(rest.every((item) => item.sources.length > 0)).toBe(true);
+  });
+});
+
+describe('filters the data cannot serve (C-05)', () => {
+  it('offers no filter that returns nothing for the KLIA directory, and drops one asked for in a link', () => {
+    const kul = getAirportContent('kul');
+    if (!kul) throw new Error('KUL content missing');
+    const items = outletViews(kul, 'en', getT('en'));
+    const available = filterAvailability(items);
+    // Every offered filter returns at least one outlet on its own.
+    const offered = [
+      available.openNow ? { ...EMPTY_OUTLET_FILTERS, openNow: true } : undefined,
+      available.halal ? { ...EMPTY_OUTLET_FILTERS, halal: true } : undefined,
+      available.landside ? { ...EMPTY_OUTLET_FILTERS, zone: 'landside' as const } : undefined,
+      available.airside ? { ...EMPTY_OUTLET_FILTERS, zone: 'airside' as const } : undefined,
+    ].filter((filters) => filters !== undefined);
+    for (const filters of offered) expect(filterOutlets(items, filters, Date.parse('2026-11-21T04:00:00Z')).length).toBeGreaterThan(0);
+    // No outlet publishes machine-readable hours yet, so "Open now" is not offered and a link's
+    // ?filters=open-now is dropped with its name instead of giving "0 of 8".
+    expect(available.openNow).toBe(false);
+    const parsed = parseOutletFilters(new URLSearchParams('filters=open-now,airside'), { categories: [], cuisines: [], terminals: ['T1', 'T2'], gateIds: [] });
+    const { filters, dropped } = withoutUnavailable(parsed, available);
+    expect(dropped).toEqual(['openNow']);
+    expect(filters.openNow).toBe(false);
+    expect(filters.zone).toBe('airside');
+    expect(filterOutlets(items, filters, null).length).toBeGreaterThan(0);
+  });
+
+  it('keeps every filter when the data can serve it', () => {
+    const items = [
+      outlet({ id: 'a', name: 'A', hours: { kind: '24h' }, halal: 'certified', zone: 'landside', priceBand: 2 }),
+      outlet({ id: 'b', name: 'B', zone: 'airside' }),
+    ];
+    const available = filterAvailability(items);
+    expect(available).toEqual({ openNow: true, halal: true, landside: true, airside: true, price: true });
+    const asked = { ...EMPTY_OUTLET_FILTERS, openNow: true, halal: true, zone: 'airside' as const, prices: [2 as const] };
+    expect(withoutUnavailable(asked, available)).toEqual({ filters: asked, dropped: [] });
+    expect(withoutUnavailable(asked, { ...available, airside: false, price: false }).dropped).toEqual(['airside', 'price']);
   });
 });

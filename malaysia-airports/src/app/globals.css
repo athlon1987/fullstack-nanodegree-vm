@@ -579,6 +579,12 @@
     overflow-x: clip;
   }
 
+  /* A long unbroken word (an e-mail address, a URL) breaks at the edge instead of being clipped
+     at 320 px and 125% text (WCAG 1.4.10, A-16). Normal wrapping is unchanged. */
+  main {
+    overflow-wrap: break-word;
+  }
+
   h1,
   h2,
   h3,
@@ -1039,4 +1045,41 @@ html[data-compact-chrome] [data-mobile-bar] [data-bar-label] {
   [data-airport-page] [data-page-breadcrumbs] {
     display: none;
   }
+}
+
+/*
+ * A-08 (verification round, 21 November 2026): reserve the saved-flight card's space before
+ * hydration. SAVED_FLIGHT_FLAG_SCRIPT sets data-saved-flight on <html> while the page parses; the
+ * empty slot and the card's loading placeholder then take the card's usual height, so the card
+ * appears without moving the page. Without these rules the phone home measured CLS 0.16 (en) and
+ * 0.18 (ms). Heights measured on the production build, in rem so they follow the text size.
+ */
+html {
+  --saved-flight-height: 9.1rem;
+}
+@media (max-width: 47.99rem) {
+  html {
+    --saved-flight-height: 9.8rem;
+  }
+}
+@media (max-width: 39.99rem) {
+  html {
+    --saved-flight-height: 12.8rem;
+  }
+  html[lang='ms'] {
+    --saved-flight-height: 17rem;
+  }
+  html[data-text-size='125'] {
+    --saved-flight-height: 15.8rem;
+  }
+  html[lang='ms'][data-text-size='125'] {
+    --saved-flight-height: 16.75rem;
+  }
+}
+html[data-saved-flight] [data-saved-flight-slot]:empty {
+  display: block;
+  min-height: var(--saved-flight-height);
+}
+.saved-flight-size {
+  min-height: var(--saved-flight-height);
 }

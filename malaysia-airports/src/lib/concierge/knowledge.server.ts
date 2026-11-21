@@ -3,6 +3,8 @@
  * the answer engine reads, as plain serialisable data. `/api/concierge` uses it directly and
  * `/[lang]/concierge/knowledge.json` serves it as static JSON for the browser fallback.
  */
+// Package E (fix round, security-17): importing this module from a Client Component fails the build.
+import 'server-only';
 import {
   AIRPORTS,
   ALL_SOURCES,

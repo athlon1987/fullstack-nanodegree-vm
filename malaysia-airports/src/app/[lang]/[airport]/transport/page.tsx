@@ -12,6 +12,7 @@ import { SectionHeading } from '@/components/common/section-heading';
 import { SourceNote } from '@/components/common/source-note';
 import { TranslationNotice } from '@/components/common/translation-notice';
 import { TerminalTransfers } from '@/components/transport/terminal-transfers';
+import { ToutsWarning } from '@/components/transport/touts-warning';
 import { transportPageModel } from '@/components/transport/transport-data.server';
 import { DEFAULT_PLANNER_STATE, TransportPlanner } from '@/components/transport/transport-planner';
 import { TransportPlannerFromUrl } from '@/components/transport/transport-planner-url';
@@ -22,6 +23,9 @@ import { Icon } from '@/components/ui/icon';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export const generateStaticParams = () => sectionStaticParams('transport');
+
+/** Fully static for the airports that have transport; any other airport gets a 404 on the first request (C-06). */
+export const ensureStatic = 'navigation';
 
 export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/transport'>) {
   const { lang, airport: slug } = await params;
@@ -87,6 +91,9 @@ async function Transport({ params }: { params: AirportPageParams }) {
       <Container className="flex flex-col gap-14 pb-section">
         {model.translationMissing ? <TranslationNotice /> : null}
 
+        {/* Before any option: book rides only through official channels (C-02). */}
+        <ToutsWarning context={model.context} className="-mb-6" />
+
         <section aria-labelledby="planner-title">
           <SectionHeading id="planner-title" title={t('transportPages.planner.title')} variant="title" />
           {model.planner.length > 0 ? (
@@ -100,22 +107,7 @@ async function Transport({ params }: { params: AirportPageParams }) {
 
         {model.missingModes.length > 0 ? (
           <section aria-labelledby="missing-modes-title" className="grid gap-6 lg:grid-cols-2">
-            {model.missingModes.includes('private-car') && hasParking ? (
-              <div className="flex min-w-0 items-start gap-4 rounded-xl border border-line-strong bg-surface p-5">
-                <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-page-subtle text-ink">
-                  <Icon name="private-car" />
-                </span>
-                <div className="min-w-0">
-                  <h3 className="type-title-md text-ink">{t('transportPages.planner.privateCar')}</h3>
-                  <p className="type-body-sm mt-1 text-ink-2">{t('transportPages.planner.privateCarBody')}</p>
-                  <LocaleLink href={`/${airport.slug}/parking`} className="link-action type-body-sm mt-2 text-ink">
-                    {t('transportPages.planner.seeParking')}
-                    <Icon name="arrow-right" size="sm" />
-                  </LocaleLink>
-                </div>
-              </div>
-            ) : null}
-            <div className="min-w-0 rounded-xl border border-line bg-page-subtle p-5">
+            <div className="min-w-0 rounded-xl border border-line bg-page-subtle p-5 lg:order-2">
               <h2 id="missing-modes-title" className="type-title-md text-ink">
                 {t('transportPages.planner.missingTitle')}
               </h2>
@@ -135,6 +127,21 @@ async function Transport({ params }: { params: AirportPageParams }) {
                 {t('transportPages.gaps.officialSite')}
               </ExternalLink>
             </div>
+            {model.missingModes.includes('private-car') && hasParking ? (
+              <div className="flex min-w-0 items-start gap-4 rounded-xl border border-line-strong bg-surface p-5 lg:order-1">
+                <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-page-subtle text-ink">
+                  <Icon name="private-car" />
+                </span>
+                <div className="min-w-0">
+                  <h3 className="type-title-md text-ink">{t('transportPages.planner.privateCar')}</h3>
+                  <p className="type-body-sm mt-1 text-ink-2">{t('transportPages.planner.privateCarBody')}</p>
+                  <LocaleLink href={`/${airport.slug}/parking`} className="link-action type-body-sm mt-2 text-ink">
+                    {t('transportPages.planner.seeParking')}
+                    <Icon name="arrow-right" size="sm" />
+                  </LocaleLink>
+                </div>
+              </div>
+            ) : null}
           </section>
         ) : null}
 

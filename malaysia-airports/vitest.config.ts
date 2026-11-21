@@ -10,6 +10,9 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
+      // `server-only` throws outside a React Server Components build; unit tests run server
+      // modules directly, so they get an empty stand-in. The real guard still applies to builds.
+      'server-only': fileURLToPath(new URL('./src/lib/testing/server-only.ts', import.meta.url)),
     },
   },
   test: {

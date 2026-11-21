@@ -12,6 +12,20 @@ export interface TerminalInfo {
   levels: Record<string, string>;
 }
 
+/**
+ * Anti-touting advice for the transport decision (C-02): the airport's sourced statement (the
+ * Help answer the arriving guide also gives), shown at the top and beside taxi and e-hailing.
+ */
+export interface ToutsView {
+  /** The sourced statement in the page language. */
+  body: string;
+  provenance: Provenance;
+  asOf?: string;
+  sourceIds: string[];
+  /** Locale-free link to the Help answer: `/help/scams#scam-touts`. */
+  helpHref: string;
+}
+
 /** What every transport card needs besides the option itself. */
 export interface TransportContext {
   slug: string;
@@ -21,6 +35,8 @@ export interface TransportContext {
   sources: Record<string, Source>;
   /** The airport's official website, for anything we do not publish. */
   officialUrl: string;
+  /** Present where the airport has a sourced warning about ride touts (KLIA). */
+  touts?: ToutsView;
 }
 
 /** Data for the planner: options compared by `compareTransport`, with their context. */
@@ -42,6 +58,26 @@ export interface NoteView {
 /** Resolve source ids against a lookup, skipping unknown ids. */
 export function sourcesFor(ids: readonly string[], lookup: Readonly<Record<string, Source>>): Source[] {
   return ids.map((id) => lookup[id]).filter((source): source is Source => source !== undefined);
+}
+
+/** Modes you buy a ticket for before you ride, where an operator's own website can sell one. */
+const TICKETED_MODES: readonly TransportOption['mode'][] = ['rail', 'bus', 'shuttle'];
+
+/**
+ * The official place to buy a ticket for an option (C-02), official channels only: the option's
+ * own booking link; else the operator's page among its sources; else the website of its named
+ * operator when another cited page of that operator is in the lookup (KLIA Ekspres and KLIA
+ * Transit share Express Rail Link's kliaekspres.com). Never an aggregator or a booking site.
+ */
+export function ticketChannel(option: TransportOption, lookup: Readonly<Record<string, Source>>): string | undefined {
+  if (option.bookingUrl) return option.bookingUrl;
+  if (!TICKETED_MODES.includes(option.mode)) return undefined;
+  const own = sourcesFor(option.sources, lookup).find((source) => source.kind === 'operator' && /^https?:/.test(source.url));
+  if (own) return own.url;
+  const operator = option.operator?.toLowerCase();
+  if (!operator) return undefined;
+  const site = Object.values(lookup).find((source) => source.kind === 'operator' && source.publisher.toLowerCase().startsWith(operator) && /^https?:/.test(source.url));
+  return site ? new URL(site.url).origin + '/' : undefined;
 }
 
 /** The first official or operator page among an item's sources, for "check the official site" links. */

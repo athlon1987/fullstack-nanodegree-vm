@@ -1,5 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
+import { AXE_TAGS as SHARED_AXE_TAGS } from './support/axe';
 
 /**
  * Journeys for the ground transport planner (`/[lang]/[airport]/transport`) and parking
@@ -10,7 +11,7 @@ import { expect, test, type Page } from '@playwright/test';
  * content publishes RM 55 until 31 December 2026 and RM 65 from 1 January 2027.
  */
 
-const AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'];
+const AXE_TAGS = [...SHARED_AXE_TAGS];
 const BEFORE_RISE = new Date('2026-11-17T10:00:00+08:00');
 const AFTER_RISE = new Date('2027-01-02T10:00:00+08:00');
 
@@ -110,23 +111,89 @@ test.describe('transport planner', () => {
     await page.goto('/ms/kul/transport');
     await expect(page.locator('html')).toHaveAttribute('lang', 'ms');
     await expect(page.getByRole('heading', { level: 1, name: 'Ke dan dari KLIA' })).toBeVisible();
+    // C-02: the anti-touting advice is at the top in Malay too, with the Help answer.
+    const warning = page.getByRole('main').getByRole('note').filter({ hasText: 'Tempah teksi hanya di kaunter kupon; abaikan sesiapa yang menawarkan tumpangan' });
+    await expect(warning).toBeVisible();
+    await expect(warning.getByRole('link', { name: /Amaran penipuan/ })).toHaveAttribute('href', '/ms/help/scams#scam-touts');
+  });
+
+  test('warns against touts at the top and beside taxis and e-hailing, lists the coupon taxi for KL Sentral and links to official tickets (C-02)', async ({ page }) => {
+    await page.clock.setFixedTime(BEFORE_RISE);
+    await page.goto('/en/kul/transport');
+    const main = page.getByRole('main');
+    const warning = main.getByRole('note').filter({ hasText: 'Book taxis only at the coupon counters; ignore anyone offering a ride' });
+    await expect(warning).toBeVisible();
+    await expect(warning).toContainText('Road Transport Department');
+    await expect(warning.getByRole('link', { name: 'Scam alerts: what to do' })).toHaveAttribute('href', '/en/help/scams#scam-touts');
+    // It comes before the comparison.
+    const warningBox = await warning.boundingBox();
+    const plannerBox = await main.getByRole('heading', { name: 'Compare your options' }).boundingBox();
+    expect(warningBox!.y).toBeLessThan(plannerBox!.y);
+
+    const results = main.getByRole('list', { name: /Ways to travel between KLIA and KL Sentral/ });
+    const taxi = results.getByRole('article', { name: 'Airport taxi (prepaid coupon)' });
+    await expect(taxi).toBeVisible();
+    await expect(taxi).toContainText('Book taxis only at the coupon counters; ignore anyone offering a ride.');
+    await expect(taxi).toContainText('Coupon counters: International Arrival Hall');
+    await expect(results.getByRole('article', { name: /E-hailing/ })).toContainText('Book in the app and meet your driver at the pick-up point; ignore anyone offering a ride.');
+    await expect(main.getByRole('heading', { name: 'Not listed for KL Sentral' })).toBeVisible();
+    await expect(main.getByRole('region', { name: 'Not listed for KL Sentral' }).getByText('Airport taxi (prepaid coupon)')).toHaveCount(0);
+
+    const ekspres = results.getByRole('article', { name: /KLIA Ekspres/ });
+    await expect(ekspres.getByRole('link', { name: /Tickets on the operator’s website/ })).toHaveAttribute('href', 'https://kliaekspres.com/');
+    await expectNoAxeViolations(page);
+  });
+
+  test('puts each section heading before its sub-headings (C-10)', async ({ page }) => {
+    await page.goto('/en/kul/transport');
+    const main = page.getByRole('main');
+    await expect(main.getByRole('heading', { level: 1 })).toBeVisible();
+    const levels = await main.locator('h1, h2, h3, h4').evaluateAll((nodes) => nodes.filter((node) => (node as HTMLElement).offsetParent !== null).map((node) => Number(node.tagName.slice(1))));
+    // No heading skips a level on the way down (an h3 right after an h1 would).
+    for (let index = 1; index < levels.length; index += 1) expect(levels[index] - levels[index - 1], `heading ${index}`).toBeLessThanOrEqual(1);
+    const missing = main.getByRole('region', { name: 'Not covered here yet' });
+    const order = await missing.locator('h2, h3').evaluateAll((nodes) => nodes.map((node) => node.tagName));
+    expect(order[0]).toBe('H2');
   });
 });
 
 test.describe('parking', () => {
-  test('warns about Preferred Parking, says rates are not verified, estimates only a ceiling, and passes axe', async ({ page }) => {
+  // Intended behaviour changed in the fix round (C-01): the Preferred Parking warning moved from a
+  // callout at the top into its row of the price matrix, and the "rates are not verified" callout
+  // into the matrix lead. The calculator still estimates only a ceiling.
+  test('leads with the price matrix, keeps the warning in its row, estimates only a ceiling, and passes axe', async ({ page }) => {
     await page.clock.setFixedTime(BEFORE_RISE);
     await page.goto('/en/kul/parking');
     const main = page.getByRole('main');
     await expect(main.getByRole('heading', { level: 1, name: 'Parking at KLIA' })).toBeVisible();
-    await expect(main.getByRole('note').filter({ hasText: 'Parking for more than a day? Avoid Preferred Parking' }).first()).toBeVisible();
-    await expect(main.getByRole('note').filter({ hasText: 'Parking rates are not verified' })).toBeVisible();
+
+    const matrix = main.getByRole('region', { name: 'Prices at a glance' });
+    await expect(matrix).toContainText('Not the fee');
+    const table = matrix.getByRole('table', { name: 'What parking at KLIA can cost for 1, 3 or 7 days' });
+    await expect(table.getByRole('columnheader', { name: '7 days' })).toBeVisible();
+    // Long Term Car Park: published daily maximum, so "at most" RM 32, 96 and 224. Anchored: the
+    // Preferred Parking warning row now names the Long Term Car Park too (D-06).
+    const ltcp = table.getByRole('row', { name: /^Long Term Car Park/ });
+    await expect(ltcp).toContainText('RM 32');
+    await expect(ltcp).toContainText('RM 96');
+    await expect(ltcp).toContainText('RM 224');
+    // Terminal 1 Car Park: not verified; the source's own figure, dated and attributed, with a link out.
+    await expect(table).toContainText('Not verified. RM 52 a day according to klia.info (undated, retrieved 17 Nov 2026).');
+    await expect(table.getByRole('link', { name: /Check the official rates/ }).first()).toHaveAttribute('href', /malaysiaairports\.com\.my/);
+    // Preferred Parking: no price, and its warning in its own row.
+    await expect(table.getByRole('row', { name: /^Preferred Parking/ })).toContainText('No price published');
+    // D-06 states the warning as a rule (verification round: was "Parking for more than a day? Avoid Preferred Parking").
+    await expect(table).toContainText('Staying more than a day? Use the Long Term Car Park');
+    await expect(matrix.getByRole('link', { name: /Book parking online/ })).toHaveAttribute('href', /malaysiaairports\.com\.my/);
 
     // Long Term Car Park: rates not verified, daily maximum RM 32 published, so only "at most".
     await expect(main.getByRole('combobox', { name: 'Car park' }).first()).toHaveValue('kul-long-term-car-park');
     await expect(main.getByRole('status').filter({ hasText: 'At most RM 32' })).toBeVisible();
     await main.getByRole('button', { name: '3 days' }).click();
     await expect(main.getByRole('status').filter({ hasText: 'At most RM 96' })).toBeVisible();
+    // The official site takes no dates in its link, so the dates are shown beside it.
+    await expect(main.getByRole('link', { name: /Book Long Term Car Park \(LTCP\) on the official site/ })).toBeVisible();
+    await expect(main.getByText(/^Your dates: .+ to .+\. Enter them on the official site/)).toBeVisible();
 
     // A car park without a daily maximum gets no figure at all.
     await main.getByRole('combobox', { name: 'Car park' }).first().selectOption('kul-t1-car-park');
@@ -137,6 +204,30 @@ test.describe('parking', () => {
     await expect(main.getByRole('article', { name: 'Preferred Parking' })).toContainText('Demo');
     await expectNoHorizontalOverflow(page);
     await expectNoAxeViolations(page);
+  });
+
+  test('shows the price matrix in the first phone screen, before the calculator (C-01)', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/en/kul/parking');
+    const matrix = page.getByRole('main').getByRole('region', { name: 'Prices at a glance' });
+    await expect(matrix).toBeVisible();
+    const box = await matrix.boundingBox();
+    expect(box, 'matrix box').not.toBeNull();
+    // It starts inside the first screen, under the page header (with the current airport chrome).
+    expect(box!.y).toBeLessThan(844 - 120);
+    const calculator = await page.getByRole('heading', { name: 'Estimate your stay' }).boundingBox();
+    expect(calculator!.y).toBeGreaterThan(box!.y + box!.height - 1);
+    await expectNoHorizontalOverflow(page);
+  });
+
+  test('fills the calculator with the dates a journey link carries (B-13, C-01)', async ({ page }) => {
+    await page.clock.setFixedTime(BEFORE_RISE);
+    await page.goto('/en/kul/parking?t=T1&from=2026-11-20T08%3A00%3A00%2B08%3A00&to=2026-11-23T08%3A00%3A00%2B08%3A00');
+    const main = page.getByRole('main');
+    await expect(main.getByText('Dates filled in from your flight. Change them if your plans differ.')).toBeVisible();
+    await expect(main.getByLabel('Entry date')).toHaveValue('2026-11-20');
+    await expect(main.getByLabel('Exit date')).toHaveValue('2026-11-23');
+    await expect(main.getByRole('status').filter({ hasText: 'At most RM 96' })).toBeVisible();
   });
 
   test('remembers where I parked and shows it on My journey', async ({ page }) => {
@@ -158,5 +249,31 @@ test.describe('parking', () => {
     await expect(page).toHaveURL(/\/en\/journey/);
     // Next.js keeps the parking page mounted but hidden; role queries skip it.
     await expect(page.getByRole('main').getByRole('definition').filter({ hasText: 'B-114' })).toBeVisible();
+  });
+});
+
+test.describe('transit planner verdict (C-03)', () => {
+  test('puts the verdict card under the form and before the steps, within one phone screen, and announces changes', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 664 });
+    await page.goto('/en/kul/transit?from=T1&to=T2&ticket=self&arr=intl&dep=intl&layover=180');
+    const main = page.getByRole('main');
+    const verdict = main.getByRole('region', { name: 'Tight' });
+    await expect(verdict).toBeVisible();
+    await expect(verdict).toContainText('Your time sits inside our estimate');
+    await expect(verdict).toContainText('Our estimate');
+    await expect(verdict.getByRole('link', { name: /If it is tight: what to do/ })).toHaveAttribute('href', '#transit-late');
+
+    const form = main.getByRole('form', { name: 'Plan your connection' });
+    const last = await form.getByRole('combobox').last().boundingBox();
+    const card = await verdict.boundingBox();
+    const steps = await main.getByRole('heading', { name: /steps/i }).first().boundingBox();
+    expect(card!.y).toBeGreaterThan(last!.y);
+    expect(card!.y - (last!.y + last!.height)).toBeLessThan(664);
+    expect(steps!.y).toBeGreaterThan(card!.y);
+
+    // A change is announced politely with the new verdict.
+    await form.getByRole('combobox').last().selectOption('720');
+    await expect(main.getByRole('region', { name: 'Looks workable' })).toBeVisible();
+    await expect(form.getByRole('status')).toContainText('Looks workable.');
   });
 });

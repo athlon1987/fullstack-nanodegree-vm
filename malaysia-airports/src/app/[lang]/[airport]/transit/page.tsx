@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { airportsWithContent, getAirport, getSource, pick, resolveSources } from '@/content';
 import { getT, toLang } from '@/lib/i18n';
-import { airportSectionMetadata, loadAirportPage, type AirportPageParams } from '@/components/airport/section-page';
+import { airportSectionMetadata, loadAirportPageFor, type AirportPageParams } from '@/components/airport/section-page';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { EmptyState } from '@/components/common/empty-state';
 import { ExternalLink } from '@/components/common/external-link';
@@ -16,16 +16,24 @@ import { transitData, type RestView, type TransitData } from '@/components/guide
 import { DEFAULT_TRANSIT_INPUT } from '@/components/guides/transit-logic';
 import { TransitPlanner } from '@/components/guides/transit-planner';
 import { TransitPlannerFromUrl } from '@/components/guides/transit-planner-url';
+import { OpsStatusSection } from '@/components/flights/ops-status-section';
 import { airportsWithSection } from '@/components/shell/sections.server';
 import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { Translator } from '@/lib/i18n/translate';
 
-/** KLIA has the planner; the other airports with content get the simpler page. Others render on demand. */
+/** KLIA has the planner; the other airports with content get the simpler page. Any other airport is a 404 (C-06). */
 export function generateStaticParams() {
-  return [...new Set([...airportsWithSection('transit'), ...airportsWithContent()])].map((airport) => ({ airport }));
+  return transitAirports().map((airport) => ({ airport }));
 }
+
+/** Fully static for those airports; any other airport gets a 404 on the first request (C-06). */
+export const ensureStatic = 'navigation';
+
+const transitAirports = () => [...new Set([...airportsWithSection('transit'), ...airportsWithContent()])];
+/** The simple page for an airport with content but no transit section is an empty state: not indexed. */
+const transitEmptyState = (_sections: readonly unknown[], slug: string) => airportsWithContent().includes(slug);
 
 export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/transit'>) {
   const { lang, airport: slug } = await params;
@@ -37,6 +45,7 @@ export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/
     airport
       ? { title: t('guidePages.transit.metaTitle', { airport: airport.shortName }), description: t('guidePages.transit.metaDescription', { airport: airport.name }) }
       : {},
+    { emptyState: transitEmptyState },
   );
 }
 
@@ -57,8 +66,8 @@ export default function TransitPage({ params }: PageProps<'/[lang]/[airport]/tra
 }
 
 async function Transit({ params }: { params: AirportPageParams }) {
-  // Any known airport: those without transit content get an honest page rather than a 404.
-  const { lang, t, airport, content, sections } = await loadAirportPage(params, 'overview');
+  // KLIA's planner, or the honest simple page for another airport with content; others are a 404.
+  const { lang, t, airport, content, sections } = await loadAirportPageFor(params, (has, slug) => has.includes('transit') || transitAirports().includes(slug));
   const data = transitData(content, lang, t, sections.includes('lounges'));
   const planner = airport.terminals.some((terminal) => terminal.id === 'T1') && airport.terminals.some((terminal) => terminal.id === 'T2') && data.options.length > 0;
   const header = (
@@ -131,6 +140,8 @@ async function Transit({ params }: { params: AirportPageParams }) {
         <section id="between-terminals" aria-labelledby="between-terminals-title" className="scroll-mt-32 border-t border-line pt-12">
           <SectionHeading id="between-terminals-title" title={t('guidePages.transit.official.title', { airport: airport.shortName })} variant="title" />
           <div className="flex flex-col gap-4">
+            {/* Whether the train and shuttle between terminals are running, from current notices (B-01 hand-off). */}
+            <OpsStatusSection airport={airport.slug} services={['inter-terminal-train', 'inter-terminal-shuttle']} headingLevel={3} className="max-w-narrow" />
             {data.interTerminal ? <FactCard fact={data.interTerminal} className="max-w-narrow border-ink" /> : null}
             <h3 className="type-title-md mt-4 text-ink">{t('guidePages.transit.official.optionsTitle')}</h3>
             <ul className="grid items-start gap-4 lg:grid-cols-2">

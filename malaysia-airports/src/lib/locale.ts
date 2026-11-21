@@ -5,9 +5,24 @@
  *
  * Pure string functions: safe on the server and the client.
  */
-import { DEFAULT_LANG, LANGS, isLang, type Lang } from '@/content/types';
+import type { Lang } from '@/content/types';
 
-const EXTERNAL = /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i;
+/*
+ * The locales, kept here as plain values (checked against `Lang` at compile time) so that this
+ * module, which every link in the browser uses, does not pull the content schemas and zod into
+ * the client bundle (performance-08).
+ */
+const LOCALE_FLAGS: Record<Lang, true> = { en: true, ms: true };
+const LANGS = Object.keys(LOCALE_FLAGS) as Lang[];
+const DEFAULT_LANG: Lang = 'en';
+const isLang = (value: unknown): value is Lang => typeof value === 'string' && Object.hasOwn(LOCALE_FLAGS, value);
+
+/** Absolute and scheme links that may be passed through unchanged (security-09). */
+const ALLOWED_EXTERNAL = /^(?:https:\/\/[^\s/\\]|mailto:|tel:)/i;
+/** Anything else that is not a plain path: other schemes, `//host` and `/\host`. */
+const OTHER_SCHEME = /^(?:[a-z][a-z0-9+.-]*:|[/\\]{2}|\/\\)/i;
+/** What a link that is not allowed becomes: an inert in-page link. */
+export const BLOCKED_HREF = '#';
 
 function splitSuffix(path: string): [string, string] {
   const index = path.search(/[?#]/);
@@ -35,11 +50,15 @@ export function stripLocale(pathname: string): string {
 /**
  * Build an internal link for a language: `localeHref('ms', '/kul/flights')` is `/ms/kul/flights`.
  *
- * Left untouched: absolute URLs (`https:`, `mailto:`, `tel:`), hash-only links (`#main`) and
- * API routes (`/api/...`). A path that already has a locale prefix is re-prefixed.
+ * Left untouched: `https:`, `mailto:` and `tel:` links, hash-only links (`#main`) and API routes
+ * (`/api/...`). Any other scheme (`http:`, `data:`, `javascript:`…), protocol-relative `//host`
+ * and `/\host` become `BLOCKED_HREF`. A path that already has a locale prefix is re-prefixed.
  */
 export function localeHref(lang: Lang, path: string): string {
-  if (EXTERNAL.test(path) || path.startsWith('#')) return path;
+  const trimmed = path.trim();
+  if (ALLOWED_EXTERNAL.test(trimmed) || trimmed.startsWith('#')) return trimmed;
+  if (OTHER_SCHEME.test(trimmed) || /[\u0000-\u001f]/.test(trimmed)) return BLOCKED_HREF;
+  path = trimmed;
   const normalised = path.startsWith('/') ? path : `/${path}`;
   if (normalised === '/api' || normalised.startsWith('/api/')) return normalised;
   const bare = stripLocale(normalised);

@@ -8,7 +8,7 @@ import { Icon } from '@/components/ui/icon';
 import { IconButton } from '@/components/ui/icon-button';
 import { Kbd } from '@/components/ui/kbd';
 import { Tooltip } from '@/components/ui/tooltip';
-import { overlays, useOverlayState } from './overlay-store';
+import { overlays, useOverlayOpen } from './overlay-store';
 
 /** Number of things saved in "My journey" (flights, places and the parked-car note). */
 export function useSavedCount(): number {
@@ -19,7 +19,7 @@ export function useSavedCount(): number {
 /** Opens the search palette. The shortcut is shown in the tooltip. */
 export function SearchButton({ className }: { className?: string }) {
   const t = useT();
-  const { open } = useOverlayState();
+  const open = useOverlayOpen('search');
   return (
     <Tooltip
       side="bottom"
@@ -33,8 +33,9 @@ export function SearchButton({ className }: { className?: string }) {
         icon="search"
         label={t('search.open')}
         aria-haspopup="dialog"
-        aria-expanded={open === 'search'}
+        aria-expanded={open}
         aria-keyshortcuts="Control+K Meta+K"
+        data-early-overlay="search"
         onClick={() => overlays.openSearch()}
         className={className}
       />
@@ -71,14 +72,14 @@ export function JourneyLink({ className }: { className?: string }) {
 /** Opens the concierge panel. */
 export function ConciergeLauncher({ className }: { className?: string }) {
   const t = useT();
-  const { open } = useOverlayState();
+  const open = useOverlayOpen('concierge');
   return (
     <Tooltip side="bottom" content={t('concierge.open')}>
       <IconButton
         icon="sparkles"
         label={t('concierge.open')}
         aria-haspopup="dialog"
-        aria-expanded={open === 'concierge'}
+        aria-expanded={open}
         onClick={() => overlays.openConcierge()}
         className={className}
       />
@@ -89,13 +90,14 @@ export function ConciergeLauncher({ className }: { className?: string }) {
 /** Opens the menu (navigation, language and display settings). */
 export function MenuButton({ className }: { className?: string }) {
   const t = useT();
-  const { open } = useOverlayState();
+  const open = useOverlayOpen('menu');
   return (
     <IconButton
       icon="menu"
       label={t('common.actions.openMenu')}
       aria-haspopup="dialog"
-      aria-expanded={open === 'menu'}
+      aria-expanded={open}
+      data-early-overlay="menu"
       onClick={() => overlays.openMenu()}
       className={className}
     />
@@ -105,12 +107,12 @@ export function MenuButton({ className }: { className?: string }) {
 /** "Display settings" in the utility bar: opens theme, text size, contrast and motion. */
 export function DisplaySettingsButton({ className }: { className?: string }) {
   const t = useT();
-  const { open } = useOverlayState();
+  const open = useOverlayOpen('preferences');
   return (
     <button
       type="button"
       aria-haspopup="dialog"
-      aria-expanded={open === 'preferences'}
+      aria-expanded={open}
       onClick={() => overlays.openPreferences()}
       className={cn(
         'type-caption inline-flex h-7 items-center gap-1.5 rounded-xs px-1.5 font-semibold text-on-inverse-dim transition-colors duration-fast hover:text-on-inverse',

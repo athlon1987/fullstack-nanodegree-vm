@@ -3,6 +3,7 @@ import { fontVariables } from '@/fonts';
 import { getT } from '@/lib/i18n';
 import { PREFERENCES_INIT_SCRIPT } from '@/lib/preferences';
 import { NotFoundContent } from '@/components/platform/not-found-content';
+import { ShortSharedCache } from '@/components/platform/short-cache';
 import './globals.css';
 
 const en = getT('en');
@@ -19,6 +20,7 @@ export const metadata: Metadata = {
  * whole document with its own styles, fonts and theme script. We cannot know the visitor's
  * language here, so it speaks both: English first, Bahasa Malaysia beside it, each marked with
  * its `lang`. Search works without JavaScript (a plain GET form to the search page).
+ * `ShortSharedCache` caps shared caching of the 404 at a minute (security-12).
  */
 export default function GlobalNotFound() {
   return (
@@ -27,6 +29,7 @@ export default function GlobalNotFound() {
         <script dangerouslySetInnerHTML={{ __html: PREFERENCES_INIT_SCRIPT }} />
       </head>
       <body className="flex min-h-dvh flex-col bg-page text-ink">
+        <ShortSharedCache />
         <NotFoundContent />
       </body>
     </html>

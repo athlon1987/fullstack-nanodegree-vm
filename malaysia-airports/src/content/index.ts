@@ -121,6 +121,7 @@ export function validateAllContent(): ContentIssue[] {
 export * from './types';
 export * from './airports';
 export * from './guides';
+export * from './planning-rules';
 export * from './faqs';
 export * from './notices';
 export * from './corporate';

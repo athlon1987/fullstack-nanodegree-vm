@@ -7,6 +7,7 @@ import {
   airportsWithContent,
   getAirportContent,
   hasTranslation,
+  localizeAirport,
   pick,
   resolveSources,
   type Guide,
@@ -15,7 +16,7 @@ import {
   type Provenance,
   type Source,
 } from '@/content';
-import { GUIDE_GROUPS, GUIDE_NOTE_TOPICS, guideIcon, type GuideGroupId } from './guide-meta';
+import { GUIDE_GROUPS, GUIDE_NOTE_DIRECTION, GUIDE_NOTE_TOPICS, guideIcon, type GuideGroupId } from './guide-meta';
 import { guideScopes, guideStepScopes, type GuideScope } from './guide-scopes';
 import type { IconKey } from '@/components/ui/icon';
 
@@ -145,7 +146,7 @@ export function toNoteView(note: GuideNote, lang: Lang): AirportNoteView {
   return {
     id: note.id,
     airportCode: content?.airport.code ?? note.airport.toUpperCase(),
-    airportName: content?.airport.shortName ?? note.airport.toUpperCase(),
+    airportName: content ? localizeAirport(content.airport, lang).shortName : note.airport.toUpperCase(),
     title: pick(note.title, lang),
     body: pick(note.body, lang),
     provenance: note.provenance,
@@ -157,11 +158,14 @@ export function toNoteView(note: GuideNote, lang: Lang): AirportNoteView {
 export function airportNotesForGuide(slug: string, lang: Lang): AirportNoteView[] {
   const topics = GUIDE_NOTE_TOPICS[slug];
   if (!topics) return [];
+  const direction = GUIDE_NOTE_DIRECTION[slug];
   const notes: AirportNoteView[] = [];
   for (const airport of airportsWithContent()) {
     for (const note of getAirportContent(airport)?.guidesNotes ?? []) {
-      // Content-gap notes are honest but generic; they belong on the airport pages, not here.
-      if (topics.includes(note.topic) && note.provenance !== 'suggestion') notes.push(toNoteView(note, lang));
+      // Coverage notes have their own topic and never match a guide topic (D-05).
+      if (!topics.includes(note.topic)) continue;
+      if (direction && note.appliesTo?.direction && note.appliesTo.direction !== direction) continue;
+      notes.push(toNoteView(note, lang));
     }
   }
   return notes;

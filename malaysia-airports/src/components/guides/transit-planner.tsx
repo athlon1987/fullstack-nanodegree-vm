@@ -57,6 +57,8 @@ const VERDICT: Record<TimeVerdict, { tone: 'positive' | 'warning' | 'critical'; 
   'very-tight': { tone: 'critical', icon: 'octagon-alert', title: 'guidePages.transit.time.verdict.veryTight', body: 'guidePages.transit.time.verdictBody.veryTight' },
 };
 
+const TONE_TEXT = { positive: 'text-positive-fg', warning: 'text-warning-fg', critical: 'text-critical-fg' } as const;
+
 /** Steps the official inter-terminal note covers when the traveller changes terminals. */
 const OFFICIAL_WHEN_CHANGING: readonly TransitStepId[] = ['immigration', 'bags', 'travel', 'check-in'];
 
@@ -82,14 +84,18 @@ export function TransitPlanner({ data, initial }: TransitPlannerProps) {
     } catch {
       // Some embedded browsers forbid history writes; the planner still works without the URL.
     }
+    const nextVerdict = timeVerdict(next.layover, estimateTime(next));
     setAnnouncement(
-      t('guidePages.transit.planner.updated', {
-        summary: t('guidePages.transit.planner.summary', {
-          from: terminalName(next.from),
-          to: terminalName(next.to),
-          ticket: ticketName(next.ticket),
-          layover: formatDuration(next.layover, lang),
+      t('transportPages.transitVerdict.announce', {
+        updated: t('guidePages.transit.planner.updated', {
+          summary: t('guidePages.transit.planner.summary', {
+            from: terminalName(next.from),
+            to: terminalName(next.to),
+            ticket: ticketName(next.ticket),
+            layover: formatDuration(next.layover, lang),
+          }),
         }),
+        verdict: t(VERDICT[nextVerdict].title),
       }),
     );
   };
@@ -180,6 +186,8 @@ export function TransitPlanner({ data, initial }: TransitPlannerProps) {
       </form>
 
       <div className="flex min-w-0 flex-col gap-8">
+        <VerdictCard verdict={verdict} estimate={estimate} layover={input.layover} self={input.ticket === 'self'} late={data.late.length > 0} />
+
         <section aria-labelledby="transit-case-title" className="flex min-w-0 gap-4 rounded-xl border border-ink bg-surface p-5">
           <span aria-hidden="true" className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-inverse text-on-inverse">
             <Icon name={caseCopy.icon} />
@@ -253,40 +261,19 @@ export function TransitPlanner({ data, initial }: TransitPlannerProps) {
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="min-w-0">
               <h3 id="transit-time-title" className="type-title-md text-ink">
-                {t('guidePages.transit.time.title')}
+                {t('guidePages.transit.time.breakdown')}
               </h3>
               <p className="type-body-sm mt-1 text-ink-2">{t('guidePages.transit.time.lead')}</p>
             </div>
             <ProvenanceTag provenance="estimated" />
           </div>
-          <dl className="mt-5 grid gap-4 sm:grid-cols-2">
-            <div className="min-w-0 rounded-lg bg-page-subtle p-4">
-              <dt className="type-caption text-ink-2">{t('guidePages.transit.time.estimate')}</dt>
-              <dd className="type-data-lg mt-1 text-ink">
-                {t('guidePages.transit.time.range', { min: formatDuration(estimate.min, lang), max: formatDuration(estimate.max, lang) })}
-              </dd>
-            </div>
-            <div className="min-w-0 rounded-lg bg-page-subtle p-4">
-              <dt className="type-caption text-ink-2">{t('guidePages.transit.time.yours')}</dt>
-              <dd className="type-data-lg mt-1 text-ink">{formatDuration(input.layover, lang)}</dd>
-            </div>
-          </dl>
-          <Callout tone={VERDICT[verdict].tone} icon={VERDICT[verdict].icon} title={t(VERDICT[verdict].title)} className="mt-4">
-            <p>{t(VERDICT[verdict].body)}</p>
-          </Callout>
           <p className="type-body-sm mt-4 flex gap-2 text-ink">
             <Icon name="info" size="sm" className="mt-0.5 shrink-0" />
             <span>{t('guidePages.transit.time.confirm')}</span>
           </p>
-          {input.ticket === 'self' ? (
-            <p className="type-body-sm mt-2 flex gap-2 text-ink">
-              <Icon name="triangle-alert" size="sm" className="mt-0.5 shrink-0" />
-              <span>{t('guidePages.transit.time.selfWarning')}</span>
-            </p>
-          ) : null}
           <details className="group/est mt-4 border-t border-line pt-3">
             <summary className="type-body-sm inline-flex min-h-11 cursor-pointer items-center gap-1.5 font-semibold text-ink">
-              {t('guidePages.transit.time.breakdown')}
+              {t('guidePages.transit.time.segment')}
               <Icon name="chevron-down" size="sm" className="transition-transform duration-fast group-open/est:rotate-180" />
             </summary>
             <p className="type-caption mb-2 text-ink-2">{t('guidePages.transit.time.breakdownLead')}</p>
@@ -342,5 +329,56 @@ export function TransitPlanner({ data, initial }: TransitPlannerProps) {
         </p>
       </div>
     </div>
+  );
+}
+
+/**
+ * The answer first (C-03): verdict word, one sentence, our time range against the traveller's,
+ * and what to do if it is tight, directly under the form on phone and desktop. Changes are
+ * announced politely by the form's status line.
+ */
+function VerdictCard({ verdict, estimate, layover, self, late }: { verdict: TimeVerdict; estimate: { min: number; max: number }; layover: number; self: boolean; late: boolean }) {
+  const t = useT();
+  const lang = useLang();
+  const copy = VERDICT[verdict];
+  const border = verdict === 'comfortable' ? 'border-positive-border' : verdict === 'tight' ? 'border-warning-border' : 'border-critical-border';
+  return (
+    <section aria-labelledby="transit-verdict-title" data-transit-verdict={verdict} className={cn('flex min-w-0 flex-col gap-4 rounded-xl border-2 bg-surface p-5 shadow-sm', border)}>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <p className="type-eyebrow text-ink-3">{t('guidePages.transit.time.title')}</p>
+        <ProvenanceTag provenance="estimated" length="short" />
+      </div>
+      <div className="flex min-w-0 gap-3">
+        <Icon name={copy.icon} className={cn('mt-1 shrink-0', TONE_TEXT[copy.tone])} />
+        <div className="min-w-0">
+          <h3 id="transit-verdict-title" className="type-title-lg text-ink">
+            {t(copy.title)}
+          </h3>
+          <p className="type-body mt-1 text-ink-2">{t(copy.body)}</p>
+        </div>
+      </div>
+      <dl className="grid grid-cols-2 gap-3">
+        <div className="min-w-0 rounded-lg bg-page-subtle p-3">
+          <dt className="type-caption text-ink-2">{t('guidePages.transit.time.estimate')}</dt>
+          <dd className="type-data-md mt-1 text-ink">{t('guidePages.transit.time.range', { min: formatDuration(estimate.min, lang), max: formatDuration(estimate.max, lang) })}</dd>
+        </div>
+        <div className="min-w-0 rounded-lg bg-page-subtle p-3">
+          <dt className="type-caption text-ink-2">{t('guidePages.transit.time.yours')}</dt>
+          <dd className="type-data-md mt-1 text-ink">{formatDuration(layover, lang)}</dd>
+        </div>
+      </dl>
+      {self ? (
+        <p className="type-body-sm flex gap-2 text-ink">
+          <Icon name="triangle-alert" size="sm" className="mt-0.5 shrink-0" />
+          <span>{t('guidePages.transit.time.selfWarning')}</span>
+        </p>
+      ) : null}
+      {late ? (
+        <a href="#transit-late" className="link-action type-body-sm self-start font-semibold text-ink">
+          {t('transportPages.transitVerdict.tightAction')}
+          <Icon name="arrow-down" size="sm" />
+        </a>
+      ) : null}
+    </section>
   );
 }

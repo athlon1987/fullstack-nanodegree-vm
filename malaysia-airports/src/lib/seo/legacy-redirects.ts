@@ -15,7 +15,13 @@
  *
  * Status codes: 308 (permanent) when the old page has a true equivalent here; 307 (temporary)
  * when we send the visitor to the closest page because the equivalent does not exist yet, so the
- * mapping can improve later without browsers having cached the fallback forever.
+ * mapping can improve later without browsers having cached the fallback forever (docs-07).
+ *
+ * Topics about one record (Fast Track, car rental) name that record per old airport in `records`:
+ * where the airport has it, the redirect is permanent and lands on the record's anchor
+ * (`/kul/facilities?t=T1#kul-t1-fast-track`); elsewhere it is a 307 to the closest page.
+ * `legacy-redirects.test.ts` checks every permanent destination against the content layer: the
+ * section, guide or help topic exists, and a named record exists with that anchor.
  */
 
 /** Airport sections of this site (mirrors `AIRPORT_SECTION_IDS` in `src/components/shell/sections.ts`). */
@@ -45,7 +51,15 @@ export const LEGACY_AIRPORTS: readonly LegacyAirport[] = [
 
 /** Where an old topic goes: an airport section (first available wins), or a network-wide page. */
 export type LegacyDestination =
-  | { sections: readonly LegacySection[]; query?: Record<string, string> }
+  | {
+      sections: readonly LegacySection[];
+      query?: Record<string, string>;
+      /**
+       * The one record this topic is about, by old airport (`klia1`): its page anchor. Airports
+       * without an entry get the closest page with a 307.
+       */
+      records?: Readonly<Record<string, string>>;
+    }
   | { page: string };
 
 export interface LegacyTopic {
@@ -74,10 +88,12 @@ export const LEGACY_TOPICS: readonly LegacyTopic[] = [
   { path: 'air-travel/services', to: { sections: ['facilities'] } },
   { path: 'air-travel/services/airport-care-ambassadors', to: { page: '/help' }, exact: false },
   { path: 'air-travel/services/butterfly-effect', to: { page: '/guides/neurodivergent' } },
-  { path: 'air-travel/services/fast-track', to: { sections: ['overview'] }, exact: false },
+  // Fast Track is a facility record at KLIA only (content D-02): each terminal's tree lands on its record.
+  { path: 'air-travel/services/fast-track', to: { sections: ['facilities'], records: { klia1: 'kul-t1-fast-track', klia2: 'kul-t2-fast-track' } } },
   { path: 'air-travel/services/lost-and-found', to: { page: '/help/lost-property' } },
   { path: 'air-travel/services/special-assistance', to: { page: '/accessibility' } },
-  { path: 'air-travel/services/wifi', to: { sections: ['facilities'] } },
+  // No airport publishes Wi-Fi details we could verify (listed as a gap): closest page, 307.
+  { path: 'air-travel/services/wifi', to: { sections: ['facilities'] }, exact: false },
   { path: 'air-travel/special-assistance', to: { page: '/accessibility' } },
   { path: 'air-travel/flight-transfer', to: { sections: ['transit'] } },
   { path: 'air-travel/inter-terminal-transfer', to: { sections: ['transit'] } },
@@ -89,7 +105,8 @@ export const LEGACY_TOPICS: readonly LegacyTopic[] = [
   { path: 'air-travel/vehicle-access-management-system', to: { sections: ['transport'] }, exact: false },
   { path: 'air-travel/parking', to: { sections: ['parking'] } },
   { path: 'air-travel/public-transport', to: { sections: ['transport'] } },
-  { path: 'air-travel/rental-services', to: { sections: ['transport'] } },
+  // Car rental is a transport record at Penang only; elsewhere the transport page is the closest, 307.
+  { path: 'air-travel/rental-services', to: { sections: ['transport'], records: { penang: 'transport-pen-car-rental' } } },
   { path: 'air-travel/location-map', to: { sections: ['map', 'facilities'] } },
   { path: 'air-travel/passenger-services-charges', to: { page: '/help' }, exact: false },
   { path: 'air-travel/travel-health-sops', to: { page: '/notices' }, exact: false },
@@ -126,15 +143,17 @@ export function resolveLegacyTopic(airport: LegacyAirport, topic: LegacyTopic): 
   }
   const wanted = topic.to.sections;
   const section = wanted.find((candidate) => airport.sections.includes(candidate)) ?? 'overview';
-  const equivalent = section === wanted[0];
+  const record = topic.to.records?.[airport.legacy];
+  const equivalent = section === wanted[0] && (topic.to.records === undefined || record !== undefined);
   const query = new URLSearchParams();
   if (airport.terminal) query.set('t', airport.terminal);
   // Filters only make sense on the page they were written for.
   if (equivalent) for (const [key, value] of Object.entries(topic.to.query ?? {})) query.set(key, value);
   const search = query.toString();
+  const hash = equivalent && record ? `#${record}` : '';
   return {
     from,
-    to: `/${airport.slug}${section === 'overview' ? '' : `/${section}`}${search ? `?${search}` : ''}`,
+    to: `/${airport.slug}${section === 'overview' ? '' : `/${section}`}${search ? `?${search}` : ''}${hash}`,
     permanent: topic.exact !== false && equivalent,
     section,
   };

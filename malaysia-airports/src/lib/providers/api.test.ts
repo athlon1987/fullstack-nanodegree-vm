@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { FLIGHTS_DEFAULT_LIMIT, FLIGHTS_MAX_LIMIT, buildHealth, handleFlightsQuery, type ApiErrorResponse, type FlightsApiResponse } from './api';
+import { FLIGHTS_DEFAULT_LIMIT, FLIGHTS_MAX_LIMIT, buildHealth, handleFlightsQuery, isMonitoringRequest, publicHealth, type ApiErrorResponse, type FlightsApiResponse } from './api';
 
 const NOW = new Date('2026-11-17T06:30:00Z');
 const run = (query: string) => handleFlightsQuery(new URLSearchParams(query), NOW);
@@ -36,7 +36,7 @@ describe('GET /api/flights handler', () => {
     const london = ok('airport=kul&q=london');
     expect(london.flights.length).toBeGreaterThan(0);
     expect(london.flights.every((flight) => flight.destination.city === 'London')).toBe(true);
-    expect(ok('airport=kul&date=2026-12-01&limit=3').flights.every((flight) => flight.date === '2026-12-01')).toBe(true);
+    expect(ok('airport=kul&date=2026-11-18&limit=3').flights.every((flight) => flight.date === '2026-11-18')).toBe(true);
   });
 
   it('caps the limit instead of failing', () => {
@@ -64,7 +64,34 @@ describe('GET /api/flights handler', () => {
   });
 });
 
+describe('API hygiene (security-15)', () => {
+  it('bounds date to yesterday through the day after tomorrow, Malaysian time', () => {
+    expect(ok('airport=kul&date=2026-11-16').query.date).toBe('2026-11-16');
+    expect(ok('airport=kul&date=2026-11-19').query.date).toBe('2026-11-19');
+    for (const date of ['2026-11-15', '2026-11-20', '1900-01-01', '9999-12-31']) {
+      expect(bad(`airport=kul&date=${date}`).error.issues[0]).toMatchObject({ field: 'date', message: 'date must be between 2026-11-16 and 2026-11-19' });
+    }
+  });
+
+  it('rejects repeated parameters, even when one is empty', () => {
+    expect(bad('airport=kul&airport=pen').error.issues).toEqual([{ field: 'airport', message: 'airport is repeated' }]);
+    expect(bad('airport=kul&q=&q=MH').error.issues[0].field).toBe('q');
+  });
+});
+
 describe('GET /api/health payload', () => {
+  it('tells the public only the status and the build (security-11)', () => {
+    expect(publicHealth('202611210110')).toEqual({ status: 'ok', build: '202611210110' });
+    expect(publicHealth(undefined)).toEqual({ status: 'ok', build: 'unversioned' });
+    expect(publicHealth('<script>')).toEqual({ status: 'ok', build: 'unversioned' });
+    const token = 'a-long-monitoring-token-123';
+    expect(isMonitoringRequest(`Bearer ${token}`, token)).toBe(true);
+    expect(isMonitoringRequest('Bearer wrong-token-of-length-27', token)).toBe(false);
+    expect(isMonitoringRequest(`Bearer ${token}`, undefined)).toBe(false);
+    expect(isMonitoringRequest(`Bearer short`, 'short')).toBe(false);
+    expect(isMonitoringRequest(null, token)).toBe(false);
+  });
+
   it('reports provider modes and build information', () => {
     const health = buildHealth(NOW, { NODE_ENV: 'test', GIT_COMMIT: 'abc123' });
     expect(health.status).toBe('ok');

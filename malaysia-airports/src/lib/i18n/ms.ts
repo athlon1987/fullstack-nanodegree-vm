@@ -368,7 +368,7 @@ export const ms: Dictionary = {
     mapNote: 'Ini peta demonstrasi skematik, bukan pelan lantai.',
     notificationsNote: 'Pemberitahuan dalam prototaip ini hanyalah demonstrasi.',
     learnMore: 'Tentang prototaip ini',
-    doNotPlan: 'Jangan gunakannya untuk merancang perjalanan.',
+    doNotPlan: 'Jangan gunakan data ini untuk merancang perjalanan.',
   },
   freshness: {
     updated: 'Dikemas kini {time}',
@@ -724,7 +724,12 @@ export const ms: Dictionary = {
       selected: 'Dipilih',
       changeFrom: 'Tukar lapangan terbang. Kini {airport}',
     },
-    bottomBar: { label: 'Navigasi pantas', journey: 'Perjalanan', menu: 'Menu' },
+    bottomBar: {
+      label: 'Navigasi pantas',
+      journey: 'Perjalanan',
+      journeyCount: { one: 'Perjalanan: {count} item disimpan', other: 'Perjalanan: {count} item disimpan' },
+      menu: 'Menu',
+    },
     menu: { title: 'Menu', explore: 'Teroka', more: 'Lagi', languageAndDisplay: 'Bahasa dan paparan' },
     footer: {
       statementTitle: 'Apakah prototaip ini',
@@ -959,7 +964,7 @@ export const ms: Dictionary = {
     homeSearch: {
       arrivalsInstead: 'Cari penerbangan tiba',
       departuresInstead: 'Cari penerbangan berlepas',
-      doNotPlan: 'Jangan gunakannya untuk merancang perjalanan.',
+      doNotPlan: 'Jangan gunakan penerbangan ini untuk merancang perjalanan.',
       siteTitle: 'Di laman ini',
       noFlights: 'Tiada penerbangan sepadan dengan "{query}".',
       tryThese: 'Halaman ini mungkin membantu:',
@@ -994,6 +999,10 @@ export const ms: Dictionary = {
       trolley: {
         title: 'Troli bagasi: belum diterbitkan',
         summary: 'Kami belum menerbitkan lokasi troli bagasi atau sama ada ia percuma. Tanya di kaunter pertanyaan atau semak laman rasmi lapangan terbang.',
+      },
+      fastTrack: {
+        title: 'Laluan pantas (fast track): belum diterbitkan',
+        summary: 'Kami belum menerbitkan butiran laluan pantas atau lorong keutamaan di mana-mana lapangan terbang. Tanya syarikat penerbangan anda atau Malaysia Airports sebelum anda melancong.',
       },
     },
     directory: { pinnedTitle: 'Mula dengan', lastUsed: 'Pilihan terakhir anda' },

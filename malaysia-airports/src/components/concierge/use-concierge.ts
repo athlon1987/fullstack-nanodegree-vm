@@ -3,7 +3,11 @@
 /**
  * Concierge state and the ask flow, shared by the panel and the full page.
  *
- * - Consent is remembered on this device (`ma:concierge-consent:v1`).
+ * - Until the visitor agrees, every question is answered on this device by the deterministic
+ *   engine from the knowledge pack: nothing is sent, so no consent is needed and suggested
+ *   questions answer at once (B-15, usability-21).
+ * - Consent (`ma:concierge-consent:v1`) is asked only before the concierge service is used, which
+ *   may word answers with AI, and before the saved flight is included.
  * - The conversation lives in session storage (`ma:concierge-conversation:v1`): this tab only,
  *   gone when the tab closes. Nothing is stored on the server.
  * - A question goes to `/api/concierge`. If that fails (offline, rate-limited, timeout, server
@@ -28,8 +32,8 @@ export interface ConciergeTurn {
   status: 'pending' | 'done' | 'error';
   answer?: ConciergeAnswer;
   mode?: ConciergeMode;
-  /** Why the answer was produced on this device. */
-  note?: 'offline' | 'rate-limited';
+  /** Why the answer was produced on this device: the service failed, or the visitor has not opted in (`private`). */
+  note?: 'offline' | 'rate-limited' | 'private';
   /** Context the question was asked with, for "Try again". */
   context?: ConciergeContext;
 }
@@ -82,7 +86,7 @@ const ConversationSchema = z.object({
       status: z.enum(['pending', 'done', 'error']),
       answer: z.custom<ConciergeAnswer>(isAnswer).optional(),
       mode: z.enum(['grounded', 'grounded-rephrased', 'local']).optional(),
-      note: z.enum(['offline', 'rate-limited']).optional(),
+      note: z.enum(['offline', 'rate-limited', 'private']).optional(),
       context: ContextSchema.optional(),
     }),
   ),
@@ -128,6 +132,11 @@ export function loadKnowledge(lang: Lang): Promise<ConciergeKnowledge> {
   return pending;
 }
 
+/** Load the engine and the knowledge pack ahead of the first question (on idle), so on-device answers are immediate. */
+export function prepareOnDevice(lang: Lang): void {
+  void Promise.all([import('@/lib/concierge/engine'), import('@/lib/concierge/flights'), import('@/lib/providers'), loadKnowledge(lang)]).catch(() => undefined);
+}
+
 async function answerOnDevice(question: string, lang: Lang, context: ConciergeContext): Promise<ConciergeAnswer> {
   const [engine, adapters, providers, knowledge] = await Promise.all([
     import('@/lib/concierge/engine'),
@@ -139,7 +148,7 @@ async function answerOnDevice(question: string, lang: Lang, context: ConciergeCo
   return engine.answerQuestion({ question, lang, context }, { knowledge, now, flights: adapters.flightSourceFromProvider(providers.getFlightProvider(now)) });
 }
 
-type ApiResult = { ok: true; data: ConciergeResponse } | { ok: false; reason: 'offline' | 'rate-limited' };
+type ApiResult = { ok: true; data: ConciergeResponse } | { ok: false; reason: 'offline' | 'rate-limited' | 'private' };
 
 async function askServer(question: string, lang: Lang, context: ConciergeContext): Promise<ApiResult> {
   const controller = new AbortController();
@@ -167,8 +176,11 @@ function update(id: string, patch: Partial<ConciergeTurn>): void {
   conversationStore.set((state) => ({ ...state, turns: state.turns.map((turn) => (turn.id === id ? { ...turn, ...patch } : turn)) }));
 }
 
-/** Ask a question. Resolves with the finished turn (for the live announcement). */
-async function runAsk(question: string, lang: Lang, context: ConciergeContext, replaceId?: string): Promise<ConciergeTurn> {
+/**
+ * Ask a question. Resolves with the finished turn (for the live announcement). With `useServer`
+ * false (no consent yet) the answer is put together on this device and nothing is sent.
+ */
+async function runAsk(question: string, lang: Lang, context: ConciergeContext, useServer: boolean, replaceId?: string): Promise<ConciergeTurn> {
   counter += 1;
   const id = replaceId ?? `turn-${Date.now().toString(36)}-${counter}`;
   inflight.add(id);
@@ -179,7 +191,7 @@ async function runAsk(question: string, lang: Lang, context: ConciergeContext, r
   }));
   let finished: ConciergeTurn;
   try {
-    const result = await askServer(question, lang, context);
+    const result: ApiResult = useServer ? await askServer(question, lang, context) : { ok: false, reason: 'private' };
     if (result.ok) {
       finished = { ...pending, status: 'done', answer: result.data.answer, mode: result.data.mode };
     } else {
@@ -217,28 +229,38 @@ export function useConcierge(lang: Lang) {
         intent: override?.intent ?? last?.intent,
         category: override?.category ?? last?.category,
         destination: override?.destination ?? last?.destination,
-        flightId: state.useFlight ? savedFlight?.id : undefined,
+        // The saved flight is sent only with consent (B-15).
+        flightId: consent && state.useFlight ? savedFlight?.id : undefined,
       };
     },
-    [scope, state.turns, state.useFlight, savedFlight],
+    [scope, state.turns, state.useFlight, savedFlight, consent],
   );
 
-  const ask = useCallback((question: string, override?: ConciergeContext) => runAsk(question.trim(), lang, contextFor(override)), [lang, contextFor]);
-  const retry = useCallback((turn: ConciergeTurn) => runAsk(turn.question, lang, turn.context ?? contextFor(), turn.id), [lang, contextFor]);
+  const ask = useCallback((question: string, override?: ConciergeContext) => runAsk(question.trim(), lang, contextFor(override), consent), [lang, contextFor, consent]);
+  const retry = useCallback(
+    (turn: ConciergeTurn) => runAsk(turn.question, lang, consent ? (turn.context ?? contextFor()) : { ...(turn.context ?? contextFor()), flightId: undefined }, consent, turn.id),
+    [lang, contextFor, consent],
+  );
   const clear = useCallback(() => conversationStore.set((current) => ({ ...current, turns: [] })), []);
   const clearScope = useCallback(() => conversationStore.set((current) => ({ ...current, scope: {} })), []);
   const setUseFlight = useCallback((on: boolean) => conversationStore.set((current) => ({ ...current, useFlight: on })), []);
   const accept = useCallback(() => consentStore.set(true), []);
+  /** Back to answers on this device only: forget the consent and stop including the saved flight. */
+  const revoke = useCallback(() => {
+    consentStore.set(false);
+    conversationStore.set((current) => ({ ...current, useFlight: false }));
+  }, []);
 
   return {
     turns: state.turns,
     busy: state.turns.some((turn) => turn.status === 'pending' && !isInterrupted(turn)),
     consent,
     accept,
+    revoke,
     scope,
     clearScope,
     savedFlight,
-    useFlight: state.useFlight && savedFlight !== undefined,
+    useFlight: consent && state.useFlight && savedFlight !== undefined,
     setUseFlight,
     ask,
     retry,

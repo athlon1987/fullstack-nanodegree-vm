@@ -5,7 +5,7 @@
 import { pick, type AirportContent, type Lang } from '@/content';
 import { needsTranslationNotice, noteView, officialSite, sourceLookup, terminalInfo } from '@/components/transport/transport-data.server';
 import { officialSourceUrl, type NoteView } from '@/components/transport/transport-types';
-import type { CarParkView, ParkingPageData } from './parking-types';
+import type { CarParkView, ParkingPageData, ReportedFigure } from './parking-types';
 
 /** The parking page model, plus the notes rendered on the server. */
 export interface ParkingPageModel {
@@ -52,6 +52,16 @@ export function parkingPageModel(content: AirportContent, lang: Lang): ParkingPa
     if (carPark.evCharging !== undefined) view.evCharging = carPark.evCharging;
     if (carPark.bookingUrl) view.bookingUrl = carPark.bookingUrl;
     if (carPark.asOf) view.asOf = carPark.asOf;
+    // Only figures whose source the car park itself cites, so every number keeps its attribution.
+    const reported = (carPark.reportedDailyMax ?? [])
+      .filter((figure) => carPark.sources.includes(figure.source) && sources[figure.source])
+      .map((figure): ReportedFigure => {
+        const source = sources[figure.source];
+        const item: ReportedFigure = { amount: figure.amount, sourceId: source.id, publisher: source.publisher, retrieved: source.retrieved };
+        if (source.asOf) item.asOf = source.asOf;
+        return item;
+      });
+    if (reported.length > 0) view.reported = reported;
     return view;
   });
 

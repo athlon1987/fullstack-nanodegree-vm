@@ -3,6 +3,7 @@
  * estimate. Pure and client-safe. Every number here is a planning assumption of this prototype
  * (tagged `estimated` wherever it is shown), never an airport or airline figure.
  */
+import { TRANSIT_ASSUMPTIONS } from '@/content/planning-rules';
 
 export type TransitTerminal = 'T1' | 'T2';
 export type TicketType = 'protected' | 'self';
@@ -111,26 +112,11 @@ export interface Segment {
   max: number;
 }
 
-/** Planning assumptions, in minutes. Documented in the hand-off note; shown on the page as "our assumption". */
-export const ASSUMPTIONS = {
-  leaveAircraft: [10, 25],
-  transfer: [15, 40],
-  immigration: [15, 60],
-  bags: [15, 45],
-  bagsMaybe: [0, 45],
-  customs: [5, 15],
-  travel: [15, 35],
-  toDepartures: [5, 15],
-  checkIn: [10, 30],
-  controls: [15, 45],
-  controlsDomestic: [10, 25],
-  gate: [10, 25],
-  /** Check-in usually closes this long before departure (our assumption). */
-  cutoffInternational: 60,
-  cutoffDomestic: 45,
-  /** Gates usually close this long before departure (our assumption). */
-  gateClose: 20,
-} as const;
+/**
+ * Planning assumptions, in minutes. They live in the content layer (`TRANSIT_ASSUMPTIONS`, D-13) with
+ * their provenance and source; shown on the page as "our assumption".
+ */
+export const ASSUMPTIONS = TRANSIT_ASSUMPTIONS.minutes;
 
 function seg(id: Exclude<SegmentId, 'cutoff' | 'gateClose'>): Segment {
   const [min, max] = ASSUMPTIONS[id];

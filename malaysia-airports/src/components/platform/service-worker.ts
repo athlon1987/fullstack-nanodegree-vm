@@ -13,8 +13,8 @@ import {
   CACHE_NAMES,
   CACHE_PREFIX,
   NETWORK_TIMEOUT_MS,
-  PRECACHE_PATHS,
   SAVED_AT_HEADER,
+  SAVE_FETCH_CACHE,
   TITLE_HEADER,
   classifyRequest,
   extractAssetUrls,
@@ -24,6 +24,7 @@ import {
   normalisePath,
   offlinePagePath,
   pageKey,
+  precachePaths,
   type SwLang,
 } from './sw-routes';
 
@@ -90,9 +91,10 @@ sw.addEventListener('activate', (event) => {
       for (const name of await caches.keys()) if (name.startsWith(CACHE_PREFIX) && !current.has(name)) await caches.delete(name);
       await sw.registration.navigationPreload?.enable().catch(() => undefined);
       await sw.clients.claim();
-      // Keep the page the visitor is on: it loaded before this worker was in control.
+      // Keep the page the visitor is on (it loaded before this worker was in control), unless the
+      // install already saved it.
       const windows = await sw.clients.matchAll({ type: 'window' });
-      await Promise.allSettled(windows.map((client) => savePage(new URL(client.url), { withAssets: true })));
+      for (const client of windows) await savePage(new URL(client.url), { withAssets: true, skipIfSaved: true }).catch(() => undefined);
     })(),
   );
 });
@@ -146,18 +148,36 @@ sw.addEventListener('fetch', (event) => {
 
 /* ----------------------------------------------------------------------------------------- */
 
+/** The language of the page that registered the worker (it is open while the worker installs). */
+async function visitorLang(): Promise<SwLang> {
+  const windows = await sw.clients.matchAll({ type: 'window', includeUncontrolled: true }).catch(() => [] as WorkerClient[]);
+  for (const client of windows) {
+    const lang = langOfPath(new URL(client.url).pathname);
+    if (lang) return lang;
+  }
+  return sw.navigator.language?.toLowerCase().startsWith('ms') ? 'ms' : 'en';
+}
+
 async function precache(): Promise<void> {
-  const results = await Promise.allSettled(PRECACHE_PATHS.map((path) => savePage(new URL(path, ORIGIN), { withAssets: true, required: true })));
-  // The offline pages are the minimum: without them, do not take control (the browser retries later).
-  const offlineFailed = PRECACHE_PATHS.some((path, index) => path.endsWith('/offline') && results[index].status === 'rejected');
+  lastLang = await visitorLang();
+  const paths = precachePaths(lastLang);
+  // One after the other: the shared bundles are fetched once, then found in the cache.
+  const results: PromiseSettledResult<void>[] = [];
+  for (const path of paths) {
+    results.push(...(await Promise.allSettled([savePage(new URL(path, ORIGIN), { withAssets: true, required: true })])));
+  }
+  // The offline page is the minimum: without it, do not take control (the browser retries later).
+  const offlineFailed = paths.some((path, index) => path.endsWith('/offline') && results[index].status === 'rejected');
   if (offlineFailed) throw new Error('Offline page could not be saved');
 }
 
 /** Fetch a page and store it with its title and time; optionally store its bundles too. */
-async function savePage(url: URL, options: { withAssets?: boolean; required?: boolean } = {}): Promise<void> {
+async function savePage(url: URL, options: { withAssets?: boolean; required?: boolean; skipIfSaved?: boolean } = {}): Promise<void> {
   const kind = classifyRequest(url, { method: 'GET', mode: 'navigate', destination: 'document', rsc: false, sameOrigin: url.origin === ORIGIN });
   if (kind !== 'page' && kind !== 'guidance') return;
-  const response = await fetch(url.toString(), { cache: 'reload', credentials: 'same-origin' });
+  if (options.skipIfSaved && (await savedPage(pageKey(url)))) return;
+  // Revalidate instead of reloading: a page the browser has just downloaded costs a 304, not a copy.
+  const response = await fetch(url.toString(), { cache: SAVE_FETCH_CACHE, credentials: 'same-origin' });
   const stored = await storePage(pageKey(url), response);
   if (!stored) {
     if (options.required) throw new Error(`Could not save ${url.pathname}`);
@@ -183,28 +203,32 @@ async function storePage(key: string, response: Response): Promise<string | null
   return html;
 }
 
+/** Asset saves in progress, so two pages that share a bundle fetch it once (performance-11). */
+const assetsInFlight = new Map<string, Promise<void>>();
+
+/** Store one content-hashed asset once; the browser's HTTP cache usually has it already. */
+function saveAsset(cache: Cache, asset: string): Promise<void> {
+  const pending = assetsInFlight.get(asset);
+  if (pending) return pending;
+  const task = (async () => {
+    if (await cache.match(asset)) return;
+    // Bundles are immutable (content-hashed URLs): reuse the copy the page load just fetched.
+    const response = await fetch(asset, { credentials: 'same-origin', cache: 'force-cache' });
+    if (!isStorable(response, 'any')) return;
+    await cache.put(asset, response.clone());
+    if (asset.endsWith('.css')) {
+      const fonts = extractAssetUrls(await response.text(), asset).filter((font) => font !== asset);
+      await Promise.allSettled(fonts.map((font) => saveAsset(cache, font)));
+    }
+  })().finally(() => assetsInFlight.delete(asset));
+  assetsInFlight.set(asset, task);
+  return task;
+}
+
 /** Store the bundles a page needs (and the fonts its stylesheets name), skipping ones we have. */
 async function saveAssets(html: string, pageUrl: string): Promise<void> {
   const cache = await caches.open(CACHE_NAMES.static);
-  const assets = extractAssetUrls(html, pageUrl);
-  await Promise.allSettled(
-    assets.map(async (asset) => {
-      if (await cache.match(asset)) return;
-      const response = await fetch(asset, { credentials: 'same-origin' });
-      if (!isStorable(response, 'any')) return;
-      await cache.put(asset, response.clone());
-      if (asset.endsWith('.css')) {
-        const fonts = extractAssetUrls(await response.text(), asset).filter((font) => font !== asset);
-        await Promise.allSettled(
-          fonts.map(async (font) => {
-            if (await cache.match(font)) return;
-            const fontResponse = await fetch(font, { credentials: 'same-origin' });
-            if (isStorable(fontResponse, 'any')) await cache.put(font, fontResponse);
-          }),
-        );
-      }
-    }),
-  );
+  await Promise.allSettled(extractAssetUrls(html, pageUrl).map((asset) => saveAsset(cache, asset)));
   await trim(CACHE_NAMES.static, CACHE_LIMITS.static);
 }
 

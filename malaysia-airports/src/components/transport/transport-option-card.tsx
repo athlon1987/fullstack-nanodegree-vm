@@ -11,7 +11,8 @@ import { SourceNote } from '@/components/common/source-note';
 import { Chip } from '@/components/ui/chip';
 import { Icon } from '@/components/ui/icon';
 import { fareInfo } from './transport-logic';
-import { officialSourceUrl, sourcesFor, type TransportContext } from './transport-types';
+import { ToutsWarning } from './touts-warning';
+import { officialSourceUrl, sourcesFor, ticketChannel, type TransportContext } from './transport-types';
 import { AccessValue, AsOf, BoardingList, DurationValue, Fact, FareFigure, FareTimeline, FrequencyValue, HoursValue, PaymentValue } from './transport-values';
 
 /** Remarks worth a chip on a ranked card. */
@@ -46,6 +47,7 @@ export function TransportOptionCard({ option, placeKey, context, day, terminal, 
   const info = fareInfo(option, placeKey, day);
   const titleId = `transport-${option.id}-title`;
   const official = officialSourceUrl(option.sources, context.sources);
+  const tickets = ticketChannel(option, context.sources);
   const note = info.doorToDoor ? undefined : info.shown?.note ?? info.place?.periods[0]?.destination.note;
   const route = info.doorToDoor ? t('transportPages.planner.doorToDoor') : info.place ? pick(info.place.name, lang) : undefined;
   const hasHours = option.hours !== undefined;
@@ -114,6 +116,7 @@ export function TransportOptionCard({ option, placeKey, context, day, terminal, 
       ) : null}
 
       <div className="flex flex-col gap-5 border-t border-line p-4 sm:p-5">
+        {option.mode === 'taxi' || option.mode === 'e-hailing' ? <ToutsWarning context={context} variant="inline" mode={option.mode} /> : null}
         {option.description ? <p className="type-body-sm max-w-reading text-ink-2">{pick(option.description, lang)}</p> : null}
         <dl className="grid grid-cols-1 gap-x-8 gap-y-5 @md:grid-cols-2 @4xl:grid-cols-4">
           {route ? (
@@ -159,8 +162,12 @@ export function TransportOptionCard({ option, placeKey, context, day, terminal, 
             <ExternalLink href={option.bookingUrl} variant="action" className="type-body-sm">
               {t('transportPages.planner.bookOnline')}
             </ExternalLink>
+          ) : tickets ? (
+            <ExternalLink href={tickets} variant="action" className="type-body-sm font-semibold">
+              {t('transportPages.planner.tickets')}
+            </ExternalLink>
           ) : null}
-          {official ? (
+          {official && official !== tickets ? (
             <ExternalLink href={official} variant="action" className="type-body-sm">
               {t('common.actions.openOfficialSite')}
             </ExternalLink>

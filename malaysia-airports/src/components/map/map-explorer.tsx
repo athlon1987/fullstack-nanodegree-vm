@@ -22,6 +22,7 @@ import {
   MAP_FILTERS,
   applyQueryPatch,
   buildRouteSteps,
+  CHECKPOINT_KINDS,
   clampView,
   filterCounts,
   fitView,
@@ -134,8 +135,10 @@ function MapWorkspace({ map, query, sources, facilitiesHref, officialMapUrl, off
       placeByNode: new Map(map.pois.map((poi) => [poi.node, poi.name])),
       levelOrder: new Map(map.levels.map((level) => [level.id, level.order])),
       edgeNotes: map.edgeNotes,
+      checkpoints: new Set(map.pois.filter((poi) => CHECKPOINT_KINDS.includes(poi.kind)).map((poi) => poi.node)),
+      stepFree: query.stepFree,
     }),
-    [map],
+    [map, query.stepFree],
   );
 
   // `?gate=C12` (journey timeline): show the gate and make it the route's destination, then keep

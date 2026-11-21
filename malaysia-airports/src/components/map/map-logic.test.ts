@@ -11,9 +11,12 @@ import {
   fitView,
   levelBounds,
   gatePlaceId,
+  CHECKPOINT_KINDS,
   parseMapQuery,
   passesFilters,
   placeLabels,
+  placeOptionLabels,
+  placePosition,
   routeMinutes,
   routingModel,
   scoreMatch,
@@ -220,5 +223,74 @@ describe('gate deep links (journey timeline)', () => {
     expect(gatePlaceId(pois, 'C12')).toBe('g-gates-c');
     expect(gatePlaceId(pois, 'h3')).toBe('g-gates-h');
     expect(gatePlaceId(pois, 'Z9')).toBeUndefined();
+  });
+});
+
+describe('fix round: positions, option labels and step-free directions', () => {
+  it('does not give an illustrative pin a level or area its facility does not publish (C-04)', () => {
+    const prayer = view.pois.find((poi) => poi.id === 'l5-prayer-room');
+    if (!prayer?.facility) throw new Error('prayer room point or facility missing');
+    expect(prayer.provenance).toBe('demo');
+    expect(prayer.facility.levelName).toBeUndefined();
+    expect(prayer.facility.zone).toBe('unknown');
+    expect(placePosition(prayer)).toEqual({ level: false, area: false, unpublished: true });
+    // A sourced point keeps its level and area.
+    const calm = view.pois.find((poi) => poi.id === 'l5-calm-room');
+    expect(calm && placePosition(calm)).toEqual({ level: true, area: true, unpublished: false });
+    // A demo point with no facility behind it is unchanged (its name already says "illustrative").
+    const toilets = view.pois.find((poi) => poi.id === 'l5-toilets');
+    expect(toilets && placePosition(toilets)).toEqual({ level: true, area: true, unpublished: false });
+    // Every demo point linked to a facility follows the facility record.
+    for (const poi of view.pois.filter((item) => item.provenance === 'demo' && item.facility)) {
+      const position = placePosition(poi);
+      expect(position.level).toBe(poi.facility?.levelName !== undefined);
+      expect(position.area).toBe(poi.facility?.zone !== 'unknown');
+    }
+  });
+
+  it('labels every From and To option uniquely on every map (C-09)', () => {
+    for (const content of [kul]) {
+      for (const model of content.maps) {
+        for (const lang of ['en', 'ms'] as const) {
+          const map = buildMapView(model, content, lang);
+          const labels = [...placeOptionLabels(map).values()];
+          expect(labels).toHaveLength(map.pois.length);
+          expect(new Set(labels).size).toBe(labels.length);
+        }
+      }
+    }
+    const labels = placeOptionLabels(view);
+    expect(labels.get('g-aerotrain-main')).toBe('Aerotrain station (Main Terminal Building) · Gates');
+    expect(labels.get('g-aerotrain-satellite')).toBe('Aerotrain station (Satellite Building) · Gates');
+    expect(labels.get('g-gates-c')).toBe('Gates C · Gates');
+  });
+
+  it('names immigration, customs and the level change on a step-free route from gate C to the arrivals pick-up (C-08)', () => {
+    // The taxi counter is not a map place yet (hand-off to D); the arrivals pick-up is the nearest point.
+    const path = shortestPath(model, 'g-gates-c', 'l3-kerb', { accessibleOnly: true });
+    if (!path) throw new Error('no step-free path');
+    const checkpoints = new Set(view.pois.filter((poi) => CHECKPOINT_KINDS.includes(poi.kind)).map((poi) => poi.node));
+    const steps = buildRouteSteps(path, { ...context, checkpoints, stepFree: true });
+    const kinds = steps.map((step) => step.kind);
+    // No vague "Walk on": every walk names where it goes.
+    expect(steps.filter((step) => step.kind === 'walk').every((step) => step.place || step.approach)).toBe(true);
+    // The level change is its own named, step-free step that leads to arrival immigration.
+    const change = steps.find((step) => step.toLevel === 'L3');
+    expect(change).toMatchObject({ kind: 'checkpoint', levelDirection: 'down', stepFree: true, place: 'Arrival immigration' });
+    // Customs is a named step of its own.
+    expect(steps.find((step) => step.kind === 'checkpoint' && step.place === 'Customs')).toBeDefined();
+    expect(kinds.at(-1)).toBe('arrive');
+    expect(steps.at(-1)?.place).toBe('Arrivals pick-up');
+    // Immigration comes before customs.
+    expect(steps.findIndex((step) => step.place === 'Arrival immigration')).toBeLessThan(steps.findIndex((step) => step.place === 'Customs'));
+  });
+
+  it('keeps a security checkpoint as its own step on the way to the C gates', () => {
+    const path = shortestPath(model, 'l5-kerb', 'g-gates-c');
+    if (!path) throw new Error('no path');
+    const checkpoints = new Set(view.pois.filter((poi) => CHECKPOINT_KINDS.includes(poi.kind)).map((poi) => poi.node));
+    const steps = buildRouteSteps(path, { ...context, checkpoints });
+    expect(steps.find((step) => step.kind === 'checkpoint')?.place).toMatch(/Immigration and security/);
+    expect(steps.some((step) => step.kind === 'through' && step.toLevel === 'GATES' && step.levelDirection === 'down')).toBe(true);
   });
 });

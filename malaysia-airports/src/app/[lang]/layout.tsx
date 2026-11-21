@@ -11,7 +11,7 @@ import { ShellProvider } from '@/components/shell/shell-context';
 import { SiteFooter } from '@/components/shell/site-footer';
 import { SiteHeader } from '@/components/shell/site-header';
 import { fontVariables } from '@/fonts';
-import { getDictionary, getT, isLang, langParams } from '@/lib/i18n';
+import { clientDictionary, getT, isLang, langParams } from '@/lib/i18n';
 import { I18nProvider } from '@/lib/i18n/client';
 import { PREFERENCES_INIT_SCRIPT } from '@/lib/preferences';
 import { SITE_INDEXABLE } from '@/lib/seo';
@@ -69,7 +69,7 @@ export default async function RootLayout({ children }: LayoutProps<'/[lang]'>) {
         <script dangerouslySetInnerHTML={{ __html: PREFERENCES_INIT_SCRIPT }} />
       </head>
       <body className="flex min-h-dvh flex-col">
-        <I18nProvider lang={lang} dictionary={getDictionary(lang)}>
+        <I18nProvider lang={lang} dictionary={clientDictionary(lang)}>
           <ShellProvider sections={sectionAvailability()} officialSiteUrl={getSource('mahb-airports-site')?.url}>
             <SkipLink label={t('common.actions.skipToContent')} />
             <SiteHeader lang={lang} />

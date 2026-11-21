@@ -1,12 +1,10 @@
 'use client';
 
-import Link from 'next/link';
 import { useSelectedLayoutSegment } from 'next/navigation';
 import { Suspense, useEffect, useId, useRef, useState, type KeyboardEvent } from 'react';
 import type { TerminalId } from '@/content/types';
 import { cn } from '@/lib/cn';
-import { useLang, useT } from '@/lib/i18n/client';
-import { localeHref } from '@/lib/locale';
+import { useT } from '@/lib/i18n/client';
 import { AirportCode } from '@/components/common/airport-code';
 import { LocalTime } from '@/components/common/local-time';
 import { LocaleLink } from '@/components/common/locale-link';
@@ -37,7 +35,6 @@ function ActiveTerminal({ slug }: { slug: string }) {
 
 function SectionLinks({ slug, sections, terminal, onNavigate }: { slug: string; sections: readonly AirportSectionId[]; terminal?: TerminalId; onNavigate: () => void }) {
   const t = useT();
-  const lang = useLang();
   const segment = useSelectedLayoutSegment();
   return (
     <ul className="grid grid-cols-2 gap-1">
@@ -45,15 +42,15 @@ function SectionLinks({ slug, sections, terminal, onNavigate }: { slug: string; 
         const current = (segment ?? '') === section.segment;
         return (
           <li key={section.id} className="flex min-w-0">
-            <Link
-              href={localeHref(lang, sectionPath(slug, section.id, terminal))}
+            <LocaleLink
+              href={sectionPath(slug, section.id, terminal)}
               aria-current={current ? 'page' : undefined}
               onClick={onNavigate}
               className="flex min-h-11 w-full min-w-0 items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium text-ink-2 hover:bg-surface hover:text-ink aria-[current]:bg-surface aria-[current]:font-semibold aria-[current]:text-ink aria-[current]:shadow-[inset_3px_0_0_0_var(--color-primary)]"
             >
               <Icon name={section.icon} size="sm" className={current ? 'text-primary-ink' : 'text-ink-3'} />
               <span className="min-w-0">{t(section.labelKey)}</span>
-            </Link>
+            </LocaleLink>
           </li>
         );
       })}
@@ -102,14 +99,16 @@ export function AirportBar({ slug, name, fullName, code, timeZone, terminals, se
 
   return (
     <>
-      {/* 55 px plus the 1 px rule: at most 56 px on a phone at 100% text (A-01). */}
-      <Container className="flex min-h-[3.4375rem] items-center gap-x-3 py-1 md:min-h-13">
+      {/* 55 px plus the 1 px rule: at most 56 px on a phone at 100% text (A-01). The bar is a
+          size container, so at 360 px or 125% text it drops the boxed code (the name stays) and
+          shows the Sections control as an icon, instead of squeezing the name letter by letter. */}
+      <Container className="@container flex min-h-[3.4375rem] items-center gap-x-3 py-1 md:min-h-13">
         <LocaleLink
           href={`/${slug}`}
           className="flex min-h-11 min-w-0 items-center gap-2 rounded-md text-ink hover:text-primary-ink"
         >
-          <AirportCode code={code} name={fullName} variant="boxed" size="sm" />
-          <span className="type-title-sm min-w-0 leading-tight">{name}</span>
+          <AirportCode code={code} name={fullName} variant="boxed" size="sm" className="@max-[21rem]:hidden" />
+          <span className="type-title-sm min-w-0 leading-tight [overflow-wrap:normal]">{name}</span>
           <span className="sr-only">{t('shellExtras.airportBar.overviewSuffix')}</span>
         </LocaleLink>
         {terminals.length > 0 ? (
@@ -137,7 +136,7 @@ export function AirportBar({ slug, name, fullName, code, timeZone, terminals, se
           className="ml-auto inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-md border border-line-control bg-surface px-3 text-sm font-semibold text-ink transition-colors duration-fast hover:border-ink md:hidden"
         >
           <Icon name="layers" size="sm" strokeWidth={2} />
-          {t('shellExtras.airportBar.sections')}
+          <span className="@max-[19rem]:sr-only">{t('shellExtras.airportBar.sections')}</span>
           <Icon name="chevron-down" size="sm" strokeWidth={2} className={cn('transition-transform duration-fast', open && 'rotate-180')} />
         </button>
       </Container>

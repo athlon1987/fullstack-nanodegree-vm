@@ -54,3 +54,85 @@ export function checkGrounded(candidate: string, ...references: (string | Prepar
   }
   return { ok: unsupported.length === 0, unsupported };
 }
+
+/* ---- Extra checks for the AI rewording (security-04) ---------------------------------------- */
+
+/**
+ * Web addresses, bare domains, e-mail addresses and phone numbers in a text, normalised (lower
+ * case; phones as digits only). A rewording may contain one only when a retrieved statement
+ * contains the same one: a scam booking site or refund address must never reach a visitor.
+ */
+export function contactsIn(text: string): string[] {
+  const found: string[] = [];
+  let rest = text;
+  for (const match of text.matchAll(/[\p{L}0-9._%+-]+@[\p{L}0-9.-]+\.[\p{L}]{2,}/gu)) {
+    found.push(`email:${match[0].toLowerCase()}`);
+    rest = rest.replace(match[0], ' ');
+  }
+  for (const match of rest.matchAll(/\b(?:https?:\/\/|www\.)[^\s<>"')]+/gi)) {
+    found.push(`url:${match[0].toLowerCase().replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/[.,;:!?]+$/, '').replace(/\/$/, '')}`);
+    rest = rest.replace(match[0], ' ');
+  }
+  // Bare domains: labels joined by dots ending in a letters-only label ("klia-parking-deals.example").
+  for (const match of rest.matchAll(/\b(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,24}\b(?:\/[^\s<>"')]*)?/gi)) {
+    if (/^\d+(?:\.\d+)+$/.test(match[0])) continue;
+    found.push(`url:${match[0].toLowerCase().replace(/[.,;:!?]+$/, '').replace(/\/$/, '')}`);
+  }
+  for (const match of text.matchAll(/(?:\+|\b)\d[\d\s().-]{6,}\d\b/g)) {
+    const digits = match[0].replace(/\D/g, '');
+    if (digits.length >= 7 && !/^\d{4}-\d{2}-\d{2}$/.test(match[0].trim())) found.push(`phone:${digits}`);
+  }
+  return found;
+}
+
+/** Topics where a wrong yes or no could stop someone travelling or put them at risk. */
+const SENSITIVE_TERMS: Record<string, RegExp> = {
+  passport: /\b(?:passports?|pasport)\b/i,
+  visa: /\bvisas?\b/i,
+  security: /\b(?:security|screening|keselamatan|saringan)\b/i,
+  immigration: /\b(?:immigration|imigresen|autogates?)\b/i,
+  customs: /\b(?:customs|kastam|duty[- ]free allowance|declare|isytihar)\b/i,
+  entry: /\b(?:mdac|arrival card|kad ketibaan|entry requirements?)\b/i,
+  identity: /\b(?:identity card|mykad|ic|boarding pass|pas masuk)\b/i,
+  health: /\b(?:vaccinat\w*|vaksin\w*|quarantine|kuarantin)\b/i,
+  refund: /\b(?:refunds?|bayaran balik|compensation|pampasan)\b/i,
+};
+const NEGATION = /\b(?:no|not|never|none|without|don['’]?t|doesn['’]?t|isn['’]?t|aren['’]?t|needn['’]?t|cannot|can['’]?t|tidak|tak|bukan|jangan|tiada|tanpa)\b/i;
+
+/** Sensitive topics a text speaks about, with whether the sentence is negated (`passport:no`). */
+export function sensitiveClaims(text: string): Set<string> {
+  const claims = new Set<string>();
+  for (const sentence of text.split(/(?<=[.!?;:])\s+|\n+/)) {
+    const negated = NEGATION.test(sentence);
+    for (const [topic, pattern] of Object.entries(SENSITIVE_TERMS)) {
+      if (pattern.test(sentence)) claims.add(`${topic}:${negated ? 'no' : 'yes'}`);
+    }
+  }
+  return claims;
+}
+
+/**
+ * The full check for an AI rewording against the retrieved statements and draft (never the
+ * visitor's question): no new number or name, no web address, domain, e-mail or phone the
+ * statements do not contain, and no sensitive topic (passport, visa, security, immigration,
+ * customs, refunds…) that they do not discuss in the same sense (a "not" cannot appear or vanish).
+ */
+export function checkRewording(candidate: string, reference: string): GuardResult {
+  const grounded = checkGrounded(candidate, reference);
+  const unsupported = [...grounded.unsupported];
+  const referenceText = reference.toLowerCase();
+  const referenceContacts = new Set(contactsIn(reference));
+  const referenceDigits = reference.replace(/\D/g, '');
+  for (const contact of contactsIn(candidate)) {
+    const [kind, value] = [contact.slice(0, contact.indexOf(':')), contact.slice(contact.indexOf(':') + 1)];
+    const supported =
+      referenceContacts.has(contact) ||
+      (kind === 'url' && [...referenceContacts].some((known) => known.startsWith('url:') && (known.slice(4) === value || known.slice(4).startsWith(`${value}/`)))) ||
+      (kind === 'phone' && referenceDigits.includes(value) && referenceContacts.has(contact)) ||
+      (kind === 'email' && referenceText.includes(value));
+    if (!supported) unsupported.push(contact);
+  }
+  const referenceClaims = sensitiveClaims(reference);
+  for (const claim of sensitiveClaims(candidate)) if (!referenceClaims.has(claim)) unsupported.push(claim);
+  return { ok: unsupported.length === 0, unsupported };
+}

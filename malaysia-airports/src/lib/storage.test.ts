@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';
 import { memoryStorage } from '@/lib/testing/fixtures';
-import { DEFAULT_PREFERENCES, PREFERENCES_INIT_SCRIPT, PREFERENCES_STORAGE_KEY, preferenceAttributes, type Preferences } from './preferences';
-import { createStore, storageKey } from './storage';
-import { EMPTY_SAVED_JOURNEY, airportStore, journeyModeStore, preferencesStore, savedJourneyStore } from './stores';
+import { DEFAULT_PREFERENCES, PREFERENCES_INIT_SCRIPT, PREFERENCES_STORAGE_KEY, PreferencesSchema, preferenceAttributes, type Preferences } from './preferences';
+import { check, createStore, storageKey, validator } from './storage';
+import { EMPTY_SAVED_JOURNEY, SAME_SITE_PATH, SavedJourneySchema, airportStore, journeyModeStore, preferencesStore, savedJourneyStore } from './stores';
 import { getServerNow, getTicker } from './time-store';
 
 const schema = z.object({ count: z.number().int().min(0), label: z.string().optional() });
@@ -112,6 +112,36 @@ describe('app stores', () => {
     savedJourneyStore.set({ ...EMPTY_SAVED_JOURNEY, parkedCar: { carParkId: 'kul-t1-car-park', level: '2', zone: 'B', savedAt: '2026-11-17T08:00:00.000Z' } });
     expect(savedJourneyStore.get().parkedCar?.zone).toBe('B');
     savedJourneyStore.clear();
+  });
+
+  it('drop tampered saved places but keep the rest of the journey (security-09)', () => {
+    const storage = memoryStorage();
+    const place = (href: string, id = href) => ({ id, type: 'facility', airport: 'kul', title: 'Prayer room', href, savedAt: '2026-11-17T08:00:00.000Z' });
+    const flight = { id: 'mh2610-20261117-d', airport: 'kul', number: 'MH2610', direction: 'd', date: '2026-11-17', savedAt: '2026-11-17T08:00:00.000Z' };
+    storage.setItem(
+      savedJourneyStore.key,
+      JSON.stringify({
+        flights: [flight, { id: 'x' }],
+        places: [place('/kul/facilities/prayer'), place('https://evil.example/login'), place('//evil.example/x'), place('/\\evil.example'), place('data:text/html,<b>x</b>'), place('javascript:alert(1)')],
+        parkedCar: null,
+      }),
+    );
+    const store = createStore({ name: 'journey', version: 1, schema: SavedJourneySchema, defaultValue: EMPTY_SAVED_JOURNEY, storage });
+    expect(store.get().places.map((entry) => entry.href)).toEqual(['/kul/facilities/prayer']);
+    expect(store.get().flights).toEqual([flight]);
+    expect(SAME_SITE_PATH.test('/ms/kul')).toBe(true);
+  });
+
+  it('validate without zod (performance-08): unknown keys are dropped, optional keys stay absent', () => {
+    expect(PreferencesSchema.safeParse({ theme: 'dark', textSize: 125, highContrast: true, reducedMotion: false, extra: 1 })).toEqual({
+      success: true,
+      data: { theme: 'dark', textSize: 125, highContrast: true, reducedMotion: false },
+    });
+    expect(PreferencesSchema.safeParse({ theme: 'dark', textSize: 110, highContrast: true, reducedMotion: false }).success).toBe(false);
+    const rule = validator(check.object({ a: check.string({ max: 2 }), b: check.optional(check.boolean()) }));
+    expect(rule.safeParse({ a: 'ok' })).toEqual({ success: true, data: { a: 'ok' } });
+    expect(rule.safeParse({ a: 'too long' }).success).toBe(false);
+    expect(rule.safeParse([]).success).toBe(false);
   });
 });
 

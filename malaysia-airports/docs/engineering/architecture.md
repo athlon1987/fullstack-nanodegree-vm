@@ -152,7 +152,7 @@ flowchart TB
 | Vitest, Playwright, @axe-core/playwright | 5.1.x, 1.63.x, 4.14.x | Unit tests for pure logic; end-to-end and accessibility against a production build | **Measured 18 Nov:** 29 unit test files, 363 tests passing |
 | Self-hosted fonts (`next/font/local`) | Fraunces, Hanken Grotesk, Geist Mono, latin subsets | No font CDN, no third-party request at runtime | Validated: CSP `font-src 'self'` holds in the production CSP test |
 
-Deliberately absent [code]: analytics, tag managers, chat widgets, embedded video, map tiles and any other third-party script. MAHB's current homepage requests at least eight third-party hosts, including Google Tag Manager, Microsoft Clarity and a Kommunicate chat widget [observed]. Any of these in production is a privacy and performance decision for MAHB, and a change to the Content Security Policy (section 7).
+Deliberately absent [code]: third-party analytics (the only measurement is first-party and aggregate: `/api/metrics`, section 7.4), tag managers, chat widgets, embedded video, map tiles and any other third-party script. MAHB's current homepage requests at least eight third-party hosts, including Google Tag Manager, Microsoft Clarity and a Kommunicate chat widget [observed]. Any of these in production is a privacy and performance decision for MAHB, and a change to the Content Security Policy (section 7).
 
 Assumed, not validated [assumption]: the hosting platform (none is chosen; the health endpoint reads `VERCEL_GIT_COMMIT_SHA` or `GIT_COMMIT` if present, nothing more); browsers other than Chromium (both Playwright projects are Chromium: desktop 1440 x 900 and a Pixel 7 profile at 390 x 844); field performance; the AI wording path (tested with a mocked `fetch` only).
 
@@ -166,7 +166,10 @@ Assumed, not validated [assumption]: the hosting platform (none is chosen; the h
 - Content is imported from modules, so content pages complete at build time and are fully static. The prerender manifest of the 17 November build lists 152 routes per language; the sitemap lists 120 pages per language (it excludes search, My journey, offline, the design system and flight details on purpose).
 - `[lang]` is the root segment; pages read it through `next/root-params`. Several dynamic routes declare `ensureStatic = 'navigation'` (airport overview, guide topic, help topic, corporate news item), which makes the build fail if they ever read runtime data and turns an unknown slug into a real 404 on the first request.
 - The flight detail route `/[lang]/[airport]/flights/[flightId]` has no `generateStaticParams`, because ids carry a date. Its `params` are awaited inside `<Suspense>`, so it builds as a static shell with streamed content (`◐`). The flight's identity (airline, route, scheduled time) is derived on the server from the id alone, so the `h1`, breadcrumbs and metadata are correct without reading the clock; its live status comes from the client.
-- The three API routes are rendered per request (`ƒ`). They read the request before they read the clock, as the framework requires, and send `Cache-Control: no-store`.
+- The API routes (`/api/flights`, `/api/health`, `/api/concierge`, `/api/csp-report`, `/api/metrics` and the JSON 404 catch-all `/api/[[...rest]]`) are rendered per request (`ƒ`). They read the request before they read the clock, as the framework requires, and send `Cache-Control: no-store`. The board feed and journey content handlers under `[lang]` are per request too.
+- There is no root `loading.tsx` (removed in the fix round, performance-04 and -07): it wrapped every page in a fallback that was revealed late, which shifted the layout and delayed LCP. Fallbacks now exist only where a segment really waits (each dynamic page's own `<Suspense>` around its `params`). The not-found pages render a `cacheLife('minutes')` marker so a 404 is shared-cached for 60 s at most.
+
+*Verified against the code on 21 November 2026 (fix round, package E).*
 - Server Components never read the clock or random values (it is a build error under Cache Components). On the client, `useNow()` returns `null` on the server and until the first tick, then the epoch time every 30 seconds by default; components render a placeholder while it is `null`. Providers are immutable snapshots of one instant (`getFlightProvider(now)`), rebuilt every 30 seconds by `useFlightProvider()`.
 
 **Why time-dependent data is computed on the client:**
@@ -201,6 +204,8 @@ For comparison, MAHB's current homepage moved 32.7 to 34.3 MB over about 171 req
 
 **What keeps the weight down** [code]: static HTML; `'use client'` on leaf components only; server-side view builders (`*.server.ts`) that pass small serialisable props instead of whole airport content; the command palette and the concierge chat loaded with `React.lazy`; search and concierge data as separate static JSON; three self-hosted variable fonts with latin subsets, of which only the interface face is preloaded (`preload: false` on the display face); SVG artwork; dense data (the flight board) that switches between table and stacked rows with container queries; partial prefetching (one reusable shell per route).
 
+**Fix round, 21 November 2026** [code]: client storage validation no longer uses zod (`src/lib/storage.ts` `check` toolkit) and `stores.ts`, `preferences.ts` and `locale.ts` import nothing at runtime from `src/content/types.ts`; the root `I18nProvider` receives `clientDictionary(lang)`, which leaves out corporate and design-system copy (about 34 KB raw), added only where used with `I18nScope`; one `Intl.NumberFormat` per language. Budgets are enforced by Lighthouse CI (`lighthouserc.json`, section 3.5). The figures above predate these changes; the verification build re-measures. Still open, owned by other packages: the icon registry split and lazy dialogs (A), the demo generator out of the shell (B), schema-free runtime helpers in `src/content/types.ts` (D), and per-feature dictionary scoping for flights, guides, transport, commerce and map copy (each package wraps its pages in `I18nScope`, then the platform drops those namespaces from the root).
+
 **Where it falls short** [measured]: JavaScript is 294 to 312 KB gzip per page, above the 250 KB budget for homes in the product strategy (section 7 of that document). The largest chunks are `react-dom` (about 70 KB gzip) and a chunk dominated by zod (about 33 KB gzip). Three changes would close most of the gap [proposed]:
 
 1. Split the few runtime helpers that clients need (`pick`, labels, constants) out of `src/content/types.ts` into a schema-free module, so zod leaves client bundles (the domain hand-off lists this).
@@ -214,8 +219,9 @@ For comparison, MAHB's current homepage moved 32.7 to 34.3 MB over about 171 req
 | Aspect | Behaviour |
 |---|---|
 | Registration | Production builds only; scope `/`; `updateViaCache: 'none'`. Development removes stale registrations |
-| Install | Precaches `/en`, `/ms`, `/en/offline`, `/ms/offline` and the bundles and fonts those pages reference |
-| Caches | `ma-v1-static` (400 entries), `ma-v1-pages` (60), `ma-v1-data` (8). Names carry a storage-format version (`v1`); on activate, any `ma-*` cache with another name is deleted. The build version (`__MA_BUILD__`) is compiled into the worker, so every deploy installs a new worker, and it is recorded on each saved page (`x-ma-build`) |
+| Registration timing | After `load` and once the network has been quiet for 1.5 s (at most 10 s), in an idle period, so the precache never competes with the page or its prefetches |
+| Install | Precaches the visitor's language only: `/<lang>` and `/<lang>/offline`, one after the other, and the bundles and fonts they reference. Pages are fetched with `cache: 'no-cache'` (a page the browser has just loaded revalidates as a `304`), bundles with `force-cache` (content-hashed), and concurrent saves share one fetch per asset. On activate, the page the visitor is on is saved unless the install already saved it |
+| Caches | `ma-v1-static` (400 entries), `ma-v1-pages` (60), `ma-v1-data` (8). Names carry a storage-format version (`v1`), deliberately not the build, so pages a visitor saved survive a deployment; on activate, any `ma-*` cache with another name is deleted. The build version (`__MA_BUILD__`) is compiled into the worker, so every deploy installs a new worker, and it is recorded on each saved page (`x-ma-build`) |
 | Static assets | Cache first (hashed bundles, fonts, icons) |
 | Guidance pages | Stale-while-revalidate: airport overview and sections, guides, help, accessibility, airport directory |
 | Data | Stale-while-revalidate: manifest, search index, concierge knowledge pack |
@@ -249,7 +255,7 @@ Production additions [proposed]: when live flights arrive, the worker must keep 
 
 Dependency direction: routes → feature components → common and ui → lib → content types. Client components receive content as props. These rules are **conventions**: the `server-only` package is not installed and no lint rule enforces import boundaries [code]. One inversion exists: `src/lib/search/documents.ts` imports `CORPORATE_SECTIONS` from `src/components/corporate` (integration hand-off, item 10).
 
-Production additions [proposed]: add `server-only` to the server modules; enforce boundaries with `no-restricted-imports` rules in `eslint.config.mjs`; move `CORPORATE_SECTIONS` into `src/content`.
+`server-only` is installed and imported by `rephrase.server.ts` and `knowledge.server.ts` [code, 21 November 2026]. Production additions [proposed]: enforce boundaries with `no-restricted-imports` rules in `eslint.config.mjs`; move `CORPORATE_SECTIONS` into `src/content`.
 
 ### 3.2 Ownership boundaries
 
@@ -286,7 +292,11 @@ Automated accessibility checks find a minority of WCAG issues. Production needs 
 
 ### 3.5 CI/CD design
 
-There is no CI configuration in the repository today [code]. The Playwright configuration is already CI-aware (`forbidOnly`, one retry and two workers when `CI` is set). Proposed GitHub Actions pipeline [proposed]:
+*Verified against the code on 21 November 2026 (fix round, package E).*
+
+**What exists** [code]: `.github/workflows/malaysia-airports-ci.yml` at the repository root runs on pull requests that touch `malaysia-airports/**` and by hand. Job `verify`: `npm ci`, `npm audit --omit=dev --audit-level=high` (gate), `next typegen`, `tsc`, ESLint, Vitest, `next build` with `APP_VERSION` set to the commit, Playwright on the desktop, phone and `webkit-phone` projects (`PLAYWRIGHT_WEBKIT=1`; the shared axe tags in `e2e/support/axe.ts`), and Lighthouse CI with the budgets in `lighthouserc.json` (mobile, median of 3: performance 95, TBT 200 ms, CLS 0.1, LCP 2.5 s; home JavaScript 250 KB; guidance pages 500 KB and 40 requests) on `/en`, `/ms`, the KLIA board, one current flight page, `/en/journey`, a guide and KLIA parking. Job `codeql` (javascript-typescript) and job `secrets` (gitleaks over the full history). `.github/dependabot.yml` covers the app's npm dependencies and the workflow actions. The rows below remain the full target pipeline; `content`, `tokens`, `links`, `preview` and `release` are not built yet.
+
+Target GitHub Actions pipeline [proposed]:
 
 | Job | Runs | Needs | Blocks merge? |
 |---|---|---|---|
@@ -605,7 +615,9 @@ Design rules: a hosted payment page or redirect so card data never touches MAHB'
 
 ### 6.3 Rate limiting
 
-Today the concierge route has an in-memory token bucket per process (10 requests in a burst, then one every 6 seconds, keyed by `x-forwarded-for`), which resets on restart and is not shared [code]. Production follows `security.md` section 4 [proposed]: edge rules first (for example 60 requests per minute per client on `/api/flights`, 10 on `/api/concierge`, body size limits); a shared sliding-window limiter keyed by the client address as seen by the trusted edge plus a short-lived anonymous session id; `429` with `Retry-After` and a message the interface already handles calmly; budget caps on the model provider.
+*Verified against the code on 21 November 2026 (fix round, package E).*
+
+Today [code]: token buckets behind a `RateLimitStore` interface (in memory per process by default): the concierge route (10 in a burst, then one every 6 seconds) and, in `src/proxy.ts`, `/api/flights` (60, then 1 per second), `/api/health` (10), the report endpoints (30), other `/api/*` (60) and the per-request pages (60). The client key comes only from a trusted source (`TRUSTED_CLIENT_IP_HEADER` or `TRUSTED_PROXY_HOPS`), never the first `X-Forwarded-For` entry; unconfigured, all clients share one bucket (fail safe). Invalid requests count; cross-site and wrong-media-type requests are refused before counting. Paid model calls have site-wide per-minute, daily and monthly caps and a circuit breaker. Edge rules as configuration: `docs/engineering/edge/`. Production follows `security.md` section 4 [proposed]: edge rules first (for example 60 requests per minute per client on `/api/flights`, 10 on `/api/concierge`, body size limits); a shared sliding-window limiter keyed by the client address as seen by the trusted edge plus a short-lived anonymous session id; `429` with `Retry-After` and a message the interface already handles calmly; budget caps on the model provider.
 
 **Shared networks.** MAHB's content API stopped serving this project's network after about 15 page loads at roughly one per second, and one load showed a WAF block page [observed]. Airport Wi-Fi, hotels and mobile carriers put many travellers behind one address. Limits must be generous per address, challenge before blocking, and never affect static guidance, which does not depend on the API.
 
@@ -693,8 +705,11 @@ Each environment has its own secrets, its own `NEXT_PUBLIC_SITE_URL` and an `APP
 
 - Security headers on every response from `next.config.ts`: a static CSP (`default-src 'self'`; scripts and styles from this origin plus `'unsafe-inline'`; `frame-ancestors`, `frame-src` and `object-src 'none'`; `base-uri 'none'`; `form-action 'self'`), HSTS for two years with subdomains, `nosniff`, `strict-origin-when-cross-origin`, a `Permissions-Policy` that denies camera, microphone, geolocation, payment, USB and screen capture, COOP `same-origin`, `X-Frame-Options: DENY`; `noindex` unless `SITE_INDEXING=allow`; no `X-Powered-By`.
 - No accounts, no payments, no server-side personal store, no third-party scripts.
-- Input validation with zod on the two API routes that take input (`/api/flights`, `/api/concierge`); 4 KB body cap and content-type check on the concierge.
-- The concierge question is never logged; the AI provider receives only the question, the draft and the retrieved statements.
+- Input validation with zod on the API routes that take input (`/api/flights`, `/api/concierge`); `/api/flights` bounds `date` to yesterday through the day after tomorrow and refuses repeated parameters; unknown `/api/*` paths answer a JSON 404.
+- Concierge transport checks: exact `application/json`, `Sec-Fetch-Site` and `Origin` must be this site, a declared body over 4 KB is refused unread and an undeclared one is cut off at 4 KB while streaming.
+- A report-only CSP without `'unsafe-inline'` (the preferences script by hash, Trusted Types required) reporting to `/api/csp-report`; canonical and hreflang `Link` headers on every localised page.
+- The public `/api/health` answers status and build id only; details need the `HEALTH_TOKEN` bearer token.
+- The concierge question is never logged; the AI provider receives only the redacted, escaped question (in its own block), the draft and the retrieved statements, and its wording must pass the fact guard (no new number, name, URL, domain, e-mail or phone, no changed document or security claim). `server-only` guards the modules that read the key.
 - A privacy page that lists every storage key and clears them all.
 - Known compromise: `'unsafe-inline'` in `script-src`, the documented cost of a static CSP (nonces would force per-request rendering).
 
@@ -712,7 +727,7 @@ TLS for every connection (HSTS already sent; preload is a domain-wide decision f
 
 ### 7.4 Consent management
 
-Today [code]: the concierge asks for consent on first use and explains what is sent; notifications use the browser's permission prompt; the only cookie is `lang`; nothing else needs consent because nothing else is collected.
+Today [code]: the concierge asks for consent on first use and explains what is sent; notifications use the browser's permission prompt; the only cookie is `lang`. First-party aggregate measurement (`/api/metrics`: answer state per top task and hand-off followed, per site section and day; no identifier) is off when the browser sends Global Privacy Control or Do Not Track or the visitor switches it off (`ma:measurement:v1`); the privacy page must describe it (package D).
 
 Production [proposed]: separate, recorded opt-ins for analytics (if MAHB's analytics needs consent), each notification channel, and any marketing, each withdrawable in one step and from every message. Consent records keep the text version and time. The PDPA requires the written notice in both the national language and English [prior]; the platform's bilingual model supports that directly.
 

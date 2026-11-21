@@ -9,6 +9,7 @@
  * So nothing is published here except the gaps note: no facilities, transport, parking, airlines
  * or notices. Detailed content awaits a first-hand source.
  */
+import { NOTES } from '../source-notes';
 import { defineAirportContent, lt, type GuideNote, type Source } from '../types';
 import { MAHB, RETRIEVED_16_NOV, contentGapsNote, source } from './_helpers';
 
@@ -25,6 +26,7 @@ const guidesNotes: GuideNote[] = [
     ),
     sources: ['prototype-method', 'mahb-langkawi-site', 'mahb-annual-report-2023', 'mahb-contact'],
     asOf: RETRIEVED_16_NOV,
+    gaps: [{ area: 'facilities' }, { area: 'outlets' }, { area: 'transport' }, { area: 'car-parks' }, { area: 'airlines' }],
   }),
 ];
 
@@ -33,9 +35,11 @@ const sources: Source[] = [
     'mahb-langkawi-site',
     'official',
     MAHB,
-    'Langkawi International Airport: official passenger pages (as indexed)',
+    'Langkawi International Airport: official passenger pages',
     'https://airports.malaysiaairports.com.my/en/langkawi',
     RETRIEVED_16_NOV,
+    undefined,
+    { note: NOTES.asIndexed },
   ),
 ];
 

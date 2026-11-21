@@ -6,7 +6,7 @@ import manifest from '@/app/manifest';
 import { serializeJsonLd } from './json-ld';
 import { pageMetadata } from './metadata';
 import { airportJsonLd, breadcrumbJsonLd, organizationJsonLd } from './schemas';
-import { sitemapPaths } from './site-routes';
+import { SITEMAP_EXCLUDED, sitemapPaths, staticRoutePaths } from './site-routes';
 
 describe('sitemap', () => {
   const entries = sitemap();
@@ -35,6 +35,29 @@ describe('sitemap', () => {
     const paths = sitemapPaths();
     expect(paths).toContain('/kul/map');
     expect(paths).not.toContain('/kch/parking');
+  });
+
+  it('lists every static page folder except the deliberate exclusions (docs-01)', () => {
+    const paths = new Set(sitemapPaths());
+    const statics = staticRoutePaths();
+    expect(statics).toEqual(expect.arrayContaining(['/', '/corporate', '/corporate/about', '/corporate/careers', '/corporate/news', '/privacy']));
+    for (const path of statics) expect(paths.has(path) || (SITEMAP_EXCLUDED as readonly string[]).includes(path)).toBe(true);
+  });
+
+  it('matches the generateStaticParams of the dynamic routes (docs-01)', async () => {
+    const paths = new Set(sitemapPaths());
+    const news = await import('@/app/[lang]/corporate/news/[slug]/page');
+    const guides = await import('@/app/[lang]/guides/[topic]/page');
+    const help = await import('@/app/[lang]/help/[topic]/page');
+    const outlets = await import('@/app/[lang]/[airport]/shop-dine/[outlet]/page');
+    const newsParams = news.generateStaticParams();
+    expect(newsParams.length).toBeGreaterThanOrEqual(14);
+    for (const { slug } of newsParams) expect(paths.has(`/corporate/news/${slug}`)).toBe(true);
+    for (const { topic } of guides.generateStaticParams()) expect(paths.has(`/guides/${topic}`)).toBe(true);
+    for (const { topic } of help.generateStaticParams()) expect(paths.has(`/help/${topic}`)).toBe(true);
+    for (const { airport, outlet } of outlets.generateStaticParams() as { airport: string; outlet: string }[]) {
+      if (outlet !== '__none__') expect(paths.has(`/${airport}/shop-dine/${outlet}`)).toBe(true);
+    }
   });
 });
 
@@ -93,5 +116,18 @@ describe('page metadata helper', () => {
     expect(meta.alternates?.languages).toMatchObject({ en: '/en/kul/parking', ms: '/ms/kul/parking', 'x-default': '/en/kul/parking' });
     expect(meta).not.toHaveProperty('robots');
     expect(pageMetadata({ lang: 'en', path: '/offline', title: 't', description: 'd', noindex: true }).robots).toMatchObject({ index: false });
+  });
+});
+
+describe('CSP report aggregation (security-07)', () => {
+  it('reads both report formats and keeps only aggregate, path-level counts', async () => {
+    const { createCspReportStore, parseCspReports } = await import('./csp-reports');
+    const legacy = parseCspReports({ 'csp-report': { 'effective-directive': 'script-src-elem', 'blocked-uri': 'inline', 'document-uri': 'https://site.example/en/kul/flights/mh1?ref=me#x', 'script-sample': 'self.__next_f.push([1,"x"])' } });
+    const modern = parseCspReports([{ type: 'csp-violation', body: { effectiveDirective: 'script-src-elem', blockedURL: 'https://evil.example/x.js?token=1', documentURL: 'https://site.example/ms', sample: '' } }, { type: 'deprecation', body: {} }]);
+    expect(legacy).toEqual([{ directive: 'script-src-elem', blocked: 'inline', page: '/en/kul/flights', sample: 'framework:flight-data' }]);
+    expect(modern).toEqual([{ directive: 'script-src-elem', blocked: 'https://evil.example', page: '/ms', sample: '' }]);
+    const store = createCspReportStore(1);
+    store.add([...legacy, ...legacy, ...modern]);
+    expect(store.summary()).toEqual({ total: 3, groups: [{ key: 'script-src-elem | inline | /en/kul/flights | framework:flight-data', count: 2 }, { key: 'other', count: 1 }] });
   });
 });

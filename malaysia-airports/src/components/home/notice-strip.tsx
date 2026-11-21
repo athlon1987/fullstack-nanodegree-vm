@@ -71,7 +71,7 @@ export function NoticeStrip({ notices, className }: { notices: readonly NoticeVi
               {notice.provenance === 'demo' ? <ProvenanceTag provenance="demo" length="short" className="ml-1" /> : null}
             </h2>
             <p className="type-body-sm mt-1 font-semibold text-ink sm:text-[0.9375rem]">{notice.title}</p>
-            {period ? <p className="type-data-xs mt-0.5 text-ink-2 max-sm:hidden [@media(max-height:50rem)]:hidden">{period}</p> : null}
+            {period ? <p className="type-caption mt-0.5 text-ink-2 max-sm:hidden [@media(max-height:50rem)]:hidden">{period}</p> : null}
           </div>
           <LocaleLink
             href={`/notices#${notice.id}`}

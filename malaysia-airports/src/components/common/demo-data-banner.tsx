@@ -9,7 +9,7 @@ import { LocaleLink } from './locale-link';
 export interface DemoDataBannerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
   /** Replace the default body ("Flight times, gates and status on this page are simulated..."), for example with `provider.meta().disclaimer`. */
   children?: ReactNode;
-  /** One line only: the title and "Do not use it to plan travel." Use above inline results. */
+  /** One line only: the title and "Do not use this data to plan travel." Use above inline results. */
   compact?: boolean;
   /** Hide the "About this prototype" link (when the banner is already on that page). */
   hideLink?: boolean;

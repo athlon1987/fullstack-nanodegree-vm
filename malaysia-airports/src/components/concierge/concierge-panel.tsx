@@ -43,7 +43,6 @@ export function ConciergePanel() {
             <ConciergeChat
               variant="panel"
               initialQuestion={dialog.payload.question}
-              onDecline={() => closeOverlay('concierge')}
               toolbarEnd={
                 <LocaleLink
                   href="/concierge"

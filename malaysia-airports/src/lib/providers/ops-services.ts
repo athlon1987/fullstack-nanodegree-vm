@@ -53,7 +53,8 @@ export const OPS_SERVICES: readonly OpsServiceDefinition[] = [
     airports: ['kul', 'pen', 'bki', 'kch', 'lgk', 'szb'],
     name: L('Immigration', 'Imigresen'),
     pattern: /immigration|autogate|imigresen/i,
-    waits: ['security', 'immigration-departure'],
+    // Leaving (security, immigration) and arriving (immigration): each step picks its own.
+    waits: ['security', 'immigration-departure', 'immigration-arrival'],
   },
 ];
 

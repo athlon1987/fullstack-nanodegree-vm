@@ -368,7 +368,7 @@ export const en = {
     mapNote: 'This is a schematic demonstration map, not a floor plan.',
     notificationsNote: 'Notifications in this prototype are demonstrations.',
     learnMore: 'About this prototype',
-    doNotPlan: 'Do not use it to plan travel.',
+    doNotPlan: 'Do not use this data to plan travel.',
   },
   freshness: {
     updated: 'Updated {time}',
@@ -724,7 +724,13 @@ export const en = {
       selected: 'Selected',
       changeFrom: 'Change airport. Currently {airport}',
     },
-    bottomBar: { label: 'Quick navigation', journey: 'Journey', menu: 'Menu' },
+    bottomBar: {
+      label: 'Quick navigation',
+      journey: 'Journey',
+      // Starts with the visible label, then the badge's number (WCAG 2.5.3; verification round).
+      journeyCount: { one: 'Journey: {count} saved item', other: 'Journey: {count} saved items' },
+      menu: 'Menu',
+    },
     menu: { title: 'Menu', explore: 'Explore', more: 'More', languageAndDisplay: 'Language and display' },
     footer: {
       statementTitle: 'What this prototype is',
@@ -995,6 +1001,10 @@ export const en = {
       trolley: {
         title: 'Baggage trolleys: not published yet',
         summary: 'We have not published where baggage trolleys are or whether they are free. Ask at the information counter or check the official airport page.',
+      },
+      fastTrack: {
+        title: 'Fast track: not published yet',
+        summary: 'We have not published details of fast-track or priority lanes at any airport yet. Ask your airline or Malaysia Airports before you travel.',
       },
     },
     directory: { pinnedTitle: 'Start with', lastUsed: 'Your last choice' },

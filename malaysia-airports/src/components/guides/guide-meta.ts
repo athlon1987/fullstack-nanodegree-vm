@@ -40,16 +40,23 @@ export const START_HERE_GUIDE = 'first-time';
 
 /** Airport guide-note topics shown under "At specific airports" on each guide. */
 export const GUIDE_NOTE_TOPICS: Readonly<Record<string, readonly GuideNoteTopic[]>> = {
-  departing: ['getting-there', 'check-in', 'gate'],
+  departing: ['getting-there', 'check-in', 'immigration', 'gate'],
   arriving: ['landing', 'immigration', 'baggage', 'onward-transport', 'meeting'],
   'check-in': ['check-in'],
   security: ['security'],
   'immigration-customs': ['landing', 'immigration', 'customs'],
   baggage: ['baggage'],
-  'first-time': ['terminal'],
+  'first-time': ['terminal', 'immigration'],
   'reduced-mobility': ['assistance'],
   neurodivergent: ['assistance'],
   'older-travellers': ['assistance'],
+};
+
+/** Guides about one direction of travel show only that direction's airport notes (D-07). */
+export const GUIDE_NOTE_DIRECTION: Readonly<Record<string, 'departing' | 'arriving'>> = {
+  departing: 'departing',
+  'first-time': 'departing',
+  arriving: 'arriving',
 };
 
 /** Related guides, in order. */

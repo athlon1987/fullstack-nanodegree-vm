@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { BRAND_COLORS } from './brand';
-import { classifyRequest, extractAssetUrls, extractTitle, isStorable, offlinePagePath, pageKey, type RequestInfo } from './sw-routes';
+import { CACHE_NAMES, SAVE_FETCH_CACHE, classifyRequest, extractAssetUrls, extractTitle, isStorable, offlinePagePath, pageKey, precachePaths, type RequestInfo } from './sw-routes';
 
 const ORIGIN = 'https://example.org';
 const nav: RequestInfo = { method: 'GET', mode: 'navigate', destination: 'document', rsc: false, sameOrigin: true };
@@ -17,6 +17,19 @@ describe('service worker routing', () => {
     expect(kind('/en/kul/parking', { ...sub, rsc: true })).toBe('bypass');
     expect(kind('/en/kul/parking?_rsc=abc', sub)).toBe('bypass');
     expect(kind('/_next/static/service-worker/sw.js', sub)).toBe('bypass');
+  });
+
+  it('precaches only the visitor language shell and offline page, revalidating instead of re-downloading (performance-11)', () => {
+    expect(precachePaths('en')).toEqual(['/en', '/en/offline']);
+    expect(precachePaths('ms')).toEqual(['/ms', '/ms/offline']);
+    expect(SAVE_FETCH_CACHE).toBe('no-cache');
+    const worker = readFileSync(join(__dirname, 'service-worker.ts'), 'utf8');
+    expect(worker).not.toContain("cache: 'reload'");
+    expect(worker).toContain('assetsInFlight');
+  });
+
+  it('names caches by storage format, not by build, so saved pages survive a deployment (docs-13)', () => {
+    expect(Object.values(CACHE_NAMES)).toEqual(['ma-v1-static', 'ma-v1-pages', 'ma-v1-data']);
   });
 
   it('never stores search results (the query is personal)', () => {

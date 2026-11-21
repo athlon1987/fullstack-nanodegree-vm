@@ -10,8 +10,11 @@ import {
   parseFareValidity,
   placeChoices,
   placeName,
+  servesAnyPlace,
   withDoorToDoorEntries,
 } from './transport-logic';
+import { ticketChannel } from './transport-types';
+import type { Source } from '@/content/types';
 
 const base = { airport: 'kul', boarding: [], provenance: 'official' as const, sources: ['x'] };
 
@@ -128,5 +131,43 @@ describe('fareInfo', () => {
     expect(fareInfo(express, 'nowhere', '2026-11-17')).toEqual({ dated: false, doorToDoor: false });
     expect(fareInfo(hailing, undefined, '2026-11-17')).toEqual({ dated: false, doorToDoor: true });
     expect(fareInfo(coach, undefined, '2026-11-17')).toMatchObject({ dated: false, shown: { name: { en: 'KL Sentral' } } });
+  });
+});
+
+describe('fix round: taxis for every place and official ticket links (C-02)', () => {
+  const taxi: TransportOption = { ...base, id: 'taxi', mode: 'taxi', name: { en: 'Coupon taxi' }, destinations: [{ name: { en: 'City zone' } }] };
+
+  it('offers a taxi that lists one place for every other place too, without a fare', () => {
+    expect(servesAnyPlace(taxi)).toBe(true);
+    expect(servesAnyPlace(coach)).toBe(false);
+    const rows = compareTransport(withDoorToDoorEntries([express, coach, taxi], 'KL Sentral'), { priority: 'price', destination: 'KL Sentral' });
+    const row = rows.find((item) => item.option.id === 'taxi');
+    expect(row?.labels).not.toContain('destination-not-listed');
+    expect(row?.fare).toBeUndefined();
+    // The card treats it as door to door for KL Sentral, and keeps its own fare note for the city zone.
+    expect(fareInfo(taxi, 'kl sentral', '2026-11-17')).toEqual({ dated: false, doorToDoor: true });
+    expect(fareInfo(taxi, 'city zone', '2026-11-17')).toMatchObject({ doorToDoor: false, shown: { name: { en: 'City zone' } } });
+    // A place it already lists is not added twice.
+    expect(withDoorToDoorEntries([taxi], 'City zone')[0].destinations).toHaveLength(1);
+  });
+
+  it('links to a ticket only through an official channel', () => {
+    const source = (id: string, kind: Source['kind'], publisher: string, url: string): Source => ({ id, kind, publisher, title: id, url, retrieved: '2026-11-17' });
+    const lookup: Record<string, Source> = {
+      erl: source('erl', 'operator', 'Express Rail Link (kliaekspres.com)', 'https://kliaekspres.com/products-fares/klia-transit'),
+      news: source('news', 'news', 'The Star', 'https://www.thestar.com.my/'),
+      agg: source('agg', 'aggregator', 'Bus Online Ticket', 'https://www.busonlineticket.com/'),
+    };
+    const ekspres: TransportOption = { ...express, operator: 'Express Rail Link', sources: ['news'] };
+    const transit: TransportOption = { ...stopping, operator: 'Express Rail Link', sources: ['erl'] };
+    const bus: TransportOption = { ...coach, sources: ['agg'] };
+    // The operator's own page among the option's sources.
+    expect(ticketChannel(transit, lookup)).toBe('https://kliaekspres.com/products-fares/klia-transit');
+    // No operator source of its own: the named operator's website, never the news report.
+    expect(ticketChannel(ekspres, lookup)).toBe('https://kliaekspres.com/');
+    // Aggregators are not official channels; taxis and e-hailing have no online ticket.
+    expect(ticketChannel(bus, lookup)).toBeUndefined();
+    expect(ticketChannel(taxi, lookup)).toBeUndefined();
+    expect(ticketChannel({ ...hailing, bookingUrl: 'https://example.org/book' }, lookup)).toBe('https://example.org/book');
   });
 });

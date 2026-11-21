@@ -73,6 +73,42 @@ describe('section glossary (A-21): one noun per section', () => {
       }
     }
   });
+
+  /**
+   * The h1 of each section page (the key its `PageHeader` reads) names the section with the same
+   * noun as its tab: "Parking at {airport}" for "Parking". Titles in other packages' dictionaries
+   * that still use a different noun are listed with their hand-off; delete an entry once that
+   * package aligns its title, and the test then guards it too.
+   */
+  const PAGE_TITLE_KEYS: Record<Exclude<(typeof AIRPORT_SECTION_IDS)[number], 'overview'>, string> = {
+    flights: 'flightPages.board.title',
+    map: 'mapPages.title',
+    facilities: 'nav.facilities',
+    transport: 'transportPages.transport.title',
+    parking: 'transportPages.parking.title',
+    'shop-dine': 'nav.shopDine',
+    lounges: 'nav.lounges',
+    transit: 'guidePages.transit.title',
+  };
+  const AWAITING_HANDOFF: Partial<Record<keyof typeof PAGE_TITLE_KEYS, string>> = {
+    flights: 'B: "Departures and arrivals" (flightPages.board.title)',
+    transport: 'C: "Getting to and from {airport}" (transportPages.transport.title)',
+    transit: 'D: "Connecting at {airport}" (guidePages.transit.title)',
+  };
+
+  it('uses the tab noun in each section page title', () => {
+    for (const dictionary of [en, ms]) {
+      const label = (key: string): string => key.split('.').reduce<unknown>((node, part) => (node as Record<string, unknown>)[part], dictionary) as string;
+      for (const section of AIRPORT_SECTIONS) {
+        if (section.id === 'overview' || AWAITING_HANDOFF[section.id]) continue;
+        const noun = label(section.labelKey).toLowerCase();
+        const title = label(PAGE_TITLE_KEYS[section.id]).toLowerCase();
+        expect(title, `${dictionary === en ? 'en' : 'ms'} ${section.id}`).toContain(noun);
+      }
+    }
+    // Every hand-off names a real section, so the list cannot hide a typo.
+    for (const id of Object.keys(AWAITING_HANDOFF)) expect(Object.keys(PAGE_TITLE_KEYS)).toContain(id);
+  });
 });
 
 describe('Malay wording (A-25)', () => {

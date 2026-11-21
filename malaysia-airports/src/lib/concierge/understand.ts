@@ -201,6 +201,9 @@ function airlineNamed(text: string, raw: string, knowledge: ConciergeKnowledge):
   return undefined;
 }
 
+/** Qualifiers that ask for step-free facts (first-time-access-09), in both languages. */
+const ACCESS_WORDS = ['accessible', 'step free', 'wheelchair', 'wheel chair', 'elderly', 'older', 'warga emas', 'tua', 'mesra oku', 'oku', 'kerusi roda', 'disabled', 'reduced mobility', 'tanpa tangga', 'tiada tangga'];
+
 /** The airline named in "which terminal does <airline> use/fly from" as typed, at most four words. */
 function airlineAsTyped(raw: string): string | undefined {
   const match =
@@ -228,13 +231,16 @@ export function understand(question: string, knowledge: ConciergeKnowledge, cont
   }
 
   // "Is the Aerotrain running?", "Adakah tren antara terminal beroperasi?" (B-08).
-  const serviceNamed = ['aerotrain', 'inter terminal train', 'inter terminal shuttle', 'shuttle', 'klia transit', 'klia ekspres', 'ekspres', 'erl', 'train', 'tren', 'kereta api'].some((item) => hasPhrase(text, item));
+  const serviceNamed = ['aerotrain', 'inter terminal train', 'inter terminal shuttle', 'shuttle', 'ulang alik', 'klia transit', 'klia ekspres', 'ekspres', 'erl', 'train', 'tren', 'kereta api'].some((item) => hasPhrase(text, item));
   const statusAsked = ['running', 'operating', 'working', 'open now', 'closed', 'suspended', 'disrupted', 'status', 'beroperasi', 'berjalan', 'ditutup', 'tergendala'].some((item) => hasPhrase(text, item));
   if (serviceNamed && statusAsked) bump('service-status', 8);
   // A fare for a named way of travelling: "How much is the KLIA Ekspres?", "Berapa tambang KLIA Ekspres?".
   const fareAsked = ['how much', 'fare', 'fares', 'price', 'prices', 'cost', 'costs', 'ticket', 'tickets', 'berapa', 'tambang', 'harga', 'kos', 'tiket'].some((item) => hasPhrase(text, item));
   const modeNamed = ['ekspres', 'express', 'klia transit', 'train', 'tren', 'bus', 'bas', 'coach', 'taxi', 'teksi', 'grab', 'e hailing', 'ehailing', 'shuttle'].some((item) => hasPhrase(text, item));
   if (fareAsked && modeNamed && !['park', 'parking', 'parkir', 'letak kereta'].some((item) => hasPhrase(text, item))) bump('fare', 7);
+  // "Di mana teksi mesra OKU?", "wheelchair taxi": a way of travelling with an access qualifier is
+  // a transport question answered from step-free facts, not the general assistance topic.
+  if (modeNamed && ACCESS_WORDS.some((item) => hasPhrase(text, item))) bump('transport', 4);
   // "Which terminal does Emirates use?", "Terminal mana untuk AirAsia?".
   const whichTerminal = /\b(?:which|what) terminal\b|\bterminal (?:mana|apa|yang mana)\b|\bterminal (?:for|does)\b/.test(text) && !/\b(?:between|change|transfer|antara|tukar)\b/.test(text);
   if (whichTerminal) bump('airline-terminal', 8);
@@ -300,7 +306,7 @@ export function understand(question: string, knowledge: ConciergeKnowledge, cont
   let priority: ConciergeSlots['priority'];
   if (['cheapest', 'cheap', 'cheaper', 'budget', 'lowest fare', 'termurah', 'murah', 'jimat'].some((item) => hasPhrase(text, item))) priority = 'price';
   else if (['fastest', 'quickest', 'quick', 'fast', 'terpantas', 'paling cepat'].some((item) => hasPhrase(text, item))) priority = 'time';
-  else if (['step free', 'wheelchair', 'accessible', 'mesra oku'].some((item) => hasPhrase(text, item))) priority = 'accessibility';
+  else if (['step free', 'wheelchair', 'accessible', 'mesra oku', 'tanpa tangga', 'mesra kerusi roda'].some((item) => hasPhrase(text, item))) priority = 'accessibility';
 
   const slots: ConciergeSlots = {
     airport,
@@ -316,7 +322,7 @@ export function understand(question: string, knowledge: ConciergeKnowledge, cont
     myFlight: ['my flight', 'our flight', 'penerbangan saya', 'penerbangan kami'].some((item) => hasPhrase(text, item)),
     leave: ['leave the airport', 'go into the city', 'go into town', 'go out', 'visit the city', 'see the city', 'keluar'].some((item) => hasPhrase(text, item)),
     baggage: ['bag', 'bags', 'baggage', 'luggage', 'suitcase', 'bagasi', 'beg'].some((item) => hasPhrase(text, item)),
-    accessible: ['accessible', 'step free', 'wheelchair', 'wheel chair', 'elderly', 'older', 'warga emas', 'tua', 'mesra oku', 'oku', 'kerusi roda', 'disabled', 'reduced mobility'].some((item) => hasPhrase(text, item)),
+    accessible: ACCESS_WORDS.some((item) => hasPhrase(text, item)),
     airlineName: whichTerminal ? airlineAsTyped(raw) : undefined,
   };
   return { intent, score, slots };

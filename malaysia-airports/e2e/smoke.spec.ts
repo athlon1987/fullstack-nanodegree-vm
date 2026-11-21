@@ -1,5 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
+import { AXE_TAGS as SHARED_AXE_TAGS } from './support/axe';
 
 /**
  * Smoke journeys for the application shell, the home page and the airport pages.
@@ -13,7 +14,7 @@ import { expect, test, type Page } from '@playwright/test';
  */
 
 /** wcag21a was missing, which hid a Level A failure (A-02). E publishes the shared list in e2e/support/axe.ts (E-06). */
-const AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'];
+const AXE_TAGS = [...SHARED_AXE_TAGS];
 
 /**
  * `@axe-core/playwright` is typed against a newer `playwright-core` than the one `@playwright/test`

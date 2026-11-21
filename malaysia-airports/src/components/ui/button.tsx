@@ -4,7 +4,9 @@ import { cn } from '@/lib/cn';
 import { Icon, type IconName } from './icon';
 
 const BASE =
-  'relative inline-flex shrink-0 items-center justify-center rounded-md border border-transparent font-semibold whitespace-nowrap select-none ' +
+  // Labels wrap instead of running off the screen at 320 px and 125% text (A-16; design-system
+  // rule: never truncate, use min heights). One-line buttons keep their exact height.
+  'relative inline-flex max-w-full shrink-0 items-center justify-center rounded-md border border-transparent text-center font-semibold select-none ' +
   'transition-[background-color,border-color,color,box-shadow] duration-fast ' +
   'disabled:border-line disabled:bg-neutral-bg disabled:text-ink-3 disabled:shadow-none ' +
   'aria-disabled:cursor-not-allowed data-[loading=true]:cursor-progress';
@@ -23,9 +25,9 @@ const VARIANTS = {
 } as const;
 
 const SIZES = {
-  sm: 'h-9 gap-1.5 px-3 text-sm touch:min-h-11',
-  md: 'h-11 gap-2 px-4 text-base',
-  lg: 'h-13 gap-2.5 px-6 text-lg',
+  sm: 'min-h-9 gap-1.5 px-3 py-1 text-sm touch:min-h-11',
+  md: 'min-h-11 gap-2 px-4 py-1.5 text-base',
+  lg: 'min-h-13 gap-2.5 px-6 py-2 text-lg',
 } as const;
 
 export type ButtonVariant = keyof typeof VARIANTS;

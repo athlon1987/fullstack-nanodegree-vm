@@ -43,6 +43,7 @@
  * Terminal 2 facilities beyond the Calm Room and sensory walls; no facility locations for prayer
  * rooms, clinics or ATMs. Leave those empty until an official source is captured.
  */
+import { NOTES, type SourceExtras } from '../source-notes';
 import { createEdgeBuilder } from '@/lib/map/build';
 import {
   defineAirportContent,
@@ -62,9 +63,9 @@ import {
 } from '../types';
 
 const PARKING_AS_OF = '2026-11-16';
-const INDEXED = 'As indexed in November 2026';
+/** Search-index summaries read on 16 November 2026. */
+const INDEXED = '2026-11-16';
 /** For facts whose source carries no date: the research run found them on 16 November 2026. */
-const UNDATED = 'Source undated; checked 16 November 2026';
 /** Date of the search summaries in `f-klia-transport.md`. */
 const TRANSPORT_AS_OF = '2026-11-17';
 const STATION_LEVEL_NOT_VERIFIED_T1: LocalizedText = lt(
@@ -100,7 +101,8 @@ const facilities: Facility[] = [
     ),
     mapPoint: 'l5-calm-room',
     provenance: 'official',
-    asOf: 'Launch coverage, 2020 to 2021',
+    asOf: '2021',
+    asOfNote: lt('Launch coverage, 2020 to 2021', 'Liputan pelancaran, 2020 hingga 2021'),
     sources: ['mahb-butterfly-effect', 'says-calm-room-sensory-walls'],
   },
   {
@@ -118,7 +120,7 @@ const facilities: Facility[] = [
       'A Calm Room for passengers with hidden disabilities opened at Terminal 2 in July 2025.',
       'Bilik Tenang untuk penumpang dengan ketidakupayaan tersembunyi dibuka di Terminal 2 pada Julai 2025.',
     ),
-    provenance: 'official',
+    provenance: 'estimated',
     asOf: '2025-07',
     sources: ['routesonline-calm-room-t2'],
   },
@@ -153,7 +155,8 @@ const facilities: Facility[] = [
       'Liputan pelancaran melaporkan enam dinding deria di Terminal 1 (dan empat di Terminal 2). Lokasinya dinyatakan dalam Butterfly Kit.',
     ),
     provenance: 'estimated',
-    asOf: 'Launch coverage, 2020 to 2021',
+    asOf: '2021',
+    asOfNote: lt('Launch coverage, 2020 to 2021', 'Liputan pelancaran, 2020 hingga 2021'),
     sources: ['says-calm-room-sensory-walls'],
   },
   {
@@ -168,7 +171,8 @@ const facilities: Facility[] = [
       'Liputan pelancaran melaporkan empat dinding deria di Terminal 2. Lokasinya dinyatakan dalam Butterfly Kit.',
     ),
     provenance: 'estimated',
-    asOf: 'Launch coverage, 2020 to 2021',
+    asOf: '2021',
+    asOfNote: lt('Launch coverage, 2020 to 2021', 'Liputan pelancaran, 2020 hingga 2021'),
     sources: ['says-calm-room-sensory-walls'],
   },
   {
@@ -296,7 +300,6 @@ const facilities: Facility[] = [
     operator: 'Plaza Premium',
     mapPoint: 'g-plaza-premium',
     provenance: 'estimated',
-    asOf: 'Listing undated',
     sources: ['dragonpass-plaza-premium-kul', 'mahb-lounges-listing'],
   },
   {
@@ -317,7 +320,6 @@ const facilities: Facility[] = [
     operator: 'Plaza Premium',
     mapPoint: 'g-plaza-premium-first',
     provenance: 'estimated',
-    asOf: 'Listing undated',
     sources: ['layoverindex-kul-lounges', 'dragonpass-plaza-premium-kul'],
   },
   {
@@ -335,7 +337,6 @@ const facilities: Facility[] = [
     operator: 'Malaysia Airlines',
     mapPoint: 'g-golden-lounge-satellite',
     provenance: 'official',
-    asOf: UNDATED,
     sources: ['mh-klia-t1-passenger-journey', 'loungereview-kul'],
   },
   {
@@ -353,7 +354,6 @@ const facilities: Facility[] = [
     operator: 'Malaysia Airlines',
     mapPoint: 'g-golden-lounge-regional',
     provenance: 'official',
-    asOf: UNDATED,
     sources: ['mh-klia-t1-passenger-journey', 'loungereview-kul'],
   },
   {
@@ -371,7 +371,6 @@ const facilities: Facility[] = [
     operator: 'Malaysia Airlines',
     mapPoint: 'g-golden-lounge-domestic',
     provenance: 'official',
-    asOf: UNDATED,
     sources: ['mh-klia-t1-passenger-journey', 'loungereview-kul'],
   },
   {
@@ -394,7 +393,6 @@ const facilities: Facility[] = [
     ),
     mapPoint: 'g-sama-sama-express',
     provenance: 'estimated',
-    asOf: 'Booking listings, undated',
     sources: ['booking-sama-sama-express', 'kliainfo-sama-sama-express'],
   },
   /*
@@ -417,7 +415,6 @@ const facilities: Facility[] = [
       'Disenaraikan oleh program lounge (senarai lounge Maybank dan DragonPass), bukan oleh pengendali. Sahkan akses dan waktu operasi sebelum perjalanan.',
     ),
     provenance: 'estimated',
-    asOf: 'Listings undated; checked 17 November 2026',
     sources: ['maybank-lounge-list', 'dragonpass-travel-club-klia2'],
   },
   {
@@ -453,6 +450,42 @@ const facilities: Facility[] = [
     provenance: 'official',
     asOf: '2026-11-16',
     sources: ['mahb-klia-t1-home-features'],
+  },
+  // Fast Track (D-02): the official site's Booking Services entry names KLIA T1 and T2 and links to
+  // the booking site. Every detail it does not publish is said to be not published.
+  {
+    id: 'kul-t1-fast-track',
+    airport: 'kul',
+    terminal: 'T1',
+    name: lt('Fast Track', 'Fast Track (laluan pantas)'),
+    category: 'other',
+    zone: 'unknown',
+    description: lt(
+      'An optional service you book on a separate website, myairportfasttrack.com. Malaysia Airports lists Fast Track under Booking Services for KLIA Terminal 1 and links to that site. Not published in our sources: what it includes, which checkpoints it covers (security, immigration or both), the price, the hours and the seller. Check them on the booking site before you buy. You can travel without it.',
+      'Perkhidmatan pilihan yang ditempah di laman web berasingan, myairportfasttrack.com. Malaysia Airports menyenaraikan Fast Track di bawah Perkhidmatan Tempahan bagi KLIA Terminal 1 dan memaut ke laman itu. Tidak diterbitkan dalam sumber kami: apa yang termasuk, pemeriksaan yang diliputi (keselamatan, imigresen atau kedua-duanya), harga, waktu operasi dan penjualnya. Semak di laman tempahan sebelum membeli. Anda boleh melakukan perjalanan tanpanya.',
+    ),
+    access: lt('Book on myairportfasttrack.com. Who may use it is not published in our sources.', 'Tempah di myairportfasttrack.com. Siapa yang boleh menggunakannya tidak diterbitkan dalam sumber kami.'),
+    bookingUrl: 'https://www.myairportfasttrack.com/',
+    provenance: 'official',
+    asOf: '2026-11-21',
+    sources: ['mahb-booking-services-fast-track', 'myairportfasttrack-site'],
+  },
+  {
+    id: 'kul-t2-fast-track',
+    airport: 'kul',
+    terminal: 'T2',
+    name: lt('Fast Track', 'Fast Track (laluan pantas)'),
+    category: 'other',
+    zone: 'unknown',
+    description: lt(
+      'An optional service you book on a separate website, myairportfasttrack.com. Malaysia Airports lists Fast Track under Booking Services for KLIA Terminal 2 and links to that site. Not published in our sources: what it includes, which checkpoints it covers (security, immigration or both), the price, the hours and the seller. Check them on the booking site before you buy. You can travel without it.',
+      'Perkhidmatan pilihan yang ditempah di laman web berasingan, myairportfasttrack.com. Malaysia Airports menyenaraikan Fast Track di bawah Perkhidmatan Tempahan bagi KLIA Terminal 2 dan memaut ke laman itu. Tidak diterbitkan dalam sumber kami: apa yang termasuk, pemeriksaan yang diliputi (keselamatan, imigresen atau kedua-duanya), harga, waktu operasi dan penjualnya. Semak di laman tempahan sebelum membeli. Anda boleh melakukan perjalanan tanpanya.',
+    ),
+    access: lt('Book on myairportfasttrack.com. Who may use it is not published in our sources.', 'Tempah di myairportfasttrack.com. Siapa yang boleh menggunakannya tidak diterbitkan dalam sumber kami.'),
+    bookingUrl: 'https://www.myairportfasttrack.com/',
+    provenance: 'official',
+    asOf: '2026-11-21',
+    sources: ['mahb-booking-services-fast-track', 'myairportfasttrack-site'],
   },
 ];
 
@@ -501,7 +534,6 @@ const outlets: Outlet[] = [
       'Refurbished duty-free stores for chocolate and liquor, as described by Tatler Asia.',
       'Kedai bebas cukai coklat dan minuman keras yang telah diubah suai, seperti yang diterangkan oleh Tatler Asia.',
     ),
-    asOf: 'Article undated; checked 17 November 2026',
     sources: ['tatler-duty-free-malaysia-airports'],
   },
   {
@@ -606,7 +638,6 @@ const outlets: Outlet[] = [
       'A shopping mall before security. Third-party guides describe a relaxation zone, a Plaza Premium Lounge and a hotel on Level 2M. Its individual shops and restaurants are not listed here because we could not verify them.',
       'Pusat beli-belah sebelum pemeriksaan keselamatan. Panduan pihak ketiga menerangkan zon rehat, Plaza Premium Lounge dan sebuah hotel di Aras 2M. Kedai dan restorannya tidak disenaraikan di sini kerana belum dapat disahkan.',
     ),
-    asOf: 'Guides undated; checked 17 November 2026',
     sources: ['timeout-gateway-klia2'],
   },
 ];
@@ -717,8 +748,8 @@ const transport: TransportOption[] = [
     name: lt('KLIA Ekspres (non-stop train to KL Sentral)', 'KLIA Ekspres (tren tanpa henti ke KL Sentral)'),
     operator: 'Express Rail Link',
     description: lt(
-      'The non-stop airport train between KL Sentral and both KLIA terminals. The adult fare rises on 1 January 2027, so both fares are listed with their dates. Sources disagree on the last train and we have no sourced frequency, so neither is published here: check kliaekspres.com before you travel.',
-      'Tren lapangan terbang tanpa henti antara KL Sentral dan kedua-dua terminal KLIA. Tambang dewasa naik pada 1 Januari 2027, jadi kedua-dua tambang disenaraikan bersama tarikhnya. Sumber berbeza tentang tren terakhir dan kami tiada kekerapan yang bersumber, jadi kedua-duanya tidak diterbitkan di sini: semak kliaekspres.com sebelum perjalanan.',
+      'The non-stop airport train between KL Sentral and both KLIA terminals. The adult fare changes from RM55 to RM65 on 1 January 2027. Sources disagree on the last train and we have no sourced frequency, so neither is published here: check kliaekspres.com before you travel.',
+      'Tren lapangan terbang tanpa henti antara KL Sentral dan kedua-dua terminal KLIA. Tambang dewasa berubah daripada RM55 kepada RM65 pada 1 Januari 2027. Sumber berbeza tentang tren terakhir dan kami tiada kekerapan yang bersumber, jadi kedua-duanya tidak diterbitkan di sini: semak kliaekspres.com sebelum perjalanan.',
     ),
     destinations: [
       {
@@ -744,7 +775,7 @@ const transport: TransportOption[] = [
       { terminal: 'T1', note: STATION_LEVEL_NOT_VERIFIED_T1 },
       { terminal: 'T2', note: STATION_LEVEL_NOT_VERIFIED_T2 },
     ],
-    provenance: 'official',
+    provenance: 'estimated',
     asOf: '2026-10-01',
     sources: [
       'thestar-klia-ekspres-fares-2027',
@@ -952,6 +983,7 @@ const carParks: CarPark[] = [
     baysQualifier: 'over',
     rates: [],
     rateStatus: 'not-verified',
+    reportedDailyMax: [{ amount: 52, source: 'kliainfo-parking-rates' }],
     features: [
       lt('24/7 CCTV', 'CCTV 24 jam'),
       lt('Air-conditioned waiting lounge', 'Ruang menunggu berhawa dingin'),
@@ -970,8 +1002,8 @@ const carParks: CarPark[] = [
     name: lt('Preferred Parking', 'Parkir Pilihan (Preferred Parking)'),
     type: 'preferred',
     description: lt(
-      'Terminal 1 Car Park Level 2, Blocks B and C. This is a premium product, not long-stay parking. In January 2025 paultan.org reported a bill of RM2,084 for a driver who left a car here during a long trip. We have not captured its rates. For a longer trip use the Long Term Car Park, and check the official parking page before you park.',
-      'Aras 2 Tempat Letak Kereta Terminal 1, Blok B dan C. Ini produk premium, bukan parkir jangka panjang. Pada Januari 2025 paultan.org melaporkan bil RM2,084 bagi pemandu yang meninggalkan kereta di sini sepanjang perjalanan yang lama. Kadarnya belum kami peroleh. Untuk perjalanan lebih lama, gunakan Tempat Letak Kereta Jangka Panjang dan semak halaman parkir rasmi sebelum meletak kereta.',
+      'Terminal 1 Car Park Level 2, Blocks B and C. This is a premium product, not long-stay parking. We have not captured its rates. For a trip of more than a day use the Long Term Car Park, and check the official parking page before you park.',
+      'Aras 2 Tempat Letak Kereta Terminal 1, Blok B dan C. Ini produk premium, bukan parkir jangka panjang. Kadarnya belum kami peroleh. Untuk perjalanan lebih daripada sehari, gunakan Tempat Letak Kereta Jangka Panjang dan semak halaman parkir rasmi sebelum meletak kereta.',
     ),
     bays: 300,
     baysQualifier: 'over',
@@ -1023,6 +1055,7 @@ const carParks: CarPark[] = [
     ),
     rates: [],
     rateStatus: 'not-verified',
+    reportedDailyMax: [{ amount: 52, source: 'mahb-klia-parking-pages-indexed' }],
     features: [],
     provenance: 'estimated',
     asOf: TRANSPORT_AS_OF,
@@ -1058,15 +1091,16 @@ const airlines: AirlineAtAirport[] = [
     code: 'MH',
     name: 'Malaysia Airlines',
     terminal: 'T1',
-    checkIn:
+    checkIn: lt(
       'Level 5. International Economy: Row H, counters 1 to 18. International Business: Row D, counters 4 to 12 (Business Suite: counters 1 to 3). Domestic Economy: Row B, counters 1 to 18. Groups of 10 or more (international): counter C13. Self-service bag drop: counters F and G.',
+      'Aras 5. Ekonomi antarabangsa: Barisan H, kaunter 1 hingga 18. Perniagaan antarabangsa: Barisan D, kaunter 4 hingga 12 (Business Suite: kaunter 1 hingga 3). Ekonomi domestik: Barisan B, kaunter 1 hingga 18. Kumpulan 10 orang atau lebih (antarabangsa): kaunter C13. Serahan bagasi layan diri: kaunter F dan G.',
+    ),
     destinations: [],
     basis: 'airline',
     note: lt(
       'Malaysia Airlines says its counters at Terminal 1 are arranged by the airport authority based on daily conditions, so check the screens on the day.',
       'Malaysia Airlines menyatakan kaunternya di Terminal 1 disusun oleh pihak berkuasa lapangan terbang mengikut keadaan harian, jadi semak skrin pada hari perjalanan.',
     ),
-    asOf: 'Page undated',
     sources: ['mh-klia-t1-passenger-journey'],
   },
   {
@@ -1075,7 +1109,6 @@ const airlines: AirlineAtAirport[] = [
     terminal: 'T1',
     destinations: [],
     basis: 'airline',
-    asOf: UNDATED,
     sources: ['ana-kuala-lumpur-guide'],
   },
   {
@@ -1146,17 +1179,18 @@ const notices: Notice[] = [
     airport: 'kul',
     terminal: 'T1',
     severity: 'advisory',
+    // No "Planned:" prefix: the in-effect and ended labels come from the dates (D-08).
     title: lt(
-      'Planned: no Aerotrain between midnight and 5am, 28 November to 1 December',
-      'Dirancang: tiada Aerotrain antara tengah malam dan 5 pagi, 28 November hingga 1 Disember',
+      'No Aerotrain from midnight to 5am, 28 November to 1 December',
+      'Tiada Aerotrain dari tengah malam hingga 5 pagi, 28 November hingga 1 Disember',
     ),
     body: lt(
-      'A software update is scheduled for these nights, subject to an independent safety assessment; we found no confirmation of the final dates. If it goes ahead, the Aerotrain between the Main Terminal Building and the Satellite Building (C gates) will be unavailable from 00:00 to 05:00. Shuttle buses replace it: follow the signs to the bus lounge or ask ground staff, and allow extra time to reach a C gate.',
-      'Kemas kini perisian dijadualkan pada malam-malam ini, tertakluk kepada penilaian keselamatan bebas; kami tidak menemui pengesahan tarikh akhir. Jika diteruskan, Aerotrain antara Bangunan Terminal Utama dan Bangunan Satelit (pintu C) tidak beroperasi dari 00:00 hingga 05:00. Bas pemindahan disediakan: ikut papan tanda ke ruang menunggu bas atau tanya petugas, dan peruntukkan masa tambahan untuk ke pintu C.',
+      'A software update is scheduled for these nights, subject to an independent safety assessment; we found no confirmation of the final dates. If it goes ahead, the Aerotrain between the Main Terminal Building and the Satellite Building (C gates) will be unavailable from 00:00 to 05:00. Shuttle buses replace it: follow the signs to the bus lounge or ask ground staff, and allow extra time to reach a C gate. Whether the buses are step-free, and how much extra time assisted passengers need, is not published: if you use a wheelchair or need help, ask your airline for assistance before you fly and allow extra time.',
+      'Kemas kini perisian dijadualkan pada malam-malam ini, tertakluk kepada penilaian keselamatan bebas; kami tidak menemui pengesahan tarikh akhir. Jika diteruskan, Aerotrain antara Bangunan Terminal Utama dan Bangunan Satelit (pintu C) tidak beroperasi dari 00:00 hingga 05:00. Bas pemindahan disediakan: ikut papan tanda ke ruang menunggu bas atau tanya petugas, dan peruntukkan masa tambahan untuk ke pintu C. Sama ada bas itu bebas tangga, dan berapa banyak masa tambahan yang diperlukan oleh penumpang yang dibantu, tidak diterbitkan: jika anda menggunakan kerusi roda atau memerlukan bantuan, minta bantuan daripada syarikat penerbangan anda sebelum terbang dan peruntukkan masa tambahan.',
     ),
     validFrom: '2026-11-28T00:00:00+08:00',
     validTo: '2026-12-01T05:00:00+08:00',
-    provenance: 'official',
+    provenance: 'estimated',
     asOf: '2026-10-07',
     sources: ['malaymail-aerotrain-software-oct-2026', 'soyacincau-aerotrain-software-oct-2026'],
   },
@@ -1164,16 +1198,17 @@ const notices: Notice[] = [
     id: 'kul-klia-ekspres-fare-rise-2027',
     airport: 'kul',
     severity: 'info',
-    title: lt(
-      'KLIA Ekspres adult fare rises to RM65 on 1 January 2027',
-      'Tambang dewasa KLIA Ekspres naik kepada RM65 pada 1 Januari 2027',
-    ),
+    // One title that reads correctly before and after the change (D-10).
+    title: lt('KLIA Ekspres adult fare: RM65 from 1 January 2027', 'Tambang dewasa KLIA Ekspres: RM65 mulai 1 Januari 2027'),
     body: lt(
-      'The adult one-way fare between KL Sentral and KLIA is RM55 until 31 December 2026 and RM65 from 1 January 2027 (return RM118, child RM29, children under 6 free). KLIA Transit adult fares to KLIA are also reported to change on that date: RM45.40 from Bandar Tasik Selatan, RM11.50 from Putrajaya & Cyberjaya and RM5.80 from Salak Tinggi. Check kliaekspres.com before you travel.',
-      'Tambang dewasa sehala antara KL Sentral dan KLIA ialah RM55 hingga 31 Disember 2026 dan RM65 mulai 1 Januari 2027 (pergi balik RM118, kanak-kanak RM29, kanak-kanak bawah 6 tahun percuma). Tambang dewasa KLIA Transit ke KLIA turut dilaporkan berubah pada tarikh itu: RM45.40 dari Bandar Tasik Selatan, RM11.50 dari Putrajaya & Cyberjaya dan RM5.80 dari Salak Tinggi. Semak kliaekspres.com sebelum perjalanan.',
+      'The adult one-way fare between KL Sentral and KLIA changes from RM55 to RM65 on 1 January 2027 (return RM118, child RM29, children under 6 free). KLIA Transit adult fares to KLIA are also reported to change on that date: RM45.40 from Bandar Tasik Selatan, RM11.50 from Putrajaya & Cyberjaya and RM5.80 from Salak Tinggi. Check kliaekspres.com before you travel.',
+      'Tambang dewasa sehala antara KL Sentral dan KLIA berubah daripada RM55 kepada RM65 pada 1 Januari 2027 (pergi balik RM118, kanak-kanak RM29, kanak-kanak bawah 6 tahun percuma). Tambang dewasa KLIA Transit ke KLIA turut dilaporkan berubah pada tarikh itu: RM45.40 dari Bandar Tasik Selatan, RM11.50 dari Putrajaya & Cyberjaya dan RM5.80 dari Salak Tinggi. Semak kliaekspres.com sebelum perjalanan.',
     ),
-    validTo: '2026-12-31T23:59:59+08:00',
-    provenance: 'official',
+    // In effect from the announcement until some weeks after the change, so it stays on the
+    // KLIA page and the home strip on the day the new fare applies (D-10).
+    validFrom: '2026-10-01T00:00:00+08:00',
+    validTo: '2027-01-31T23:59:59+08:00',
+    provenance: 'estimated',
     asOf: '2026-10-01',
     sources: ['thestar-klia-ekspres-fares-2027', 'businesstoday-klia-ekspres-fares-2027', 'soyacincau-klia-ekspres-fares-2027'],
   },
@@ -1221,7 +1256,6 @@ const guidesNotes: GuideNote[] = [
     ),
     appliesTo: { terminal: 'T1', direction: 'departing' },
     provenance: 'official',
-    asOf: UNDATED,
     sources: ['mh-klia-t1-passenger-journey'],
   },
   {
@@ -1235,7 +1269,6 @@ const guidesNotes: GuideNote[] = [
     ),
     appliesTo: { terminal: 'T1', airline: 'MH', direction: 'departing' },
     provenance: 'official',
-    asOf: 'Page undated',
     sources: ['mh-klia-t1-passenger-journey'],
   },
   {
@@ -1263,7 +1296,6 @@ const guidesNotes: GuideNote[] = [
     ),
     appliesTo: { terminal: 'T1', gatePrefixes: ['G', 'H'], direction: 'departing' },
     provenance: 'official',
-    asOf: UNDATED,
     sources: ['mh-klia-t1-passenger-journey'],
   },
   {
@@ -1277,7 +1309,6 @@ const guidesNotes: GuideNote[] = [
     ),
     appliesTo: { terminal: 'T1', gatePrefixes: ['A', 'B'], direction: 'departing' },
     provenance: 'estimated',
-    asOf: UNDATED,
     sources: ['mh-klia-t1-passenger-journey', 'kliainfo-domestic-departures'],
   },
   {
@@ -1305,7 +1336,6 @@ const guidesNotes: GuideNote[] = [
     ),
     appliesTo: { direction: 'arriving' },
     provenance: 'estimated',
-    asOf: UNDATED,
     sources: ['kliainfo-lost-found'],
   },
   {
@@ -1319,7 +1349,6 @@ const guidesNotes: GuideNote[] = [
     ),
     appliesTo: { terminal: 'T1' },
     provenance: 'estimated',
-    asOf: UNDATED,
     sources: ['klia2info-level-guide'],
   },
   {
@@ -1333,7 +1362,6 @@ const guidesNotes: GuideNote[] = [
     ),
     appliesTo: { terminal: 'T1' },
     provenance: 'estimated',
-    asOf: UNDATED,
     sources: ['ana-kuala-lumpur-guide', 'klia2info-level-guide'],
   },
   {
@@ -1347,7 +1375,6 @@ const guidesNotes: GuideNote[] = [
     ),
     appliesTo: { terminal: 'T1' },
     provenance: 'estimated',
-    asOf: 'Booking listings, undated',
     sources: ['booking-sama-sama-express', 'kliainfo-sama-sama-express'],
   },
   {
@@ -1397,32 +1424,74 @@ const guidesNotes: GuideNote[] = [
     sources: ['mahb-inter-terminal-transfer', 'soyacincau-klia-ekspres-fares-2027', 'malaymail-seamless-transfer-2025'],
   },
   {
+    // D-07: what departing Malaysian citizens need to know at passport control. No official
+    // statement could be read, so this says what is not published and who decides (needs the
+    // Immigration Department's own wording before launch).
+    id: 'kul-departing-immigration-citizens',
+    airport: 'kul',
+    topic: 'immigration',
+    title: lt('Leaving Malaysia: passport control for Malaysian citizens', 'Meninggalkan Malaysia: kawalan pasport bagi warganegara Malaysia'),
+    body: lt(
+      'Our sources do not publish who may use the departure autogates, what Malaysian citizens need to use them, or which counters help older passengers and people who need assistance. Have your passport ready. If you are not sure which lane to use, or you need a staffed counter, ask an immigration officer in the hall. The Immigration Department of Malaysia sets the rules.',
+      'Sumber kami tidak menerbitkan siapa yang boleh menggunakan autogate berlepas, apa yang diperlukan oleh warganegara Malaysia untuk menggunakannya, atau kaunter mana yang membantu penumpang warga emas dan mereka yang memerlukan bantuan. Sediakan pasport anda. Jika anda tidak pasti lorong mana yang perlu digunakan, atau memerlukan kaunter berpegawai, tanya pegawai imigresen di dewan. Jabatan Imigresen Malaysia menetapkan peraturannya.',
+    ),
+    appliesTo: { scope: 'international', direction: 'departing', traveller: 'citizen' },
+    provenance: 'suggestion',
+    asOf: '2026-11-21',
+    sources: ['imi-official-site', 'prototype-method'],
+  },
+  {
+    // D-04: every accessibility fact a wheelchair user needs that we cannot publish yet, listed
+    // once (the accessibility hub shows it with the official request channels).
+    id: 'kul-accessibility-gaps',
+    airport: 'kul',
+    topic: 'coverage',
+    title: lt('Accessibility details not published yet for KLIA', 'Butiran kebolehcapaian yang belum diterbitkan bagi KLIA'),
+    body: lt(
+      'Checked on 21 November 2026. Not in our sources yet: where the accessible toilets, lifts, nursing rooms, and buggy and wheelchair points are; accessible parking bays; which trains, buses and stations are step-free; what the airport\'s own special assistance service offers and how to book it; assistance rules for airlines other than Malaysia Airlines, including AirAsia, AirAsia X and Batik Air; the opening hours of the Malaysia Airports CARE live chat. Until they are published, ask your airline for assistance when you book, and ask Malaysia Airports through CARE live chat or at an information counter.',
+      'Disemak pada 21 November 2026. Belum ada dalam sumber kami: lokasi tandas OKU, lif, bilik penjagaan bayi, serta tempat kereta buggy dan kerusi roda; petak parkir OKU; tren, bas dan stesen yang bebas tangga; apa yang ditawarkan oleh perkhidmatan bantuan khas lapangan terbang sendiri dan cara menempahnya; peraturan bantuan syarikat penerbangan selain Malaysia Airlines, termasuk AirAsia, AirAsia X dan Batik Air; waktu operasi sembang langsung Malaysia Airports CARE. Sehingga semua ini diterbitkan, minta bantuan daripada syarikat penerbangan anda semasa menempah, dan tanya Malaysia Airports melalui sembang langsung CARE atau di kaunter pertanyaan.',
+    ),
+    gaps: [{ area: 'accessible-toilet' }, { area: 'nursing-room' }],
+    provenance: 'suggestion',
+    asOf: '2026-11-21',
+    sources: ['prototype-method', 'mahb-special-assistance-klia-t1', 'mahb-care-chat'],
+  },
+  {
     id: 'kul-preferred-parking-warning',
     airport: 'kul',
-    topic: 'getting-there',
-    title: lt(
-      'Parking for more than a day? Avoid Preferred Parking',
-      'Parkir lebih daripada sehari? Elakkan Preferred Parking',
-    ),
+    // Parking only: the parking page reads it by id; no journey step shows it (D-05).
+    topic: 'parking',
+    title: lt('Staying more than a day? Use the Long Term Car Park', 'Lebih daripada sehari? Gunakan Tempat Letak Kereta Jangka Panjang'),
+    // Stated as a rule with the tariff and its date; the press report stays in the sources (D-06).
     body: lt(
-      'Preferred Parking (Terminal 1 Car Park Level 2, Blocks B and C) is a premium product. In January 2025 paultan.org reported a bill of RM2,084 for a long stay there. For a longer trip use the Long Term Car Park, where the daily maximum is RM32 from 1 May 2026, and check the official parking page before you park.',
-      'Preferred Parking (Aras 2 Tempat Letak Kereta Terminal 1, Blok B dan C) ialah produk premium. Pada Januari 2025 paultan.org melaporkan bil RM2,084 bagi parkir jangka panjang di situ. Untuk perjalanan lebih lama, gunakan Tempat Letak Kereta Jangka Panjang dengan maksimum harian RM32 mulai 1 Mei 2026, dan semak halaman parkir rasmi sebelum meletak kereta.',
+      'Preferred Parking (Terminal 1 Car Park Level 2, Blocks B and C) is a premium product, not long-stay parking. For a trip of more than a day, the Long Term Car Park costs at most RM32 a day from 1 May 2026 and has a free shuttle to the terminals. Check the official parking page before you park.',
+      'Preferred Parking (Aras 2 Tempat Letak Kereta Terminal 1, Blok B dan C) ialah produk premium, bukan parkir jangka panjang. Untuk perjalanan lebih daripada sehari, Tempat Letak Kereta Jangka Panjang mengenakan maksimum RM32 sehari mulai 1 Mei 2026 dan menyediakan bas ulang-alik percuma ke terminal. Semak halaman parkir rasmi sebelum meletak kereta.',
     ),
     provenance: 'estimated',
-    asOf: TRANSPORT_AS_OF,
-    sources: ['paultan-preferred-parking-2025', 'rakyatpost-ltcp-rate-rise-2026', 'mahb-klia-t1-parking'],
+    asOf: '2026-05-01',
+    sources: ['mahb-klia-t1-parking', 'mahb-klia-parking-pages-indexed', 'rakyatpost-ltcp-rate-rise-2026', 'paultan-preferred-parking-2025'],
   },
   {
     id: 'kul-content-gaps',
     airport: 'kul',
-    topic: 'terminal',
+    // One place per airport (About this prototype), never a journey step (D-05).
+    topic: 'coverage',
     title: lt('What this prototype has not verified at KLIA', 'Perkara yang belum disahkan oleh prototaip ini di KLIA'),
     body: lt(
-      'Left out because we could not verify them: first and last trains and how often KLIA Ekspres and KLIA Transit run; the train time between terminals; KLIA Transit fares before 2027; coach fares by operator and coach boarding bays; the official taxi fare table; official parking rate cards; the official list of nationalities that may use the autogates; current opening hours of the Jungle Boardwalk; Terminal 2 facilities and airlines other than AirAsia; shops and restaurants in either terminal; the Lost & Found phone number and location; Wi-Fi details. For these, use the official Malaysia Airports website or ask at an information counter.',
-      'Tidak disertakan kerana belum dapat disahkan: tren pertama dan terakhir serta kekerapan KLIA Ekspres dan KLIA Transit; tempoh perjalanan tren antara terminal; tambang KLIA Transit sebelum 2027; tambang bas ekspres mengikut pengendali dan petak menaiki bas ekspres; jadual tambang teksi rasmi; kadar parkir rasmi; senarai rasmi kewarganegaraan yang boleh menggunakan autogate; waktu operasi semasa Jungle Boardwalk; kemudahan Terminal 2 dan syarikat penerbangan selain AirAsia; kedai dan restoran di kedua-dua terminal; nombor telefon dan lokasi Barang Hilang & Dijumpai; butiran Wi-Fi. Untuk perkara ini, gunakan laman web rasmi Malaysia Airports atau tanya di kaunter pertanyaan.',
+      'Checked against this site on 21 November 2026. Not published here because we could not verify them: first and last trains and how often KLIA Ekspres and KLIA Transit run; the train time between terminals; KLIA Transit fares before 2027; coach fares by operator and coach boarding bays; the official taxi fare table; official parking rate cards; who may use the immigration autogates, including the rules for Malaysian citizens; current opening hours of the Jungle Boardwalk; most Terminal 2 facilities and a Terminal 2 map; Terminal 2 airlines other than AirAsia and AirAsia X; opening hours and prices of shops and restaurants, and outlets beyond the few listed; the Lost & Found phone number and location; where toilets, accessible toilets, lifts and nursing rooms are; Wi-Fi details. For these, use the official Malaysia Airports website or ask at an information counter.',
+      'Disemak dengan laman ini pada 21 November 2026. Tidak diterbitkan di sini kerana belum dapat disahkan: tren pertama dan terakhir serta kekerapan KLIA Ekspres dan KLIA Transit; tempoh perjalanan tren antara terminal; tambang KLIA Transit sebelum 2027; tambang bas ekspres mengikut pengendali dan petak menaiki bas ekspres; jadual tambang teksi rasmi; kadar parkir rasmi; siapa yang boleh menggunakan autogate imigresen, termasuk peraturan bagi warganegara Malaysia; waktu operasi semasa Jungle Boardwalk; kebanyakan kemudahan Terminal 2 dan peta Terminal 2; syarikat penerbangan Terminal 2 selain AirAsia dan AirAsia X; waktu operasi dan harga kedai serta restoran, dan kedai selain yang sedikit disenaraikan; nombor telefon dan lokasi Barang Hilang & Dijumpai; lokasi tandas, tandas OKU, lif dan bilik penjagaan bayi; butiran Wi-Fi. Untuk perkara ini, gunakan laman web rasmi Malaysia Airports atau tanya di kaunter pertanyaan.',
     ),
+    gaps: [
+      { area: 'parking-rates' },
+      { area: 'maps', terminal: 'T2' },
+      { area: 'outlet-hours' },
+      { area: 'toilet' },
+      { area: 'accessible-toilet' },
+      { area: 'nursing-room' },
+      { area: 'wifi' },
+    ],
     provenance: 'suggestion',
-    asOf: TRANSPORT_AS_OF,
+    asOf: '2026-11-21',
     sources: ['prototype-method', 'mahb-klia-t1-home'],
   },
 ];
@@ -1437,7 +1506,6 @@ const guidesNotes: GuideNote[] = [
  * ---------------------------------------------------------------------------------------- */
 
 const MAHB = 'Malaysia Airports Holdings Berhad';
-const LINK_NOT_RECORDED = 'as quoted in search results on 17 November 2026; exact link not recorded';
 
 function source(
   id: string,
@@ -1447,11 +1515,44 @@ function source(
   url: string,
   retrieved: string,
   asOf?: string,
+  extras: SourceExtras = {},
 ): Source {
-  return asOf ? { id, kind, publisher, title, url, retrieved, asOf } : { id, kind, publisher, title, url, retrieved };
+  const base = { id, kind, publisher, title, url, retrieved, ...extras };
+  return asOf ? { ...base, asOf } : { ...base, undated: true };
 }
 
 const KUL_SOURCES: Source[] = [
+  /* ---- Booking services --------------------------------------------------------------------- */
+  source(
+    'mahb-booking-services-fast-track',
+    'official',
+    MAHB,
+    'Booking Services: Fast Track',
+    'https://airports.malaysiaairports.com.my/en/klia1/air-travel/services/fast-track',
+    '2026-11-21',
+    '2026-11-21',
+    {
+      note: lt(
+        'Read first hand on 21 November 2026: the official menu lists Fast Track for KLIA Terminal 1 and Terminal 2 and links to myairportfasttrack.com. The page gives no price, hours or checkpoints.',
+        'Dibaca sendiri pada 21 November 2026: menu rasmi menyenaraikan Fast Track bagi KLIA Terminal 1 dan Terminal 2 serta memaut ke myairportfasttrack.com. Halaman itu tidak memberikan harga, waktu operasi atau pemeriksaan yang diliputi.',
+      ),
+    },
+  ),
+  source(
+    'myairportfasttrack-site',
+    'other',
+    'myairportfasttrack.com',
+    'Fast Track booking site',
+    'https://www.myairportfasttrack.com/',
+    '2026-11-21',
+    undefined,
+    {
+      note: lt(
+        'The booking site the official site links to. We could not open it, so its seller, prices and terms are not confirmed.',
+        'Laman tempahan yang dipautkan oleh laman rasmi. Kami tidak dapat membukanya, jadi penjual, harga dan syaratnya belum disahkan.',
+      ),
+    },
+  ),
   /* ---- Rail ------------------------------------------------------------------------------ */
   source(
     'thestar-klia-ekspres-fares-2027',
@@ -1503,26 +1604,31 @@ const KUL_SOURCES: Source[] = [
     'busonlineticket-airport-coach',
     'aggregator',
     'BusOnlineTicket.com',
-    `KLIA airport coach listings and fares, ${LINK_NOT_RECORDED}`,
+    'KLIA airport coach listings and fares',
     'https://www.busonlineticket.com/',
     '2026-11-17',
     '2026',
+    { note: NOTES.linkNotRecorded },
   ),
   source(
     'mahb-klia-taxi',
     'official',
     MAHB,
-    'Getting around: metered taxi (page found in the search index; content not read first hand)',
+    'Getting around: metered taxi',
     'https://airports.malaysiaairports.com.my/getting-around-transport-car/taxi/metered-taxi',
     '2026-11-17',
+    undefined,
+    { note: NOTES.indexedNotRead },
   ),
   source(
     'mahb-klia-e-hailing',
     'official',
     MAHB,
-    'Getting around: e-hailing (as summarised in search results)',
+    'Getting around: e-hailing',
     'https://airports.malaysiaairports.com.my/getting-around-transport/car/e-hailing',
     '2026-11-17',
+    undefined,
+    { note: NOTES.searchSummary },
   ),
   source(
     'ringgitplus-e-hailing-fee',
@@ -1538,17 +1644,21 @@ const KUL_SOURCES: Source[] = [
     'mahb-inter-terminal-transfer',
     'official',
     MAHB,
-    'Transit: inter-terminal transfer (as summarised in search results)',
+    'Transit: inter-terminal transfer',
     'https://airports.malaysiaairports.com.my/transit/inter-terminal-transfer',
     '2026-11-17',
+    undefined,
+    { note: NOTES.searchSummary },
   ),
   source(
     'klia2commy-inter-terminal-shuttle',
     'aggregator',
     'klia2.com.my',
-    `Inter-terminal shuttle bus stops and frequency, ${LINK_NOT_RECORDED}`,
+    'Inter-terminal shuttle bus stops and frequency',
     'https://www.klia2.com.my/',
     '2026-11-17',
+    undefined,
+    { note: NOTES.linkNotRecorded },
   ),
   source(
     'malaymail-seamless-transfer-2025',
@@ -1573,44 +1683,52 @@ const KUL_SOURCES: Source[] = [
     'rakyatpost-ltcp-rate-rise-2026',
     'news',
     'The Rakyat Post',
-    `Report on the KLIA Long Term Car Park daily maximum rising to RM32 (16 May 2026), ${LINK_NOT_RECORDED}`,
+    'Report on the KLIA Long Term Car Park daily maximum rising to RM32 (16 May 2026)',
     'https://www.therakyatpost.com/',
     '2026-11-17',
     '2026-05-16',
+    { note: NOTES.linkNotRecorded },
   ),
   source(
     'tripcom-klia-parking-guide',
     'aggregator',
     'Trip.com',
-    `KLIA parking guide (2026), ${LINK_NOT_RECORDED}`,
+    'KLIA parking guide (2026)',
     'https://www.trip.com/',
     '2026-11-17',
     '2026',
+    { note: NOTES.linkNotRecorded },
   ),
   source(
     'mahb-klia-parking-pages-indexed',
     'official',
     MAHB,
-    `KLIA car and Terminal 2 parking rate pages (undated, may be out of date), ${LINK_NOT_RECORDED}`,
+    'KLIA car and Terminal 2 parking rate pages (undated, may be out of date)',
     'https://airports.malaysiaairports.com.my/',
     '2026-11-17',
+    undefined,
+    { note: NOTES.linkNotRecorded },
   ),
   source(
     'kliainfo-parking-rates',
     'aggregator',
     'klia.info',
-    `KLIA Terminal 1 car park daily maximum, ${LINK_NOT_RECORDED}`,
+    'KLIA Terminal 1 car park daily maximum',
     'https://klia.info/',
     '2026-11-17',
+    undefined,
+    { note: NOTES.linkNotRecorded },
   ),
   /* ---- Entry formalities ------------------------------------------------------------------ */
   source(
     'kln-mdac-mission-page',
     'government',
-    'Ministry of Foreign Affairs, Malaysia (mission page on kln.gov.my)',
-    `Malaysia Digital Arrival Card (MDAC) requirements, ${LINK_NOT_RECORDED}`,
+    'Ministry of Foreign Affairs, Malaysia',
+    'Malaysia Digital Arrival Card (MDAC) requirements',
     'https://www.kln.gov.my/',
     '2026-11-17',
+    undefined,
+    { note: NOTES.linkNotRecorded },
   ),
   source(
     'dollarsandsense-autogate-guide',
@@ -1634,9 +1752,11 @@ const KUL_SOURCES: Source[] = [
     'mahb-klia-t1-dine-directory',
     'official',
     MAHB,
-    'KLIA Terminal 1: dine directory (restaurants and cafes)',
+    'KLIA Terminal 1: dine directory',
     'https://airports.malaysiaairports.com.my/en/klia1/shop-dine-services/dine',
     '2026-11-17',
+    undefined,
+    { note: NOTES.restaurantsCafes },
   ),
   source(
     'mahb-klia-t1-shop-directory',
@@ -1658,77 +1778,91 @@ const KUL_SOURCES: Source[] = [
     'nst-eraman-klia-t1-2024',
     'news',
     'New Straits Times',
-    'New look for Eraman’s duty-free mall at KLIA (headline as given in the link)',
+    'New look for Eraman’s duty-free mall at KLIA',
     'https://nst.com.my/amp/business/corporate/2024/11/1139412/new-look-eramans-duty-free-mall-klia',
     '2026-11-17',
     '2024-11',
+    { note: NOTES.headlineFromLink },
   ),
   source(
     'moodie-eraman-klia-t1-2024',
     'news',
     'The Moodie Davitt Report',
-    'Report on the Eraman Duty-Free Mall relaunch at KLIA Terminal 1 (article title not recorded)',
+    'Report on the Eraman Duty-Free Mall relaunch at KLIA Terminal 1',
     'https://moodiedavittreport.com/?p=434288',
     '2026-11-17',
     '2024-11',
+    { note: NOTES.articleTitleNotRecorded },
   ),
   source(
     'tatler-duty-free-malaysia-airports',
     'news',
     'Tatler Asia',
-    'Duty-free options at Malaysia Airports (headline as given in the link)',
+    'Duty-free options at Malaysia Airports',
     'https://www.tatlerasia.com/lifestyle/travel/duty-free-options-malaysia-airports',
     '2026-11-17',
+    undefined,
+    { note: NOTES.headlineFromLink },
   ),
   source(
     'moodie-charlotte-tilbury-klia',
     'news',
     'The Moodie Davitt Report',
-    'Report on Charlotte Tilbury’s first Southeast Asian store, at KLIA Terminal 1 (article title not recorded)',
+    'Report on Charlotte Tilbury’s first Southeast Asian store, at KLIA Terminal 1',
     'https://moodiedavittreport.com/?p=483401',
     '2026-11-17',
+    undefined,
+    { note: NOTES.articleTitleNotRecorded },
   ),
   source(
     'seven-eleven-cafe-klia-2026',
     'operator',
     '7-Eleven Malaysia',
-    `1,000th 7-Eleven CAFe store opens at KLIA Terminal 1 (press release, July 2026), ${LINK_NOT_RECORDED}`,
+    '1,000th 7-Eleven CAFe store opens at KLIA Terminal 1 (press release, July 2026)',
     'https://www.7eleven.com.my/',
     '2026-11-17',
     '2026-07',
+    { note: NOTES.linkNotRecorded },
   ),
   source(
     'nst-eraman-klia-t2-2026',
     'news',
     'New Straits Times',
-    'Eraman bets on upgraded KLIA Terminal 2 duty-free mall to lift travel (headline as given in the link)',
+    'Eraman bets on upgraded KLIA Terminal 2 duty-free mall to lift travel',
     'https://www.nst.com.my/amp/business/corporate/2026/07/1483435/eraman-bets-upgraded-klia-terminal-2-duty-free-mall-lift-travel',
     '2026-11-17',
     '2026-07',
+    { note: NOTES.headlineFromLink },
   ),
   source(
     'timeout-gateway-klia2',
     'aggregator',
-    'Time Out and fan sites (third-party guides)',
-    `gateway@klia2 layout (guides undated), ${LINK_NOT_RECORDED}`,
+    'Time Out and fan sites',
+    'gateway@klia2 layout (guides undated)',
     'https://www.timeout.com/',
     '2026-11-17',
+    undefined,
+    { note: NOTES.linkNotRecorded },
   ),
   source(
     'maybank-lounge-list',
     'other',
     'Maybank',
-    `Airport lounge list for Maybank cardholders: Travel Club Lounge, KLIA Terminal 2, ${LINK_NOT_RECORDED}`,
+    'Airport lounge list for Maybank cardholders: Travel Club Lounge, KLIA Terminal 2',
     'https://www.maybank2u.com.my/',
     '2026-11-17',
+    undefined,
+    { note: NOTES.linkNotRecorded },
   ),
   source(
     'dragonpass-travel-club-klia2',
     'aggregator',
     'DragonPass',
-    `Travel Club Lounge, KLIA Terminal 2 (lounge listing), ${LINK_NOT_RECORDED}`,
+    'Travel Club Lounge, KLIA Terminal 2 (lounge listing)',
     'https://www.dragonpass.com/',
     '2026-11-17',
+    undefined,
+    { note: NOTES.linkNotRecorded },
   ),
 ];
 
@@ -1792,9 +1926,9 @@ const POI_INPUTS: PoiInput[] = [
   { id: 'g-plaza-premium-first', level: 'GATES', zone: 'g-contact-pier', x: 740, y: 350, name: lt('Plaza Premium First', 'Plaza Premium First'), kind: 'lounge', ref: { type: 'facility', id: 'kul-t1-plaza-premium-first' }, provenance: 'estimated', sources: ['layoverindex-kul-lounges'] },
   { id: 'g-golden-lounge-regional', level: 'GATES', zone: 'g-contact-pier', x: 840, y: 350, name: lt('Malaysia Airlines Golden Lounge (Regional)', 'Golden Lounge Malaysia Airlines (Serantau)'), kind: 'lounge', ref: { type: 'facility', id: 'kul-t1-golden-lounge-regional' }, provenance: 'official', sources: MH_JOURNEY },
   { id: 'g-aerotrain-main', level: 'GATES', zone: 'g-contact-pier', x: 500, y: 350, name: lt('Aerotrain station (Main Terminal Building)', 'Stesen Aerotrain (Bangunan Terminal Utama)'), kind: 'train', ref: { type: 'transport', id: 'kul-t1-aerotrain' }, provenance: 'official', sources: ['malaymail-aerotrain-software-oct-2026', 'mh-klia-t1-passenger-journey'] },
-  { id: 'g-bus-lounge', level: 'GATES', zone: 'g-contact-pier', x: 580, y: 370, name: lt('Bus lounge (transfer buses when the Aerotrain is closed)', 'Ruang menunggu bas (bas pemindahan semasa Aerotrain ditutup)'), kind: 'bus', provenance: 'official', sources: ['malaymail-aerotrain-software-oct-2026', 'soyacincau-aerotrain-software-oct-2026'] },
+  { id: 'g-bus-lounge', level: 'GATES', zone: 'g-contact-pier', x: 580, y: 370, name: lt('Bus lounge (transfer buses when the Aerotrain is closed)', 'Ruang menunggu bas (bas pemindahan semasa Aerotrain ditutup)'), kind: 'bus', provenance: 'estimated', sources: ['malaymail-aerotrain-software-oct-2026', 'soyacincau-aerotrain-software-oct-2026'] },
   { id: 'g-aerotrain-satellite', level: 'GATES', zone: 'g-satellite', x: 500, y: 215, name: lt('Aerotrain station (Satellite Building)', 'Stesen Aerotrain (Bangunan Satelit)'), kind: 'train', ref: { type: 'transport', id: 'kul-t1-aerotrain' }, provenance: 'official', sources: ['malaymail-aerotrain-software-oct-2026', 'mh-klia-t1-passenger-journey'] },
-  { id: 'g-jungle-boardwalk', level: 'GATES', zone: 'g-satellite', x: 500, y: 150, name: lt('KLIA Jungle Boardwalk', 'KLIA Jungle Boardwalk'), kind: 'other', ref: { type: 'facility', id: 'kul-t1-jungle-boardwalk' }, provenance: 'official', sources: ['mahb-tiktok-jungle-boardwalk'] },
+  { id: 'g-jungle-boardwalk', level: 'GATES', zone: 'g-satellite', x: 500, y: 150, name: lt('KLIA Jungle Boardwalk', 'KLIA Jungle Boardwalk'), kind: 'other', ref: { type: 'facility', id: 'kul-t1-jungle-boardwalk' }, provenance: 'estimated', sources: ['mahb-tiktok-jungle-boardwalk'] },
   { id: 'g-gates-c', level: 'GATES', zone: 'g-satellite', x: 500, y: 85, name: lt('Gates C (Satellite Building)', 'Pintu C (Bangunan Satelit)'), kind: 'gate', provenance: 'official', sources: ['malaymail-aerotrain-software-oct-2026', 'mh-klia-t1-passenger-journey'] },
   { id: 'g-golden-lounge-satellite', level: 'GATES', zone: 'g-satellite', x: 380, y: 150, name: lt('Malaysia Airlines Golden Lounge (Satellite)', 'Golden Lounge Malaysia Airlines (Satelit)'), kind: 'lounge', ref: { type: 'facility', id: 'kul-t1-golden-lounge-satellite' }, provenance: 'official', sources: MH_JOURNEY },
   { id: 'g-sama-sama-express', level: 'GATES', zone: 'g-satellite', x: 620, y: 150, name: lt('Sama-Sama Express (airside transit hotel)', 'Sama-Sama Express (hotel transit kawasan udara)'), kind: 'hotel', ref: { type: 'facility', id: 'kul-t1-sama-sama-express' }, provenance: 'estimated', sources: ['booking-sama-sama-express', 'kliainfo-sama-sama-express'] },

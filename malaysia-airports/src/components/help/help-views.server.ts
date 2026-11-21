@@ -2,7 +2,7 @@
  * Server-only builders for the help centre: localised FAQ and topic views, contacts and official
  * links resolved from the content layer. Never import from a Client Component.
  */
-import { FAQS, GROUP_CONTACTS, HELP_TOPICS, getAirport, getFaq, getSource, pick, resolveSources, type Contact, type Faq, type Lang, type Source } from '@/content';
+import { FAQS, GROUP_CONTACTS, HELP_TOPICS, getAirport, getFaq, getSource, localizeAirport, pick, resolveSources, type Contact, type Faq, type Lang, type Source } from '@/content';
 import type { Translator } from '@/lib/i18n/translate';
 import type { FactView } from '@/components/guides/fact-card';
 import { HELP_TOPIC_ORDER, TOPIC_OFFICIAL, helpTopicIcon } from './help-meta';
@@ -64,7 +64,7 @@ export function toFaqView(faq: Faq, lang: Lang): FaqView {
     asOf: faq.asOf,
     airports: (faq.airports ?? []).map((slug) => {
       const airport = getAirport(slug);
-      return { code: airport?.code ?? slug.toUpperCase(), name: airport?.shortName ?? slug.toUpperCase() };
+      return { code: airport?.code ?? slug.toUpperCase(), name: airport ? localizeAirport(airport, lang).shortName : slug.toUpperCase() };
     }),
   };
 }

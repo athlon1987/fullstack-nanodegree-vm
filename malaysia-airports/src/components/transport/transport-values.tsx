@@ -157,7 +157,7 @@ export function PaymentValue({ option, shortLabel = false }: { option: Transport
   const t = useT();
   const lang = useLang();
   return option.payment && option.payment.length > 0 ? (
-    <span className="type-body-sm text-ink">{formatList(option.payment, lang)}</span>
+    <span className="type-body-sm text-ink">{formatList(option.payment.map((method) => pick(method, lang)), lang)}</span>
   ) : (
     <NotPublished label={shortLabel ? undefined : t('transportPages.fare.paymentNotPublished')} />
   );

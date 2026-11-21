@@ -1,5 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
+import { AXE_TAGS as SHARED_AXE_TAGS } from './support/axe';
 
 /**
  * Commerce journeys: shop and dine discovery, an outlet page, and lounges and rest.
@@ -10,7 +11,7 @@ import { expect, test, type Page } from '@playwright/test';
  * The dev server compiles pages on first visit, so navigation waits are generous.
  */
 
-const AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'];
+const AXE_TAGS = [...SHARED_AXE_TAGS];
 type AxePage = ConstructorParameters<typeof AxeBuilder>[0]['page'];
 
 async function expectNoAxeViolations(page: Page) {
@@ -35,12 +36,13 @@ async function openFilters(page: Page, isMobile: boolean) {
 test.describe.configure({ timeout: 120_000 });
 
 test.describe('shop and dine', () => {
-  test('discovery lists published outlets with an honest note and the official directory', async ({ page }) => {
+  test('discovery lists published outlets with an honest note and the official directory', async ({ page, isMobile }) => {
     await page.goto('/en/kul/shop-dine', { timeout: 90_000 });
     const main = page.getByRole('main');
     await expect(main.getByRole('heading', { level: 1, name: 'Shops and food' })).toBeVisible();
     await expect(page).toHaveTitle(/Shops and food: KLIA/);
-    await expect(main.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('link', { name: 'KLIA' })).toBeVisible();
+    // On phones the compact airport bar replaces the one-item breadcrumb (package A, A-01).
+    if (!isMobile) await expect(main.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('link', { name: 'KLIA' })).toBeVisible();
 
     const note = main.getByRole('complementary', { name: 'Only what we could confirm' });
     await expect(note).toContainText('Partial directory');
@@ -78,18 +80,21 @@ test.describe('shop and dine', () => {
     await expect(main.getByRole('link', { name: 'Eraman Duty-Free Mall' })).toHaveCount(0);
   });
 
-  test('honours the home page filters and explains why "open now" leaves outlets out', async ({ page, isMobile }) => {
+  // Intended behaviour changed in the fix round (C-05): "Open now" cannot return anything while no
+  // outlet publishes opening hours, so it is not offered; a link that asks for it shows every
+  // outlet (with the other filters applied) and says why, instead of "0 of 8".
+  test('honours the home page filters, and drops "open now" with the reason instead of showing nothing', async ({ page, isMobile }) => {
     await page.goto('/en/kul/shop-dine?filters=open-now,airside', { timeout: 90_000 });
     const main = page.getByRole('main');
-    await openFilters(page, isMobile);
-    await expect(main.getByRole('switch', { name: 'Open now' })).toBeChecked();
-    await expect(main.getByRole('heading', { name: 'No outlet with published hours is open now' })).toBeVisible();
-    // The button is in the static HTML: retry until hydration has attached its handler.
-    await expect(async () => {
-      await main.getByRole('button', { name: 'Turn off “Open now”' }).click({ timeout: 2_000 });
-      await expect(main.getByRole('link', { name: 'Eraman Chocolate and Liquor Duty Free' })).toBeVisible({ timeout: 1_000 });
-    }).toPass();
+    await expect(main.getByText(/^Showing every outlet: we could not apply “Open now” \(opening hours\)/)).toBeVisible();
+    await expect(main.getByRole('link', { name: 'Eraman Chocolate and Liquor Duty Free' })).toBeVisible();
     await expect(main.getByRole('link', { name: 'gateway@klia2' })).toHaveCount(0);
+    // The result line counts what is shown: never "0 of 8 places".
+    await expect(main.getByText(/^[1-9]\d* of \d+ places?$/)).toBeVisible();
+    await openFilters(page, isMobile);
+    await expect(main.getByRole('switch', { name: 'Open now' })).toHaveCount(0);
+    await expect(main.getByText('Not offered yet')).toBeVisible();
+    await expect(main.getByRole('button', { name: /After security/ })).toHaveAttribute('aria-pressed', 'true');
   });
 
   test('near your gate groups outlets by schematic proximity, labelled as an estimate', async ({ page }) => {
@@ -117,12 +122,13 @@ test.describe('shop and dine', () => {
 });
 
 test.describe('outlet page', () => {
-  test('shows where, hours or "not published", sources and related outlets, and saves to my journey', async ({ page }) => {
+  test('shows where, hours or "not published", sources and related outlets, and saves to my journey', async ({ page, isMobile }) => {
     await page.goto('/en/kul/shop-dine/paul-le-cafe', { timeout: 90_000 });
     const main = page.getByRole('main');
     await expect(main.getByRole('heading', { level: 1, name: 'PAUL Le Cafe' })).toBeVisible();
     await expect(page).toHaveTitle(/PAUL Le Cafe, KLIA Terminal 1/);
-    await expect(main.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('link', { name: 'Shops and food' })).toBeVisible();
+    // Phones hide page breadcrumbs under the compact airport bar (package A, A-01).
+    if (!isMobile) await expect(main.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('link', { name: 'Shops and food' })).toBeVisible();
     await expect(main.getByRole('heading', { level: 2, name: 'Where to find it' })).toBeVisible();
     await expect(main.getByText('Not published').first()).toBeVisible();
     await expect(main.getByText('Halal certified').first()).toBeVisible();
@@ -146,6 +152,13 @@ test.describe('outlet page', () => {
 });
 
 test.describe('lounges and rest', () => {
+  test('says once per card that price is not published (C-11)', async ({ page }) => {
+    await page.goto('/en/kul/lounges', { timeout: 90_000 });
+    const card = page.getByRole('main').getByRole('article', { name: 'Plaza Premium Lounge' }).first();
+    await expect(card).toBeVisible();
+    await expect(card.getByText(/price$/)).toHaveCount(1);
+  });
+
   test('lists lounges by terminal and side of security, with the transit explainer', async ({ page }) => {
     await page.goto('/en/kul/lounges', { timeout: 90_000 });
     const main = page.getByRole('main');

@@ -34,7 +34,13 @@ export interface RequestInfo {
 export const LOCALES = ['en', 'ms'] as const;
 export type SwLang = (typeof LOCALES)[number];
 
-/** Cache names; bump `CACHE_SCHEMA` only when the stored format changes. */
+/**
+ * Cache names carry the storage-format version (`v1`), deliberately NOT the build: saved pages
+ * and the bundles they reference must survive a deployment, or every release would wipe what a
+ * visitor saved for offline use. Each stored page records its build in `x-ma-build`; bundles are
+ * content-hashed, so old and new builds never collide; the per-cache entry limits bound the size.
+ * Bump `CACHE_SCHEMA` only when the stored format changes (docs-13).
+ */
 export const CACHE_SCHEMA = 'v1';
 export const CACHE_PREFIX = 'ma-';
 export const CACHE_NAMES = {
@@ -46,8 +52,19 @@ export const CACHE_NAMES = {
 /** Entries kept per cache (oldest dropped first). Pages stay small: about 60 KB to 200 KB each. */
 export const CACHE_LIMITS = { static: 400, pages: 60, data: 8 } as const;
 
-/** The app shell: precached on install, so the start page and the offline page always open. */
-export const PRECACHE_PATHS = ['/en', '/ms', '/en/offline', '/ms/offline'] as const;
+/**
+ * The app shell precached on install: the start page and the offline page of the visitor's
+ * language only (performance-11). The other language is saved when the visitor first opens it.
+ */
+export function precachePaths(lang: SwLang): string[] {
+  return [`/${lang}`, `/${lang}/offline`];
+}
+
+/**
+ * How the worker fetches pages it saves in the background: revalidate with the server, so a page
+ * the browser just downloaded comes back as a cheap `304` instead of a second full download.
+ */
+export const SAVE_FETCH_CACHE: RequestCache = 'no-cache';
 
 /** Response headers the worker adds to stored pages (read by the offline page). */
 export const SAVED_AT_HEADER = 'x-ma-saved-at';

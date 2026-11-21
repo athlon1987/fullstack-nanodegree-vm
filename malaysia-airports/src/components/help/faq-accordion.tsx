@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useSyncExternalStore } from 'react';
+import { formatAsOf } from '@/content/types';
 import { useLang, useT } from '@/lib/i18n/client';
 import { formatDate } from '@/lib/time';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
@@ -48,7 +49,7 @@ export function FaqAccordion({ faqs, headingLevel = 3 }: { faqs: readonly FaqVie
               </Chip>
             ))}
             {faq.asOf ? (
-              <span className="type-caption text-ink-2">{t('freshness.asOf', { date: isoDate.test(faq.asOf) ? formatDate(faq.asOf, lang) : faq.asOf })}</span>
+              <span className="type-caption text-ink-2">{t('freshness.asOf', { date: isoDate.test(faq.asOf) ? formatDate(faq.asOf, lang) : formatAsOf(faq.asOf, lang) })}</span>
             ) : null}
             <CopyLinkButton anchor={faq.id} />
           </div>

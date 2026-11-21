@@ -23,8 +23,8 @@ type FlightPageProps = PageProps<'/[lang]/[airport]/flights/[flightId]'>;
  * `generateStaticParams`: `params` is awaited inside Suspense and the page renders per request
  * (Next.js notes, section 5). The flight's identity comes from the id alone; its status comes
  * from the flight feed on the client. Malformed and unknown ids get a small 404, and codeshare
- * numbers a 308 to the operating flight, before this page is built (`src/lib/flights/route-guard.ts`,
- * called from the proxy).
+ * numbers a 308 to the operating flight, before this page is built (`src/lib/providers/flight-route.ts`,
+ * called from `src/proxy.ts`).
  */
 
 export async function generateMetadata({ params }: FlightPageProps): Promise<Metadata> {

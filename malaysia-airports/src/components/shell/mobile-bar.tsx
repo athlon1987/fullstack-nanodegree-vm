@@ -11,7 +11,7 @@ import { LocaleLink } from '@/components/common/locale-link';
 import { Icon, type IconName } from '@/components/ui/icon';
 import { useSavedCount } from './header-tools';
 import { ScrollChrome } from './scroll-chrome';
-import { overlays, useOverlayState } from './overlay-store';
+import { overlays, useOverlayOpen } from './overlay-store';
 import { sectionHref } from './sections';
 import { useSectionAvailability } from './shell-context';
 
@@ -19,18 +19,21 @@ const ITEM =
   'relative flex min-h-14 w-full min-w-11 flex-col items-center justify-center gap-0.5 rounded-md text-xs leading-tight font-semibold text-ink-2 transition-colors duration-fast aria-[current]:text-ink';
 
 function Label({ icon, children, badge }: { icon: IconName; children: ReactNode; badge?: number }) {
+  // The label comes first in the DOM and the icon is moved above it with `order-first`, so the
+  // visible text reads "Journey 1" (the space keeps them two words) and the accessible name can
+  // start with it (WCAG 2.5.3; verification round).
   return (
     <>
-      <span className="relative">
+      <span data-bar-label="" className="whitespace-nowrap">
+        {children}
+      </span>{' '}
+      <span className="relative order-first">
         <Icon name={icon} size="lg" />
         {badge ? (
           <span aria-hidden="true" className="type-data-xs absolute -top-1 -right-2.5 flex h-4.5 min-w-4.5 items-center justify-center rounded-pill bg-primary px-1 font-bold text-on-primary">
             {badge}
           </span>
         ) : null}
-      </span>
-      <span data-bar-label="" className="whitespace-nowrap">
-        {children}
       </span>
     </>
   );
@@ -40,7 +43,8 @@ function Bar({ pathname }: { pathname: string | null }) {
   const t = useT();
   const { selection } = useAirportContext();
   const availability = useSectionAvailability();
-  const { open } = useOverlayState();
+  const searchOpen = useOverlayOpen('search');
+  const menuOpen = useOverlayOpen('menu');
   const saved = useSavedCount();
   const [first, second] = pathname ? stripLocale(pathname).split('/').filter(Boolean) : [];
   const onHome = pathname !== null && !first;
@@ -71,7 +75,8 @@ function Bar({ pathname }: { pathname: string | null }) {
           <button
             type="button"
             aria-haspopup="dialog"
-            aria-expanded={open === 'search'}
+            aria-expanded={searchOpen}
+            data-early-overlay="search"
             onClick={() => overlays.openSearch()}
             className={cn(ITEM, 'text-ink')}
           >
@@ -90,7 +95,7 @@ function Bar({ pathname }: { pathname: string | null }) {
             prefetch="auto"
             href="/journey"
             aria-current={onJourney ? 'page' : undefined}
-            aria-label={saved > 0 ? t.count('shell.journey.count', saved) : undefined}
+            aria-label={saved > 0 ? t.count('shell.bottomBar.journeyCount', saved) : undefined}
             className={ITEM}
           >
             <Label icon="bookmark" badge={saved}>
@@ -99,7 +104,7 @@ function Bar({ pathname }: { pathname: string | null }) {
           </LocaleLink>
         </li>
         <li>
-          <button type="button" aria-haspopup="dialog" aria-expanded={open === 'menu'} onClick={() => overlays.openMenu()} className={ITEM}>
+          <button type="button" aria-haspopup="dialog" aria-expanded={menuOpen} data-early-overlay="menu" onClick={() => overlays.openMenu()} className={ITEM}>
             <Label icon="menu">{t('shell.bottomBar.menu')}</Label>
           </button>
         </li>

@@ -31,3 +31,40 @@ export function ContactList({ contacts }: { contacts: readonly ContactView[] }) 
     </ul>
   );
 }
+
+/**
+ * A compact "Call Malaysia Airports" row for the top of Help (D-15): the published phone lines as
+ * labelled `tel:` links, so a verified number is one tap away on a phone. Server-rendered.
+ */
+export function CallRow({ contacts, title, allLabel, max = 2 }: { contacts: readonly ContactView[]; title: string; allLabel: string; max?: number }) {
+  const phones = contacts.filter((contact) => contact.kind === 'phone' && contact.href?.startsWith('tel:')).slice(0, max);
+  if (phones.length === 0) return null;
+  return (
+    <section aria-labelledby="help-call-title" className="flex flex-col gap-2">
+      <h2 id="help-call-title" className="type-title-sm text-ink">
+        {title}
+      </h2>
+      <ul className="flex flex-wrap gap-2">
+        {phones.map((phone) => (
+          <li key={phone.id} className="min-w-0">
+            <a
+              href={phone.href}
+              className="type-body-sm inline-flex min-h-11 max-w-full items-center gap-2 rounded-pill border border-line-control bg-surface px-4 py-1.5 text-ink transition-colors duration-fast hover:border-ink"
+            >
+              <Icon name="phone" size="sm" className="shrink-0 text-primary-ink" />
+              <span className="min-w-0">
+                <span className="tabular font-semibold">{phone.value}</span>
+                <span className="text-ink-2"> · {phone.label}</span>
+              </span>
+            </a>
+          </li>
+        ))}
+        <li className="flex items-center">
+          <a href="#contacts" className="link type-body-sm inline-flex min-h-11 items-center px-1 text-ink">
+            {allLabel}
+          </a>
+        </li>
+      </ul>
+    </section>
+  );
+}

@@ -3,9 +3,33 @@
  * page language and resolve sources, so Client Components receive small, serialisable props and
  * never import `@/content`.
  */
-import { getSource, hasTranslation, pick, resolveSources, terminalLabel, type AirportContent, type GuideNote, type Lang, type LocalizedText, type Source } from '@/content';
+import { FAQS, getGuide, getSource, hasTranslation, pick, resolveSources, terminalLabel, type AirportContent, type GuideNote, type Lang, type LocalizedText, type Source } from '@/content';
 import { PLANNER_MODES } from './transport-logic';
-import type { NoteView, TerminalInfo, TransportContext } from './transport-types';
+import type { NoteView, TerminalInfo, ToutsView, TransportContext } from './transport-types';
+
+/** The Help answer about ride touts, scoped to the airports it applies to. */
+const TOUTS_FAQ = 'scam-touts';
+/** The arriving guide's statement it repeats ("Leaving the airport": book at a counter or in your app). */
+const TOUTS_GUIDE = { slug: 'arriving', step: 'official-transport' };
+
+/**
+ * The airport's anti-touting statement for the transport page (C-02): the arriving guide's step,
+ * with its sources, where the Help answer about touts applies to this airport and the airport has
+ * taxis or e-hailing to warn about. Falls back to the Help answer's own words.
+ */
+export function toutsView(content: AirportContent, lang: Lang): ToutsView | undefined {
+  const rides = content.transport.some((option) => option.mode === 'taxi' || option.mode === 'e-hailing');
+  const faq = FAQS.find((item) => item.id === TOUTS_FAQ && item.airports?.includes(content.airport.slug));
+  if (!rides || !faq) return undefined;
+  const step = getGuide(TOUTS_GUIDE.slug)
+    ?.sections.flatMap((section) => section.steps)
+    .find((item) => item.id === TOUTS_GUIDE.step);
+  const helpHref = `/help/${faq.topic}#${faq.id}`;
+  if (step?.body) return { body: pick(step.body, lang), provenance: step.provenance, sourceIds: step.sources ?? faq.sources, helpHref };
+  const view: ToutsView = { body: pick(faq.answer, lang), provenance: faq.provenance, sourceIds: faq.sources, helpHref };
+  if (faq.asOf) view.asOf = faq.asOf;
+  return view;
+}
 
 const PASSENGER_SITE = 'https://airports.malaysiaairports.com.my/';
 
@@ -68,9 +92,11 @@ export function transportPageModel(content: AirportContent, lang: Lang): Transpo
   const transfer = between.length > 0 ? content.guidesNotes.filter((note) => note.topic === 'transit' && !note.appliesTo) : [];
   const gaps = content.guidesNotes.find((note) => note.id === `${content.airport.slug}-content-gaps`);
   const present = new Set(planner.map((option) => option.mode));
+  const touts = toutsView(content, lang);
 
   const sourceIds = [
     ...content.transport.flatMap((option) => option.sources),
+    ...(touts?.sourceIds ?? []),
     ...transfer.flatMap((note) => note.sources),
     ...(gaps?.sources ?? []),
   ];
@@ -96,6 +122,7 @@ export function transportPageModel(content: AirportContent, lang: Lang): Transpo
       terminals: terminalInfo(content, lang),
       sources: sourceLookup(sourceIds),
       officialUrl: officialSite(content),
+      ...(touts ? { touts } : {}),
     },
     planner,
     between,

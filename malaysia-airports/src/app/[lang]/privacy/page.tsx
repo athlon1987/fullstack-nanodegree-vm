@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
 import { CORPORATE_LINKS } from '@/content';
-import { getDictionary, getT, toLang } from '@/lib/i18n';
+import { I18nScope, getDictionary, getT, toLang } from '@/lib/i18n';
 import { ExternalLink } from '@/components/common/external-link';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { CorporateHeader } from '@/components/corporate/corporate-header';
@@ -113,7 +113,10 @@ export default async function PrivacyPage() {
 
         <PageSection id="clear" number={4} title={t('corporatePages.privacy.clear.title')} lead={t('corporatePages.privacy.clear.lead')}>
           <div className="grid gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,1fr)_20rem]">
-            <DeviceData />
+            {/* Package E (fix round, performance-09): corporate copy is no longer in the root dictionary. */}
+            <I18nScope lang={lang} namespaces={['corporatePages.privacy']}>
+              <DeviceData />
+            </I18nScope>
             <div className="self-start">
               <h3 className="type-title-sm text-ink">{t('corporatePages.privacy.clear.browserTitle')}</h3>
               <p className="type-body-sm mt-1.5 text-ink-2">{t('corporatePages.privacy.clear.browserBody')}</p>

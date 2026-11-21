@@ -1,13 +1,31 @@
 'use client';
 
-import { useId, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { cn } from '@/lib/cn';
 import { useJourneyMode } from '@/lib/hooks';
 import { useT } from '@/lib/i18n/client';
-import { JOURNEY_MODES, type JourneyMode } from '@/lib/journey/modes';
+import { JOURNEY_MODES, isJourneyMode, type JourneyMode } from '@/lib/journey/modes';
 import { directionForMode, resetFlightDirection } from '@/components/flights/flight-direction';
 import { Icon } from '@/components/ui/icon';
 import { JOURNEY_ACTIONS, actionTitleKey } from './journey-actions';
+
+/**
+ * Remembers a mode tapped before hydration. React resets a controlled radio to its state when it
+ * hydrates, so an early tap was silently undone (A-09: taps 0 to 600 ms after the HTML arrived).
+ * This listener runs during HTML parsing; `JourneyModes` applies the tap once it has hydrated.
+ */
+const EARLY_MODE_SCRIPT = `(function(){try{document.addEventListener('change',function(e){var t=e.target;if(t&&t.hasAttribute&&t.hasAttribute('data-journey-radio')&&t.checked){window.__maEarlyJourneyMode=t.value}},true)}catch(e){}})()`;
+
+function EarlyModeCapture() {
+  return (
+    <script
+      suppressHydrationWarning
+      // Plain text on the client: React never creates a script element after hydration.
+      type={typeof window === 'undefined' ? 'text/javascript' : 'text/plain'}
+      dangerouslySetInnerHTML={{ __html: EARLY_MODE_SCRIPT }}
+    />
+  );
+}
 
 /**
  * The four journey modes: departing, arriving, transiting, meeting someone. Choosing one sets
@@ -23,6 +41,7 @@ export function JourneyModes({ className }: { className?: string }) {
   const { effectiveMode, set } = useJourneyMode();
   const [announcement, setAnnouncement] = useState('');
 
+
   const choose = (mode: JourneyMode) => {
     set(mode);
     resetFlightDirection();
@@ -35,36 +54,54 @@ export function JourneyModes({ className }: { className?: string }) {
     );
   };
 
+  // A mode tapped before hydration (see `EARLY_MODE_SCRIPT`) wins over the stored one, and is
+  // announced like any other choice. Runs after each render, but only acts once.
+  useEffect(() => {
+    const early = (window as { __maEarlyJourneyMode?: string }).__maEarlyJourneyMode;
+    if (early === undefined) return;
+    delete (window as { __maEarlyJourneyMode?: string }).__maEarlyJourneyMode;
+    if (isJourneyMode(early) && early !== effectiveMode) queueMicrotask(() => choose(early));
+  });
+
   return (
-    <fieldset className={cn('min-w-0', className)}>
-      <legend className="sr-only">{t('journey.modes.title')}</legend>
-      <div className="grid grid-cols-4 gap-1 rounded-lg border border-line-control bg-page-subtle p-1">
-        {JOURNEY_MODES.map((mode) => (
-          <label
-            key={mode}
-            className={cn(
-              'relative flex min-h-12 min-w-0 cursor-pointer flex-col items-center justify-center gap-0.5 rounded-md px-1 py-1 text-center font-semibold text-ink-2 transition-colors duration-fast select-none',
-              'sm:min-h-13 sm:flex-row sm:gap-2.5 sm:px-4 sm:py-1.5',
-              'hover:text-ink has-[:checked]:bg-ink has-[:checked]:text-page has-[:checked]:shadow-xs has-[:focus-visible]:focus-ring',
-              'forced-colors:has-[:checked]:forced-color-adjust-none forced-colors:has-[:checked]:bg-[Highlight] forced-colors:has-[:checked]:text-[HighlightText]',
-            )}
-          >
-            <input type="radio" name={group} value={mode} checked={effectiveMode === mode} onChange={() => choose(mode)}
-              // Covers the whole tile (invisibly), so a tap anywhere lands on the native radio itself.
-              className="absolute inset-0 z-10 m-0 cursor-pointer appearance-none rounded-md opacity-0"
-            />
-            <Icon name={mode} size="md" strokeWidth={1.75} className="sm:size-4" />
-            <span className="flex min-w-0 flex-col leading-tight">
-              <span className="text-[0.8125rem] sm:text-base">{t(`journey.modes.${mode}.label`)}</span>
-              <span className="type-data-xs mt-0.5 font-medium opacity-80 max-sm:hidden">{t(`home.modes.sub.${mode}`)}</span>
-            </span>
-          </label>
-        ))}
-      </div>
-      <p role="status" className="sr-only">
-        {announcement}
-      </p>
-    </fieldset>
+    <>
+      <EarlyModeCapture />
+      <fieldset className={cn('min-w-0', className)}>
+        <legend className="sr-only">{t('journey.modes.title')}</legend>
+        <div className="grid grid-cols-4 gap-1 rounded-lg border border-line-control bg-page-subtle p-1">
+          {JOURNEY_MODES.map((mode) => (
+            <label
+              key={mode}
+              className={cn(
+                'relative flex min-h-12 min-w-0 cursor-pointer flex-col items-center justify-center gap-0.5 rounded-md px-1 py-1 text-center font-semibold text-ink-2 transition-colors duration-fast select-none',
+                'sm:min-h-13 sm:flex-row sm:gap-2.5 sm:px-4 sm:py-1.5',
+                'hover:text-ink has-[:checked]:bg-ink has-[:checked]:text-page has-[:checked]:shadow-xs has-[:focus-visible]:focus-ring',
+                'forced-colors:has-[:checked]:forced-color-adjust-none forced-colors:has-[:checked]:bg-[Highlight] forced-colors:has-[:checked]:text-[HighlightText]',
+              )}
+            >
+              <input
+                type="radio"
+                name={group}
+                value={mode}
+                checked={effectiveMode === mode}
+                onChange={() => choose(mode)}
+                data-journey-radio=""
+                // Covers the whole tile (invisibly), so a tap anywhere lands on the native radio itself.
+                className="absolute inset-0 z-10 m-0 cursor-pointer appearance-none rounded-md opacity-0"
+              />
+              <Icon name={mode} size="md" strokeWidth={1.75} className="sm:size-4" />
+              <span className="flex min-w-0 flex-col leading-tight">
+                <span className="text-[0.8125rem] sm:text-base">{t(`journey.modes.${mode}.label`)}</span>
+                <span className="type-caption mt-0.5 font-medium opacity-80 max-sm:hidden">{t(`home.modes.sub.${mode}`)}</span>
+              </span>
+            </label>
+          ))}
+        </div>
+        <p role="status" className="sr-only">
+          {announcement}
+        </p>
+      </fieldset>
+    </>
   );
 }
 
@@ -75,8 +112,7 @@ export function JourneyModeGuidance({ className }: { className?: string }) {
   return (
     <p className={cn('type-body-sm text-ink-2', className)}>
       <span className="type-eyebrow mr-2.5 text-gold-ink">{t(`journey.modes.${effectiveMode}.label`)}</span>
-      {/* A real space, so assistive technology does not read "DepartingCheck…". */}{' '}
-      {t(`home.modes.guidance.${effectiveMode}`)}
+      {/* A real space, so assistive technology does not read "DepartingCheck…". */} {t(`home.modes.guidance.${effectiveMode}`)}
     </p>
   );
 }

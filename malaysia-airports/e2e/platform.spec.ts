@@ -1,23 +1,17 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
+import { expectNoAxeViolations } from './support/axe';
 
 /**
  * Platform quality: security headers, the web app manifest and icons, sitemap and robots, legacy
  * redirects, the offline page, the designed global 404, and (production builds only) the service
  * worker saving pages for offline use.
  *
- * Conventions as in smoke.spec.ts: `getByRole` locators, an axe scan (WCAG 2.0 to 2.2 A and AA)
- * on every page this feature owns, English strings from src/lib/i18n/features/platform.ts.
+ * Conventions as in smoke.spec.ts: `getByRole` locators, the shared axe scan from
+ * `e2e/support/axe.ts` (WCAG 2.0, 2.1 and 2.2, A and AA) on every page this feature owns,
+ * English strings from src/lib/i18n/features/platform.ts. Also the API hardening of the fix
+ * round: concierge origin and media-type checks, JSON 404s, the public health body, request
+ * limits, canonical and hreflang links, and the report-only CSP.
  */
-
-const AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'];
-type AxePage = ConstructorParameters<typeof AxeBuilder>[0]['page'];
-
-async function expectNoAxeViolations(page: Page) {
-  const results = await new AxeBuilder({ page: page as unknown as AxePage }).withTags(AXE_TAGS).analyze();
-  const summary = results.violations.map((v) => `${v.id} (${v.impact}): ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`);
-  expect(summary, 'axe violations').toEqual([]);
-}
 
 async function expectNoHorizontalOverflow(page: Page) {
   const { scrollWidth, clientWidth } = await page.evaluate(() => ({
@@ -55,7 +49,11 @@ test.describe('security headers', () => {
     await page.addInitScript(() => {
       const found: string[] = [];
       (window as unknown as { __csp: string[] }).__csp = found;
-      document.addEventListener('securitypolicyviolation', (event) => found.push(`${event.effectiveDirective} ${event.blockedURI}`));
+      // Only the enforced policy counts here. The report-only policy (security-07) is expected to
+      // report the framework's inline scripts until hashes and nonces replace 'unsafe-inline'.
+      document.addEventListener('securitypolicyviolation', (event) => {
+        if (event.disposition === 'enforce') found.push(`${event.effectiveDirective} ${event.blockedURI}`);
+      });
     });
     for (const path of ['/en', '/en/kul', '/en/offline', '/ms/kul/parking']) {
       await page.goto(path);
@@ -63,6 +61,76 @@ test.describe('security headers', () => {
       const violations = await page.evaluate(() => (window as unknown as { __csp: string[] }).__csp);
       // zod probes `new Function` once while building schemas; see platform hand-off, "Requests".
       expect(violations.filter((violation) => !/^script-src eval$/.test(violation)), path).toEqual([]);
+    }
+  });
+});
+
+test.describe('API hardening (fix round)', () => {
+  test('the concierge refuses other sites and look-alike media types before counting them', async ({ request }) => {
+    const crossSite = await request.post('/api/concierge', {
+      data: { question: 'Where can I pray?', lang: 'en' },
+      headers: { Origin: 'https://evil.example', 'Sec-Fetch-Site': 'cross-site' },
+    });
+    expect(crossSite.status()).toBe(403);
+    expect(crossSite.headers()['x-ratelimit-remaining']).toBeUndefined();
+    const noCors = await request.post('/api/concierge', {
+      data: '{"question":"hi","lang":"en"}',
+      headers: { 'Content-Type': 'text/plain;x=application/json' },
+    });
+    expect(noCors.status()).toBe(415);
+    const tooLarge = await request.post('/api/concierge', { data: JSON.stringify({ question: 'x'.repeat(5000), lang: 'en' }), headers: { 'Content-Type': 'application/json' } });
+    expect([413, 429]).toContain(tooLarge.status());
+  });
+
+  test('unknown API paths answer a small JSON 404, and the flights API refuses ambiguous queries', async ({ request }) => {
+    for (const path of ['/api/nope', '/api', '/api/nope/deeper']) {
+      const response = await request.get(path);
+      expect(response.status(), path).toBe(404);
+      expect(response.headers()['content-type'], path).toContain('application/json');
+      expect(await response.json(), path).toEqual({ error: { code: 'not_found', message: 'No such API endpoint.' } });
+    }
+    expect((await request.get('/api/flights?airport=kul&airport=pen')).status()).toBe(400);
+    expect((await request.get('/api/flights?airport=kul&date=1900-01-01')).status()).toBe(400);
+    expect((await request.head('/api/flights?airport=kul')).status()).toBe(200);
+  });
+
+  test('the public health check says only that the service is up and which build runs', async ({ request }) => {
+    const body = (await (await request.get('/api/health')).json()) as Record<string, unknown>;
+    expect(Object.keys(body).sort()).toEqual(['build', 'status']);
+    expect(body.status).toBe('ok');
+    expect(JSON.stringify(body)).not.toMatch(/node|environment|v\d+\.\d+\.\d+/i);
+  });
+
+  test('every localised page names its canonical URL and both languages', async ({ request }) => {
+    for (const [path, rest] of [['/en', ''], ['/ms/kul/parking', '/kul/parking'], ['/en/guides/baggage', '/guides/baggage']] as const) {
+      const link = (await request.get(path, { maxRedirects: 0 })).headers().link ?? '';
+      const lang = path.split('/')[1];
+      expect(link, path).toMatch(new RegExp(`<[^>]*/${lang}${rest}>; rel="canonical"`));
+      expect(link, path).toMatch(new RegExp(`<[^>]*/en${rest}>; rel="alternate"; hreflang="en"`));
+      expect(link, path).toMatch(new RegExp(`<[^>]*/ms${rest}>; rel="alternate"; hreflang="ms"`));
+    }
+  });
+
+  test('a stricter report-only policy reports to this site', async ({ request }) => {
+    const headers = (await request.get('/en')).headers();
+    expect(headers['content-security-policy-report-only']).toContain("require-trusted-types-for 'script'");
+    expect(headers['content-security-policy-report-only']).toMatch(/script-src 'self' 'sha256-[^']+'/);
+    expect(headers['reporting-endpoints']).toBe('csp="/api/csp-report"');
+    const report = await request.post('/api/csp-report', {
+      data: JSON.stringify({ 'csp-report': { 'effective-directive': 'script-src-elem', 'blocked-uri': 'inline', 'document-uri': 'http://localhost/en' } }),
+      headers: { 'Content-Type': 'application/csp-report' },
+    });
+    expect(report.status()).toBe(204);
+  });
+
+  test('404 responses are not kept in shared caches for long (production)', async ({ request }) => {
+    test.skip(await isDevServer(request), 'The dev server never caches; judge against a production build.');
+    for (const path of ['/en/nope-xyz', '/xyz.txt', '/en/a/b/c']) {
+      await request.get(path);
+      const response = await request.get(path);
+      const cacheControl = response.headers()['cache-control'] ?? '';
+      const sMaxAge = /s-maxage=(\d+)/.exec(cacheControl);
+      expect(!sMaxAge || Number(sMaxAge[1]) <= 60, `${path}: ${cacheControl}`).toBe(true);
     }
   });
 });
@@ -136,6 +204,10 @@ test.describe('legacy MAHB URLs', () => {
       ['/en/klia2/flight-information/departures', 308, '/en/kul/flights?t=T2&dir=d'],
       ['/en/penang/air-travel/baggage', 308, '/en/guides/baggage'],
       ['/en/kuching/parking', 307, '/en/kch'],
+      // docs-07: only an equivalent page is a permanent destination.
+      ['/en/klia1/air-travel/services/fast-track', 308, '/en/kul/facilities?t=T1#kul-t1-fast-track'],
+      ['/en/klia2/air-travel/services/wifi', 307, '/en/kul/facilities?t=T2'],
+      ['/en/klia1/air-travel/rental-services', 307, '/en/kul/transport?t=T1'],
     ];
     for (const [from, status, to] of cases) {
       const response = await request.get(from, { maxRedirects: 0 });

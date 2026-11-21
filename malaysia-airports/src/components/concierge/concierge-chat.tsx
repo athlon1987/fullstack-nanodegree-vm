@@ -5,7 +5,6 @@ import { getAirport, terminalLabel } from '@/content/airports';
 import { CONCIERGE_MAX_QUESTION } from '@/lib/concierge/constants';
 import type { ConciergeContext } from '@/lib/concierge/types';
 import { cn } from '@/lib/cn';
-import { useHydrated } from '@/lib/hooks/use-store';
 import { useLang, useT } from '@/lib/i18n/client';
 import { LocaleLink } from '@/components/common/locale-link';
 import { Button } from '@/components/ui/button';
@@ -16,7 +15,7 @@ import { IconButton } from '@/components/ui/icon-button';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ConciergeAnswerView } from './concierge-answer';
-import { isInterrupted, loadKnowledge, useConcierge, type ConciergeTurn } from './use-concierge';
+import { isInterrupted, prepareOnDevice, useConcierge, type ConciergeTurn } from './use-concierge';
 
 const EXAMPLE_KEYS = ['checkIn', 'transfer', 'sentral', 'eat', 'delay', 'prayer', 'layover', 'parking', 'lost', 'wheelchair', 'wifi'] as const;
 const PANEL_EXAMPLES = ['transfer', 'sentral', 'delay', 'prayer', 'layover', 'parking'] as const;
@@ -26,6 +25,10 @@ function prefersReducedMotion(): boolean {
   return document.documentElement.dataset.motion === 'reduce' || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
+/**
+ * The opt-in for the concierge service (AI wording, saved flight). Asked only when the visitor
+ * wants one of those (B-15): answers already work on this device without it.
+ */
 function Consent({ onAccept, onDecline }: { onAccept: () => void; onDecline?: () => void }) {
   const t = useT();
   const titleId = useId();
@@ -36,12 +39,12 @@ function Consent({ onAccept, onDecline }: { onAccept: () => void; onDecline?: ()
     { icon: 'info', title: t('conciergePage.consent.limitsTitle'), body: t('conciergePage.consent.limits') },
   ];
   return (
-    <section aria-labelledby={titleId} className="flex flex-col gap-5">
+    <section aria-labelledby={titleId} className="flex flex-col gap-5 rounded-lg border border-line-strong bg-surface p-4 sm:p-5">
       <div>
-        <h3 id={titleId} className="type-title-lg text-ink">
-          {t('conciergePage.consent.title')}
+        <h3 id={titleId} className="type-title-md text-ink">
+          {t('conciergePage.onDevice.optInTitle')}
         </h3>
-        <p className="type-body mt-1 text-ink-2">{t('conciergePage.consent.intro')}</p>
+        <p className="type-body mt-1 text-ink-2">{t('conciergePage.onDevice.optInIntro')}</p>
       </div>
       <ul className="flex flex-col gap-4">
         {items.map((item) => (
@@ -70,6 +73,34 @@ function Consent({ onAccept, onDecline }: { onAccept: () => void; onDecline?: ()
         {t('conciergePage.consent.privacyLink')}
       </LocaleLink>
     </section>
+  );
+}
+
+/**
+ * The privacy line above the conversation, in the server HTML (performance-12): what happens to
+ * a question now, and the switch between answers on this device and the concierge service.
+ */
+function PrivacyNotice({ consent, onTurnOn, onTurnOff, expanded }: { consent: boolean; onTurnOn: () => void; onTurnOff: () => void; expanded: boolean }) {
+  const t = useT();
+  return (
+    <div data-concierge-privacy={consent ? 'service' : 'device'} className="flex flex-wrap items-start gap-x-3 gap-y-2 rounded-md border border-line bg-page-subtle px-3.5 py-2.5">
+      <Icon name={consent ? 'sparkles' : 'shield-check'} size="sm" className="mt-0.5 shrink-0 text-ink-2" />
+      <p className="type-body-sm min-w-0 flex-1 basis-56 text-ink-2">
+        {consent ? t('conciergePage.onDevice.noticeServer') : t('conciergePage.onDevice.noticeLocal')}{' '}
+        <LocaleLink href="/privacy" className="link">
+          {t('conciergePage.consent.privacyLink')}
+        </LocaleLink>
+      </p>
+      {consent ? (
+        <Button variant="quiet" size="sm" iconStart="shield-check" onClick={onTurnOff}>
+          {t('conciergePage.onDevice.turnOff')}
+        </Button>
+      ) : (
+        <Button variant="quiet" size="sm" iconStart="sparkles" aria-expanded={expanded} onClick={onTurnOn}>
+          {t('conciergePage.onDevice.turnOn')}
+        </Button>
+      )}
+    </div>
   );
 }
 
@@ -149,27 +180,27 @@ function Turn({ turn, onAsk, onRetry, busy }: { turn: ConciergeTurn; onAsk: (que
 
 export interface ConciergeChatProps {
   variant: 'panel' | 'page';
-  /** A question to ask as soon as the visitor has agreed (from a launcher). */
+  /** A question to answer as soon as the conversation opens (from a launcher). */
   initialQuestion?: string;
-  /** Panel only: close the panel ("Not now"). */
-  onDecline?: () => void;
   /** Extra controls at the end of the toolbar (the panel's "open full page" link). */
   toolbarEnd?: React.ReactNode;
 }
 
 /**
- * The concierge conversation: consent on first use, the airport it answers for, example
- * questions, the log of questions and answers, and the question field. Used by the panel and
- * by the full page.
+ * The concierge conversation: the privacy line (answers on this device until the visitor opts in
+ * to the service), the airport it answers for, example questions, the log of questions and
+ * answers, and the question field. Used by the panel and by the full page. Everything here is in
+ * the server HTML in its first-visit state, so nothing jumps when it hydrates (performance-12).
  */
-export function ConciergeChat({ variant, initialQuestion, onDecline, toolbarEnd }: ConciergeChatProps) {
+export function ConciergeChat({ variant, initialQuestion, toolbarEnd }: ConciergeChatProps) {
   const t = useT();
   const lang = useLang();
-  const hydrated = useHydrated();
   const concierge = useConcierge(lang);
   const { turns, busy, consent, ask, retry, clear, scope, clearScope, savedFlight, useFlight, setUseFlight } = concierge;
   const [draft, setDraft] = useState('');
   const [announcement, setAnnouncement] = useState('');
+  /** The opt-in panel is open; `flight` when it was opened by the saved-flight switch. */
+  const [optIn, setOptIn] = useState<null | 'service' | 'flight'>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const focusInput = () => formRef.current?.querySelector('input')?.focus();
   const logRef = useRef<HTMLOListElement>(null);
@@ -184,13 +215,16 @@ export function ConciergeChat({ variant, initialQuestion, onDecline, toolbarEnd 
     void ask(text, context).then((turn) => {
       setAnnouncement(turn.answer ? t('conciergePage.log.announceAnswer', { text: turn.answer.text }) : t('conciergePage.log.failed'));
       if (turn.answer) {
+        // The answer's start comes into view; the composer stays on screen (sticky on the page,
+        // inside the panel's own scroll area), so the focused field never leaves the viewport.
         const element = logRef.current?.querySelector<HTMLElement>(`[data-turn="${turn.id}"]`);
         element?.scrollIntoView({ block: 'start', behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
       }
     });
   };
 
-  // A launcher's question: ask it once consent is given (or right away if it already is).
+  // A launcher's question (a suggested question on the home page) is answered at once: before
+  // consent it is answered on this device, so there is nothing to agree to first (usability-21).
   const askInitial = useEffectEvent(() => {
     const question = pendingInitial.current;
     if (!question || askedInitial.current === question) return;
@@ -199,20 +233,18 @@ export function ConciergeChat({ variant, initialQuestion, onDecline, toolbarEnd 
     submit(question);
   });
   useEffect(() => {
-    if (consent) askInitial();
-  }, [consent]);
+    askInitial();
+  }, []);
 
-  // Once agreed, fetch the knowledge pack in the background so answers keep working offline.
+  // Load the engine and the knowledge pack when the browser is idle, so the first on-device
+  // answer is immediate and later ones keep working offline.
   useEffect(() => {
-    if (!consent) return;
     const idle = window.requestIdleCallback ?? ((callback: () => void) => window.setTimeout(callback, 1500));
-    const handle = idle(() => {
-      loadKnowledge(lang).catch(() => undefined);
-    });
+    const handle = idle(() => prepareOnDevice(lang));
     return () => {
       if (window.cancelIdleCallback && typeof handle === 'number') window.cancelIdleCallback(handle);
     };
-  }, [consent, lang]);
+  }, [lang]);
 
   const onSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -226,27 +258,25 @@ export function ConciergeChat({ variant, initialQuestion, onDecline, toolbarEnd 
     focusInput();
   };
 
-  if (!hydrated) {
-    return (
-      <div role="status" aria-label={t('common.labels.loading')} className="flex flex-col gap-3">
-        <Skeleton className="h-6 w-1/2" />
-        <Skeleton className="h-20 w-full" />
-        <Skeleton className="h-12 w-full" />
-      </div>
-    );
-  }
-
-  if (!consent) {
-    return (
-      <Consent
-        onAccept={() => {
-          concierge.accept();
-          window.setTimeout(() => focusInput(), 0);
-        }}
-        onDecline={onDecline}
-      />
-    );
-  }
+  const acceptOptIn = () => {
+    concierge.accept();
+    if (optIn === 'flight') setUseFlight(true);
+    setOptIn(null);
+    setAnnouncement(t('conciergePage.onDevice.announceOn'));
+    window.setTimeout(() => focusInput(), 0);
+  };
+  const turnOff = () => {
+    concierge.revoke();
+    setAnnouncement(t('conciergePage.onDevice.announceOff'));
+  };
+  const onFlightChange = (on: boolean) => {
+    if (on && !consent) {
+      setOptIn('flight');
+      setAnnouncement(t('conciergePage.onDevice.flightNeedsConsent'));
+      return;
+    }
+    setUseFlight(on);
+  };
 
   const airport = scope.airport ? getAirport(scope.airport) : undefined;
   const scopeLabel = airport ? terminalLabel(airport, scope.terminal && airport.terminals.length > 1 ? scope.terminal : 'MAIN', lang) : undefined;
@@ -278,7 +308,7 @@ export function ConciergeChat({ variant, initialQuestion, onDecline, toolbarEnd 
             <span className="type-body-sm text-ink">{t('conciergePage.scope.noAirport')}</span>
           )}
           {savedFlight ? (
-            <FilterChip pressed={useFlight} onPressedChange={setUseFlight} icon="plane">
+            <FilterChip pressed={useFlight} onPressedChange={onFlightChange} icon="plane">
               {t('conciergePage.scope.useFlight', { flight: savedFlight.number })}
             </FilterChip>
           ) : null}
@@ -299,6 +329,10 @@ export function ConciergeChat({ variant, initialQuestion, onDecline, toolbarEnd 
 
       {/* In the panel the conversation scrolls on its own, so the question field stays in view. */}
       <div className={cn('flex flex-col gap-8', variant === 'panel' && '-mx-1 min-h-0 flex-1 overflow-y-auto overscroll-contain px-1 pb-2')}>
+        <div className="flex flex-col gap-4">
+          <PrivacyNotice consent={consent} expanded={optIn !== null} onTurnOn={() => setOptIn((value) => (value ? null : 'service'))} onTurnOff={turnOff} />
+          {optIn && !consent ? <Consent onAccept={acceptOptIn} onDecline={() => setOptIn(null)} /> : null}
+        </div>
         {turns.length === 0 ? (
           <Examples keys={variant === 'panel' ? PANEL_EXAMPLES : EXAMPLE_KEYS} onAsk={(question) => submit(question)} disabled={busy} />
         ) : null}
@@ -315,7 +349,16 @@ export function ConciergeChat({ variant, initialQuestion, onDecline, toolbarEnd 
       <form
         ref={formRef}
         onSubmit={onSubmit}
-        className={cn('flex shrink-0 flex-col gap-1.5', variant === 'panel' && '-mx-5 border-t border-line px-5 pt-4 sm:-mx-6 sm:px-6')}
+        className={cn(
+          'flex shrink-0 flex-col gap-1.5',
+          variant === 'panel' && '-mx-5 border-t border-line px-5 pt-4 sm:-mx-6 sm:px-6',
+          // On the page the composer sticks to the bottom of the screen (above the phone's bottom
+          // bar), so the focused field stays in view after each answer (accessibility-14).
+          variant === 'page' &&
+            'sticky bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-10 -mx-4 border-t border-line bg-page px-4 py-3 sm:-mx-7 sm:bg-surface sm:px-7 md:bottom-0',
+          // Fills the strip between the composer and the phone's bottom bar, so answers do not show through.
+          variant === 'page' && 'after:absolute after:inset-x-0 after:top-full after:h-6 after:bg-page sm:after:bg-surface md:after:hidden',
+        )}
       >
         <div className="flex items-end gap-2">
           <Input

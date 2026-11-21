@@ -213,6 +213,9 @@ export function searchAll(index: SearchIndex, query: string, options: SearchOpti
     filter: (result) => {
       const stored = result as unknown as SearchDocument;
       if (options.types && !options.types.includes(stored.type)) return false;
+      // A "not published" answer only for a topic the visitor typed, never through a synonym:
+      // "wheelchair" must not lead with "Accessible parking: not published" via "accessible".
+      if (stored.type === 'unpublished' && !result.queryTerms.some((term) => typed.has(term))) return false;
       return !options.airport || !stored.airport || stored.airport === options.airport;
     },
     boostDocument: (_id, _term, stored) => {

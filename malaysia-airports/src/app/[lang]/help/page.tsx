@@ -6,7 +6,7 @@ import { LocaleLink } from '@/components/common/locale-link';
 import { PageHeader } from '@/components/common/page-header';
 import { ProvenanceLegend } from '@/components/common/provenance-legend';
 import { SectionHeading } from '@/components/common/section-heading';
-import { ContactList } from '@/components/help/contact-list';
+import { CallRow, ContactList } from '@/components/help/contact-list';
 import { EscalationLadder } from '@/components/help/escalation-ladder';
 import { POPULAR_FAQS } from '@/components/help/help-meta';
 import { HelpSearch } from '@/components/help/help-search';
@@ -35,11 +35,17 @@ export default async function HelpPage() {
   const byId = Object.fromEntries(faqs.map((faq) => [faq.id, faq]));
   const popular = POPULAR_FAQS.map((id) => byId[id]).filter(Boolean);
   const topics = helpTopicViews(lang);
+  const contacts = contactViews(lang, t);
   const official = [...officialLinks('contact', t), ...officialLinks('scams', t).slice(0, 1), ...officialLinks('lost-property', t), ...officialLinks('privacy', t)];
 
   return (
     <>
-      <PageHeader title={t('guidePages.help.title')} lead={t('guidePages.help.lead')} breadcrumbs={<Breadcrumbs items={[{ label: t('nav.help') }]} />} />
+      <PageHeader
+        title={t('guidePages.help.title')}
+        lead={t('guidePages.help.lead')}
+        breadcrumbs={<Breadcrumbs items={[{ label: t('nav.help') }]} />}
+        meta={<CallRow contacts={contacts} title={t('guidePages.help.callTitle')} allLabel={t('guidePages.help.callAll')} />}
+      />
       <Container className="flex flex-col gap-16 pb-16">
         <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
           <div className="flex min-w-0 flex-col gap-8">
@@ -110,7 +116,7 @@ export default async function HelpPage() {
       <Container className="flex flex-col gap-12 py-section">
         <section id="contacts" aria-labelledby="help-contacts-title" className="scroll-mt-32">
           <SectionHeading id="help-contacts-title" title={t('guidePages.help.contactsTitle')} lead={t('guidePages.help.contactsLead')} variant="title" />
-          <ContactList contacts={contactViews(lang, t)} />
+          <ContactList contacts={contacts} />
         </section>
         <OfficialLinks links={official} title={t('guidePages.help.officialTitle')} />
         <ProvenanceLegend headingLevel={2} />

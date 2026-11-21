@@ -35,7 +35,9 @@ type UnverifiedField = Airport['unverifiedFields'][number];
 /** The single timezone used by every airport in the network (UTC+8, no daylight saving). */
 export const AIRPORT_TIMEZONE = 'Asia/Kuala_Lumpur' as const;
 
-const AS_OF = '2024-04-29 (Annual Report 2023 lists); codes checked 2026-11-16';
+/** The airport list comes from the Annual Report 2023 (published 29 April 2024); codes were checked on 16 November 2026. */
+const AS_OF = '2024-04-29';
+const AS_OF_NOTE = lt('Annual Report 2023 airport list; codes checked 16 November 2026', 'Senarai lapangan terbang Laporan Tahunan 2023; kod disemak pada 16 November 2026');
 
 /** Group-level contacts published by Malaysia Airports. They are not airport-specific lines. */
 export const GROUP_CONTACTS: Contact[] = [
@@ -48,7 +50,7 @@ export const GROUP_CONTACTS: Contact[] = [
       'This is the group support line, not a number for a specific airport.',
       'Ini talian sokongan kumpulan, bukan nombor khusus bagi sesebuah lapangan terbang.',
     ),
-    asOf: 'Retrieved 2026-11-16',
+    asOf: '2026-11-16',
     sources: ['mahb-contact', 'mahb-klia-t1-help'],
   },
   {
@@ -56,7 +58,7 @@ export const GROUP_CONTACTS: Contact[] = [
     label: lt('General enquiries and feedback', 'Pertanyaan am dan maklum balas'),
     value: 'info@malaysiaairports.com.my',
     href: 'mailto:info@malaysiaairports.com.my',
-    asOf: 'Retrieved 2026-11-16',
+    asOf: '2026-11-16',
     sources: ['mahb-contact', 'mahb-care-chat'],
   },
 ];
@@ -68,7 +70,7 @@ const KUL_CONTACTS: Contact[] = [
     label: lt('KLIA Terminal 1 and corporate office', 'KLIA Terminal 1 dan pejabat korporat'),
     value: '+60 3 8777 7000',
     href: 'tel:+60387777000',
-    asOf: 'Retrieved 2026-11-16',
+    asOf: '2026-11-16',
     sources: ['mahb-klia-t1-help'],
   },
   {
@@ -80,14 +82,14 @@ const KUL_CONTACTS: Contact[] = [
       'Staffed by people on a daily schedule, not around the clock.',
       'Dikendalikan oleh petugas mengikut jadual harian, bukan 24 jam.',
     ),
-    asOf: 'Retrieved 2026-11-16',
+    asOf: '2026-11-16',
     sources: ['mahb-care-chat'],
   },
   {
     kind: 'app',
     label: lt('MYairports mobile app', 'Aplikasi mudah alih MYairports'),
     value: 'MYairports',
-    asOf: 'Retrieved 2026-11-16',
+    asOf: '2026-11-16',
     sources: ['mahb-care-chat'],
   },
 ];
@@ -110,7 +112,7 @@ const KUL_TERMINALS: Terminal[] = [
         name: lt('Level 1: buses', 'Aras 1: bas'),
         order: 1,
         description: lt('The bus terminal serving Terminal 1.', 'Terminal bas untuk Terminal 1.'),
-        provenance: 'official',
+        provenance: 'estimated',
         sources: ['ana-kuala-lumpur-guide', 'klia2info-level-guide'],
       },
       {
@@ -166,6 +168,23 @@ const STATE_MS: Record<string, string> = {
   Penang: 'Pulau Pinang',
 };
 
+/** Malay forms of place names that differ from English (draft, pending native review, OOS-14). */
+const PLACE_MS: Record<string, string> = {
+  Penang: 'Pulau Pinang',
+  'Pangkor Island': 'Pulau Pangkor',
+  'Redang Island': 'Pulau Redang',
+  'Tioman Island': 'Pulau Tioman',
+};
+
+/** "Penang International Airport" → "Lapangan Terbang Antarabangsa Pulau Pinang" (D-09). */
+function malayAirportName(name: string): string {
+  const international = /^(.*) International Airport$/.exec(name);
+  if (international) return `Lapangan Terbang Antarabangsa ${PLACE_MS[international[1]] ?? international[1]}`;
+  const plain = /^(.*) Airport$/.exec(name);
+  if (plain) return `Lapangan Terbang ${PLACE_MS[plain[1]] ?? plain[1]}`;
+  return name;
+}
+
 function summaryFor(row: Row, classification: AirportClassification): LocalizedText {
   const stateMs = STATE_MS[row.state] ?? row.state;
   if (classification === 'international') {
@@ -197,6 +216,10 @@ function build(row: Row, classification: AirportClassification): Airport {
     shortName: row.shortName,
     city: row.city,
     state: row.state,
+    localName: lt(row.name, malayAirportName(row.name)),
+    localShortName: lt(row.shortName, PLACE_MS[row.shortName] ?? row.shortName),
+    localCity: lt(row.city, PLACE_MS[row.city] ?? row.city),
+    localState: lt(row.state, STATE_MS[row.state] ?? row.state),
     region: row.region,
     classification,
     depth,
@@ -208,6 +231,7 @@ function build(row: Row, classification: AirportClassification): Airport {
     verification: unverifiedFields.length === 0 ? 'verified' : 'unverified',
     unverifiedFields,
     asOf: AS_OF,
+    asOfNote: AS_OF_NOTE,
     sources: row.sources,
   };
   if (row.icao) airport.icao = row.icao;
@@ -442,4 +466,21 @@ export function findAirportChoice(selection: AirportSelection | null | undefined
   if (!selection) return undefined;
   const sameAirport = AIRPORT_CHOICES.filter((choice) => choice.airport === selection.airport);
   return sameAirport.find((choice) => choice.terminal === selection.terminal) ?? sameAirport[0];
+}
+
+/**
+ * The airport with its names, city and state in the reader's language (D-09). Wrap an airport
+ * once where a page or component loads it, and everything it prints from these fields follows
+ * the page language: `const airport = localizeAirport(getAirport(slug)!, lang)`.
+ * Codes, slugs and every other field are unchanged, so lookups keep working.
+ */
+export function localizeAirport(airport: Airport, lang: Lang): Airport {
+  if (lang === 'en') return airport;
+  return {
+    ...airport,
+    ...(airport.localName ? { name: pick(airport.localName, lang) } : {}),
+    ...(airport.localShortName ? { shortName: pick(airport.localShortName, lang) } : {}),
+    ...(airport.localCity ? { city: pick(airport.localCity, lang) } : {}),
+    ...(airport.localState ? { state: pick(airport.localState, lang) } : {}),
+  };
 }

@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
-import { ALL_SOURCES, CORPORATE_SOURCES } from '@/content';
+import { ALL_SOURCES, CORPORATE_SOURCES, airportsWithContent, formatAsOf, getAirportContent, localizeAirport, pick, resolveSources } from '@/content';
 import { getDictionary, getT, toLang } from '@/lib/i18n';
 import type { TKey } from '@/lib/i18n/translate';
 import { LocaleLink } from '@/components/common/locale-link';
 import { ProvenanceLegend } from '@/components/common/provenance-legend';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
+import { SourceNote } from '@/components/common/source-note';
 import { CorporateHeader } from '@/components/corporate/corporate-header';
 import { JumpNav } from '@/components/corporate/jump-nav';
 import { PageSection } from '@/components/corporate/page-section';
@@ -49,7 +50,16 @@ export default async function AboutPrototypePage() {
   const copy = getDictionary(lang).corporatePages.prototype;
   const sourceCount = new Set([...ALL_SOURCES, ...CORPORATE_SOURCES].map((source) => source.id)).size;
 
-  const jump = (['what', 'data', 'sourcing', 'integrations', 'targets', 'limits'] as const).map((id) => ({ id, label: t(`corporatePages.prototype.jump.${id}`) }));
+  // What the prototype has not verified, one list per airport, from the coverage notes (D-05).
+  // Section pages link here (`#gaps-<airport>`) instead of repeating the list.
+  const gapLists = airportsWithContent().flatMap((slug) => {
+    const content = getAirportContent(slug);
+    if (!content) return [];
+    const notes = content.guidesNotes.filter((note) => note.topic === 'coverage');
+    return notes.length > 0 ? [{ slug, name: localizeAirport(content.airport, lang).shortName, notes }] : [];
+  });
+
+  const jump = (['what', 'data', 'sourcing', 'gaps', 'integrations', 'targets', 'limits'] as const).map((id) => ({ id, label: t(`corporatePages.prototype.jump.${id}`) }));
 
   return (
     <>
@@ -151,7 +161,34 @@ export default async function AboutPrototypePage() {
           </div>
         </PageSection>
 
-        <PageSection id="integrations" number={4} title={t('corporatePages.prototype.integrations.title')} lead={t('corporatePages.prototype.integrations.lead')}>
+        <PageSection id="gaps" number={4} title={t('corporatePages.prototype.gaps.title')} lead={t('corporatePages.prototype.gaps.lead')}>
+          <ul className="flex flex-col border-t border-line">
+            {gapLists.map((airport) => (
+              <li key={airport.slug} id={`gaps-${airport.slug}`} className="scroll-mt-32 border-b border-line py-6">
+                <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+                  <h3 className="type-title-md text-ink">{airport.name}</h3>
+                  <LocaleLink href={`/${airport.slug}`} className="link-action type-body-sm text-ink">
+                    {t('corporatePages.prototype.gaps.open', { airport: airport.name })}
+                    <Icon name="arrow-right" size="sm" strokeWidth={1.75} />
+                  </LocaleLink>
+                </div>
+                {airport.notes.map((note) => (
+                  <div key={note.id} className="mt-3 max-w-reading">
+                    <h4 className="type-title-sm text-ink">{pick(note.title, lang)}</h4>
+                    <p className="type-body mt-1 text-ink-2">{pick(note.body, lang)}</p>
+                    <div className="mt-1 flex flex-wrap items-center gap-x-3">
+                      <ProvenanceTag provenance={note.provenance} length="short" />
+                      {note.asOf ? <span className="type-caption text-ink-2">{t('corporatePages.prototype.gaps.checked', { date: formatAsOf(note.asOf, lang) })}</span> : null}
+                      <SourceNote sources={resolveSources(note.sources)} />
+                    </div>
+                  </div>
+                ))}
+              </li>
+            ))}
+          </ul>
+        </PageSection>
+
+        <PageSection id="integrations" number={5} title={t('corporatePages.prototype.integrations.title')} lead={t('corporatePages.prototype.integrations.lead')}>
           <TableScroll label={t('corporatePages.prototype.integrations.tableCaption')}>
             <Table className="min-w-[48rem]">
               <caption className="sr-only">{t('corporatePages.prototype.integrations.tableCaption')}</caption>
@@ -179,7 +216,7 @@ export default async function AboutPrototypePage() {
 
         <PageSection
           id="targets"
-          number={5}
+          number={6}
           title={t('corporatePages.prototype.targets.title')}
           lead={t('corporatePages.prototype.targets.lead')}
           action={
@@ -214,7 +251,7 @@ export default async function AboutPrototypePage() {
           </div>
         </PageSection>
 
-        <PageSection id="limits" number={6} title={t('corporatePages.prototype.limits.title')}>
+        <PageSection id="limits" number={7} title={t('corporatePages.prototype.limits.title')}>
           <ul className="grid gap-x-10 border-t border-line md:grid-cols-2">
             {Object.values(copy.limits.items).map((item) => (
               <li key={item} className="type-body flex gap-3 border-b border-line py-4 text-ink-2">

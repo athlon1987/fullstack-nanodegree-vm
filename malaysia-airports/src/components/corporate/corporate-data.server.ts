@@ -8,6 +8,7 @@ import {
   MEDIA_ITEMS,
   NEWS_ITEMS,
   getSource,
+  isAuthoritativeSource,
   pick,
   type CorporateFact,
   type CorporateMediaItem,
@@ -38,7 +39,8 @@ export function unknownCorporateSourceIds(ids: readonly string[]): string[] {
  * third party reports it (the house rule in `src/content/sources.ts`).
  */
 export function provenanceOf(sources: readonly Source[]): Provenance {
-  return sources.some((item) => item.kind === 'official' || item.kind === 'government' || item.kind === 'operator') ? 'official' : 'estimated';
+  // Same rule as validateContent (D-01): relays, social posts and our own pages never make it official.
+  return sources.some(isAuthoritativeSource) ? 'official' : 'estimated';
 }
 
 const MONTH_YEAR: Record<Lang, Intl.DateTimeFormat> = {

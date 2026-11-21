@@ -43,31 +43,56 @@ export interface AirportPageContext {
  * Await it INSIDE a `<Suspense>` child, never at the top of a page or layout (Next.js notes, section 5).
  */
 export async function loadAirportPage(params: AirportPageParams, section: AirportSectionId = 'overview'): Promise<AirportPageContext> {
+  return loadAirportPageFor(params, (sections) => sections.includes(section));
+}
+
+/**
+ * Like `loadAirportPage`, for a page that also serves an honest empty state to some airports
+ * without its section (the map's "no map yet" for airports with facilities; transit's simple page
+ * for airports with content). `accepts` decides; every other airport gets the not-found page.
+ */
+export async function loadAirportPageFor(
+  params: AirportPageParams,
+  accepts: (sections: readonly AirportSectionId[], slug: string) => boolean,
+): Promise<AirportPageContext> {
   const { lang: rawLang, airport: slug } = await params;
   const lang = toLang(rawLang);
   const content = getAirportContent(slug);
   // Only the canonical lower-case slug is a page: `/en/KUL` is not.
   if (!content || content.airport.slug !== slug) notFound();
   const sections = airportSections(content.airport.slug);
-  if (!sections.includes(section)) notFound();
+  if (!accepts(sections, content.airport.slug)) notFound();
   return { lang, t: getT(lang), airport: content.airport, content, sections };
 }
 
 /**
  * Metadata for a section page: "Parking: KLIA" with the section's one-line description.
- * Unknown airports get the not-found title.
+ *
+ * An unknown airport, or one without the section, gets the not-found title and `noindex`: the
+ * page itself answers with the not-found page, so the tab must not say "Parking at Subang"
+ * (C-06). Pages that serve an honest empty state to some airports without the section pass
+ * `emptyState`: those keep their title but are not indexed.
  */
 export async function airportSectionMetadata(
   params: AirportPageParams,
   section: AirportSectionId,
   overrides: { title?: string; description?: string } = {},
+  options: { emptyState?: (sections: readonly AirportSectionId[], slug: string) => boolean } = {},
 ): Promise<Metadata> {
   const { lang, airport: slug } = await params;
-  const t = getT(lang);
+  const t = getT(toLang(lang));
   const airport = getAirportContent(slug)?.airport;
-  if (!airport) return { title: t('errors.notFoundTitle') };
+  const missing: Metadata = { title: t('errors.notFoundTitle'), robots: { index: false, follow: false } };
+  if (!airport || airport.slug !== slug) return missing;
+  const sections = airportSections(airport.slug);
+  const has = sections.includes(section);
+  const empty = !has && (options.emptyState?.(sections, airport.slug) ?? false);
+  if (!has && !empty) return missing;
   const meta = getSection(section);
   const title = overrides.title ?? (section === 'overview' ? `${airport.name} (${airport.code})` : `${t(meta.labelKey)}: ${airport.shortName}`);
   const description = overrides.description ?? (meta.descriptionKey ? `${t(meta.descriptionKey)} ${airport.name}.` : t('airportPage.metaDescription', { airport: airport.name }));
-  return { title, description };
+  return empty ? { title, description, robots: { index: false, follow: true } } : { title, description };
 }
+
+/** The map's empty state serves airports with a facilities directory but no map (C-06). */
+export const mapEmptyState = (sections: readonly AirportSectionId[]): boolean => sections.includes('facilities');

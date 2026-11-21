@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { guideSlugs, helpTopicSlugs } from '@/content';
+import { getAirportContent, guideSlugs, helpTopicSlugs } from '@/content';
 import { airportSections } from '@/components/shell/sections.server';
 import { LEGACY_AIRPORTS, LEGACY_TOPICS, legacyMappings, legacyRedirects } from './legacy-redirects';
 
@@ -26,7 +26,7 @@ function redirect(path: string): { to: string; permanent: boolean } | null {
 
 /** Does a page exist at this path (without the locale)? */
 function pageExists(path: string): boolean {
-  const [pathname] = path.split('?');
+  const [pathname] = path.split(/[?#]/);
   const parts = pathname.split('/').filter(Boolean);
   if (parts[0] === 'guides' && parts[1]) return guideSlugs().includes(parts[1]);
   if (parts[0] === 'help' && parts[1]) return helpTopicSlugs().includes(parts[1]);
@@ -80,10 +80,34 @@ describe('legacy redirects', () => {
     expect(redirect('/en/klia2/transit/inter-terminal-transfer')?.to).toBe(redirect('/en/klia2/air-travel/inter-terminal-transfer')?.to);
   });
 
-  it('answer with 307 where the closest page is a stand-in', () => {
+  it('answer with 307 where the closest page is a stand-in (docs-07)', () => {
     expect(redirect('/en/kuching/parking')).toEqual({ to: '/en/kch', permanent: false });
-    expect(redirect('/en/klia1/air-travel/services/fast-track')).toEqual({ to: '/en/kul?t=T1', permanent: false });
+    expect(redirect('/en/penang/air-travel/services/fast-track')).toEqual({ to: '/en/pen/facilities', permanent: false });
+    for (const legacy of ['klia1', 'klia2', 'penang', 'kota-kinabalu']) expect(redirect(`/en/${legacy}/air-travel/services/wifi`)?.permanent).toBe(false);
+    expect(redirect('/en/klia1/air-travel/rental-services')).toEqual({ to: '/en/kul/transport?t=T1', permanent: false });
     expect(redirect('/en/penang/something/not/in/the/sitemap')).toEqual({ to: '/en/pen', permanent: false });
+  });
+
+  it('land on the record the old page was about, where it exists (docs-07)', () => {
+    expect(redirect('/en/klia1/air-travel/services/fast-track')).toEqual({ to: '/en/kul/facilities?t=T1#kul-t1-fast-track', permanent: true });
+    expect(redirect('/ms/klia2/air-travel/services/fast-track')).toEqual({ to: '/ms/kul/facilities?t=T2#kul-t2-fast-track', permanent: true });
+    expect(redirect('/en/penang/air-travel/rental-services')).toEqual({ to: '/en/pen/transport#transport-pen-car-rental', permanent: true });
+  });
+
+  it('only redirect permanently to pages with the content (content anchor for each destination)', () => {
+    for (const mapping of legacyMappings().filter((entry) => entry.permanent)) {
+      const [, hash] = mapping.to.split('#');
+      if (!hash) continue;
+      const slug = mapping.to.split('/')[1];
+      const content = getAirportContent(slug);
+      const anchors = [
+        ...(content?.facilities ?? []).map((facility) => facility.id),
+        ...(content?.transport ?? []).map((option) => `transport-${option.id}`),
+      ];
+      expect(anchors, `${mapping.from} -> ${mapping.to}`).toContain(hash);
+    }
+    // Topics with no verified content anywhere stay temporary everywhere.
+    expect(legacyMappings().filter((entry) => /wifi$/.test(entry.from)).every((entry) => !entry.permanent)).toBe(true);
   });
 
   it('leave current URLs alone', () => {

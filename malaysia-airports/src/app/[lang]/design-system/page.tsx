@@ -19,7 +19,7 @@ import {
 import { PreviewToolbar } from '@/components/design-system/toolbar';
 import { Container } from '@/components/ui/container';
 import { Icon, type IconName } from '@/components/ui/icon';
-import { getT, toLang } from '@/lib/i18n';
+import { I18nScope, getT, toLang } from '@/lib/i18n';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getT(await routeLang());
@@ -42,7 +42,8 @@ export default async function DesignSystemPage() {
   const props = { t, lang };
 
   return (
-    <>
+    // Package E (fix round, performance-09): design-system copy is no longer in the root dictionary.
+    <I18nScope lang={lang} namespaces={['designSystem']}>
       <div className="relative overflow-hidden">
         <TaburField fade className="absolute top-0 right-0 hidden h-72 w-1/2 sm:block" />
         <PageHeader
@@ -137,6 +138,6 @@ export default async function DesignSystemPage() {
       <DsSection id="art" number={14} tone="subtle" title={t('designSystem.sections.art')} intro={t('designSystem.intro.art')}>
         <ArtShowcase {...props} />
       </DsSection>
-    </>
+    </I18nScope>
   );
 }

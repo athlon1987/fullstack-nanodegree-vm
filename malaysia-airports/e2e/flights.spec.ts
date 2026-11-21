@@ -1,5 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
+import { AXE_TAGS as SHARED_AXE_TAGS } from './support/axe';
 
 /**
  * Journeys for the flights feature: the departures and arrivals board, a flight page, and
@@ -11,7 +12,7 @@ import { expect, test, type Page } from '@playwright/test';
  * to Singapore at 10:50 on the synthetic timetable.
  */
 
-const AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'];
+const AXE_TAGS = [...SHARED_AXE_TAGS];
 const MORNING = new Date('2026-11-18T09:40:00+08:00');
 const FLIGHT = '/en/kul/flights/mh2626-20261118-d';
 
@@ -129,6 +130,16 @@ test.describe('flight page', () => {
 
   // Intended change (B-14, security-05): unknown ids get a real 404 with a small page, before any
   // flight data is built; it still searches the board and links to it.
+  test('malformed and oversized ids get the same small 404 before any page is built', async ({ request }) => {
+    for (const id of ['%3Cimg%20src%3Dx%20onerror%3Dalert(1)%3E', 'x'.repeat(1600), 'zz9999-20990101-d']) {
+      const response = await request.get(`/en/kul/flights/${id}`, { maxRedirects: 0 });
+      expect(response.status(), id.slice(0, 20)).toBe(404);
+      const body = await response.text();
+      expect(body.length).toBeLessThan(30_000);
+      expect(body).not.toContain('<img');
+    }
+  });
+
   test('an unknown flight gets a small 404 page with a search', async ({ page }) => {
     const response = await page.goto('/en/kul/flights/zz9999-20261118-d');
     expect(response?.status()).toBe(404);
@@ -203,7 +214,9 @@ async function unlabelledInView(page: Page, selector: string): Promise<{ total: 
 
 test.describe('fix round B: flight board', () => {
   for (const path of ['/en/kul/flights?dir=d', '/ms/kul/flights?dir=d', '/en/pen/flights?dir=d']) {
-    test(`every board row has a demo label in view (${path})`, async ({ page }) => {
+    test(`every board row has a demo label in view (${path})`, async ({ page, isMobile }) => {
+      // The sizes the content-integrity check used: 390x844 on the phone, 1280x900 on desktop.
+      await page.setViewportSize(isMobile ? { width: 390, height: 844 } : { width: 1280, height: 900 });
       await page.goto(path);
       await expect(page.getByRole('main').locator('[data-status]').filter({ visible: true }).first()).toBeVisible();
       const result = await unlabelledInView(page, 'main [data-status]');
@@ -245,6 +258,15 @@ test.describe('fix round B: flight board', () => {
     const main = page.getByRole('main');
     await expect(main.locator('[data-status="delayed"]').filter({ visible: true }).first()).toBeVisible();
     await expect(main.getByText(/^Scheduled \d\d:\d\d, now \d\d:\d\d$/).first()).toBeAttached();
+
+    // The accessibility tree of the board (arrivals have both on this timetable): the struck
+    // times are hidden and the words say which time is old (accessibility-03).
+    await page.goto('/en/kul/flights?dir=a&s=delayed,cancelled');
+    await expect(main.locator('[data-status="cancelled"]').filter({ visible: true }).first()).toBeVisible();
+    const tree = await main.ariaSnapshot();
+    expect(tree).toMatch(/Scheduled \d\d:\d\d, now \d\d:\d\d/);
+    expect(tree).toMatch(/Cancelled, was \d\d:\d\d/);
+    expect(tree).not.toMatch(/^\s*- (?:text|deletion): "?\d\d:\d\d"?\s*$/m);
   });
 
   test('live updates can be paused and resumed, and the change is announced', async ({ page }) => {
@@ -280,14 +302,22 @@ test.describe('fix round B: flight board', () => {
   });
 
   test('announces a change to a saved flight once, politely', async ({ page }) => {
-    // 10 seconds before MH 2626 starts boarding (11:15 on this timetable, after its delay).
-    await page.clock.install({ time: new Date('2026-11-18T11:14:50+08:00') });
-    await page.goto(FLIGHT);
-    await page.getByRole('main').getByRole('button', { name: 'Save flight' }).click();
+    // A minute before MH 2626 starts boarding (11:15 on this timetable, after its delay), so a
+    // slow first load on a busy server cannot run past the change before the first snapshot.
+    await page.clock.install({ time: new Date('2026-11-18T11:14:00+08:00') });
+    // The flight is already saved on this device (saving is covered by the flight page tests).
+    await page.addInitScript(() => {
+      const saved = { id: 'mh2626-20261118-d', airport: 'kul', number: 'MH2626', direction: 'd', date: '2026-11-18', route: 'Kuala Lumpur to Singapore', savedAt: '2026-11-18T03:00:00.000Z' };
+      localStorage.setItem('ma:journey:v1', JSON.stringify({ flights: [saved], places: [], parkedCar: null }));
+    });
     await page.goto('/en/kul/flights?dir=d&q=MH2626');
     await expect(page.getByRole('main').getByRole('link', { name: /^View flight MH 2626/ }).first()).toBeVisible();
-    await page.clock.runFor(31_000);
-    await expect(page.getByRole('status').filter({ hasText: /MH 2626 to Singapore: now Boarding/ })).toBeAttached({ timeout: 5_000 });
+    await expect(page.getByRole('main').getByRole('button', { name: 'Save MH 2626 to My journey' }).first()).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByRole('status').filter({ hasText: /MH 2626 to Singapore: now Boarding/ })).toHaveCount(0);
+    // Updates wait while the pointer rests on a row (WCAG 2.2.2): keep it off the board.
+    await page.mouse.move(1, 1);
+    await page.clock.runFor(61_000);
+    await expect(page.getByRole('status').filter({ hasText: /MH 2626 to Singapore: now Boarding/ })).toBeAttached({ timeout: 10_000 });
   });
 });
 
@@ -311,7 +341,8 @@ test.describe('fix round B: flight page', () => {
     });
   }
 
-  test('labels the gate, belt and check-in values as demo data in the same view', async ({ page }) => {
+  test('labels the gate, belt and check-in values as demo data in the same view', async ({ page, isMobile }) => {
+    await page.setViewportSize(isMobile ? { width: 390, height: 844 } : { width: 1280, height: 900 });
     for (const path of [FLIGHT, '/en/kul/flights/mh2627-20261118-a']) {
       await page.goto(path);
       await expect(page.locator('#flight-status-title')).toBeVisible();

@@ -1,6 +1,6 @@
 'use client';
 
-import { useId, type FormEvent } from 'react';
+import { useId, useState, type FormEvent } from 'react';
 import { terminalLabel } from '@/content/airports';
 import type { Airport, TerminalId } from '@/content/types';
 import type { FlightDirection } from '@/lib/flights';
@@ -13,7 +13,14 @@ import { STATUS_GROUPS, readQueryKind, type StatusGroupId } from './board-model'
 export interface BoardToolbarProps {
   airport: Airport;
   direction: FlightDirection;
+  /** The query the board shows (it follows the field in a transition). */
   query: string;
+  /**
+   * The field's starting text. The field keeps its own text, so a keystroke re-renders only the
+   * field (performance-02); change `searchKey` to reset it from outside (Clear search).
+   */
+  initialQuery: string;
+  searchKey?: number;
   onQueryChange: (query: string) => void;
   terminal: TerminalId | undefined;
   onTerminalChange: (terminal: TerminalId | undefined) => void;
@@ -29,7 +36,7 @@ export interface BoardToolbarProps {
  * chip that clears it. Every control is a real form control or toggle button; nothing depends
  * on colour alone.
  */
-export function BoardToolbar({ airport, direction, query, onQueryChange, terminal, onTerminalChange, groups, onGroupsChange, counts }: BoardToolbarProps) {
+export function BoardToolbar({ airport, direction, query, initialQuery, searchKey = 0, onQueryChange, terminal, onTerminalChange, groups, onGroupsChange, counts }: BoardToolbarProps) {
   const t = useT();
   const lang = useLang();
   const id = useId();
@@ -47,18 +54,7 @@ export function BoardToolbar({ airport, direction, query, onQueryChange, termina
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-end gap-3">
         <form role="search" aria-label={t('flightPages.board.searchLabel')} className="min-w-0 flex-1 basis-80" onSubmit={(event: FormEvent) => event.preventDefault()}>
-          <SearchField
-            label={t('flightPages.board.searchLabel')}
-            hideLabel
-            value={query}
-            onValueChange={onQueryChange}
-            onClear={() => onQueryChange('')}
-            placeholder={t('flightPages.board.searchPlaceholder')}
-            placeholderShort={t('flightPages.board.searchPlaceholderShort')}
-            name="q"
-            inputMode="search"
-            autoComplete="off"
-          />
+          <BoardSearchField key={searchKey} initial={initialQuery} onQueryChange={onQueryChange} />
         </form>
       </div>
 
@@ -104,5 +100,29 @@ export function BoardToolbar({ airport, direction, query, onQueryChange, termina
         </p>
       ) : null}
     </div>
+  );
+}
+
+/** The search field with its own text: typing re-renders this field only; the board follows. */
+function BoardSearchField({ initial, onQueryChange }: { initial: string; onQueryChange: (query: string) => void }) {
+  const t = useT();
+  const [text, setText] = useState(initial);
+  const change = (value: string) => {
+    setText(value);
+    onQueryChange(value);
+  };
+  return (
+    <SearchField
+      label={t('flightPages.board.searchLabel')}
+      hideLabel
+      value={text}
+      onValueChange={change}
+      onClear={() => change('')}
+      placeholder={t('flightPages.board.searchPlaceholder')}
+      placeholderShort={t('flightPages.board.searchPlaceholderShort')}
+      name="q"
+      inputMode="search"
+      autoComplete="off"
+    />
   );
 }

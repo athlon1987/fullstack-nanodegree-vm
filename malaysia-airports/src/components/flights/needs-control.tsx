@@ -60,7 +60,14 @@ export function NeedsControl({ headingLevel = 3, tripOptions = false, className 
       <p className="type-body-sm mt-1 text-ink-2">{t('flightPages.needs.lead')}</p>
       <div role="group" aria-labelledby="needs-control-title" className="mt-3 flex flex-wrap gap-2">
         {TRAVELLER_NEEDS.map((need) => (
-          <FilterChip key={need} pressed={needs.includes(need)} onPressedChange={(on) => toggle(need, on)} icon={NEED_ICONS[need]}>
+          <FilterChip
+            key={need}
+            pressed={needs.includes(need)}
+            onPressedChange={(on) => toggle(need, on)}
+            icon={NEED_ICONS[need]}
+            // Long labels wrap instead of pushing the page sideways at large text on phones.
+            className="h-auto min-h-9 max-w-full shrink py-1.5 text-left whitespace-normal touch:h-auto touch:min-h-11"
+          >
             {t(`flightPages.needs.options.${NEED_KEYS[need]}`)}
           </FilterChip>
         ))}

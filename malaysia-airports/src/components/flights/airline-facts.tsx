@@ -47,8 +47,8 @@ export function AirlineFacts({ lang, airport, airline }: AirlineFactsProps) {
         {airline.checkIn ? (
           <div>
             <dt className="type-eyebrow text-ink-2">{t('common.labels.checkIn')}</dt>
-            <dd className="type-body-sm mt-0.5 text-ink" lang={lang === 'en' ? undefined : 'en'}>
-              {airline.checkIn}
+            <dd className="type-body-sm mt-0.5 text-ink" lang={lang === 'en' || airline.checkIn.ms ? undefined : 'en'}>
+              {pick(airline.checkIn, lang)}
             </dd>
           </div>
         ) : null}

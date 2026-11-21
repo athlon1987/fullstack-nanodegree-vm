@@ -17,6 +17,9 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export const generateStaticParams = () => sectionStaticParams('shop-dine');
 
+/** Fully static for the airports that have this section; any other airport gets a 404 on the first request (C-06). */
+export const ensureStatic = 'navigation';
+
 export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/shop-dine'>) {
   const { lang, airport: slug } = await params;
   const airport = getAirport(slug);

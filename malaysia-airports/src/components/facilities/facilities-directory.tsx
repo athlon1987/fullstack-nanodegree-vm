@@ -2,8 +2,10 @@
 
 import { Suspense, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import type { FacilityCategory, Source, TerminalId } from '@/content/types';
-import { useT } from '@/lib/i18n/client';
+import { facilityCategoryLabel, type FacilityCategory, type Source, type TerminalId } from '@/content/types';
+import { useLang, useT } from '@/lib/i18n/client';
+import { NotPublished } from '@/components/common/not-published';
+import { Icon } from '@/components/ui/icon';
 import { EmptyState } from '@/components/common/empty-state';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/cn';
@@ -13,7 +15,9 @@ import { FacilityCard } from './facility-card';
 import {
   EMPTY_FACILITY_FILTERS,
   activeFilterCount,
+  ASSISTANCE_CATEGORIES,
   filterFacilities,
+  missingExpectedCategories,
   parseFacilityFilters,
   writeFacilityFilters,
   type FacilityFilters,
@@ -27,6 +31,8 @@ export interface FacilitiesDirectoryProps {
   terminals: { id: TerminalId; label: string }[];
   /** Airport slug: enables "save to My journey" on each card. */
   airport?: string;
+  /** Short airport name, for the "not published yet" cards. */
+  airportName?: string;
 }
 
 /**
@@ -43,7 +49,7 @@ export function FacilitiesDirectory(props: FacilitiesDirectoryProps) {
 
 function DirectoryFromUrl(props: FacilitiesDirectoryProps) {
   const params = useSearchParams();
-  const categories = useMemo(() => [...new Set(props.items.map((item) => item.category))], [props.items]);
+  const categories = useMemo(() => [...new Set([...props.items.map((item) => item.category), ...missingExpectedCategories(props.items)])], [props.items]);
   const filters = useMemo(
     () => parseFacilityFilters(params, { categories, terminals: props.terminals.map((terminal) => terminal.id) }),
     [params, categories, props.terminals],
@@ -61,6 +67,7 @@ function Directory({
   sources,
   terminals,
   airport,
+  airportName,
   filters,
   live,
 }: FacilitiesDirectoryProps & {
@@ -72,8 +79,18 @@ function Directory({
   live: boolean;
 }) {
   const t = useT();
+  const lang = useLang();
   const [open, setOpen] = useState(false);
   const multiTerminal = terminals.length > 1;
+  // Expected but unpublished categories (C-07): a chip each, and a "not published" card with the
+  // information-counter route. Terminal and area filters do not apply to them (nothing is placed).
+  const missing = useMemo(() => missingExpectedCategories(items), [items]);
+  const placeholders = missing.filter(
+    (category) =>
+      (filters.categories.length === 0 || filters.categories.includes(category)) &&
+      (!filters.accessible || ASSISTANCE_CATEGORIES.includes(category)),
+  );
+  const information = items.find((item) => item.category === 'information');
   const categories = useMemo(() => {
     const seen = new Map<FacilityCategory, { label: string; icon: string; count: number }>();
     for (const item of items) {
@@ -136,6 +153,17 @@ function Directory({
                   {category.label}
                 </FilterChip>
               ))}
+              {missing.map((category) => (
+                <FilterChip
+                  key={category}
+                  icon="circle-dashed"
+                  pressed={filters.categories.includes(category)}
+                  onPressedChange={(pressed) => update({ categories: pressed ? [...filters.categories, category] : filters.categories.filter((id) => id !== category) })}
+                  className="border-dashed"
+                >
+                  {facilityCategoryLabel(category, lang)}
+                </FilterChip>
+              ))}
             </div>
           </div>
 
@@ -185,7 +213,7 @@ function Directory({
         <p className="type-data-sm mb-4 text-ink-2" aria-live="polite">
           {t.count('mapPages.facilities.results', shown.length)}
         </p>
-        {groups.length === 0 ? (
+        {groups.length === 0 && placeholders.length === 0 ? (
           <EmptyState
             icon="search-x"
             headingLevel={2}
@@ -213,6 +241,41 @@ function Directory({
                 </div>
               </section>
             ))}
+            {placeholders.length > 0 ? (
+              <section aria-labelledby="facility-group-unpublished" data-facility-placeholders="">
+                <h2 id="facility-group-unpublished" className="type-title-lg mb-1 border-b border-line pb-2 text-ink">
+                  {t('mapPages.facilities.placeholderTitle')}
+                </h2>
+                <p className="type-body-sm mb-4 text-ink-2">{t('mapPages.facilities.placeholderLead', { airport: airportName ?? '' })}</p>
+                <div className="grid gap-4 @3xl:grid-cols-2">
+                  {placeholders.map((category) => (
+                    <article
+                      key={category}
+                      id={`facility-unpublished-${category}`}
+                      aria-labelledby={`facility-unpublished-${category}-title`}
+                      className="flex min-w-0 scroll-mt-32 flex-col gap-3 rounded-xl border border-dashed border-line-strong bg-page-subtle p-4 sm:p-5"
+                    >
+                      <div className="flex items-start gap-3">
+                        <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-surface text-ink-2">
+                          <Icon name={category} />
+                        </span>
+                        <h3 id={`facility-unpublished-${category}-title`} className="type-title-md min-w-0 text-ink">
+                          {facilityCategoryLabel(category, lang)}
+                        </h3>
+                      </div>
+                      <NotPublished label={t('mapPages.facilities.placeholderFields')} />
+                      <p className="type-body-sm text-ink-2">{t('mapPages.facilities.placeholderBody', { airport: airportName ?? '' })}</p>
+                      {information ? (
+                        <a href={`#${information.id}`} className="link-action type-body-sm self-start text-ink">
+                          {t('mapPages.facilities.placeholderAction')}
+                          <Icon name="arrow-right" size="sm" />
+                        </a>
+                      ) : null}
+                    </article>
+                  ))}
+                </div>
+              </section>
+            ) : null}
           </div>
         )}
       </div>

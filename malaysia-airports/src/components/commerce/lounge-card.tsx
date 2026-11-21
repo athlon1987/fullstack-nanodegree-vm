@@ -63,6 +63,8 @@ export function LoungeCard({ item, lang, showTerminal, headingLevel = 4 }: Loung
           { label: t('commercePages.lounges.level'), value: item.levelName },
           { label: t('commercePages.lounges.hours'), value: item.hours ? <HoursText hours={item.hours} /> : undefined },
           { label: t('commercePages.lounges.access'), value: item.access },
+          // No operator publishes prices here yet (C-11, OOS-04): said once, in the grouped line.
+          { label: t('commercePages.lounges.price'), value: undefined },
         ]}
       />
 

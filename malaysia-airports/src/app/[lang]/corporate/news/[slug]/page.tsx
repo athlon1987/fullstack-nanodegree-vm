@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
-import { CORPORATE_LINKS, getAirport } from '@/content';
+import { CORPORATE_LINKS, getAirport, localizeAirport } from '@/content';
 import { getT, toLang } from '@/lib/i18n';
 import { LocaleLink } from '@/components/common/locale-link';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
@@ -99,7 +99,7 @@ async function NewsItem({ params }: { params: Params }) {
                           className="type-body-sm inline-flex min-h-11 items-center gap-2 rounded-pill border border-line-control bg-surface px-4 text-ink transition-colors duration-fast hover:border-ink"
                         >
                           <span className="type-data-xs text-ink-3">{airport.code}</span>
-                          {airport.shortName}
+                          {localizeAirport(airport, lang).shortName}
                         </LocaleLink>
                       </li>
                     );

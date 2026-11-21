@@ -54,6 +54,22 @@ export function plural(lang: Lang, count: number, forms: PluralForms): string {
   return forms[pluralForm(lang, count)];
 }
 
+/**
+ * One number formatter per language, made once (performance-16: building an `Intl.NumberFormat`
+ * on every plural lookup was the largest app-code cost in the guides profile).
+ */
+const NUMBER_FORMATS = new Map<Lang, Intl.NumberFormat>();
+
+/** The shared number formatter for a language (`en-MY` or `ms-MY`). */
+export function numberFormat(lang: Lang): Intl.NumberFormat {
+  let format = NUMBER_FORMATS.get(lang);
+  if (!format) {
+    format = new Intl.NumberFormat(lang === 'ms' ? 'ms-MY' : 'en-MY');
+    NUMBER_FORMATS.set(lang, format);
+  }
+  return format;
+}
+
 function lookup(dictionary: Dictionary, key: string): unknown {
   let node: unknown = dictionary;
   for (const part of key.split('.')) {
@@ -76,7 +92,7 @@ export function createTranslator(lang: Lang, dictionary: Dictionary): Translator
     const value = lookup(dictionary, key);
     if (typeof value !== 'object' || value === null) return key;
     const form = (value as PluralForms)[pluralForm(lang, amount)];
-    const shown = new Intl.NumberFormat(lang === 'ms' ? 'ms-MY' : 'en-MY').format(amount);
+    const shown = numberFormat(lang).format(amount);
     return typeof form === 'string' ? interpolate(form, { count: shown, ...vars }) : key;
   };
   return Object.assign(translate, { count, lang });

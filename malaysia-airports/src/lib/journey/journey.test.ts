@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { getAirportContent } from '@/content';
 import type { AirportContent, GuideNote } from '@/content/types';
+import { checkInLines } from '@/lib/flights/check-in';
 import { getT } from '@/lib/i18n';
+import { DemoFlightProvider } from '@/lib/providers/demo-flights';
 import { LHR, PEN, makeFlight, type FlightSeed } from '@/lib/testing/fixtures';
 import { JOURNEY_MODES, buildJourney, type JourneyStep } from './index';
 
@@ -431,6 +433,39 @@ describe('buildJourney: status lines and check-in desks (B-01, B-12)', () => {
     expect(step(steps, 'gate').ops).toEqual(['aerotrain']);
     expect(step(steps, 'security').ops).toEqual(['immigration']);
     expect(step(departing(international({ gate: 'G6' }), '08:00'), 'gate').ops).toBeUndefined();
+  });
+
+  it('shows no immigration line for a domestic departure', () => {
+    expect(step(departing(domestic(), '08:00'), 'security').ops).toBeUndefined();
+  });
+
+  it('agrees with the status card on every demo departure, with and without desk rows from the feed', () => {
+    const now = new Date('2026-11-18T09:40:00+08:00');
+    const board = new DemoFlightProvider(now).listFlightsSync({ airport: 'kul', direction: 'd' });
+    let withRows = 0;
+    let withoutRows = 0;
+    for (const flight of board) {
+      if (flight.status === 'cancelled' || flight.status === 'departed') continue;
+      const lines = checkInLines(flight);
+      const checkIn = buildJourney({ flight, mode: 'departing', airportContent: kul, now }).find((item) => item.id === 'check-in');
+      if (!checkIn) continue;
+      const closed = flight.checkInClosesAt !== undefined && Date.parse(flight.checkInClosesAt) <= now.getTime();
+      if (closed) continue;
+      if (lines.length > 0) {
+        withRows += 1;
+        // Every line the card shows (cabins and bag drop) is in the timeline, in both languages.
+        for (const line of lines) {
+          expect(checkIn.body.en, flight.id).toContain(line.en);
+          expect(checkIn.body.ms, flight.id).toContain(line.ms as string);
+        }
+      } else {
+        withoutRows += 1;
+        // No feed row: neither the card nor the timeline invents one.
+        expect(checkIn.body.en, flight.id).not.toMatch(/\bRow [A-Z]\b/);
+      }
+    }
+    expect(withRows).toBeGreaterThan(0);
+    expect(withoutRows).toBeGreaterThan(0);
   });
 
   it('lists every cabin desk and the bag drop in the check-in step', () => {

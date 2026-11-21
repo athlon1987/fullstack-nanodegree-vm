@@ -5,7 +5,11 @@ import type { TKey } from '@/lib/i18n/translate';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { LocaleLink } from '@/components/common/locale-link';
 import { PageHeader } from '@/components/common/page-header';
+import { ExternalLink } from '@/components/common/external-link';
 import { ProvenanceLegend } from '@/components/common/provenance-legend';
+import { ProvenanceTag } from '@/components/common/provenance-tag';
+import { SourceNote } from '@/components/common/source-note';
+import { NeedsControl } from '@/components/flights/needs-control';
 import { SectionHeading } from '@/components/common/section-heading';
 import { accessibilityData } from '@/components/guides/accessibility-data.server';
 import { FactCard } from '@/components/guides/fact-card';
@@ -27,6 +31,7 @@ const NAV: readonly { id: string; label: TKey; icon: IconKey }[] = [
   { id: 'assistance', label: 'guidePages.accessibility.nav.assistance', icon: 'hand-helping' },
   { id: 'hidden-disabilities', label: 'guidePages.accessibility.nav.butterfly', icon: 'leaf' },
   { id: 'facilities', label: 'guidePages.accessibility.nav.facilities', icon: 'accessibility' },
+  { id: 'not-published', label: 'guidePages.accessibility.gaps.title', icon: 'circle-help' },
   { id: 'settings', label: 'guidePages.accessibility.nav.settings', icon: 'sliders-horizontal' },
   { id: 'statement', label: 'guidePages.accessibility.nav.statement', icon: 'file-text' },
 ];
@@ -104,6 +109,11 @@ export default async function AccessibilityPage() {
           </div>
           <h3 className="type-title-md mt-12 mb-4 text-ink">{t('guidePages.accessibility.assistance.contactsTitle')}</h3>
           <ContactList contacts={contactViews(lang, t)} />
+          {/* B-11 hand-off: set the needs My journey plans for, here where people look for help. */}
+          <div className="mt-12 max-w-reading">
+            <p className="type-body mb-4 text-ink-2">{t('guidePages.accessibility.assistance.needsLead')}</p>
+            <NeedsControl headingLevel={3} />
+          </div>
         </section>
 
         <section id="hidden-disabilities" aria-labelledby="hidden-title" className="scroll-mt-32 border-t border-line pt-12">
@@ -141,19 +151,32 @@ export default async function AccessibilityPage() {
         <section id="facilities" aria-labelledby="facilities-title" className="scroll-mt-32 border-t border-line pt-12">
           <SectionHeading id="facilities-title" number={3} title={t('guidePages.accessibility.facilities.title')} lead={t('guidePages.accessibility.facilities.lead')} />
           <ul className="grid gap-3 md:grid-cols-3">
-            {FACILITY_LINKS.map((item) => (
-              <Card as="li" key={item.id} interactive padding="md" className="flex min-w-0 flex-col gap-2">
-                <Icon name={item.icon} size="lg" className="text-primary-ink" />
-                <h3 className="type-title-md text-ink">
-                  <CardLink href={item.href}>{t(item.title)}</CardLink>
-                </h3>
-                <p className="type-body-sm text-ink-2">{t(item.body)}</p>
-                <span aria-hidden="true" className="type-body-sm mt-auto inline-flex items-center gap-1.5 pt-1 font-semibold text-ink">
-                  {t(item.action)}
-                  <Icon name="arrow-right" size="sm" />
-                </span>
-              </Card>
-            ))}
+            {FACILITY_LINKS.map((item) =>
+              // While no accessible toilet is published, the card must not send people to a map
+              // that says they are not on it (D-11). The map link returns once points exist.
+              item.id === 'toilets' && !data.accessibleToiletsPublished ? (
+                <Card as="li" key={item.id} padding="md" className="flex min-w-0 flex-col gap-2">
+                  <Icon name={item.icon} size="lg" className="text-primary-ink" />
+                  <h3 className="type-title-md text-ink">{t(item.title)}</h3>
+                  <p className="type-body-sm text-ink-2">{t('guidePages.accessibility.facilities.toiletsBodyUnpublished')}</p>
+                  <ExternalLink href={data.specialAssistanceUrl} className="type-body-sm mt-auto pt-1 font-semibold text-ink">
+                    {t('guidePages.accessibility.facilities.toiletsActionOfficial')}
+                  </ExternalLink>
+                </Card>
+              ) : (
+                <Card as="li" key={item.id} interactive padding="md" className="flex min-w-0 flex-col gap-2">
+                  <Icon name={item.icon} size="lg" className="text-primary-ink" />
+                  <h3 className="type-title-md text-ink">
+                    <CardLink href={item.href}>{t(item.title)}</CardLink>
+                  </h3>
+                  <p className="type-body-sm text-ink-2">{t(item.body)}</p>
+                  <span aria-hidden="true" className="type-body-sm mt-auto inline-flex items-center gap-1.5 pt-1 font-semibold text-ink">
+                    {t(item.action)}
+                    <Icon name="arrow-right" size="sm" />
+                  </span>
+                </Card>
+              ),
+            )}
           </ul>
           {data.otherFacilityAirports.length > 0 ? (
             <p className="type-body-sm mt-5 text-ink-2">
@@ -170,11 +193,40 @@ export default async function AccessibilityPage() {
             </p>
           ) : null}
         </section>
+
+        {data.gaps ? (
+          <section id="not-published" aria-labelledby="not-published-title" className="scroll-mt-32 border-t border-line pt-12">
+            <SectionHeading id="not-published-title" number={4} title={t('guidePages.accessibility.gaps.title')} lead={t('guidePages.accessibility.gaps.lead')} />
+            <div className="grid gap-12 lg:grid-cols-2">
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                  <h3 className="type-title-md text-ink">{data.gaps.title}</h3>
+                  <ProvenanceTag provenance="suggestion" length="short" />
+                </div>
+                <p className="type-body mt-2 max-w-reading text-ink-2">{data.gaps.body}</p>
+                <SourceNote sources={data.gaps.sources} className="mt-1" />
+              </div>
+              <div className="min-w-0 rounded-lg border border-line-strong bg-surface p-5">
+                <h3 className="type-title-md text-ink">{t('guidePages.accessibility.gaps.askTitle')}</h3>
+                <ul className="type-body mt-3 flex list-disc flex-col gap-2 pl-5 text-ink-2">
+                  <li>{t('guidePages.accessibility.gaps.askAirline')}</li>
+                  <li>{t('guidePages.accessibility.gaps.askAirport')}</li>
+                  <li>{t('guidePages.accessibility.gaps.chatHours')}</li>
+                </ul>
+                {data.careChatUrl ? (
+                  <ExternalLink href={data.careChatUrl} className="type-body-sm mt-4 inline-flex font-semibold text-ink">
+                    {t('guidePages.accessibility.gaps.chatAction')}
+                  </ExternalLink>
+                ) : null}
+              </div>
+            </div>
+          </section>
+        ) : null}
       </Container>
 
       <Section id="settings" tone="subtle" spacing="md" aria-labelledby="settings-title" className="scroll-mt-32">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,32rem)]">
-          <SectionHeading id="settings-title" number={4} title={t('guidePages.accessibility.settings.title')} lead={t('guidePages.accessibility.settings.lead')} />
+          <SectionHeading id="settings-title" number={data.gaps ? 5 : 4} title={t('guidePages.accessibility.settings.title')} lead={t('guidePages.accessibility.settings.lead')} />
           <div className="rounded-xl border border-line-strong bg-surface p-5 sm:p-6">
             <PreferencesControls />
           </div>
@@ -183,7 +235,7 @@ export default async function AccessibilityPage() {
 
       <Container size="narrow" className="flex flex-col gap-12 py-section">
         <section id="statement" aria-labelledby="statement-title" className="scroll-mt-32">
-          <SectionHeading id="statement-title" number={5} title={t('guidePages.accessibility.statement.title')} lead={t('guidePages.accessibility.statement.reviewed')} />
+          <SectionHeading id="statement-title" number={data.gaps ? 6 : 5} title={t('guidePages.accessibility.statement.title')} lead={t('guidePages.accessibility.statement.reviewed')} />
           <div className="flex max-w-reading flex-col gap-8">
             <p className="type-body-lg text-ink">{t('guidePages.accessibility.statement.intro')}</p>
             <div>

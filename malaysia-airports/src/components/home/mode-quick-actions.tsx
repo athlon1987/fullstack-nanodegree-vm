@@ -27,7 +27,7 @@ export interface ModeQuickActionsProps {
  */
 const TILE =
   'w-full gap-1 p-2 sm:gap-2 sm:p-3.5 ' +
-  'max-sm:[&_.type-body-sm]:hidden max-sm:[&_.type-data-xs]:hidden max-sm:[&_.type-title-sm]:text-[0.8125rem] max-sm:[&_.type-title-sm]:leading-tight max-sm:[&_svg]:size-5 ' +
+  'max-sm:[&_.type-body-sm]:hidden max-sm:[&_[data-emphasis-label]]:hidden max-sm:[&_.type-title-sm]:text-[0.8125rem] max-sm:[&_.type-title-sm]:leading-tight max-sm:[&_svg]:size-5 ' +
   'sm:[&_.type-title-sm]:text-base sm:[&_.type-title-sm]:leading-snug sm:[&_.type-body-sm]:text-[0.8125rem] ' +
   '[@media(max-height:50rem)]:[&_.type-body-sm]:hidden [&>svg]:hidden';
 

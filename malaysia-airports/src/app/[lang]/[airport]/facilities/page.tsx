@@ -17,6 +17,9 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export const generateStaticParams = () => sectionStaticParams('facilities');
 
+/** Fully static for the airports that have facilities; any other airport gets a 404 on the first request (C-06). */
+export const ensureStatic = 'navigation';
+
 export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/facilities'>) {
   const { lang, airport: slug } = await params;
   const airport = getAirport(slug);
@@ -72,6 +75,7 @@ async function Facilities({ params }: { params: AirportPageParams }) {
           sources={sourceLookup(items.flatMap((item) => item.sourceIds))}
           terminals={airport.terminals.map((terminal) => ({ id: terminal.id, label: terminalLabel(airport, terminal.id, lang, { short: true }) }))}
           airport={airport.slug}
+          airportName={airport.shortName}
         />
 
         <section aria-labelledby="facility-gaps-title" className="mt-14 grid gap-6 border-t border-line pt-10 lg:grid-cols-[minmax(0,17.5rem)_minmax(0,1fr)] lg:gap-10">

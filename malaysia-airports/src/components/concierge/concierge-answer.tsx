@@ -68,7 +68,7 @@ const MODE_ICON: Record<ConciergeMode, IconName> = { grounded: 'badge-check', 'g
 export interface ConciergeAnswerViewProps {
   answer: ConciergeAnswer;
   mode: ConciergeMode;
-  note?: 'offline' | 'rate-limited';
+  note?: 'offline' | 'rate-limited' | 'private';
   onAsk: (question: string, context?: ConciergeContext) => void;
   busy: boolean;
 }
@@ -166,12 +166,16 @@ export function ConciergeAnswerView({ answer, mode, note, onAsk, busy }: Concier
       <div className="flex flex-col gap-1.5 border-t border-line pt-3">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
           <span className="type-caption inline-flex items-center gap-1.5 font-semibold text-ink-2">
-            <Icon name={MODE_ICON[mode]} size="xs" />
+            <Icon name={note === 'private' ? 'shield-check' : MODE_ICON[mode]} size="xs" />
             {mode === 'grounded' ? t('conciergePage.mode.grounded') : mode === 'grounded-rephrased' ? t('conciergePage.mode.rephrased') : t('conciergePage.mode.local')}
           </span>
           <SourceNote sources={answer.sources} />
         </div>
-        {mode === 'local' ? <p className="type-caption text-ink-2">{note === 'rate-limited' ? t('conciergePage.mode.rateLimited') : t('conciergePage.mode.localHint')}</p> : null}
+        {mode === 'local' ? (
+          <p className="type-caption text-ink-2">
+            {note === 'private' ? t('conciergePage.onDevice.privateHint') : note === 'rate-limited' ? t('conciergePage.mode.rateLimited') : t('conciergePage.mode.localHint')}
+          </p>
+        ) : null}
         {answer.translationFallback ? <TranslationNotice /> : null}
       </div>
     </div>

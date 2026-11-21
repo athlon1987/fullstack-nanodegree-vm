@@ -1,12 +1,13 @@
 'use client';
 
-import { Suspense, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { Suspense, useDeferredValue, useEffect, useMemo, useRef, useState, useTransition, type ReactNode } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { getAirport, terminalLabel } from '@/content/airports';
 import type { Airport, TerminalId } from '@/content/types';
 import type { Flight, FlightDirection } from '@/lib/flights';
 import { useSavedJourney } from '@/lib/hooks/use-saved-journey';
 import { useFlightFeed, type FeedRequest } from '@/lib/providers/use-flight-feed';
+import { cn } from '@/lib/cn';
 import { useLang, useT } from '@/lib/i18n/client';
 import { dateKey, formatDate, formatTime, shiftDateKey, timezoneLabel, zonedDateTime } from '@/lib/time';
 import { AirportCode } from '@/components/common/airport-code';
@@ -53,9 +54,11 @@ const NO_PARAMS: BoardParams = { q: '', groups: [] };
  * flight feed after hydration (last-known data with its age if a refresh fails); the static HTML
  * holds the same layout with a skeleton board.
  *
- * Responsiveness (performance-02): the typed query is deferred, so the field never waits for the
- * list; at most `BOARD_ROW_LIMIT` rows render until "Show more". Refreshing can be paused, and
- * waits while a row has focus or the pointer (WCAG 2.2.2).
+ * Responsiveness (performance-02): the search field keeps its own text, so a keystroke re-renders
+ * only the field; the list follows in a transition, the URL is written once typing pauses, a new
+ * direction renders as a deferred value, and rows are memoised. At most `BOARD_ROW_LIMIT` rows
+ * render until "Show more". Refreshing can be paused, and waits while a row has focus or the
+ * pointer (WCAG 2.2.2).
  */
 export function FlightBoardExplorer({ airport }: FlightBoardExplorerProps) {
   const record = getAirport(airport);
@@ -83,10 +86,14 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
   const lang = useLang();
   const { journey, saveFlight, removeFlight } = useSavedJourney();
   const { direction: modeDirection, setDirection } = useFlightDirection();
-  const direction = params.direction ?? modeDirection;
+  /* The tab follows a click at once; the list for the new direction renders as a deferred value. */
+  const chosenDirection = params.direction ?? modeDirection;
+  const direction = useDeferredValue(chosenDirection);
   const zone = airport.timezone;
-  const [draft, setDraft] = useState(params.q);
-  const query = useDeferredValue(draft);
+  const [query, setQuery] = useState(params.q);
+  const [searchKey, setSearchKey] = useState(0);
+  const [, startTransition] = useTransition();
+  const urlTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const [shift, setShift] = useState({ earlier: 0, later: 0 });
   const [userPaused, setUserPaused] = useState(false);
   const [held, setHeld] = useState({ focus: false, pointer: false });
@@ -103,7 +110,8 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
 
   /** Write the filters to the URL without a navigation, so the view can be shared and reloaded. */
   const write = (changes: Partial<{ direction: FlightDirection; terminal: TerminalId | undefined; q: string; groups: StatusGroupId[] }>) => {
-    const next = { direction, terminal: params.terminal, q: draft, groups: params.groups, ...changes };
+    clearTimeout(urlTimer.current);
+    const next = { direction: chosenDirection, terminal: params.terminal, q: query, groups: params.groups, ...changes };
     window.history.replaceState(null, '', `${window.location.pathname}${boardQueryString(next)}${window.location.hash}`);
   };
 
@@ -172,10 +180,25 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
     return () => clearTimeout(timer);
   }, [filterKey]);
 
+  /* Typing: the board follows in a transition, and the URL is written once typing pauses. */
   const onQueryChange = (value: string) => {
-    setDraft(value);
-    write({ q: value });
+    startTransition(() => setQuery(value));
+    clearTimeout(urlTimer.current);
+    // Only `q` changes, merged into the URL as it is then (filters chosen meanwhile are kept).
+    urlTimer.current = setTimeout(() => {
+      const url = new URL(window.location.href);
+      if (value.trim()) url.searchParams.set('q', value.trim());
+      else url.searchParams.delete('q');
+      window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
+    }, 400);
   };
+  /* Clearing from outside the field (the no-results state) also resets the field. */
+  const clearQuery = () => {
+    setQuery('');
+    setSearchKey((value) => value + 1);
+    write({ q: '' });
+  };
+  useEffect(() => () => clearTimeout(urlTimer.current), []);
   const togglePause = () => {
     setUserPaused((value) => !value);
     setAnnouncement(userPaused ? t('flightPages.feed.resumed') : t('flightPages.feed.paused'));
@@ -218,7 +241,7 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
           icon="search-x"
           title={t('flightPages.board.noResultsTitle', { query: query.trim() })}
           action={
-            <Button variant="secondary" size="sm" iconStart="x" onClick={() => onQueryChange('')}>
+            <Button variant="secondary" size="sm" iconStart="x" onClick={clearQuery}>
               {t('flightPages.board.clearSearch')}
             </Button>
           }
@@ -261,7 +284,9 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
       <BoardToolbar
         airport={airport}
         direction={direction}
-        query={draft}
+        query={query}
+        initialQuery={query}
+        searchKey={searchKey}
         onQueryChange={onQueryChange}
         terminal={params.terminal}
         onTerminalChange={(terminal) => write({ terminal })}
@@ -291,10 +316,12 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
           if ((event.target as HTMLElement).closest('li, tr')) setHeld((value) => ({ ...value, focus: true }));
         }}
         onBlurCapture={() => setHeld((value) => ({ ...value, focus: false }))}
-        onPointerEnter={(event) => {
-          if (event.pointerType === 'mouse') setHeld((value) => ({ ...value, pointer: true }));
+        onPointerOver={(event) => {
+          // Only a mouse resting on a row holds the updates (not anywhere on the board).
+          const onRow = event.pointerType === 'mouse' && Boolean((event.target as HTMLElement).closest('li, tr'));
+          setHeld((value) => (value.pointer === onRow ? value : { ...value, pointer: onRow }));
         }}
-        onPointerLeave={() => setHeld((value) => ({ ...value, pointer: false }))}
+        onPointerLeave={() => setHeld((value) => (value.pointer ? { ...value, pointer: false } : value))}
       >
       <FlightBoard
         flights={visible}
@@ -388,13 +415,18 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
 
   return (
     <div className="flex flex-col">
-      <Tabs value={direction} onValueChange={onDirectionChange}>
+      <Tabs value={chosenDirection} onValueChange={onDirectionChange}>
         <TabsList aria-label={t('flightPages.board.tabsLabel')}>
           {tab('d')}
           {tab('a')}
         </TabsList>
-        <TabsContent value="d">{direction === 'd' ? panel : null}</TabsContent>
-        <TabsContent value="a">{direction === 'a' ? panel : null}</TabsContent>
+        {/* While the new direction renders, the previous list stays under the chosen tab, dimmed. */}
+        <TabsContent value="d" className={cn(chosenDirection !== direction && 'opacity-60')}>
+          {chosenDirection === 'd' ? panel : null}
+        </TabsContent>
+        <TabsContent value="a" className={cn(chosenDirection !== direction && 'opacity-60')}>
+          {chosenDirection === 'a' ? panel : null}
+        </TabsContent>
       </Tabs>
       <p ref={countRegion} role="status" aria-live="polite" aria-atomic="true" className="sr-only" />
       <p role="status" aria-live="polite" className="sr-only">

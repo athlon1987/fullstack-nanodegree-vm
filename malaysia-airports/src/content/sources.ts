@@ -13,10 +13,12 @@
  * pages were read through search indexes on that date, not fetched directly; the exception is the
  * KLIA Terminal 1 parking page, which was read first hand.
  */
+import { NOTES, type SourceExtras } from './source-notes';
 import type { Source, SourceKind } from './types';
 
 const RETRIEVED = '2026-11-16';
 
+/** Build a source. A source with no stated date is marked `undated: true` (D-12). */
 function source(
   id: string,
   kind: SourceKind,
@@ -24,8 +26,10 @@ function source(
   title: string,
   url: string,
   asOf?: string,
+  extras: SourceExtras = {},
 ): Source {
-  return asOf ? { id, kind, publisher, title, url, retrieved: RETRIEVED, asOf } : { id, kind, publisher, title, url, retrieved: RETRIEVED };
+  const base = { id, kind, publisher, title, url, retrieved: RETRIEVED, ...extras };
+  return asOf ? { ...base, asOf } : { ...base, undated: true };
 }
 
 const MAHB = 'Malaysia Airports Holdings Berhad';
@@ -46,9 +50,10 @@ export const CORE_SOURCES: readonly Source[] = [
     'mahb-annual-report-2023-text',
     'aggregator',
     'MarketScreener',
-    'Malaysia Airports: Full Annual Report (text copy of the Annual Report 2023)',
+    'Malaysia Airports: Full Annual Report',
     'https://www.marketscreener.com/quote/stock/MALAYSIA-AIRPORTS-6491319/news/Malaysia-Airports-Full-Annual-Report-75-44-MB-46560038/',
     '2024-04-29',
+    { note: NOTES.annualReportTextCopy },
   ),
   source('mahb-airports-site', 'official', MAHB, 'Malaysia Airports passenger website', 'https://airports.malaysiaairports.com.my/'),
   source('mahb-contact', 'official', MAHB, 'Contact - Malaysia Airports', 'https://www.malaysiaairports.com.my/contact'),
@@ -57,8 +62,10 @@ export const CORE_SOURCES: readonly Source[] = [
     'mahb-corporate-profile-copy',
     'other',
     'Third-party copy of a Malaysia Airports publication',
-    "Malaysia Airports corporate profile 'Connecting You' (undated copy)",
+    "Malaysia Airports corporate profile 'Connecting You'",
     'https://lvyou168.cn/malaysiaairports/pdf/corporate_profile.pdf',
+    undefined,
+    { note: NOTES.undatedCopy, localPublisher: { en: 'Third-party copy of a Malaysia Airports publication', ms: 'Salinan pihak ketiga penerbitan Malaysia Airports' } },
   ),
   source(
     'caam-ras-destinations',
@@ -71,16 +78,19 @@ export const CORE_SOURCES: readonly Source[] = [
     'parlimen-st172-2025',
     'government',
     'Parliament of Malaysia',
-    'Statute Paper ST.172/2025 (2024 annual report tabled in Parliament)',
+    'Statute Paper ST.172/2025',
     'https://www.parlimen.gov.my/ipms/eps/2025-11-25/ST.172.2025%20-%20ST172.2025.pdf',
     '2025-11-25',
+    { note: NOTES.tabledInParliament },
   ),
   source(
     'wikipedia-airports-malaysia',
     'aggregator',
-    'Wikipedia (mirror)',
+    'Wikipedia',
     'List of airports in Malaysia',
     'https://wikwiand-revamp.pages.dev/en/List_of_airports_in_Malaysia',
+    undefined,
+    { note: NOTES.mirror },
   ),
   source(
     'caam-eaip-wmkp',
@@ -90,7 +100,7 @@ export const CORE_SOURCES: readonly Source[] = [
     'https://aip.caam.gov.my/aip/eAIP/2026-10-29-AIRAC/html/eAIP/WM-AD-2.WMKP-en-MS.html',
     '2026-10-29',
   ),
-  source('mahb-penang-site', 'official', MAHB, 'PEN - Penang (Malaysia Airports airport site)', 'https://airports.malaysiaairports.com.my/en/penang'),
+  source('mahb-penang-site', 'official', MAHB, 'PEN - Penang', 'https://airports.malaysiaairports.com.my/en/penang', undefined, { note: NOTES.airportSite }),
   source(
     'caam-eaip-wbkk',
     'government',
@@ -129,9 +139,11 @@ export const CORE_SOURCES: readonly Source[] = [
   source(
     'klia2info-miri',
     'aggregator',
-    'klia2.info (third-party guide)',
+    'klia2.info',
     'Miri Airport (MYY): address, airlines and location',
     'https://www.klia2.info/airports/miri-international-airport/',
+    undefined,
+    { note: NOTES.thirdPartyGuide },
   ),
 
   /* ---- KLIA: official pages ----------------------------------------------------------- */
@@ -178,8 +190,10 @@ export const CORE_SOURCES: readonly Source[] = [
     'mahb-lounges-listing',
     'official',
     MAHB,
-    'Lounges (shop, dine and services directory)',
+    'Lounges',
     'https://airports.malaysiaairports.com.my/shop-dine-services/services/lounges',
+    undefined,
+    { note: NOTES.directory },
   ),
   source(
     'mahb-convergence-touch-of-zen',
@@ -192,9 +206,10 @@ export const CORE_SOURCES: readonly Source[] = [
     'mahb-tiktok-jungle-boardwalk',
     'official',
     MAHB,
-    'KLIA Jungle Boardwalk is now open again (official TikTok)',
+    'KLIA Jungle Boardwalk is now open again',
     'https://www.tiktok.com/@malaysiaairports/video/7285278239071767815',
     '2023-10',
+    { note: NOTES.officialTikTok },
   ),
 
   /* ---- KLIA: airlines and operators ---------------------------------------------------- */
@@ -207,18 +222,21 @@ export const CORE_SOURCES: readonly Source[] = [
   ),
   source(
     'ana-kuala-lumpur-guide',
-    'operator',
+    'other',
     'All Nippon Airways',
-    'Kuala Lumpur International Airport, Terminal 1 (airport guide)',
+    'Kuala Lumpur International Airport, Terminal 1',
     'https://www.ana.co.jp/en/kh/travel-information/airport-and-city-info/kuala-lumpur/',
+    undefined,
+    { note: NOTES.airlineGuide },
   ),
   source(
     'routesonline-calm-room-t2',
-    'operator',
-    'Routes (release by Malaysia Airports)',
+    'news',
+    'Routes',
     'New Calm Room opens at KLIA Terminal 2, enhancing support for passengers with hidden disabilities',
     'https://www.routesonline.com/airports/8/kuala-lumpur-international-airport-klia/news/299664807/new-calm-room-opens-at-klia-terminal-2-enhancing-support-for-passengers-with-hidden-disabilities',
     '2025-07',
+    { note: NOTES.routesRelay },
   ),
 
   /* ---- KLIA: news ---------------------------------------------------------------------- */
@@ -287,8 +305,8 @@ export const CORE_SOURCES: readonly Source[] = [
   ),
 
   /* ---- KLIA: third-party guides and listings (not authoritative) ----------------------- */
-  source('klia2info-airlines', 'aggregator', 'klia2.info (third-party guide)', "KLIA 1 or 2? Find your airline's terminal: full 2026 list", 'https://www.klia2.info/airlines/', '2026'),
-  source('klairport-info-klia', 'aggregator', 'klairport.info (third-party guide)', 'KLIA Terminal 1', 'https://klairport.info/klia/', '2026'),
+  source('klia2info-airlines', 'aggregator', 'klia2.info', "KLIA 1 or 2? Find your airline's terminal: full 2026 list", 'https://www.klia2.info/airlines/', '2026', { note: NOTES.thirdPartyGuide }),
+  source('klairport-info-klia', 'aggregator', 'klairport.info', 'KLIA Terminal 1', 'https://klairport.info/klia/', '2026', { note: NOTES.thirdPartyGuide }),
   source(
     'blacklane-klia-guide',
     'aggregator',
@@ -300,19 +318,21 @@ export const CORE_SOURCES: readonly Source[] = [
   source(
     'destinationkl-klia-vs-klia2',
     'aggregator',
-    'destinationkualalumpur.com (blog)',
+    'destinationkualalumpur.com',
     'KLIA vs KLIA2: which terminal is my airline? (2026)',
     'https://destinationkualalumpur.com/klia-vs-klia2/',
     '2026',
+    { note: NOTES.blog },
   ),
-  source('klia2info-level-guide', 'aggregator', 'klia2.info (third-party guide)', 'KLIA Main Terminal Building level guide', 'https://www.klia2.info/?p=1149'),
+  source('klia2info-level-guide', 'aggregator', 'klia2.info', 'KLIA Main Terminal Building level guide', 'https://www.klia2.info/?p=1149', undefined, { note: NOTES.thirdPartyGuide }),
   source(
     'klia2info-layout-plan',
     'aggregator',
-    'klia2.info (third-party guide)',
+    'klia2.info',
     'KLIA layout plan: navigate KLIA Terminal 1 with ease',
     'https://www.klia2.info/klia/klia-layout-plan/',
     '2026',
+    { note: NOTES.thirdPartyGuide },
   ),
   source(
     'traveloka-mdac',
@@ -334,23 +354,29 @@ export const CORE_SOURCES: readonly Source[] = [
     'booking-sama-sama-express',
     'aggregator',
     'Booking.com',
-    'Sama-Sama Express KLIA Terminal 1 - Airside Transit Hotel (listing)',
+    'Sama-Sama Express KLIA Terminal 1 - Airside Transit Hotel',
     'https://booking.com/hotel/my/sama-sama-express-klia.en-gb.html',
+    undefined,
+    { note: NOTES.listing },
   ),
   source(
     'kliainfo-sama-sama-express',
     'aggregator',
-    'klia.info (third-party guide)',
+    'klia.info',
     'Sama-Sama Express KLIA (Terminal 1)',
     'https://klia.info/accommodations/mid_range_hotels/sama-sama_express_klia.htm',
+    undefined,
+    { note: NOTES.thirdPartyGuide },
   ),
-  source('kliainfo-lost-found', 'aggregator', 'klia.info (third-party guide)', 'Lost & Found Counter at KLIA Terminal 1', 'https://klia.info/facilities/lost_and_found.htm'),
+  source('kliainfo-lost-found', 'aggregator', 'klia.info', 'Lost & Found Counter at KLIA Terminal 1', 'https://klia.info/facilities/lost_and_found.htm', undefined, { note: NOTES.thirdPartyGuide }),
   source(
     'kliainfo-domestic-departures',
     'aggregator',
-    'klia.info (third-party guide)',
+    'klia.info',
     'Domestic departures guide at KLIA',
     'https://klia.info/passenger_guides/domestic_departures.htm',
+    undefined,
+    { note: NOTES.thirdPartyGuide },
   ),
 
   /* ---- This prototype ------------------------------------------------------------------- */
@@ -360,6 +386,12 @@ export const CORE_SOURCES: readonly Source[] = [
     'This prototype (not an official source)',
     'How this concept prototype estimates and labels guidance',
     '/about-this-prototype',
+    '2026-11-17',
+    {
+      // Our own page, so its title and publisher are ours to translate (D-03).
+      localTitle: { en: 'How this concept prototype estimates and labels guidance', ms: 'Cara prototaip konsep ini menganggar dan melabel panduan' },
+      localPublisher: { en: 'This prototype (not an official source)', ms: 'Prototaip ini (bukan sumber rasmi)' },
+    },
   ),
 
   /* ---- Shared by more than one airport content file (appended with PEN, BKI, KCH, LGK, SZB) ---- */
@@ -367,16 +399,21 @@ export const CORE_SOURCES: readonly Source[] = [
     'imi-domestic-travel',
     'government',
     'Immigration Department of Malaysia',
-    'Domestic travel: documents for travel to and from Sabah and Sarawak (as summarised in search results)',
+    'Domestic travel: documents for travel to and from Sabah and Sarawak',
     'https://www.imi.gov.my/index.php/en/main-services/domestic-travel-domestic/',
+    undefined,
+    { note: NOTES.searchSummary },
   ),
   source(
     'imi-restricted-travel-documents',
     'government',
     'Immigration Department of Malaysia',
-    'Restricted travel documents (as summarised in search results)',
+    'Restricted travel documents',
     'https://www.imi.gov.my/index.php/en/main-services/travel-documents/restricted-travel-documents/',
+    undefined,
+    { note: NOTES.searchSummary },
   ),
+  source('imi-official-site', 'government', 'Immigration Department of Malaysia', 'Immigration Department of Malaysia', 'https://www.imi.gov.my/', undefined, { note: NOTES.authorityNotRead }),
   source(
     'mh-visa-immigration-documents',
     'operator',
@@ -398,7 +435,8 @@ export const CORE_SOURCES: readonly Source[] = [
     'Flightradar24',
     '9M-MWA, ATR 72-500, AirBorneo: flight history',
     'https://www.flightradar24.com/data/aircraft/9m-mwa',
-    '2026-09 to 2026-10',
+    '2026-10',
+    { asOfNote: NOTES.observedRange },
   ),
   source(
     'flightconnections-myy',
@@ -415,32 +453,32 @@ export const CORE_SOURCES: readonly Source[] = [
    * search summaries quoted from the page; the title says so. The feedback site was observed first
    * hand on 16 November 2026 (docs/research/audit/firsthand-observations.md).
    * ------------------------------------------------------------------------------------------ */
-  { id: 'mahb-lags-restricted-items', kind: 'official', publisher: MAHB, title: 'Liquids, aerosols and gels (LAGs) and restricted items (as summarised in search results)', url: 'https://airports.malaysiaairports.com.my/passenger-guide/lags-restricted-items', retrieved: '2026-11-17' },
-  { id: 'mahb-customs-immigration-guide', kind: 'official', publisher: MAHB, title: 'Customs and immigration passenger guide (page found in search results; content not read)', url: 'https://airports.malaysiaairports.com.my/passenger-guide/customs-immigration', retrieved: '2026-11-17' },
-  { id: 'mahb-flight-transfers', kind: 'official', publisher: MAHB, title: 'Flight transfers (as summarised in search results)', url: 'https://airports.malaysiaairports.com.my/transit/flight-transfers', retrieved: '2026-11-17' },
-  { id: 'mahb-special-assistance-klia-t1', kind: 'official', publisher: MAHB, title: 'Special assistance at KLIA Terminal 1 (listed in the official sitemap; content not captured)', url: 'https://www.malaysiaairports.com.my/en/klia1/air-travel/special-assistance', retrieved: '2026-11-16' },
-  { id: 'mahb-feedback-site', kind: 'official', publisher: MAHB, title: 'Malaysia Airports feedback site (linked from Help on the official site; observed first hand)', url: 'https://feedback.malaysiaairports.com.my/', retrieved: '2026-11-16' },
-  { id: 'mahb-scam-alert', kind: 'official', publisher: MAHB, title: 'Scam alert (as summarised in search results)', url: 'https://www.malaysiaairports.com.my/scam-alert', retrieved: '2026-11-17' },
-  { id: 'mahb-corporate-scam-alert', kind: 'official', publisher: MAHB, title: 'Scam alert, corporate site (as summarised in search results)', url: 'https://corporate.malaysiaairports.com.my/en/scam-alert', retrieved: '2026-11-17' },
-  { id: 'mahb-privacy-notice', kind: 'official', publisher: MAHB, title: 'Privacy Notice (English version), PDF (as summarised in search results)', url: 'https://www.malaysiaairports.com.my/sites/corporate/files/2024-04/Privacy%20Notice%20%28English%20version%29%20FINAL.pdf', retrieved: '2026-11-17', asOf: '2024-04' },
-  { id: 'mh-cabin-baggage', kind: 'operator', publisher: 'Malaysia Airlines', title: 'Cabin baggage rules (as summarised in search results)', url: 'https://www.malaysiaairlines.com/in/en/travel-info/baggage/cabin-baggage.html', retrieved: '2026-11-17' },
-  { id: 'mh-power-banks', kind: 'operator', publisher: 'Malaysia Airlines', title: 'Carrying power banks on board (as summarised in search results)', url: 'https://malaysiaairlines.com/kr/ko/mh-media-centre/important-for-you/carrying-power-banks-on-board.html', retrieved: '2026-11-17', asOf: '2025-04-01' },
-  { id: 'mh-special-assistance', kind: 'operator', publisher: 'Malaysia Airlines', title: 'MHguardian and special assistance, including wheelchair requests (as summarised in search results)', url: 'https://www.malaysiaairlines.com/uk/en/travel-info/mhguardian.html', retrieved: '2026-11-17' },
+  { id: 'mahb-lags-restricted-items', kind: 'official', publisher: MAHB, title: 'Liquids, aerosols and gels (LAGs) and restricted items', url: 'https://airports.malaysiaairports.com.my/passenger-guide/lags-restricted-items', note: NOTES.searchSummary, retrieved: '2026-11-17', undated: true },
+  { id: 'mahb-customs-immigration-guide', kind: 'official', publisher: MAHB, title: 'Customs and immigration passenger guide', url: 'https://airports.malaysiaairports.com.my/passenger-guide/customs-immigration', note: NOTES.pageFoundNotRead, retrieved: '2026-11-17', undated: true },
+  { id: 'mahb-flight-transfers', kind: 'official', publisher: MAHB, title: 'Flight transfers', url: 'https://airports.malaysiaairports.com.my/transit/flight-transfers', note: NOTES.searchSummary, retrieved: '2026-11-17', undated: true },
+  { id: 'mahb-special-assistance-klia-t1', kind: 'official', publisher: MAHB, title: 'Special assistance at KLIA Terminal 1', url: 'https://www.malaysiaairports.com.my/en/klia1/air-travel/special-assistance', note: NOTES.sitemapOnly, retrieved: '2026-11-16', undated: true },
+  { id: 'mahb-feedback-site', kind: 'official', publisher: MAHB, title: 'Malaysia Airports feedback site', url: 'https://feedback.malaysiaairports.com.my/', note: NOTES.linkedFromHelp, retrieved: '2026-11-16', undated: true },
+  { id: 'mahb-scam-alert', kind: 'official', publisher: MAHB, title: 'Scam alert', url: 'https://www.malaysiaairports.com.my/scam-alert', note: NOTES.searchSummary, retrieved: '2026-11-17', undated: true },
+  { id: 'mahb-corporate-scam-alert', kind: 'official', publisher: MAHB, title: 'Scam alert, corporate site', url: 'https://corporate.malaysiaairports.com.my/en/scam-alert', note: NOTES.searchSummary, retrieved: '2026-11-17', undated: true },
+  { id: 'mahb-privacy-notice', kind: 'official', publisher: MAHB, title: 'Privacy Notice (English version), PDF', url: 'https://www.malaysiaairports.com.my/sites/corporate/files/2024-04/Privacy%20Notice%20%28English%20version%29%20FINAL.pdf', note: NOTES.searchSummary, retrieved: '2026-11-17', asOf: '2024-04' },
+  { id: 'mh-cabin-baggage', kind: 'operator', publisher: 'Malaysia Airlines', title: 'Cabin baggage rules', url: 'https://www.malaysiaairlines.com/in/en/travel-info/baggage/cabin-baggage.html', note: NOTES.searchSummary, retrieved: '2026-11-17', undated: true },
+  { id: 'mh-power-banks', kind: 'operator', publisher: 'Malaysia Airlines', title: 'Carrying power banks on board', url: 'https://malaysiaairlines.com/kr/ko/mh-media-centre/important-for-you/carrying-power-banks-on-board.html', note: NOTES.searchSummary, retrieved: '2026-11-17', asOf: '2025-04-01' },
+  { id: 'mh-special-assistance', kind: 'operator', publisher: 'Malaysia Airlines', title: 'MHguardian and special assistance, including wheelchair requests', url: 'https://www.malaysiaairlines.com/uk/en/travel-info/mhguardian.html', note: NOTES.searchSummary, retrieved: '2026-11-17', undated: true },
   { id: 'malaymail-mh-power-banks-2025', kind: 'news', publisher: 'Malay Mail', title: 'Malaysia Airlines bans power bank use on flights, tightens carry-on rules from April 1', url: 'https://www.malaymail.com/news/malaysia/2025/03/22/malaysia-airlines-bans-power-bank-use-on-flights-tightens-carry-on-rules-from-april-1/170441', retrieved: '2026-11-17', asOf: '2025-03-22' },
   { id: 'thestar-power-banks-caam-2025', kind: 'news', publisher: 'The Star', title: 'No power banks in bags', url: 'https://www.thestar.com.my/news/nation/2025/03/15/no-power-banks-in-bags', retrieved: '2026-11-17', asOf: '2025-03-15' },
-  { id: 'caam-sd-01-2026-power-banks', kind: 'government', publisher: CAAM, title: 'SD 01/2026: Safety measures for the carriage of lithium-ion battery power banks for passengers and crew (title seen in search results; content not read)', url: 'https://www.caam.gov.my/wp-content/uploads/2026/04/SD-01_2026-Safety-Measures-for-The-Carriage-of-Lithium-Ion-Battery-Power-Bank-for-Passenger-and-Crew.pdf', retrieved: '2026-11-17', asOf: '2026-04' },
+  { id: 'caam-sd-01-2026-power-banks', kind: 'government', publisher: CAAM, title: 'SD 01/2026: Safety measures for the carriage of lithium-ion battery power banks for passengers and crew', url: 'https://www.caam.gov.my/wp-content/uploads/2026/04/SD-01_2026-Safety-Measures-for-The-Carriage-of-Lithium-Ion-Battery-Power-Bank-for-Passenger-and-Crew.pdf', note: NOTES.titleSeenNotRead, retrieved: '2026-11-17', asOf: '2026-04' },
   { id: 'thestar-mavcom-delay-refunds-2025', kind: 'news', publisher: 'The Star', title: 'Mavcom: Airlines must offer passengers refunds for flight delays of five hours or more', url: 'https://www.thestar.com.my/business/business-news/2025/02/19/mavcom-airlines-must-offer-passengers-refunds-for-flight-delays-of-five-hours-or-more', retrieved: '2026-11-17', asOf: '2025-02-19' },
   { id: 'malaymail-delay-refunds-2024', kind: 'news', publisher: 'Malay Mail', title: 'What you should know about getting your money back for AirAsia, MAB, Batik Air flights late five hours or more', url: 'https://www.malaymail.com/news/malaysia/2024/09/05/what-you-should-know-about-getting-your-money-back-for-airasia-mab-batik-air-flights-late-five-hours-or-more/149234', retrieved: '2026-11-17', asOf: '2024-09-05' },
   { id: 'skrine-macpc-2016', kind: 'other', publisher: 'Skrine (law firm)', title: 'Now everyone can fly with less headaches! (Malaysian Aviation Consumer Protection Code 2016)', url: 'https://www.skrine.com/insights/newsletter/september-2016/now-everyone-can-fly-with-less-headaches!', retrieved: '2026-11-17', asOf: '2016-09' },
-  { id: 'conventuslaw-mavcom-complaint', kind: 'other', publisher: 'Conventus Law', title: 'Malaysia: a practical guide to file a complaint at MAVCOM', url: 'https://conventuslaw.com/report/malaysia-a-practical-guide-to-file-a-complaint-at-mavcom/', retrieved: '2026-11-17' },
-  { id: 'caam-mavcom-consumer-report-2026', kind: 'government', publisher: CAAM, title: "MAVCOM's latest consumer report highlights better consumer protection, improved airline responsiveness (as summarised in search results)", url: 'https://www.caam.gov.my/newsroom/mavcoms-latest-consumer-report-highlights-better-consumer-protection-improved-airline-responsiveness/', retrieved: '2026-11-17', asOf: '2026-03' },
+  { id: 'conventuslaw-mavcom-complaint', kind: 'other', publisher: 'Conventus Law', title: 'Malaysia: a practical guide to file a complaint at MAVCOM', url: 'https://conventuslaw.com/report/malaysia-a-practical-guide-to-file-a-complaint-at-mavcom/', retrieved: '2026-11-17', undated: true },
+  { id: 'caam-mavcom-consumer-report-2026', kind: 'government', publisher: CAAM, title: "MAVCOM's latest consumer report highlights better consumer protection, improved airline responsiveness", url: 'https://www.caam.gov.my/newsroom/mavcoms-latest-consumer-report-highlights-better-consumer-protection-improved-airline-responsiveness/', note: NOTES.searchSummary, retrieved: '2026-11-17', asOf: '2026-03' },
   { id: 'thestar-jpj-touts-2026', kind: 'news', publisher: 'The Star', title: 'JPJ goes after airport touts targeting foreign visitors', url: 'https://www.thestar.com.my/news/nation/2026/07/07/jpj-goes-after-airport-touts-targeting-foreign-visitors', retrieved: '2026-11-17', asOf: '2026-07-07' },
   { id: 'malaymail-ehailing-touts-2026', kind: 'news', publisher: 'Malay Mail', title: 'JPJ cracks down on e-hailing drivers at KLIA bypassing apps, charging up to RM800', url: 'https://www.malaymail.com/amp/news/malaysia/2026/07/07/jpj-cracks-down-on-e-hailing-drivers-at-klia-bypassing-apps-charging-up-to-rm800/226642', retrieved: '2026-11-17', asOf: '2026-07-07' },
-  { id: 'imi-mdac-portal', kind: 'government', publisher: 'Immigration Department of Malaysia', title: 'Malaysia Digital Arrival Card (MDAC) portal (address as given in search results)', url: 'https://imigresen-online.imi.gov.my/mdac/main', retrieved: '2026-11-17' },
-  { id: 'wikipedia-mdac', kind: 'other', publisher: 'Wikipedia', title: 'Malaysia Digital Arrival Card', url: 'https://en.wikipedia.org/wiki/Malaysia_Digital_Arrival_Card', retrieved: '2026-11-17' },
-  { id: 'customs-gov-my', kind: 'government', publisher: 'Royal Malaysian Customs Department', title: 'Royal Malaysian Customs Department official website (named in search results; content not read)', url: 'https://www.customs.gov.my/', retrieved: '2026-11-17' },
+  { id: 'imi-mdac-portal', kind: 'government', publisher: 'Immigration Department of Malaysia', title: 'Malaysia Digital Arrival Card (MDAC) portal', url: 'https://imigresen-online.imi.gov.my/mdac/main', note: NOTES.addressFromSearch, retrieved: '2026-11-17', undated: true },
+  { id: 'wikipedia-mdac', kind: 'other', publisher: 'Wikipedia', title: 'Malaysia Digital Arrival Card', url: 'https://en.wikipedia.org/wiki/Malaysia_Digital_Arrival_Card', retrieved: '2026-11-17', undated: true },
+  { id: 'customs-gov-my', kind: 'government', publisher: 'Royal Malaysian Customs Department', title: 'Royal Malaysian Customs Department official website', url: 'https://www.customs.gov.my/', note: NOTES.namedNotRead, retrieved: '2026-11-17', undated: true },
   { id: 'hro-customs-declaration-2022', kind: 'news', publisher: 'Human Resources Online', title: 'Customs declaration form must be filled in by all travellers flying to and from Malaysia: what you need to know', url: 'https://www.humanresourcesonline.net/customs-declaration-form-must-be-filled-in-by-all-travellers-flying-to-and-from-malaysia-what-you-need-to-know', retrieved: '2026-11-17', asOf: '2022-10' },
-  { id: 'sarawaktribune-mykad-entry-2026', kind: 'news', publisher: 'Sarawak Tribune', title: 'Malaysians from the Peninsula and Sabah can enter Sarawak with MyKad (as summarised in search results)', url: 'https://www.sarawaktribune.com/?p=277989', retrieved: '2026-11-17', asOf: '2026-06-12' },
+  { id: 'sarawaktribune-mykad-entry-2026', kind: 'news', publisher: 'Sarawak Tribune', title: 'Malaysians from the Peninsula and Sabah can enter Sarawak with MyKad', url: 'https://www.sarawaktribune.com/?p=277989', note: NOTES.searchSummary, retrieved: '2026-11-17', asOf: '2026-06-12' },
 ];
 
 /** Core sources keyed by id. Prefer `getSource` from `@/content`, which also sees per-airport sources. */

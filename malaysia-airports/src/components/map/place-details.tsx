@@ -10,7 +10,7 @@ import { AccessibleValue, AreaValue, FactList, HoursValue, sourcesFor } from '@/
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { IconButton } from '@/components/ui/icon-button';
-import type { LevelView, PoiView } from './map-logic';
+import { placePosition, type LevelView, type PoiView } from './map-logic';
 
 export interface PlaceDetailsProps {
   poi: PoiView;
@@ -37,6 +37,8 @@ export function PlaceDetails({ poi, level, sources, facilitiesHref, isDestinatio
   const facility = poi.facility;
   const placeSources = sourcesFor(poi.sourceIds, sources);
   const facilitySources = facility ? sourcesFor(facility.sourceIds, sources) : [];
+  // An illustrative pin may not claim a level or area its facility does not publish (C-04).
+  const position = placePosition(poi);
 
   const copyLink = async () => {
     try {
@@ -57,7 +59,7 @@ export function PlaceDetails({ poi, level, sources, facilitiesHref, isDestinatio
         <div className="min-w-0 flex-1">
           <p className="type-eyebrow text-gold-ink">
             {poi.kindLabel}
-            {level ? <span className="text-ink-3"> · {level.label}</span> : null}
+            {level && position.level ? <span className="text-ink-3"> · {level.label}</span> : null}
           </p>
           <h2 id={DETAILS_HEADING_ID} tabIndex={-1} className="type-title-lg mt-1 text-ink outline-none">
             {poi.name}
@@ -69,8 +71,8 @@ export function PlaceDetails({ poi, level, sources, facilitiesHref, isDestinatio
       <div className="flex flex-col gap-4 px-4 pb-4 sm:px-5 sm:pb-5">
         <FactList
           facts={[
-            { label: t('mapPages.details.level'), value: level?.name ?? poi.level },
-            { label: t('mapPages.details.area'), value: poi.side !== 'unknown' ? <AreaValue side={poi.side} /> : undefined },
+            { label: t('mapPages.details.level'), value: position.level ? (level?.name ?? poi.level) : undefined },
+            { label: t('mapPages.details.area'), value: position.area && poi.side !== 'unknown' ? <AreaValue side={poi.side} /> : undefined },
             ...(facility?.locationNote ? [{ label: t('mapPages.details.location'), value: facility.locationNote }] : []),
             { label: t('mapPages.details.hours'), value: facility?.hours ? <HoursValue hours={facility.hours} /> : undefined },
             { label: t('mapPages.details.accessibility'), value: facility?.accessible !== undefined ? <AccessibleValue accessible={facility.accessible} /> : undefined },
@@ -108,8 +110,12 @@ export function PlaceDetails({ poi, level, sources, facilitiesHref, isDestinatio
             <h3 className="type-title-sm text-ink">{t('mapPages.details.positionTitle')}</h3>
             <ProvenanceTag provenance={poi.provenance} />
           </div>
-          <p className="type-body-sm mt-2 text-ink-2">
-            {poi.provenance === 'demo' ? t('mapPages.details.positionIllustrative') : t('mapPages.details.positionSourced')}
+          <p className="type-body-sm mt-2 text-ink-2" data-position={position.unpublished ? 'unpublished' : poi.provenance === 'demo' ? 'illustrative' : 'sourced'}>
+            {position.unpublished
+              ? t('mapPages.details.positionUnpublished')
+              : poi.provenance === 'demo'
+                ? t('mapPages.details.positionIllustrative')
+                : t('mapPages.details.positionSourced')}
           </p>
           <SourceNote sources={placeSources} className="mt-1" />
         </div>

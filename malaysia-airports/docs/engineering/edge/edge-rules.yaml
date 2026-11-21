@@ -1,0 +1,50 @@
+# Host-neutral edge rules for the Malaysia Airports concept site (security-06): what the CDN or
+# WAF in front of the app must enforce, to be translated into the chosen host's rule language
+# (Cloudflare, Akamai, CloudFront + AWS WAF, Fastly). Same limits as ROUTE_POLICIES in
+# src/lib/concierge/rate-limit.ts and docs/engineering/edge/rate-limits.nginx.conf.
+# Not deployed: deploying on MAHB infrastructure is OOS-11.
+version: 1
+client_identity:
+  # The CDN's own client-IP header; the app reads the same header (TRUSTED_CLIENT_IP_HEADER).
+  header: cf-connecting-ip   # replace with the chosen CDN's header
+  strip_incoming: [x-forwarded-for, x-real-ip]   # the CDN rewrites these; never trust client values
+rate_limits:
+  - name: concierge
+    match: { method: POST, path: /api/concierge }
+    per_client: { requests: 10, period_seconds: 60, burst: 10 }
+    action: block_429
+  - name: flights
+    match: { path_prefix: /api/flights }
+    per_client: { requests: 60, period_seconds: 60, burst: 60 }
+    action: block_429
+  - name: health
+    match: { path: /api/health }
+    per_client: { requests: 10, period_seconds: 60, burst: 10 }
+    action: block_429
+  - name: reports
+    match: { path_regex: '^/api/(csp-report|metrics)$' }
+    per_client: { requests: 30, period_seconds: 60, burst: 30 }
+    action: block_429
+  - name: api_other
+    match: { path_prefix: /api/ }
+    per_client: { requests: 60, period_seconds: 60, burst: 60 }
+    action: block_429
+  - name: dynamic_pages
+    match: { path_regex: '^/(en|ms)/([a-z]{3}/flights/[^/]+|journey/content/[^/]+)/?$' }
+    per_client: { requests: 60, period_seconds: 60, burst: 60 }
+    # Shared networks (airport Wi-Fi, carriers): challenge before blocking.
+    action: managed_challenge_then_429
+body_limits:
+  - { match: { path: /api/concierge }, max_bytes: 4096 }
+  - { match: { path_regex: '^/api/(csp-report|metrics)$' }, max_bytes: 16384 }
+  - { match: { path_prefix: / }, max_bytes: 16384 }
+bot_management:
+  # Score-based: verified search crawlers allowed on pages; automated clients on /api/* challenged
+  # above the score threshold; never challenge prerendered guidance pages for humans.
+  verified_bots: allow_pages_only
+  api_automation_score_threshold: 30
+  action_on_api: managed_challenge
+caching:
+  # 404s at most a minute in shared caches (the app sends s-maxage=60).
+  not_found_max_seconds: 60
+  api: bypass

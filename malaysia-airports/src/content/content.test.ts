@@ -2,6 +2,11 @@ import { describe, expect, it } from 'vitest';
 import {
   AIRPORTS,
   AIRPORT_CHOICES,
+  ARRIVAL_TIME_RULE,
+  TRANSIT_ASSUMPTIONS,
+  asOfStartDate,
+  formatAsOf,
+  localizeAirport,
   CORE_SOURCES,
   FACILITY_CATEGORIES,
   FACILITY_CATEGORY_META,
@@ -244,11 +249,15 @@ describe('labels, notices and seeds', () => {
 
   it('shows current and soon-to-start notices, most serious first, and scopes them to an airport', () => {
     const now = new Date('2026-11-17T04:00:00Z');
-    expect(currentNotices(getNotices('kul'), now).map((notice) => notice.id)).toEqual(['kul-aerotrain-software-update-nov-2026', 'kul-klia-ekspres-fare-rise-2027', 'prototype-demo-data']);
-    expect(currentNotices(getNotices('kul'), now, { upcomingWithinDays: 2 }).map((notice) => notice.id)).toEqual(['kul-klia-ekspres-fare-rise-2027', 'prototype-demo-data']);
-    expect(currentNotices(getNotices('kul'), new Date('2026-12-05T00:00:00Z')).map((notice) => notice.id)).toEqual(['kul-klia-ekspres-fare-rise-2027', 'prototype-demo-data']);
-    // The fare-rise notice expires when the new fare takes effect.
-    expect(currentNotices(getNotices('kul'), new Date('2027-01-02T00:00:00Z')).map((notice) => notice.id)).toEqual(['prototype-demo-data']);
+    // Same-severity notices sort by start date; the fare notice now starts at its announcement
+    // (D-10), so it follows the undated demo notice.
+    expect(currentNotices(getNotices('kul'), now).map((notice) => notice.id)).toEqual(['kul-aerotrain-software-update-nov-2026', 'prototype-demo-data', 'kul-klia-ekspres-fare-rise-2027']);
+    expect(currentNotices(getNotices('kul'), now, { upcomingWithinDays: 2 }).map((notice) => notice.id)).toEqual(['prototype-demo-data', 'kul-klia-ekspres-fare-rise-2027']);
+    expect(currentNotices(getNotices('kul'), new Date('2026-12-05T00:00:00Z')).map((notice) => notice.id)).toEqual(['prototype-demo-data', 'kul-klia-ekspres-fare-rise-2027']);
+    // Changed for D-10: the fare-rise notice stays in effect over the change and for some weeks
+    // after it, instead of expiring the day the new fare applies.
+    expect(currentNotices(getNotices('kul'), new Date('2027-01-02T00:00:00Z')).map((notice) => notice.id)).toEqual(['prototype-demo-data', 'kul-klia-ekspres-fare-rise-2027']);
+    expect(currentNotices(getNotices('kul'), new Date('2027-02-02T00:00:00Z')).map((notice) => notice.id)).toEqual(['prototype-demo-data']);
     expect(getNotices('pen').map((notice) => notice.id)).toEqual(['prototype-demo-data', 'pen-terminal-expansion-works']);
     expect(getNotices('iph').map((notice) => notice.id)).toEqual(['prototype-demo-data']);
   });
@@ -262,5 +271,231 @@ describe('labels, notices and seeds', () => {
     expect(faqsByTopic('terminals', 'pen')).toEqual([]);
     expect(faqsByTopic('terminals', 'kul').length).toBe(2);
     expect(latestNews(1)[0].slug).toBe('klia-aerotrain-24-hour-service-resumes');
+  });
+});
+
+/* -------------------------------------------------------------------------------------------
+ * Fix round D (content, provenance, dates, coverage): docs/qa/fixes/D.md
+ * ---------------------------------------------------------------------------------------- */
+
+describe('provenance and source policy (D-01, D-06)', () => {
+  function bundleWith(change: (content: AirportContentModule) => void, extraSources: ContentBundle['sources'] = []): ContentBundle {
+    const content: AirportContentModule = structuredClone(KUL_CONTENT);
+    change(content);
+    return { sources: [...CORE_SOURCES, ...extraSources], airports: [...AIRPORTS], airportContent: [content], guides: GUIDES, faqs: FAQS, notices: NETWORK_NOTICES, corporatePages: [], news: [] };
+  }
+  const officialWith = (ids: string[]) => (content: AirportContentModule) => {
+    content.facilities[0].provenance = 'official';
+    content.facilities[0].sources = ids;
+  };
+  const hasOfficialIssue = (bundle: ContentBundle) => validateContent(bundle).some((issue) => issue.message.startsWith('Tagged official'));
+
+  it('rejects an Official tag that rests only on news, aggregators or this prototype', () => {
+    expect(hasOfficialIssue(bundleWith(officialWith(['thestar-klia-ekspres-fares-2027', 'wego-klia-to-city'])))).toBe(true);
+    expect(hasOfficialIssue(bundleWith(officialWith(['prototype-method'])))).toBe(true);
+    expect(hasOfficialIssue(bundleWith(officialWith(['mahb-klia-t1-parking'])))).toBe(false);
+  });
+
+  it('never lets a social post back an Official tag, even the airport’s own', () => {
+    expect(hasOfficialIssue(bundleWith(officialWith(['mahb-tiktok-jungle-boardwalk'])))).toBe(true);
+  });
+
+  it('rejects a relayed release or advertorial registered as official, and annotations in titles', () => {
+    const relay = { id: 'test-relay', kind: 'official' as const, publisher: 'Routes', title: 'A release', url: 'https://www.routesonline.com/x', retrieved: '2026-11-16', undated: true as const };
+    const annotated = { id: 'test-annotated', kind: 'news' as const, publisher: 'Paper', title: 'A story (as summarised in search results)', url: 'https://example.com/x', retrieved: '2026-11-16', undated: true as const };
+    const issues = validateContent(bundleWith(() => undefined, [relay, annotated]));
+    expect(issues.some((issue) => issue.path === 'sources[test-relay]' && issue.message.includes('relays'))).toBe(true);
+    expect(issues.some((issue) => issue.path === 'sources[test-annotated]' && issue.message.includes('note'))).toBe(true);
+  });
+
+  it('tags the records the audit found as Official on third-party sources as Estimated, and prototype statements as Suggestion', () => {
+    const kul = getAirportContent('kul')!;
+    const pen = getAirportContent('pen')!;
+    const szb = getAirportContent('szb')!;
+    expect(kul.transport.find((option) => option.id === 'kul-klia-ekspres')?.provenance).toBe('estimated');
+    for (const id of ['kul-klia-ekspres-fare-rise-2027', 'kul-aerotrain-software-update-nov-2026']) {
+      expect(kul.notices.find((notice) => notice.id === id)?.provenance).toBe('estimated');
+    }
+    expect(pen.transport.find((option) => option.id === 'pen-e-hailing')?.provenance).toBe('estimated');
+    expect(pen.guidesNotes.find((note) => note.id === 'pen-e-hailing-pick-up')?.provenance).toBe('estimated');
+    expect(szb.guidesNotes.find((note) => note.id === 'szb-night-curfew')?.provenance).toBe('estimated');
+    expect(FAQS.find((faq) => faq.id === 'flight-delay-refund')?.provenance).toBe('estimated');
+    for (const id of ['is-this-official', 'privacy-this-site', 'privacy-clear-data']) expect(FAQS.find((faq) => faq.id === id)?.provenance).toBe('suggestion');
+    for (const id of ['corp-routes-2025-growth', 'routesonline-calm-room-t2', 'corp-edge-solar-advertorial', 'ana-kuala-lumpur-guide']) {
+      expect(['official', 'operator', 'government']).not.toContain(getSource(id)?.kind);
+    }
+  });
+
+  it('states the Preferred Parking advice as a rule on the parking topic, with the press report only as a source', () => {
+    const warning = getAirportContent('kul')!.guidesNotes.find((note) => note.id === 'kul-preferred-parking-warning')!;
+    expect(warning.topic).toBe('parking');
+    expect(warning.body.en).toMatch(/RM32 a day from 1 May 2026/);
+    expect(`${warning.title.en} ${warning.body.en} ${warning.body.ms}`).not.toMatch(/paultan|2,084/);
+    expect(warning.sources).toContain('paultan-preferred-parking-2025');
+  });
+});
+
+describe('Fast Track (D-02)', () => {
+  it('publishes a sourced Fast Track record for each KLIA terminal, with what is unknown said to be unknown', () => {
+    const kul = getAirportContent('kul')!;
+    for (const terminal of ['T1', 'T2'] as const) {
+      const record = kul.facilities.find((facility) => facility.id === `kul-${terminal.toLowerCase()}-fast-track`);
+      expect(record, terminal).toBeDefined();
+      expect(record!.terminal).toBe(terminal);
+      expect(record!.name.en).toBe('Fast Track');
+      expect(record!.bookingUrl).toBe('https://www.myairportfasttrack.com/');
+      expect(record!.description.en).toMatch(/Not published in our sources: .*price.*hours.*seller/);
+      expect(record!.description.ms).toBeTruthy();
+      expect(resolveSources(record!.sources).some((source) => source.kind === 'official' && source.url.includes('malaysiaairports.com.my'))).toBe(true);
+      expect(record!.asOf).toBeTruthy();
+    }
+  });
+});
+
+describe('localised source metadata and dates (D-03, D-12)', () => {
+  const all = [...CORE_SOURCES, ...airportsWithContent().flatMap((slug) => resolveSources(getAirportContent(slug)!.facilities.flatMap((f) => f.sources)))];
+
+  it('gives every annotation and date qualifier a Malay version', () => {
+    for (const source of all) {
+      if (source.note) expect(source.note.ms, source.id).toBeTruthy();
+      if (source.asOfNote) expect(source.asOfNote.ms, source.id).toBeTruthy();
+    }
+    const method = getSource('prototype-method')!;
+    expect(method.localTitle?.ms).toBeTruthy();
+    expect(method.localPublisher?.ms).toBeTruthy();
+  });
+
+  it('localises airline check-in notes and payment lists', () => {
+    for (const slug of airportsWithContent()) {
+      const content = getAirportContent(slug)!;
+      for (const airline of content.airlines) if (airline.checkIn) expect(airline.checkIn.ms, `${slug} ${airline.code}`).toBeTruthy();
+      for (const option of content.transport) for (const method of option.payment ?? []) expect(method.ms, option.id).toBeTruthy();
+    }
+  });
+
+  it('dates every source and FAQ, or marks it undated, in a form code can compare', () => {
+    for (const source of all) expect(Boolean(source.asOf) !== Boolean(source.undated), source.id).toBe(true);
+    for (const faq of FAQS) expect(Boolean(faq.asOf) !== Boolean(faq.undated), faq.id).toBe(true);
+    expect(asOfStartDate('2026-08')).toBe('2026-08-01');
+    expect(formatAsOf('2026-11-16', 'en')).toBe('16 Nov 2026');
+    expect(formatAsOf('2026-08', 'ms')).toMatch(/Ogos 2026/);
+  });
+
+  /**
+   * Records whose as-of date is more than 12 months before the last content review. Each was
+   * looked at on that day; a new stale record fails this test until someone re-checks it or
+   * adds it here with a reason.
+   */
+  const CONTENT_REVIEWED_ON = '2026-11-21';
+  const REVIEWED_STALE: Record<string, string> = {
+    'facility:kul-t1-calm-room': 'Opening coverage; the official site still promotes the Calm Rooms',
+    'facility:kul-t2-calm-room': 'Opening release; still promoted',
+    'facility:kul-butterfly-effect': 'Programme still on the official menu (21 Nov 2026)',
+    'facility:kul-t1-sensory-walls': 'Opening coverage',
+    'facility:kul-t2-sensory-walls': 'Opening coverage',
+    'facility:kul-t1-information-counter': 'Calm Room release names the counter',
+    'facility:kul-t1-jungle-boardwalk': 'Hours already marked as not verified',
+    'outlet:kul-t1-eraman-duty-free-mall': 'Opening coverage of a permanent outlet',
+    'note:kul-butterfly-effect-note': 'Programme still on the official menu',
+    'carPark:pen-premium-parking': 'Launch announcement; tagged Estimated',
+    'note:pen-premium-parking-link-bridge': 'Launch announcement; tagged Estimated',
+    'facility:bki-airport-contact': 'Contact page date',
+    'note:szb-check-which-airport': 'Tagged Estimated; needs a first-hand source',
+    'note:szb-night-curfew': 'Tagged Estimated; needs a first-hand source',
+    'faq:klia-terminal-names': 'Date of the rebranding, which still applies',
+    'faq:klia-hidden-disabilities': 'Programme still on the official menu',
+    'faq:flight-delay-care': 'The 2016 consumer code is the rule in force',
+    'faq:flight-delay-refund': 'Tagged Estimated',
+    'faq:privacy-malaysia-airports': 'Current privacy notice',
+    'faq:power-bank-rules': 'Airline rule page date',
+  };
+
+  it('flags records older than 12 months that nobody has reviewed', () => {
+    const cutoff = `${Number(CONTENT_REVIEWED_ON.slice(0, 4)) - 1}${CONTENT_REVIEWED_ON.slice(4)}`;
+    const stale: string[] = [];
+    const check = (id: string, asOf?: string) => {
+      const start = asOfStartDate(asOf);
+      if (start && start < cutoff) stale.push(id);
+    };
+    for (const slug of airportsWithContent()) {
+      const content = getAirportContent(slug)!;
+      for (const item of content.facilities) check(`facility:${item.id}`, item.asOf);
+      for (const item of content.outlets) check(`outlet:${item.id}`, item.asOf);
+      for (const item of content.transport) check(`transport:${item.id}`, item.asOf);
+      for (const item of content.carParks) check(`carPark:${item.id}`, item.asOf);
+      for (const item of content.guidesNotes) check(`note:${item.id}`, item.asOf);
+      for (const item of content.notices) check(`notice:${item.id}`, item.asOf);
+    }
+    for (const faq of FAQS) check(`faq:${faq.id}`, faq.asOf);
+    expect(stale.filter((id) => !(id in REVIEWED_STALE))).toEqual([]);
+  });
+});
+
+describe('coverage notes (D-05) and departing immigration (D-07)', () => {
+  it('keeps every gaps note off the journey topics and consistent with the published records', () => {
+    for (const slug of airportsWithContent()) {
+      const note = getAirportContent(slug)!.guidesNotes.find((item) => item.id === `${slug}-content-gaps`);
+      expect(note?.topic, slug).toBe('coverage');
+      expect(note?.gaps?.length, slug).toBeGreaterThan(0);
+    }
+  });
+
+  it('fails when a gaps note names an area that has published records', () => {
+    const content: AirportContentModule = structuredClone(KUL_CONTENT);
+    content.outlets[0].hours = { kind: '24h' };
+    const issues = validateContent({ sources: [...CORE_SOURCES], airports: [...AIRPORTS], airportContent: [content], guides: GUIDES, faqs: FAQS, notices: NETWORK_NOTICES, corporatePages: [], news: [] });
+    expect(issues.some((issue) => issue.path.includes('kul-content-gaps') && issue.message.includes('outlet-hours'))).toBe(true);
+  });
+
+  it('publishes a departing passport-control note for Malaysian citizens in both languages', () => {
+    const note = getAirportContent('kul')!.guidesNotes.find((item) => item.id === 'kul-departing-immigration-citizens')!;
+    expect(note.topic).toBe('immigration');
+    expect(note.appliesTo).toMatchObject({ direction: 'departing', traveller: 'citizen' });
+    expect(note.body.ms).toBeTruthy();
+    expect(note.provenance).not.toBe('official');
+  });
+});
+
+describe('time-sensitive notices (D-08, D-10)', () => {
+  const kul = () => getAirportContent('kul')!.notices;
+  const at = (iso: string) => new Date(iso);
+
+  it('names the Aerotrain closure without "Planned", in effect on the night and ended afterwards', () => {
+    const notice = kul().find((item) => item.id === 'kul-aerotrain-software-update-nov-2026')!;
+    expect(notice.title.en).not.toMatch(/planned/i);
+    expect(notice.title.ms).not.toMatch(/dirancang/i);
+    expect(notice.body.en).toMatch(/step-free/);
+    expect(noticeState(notice, at('2026-11-28T02:00:00+08:00'))).toBe('active');
+    expect(noticeState(notice, at('2027-01-15T12:00:00+08:00'))).toBe('expired');
+  });
+
+  it('keeps the fare-rise notice in effect over the change, with one title that reads right on both sides', () => {
+    const notice = kul().find((item) => item.id === 'kul-klia-ekspres-fare-rise-2027')!;
+    for (const instant of ['2026-12-31T23:00:00+08:00', '2027-01-01T00:10:00+08:00', '2027-01-15T12:00:00+08:00']) {
+      expect(noticeState(notice, at(instant)), instant).toBe('active');
+    }
+    expect(noticeState(notice, at('2027-02-15T12:00:00+08:00'))).toBe('expired');
+    expect(notice.title.en).toBe('KLIA Ekspres adult fare: RM65 from 1 January 2027');
+    const option = getAirportContent('kul')!.transport.find((item) => item.id === 'kul-klia-ekspres')!;
+    expect(option.description?.en).not.toMatch(/both fares are listed/);
+  });
+});
+
+describe('Malay airport names (D-09) and planning rules (D-13)', () => {
+  it('gives every airport its name, city and state in Malay', () => {
+    const pen = localizeAirport(getAirport('pen')!, 'ms');
+    expect(pen.name).toBe('Lapangan Terbang Antarabangsa Pulau Pinang');
+    expect(pen.state).toBe('Pulau Pinang');
+    expect(localizeAirport(getAirport('lbu')!, 'ms').state).toBe('Wilayah Persekutuan Labuan');
+    expect(localizeAirport(getAirport('szb')!, 'ms').name).toBe('Lapangan Terbang Sultan Abdul Aziz Shah');
+    expect(localizeAirport(getAirport('pen')!, 'en').name).toBe('Penang International Airport');
+    for (const airport of AIRPORTS) expect(localizeAirport(airport, 'ms').name, airport.code).toMatch(/^Lapangan Terbang/);
+  });
+
+  it('keeps the arrival-time rule in step with the departing guide', () => {
+    const step = getGuide('departing')!.sections.flatMap((section) => section.steps).find((item) => item.id === 'plan-arrival-time')!;
+    expect(step.body.en).toMatch(new RegExp(`${ARRIVAL_TIME_RULE.minutesBefore.international / 60} hours before an international flight`));
+    expect(step.body.en).toMatch(new RegExp(`${ARRIVAL_TIME_RULE.minutesBefore.domestic / 60} hours before a domestic flight`));
+    expect(TRANSIT_ASSUMPTIONS.provenance).toBe('estimated');
   });
 });

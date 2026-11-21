@@ -1,7 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import type { Source } from '@/content/types';
+import { formatAsOf, type Source } from '@/content/types';
 import { formatList } from '@/lib/format';
 import { useLang, useT } from '@/lib/i18n/client';
 import { NotPublished } from '@/components/common/not-published';
@@ -80,11 +80,11 @@ export function FactList({ facts, className }: { facts: readonly Fact[]; classNa
   );
 }
 
-/** "As of 16 November 2026" for a date, or the source's own wording ("As indexed in November 2026"). */
+/** "As of 16 November 2026" for a date; months and years ("2023-10") in words too (D-12 as-of format). */
 export function AsOf({ value, className }: { value: string; className?: string }) {
   const t = useT();
   const lang = useLang();
-  const text = /^\d{4}-\d{2}-\d{2}$/.test(value) ? t('freshness.asOf', { date: formatDate(value, lang) }) : value;
+  const text = t('freshness.asOf', { date: /^\d{4}-\d{2}-\d{2}$/.test(value) ? formatDate(value, lang) : formatAsOf(value, lang) });
   return <p className={cn('type-caption py-2 text-ink-2', className)}>{text}</p>;
 }
 

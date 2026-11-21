@@ -32,6 +32,7 @@
  * the information desk (low confidence); shop and restaurant names; the level layout; the
  * airport operator's e-mail address (an operational contact, withheld).
  */
+import { NOTES } from '../source-notes';
 import {
   defineAirportContent,
   lt,
@@ -46,7 +47,8 @@ import {
 } from '../types';
 import { CAAM, MAHB, RETRIEVED_16_NOV, contentGapsNote, source } from './_helpers';
 
-const CHECKED = 'Checked 16 November 2026';
+/** The day the research run checked these pages. */
+const CHECKED = '2026-11-16';
 const OFFICIAL_PAGE = 'https://airports.malaysiaairports.com.my/kota-kinabalu';
 
 /* -------------------------------------------------------------------------------------------
@@ -80,7 +82,6 @@ const facilities: Facility[] = [
     ),
     access: lt('Access rules are set by Malaysia Airlines.', 'Syarat akses ditetapkan oleh Malaysia Airlines.'),
     provenance: 'official',
-    asOf: 'Page undated',
     sources: ['mh-lounge-partners'],
   },
   {
@@ -104,7 +105,12 @@ const facilities: Facility[] = [
  * Ground transport: BAS.MY airport buses
  * ---------------------------------------------------------------------------------------- */
 
-const BUS_PAYMENT = ['ManjaLink or ManjaPay', 'Concession card', 'Visa or Mastercard debit or credit card', 'DuitNow QR'];
+const BUS_PAYMENT: LocalizedText[] = [
+  lt('ManjaLink or ManjaPay', 'ManjaLink atau ManjaPay'),
+  lt('Concession card', 'Kad konsesi'),
+  lt('Visa or Mastercard debit or credit card', 'Kad debit atau kredit Visa atau Mastercard'),
+  lt('DuitNow QR', 'DuitNow QR'),
+];
 const BUS_SOURCES = ['sabahguide-basmy-kk', 'railtravelstation-basmy-kk', 'kuchingborneo-basmy-kk-routes'];
 const BUS_FREQUENCY: LocalizedText = lt(
   'Buses leave to a fixed timetable. How often they call at the airport is not verified.',
@@ -376,6 +382,7 @@ const guidesNotes: GuideNote[] = [
       'malaymail-chongqing-kk-2026',
     ],
     asOf: RETRIEVED_16_NOV,
+    gaps: [{ area: 'outlets' }],
   }),
 ];
 
@@ -388,7 +395,7 @@ const guidesNotes: GuideNote[] = [
 const R = RETRIEVED_16_NOV;
 
 const sources: Source[] = [
-  source('mahb-kota-kinabalu-site', 'official', MAHB, 'Kota Kinabalu International Airport: official passenger pages (as indexed)', OFFICIAL_PAGE, R),
+  source('mahb-kota-kinabalu-site', 'official', MAHB, 'Kota Kinabalu International Airport: official passenger pages', OFFICIAL_PAGE, R, undefined, { note: NOTES.asIndexed }),
   source('caam-eaip-wbkk-2024', 'government', CAAM, 'eAIP Malaysia: WBKK Kota Kinabalu International (AD 2), edition of 23 April 2024', 'https://aip.caam.gov.my/aip/eAIP/2024-04-23/html/eAIP/WM-AD-2.WBKK-en-MS.html', R, '2024-04-23'),
   source('mh-lounge-partners', 'operator', 'Malaysia Airlines', 'Lounge partners', 'https://www.malaysiaairlines.com/uk/en/experience/lounge/lounge-partners.html', R),
   source('wikipedia-bki', 'other', 'Wikipedia', 'Kota Kinabalu International Airport', 'https://en.wikipedia.org/wiki/Kota_Kinabalu_International_Airport', R),

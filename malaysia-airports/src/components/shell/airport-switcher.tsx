@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Icon } from '@/components/ui/icon';
 import { SearchField } from '@/components/ui/search-field';
-import { closeOverlay, overlays, useOverlayDialog, useOverlayState } from './overlay-store';
+import { closeOverlay, overlays, useOverlayDialog, useOverlayOpen } from './overlay-store';
 import { chooseAirportPath, getSection, isAirportSection, sameSectionPath, sectionHref, sectionPath, type AirportSectionId } from './sections';
 import { useSectionAvailability } from './shell-context';
 
@@ -43,7 +43,7 @@ export function AirportSwitcherButton({ variant = 'header', then, labelClassName
   const t = useT();
   const lang = useLang();
   const { choice, selection, hydrated } = useAirportContext();
-  const { open } = useOverlayState();
+  const open = useOverlayOpen('airport');
   const airport = choice ? getAirport(choice.airport) : undefined;
   // KLIA without a chosen terminal is just "KLIA": never imply Terminal 1.
   const terminal = selection?.terminal;
@@ -52,7 +52,7 @@ export function AirportSwitcherButton({ variant = 'header', then, labelClassName
   const common = {
     type: 'button' as const,
     'aria-haspopup': 'dialog' as const,
-    'aria-expanded': open === 'airport',
+    'aria-expanded': open,
     onClick: () => overlays.openAirportSwitcher(then),
   };
 
@@ -94,6 +94,9 @@ export function AirportSwitcherButton({ variant = 'header', then, labelClassName
     <button
       {...common}
       data-airport-switcher="header"
+      data-early-overlay={then ? undefined : 'airport'}
+      // Lets the header make room for "Choose airport" on narrow screens (see `SiteHeader`).
+      data-no-airport={choice ? undefined : ''}
       className={cn(
         'inline-flex min-h-11 max-w-full min-w-0 items-center gap-2 rounded-md border px-2.5 text-left text-sm font-semibold transition-colors duration-fast sm:px-3',
         unset
@@ -114,8 +117,9 @@ export function AirportSwitcherButton({ variant = 'header', then, labelClassName
       ) : (
         <>
           <Icon name="map-pin" size="sm" strokeWidth={2} className="shrink-0" />
-          {/* Wraps inside the button at 320 px and 125% text instead of spilling out (A-16). */}
-          <span className="min-w-0 leading-tight [overflow-wrap:anywhere] max-xs:text-xs">{label}</span>
+          {/* At 320 px and 125% text the header hides the wordmark's name to make room, and the
+              label wraps between words if it must, never letter by letter (A-16). */}
+          <span className="min-w-0 leading-tight">{label}</span>
         </>
       )}
       <Icon name="chevron-down" size="sm" strokeWidth={2} className="shrink-0 opacity-70 max-xs:hidden" />

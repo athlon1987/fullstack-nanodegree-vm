@@ -76,9 +76,21 @@ function subscribe(listener: () => void): () => void {
 const getSnapshot = (): OverlayState => state;
 const getServerSnapshot = (): OverlayState => CLOSED;
 
-/** Subscribe to the overlay state. */
+/** Subscribe to the overlay state. Re-renders on every change: prefer `useOverlayOpen` for one overlay. */
 export function useOverlayState(): OverlayState {
   return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+}
+
+/**
+ * Is this one overlay open? Re-renders only when that answer changes, so opening the airport
+ * switcher does not re-render every other trigger and panel (A-09: switcher open under 200 ms).
+ */
+export function useOverlayOpen(name: OverlayName): boolean {
+  return useSyncExternalStore(
+    subscribe,
+    () => state.open === name,
+    () => false,
+  );
 }
 
 /**
@@ -89,7 +101,12 @@ export function useOverlayState(): OverlayState {
  *            <SheetContent onCloseAutoFocus={dialog.onCloseAutoFocus} …>
  */
 export function useOverlayDialog(name: OverlayName) {
-  const current = useOverlayState();
+  // Only this dialog's state: other overlays opening and closing do not re-render it.
+  const current = useSyncExternalStore(
+    subscribe,
+    () => (state.open === name ? state : CLOSED),
+    getServerSnapshot,
+  );
   return {
     open: current.open === name,
     payload: current.open === name ? current.payload : CLOSED.payload,

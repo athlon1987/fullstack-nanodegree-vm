@@ -680,7 +680,8 @@ function departingSteps(context: Context): Draft[] {
             'Sediakan pasport dan pas masuk. Tempoh beratur berbeza-beza: peruntukkan sekurang-kurangnya 45 minit untuk imigresen dan pemeriksaan keselamatan.',
           ),
     provenance: 'estimated',
-    ops: ['immigration'],
+    // Domestic departures have no immigration check: no immigration status line for them.
+    ...(international === false ? {} : { ops: ['immigration' as OpsServiceId] }),
     notes: [...notesFor(context, 'security', 'departing'), ...notesFor(context, 'immigration', 'departing')],
   });
 

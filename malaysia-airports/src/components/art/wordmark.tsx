@@ -12,6 +12,8 @@ export interface WordmarkProps {
   name: string;
   size?: keyof typeof SIZES;
   className?: string;
+  /** Classes for the name only, for example to hide it visually where space is short. */
+  nameClassName?: string;
 }
 
 /**
@@ -20,12 +22,12 @@ export interface WordmarkProps {
  *
  * @example <LocaleLink href="/"><Wordmark name={t('common.appName')} /></LocaleLink>
  */
-export function Wordmark({ name, size = 'md', className }: WordmarkProps) {
+export function Wordmark({ name, size = 'md', className, nameClassName }: WordmarkProps) {
   const s = SIZES[size];
   return (
     <span className={cn('inline-flex items-center text-ink', s.gap, className)}>
       <BrandMark className={s.mark} />
-      <span className={cn('font-display leading-none font-[520] tracking-[-0.012em] whitespace-nowrap', s.text)}>{name}</span>
+      <span className={cn('font-display leading-none font-[520] tracking-[-0.012em] whitespace-nowrap', s.text, nameClassName)}>{name}</span>
     </span>
   );
 }

@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { getAirport, isMultiTerminal, terminalLabel } from '@/content';
 import { getT, toLang } from '@/lib/i18n';
-import { airportSectionMetadata, loadAirportPage, type AirportPageParams } from '@/components/airport/section-page';
+import { airportSectionMetadata, loadAirportPageFor, mapEmptyState, type AirportPageParams } from '@/components/airport/section-page';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { PageHeader } from '@/components/common/page-header';
 import { TranslationNotice } from '@/components/common/translation-notice';
@@ -21,11 +21,14 @@ export function generateStaticParams() {
   return [...(slugs.size > 0 ? slugs : new Set(['kul']))].map((airport) => ({ airport }));
 }
 
+/** Fully static for those airports; any other airport gets a 404 on the first request (C-06). */
+export const ensureStatic = 'navigation';
+
 export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/map'>) {
   const { lang, airport: slug } = await params;
   const airport = getAirport(slug);
   const t = getT(toLang(lang));
-  return airportSectionMetadata(params, 'map', airport ? { description: t('mapPages.metaDescription', { airport: airport.name }) } : {});
+  return airportSectionMetadata(params, 'map', airport ? { description: t('mapPages.metaDescription', { airport: airport.name }) } : {}, { emptyState: mapEmptyState });
 }
 
 /** Terminal map and wayfinding: a schematic map, search, filters, details and written routes. */
@@ -38,7 +41,7 @@ export default function MapPage({ params }: PageProps<'/[lang]/[airport]/map'>) 
 }
 
 async function TerminalMap({ params }: { params: AirportPageParams }) {
-  const { lang, t, airport, content, sections } = await loadAirportPage(params);
+  const { lang, t, airport, content, sections } = await loadAirportPageFor(params, (has) => has.includes('map') || mapEmptyState(has));
   const maps = content.maps.map((model) => buildMapView(model, content, lang));
   const official = officialPages(content);
   const facilitiesHref = sections.includes('facilities') ? `/${airport.slug}/facilities` : undefined;

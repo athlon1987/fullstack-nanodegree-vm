@@ -14,6 +14,7 @@
  * as the offline fallback, in the browser.
  */
 import type { CarPark, Contact, Facility, Hours, Lang, Notice, Outlet, Provenance, TerminalId, TransportOption } from '@/content/types';
+import { isAuthoritativeSource } from '@/content/types';
 import { formatCurrency } from '@/lib/format';
 import { gatePrefixesOf } from '@/lib/flights/gates';
 import { formatFlightNumber, isInternationalFlight } from '@/lib/flights/query';
@@ -359,6 +360,15 @@ function facilityStatement(s: Scope, facility: Facility): void {
   );
 }
 
+/**
+ * Outlets carry no provenance field, so their tag follows their sources: Official only when an
+ * authoritative source backs them, as on every other record (D-01). Verification round: both
+ * outlet statements said Official, even for a magazine report.
+ */
+function outletProvenance(s: Scope, outlet: Outlet): Provenance {
+  return s.k.sources.some((source) => outlet.sources.includes(source.id) && isAuthoritativeSource(source)) ? 'official' : 'estimated';
+}
+
 function outletCard(s: Scope, outlet: Outlet): void {
   const airport = getAirport(s.k, outlet.airport);
   const terminal = airport?.terminals.find((item) => item.id === outlet.terminal);
@@ -373,7 +383,7 @@ function outletCard(s: Scope, outlet: Outlet): void {
     location: outlet.locationNote ? s.b.pick(outlet.locationNote) : undefined,
     hours: formatHours(s.b, outlet.hours),
     halal: outlet.halal,
-    provenance: 'official',
+    provenance: outletProvenance(s, outlet),
     sourceIds: outlet.sources,
     href: hrefFor(s.k, 'outlet', outlet.id),
   });
@@ -444,9 +454,9 @@ const checkIn: Handler = (s) => {
       s.b.statement({ text: s.b.say('checkInAirlineTerminal', { airline: name, terminal: terminalName(s, fact.terminal) ?? '' }), provenance, sourceIds: fact.sources }, `airline-terminal:${fact.code}`);
     }
     if (fact?.checkIn) {
-      if (s.lang === 'ms') s.b.fallback = true;
+      if (s.lang === 'ms' && !fact.checkIn.ms) s.b.fallback = true;
       s.b.text = s.b.say('checkInAirline', { airline: name, airport: airport.shortName });
-      s.b.statement({ title: name, text: fact.checkIn, provenance, sourceIds: fact.sources }, `airline-checkin:${fact.code}`);
+      s.b.statement({ title: name, text: s.b.pick(fact.checkIn), provenance, sourceIds: fact.sources }, `airline-checkin:${fact.code}`);
     } else {
       s.b.text = s.b.say('checkInAirlineMissing', { airline: name, airport: airport.shortName });
       escalate(s, 'missing', true);
@@ -874,7 +884,19 @@ const fare: Handler = (s) => {
       );
     }
   } else {
+    // No fare in our sources: say so first, then what the records do say about each stop (often a
+    // dated or indicative fare with its source), never a fare we do not have.
     s.b.text = s.b.say('fareNone', { option: list(options.map((option) => shortName(s.b.pick(option.name))), s.lang) });
+    s.b.statement({ text: s.b.text, provenance: 'suggestion', sourceIds: [] }, 'fare-none');
+    const noted = options.flatMap((option) =>
+      option.destinations.filter((row) => row.note && (!wanted || normalise(row.name.en).includes(wanted))).map((row) => ({ option, row })),
+    );
+    for (const { option, row } of noted.slice(0, 3)) {
+      s.b.statement(
+        { title: `${shortName(s.b.pick(option.name))} · ${s.b.pick(row.name)}`, text: row.note ? s.b.pick(row.note) : '', provenance: option.provenance, sourceIds: option.sources, href: hrefFor(s.k, 'transport', option.id) },
+        `fare-note:${option.id}:${row.name.en}`,
+      );
+    }
     escalate(s, 'missing');
   }
   for (const option of options.slice(0, 2)) {
@@ -912,8 +934,8 @@ const airlineTerminal: Handler = (s) => {
     s.b.statement({ title: name, text: s.b.text, provenance, sourceIds: fact.sources }, `airline-terminal:${fact.code}`);
     if (provenance === 'estimated') s.b.statement({ text: s.b.say('airlineTerminalConfirm'), provenance: 'suggestion', sourceIds: [] }, 'confirm-booking');
     if (fact.checkIn) {
-      if (s.lang === 'ms') s.b.fallback = true;
-      s.b.statement({ title: s.b.say('checkInAirline', { airline: name, airport: airport.shortName }), text: fact.checkIn, provenance, sourceIds: fact.sources }, `airline-checkin:${fact.code}`);
+      if (s.lang === 'ms' && !fact.checkIn.ms) s.b.fallback = true;
+      s.b.statement({ title: s.b.say('checkInAirline', { airline: name, airport: airport.shortName }), text: s.b.pick(fact.checkIn), provenance, sourceIds: fact.sources }, `airline-checkin:${fact.code}`);
     }
   } else {
     s.b.text = s.b.say('airlineTerminalMissing', { airline: name, airport: airport.shortName });
@@ -1000,7 +1022,7 @@ const dutyFree: Handler = (s) => {
     s.b.text = s.b.say('dutyFree', { place: placeName(s), names: list(outlets.slice(0, 4).map((outlet) => outlet.name), s.lang) });
     const first = outlets[0];
     const where = first.locationNote ? s.b.pick(first.locationNote) : first.description ? s.b.pick(first.description) : '';
-    if (where) s.b.statement({ title: first.name, text: where, provenance: 'official', sourceIds: first.sources, href: hrefFor(s.k, 'outlet', first.id) }, `outlet:${first.id}`);
+    if (where) s.b.statement({ title: first.name, text: where, provenance: outletProvenance(s, first), sourceIds: first.sources, href: hrefFor(s.k, 'outlet', first.id) }, `outlet:${first.id}`);
     for (const outlet of outlets) outletCard(s, outlet);
   } else {
     s.b.text = s.b.say('dutyFreeNone', { place: placeName(s) });
@@ -1016,7 +1038,7 @@ const serviceStatus: Handler = (s) => {
   const text = normalise(s.question);
   const id = /\baerotrain\b/.test(text)
     ? 'aerotrain'
-    : /\bshuttle\b/.test(text)
+    : /\bshuttle\b|\bulang alik\b/.test(text)
       ? 'inter-terminal-shuttle'
       : /\b(?:train|tren|kereta api|transit|ekspres|erl)\b/.test(text)
         ? 'inter-terminal-train'
@@ -1040,11 +1062,18 @@ const serviceStatus: Handler = (s) => {
       s.b.text = s.b.say('serviceStatusPlanned', { service: name, title: s.b.pick(planned.title) });
       addNotice(s, planned);
     } else {
+      // The status is the answer, so it leads; the notices page is where it would change.
       s.b.text = s.b.say('serviceStatusClear', { service: name });
+      s.b.statement({ text: s.b.text, provenance: 'suggestion', sourceIds: [], href: '/notices' }, 'service-clear');
     }
-    // What the service is, from its published record (grounds the answer either way).
-    const record = s.k.transport.find((option) => option.airport === airport.slug && (service.pattern.test(option.id) || service.pattern.test(option.name.en)));
-    if (record?.description) s.b.statement({ title: s.b.pick(record.name), text: s.b.pick(record.description), provenance: record.provenance, sourceIds: record.sources, href: hrefFor(s.k, 'transport', record.id) }, `transport:${record.id}`);
+    // What the service is, from its published record (grounds the answer either way). The
+    // inter-terminal record first: "shuttle" also names the car-park shuttle.
+    const records = s.k.transport.filter((option) => option.airport === airport.slug && (service.pattern.test(option.id) || service.pattern.test(option.name.en)));
+    const record = records.find((option) => option.mode === 'inter-terminal') ?? records[0];
+    // Pushed directly: it shares words with the status line but states different facts.
+    if (record?.description && s.b.statements.length < ANSWER_LIMITS.statements && s.b.once(`s:transport:${record.id}`)) {
+      s.b.statements.push({ title: s.b.pick(record.name), text: s.b.pick(record.description), provenance: record.provenance, sourceIds: record.sources, href: hrefFor(s.k, 'transport', record.id) });
+    }
     s.b.limit(s.b.say('serviceStatusLive'));
   }
   s.b.direct = true;
@@ -1067,6 +1096,9 @@ const immigration: Handler = (s) => {
 const arrivalTime: Handler = (s) => {
   // The published guidance first, then the flight lookup (first-time-access-09).
   s.b.text = s.b.say('arrivalTime');
+  // The published guide step that gives both the international and the domestic figure leads.
+  const both = s.k.passages.find((item) => /international/i.test(item.body.en) && /domestic/i.test(item.body.en) && /\b3 hours\b/.test(item.body.en) && /\b2 hours\b/.test(item.body.en));
+  if (both) s.b.passage(both);
   passages(s, { text: 'aim to be at the airport at least 3 hours before an international flight 2 hours domestic airline deadlines', terminal: undefined, require: ['hours', 'jam'], limit: 1, minScore: 3 });
   if (s.b.statements.length === 0) s.b.statement({ text: s.b.text, provenance: 'estimated', sourceIds: [] }, 'arrival-guide');
   if (s.u.slots.accessible) s.b.statement({ text: s.b.say('arrivalTimeHelp'), provenance: 'suggestion', sourceIds: [] }, 'arrival-help');

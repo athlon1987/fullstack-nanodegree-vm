@@ -42,7 +42,10 @@ export default function AirportPage({ params }: PageProps<'/[lang]/[airport]'>) 
   return (
     <Suspense
       fallback={
-        <Container className="py-10" aria-hidden="true">
+        // `min-h-dvh` keeps the footer below the first screen while the overview is revealed: with
+        // a short fallback it painted in view and then jumped (desktop CLS 0.30 to 0.37; E-02,
+        // verification round).
+        <Container className="min-h-dvh py-10" aria-hidden="true">
           <Skeleton className="h-40 w-full" />
         </Container>
       }

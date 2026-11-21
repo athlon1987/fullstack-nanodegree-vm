@@ -284,6 +284,18 @@ const QUESTIONS = [
   'Is there step-free access to KLIA Ekspres at Terminal 1?',
   'Boleh ibu saya guna autogate?',
   'Saya pertama kali ke luar negara dengan ibu yang sudah tua. Pukul berapa perlu sampai?',
+  // Fix round B: the same direct answers asked in the other language or another way.
+  'Terminal mana untuk AirAsia?',
+  'Boleh beli fast track di KLIA?',
+  'Di mana kedai bebas cukai?',
+  'Adakah Aerotrain beroperasi?',
+  'Is the shuttle bus between terminals running?',
+  'Adakah bas ulang-alik antara terminal beroperasi?',
+  'Di mana teksi mesra OKU?',
+  'Laluan tanpa tangga ke KLIA Ekspres?',
+  'What is the bus fare to KL Sentral?',
+  'Berapa harga tiket KLIA Transit?',
+  'How early should I arrive for a domestic flight?',
   'How early should I get to the airport?',
 ];
 const CONTEXTS: ConciergeContext[] = [{}, { airport: 'kul' }, { airport: 'kul', terminal: 'T2' }, { airport: 'pen' }, { airport: 'bki' }, { airport: 'lgk' }, { airport: 'iph' }];
@@ -419,6 +431,8 @@ describe('direct answers (B-08)', () => {
     expect(answer.intent).toBe('duty-free');
     expect(first(answer).title).toMatch(/Chocolate/);
     expect(first(answer).sourceIds.length).toBeGreaterThan(0);
+    // D-01 (verification round): its only source is a magazine report, so it is not Official.
+    expect(first(answer).provenance).toBe('estimated');
   });
 
   it('Aerotrain status: reads the current notices, says when nothing is reported, never claims live data', () => {
@@ -458,6 +472,55 @@ describe('direct answers (B-08)', () => {
     const english = ask('How early should I get to the airport?', kul);
     expect(english.intent).toBe('arrival-time');
     expect(english.text).toMatch(/at least 3 hours before an international flight/);
+  });
+
+  it('answers the same direct questions in Malay, with the answer first (fix round B)', () => {
+    const airAsia = ask('Terminal mana untuk AirAsia?', kul, 'ms');
+    expect(airAsia.intent).toBe('airline-terminal');
+    expect(first(airAsia).text).toMatch(/AirAsia .*KLIA Terminal 2/);
+    expect(ask('Boleh beli fast track di KLIA?', kul, 'ms').intent).toBe('fast-track');
+    const dutyFree = ask('Di mana kedai bebas cukai?', kul, 'ms');
+    expect(dutyFree.intent).toBe('duty-free');
+    expect(first(dutyFree).sourceIds.length).toBeGreaterThan(0);
+    expect(ask('Adakah Aerotrain beroperasi?', kul, 'ms').intent).toBe('service-status');
+    const shuttle = ask('Adakah bas ulang-alik antara terminal beroperasi?', kul, 'ms');
+    expect(shuttle.intent).toBe('service-status');
+    expect(shuttle.text).toMatch(/bas ulang-alik/i);
+  });
+
+  it('a status question leads with the status, then the service it is about (not the car-park shuttle)', () => {
+    const later = Date.parse('2027-03-01T10:00:00+08:00');
+    const answer = answerQuestion({ question: 'Is the shuttle bus between terminals running?', lang: 'en', context: kul }, { knowledge: en, now: later, flights });
+    expect(answer.intent).toBe('service-status');
+    expect(first(answer).text).toBe(answer.text);
+    expect(first(answer).text).toMatch(/^No disruption to the shuttle bus between terminals is reported in our sources/);
+    expect(answer.statements[1].title).toMatch(/shuttle bus between the terminals/i);
+    expect(answer.statements[1].sourceIds.length).toBeGreaterThan(0);
+  });
+
+  it('Malay access qualifiers ("mesra OKU", "tanpa tangga") keep to step-free facts or say they are not published', () => {
+    for (const question of ['Di mana teksi mesra OKU?', 'Laluan tanpa tangga ke KLIA Ekspres?']) {
+      const answer = ask(question, kul, 'ms');
+      expect(answer.intent, question).toBe('transport');
+      expect(first(answer).text, question).toMatch(/^Akses tanpa tangga untuk .* tidak diterbitkan dalam sumber kami\. Tanya/);
+      expect(answer.escalation).toBeDefined();
+    }
+  });
+
+  it('a fare we do not have is said first, then what the records say for that stop, with sources', () => {
+    const bus = ask('What is the bus fare to KL Sentral?', kul);
+    expect(bus.intent).toBe('fare');
+    expect(first(bus).text).toMatch(/^A fare for .* is not published in our sources\.$/);
+    expect(bus.statements[1].title).toMatch(/KL Sentral/);
+    expect(bus.statements[1].sourceIds.length).toBeGreaterThan(0);
+    expect(bus.escalation).toBeDefined();
+  });
+
+  it('"how early" for a domestic flight leads with the published step that gives both figures', () => {
+    const answer = ask('How early should I arrive for a domestic flight?', kul);
+    expect(answer.intent).toBe('arrival-time');
+    expect(first(answer).text).toMatch(/3 hours before an international flight and at least 2 hours before a domestic flight/);
+    expect(first(answer).sourceIds.length).toBeGreaterThan(0);
   });
 
   it('writes the transfer answer with articles (A-28 hand-off)', () => {

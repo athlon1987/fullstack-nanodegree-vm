@@ -33,6 +33,8 @@ const UNPUBLISHED_TOPICS = [
   { id: 'hearingLoop', href: '/accessibility', keywords: ['hearing loop', 'hearing loops', 'induction loop', 'hearing', 'deaf', 'pekak', 'gelung pendengaran'] },
   { id: 'moneyChanger', href: '/help', keywords: ['money changer', 'money changers', 'currency exchange', 'forex', 'pengurup wang', 'tukar wang', 'tukaran wang', 'changer', 'currency'] },
   { id: 'trolley', href: '/help', keywords: ['trolley', 'trolleys', 'troli', 'baggage trolley', 'luggage cart'] },
+  // Only until the content layer publishes a Fast Track record (D-02): see `buildSearchDocuments`.
+  { id: 'fastTrack', href: '/help', keywords: ['fast track', 'fasttrack', 'laluan pantas', 'priority lane', 'lorong keutamaan', 'express lane'] },
 ] as const;
 const clip = (text: string, length = 220): string => (text.length > length ? `${text.slice(0, length - 1).trimEnd()}…` : text);
 
@@ -226,7 +228,10 @@ export function buildSearchDocuments(lang: Lang): SearchDocument[] {
   const t = getT(lang);
   // Known gaps answer honestly instead of returning the nearest unrelated record (A-12). These
   // say only that nothing is published; they state no fact about the airports.
+  // A gap closes by itself once a real record covers it: "fast track" then finds that record.
+  const published = (phrase: string) => documents.some((document) => document.title.toLowerCase().includes(phrase));
   for (const gap of UNPUBLISHED_TOPICS) {
+    if (gap.id === 'fastTrack' && published('fast track')) continue;
     documents.push({
       id: `unpublished:${gap.id}`,
       type: 'unpublished',

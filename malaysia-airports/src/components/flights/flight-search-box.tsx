@@ -121,18 +121,24 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
   const text = query.trim();
   // Typing stays responsive: matching follows the field at a lower priority.
   const deferredText = useDeferredValue(text);
+  // So does the Departures/Arrivals switch (and the journey mode that sets it): the pool for the
+  // other direction is built in the background, after the switch has answered (A-09).
+  const poolDirection = useDeferredValue(direction);
   const searching = text.length >= 2;
 
   useEffect(() => (scopeSlug && !active ? whenIdle(() => startTransition(() => setActive(true))) : undefined), [scopeSlug, active]);
 
   /* Today's flights in scope: one airport, or every airport with a demo board. */
+  // Typing also asks for the pool, in the deferred render: a query typed before hydration (when
+  // the focus handler was not attached yet) still gets its results instead of "Loading" forever.
+  const wanted = active || deferredText.length >= 2;
   const pool = useMemo<Flight[] | null>(() => {
-    if (!provider || !active) return null;
+    if (!provider || !wanted) return null;
     const slugs = scopeSlug ? [scopeSlug] : DEMO_AIRPORT_SLUGS;
     return slugs
-      .flatMap((slug) => provider.listFlightsSync({ airport: slug, direction }))
+      .flatMap((slug) => provider.listFlightsSync({ airport: slug, direction: poolDirection }))
       .filter((flight) => !scopeTerminal || !scopeSlug || flight.terminal === scopeTerminal);
-  }, [provider, active, scopeSlug, scopeTerminal, direction]);
+  }, [provider, wanted, scopeSlug, scopeTerminal, poolDirection]);
 
   const results = useMemo<Flight[] | null>(() => {
     if (!pool || !provider || deferredText.length < 2) return null;

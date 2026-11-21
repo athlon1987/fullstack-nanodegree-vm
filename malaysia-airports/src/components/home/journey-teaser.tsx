@@ -91,8 +91,8 @@ export function JourneyTeaser({ facts, fallback }: JourneyTeaserProps) {
             <ProvenanceTag provenance="demo" length="short" />
           </p>
           {flight ? (
-            <p className="mt-1.5 flex flex-wrap items-baseline gap-x-2.5 gap-y-1 text-ink">
-              <LocaleLink href={flightHref(flight)} className="type-data-lg link">
+            <p className="mt-1 flex flex-wrap items-center gap-x-2.5 text-ink">
+              <LocaleLink href={flightHref(flight)} className="type-data-lg link inline-flex min-h-11 items-center">
                 {formatFlightNumber(flight)}
               </LocaleLink>
               <span className="type-title-sm">{t('flights.detail.route', { origin: flight.origin.city, destination: flight.destination.city })}</span>

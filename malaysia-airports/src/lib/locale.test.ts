@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { localeFromPath, localeHref, negotiateLang, stripLocale, switchLocalePath } from './locale';
+import { BLOCKED_HREF, localeFromPath, localeHref, negotiateLang, stripLocale, switchLocalePath } from './locale';
 
 describe('locale paths', () => {
   it('prefixes internal paths with the language', () => {
@@ -13,6 +13,13 @@ describe('locale paths', () => {
     expect(localeHref('ms', 'tel:+60387770000')).toBe('tel:+60387770000');
     expect(localeHref('ms', '#main')).toBe('#main');
     expect(localeHref('ms', '/api/flights?airport=kul')).toBe('/api/flights?airport=kul');
+  });
+
+  it('passes through only https:, mailto: and tel:, and blocks other schemes (security-09)', () => {
+    expect(localeHref('en', 'mailto:help@example.com')).toBe('mailto:help@example.com');
+    for (const href of ['https://evil.example/login'.replace('https', 'http'), '//evil.example/x', '/\\evil.example/x', '\\\\evil.example', 'data:text/html,<script>alert(1)</script>', 'javascript:alert(1)', ' JavaScript:alert(1)', 'https:/\\evil.example', 'java\tscript:alert(1)']) {
+      expect(localeHref('en', href)).toBe(BLOCKED_HREF);
+    }
   });
 
   it('never double-prefixes a path that already has a locale', () => {

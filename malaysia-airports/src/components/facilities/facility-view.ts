@@ -38,6 +38,19 @@ export interface FacilityView {
   mapHref?: string;
 }
 
+/**
+ * Categories travellers expect at any airport, mirroring the map's filters (C-07). When none is
+ * published for an airport the directory shows a "not published" card for it, with the
+ * information-counter route, rather than leaving a parent to search for a nursing room.
+ */
+export const EXPECTED_FACILITY_CATEGORIES: readonly FacilityCategory[] = ['nursing-room', 'accessible-toilet', 'toilet', 'prayer-room'];
+
+/** Expected categories with no published facility, in the order above. */
+export function missingExpectedCategories(items: readonly Pick<FacilityView, 'category'>[]): FacilityCategory[] {
+  const present = new Set(items.map((item) => item.category));
+  return EXPECTED_FACILITY_CATEGORIES.filter((category) => !present.has(category));
+}
+
 /** Categories that count as accessibility and assistance services in the directory filter. */
 export const ASSISTANCE_CATEGORIES: readonly FacilityCategory[] = ['assistance', 'calm-room', 'accessible-toilet', 'porter'];
 

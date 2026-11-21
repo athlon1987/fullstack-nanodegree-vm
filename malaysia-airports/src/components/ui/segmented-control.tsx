@@ -91,7 +91,7 @@ export function SegmentedControl<T extends string = string>({
             {option.icon ? <Icon name={option.icon} size="sm" strokeWidth={1.75} /> : null}
             <span className="flex min-w-0 flex-col leading-tight">
               <span>{option.label}</span>
-              {option.hint ? <span className="type-data-xs mt-0.5 font-medium opacity-80">{option.hint}</span> : null}
+              {option.hint ? <span className="type-caption mt-0.5 font-medium opacity-80">{option.hint}</span> : null}
             </span>
           </label>
         ))}

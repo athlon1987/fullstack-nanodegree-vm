@@ -17,6 +17,7 @@
  * routes; terminal facilities, lounges, transport and parking; who operates the terminal; whether
  * the curfew is unchanged. Detailed content awaits a first-hand source.
  */
+import { NOTES } from '../source-notes';
 import { defineAirportContent, lt, type AirlineAtAirport, type GuideNote, type Source } from '../types';
 import { RETRIEVED_16_NOV, contentGapsNote, source } from './_helpers';
 
@@ -52,7 +53,8 @@ const guidesNotes: GuideNote[] = [
       'Subang (SZB) dan KLIA (KUL) ialah lapangan terbang yang berbeza. Penerbangan jet berjadual kembali ke Subang pada 1 Ogos 2024, tetapi The Edge melaporkan AirAsia kemudian memindahkan penerbangan jetnya ke KLIA pada April dan Firefly menghentikan penerbangan jet dari Subang mulai 19 Ogos. Laporan itu tidak menyatakan tahun, yang kami fahami sebagai 2025. Semak kod lapangan terbang pada tempahan anda sebelum bertolak.',
     ),
     provenance: 'estimated',
-    asOf: 'Reported about 2024 to 2025; article dates not captured',
+    asOf: '2025',
+    asOfNote: lt('Reported about 2024 to 2025; article dates not captured', 'Dilaporkan sekitar 2024 hingga 2025; tarikh artikel tidak direkodkan'),
     sources: ['theedge-subang-structural-limits', 'theedge-firefly-jets-subang-2025'],
   },
   {
@@ -64,8 +66,9 @@ const guidesNotes: GuideNote[] = [
       'Subang Airport operates under a night curfew from 22:00 to 06:00 to limit noise for nearby homes, according to a report in The Edge that quotes the transport minister (about mid-2024; the article date was not captured). It was reported in connection with jet flights; whether it applies in the same way to turboprop flights is not verified.',
       'Lapangan Terbang Subang beroperasi di bawah perintah berkurung malam dari 22:00 hingga 06:00 bagi mengehadkan bunyi bising untuk kediaman berhampiran, menurut laporan The Edge yang memetik menteri pengangkutan (kira-kira pertengahan 2024; tarikh artikel tidak direkodkan). Ia dilaporkan berkaitan penerbangan jet; sama ada ia terpakai dengan cara yang sama bagi penerbangan turboprop belum disahkan.',
     ),
-    provenance: 'official',
-    asOf: 'Reported about mid-2024; article date not captured',
+    provenance: 'estimated',
+    asOf: '2024',
+    asOfNote: lt('Reported about mid-2024; article date not captured', 'Dilaporkan sekitar pertengahan 2024; tarikh artikel tidak direkodkan'),
     sources: ['theedge-subang-capacity-curfew-2024', 'theedge-subang-structural-limits'],
   },
   contentGapsNote({
@@ -80,6 +83,7 @@ const guidesNotes: GuideNote[] = [
     ),
     sources: ['prototype-method', 'mahb-annual-report-2023', 'mahb-contact'],
     asOf: RETRIEVED_16_NOV,
+    gaps: [{ area: 'facilities' }, { area: 'outlets' }, { area: 'transport' }, { area: 'car-parks' }],
   }),
 ];
 
@@ -91,7 +95,8 @@ const sources: Source[] = [
     "Subang's premium city airport ambition held back by structural limitations",
     'https://theedgemalaysia.com/node/765313',
     RETRIEVED_16_NOV,
-    'About 2025; article date not captured',
+    '2025',
+    { asOfNote: NOTES.reportedAbout },
   ),
   source(
     'theedge-subang-capacity-curfew-2024',
@@ -100,7 +105,8 @@ const sources: Source[] = [
     'Subang Airport doubles capacity to 3 mil passengers a year, with 10pm-6am curfew: transport minister',
     'https://theedgemalaysia.com/node/720870',
     RETRIEVED_16_NOV,
-    'About mid-2024; article date not captured',
+    '2024',
+    { asOfNote: NOTES.reportedAbout },
   ),
   source(
     'theedge-firefly-jets-subang-2025',
@@ -109,7 +115,8 @@ const sources: Source[] = [
     'Firefly to cease jet operations at Subang Airport from August',
     'https://theedgemalaysia.com/node/764537',
     RETRIEVED_16_NOV,
-    'About mid-2025; article date not captured',
+    '2025',
+    { asOfNote: NOTES.reportedAbout },
   ),
   source(
     'klia2info-aor',

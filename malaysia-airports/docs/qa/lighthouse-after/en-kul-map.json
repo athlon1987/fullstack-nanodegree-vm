@@ -1,0 +1,72 @@
+{
+ "key": "en-kul-map",
+ "url": "http://localhost:3100/en/kul/map",
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-21T02:56:01.814Z",
+ "median": {
+  "performance": 74,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1222,
+  "lcp_ms": 4565,
+  "tbt_ms": 393,
+  "cls": 0.003,
+  "si_ms": 1645,
+  "totalBytes": 645229,
+  "requests": 37
+ },
+ "a11yFailures": [],
+ "rows": [
+  {
+   "finalUrl": "http://localhost:3100/en/kul/map",
+   "runtimeError": null,
+   "performance": 76,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1224,
+   "lcp_ms": 4572,
+   "tbt_ms": 344,
+   "cls": 0.003,
+   "si_ms": 2051,
+   "totalBytes": 644989,
+   "requests": 37,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "http://localhost:3100/en/kul/map",
+   "runtimeError": null,
+   "performance": 74,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1222,
+   "lcp_ms": 4565,
+   "tbt_ms": 393,
+   "cls": 0.003,
+   "si_ms": 1222,
+   "totalBytes": 645229,
+   "requests": 37,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "http://localhost:3100/en/kul/map",
+   "runtimeError": null,
+   "performance": 74,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1212,
+   "lcp_ms": 4531,
+   "tbt_ms": 412,
+   "cls": 0.003,
+   "si_ms": 1645,
+   "totalBytes": 647503,
+   "requests": 38,
+   "a11yFailures": []
+  }
+ ],
+ "caveat": "Lab measurement: Lighthouse mobile emulation with simulated throttling, run from a shared cloud container; hosts outside the session allowlist (analytics, some CDNs) were blocked, which changes page weight and timings. Indicative only; not field data and not comparable to CrUX."
+}

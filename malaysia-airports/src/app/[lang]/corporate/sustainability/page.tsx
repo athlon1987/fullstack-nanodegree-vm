@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
-import { CARBON_ACCREDITATIONS, CORPORATE_LINKS, SUSTAINABILITY_TARGETS, getAirport, pick } from '@/content';
+import { CARBON_ACCREDITATIONS, CORPORATE_LINKS, SUSTAINABILITY_TARGETS, getAirport, localizeAirport, pick } from '@/content';
 import { getT, toLang } from '@/lib/i18n';
 import { ExternalLink } from '@/components/common/external-link';
 import { LocaleLink } from '@/components/common/locale-link';
@@ -65,7 +65,7 @@ export default async function CorporateSustainabilityPage() {
                       <RowHeader>
                         {airport ? (
                           <LocaleLink href={`/${airport.slug}`} className="link font-semibold text-ink">
-                            {airport.name}
+                            {localizeAirport(airport, lang).name}
                           </LocaleLink>
                         ) : (
                           item.airport.toUpperCase()

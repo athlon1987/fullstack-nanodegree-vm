@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Suspense } from 'react';
+import { lang as routeLang } from 'next/root-params';
 import { airportsWithContent, getAirportContent, pick } from '@/content';
 import { getT, toLang } from '@/lib/i18n';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
@@ -8,11 +8,9 @@ import { MyJourney } from '@/components/flights/my-journey';
 import type { CarParkOption } from '@/components/flights/parked-car-card';
 import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
-import { Skeleton } from '@/components/ui/skeleton';
 
-export async function generateMetadata({ params }: PageProps<'/[lang]/journey'>): Promise<Metadata> {
-  const { lang } = await params;
-  const t = getT(lang);
+export async function generateMetadata(): Promise<Metadata> {
+  const t = getT(toLang(await routeLang()));
   return { title: t('journey.saved.title'), description: t('flightPages.journey.metaDescription'), robots: { index: false, follow: true } };
 }
 
@@ -21,24 +19,12 @@ export async function generateMetadata({ params }: PageProps<'/[lang]/journey'>)
  * parking note, and the empty state is in the server HTML. Everything personal is read from this
  * device after hydration; each saved flight's airport notes are fetched on demand from
  * `/[lang]/journey/content/[airport]` (performance-06).
+ *
+ * The language comes from the root params (as on the concierge page), so there is no Suspense
+ * fallback to swap out: the first HTML is the page itself, with no layout shift.
  */
-export default function JourneyPage({ params }: PageProps<'/[lang]/journey'>) {
-  return (
-    <Suspense
-      fallback={
-        <Container className="py-10" aria-hidden="true">
-          <Skeleton className="h-12 w-64" />
-          <Skeleton className="mt-8 h-64 w-full" />
-        </Container>
-      }
-    >
-      <Journey params={params} />
-    </Suspense>
-  );
-}
-
-async function Journey({ params }: { params: PageProps<'/[lang]/journey'>['params'] }) {
-  const lang = toLang((await params).lang);
+export default async function JourneyPage() {
+  const lang = toLang(await routeLang());
   const t = getT(lang);
   const carParks: CarParkOption[] = [];
   for (const slug of airportsWithContent()) {

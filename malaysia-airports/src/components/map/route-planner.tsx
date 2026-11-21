@@ -14,7 +14,7 @@ import { Icon, type IconKey } from '@/components/ui/icon';
 import { IconButton } from '@/components/ui/icon-button';
 import { NativeSelect } from '@/components/ui/native-select';
 import { Switch } from '@/components/ui/switch';
-import type { LevelView, MapView, RouteStep } from './map-logic';
+import { placeOptionLabels, type LevelView, type MapView, type RouteStep } from './map-logic';
 
 export const ROUTE_FROM_ID = 'map-route-from';
 export const ROUTE_TO_ID = 'map-route-to';
@@ -53,7 +53,17 @@ export function stepInstruction(step: RouteStep, t: Translator, levels: Readonly
       if (step.approach === 'stairs') return t('mapPages.route.steps.toStairs');
       return t('mapPages.route.steps.walkOn');
     case 'through':
-      return t('mapPages.route.steps.walkThrough', { level: levelName(step.toLevel) });
+    case 'checkpoint': {
+      // A checkpoint step names the control ("Go through Customs"); a level change names the
+      // level and where it leads, and says how to keep it step-free (C-08).
+      if (step.kind === 'checkpoint' && !step.toLevel) return t('mapPages.route.steps.goThrough', { place });
+      const level = levelName(step.toLevel);
+      const up = step.levelDirection === 'up';
+      const base = step.place
+        ? t(up ? 'mapPages.route.steps.levelUpTo' : 'mapPages.route.steps.levelDownTo', { level, place })
+        : t(up ? 'mapPages.route.steps.levelUp' : 'mapPages.route.steps.levelDown', { level });
+      return step.stepFree ? `${base} ${t('mapPages.route.steps.stepFreeLevel')}` : base;
+    }
     case 'change-level': {
       const level = levelName(step.toLevel);
       const up = step.direction === 'up';
@@ -74,6 +84,8 @@ function stepIcon(step: RouteStep): IconKey {
   if (step.kind === 'start') return 'circle-dot';
   if (step.kind === 'arrive') return 'map-pin';
   if (step.kind === 'change-level') return step.conveyance === 'lift' ? 'move-vertical' : 'chevrons-up-down';
+  if (step.kind === 'through') return step.stepFree ? 'move-vertical' : 'chevrons-up-down';
+  if (step.kind === 'checkpoint') return 'id-card';
   if (step.kind === 'ride') return step.conveyance === 'bus' ? 'bus-front' : 'tram-front';
   return 'footprints';
 }
@@ -106,13 +118,15 @@ export function RoutePlanner({
   const both = Boolean(fromId && toId);
   const same = both && fromId === toId;
 
+  // Unique per map: "Aerotrain station (Satellite Building) · Gates", not two "Aerotrain station" (C-09).
+  const labels = placeOptionLabels(map);
   const options = map.levels.map((level) => (
     <optgroup key={level.id} label={level.name}>
       {map.pois
         .filter((poi) => poi.level === level.id)
         .map((poi) => (
           <option key={poi.id} value={poi.id}>
-            {poi.short} · {level.label}
+            {labels.get(poi.id)}
           </option>
         ))}
     </optgroup>
@@ -211,7 +225,7 @@ export function RoutePlanner({
             {steps.map((step, index) => {
               const instruction = stepInstruction(step, t, levelsById);
               const level = levelsById.get(step.level);
-              const walkMeta = step.metres > 0 && (step.kind === 'walk' || step.kind === 'through');
+              const walkMeta = step.metres > 0 && (step.kind === 'walk' || step.kind === 'through' || step.kind === 'checkpoint');
               const rideMeta = step.kind === 'ride' || step.kind === 'change-level';
               const last = index === steps.length - 1;
               return (

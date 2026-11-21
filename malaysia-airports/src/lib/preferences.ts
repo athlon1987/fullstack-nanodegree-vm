@@ -13,21 +13,23 @@
  *   data-contrast      "normal" | "more"
  *   data-motion        "normal" | "reduce"
  */
-import { z } from 'zod';
-import { storageKey } from './storage';
+import { check, storageKey, validator, type Infer } from './storage';
 
 export const THEMES = ['system', 'light', 'dark'] as const;
 export const TEXT_SIZES = [100, 112, 125] as const;
 
-export const PreferencesSchema = z.object({
-  theme: z.enum(THEMES),
-  textSize: z.union([z.literal(100), z.literal(112), z.literal(125)]),
-  highContrast: z.boolean(),
-  reducedMotion: z.boolean(),
-});
+/** Validates stored preferences (hand-written checks: no zod in the browser shell). */
+export const PreferencesSchema = validator(
+  check.object({
+    theme: check.oneOf(THEMES),
+    textSize: check.oneOf(TEXT_SIZES),
+    highContrast: check.boolean(),
+    reducedMotion: check.boolean(),
+  }),
+);
 
 /** The user's display and accessibility choices. */
-export type Preferences = z.infer<typeof PreferencesSchema>;
+export type Preferences = Infer<typeof PreferencesSchema>;
 export type ThemeChoice = Preferences['theme'];
 export type TextSize = Preferences['textSize'];
 

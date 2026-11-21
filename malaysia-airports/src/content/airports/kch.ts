@@ -20,7 +20,8 @@
 import { defineAirportContent, lt, type AirlineAtAirport, type GuideNote, type Notice, type Source } from '../types';
 import { RETRIEVED_16_NOV, contentGapsNote, source } from './_helpers';
 
-const CHECKED = 'Checked 16 November 2026';
+/** The day the research run checked these pages. */
+const CHECKED = '2026-11-16';
 
 /* -------------------------------------------------------------------------------------------
  * Airlines: only routes that flight listings retrieved in 2026 support
@@ -110,6 +111,7 @@ const guidesNotes: GuideNote[] = [
     ),
     sources: ['prototype-method', 'mahb-airports-site', 'mahb-contact', 'fr24-btu', 'flightsfrom-btu'],
     asOf: RETRIEVED_16_NOV,
+    gaps: [{ area: 'facilities' }, { area: 'outlets' }, { area: 'transport' }, { area: 'car-parks' }, { area: 'maps' }],
   }),
 ];
 

@@ -326,6 +326,58 @@ export function sortOutlets(items: readonly OutletView[], sort: OutletSort, opti
   return sorted.sort(suggested);
 }
 
+/**
+ * Which filters can return anything with the data we hold (C-05). A filter that cannot is not
+ * offered: "Open now" needs machine-readable hours, "Halal certified" a published certification,
+ * a side of security at least one outlet placed there, price at least one price band.
+ */
+export interface FilterAvailability {
+  openNow: boolean;
+  halal: boolean;
+  landside: boolean;
+  airside: boolean;
+  price: boolean;
+}
+
+export function filterAvailability(items: readonly OutletView[]): FilterAvailability {
+  return {
+    openNow: items.some((item) => hasMachineHours(item.hours)),
+    halal: items.some((item) => item.halal === 'certified'),
+    landside: items.some((item) => item.zone === 'landside' || item.zone === 'both'),
+    airside: items.some((item) => item.zone === 'airside' || item.zone === 'both'),
+    price: items.some((item) => item.priceBand !== undefined),
+  };
+}
+
+/** A filter that was asked for (in a link) but cannot return anything with current data. */
+export type UnavailableFilter = 'openNow' | 'halal' | 'landside' | 'airside' | 'price';
+
+/**
+ * Remove the filters that cannot return a result, and say which were removed. A link from the
+ * home page with `?filters=open-now` then shows every outlet and the reason, never "0 of 8".
+ */
+export function withoutUnavailable(filters: OutletFilters, available: FilterAvailability): { filters: OutletFilters; dropped: UnavailableFilter[] } {
+  const dropped: UnavailableFilter[] = [];
+  const next: OutletFilters = { ...filters };
+  if (next.openNow && !available.openNow) {
+    next.openNow = false;
+    dropped.push('openNow');
+  }
+  if (next.halal && !available.halal) {
+    next.halal = false;
+    dropped.push('halal');
+  }
+  if (next.zone && !available[next.zone]) {
+    dropped.push(next.zone);
+    delete next.zone;
+  }
+  if (next.prices.length > 0 && !available.price) {
+    next.prices = [];
+    dropped.push('price');
+  }
+  return { filters: next, dropped };
+}
+
 /** Coverage of each detail across the directory: what the filters can work with. */
 export function coverage(items: readonly OutletView[]) {
   return {

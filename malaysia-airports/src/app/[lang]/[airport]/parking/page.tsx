@@ -15,13 +15,17 @@ import { CarParkListFromUrl } from '@/components/parking/car-park-list-url';
 import { parkingPageModel } from '@/components/parking/parking-data.server';
 import { ParkedCarControl } from '@/components/parking/parked-car-control';
 import { ParkingCalculator } from '@/components/parking/parking-calculator';
+import { ParkingCalculatorFromUrl } from '@/components/parking/parking-calculator-url';
+import { ParkingPriceMatrix } from '@/components/parking/parking-price-matrix';
 import { sourcesFor } from '@/components/transport/transport-types';
-import { Button } from '@/components/ui/button';
-import { Callout } from '@/components/ui/callout';
 import { Container } from '@/components/ui/container';
+import { Icon } from '@/components/ui/icon';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export const generateStaticParams = () => sectionStaticParams('parking');
+
+/** Fully static for the airports that have parking; any other airport gets a 404 on the first request (C-06). */
+export const ensureStatic = 'navigation';
 
 export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/parking'>) {
   const { lang, airport: slug } = await params;
@@ -39,7 +43,11 @@ export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/
   );
 }
 
-/** Parking: car parks compared, rates by status with an estimate where possible, and a parked-car note. */
+/**
+ * Parking, price first (C-01): a compact matrix of what 1, 3 or 7 days cost at each car park
+ * (with Preferred Parking's warning in its row), then the calculator for exact dates, the car
+ * parks, and a parked-car note.
+ */
 export default function ParkingPage({ params }: PageProps<'/[lang]/[airport]/parking'>) {
   return (
     <Suspense
@@ -58,7 +66,7 @@ export default function ParkingPage({ params }: PageProps<'/[lang]/[airport]/par
 
 async function Parking({ params }: { params: AirportPageParams }) {
   const { lang, t, airport, sections, content } = await loadAirportPage(params, 'parking');
-  const { data, someNotVerified, gaps, translationMissing } = parkingPageModel(content, lang);
+  const { data, gaps, translationMissing } = parkingPageModel(content, lang);
   const warning = data.premiumWarning;
 
   return (
@@ -68,54 +76,30 @@ async function Parking({ params }: { params: AirportPageParams }) {
         title={t('transportPages.parking.title', { airport: airport.shortName })}
         lead={t('transportPages.parking.lead')}
         breadcrumbs={<Breadcrumbs items={[{ label: airport.shortName, href: `/${airport.slug}` }, { label: t('nav.parking') }]} />}
-        actions={
-          <>
-            <Button asChild iconEnd="arrow-up-right">
-              <ExternalLink href={data.officialUrl} variant="plain" hideIcon>
-                {t('transportPages.parking.bookAction')}
-              </ExternalLink>
-            </Button>
-            {sections.includes('transport') ? (
-              <Button asChild variant="secondary" iconStart="train-front">
-                <LocaleLink href={`/${airport.slug}/transport`}>{t('transportPages.parking.seeTransport')}</LocaleLink>
-              </Button>
-            ) : null}
-          </>
-        }
+        className="[&>div]:pb-5 sm:[&>div]:pb-8"
       />
       <Container className="flex flex-col gap-14 pb-section">
-        {translationMissing ? <TranslationNotice /> : null}
+        <ParkingPriceMatrix
+          data={data}
+          t={t}
+          lang={lang}
+          transportLink={
+            sections.includes('transport') ? (
+              <LocaleLink href={`/${airport.slug}/transport`} className="link-action type-body-sm text-ink">
+                <Icon name="train-front" size="sm" />
+                {t('transportPages.parking.seeTransport')}
+              </LocaleLink>
+            ) : undefined
+          }
+        />
 
-        {warning || someNotVerified ? (
-          <div className="flex flex-col gap-4">
-            {warning ? (
-              <Callout tone="critical" icon="triangle-alert" title={warning.title} className="border-2">
-                <p>{warning.body}</p>
-                <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
-                  <ProvenanceTag provenance={warning.provenance} />
-                  <SourceNote sources={sourcesFor(warning.sourceIds, data.sources)} />
-                </div>
-              </Callout>
-            ) : null}
-            {someNotVerified ? (
-              <Callout
-                tone="warning"
-                title={t('transportPages.parking.ratesCalloutTitle')}
-                actions={
-                  <ExternalLink href={data.officialUrl} variant="action" className="type-body-sm">
-                    {t('transportPages.parking.ratesCalloutAction')}
-                  </ExternalLink>
-                }
-              >
-                <p>{t('transportPages.parking.ratesCalloutBody')}</p>
-              </Callout>
-            ) : null}
-          </div>
-        ) : null}
+        {translationMissing ? <TranslationNotice /> : null}
 
         <section aria-labelledby="parking-calculator-title">
           <SectionHeading id="parking-calculator-title" title={t('transportPages.calculator.title')} lead={t('transportPages.calculator.lead')} variant="title" />
-          <ParkingCalculator data={data} />
+          <Suspense fallback={<ParkingCalculator data={data} />}>
+            <ParkingCalculatorFromUrl data={data} />
+          </Suspense>
         </section>
 
         <section aria-labelledby="car-parks-title">

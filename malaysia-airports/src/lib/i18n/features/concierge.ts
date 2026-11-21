@@ -244,6 +244,19 @@ export const conciergePageEn = {
     actionTerminalMap: 'Terminal map',
     actionTransportPlanner: 'Transport planner',
   },
+  // Fix round B (B-15): answers on this device until the visitor turns on AI wording (no consent needed).
+  onDevice: {
+    noticeLocal: 'Answers come from our verified content and are put together on this device. Nothing you type is sent or stored.',
+    noticeServer: 'Your questions go to the concierge service, which may word answers with AI from verified content. Nothing is stored on our server.',
+    turnOn: 'AI wording and saved flight',
+    turnOff: 'Answer on this device only',
+    optInTitle: 'Turn on AI wording and saved-flight help',
+    optInIntro: 'Answers already work without this. Agreeing sends your questions to the concierge service, which can word replies with AI and use the flight you saved.',
+    announceOn: 'AI wording and saved-flight help are on.',
+    announceOff: 'Answers are now put together on this device only.',
+    privateHint: 'Put together in your browser from verified content. Your question was not sent anywhere.',
+    flightNeedsConsent: 'To use your saved flight, turn on the concierge service first.',
+  },
 };
 
 export const conciergePageMs: typeof conciergePageEn = {
@@ -477,5 +490,17 @@ export const conciergePageMs: typeof conciergePageEn = {
     actionShowOnTheTerminal: 'Tunjuk pada peta terminal',
     actionTerminalMap: 'Peta terminal',
     actionTransportPlanner: 'Perancang pengangkutan',
+  },
+  onDevice: {
+    noticeLocal: 'Jawapan datang daripada kandungan kami yang disahkan dan disusun pada peranti ini. Apa yang anda taip tidak dihantar atau disimpan.',
+    noticeServer: 'Soalan anda dihantar ke perkhidmatan concierge, yang mungkin menyusun jawapan dengan AI daripada kandungan yang disahkan. Tiada apa disimpan di pelayan kami.',
+    turnOn: 'Susunan kata AI dan penerbangan simpanan',
+    turnOff: 'Jawab pada peranti ini sahaja',
+    optInTitle: 'Hidupkan susunan kata AI dan bantuan penerbangan simpanan',
+    optInIntro: 'Jawapan sudah berfungsi tanpa ini. Dengan bersetuju, soalan anda dihantar ke perkhidmatan concierge, yang boleh menyusun jawapan dengan AI dan menggunakan penerbangan yang anda simpan.',
+    announceOn: 'Susunan kata AI dan bantuan penerbangan simpanan dihidupkan.',
+    announceOff: 'Jawapan kini disusun pada peranti ini sahaja.',
+    privateHint: 'Disusun dalam pelayar anda daripada kandungan yang disahkan. Soalan anda tidak dihantar ke mana-mana.',
+    flightNeedsConsent: 'Untuk menggunakan penerbangan simpanan anda, hidupkan perkhidmatan concierge dahulu.',
   },
 };

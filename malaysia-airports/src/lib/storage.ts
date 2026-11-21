@@ -4,7 +4,8 @@
  * `createStore` wraps one `localStorage` entry:
  *  - keys are namespaced and versioned (`ma:airport:v1`), so a shape change is a version bump
  *    and old data is simply ignored;
- *  - every read is validated with a zod schema; anything invalid falls back to the default;
+ *  - every read is validated (a `Validator`: the small `check` toolkit below, or any zod schema);
+ *    anything invalid falls back to the default;
  *  - storage being unavailable (private mode, blocked cookies, server render) never throws: the
  *    store keeps working in memory;
  *  - `subscribe` / `getSnapshot` / `getServerSnapshot` plug straight into
@@ -13,8 +14,101 @@
  *  - changes made in another tab arrive through the `storage` event.
  *
  * Nothing personal leaves the browser: this module never talks to the network.
+ *
+ * Bundle size (performance-08): this module and the app's own stores validate with the
+ * hand-written `check` toolkit, so zod and the content schemas stay out of the browser shell.
  */
-import type { z } from 'zod';
+
+/* ---- Validation ----------------------------------------------------------------------------- */
+
+/**
+ * What a store needs from a schema: a `safeParse` that never throws. Zod schemas (classic or
+ * mini) match it, and so do validators built with `check` + `validator`.
+ */
+export interface Validator<T> {
+  safeParse(input: unknown): { success: true; data: T } | { success: false };
+}
+
+const INVALID: unique symbol = Symbol('invalid');
+type Invalid = typeof INVALID;
+
+/** A check returns the (cleaned) value, or `INVALID`. */
+export type Check<T> = (input: unknown) => T | Invalid;
+type Out<C> = C extends Check<infer T> ? T : never;
+type OptionalKeys<S> = { [K in keyof S]: undefined extends Out<S[K]> ? K : never }[keyof S];
+type Simplify<T> = { [K in keyof T]: T[K] } & {};
+type ObjectOut<S> = Simplify<{ [K in Exclude<keyof S, OptionalKeys<S>>]: Out<S[K]> } & { [K in OptionalKeys<S>]?: Exclude<Out<S[K]>, undefined> }>;
+
+/** The value type a check or validator accepts. */
+export type Infer<C> = C extends Validator<infer T> ? T : Out<C>;
+
+const isRecord = (input: unknown): input is Record<string, unknown> => typeof input === 'object' && input !== null && !Array.isArray(input);
+
+/** Tiny, tree-shakable validation for stored JSON. Unknown object keys are dropped. */
+export const check = {
+  string:
+    (options: { min?: number; max?: number; pattern?: RegExp } = {}): Check<string> =>
+    (input) =>
+      typeof input === 'string' && input.length >= (options.min ?? 0) && input.length <= (options.max ?? Number.POSITIVE_INFINITY) && (!options.pattern || options.pattern.test(input))
+        ? input
+        : INVALID,
+  boolean: (): Check<boolean> => (input) => (typeof input === 'boolean' ? input : INVALID),
+  oneOf:
+    <const V extends readonly (string | number | boolean)[]>(values: V): Check<V[number]> =>
+    (input) =>
+      (values as readonly unknown[]).includes(input) ? (input as V[number]) : INVALID,
+  optional:
+    <T>(inner: Check<T>): Check<T | undefined> =>
+    (input) =>
+      input === undefined ? undefined : inner(input),
+  nullable:
+    <T>(inner: Check<T>): Check<T | null> =>
+    (input) =>
+      input === null ? null : inner(input),
+  object:
+    <S extends Record<string, Check<unknown>>>(shape: S): Check<ObjectOut<S>> =>
+    (input) => {
+      if (!isRecord(input)) return INVALID;
+      const output: Record<string, unknown> = {};
+      for (const [key, inner] of Object.entries(shape)) {
+        const value = inner(input[key]);
+        if (value === INVALID) return INVALID;
+        if (value !== undefined) output[key] = value;
+      }
+      return output as ObjectOut<S>;
+    },
+  /**
+   * An array of at most `max` items. With `dropInvalid`, items that fail are left out instead of
+   * failing the whole value (one tampered saved place must not wipe the saved journey).
+   */
+  array:
+    <T>(item: Check<T>, options: { max?: number; dropInvalid?: boolean } = {}): Check<T[]> =>
+    (input) => {
+      if (!Array.isArray(input) || input.length > (options.max ?? Number.POSITIVE_INFINITY)) return INVALID;
+      const output: T[] = [];
+      for (const entry of input) {
+        const value = item(entry);
+        if (value === INVALID) {
+          if (options.dropInvalid) continue;
+          return INVALID;
+        }
+        output.push(value);
+      }
+      return output;
+    },
+};
+
+/** Wrap a check as a `Validator` for `createStore`. */
+export function validator<T>(rule: Check<T>): Validator<T> {
+  return {
+    safeParse(input) {
+      const value = rule(input);
+      return value === INVALID ? { success: false } : { success: true, data: value };
+    },
+  };
+}
+
+/* ---- Stores --------------------------------------------------------------------------------- */
 
 /** The part of the Web Storage API a store needs. Tests pass an in-memory implementation. */
 export interface StorageLike {
@@ -37,8 +131,8 @@ export interface StoreOptions<T> {
   name: string;
   /** Bump when the stored shape changes incompatibly. */
   version: number;
-  /** Validates whatever is read from storage. */
-  schema: z.ZodType<T>;
+  /** Validates whatever is read from storage (a `validator(check…)` or a zod schema). */
+  schema: Validator<T>;
   /** Used on the server, before hydration, and whenever stored data is missing or invalid. */
   defaultValue: T;
   /**

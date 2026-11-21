@@ -12,6 +12,7 @@
  * or the core registry. Unknown facts are left out; the pages say so and link to the official
  * channel instead.
  */
+import { NOTES, type SourceExtras } from './source-notes';
 import { lt, type CorporatePage, type CorporateSection, type LocalizedText, type NewsItem, type Source, type SourceKind } from './types';
 
 /** Corporate pages (`/corporate/<slug>`). */
@@ -29,7 +30,8 @@ export const CORPORATE_PAGES: CorporatePage[] = [
         type: 'fact',
         label: lt('Airports operated in Malaysia', 'Lapangan terbang yang dikendalikan di Malaysia'),
         value: lt('39', '39'),
-        asOf: '2024-04-29 (Annual Report 2023)',
+        asOf: '2024-04-29',
+        asOfNote: lt('Annual Report 2023', 'Laporan Tahunan 2023'),
         sources: ['mahb-annual-report-2023', 'mahb-annual-report-2023-text'],
       },
       {
@@ -39,7 +41,8 @@ export const CORPORATE_PAGES: CorporatePage[] = [
           'KL International Airport, Penang, Langkawi, Kota Kinabalu and Kuching',
           'Lapangan Terbang Antarabangsa KL, Pulau Pinang, Langkawi, Kota Kinabalu dan Kuching',
         ),
-        asOf: '2024-04-29 (Annual Report 2023)',
+        asOf: '2024-04-29',
+        asOfNote: lt('Annual Report 2023', 'Laporan Tahunan 2023'),
         sources: ['mahb-annual-report-2023', 'mahb-annual-report-2023-text'],
       },
       {
@@ -120,10 +123,11 @@ export function latestNews(limit?: number): NewsItem[] {
 
 const RETRIEVED = '2026-11-16';
 const MAHB = 'Malaysia Airports Holdings Berhad';
-const MAHB_VIA_ROUTES = 'Malaysia Airports Holdings Berhad (release published on Routesonline)';
 
-function source(id: string, kind: SourceKind, publisher: string, title: string, url: string, asOf?: string): Source {
-  return asOf ? { id, kind, publisher, title, url, retrieved: RETRIEVED, asOf } : { id, kind, publisher, title, url, retrieved: RETRIEVED };
+/** Build a source. A source with no stated date is marked `undated: true` (D-12). */
+function source(id: string, kind: SourceKind, publisher: string, title: string, url: string, asOf?: string, extras: SourceExtras = {}): Source {
+  const base = { id, kind, publisher, title, url, retrieved: RETRIEVED, ...extras };
+  return asOf ? { ...base, asOf } : { ...base, undated: true };
 }
 
 /**
@@ -133,42 +137,42 @@ function source(id: string, kind: SourceKind, publisher: string, title: string, 
 export const CORPORATE_SOURCES: readonly Source[] = [
   /* ---- Malaysia Airports ------------------------------------------------------------------ */
   source('corp-mahb-corporate-site', 'official', MAHB, 'Malaysia Airports corporate website', 'https://corporate.malaysiaairports.com.my/'),
-  source('corp-mahb-our-brand', 'official', MAHB, 'Our Core Values / Our Brand (corporate website, as summarised in search results)', 'https://corporate.malaysiaairports.com.my/en/about-us/corporate-profile/our-brand'),
-  source('corp-mahb-management-team', 'official', MAHB, 'Management Team (corporate website, as summarised in search results)', 'https://corporate.malaysiaairports.com.my/en/about-us/organisation/management-team'),
-  source('corp-mahb-board', 'official', MAHB, 'Board of Directors (corporate website; page found in search results, content not read)', 'https://corporate.malaysiaairports.com.my/en/about-us/organisation/board-directors'),
-  source('corp-mahb-subsidiaries', 'official', MAHB, 'Subsidiaries (Malaysia Airports website, as summarised in search results)', 'https://www.malaysiaairports.com.my/about-us/subsidiaries'),
-  source('corp-mahb-sustainability', 'official', MAHB, 'Memorable Airport Experiences (corporate website, Sustainability section)', 'https://corporate.malaysiaairports.com.my/en/sustainability/memorable-airport-experiences'),
+  source('corp-mahb-our-brand', 'official', MAHB, 'Our Core Values / Our Brand', 'https://corporate.malaysiaairports.com.my/en/about-us/corporate-profile/our-brand', undefined, { note: NOTES.corporateSearchSummary }),
+  source('corp-mahb-management-team', 'official', MAHB, 'Management Team', 'https://corporate.malaysiaairports.com.my/en/about-us/organisation/management-team', undefined, { note: NOTES.corporateSearchSummary }),
+  source('corp-mahb-board', 'official', MAHB, 'Board of Directors', 'https://corporate.malaysiaairports.com.my/en/about-us/organisation/board-directors', undefined, { note: NOTES.corporateFoundNotRead }),
+  source('corp-mahb-subsidiaries', 'official', MAHB, 'Subsidiaries', 'https://www.malaysiaairports.com.my/about-us/subsidiaries', undefined, { note: NOTES.mahbSearchSummary }),
+  source('corp-mahb-sustainability', 'official', MAHB, 'Memorable Airport Experiences', 'https://corporate.malaysiaairports.com.my/en/sustainability/memorable-airport-experiences', undefined, { note: NOTES.corporateSustainability }),
   source('corp-mahb-careers-portal', 'official', MAHB, 'Malaysia Airports careers portal', 'https://careers.malaysiaairports.com.my/'),
-  source('corp-mahb-careers-leaders', 'official', MAHB, 'Our Leaders, Malaysia Airports careers portal (as summarised in search results)', 'https://careers.malaysiaairports.com.my/content/Our-Leaders/?locale=en_GB'),
-  source('corp-mahb-news-1787', 'official', MAHB, 'Tan Sri Dr. Azmil Khalid appointed as Malaysia Airports … (media centre; title shortened in search results)', 'https://corporate.malaysiaairports.com.my/en/media-centre/news/1787', '2026-06-18'),
-  source('corp-mahb-news-1401', 'official', MAHB, "Managing Director Dato' Mohd Izani Ghani appointed … (media centre; title shortened in search results)", 'https://www.malaysiaairports.com.my/en/media-centre/news/1401'),
-  source('corp-mahb-news-1678', 'official', MAHB, 'Strong 2025 passenger growth builds momentum for Visit Malaysia 2026 (media centre)', 'https://corporate.malaysiaairports.com.my/en/media-centre/news/1678', '2026-01-19'),
-  source('corp-mahb-news-1686', 'official', MAHB, 'Visit Malaysia 2026 opens with 9.4 million passengers at … (media centre; title shortened in search results)', 'https://corporate.malaysiaairports.com.my/en/media-centre/news/1686', '2026-02'),
-  source('corp-mahb-news-273', 'official', MAHB, 'Operating Agreements release (media centre item 273; title not captured)', 'https://corporate.malaysiaairports.com.my/en/media-centre/news/273', '2023-02'),
-  source('corp-mahb-aerotrain-back-on-track', 'official', MAHB, 'KLIA Aerotrain replacement project back on track (media centre)', 'https://www.malaysiaairports.com.my/media-centre/news/klia-aerotrain-replacement-project-back-track', '2024-01'),
-  source('corp-mahb-ar2020', 'official', MAHB, 'Malaysia Airports Annual Report 2020 microsite', 'http://annualreport2020.malaysiaairports.com.my/', 'Annual Report 2020'),
+  source('corp-mahb-careers-leaders', 'official', MAHB, 'Our Leaders, Malaysia Airports careers portal', 'https://careers.malaysiaairports.com.my/content/Our-Leaders/?locale=en_GB', undefined, { note: NOTES.searchSummary }),
+  source('corp-mahb-news-1787', 'official', MAHB, 'Tan Sri Dr. Azmil Khalid appointed as Malaysia Airports …', 'https://corporate.malaysiaairports.com.my/en/media-centre/news/1787', '2026-06-18', { note: NOTES.mediaCentreShortened }),
+  source('corp-mahb-news-1401', 'official', MAHB, "Managing Director Dato' Mohd Izani Ghani appointed …", 'https://www.malaysiaairports.com.my/en/media-centre/news/1401', undefined, { note: NOTES.mediaCentreShortened }),
+  source('corp-mahb-news-1678', 'official', MAHB, 'Strong 2025 passenger growth builds momentum for Visit Malaysia 2026', 'https://corporate.malaysiaairports.com.my/en/media-centre/news/1678', '2026-01-19', { note: NOTES.mediaCentre }),
+  source('corp-mahb-news-1686', 'official', MAHB, 'Visit Malaysia 2026 opens with 9.4 million passengers at …', 'https://corporate.malaysiaairports.com.my/en/media-centre/news/1686', '2026-02', { note: NOTES.mediaCentreShortened }),
+  source('corp-mahb-news-273', 'official', MAHB, 'Operating Agreements release', 'https://corporate.malaysiaairports.com.my/en/media-centre/news/273', '2023-02', { note: NOTES.mediaCentreUntitled }),
+  source('corp-mahb-aerotrain-back-on-track', 'official', MAHB, 'KLIA Aerotrain replacement project back on track', 'https://www.malaysiaairports.com.my/media-centre/news/klia-aerotrain-replacement-project-back-track', '2024-01', { note: NOTES.mediaCentre }),
+  source('corp-mahb-ar2020', 'official', MAHB, 'Malaysia Airports Annual Report 2020 microsite', 'http://annualreport2020.malaysiaairports.com.my/', '2020', { asOfNote: NOTES.annualReport2020 }),
   source('corp-mahb-sr2019', 'official', MAHB, 'Malaysia Airports Sustainability Report 2019 (PDF)', 'https://drmapssdev.blob.core.windows.net/corporate-cms/2024-06/MAHB-Sustainability-Report-2019.pdf', '2019'),
-  source('corp-routes-2025-growth', 'official', MAHB_VIA_ROUTES, "Malaysia Airports' Strong 2025 Passenger Growth Builds Momentum for Visit Malaysia 2026", 'https://www.routesonline.com/airports/9835/malaysia-airports-holdings-berhad/news/299665873/malaysia-airports-strong-2025-passenger-growth-builds-momentum-for-visit-malaysia-2026/', '2026-01'),
-  source('corp-routes-vm2026-january', 'official', MAHB_VIA_ROUTES, 'Visit Malaysia 2026 Opens with 9.4 Million Passengers at Airports Nationwide', 'https://www.routesonline.com/airports/9835/malaysia-airports-holdings-berhad/news/299666012/visit-malaysia-2026-opens-with-94-million-passengers-at-airports-nationwide/', '2026-02'),
-  source('corp-routes-september-2026', 'official', MAHB_VIA_ROUTES, "Malaysia Airports' Regional Airports Record International Traffic Growth in September", 'https://www.routesonline.com/airports/9835/malaysia-airports-holdings-berhad/news/299667154/malaysia-airports-regional-airports-record-international-traffic-growth-in-september/', '2026-10'),
-  source('corp-routes-operating-agreements', 'official', MAHB_VIA_ROUTES, 'New Operating Agreements Ensure Commercial Sustainability and Facilitate Growth for Malaysia Airports', 'https://www.routesonline.com/airports/8/kuala-lumpur-international-airport-klia/news/299400/new-operating-agreements-ensure-commercial-sustainability-and-facilitate-growth-for-malaysia-airports/', '2023-02'),
-  source('corp-routes-langkawi-asq', 'official', MAHB_VIA_ROUTES, 'Langkawi International Airport 5th ASQ Awards Win for Best Airport', 'https://www.routesonline.com/airports/6438/langkawi-international-airport/news/299666010/langkawi-international-airport-5th-asq-awards-win-for-best-airport/', '2026'),
-  source('corp-edge-solar-advertorial', 'official', 'The Edge Malaysia (advertorial for Malaysia Airports)', "Powering the future of aviation: How KLIA Aeropolis Solar Park supports Malaysia Airports' transformation journey", 'https://theedgemalaysia.com/content/advertise/powering-the-future-of-aviation-how-klia-aeropolis-solar-park-supports-malaysia-airports-transformation-journey', '2026-01'),
+  source('corp-routes-2025-growth', 'news', 'Routes', "Malaysia Airports' Strong 2025 Passenger Growth Builds Momentum for Visit Malaysia 2026", 'https://www.routesonline.com/airports/9835/malaysia-airports-holdings-berhad/news/299665873/malaysia-airports-strong-2025-passenger-growth-builds-momentum-for-visit-malaysia-2026/', '2026-01'),
+  source('corp-routes-vm2026-january', 'news', 'Routes', 'Visit Malaysia 2026 Opens with 9.4 Million Passengers at Airports Nationwide', 'https://www.routesonline.com/airports/9835/malaysia-airports-holdings-berhad/news/299666012/visit-malaysia-2026-opens-with-94-million-passengers-at-airports-nationwide/', '2026-02'),
+  source('corp-routes-september-2026', 'news', 'Routes', "Malaysia Airports' Regional Airports Record International Traffic Growth in September", 'https://www.routesonline.com/airports/9835/malaysia-airports-holdings-berhad/news/299667154/malaysia-airports-regional-airports-record-international-traffic-growth-in-september/', '2026-10'),
+  source('corp-routes-operating-agreements', 'news', 'Routes', 'New Operating Agreements Ensure Commercial Sustainability and Facilitate Growth for Malaysia Airports', 'https://www.routesonline.com/airports/8/kuala-lumpur-international-airport-klia/news/299400/new-operating-agreements-ensure-commercial-sustainability-and-facilitate-growth-for-malaysia-airports/', '2023-02'),
+  source('corp-routes-langkawi-asq', 'news', 'Routes', 'Langkawi International Airport 5th ASQ Awards Win for Best Airport', 'https://www.routesonline.com/airports/6438/langkawi-international-airport/news/299666010/langkawi-international-airport-5th-asq-awards-win-for-best-airport/', '2026'),
+  source('corp-edge-solar-advertorial', 'other', 'The Edge Malaysia', "Powering the future of aviation: How KLIA Aeropolis Solar Park supports Malaysia Airports' transformation journey", 'https://theedgemalaysia.com/content/advertise/powering-the-future-of-aviation-how-klia-aeropolis-solar-park-supports-malaysia-airports-transformation-journey', '2026-01', { note: NOTES.advertorial }),
 
   /* ---- Programme operators ---------------------------------------------------------------- */
-  source('corp-aci-aca-bki-lgk-2024', 'operator', 'ACI Asia-Pacific & Middle East (operator of Airport Carbon Accreditation)', 'Kota Kinabalu and Langkawi achieve Airport Carbon Accreditation', 'https://www.aci-asiapac.aero/media-centre/news/kota-kinabalu-and-langkawi-achieve-airport-carbon-accreditation', '2024-12-05'),
+  source('corp-aci-aca-bki-lgk-2024', 'operator', 'ACI Asia-Pacific & Middle East', 'Kota Kinabalu and Langkawi achieve Airport Carbon Accreditation', 'https://www.aci-asiapac.aero/media-centre/news/kota-kinabalu-and-langkawi-achieve-airport-carbon-accreditation', '2024-12-05', { note: NOTES.acaOperator }),
 
   /* ---- Press ------------------------------------------------------------------------------ */
   source('corp-fmt-consortium-2024', 'news', 'Free Malaysia Today', 'Khazanah and EPF lead consortium to take over MAHB', 'https://www.freemalaysiatoday.com/category/highlight/2024/05/15/khazanah-and-epf-lead-consortium-to-take-over-mahb', '2024-05-15'),
-  source('corp-nst-privatise-2024', 'news', 'New Straits Times', 'Khazanah, EPF, two partners privatise Malaysia Airports RM12.3bil (title from the address)', 'https://nst.com.my/amp/business/corporate/2024/05/1051048/khazanah-epf-two-partners-privatise-malaysia-airports-rm123bil', '2024-05'),
+  source('corp-nst-privatise-2024', 'news', 'New Straits Times', 'Khazanah, EPF, two partners privatise Malaysia Airports RM12.3bil', 'https://nst.com.my/amp/business/corporate/2024/05/1051048/khazanah-epf-two-partners-privatise-malaysia-airports-rm123bil', '2024-05', { note: NOTES.titleFromAddress }),
   source('corp-thestar-khazanah-epf-2024', 'news', 'The Star', 'Khazanah, EPF on MAHB privatisation and future benefits', 'https://www.thestar.com.my/news/nation/2024/05/26/khazanah-epf-on-mahb-privatisation-and-future-benefits', '2024-05-26'),
   source('corp-malaymail-takeover-2024', 'news', 'Malay Mail', "What's behind the controversy of MAHB's Khazanah-EPF takeover", 'https://www.malaymail.com/amp/news/malaysia/2024/05/24/whats-behind-the-controversy-of-mahbs-khazanah-epf-takeover-and-what-does-israel-have-to-do-with-it/135866', '2024-05-24'),
   source('corp-nst-ownership-70pct-2024', 'news', 'New Straits Times', 'PM: No sale of MAHB to foreign firms, ownership boosted to 70pct', 'https://www.nst.com.my/amp/news/nation/2024/06/1067999/pm-no-sale-mahb-foreign-firms-ownership-boosted-70pct-watch', '2024-06'),
   source('corp-fmt-offer-2024', 'news', 'Free Malaysia Today', 'Khazanah-led consortium makes formal offer for MAHB at RM11 per share', 'https://fmtv5.freemalaysiatoday.com/category/nation/2024/11/15/khazanah-led-consortium-makes-formal-offer-for-mahb-at-rm11-per-share', '2024-11-15'),
   source('corp-thestar-delisting-2025', 'news', 'The Star', 'Delisting a watershed moment for MAHB privatisation', 'https://www.thestar.com.my/business/business-news/2025/02/25/delisting-a-watershed-moment-for-mahb-privatisation', '2025-02-25'),
   source('corp-malaysiakini-delisting-2025', 'news', 'Malaysiakini', 'MAHB delisting after 25 years a watershed moment for its privatisation', 'https://www.malaysiakini.com/news/735493', '2025-02'),
-  source('corp-bernama-delisting-2025', 'news', 'Bernama', 'Report on the MAHB delisting (title not captured in search results)', 'https://www.bernama.com/en/news.php?id=2415761', '2025-02'),
-  source('corp-azmilaw-delisting', 'other', 'Azmi & Associates (law firm)', 'Azmi & Associates Advises MAHB on Landmark Takeover and Delisting Exercise', 'https://www.azmilaw.com/news/azmi-associates-advises-mahb-on-landmark-takeover-and-delisting-exercise/'),
+  source('corp-bernama-delisting-2025', 'news', 'Bernama', 'Report on the MAHB delisting', 'https://www.bernama.com/en/news.php?id=2415761', '2025-02', { note: NOTES.titleNotCaptured }),
+  source('corp-azmilaw-delisting', 'other', 'Azmi & Associates', 'Azmi & Associates Advises MAHB on Landmark Takeover and Delisting Exercise', 'https://www.azmilaw.com/news/azmi-associates-advises-mahb-on-landmark-takeover-and-delisting-exercise/', undefined, { note: NOTES.lawFirm }),
   source('corp-capa-ined-2025', 'news', 'CAPA Centre for Aviation', 'MAHB: all independent non-executive directors tender resignations prior to Bursa de-listing', 'https://centreforaviation.com/news/mahb-all-independent-non-executive-directors-tender-resignations-prior-to-bursa-de-listing-1304931', '2025-02'),
   source('corp-thestar-chairman-2026', 'news', 'The Star', 'MAHB appoints Azmil Khalid as non-independent non-executive chairman', 'https://www.thestar.com.my/business/business-news/2026/06/18/mahb-appoints-azmil-khalid-as-non-independent-non-executive-chairman', '2026-06-18'),
   source('corp-edge-chairman-2026', 'news', 'The Edge Malaysia', 'MAHB appoints Azmil Khalid as new chairman', 'https://theedgemalaysia.com/node/807430', '2026-06'),
@@ -182,10 +186,10 @@ export const CORPORATE_SOURCES: readonly Source[] = [
   source('corp-businesstoday-september-2026', 'news', 'BusinessToday', "Penang Airport International Traffic Rises 5.3% Despite Malaysia Airports' September Decline", 'https://www.businesstoday.com.my/2026/10/26/penang-airport-international-traffic-rises-5-3-despite-malaysia-airports-september-decline/', '2026-10-26'),
   source('corp-hurriyet-istanbul-2025', 'news', 'Hurriyet Daily News', "Istanbul's airports set all-time passenger records in 2025", 'https://hurriyetdailynews.com/istanbuls-airports-set-all-time-passenger-records-in-2025-217313', '2026-01'),
   source('corp-vibes-q3-2025', 'news', 'The Vibes', 'MAHB records 12.2% rise in passenger traffic amid route expansion and airline growth', 'https://www.thevibes.com/articles/business/114341/mahb-records-12.2-rise-in-passenger-traffic-amid-route-expansion-and-airline-growth', '2025-10'),
-  source('corp-marketscreener-hourly-2025', 'aggregator', 'MarketScreener (relay of a Malaysia Airports release)', 'KLIA breaks hourly passenger record with more than 12,000 movements', 'https://www.marketscreener.com/news/klia-breaks-hourly-passenger-record-with-more-than-12-000-movements-ce7d5bdbdb8af120', '2025-09'),
+  source('corp-marketscreener-hourly-2025', 'aggregator', 'MarketScreener', 'KLIA breaks hourly passenger record with more than 12,000 movements', 'https://www.marketscreener.com/news/klia-breaks-hourly-passenger-record-with-more-than-12-000-movements-ce7d5bdbdb8af120', '2025-09', { note: NOTES.releaseRelay }),
   source('corp-malaymail-oa-2023', 'news', 'Malay Mail', 'Minister: Under new deal with MAHB, travellers to also fund airport developments along with govt', 'https://www.malaymail.com/news/malaysia/2023/02/09/minister-under-new-deal-with-mahb-travellers-to-also-fund-airport-developments-along-with-govt/54105', '2023-02-09'),
-  source('corp-borneopost-oa-2024', 'news', 'The Borneo Post (via PressReader)', 'Govt, MAHB ink new 45-year deals to upgrade Malaysian airports', 'https://www.pressreader.com/malaysia/the-borneo-post/20240319/281548000876163', '2024-03-19'),
-  source('corp-kenanga-oa-2024', 'other', 'Kenanga Research', 'Company update on MAHB (analyst note)', 'https://www.kenanga.com.my/wp-content/uploads/2024/03/AIRPORT-240319-CU-Kenanga.pdf', '2024-03-19'),
+  source('corp-borneopost-oa-2024', 'news', 'The Borneo Post', 'Govt, MAHB ink new 45-year deals to upgrade Malaysian airports', 'https://www.pressreader.com/malaysia/the-borneo-post/20240319/281548000876163', '2024-03-19', { note: NOTES.viaPressReader }),
+  source('corp-kenanga-oa-2024', 'other', 'Kenanga Research', 'Company update on MAHB', 'https://www.kenanga.com.my/wp-content/uploads/2024/03/AIRPORT-240319-CU-Kenanga.pdf', '2024-03-19', { note: NOTES.analystNote }),
   source('corp-malaymail-oa-analysts-2024', 'news', 'Malay Mail', "MAHB's new operating agreement with govt strengthens its earnings prospects, say analysts", 'https://www.malaymail.com/news/money/2024/03/21/mahbs-new-operating-agreement-with-govt-strengthens-its-earnings-prospects-say-analysts/124690', '2024-03-21'),
   source('corp-malaymail-aerotrain-returns-2025', 'news', 'Malay Mail', 'KLIA Aerotrain returns July 1, Anwar to officiate relaunch', 'https://www.malaymail.com/news/malaysia/2025/06/30/klia-aerotrain-returns-july-1-anwar-to-officiate-relaunch-loke-applauds-revival/182306', '2025-06-30'),
   source('corp-malaymail-aerotrain-cost-2025', 'news', 'Malay Mail', 'KLIA Aerotrain to return in second quarter of 2025 after RM456m overhaul, MAHB confirms', 'https://www.malaymail.com/news/malaysia/2025/01/24/klia-aerotrain-to-return-in-second-quarter-of-2025-after-rm456m-overhaul-mahb-confirms/164425', '2025-01-24'),
@@ -193,7 +197,7 @@ export const CORPORATE_SOURCES: readonly Source[] = [
   source('corp-malaymail-aerotrain-alstom-2024', 'news', 'Malay Mail', 'MAHB, Alstom, IJMC-Pestech JV tie up to complete KLIA Aerotrain replacement project', 'https://www.malaymail.com/news/money/2024/01/17/mahb-alstom-ijmc-pestech-jv-tie-up-to-complete-klia-aerotrain-replacement-project/112923', '2024-01-17'),
   source('corp-edge-baggage-2022', 'news', 'The Edge Malaysia', 'T7 Global-Siemens consortium wins KLIA baggage handling system contract', 'https://theedgemalaysia.com/article/t7-globalsiemens-consortium-wins-klia-baggage-handling-system-contract', '2022-12'),
   source('corp-thestar-baggage-2022', 'news', 'The Star', 'T7 consortium secures KLIA contract', 'https://www.thestar.com.my/business/business-news/2022/12/15/t7-consortium-secures-klia-contract', '2022-12-15'),
-  source('corp-skrine-baggage-2023', 'other', 'Skrine (law firm)', 'Transaction News: Malaysia Airports awards contract for upgrade of baggage handling system at KLIA-1', 'https://www.skrine.com/insights/alerts/january-2023/transaction-news-malaysia-airports-awards-contract', '2023-01'),
+  source('corp-skrine-baggage-2023', 'other', 'Skrine', 'Transaction News: Malaysia Airports awards contract for upgrade of baggage handling system at KLIA-1', 'https://www.skrine.com/insights/alerts/january-2023/transaction-news-malaysia-airports-awards-contract', '2023-01', { note: NOTES.lawFirm }),
   source('corp-thesun-baggage-2028', 'news', 'The Sun', 'T7 Global executes resequencing agreement for KLIA T1 baggage handling system, targeted to be complete by Q4 2028', 'https://thesun.my/business/t7-global-executes-resequencing-agreement-for-klia-t1-baggage-handling-system-targeted-to-be-complete-by-q4-2028/', '2026-01'),
   source('corp-malaymail-solar-2026', 'news', 'Malay Mail', 'DPM Fadillah unveils KLIA Aeropolis solar farm and battery project', 'https://www.malaymail.com/news/malaysia/2026/01/29/dpm-fadillah-unveils-klia-aeropolis-solar-farm-and-battery-project-as-malaysia-powers-up-energy-transition/207242', '2026-01-29'),
   source('corp-bernama-solar-2026', 'news', 'Bernama', "KLIA Aeropolis Solar Farm To Cut KLIA's Carbon Emissions By 30 Pct In 2027 -- MAHB", 'https://www.bernama.com/lite/news.php?id=2518164', '2026-01'),
@@ -205,7 +209,7 @@ export const CORPORATE_SOURCES: readonly Source[] = [
 
   /* ---- Reference works -------------------------------------------------------------------- */
   source('corp-wikipedia-mahb', 'other', 'Wikipedia', 'Malaysia Airports', 'https://en.wikipedia.org/wiki/Malaysia_Airports'),
-  source('corp-nus-ar1999', 'other', 'NUS Libraries (copy of a Malaysia Airports publication)', 'Malaysia Airports Holdings Berhad Annual Report 1999, corporate profile pages', 'https://lib.nus.edu.sg/nus_hl/airport1999-3.pdf', '1999'),
+  source('corp-nus-ar1999', 'other', 'NUS Libraries', 'Malaysia Airports Holdings Berhad Annual Report 1999, corporate profile pages', 'https://lib.nus.edu.sg/nus_hl/airport1999-3.pdf', '1999', { note: NOTES.publicationCopy }),
 ];
 
 /* ---- Shapes ------------------------------------------------------------------------------- */

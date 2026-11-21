@@ -4,7 +4,7 @@ import { useT } from '@/lib/i18n/client';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
-import { MAP_FILTERS, type LevelView, type MapFilterId, type PoiView } from './map-logic';
+import { MAP_FILTERS, placePosition, type LevelView, type MapFilterId, type PoiView } from './map-logic';
 
 export interface PlaceListProps {
   levels: readonly LevelView[];
@@ -77,7 +77,7 @@ export function PlaceList({ levels, pois, total, filters, selectedId, onShow, on
                         <p className="type-body font-semibold text-ink">{poi.name}</p>
                         <p className="type-body-sm text-ink-2">
                           {poi.kindLabel}
-                          {poi.side !== 'unknown' ? ` · ${t(`mapPages.area.${poi.side}`)}` : null}
+                          {poi.side !== 'unknown' && placePosition(poi).area ? ` · ${t(`mapPages.area.${poi.side}`)}` : null}
                         </p>
                         <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
                           <ProvenanceTag provenance={poi.provenance} length="short" />

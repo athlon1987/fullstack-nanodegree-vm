@@ -116,3 +116,24 @@ to `/<a>/facilities`). All 276 sitemap URLs are covered; the unit test checks ev
   shorter home-screen name is wanted on iOS; replace `src/app/favicon.ico` (Next.js default) or delete
   it so `icon.svg` is used everywhere.
 - integration: set `NEXT_PUBLIC_SITE_URL` and `APP_VERSION` (commit) for production builds; run `npm run e2e`.
+
+## Fix round, 21 November 2026 (package E)
+
+What changed for every team, and what we ask of you. Details: `docs/qa/fixes/E.md`.
+
+**Use these**
+
+- **Metadata.** Call `pageMetadata({ lang, path, title, description })` from `@/lib/seo` in every route's `generateMetadata`: it gives the HTML canonical and en/ms/x-default alternates. Until you do, `next.config.ts` sends the same values as `Link` headers on every localised page.
+- **Dictionaries.** The root `I18nProvider` now receives `clientDictionary(lang)`: every namespace except `corporatePages` and `designSystem`. A Client Component that reads one of those must sit under `<I18nScope lang={lang} namespaces={['corporatePages.privacy']}>` (from `@/lib/i18n`, a Server Component). `i18n.test.ts` fails if a Client Component outside the allowed places reads a scoped namespace. Next step (please): wrap your feature pages in `I18nScope` with your own namespace (`flightPages`, `guidePages`, `transportPages`, `commercePages`, `mapPages`), tell platform, and those namespaces leave the root dictionary.
+- **Accessibility scans.** Import `AXE_TAGS` and `expectNoAxeViolations` from `e2e/support/axe.ts` (wcag2a, wcag2aa, wcag21a, wcag21aa, wcag22aa) instead of a local list.
+- **Measurement.** Declare a top task's answer state with `data-answer-task="parking-price" data-answer-state="answered|partial|not-published|demo"` on the answering element, and mark commercial or official hand-off links with `data-handoff="parking-booking"`. The platform reports them (aggregate, first-party, consent-aware) and adds campaign parameters when a marked link is followed. `withCampaign(href, name)` from `@/components/platform/metrics` does the same at render time.
+- **Storage validation.** `createStore` takes any `{ safeParse }` validator. Prefer `validator(check.object({...}))` from `@/lib/storage` (no zod in the browser); zod schemas still work but keep zod in your bundle.
+- **Links.** `localeHref` now passes through only `https:`, `mailto:` and `tel:`; anything else (including `http:`) becomes `#`. Saved places accept same-site paths only.
+
+**Limits and environment**
+
+- Request limits per route (`ROUTE_POLICIES` in `src/lib/concierge/rate-limit.ts`): flights API 60 burst then 1/s, health 10, reports 30, other API 60, per-request pages 60, concierge 10 then 1 every 6 s.
+- Production must set `TRUSTED_PROXY_HOPS` or `TRUSTED_CLIENT_IP_HEADER`; otherwise every client shares one bucket. Optional: `HEALTH_TOKEN` (detailed health), `CONCIERGE_MAX_CALLS_PER_MINUTE`, `_PER_DAY`, `_PER_MONTH`.
+- `/api/flights` refuses repeated parameters and dates outside yesterday to the day after tomorrow.
+
+**Inline scripts and the CSP.** A report-only policy without `'unsafe-inline'` now runs. Inline scripts other than the preferences script will be reported. Package A: export `EARLY_TAP_SCRIPT`, `EARLY_MODE_SCRIPT` and `SAVED_FLIGHT_FLAG_SCRIPT` (or move them to one module) so `next.config.ts` can hash them before the policy is enforced.

@@ -10,6 +10,7 @@ import { useAirportContext } from '@/lib/hooks';
 import { useLang, useT } from '@/lib/i18n/client';
 import { localeHref } from '@/lib/locale';
 import { AIRPORT_SECTIONS, sectionPath, type AirportSectionId } from '@/components/shell/sections';
+import { LocaleLink } from '@/components/common/locale-link';
 import { Icon } from '@/components/ui/icon';
 import { useTerminalFilter } from './use-terminal-filter';
 
@@ -25,7 +26,6 @@ export interface SectionNavProps {
 
 function NavList({ slug, name, sections, segment, terminal }: SectionNavProps & { segment: string | null | undefined; terminal?: TerminalId }) {
   const t = useT();
-  const lang = useLang();
   const list = useRef<HTMLUListElement>(null);
   const [edges, setEdges] = useState({ start: false, end: false });
   const currentId: AirportSectionId | undefined = segment === undefined ? undefined : (AIRPORT_SECTIONS.find((section) => section.segment === (segment ?? ''))?.id ?? undefined);
@@ -83,8 +83,8 @@ function NavList({ slug, name, sections, segment, terminal }: SectionNavProps & 
           const current = section.id === currentId;
           return (
             <li key={section.id} className="shrink-0">
-              <Link
-                href={localeHref(lang, sectionPath(slug, section.id, terminal))}
+              <LocaleLink
+                href={sectionPath(slug, section.id, terminal)}
                 aria-current={current ? 'page' : undefined}
                 className={cn(
                   'relative inline-flex h-12 items-center gap-1.5 px-2.5 text-sm font-medium whitespace-nowrap text-ink-2 transition-colors duration-fast hover:text-ink focus-visible:focus-ring-inset',
@@ -95,7 +95,7 @@ function NavList({ slug, name, sections, segment, terminal }: SectionNavProps & 
                 {/* Labels only: without icons all nine tabs fit at 1280 px and up in both
                     languages (A-13); the phone "Sections" panel keeps the icons. */}
                 {t(section.labelKey)}
-              </Link>
+              </LocaleLink>
             </li>
           );
         })}
@@ -171,6 +171,8 @@ function Chips({ slug, terminals, active, hrefFor, onChoose }: TerminalChipsProp
           <li key={option.id ?? 'all'}>
             <Link
               href={hrefFor(option.id)}
+              // The same page with another terminal: nothing to fetch ahead (A-19).
+              prefetch={false}
               replace
               scroll={false}
               aria-current={current ? 'true' : undefined}

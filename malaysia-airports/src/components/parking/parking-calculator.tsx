@@ -6,20 +6,27 @@ import { formatCurrency, formatDuration } from '@/lib/format';
 import { useNow } from '@/lib/hooks';
 import { useLang, useT } from '@/lib/i18n/client';
 import { calculateParking } from '@/lib/parking';
-import { timezoneLabel } from '@/lib/time';
+import { formatDateTime, timezoneLabel } from '@/lib/time';
 import { ExternalLink } from '@/components/common/external-link';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { SourceNote } from '@/components/common/source-note';
 import { Button } from '@/components/ui/button';
 import { Callout } from '@/components/ui/callout';
 import { Chip } from '@/components/ui/chip';
+import { Icon } from '@/components/ui/icon';
 import { Input } from '@/components/ui/input';
 import { NativeSelect } from '@/components/ui/native-select';
 import { sourcesFor } from '@/components/transport/transport-types';
-import { dailyMaxCeiling, defaultArrival, QUICK_STAYS, shiftStamp, stayMinutes, type LocalStamp } from './parking-logic';
+import { dailyMaxCeiling, defaultArrival, localInstant, QUICK_STAYS, shiftStamp, stayMinutes, type LocalStamp } from './parking-logic';
 import type { ParkingPageData } from './parking-types';
 
 const EMPTY: LocalStamp = { date: '', time: '' };
+
+/** Entry and exit carried in by a link (journey links send `?from=&to=`, B-13 and C-01). */
+export interface CalculatorInitial {
+  entry?: LocalStamp;
+  exit?: LocalStamp;
+}
 
 /** Published rates first, then a published daily maximum, then the first car park. */
 function defaultCarPark(data: ParkingPageData): string {
@@ -38,14 +45,15 @@ function defaultCarPark(data: ParkingPageData): string {
  * - not verified otherwise: no figure, the quoted figures with their sources, and the official page.
  * Times are airport time. Arrival defaults to the next quarter hour once the clock is read.
  */
-export function ParkingCalculator({ data }: { data: ParkingPageData }) {
+export function ParkingCalculator({ data, initial }: { data: ParkingPageData; initial?: CalculatorInitial }) {
   const t = useT();
   const lang = useLang();
   const id = useId();
   const now = useNow(60_000);
   const [carParkId, setCarParkId] = useState(() => defaultCarPark(data));
-  const [entryState, setEntry] = useState<LocalStamp | null>(null);
-  const [exitState, setExit] = useState<LocalStamp | null>(null);
+  const [entryState, setEntry] = useState<LocalStamp | null>(initial?.entry ?? null);
+  const [exitState, setExit] = useState<LocalStamp | null>(initial?.exit ?? null);
+  const prefilled = Boolean(initial?.entry) && entryState === initial?.entry;
 
   const entry = entryState ?? (now === null ? EMPTY : defaultArrival(now, data.timezone));
   const exit = exitState ?? shiftStamp(entry, 1440, data.timezone) ?? EMPTY;
@@ -65,6 +73,8 @@ export function ParkingCalculator({ data }: { data: ParkingPageData }) {
   };
 
   const estimate = result && !result.unavailable ? result : null;
+  const entryAt = localInstant(entry.date, entry.time, data.timezone);
+  const exitAt = localInstant(exit.date, exit.time, data.timezone);
   const money = (amount: number) => formatCurrency(amount, lang, { alwaysShowSen: !Number.isInteger(amount) });
   const headline =
     minutes === null
@@ -131,6 +141,12 @@ export function ParkingCalculator({ data }: { data: ParkingPageData }) {
             })}
           </div>
         </div>
+        {prefilled ? (
+          <p className="type-body-sm flex gap-2 text-ink-2">
+            <Icon name="info" size="sm" className="mt-0.5 shrink-0" />
+            {t('transportPages.calculator.prefilled')}
+          </p>
+        ) : null}
         {now !== null ? <p className="type-caption text-ink-2">{t('transportPages.calculator.timezone', { zone: timezoneLabel(now, data.timezone) })}</p> : null}
       </form>
 
@@ -215,6 +231,20 @@ export function ParkingCalculator({ data }: { data: ParkingPageData }) {
         <ExternalLink href={carPark.officialUrl} variant="action" className="type-body-sm self-start">
           {t('transportPages.calculator.officialLink')}
         </ExternalLink>
+
+        {carPark.bookingUrl ? (
+          // The official site takes no product or dates in its link, so the dates go beside it (C-01).
+          <div className="flex flex-col gap-1 border-t border-line pt-3">
+            <ExternalLink href={carPark.bookingUrl} variant="action" className="type-body-sm self-start font-semibold">
+              {t('transportPages.calculator.bookAction', { carPark: carPark.name })}
+            </ExternalLink>
+            {entryAt && exitAt && minutes !== null && minutes > 0 ? (
+              <p className="type-body-sm text-ink-2">
+                {t('transportPages.calculator.bookDates', { entry: formatDateTime(entryAt, lang, data.timezone), exit: formatDateTime(exitAt, lang, data.timezone) })}
+              </p>
+            ) : null}
+          </div>
+        ) : null}
       </section>
     </div>
   );

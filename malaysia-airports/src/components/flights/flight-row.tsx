@@ -1,5 +1,6 @@
 'use client';
 
+import { memo } from 'react';
 import { getAirport } from '@/content/airports';
 import { cn } from '@/lib/cn';
 import { formatFlightNumber, remotePlace, type Flight } from '@/lib/flights';
@@ -44,7 +45,7 @@ export interface FlightRowProps {
  * Every flight in this prototype is simulated: whatever lists these rows must carry the
  * demonstration label.
  */
-export function FlightRow({ flight, layout = 'card', showAirport = false, onNavigate, saved = false, onSaveChange, className }: FlightRowProps) {
+function FlightRowView({ flight, layout = 'card', showAirport = false, onNavigate, saved = false, onSaveChange, className }: FlightRowProps) {
   const t = useT();
   const place = remotePlace(flight);
   const moved = flight.estimated !== flight.scheduled;
@@ -192,3 +193,21 @@ export function FlightRow({ flight, layout = 'card', showAirport = false, onNavi
     </li>
   );
 }
+
+/**
+ * Rows are memoised (performance-02): a board refresh or a search re-renders only the rows whose
+ * flight changed. Flights are immutable snapshots, so identity is the test. `onSaveChange` is
+ * usually a new closure on every render of the list, so only its presence is compared; it is
+ * called from a click, never during render.
+ */
+export const FlightRow = memo(
+  FlightRowView,
+  (before, after) =>
+    before.flight === after.flight &&
+    before.layout === after.layout &&
+    before.showAirport === after.showAirport &&
+    before.saved === after.saved &&
+    before.className === after.className &&
+    before.onNavigate === after.onNavigate &&
+    Boolean(before.onSaveChange) === Boolean(after.onSaveChange),
+);

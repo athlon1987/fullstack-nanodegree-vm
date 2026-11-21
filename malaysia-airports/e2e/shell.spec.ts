@@ -1,5 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
+import { AXE_TAGS as SHARED_AXE_TAGS } from './support/axe';
 
 /**
  * Shell, home and search checks from the fix round (package A, docs/qa/fixes/A.md). Each block
@@ -7,14 +8,15 @@ import { expect, test, type Page } from '@playwright/test';
  */
 
 /**
- * The shared WCAG tag list (wcag2a, wcag2aa, wcag21a, wcag21aa, wcag22aa). Package E publishes it
- * in `e2e/support/axe.ts` (E-06); until that file lands this spec keeps the same list here.
+ * The shared WCAG tag list from `e2e/support/axe.ts` (E-06). It includes wcag21a, so
+ * label-content-name-mismatch (A-02) runs with the rest. Verification round: `withRules()` after
+ * `withTags()` replaced the tag set, so this scan used to run that one rule only.
  */
-const AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'];
+const AXE_TAGS = [...SHARED_AXE_TAGS];
 type AxePage = ConstructorParameters<typeof AxeBuilder>[0]['page'];
 
 async function axeViolations(page: Page): Promise<string[]> {
-  const results = await new AxeBuilder({ page: page as unknown as AxePage }).withTags(AXE_TAGS).withRules(['label-content-name-mismatch']).analyze();
+  const results = await new AxeBuilder({ page: page as unknown as AxePage }).withTags(AXE_TAGS).analyze();
   return results.violations.map((v) => `${v.id} (${v.impact}): ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`);
 }
 
@@ -62,11 +64,14 @@ test.describe('A-01 airport chrome on a phone', () => {
     await expect(page.locator('[data-airport-chrome="full"]')).toBeVisible();
     await page.goto('/en/kul/parking');
     await expect(page.locator('[data-airport-chrome="full"]')).toHaveCount(0);
-    await expect(page.locator('[data-airport-chrome="compact"]')).toBeVisible();
+    // `:visible`: while a page streams in development, React keeps a hidden copy until the swap.
+    await expect(page.locator('[data-airport-chrome="compact"]:visible')).toBeVisible();
   });
 
   // The first board row also depends on the board's own toolbar and banner (package B, B-03 and
-  // B-16). Enable once those land; the chrome above the heading is already within budget.
+  // B-16). Verification round (21 Nov 2026, production build): still fails, first row at 864 px
+  // (phone project) and 893 px (desktop project) at 390x664, below the lead, the direction tabs,
+  // search, status chips, the demo banner and the table heading. Open in docs/qa/verification.md.
   test.fixme('the first board row is inside the first 664 px', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 664 });
     await page.goto('/en/kul/flights');
@@ -93,6 +98,7 @@ test.describe('A-03 the home search is not flights-only', () => {
       ['en', 'parking', 'See all results for "parking"'],
       ['en', 'arrival card', 'See all results for "arrival card"'],
       ['ms', 'parking', 'Lihat semua hasil untuk "parking"'],
+      ['ms', 'arrival card', 'Lihat semua hasil untuk "arrival card"'],
     ] as const) {
       await page.goto(`/${lang}`);
       const box = page.getByRole('search').first().getByRole('searchbox');
@@ -104,28 +110,38 @@ test.describe('A-03 the home search is not flights-only', () => {
     }
   });
 
-  test('a route opens the site search; one exact flight number opens that flight', async ({ page }) => {
-    await page.goto('/en');
-    await page.waitForLoadState('networkidle');
-    const box = page.getByRole('search').first().getByRole('searchbox');
-    await box.fill('KUL-PEN');
-    await box.press('Enter');
-    await expect(page).toHaveURL(/\/en\/search\?q=KUL-PEN/);
+  for (const [lang, kindLabel, oneFound] of [
+    ['en', /Flight number/, /1 flight/],
+    ['ms', /Nombor penerbangan/, /1 penerbangan/],
+  ] as const) {
+    test(`a route opens the site search; one exact flight number opens that flight (${lang})`, async ({ page }) => {
+      await page.goto(`/${lang}`);
+      await page.waitForLoadState('networkidle');
+      const box = page.getByRole('search').first().getByRole('searchbox');
+      await box.fill('KUL-PEN');
+      await box.press('Enter');
+      await expect(page).toHaveURL(new RegExp(`/${lang}/search\\?q=KUL-PEN`));
 
-    // A flight number from the KLIA board's own examples (it always exists today).
-    await page.goto('/en/kul');
-    const kulBox = page.locator('#flight-search').getByRole('searchbox');
-    await kulBox.focus();
-    const example = page.locator('#flight-search').getByRole('button', { name: /Flight number/ }).first();
-    await expect(example).toBeVisible();
-    // The generic example ("MH 2") is replaced by one from KLIA's own board once the browser is idle.
-    await expect(example).not.toHaveText(/MH 2$/);
-    const number = (await example.locator('span').last().textContent())?.trim() ?? '';
-    await kulBox.fill(number);
-    await expect(page.locator('#flight-search').getByRole('status')).toContainText(/1 flight/);
-    await kulBox.press('Enter');
-    await expect(page).toHaveURL(/\/en\/kul\/flights\/[a-z0-9]+-\d{8}-d$/);
-  });
+      // A flight number from the KLIA board's own examples (the demo board changes every day, so
+      // a fixed number such as MH2072 is not always on it).
+      await page.goto(`/${lang}/kul`);
+      // As above: this checks search routing, so wait until the page is live. Focus or text given
+      // to the overview's search before hydration is still lost, because its Suspense fallback is
+      // replaced rather than hydrated (open issue in docs/qa/verification.md, verification round).
+      await page.waitForLoadState('networkidle');
+      const kulBox = page.locator('#flight-search').getByRole('searchbox');
+      await kulBox.focus();
+      const example = page.locator('#flight-search').getByRole('button', { name: kindLabel }).first();
+      await expect(example).toBeVisible();
+      // The generic example ("MH 2") is replaced by one from KLIA's own board once the browser is idle.
+      await expect(example).not.toHaveText(/MH 2$/);
+      const number = (await example.locator('span').last().textContent())?.trim() ?? '';
+      await kulBox.fill(number);
+      await expect(page.locator('#flight-search').getByRole('status')).toContainText(oneFound);
+      await kulBox.press('Enter');
+      await expect(page).toHaveURL(new RegExp(`/${lang}/kul/flights/[a-z0-9]+-\\d{8}-d$`));
+    });
+  }
 });
 
 test.describe('A-04 demo label in view', () => {
@@ -292,6 +308,8 @@ test.describe('A-15 assistance in the header', () => {
     if (isMobile) {
       await page.setViewportSize({ width: 390, height: 844 });
       await page.goto('/en');
+      // The Menu button needs the page hydrated; a click before the JavaScript runs does nothing.
+      await page.waitForLoadState('networkidle');
       await page.getByRole('navigation', { name: 'Quick navigation' }).getByRole('button', { name: 'Menu' }).click();
       await expect(page.getByRole('dialog', { name: 'Menu' }).getByRole('link', { name: 'Assistance' })).toHaveAttribute('href', '/en/accessibility');
     } else {
@@ -312,10 +330,158 @@ test.describe('A-16 reflow at 320 px and 125% text', () => {
   test('no page scrolls sideways', async ({ page }) => {
     await seed(page, { textSize: 125 });
     await page.setViewportSize({ width: 320, height: 640 });
-    for (const path of ['/en', '/ms', '/en/kul', '/en/kul/transport', '/en/kul/parking', '/en/search?q=parking', '/en/airports']) {
+    for (const path of [
+      '/en',
+      '/ms',
+      '/en/kul',
+      '/en/kul/flights',
+      '/en/kul/transport',
+      '/en/kul/parking',
+      '/en/kul/facilities',
+      '/en/kul/map',
+      '/en/kul/shop-dine',
+      '/en/kul/lounges',
+      '/en/help',
+      '/en/journey',
+      '/en/guides',
+      '/en/search?q=parking',
+      '/en/airports',
+    ]) {
       await page.goto(path);
       const [scrollWidth, clientWidth] = await page.evaluate(() => [document.documentElement.scrollWidth, document.documentElement.clientWidth]);
       expect(scrollWidth, path).toBeLessThanOrEqual(clientWidth);
     }
+  });
+});
+
+test.describe('A-01 airport chrome at 125% text', () => {
+  test('the section heading is never under the fixed bottom bar', async ({ page }) => {
+    await seed(page, { textSize: 125 });
+    for (const [width, height] of [
+      [360, 800],
+      [390, 664],
+    ] as const) {
+      await page.setViewportSize({ width, height });
+      for (const path of ['/en/kul/flights', '/ms/kul/transport', '/en/kul/parking']) {
+        await page.goto(path);
+        const h1 = page.locator('main h1').first();
+        await expect(h1).toBeVisible();
+        const heading = await h1.evaluate((element) => element.getBoundingClientRect());
+        const bar = await page.locator('[data-mobile-bar]').evaluate((element) => element.getBoundingClientRect().top);
+        expect(heading.bottom, `${path} at ${width}x${height}`).toBeLessThanOrEqual(bar);
+      }
+    }
+  });
+});
+
+test.describe('A-24 English citations on Malay pages', () => {
+  test('every source title and publisher on /ms/kul/parking is marked lang="en"', async ({ page }) => {
+    await page.goto('/ms/kul/parking');
+    const notes = page.locator('main details:has([data-source-marker])');
+    // `count()` does not wait; under parallel load it once read 0 (verification round).
+    await expect(notes.first()).toBeAttached();
+    expect(await notes.count()).toBeGreaterThan(0);
+    const unmarked = await notes.evaluateAll((elements) =>
+      elements.flatMap((details) =>
+        [...details.querySelectorAll('li')].flatMap((item) => {
+          const title = item.querySelector('a');
+          return title && !title.closest('[lang="en"]') && !title.querySelector('[lang="en"]')
+            ? [{ href: (title.getAttribute('href') ?? '').replace(/^\/ms(?=\/|$)/, '/en'), text: title.querySelector('span')?.textContent?.trim() ?? '' }]
+            : [];
+        }),
+      ),
+    );
+    // D-03 translated this prototype's own source titles into Malay, and those need no lang="en".
+    // A title that reads the same as on the English page is English, so it must be marked.
+    await page.goto('/en/kul/parking');
+    const englishTitles = new Map(
+      await page.locator('main details:has([data-source-marker]) li a').evaluateAll((links) =>
+        links.map((link) => [link.getAttribute('href') ?? '', link.querySelector('span')?.textContent?.trim() ?? ''] as [string, string]),
+      ),
+    );
+    expect(unmarked.filter((item) => englishTitles.get(item.href) === item.text).map((item) => item.text)).toEqual([]);
+  });
+});
+
+test.describe('A-27 home preview targets', () => {
+  test('each preview row is one link with a hit area of at least 44 px at 360 px and 125% text', async ({ page }) => {
+    await seed(page, { textSize: 125 });
+    await page.setViewportSize({ width: 360, height: 800 });
+    await page.goto('/en');
+    const rows = page.locator('main a[href*="/flights/"][href*="-20"]');
+    await expect(rows.first()).toBeVisible();
+    const heights = await rows.evaluateAll((links) =>
+      links
+        .filter((link) => link.getBoundingClientRect().height > 0)
+        .map((link) => {
+          // A stretched link (::after over its row) is the whole row for a tap.
+          if (getComputedStyle(link, '::after').position !== 'absolute') return link.getBoundingClientRect().height;
+          let row = link.parentElement;
+          while (row && getComputedStyle(row).position === 'static') row = row.parentElement;
+          return row ? row.getBoundingClientRect().height : 0;
+        }),
+    );
+    expect(heights.length).toBeGreaterThan(0);
+    for (const height of heights) expect(height).toBeGreaterThanOrEqual(44);
+  });
+});
+
+test.describe('A-30 breadcrumb structured data', () => {
+  test('/en/kul/parking emits a BreadcrumbList matching the visible trail', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('/en/kul/parking');
+    const lists = await page.locator('script[type="application/ld+json"]').evaluateAll((scripts) =>
+      scripts.flatMap((script) => {
+        const data = JSON.parse(script.textContent ?? 'null');
+        return (Array.isArray(data) ? data : [data]).filter((item) => item && item['@type'] === 'BreadcrumbList');
+      }),
+    );
+    expect(lists).toHaveLength(1);
+    const items = lists[0].itemListElement as { position: number; name: string; item?: string }[];
+    // `allTextContents()` does not wait: the prerendered page body is revealed from React's hidden
+    // segment shortly after `load`, so wait for the trail first (verification round: 4 of 8 phone runs read []).
+    await expect(page.getByRole('navigation', { name: 'Breadcrumb' }).locator('li').last()).toBeVisible();
+    const visible = (await page.getByRole('navigation', { name: 'Breadcrumb' }).locator('li').allTextContents()).map((text) => text.trim());
+    expect(items.map((item) => item.name)).toEqual(visible);
+    expect(items.map((item) => item.position)).toEqual(visible.map((_, index) => index + 1));
+    expect(items[0].item).toMatch(/\/en$/);
+    expect(items[1].item).toMatch(/\/en\/kul$/);
+    expect(items.at(-1)?.item).toBeUndefined();
+  });
+});
+
+test.describe('A-09 early taps', () => {
+  test('a journey mode tapped before hydration is kept', async ({ page }) => {
+    // Hold the JavaScript back so the tap lands on the server HTML, before React hydrates.
+    await page.route(/\/_next\/static\/chunks\/.*\.js/, async (route) => {
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      await route.continue();
+    });
+    await page.goto('/en', { waitUntil: 'domcontentloaded' });
+    await page.getByRole('main').getByRole('radio', { name: /^Arriving/ }).check({ force: true });
+    await page.waitForLoadState('networkidle');
+    await expect(page.getByRole('main').getByRole('radio', { name: /^Arriving/ })).toBeChecked();
+    await expect(page.getByRole('main').locator('[data-flight-scope]')).toContainText(/arrivals/);
+  });
+
+  test('the header airport switcher tapped before hydration opens once the page is ready', async ({ page }) => {
+    await page.route(/\/_next\/static\/chunks\/.*\.js/, async (route) => {
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      await route.continue();
+    });
+    await page.goto('/en', { waitUntil: 'domcontentloaded' });
+    await page.getByRole('banner').getByRole('button', { name: /Choose airport/ }).click();
+    await expect(page.getByRole('dialog', { name: 'Choose an airport' })).toBeVisible({ timeout: 30_000 });
+  });
+
+  test('a flight query typed before hydration still gets its results', async ({ page }) => {
+    await page.route(/\/_next\/static\/chunks\/.*\.js/, async (route) => {
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      await route.continue();
+    });
+    await page.goto('/en', { waitUntil: 'domcontentloaded' });
+    const desk = page.getByRole('main').getByRole('region', { name: 'Flight search' });
+    await desk.getByRole('searchbox').fill('MH');
+    await expect(desk.getByRole('status').first()).toContainText(/flights? found/, { timeout: 30_000 });
   });
 });

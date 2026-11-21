@@ -41,7 +41,8 @@ export const FAQS: Faq[] = [
     ),
     airports: ['kul'],
     provenance: 'official',
-    asOf: '2023-02-09 (rebranding announced)',
+    asOf: '2023-02-09',
+    asOfNote: lt('Rebranding announced', 'Penjenamaan semula diumumkan'),
     sources: ['mahb-klia-t1-home', 'malaymail-klia-rebrand-2023'],
   },
   {
@@ -67,7 +68,7 @@ export const FAQS: Faq[] = [
     ),
     airports: ['kul'],
     provenance: 'official',
-    asOf: 'As indexed in November 2026',
+    asOf: '2026-11-16',
     sources: ['mahb-lost-found', 'mahb-klia-t1-help', 'kliainfo-lost-found'],
   },
   {
@@ -111,7 +112,7 @@ export const FAQS: Faq[] = [
       'Talian khidmat pelanggan kumpulan ialah +60 3 8777 0000 dan alamat e-mel am ialah info@malaysiaairports.com.my. Malaysia Airports juga menyediakan sembang langsung yang dikendalikan oleh petugas mengikut jadual harian, dan menerima maklum balas melalui aplikasi mudah alih MYairports.',
     ),
     provenance: 'official',
-    asOf: 'Retrieved 2026-11-16',
+    asOf: '2026-11-16',
     sources: ['mahb-contact', 'mahb-care-chat'],
   },
   {
@@ -122,7 +123,9 @@ export const FAQS: Faq[] = [
       'No. This is an independent concept prototype. It has no access to airport operational systems, so flight information, wait times and availability are demonstration data and are labelled as such. Published facts come from cited sources with the date we retrieved them.',
       'Tidak. Ini prototaip konsep bebas. Ia tiada akses kepada sistem operasi lapangan terbang, maka maklumat penerbangan, masa menunggu dan ketersediaan ialah data demonstrasi dan dilabel sedemikian. Fakta yang diterbitkan datang daripada sumber yang dipetik bersama tarikh ia diperoleh.',
     ),
-    provenance: 'official',
+    provenance: 'suggestion',
+    // Our own statement about this prototype, written for the help centre on 17 November 2026.
+    asOf: '2026-11-17',
     sources: ['prototype-method'],
   },
   /* ---- Appended by the guides team (17 November 2026); answers cite their own sources. ---- */
@@ -135,6 +138,8 @@ export const FAQS: Faq[] = [
       'Gunakan aplikasi atau laman web syarikat penerbangan anda dan skrin di terminal. Malaysia Airports menerbitkan maklumat berlepas langsung di laman web rasminya. Papan penerbangan dalam prototaip ini ialah data demonstrasi dan tidak boleh digunakan untuk merancang perjalanan sebenar.',
     ),
     provenance: 'official',
+    // Our own statement about this prototype, written for the help centre on 17 November 2026.
+    asOf: '2026-11-17',
     sources: ['mahb-klia-t1-departures', 'prototype-method'],
   },
   {
@@ -157,7 +162,7 @@ export const FAQS: Faq[] = [
       'The Malaysian Aviation Commission (Mavcom) says airlines must offer passengers a refund for delays of five hours or more, under 2024 amendments to the Malaysian Aviation Consumer Protection Code. Malay Mail reported that the refund is an option you apply for, not an automatic payment: ask your airline first.',
       'Suruhanjaya Penerbangan Malaysia (Mavcom) menyatakan syarikat penerbangan mesti menawarkan bayaran balik kepada penumpang bagi kelewatan lima jam atau lebih, di bawah pindaan 2024 kepada Kod Perlindungan Pengguna Penerbangan Malaysia. Malay Mail melaporkan bahawa bayaran balik ialah pilihan yang perlu dipohon, bukan bayaran automatik: tanya syarikat penerbangan anda dahulu.',
     ),
-    provenance: 'official',
+    provenance: 'estimated',
     asOf: '2025-02-19',
     sources: ['thestar-mavcom-delay-refunds-2025', 'malaymail-delay-refunds-2024'],
   },
@@ -170,6 +175,8 @@ export const FAQS: Faq[] = [
       'Maklumkan kepada syarikat penerbangan sebaik sahaja anda tahu, sebaiknya sebelum mendarat. Jika kedua-dua penerbangan dalam satu tempahan, syarikat yang mengeluarkan tiket lazimnya mengatur pilihan seterusnya. Bagi tiket berasingan, syarikat penerbangan kedua mungkin tidak tahu tentang penerbangan pertama anda, jadi hubunginya terus dan tanya apa yang boleh dilakukan. Sahkan semuanya dengan syarikat penerbangan: ini panduan umum.',
     ),
     provenance: 'estimated',
+    // Our own statement about this prototype, written for the help centre on 17 November 2026.
+    asOf: '2026-11-17',
     sources: ['prototype-method'],
   },
   {
@@ -181,7 +188,7 @@ export const FAQS: Faq[] = [
       'Malaysia Airports mengendalikan laman web maklum balas berasingan, yang dipautkan dari bahagian Help laman rasminya. Anda juga boleh menulis kepada info@malaysiaairports.com.my, menggunakan sembang langsung (dikendalikan mengikut jadual harian, bukan 24 jam) atau aplikasi MYairports.',
     ),
     provenance: 'official',
-    asOf: 'Observed 2026-11-16',
+    asOf: '2026-11-16',
     sources: ['mahb-feedback-site', 'mahb-contact', 'mahb-care-chat'],
   },
   {
@@ -193,6 +200,7 @@ export const FAQS: Faq[] = [
       'Buat aduan kepada syarikat penerbangan dahulu dan simpan nombor rujukannya. Panduan sebuah firma guaman menyatakan syarikat penerbangan dijangka memberi maklum balas dalam tempoh 30 hari, dan jika masalah tidak selesai anda boleh membuat aduan kepada Suruhanjaya Penerbangan Malaysia (Mavcom) di laman webnya atau dalam aplikasi FlySmart, dengan menyertakan nombor rujukan syarikat penerbangan, butiran penerbangan dan tempahan serta surat-menyurat anda. Mavcom melaporkan pada 2026 bahawa ia menyelesaikan 99 peratus aduan yang diterima.',
     ),
     provenance: 'estimated',
+    asOf: '2026-03',
     sources: ['conventuslaw-mavcom-complaint', 'caam-mavcom-consumer-report-2026'],
   },
   {
@@ -204,6 +212,7 @@ export const FAQS: Faq[] = [
       'Tidak. Malaysia Airports memberi amaran tentang halaman media sosial palsu yang menjual bagasi hilang dan menyatakan ia tidak menjual barang atau bagasi hilang dalam apa jua keadaan.',
     ),
     provenance: 'official',
+    undated: true,
     sources: ['mahb-scam-alert'],
   },
   {
@@ -215,6 +224,7 @@ export const FAQS: Faq[] = [
       'Malaysia Airports menyenaraikan pengambilan kerja palsu antara penipuan di halaman amaran penipuannya. Ia menasihatkan anda menyemak sama ada syarikat itu sah dan menghubunginya untuk bertanya tentang tawaran tersebut.',
     ),
     provenance: 'official',
+    undated: true,
     sources: ['mahb-scam-alert'],
   },
   {
@@ -226,6 +236,7 @@ export const FAQS: Faq[] = [
       'Halaman amaran penipuan korporat Malaysia Airports menyenaraikan e-mel pendaftaran vendor palsu yang mendakwa daripada KLIA. Semak sebarang permintaan sedemikian dengan laman web korporat rasmi sebelum membalas.',
     ),
     provenance: 'official',
+    undated: true,
     sources: ['mahb-corporate-scam-alert'],
   },
   {
@@ -250,6 +261,7 @@ export const FAQS: Faq[] = [
       'Tidak. MDAC adalah percuma di portal rasmi Imigresen. Laporan menyebut laman web tiruan yang mengenakan bayaran: gunakan portal rasmi sahaja.',
     ),
     provenance: 'official',
+    undated: true,
     sources: ['kln-mdac-mission-page', 'imi-mdac-portal', 'wikipedia-mdac'],
   },
   {
@@ -260,7 +272,9 @@ export const FAQS: Faq[] = [
       'Saved flights, places, your parking note, your airport and your display settings are kept in your browser on this device. They are not sent to a server. The site loads no analytics, advertising or third-party scripts.',
       'Penerbangan, tempat, nota parkir, lapangan terbang dan tetapan paparan yang disimpan berada dalam pelayar anda pada peranti ini. Ia tidak dihantar ke pelayan. Laman ini tidak memuatkan analitik, pengiklanan atau skrip pihak ketiga.',
     ),
-    provenance: 'official',
+    provenance: 'suggestion',
+    // Our own statement about this prototype, written for the help centre on 17 November 2026.
+    asOf: '2026-11-17',
     sources: ['prototype-method'],
   },
   {
@@ -271,7 +285,9 @@ export const FAQS: Faq[] = [
       'Use "Clear my journey" on the My journey page and "Reset to defaults" in the display settings, or clear this site\'s data in your browser settings.',
       'Gunakan "Kosongkan perjalanan saya" di halaman Perjalanan saya dan "Tetapkan semula" dalam tetapan paparan, atau padam data laman ini dalam tetapan pelayar anda.',
     ),
-    provenance: 'official',
+    provenance: 'suggestion',
+    // Our own statement about this prototype, written for the help centre on 17 November 2026.
+    asOf: '2026-11-17',
     sources: ['prototype-method'],
   },
   {
@@ -295,6 +311,8 @@ export const FAQS: Faq[] = [
       'Terangkan barang itu (jenama, warna, apa-apa ciri khas), di mana dan bila kali terakhir anda memilikinya, nombor penerbangan anda, dan cara menghubungi anda. Gambar amat membantu.',
     ),
     provenance: 'suggestion',
+    // Our own statement about this prototype, written for the help centre on 17 November 2026.
+    asOf: '2026-11-17',
     sources: ['prototype-method'],
   },
   {
@@ -306,6 +324,7 @@ export const FAQS: Faq[] = [
       'Barang yang tertinggal dalam pesawat dikendalikan oleh syarikat penerbangan atau pengendali daratnya, bukan oleh Barang Hilang & Dijumpai lapangan terbang. Hubungi syarikat penerbangan secepat mungkin, dengan nombor penerbangan dan tempat duduk anda.',
     ),
     provenance: 'official',
+    undated: true,
     sources: ['mahb-lost-found', 'mahb-klia-t1-help'],
   },
   {
@@ -317,6 +336,7 @@ export const FAQS: Faq[] = [
       'Melalui syarikat penerbangan anda, semasa menempah. Malaysia Airlines meminta permohonan kerusi roda dibuat sekurang-kurangnya 48 jam sebelum berlepas; permohonan lewat bergantung pada ketersediaan, dan ia menyatakan perkhidmatan ini percuma. Syarikat penerbangan lain mempunyai peraturan sendiri.',
     ),
     provenance: 'official',
+    undated: true,
     sources: ['mh-special-assistance'],
   },
   {
@@ -329,6 +349,7 @@ export const FAQS: Faq[] = [
     ),
     airports: ['kul'],
     provenance: 'official',
+    undated: true,
     sources: ['mahb-lags-restricted-items', 'mh-cabin-baggage'],
   },
   {
@@ -352,6 +373,7 @@ export const FAQS: Faq[] = [
       'Laporkan kepada syarikat penerbangan atau pengendali daratnya sebelum keluar dari balai bagasi, dan simpan nombor rujukan. Barang Hilang & Dijumpai lapangan terbang mengendalikan barang yang hilang di terminal, bukan bagasi daftar masuk.',
     ),
     provenance: 'estimated',
+    undated: true,
     sources: ['kliainfo-lost-found', 'mahb-lost-found'],
   },
   {

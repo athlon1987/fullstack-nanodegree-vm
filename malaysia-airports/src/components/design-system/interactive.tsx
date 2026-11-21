@@ -51,7 +51,7 @@ export function SearchFieldDemo() {
         placeholderShort={t('flights.search.label')}
         hint={t('flights.search.hint')}
         trailing={
-          <Button size="sm" iconEnd="arrow-right" className="h-11 max-sm:px-3.5">
+          <Button size="sm" iconEnd="arrow-right" className="min-h-11 max-sm:px-3.5">
             <span className="max-sm:sr-only">{t('common.actions.search')}</span>
           </Button>
         }

@@ -67,10 +67,12 @@ export function SiteHeader({ lang }: { lang: Lang }) {
       </div>
 
       <header data-print="hidden" data-site-header="" className="sticky top-0 z-40 h-header border-b border-line bg-page">
-        <div className="@container mx-auto h-full max-w-wide px-4 sm:px-6">
+        <div className="group/hdr @container mx-auto h-full max-w-wide px-4 sm:px-6">
           <div className="flex h-full items-center gap-2 sm:gap-3">
             <LocaleLink href="/" aria-label={t('shell.homeLabel', { name: t('common.appName') })} className="shrink-0 rounded-sm">
-              <Wordmark name={t('common.appName')} size="sm" className="sm:hidden" />
+              {/* With no airport chosen, a narrow header (320 px, or 125% text) keeps the mark and
+                  hides the name visually, so "Choose airport" fits (A-16). The link keeps its name. */}
+              <Wordmark name={t('common.appName')} size="sm" className="sm:hidden" nameClassName="@max-[21rem]:group-has-[[data-no-airport]]/hdr:sr-only" />
               <Wordmark name={t('common.appName')} className="max-sm:hidden" />
             </LocaleLink>
             <PrimaryNav className={cn('ml-3', at.nav)} />

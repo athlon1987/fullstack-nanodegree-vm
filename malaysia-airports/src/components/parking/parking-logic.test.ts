@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
+import { getAirportContent } from '@/content';
 import { calculateParking } from '@/lib/parking';
-import { dailyMaxCeiling, defaultArrival, localInstant, parseClock, shiftStamp, stayMinutes } from './parking-logic';
+import { parkingPageModel } from './parking-data.server';
+import { dailyMaxCeiling, defaultArrival, localInstant, MATRIX_DAYS, parseClock, priceCell, priceRow, shiftStamp, stampFromIso, stayMinutes } from './parking-logic';
 
 const TZ = 'Asia/Kuala_Lumpur';
 
@@ -65,5 +67,54 @@ describe('daily maximum ceiling', () => {
       if (result.unavailable) throw new Error('expected a fee');
       expect(dailyMaxCeiling(carPark, minutes)!.amount).toBeGreaterThanOrEqual(result.total);
     }
+  });
+});
+
+describe('price matrix (C-01)', () => {
+  const base = { rates: [], graceMinutes: undefined };
+  it('gives the most a stay can cost under a published daily maximum', () => {
+    const ltcp = { ...base, rateStatus: 'not-verified' as const, dailyMax: 32 };
+    expect(MATRIX_DAYS).toEqual([1, 3, 7]);
+    expect(priceRow(ltcp)).toEqual([
+      { kind: 'ceiling', amount: 32 },
+      { kind: 'ceiling', amount: 96 },
+      { kind: 'ceiling', amount: 224 },
+    ]);
+  });
+
+  it('turns the sources’ own daily maximums into a range when rates are not verified', () => {
+    const one = { ...base, rateStatus: 'not-verified' as const, reported: [{ amount: 52 }] };
+    expect(priceCell(one, 3)).toEqual({ kind: 'reported', min: 156, max: 156 });
+    const two = { ...base, rateStatus: 'not-verified' as const, reported: [{ amount: 52 }, { amount: 40 }] };
+    expect(priceCell(two, 7)).toEqual({ kind: 'reported', min: 280, max: 364 });
+  });
+
+  it('says nothing it cannot stand behind, and estimates from a published tariff', () => {
+    expect(priceCell({ ...base, rateStatus: 'not-verified' as const }, 1)).toEqual({ kind: 'none' });
+    const tariff = { rates: [{ fromMinute: 0, kind: 'per-block' as const, amount: 4, blockMinutes: 60 }], rateStatus: 'published' as const, dailyMax: 30 };
+    expect(priceCell(tariff, 1)).toEqual({ kind: 'estimate', amount: 30 });
+    expect(priceCell(tariff, 3)).toEqual({ kind: 'estimate', amount: 90 });
+  });
+
+  it('reads the dates journey links carry, in airport time', () => {
+    expect(stampFromIso('2026-11-21T02:30:00Z', 'Asia/Kuala_Lumpur')).toEqual({ date: '2026-11-21', time: '10:30' });
+    expect(stampFromIso('not a date', 'Asia/Kuala_Lumpur')).toBeNull();
+    expect(stampFromIso(null, 'Asia/Kuala_Lumpur')).toBeNull();
+  });
+});
+
+describe('KLIA price matrix data (C-01)', () => {
+  it('quotes a dated, attributed daily maximum for every not-verified car park that has one', () => {
+    const kul = getAirportContent('kul');
+    if (!kul) throw new Error('KUL content missing');
+    const { data } = parkingPageModel(kul, 'en');
+    const byId = new Map(data.carParks.map((carPark) => [carPark.id, carPark]));
+    expect(priceRow(byId.get('kul-long-term-car-park')!)[1]).toEqual({ kind: 'ceiling', amount: 96 });
+    const t1 = byId.get('kul-t1-car-park')!;
+    expect(t1.reported).toEqual([{ amount: 52, sourceId: 'kliainfo-parking-rates', publisher: 'klia.info', retrieved: '2026-11-17' }]);
+    expect(priceRow(t1)[0]).toEqual({ kind: 'reported', min: 52, max: 52 });
+    // Preferred Parking has no figure: its row carries the warning instead.
+    expect(priceRow(byId.get('kul-t1-preferred-parking')!).every((cell) => cell.kind === 'none')).toBe(true);
+    expect(data.premiumWarning).toBeDefined();
   });
 });

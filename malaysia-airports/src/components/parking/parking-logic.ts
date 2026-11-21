@@ -8,6 +8,7 @@
  *   that assumption and labels the figure as an estimate; it is never shown as the fee.
  */
 import type { CarPark } from '@/content/types';
+import { calculateParking } from '@/lib/parking';
 import { dateKey, formatTime, zonedDateTime } from '@/lib/time';
 
 const MINUTES_PER_DAY = 1440;
@@ -86,3 +87,55 @@ export const QUICK_STAYS = [
   { minutes: 3 * 1440, unit: 'days', count: 3 },
   { minutes: 7 * 1440, unit: 'days', count: 7 },
 ] as const;
+
+/* -------------------------------------------------------------------------------------------
+ * Price matrix (C-01): what a stay of 1, 3 or 7 days can cost at each car park
+ * ---------------------------------------------------------------------------------------- */
+
+/** Stay lengths in the price matrix, in days. */
+export const MATRIX_DAYS = [1, 3, 7] as const;
+
+/**
+ * One cell of the price matrix:
+ * - `estimate`: worked out from a published tariff;
+ * - `ceiling`: the most the stay can cost under a published daily maximum (hourly rates not verified);
+ * - `reported`: rates not verified; the range the sources' daily maximums give, never the fee;
+ * - `none`: no figure we can stand behind.
+ */
+export type PriceCell =
+  | { kind: 'estimate'; amount: number }
+  | { kind: 'ceiling'; amount: number }
+  | { kind: 'reported'; min: number; max: number }
+  | { kind: 'none' };
+
+type PricedCarPark = Pick<CarPark, 'rates' | 'rateStatus' | 'dailyMax' | 'graceMinutes'> & { reported?: readonly { amount: number }[] };
+
+const money = (value: number): number => Math.round(value * 100) / 100;
+
+/** The matrix cell for a stay of `days` days. Pure: it never reads the clock. */
+export function priceCell(carPark: PricedCarPark, days: number): PriceCell {
+  const minutes = days * MINUTES_PER_DAY;
+  const result = calculateParking(carPark, minutes);
+  if (!result.unavailable) return { kind: 'estimate', amount: result.total };
+  const ceiling = dailyMaxCeiling(carPark, minutes);
+  if (ceiling) return { kind: 'ceiling', amount: ceiling.amount };
+  const amounts = (carPark.reported ?? []).map((figure) => figure.amount);
+  if (amounts.length > 0) return { kind: 'reported', min: money(Math.min(...amounts) * days), max: money(Math.max(...amounts) * days) };
+  return { kind: 'none' };
+}
+
+/** A row of the matrix: one cell per entry of `MATRIX_DAYS`. */
+export function priceRow(carPark: PricedCarPark): PriceCell[] {
+  return MATRIX_DAYS.map((days) => priceCell(carPark, days));
+}
+
+/**
+ * A local stamp from an ISO instant in a link (`?from=2026-11-21T10:00:00+08:00`), in airport
+ * time. Null when the value is missing or not a date. Journey links carry these (B-13).
+ */
+export function stampFromIso(value: string | null | undefined, timeZone: string): LocalStamp | null {
+  if (!value) return null;
+  const instant = new Date(value);
+  if (Number.isNaN(instant.getTime())) return null;
+  return { date: dateKey(instant, timeZone), time: formatTime(instant, timeZone) };
+}

@@ -76,9 +76,37 @@ export function startServiceWorker(): void {
       .then(track)
       .catch(() => worker.set({ status: 'error' }));
   };
-  // Let the page finish loading first: the worker's precache should not compete with it.
-  if (document.readyState === 'complete') register();
-  else window.addEventListener('load', register, { once: true });
+  // Let the page and its prefetches finish first: the worker's precache must not compete with
+  // them (performance-11).
+  const start = () => afterNetworkIdle(register);
+  if (document.readyState === 'complete') start();
+  else window.addEventListener('load', start, { once: true });
+}
+
+/**
+ * Run `callback` once the network has been quiet for a moment: no new resource entries for
+ * `quietMs`, checked every 500 ms, and at most `maxWaitMs` after the call. Then in an idle period.
+ */
+export function afterNetworkIdle(callback: () => void, quietMs = 1500, maxWaitMs = 10_000): void {
+  const count = () => (typeof performance !== 'undefined' && performance.getEntriesByType ? performance.getEntriesByType('resource').length : 0);
+  let last = count();
+  let quiet = 0;
+  let waited = 0;
+  const idle = () => {
+    const withIdle = window as Window & { requestIdleCallback?: (fn: () => void, options?: { timeout: number }) => number };
+    if (withIdle.requestIdleCallback) withIdle.requestIdleCallback(callback, { timeout: 2000 });
+    else callback();
+  };
+  const timer = window.setInterval(() => {
+    const now = count();
+    quiet = now === last ? quiet + 500 : 0;
+    last = now;
+    waited += 500;
+    if (quiet >= quietMs || waited >= maxWaitMs) {
+      window.clearInterval(timer);
+      idle();
+    }
+  }, 500);
 }
 
 function track(reg: ServiceWorkerRegistration): void {

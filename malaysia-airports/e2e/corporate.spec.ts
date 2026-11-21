@@ -1,5 +1,5 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
+import { expectNoAxeViolations } from './support/axe';
 
 /**
  * Journeys for the corporate section and the transparency pages (about this prototype, privacy,
@@ -8,14 +8,7 @@ import { expect, test, type Page } from '@playwright/test';
  * so timeouts are generous.
  */
 
-const AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'];
-type AxePage = ConstructorParameters<typeof AxeBuilder>[0]['page'];
-
-async function expectNoAxeViolations(page: Page) {
-  const results = await new AxeBuilder({ page: page as unknown as AxePage }).withTags(AXE_TAGS).analyze();
-  const summary = results.violations.map((v) => `${v.id} (${v.impact}): ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`);
-  expect(summary, 'axe violations').toEqual([]);
-}
+// The shared WCAG 2.2 AA scan (e2e/support/axe.ts) replaces this spec's own tag list.
 
 async function expectNoHorizontalOverflow(page: Page) {
   const { scrollWidth, clientWidth } = await page.evaluate(() => ({

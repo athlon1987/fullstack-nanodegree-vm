@@ -496,7 +496,8 @@ describe('opsStatus: status lines fed by notices (B-01)', () => {
     const fare: Notice = { ...notice, id: 'kul-klia-ekspres-fare-rise-2027', title: { en: 'KLIA Ekspres adult fare rises to RM65' }, validFrom: undefined, validTo: undefined };
     const lines = opsStatus({ airport: 'kul', notices: [fare], now: new Date('2026-11-18T10:00:00+08:00'), services: ['inter-terminal-train', 'immigration'], terminal: 'T1' });
     expect(lines[0].state).toBe('clear');
-    expect(lines[1].waits.length).toBe(2);
+    // Security and immigration when leaving, immigration when arriving (the arrival step shows its own).
+    expect(lines[1].waits.map((wait) => wait.checkpoint)).toEqual(['security', 'immigration-departure', 'immigration-arrival']);
     expect(lines[1].waits.every((wait) => wait.isDemo && wait.terminal === 'T1')).toBe(true);
   });
 });
