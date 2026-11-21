@@ -16,7 +16,8 @@
  * The result is an ESTIMATE from published rates (`provenance: 'estimated'` in the UI). When a
  * car park's rates are not verified the function says so instead of guessing.
  */
-import { lt, type CarPark, type LocalizedText, type RateBand } from '@/content/types';
+import { lt } from '@/content/values';
+import type { CarPark, LocalizedText, RateBand } from '@/content/types';
 import { formatDuration } from './format';
 
 /** One line of the fee breakdown. */

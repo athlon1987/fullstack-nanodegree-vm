@@ -7,8 +7,7 @@
  *    nearest the gate.
  */
 import { useCallback, useSyncExternalStore } from 'react';
-import { z } from 'zod';
-import { createStore } from '@/lib/storage';
+import { check, createStore, validator } from '@/lib/storage';
 
 export interface TripOptions {
   handLuggageOnly: boolean;
@@ -20,7 +19,8 @@ export const DEFAULT_TRIP_OPTIONS: TripOptions = { handLuggageOnly: false, loung
 export const tripOptionsStore = createStore<TripOptions>({
   name: 'trip-options',
   version: 1,
-  schema: z.object({ handLuggageOnly: z.boolean(), loungeAccess: z.boolean() }),
+  // zod-free validation (round 2, E-03): zod left the JavaScript of every page.
+  schema: validator(check.object({ handLuggageOnly: check.boolean(), loungeAccess: check.boolean() })),
   defaultValue: DEFAULT_TRIP_OPTIONS,
 });
 

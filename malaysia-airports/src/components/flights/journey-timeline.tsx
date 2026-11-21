@@ -1,7 +1,8 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { hasTranslation, pick, type Notice, type Source } from '@/content/types';
+import { hasTranslation, pick } from '@/content/values';
+import type { Notice, Source } from '@/content/types';
 import type { Flight } from '@/lib/flights';
 import { useJourneyMode } from '@/lib/hooks/use-journey-mode';
 import { useLang, useT } from '@/lib/i18n/client';

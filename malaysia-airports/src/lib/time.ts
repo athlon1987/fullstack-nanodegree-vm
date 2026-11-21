@@ -97,8 +97,17 @@ export function offsetCacheStats(): { exactLookups: number; cachedDays: number }
   return { exactLookups: offsetLookups, cachedDays: dayOffsets.size };
 }
 
+/**
+ * Malaysia has kept UTC+8, without daylight saving, since 1 January 1982 (IANA tz database,
+ * `Asia/Kuala_Lumpur`). Every airport here uses that zone, so its offset needs no `Intl` call
+ * (round 2: the first `Intl` object a page builds loads locale data, about 40 ms on a mid-range
+ * phone, in the middle of hydration). Earlier instants take the exact path.
+ */
+const MALAYSIA_FIXED_FROM = Date.UTC(1982, 0, 1);
+
 function cachedOffset(ms: number, timeZone: string): number {
   if (timeZone === 'UTC' || timeZone === 'Etc/UTC') return 0;
+  if (timeZone === DEFAULT_TIMEZONE && ms >= MALAYSIA_FIXED_FROM) return 480;
   const day = Math.floor(ms / DAY_MS);
   const dayKey = `${timeZone}|${day}`;
   let whole = dayOffsets.get(dayKey);
@@ -267,7 +276,19 @@ export function formatDate(
   style: DateStyle = 'medium',
   timeZone: string = DEFAULT_TIMEZONE,
 ): string {
-  return new Intl.DateTimeFormat(LOCALES[lang], { ...DATE_OPTIONS[style], timeZone }).format(toDate(value));
+  return dateFormat(lang, style, timeZone).format(toDate(value));
+}
+
+/** One formatter per language, style and zone, made on first use (round 2: building one per call cost ~17 ms of a phone page load). */
+const DATE_FORMATS = new Map<string, Intl.DateTimeFormat>();
+function dateFormat(lang: Lang, style: DateStyle, timeZone: string): Intl.DateTimeFormat {
+  const key = `${lang}|${style}|${timeZone}`;
+  let format = DATE_FORMATS.get(key);
+  if (!format) {
+    format = new Intl.DateTimeFormat(LOCALES[lang], { ...DATE_OPTIONS[style], timeZone });
+    DATE_FORMATS.set(key, format);
+  }
+  return format;
 }
 
 /** Date and 24-hour time together: `17 Nov, 14:05`. */

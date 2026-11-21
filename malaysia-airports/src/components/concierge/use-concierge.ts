@@ -26,6 +26,11 @@ import { useStore } from '@/lib/hooks/use-store';
 import { localeHref } from '@/lib/locale';
 import { createStore, type StorageLike } from '@/lib/storage';
 
+// The concierge is now the only client code that uses zod (round 2, E-03), and `@/content/types`
+// (which used to set this for every page) no longer loads in the browser. Without it zod probes
+// `new Function`, which the CSP blocks (a `script-src` report in production consoles).
+z.config({ jitless: true });
+
 export interface ConciergeTurn {
   id: string;
   question: string;

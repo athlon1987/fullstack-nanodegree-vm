@@ -43,6 +43,13 @@ export interface FlightBoardProps {
   skeletonRows?: number;
   /** Leave out the demonstration banner. Only when the same view already shows one directly above. */
   hideBanner?: boolean;
+  /**
+   * A shorter header on phones, for a board under its own Departures/Arrivals tabs (A-01, round
+   * 2): the heading and the refresh interval are left to screen readers (the selected tab names
+   * the direction, the Pause button says the board is live) and the header actions share the
+   * first row with the subtitle.
+   */
+  compactHeader?: boolean;
   /** Group rows under the local hour of their scheduled time ("From 14:00"). */
   groupByHour?: boolean;
   /** Time zone of the board's airport, for the hour groups. */
@@ -90,6 +97,7 @@ export function FlightBoard({
   footer,
   skeletonRows = 6,
   hideBanner = false,
+  compactHeader = false,
   groupByHour = false,
   timeZone,
   dayLabel,
@@ -129,14 +137,27 @@ export function FlightBoard({
       {/* overflow-clip (not hidden) keeps the rounded corners without breaking the sticky hour headers. */}
       <div className={cn('surface-board @container relative overflow-clip border border-line', hideBanner ? 'rounded-lg' : 'rounded-b-lg border-t-0')}>
         <WeaveTexture className="absolute right-0 bottom-0 h-14 w-2/5 max-sm:hidden" />
-        <div className="relative flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-b border-line px-4 py-4 sm:px-5">
+        <div
+          className={cn(
+            'relative flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-b border-line px-4 py-4 sm:px-5',
+            compactHeader && 'max-sm:grid max-sm:grid-cols-[minmax(0,1fr)_auto] max-sm:items-center max-sm:gap-x-3 max-sm:gap-y-1 max-sm:py-2.5',
+          )}
+        >
           <div className="min-w-0">
-            <Heading className="type-title-lg text-ink">{title}</Heading>
-            {subtitle ? <p className="type-body-sm mt-0.5 text-ink-2">{subtitle}</p> : null}
+            <Heading className={cn('type-title-lg text-ink', compactHeader && 'max-sm:sr-only')}>{title}</Heading>
+            {subtitle ? <p className={cn('type-body-sm mt-0.5 text-ink-2', compactHeader && 'max-sm:mt-0')}>{subtitle}</p> : null}
           </div>
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-            <Freshness live={live} updatedAt={updatedAt} refreshSeconds={refreshSeconds} context={context} />
-            {headerActions}
+          <div className={cn('flex flex-wrap items-center gap-x-3 gap-y-1', compactHeader && 'max-sm:contents')}>
+            <Freshness
+              live={live}
+              updatedAt={updatedAt}
+              refreshSeconds={refreshSeconds}
+              // The Pause button beside it says the board updates itself; the interval is read out.
+              intervalClassName={compactHeader ? 'max-sm:sr-only' : undefined}
+              context={context}
+              className={compactHeader ? 'max-sm:col-span-2' : undefined}
+            />
+            {headerActions ? <div className={cn('contents', compactHeader && 'max-sm:col-start-2 max-sm:row-start-1 max-sm:block')}>{headerActions}</div> : null}
           </div>
         </div>
 

@@ -8,7 +8,8 @@
  * Content authors: add network-wide notices to `NETWORK_NOTICES`. A simulated notice must use
  * `provenance: 'demo'` so that the UI labels it as demonstration data.
  */
-import { lt, type Notice, type NoticeSeverity } from './types';
+import { lt } from './values';
+import type { Notice, NoticeSeverity } from './types';
 
 /** Notices that apply to the whole network. */
 export const NETWORK_NOTICES: Notice[] = [

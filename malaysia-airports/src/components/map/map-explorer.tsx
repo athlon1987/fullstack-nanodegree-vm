@@ -1,8 +1,8 @@
 'use client';
 
-import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { MapNode, Source } from '@/content/types';
+import { useUrlSearchParams } from '@/lib/hooks/use-url';
 import { shortestPath } from '@/lib/map';
 import { useT } from '@/lib/i18n/client';
 import { ExternalLink } from '@/components/common/external-link';
@@ -18,7 +18,6 @@ import { SegmentedControl } from '@/components/ui/segmented-control';
 import { MapCanvas, type RouteConnector, type RouteLine } from './map-canvas';
 import { MapLegend } from './map-legend';
 import {
-  EMPTY_MAP_QUERY,
   MAP_FILTERS,
   applyQueryPatch,
   buildRouteSteps,
@@ -68,15 +67,10 @@ const FOCUS_ZOOM = 1.8;
  * the list of places are there without JavaScript.
  */
 export function MapExplorer(props: MapExplorerProps) {
-  return (
-    <Suspense fallback={<MapExplorerView {...props} query={EMPTY_MAP_QUERY} />}>
-      <MapFromUrl {...props} />
-    </Suspense>
-  );
-}
-
-function MapFromUrl(props: MapExplorerProps) {
-  const params = useSearchParams();
+  // No `<Suspense>` (round 2): the query comes from `useUrlSearchParams`, empty until hydration,
+  // so the server map hydrates in place (a search typed before hydration is kept); a deep link's
+  // place, level or route is applied right after.
+  const params = useUrlSearchParams();
   const query = useMemo(() => parseMapQuery(params), [params]);
   return <MapExplorerView {...props} query={query} />;
 }

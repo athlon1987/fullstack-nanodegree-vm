@@ -21,6 +21,7 @@ import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { Lang } from '@/content/types';
+import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 export function generateStaticParams() {
   return helpTopicSlugs().map((topic) => ({ topic }));
@@ -40,16 +41,19 @@ export async function generateMetadata({ params }: PageProps<'/[lang]/help/[topi
 
 export default function HelpTopicPage({ params }: PageProps<'/[lang]/help/[topic]'>) {
   return (
-    <Suspense
-      fallback={
-        <Container className="py-10" aria-hidden="true">
-          <Skeleton className="h-12 w-2/3" />
-          <Skeleton className="mt-8 h-96 w-full" />
-        </Container>
-      }
-    >
-      <HelpTopic params={params} />
-    </Suspense>
+    <I18nPageScope namespaces={['guidePages']}>
+      <Suspense
+        fallback={
+          <Container className="py-10" aria-hidden="true">
+            <Skeleton className="h-12 w-2/3" />
+            <Skeleton className="mt-8 h-96 w-full" />
+          </Container>
+        }
+      >
+        <HelpTopic params={params} />
+      </Suspense>
+  
+    </I18nPageScope>
   );
 }
 

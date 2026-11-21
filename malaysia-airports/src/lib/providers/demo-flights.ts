@@ -19,7 +19,8 @@
  * shows these flights must carry the "Demonstration data" label.
  */
 import { getAirport } from '@/content/airports';
-import { lt, type Airport, type LocalizedText, type TerminalId } from '@/content/types';
+import { lt } from '@/content/values';
+import type { Airport, LocalizedText, TerminalId } from '@/content/types';
 import { decodeFlightId, encodeFlightId, flightDesignator } from '@/lib/flights/id';
 import { filterFlights, searchFlights, sortFlights } from '@/lib/flights/query';
 import type { CheckInDesk, DemoFlight, FlightDirection, FlightPlace, FlightStatus } from '@/lib/flights/types';

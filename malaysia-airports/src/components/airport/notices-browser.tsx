@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { getAirport } from '@/content/airports';
-import { NOTICE_SEVERITIES, type NoticeSeverity } from '@/content/types';
+import { NOTICE_SEVERITIES } from '@/content/values';
+import type { NoticeSeverity } from '@/content/types';
 import { useT } from '@/lib/i18n/client';
 import { FilterChip } from '@/components/ui/filter-chip';
 import { NativeSelect } from '@/components/ui/native-select';

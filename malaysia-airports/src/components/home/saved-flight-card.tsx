@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import { getAirport } from '@/content/airports';
-import { pick } from '@/content/types';
+import { pick } from '@/content/values';
 import { formatFlightNumber, isFinalStatus, isInternationalFlight, type Flight } from '@/lib/flights';
 import { useFlightProvider } from '@/lib/hooks';
 import { useLang, useT } from '@/lib/i18n/client';

@@ -1,6 +1,7 @@
 'use client';
 
-import { PROVENANCES, type Provenance } from '@/content/types';
+import { PROVENANCES } from '@/content/values';
+import type { Provenance } from '@/content/types';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n/client';
 import { ProvenanceTag } from './provenance-tag';

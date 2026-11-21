@@ -51,7 +51,7 @@ export function BoardToolbar({ airport, direction, query, initialQuery, searchKe
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3 sm:gap-4">
       <div className="flex flex-wrap items-end gap-3">
         <form role="search" aria-label={t('flightPages.board.searchLabel')} className="min-w-0 flex-1 basis-80" onSubmit={(event: FormEvent) => event.preventDefault()}>
           <BoardSearchField key={searchKey} initial={initialQuery} onQueryChange={onQueryChange} />

@@ -2,7 +2,8 @@
 
 import type { ReactNode } from 'react';
 import { getAirport, terminalLabel } from '@/content/airports';
-import { pick, type Provenance, type Source } from '@/content/types';
+import { pick } from '@/content/values';
+import type { Provenance, Source } from '@/content/types';
 import { cn } from '@/lib/cn';
 import { checkInLines, formatFlightNumber, type Flight } from '@/lib/flights';
 import { formatDuration } from '@/lib/format';

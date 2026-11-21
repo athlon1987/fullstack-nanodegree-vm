@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { lang as routeLang } from 'next/root-params';
 import { getSource } from '@/content';
@@ -11,6 +12,7 @@ import { ShellProvider } from '@/components/shell/shell-context';
 import { SiteFooter } from '@/components/shell/site-footer';
 import { SiteHeader } from '@/components/shell/site-header';
 import { fontVariables } from '@/fonts';
+import { UrlSync } from '@/lib/hooks/use-url';
 import { clientDictionary, getT, isLang, langParams } from '@/lib/i18n';
 import { I18nProvider } from '@/lib/i18n/client';
 import { PREFERENCES_INIT_SCRIPT } from '@/lib/preferences';
@@ -80,6 +82,10 @@ export default async function RootLayout({ children }: LayoutProps<'/[lang]'>) {
             <MobileBar />
             <GlobalOverlays />
             <PlatformRuntime />
+            {/* Tells the URL hooks in `use-url.ts` about client-side navigations (round 2). */}
+            <Suspense fallback={null}>
+              <UrlSync />
+            </Suspense>
           </ShellProvider>
         </I18nProvider>
       </body>

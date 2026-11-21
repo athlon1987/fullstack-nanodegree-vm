@@ -69,10 +69,11 @@ test.describe('A-01 airport chrome on a phone', () => {
   });
 
   // The first board row also depends on the board's own toolbar and banner (package B, B-03 and
-  // B-16). Verification round (21 Nov 2026, production build): still fails, first row at 864 px
-  // (phone project) and 893 px (desktop project) at 390x664, below the lead, the direction tabs,
-  // search, status chips, the demo banner and the table heading. Open in docs/qa/verification.md.
-  test.fixme('the first board row is inside the first 664 px', async ({ page }) => {
+  // B-16). It was `fixme` after the verification round (first row at 864 px on the phone project,
+  // 893 px on the desktop project). Round 2 (docs/qa/fixes/round2-performance.md): on phones the
+  // lead is left to screen readers, the board header is one row of window and Pause plus one row
+  // of freshness, and the gaps are tighter: first row at 643 px on both projects.
+  test('the first board row is inside the first 664 px', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 664 });
     await page.goto('/en/kul/flights');
     const row = page.locator('main a[href*="/kul/flights/"]').first();

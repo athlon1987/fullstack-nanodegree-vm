@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { getAirportContent } from '@/content';
-import { lt, type TransportOption } from '@/content/types';
+import { lt } from '@/content/values';
+import type { TransportOption } from '@/content/types';
 import { compareTransport } from './transport';
 
 function option(id: string, mode: TransportOption['mode'], extra: Partial<TransportOption> = {}): TransportOption {

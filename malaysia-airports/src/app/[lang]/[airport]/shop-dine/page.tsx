@@ -14,6 +14,7 @@ import { sectionPath } from '@/components/shell/sections';
 import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 import { Skeleton } from '@/components/ui/skeleton';
+import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 export const generateStaticParams = () => sectionStaticParams('shop-dine');
 
@@ -30,17 +31,20 @@ export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/
 /** Shop and dine discovery for one airport: every published outlet, with filters and sources. */
 export default function ShopDinePage({ params }: PageProps<'/[lang]/[airport]/shop-dine'>) {
   return (
-    <Suspense
-      fallback={
-        <Container className="py-10" aria-hidden="true">
-          <Skeleton className="h-10 w-72" />
-          <Skeleton className="mt-8 h-14 w-full" />
-          <Skeleton className="mt-8 h-72 w-full" />
-        </Container>
-      }
-    >
-      <ShopDine params={params} />
-    </Suspense>
+    <I18nPageScope namespaces={['commercePages']}>
+      <Suspense
+        fallback={
+          <Container className="py-10" aria-hidden="true">
+            <Skeleton className="h-10 w-72" />
+            <Skeleton className="mt-8 h-14 w-full" />
+            <Skeleton className="mt-8 h-72 w-full" />
+          </Container>
+        }
+      >
+        <ShopDine params={params} />
+      </Suspense>
+  
+    </I18nPageScope>
   );
 }
 

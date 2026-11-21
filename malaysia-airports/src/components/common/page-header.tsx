@@ -9,6 +9,10 @@ export interface PageHeaderProps {
   title: ReactNode;
   /** One or two sentences that say what the page is for. */
   lead?: ReactNode;
+  /** Classes for the lead, e.g. `max-sm:sr-only` where the first phone screen is for the page's tool (A-01). */
+  leadClassName?: string;
+  /** Less space under the header on phones, where a tool follows directly (A-01, round 2). */
+  tightOnPhones?: boolean;
   /** `<Breadcrumbs>` for the page. */
   breadcrumbs?: ReactNode;
   /** Primary actions for the page (buttons or links). */
@@ -32,10 +36,10 @@ export interface PageHeaderProps {
  * <PageHeader eyebrow={airport.shortName} title={t('parking.title')} lead={...}
  *   breadcrumbs={<Breadcrumbs items={[{ label: airport.shortName, href: `/${airport.slug}` }, { label: t('nav.parking') }]} />} />
  */
-export function PageHeader({ eyebrow, title, lead, breadcrumbs, actions, meta, art, tone = 'page', size = 'md', width = 'page', className }: PageHeaderProps) {
+export function PageHeader({ eyebrow, title, lead, leadClassName, tightOnPhones = false, breadcrumbs, actions, meta, art, tone = 'page', size = 'md', width = 'page', className }: PageHeaderProps) {
   return (
     <header className={cn(tone === 'subtle' && 'border-b border-line bg-page-subtle', className)}>
-      <Container size={width} className={cn('pb-8 sm:pb-10', breadcrumbs ? 'pt-3 sm:pt-4' : 'pt-8 sm:pt-12')}>
+      <Container size={width} className={cn('pb-8 sm:pb-10', tightOnPhones && 'max-sm:pb-5', breadcrumbs ? 'pt-3 sm:pt-4' : 'pt-8 sm:pt-12')}>
         {breadcrumbs ? (
           <div data-page-breadcrumbs="" className="mb-4 sm:mb-6">
             {breadcrumbs}
@@ -50,7 +54,7 @@ export function PageHeader({ eyebrow, title, lead, breadcrumbs, actions, meta, a
               </p>
             ) : null}
             <h1 className={cn('text-ink', size === 'lg' ? 'type-display-xl' : 'type-display-lg')}>{title}</h1>
-            {lead ? <p className="type-body-lg mt-4 max-w-reading text-ink-2">{lead}</p> : null}
+            {lead ? <p className={cn('type-body-lg mt-4 max-w-reading text-ink-2', leadClassName)}>{lead}</p> : null}
             {meta ? <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2">{meta}</div> : null}
             {actions ? <div className="mt-6 flex flex-wrap items-center gap-3">{actions}</div> : null}
           </div>

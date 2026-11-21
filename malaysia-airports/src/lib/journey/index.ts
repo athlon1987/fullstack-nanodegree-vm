@@ -14,7 +14,8 @@
  * Pure: pass `now` in. Copy is `LocalizedText` (both languages); action labels are dictionary
  * keys; `href`s have no locale prefix (use `localeHref`).
  */
-import { lt, type AirportContent, type GuideNote, type GuideNoteTopic, type LocalizedText, type Provenance, type TerminalId } from '@/content/types';
+import { lt } from '@/content/values';
+import type { AirportContent, GuideNote, GuideNoteTopic, LocalizedText, Provenance, TerminalId } from '@/content/types';
 import { isMultiTerminal, terminalLabel } from '@/content/airports';
 import { checkInLines } from '@/lib/flights/check-in';
 import { formatFlightNumber, isInternationalFlight, remotePlace } from '@/lib/flights/query';

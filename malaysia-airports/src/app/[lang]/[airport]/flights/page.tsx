@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { Suspense } from 'react';
 import { getAirport } from '@/content/airports';
 import { getT } from '@/lib/i18n';
 import { loadAirportPage, sectionStaticParams, type AirportPageParams } from '@/components/airport/section-page';
@@ -7,12 +6,17 @@ import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { PageHeader } from '@/components/common/page-header';
 import { FlightBoardExplorer } from '@/components/flights/flight-board-explorer';
 import { Container } from '@/components/ui/container';
-import { Skeleton } from '@/components/ui/skeleton';
 
 /** Only airports with a demonstration board are prerendered; others answer with the not-found page. */
 export function generateStaticParams() {
   return sectionStaticParams('flights');
 }
+
+/**
+ * Fully static for those airports (round 2; the C-06 hand-off): any other airport waits for the
+ * complete render, so its first response is already a 404, and the page needs no fallback.
+ */
+export const ensureStatic = 'navigation';
 
 export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/flights'>): Promise<Metadata> {
   const { lang, airport: slug } = await params;
@@ -28,21 +32,13 @@ export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/
 /**
  * Departures and arrivals for one airport. The header and the board's frame are static; rows are
  * computed on the client from the demonstration provider after hydration, and the filters live
- * in the URL (`?dir=`, `?t=`, `?q=`, `?s=`), read inside the explorer's own Suspense boundary.
+ * in the URL (`?dir=`, `?t=`, `?q=`, `?s=`), read by the explorer after hydration.
+ *
+ * No page-level `<Suspense>` (round 2, as on the airport overview): it only made React send a
+ * skeleton and reveal the board later with its throttled script (LCP 4.4 s in two of three runs).
  */
 export default function FlightsPage({ params }: PageProps<'/[lang]/[airport]/flights'>) {
-  return (
-    <Suspense
-      fallback={
-        <Container className="py-10" aria-hidden="true">
-          <Skeleton className="h-12 w-72" />
-          <Skeleton className="mt-8 h-96 w-full" />
-        </Container>
-      }
-    >
-      <Flights params={params} />
-    </Suspense>
-  );
+  return <Flights params={params} />;
 }
 
 async function Flights({ params }: { params: AirportPageParams }) {
@@ -52,6 +48,10 @@ async function Flights({ params }: { params: AirportPageParams }) {
       <PageHeader
         title={t('flightPages.board.title')}
         lead={t('flightPages.board.lead', { airport: airport.shortName })}
+        // A-01 (round 2): on phones the first screen goes to the board; the lead stays for screen
+        // readers, and the board footer repeats that times are airport time.
+        leadClassName="max-sm:sr-only"
+        tightOnPhones
         breadcrumbs={<Breadcrumbs items={[{ label: airport.shortName, href: `/${airport.slug}` }, { label: t('nav.flights') }]} />}
       />
       <Container className="pb-section">

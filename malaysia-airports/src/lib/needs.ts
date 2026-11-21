@@ -11,8 +11,7 @@
  * const steps = buildJourney({ flight, mode, airportContent, now, preferences: needsToPreferences(needs) });
  */
 import { useCallback, useMemo, useSyncExternalStore } from 'react';
-import { z } from 'zod';
-import { createStore } from '@/lib/storage';
+import { check, createStore, validator } from '@/lib/storage';
 
 /** Needs a traveller can choose. Order is the order the control shows them in. */
 export const TRAVELLER_NEEDS = ['wheelchair', 'step-free', 'older', 'companion'] as const;
@@ -29,7 +28,8 @@ export function isTravellerNeed(value: unknown): value is TravellerNeed {
 export const needsStore = createStore<TravellerNeed[]>({
   name: 'needs',
   version: 1,
-  schema: z.array(z.enum(TRAVELLER_NEEDS)).max(TRAVELLER_NEEDS.length),
+  // zod-free validation (round 2, E-03): zod left the JavaScript of every page.
+  schema: validator(check.array(check.oneOf(TRAVELLER_NEEDS), { max: TRAVELLER_NEEDS.length })),
   defaultValue: [],
 });
 

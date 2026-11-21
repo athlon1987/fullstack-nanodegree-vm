@@ -6,7 +6,8 @@
  * must be shown with the demonstration label. Neither reads the clock: pass `now` in.
  */
 import { getAirport } from '@/content/airports';
-import { lt, type LocalizedText, type Notice, type TerminalId } from '@/content/types';
+import { lt } from '@/content/values';
+import type { LocalizedText, Notice, TerminalId } from '@/content/types';
 import { dateKey, minutesOfDay, toDate, toIsoWithOffset, type Instant } from '@/lib/time';
 import { OPS_SERVICES, type OpsServiceId } from './ops-services';
 import { seededRandom } from './random';

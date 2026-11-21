@@ -11,6 +11,8 @@ export interface FreshnessProps {
   updatedAt: Instant | null;
   /** Adds "Refreshes every N seconds". */
   refreshSeconds?: number;
+  /** Classes for that sentence, e.g. `max-sm:sr-only` in a compact header (A-01, round 2). */
+  intervalClassName?: string;
   /** Context shown before the time, for example the airport and day: "KUL · Tuesday, 17 November". */
   context?: ReactNode;
   /**
@@ -26,7 +28,7 @@ export interface FreshnessProps {
  *
  * @example <Freshness updatedAt={provider?.meta().generatedAt ?? null} refreshSeconds={30} />
  */
-export function Freshness({ updatedAt, refreshSeconds, context, live = 'polite', className }: FreshnessProps) {
+export function Freshness({ updatedAt, refreshSeconds, intervalClassName, context, live = 'polite', className }: FreshnessProps) {
   const t = useT();
   return (
     <p className={cn('type-data-sm flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 text-ink-2', className)}>
@@ -41,7 +43,7 @@ export function Freshness({ updatedAt, refreshSeconds, context, live = 'polite',
           </time>
         )}
       </span>
-      {refreshSeconds ? <span>{t('freshness.refreshesEvery', { seconds: refreshSeconds })}</span> : null}
+      {refreshSeconds ? <span className={intervalClassName}>{t('freshness.refreshesEvery', { seconds: refreshSeconds })}</span> : null}
     </p>
   );
 }

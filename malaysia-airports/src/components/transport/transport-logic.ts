@@ -9,7 +9,8 @@
  * `compareTransport` ranks on today's fare. With no date (server render, before the clock is read)
  * it keeps the first period and the UI lists every period with its dates.
  */
-import { pick, type Lang, type LocalizedText, type TransportDestination, type TransportMode, type TransportOption } from '@/content/types';
+import { pick } from '@/content/values';
+import type { Lang, LocalizedText, TransportDestination, TransportMode, TransportOption } from '@/content/types';
 
 const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 

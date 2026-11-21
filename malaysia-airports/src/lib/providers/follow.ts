@@ -10,8 +10,7 @@
  *    flight watcher and a data-protection review (OOS-10). A live implementation replaces
  *    `DemoEmailFollowChannel` behind the same interface and reports `mode: 'live'`.
  */
-import { z } from 'zod';
-import { createStore } from '@/lib/storage';
+import { check, createStore, validator } from '@/lib/storage';
 
 export type FollowChannelId = 'browser' | 'email' | 'push';
 
@@ -42,7 +41,8 @@ export function isEmailAddress(value: string): boolean {
 export const emailFollowStore = createStore<Record<string, string>>({
   name: 'flight-follow-email',
   version: 1,
-  schema: z.record(z.string().min(5).max(40), z.string().max(254)),
+  // zod-free validation (round 2, E-03): zod left the JavaScript of every page.
+  schema: validator(check.record(check.string({ min: 5, max: 40 }), check.string({ max: 254 }))),
   defaultValue: {},
 });
 

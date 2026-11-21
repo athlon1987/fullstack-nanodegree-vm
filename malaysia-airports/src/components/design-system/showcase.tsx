@@ -1,6 +1,7 @@
 import { resolveSources } from '@/content';
 import { AIRPORTS, CLASSIFICATION_LABELS, FEATURED_AIRPORTS, airportsByClassification, getAirport } from '@/content/airports';
-import { PROVENANCES, pick, type Lang } from '@/content/types';
+import { PROVENANCES, pick } from '@/content/values';
+import type { Lang } from '@/content/types';
 import { FLIGHT_STATUSES, formatFlightNumber } from '@/lib/flights';
 import type { Translator } from '@/lib/i18n/translate';
 import { addMinutes, formatTime } from '@/lib/time';

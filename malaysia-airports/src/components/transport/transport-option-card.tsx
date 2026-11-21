@@ -1,6 +1,7 @@
 'use client';
 
-import { pick, TRANSPORT_MODE_LABELS, type TerminalId, type TransportOption } from '@/content/types';
+import { pick, TRANSPORT_MODE_LABELS } from '@/content/values';
+import type { TerminalId, TransportOption } from '@/content/types';
 import { cn } from '@/lib/cn';
 import { formatList } from '@/lib/format';
 import { useLang, useT } from '@/lib/i18n/client';

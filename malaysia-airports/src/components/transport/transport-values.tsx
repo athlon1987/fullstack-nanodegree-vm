@@ -1,7 +1,8 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { pick, type Hours, type Lang, type Money, type TerminalId, type TransportOption } from '@/content/types';
+import { pick } from '@/content/values';
+import type { Hours, Lang, Money, TerminalId, TransportOption } from '@/content/types';
 import { cn } from '@/lib/cn';
 import { formatCurrency, formatDuration, formatList } from '@/lib/format';
 import { useLang, useT } from '@/lib/i18n/client';

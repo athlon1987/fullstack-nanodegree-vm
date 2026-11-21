@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Suspense, type MouseEvent } from 'react';
-import { LANGS, type Lang } from '@/content/types';
+import { LANGS } from '@/content/values';
+import type { Lang } from '@/content/types';
 import { cn } from '@/lib/cn';
 import { useLang, useT } from '@/lib/i18n/client';
 import { switchLocalePath } from '@/lib/locale';

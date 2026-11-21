@@ -1,8 +1,9 @@
 'use client';
 
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { getAirport } from '@/content/airports';
 import type { TerminalId } from '@/content/types';
+import { useUrlSearchParams } from '@/lib/hooks/use-url';
 
 /** What `useTerminalFilter` returns. */
 export interface TerminalFilter {
@@ -16,7 +17,10 @@ export interface TerminalFilter {
  * The terminal filter of an airport page. KLIA is one airport with two terminals, and the
  * terminal is a filter in the URL (`?t=T1|T2`), never a separate tree of pages.
  *
- * It reads `useSearchParams`, so the component that calls it must sit inside `<Suspense>`.
+ * The query comes from `useUrlSearchParams` (round 2): no terminal on the server and during
+ * hydration, the URL's right after, so the caller's tree hydrates instead of being replaced. It
+ * still reads `usePathname` for `hrefFor`: on routes with params that are not prerendered, keep
+ * the caller inside `<Suspense>`; `useTerminalParam` needs no boundary.
  *
  * @example
  * const { terminal } = useTerminalFilter('kul');
@@ -24,10 +28,8 @@ export interface TerminalFilter {
  */
 export function useTerminalFilter(airport: string): TerminalFilter {
   const pathname = usePathname();
-  const params = useSearchParams();
-  const record = getAirport(airport);
-  const value = params.get('t');
-  const terminal = record && record.terminals.length > 1 ? record.terminals.find((item) => item.id === value)?.id : undefined;
+  const params = useUrlSearchParams();
+  const terminal = terminalFrom(airport, params);
   return {
     terminal,
     hrefFor: (next) => {
@@ -38,4 +40,15 @@ export function useTerminalFilter(airport: string): TerminalFilter {
       return `${pathname}${suffix ? `?${suffix}` : ''}`;
     },
   };
+}
+
+function terminalFrom(airport: string, params: URLSearchParams): TerminalId | undefined {
+  const record = getAirport(airport);
+  const value = params.get('t');
+  return record && record.terminals.length > 1 ? record.terminals.find((item) => item.id === value)?.id : undefined;
+}
+
+/** Only the terminal in the URL (`?t=`), for trees that do not build links: no `<Suspense>` needed. */
+export function useTerminalParam(airport: string): TerminalId | undefined {
+  return terminalFrom(airport, useUrlSearchParams());
 }

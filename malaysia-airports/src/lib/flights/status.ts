@@ -3,7 +3,7 @@
  * Status is never shown by colour alone: always render the label and the icon together.
  */
 import type { Lang, LocalizedText } from '@/content/types';
-import { lt, pick } from '@/content/types';
+import { lt, pick } from '@/content/values';
 import type { TKey } from '@/lib/i18n/translate';
 import type { FlightDirection, FlightStatus } from './types';
 

@@ -1,11 +1,11 @@
 'use client';
 
-import { Suspense, useDeferredValue, useEffect, useMemo, useRef, useState, useTransition, type ReactNode } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useDeferredValue, useEffect, useMemo, useRef, useState, useTransition, type ReactNode } from 'react';
 import { getAirport, terminalLabel } from '@/content/airports';
 import type { Airport, TerminalId } from '@/content/types';
 import type { Flight, FlightDirection } from '@/lib/flights';
 import { useSavedJourney } from '@/lib/hooks/use-saved-journey';
+import { useUrlSearchParams } from '@/lib/hooks/use-url';
 import { useFlightFeed, type FeedRequest } from '@/lib/providers/use-flight-feed';
 import { cn } from '@/lib/cn';
 import { useLang, useT } from '@/lib/i18n/client';
@@ -45,8 +45,6 @@ export interface FlightBoardExplorerProps {
   airport: string;
 }
 
-const NO_PARAMS: BoardParams = { q: '', groups: [] };
-
 /**
  * The full departures and arrivals board of one airport: tabs synced to `?dir=d|a`, the terminal
  * filter (`?t=`), search within the board (`?q=`), status filters (`?s=`), a time window with
@@ -63,15 +61,13 @@ const NO_PARAMS: BoardParams = { q: '', groups: [] };
 export function FlightBoardExplorer({ airport }: FlightBoardExplorerProps) {
   const record = getAirport(airport);
   if (!record) return null;
-  return (
-    <Suspense fallback={<BoardView airport={record} params={NO_PARAMS} />}>
-      <BoardFromUrl airport={record} />
-    </Suspense>
-  );
+  // No `<Suspense>` (round 2): the filters come from `useUrlSearchParams`, empty until hydration,
+  // so the server board hydrates in place and a search typed before hydration is kept.
+  return <BoardFromUrl airport={record} />;
 }
 
 function BoardFromUrl({ airport }: { airport: Airport }) {
-  const search = useSearchParams();
+  const search = useUrlSearchParams();
   const { direction } = useFlightDirection();
   const params = readBoardParams(
     search,
@@ -99,6 +95,16 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
   const [held, setHeld] = useState({ focus: false, pointer: false });
   const [announcement, setAnnouncement] = useState('');
   const searching = isSearching(query);
+  /* A `?q=` in the URL arrives after hydration (or after a client navigation commits): the field
+     takes it once, unless the visitor has typed something meanwhile. */
+  const [urlQueryTaken, setUrlQueryTaken] = useState(params.q !== '');
+  if (params.q && !urlQueryTaken) {
+    setUrlQueryTaken(true);
+    if (!query) {
+      setQuery(params.q);
+      setSearchKey((value) => value + 1);
+    }
+  }
 
   const rangeAt = (at: number, dir: FlightDirection) => (searching ? searchRange(at, zone) : boardRange(at, shift.earlier, shift.later, dir));
   const feed = useFlightFeed(
@@ -230,7 +236,7 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
     </Button>
   );
   const edge = (canMove: boolean, button: ReactNode, limit: string) => (
-    <div className="flex justify-center px-4 py-1.5 sm:px-5">{canMove ? button : <p className="type-body-sm py-2 text-ink-2">{limit}</p>}</div>
+    <div className="flex justify-center px-4 py-0.5 sm:px-5 sm:py-1.5">{canMove ? button : <p className="type-body-sm py-2 text-ink-2">{limit}</p>}</div>
   );
 
   const empty = (() => {
@@ -279,8 +285,9 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
     );
   })();
 
+  // Tighter on phones so the first rows reach the first screen (A-01, round 2).
   const panel = (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-3 sm:gap-5">
       <BoardToolbar
         airport={airport}
         direction={direction}
@@ -295,7 +302,8 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
         counts={counts}
       />
 
-      <FeedNotice feed={feed} timeZone={zone} />
+      {/* The live region stays in the page; while empty it takes no gap of its own. */}
+      <FeedNotice feed={feed} timeZone={zone} className="empty:-mt-3 sm:empty:-mt-5" />
 
       {savedOnBoard > 0 ? (
         <p className="type-body-sm flex flex-wrap items-center gap-x-3 gap-y-0.5 rounded-md border border-line bg-page-subtle py-1 pr-1 pl-3 text-ink-2">
@@ -341,11 +349,15 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
         context={
           generatedAt ? (
             <>
-              <AirportCode code={airport.code} name={airport.name} size="sm" /> <span aria-hidden="true">·</span> {formatDate(generatedAt, lang, 'weekday')}
+              <AirportCode code={airport.code} name={airport.name} size="sm" /> <span aria-hidden="true">·</span>{' '}
+              {/* The short date on phones keeps the freshness line to one row (A-01, round 2). */}
+              <span className="sm:hidden">{formatDate(generatedAt, lang, 'short')}</span>
+              <span className="max-sm:hidden">{formatDate(generatedAt, lang, 'weekday')}</span>
             </>
           ) : undefined
         }
         live="off"
+        compactHeader
         groupByHour
         timeZone={zone}
         dayLabel={(date) => {
@@ -420,12 +432,12 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
           {tab('d')}
           {tab('a')}
         </TabsList>
-        {/* While the new direction renders, the previous list stays under the chosen tab, dimmed. */}
-        <TabsContent value="d" className={cn(chosenDirection !== direction && 'opacity-60')}>
-          {chosenDirection === 'd' ? panel : null}
-        </TabsContent>
-        <TabsContent value="a" className={cn(chosenDirection !== direction && 'opacity-60')}>
-          {chosenDirection === 'a' ? panel : null}
+        {/* While the new direction renders, the previous list stays under the chosen tab, dimmed.
+            One panel that follows the chosen tab (round 2, B-06): with a panel per tab, a switch
+            moved the board to the other panel, so React rebuilt every row before the tab could
+            answer (320 to 440 ms at 4x CPU). Radix renders only the selected panel either way. */}
+        <TabsContent value={chosenDirection} className={cn('max-sm:pt-3', chosenDirection !== direction && 'opacity-60')}>
+          {panel}
         </TabsContent>
       </Tabs>
       <p ref={countRegion} role="status" aria-live="polite" aria-atomic="true" className="sr-only" />

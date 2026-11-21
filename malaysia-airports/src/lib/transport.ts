@@ -8,7 +8,8 @@
  *   and 24-hour service. It is `basis: 'heuristic'`: present it as estimated guidance.
  * - `accessibility` puts options confirmed step-free first, unknown next, not step-free last.
  */
-import { pick, type TransportDestination, type TransportMode, type TransportOption } from '@/content/types';
+import { pick } from '@/content/values';
+import type { TransportDestination, TransportMode, TransportOption } from '@/content/types';
 
 /** What the traveller cares about most. */
 export type TransportPriority = 'price' | 'time' | 'convenience' | 'accessibility';

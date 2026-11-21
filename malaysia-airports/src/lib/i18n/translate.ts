@@ -92,7 +92,9 @@ export function createTranslator(lang: Lang, dictionary: Dictionary): Translator
     const value = lookup(dictionary, key);
     if (typeof value !== 'object' || value === null) return key;
     const form = (value as PluralForms)[pluralForm(lang, amount)];
-    const shown = numberFormat(lang).format(amount);
+    // Counts under 1,000 look the same in both languages without a formatter (round 2: the first
+    // `Intl` object on a page costs about 40 ms on a mid-range phone while it hydrates).
+    const shown = Number.isInteger(amount) && Math.abs(amount) < 1000 ? String(amount) : numberFormat(lang).format(amount);
     return typeof form === 'string' ? interpolate(form, { count: shown, ...vars }) : key;
   };
   return Object.assign(translate, { count, lang });

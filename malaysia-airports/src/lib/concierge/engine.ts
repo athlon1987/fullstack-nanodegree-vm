@@ -14,7 +14,7 @@
  * as the offline fallback, in the browser.
  */
 import type { CarPark, Contact, Facility, Hours, Lang, Notice, Outlet, Provenance, TerminalId, TransportOption } from '@/content/types';
-import { isAuthoritativeSource } from '@/content/types';
+import { isAuthoritativeSource } from '@/content/values';
 import { formatCurrency } from '@/lib/format';
 import { gatePrefixesOf } from '@/lib/flights/gates';
 import { formatFlightNumber, isInternationalFlight } from '@/lib/flights/query';

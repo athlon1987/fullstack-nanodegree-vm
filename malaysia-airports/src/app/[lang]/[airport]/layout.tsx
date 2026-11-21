@@ -5,9 +5,10 @@ import { Container } from '@/components/ui/container';
 import { Skeleton } from '@/components/ui/skeleton';
 
 /**
- * Layout of every page under an airport: the airport header with its section navigation, then
- * the page. `params` is awaited inside the Suspense child, never at the top (Next.js notes,
- * section 5); for prerendered airports the header is part of the static HTML.
+ * Layout of every page under an airport: the compact airport header with its section navigation,
+ * then the page. `params` is awaited inside the Suspense child, never at the top (Next.js notes,
+ * section 5): flight pages under this layout are not prerendered. The overview renders its own
+ * full banner instead, and `globals.css` hides this header there (round 2).
  */
 export default function AirportLayout({ children, params }: LayoutProps<'/[lang]/[airport]'>) {
   return (
@@ -31,7 +32,7 @@ async function Header({ params }: { params: AirportPageParams }) {
 /** The size of the compact airport bar, the chrome of most airport pages (no layout shift). */
 function HeaderSkeleton() {
   return (
-    <div className="border-b border-line bg-page-subtle" aria-hidden="true">
+    <div data-airport-header-skeleton="" className="border-b border-line bg-page-subtle" aria-hidden="true">
       <Container className="flex min-h-[3.4375rem] items-center gap-3 py-1 md:min-h-13">
         <Skeleton className="h-6 w-24" />
         <Skeleton className="h-5 w-14" />

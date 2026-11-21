@@ -1,4 +1,3 @@
-import { Suspense } from 'react';
 import { getAirport, isMultiTerminal, terminalLabel } from '@/content';
 import { getT, toLang } from '@/lib/i18n';
 import { airportSectionMetadata, loadAirportPageFor, mapEmptyState, type AirportPageParams } from '@/components/airport/section-page';
@@ -10,7 +9,7 @@ import { MapUnavailable } from '@/components/map/map-unavailable';
 import { buildMapView, mapSourceIds, needsTranslationNotice, officialPages, sourceLookup } from '@/components/map/map-view.server';
 import { airportsWithSection } from '@/components/shell/sections.server';
 import { Container } from '@/components/ui/container';
-import { Skeleton } from '@/components/ui/skeleton';
+import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 /**
  * Airports with a schematic map, plus those with a facilities directory: the latter get the
@@ -31,12 +30,18 @@ export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/
   return airportSectionMetadata(params, 'map', airport ? { description: t('mapPages.metaDescription', { airport: airport.name }) } : {}, { emptyState: mapEmptyState });
 }
 
-/** Terminal map and wayfinding: a schematic map, search, filters, details and written routes. */
+/**
+ * Terminal map and wayfinding: a schematic map, search, filters, details and written routes.
+ *
+ * No page-level `<Suspense>` (round 2, as on the airport overview): the page is fully static
+ * (`ensureStatic`), and a boundary only delayed the body behind a skeleton until React's
+ * throttled reveal script ran (LCP 4.6 s on a phone).
+ */
 export default function MapPage({ params }: PageProps<'/[lang]/[airport]/map'>) {
   return (
-    <Suspense fallback={<MapSkeleton />}>
+    <I18nPageScope namespaces={['mapPages']}>
       <TerminalMap params={params} />
-    </Suspense>
+    </I18nPageScope>
   );
 }
 
@@ -76,17 +81,5 @@ async function TerminalMap({ params }: { params: AirportPageParams }) {
         )}
       </Container>
     </>
-  );
-}
-
-function MapSkeleton() {
-  return (
-    <Container className="py-10" aria-hidden="true">
-      <Skeleton className="h-10 w-64" />
-      <div className="mt-8 grid gap-6 lg:grid-cols-[23rem_1fr]">
-        <Skeleton className="h-64 w-full" />
-        <Skeleton className="h-96 w-full" />
-      </div>
-    </Container>
   );
 }

@@ -5,22 +5,32 @@
 import type { Lang, Money } from '@/content/types';
 import { intlLocale } from './time';
 
+/** Number formatters made once per locale and options (round 2: each one costs a few ms on a phone). */
+const NUMBER_FORMATS = new Map<string, Intl.NumberFormat>();
+function numberFormat(lang: Lang, minimumFractionDigits: number, maximumFractionDigits: number): Intl.NumberFormat {
+  const key = `${lang}|${minimumFractionDigits}|${maximumFractionDigits}`;
+  let format = NUMBER_FORMATS.get(key);
+  if (!format) {
+    format = new Intl.NumberFormat(intlLocale(lang), { minimumFractionDigits, maximumFractionDigits });
+    NUMBER_FORMATS.set(key, format);
+  }
+  return format;
+}
+const LIST_FORMATS = new Map<string, Intl.ListFormat>();
+
 /**
  * Malaysian ringgit: `RM 12.50`. Whole amounts drop the sen (`RM 12`) unless `alwaysShowSen`.
  */
 export function formatCurrency(amount: number | Money, lang: Lang = 'en', options: { alwaysShowSen?: boolean } = {}): string {
   const value = typeof amount === 'number' ? amount : amount.amount;
   const whole = Number.isInteger(value) && !options.alwaysShowSen;
-  const formatted = new Intl.NumberFormat(intlLocale(lang), {
-    minimumFractionDigits: whole ? 0 : 2,
-    maximumFractionDigits: whole ? 0 : 2,
-  }).format(value);
+  const formatted = numberFormat(lang, whole ? 0 : 2, whole ? 0 : 2).format(value);
   return `RM ${formatted}`;
 }
 
 /** Whole number with grouping: `5,700`. */
 export function formatNumber(value: number, lang: Lang = 'en'): string {
-  return new Intl.NumberFormat(intlLocale(lang), { maximumFractionDigits: 0 }).format(value);
+  return numberFormat(lang, 0, 0).format(value);
 }
 
 /**
@@ -47,13 +57,19 @@ export function formatDistance(metres: number, lang: Lang = 'en'): string {
     const rounded = metres < 10 ? Math.round(metres) : Math.round(metres / 10) * 10;
     return `${formatNumber(rounded, lang)} m`;
   }
-  const km = new Intl.NumberFormat(intlLocale(lang), { maximumFractionDigits: 1 }).format(metres / 1000);
+  const km = numberFormat(lang, 0, 1).format(metres / 1000);
   return `${km} km`;
 }
 
 /** A list in words: `A, B and C` (`A, B dan C`). Use `disjunction` for "or". */
 export function formatList(items: readonly string[], lang: Lang = 'en', type: 'conjunction' | 'disjunction' = 'conjunction'): string {
-  return new Intl.ListFormat(lang === 'ms' ? 'ms' : 'en-GB', { style: 'long', type }).format(items);
+  const key = `${lang}|${type}`;
+  let format = LIST_FORMATS.get(key);
+  if (!format) {
+    format = new Intl.ListFormat(lang === 'ms' ? 'ms' : 'en-GB', { style: 'long', type });
+    LIST_FORMATS.set(key, format);
+  }
+  return format.format(items);
 }
 
 /** Bay counts and similar published figures with their qualifier: `over 5,700`, `about 300`. */

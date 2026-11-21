@@ -20,6 +20,7 @@ import { Chip } from '@/components/ui/chip';
 import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
 import { Skeleton } from '@/components/ui/skeleton';
+import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 type OutletPageProps = PageProps<'/[lang]/[airport]/shop-dine/[outlet]'>;
 
@@ -48,17 +49,20 @@ export async function generateMetadata({ params }: OutletPageProps): Promise<Met
 
 export default function OutletPage({ params }: OutletPageProps) {
   return (
-    <Suspense
-      fallback={
-        <Container className="py-10" aria-hidden="true">
-          <Skeleton className="h-4 w-56" />
-          <Skeleton className="mt-6 h-12 w-80 max-w-full" />
-          <Skeleton className="mt-10 h-72 w-full" />
-        </Container>
-      }
-    >
-      <Outlet params={params} />
-    </Suspense>
+    <I18nPageScope namespaces={['commercePages']}>
+      <Suspense
+        fallback={
+          <Container className="py-10" aria-hidden="true">
+            <Skeleton className="h-4 w-56" />
+            <Skeleton className="mt-6 h-12 w-80 max-w-full" />
+            <Skeleton className="mt-10 h-72 w-full" />
+          </Container>
+        }
+      >
+        <Outlet params={params} />
+      </Suspense>
+  
+    </I18nPageScope>
   );
 }
 

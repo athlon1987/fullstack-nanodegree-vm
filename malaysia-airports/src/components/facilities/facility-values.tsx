@@ -1,7 +1,8 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { formatAsOf, type Source } from '@/content/types';
+import { formatAsOf } from '@/content/values';
+import type { Source } from '@/content/types';
 import { formatList } from '@/lib/format';
 import { useLang, useT } from '@/lib/i18n/client';
 import { NotPublished } from '@/components/common/not-published';

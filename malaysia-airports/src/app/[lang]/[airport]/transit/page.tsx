@@ -22,6 +22,7 @@ import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { Translator } from '@/lib/i18n/translate';
+import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 /** KLIA has the planner; the other airports with content get the simpler page. Any other airport is a 404 (C-06). */
 export function generateStaticParams() {
@@ -52,16 +53,19 @@ export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/
 /** Connections and transit: an interactive planner at KLIA, honest guidance everywhere else. */
 export default function TransitPage({ params }: PageProps<'/[lang]/[airport]/transit'>) {
   return (
-    <Suspense
-      fallback={
-        <Container className="py-10" aria-hidden="true">
-          <Skeleton className="h-10 w-72" />
-          <Skeleton className="mt-8 h-96 w-full" />
-        </Container>
-      }
-    >
-      <Transit params={params} />
-    </Suspense>
+    <I18nPageScope namespaces={['guidePages', 'transportPages']}>
+      <Suspense
+        fallback={
+          <Container className="py-10" aria-hidden="true">
+            <Skeleton className="h-10 w-72" />
+            <Skeleton className="mt-8 h-96 w-full" />
+          </Container>
+        }
+      >
+        <Transit params={params} />
+      </Suspense>
+  
+    </I18nPageScope>
   );
 }
 

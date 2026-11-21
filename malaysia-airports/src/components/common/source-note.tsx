@@ -1,15 +1,7 @@
 'use client';
 
-import {
-  UNDATED_LABEL,
-  formatAsOf,
-  pick,
-  sourcePublisher,
-  sourcePublisherIsForeign,
-  sourceTitle,
-  sourceTitleIsForeign,
-  type Source,
-} from '@/content/types';
+import { UNDATED_LABEL, formatAsOf, pick, sourcePublisher, sourcePublisherIsForeign, sourceTitle, sourceTitleIsForeign } from '@/content/values';
+import type { Source } from '@/content/types';
 import { cn } from '@/lib/cn';
 import { useLang, useT } from '@/lib/i18n/client';
 import { formatDate } from '@/lib/time';

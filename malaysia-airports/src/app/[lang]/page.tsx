@@ -5,6 +5,7 @@ import { getT, toLang } from '@/lib/i18n';
 import { JsonLd, organizationJsonLd, websiteJsonLd } from '@/lib/seo';
 import { toNoticeViews } from '@/components/airport/notice-views.server';
 import { HomeBoard, HomeConcierge, HomeHero, HomeJourney, HomeNetwork, HomeShopDine } from '@/components/home/home-sections';
+import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getT(await routeLang());
@@ -22,14 +23,17 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function HomePage() {
   const lang = toLang(await routeLang());
   return (
-    <>
-      <JsonLd data={[websiteJsonLd(lang), organizationJsonLd(lang)]} />
-      <HomeHero lang={lang} notices={toNoticeViews(getNotices(), lang, 'compact')} />
-      <HomeBoard lang={lang} />
-      <HomeJourney lang={lang} />
-      <HomeNetwork lang={lang} />
-      <HomeShopDine lang={lang} />
-      <HomeConcierge lang={lang} />
-    </>
+    <I18nPageScope namespaces={['home']}>
+      <>
+        <JsonLd data={[websiteJsonLd(lang), organizationJsonLd(lang)]} />
+        <HomeHero lang={lang} notices={toNoticeViews(getNotices(), lang, 'compact')} />
+        <HomeBoard lang={lang} />
+        <HomeJourney lang={lang} />
+        <HomeNetwork lang={lang} />
+        <HomeShopDine lang={lang} />
+        <HomeConcierge lang={lang} />
+      </>
+  
+    </I18nPageScope>
   );
 }

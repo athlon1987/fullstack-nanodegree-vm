@@ -5,7 +5,7 @@
  */
 import { z } from 'zod';
 import { getAirport } from '@/content/airports';
-import { TERMINAL_IDS } from '@/content/types';
+import { TERMINAL_IDS } from '@/content/values';
 import type { Flight } from '@/lib/flights/types';
 import { dateKey, isDateKey, shiftDateKey, toIsoWithOffset } from '@/lib/time';
 import { DemoFlightProvider } from './demo-flights';

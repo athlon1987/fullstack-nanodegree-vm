@@ -1,7 +1,7 @@
 'use client';
 
 import { getAirport, terminalLabel } from '@/content/airports';
-import { pick } from '@/content/types';
+import { pick } from '@/content/values';
 import { checkInLines, type Flight } from '@/lib/flights';
 import { useLang, useT } from '@/lib/i18n/client';
 import type { JourneyStep } from '@/lib/journey';

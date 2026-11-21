@@ -9,6 +9,7 @@ import { guideGroups } from '@/components/guides/guide-views.server';
 import { NextStepCards } from '@/components/guides/next-step-cards';
 import { Container } from '@/components/ui/container';
 import { Section } from '@/components/ui/section';
+import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getT(toLang(await routeLang()));
@@ -23,17 +24,20 @@ export default async function GuidesPage() {
   const lang = toLang(await routeLang());
   const t = getT(lang);
   return (
-    <>
-      <PageHeader title={t('guidePages.title')} lead={t('guidePages.hub.lead')} breadcrumbs={<Breadcrumbs items={[{ label: t('nav.plan') }]} />} />
-      <Container className="pb-16">
-        <GuideIndex groups={guideGroups(lang)} />
-      </Container>
-      <Section tone="subtle" spacing="md" aria-label={t('guidePages.hub.help.title')}>
-        <NextStepCards t={t} />
-      </Section>
-      <Container className="py-section">
-        <ProvenanceLegend headingLevel={2} />
-      </Container>
-    </>
+    <I18nPageScope namespaces={['guidePages']}>
+      <>
+        <PageHeader title={t('guidePages.title')} lead={t('guidePages.hub.lead')} breadcrumbs={<Breadcrumbs items={[{ label: t('nav.plan') }]} />} />
+        <Container className="pb-16">
+          <GuideIndex groups={guideGroups(lang)} />
+        </Container>
+        <Section tone="subtle" spacing="md" aria-label={t('guidePages.hub.help.title')}>
+          <NextStepCards t={t} />
+        </Section>
+        <Container className="py-section">
+          <ProvenanceLegend headingLevel={2} />
+        </Container>
+      </>
+  
+    </I18nPageScope>
   );
 }

@@ -10,12 +10,11 @@
  *  - Recent searches stay on the device.
  */
 import { useEffect, useMemo, useSyncExternalStore } from 'react';
-import { z } from 'zod';
 import type { Lang } from '@/content/types';
 import type { Flight } from '@/lib/flights';
 import { useFlightProvider, useStore } from '@/lib/hooks';
 import { createSearchIndex, looksLikeFlightQuery, searchAll, type SearchDocument, type SearchGroup, type SearchIndex } from '@/lib/search/engine';
-import { createStore } from '@/lib/storage';
+import { check, createStore, validator } from '@/lib/storage';
 
 /* ---- The index ------------------------------------------------------------------------------- */
 
@@ -123,7 +122,8 @@ const MAX_RECENT = 6;
 const recentStore = createStore<string[]>({
   name: 'recent-searches',
   version: 1,
-  schema: z.array(z.string().min(1).max(80)).max(MAX_RECENT),
+  // zod-free validation (round 2, E-03): zod left the JavaScript of every page.
+  schema: validator(check.array(check.string({ min: 1, max: 80 }), { max: MAX_RECENT })),
   defaultValue: [],
 });
 

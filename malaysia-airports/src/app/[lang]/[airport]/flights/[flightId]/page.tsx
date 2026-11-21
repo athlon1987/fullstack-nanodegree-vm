@@ -15,6 +15,7 @@ import { flightTitle, identifyFlight } from '@/components/flights/identify-fligh
 import { journeyExtras, publishedCheckInFor } from '@/components/flights/journey-content';
 import { Container } from '@/components/ui/container';
 import { Skeleton } from '@/components/ui/skeleton';
+import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 type FlightPageProps = PageProps<'/[lang]/[airport]/flights/[flightId]'>;
 
@@ -43,17 +44,20 @@ export async function generateMetadata({ params }: FlightPageProps): Promise<Met
 
 export default function FlightPage({ params }: FlightPageProps) {
   return (
-    <Suspense
-      fallback={
-        <Container className="py-10" aria-hidden="true">
-          <Skeleton className="h-4 w-56" />
-          <Skeleton className="mt-6 h-12 w-80 max-w-full" />
-          <Skeleton className="mt-10 h-72 w-full" />
-        </Container>
-      }
-    >
-      <Flight params={params} />
-    </Suspense>
+    <I18nPageScope namespaces={['home']}>
+      <Suspense
+        fallback={
+          <Container className="py-10" aria-hidden="true">
+            <Skeleton className="h-4 w-56" />
+            <Skeleton className="mt-6 h-12 w-80 max-w-full" />
+            <Skeleton className="mt-10 h-72 w-full" />
+          </Container>
+        }
+      >
+        <Flight params={params} />
+      </Suspense>
+  
+    </I18nPageScope>
   );
 }
 
@@ -96,7 +100,15 @@ async function Flight({ params }: { params: FlightPageProps['params'] }) {
   ];
   const sources: Record<string, Source> = Object.fromEntries(resolveSources(sourceIds).map((source) => [source.id, source]));
   const airline = content.airlines.find((item) => item.code === flight.airline.code);
-  const airlineLabel = `${flight.airline.name} · ${flight.direction === 'd' ? t('flightPages.detail.eyebrowDeparture', { date }) : t('flightPages.detail.eyebrowArrival', { date })}`;
+  const eyebrowFor = (day: string) => `${flight.airline.name} · ${flight.direction === 'd' ? t('flightPages.detail.eyebrowDeparture', { date: day }) : t('flightPages.detail.eyebrowArrival', { date: day })}`;
+  // On phones the short date keeps the line from wrapping, so the h1 starts within the first
+  // 200 px (A-01, round 2: it was at 201 px in English, under a two-line eyebrow).
+  const airlineLabel = (
+    <>
+      <span className="sm:hidden">{eyebrowFor(formatDate(flight.scheduled, lang, 'short', airport.timezone))}</span>
+      <span className="max-sm:hidden">{eyebrowFor(date)}</span>
+    </>
+  );
 
   return (
     <>

@@ -2,7 +2,8 @@
 
 import { Suspense, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { facilityCategoryLabel, type FacilityCategory, type Source, type TerminalId } from '@/content/types';
+import { facilityCategoryLabel } from '@/content/values';
+import type { FacilityCategory, Source, TerminalId } from '@/content/types';
 import { useLang, useT } from '@/lib/i18n/client';
 import { NotPublished } from '@/components/common/not-published';
 import { Icon } from '@/components/ui/icon';

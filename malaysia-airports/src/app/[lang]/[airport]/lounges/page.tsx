@@ -24,6 +24,7 @@ import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
 import { Skeleton } from '@/components/ui/skeleton';
+import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 export const generateStaticParams = () => sectionStaticParams('lounges');
 
@@ -40,16 +41,19 @@ export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/
 /** Lounges, hotels, rest and shower facilities at one airport, by terminal and side of security. */
 export default function LoungesPage({ params }: PageProps<'/[lang]/[airport]/lounges'>) {
   return (
-    <Suspense
-      fallback={
-        <Container className="py-10" aria-hidden="true">
-          <Skeleton className="h-10 w-72" />
-          <Skeleton className="mt-8 h-72 w-full" />
-        </Container>
-      }
-    >
-      <Lounges params={params} />
-    </Suspense>
+    <I18nPageScope namespaces={['commercePages']}>
+      <Suspense
+        fallback={
+          <Container className="py-10" aria-hidden="true">
+            <Skeleton className="h-10 w-72" />
+            <Skeleton className="mt-8 h-72 w-full" />
+          </Container>
+        }
+      >
+        <Lounges params={params} />
+      </Suspense>
+  
+    </I18nPageScope>
   );
 }
 

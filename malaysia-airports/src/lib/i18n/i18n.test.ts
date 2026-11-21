@@ -108,7 +108,17 @@ describe('client dictionary (performance-09)', () => {
 
   it('only the scoped places read scoped namespaces in Client Components', () => {
     const root = join(__dirname, '..', '..');
-    const allowed = [/^components\/corporate\/device-data\.tsx$/, /^components\/design-system\//];
+    // Per namespace since round 2 (more namespaces are scoped; see `SCOPED_NAMESPACES`): the
+    // folders whose Client Components are only rendered on pages that scope that namespace.
+    const allowed: Record<(typeof SCOPED_NAMESPACES)[number], RegExp[]> = {
+      corporatePages: [/^components\/corporate\/device-data\.tsx$/],
+      designSystem: [/^components\/design-system\//],
+      guidePages: [/^components\/(guides|help)\//],
+      transportPages: [/^components\/(transport|parking)\//, /^components\/guides\/transit-planner\.tsx$/],
+      commercePages: [/^components\/commerce\//],
+      mapPages: [/^components\/(map|facilities)\//],
+      home: [/^components\/home\//, /^components\/flights\/flight-search-box\.tsx$/],
+    };
     const offenders: string[] = [];
     const walk = (dir: string) => {
       for (const name of readdirSync(dir)) {
@@ -119,12 +129,66 @@ describe('client dictionary (performance-09)', () => {
           const client = /^['"]use client['"]/m.test(source) || source.includes('useT()');
           const file = relative(root, path).split('\\').join('/');
           if (file.startsWith('lib/i18n/')) continue;
-          if (client && SCOPED_NAMESPACES.some((name) => new RegExp(`['\`"]${name}\\.`).test(source)) && !allowed.some((rule) => rule.test(file))) offenders.push(file);
+          for (const namespace of SCOPED_NAMESPACES) {
+            if (client && new RegExp(`['\`"]${namespace}\\.`).test(source) && !allowed[namespace].some((rule) => rule.test(file))) offenders.push(`${file} (${namespace})`);
+          }
         }
       }
     };
     walk(root);
     expect(offenders).toEqual([]);
+  });
+
+  it('pages whose Client Components read a scoped namespace send it with I18nPageScope (round 2)', () => {
+    // Follows imports from each page (static and `import()`); once a module is a Client Component,
+    // every module below it is client code. A namespace the page's client code reads must be in
+    // the page's `I18nPageScope`, or users would see the raw key. The root layouts may read none.
+    const root = join(__dirname, '..', '..');
+    const sources = new Map<string, string>();
+    const collect = (dir: string) => {
+      for (const name of readdirSync(dir)) {
+        const path = join(dir, name);
+        if (statSync(path).isDirectory()) collect(path);
+        else if (/\.tsx?$/.test(name) && !/\.test\./.test(name)) sources.set(path, readFileSync(path, 'utf8'));
+      }
+    };
+    collect(root);
+    const resolve = (spec: string, from: string): string | undefined => {
+      const base = spec.startsWith('@/') ? join(root, spec.slice(2)) : spec.startsWith('.') ? join(from, '..', spec) : undefined;
+      if (!base) return undefined;
+      return [`${base}.ts`, `${base}.tsx`, join(base, 'index.ts'), join(base, 'index.tsx')].find((candidate) => sources.has(candidate));
+    };
+    const deps = (file: string): string[] =>
+      [...(sources.get(file) ?? '').matchAll(/(?:^import\s+(?!type\s)[^;]*?from\s+|^export\s+(?!type\s)[^;]*?from\s+|import\(\s*)['"]([^'"]+)['"]/gm)]
+        .map((match) => resolve(match[1], file))
+        .filter((dep): dep is string => Boolean(dep));
+    const clientReads = (entry: string): Set<string> => {
+      const read = new Set<string>();
+      const seen = new Set<string>();
+      const stack: [string, boolean][] = [[entry, false]];
+      while (stack.length > 0) {
+        const [file, inClient] = stack.pop()!;
+        const source = sources.get(file) ?? '';
+        const client = inClient || /^['"]use client['"]/.test(source.trimStart());
+        if (seen.has(`${file}|${client}`)) continue;
+        seen.add(`${file}|${client}`);
+        if (client && !relative(root, file).startsWith(join('lib', 'i18n'))) {
+          for (const namespace of SCOPED_NAMESPACES) if (new RegExp(`['\`"]${namespace}\\.`).test(source)) read.add(namespace);
+        }
+        for (const dep of deps(file)) stack.push([dep, client]);
+      }
+      return read;
+    };
+    const app = join(root, 'app', '[lang]');
+    expect([...clientReads(join(app, 'layout.tsx')), ...clientReads(join(app, '[airport]', 'layout.tsx'))]).toEqual([]);
+    const missing: string[] = [];
+    for (const file of sources.keys()) {
+      if (!file.startsWith(app) || !file.endsWith('page.tsx')) continue;
+      const source = sources.get(file) ?? '';
+      const scoped = new Set([...source.matchAll(/<I18n(?:Page)?Scope[^>]*namespaces=\{\[([^\]]*)\]\}/g)].flatMap((match) => [...match[1].matchAll(/'([^'.]+)[^']*'/g)].map((name) => name[1])));
+      for (const namespace of clientReads(file)) if (!scoped.has(namespace)) missing.push(`${relative(app, file)}: ${namespace}`);
+    }
+    expect(missing).toEqual([]);
   });
 
   it('makes one number formatter per language (performance-16)', () => {

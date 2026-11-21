@@ -3,7 +3,8 @@
  * with their provenance and sources so one edit updates every surface. A small module with no
  * other content in it, so client code (the transit planner) can import it cheaply.
  */
-import { lt, type LocalizedText, type Provenance } from './types';
+import { lt } from './values';
+import type { LocalizedText, Provenance } from './types';
 
 /** How early to be at the airport, in minutes before departure. Same rule as the departing guide's "Plan when to arrive" step. */
 export const ARRIVAL_TIME_RULE = {

@@ -10,7 +10,8 @@
  * `useLang()` from `@/lib/i18n/client`, and import types from `@/lib/i18n/translate`.
  */
 import { createElement, type ComponentProps, type ReactNode } from 'react';
-import { DEFAULT_LANG, LANGS, isLang, type Lang } from '@/content/types';
+import { DEFAULT_LANG, LANGS, isLang } from '@/content/values';
+import type { Lang } from '@/content/types';
 import { I18nExtend, type PartialDictionary } from './client';
 import { en, type Dictionary } from './en';
 import { ms } from './ms';
@@ -30,11 +31,23 @@ export function getDictionary(lang: Lang): Dictionary {
 
 /**
  * Namespaces left out of the root `I18nProvider` because only one part of the site uses them in
- * Client Components (performance-09): corporate copy must never ride along on passenger pages.
+ * Client Components (performance-09): corporate copy must never ride along on passenger pages,
+ * and since round 2 neither does the copy of one section (guides, transport and parking, shop and
+ * dine, the map and facilities, the home page) on every other page.
  * Where a Client Component needs one, wrap it in `I18nScope` with just the part it reads.
  * `i18n.test.ts` fails if a Client Component outside the allowed places reads one of them.
  */
-export const SCOPED_NAMESPACES = ['corporatePages', 'designSystem'] as const satisfies readonly (keyof Dictionary)[];
+export const SCOPED_NAMESPACES = [
+  'corporatePages',
+  'designSystem',
+  // Round 2 (E-11/E-01): each page that needs these wraps its content in `I18nPageScope`
+  // (`./page-scope.tsx`); the shell and its overlays read none of them.
+  'guidePages',
+  'transportPages',
+  'commercePages',
+  'mapPages',
+  'home',
+] as const satisfies readonly (keyof Dictionary)[];
 
 /**
  * The dictionary the root layout sends to the browser: every namespace except the scoped ones.

@@ -23,6 +23,7 @@ import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
 import { Skeleton } from '@/components/ui/skeleton';
+import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 export function generateStaticParams() {
   return guideSlugs().map((topic) => ({ topic }));
@@ -42,16 +43,19 @@ export async function generateMetadata({ params }: PageProps<'/[lang]/guides/[to
 
 export default function GuidePage({ params }: PageProps<'/[lang]/guides/[topic]'>) {
   return (
-    <Suspense
-      fallback={
-        <Container className="py-10" aria-hidden="true">
-          <Skeleton className="h-12 w-2/3" />
-          <Skeleton className="mt-8 h-96 w-full" />
-        </Container>
-      }
-    >
-      <Guide params={params} />
-    </Suspense>
+    <I18nPageScope namespaces={['guidePages']}>
+      <Suspense
+        fallback={
+          <Container className="py-10" aria-hidden="true">
+            <Skeleton className="h-12 w-2/3" />
+            <Skeleton className="mt-8 h-96 w-full" />
+          </Container>
+        }
+      >
+        <Guide params={params} />
+      </Suspense>
+  
+    </I18nPageScope>
   );
 }
 

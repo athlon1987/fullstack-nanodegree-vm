@@ -14,7 +14,8 @@
  * prototype `noindex` stays in force. The Open Graph image comes from `app/[lang]/opengraph-image.png`.
  */
 import type { Metadata } from 'next';
-import { LANGS, type Lang } from '@/content/types';
+import { LANGS } from '@/content/values';
+import type { Lang } from '@/content/types';
 import { getT } from '@/lib/i18n';
 import { OG_LOCALE, localePaths } from './site';
 

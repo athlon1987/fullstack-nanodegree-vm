@@ -21,6 +21,7 @@ import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
 import { Skeleton } from '@/components/ui/skeleton';
+import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 export const generateStaticParams = () => sectionStaticParams('transport');
 
@@ -46,17 +47,20 @@ export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/
 /** Ground transport planner: compare the published ways to and from the airport, and between its terminals. */
 export default function TransportPage({ params }: PageProps<'/[lang]/[airport]/transport'>) {
   return (
-    <Suspense
-      fallback={
-        <Container className="py-10" aria-hidden="true">
-          <Skeleton className="h-10 w-72" />
-          <Skeleton className="mt-8 h-40 w-full" />
-          <Skeleton className="mt-6 h-96 w-full" />
-        </Container>
-      }
-    >
-      <Transport params={params} />
-    </Suspense>
+    <I18nPageScope namespaces={['transportPages']}>
+      <Suspense
+        fallback={
+          <Container className="py-10" aria-hidden="true">
+            <Skeleton className="h-10 w-72" />
+            <Skeleton className="mt-8 h-40 w-full" />
+            <Skeleton className="mt-6 h-96 w-full" />
+          </Container>
+        }
+      >
+        <Transport params={params} />
+      </Suspense>
+  
+    </I18nPageScope>
   );
 }
 

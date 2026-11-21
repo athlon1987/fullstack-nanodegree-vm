@@ -3,7 +3,8 @@
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { AIRPORTS, AIRPORT_CHOICES, CLASSIFICATION_LABELS } from '@/content/airports';
-import { AIRPORT_CLASSIFICATIONS, pick, type Airport, type AirportClassification } from '@/content/types';
+import { AIRPORT_CLASSIFICATIONS, pick } from '@/content/values';
+import type { Airport, AirportClassification } from '@/content/types';
 import { useAirportContext } from '@/lib/hooks';
 import { useLang, useT } from '@/lib/i18n/client';
 import type { TKey } from '@/lib/i18n/translate';

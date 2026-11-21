@@ -21,6 +21,7 @@ import { sourcesFor } from '@/components/transport/transport-types';
 import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
 import { Skeleton } from '@/components/ui/skeleton';
+import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 export const generateStaticParams = () => sectionStaticParams('parking');
 
@@ -50,17 +51,20 @@ export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/
  */
 export default function ParkingPage({ params }: PageProps<'/[lang]/[airport]/parking'>) {
   return (
-    <Suspense
-      fallback={
-        <Container className="py-10" aria-hidden="true">
-          <Skeleton className="h-10 w-72" />
-          <Skeleton className="mt-8 h-32 w-full" />
-          <Skeleton className="mt-6 h-96 w-full" />
-        </Container>
-      }
-    >
-      <Parking params={params} />
-    </Suspense>
+    <I18nPageScope namespaces={['transportPages']}>
+      <Suspense
+        fallback={
+          <Container className="py-10" aria-hidden="true">
+            <Skeleton className="h-10 w-72" />
+            <Skeleton className="mt-8 h-32 w-full" />
+            <Skeleton className="mt-6 h-96 w-full" />
+          </Container>
+        }
+      >
+        <Parking params={params} />
+      </Suspense>
+  
+    </I18nPageScope>
   );
 }
 

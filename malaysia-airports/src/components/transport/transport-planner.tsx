@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { useId, useMemo } from 'react';
-import { pick, TRANSPORT_MODE_LABELS, type TerminalId } from '@/content/types';
+import { pick, TRANSPORT_MODE_LABELS } from '@/content/values';
+import type { TerminalId } from '@/content/types';
 import { useNow } from '@/lib/hooks';
 import { useLang, useT } from '@/lib/i18n/client';
 import { dateKey } from '@/lib/time';

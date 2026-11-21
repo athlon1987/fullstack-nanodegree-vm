@@ -1,7 +1,7 @@
 'use client';
 
 import { useId, useState } from 'react';
-import { pick } from '@/content/types';
+import { pick } from '@/content/values';
 import { formatCurrency, formatDuration } from '@/lib/format';
 import { useNow } from '@/lib/hooks';
 import { useLang, useT } from '@/lib/i18n/client';

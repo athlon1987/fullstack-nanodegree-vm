@@ -16,19 +16,8 @@
  *
  * This module is small and safe to import from Client Components (the airport switcher does).
  */
-import {
-  lt,
-  pick,
-  type Airport,
-  type AirportClassification,
-  type AirportDepth,
-  type AirportRegion,
-  type Contact,
-  type Lang,
-  type LocalizedText,
-  type Terminal,
-  type TerminalId,
-} from './types';
+import { lt, pick } from './values';
+import type { Airport, AirportClassification, AirportDepth, AirportRegion, Contact, Lang, LocalizedText, Terminal, TerminalId } from './types';
 
 type UnverifiedField = Airport['unverifiedFields'][number];
 

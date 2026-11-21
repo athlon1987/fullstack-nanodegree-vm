@@ -1,6 +1,6 @@
-import { Suspense } from 'react';
 import { CLASSIFICATION_LABELS, airportSlugs, getNotices, getSource, pick, resolveSources, type Provenance } from '@/content';
 import { AirportFlightTools } from '@/components/airport/airport-flight-tools';
+import { AirportBanner } from '@/components/airport/airport-header';
 import { NoticeList } from '@/components/airport/notice-list';
 import { toNoticeViews } from '@/components/airport/notice-views.server';
 import { airportSectionMetadata, loadAirportPage, type AirportPageParams } from '@/components/airport/section-page';
@@ -12,11 +12,10 @@ import { SourceNote } from '@/components/common/source-note';
 import { AIRPORT_SECTIONS, sectionPath, type AirportSectionId } from '@/components/shell/sections';
 import { Callout } from '@/components/ui/callout';
 import { Card, CardLink } from '@/components/ui/card';
-import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
 import { Section } from '@/components/ui/section';
-import { Skeleton } from '@/components/ui/skeleton';
 import { JsonLd, airportJsonLd } from '@/lib/seo';
+import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 /** Every airport in the registry gets an overview page, including directory-only ones. */
 export function generateStaticParams() {
@@ -34,24 +33,22 @@ export function generateMetadata({ params }: PageProps<'/[lang]/[airport]'>) {
 }
 
 /**
- * Airport overview: the scoped flight search, mode-aware quick actions and a board preview, the
- * airport's notices, key facts with their sources, and a card for each section the airport has.
- * Airports with little or no verified content say so and point to the official channels.
+ * Airport overview: the airport banner, the scoped flight search, mode-aware quick actions and a
+ * board preview, the airport's notices, key facts with their sources, and a card for each section
+ * the airport has. Airports with little or no verified content say so and point to the official
+ * channels.
+ *
+ * `params` is awaited without a page-level `<Suspense>` (round 2, a deliberate exception to the
+ * Next.js notes, Do/Don't 1): every airport is listed by `generateStaticParams` and
+ * `ensureStatic = 'navigation'` refuses any other, so nothing here waits on a request. A
+ * boundary only made React send a skeleton and reveal the body later with its throttled `$RC`
+ * script (Suspense content above about 12.8 KB of shell is outlined): LCP was 4.4 s on a phone.
  */
 export default function AirportPage({ params }: PageProps<'/[lang]/[airport]'>) {
   return (
-    <Suspense
-      fallback={
-        // `min-h-dvh` keeps the footer below the first screen while the overview is revealed: with
-        // a short fallback it painted in view and then jumped (desktop CLS 0.30 to 0.37; E-02,
-        // verification round).
-        <Container className="min-h-dvh py-10" aria-hidden="true">
-          <Skeleton className="h-40 w-full" />
-        </Container>
-      }
-    >
+    <I18nPageScope namespaces={['home']}>
       <Overview params={params} />
-    </Suspense>
+    </I18nPageScope>
   );
 }
 
@@ -76,6 +73,7 @@ async function Overview({ params }: { params: AirportPageParams }) {
   return (
     <>
       <JsonLd data={airportJsonLd(airport, lang)} />
+      <AirportBanner airport={airport} lang={lang} sections={sections} />
       {/* Operational notices first, directly under the airport header, inside the first phone
           screen (A-20, BR-08). */}
       <Section tone="subtle" spacing="sm" aria-labelledby="airport-notices-title">

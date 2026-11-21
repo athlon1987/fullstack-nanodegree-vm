@@ -7,15 +7,15 @@
  * is no push server.
  */
 import { useCallback, useMemo, useSyncExternalStore } from 'react';
-import { z } from 'zod';
 import { useStore } from '@/lib/hooks/use-store';
-import { createStore } from '@/lib/storage';
+import { check, createStore, validator } from '@/lib/storage';
 
 /** Flight ids with demo alerts turned on (`ma:flight-alerts:v1`). */
 export const flightAlertsStore = createStore<string[]>({
   name: 'flight-alerts',
   version: 1,
-  schema: z.array(z.string().min(5).max(40)).max(20),
+  // zod-free validation (round 2, E-03): zod left the JavaScript of every page.
+  schema: validator(check.array(check.string({ min: 5, max: 40 }), { max: 20 })),
   defaultValue: [],
 });
 

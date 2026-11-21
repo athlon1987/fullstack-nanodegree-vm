@@ -8,6 +8,7 @@ import { MyJourney } from '@/components/flights/my-journey';
 import type { CarParkOption } from '@/components/flights/parked-car-card';
 import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
+import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getT(toLang(await routeLang()));
@@ -39,21 +40,24 @@ export default async function JourneyPage() {
   }
 
   return (
-    <>
-      <PageHeader
-        title={t('journey.saved.title')}
-        lead={t('flightPages.journey.lead')}
-        meta={
-          <p className="type-body-sm inline-flex items-center gap-2 text-ink-2">
-            <Icon name="shield-check" size="sm" className="text-ink" />
-            {t('journey.saved.storedLocally')}
-          </p>
-        }
-        breadcrumbs={<Breadcrumbs items={[{ label: t('nav.myJourney') }]} />}
-      />
-      <Container className="pb-section">
-        <MyJourney carParks={carParks} />
-      </Container>
-    </>
+    <I18nPageScope namespaces={['home']}>
+      <>
+        <PageHeader
+          title={t('journey.saved.title')}
+          lead={t('flightPages.journey.lead')}
+          meta={
+            <p className="type-body-sm inline-flex items-center gap-2 text-ink-2">
+              <Icon name="shield-check" size="sm" className="text-ink" />
+              {t('journey.saved.storedLocally')}
+            </p>
+          }
+          breadcrumbs={<Breadcrumbs items={[{ label: t('nav.myJourney') }]} />}
+        />
+        <Container className="pb-section">
+          <MyJourney carParks={carParks} />
+        </Container>
+      </>
+  
+    </I18nPageScope>
   );
 }

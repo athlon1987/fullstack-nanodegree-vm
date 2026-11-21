@@ -1,14 +1,12 @@
 'use client';
 
-import { Suspense } from 'react';
 import { DemoMarkedList } from '@/components/common/demo-tag';
-import type { TerminalId } from '@/content/types';
 import { useT } from '@/lib/i18n/client';
 import { FlightSearchBox } from '@/components/flights/flight-search-box';
 import { BoardPreview } from '@/components/home/board-preview';
 import { JourneyModeGuidance, JourneyModes } from '@/components/home/journey-modes';
 import { ModeQuickActions } from '@/components/home/mode-quick-actions';
-import { useTerminalFilter } from './use-terminal-filter';
+import { useTerminalParam } from './use-terminal-filter';
 
 export interface AirportFlightToolsProps {
   slug: string;
@@ -18,8 +16,17 @@ export interface AirportFlightToolsProps {
   hasFlights: boolean;
 }
 
-function Tools({ slug, name, hasFlights, terminal }: AirportFlightToolsProps & { terminal?: TerminalId }) {
+/**
+ * The scoped tools of an airport overview: flight search, journey modes with their quick actions
+ * and a board preview, all narrowed to the terminal in the URL (`?t=`) at KLIA.
+ *
+ * No `<Suspense>` (round 2): the terminal comes from `useTerminalParam`, so this tree hydrates in
+ * place and text typed into the search before hydration is kept (it used to be a fallback that
+ * React replaced, losing the input).
+ */
+export function AirportFlightTools({ slug, name, hasFlights }: AirportFlightToolsProps) {
   const t = useT();
+  const terminal = useTerminalParam(slug);
   return (
     <div className="flex flex-col gap-10">
       {hasFlights ? (
@@ -48,22 +55,5 @@ function Tools({ slug, name, hasFlights, terminal }: AirportFlightToolsProps & {
         </DemoMarkedList>
       ) : null}
     </div>
-  );
-}
-
-function ToolsForRoute(props: AirportFlightToolsProps) {
-  const { terminal } = useTerminalFilter(props.slug);
-  return <Tools {...props} terminal={terminal} />;
-}
-
-/**
- * The scoped tools of an airport overview: flight search, journey modes with their quick actions
- * and a board preview, all narrowed to the terminal in the URL (`?t=`) at KLIA.
- */
-export function AirportFlightTools(props: AirportFlightToolsProps) {
-  return (
-    <Suspense fallback={<Tools {...props} />}>
-      <ToolsForRoute {...props} />
-    </Suspense>
   );
 }

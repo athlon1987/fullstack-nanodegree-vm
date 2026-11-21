@@ -14,7 +14,7 @@ import { SegmentedControl } from '@/components/ui/segmented-control';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Tooltip } from '@/components/ui/tooltip';
-import { PROVENANCES } from '@/content/types';
+import { PROVENANCES } from '@/content/values';
 
 const MODE_HINT_ICON = { departing: 'departing', arriving: 'arriving', transiting: 'transiting', meeting: 'meeting' } as const;
 

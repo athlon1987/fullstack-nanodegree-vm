@@ -1,10 +1,10 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
-import { Suspense, type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { getAirport } from '@/content/airports';
 import { cn } from '@/lib/cn';
 import { useAirportContext } from '@/lib/hooks';
+import { useUrlPathname } from '@/lib/hooks/use-url';
 import { useT } from '@/lib/i18n/client';
 import { stripLocale } from '@/lib/locale';
 import { LocaleLink } from '@/components/common/locale-link';
@@ -39,8 +39,12 @@ function Label({ icon, children, badge }: { icon: IconName; children: ReactNode;
   );
 }
 
-function Bar({ pathname }: { pathname: string | null }) {
+function Bar() {
   const t = useT();
+  // From `useUrlPathname` (round 2): `null` on the server and during hydration, so the bar is
+  // part of the prerendered page and hydrates in place on every route (no Suspense fallback to
+  // be swapped out under a tap); the current item is marked right after hydration.
+  const pathname = useUrlPathname();
   const { selection } = useAirportContext();
   const availability = useSectionAvailability();
   const searchOpen = useOverlayOpen('search');
@@ -113,10 +117,6 @@ function Bar({ pathname }: { pathname: string | null }) {
   );
 }
 
-function BarForPath() {
-  return <Bar pathname={usePathname()} />;
-}
-
 /**
  * The phone bottom bar: Home, Flights, Search, Journey and Menu. Targets are at least 44px and
  * the bar pads itself for the home indicator. Hidden from `md` up. On short windows and at large
@@ -126,9 +126,7 @@ export function MobileBar() {
   return (
     <>
       <ScrollChrome />
-      <Suspense fallback={<Bar pathname={null} />}>
-        <BarForPath />
-      </Suspense>
+      <Bar />
     </>
   );
 }

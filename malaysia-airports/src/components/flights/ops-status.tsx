@@ -1,7 +1,8 @@
 'use client';
 
 import { useMemo } from 'react';
-import { pick, type Notice, type Source, type TerminalId } from '@/content/types';
+import { pick } from '@/content/values';
+import type { Notice, Source, TerminalId } from '@/content/types';
 import { cn } from '@/lib/cn';
 import { useNow } from '@/lib/hooks/use-now';
 import { useLang, useT } from '@/lib/i18n/client';

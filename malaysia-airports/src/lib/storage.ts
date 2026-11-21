@@ -96,6 +96,19 @@ export const check = {
       }
       return output;
     },
+  /** A plain object of string keys to values, each key and value checked (round 2: `follow.ts`). */
+  record:
+    <V>(key: Check<string>, value: Check<V>): Check<Record<string, V>> =>
+    (input) => {
+      if (!isRecord(input)) return INVALID;
+      const output: Record<string, V> = {};
+      for (const [name, entry] of Object.entries(input)) {
+        const checked = value(entry);
+        if (key(name) === INVALID || checked === INVALID) return INVALID;
+        output[name] = checked;
+      }
+      return output;
+    },
 };
 
 /** Wrap a check as a `Validator` for `createStore`. */

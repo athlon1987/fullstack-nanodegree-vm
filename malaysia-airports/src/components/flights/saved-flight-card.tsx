@@ -7,7 +7,7 @@ import { useLang, useT } from '@/lib/i18n/client';
 import type { JourneyStep } from '@/lib/journey';
 import type { SavedFlight } from '@/lib/stores';
 import { dateKey, formatDate, formatTime, shiftDateKey, type Instant } from '@/lib/time';
-import { pick } from '@/content/types';
+import { pick } from '@/content/values';
 import { FlightStatusChip } from '@/components/common/flight-status-chip';
 import { LocaleLink } from '@/components/common/locale-link';
 import { TerminalBadge } from '@/components/common/terminal-badge';

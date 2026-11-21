@@ -14,6 +14,7 @@ import { facilityViews, needsTranslationNotice, officialPages, sourceLookup } fr
 import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 import { Skeleton } from '@/components/ui/skeleton';
+import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 export const generateStaticParams = () => sectionStaticParams('facilities');
 
@@ -30,16 +31,19 @@ export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/
 /** Facilities and services directory: every published facility with its source. */
 export default function FacilitiesPage({ params }: PageProps<'/[lang]/[airport]/facilities'>) {
   return (
-    <Suspense
-      fallback={
-        <Container className="py-10" aria-hidden="true">
-          <Skeleton className="h-10 w-72" />
-          <Skeleton className="mt-8 h-64 w-full" />
-        </Container>
-      }
-    >
-      <Facilities params={params} />
-    </Suspense>
+    <I18nPageScope namespaces={['mapPages']}>
+      <Suspense
+        fallback={
+          <Container className="py-10" aria-hidden="true">
+            <Skeleton className="h-10 w-72" />
+            <Skeleton className="mt-8 h-64 w-full" />
+          </Container>
+        }
+      >
+        <Facilities params={params} />
+      </Suspense>
+  
+    </I18nPageScope>
   );
 }
 

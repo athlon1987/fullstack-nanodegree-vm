@@ -1,16 +1,34 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { Suspense, lazy, useEffect, useRef, useState } from 'react';
+import { Suspense, lazy, useEffect, useRef, useState, type ReactNode } from 'react';
 import { usePreferencesSync } from '@/lib/hooks';
-import { ConciergePanel } from '@/components/concierge/concierge-panel';
-import { AirportSwitcherDialog } from './airport-switcher';
-import { closeOverlay, openOverlay, useOverlayOpen } from './overlay-store';
-import { MenuPanel, PreferencesPanel } from './panels';
+import { closeOverlay, openOverlay, useOverlayOpen, type OverlayName } from './overlay-store';
 import { RouteFocus } from './route-focus';
 
 // The palette brings the search engine with it: load it the first time it is opened.
 const CommandPalette = lazy(() => import('@/components/search/command-palette').then((module) => ({ default: module.CommandPalette })));
+
+/*
+ * The other overlays (round 2, E-03 and E-01): Radix Dialog, the switcher, the menu, display
+ * settings and the concierge panel were in every page's first-load script and evaluated during
+ * start-up. They load when the page is first idle, or at once when one is opened before that.
+ */
+const loadSwitcher = () => import('./airport-switcher-dialog');
+const loadPanels = () => import('./panels');
+const loadConcierge = () => import('@/components/concierge/concierge-panel');
+const AirportSwitcherDialog = lazy(() => loadSwitcher().then((module) => ({ default: module.AirportSwitcherDialog })));
+const PreferencesPanel = lazy(() => loadPanels().then((module) => ({ default: module.PreferencesPanel })));
+const MenuPanel = lazy(() => loadPanels().then((module) => ({ default: module.MenuPanel })));
+const ConciergePanel = lazy(() => loadConcierge().then((module) => ({ default: module.ConciergePanel })));
+
+/** Mounts an overlay once the page has been idle (`ready`) or once it is first opened. */
+function Deferred({ name, ready, children }: { name: OverlayName; ready: boolean; children: ReactNode }) {
+  const open = useOverlayOpen(name);
+  const [wanted, setWanted] = useState(false);
+  if ((open || ready) && !wanted) setWanted(true);
+  return wanted ? <Suspense fallback={null}>{children}</Suspense> : null;
+}
 
 /**
  * Taps on the header's switcher, search and menu buttons made before hydration (when React has
@@ -59,6 +77,24 @@ export function GlobalOverlays() {
   const searchOpen = useOverlayOpen('search');
   const [paletteWanted, setPaletteWanted] = useState(false);
   if (searchOpen && !paletteWanted) setPaletteWanted(true);
+  // Set once the overlay modules have loaded in idle time; they then mount closed, as before.
+  const [idleReady, setIdleReady] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    const load = () => {
+      void Promise.all([loadSwitcher(), loadPanels(), loadConcierge()]).then(() => {
+        if (!cancelled) setIdleReady(true);
+      });
+    };
+    const idle = typeof window.requestIdleCallback === 'function';
+    const handle = idle ? window.requestIdleCallback(load, { timeout: 4000 }) : window.setTimeout(load, 2000);
+    return () => {
+      cancelled = true;
+      if (idle) window.cancelIdleCallback(handle);
+      else window.clearTimeout(handle);
+    };
+  }, []);
 
   useEffect(() => {
     const early = window as EarlyWindow;
@@ -85,10 +121,18 @@ export function GlobalOverlays() {
   return (
     <>
       <EarlyTapCapture />
-      <AirportSwitcherDialog />
-      <PreferencesPanel />
-      <MenuPanel />
-      <ConciergePanel />
+      <Deferred name="airport" ready={idleReady}>
+        <AirportSwitcherDialog />
+      </Deferred>
+      <Deferred name="preferences" ready={idleReady}>
+        <PreferencesPanel />
+      </Deferred>
+      <Deferred name="menu" ready={idleReady}>
+        <MenuPanel />
+      </Deferred>
+      <Deferred name="concierge" ready={idleReady}>
+        <ConciergePanel />
+      </Deferred>
       {paletteWanted ? (
         <Suspense fallback={null}>
           <CommandPalette />

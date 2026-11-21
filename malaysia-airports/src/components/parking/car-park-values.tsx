@@ -1,6 +1,7 @@
 'use client';
 
-import { pick, type Lang, type RateBand } from '@/content/types';
+import { pick } from '@/content/values';
+import type { Lang, RateBand } from '@/content/types';
 import type { Translator } from '@/lib/i18n/translate';
 import { formatCurrency, formatDuration, formatQualifiedNumber } from '@/lib/format';
 import { useT } from '@/lib/i18n/client';

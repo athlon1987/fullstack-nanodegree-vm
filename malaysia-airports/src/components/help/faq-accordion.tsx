@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useSyncExternalStore } from 'react';
-import { formatAsOf } from '@/content/types';
+import { formatAsOf } from '@/content/values';
 import { useLang, useT } from '@/lib/i18n/client';
 import { formatDate } from '@/lib/time';
 import { ProvenanceTag } from '@/components/common/provenance-tag';

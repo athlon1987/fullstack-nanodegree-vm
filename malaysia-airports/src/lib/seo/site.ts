@@ -2,7 +2,8 @@
  * The public origin of the site and absolute URLs for sitemaps, JSON-LD and Open Graph.
  * Same source as the root layout's `metadataBase`: `NEXT_PUBLIC_SITE_URL`, else localhost.
  */
-import { LANGS, type Lang } from '@/content/types';
+import { LANGS } from '@/content/values';
+import type { Lang } from '@/content/types';
 import { localeHref } from '@/lib/locale';
 
 export const SITE_URL = new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000');

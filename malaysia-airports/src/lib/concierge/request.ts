@@ -2,7 +2,7 @@
  * The `/api/concierge` request contract, validated with zod on the server.
  */
 import { z } from 'zod';
-import { FACILITY_CATEGORIES, LANGS, TERMINAL_IDS } from '@/content/types';
+import { FACILITY_CATEGORIES, LANGS, TERMINAL_IDS } from '@/content/values';
 import { CONCIERGE_MAX_QUESTION } from './constants';
 import { CONCIERGE_INTENTS } from './types';
 

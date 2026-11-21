@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { isLang } from '@/content/types';
+import { isLang } from '@/content/values';
 import { clientKey, createRouteLimiter, policyFor, tooManyRequests } from '@/lib/concierge/rate-limit';
 import { negotiateLang } from '@/lib/locale';
 // Package B (fix round, B-14): flight pages get a cheap 404 or a codeshare 308 before rendering.

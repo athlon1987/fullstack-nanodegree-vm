@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react';
 import { GROUP_CONTACTS } from '@/content/airports';
-import { pick } from '@/content/types';
+import { pick } from '@/content/values';
 import { useLang, useT } from '@/lib/i18n/client';
 import { LocaleLink } from '@/components/common/locale-link';
 import { Sheet, SheetContent } from '@/components/ui/dialog';

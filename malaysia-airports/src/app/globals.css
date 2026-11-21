@@ -853,6 +853,25 @@
   font-variant-numeric: tabular-nums lining-nums;
 }
 
+/* Round 2 (interaction latency, A-09): Radix sets `pointer-events: none` on <body> while a modal
+   dialog is open. pointer-events is inherited, so that one inline style restyled the whole page
+   when the airport switcher, menu or search opened and again when it closed (58 to 80 ms each
+   at 4x CPU, measured). Every dialog here has a full-screen overlay (z-50) that already takes
+   the pointer, so the page keeps its value and only <body> is restyled. */
+body {
+  pointer-events: auto !important;
+}
+
+/* Round 2 (interaction latency, A-09/B-06): react-remove-scroll-bar, under every Radix dialog,
+   sets this variable on <body> while a dialog is open. As an ordinary custom property it is
+   inherited, so opening and closing the airport switcher or the menu restyled every element on
+   the page (about 1,900 at 4x CPU: 80 ms each way). Nothing here reads it: it is registered as
+   not inherited, and only <body> is restyled. */
+@property --removed-body-scroll-bar-size {
+  syntax: '*';
+  inherits: false;
+}
+
 /* ------------------------------------------------------------------------------------------
  * Reduced motion: the system setting and the in-app setting
  * --------------------------------------------------------------------------------------- */
@@ -1037,6 +1056,14 @@ html[data-compact-chrome] [data-mobile-bar] [data-bar-label] {
   clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
+}
+
+/* Round 2: the airport overview renders its own full banner as part of its static HTML
+   (AirportBanner), so the layout's compact airport bar and its placeholder are not shown there.
+   Hidden with CSS rather than chosen with a router hook, which needed a Suspense boundary that
+   React revealed only after the page body (late LCP and a layout shift on /en/kul). */
+main:has([data-airport-chrome='full']) :is([data-airport-chrome='compact'], [data-airport-header-skeleton]) {
+  display: none;
 }
 
 /* Airport section pages on phones: the compact airport bar already links back to the airport,
