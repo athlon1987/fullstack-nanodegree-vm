@@ -169,3 +169,59 @@ test.describe('home type scale (A-14)', () => {
     });
   }
 });
+
+/*
+ * Verification, round 5: the platform runtime became its own script in this round, and the flight
+ * page's lower parts their own chunks. When such a chunk could not be fetched (the connection
+ * dropped while the page was starting), the rejected import replaced the whole page, the offline
+ * page included, with "This page couldn't load". Now the page stays and the chunk is fetched again
+ * when the connection returns. Every script the page's own HTML does not name is made to fail here.
+ */
+test.describe('a script that cannot be fetched does not take the page down', () => {
+  async function failLazyChunks(page: Page, path: string) {
+    const html = await (await page.request.get(path)).text();
+    const named = new Set([...html.matchAll(/\/_next\/static\/chunks\/[^"'\s)\\]+\.js/g)].map((match) => match[0]));
+    const state = { failing: true, failed: 0 };
+    await page.route('**/_next/static/chunks/**/*.js', (route) => {
+      const pathname = new URL(route.request().url()).pathname;
+      if (!state.failing || named.has(pathname)) return route.continue();
+      state.failed += 1;
+      return route.abort('internetdisconnected');
+    });
+    return state;
+  }
+
+  test('the offline page stays, and the runtime arrives when the connection returns', async ({ page, context }) => {
+    const chunks = await failLazyChunks(page, '/en/offline');
+    await page.goto('/en/offline', { waitUntil: 'load' });
+    await page.waitForTimeout(2000);
+    expect(chunks.failed).toBeGreaterThan(0);
+    await expect(page.getByRole('heading', { level: 1, name: 'Offline access' })).toBeVisible();
+    await expect(page.getByText('This page couldn’t load')).toHaveCount(0);
+    // Back online: the browser says so, the runtime's script is fetched again and it reports the next drop.
+    chunks.failing = false;
+    await context.setOffline(true);
+    await context.setOffline(false);
+    // The runtime registers the service worker once its script has arrived.
+    await expect.poll(() => page.evaluate(async () => (await navigator.serviceWorker.getRegistrations()).length), { timeout: 20_000 }).toBeGreaterThan(0);
+    await context.setOffline(true);
+    await expect(page.getByRole('status').filter({ hasText: 'You are offline' })).toBeVisible();
+    await context.setOffline(false);
+    await expect(page.getByRole('heading', { level: 1, name: 'Offline access' })).toBeVisible();
+  });
+
+  test('the flight page keeps its answer, and its timeline loads when the connection returns', async ({ page, context }) => {
+    await page.clock.setFixedTime(new Date('2026-11-18T09:40:00+08:00'));
+    const chunks = await failLazyChunks(page, '/en/kul/flights/mh2626-20261118-d');
+    await page.goto('/en/kul/flights/mh2626-20261118-d', { waitUntil: 'load' });
+    await page.waitForTimeout(3000);
+    expect(chunks.failed).toBeGreaterThan(0);
+    await expect(page.getByRole('heading', { level: 1, name: 'MH 2626 to Singapore' })).toBeVisible();
+    await expect(page.getByText('This page couldn’t load')).toHaveCount(0);
+    await expect(page.getByText('Something went wrong')).toHaveCount(0);
+    chunks.failing = false;
+    await context.setOffline(true);
+    await context.setOffline(false);
+    await expect(page.locator('[data-step="boarding"]').first()).toBeVisible({ timeout: 20_000 });
+  });
+});

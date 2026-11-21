@@ -1,0 +1,271 @@
+{
+ "note": "Lighthouse CI 0.16.0 (lighthouserc.json, preset perf, mobile, simulated throttling) plus one current flight page, as the workflow step runs it, locally on a CI-style build (no NEXT_PUBLIC_SITE_URL, APP_VERSION set, .next-ci) on 22 Nov 2026 between 04:23 and 04:26 Kuala Lumpur time; the board window (04:13 to 10:23) held departures from 07:00. Local additions: Playwright Chromium, --no-sandbox.",
+ "runs": {
+  "http://localhost:3100/en": [
+   {
+    "performance": 97,
+    "lcp_ms": 1136,
+    "tbt_ms": 189,
+    "cls": 0,
+    "scriptBytes": 354754,
+    "totalBytes": 620787,
+    "requests": 40,
+    "lcpElement": "Your journey, beautifully connected.",
+    "benchmarkIndex": 2094.5,
+    "fetchTime": "2026-11-21T20:22:18.672Z"
+   },
+   {
+    "performance": 96,
+    "lcp_ms": 1097,
+    "tbt_ms": 232,
+    "cls": 0,
+    "scriptBytes": 354754,
+    "totalBytes": 620789,
+    "requests": 40,
+    "lcpElement": "Your journey, beautifully connected.",
+    "benchmarkIndex": 2115,
+    "fetchTime": "2026-11-21T20:22:31.818Z"
+   },
+   {
+    "performance": 95,
+    "lcp_ms": 1096,
+    "tbt_ms": 260,
+    "cls": 0,
+    "scriptBytes": 354754,
+    "totalBytes": 620787,
+    "requests": 40,
+    "lcpElement": "Your journey, beautifully connected.",
+    "benchmarkIndex": 2094,
+    "fetchTime": "2026-11-21T20:22:44.722Z"
+   }
+  ],
+  "http://localhost:3100/ms": [
+   {
+    "performance": 96,
+    "lcp_ms": 1072,
+    "tbt_ms": 213,
+    "cls": 0,
+    "scriptBytes": 354754,
+    "totalBytes": 622258,
+    "requests": 40,
+    "lcpElement": "Semak penerbangan, rancang perjalanan anda.",
+    "benchmarkIndex": 2087.5,
+    "fetchTime": "2026-11-21T20:22:57.466Z"
+   },
+   {
+    "performance": 95,
+    "lcp_ms": 1122,
+    "tbt_ms": 241,
+    "cls": 0,
+    "scriptBytes": 354754,
+    "totalBytes": 622259,
+    "requests": 40,
+    "lcpElement": "Semak penerbangan, rancang perjalanan anda.",
+    "benchmarkIndex": 2181.5,
+    "fetchTime": "2026-11-21T20:23:10.273Z"
+   },
+   {
+    "performance": 97,
+    "lcp_ms": 1066,
+    "tbt_ms": 208,
+    "cls": 0,
+    "scriptBytes": 354754,
+    "totalBytes": 622259,
+    "requests": 40,
+    "lcpElement": "Semak penerbangan, rancang perjalanan anda.",
+    "benchmarkIndex": 2132.5,
+    "fetchTime": "2026-11-21T20:23:22.881Z"
+   }
+  ],
+  "http://localhost:3100/en/kul/flights": [
+   {
+    "performance": 95,
+    "lcp_ms": 940,
+    "tbt_ms": 255,
+    "cls": 0,
+    "scriptBytes": 345228,
+    "totalBytes": 582539,
+    "requests": 38,
+    "lcpElement": null,
+    "benchmarkIndex": 2084,
+    "fetchTime": "2026-11-21T20:23:35.579Z"
+   },
+   {
+    "performance": 97,
+    "lcp_ms": 920,
+    "tbt_ms": 190,
+    "cls": 0.003,
+    "scriptBytes": 345228,
+    "totalBytes": 582537,
+    "requests": 38,
+    "lcpElement": null,
+    "benchmarkIndex": 2175,
+    "fetchTime": "2026-11-21T20:23:48.071Z"
+   },
+   {
+    "performance": 97,
+    "lcp_ms": 919,
+    "tbt_ms": 192,
+    "cls": 0.004,
+    "scriptBytes": 345228,
+    "totalBytes": 582533,
+    "requests": 38,
+    "lcpElement": null,
+    "benchmarkIndex": 2230,
+    "fetchTime": "2026-11-21T20:24:00.428Z"
+   }
+  ],
+  "http://localhost:3100/en/journey": [
+   {
+    "performance": 100,
+    "lcp_ms": 918,
+    "tbt_ms": 88,
+    "cls": 0,
+    "scriptBytes": 312545,
+    "totalBytes": 531243,
+    "requests": 33,
+    "lcpElement": "Save a flight and this page shows its status, what to do and",
+    "benchmarkIndex": 2082,
+    "fetchTime": "2026-11-21T20:24:12.899Z"
+   },
+   {
+    "performance": 100,
+    "lcp_ms": 916,
+    "tbt_ms": 78,
+    "cls": 0,
+    "scriptBytes": 312545,
+    "totalBytes": 531241,
+    "requests": 33,
+    "lcpElement": "Save a flight and this page shows its status, what to do and",
+    "benchmarkIndex": 1820.5,
+    "fetchTime": "2026-11-21T20:24:24.633Z"
+   },
+   {
+    "performance": 99,
+    "lcp_ms": 914,
+    "tbt_ms": 95,
+    "cls": 0,
+    "scriptBytes": 312545,
+    "totalBytes": 531241,
+    "requests": 33,
+    "lcpElement": "Save a flight and this page shows its status, what to do and",
+    "benchmarkIndex": 2201.5,
+    "fetchTime": "2026-11-21T20:24:36.362Z"
+   }
+  ],
+  "http://localhost:3100/en/guides/baggage": [
+   {
+    "performance": 99,
+    "lcp_ms": 1064,
+    "tbt_ms": 118,
+    "cls": 0,
+    "scriptBytes": 320312,
+    "totalBytes": 558437,
+    "requests": 36,
+    "lcpElement": "Weight, size and number of bags depend on your airline and f",
+    "benchmarkIndex": 2142,
+    "fetchTime": "2026-11-21T20:24:48.037Z"
+   },
+   {
+    "performance": 99,
+    "lcp_ms": 1067,
+    "tbt_ms": 130,
+    "cls": 0,
+    "scriptBytes": 320312,
+    "totalBytes": 558435,
+    "requests": 36,
+    "lcpElement": "Weight, size and number of bags depend on your airline and f",
+    "benchmarkIndex": 2136,
+    "fetchTime": "2026-11-21T20:25:00.169Z"
+   },
+   {
+    "performance": 98,
+    "lcp_ms": 1066,
+    "tbt_ms": 154,
+    "cls": 0,
+    "scriptBytes": 320312,
+    "totalBytes": 558435,
+    "requests": 36,
+    "lcpElement": "Weight, size and number of bags depend on your airline and f",
+    "benchmarkIndex": 2099,
+    "fetchTime": "2026-11-21T20:25:12.024Z"
+   }
+  ],
+  "http://localhost:3100/en/kul/parking": [
+   {
+    "performance": 92,
+    "lcp_ms": 1130,
+    "tbt_ms": 338,
+    "cls": 0,
+    "scriptBytes": 370758,
+    "totalBytes": 616952,
+    "requests": 40,
+    "lcpElement": "What a stay costs at each car park, an estimate for your dat",
+    "benchmarkIndex": 2051,
+    "fetchTime": "2026-11-21T20:25:23.997Z"
+   },
+   {
+    "performance": 95,
+    "lcp_ms": 1129,
+    "tbt_ms": 268,
+    "cls": 0.003,
+    "scriptBytes": 370758,
+    "totalBytes": 616950,
+    "requests": 40,
+    "lcpElement": "What a stay costs at each car park, an estimate for your dat",
+    "benchmarkIndex": 2160.5,
+    "fetchTime": "2026-11-21T20:25:36.450Z"
+   },
+   {
+    "performance": 96,
+    "lcp_ms": 1111,
+    "tbt_ms": 210,
+    "cls": 0.003,
+    "scriptBytes": 370758,
+    "totalBytes": 616950,
+    "requests": 40,
+    "lcpElement": "What a stay costs at each car park, an estimate for your dat",
+    "benchmarkIndex": 1937.5,
+    "fetchTime": "2026-11-21T20:25:48.753Z"
+   }
+  ],
+  "http://localhost:3100/en/kul/flights/ak6336-20261122-d": [
+   {
+    "performance": 94,
+    "lcp_ms": 1225,
+    "tbt_ms": 286,
+    "cls": 0,
+    "scriptBytes": 396665,
+    "totalBytes": 690145,
+    "requests": 47,
+    "lcpElement": "AK 6336 to Penang",
+    "benchmarkIndex": 2179.5,
+    "fetchTime": "2026-11-21T20:26:01.211Z"
+   },
+   {
+    "performance": 95,
+    "lcp_ms": 1216,
+    "tbt_ms": 263,
+    "cls": 0.003,
+    "scriptBytes": 396665,
+    "totalBytes": 690145,
+    "requests": 47,
+    "lcpElement": "AK 6336 to Penang",
+    "benchmarkIndex": 2152,
+    "fetchTime": "2026-11-21T20:26:13.705Z"
+   },
+   {
+    "performance": 93,
+    "lcp_ms": 1212,
+    "tbt_ms": 318,
+    "cls": 0,
+    "scriptBytes": 396665,
+    "totalBytes": 690146,
+    "requests": 47,
+    "lcpElement": "AK 6336 to Penang",
+    "benchmarkIndex": 2223,
+    "fetchTime": "2026-11-21T20:26:26.215Z"
+   }
+  ]
+ }
+}

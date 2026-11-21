@@ -67,7 +67,7 @@ if (want('status')) {
       const { ctx, page } = await open({ clock });
       await page.goto(`${BASE}/${lang}`, { waitUntil: 'networkidle' });
       const summary = page.locator('main summary', { hasText: /Services at KLIA now|Perkhidmatan di KLIA sekarang/ }).first();
-      res[`/${lang} home strip (${label})`] = clean(await summary.evaluate((s) => [...s.querySelectorAll('*')].filter((e) => e.childElementCount === 0 && e.getBoundingClientRect().height > 0).map((e) => e.textContent).join(' ')).catch(() => 'not found'));
+      res[`/${lang} home strip (${label})`] = clean(await summary.evaluate((s) => [...s.querySelectorAll('*')].filter((e) => e.childElementCount === 0 && e.getBoundingClientRect().height > 0 && getComputedStyle(e).visibility !== 'hidden').map((e) => e.textContent).join(' ')).catch(() => 'not found'));
       await ctx.close();
     }
   }

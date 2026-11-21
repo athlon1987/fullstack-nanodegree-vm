@@ -1,5 +1,5 @@
 {
- "key": "board-night",
+ "key": "flights",
  "url": "http://localhost:3100/en/kul/flights",
  "preset": "mobile (Lighthouse default)",
  "profile": {
@@ -257,5 +257,6 @@
    }
   ]
  },
- "caveat": "Lab measurement: Lighthouse with simulated (or, with --profile, applied) throttling against a local next start. Indicative only; not field data."
+ "caveat": "Lab measurement: Lighthouse with simulated (or, with --profile, applied) throttling against a local next start. Indicative only; not field data.",
+ "note": "Measured 02:48 to 02:55 Kuala Lumpur time (22 November) with the real clock: the board window (02:38 to 08:55) held departures from 07:00, so this is the board with rows, as in round four. The empty night board is measured separately (board-night-2330/)."
 }

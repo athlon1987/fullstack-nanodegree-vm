@@ -7,6 +7,7 @@ import { useSavedJourney } from '@/lib/hooks/use-saved-journey';
 import { useT } from '@/lib/i18n/client';
 import type { JourneyAirportContent } from '@/lib/journey';
 import { useFlightFeed, type FeedRequest } from '@/lib/providers/use-flight-feed';
+import { retryingImport } from '@/lib/retrying-import';
 import { dateKey } from '@/lib/time';
 import { Skeleton } from '@/components/ui/skeleton';
 import { flightAvailability, sameFlightOn } from './board-model';
@@ -25,10 +26,12 @@ import { modesForFlight, useJourneyPreferences } from './journey-preferences';
  * budget 250). They render only once the feed has answered, so loading them at idle costs no
  * visible time; the journey builder behind the summary loads alongside the feed.
  */
-const loadTimeline = () => import('./journey-timeline');
-const loadNeeds = () => import('./needs-control');
-const loadNotFound = () => import('./flight-not-found');
-const loadJourney = () => import('@/lib/journey');
+// Verification, round 5: a chunk that could not be fetched (a dropped connection) is fetched again
+// when the connection returns, instead of the rejection replacing the page with the error screen.
+const loadTimeline = () => retryingImport(() => import('./journey-timeline'));
+const loadNeeds = () => retryingImport(() => import('./needs-control'));
+const loadNotFound = () => retryingImport(() => import('./flight-not-found'));
+const loadJourney = () => retryingImport(() => import('@/lib/journey'));
 const JourneyTimeline = lazy(() => loadTimeline().then((module) => ({ default: module.JourneyTimeline })));
 const NeedsControl = lazy(() => loadNeeds().then((module) => ({ default: module.NeedsControl })));
 const FlightNotFound = lazy(() => loadNotFound().then((module) => ({ default: module.FlightNotFound })));

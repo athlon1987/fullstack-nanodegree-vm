@@ -1,0 +1,59 @@
+{
+ "key": "board-night-ms",
+ "url": "http://localhost:3100/ms/kul/flights",
+ "clock": "2026-11-22T23:30:00+08:00",
+ "preset": "mobile (Lighthouse 13.6 defaults, simulated)",
+ "measured": "2026-11-21T20:28:08.688Z",
+ "median": {
+  "performance": 96,
+  "fcp_ms": 913,
+  "lcp_ms": 913,
+  "tbt_ms": 246,
+  "cls": 0.005
+ },
+ "rows": [
+  {
+   "performance": 96,
+   "fcp_ms": 926,
+   "lcp_ms": 926,
+   "tbt_ms": 246,
+   "cls": 0.005,
+   "observedLcp": 210,
+   "lcpElement": "Tunjuk penerbangan seterusnya untuk melihat lebih jauh, atau yang lebih awal un…",
+   "benchmarkIndex": 2331,
+   "runtimeError": null,
+   "shifts": [
+    "header.sticky > div.group/hdr > div.flex > div.ml-auto | KUL\n, tukar lapangan terbang (kini KLIA) | 0.005"
+   ]
+  },
+  {
+   "performance": 98,
+   "fcp_ms": 913,
+   "lcp_ms": 913,
+   "tbt_ms": 180,
+   "cls": 0.026,
+   "observedLcp": 180,
+   "lcpElement": "Tunjuk penerbangan seterusnya untuk melihat lebih jauh, atau yang lebih awal un…",
+   "benchmarkIndex": 2238.5,
+   "runtimeError": null,
+   "shifts": [
+    "div.surface-board > div.relative > div.flex > div.type-body-sm | Tunjuk penerbangan seterusnya untuk meli | 0.021",
+    "header.sticky > div.group/hdr > div.flex > div.ml-auto | KUL\n, tukar lapangan terbang (kini KLIA) | 0.005"
+   ]
+  },
+  {
+   "performance": 95,
+   "fcp_ms": 913,
+   "lcp_ms": 913,
+   "tbt_ms": 267,
+   "cls": 0.005,
+   "observedLcp": 173,
+   "lcpElement": "Tunjuk penerbangan seterusnya untuk melihat lebih jauh, atau yang lebih awal un…",
+   "benchmarkIndex": 2384,
+   "runtimeError": null,
+   "shifts": [
+    "header.sticky > div.group/hdr > div.flex > div.ml-auto | KUL\n, tukar lapangan terbang (kini KLIA) | 0.005"
+   ]
+  }
+ ]
+}
