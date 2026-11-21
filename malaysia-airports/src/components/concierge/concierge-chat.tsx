@@ -299,6 +299,35 @@ export function ConciergeChat({ variant, initialQuestion, toolbarEnd }: Concierg
     setUseFlight(on);
   };
 
+  /** The page's composer sticks to the bottom of the window only once there is a conversation. */
+  const stuck = variant === 'page' && turns.length > 0;
+  // Round 6 (P9, WCAG 2.4.11): while the composer is stuck, the page keeps a bottom scroll padding
+  // as tall as the composer (plus the phone's bottom bar when it shows), so a control that takes
+  // focus is scrolled clear of it, at any window size, zoom or text size. Measured, because the
+  // composer grows with the text size and with the character counter.
+  useEffect(() => {
+    const form = formRef.current;
+    if (!stuck || !form) return;
+    const root = document.documentElement;
+    const update = () => {
+      if (getComputedStyle(form).position !== 'sticky') {
+        root.style.removeProperty('scroll-padding-bottom');
+        return;
+      }
+      const height = Math.ceil(form.getBoundingClientRect().height);
+      root.style.setProperty('scroll-padding-bottom', `calc(${height}px + var(--spacing-sticky-bottom) + env(safe-area-inset-bottom) + 0.5rem)`);
+    };
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(form);
+    window.addEventListener('resize', update);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', update);
+      root.style.removeProperty('scroll-padding-bottom');
+    };
+  }, [stuck]);
+
   const airport = scope.airport ? getAirport(scope.airport) : undefined;
   const scopeLabel = airport ? terminalLabel(airport, scope.terminal && airport.terminals.length > 1 ? scope.terminal : 'MAIN', lang) : undefined;
   const length = draft.length;
@@ -354,9 +383,7 @@ export function ConciergeChat({ variant, initialQuestion, toolbarEnd }: Concierg
           <PrivacyNotice consent={consent} expanded={optIn !== null} onTurnOn={() => setOptIn((value) => (value ? null : 'service'))} onTurnOff={turnOff} />
           {optIn && !consent ? <Consent onAccept={acceptOptIn} onDecline={() => setOptIn(null)} /> : null}
         </div>
-        {turns.length === 0 ? (
-          <Examples keys={variant === 'panel' ? PANEL_EXAMPLES : EXAMPLE_KEYS} onAsk={(question) => submit(question)} disabled={busy} />
-        ) : null}
+        {variant === 'panel' && turns.length === 0 ? <Examples keys={PANEL_EXAMPLES} onAsk={(question) => submit(question)} disabled={busy} /> : null}
 
         <div role="log" aria-label={t('conciergePage.log.label')} aria-live="off" className={cn(turns.length === 0 && 'hidden')}>
           <ol ref={logRef} className="flex flex-col gap-8">
@@ -371,17 +398,19 @@ export function ConciergeChat({ variant, initialQuestion, toolbarEnd }: Concierg
         ref={formRef}
         onSubmit={onSubmit}
         data-sticky-bottom={variant === 'page' ? '' : undefined}
+        data-composer={variant === 'page' ? (stuck ? 'sticky' : 'static') : undefined}
         className={cn(
           'flex shrink-0 flex-col gap-1.5',
           variant === 'panel' && '-mx-5 border-t border-line px-5 pt-4 sm:-mx-6 sm:px-6',
-          // On the page the composer sticks to the bottom of the screen (above the phone's bottom
-          // bar), so the focused field stays in view after each answer (accessibility-14).
-          variant === 'page' &&
+          // On the page, once there is a conversation, the composer sticks to the bottom of the
+          // screen (above the phone's bottom bar), so the focused field stays in view after each
+          // answer (accessibility-14).
+          stuck &&
             // Round 4 (layout package, WCAG 2.4.11/2.4.12): the offset follows the bottom bar (0 while it is slid
             // away), and on short windows `data-sticky-bottom` turns sticking off (globals.css).
             'sticky bottom-[calc(var(--spacing-sticky-bottom)+env(safe-area-inset-bottom))] z-10 -mx-4 border-t border-line bg-page px-4 py-3 sm:-mx-7 sm:bg-surface sm:px-7 md:bottom-0',
           // Fills the strip between the composer and the phone's bottom bar, so answers do not show through.
-          variant === 'page' && 'after:absolute after:inset-x-0 after:top-full after:h-6 after:bg-page sm:after:bg-surface md:after:hidden',
+          stuck && 'after:absolute after:inset-x-0 after:top-full after:h-6 after:bg-page sm:after:bg-surface md:after:hidden',
         )}
       >
         <div className="flex items-end gap-2">
@@ -406,6 +435,11 @@ export function ConciergeChat({ variant, initialQuestion, toolbarEnd }: Concierg
           </p>
         ) : null}
       </form>
+
+      {/* Round 6 (P9, WCAG 2.4.11 and 2.5.8): before the first question the page's composer is not
+          sticky and comes first, with the suggestions after it in reading and focus order, so no
+          suggestion can sit under it (it hid the focused suggestion at 1280 x 720 and 1440 x 900). */}
+      {variant === 'page' && turns.length === 0 ? <Examples keys={EXAMPLE_KEYS} onAsk={(question) => submit(question)} disabled={busy} /> : null}
     </div>
   );
 }

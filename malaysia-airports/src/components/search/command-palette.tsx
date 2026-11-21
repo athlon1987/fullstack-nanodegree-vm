@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { Dialog as DialogPrimitive } from 'radix-ui';
-import { useEffect, useId, useState, type KeyboardEvent, type ReactNode } from 'react';
+import { useEffect, useId, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { getAirport, localName } from '@/content/airports';
 import { cn } from '@/lib/cn';
 import { formatFlightNumber, placeCity, type Flight } from '@/lib/flights';
@@ -23,6 +23,7 @@ import { Button } from '@/components/ui/button';
 import { Icon, type IconKey } from '@/components/ui/icon';
 import { IconButton } from '@/components/ui/icon-button';
 import { Kbd } from '@/components/ui/kbd';
+import { focusDestination } from './focus-destination';
 import { clearRecentSearches, loadSearchIndex, rememberSearch, useRecentSearches, useSiteSearch } from './site-search';
 
 type Item =
@@ -153,14 +154,34 @@ export function CommandPalette() {
     closeOverlay('search');
   };
 
+  /** Where focus goes once the palette has closed: the chosen page, not the button that opened it. */
+  const destination = useRef<string | null>(null);
+  const go = (href: string) => {
+    destination.current = localeHref(lang, href);
+    leave();
+  };
+
   const activate = (item: Item) => {
     if (item.kind === 'recent') {
       setQuery(item.query);
       setActive(0);
       return;
     }
-    leave();
+    go(item.href);
     router.push(localeHref(lang, item.href));
+  };
+
+  // Round 6 (A-05 residual, WCAG 2.4.3): after a selection, focus moves to the destination (its
+  // `#anchor` target, or the page's `h1`) instead of returning to the Search button or `<body>`.
+  const onCloseAutoFocus = (event: Event) => {
+    const href = destination.current;
+    destination.current = null;
+    if (!href) {
+      dialog.onCloseAutoFocus(event);
+      return;
+    }
+    event.preventDefault();
+    focusDestination(href);
   };
 
   const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -215,7 +236,7 @@ export function CommandPalette() {
       const { flight } = item;
       const boardAirport = getAirport(flight.airport);
       return (
-        <LocaleLink key={item.id} {...common} href={item.href} onClick={leave}>
+        <LocaleLink key={item.id} {...common} href={item.href} onClick={() => go(item.href)}>
           <span className="type-data-md w-12 shrink-0">{formatTime(flight.estimated)}</span>
           <span className="min-w-0 flex-1">
             <span className="type-title-sm block">
@@ -231,7 +252,7 @@ export function CommandPalette() {
       );
     }
     return (
-      <LocaleLink key={item.id} {...common} href={item.href} onClick={leave}>
+      <LocaleLink key={item.id} {...common} href={item.href} onClick={() => go(item.href)}>
         <Icon name={item.kind === 'all' ? 'search' : item.icon} size="sm" className="text-ink-3" />
         <span className="min-w-0 flex-1">
           <span className={item.kind === 'all' ? 'font-semibold' : 'font-medium'}>{item.label}</span>
@@ -248,7 +269,7 @@ export function CommandPalette() {
         <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-board/60 data-[state=closed]:animate-fade-out data-[state=open]:animate-fade-in" />
         <DialogPrimitive.Content
           aria-describedby={undefined}
-          onCloseAutoFocus={dialog.onCloseAutoFocus}
+          onCloseAutoFocus={onCloseAutoFocus}
           className={cn(
             'fixed inset-0 z-50 flex flex-col bg-surface-raised text-ink shadow-lg outline-none data-[state=closed]:animate-fade-out data-[state=open]:animate-fade-in',
             'sm:inset-x-auto sm:top-[9vh] sm:bottom-auto sm:left-1/2 sm:max-h-[min(42rem,82vh)] sm:w-[min(44rem,calc(100vw-2rem))] sm:-translate-x-1/2 sm:rounded-xl sm:border sm:border-line-strong',
