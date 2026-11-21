@@ -1324,3 +1324,491 @@ Files changed in this round: `e2e/ask-round4.spec.ts` and `e2e/shell.spec.ts` (F
 `src/lib/i18n/features/concierge.ts` and `src/lib/concierge/engine.test.ts` (item 2),
 `src/lib/i18n/features/corporate.ts` and `src/lib/i18n/features/platform.ts` (item 3), `lighthouserc.json` (item
 5), the new `scripts/qa/` (11 files) and `docs/qa/lighthouse-round4/`, and this section.
+
+# Round five
+
+Owner: release and verification. Date: 22 November 2026 (measurements 02:37 to 05:50 Kuala Lumpur time). Scope:
+the three round-five packages (`docs/qa/fixes/round5-speed.md`, `round5-flight.md`, `round5-polish.md`), checked on
+a production build (`.next` deleted, then `NEXT_PUBLIC_SITE_URL=http://localhost:3100 npx next build`, served by
+`TRUSTED_CLIENT_IP_HEADER=x-e2e-client-ip npx next start -p 3100`); every claim in the three logs checked against
+that build; round four's verified 6.1 items and gallery notes repeated where a round-five change could touch them;
+the full suite run three ways (as configured, in CI mode as the workflow runs it, and with the browser clock at
+night); and the CI workflow's jobs run locally as far as this container allows. Rounds one to four above are
+unchanged.
+
+**Result.** Types, lint, **581 unit tests** (577 as delivered, 7 of 7 runs; 4 added here), `npm audit` (0 and 0),
+the build (0 warnings, 363 static pages), **526 end-to-end tests: 512 passed, 0 failed, 14 skipped** on the final
+build with the real clock, in CI mode and with the browser clock at night, the axe scans (**0
+violations** in 60 call sites in 13 specs, plus 68 scans of the states round five added; one intermittent
+`target-size` result in one night run, not reproduced in 236 repeats, G3 item 5), the link crawls (**0 broken
+links, 0 missing anchors**, 0 redirects), **exactly one canonical per response and one in the head on 276 of 276**
+(152 in round four), and **0 of 276** pages with the `h1` revealed by `$RC`. **One regression was found and fixed**:
+when the platform runtime's script (made lazy in this round) could not be fetched, every page, the offline page
+included, was replaced by "This page couldn't load"; the flight page's new lazy parts did the same inside the page
+(G3 item 1). A related round-five slip, "My needs" tapped before its lazy control arrives jumping to nothing, is
+fixed too (item 2). **Acceptance of the 18 round-five claims: 16 verified, 2 partly, 0 not verified, 0 regressed
+on the final build** (the delivered build regressed gallery note 3's offline page, G3); of round four's re-checks,
+6.1.7 stays partly and gallery note 3 is now partly, the rest verified. The backlog count does not move: **85
+verified, 16 not verified, 0 regressed** of 101 (G5); A-14, B-09, E-03, E-11, E-12 and E-14 are closer. Lighthouse:
+performance 95 or more on **8 of 10** pages in the first set and 7 of 10 in the second (round four 7 of 10); LCP 2.5
+s or less on 10 of 10, and now on **the flight page (1.22 s, performance 94 and 96; round four 68 to 75 and 4.2 to
+4.9 s)** and **the empty night board (0.92 s, 95 to 96; round four 76 to 78 and 4.7 s)**; TBT 200 ms or less on 2 and
+4 of 10 (round four 3 of 10). The concierge's round-four rise is gone (TBT 311 → 183 ms pooled, performance 97 to
+98); on the other pages TBT stays within this container's spread of round four, and the budget step fails 10
+assertions (round four 14).
+
+## G1. Clean-up before the checks
+
+- Nothing from this checkout was running and nothing listened on ports 3241 to 3243 or 3251 to 3253 (or 3100): the
+  three engineers had stopped their servers. There was no `.next-r5*` folder, and `tsconfig.json` and
+  `next-env.d.ts` named only `.next` (the polish engineer had restored `next-env.d.ts`, as the other two logs say
+  its owner should). Nothing to remove.
+- `.next` (round four's build `ygqxXIFcmSWq51rkxYSGE`) was deleted and rebuilt from clean three times: as delivered
+  (`xsWRXXv7gNRBuBLswkjlO`), after G3 item 1 (`o8PZoev6Xy67wES104dOL`) and after G3 item 2. The final build,
+  `b4AW-Kxsx1vSRiJq7KWD0`, is left in `.next`.
+- Every server was stopped by its process group. The CI-style build (`.next-ci`), the lines Next.js added for it to
+  `tsconfig.json` and `next-env.d.ts` (both files restored from copies taken before), the Lighthouse CI reports
+  (`.lighthouseci`, moved to the session scratch folder; a summary is in `docs/qa/lighthouse-round5/ci-budgets/`),
+  `playwright-report/`, `test-results/` and the metric file the servers wrote (`.data/`, git-ignored) were removed
+  at the end.
+- One `git --version` ran by mistake inside a longer command line (it prints the program's version and reads no
+  repository). No other git command was run.
+
+## G2. Results
+
+### G2.1 Static checks, unit tests and build
+
+| Check | Result |
+|---|---|
+| `npx tsc --noEmit` | 0 errors (incremental, then a full `--incremental false` check; again after each change in G3) |
+| `npx eslint .` | 0 problems (includes `scripts/qa/`) |
+| `npx vitest run` | As delivered: 40 files, **577 passed**, 0 failed, in **7 of 7** runs (round four 554). Final: 41 files, **581 passed** (G3 item 1 adds `src/lib/retrying-import.test.ts`) |
+| `npm audit --omit=dev` / `npm audit` | 0 vulnerabilities / 0 vulnerabilities |
+| `NEXT_PUBLIC_SITE_URL=http://localhost:3100 npx next build` | Succeeds from clean in 36 to 38 s, **0 warnings**, 363 static pages (round four 365: the catch-all's prerendered fallbacks `◐ /en/[...rest]` and the others became `○ /en/not-found` and `○ /ms/not-found`, the polish package's intended change; the rest of the route table is identical) |
+
+### G2.2 End-to-end and accessibility (production build, desktop 1440x900 and phone Pixel 7 390x844, `--trace off`)
+
+| Run | Build | Clock | Tests | Passed | Failed | Skipped | Notes |
+|---|---|---|---|---|---|---|---|
+| 1 | As delivered | Real, 02:38 to 02:46 | 522 | **508** | **0** | 14 | See the note on the night window below |
+| 2 | After G3 item 1 (+4 tests) | Real, 04:00 to 04:08 | 526 | **512** | **0** | 14 | |
+| 3 | CI mode (`CI=true`, retries 1, 2 workers, `E2E_STATUS_CODES=1`), CI-style build | Real, 04:15 to 04:22 | 526 | **512** | **0** | 14 | 0 flaky |
+| 4 | After G3 item 1 | Browser 22 Nov 23:30 | 526 | 509 | 3 | 14 | 2 are a harness artefact, 1 intermittent (G3 item 4) |
+| 5 | After G3 item 1 | Browser 18 Nov 23:30 | 526 | 511 | 1 | 14 | Intermittent axe `target-size` (G3 item 5) |
+| 6 (final) | Final | Real, 04:57 to 05:05 | 526 | **512** | **0** | 14 | |
+| 7 (final) | Final | Browser 18 Nov 23:30 | 526 | **512** | **0** | 14 | |
+
+**The night window.** Round four put the board's empty window at about 22:55 to 05:05. On 22 November the first
+departure is at 07:00 and the board looks six hours ahead, so with the real clock the window is empty only from
+about 22:55 to 01:00: runs 1 to 3 saw a board with rows. The night runs (4, 5 and 7) therefore fix **the browser
+clock** at 23:30 Kuala Lumpur time for every page whose test does not pin its own clock: `scripts/qa/night-clock.cjs`
+(new, G6) wraps `@playwright/test` so each test context gets an init script that shifts `Date` (time keeps running);
+the feed answers for the browser's instant, so the board shows "No departures between 23:20 and 05:30". Tests that
+pin a clock keep theirs. Run 4 used 22 November and showed why the date must be the pinned tests' date (18
+November): see G3 item 4.
+
+The 14 skips are round four's 6 project-specific ones plus 8 new deliberate ones (the header tooltip and concierge
+panel on the phone, the phone type-size budget on desktop, the four desktop section-shift checks on the phone).
+92 tests are new in round five: `speed-round5.spec.ts` 24 (4 of them added here, G3), `flight-round5.spec.ts` 26
+and `polish-round5.spec.ts` 42, on both projects. The spec changes the logs declare were read: A-03 in
+`shell.spec.ts` gets its own client address and waits for hydration (assertions unchanged), and
+`transport.spec.ts` expects "Simulated space" where the Preferred Parking card said "Demo" (the intended change).
+None removes an assertion. A-03 with `--repeat-each=5`: **30 of 30**, both projects. The two regression tests of G3:
+12 of 12 on repeat; 6.1.6's "My needs" test 20 of 20 after G3 item 2.
+
+**Axe: 0 violations** in every run except one intermittent result in run 5 (G3 item 5). 60 scan call sites in 13
+specs (round four 59 in 12), all with the shared tag list (wcag2a, wcag2aa, wcag21a, wcag21aa, wcag22aa), on both
+projects. The new speed and flight specs scan nothing, so the states round five added were scanned here
+(`acceptance-round5.mjs axe`, the same tags): the night board (en, ms), the flight page before the feed answers
+and after, the catch-all 404s (en, ms), parking and transport (en, ms), `/en/airports`, `/en`, `/ms`, `/en/kul`,
+My journey with a saved flight, the concierge's "could not be loaded" answer, each in light and dark at 390 and
+1440 px (66 scans on the final build), and the header tooltip open in light and dark (2 scans): **0 violations**.
+Lighthouse accessibility is
+**100 in every run** of this round that scores it.
+
+### G2.3 Links, search index and canonicals (`scripts/qa/`; a fresh client address per request)
+
+| Check | Result (final build) |
+|---|---|
+| Static HTML, 276 sitemap URLs (`crawl-static.py`) | **438 pages, 1,170 unique links, 0 broken, 0 missing anchors, 0 links through redirects** (identical to round four) |
+| Rendered in Chromium after hydration (`crawl-rendered.mjs`, round three's settings: clock 18 November 09:40, MH 2626 saved) | **285 pages, 1,541 unique links, 1,033 targets, 226 fragment links, 0 broken, 0 missing anchors, 0 redirected** (round four 1,535, 1,027, 226; the delivered build 1,524, 1,016, 226). The totals move with the demonstration-flight links the thin airports' previews show when they are read (the README's caveat); `/en/btu`, `/en/myy` and `/en/twu` each list 12 flights, all answering 200 |
+| Search index, `/en` and `/ms` (`search-index.mjs`) | **446 documents** (223 per language), 308 pages, 172 anchors, **0 broken, 0 missing**; **0 documents with "[object Object]"** (2 per language in round four) |
+| Canonical and hreflang (`canonical.py`, stricter this round, G6) | 276 of 276 self-canonical with `en` and `ms` alternates; **exactly one canonical `<link>` in the head on 276 of 276** (round four 152) and none elsewhere in the document; **one canonical per response on 276 of 276** (one `Link` header, the same URL); flight pages (en, ms) and four 404s the same. Hreflang alternates are in the head on 152 and in the `Link` header on 276 |
+| `$RC` (`rc-scan.py`) | **`h1` in a hidden segment: 0 of 276**; 1,264 reveals, round four's distribution (3 on 110 pages, up to 10 on airport pages), all after the `h1` |
+
+### G2.4 Lighthouse mobile (`scripts/qa/lighthouse.mjs`, Lighthouse 13.6, Moto G Power, simulated slow 4G, 4x CPU; 3 runs, median)
+
+Before = round four (`docs/qa/lighthouse-round4/`). Set 1 = the build as delivered, 02:48 to 02:55 Kuala Lumpur time
+(`docs/qa/lighthouse-round5/`); set 2 = the final build, 05:14 to 05:21, on every page within 2 points or 20 ms of a
+target (`docs/qa/lighthouse-round5/second-set/`, with diagnostics). The final build differs from the delivered one
+only in the failure paths of G3 (first-load JavaScript +0.1 to 0.2 KB). At both times the board's window held
+departures (from 07:00), as in round four's table; the empty night board is measured separately below. KB = 1,024
+bytes. Shared 4-vCPU container, nothing else running (set 2 began just after an e2e run, load average 3.6 and
+falling); Lighthouse's CPU benchmark index ranged from 1,276 to 2,913.
+
+| Page | Performance before → set 1 → set 2 (runs) | LCP before → after | TBT before → set 1 → set 2 (runs) | CLS | KB before → after | Requests |
+|---|---|---|---|---|---|---|
+| `/en` | 94 → **95** (95/95/95) → **95** (95/95/93) | 1.11 → 1.09 s | 295 → 257 (251/257/257) → 272 (272/263/311) | 0 | 628 → 624 | 43 → 43 |
+| `/ms` | 95 → **94** (94/93/94) → **91** (86/97/91) | 1.08 → 1.12 s | 268 → 293 (293/307/274) → 377 (541/204/377) | 0 | 630 → 625 | 43 → 43 |
+| `/en/kul` | 94 → **94** (93/95/94) → **93** (92/93/95) | 1.09 → 1.11 s | 281 → 301 (316/270/301) → 323 (335/323/243) | 0 | 650 → 621 | 48 → **44** |
+| `/en/kul/flights` (rows) | 95 → **96** (94/96/97) → **96** (99/94/96) | 0.91 → 0.92 s | 263 → 212 (283/212/200) → 242 (98/292/242) | 0.003 | 592 → 587 | 42 → 41 |
+| `/en/kul/map` | 97 → **96** (95/96; one `NO_NAVSTART`) → **94** (94/95/93) | 1.08 → 1.07 s | 205 → 257 (257/242) → 288 (288/259/302) | 0.003 → 0 to 0.003 | 609 → 605 | 41 → **40** |
+| `/en/kul/transport` | 96 → **95** (96/95/95) → **97** (93/98/97) | 1.07 → 1.07 s | 219 → 268 (231/268/273) → **183** (332/170/183) | 0.003 | 600 → 594 | 40 → 39 |
+| `/en/kul/parking` | 97 → **96** (96/95/98) → **95** (91/97/95) | 1.12 → 1.11 s | 188 → 221 (221/261/170) → 273 (367/199/273) | 0 to 0.003 | 608 → 602 | 44 → 43 |
+| `/en/guides` | 98 → **98** (98/99/98) | 1.07 → **0.91 s** | 175 → **162** (162/110/167) | 0 | 548 → 539 | 38 → 37 |
+| `/en/concierge` | 93 → **97** (97/96/97) → **98** (97/99/98) | 0.92 → 0.92 s | 311 → 209 (209/239/182) → **169** (183/130/169) | 0 | **705 → 558** | 45 → **39** |
+| `/en/journey` | 98 → **99** (99/98/99) | 0.92 → 0.91 s | 179 → **126** (126/170/125) | 0 | 526 → 519 | 36 → 35 |
+
+Against the brief: performance 95 or more on **8 of 10** medians in set 1 (not `/ms` 94, `/en/kul` 94) and 7 of 10
+with set 2 (not `/ms` 91, `/en/kul` 93, the map 94); round four 7 of 10. LCP 2.5 s or less on **10 of 10** (largest
+1.15 s). CLS 0.1 or less on 10 of 10 (largest median 0.003). TBT 200 ms or less on **2 of 10** in set 1 (guides,
+journey) and 4 of 10 with set 2 (concierge 169, transport 183); round four 3 of 10. Bytes: every guidance page
+measured is over 500 KB (539 to 605); 40 requests or fewer now on the map (40) and transport (39), not parking (43).
+
+**Pooled over both sets** (six runs), TBT medians: `/en` 260 ms (round four's pooled six 264), `/ms` 300, `/en/kul`
+308 (295), concierge **183** (round four's pooled six 287), board 227, map 259, transport 250, parking 241. Across
+sessions, only the concierge (about −100 ms) and My journey (−53 ms, three runs) move beyond this container's 60 to
+100 ms spread; the map, transport and parking read 30 to 50 ms above round four's three runs, inside it. The speed
+log's interleaved comparison (each page on the final and the baseline build in turn, five rounds) is the better test
+of the direction and found −58 to −68 ms on `/en`, `/ms` and `/en/kul`; it could not be repeated here (the baseline
+build no longer exists). Set 2's longest tasks are React DOM's and the framework's chunk (`01t2i9pe5vz2-.js`, 215 to
+233 ms) and the HTML document (156 to 232 ms), as the speed log says.
+
+Pages round four measured separately (in its budget step), now in the table's conditions:
+
+| Page | Round four | Set 1 | Set 2 |
+|---|---|---|---|
+| Flight page (`/en/kul/flights/ak6336-20261122-d`) | 68 to 75, LCP 4.2 to 4.9 s (budget step) | **94** (93/94/96), **LCP 1.22 s**, TBT 301 (301/301/236), CLS 0.003, 674 KB, 48 requests | **96** (98/93/96), 1.22 s, 218 (159/316/218), 0.003 |
+| Empty night board, English (browser clock 23:30; `lh-clock.mjs`, performance only, `board-night-2330/`) | 76 to 78, LCP 4.7 s (23:17) | **96** (95/97/96), **LCP 0.92 s**, TBT 235, CLS 0.012 | **95** (95/95/93), 0.92 s, 272, 0.003 |
+| Empty night board, Malay | not measured | **96** (96/98/95), 0.91 s, 246, 0.005 (one run 0.026) | **96** (96/95/97), 0.91 s, 225, 0.005 (one run 0.026) |
+
+The flight package's open question, its `lighthouse.mjs` medians of 86 to 87 on the flight page, did not recur: 94
+and 96 here with the same harness, LCP the `h1` at 1.22 s. Accessibility is 100 in every run; best practices 96 and
+SEO 66, as in round four.
+
+Congested airport Wi-Fi (`--profile=airport-wifi,250,1500,500,4`, 3 runs, `airport-wifi/`, with diagnostics): `/en`
+LCP **2.57 s** (2.570/2.556/2.582; round three 2.57), performance 85, TBT 357 ms; the board **2.65 s**
+(2.659/2.642/2.652; round three 2.68), 86. LCP is the first paint on both, behind 23 KB of render-blocking CSS
+(about 1.2 s of it on this profile). Not met (2.5 s).
+
+### G2.5 First-load JavaScript (`scripts/qa/first-load-js.mjs`, gzip KB; 39 page routes; framework 128.7 in every row)
+
+| Route | Round four | Round five (final build) |
+|---|---|---|
+| shared shell (the catch-all route minus the framework) | 70.1 | **33.0** |
+| flight page | 249.1 | **198.3** |
+| `/en/journey` | 246.0 | 212.2 (the largest) |
+| `/en` (budget 250) | 229.5 | **195.7** |
+| `/en/kul` | 230.2 | 196.3 |
+| board / map | 229.2 / 227.9 | 197.6 / 194.7 |
+| parking / transport | 223.2 / 217.1 | 188.1 / 180.8 |
+| concierge | 217.1 | 182.0 |
+| guides hub / guide topic | 202.6 / 204.5 | **165.5 / 167.5** |
+| corporate news story | 203.0 | **166.0** |
+| at 170 or less (content and guidance target), of 39 | 0 | **18** |
+| over 250, of 39 | 0 | **0** |
+
+- The speed log's numbers hold to 0.1 KB on the delivered build; G3 item 1 adds 0.1 to 0.2 KB per route.
+- lucide-react is in **0** client chunks (the icons are one 144-symbol sprite, `icons.<hash>.svg`, 92 to 149
+  `<use>` references per page and no icon geometry in the RSC payload); the demonstration generator is in **0**
+  client chunks (its constants are only in the server bundle); zod in 0.
+- Over 170: 21 routes (the home among them, whose budget is 250), from 170.3 (offline) to 212.2 (journey).
+
+### G2.6 Other production measurements (Playwright, Pixel 7 unless stated)
+
+| Measure | Round four | Round five (final build unless stated) |
+|---|---|---|
+| Interaction latency at 4x CPU, worst per run (`interaction-latency.mjs`, 2 sets of 3) | Board typing 48/96/104; direction 88/96/72; home mode 104/144/112; home switcher 136/152/160; `/en/kul` switcher 176/128/144 | Board typing 48/88/88 and 40/64/32; direction 120/88/120 and 80/104/128; home mode 120/**232**/112 and 160/112/104; home switcher 176/136/184 and 160/160/152; `/en/kul` switcher **224**/160/152 and 136/176/152. **2 of 30 runs over 200 ms**, both in the first set (round four 0 of 15; round three 2 of 9) |
+| Input before hydration (round three's `early.cjs`, scripts delayed 2.5 s, 4x CPU) | 0 of 10 lost per case | **0 of 10 lost** in each of the four cases |
+| Home CLS (`layout-shift.mjs`, `/en` and `/ms`, three viewports, 3 loads) | 0 in 36 loads | **0 in all 36 loads** (18 normal, 18 at 4x CPU with a slow network) |
+| Desktop CLS, 1440x900, 3 loads (E-02's pages) | `/en` 0, `/ms` 0, `/en/kul` 0.011, concierge 0 | **The same**; My journey 0; all phones 0 |
+| Desktop CLS on airport section pages (parking, facilities, lounges, shop-dine, map, transit, PEN parking) | 0.025 to 0.026 | **0.0004 to 0.0005**, 0 inside `<main>` (the rest is the header's airport switcher) |
+| Desktop CLS, transport (en / ms) | 0.045 to 0.049 | **0.0004 / 0.0012**, 0 inside `<main>` |
+| Desktop CLS, board and flight page (clock 18 November 09:40) | board 0.039 | board **0.008**; flight page **0.009** (0.097 on the flight package's baseline) |
+| Night board (clock 23:30), CLS | not measured | 0 on phones (en, ms); **0.023 (en), 0.041 (ms) at 1440**: the board header, the status row and the empty-state title move sideways when the feed answers |
+| Service worker, first visit to `/en` at an 18:00 clock (round four's `sw.cjs`) | 62 requests, 691 KB, Cache Storage 1,588 KB (24 entries), `/en` twice | **61 requests, 643 KB, Cache Storage 1,376 KB** (23 entries), `/en` twice |
+| HTML, gzip KB (round four's `htmlsize.py`) | `/en` 61.6, `/ms` 63.1, `/en/kul` 58.8, board 38.9, flight page 96.7; sections 49.5 to 63.7; guides 45.8 to 56.6; help 56.9; concierge 38.5; journey 38.5; airports 39.8; notices 42.1; corporate 47.0; privacy 45.9 | `/en` **53.5**, `/ms` 54.8, `/en/kul` 49.4, board 32.1, flight page **85.6**; sections 41.6 to 57.0; guides 38.1 to 48.8; help 48.3; concierge 36.9; journey 32.0; airports 33.3; notices 35.6; corporate 39.3; privacy 38.8 (7 of 22 pages at 40 or less) |
+| Placement (`acceptance-round4.mjs placement`) | Transport fare 433 / 495 px (en / ms), warning 711 / 774; Malay at 125% 881 px (warning 1,211); first taxi option 2,766 px | Fare **431 / 493**, warning 736 / 798; **Malay at 125% 717 px** (warning 1,266), English at 125% 616 px; first taxi option 2,791 px (C-02 holds); board first row, Follow, My needs and the needs control **identical** to round four |
+| Density at 390 px (`acceptance-round4.mjs density`) | Facilities 8 tags, 11 toggles, 7 sizes; Transport 5, 4, 8; Parking 8 tags, 8 toggles, 4 Demo labels | Facilities and Transport identical; Transit 20, 6, 6; Map 19, 1, 7; **Parking 4 tags, 3 toggles, 0 Demo labels on cards (1 banner), 7 sizes** |
+| A-14 type sizes on every sitemap page plus My journey and a flight page, MH 2626 saved (`type-sizes.mjs`, new) | not measured | **390 px: 272 of 280 pages at 8 or fewer**; 9 on `/en` and `/ms` (with a saved flight, its card adds 12 px), the corporate hub, corporate news and about-this-prototype (both languages). 1440 px: 269 of 280; 9 or 10 on the home, My journey, the corporate hub and about, about-this-prototype and the terminal map (its scaled SVG labels) |
+| Catch-all 404s (`/en/kul/zzz`, `/en/nothing/here`, `/en/a/b/c`, `/ms/kul/zzz`, `/ms/tiada/halaman`) | 404 with Next.js's empty error document | **404 on the first and repeat request with the shell, the skip link, the title, the `h1`, `noindex` and one canonical** in the server HTML; browser title "Page not found \| …" / "Halaman tidak ditemui \| …"; no React error (the console shows the document's 404 and, at times, the header's language link prefetching the other language's 404, as on every `MissingPage` 404 since round four) |
+| Congested airport Wi-Fi (`lighthouse.mjs --profile=airport-wifi,250,1500,500,4`) | Round three: `/en` 2.57 s, board 2.68 s | **`/en` LCP 2.57 s** (2.570/2.556/2.582), performance 85; **board 2.65 s** (2.659/2.642/2.652; rows, 02:55), 86. Still the first paint; 23 KB of render-blocking CSS ahead of it. Not met (2.5 s) |
+| A failed lazy script (new check, G3 item 1) | not measured | Delivered build: **24 of 24 page/viewport pairs** replaced by "This page couldn't load". Final build: 0 of 24; the flight page keeps its answer; the runtime's script is fetched again (3 requests) and the worker registers |
+
+## G3. Regressions, defects and changes in this round
+
+Changed in this round (each followed by `tsc`, `eslint`, the unit tests and the e2e runs above):
+
+1. **Regression (speed package), fixed: a script that could not be fetched took the whole page down.** The platform
+   runtime became its own script this round (`platform-runtime-lazy.tsx`, `React.lazy` inside an Activity
+   boundary, no error boundary). `React.lazy` keeps a rejected import, so when the runtime's chunk could not be
+   fetched (the connection dropped while the page was starting: common on airport Wi-Fi), the error reached the
+   root boundary and **every page, the offline page included, was replaced by "This page couldn't load"** with no
+   site shell, and stayed so after the connection returned (reproduced by failing that one chunk once on `/en` and
+   `/en/offline`; with every lazy chunk failing, all 24 page/viewport pairs tested). The flight page's new lazy parts
+   (timeline, needs control, not-found states, journey builder) did the same at the page level ("Something went
+   wrong"). Found while finding out why gallery note 3's offline check no longer showed its card or toast. Fix: a new
+   `src/lib/retrying-import.ts` (an import that never rejects: it tries again when the browser is back online, or
+   after a pause doubling from 5 s to a minute), used by `platform-runtime-lazy.tsx` (plus a boundary that renders
+   nothing if the runtime itself throws) and `flight-detail.tsx`. Tests: `src/lib/retrying-import.test.ts` (4) and
+   two tests in `e2e/speed-round5.spec.ts` ("a script that cannot be fetched does not take the page down": the
+   offline page and the flight page keep their content with every lazy chunk failing, and the runtime and the
+   timeline arrive when the connection returns), 12 of 12 on repeat. First-load JavaScript +0.1 to 0.2 KB.
+   Not changed (pre-existing since rounds two and three, open issue 2): the home's saved-flight card and My
+   journey's clear control are also lazy, and with a saved flight a failed fetch of theirs still shows "Something
+   went wrong" in the page.
+2. **Robustness slip (flight package), fixed: "My needs" tapped before its control arrived jumped to nothing.** The
+   needs control became a lazy chunk this round and carried the only `#needs-control` anchor, so a tap in that
+   moment left the page where it was and the control appeared off screen (the 6.1.6 test failed once in 25 runs,
+   run 4). The placeholder that holds the control's room now carries the anchor (`flight-detail.tsx`); the e2e test
+   above taps "My needs" while the chunk is failing and checks the control is in view before and after it arrives.
+   6.1.6's own test then passed 20 of 20.
+3. **Measurement scripts** (`scripts/qa/`, G6): `acceptance-round4.mjs` read the home status strip's hidden
+   width-reserving variants as text ("1 service has a notice 2 services have a notice …"); it now skips
+   `visibility: hidden`, and reads "1 service has a notice" (real clock) and "status not available (no live feed)"
+   (20 December), as the page shows. `canonical.py` now also fails without exactly one canonical `<link>` in the
+   head. `lighthouse.mjs` sends its own client address per run, as the README says every script does.
+   `layout-shift.mjs` takes `PATHS` and `VIEWPORTS`.
+4. **Night run 4: two failures from the harness, one intermittent.** `flights.spec.ts` "announces a change to a
+   saved flight once" pins its clock with `page.clock.install` (fake timers); with the night shift on another date
+   (22 November) the shifted date still reached the page in places and its saved 18 November flight was dropped as
+   days old (4 of 4 with that date; 2 of 2 with the shift on 18 November at 11:14 or 23:30). `night-clock.cjs`
+   therefore defaults to 18 November, the pinned tests' date. The same test also fails when repeated (14 of 20 with
+   `--repeat-each=10`): its board refreshes about 18 times from the worker's one client address while the clock runs
+   forward, and the fourth repeat meets the feed's rate limit (429), after which the board correctly shows
+   "Showing the last flight information we received … Try again"; with a fresh address per repeat, 4 of 4 pass.
+   That is round four's A-03 issue (open issue 9), not a product change. The trust.spec 6.1.6 failure is item 2.
+5. **Night run 5: one intermittent axe result.** `concierge.spec.ts` "works in Bahasa Malaysia" (desktop) reported
+   `target-size` on the privacy row's "Susunan kata AI dan penerbangan simpanan" button (36 px tall, so partly
+   covered at that instant, probably mid-scroll under the sticky header). Not reproduced in 236 repeats (8 with the
+   real clock, 28 at night, 200 under load at night with `ask-round4.spec.ts`). Recorded, not changed.
+
+The round-five logs' own open questions, answered:
+
+- **Flight log, open 1** (`lighthouse.mjs` medians 86 to 87 on the flight page): on a quiet machine the harness gives
+  **94** (93/94/96) and 95 in a probe, LCP 1.21 to 1.22 s, CLS 0 to 0.003, every request 200. The 86 to 87 were
+  the shared machine's load; the harness itself is consistent with the other drivers.
+- **Flight log, "after the last build"** (the summary placeholder height): on this build the Malay flight page's
+  CLS at 390 px is 0 and the Lighthouse runs show 0 to 0.003.
+- **Speed log, the platform test that "can race with the worker's installation"**: it passed in all seven full runs.
+
+Wrong-way numbers, not fixed (none crosses a target that was met in round four):
+
+- Lighthouse TBT medians on the map (205 → 257 and 288 ms), transport (219 → 268, then 183) and parking (188 → 221
+  and 273), and `/ms` performance 95 → 94 and 91 (one run at 86, TBT 541): within this container's spread (G2.4), not
+  attributed to a change.
+- Interaction latency: 2 of 30 worst-interaction runs over 200 ms (home mode 232, `/en/kul` switcher 224), both in
+  one set; round four had 0 of 15.
+- Gallery note 3: with the runtime out of the first load, a connection that drops before its script arrives gets
+  the offline page's card but no toast until the script arrives (G4).
+- Night board at 1440 px: CLS 0.023 (en) and 0.041 (ms), measured for the first time.
+
+## G4. Acceptance: the round-five claims, re-review 6.1 and the gallery notes
+
+Evidence from the final build: the e2e assertions, `scripts/qa/acceptance-round5.mjs` (new) and
+`acceptance-round4.mjs`, the measurements above, and 15 screenshots looked at (flight page before the feed
+answers, 390; flight page filled, 1440; night board 390 en and 390 ms dark; `/en/kul/zzz` 1440 dark; parking card
+390; Malay transport at 125% text 390; the airports map at 1440 and 320; the concierge with the feed blocked 1440;
+the home 390; the header tooltip 1440; `/ms` 1440 dark; My journey's timeline 390; and the "This page couldn't load"
+screen of G3 item 1).
+
+| Package, item | Log's claim | Verdict | Evidence (final build unless stated) |
+|---|---|---|---|
+| Speed 1, TBT and performance (A-09, E-01) | Partly fixed | **Partly**, as claimed (one of its changes regressed; fixed here, G3 item 1) | The concierge's round-four rise is gone: performance 93 → 97 and 98, TBT 311 → 209 and 169 (183 pooled), 705 → 558 KB, 45 → 39 requests. `/en` 95 in both sets (claimed 96); `/ms` 94 and 91 (claimed 95); `/en/kul` 94 and 93 (claimed 92). TBT on `/en`, `/ms` and `/en/kul` 257 to 377 ms, above 200 as the log says, and not measurably lower than round four across sessions (G2.4). Icons render without hydrating (G2.5); header tooltip below; `$RC` 0 of 276; home CLS 0 |
+| Speed 2, first-load JavaScript (E-03) | Partly fixed | **Verified** (the numbers; the target still missed, as claimed) | Shell 70.1 → 32.9 KB as delivered (33.0 final), every route 19.6 to 51.0 KB lighter, **18 of 39** at 170 or less, 0 over 250, journey 212.0 the largest; identical to the log to 0.1 KB |
+| Speed 3, the concierge's flights from the feed (B-09) | Fixed | **Verified** | On the device the answer requests `/en/flights/feed` (`/ms/…` in Malay) and reads "MH 785 shows as scheduled in the demonstration data. Your airline has the real status. …" with the demonstration banner; no script the page loads contains the generator. `/api/concierge` answers with the feed's own flight (id, status, scheduled and estimated times equal). Feed blocked: "Flight information could not be loaded just now, so I cannot check MH 785. If you are offline, try again …" / "Maklumat penerbangan tidak dapat dimuatkan sekarang, …" (for "delayed?" it follows the delay rights, under "What we do not know"); never "not found" (screenshot) |
+| Speed 4, bytes, HTML and the worker (E-01, E-11, E-12) | Partly fixed | **Verified** | HTML gzip as the log (`/en` 53.5, `/en/kul` 49.4, guides 38.1, concierge 36.9); the concierge's copy only on the concierge page (e2e); worker first visit 61 requests, 643 KB, Cache Storage 1,376 KB; guides hub 539 KB, baggage guide 545 KB (512 not met, as claimed) |
+| Speed 5, the home's type sizes (A-14) | Fixed | **Partly** | 8 at 390 px on `/en` and `/ms` (11 13 14 16 18 20 22 26) and 9 at 1440, as claimed; but **9 at 390 px when a flight is saved** (the saved-flight card adds 12 px), a state the log did not count |
+| Speed, icons as one sprite (cross-package) | — | **Verified** | 0 client chunks with lucide; one 144-symbol sprite; drawn in light, dark and on the phone bar (screenshots); e2e |
+| Speed, tooltip without Radix (cross-package) | — | **Verified** | e2e (hover, keyboard focus, Escape, hoverable, inside the window); axe 0 with it open, light and dark; beside its trigger (screenshot) |
+| Speed, the platform runtime as its own script | — | **Regressed as delivered, fixed** | G3 item 1 |
+| Flight 1, the flight page's LCP (E-01, E-02) | Fixed | **Verified** | `h1` inline at byte 22,540 (en) and 22,668 (ms), before the first hidden segment (46,600); the log's 19,517 grew by the polish package's head canonical. Performance 94 and 96, LCP 1.22 s (the `h1`), CLS 0 to 0.003 with `lighthouse.mjs`; budget step 93 to 95, LCP 1.21 to 1.23 s. Before the feed answers the card shows the timetable facts and placeholders (screenshot). 404 with "We could not find this flight" for `/en/bbn/…`, `/ms/tod/…`, `/en/kul/flights/zz9999-…` and `/en/zzz/…` |
+| Flight 2, the board at night | Fixed | **Verified** | Browser clock 23:30: LCP 0.92 s (en) and 0.91 s (ms), performance 95 to 96 (round four 76 to 78, 4.7 s); "Loading the board" in the server HTML; the empty state fills that block and offers both steps, in English and Malay (screenshots). Residual shift: 0 to 0.026 on phones; 0.023 (en) and 0.041 (ms) at 1440 px (G2.6) |
+| Flight 3, the flight page's first-load JavaScript | Fixed | **Verified** | 249.1 → 198.1 KB as delivered (198.3 final) |
+| Flight 4, density (A-14, 6.1.7) | Fixed on the counts; chips partly | **Verified**, as claimed | Flight page at 390 / 1440: provenance tags 18 / 17, Demo labels 6 / 5 with **at most 1 per view**, source toggles 2, one timeline source list, 5 filter chips, **8 type sizes**; My journey 15 / 14, 5 / 4 (at most 1 per view), 1 toggle, 8 / 9 sizes; overview 8 sizes, 2 Demo labels in one phone view (not in the item). Identical to the log |
+| Flight 5, desktop CLS on section pages | Fixed | **Verified** | 0.0004 to 0.0005 on seven section pages, 0 inside `<main>`; flight page 0.009 (log 0.0045), board 0.008 (log 0.0157) |
+| Flight 6, e2e A-03 and rate limits | Fixed | **Verified** | 30 of 30 with `--repeat-each=5`, both projects; the same remedy is still missing in another test (G3 item 4) |
+| Polish 1, catch-all 404s | Fixed | **Verified** | G2.6; five paths, first and repeat request (screenshot `/en/kul/zzz`, 1440, dark) |
+| Polish 2, search index | Fixed | **Verified** | 0 of 223 documents per language with "[object Object]"; both airline summaries plain text in both languages |
+| Polish 3, parking density (A-14, 6.1.7) | Fixed | **Verified** | At 390 px, English and Malay: 3 source toggles (1 in the list, 2 section lists), **0 Demo tags on cards**, 1 Demo marker and 1 banner in the list, 4 chips (the simulated space only), 4 provenance tags, 8 rate lines, "Simulated space" / "Ruang simulasi" on 4 of 4 cards, 7 type sizes (8 at 1440), 11.2 / 11.9 screens; the parking-booking hand-off kept (screenshot) |
+| Polish 4, the transport fare row | Fixed | **Verified** | Desktop CLS 0.0004 (en) and 0.0012 (ms), 0 inside `<main>`; at 125% on a phone the fare's text is at 717 to 749 px (ms) and 616 to 648 (en), beside the option's name (screenshot), above the warning (1,266 / 1,142); at 1440 and 125% 689 to 721; two dated lines with and without JavaScript ("from RM 55" before the date is read); Lighthouse transport 95 and 97 |
+| Polish 5, `/en/airports` map labels | Fixed | **Verified** | 0 of 5 labels outside the drawing at 320, 360, 390, 640, 768, 1024, 1280, 1440 and 1920 px and at 200% zoom (640, 720, 960 px); LGK to the right of its marker (screenshots at 1440 and 320) |
+| Polish 6, canonical in the head (E-14) | Fixed | **Verified** | G2.3 |
+| Polish 7, `.gitignore` | No change needed | **Verified** | `/.lighthouseci/`, `/test-results/`, `/playwright-report/`, `/.data/` and `/.next-*/` are listed (file read) |
+
+Of the 18 numbered claims: **16 verified, 2 partly (speed 1 and 5), 0 not verified, 0 regressed** on the final build.
+
+**Re-review 6.1 and the gallery notes, re-checked** (`acceptance-round4.mjs`, all blocks, final build):
+
+| Item | Round four | Round five | Evidence |
+|---|---|---|---|
+| 6.1.1 Status lines | Verified | **Verified** | `/en/kul` and `/ms/kul`: 0 checked times, 0 "No disruption", 4 "Status not available", the Aerotrain notice dated 7 Oct 2026; flight page and transit "From notices published up to 7 Oct 2026; no live feed."; home strip "1 service has a notice" (real clock) and "status not available (no live feed)" (20 December); concierge unchanged |
+| 6.1.2 Day of travel | Verified | **Verified** | The same texts on the restructured flight page: summary "Delayed: now 12:00 · … · Check-in closes 11:00 · Boarding 11:15", 12 steps, 0 "Done:", 4 "Past:", the delay step first, "Act now: …", AirAsia's notice period not invented |
+| 6.1.3 One fact, one answer | Verified | **Verified** | The parking cards' reworked rate lines equal the price table's and the concierge's ("Rates not verified: our sources give a daily maximum of RM 32; …", 3 unverified cells); 8 rate lines; help FAQ unchanged |
+| 6.1.4 Concierge | Verified | **Verified** | Same answers and phone heights (788 to 1,181 px); engine now loaded on intent; flight answers from the feed (B-09) |
+| 6.1.5 Search | Verified | **Verified** | Same results; "MH 2" 9 results; the airline summaries now read "KLIA Terminal 1 · Level 5. International Economy: Row H, counters 1 to 18. …" |
+| 6.1.6 Answer first, placement | Verified | **Verified** (after G3 item 2) | As G2.6; the Malay fare at 125% now on the first screen |
+| 6.1.7 Density | Partly | **Partly** | Parking and the flight page now done (G4 table); type sizes 8 on the home, `/ms`, the overview and the flight page at 390 px, but 9 on the home with a saved flight |
+| 6.1.8 Thin airports | Verified | **Verified** | Lawas, KLIA's airlines, 39 depth chips 3 / 18 / 18 unchanged; flight URLs at airports without a board now 404 |
+| 6.1.9 Measurement | Verified | **Verified** | `data-handoff`: parking-booking 2 on the reworked parking page, fast-track 2/2/1, lounge 3, rail 1 |
+| 6.1.10 Statement and Malay | Verified | **Verified** | Unchanged; "Tanya Kami"; the Malay placeholder fits |
+| Gallery 1, React #419 on 404s | Verified | **Verified** | 4 `MissingPage` 404s: 404, `h1` in the HTML, 0 failed boundaries, 0 console errors; the catch-all now the same |
+| Gallery 2, next-day rows | Verified | **Verified** | Ipoh at 11:00: "", "Tomorrow", "Tomorrow" |
+| Gallery 3, offline page and toast | Verified | **Partly** (regressed as delivered, G3 item 1) | Offline at DOMContentLoaded, before the worker was ready: the card says "Nothing is saved on this device yet: the connection dropped before offline saving was ready …"; back online, the registration is retried and the worker controls the page; the next drop shows "You are offline: showing saved information". Missing against round four: the toast "You are offline: nothing is saved on this device yet", which now needs the runtime's own script and so waits for the connection (open issue 8). In one earlier run the drop came before the first-load scripts had arrived and the page kept its server text ("Checking your connection and what is saved."), a race that round four's run did not meet |
+| Gallery 4, "MH 2" | Verified | **Verified** | 9 results; the "[object Object]" in the KLIA entry's summary is gone (polish item 2) |
+
+**The round-five logs' own numbers.** Every number re-measured here matched, within the container's noise for
+Lighthouse, except: the speed log's Lighthouse medians (interleaved, `/en` 96 and 228 ms, `/ms` 95 and 254, `/en/kul`
+92 and 257,
+concierge 98 and 157) read better than this round's sets (95 / 257 and 272, 94 and 91 / 293 and 377, 94 and 93 / 301 and
+323, 97 and 98 / 209 and 169); its "8 type sizes on the home" holds without a saved flight only; the flight page's `h1`
+is at byte 22,540, not 19,517 (the polish package's head canonical came later), and its desktop CLS is 0.009 against
+the flight log's 0.0045 (the board 0.008 against 0.0157); the night board scores 95 to 96 against the flight log's 93
+(en) and 90 (ms); and the Malay fare at 125% is at 717 to 749 px (its text) against the polish log's 720 to 770 (its
+cell). The flight log's "e2e 143 passed" and the polish log's "144 passed" were partial runs; all three packages'
+specs pass together in the full runs above.
+
+## G5. Acceptance, all 101 P0 and P1 items
+
+| Count | P0 (48) | P1 (53) | All (101) |
+|---|---|---|---|
+| Verified | 39 (round four 39) | 46 (46) | **85** (85) |
+| Not verified | 9 (9) | 7 (7) | **16** (16) |
+| Regressed | 0 | 0 | **0** (on the final build; the delivered build's G3 item 1 was fixed in this round) |
+
+No item changes state. Movement inside the 16:
+
+| ID | P | Round five evidence |
+|---|---|---|
+| B-09 | P0 | Now one part short: every flight answer, the concierge's included, comes from the server feed through the provider interface, and the generator is in no client chunk. Left: the chaos and contract tests running in CI (E-06). Official feed OOS-01 |
+| A-14 | P0 | Closer: parking and the flight page as the layout log recommended (one source list per section, at most one Demo marker per view); 8 type sizes on the home, `/ms`, the overview and the flight page at 390 px. Not met: "at most 8 on any page": 8 of 280 pages have 9 at 390 px (the home with a saved flight, the corporate hub, corporate news, about-this-prototype) and 11 at 1440 px |
+| E-03 | P0 | Closer: shell 70.1 → 33.0 KB; 18 of 39 routes at 170 KB or less (0); still 21 over, from 170.3 to 212.2 KB |
+| A-09, E-01 | P0 | Unchanged state. TBT `/en` 257 and 272 ms, `/ms` 293 and 377 (target 200, median of 3); performance 95 or more on 8 and 7 of 10 pages; the concierge now 97 to 98 with TBT 169 to 209; the flight page 94 to 96 with LCP 1.22 s (was 68 to 75 and 4.2 to 4.9 s) and the empty night board LCP 0.92 s (was 4.7); the budget step fails 10 assertions (14); interaction latency 2 of 30 runs over 200 ms |
+| E-02 | P0 | Unchanged: congested Wi-Fi LCP 2.57 s (`/en`) and 2.65 s (board), the first paint |
+| E-11 | P1 | Closer: HTML 6 to 11 KB smaller per page; 7 of 22 measured pages at 40 KB gzip or less; the root dictionary still carries `flightPages` (15 KB) |
+| E-12 | P1 | Closer: 61 requests (target 60), 643 KB (600), Cache Storage 1,376 KB (1 MB), `/en` still downloaded twice |
+| E-14 | P1 | Closer: one canonical in the head on 276 of 276; but `pageMetadata` is still not used on 124 routes, whose hreflang alternates are in the `Link` header only |
+| E-06, D-04, D-07, C-08, D-14, E-09, E-17 | P0/P1 | Unchanged |
+
+The 16 not verified: P0 A-09, A-14, B-09, D-04, D-07, E-01, E-02, E-03, E-06; P1 C-08, D-14, E-09, E-11, E-12, E-14,
+E-17.
+
+## G6. Measurement scripts
+
+Every script in `scripts/qa/` was used. Changes (README updated):
+
+| Script | Change |
+|---|---|
+| `acceptance-round5.mjs` | **New**: the numbers behind G4 (blocks concierge, html, typesizes, flightpage, notfound404, board, density, parking, search, fare, maplabels, sections, axe) |
+| `type-sizes.mjs` | **New**: A-14's type-size count on every sitemap page at 390 and 1440 px, with a saved flight |
+| `night-clock.cjs` | **New**: a `--require` preload that runs the unchanged suite with the browser clock at night (G2.2) |
+| `acceptance-round4.mjs` | Fixed: the home strip reading skips `visibility: hidden` text (G3 item 3) |
+| `canonical.py` | Stricter: exactly one canonical `<link>` in the head and in the document is now part of the pass rule |
+| `lighthouse.mjs` | Each run sends its own `x-e2e-client-ip` |
+| `layout-shift.mjs` | `PATHS` and `VIEWPORTS` options (used for E-02's pages and the night board) |
+
+One-off helpers run from the session scratch folder, not in the repository: round four's `sw.cjs`, `early.cjs` and
+`htmlsize.py` (unchanged, for comparability), the flight package's `lh-clock.mjs` (Lighthouse's API with a shifted
+browser clock, for the night board), and probes for the lazy-chunk failure (G3 item 1), the night board's shift
+sources and the A-19 prefetch.
+
+## G7. CI, run locally (`.github/workflows/malaysia-airports-ci.yml`)
+
+| Job / step | Result here |
+|---|---|
+| verify: checkout, Node 22 | Not applicable / Node 22.23.4 |
+| Install (`npm ci`) | **Pass**, in a scratch copy of `package.json` and the lockfile (the checkout's `node_modules` was not replaced): 486 packages in 23 s, one deprecation warning (`eslint@9.39.5`); `npm audit --omit=dev` there 0 |
+| Audit production dependencies (gate) / all (report) | **Pass** / **Pass** (0 and 0) |
+| Route types, type check, lint, unit tests | **Pass** (`npx next typegen`, `tsc` 0, `eslint` 0, 581 of 581) |
+| Production build (`npm run build`, `APP_VERSION` set, no `NEXT_PUBLIC_SITE_URL`) | **Pass** (into `.next-ci`, 0 warnings, 363 pages) |
+| Install browsers | **Not run** (no `playwright install` in this brief). Chromium is present; WebKit is not |
+| End-to-end (desktop, phone, WebKit phone; `CI=true`, `E2E_STATUS_CODES=1`, trusted client header) | Desktop and phone **pass**: 512 passed, 0 failed, 0 flaky, 14 skipped (run 3). **WebKit cannot run here** (no WebKit browser in the container), as in round four |
+| Lighthouse budgets (Lighthouse CI 0.16.0, lighthouserc.json's 6 URLs plus a current flight page, x 3) | Collected 21 runs (04:23 to 04:26; the board had rows). **10 assertion failures** (round four 14): script bytes on `/en` and `/ms` (354,754 transferred against 256,000) with TBT 232 and 213 ms; the baggage guide's total bytes (558 KB against 512); parking's performance 92, TBT 338 ms and bytes 617 KB; the flight page's performance 94 and TBT 286 ms. **No longer failing**: the board (95/97/97, LCP 0.92 to 0.94 s), parking's request count (40) and the flight page's LCP (1.22 s, was 4.7). My journey passes everything (99 to 100). Summary: `docs/qa/lighthouse-round5/ci-budgets/` |
+| Keep reports | Not applicable (GitHub artifact upload) |
+| CodeQL | **Cannot run here** (GitHub-hosted action; no CodeQL CLI) |
+| Secret scan (gitleaks, full history) | **Cannot run here** (no Docker daemon; it reads the git history, which this brief does not allow) |
+
+So on a runner the workflow would fail only where the product misses its budgets (the Lighthouse step), and the
+WebKit project has still never run.
+
+## G8. Open issues, ranked
+
+"Team" = fixable by the delivery team. "MAHB" = depends on MAHB data, systems or partners.
+
+1. **TBT over 200 ms on most pages; performance under 95 on `/ms` (94, 91) and `/en/kul` (94, 93)** (A-09, E-01;
+   P0). Team. Pooled six-run TBT medians: `/en` 260, `/ms` 300, `/en/kul` 308, map 259, transport 250, parking 241,
+   board
+   227, flight page 268 ms; under 200 only on the concierge (183), the guides hub (162) and My journey (126). The
+   longest tasks are React DOM's and the framework's chunk and the HTML document; the budget step fails on TBT on `/en`,
+   `/ms`, parking and the flight page, and on script bytes on `/en` and `/ms` (354 KB against 256 KB: Lighthouse
+   counts every
+   script fetched in its load window, not first-load JavaScript). The speed log's next
+   candidates stand: fewer Client Components on the home's first screen and the overview, scoping `flightPages` out of
+   the root dictionary, fonts (127 KB).
+2. **A script that cannot be fetched still replaces the page's content in two places** (resilience; found this round,
+   pre-existing since rounds two and three). Team. With a saved flight, a failed fetch of the home's saved-flight card
+   or
+   of My journey's clear control shows "Something went wrong" in the page; the overlays' idle preloads leave unhandled
+   rejections. Use `retryingImport` (G3 item 1) for every `React.lazy` that renders on page load, and add those pages to
+   the e2e test.
+3. **CI and WebKit have never run on a runner** (E-06; P0), and with them the chaos and contract tests, the last part of
+   B-09. Team. Every step that can run here passes except the budgets.
+4. **First-load JavaScript over 170 KB on 21 of 39 routes** (E-03; P0). Team. From 170.3 KB (offline) to 212.2 (My
+journey);
+   the shell is 33.0 KB, so what is left is each route's own code (tailwind-merge in the
+   shell, 8.5 KB, could go too).
+5. **Type sizes and density** (A-14, 6.1.7; P0). Team (design owner). At 390 px, 9 sizes on the home with a saved
+   flight, the corporate hub, corporate news and about-this-prototype (both languages); at 1440 px, 11 pages over 8,
+   including the home and My journey. Parking and the flight page are done.
+6. **Byte, request and HTML budgets** (E-01, E-11, E-12). Team. Guidance pages 539 to 605 KB (target 500 to 512),
+   parking 43 requests; HTML gzip over 40 KB on 15 of 22 measured pages (`/en` 53.5, flight page 85.6); the worker's
+   first visit 61 requests and 643 KB (60, 600), Cache Storage 1,376 KB (1 MB), and `/en` still downloaded twice. The
+   A-19
+   prefetch and the idle overlays (about 130 KB) are a product decision (speed log).
+7. **Congested Wi-Fi LCP 2.57 s (`/en`) and 2.65 s (board)** (E-02; P0; its last part). Team. The first paint is the
+   LCP; 23 KB of render-blocking CSS and two preloaded fonts come before it.
+8. **The offline toast waits for the runtime's script** (gallery note 3; low to medium). Team. Since the runtime left
+   the first load, a connection that drops before its script arrives gets no "You are offline" notice on any page until
+   the connection returns (the offline page's card is right). Keep a minimal connectivity listener for the toast in the
+   shell, or fetch the runtime with the first load on slow connections.
+9. **Low, team**: the night board at 1440 px shifts sideways when the feed answers (CLS 0.023 en, 0.041 ms); 2 of 30
+   worst-interaction runs over 200 ms (home mode 232, `/en/kul` switcher 224); `flights.spec.ts` "announces a change to
+   a saved flight once" shares its worker's client address and meets the feed's rate limit when repeated (give it its
+   own address, as A-03 now has); one intermittent axe `target-size` result on the concierge's privacy-row button in a
+   full night run, not reproduced in 236 repeats; hreflang alternates in the head on 152 of 276 pages (`pageMetadata`
+   not used on 124 routes; the `Link` header has them on all, E-14); the header's airport switcher shifts 0.0004 to
+   0.005
+   after hydration; unknown paths' 404 renders are kept in Next.js's route cache (bound it in the deployment); answer
+   states for the other top tasks (E-17); the enforced CSP keeps `'unsafe-inline'` (E-09); reading level (D-14).
+10. **Rate limits behind an undeclared CDN** (deployment). MAHB: set `TRUSTED_CLIENT_IP_HEADER` or `TRUSTED_PROXY_HOPS`
+    and deploy the edge rules (OOS-11).
+11. **Facts only MAHB, airlines or partners can supply**: assistance rules and notice periods for AirAsia, AirAsia X,
+    Batik Air and the other carriers (D-04); the operating airline and own phone line of the 33 airports without a
+    content file (6.1.8); an accessibility contact and response time (6.1.10); a live operations feed and notices CMS
+    (OOS-02); the official flight feed (OOS-01); the parking tariff (OOS-03); the Immigration Department's wording for
+    departing citizens (D-07); taxi, rail and e-hailing places on the map (C-08); Fast Track price, hours and seller
+    (D-02); located accessibility facts (OOS-07); native Malay review (OOS-14). MAHB.
+
+## G9. How to reproduce
+
+```bash
+npx tsc --noEmit && npx eslint . && npx vitest run && npm audit --omit=dev
+rm -rf .next && NEXT_PUBLIC_SITE_URL=http://localhost:3100 npx next build
+TRUSTED_CLIENT_IP_HEADER=x-e2e-client-ip npx next start -p 3100 &   # stop it by its process group afterwards
+npx playwright test --trace off
+NODE_OPTIONS="--require ./scripts/qa/night-clock.cjs" E2E_NIGHT=2026-11-18T23:30:00+08:00 npx playwright test --trace off
+mkdir -p out   # or any folder outside the repository (scripts/qa/README.md)
+python3 scripts/qa/crawl-static.py http://localhost:3100 out/crawl-static.json
+node scripts/qa/crawl-rendered.mjs --out=out/crawl-rendered.json --clock=2026-11-18T09:40:00+08:00 --flight=mh2626-20261118-d
+node scripts/qa/search-index.mjs && python3 scripts/qa/canonical.py http://localhost:3100 out/canonical.json /en/kul/flights/<id> /en/kul/zzz
+python3 scripts/qa/rc-scan.py http://localhost:3100 out/rc-scan.json && node scripts/qa/first-load-js.mjs .next out/fljs.json
+LIGHTHOUSE_CLI=<separate install>/node_modules/lighthouse/cli/index.js node scripts/qa/lighthouse.mjs docs/qa/lighthouse-round5 3 en=http://localhost:3100/en ...
+node scripts/qa/interaction-latency.mjs && node scripts/qa/layout-shift.mjs && CPU=4 NET=1 node scripts/qa/layout-shift.mjs
+PATHS=/en/kul,/en/concierge,/en/journey VIEWPORTS=desktop,phone node scripts/qa/layout-shift.mjs
+node scripts/qa/acceptance-round4.mjs && node scripts/qa/acceptance-round5.mjs && node scripts/qa/type-sizes.mjs http://localhost:3100 out/type-sizes.json
+```
+
+Files changed in this round: `src/lib/retrying-import.ts` and `src/lib/retrying-import.test.ts` (new),
+`src/components/platform/platform-runtime-lazy.tsx` and `src/components/flights/flight-detail.tsx` (G3 items 1 and
+2), `e2e/speed-round5.spec.ts` (two tests added), `scripts/qa/` (three new scripts, four changed, the README),
+`docs/qa/lighthouse-round5/`, and this section.
