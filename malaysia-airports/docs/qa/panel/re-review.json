@@ -1,0 +1,393 @@
+{
+  "title": "Review panel, round two: consolidated verdict",
+  "date": "2026-11-21",
+  "report": "docs/qa/panel/re-review.md",
+  "verdict": "Not ready for public launch. Recommended: a closed pilot at KLIA once the team runs CI with its TBT budgets (met or agreed anew), makes commercial measurement durable (E-17) and fixes status-line semantics, day-of-travel residuals and the one-fact-one-answer defect, and MAHB connects the official flight feed and names an owner for notices (the business lens's conditions, re-review-business.md section 7; adopted by the panel as judgement).",
+  "caveat": "Expert judgement by three independent lenses on a working prototype with demonstration data; not a user study. No passengers, disabled participants or physical screen readers; Chromium only; one clock time. ux, flight, mobile, nav, ai and ui are scored as if production data were connected; info and commerce on what exists. Performance is lab data from verification.md round three, not re-measured and not field data.",
+  "method": "Median per dimension across three independent re-reviews (business, design, inclusion); weights ui 10, ux 20, info 15, flight 15, mobile 10, nav 10, ai 10, commerce 5, perf 5; percent = sum(weight x score) / 5.",
+  "scores": {
+    "ui": 4,
+    "ux": 4,
+    "info": 3,
+    "flight": 4,
+    "mobile": 4,
+    "nav": 4,
+    "ai": 3.5,
+    "commerce": 2.5,
+    "perf": 4
+  },
+  "weights": {
+    "ui": 10,
+    "ux": 20,
+    "info": 15,
+    "flight": 15,
+    "mobile": 10,
+    "nav": 10,
+    "ai": 10,
+    "commerce": 5,
+    "perf": 5
+  },
+  "per_reviewer": {
+    "business": {
+      "lens": "Airport digital executive",
+      "report": "docs/qa/panel/re-review-business.md",
+      "scores": {
+        "ui": 4,
+        "ux": 4,
+        "info": 3,
+        "flight": 4,
+        "mobile": 4,
+        "nav": 4,
+        "ai": 3.5,
+        "commerce": 2.5,
+        "perf": 4
+      },
+      "weighted_pct": 74.5,
+      "round_one_counterpart": "exec-commerce",
+      "round_one_pct": 72.5,
+      "projection_judgement": "about 80% with the MAHB launch gates closed"
+    },
+    "design": {
+      "lens": "UX and visual design director",
+      "report": "docs/qa/panel/re-review-design.md",
+      "scores": {
+        "ui": 4,
+        "ux": 4,
+        "info": 3,
+        "flight": 4,
+        "mobile": 4,
+        "nav": 4.5,
+        "ai": 3.5,
+        "commerce": 2.5,
+        "perf": 4
+      },
+      "weighted_pct": 75.5,
+      "round_one_counterpart": "ux-frequent",
+      "round_one_pct": 71.5,
+      "projection_judgement": "about 80% with team fixes; about 85% with MAHB data as well"
+    },
+    "inclusion": {
+      "lens": "Accessibility specialist and Malay-speaking first-time traveller",
+      "report": "docs/qa/panel/re-review-inclusion.md",
+      "scores": {
+        "ui": 4,
+        "ux": 4,
+        "info": 3,
+        "flight": 4,
+        "mobile": 4,
+        "nav": 4,
+        "ai": 3.5,
+        "commerce": 2.5,
+        "perf": 4
+      },
+      "weighted_pct": 74.5,
+      "round_one_counterpart": "first-time-access",
+      "round_one_pct": 68.5,
+      "projection_judgement": "about 79 to 80% with MAHB accessibility data and team fixes"
+    }
+  },
+  "weighted_pct": 74.5,
+  "weighted_pct_mean_of_reviewers": 74.8,
+  "disagreements": [
+    {
+      "dimension": "nav",
+      "range": [
+        4,
+        4.5
+      ],
+      "note": "Half a point only (no dimension differs by a point or more). Chair check: smoking 0 results, two results titled only \"Fast Track\", taxi lists the liquids and power-bank rules; evidence supports the 4.0 median."
+    }
+  ],
+  "comparison": {
+    "round_one_panel_avg_pct": 70.8,
+    "round_one_source": "docs/qa/panel/panel-summary.md (mean of three reviews; not stored in matrix.json)",
+    "round_two_median_pct": 74.5,
+    "round_two_mean_pct": 74.8,
+    "mahb_today_pct": 42.5,
+    "heathrow_pct": 79,
+    "composite_best_per_dimension_pct": 83,
+    "composite_note": "Computed by the chair from matrix.json per-dimension scores (maximum over the ten benchmark airports, MAHB excluded); the figure itself is not stored in the matrix.",
+    "target_pct": 90.5,
+    "figures_checked_against_matrix": "MAHB 42.5 and Heathrow 79.0 match airports[].weighted_pct; composite 83.0 recomputed; no correction needed.",
+    "matrix_position": "Level with Incheon (74.5); behind Heathrow 79.0, Haneda 77.5, Schiphol 77.0, Istanbul 76.5, Changi 76.5, Hong Kong 75.5; ahead of Dubai 71.0, Hamad 69.0, Munich 66.5, MAHB 42.5. Differences up to about 3 points are within the method uncertainty.",
+    "gap_to_heathrow_points": {
+      "info": -3,
+      "commerce": -2,
+      "flight": -1.5,
+      "ai": -1,
+      "ui": 1,
+      "nav": 1,
+      "perf": 1,
+      "net": -4.5
+    },
+    "gap_to_composite_points": {
+      "info": -4.5,
+      "commerce": -2,
+      "flight": -1.5,
+      "ai": -1,
+      "perf": 0.5,
+      "net": -8.5
+    },
+    "per_dimension": {
+      "ui": {
+        "median": 4,
+        "round_one": 4,
+        "mahb": 2.5,
+        "heathrow": 3.5,
+        "best": 4,
+        "best_who": [
+          "Tokyo Haneda",
+          "Amsterdam Schiphol",
+          "Singapore Changi",
+          "Dubai International",
+          "Hamad International, Doha"
+        ]
+      },
+      "ux": {
+        "median": 4,
+        "round_one": 3.83,
+        "mahb": 2,
+        "heathrow": 4,
+        "best": 4,
+        "best_who": [
+          "London Heathrow",
+          "Tokyo Haneda",
+          "Amsterdam Schiphol",
+          "Istanbul (iGA)",
+          "Singapore Changi",
+          "Hong Kong International",
+          "Seoul Incheon"
+        ]
+      },
+      "info": {
+        "median": 3,
+        "round_one": 3,
+        "mahb": 2,
+        "heathrow": 4,
+        "best": 4.5,
+        "best_who": [
+          "Hong Kong International",
+          "Seoul Incheon"
+        ]
+      },
+      "flight": {
+        "median": 4,
+        "round_one": 4,
+        "mahb": 2.5,
+        "heathrow": 4.5,
+        "best": 4.5,
+        "best_who": [
+          "London Heathrow",
+          "Tokyo Haneda",
+          "Amsterdam Schiphol",
+          "Istanbul (iGA)",
+          "Seoul Incheon",
+          "Hamad International, Doha"
+        ]
+      },
+      "mobile": {
+        "median": 4,
+        "round_one": 3.5,
+        "mahb": 2,
+        "heathrow": 4,
+        "best": 4,
+        "best_who": [
+          "London Heathrow",
+          "Amsterdam Schiphol",
+          "Singapore Changi"
+        ]
+      },
+      "nav": {
+        "median": 4,
+        "round_one": 3.83,
+        "mahb": 2,
+        "heathrow": 3.5,
+        "best": 4,
+        "best_who": [
+          "Hong Kong International"
+        ]
+      },
+      "ai": {
+        "median": 3.5,
+        "round_one": 3.17,
+        "mahb": 2,
+        "heathrow": 4,
+        "best": 4,
+        "best_who": [
+          "London Heathrow",
+          "Istanbul (iGA)"
+        ]
+      },
+      "commerce": {
+        "median": 2.5,
+        "round_one": 2,
+        "mahb": 2.5,
+        "heathrow": 4.5,
+        "best": 4.5,
+        "best_who": [
+          "London Heathrow",
+          "Singapore Changi"
+        ]
+      },
+      "perf": {
+        "median": 4,
+        "round_one": 3.5,
+        "mahb": 1.5,
+        "heathrow": 3,
+        "best": 3.5,
+        "best_who": [
+          "Dubai International"
+        ]
+      }
+    }
+  },
+  "weaknesses": [
+    "No live operational data, and status lines that overstate freshness: all flight, gate, queue and space figures are demonstration data and the official provider throws; notices are a code file needing a deploy; status lines are inferred from notice titles, stamped \"Checked hh:mm\" with the current time and default to \"No disruption reported\" (chair confirmed). Team (semantics) and MAHB (OOS-01, OOS-02).",
+    "Content depth and operator-grade sourcing (info 3.0, high confidence): only KUL (17 URLs), PEN and BKI (6) go beyond an overview and board; Kuching and Langkawi answer 404 for transport and parking; 17 STOLports are directory cards; 8 outlets; lounges without price or rules; Fast Track details not published; third-party sources for MAHB's own building; draft Malay. MAHB (OOS-05, OOS-06, OOS-08, OOS-14).",
+    "Nothing can be bought and measurement is partial (commerce 2.5, level with MAHB today): no basket, lounge booking or B2B channel; the main parking and facilities Fast Track links are untracked; metric counts are in server memory; payment=() and script-src 'unsafe-inline' would block a checkout. Team (E-17, E-09) and MAHB/partners (OOS-03, OOS-04, OOS-13, D-17).",
+    "Assisted travellers still lack the facts and the assistance flow misleads: accessible toilets, lifts, step-free transport, accessible bays, the airport assistance service, AirAsia rules and citizens' immigration guidance missing; past steps announced \"Done: Arrange assistance\"; no warning inside the notice period; needs control about eleven screens down at 125% text; accessibility statement out of date. Team (wording, placement, statement) and MAHB/airlines/Immigration (OOS-07, D-04, D-07).",
+    "Day-of-travel residuals: the home card shows a past arrive-by time as \"Next\" (business at 18:21, design at 18:35); the delayed MH 1698 mixes original and new check-in times; the next-step card omits the delay. Team.",
+    "Concierge and search do not always answer the question asked, and surfaces disagree: fallbacks present unrelated items as related (weather gives KLIA Ekspres); access qualifiers and named airlines missed (AirAsia wheelchair gives the Calm Room); template grammar; answers 500 to 2,301 px tall on a phone; concierge says parking rates are not verified while the page shows a verified daily maximum; \"smoking\" returns 0 results, two results titled only \"Fast Track\", \"taxi\" lists the liquids rule (all chair confirmed). Team.",
+    "Alerts do not reach a passenger whose browser is closed; no push on iPhone outside an installed web app; e-mail is a demonstration. MAHB/partners (OOS-10).",
+    "Density and label noise (A-14 not verified): flight page 20 provenance chips, 10 Demo labels, 6 source toggles; facilities 21 source toggles; home about 70 upper-case labels and 12 type sizes. Team.",
+    "Answer-first unfinished and layout defects on phones and at zoom: transport fare 1,821 px, transit verdict 1,186 px under the form, overview flight search 2,175 px, desktop first board row 938 px; pages up to 17,436 px; map route chip covers its disclaimer on phones (new, chair reproduced); sticky concierge form at 400% zoom hides the focused suggestion; clipped chips and Malay mid-word breaks. Team.",
+    "Release engineering and performance unproven [verification]: TBT over 200 ms on 7 of 10 pages; guidance pages over the 500 KB budget; congested Wi-Fi LCP 2.57 to 2.68 s; CI, WebKit, chaos and contract tests never run; enforced CSP keeps unsafe-inline; rate limiting depends on the host declaring its client-address header; no usability study or assistive-technology test with people. Team (A-09, E-01, E-02, E-03, E-06, E-09) and MAHB (OOS-11, OOS-15)."
+  ],
+  "launch_blockers": [
+    "TEAM: Status-line semantics until a feed exists: drop \"Checked hh:mm\" on notice-derived lines, show the notices' as-of date, and show \"Status not available\" rather than \"No disruption reported\" when no current source exists.",
+    "TEAM: Day-of-travel residuals: the home card and My journey show the deadline that still matters once the arrive-by time has passed and never a past time as \"Next\"; delayed flights on one time basis with the delay in the next-step card; no \"Done:\" for steps the traveller must confirm; a warning inside the airline notice period; corrected English.",
+    "TEAM: One fact, one answer: the concierge and help FAQ read parking rates from the same records as the parking page, with a content test that fails on disagreement.",
+    "TEAM: Concierge: a fallback that says it cannot answer and names the official contact; honour access qualifiers and the named airline in English and Malay; fix template grammar and the \"In effect\" label; cap phone answers to a lead line and two cards (B-08).",
+    "TEAM: Search relevance (A-12): terminal in repeated titles, \"smoking\", \"wifi\", \"taxi\", \"not published\" first for accessible-toilet queries, news down-ranked, the home \"parking\" suggestion, and no \"0 flights found\" announcement for topic queries.",
+    "TEAM: Answer-first and placement: transport fare above the warning, transit verdict at the top or sticky, desktop board first row above the 900 px fold, Follow and My needs within the first two phone screens, map route controls above the map and the chip off the disclaimer, zoom sticky offsets, chips that wrap, no Malay mid-word breaks.",
+    "TEAM: Density (A-14): one source list per section, one Demo marker per view, fewer chips.",
+    "TEAM: Thin and directory-only airports: hide the empty journey-mode switcher, show the operating airline and the airport contact, and label content depth per airport on /en/airports.",
+    "TEAM: Measurement (E-17): data-handoff and a campaign parameter on every commercial link (main parking link, Fast Track on facilities and the timeline, lounge operators, rail tickets); a durable aggregate metric store.",
+    "TEAM: Accessibility statement (current focus behaviour, test scope including 200% and 400% zoom, review date, contact and response time, both languages) and the Malay copy pass (task-based home h1, Malay concierge name, shorter placeholder).",
+    "TEAM: Performance and release gates: TBT under 200 ms on the home, overview, board, transport, parking and map or agreed revised budgets; byte, request and congested Wi-Fi LCP budgets; CI with WebKit, chaos and contract tests, security and Lighthouse gates (A-09, E-01, E-02, E-03, E-06).",
+    "TEAM: Per-route CSP and payment policy for any future checkout (E-09).",
+    "TEAM with MAHB: Moderated usability study on phones in English and Malay including NVDA, VoiceOver on iOS, TalkBack and magnifier users; MAHB recruits and signs off (OOS-15).",
+    "MAHB: Official flight feed behind the provider interface, with the failure states proven against it (OOS-01).",
+    "MAHB: Operations status feed and a notices CMS with bilingual approvals, scheduling and audit, a notice live in under 5 minutes without a deploy, and a named operations owner (OOS-02).",
+    "MAHB: Official parking tariff from the barrier rate source and a booking deep link accepting product, dates and a referral code (OOS-03).",
+    "MAHB/partners: Fast Track seller, price, hours and checkpoints; lounge access rules, prices and booking; merchant or referral agreements, partner referral codes and confirmed conversions (D-02, OOS-04, OOS-13).",
+    "MAHB: Content minimum for every international airport, Kuching and Langkawi first (transport, parking, facilities with hours and location, lounges); concessionaire directory feed; airport classification confirmed (OOS-05, OOS-06).",
+    "MAHB/airlines/Immigration: Located accessibility facts for KLIA T1 and T2 and step-free status of every transport mode; the airport assistance service and CARE hours; AirAsia, AirAsia X, Batik Air and other main carriers' assistance rules; Immigration wording for departing citizens; taxi, rail and e-hailing places on a surveyed map (OOS-07, D-04, D-07, C-08).",
+    "MAHB: Operator-grade sourcing with MAHB as the source for its own building and services; brand, legal and native-Malay review; approval of the concept brand line (OOS-08, OOS-14).",
+    "MAHB/partners: Alert delivery by web push including iOS, and by e-mail (OOS-10).",
+    "MAHB: B2B enquiry channels (D-17).",
+    "MAHB: Hosting edge limits, the client-address header declared, security.txt, and field Core Web Vitals on a mid-range Android before launch (OOS-11, OOS-12, OOS-15)."
+  ],
+  "checked": [
+    {
+      "id": "W1 phone answer not on the first screen (A-01, B-03, C-01, C-03, A-11)",
+      "status": "improved",
+      "evidence": "Business fixed, design improved, inclusion fixed. h1 at 156 to 184 px on every airport sub-page (230 px at 125% in Malay); gate 277 px (was 1,306); first board row 615 to 640 px (was 1,185); parking table 340 px; saved flight 294 px. Still below the first screen: transport fare 1,821 px, transit verdict 1,186 px, overview search 2,175 px; desktop board row 938 px at 1440x900."
+    },
+    {
+      "id": "W2 commercially weaker than the site it replaces (D-02, C-01, B-13, C-05, C-11, E-17)",
+      "status": "improved",
+      "evidence": "All three improved. Fast Track in search, palette, concierge, overview and international timeline (price, hours, seller not published); parking price-first with dates carried; nothing purchasable; lounges unpriced; 8 outlets. Commerce 2.0 to 2.5, level with MAHB."
+    },
+    {
+      "id": "W3 no live data path and no operational layer (B-09, B-01)",
+      "status": "improved",
+      "evidence": "Product part improved: feed cut shows last-known data with age and Try again (business, 36 s); status lines and demo queues on the overview and in flight steps. Unchanged in substance: official provider throws; notices in src/content/notices.ts; status lines matched from notice titles."
+    },
+    {
+      "id": "W4 wrong guidance on the day of travel (B-02, B-12)",
+      "status": "improved",
+      "evidence": "Round-one defects fixed (MH 1960 check-in closed, MH 1022 and EY 411 departed, MH 1662 gate closed, per-cabin rows agreeing). Same class of error remains: home card past arrive-by as Next (business 18:21, design 18:35); delayed MH 1698 mixes times; \"Done: Arrange assistance\" (inclusion)."
+    },
+    {
+      "id": "W5 following a flight does not work where it matters (B-04)",
+      "status": "improved",
+      "evidence": "Follow beside Save at 1,194 to 1,197 px (was 5,321); honest page-open copy; e-mail labelled demonstration. No delivery when the browser is closed; none on iPhone outside an installed web app (OOS-10)."
+    },
+    {
+      "id": "W6 travellers with access needs cannot plan with confidence (B-11, D-04, D-11, A-02, A-05, A-16, C-08)",
+      "status": "improved",
+      "evidence": "Label in Name fixed (axe 0 violations in 54 scans); focus to h1; Assistance in desktop header; My needs wired; no sideways scroll on 56 page and configuration pairs; hub dead-end removed. Facts unchanged (D-04, OOS-07); needs control at 8,863 of 12,514 px at 125% text."
+    },
+    {
+      "id": "W7 search, concierge and home do not answer the question asked (A-03, A-12, B-08, A-08)",
+      "status": "improved",
+      "evidence": "Home search and site search fixed; home shows the saved flight; access words return results; concierge leads with RM 55, the airline terminal and nearest lounge. Fallbacks offer unrelated items (chair confirmed); AirAsia wheelchair leads with the Calm Room (design, inclusion); \"smoking\" 0 results (chair)."
+    },
+    {
+      "id": "W8 content thin and not operator-grade (D-16, D-06, D-05, D-03)",
+      "status": "unchanged",
+      "evidence": "Sitemap KUL 17, PEN 6, BKI 6, others 2 or fewer; /en/kch/parking and /en/lgk/transport 404 (chair confirmed); T1/T2 parking \"<= RM 52 (not verified)\"; 8 outlets; third-party sources for MAHB's own building; Malay draft. D-01 fixed on 7 pages traced (inclusion)."
+    },
+    {
+      "id": "W9 noise competes with answers (A-14, D-05, D-06)",
+      "status": "improved",
+      "evidence": "Caveat block gone from journey steps; parking warning a rule. Density unchanged: flight page 20 chips, 10 Demo labels, 6 toggles; facilities 21 toggles; home about 70 upper-case labels. A-14 not verified (verification T4)."
+    },
+    {
+      "id": "W10 performance misses its own budgets (E-01, A-09, B-06, E-02, E-03)",
+      "status": "improved",
+      "evidence": "[verification] Lighthouse 92 to 99 (95+ on 7 of 10); LCP 0.92 to 1.11 s on 10 of 10; CLS <= 0.003; TBT > 200 ms on 7 of 10 (overview 353, /en 257); guidance pages 543 to 607 KB; congested Wi-Fi LCP 2.57 to 2.68 s; CI never run."
+    },
+    {
+      "id": "A-02 Label in Name (critical)",
+      "status": "fixed",
+      "evidence": "Switcher name starts with the visible \"KUL\"; axe 0 violations in 54 scans (inclusion); design confirms."
+    },
+    {
+      "id": "A-03 home search flights-only (critical)",
+      "status": "fixed",
+      "evidence": "Topic queries show page suggestions and See all results; Enter opens the flight or /search (business, design). Residual: Malay live status announces \"0 penerbangan ditemui\" for topic queries (inclusion)."
+    },
+    {
+      "id": "B-01 status layer and queue times (critical)",
+      "status": "improved",
+      "evidence": "In-product status lines and demo queues present; feeds and CMS are OOS-02; status-line freshness overstated (chair confirmed)."
+    },
+    {
+      "id": "C-01 parking price-first (critical)",
+      "status": "improved",
+      "evidence": "1/3/7-day matrix on the first screen. Chair: Long Term Car Park <= RM 32/96/224 (daily maximum, hourly not verified); T1 and T2 <= RM 52 not verified (klia.info); Preferred Parking no price. Booking link opens without the dates."
+    },
+    {
+      "id": "E-01 mobile performance (critical)",
+      "status": "improved",
+      "evidence": "[verification] LCP met on 10 of 10; TBT budget missed on 7 of 10; CI budget step never run."
+    },
+    {
+      "id": "chair: nav half-point spread (business 4.0, design 4.5, inclusion 4.0)",
+      "status": "median holds",
+      "evidence": "Chair ran /en/search: smoking 0 results; fast track 2 results both titled only \"Fast Track\"; taxi 5 results including the liquids and power-bank rules; wifi led by an airline and a lounge. Supports 4.0."
+    },
+    {
+      "id": "chair: parking verification conflict between reviewers",
+      "status": "business view supported",
+      "evidence": "/en/kul/parking matrix: LTCP figures shown without a not-verified mark (\"Daily maximum RM 32. Hourly rates not verified. 4 sources\"); T1 and T2 \"(not verified)\"; Preferred \"No price published\". Design and inclusion statements that no price is verified are incomplete."
+    },
+    {
+      "id": "chair: concierge parking answer contradicts the parking page",
+      "status": "confirmed",
+      "evidence": "POST /api/concierge \"How much is parking at KLIA for 3 days?\": \"Parking rates are not yet verified in this prototype\"."
+    },
+    {
+      "id": "chair: concierge fallbacks",
+      "status": "confirmed with refinement",
+      "evidence": "Weather: \"I could not match that to one topic, but these published items look related\" then the KLIA Ekspres fare change. Smoking: \"Our sources do not publish smoking room for KLIA Terminal 1 yet\" then an unrelated terminal-transfer statement. It admits no match but offers unrelated items and no route to an authority."
+    },
+    {
+      "id": "chair: status lines \"Checked hh:mm\"",
+      "status": "confirmed",
+      "evidence": "/en/kul at 19:17 MYT: four lines \"Checked 19:17\" and \"No disruption reported in our sources as of 19:17; check the signs\"."
+    },
+    {
+      "id": "chair: map route chip covers the disclaimer on phones (design)",
+      "status": "confirmed (new defect)",
+      "evidence": "Pixel 7, route Check-in Row B to Gates A: elementFromPoint at the label midpoint returns the \"To Gates\" chip; screenshot shows \"demonstration\" covered. No overlap before a route is chosen."
+    },
+    {
+      "id": "chair: headers, 404s, sitemap depth",
+      "status": "confirmed",
+      "evidence": "curl -I /en: script-src 'self' 'unsafe-inline'; Permissions-Policy payment=(). /en/kch/parking and /en/lgk/transport 404. Sitemap: KUL 17, PEN 6, BKI 6, others 2 or fewer."
+    }
+  ]
+}
