@@ -1,0 +1,278 @@
+{
+ "key": "en-kul-map",
+ "url": "http://localhost:3100/en/kul/map",
+ "preset": "mobile (Lighthouse default)",
+ "profile": null,
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-21T21:17:55.985Z",
+ "median": {
+  "performance": 94,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1067,
+  "lcp_ms": 1067,
+  "tbt_ms": 288,
+  "cls": 0,
+  "si_ms": 1262,
+  "totalBytes": 619853,
+  "requests": 40
+ },
+ "a11yFailures": [],
+ "rows": [
+  {
+   "finalUrl": "/en/kul/map",
+   "runtimeError": null,
+   "performance": 94,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1067,
+   "lcp_ms": 1067,
+   "tbt_ms": 288,
+   "cls": 0,
+   "si_ms": 1262,
+   "totalBytes": 619853,
+   "requests": 40,
+   "benchmarkIndex": 1806.5,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en/kul/map",
+   "runtimeError": null,
+   "performance": 95,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1063,
+   "lcp_ms": 1063,
+   "tbt_ms": 259,
+   "cls": 0.003,
+   "si_ms": 1366,
+   "totalBytes": 619851,
+   "requests": 40,
+   "benchmarkIndex": 2082,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en/kul/map",
+   "runtimeError": null,
+   "performance": 93,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1105,
+   "lcp_ms": 1105,
+   "tbt_ms": 302,
+   "cls": 0,
+   "si_ms": 1227,
+   "totalBytes": 619855,
+   "requests": 40,
+   "benchmarkIndex": 2098,
+   "a11yFailures": []
+  }
+ ],
+ "medianRunIndex": 0,
+ "diagnostics": {
+  "observed": {
+   "fcp": 276,
+   "lcp": 276,
+   "dcl": 468,
+   "load": 471
+  },
+  "lcpElement": {
+   "selector": "div.mx-auto > div.grid > div.min-w-0 > p.type-body-lg",
+   "label": "Find a place, then follow directions written out step by step."
+  },
+  "lcpPhases": {
+   "timeToFirstByte": 27,
+   "elementRenderDelay": 249
+  },
+  "renderBlocking": [
+   {
+    "url": "/_next/static/chunks/3loxhb2t7oldw.css",
+    "bytes": 23096,
+    "ms": 159
+   }
+  ],
+  "longTasks": [
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "start": 3926,
+    "dur": 210
+   },
+   {
+    "url": "Unattributable",
+    "start": 909,
+    "dur": 180
+   },
+   {
+    "url": "/en/kul/map",
+    "start": 1137,
+    "dur": 127
+   },
+   {
+    "url": "/en/kul/map",
+    "start": 1329,
+    "dur": 75
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 4232,
+    "dur": 74
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 4136,
+    "dur": 68
+   },
+   {
+    "url": "_lighthouse-eval.js",
+    "start": 3061,
+    "dur": 54
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 4306,
+    "dur": 52
+   }
+  ],
+  "bootup": [
+   {
+    "url": "/en/kul/map",
+    "total": 1102,
+    "scripting": 71
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "total": 810,
+    "scripting": 691
+   },
+   {
+    "url": "Unattributable",
+    "total": 460,
+    "scripting": 9
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "total": 330,
+    "scripting": 285
+   }
+  ],
+  "mainThread": {
+   "scriptEvaluation": 1161,
+   "other": 679,
+   "styleLayout": 570,
+   "parseHTML": 166,
+   "scriptParseCompile": 165,
+   "paintCompositeRender": 150,
+   "garbageCollection": 36
+  },
+  "resources": {
+   "total": {
+    "n": 39,
+    "bytes": 619853
+   },
+   "script": {
+    "n": 26,
+    "bytes": 377411
+   },
+   "font": {
+    "n": 3,
+    "bytes": 130216
+   },
+   "document": {
+    "n": 1,
+    "bytes": 51236
+   },
+   "other": {
+    "n": 8,
+    "bytes": 37894
+   },
+   "stylesheet": {
+    "n": 1,
+    "bytes": 23096
+   },
+   "image": {
+    "n": 0,
+    "bytes": 0
+   },
+   "media": {
+    "n": 0,
+    "bytes": 0
+   },
+   "third-party": {
+    "n": 0,
+    "bytes": 0
+   }
+  },
+  "topRequests": [
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "type": "Script",
+    "transfer": 73619
+   },
+   {
+    "url": "/_next/static/media/fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+    "type": "Font",
+    "transfer": 68998
+   },
+   {
+    "url": "/en/kul/map",
+    "type": "Document",
+    "transfer": 51236
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "type": "Script",
+    "transfer": 47500
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "type": "Font",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/chunks/08vyt-sb8c3m4.js",
+    "type": "Script",
+    "transfer": 32664
+   },
+   {
+    "url": "/_next/static/media/geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+    "type": "Font",
+    "transfer": 24821
+   },
+   {
+    "url": "/_next/static/chunks/3loxhb2t7oldw.css",
+    "type": "Stylesheet",
+    "transfer": 23096
+   },
+   {
+    "url": "/_next/static/chunks/3x4_8drcgqaaq.js",
+    "type": "Script",
+    "transfer": 18313
+   },
+   {
+    "url": "/_next/static/chunks/047772bfor-y3.js",
+    "type": "Script",
+    "transfer": 15863
+   }
+  ],
+  "fonts": [
+   {
+    "url": "/_next/static/media/fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+    "transfer": 68998
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/media/geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+    "transfer": 24821
+   }
+  ]
+ },
+ "caveat": "Lab measurement: Lighthouse with simulated (or, with --profile, applied) throttling against a local next start. Indicative only; not field data."
+}

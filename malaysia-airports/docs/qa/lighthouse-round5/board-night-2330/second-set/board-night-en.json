@@ -1,0 +1,59 @@
+{
+ "key": "board-night-en",
+ "url": "http://localhost:3100/en/kul/flights",
+ "clock": "2026-11-22T23:30:00+08:00",
+ "preset": "mobile (Lighthouse 13.6 defaults, simulated)",
+ "measured": "2026-11-21T21:20:58.957Z",
+ "median": {
+  "performance": 95,
+  "fcp_ms": 920,
+  "lcp_ms": 920,
+  "tbt_ms": 272,
+  "cls": 0.003
+ },
+ "rows": [
+  {
+   "performance": 95,
+   "fcp_ms": 963,
+   "lcp_ms": 963,
+   "tbt_ms": 264,
+   "cls": 0.003,
+   "observedLcp": 209,
+   "lcpElement": "Show later flights to look further ahead, or earlier ones to see what has gone.",
+   "benchmarkIndex": 2164.5,
+   "runtimeError": null,
+   "shifts": [
+    "header.sticky > div.group/hdr > div.flex > div.ml-auto | KUL\n, change airport (currently KLIA) | 0.003"
+   ]
+  },
+  {
+   "performance": 95,
+   "fcp_ms": 907,
+   "lcp_ms": 907,
+   "tbt_ms": 272,
+   "cls": 0.003,
+   "observedLcp": 194,
+   "lcpElement": "Show later flights to look further ahead, or earlier ones to see what has gone.",
+   "benchmarkIndex": 2171.5,
+   "runtimeError": null,
+   "shifts": [
+    "header.sticky > div.group/hdr > div.flex > div.ml-auto | KUL\n, change airport (currently KLIA) | 0.003"
+   ]
+  },
+  {
+   "performance": 93,
+   "fcp_ms": 920,
+   "lcp_ms": 920,
+   "tbt_ms": 324,
+   "cls": 0.012,
+   "observedLcp": 211,
+   "lcpElement": "Show later flights to look further ahead, or earlier ones to see what has gone.",
+   "benchmarkIndex": 2051.5,
+   "runtimeError": null,
+   "shifts": [
+    "div.surface-board > div.relative > div.flex > div.type-body-sm | Show later flights to look further ahead | 0.009",
+    "header.sticky > div.group/hdr > div.flex > div.ml-auto | KUL\n, change airport (currently KLIA) | 0.003"
+   ]
+  }
+ ]
+}

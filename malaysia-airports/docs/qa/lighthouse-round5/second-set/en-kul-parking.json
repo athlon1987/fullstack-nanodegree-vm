@@ -1,0 +1,278 @@
+{
+ "key": "en-kul-parking",
+ "url": "http://localhost:3100/en/kul/parking",
+ "preset": "mobile (Lighthouse default)",
+ "profile": null,
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-21T21:19:16.080Z",
+ "median": {
+  "performance": 95,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1127,
+  "lcp_ms": 1127,
+  "tbt_ms": 273,
+  "cls": 0.003,
+  "si_ms": 1231,
+  "totalBytes": 616895,
+  "requests": 43
+ },
+ "a11yFailures": [],
+ "rows": [
+  {
+   "finalUrl": "/en/kul/parking",
+   "runtimeError": null,
+   "performance": 91,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1127,
+   "lcp_ms": 1127,
+   "tbt_ms": 367,
+   "cls": 0,
+   "si_ms": 1382,
+   "totalBytes": 616897,
+   "requests": 43,
+   "benchmarkIndex": 1710.5,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en/kul/parking",
+   "runtimeError": null,
+   "performance": 97,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1195,
+   "lcp_ms": 1195,
+   "tbt_ms": 199,
+   "cls": 0.003,
+   "si_ms": 1231,
+   "totalBytes": 616895,
+   "requests": 43,
+   "benchmarkIndex": 1794,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en/kul/parking",
+   "runtimeError": null,
+   "performance": 95,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1081,
+   "lcp_ms": 1081,
+   "tbt_ms": 273,
+   "cls": 0.003,
+   "si_ms": 1113,
+   "totalBytes": 616895,
+   "requests": 43,
+   "benchmarkIndex": 2018,
+   "a11yFailures": []
+  }
+ ],
+ "medianRunIndex": 2,
+ "diagnostics": {
+  "observed": {
+   "fcp": 206,
+   "lcp": 206,
+   "dcl": 336,
+   "load": 346
+  },
+  "lcpElement": {
+   "selector": "div.mx-auto > div.grid > div.min-w-0 > p.type-body-lg",
+   "label": "What a stay costs at each car park, an estimate for your dates and a note of wh…"
+  },
+  "lcpPhases": {
+   "timeToFirstByte": 14,
+   "elementRenderDelay": 192
+  },
+  "renderBlocking": [
+   {
+    "url": "/_next/static/chunks/3loxhb2t7oldw.css",
+    "bytes": 23096,
+    "ms": 154
+   }
+  ],
+  "longTasks": [
+   {
+    "url": "/en/kul/parking",
+    "start": 1053,
+    "dur": 171
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 3913,
+    "dur": 169
+   },
+   {
+    "url": "Unattributable",
+    "start": 904,
+    "dur": 97
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 4111,
+    "dur": 93
+   },
+   {
+    "url": "_lighthouse-eval.js",
+    "start": 3036,
+    "dur": 76
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 4299,
+    "dur": 66
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 4204,
+    "dur": 59
+   },
+   {
+    "url": "/en/kul/parking",
+    "start": 1294,
+    "dur": 51
+   }
+  ],
+  "bootup": [
+   {
+    "url": "/en/kul/parking",
+    "total": 969,
+    "scripting": 51
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "total": 911,
+    "scripting": 778
+   },
+   {
+    "url": "Unattributable",
+    "total": 372,
+    "scripting": 9
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "total": 120,
+    "scripting": 96
+   }
+  ],
+  "mainThread": {
+   "scriptEvaluation": 1048,
+   "other": 596,
+   "styleLayout": 495,
+   "paintCompositeRender": 142,
+   "parseHTML": 140,
+   "scriptParseCompile": 123,
+   "garbageCollection": 40
+  },
+  "resources": {
+   "total": {
+    "n": 40,
+    "bytes": 616895
+   },
+   "script": {
+    "n": 26,
+    "bytes": 370688
+   },
+   "font": {
+    "n": 3,
+    "bytes": 130216
+   },
+   "document": {
+    "n": 1,
+    "bytes": 53338
+   },
+   "other": {
+    "n": 9,
+    "bytes": 39557
+   },
+   "stylesheet": {
+    "n": 1,
+    "bytes": 23096
+   },
+   "image": {
+    "n": 0,
+    "bytes": 0
+   },
+   "media": {
+    "n": 0,
+    "bytes": 0
+   },
+   "third-party": {
+    "n": 0,
+    "bytes": 0
+   }
+  },
+  "topRequests": [
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "type": "Script",
+    "transfer": 73619
+   },
+   {
+    "url": "/_next/static/media/fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+    "type": "Font",
+    "transfer": 68998
+   },
+   {
+    "url": "/en/kul/parking",
+    "type": "Document",
+    "transfer": 53338
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "type": "Script",
+    "transfer": 47500
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "type": "Font",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/chunks/08vyt-sb8c3m4.js",
+    "type": "Script",
+    "transfer": 32664
+   },
+   {
+    "url": "/_next/static/media/geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+    "type": "Font",
+    "transfer": 24821
+   },
+   {
+    "url": "/_next/static/chunks/3loxhb2t7oldw.css",
+    "type": "Stylesheet",
+    "transfer": 23096
+   },
+   {
+    "url": "/_next/static/chunks/160j2z1j59xg-.js",
+    "type": "Script",
+    "transfer": 16011
+   },
+   {
+    "url": "/_next/static/chunks/047772bfor-y3.js",
+    "type": "Script",
+    "transfer": 15863
+   }
+  ],
+  "fonts": [
+   {
+    "url": "/_next/static/media/fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+    "transfer": 68998
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/media/geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+    "transfer": 24821
+   }
+  ]
+ },
+ "caveat": "Lab measurement: Lighthouse with simulated (or, with --profile, applied) throttling against a local next start. Indicative only; not field data."
+}
