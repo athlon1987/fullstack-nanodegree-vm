@@ -1,9 +1,9 @@
-import { Suspense } from 'react';
 import { terminalLabel } from '@/content';
 import { getT, toLang } from '@/lib/i18n';
 import { localAirport, airportSectionMetadata, loadAirportPage, sectionStaticParams, type AirportPageParams } from '@/components/airport/section-page';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { LocaleLink } from '@/components/common/locale-link';
+import { MissingPage } from '@/components/common/missing-page';
 import { PageHeader } from '@/components/common/page-header';
 import { TranslationNotice } from '@/components/common/translation-notice';
 import { coverage } from '@/components/commerce/commerce-view';
@@ -13,7 +13,6 @@ import { OutletDirectory } from '@/components/commerce/outlet-directory';
 import { sectionPath } from '@/components/shell/sections';
 import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
-import { Skeleton } from '@/components/ui/skeleton';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 export const generateStaticParams = () => sectionStaticParams('shop-dine');
@@ -28,27 +27,25 @@ export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/
   return airportSectionMetadata(params, 'shop-dine', airport ? { description: t('commercePages.metaDescription', { airport: airport.name }) } : {});
 }
 
-/** Shop and dine discovery for one airport: every published outlet, with filters and sources. */
+/**
+ * Shop and dine discovery for one airport: every published outlet, with filters and sources.
+ *
+ * No page-level `<Suspense>` (round 3, the static shell round 2 gave the airport overview, board and
+ * map): every listed airport is complete in the static HTML, so the heading and the first content
+ * paint with the document instead of waiting for React's throttled `$RC` reveal script (LCP 4.3 s on
+ * transport). Any other airport gets `MissingPage`, a 404 with the site shell.
+ */
 export default function ShopDinePage({ params }: PageProps<'/[lang]/[airport]/shop-dine'>) {
   return (
     <I18nPageScope namespaces={['commercePages']}>
-      <Suspense
-        fallback={
-          <Container className="py-10" aria-hidden="true">
-            <Skeleton className="h-10 w-72" />
-            <Skeleton className="mt-8 h-14 w-full" />
-            <Skeleton className="mt-8 h-72 w-full" />
-          </Container>
-        }
-      >
-        <ShopDine params={params} />
-      </Suspense>
-  
+      <ShopDine params={params} />
     </I18nPageScope>
   );
 }
 
 async function ShopDine({ params }: { params: AirportPageParams }) {
+  const { airport: slug } = await params;
+  if (!generateStaticParams().some((listed) => listed.airport === slug)) return <MissingPage />;
   const { lang, t, airport, content, sections } = await loadAirportPage(params, 'shop-dine');
   const items = outletViews(content, lang, t);
   const terminals = airport.terminals.map((terminal) => ({ id: terminal.id, label: terminalLabel(airport, terminal.id, lang, { short: true }) }));

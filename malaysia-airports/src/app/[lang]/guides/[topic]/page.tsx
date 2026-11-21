@@ -1,11 +1,10 @@
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { Suspense } from 'react';
 import { getGuide, guideSlugs, GUIDES } from '@/content';
 import { getT, toLang } from '@/lib/i18n';
 import { formatDate } from '@/lib/time';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { LocaleLink } from '@/components/common/locale-link';
+import { MissingPage } from '@/components/common/missing-page';
 import { PageHeader } from '@/components/common/page-header';
 import { ProvenanceLegend } from '@/components/common/provenance-legend';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
@@ -22,7 +21,6 @@ import { Callout } from '@/components/ui/callout';
 import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
-import { Skeleton } from '@/components/ui/skeleton';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 export function generateStaticParams() {
@@ -41,20 +39,16 @@ export async function generateMetadata({ params }: PageProps<'/[lang]/guides/[to
   return { title: view.title, description: view.summary };
 }
 
+/**
+ * No page-level `<Suspense>` (round 3, the static shell round 2 gave the airport overview, board and
+ * map): every listed guide is complete in the static HTML, so the heading and the first content paint
+ * with the document instead of waiting for React's throttled `$RC` reveal script (LCP 4.3 s on
+ * transport). Any other guide gets `MissingPage`, a 404 with the site shell.
+ */
 export default function GuidePage({ params }: PageProps<'/[lang]/guides/[topic]'>) {
   return (
     <I18nPageScope namespaces={['guidePages']}>
-      <Suspense
-        fallback={
-          <Container className="py-10" aria-hidden="true">
-            <Skeleton className="h-12 w-2/3" />
-            <Skeleton className="mt-8 h-96 w-full" />
-          </Container>
-        }
-      >
-        <Guide params={params} />
-      </Suspense>
-  
+      <Guide params={params} />
     </I18nPageScope>
   );
 }
@@ -63,7 +57,7 @@ async function Guide({ params }: { params: PageProps<'/[lang]/guides/[topic]'>['
   const { lang: rawLang, topic } = await params;
   const lang = toLang(rawLang);
   const guide = getGuide(topic);
-  if (!guide) notFound();
+  if (!guide) return <MissingPage />;
   const t = getT(lang);
   const view = toGuideView(guide, lang);
   const notes = airportNotesForGuide(guide.slug, lang);
@@ -125,7 +119,12 @@ async function Guide({ params }: { params: PageProps<'/[lang]/guides/[topic]'>['
 
             {notes.length > 0 ? (
               <section aria-labelledby="guide-airports" className="scroll-mt-32 border-t border-line pt-10">
-                <SectionHeading id="guide-airports" title={t('guidePages.guide.airportNotesTitle')} lead={t('guidePages.guide.airportNotesLead')} variant="title" />
+                <SectionHeading
+                  id="guide-airports"
+                  title={t('guidePages.guide.airportNotesTitle')}
+                  lead={t('guidePages.guide.airportNotesLead')}
+                  variant="title"
+                />
                 <ul className="grid items-start gap-3 xl:grid-cols-2">
                   {notes.map((note) => (
                     <li key={note.id} className="flex min-w-0 flex-col gap-2 rounded-lg border border-line-strong bg-surface p-4">

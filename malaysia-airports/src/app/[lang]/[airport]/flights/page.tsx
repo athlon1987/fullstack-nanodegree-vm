@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { getT } from '@/lib/i18n';
 import { airportSectionMetadata, localAirport, loadAirportPage, sectionStaticParams, type AirportPageParams } from '@/components/airport/section-page';
-import { MissingAirportPage } from '@/components/airport/missing-airport-page';
+import { MissingPage } from '@/components/common/missing-page';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { PageHeader } from '@/components/common/page-header';
 import { FlightBoardExplorer } from '@/components/flights/flight-board-explorer';
@@ -44,7 +44,7 @@ export default function FlightsPage({ params }: PageProps<'/[lang]/[airport]/fli
 
 async function Flights({ params }: { params: AirportPageParams }) {
   const { airport: slug } = await params;
-  if (!generateStaticParams().some((listed) => listed.airport === slug)) return <MissingAirportPage />;
+  if (!generateStaticParams().some((listed) => listed.airport === slug)) return <MissingPage />;
   const { t, airport } = await loadAirportPage(params, 'flights');
   return (
     <>

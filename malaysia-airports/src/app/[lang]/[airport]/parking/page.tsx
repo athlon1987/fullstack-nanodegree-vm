@@ -3,6 +3,7 @@ import { getT, toLang } from '@/lib/i18n';
 import { localAirport, airportSectionMetadata, loadAirportPage, sectionStaticParams, type AirportPageParams } from '@/components/airport/section-page';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { LocaleLink } from '@/components/common/locale-link';
+import { MissingPage } from '@/components/common/missing-page';
 import { PageHeader } from '@/components/common/page-header';
 import { PrototypeGapsLink } from '@/components/common/prototype-gaps-link';
 import { SectionHeading } from '@/components/common/section-heading';
@@ -16,7 +17,6 @@ import { ParkingCalculatorFromUrl } from '@/components/parking/parking-calculato
 import { ParkingPriceMatrix } from '@/components/parking/parking-price-matrix';
 import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
-import { Skeleton } from '@/components/ui/skeleton';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 export const generateStaticParams = () => sectionStaticParams('parking');
@@ -44,27 +44,23 @@ export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/
  * Parking, price first (C-01): a compact matrix of what 1, 3 or 7 days cost at each car park
  * (with Preferred Parking's warning in its row), then the calculator for exact dates, the car
  * parks, and a parked-car note.
+ *
+ * No page-level `<Suspense>` (round 3, the static shell round 2 gave the airport overview, board and
+ * map): every listed airport is complete in the static HTML, so the heading and the first content
+ * paint with the document instead of waiting for React's throttled `$RC` reveal script (LCP 4.3 s on
+ * transport). Any other airport gets `MissingPage`, a 404 with the site shell.
  */
 export default function ParkingPage({ params }: PageProps<'/[lang]/[airport]/parking'>) {
   return (
     <I18nPageScope namespaces={['transportPages']}>
-      <Suspense
-        fallback={
-          <Container className="py-10" aria-hidden="true">
-            <Skeleton className="h-10 w-72" />
-            <Skeleton className="mt-8 h-32 w-full" />
-            <Skeleton className="mt-6 h-96 w-full" />
-          </Container>
-        }
-      >
-        <Parking params={params} />
-      </Suspense>
-  
+      <Parking params={params} />
     </I18nPageScope>
   );
 }
 
 async function Parking({ params }: { params: AirportPageParams }) {
+  const { airport: slug } = await params;
+  if (!generateStaticParams().some((listed) => listed.airport === slug)) return <MissingPage />;
   const { lang, t, airport, sections, content } = await loadAirportPage(params, 'parking');
   const { data, translationMissing } = parkingPageModel(content, lang);
   const warning = data.premiumWarning;
@@ -96,7 +92,12 @@ async function Parking({ params }: { params: AirportPageParams }) {
         {translationMissing ? <TranslationNotice /> : null}
 
         <section aria-labelledby="parking-calculator-title">
-          <SectionHeading id="parking-calculator-title" title={t('transportPages.calculator.title')} lead={t('transportPages.calculator.lead')} variant="title" />
+          <SectionHeading
+            id="parking-calculator-title"
+            title={t('transportPages.calculator.title')}
+            lead={t('transportPages.calculator.lead')}
+            variant="title"
+          />
           <Suspense fallback={<ParkingCalculator data={data} />}>
             <ParkingCalculatorFromUrl data={data} />
           </Suspense>
@@ -111,7 +112,12 @@ async function Parking({ params }: { params: AirportPageParams }) {
 
         <section aria-labelledby="parked-car-title" id="where-i-parked" className="scroll-mt-32">
           <SectionHeading id="parked-car-title" title={t('transportPages.parked.title')} lead={t('transportPages.parked.lead')} variant="title" />
-          <ParkedCarControl slug={airport.slug} timezone={airport.timezone} carParks={data.carParks.map(({ id, name, type }) => ({ id, name, type }))} premiumWarning={warning?.title} />
+          <ParkedCarControl
+            slug={airport.slug}
+            timezone={airport.timezone}
+            carParks={data.carParks.map(({ id, name, type }) => ({ id, name, type }))}
+            premiumWarning={warning?.title}
+          />
         </section>
 
         {/* D-05 hand-off (round 2): one line to the single list on About this prototype. */}

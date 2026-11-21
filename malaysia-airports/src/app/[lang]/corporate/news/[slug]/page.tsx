@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
-import { Suspense } from 'react';
-import { notFound } from 'next/navigation';
 import { CORPORATE_LINKS, getAirport, localizeAirport } from '@/content';
 import { getT, toLang } from '@/lib/i18n';
 import { LocaleLink } from '@/components/common/locale-link';
+import { MissingPage } from '@/components/common/missing-page';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { SourceNote } from '@/components/common/source-note';
 import { CorporateHeader } from '@/components/corporate/corporate-header';
@@ -13,7 +12,6 @@ import { PrototypeNote } from '@/components/corporate/prototype-note';
 import { Badge } from '@/components/ui/badge';
 import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
-import { Skeleton } from '@/components/ui/skeleton';
 
 export function generateStaticParams() {
   return mediaSlugs().map((slug) => ({ slug }));
@@ -33,19 +31,14 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   return { title: item.title, description: item.summary };
 }
 
+/**
+ * No page-level `<Suspense>` (round 3, the static shell round 2 gave the airport overview, board and
+ * map): every listed story is complete in the static HTML, so the heading and the first content paint
+ * with the document instead of waiting for React's throttled `$RC` reveal script (LCP 4.3 s on
+ * transport). Any other story gets `MissingPage`, a 404 with the site shell.
+ */
 export default function CorporateNewsItemPage({ params }: { params: Params }) {
-  return (
-    <Suspense
-      fallback={
-        <Container className="py-10" aria-hidden="true">
-          <Skeleton className="h-12 w-2/3" />
-          <Skeleton className="mt-8 h-64 w-full" />
-        </Container>
-      }
-    >
-      <NewsItem params={params} />
-    </Suspense>
-  );
+  return <NewsItem params={params} />;
 }
 
 async function NewsItem({ params }: { params: Params }) {
@@ -53,7 +46,7 @@ async function NewsItem({ params }: { params: Params }) {
   const lang = toLang(rawLang);
   const t = getT(lang);
   const item = mediaView(slug, lang);
-  if (!item) notFound();
+  if (!item) return <MissingPage />;
   const more = mediaViews(lang)
     .filter((other) => other.slug !== item.slug)
     .sort((a, b) => Number(b.topic === item.topic) - Number(a.topic === item.topic))

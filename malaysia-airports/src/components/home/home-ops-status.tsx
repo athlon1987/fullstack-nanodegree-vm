@@ -3,8 +3,9 @@
 import { useMemo, useState } from 'react';
 import type { Notice, Source } from '@/content/types';
 import { useNow } from '@/lib/hooks/use-now';
+import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n/client';
-import { opsStatus } from '@/lib/providers/demo-operations';
+import { opsServicesFor, opsStatus } from '@/lib/providers/demo-operations';
 import { OpsStatus } from '@/components/flights/ops-status';
 import { Icon } from '@/components/ui/icon';
 
@@ -29,14 +30,27 @@ export function HomeOpsStatus({ notices, sources }: HomeOpsStatusProps) {
   const lines = useMemo(() => (now === null ? null : opsStatus({ airport: 'kul', notices, now, waits: false })), [notices, now]);
   const [open, setOpen] = useState(false);
   const affected = lines?.filter((line) => line.state !== 'clear').length ?? 0;
+  const current = lines === null ? null : affected > 0 ? `affected-${affected}` : 'clear';
+  const summaries = [
+    { key: 'clear', text: t('home.strip.opsClear') },
+    ...opsServicesFor('kul').map((_, index) => ({ key: `affected-${index + 1}`, text: t.count('home.strip.opsAffected', index + 1) })),
+  ];
   return (
     <details className="group border-t border-line lg:col-span-3" onToggle={(event) => setOpen(event.currentTarget.open)}>
       <summary className="flex min-h-11 cursor-pointer list-none items-center gap-3 px-3 py-1.5 text-ink transition-colors duration-fast hover:bg-page-subtle focus-visible:focus-ring-inset sm:px-4 [&::-webkit-details-marker]:hidden">
         <Icon name="train-front" className="text-primary-ink max-xs:hidden" />
-        <span className="type-body-sm min-w-0 flex-1">
-          <span className="font-semibold">{t('home.strip.opsTitle')}</span>{' '}
-          <span className="text-ink-2">
-            {lines === null ? '' : affected > 0 ? t.count('home.strip.opsAffected', affected) : t('home.strip.opsClear')}
+        <span className="type-body-sm flex min-w-0 flex-1 flex-wrap gap-x-1">
+          <span className="font-semibold">{t('home.strip.opsTitle')}</span>
+          {/* The summary needs the clock, so it arrives after hydration. Every summary it can show
+              sits in the same grid cell and only the current one is visible, so the row is as tall
+              as the longest one from the first paint and nothing moves when it arrives (round 3:
+              Malay phones wrapped to a second line after hydration, CLS 0.029). */}
+          <span className="grid text-ink-2">
+            {summaries.map((summary) => (
+              <span key={summary.key} className={cn('[grid-area:1/1]', summary.key !== current && 'invisible')}>
+                {summary.text}
+              </span>
+            ))}
           </span>
         </span>
         <Icon name="chevron-down" size="sm" className="shrink-0 text-ink-3 transition-transform duration-base group-open:rotate-180" />

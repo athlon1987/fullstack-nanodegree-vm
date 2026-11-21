@@ -1,10 +1,10 @@
-import { Suspense } from 'react';
 import { terminalLabel, type Lang } from '@/content';
 import { getT, toLang } from '@/lib/i18n';
 import { localAirport, airportSectionMetadata, loadAirportPage, sectionStaticParams, type AirportPageParams } from '@/components/airport/section-page';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { ExternalLink } from '@/components/common/external-link';
 import { LocaleLink } from '@/components/common/locale-link';
+import { MissingPage } from '@/components/common/missing-page';
 import { PageHeader } from '@/components/common/page-header';
 import { TranslationNotice } from '@/components/common/translation-notice';
 import {
@@ -23,7 +23,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
-import { Skeleton } from '@/components/ui/skeleton';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 export const generateStaticParams = () => sectionStaticParams('lounges');
@@ -38,21 +37,18 @@ export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/
   return airportSectionMetadata(params, 'lounges', airport ? { description: t('commercePages.lounges.metaDescription', { airport: airport.name }) } : {});
 }
 
-/** Lounges, hotels, rest and shower facilities at one airport, by terminal and side of security. */
+/**
+ * Lounges, hotels, rest and shower facilities at one airport, by terminal and side of security.
+ *
+ * No page-level `<Suspense>` (round 3, the static shell round 2 gave the airport overview, board and
+ * map): every listed airport is complete in the static HTML, so the heading and the first content
+ * paint with the document instead of waiting for React's throttled `$RC` reveal script (LCP 4.3 s on
+ * transport). Any other airport gets `MissingPage`, a 404 with the site shell.
+ */
 export default function LoungesPage({ params }: PageProps<'/[lang]/[airport]/lounges'>) {
   return (
     <I18nPageScope namespaces={['commercePages']}>
-      <Suspense
-        fallback={
-          <Container className="py-10" aria-hidden="true">
-            <Skeleton className="h-10 w-72" />
-            <Skeleton className="mt-8 h-72 w-full" />
-          </Container>
-        }
-      >
-        <Lounges params={params} />
-      </Suspense>
-  
+      <Lounges params={params} />
     </I18nPageScope>
   );
 }
@@ -98,6 +94,8 @@ function SideGroups({ items, lang, level, idPrefix, showTerminal }: { items: Res
 }
 
 async function Lounges({ params }: { params: AirportPageParams }) {
+  const { airport: slug } = await params;
+  if (!generateStaticParams().some((listed) => listed.airport === slug)) return <MissingPage />;
   const { lang, t, airport, content, sections } = await loadAirportPage(params, 'lounges');
   const items = restViews(content, lang);
   const multiTerminal = airport.terminals.length > 1;
@@ -161,7 +159,10 @@ async function Lounges({ params }: { params: AirportPageParams }) {
 
         <RestExplainer lang={lang} transitHref={sections.includes('transit') ? sectionPath(airport.slug, 'transit') : undefined} />
 
-        <section aria-labelledby="lounges-gaps-title" className="mt-14 grid gap-6 border-t border-line pt-10 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] lg:gap-10">
+        <section
+          aria-labelledby="lounges-gaps-title"
+          className="mt-14 grid gap-6 border-t border-line pt-10 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] lg:gap-10"
+        >
           <h2 id="lounges-gaps-title" className="type-title-lg text-ink">
             {t('commercePages.lounges.gapsTitle')}
           </h2>

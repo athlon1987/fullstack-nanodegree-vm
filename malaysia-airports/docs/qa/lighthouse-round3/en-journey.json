@@ -1,0 +1,72 @@
+{
+ "key": "en-journey",
+ "url": "http://localhost:3100/en/journey",
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-21T09:37:53.164Z",
+ "median": {
+  "performance": 98,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 915,
+  "lcp_ms": 915,
+  "tbt_ms": 179,
+  "cls": 0,
+  "si_ms": 915,
+  "totalBytes": 533722,
+  "requests": 36
+ },
+ "a11yFailures": [],
+ "rows": [
+  {
+   "finalUrl": "http://localhost:3100/en/journey",
+   "runtimeError": null,
+   "performance": 96,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 916,
+   "lcp_ms": 916,
+   "tbt_ms": 212,
+   "cls": 0,
+   "si_ms": 916,
+   "totalBytes": 533724,
+   "requests": 36,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "http://localhost:3100/en/journey",
+   "runtimeError": null,
+   "performance": 98,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 915,
+   "lcp_ms": 915,
+   "tbt_ms": 154,
+   "cls": 0,
+   "si_ms": 915,
+   "totalBytes": 533722,
+   "requests": 36,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "http://localhost:3100/en/journey",
+   "runtimeError": null,
+   "performance": 98,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 914,
+   "lcp_ms": 914,
+   "tbt_ms": 179,
+   "cls": 0,
+   "si_ms": 914,
+   "totalBytes": 533722,
+   "requests": 36,
+   "a11yFailures": []
+  }
+ ],
+ "caveat": "Lab measurement: Lighthouse mobile emulation with simulated throttling, run from a shared cloud container; hosts outside the session allowlist (analytics, some CDNs) were blocked, which changes page weight and timings. Indicative only; not field data and not comparable to CrUX."
+}

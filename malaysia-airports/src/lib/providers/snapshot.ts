@@ -93,4 +93,15 @@ export class SnapshotFlightProvider {
     const wanted = id.trim().toLowerCase();
     return day?.flights.find((flight) => flight.id === wanted) ?? null;
   }
+
+  /**
+   * Rank the flights of every board held (or one airport's) against a query, best first: the
+   * site search's flight results (round 3, E-03), as the demo generator's `searchSync` gave them.
+   */
+  searchSync(query: { q: string; airport?: string; limit?: number }): Flight[] {
+    if (!query.q.trim()) return [];
+    const flights: Flight[] = [];
+    for (const day of this.days.values()) if (!query.airport || day.airport === query.airport) flights.push(...day.flights);
+    return searchFlights(flights, query.q, { now: this.now, limit: query.limit ?? 20 });
+  }
 }

@@ -15,7 +15,7 @@ import { Table, TableScroll, TBody, Td, Th, THead, Tr } from '@/components/ui/ta
 
 /**
  * A fixed instant, so this server-rendered specimen is deterministic (Server Components never
- * read the clock). Real boards are Client Components fed by `useFlightProvider()`.
+ * read the clock). Real boards are Client Components fed by the server flight feed (`useFlightFeed()`).
  */
 const SAMPLE_INSTANT = '2026-11-17T09:30:00+08:00';
 

@@ -1,18 +1,21 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { getAirport } from '@/content/airports';
 import type { Provenance, Source, TerminalId } from '@/content/types';
 import { formatFlightNumber, isFinalStatus, isInternationalFlight, placeCity, type Flight } from '@/lib/flights';
-import { useAirportContext, useFlightProvider, useSavedJourney } from '@/lib/hooks';
+import { useAirportContext, useSavedJourney } from '@/lib/hooks';
 import { useT } from '@/lib/i18n/client';
-import { boardWindow, hasDemoRoutes } from '@/lib/providers';
-import { addMinutes, formatTime } from '@/lib/time';
+import { useFlightFeed, type FeedRequest } from '@/lib/providers/use-flight-feed';
+import { DEFAULT_TIMEZONE, addMinutes, dateKey, formatTime, type Instant } from '@/lib/time';
 import { AirportCode } from '@/components/common/airport-code';
 import { LocaleLink } from '@/components/common/locale-link';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { SourceNote } from '@/components/common/source-note';
+import { datesInRange } from '@/components/flights/board-model';
 import { flightHref } from '@/components/flights/flight-row';
+import { hasSection } from '@/components/shell/sections';
+import { useSectionAvailability } from '@/components/shell/shell-context';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { Timeline, TimelineItem } from '@/components/ui/timeline';
@@ -43,31 +46,47 @@ export interface JourneyTeaserProps {
   fallback?: { value: string; sources: Source[] };
 }
 
+/** The sample flight leaves between two and a half and 14 hours from now. */
+const sampleRange = (now: Instant) => ({ from: addMinutes(now, 150), to: addMinutes(now, 14 * 60) });
+
 /**
  * A three-step sample of the journey timeline, one step for each kind of guidance: estimated
  * (our rule of thumb), official (a sourced fact about the airport) and suggestion. It hangs on a
- * sample demonstration flight, which the visitor can save to "My journey" for later.
+ * sample demonstration flight, which the visitor can save to "My journey" for later. The flight
+ * comes from the server flight feed (round 3, E-03), not from a generator in the browser.
  */
 export function JourneyTeaser({ facts, arrival, fallback }: JourneyTeaserProps) {
   const t = useT();
-  const provider = useFlightProvider();
   const context = useAirportContext();
+  const sections = useSectionAvailability();
   const { saveFlight, removeFlight, isFlightSaved } = useSavedJourney();
 
   const chosen = context.airport?.slug;
-  const sampleAirport = chosen && hasDemoRoutes(chosen) ? chosen : (Object.keys(facts)[0] ?? 'kul');
+  const sampleAirport = chosen && hasSection(sections, chosen, 'flights') ? chosen : (Object.keys(facts)[0] ?? 'kul');
   const fact = facts[sampleAirport];
   const factTerminal = fact?.terminal;
   const airport = getAirport(sampleAirport);
+  // Today's board (shared with the board preview's request); the next day's only when today has
+  // no flight left to sample.
+  const [nextDay, setNextDay] = useState(false);
+  const zone = airport?.timezone ?? DEFAULT_TIMEZONE;
+  const feed = useFlightFeed((at): FeedRequest[] =>
+    hasSection(sections, sampleAirport, 'flights')
+      ? datesInRange(sampleRange(at), zone)
+          .filter((date) => nextDay || date <= dateKey(at, zone))
+          .map((date) => ({ airport: sampleAirport, date, direction: 'd' }))
+      : [],
+  );
+  const provider = feed.provider;
 
   const flight = useMemo<Flight | null>(() => {
     if (!provider) return null;
-    const now = provider.meta().generatedAt;
     const candidates = provider
-      .listFlightsSync({ airport: sampleAirport, direction: 'd', from: addMinutes(now, 150), to: boardWindow(now, 14).to })
+      .listFlightsSync({ airport: sampleAirport, direction: 'd', ...sampleRange(provider.now) })
       .filter((item) => !isFinalStatus(item.status) && item.status !== 'cancelled');
     return candidates.find((item) => !factTerminal || item.terminal === factTerminal) ?? candidates[0] ?? null;
   }, [provider, sampleAirport, factTerminal]);
+  if (!nextDay && provider && !flight) setNextDay(true);
 
   const arriveBy = flight ? formatTime(addMinutes(flight.scheduled, -(isInternationalFlight(flight) ? arrival.minutesBefore.international : arrival.minutesBefore.domestic))) : null;
   const saved = flight ? isFlightSaved(flight.id) : false;

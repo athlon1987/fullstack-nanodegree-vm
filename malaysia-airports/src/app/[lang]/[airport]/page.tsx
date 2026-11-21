@@ -2,7 +2,7 @@ import { CLASSIFICATION_LABELS, airportSlugs, getNotices, getSource, pick, resol
 import { terminalLabel } from '@/content/airports';
 import { AirportFlightTools } from '@/components/airport/airport-flight-tools';
 import { AirportBanner } from '@/components/airport/airport-header';
-import { MissingAirportPage } from '@/components/airport/missing-airport-page';
+import { MissingPage } from '@/components/common/missing-page';
 import { NoticeList } from '@/components/airport/notice-list';
 import { OpsStatusSection } from '@/components/flights/ops-status-section';
 import { toNoticeViews } from '@/components/airport/notice-views.server';
@@ -58,7 +58,7 @@ export default function AirportPage({ params }: PageProps<'/[lang]/[airport]'>) 
 }
 
 async function Overview({ params }: { params: AirportPageParams }) {
-  if (!airportSlugs().includes((await params).airport)) return <MissingAirportPage />;
+  if (!airportSlugs().includes((await params).airport)) return <MissingPage />;
   const { lang, t, airport, content, sections } = await loadAirportPage(params);
   const place = airport.city === airport.state ? airport.city : `${airport.city}, ${airport.state}`;
   const unverified = (field: (typeof airport.unverifiedFields)[number]): boolean => airport.unverifiedFields.includes(field);

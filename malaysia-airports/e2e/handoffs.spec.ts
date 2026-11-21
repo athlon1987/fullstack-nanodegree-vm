@@ -77,9 +77,14 @@ test.describe('round 2 hand-offs', () => {
     await page.goto('/en');
     const search = page.getByRole('search', { name: 'Search flights' });
     await search.getByRole('searchbox').fill('MH');
-    const notice = page.locator('[data-feed-state="error"]');
+    // Round 3 (E-03): the home board preview reads the same feed and says so too, so the search's
+    // notice is looked up in the results the search box controls.
+    await expect(search.getByRole('searchbox')).toHaveAttribute('aria-controls', /.+/);
+    const results = page.locator(`[id="${await search.getByRole('searchbox').getAttribute('aria-controls')}"]`);
+    const notice = results.locator('[data-feed-state="error"]');
     await expect(notice).toBeVisible({ timeout: 10_000 });
     await expect(notice).toContainText('We could not load flight information.');
+    await expect(page.locator('[data-feed-state="error"]')).toHaveCount(2);
     await page.unroute('**/flights/feed?**');
     await notice.getByRole('button', { name: 'Try again' }).click();
     await expect(search.getByText(/^\d+ flights? found$/).or(page.getByRole('main').getByText(/^\d+ flights? found$/)).first()).toBeVisible({ timeout: 10_000 });

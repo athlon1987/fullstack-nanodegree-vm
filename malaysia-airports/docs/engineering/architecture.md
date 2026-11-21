@@ -170,7 +170,7 @@ Assumed, not validated [assumption]: the hosting platform (none is chosen; the h
 - There is no root `loading.tsx` (removed in the fix round, performance-04 and -07): it wrapped every page in a fallback that was revealed late, which shifted the layout and delayed LCP. Fallbacks now exist only where a segment really waits (each dynamic page's own `<Suspense>` around its `params`). The not-found pages render a `cacheLife('minutes')` marker so a 404 is shared-cached for 60 s at most.
 
 *Verified against the code on 21 November 2026 (fix round, package E).*
-- Server Components never read the clock or random values (it is a build error under Cache Components). On the client, `useNow()` returns `null` on the server and until the first tick, then the epoch time every 30 seconds by default; components render a placeholder while it is `null`. Providers are immutable snapshots of one instant (`getFlightProvider(now)`), rebuilt every 30 seconds by `useFlightProvider()`.
+- Server Components never read the clock or random values (it is a build error under Cache Components). On the client, `useNow()` returns `null` on the server and until the first tick, then the epoch time every 30 seconds by default; components render a placeholder while it is `null`. Providers are immutable snapshots of one instant (`getFlightProvider(now)`). Since round 3 (E-03) the demo flight generator runs only on the server: Client Components read its boards from the flight feed routes through `useFlightFeed()` (`src/lib/providers/use-flight-feed.ts`), refreshed every 30 seconds, and look flights up in the `SnapshotFlightProvider` it returns.
 
 **Why time-dependent data is computed on the client:**
 

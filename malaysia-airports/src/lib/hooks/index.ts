@@ -6,7 +6,6 @@
  */
 export { useStore, useHydrated } from './use-store';
 export { useNow } from './use-now';
-export { useFlightProvider } from './use-flight-provider';
 export { useAirportContext, type AirportContextValue } from './use-airport-context';
 export { useJourneyMode, type JourneyModeValue } from './use-journey-mode';
 export { useSavedJourney, type SavedJourneyValue } from './use-saved-journey';

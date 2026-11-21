@@ -4,9 +4,9 @@ import { useMemo } from 'react';
 import { getAirport, localName } from '@/content/airports';
 import { pick } from '@/content/values';
 import { formatFlightNumber, isFinalStatus, isInternationalFlight, placeCity, type Flight } from '@/lib/flights';
-import { useFlightProvider } from '@/lib/hooks';
 import { useLang, useT } from '@/lib/i18n/client';
 import { RECOMMENDED_ARRIVAL_MINUTES, buildJourney } from '@/lib/journey';
+import { useFlightFeed, type FeedRequest } from '@/lib/providers/use-flight-feed';
 import type { SavedFlight } from '@/lib/stores';
 import { addMinutes, dateKey, formatTime } from '@/lib/time';
 import { DemoTag } from '@/components/common/demo-tag';
@@ -14,6 +14,7 @@ import { FlightStatusChip } from '@/components/common/flight-status-chip';
 import { LocaleLink } from '@/components/common/locale-link';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { TerminalBadge } from '@/components/common/terminal-badge';
+import { FeedNotice } from '@/components/flights/feed-notice';
 import { flightHref } from '@/components/flights/flight-row';
 import { Icon } from '@/components/ui/icon';
 
@@ -27,17 +28,21 @@ interface Picked {
 /**
  * The visitor's saved flight on the home first screen (A-08): status, terminal, gate, the next
  * step of its timeline and, for departures, when to be at the airport. Demonstration data, and
- * labelled so. Loaded only when a flight is saved (`SavedFlightSlot`).
+ * labelled so. Loaded only when a flight is saved (`SavedFlightSlot`). The flights come from the
+ * server flight feed (round 3, E-03): one board per saved airport, date and direction.
  */
 export function SavedFlightCard({ flights }: { flights: readonly SavedFlight[] }) {
   const t = useT();
   const lang = useLang();
-  const provider = useFlightProvider();
+  const feed = useFlightFeed((at): FeedRequest[] => {
+    const today = dateKey(at);
+    return flights.filter((saved) => saved.date >= today).map((saved) => ({ airport: saved.airport, date: saved.date, direction: saved.direction }));
+  });
+  const provider = feed.provider;
 
   const picked = useMemo<Picked | null>(() => {
     if (!provider) return null;
-    const now = provider.meta().generatedAt;
-    const today = dateKey(now);
+    const today = dateKey(provider.now);
     const found = flights
       .filter((saved) => saved.date >= today)
       .map((saved) => ({ saved, flight: provider.getFlightSync(saved.id, saved.airport) }))
@@ -51,11 +56,14 @@ export function SavedFlightCard({ flights }: { flights: readonly SavedFlight[] }
     const airport = getAirport(picked.flight.airport);
     if (!airport) return null;
     const mode = picked.saved.mode ?? (picked.flight.direction === 'd' ? 'departing' : 'arriving');
-    const steps = buildJourney({ flight: picked.flight, mode, airportContent: { airport, guidesNotes: [] }, now: provider.meta().generatedAt });
+    const steps = buildJourney({ flight: picked.flight, mode, airportContent: { airport, guidesNotes: [] }, now: provider.now });
     return steps.find((step) => step.state === 'current') ?? steps.find((step) => step.state === 'upcoming') ?? null;
   }, [picked, provider]);
 
-  if (!provider) return <div aria-hidden="true" className="saved-flight-size rounded-lg border border-line-strong bg-surface" />;
+  // Only past flights saved: nothing to fetch, so nothing to show (as before the feed).
+  const today = feed.now === null ? null : dateKey(feed.now);
+  if (today !== null && !flights.some((saved) => saved.date >= today)) return null;
+  if (!provider) return feed.status === 'error' ? <FeedNotice feed={feed} /> : <div aria-hidden="true" className="saved-flight-size rounded-lg border border-line-strong bg-surface" />;
   if (!picked) return null;
 
   const { flight, others } = picked;

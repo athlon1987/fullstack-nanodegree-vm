@@ -10,7 +10,6 @@ import { useAirportContext } from '@/lib/hooks';
 import { useLang, useT } from '@/lib/i18n/client';
 import type { TKey } from '@/lib/i18n/translate';
 import { localeHref } from '@/lib/locale';
-import { DEMO_AIRPORT_SLUGS, hasDemoRoutes } from '@/lib/providers/demo-routes';
 import { useFlightFeed, type FeedRequest } from '@/lib/providers/use-flight-feed';
 import { dateKey } from '@/lib/time';
 import { RebungRule } from '@/components/art/patterns';
@@ -19,7 +18,8 @@ import { DemoTag } from '@/components/common/demo-tag';
 import { AirportSwitcherButton } from '@/components/shell/airport-switcher';
 import { overlays } from '@/components/shell/overlay-store';
 import { rich } from '@/components/shell/rich';
-import { sectionPath } from '@/components/shell/sections';
+import { hasSection, sectionPath } from '@/components/shell/sections';
+import { useSectionAvailability } from '@/components/shell/shell-context';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { SearchField } from '@/components/ui/search-field';
@@ -120,7 +120,11 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
   const scope = record ? localizeAirport(record, lang) : airport ? undefined : context.airport;
   const scopeTerminal = airport ? terminal : context.selection?.terminal;
   const scopeSlug = scope?.slug;
-  const hasBoard = scopeSlug ? hasDemoRoutes(scopeSlug) : true;
+  // Which airports have a demonstration board, from the server-computed section list (round 3,
+  // E-03: the demo route table no longer ships to the browser).
+  const sections = useSectionAvailability();
+  const networkBoards = useMemo(() => Object.keys(sections).filter((slug) => hasSection(sections, slug, 'flights')), [sections]);
+  const hasBoard = scopeSlug ? hasSection(sections, scopeSlug, 'flights') : true;
   const text = query.trim();
   // Typing stays responsive: matching follows the field at a lower priority.
   const deferredText = useDeferredValue(text);
@@ -141,7 +145,7 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
   // the field is first used (or at idle, for its examples); the whole network asks for its boards
   // only while a query is typed.
   const wanted = active || deferredText.length >= 2;
-  const boards = useMemo<readonly string[]>(() => (scopeSlug ? (hasBoard ? [scopeSlug] : []) : DEMO_AIRPORT_SLUGS), [scopeSlug, hasBoard]);
+  const boards = useMemo<readonly string[]>(() => (scopeSlug ? (hasBoard ? [scopeSlug] : []) : networkBoards), [scopeSlug, hasBoard, networkBoards]);
   const wantBoards = scopeSlug ? wanted : deferredText.length >= 2;
   const feed = useFlightFeed((at): FeedRequest[] => (wantBoards ? boards.map((slug) => ({ airport: slug, date: dateKey(at), direction: poolDirection })) : []));
   const provider = feed.provider;
@@ -194,7 +198,7 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
     ? rich(t('flights.search.scopeAirport'), { direction: <strong className="font-semibold text-ink">{directionWord}</strong>, airport: <strong className="font-semibold text-ink">{scopeName}</strong> })
     : rich(t('flights.search.scopeNetwork'), {
         direction: <strong className="font-semibold text-ink">{directionWord}</strong>,
-        count: <strong className="tabular font-semibold text-ink">{DEMO_AIRPORT_SLUGS.length}</strong>,
+        count: <strong className="tabular font-semibold text-ink">{networkBoards.length}</strong>,
       });
 
   const kind = results ? readQuery(deferredText, results, direction) : null;

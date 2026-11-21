@@ -4,8 +4,10 @@ import { useMemo } from 'react';
 import type { TerminalId } from '@/content/types';
 import { formatFlightNumber, isFinalStatus } from '@/lib/flights';
 import { formatList } from '@/lib/format';
-import { useFlightProvider, useSavedJourney } from '@/lib/hooks';
+import { useSavedJourney } from '@/lib/hooks';
 import { useLang, useT } from '@/lib/i18n/client';
+import { useFlightFeed, type FeedRequest } from '@/lib/providers/use-flight-feed';
+import { dateKey, shiftDateKey } from '@/lib/time';
 import { LocaleLink } from '@/components/common/locale-link';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { Button } from '@/components/ui/button';
@@ -24,14 +26,20 @@ export interface GatePanelProps {
 
 /**
  * "Near your gate": choose a gate area, or use the gate of a saved departing flight (demo data,
- * labelled). Proximity itself is an estimate and says so.
+ * labelled). Proximity itself is an estimate and says so. The saved flight's gate comes from the
+ * server flight feed (round 3, E-03), only when a departing flight is saved for this airport.
  */
 export function GatePanel({ airport, terminalLabels, value, context, onChange }: GatePanelProps) {
   const t = useT();
   const lang = useLang();
   const areas = gateAreasFor(airport);
   const { journey, hydrated } = useSavedJourney();
-  const provider = useFlightProvider();
+  const feed = useFlightFeed((at): FeedRequest[] =>
+    journey.flights
+      .filter((item) => item.airport === airport && item.direction === 'd' && item.date >= shiftDateKey(dateKey(at), -1))
+      .map((item) => ({ airport, date: item.date, direction: 'd' })),
+  );
+  const provider = feed.provider;
 
   const flight = useMemo(() => {
     if (!provider) return null;

@@ -1,9 +1,9 @@
-import { Suspense } from 'react';
 import { terminalLabel } from '@/content';
 import { getT, toLang } from '@/lib/i18n';
 import { localAirport, airportSectionMetadata, loadAirportPage, sectionStaticParams, type AirportPageParams } from '@/components/airport/section-page';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { LocaleLink } from '@/components/common/locale-link';
+import { MissingPage } from '@/components/common/missing-page';
 import { PageHeader } from '@/components/common/page-header';
 import { PrototypeGapsLink } from '@/components/common/prototype-gaps-link';
 import { TranslationNotice } from '@/components/common/translation-notice';
@@ -11,7 +11,6 @@ import { FacilitiesDirectory } from '@/components/facilities/facilities-director
 import { facilityViews, needsTranslationNotice, officialPages, sourceLookup } from '@/components/map/map-view.server';
 import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
-import { Skeleton } from '@/components/ui/skeleton';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 export const generateStaticParams = () => sectionStaticParams('facilities');
@@ -26,26 +25,25 @@ export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/
   return airportSectionMetadata(params, 'facilities', airport ? { description: t('mapPages.facilities.metaDescription', { airport: airport.name }) } : {});
 }
 
-/** Facilities and services directory: every published facility with its source. */
+/**
+ * Facilities and services directory: every published facility with its source.
+ *
+ * No page-level `<Suspense>` (round 3, the static shell round 2 gave the airport overview, board and
+ * map): every listed airport is complete in the static HTML, so the heading and the first content
+ * paint with the document instead of waiting for React's throttled `$RC` reveal script (LCP 4.3 s on
+ * transport). Any other airport gets `MissingPage`, a 404 with the site shell.
+ */
 export default function FacilitiesPage({ params }: PageProps<'/[lang]/[airport]/facilities'>) {
   return (
     <I18nPageScope namespaces={['mapPages']}>
-      <Suspense
-        fallback={
-          <Container className="py-10" aria-hidden="true">
-            <Skeleton className="h-10 w-72" />
-            <Skeleton className="mt-8 h-64 w-full" />
-          </Container>
-        }
-      >
-        <Facilities params={params} />
-      </Suspense>
-  
+      <Facilities params={params} />
     </I18nPageScope>
   );
 }
 
 async function Facilities({ params }: { params: AirportPageParams }) {
+  const { airport: slug } = await params;
+  if (!generateStaticParams().some((listed) => listed.airport === slug)) return <MissingPage />;
   const { lang, t, airport, content, sections } = await loadAirportPage(params, 'facilities');
   const items = facilityViews(content, lang);
   const official = officialPages(content);

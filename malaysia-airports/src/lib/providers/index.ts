@@ -8,7 +8,6 @@
  */
 import type { Instant } from '@/lib/time';
 import { DemoFlightProvider } from './demo-flights';
-import { DemoParkingAvailabilityProvider, DemoWaitTimeProvider } from './demo-operations';
 import type { ProviderMode } from './types';
 
 export * from './types';
@@ -33,6 +32,7 @@ export {
   type OpsStatusLine,
 } from './demo-operations';
 export { OfficialFlightProvider, OFFICIAL_FLIGHTS_ENDPOINT, toOfficialParams } from './official-flights';
+export { getParkingAvailabilityProvider, getWaitTimeProvider } from './operations';
 export { DEMO_AIRPORT_SLUGS, hasDemoRoutes } from './demo-routes';
 
 /** Which mode each provider runs in. Reported by `/api/health`. */
@@ -45,14 +45,4 @@ export const PROVIDER_MODES: Readonly<Record<'flights' | 'waitTimes' | 'parkingA
 /** The flight provider for an instant. Demo in this prototype; also offers `*Sync` methods. */
 export function getFlightProvider(now: Instant): DemoFlightProvider {
   return new DemoFlightProvider(now);
-}
-
-/** The queue-estimate provider for an instant (demo). */
-export function getWaitTimeProvider(now: Instant): DemoWaitTimeProvider {
-  return new DemoWaitTimeProvider(now);
-}
-
-/** The car park availability provider for an instant (demo). */
-export function getParkingAvailabilityProvider(now: Instant): DemoParkingAvailabilityProvider {
-  return new DemoParkingAvailabilityProvider(now);
 }

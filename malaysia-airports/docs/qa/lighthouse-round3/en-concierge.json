@@ -1,0 +1,72 @@
+{
+ "key": "en-concierge",
+ "url": "http://localhost:3100/en/concierge",
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-21T09:37:16.993Z",
+ "median": {
+  "performance": 97,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 918,
+  "lcp_ms": 918,
+  "tbt_ms": 186,
+  "cls": 0,
+  "si_ms": 918,
+  "totalBytes": 712921,
+  "requests": 45
+ },
+ "a11yFailures": [],
+ "rows": [
+  {
+   "finalUrl": "http://localhost:3100/en/concierge",
+   "runtimeError": null,
+   "performance": 97,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 914,
+   "lcp_ms": 914,
+   "tbt_ms": 186,
+   "cls": 0,
+   "si_ms": 914,
+   "totalBytes": 712923,
+   "requests": 45,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "http://localhost:3100/en/concierge",
+   "runtimeError": null,
+   "performance": 99,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 918,
+   "lcp_ms": 918,
+   "tbt_ms": 140,
+   "cls": 0,
+   "si_ms": 918,
+   "totalBytes": 712921,
+   "requests": 45,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "http://localhost:3100/en/concierge",
+   "runtimeError": null,
+   "performance": 96,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 926,
+   "lcp_ms": 926,
+   "tbt_ms": 220,
+   "cls": 0,
+   "si_ms": 1118,
+   "totalBytes": 712921,
+   "requests": 45,
+   "a11yFailures": []
+  }
+ ],
+ "caveat": "Lab measurement: Lighthouse mobile emulation with simulated throttling, run from a shared cloud container; hosts outside the session allowlist (analytics, some CDNs) were blocked, which changes page weight and timings. Indicative only; not field data and not comparable to CrUX."
+}

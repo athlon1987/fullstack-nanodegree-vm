@@ -427,7 +427,7 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
                   the first row reaches the first 664 px in both languages (A-01, round 2). */}
                 {selected && selected.finished > 0 ? (
                   <p className="type-body-sm px-4 pt-2 text-center text-ink-2 max-sm:sr-only sm:px-5">
-                    {t.count('flightPages.rows.departedHidden', selected.finished)}
+                    {t.count(direction === 'd' ? 'flightPages.rows.departedHidden' : 'flightPages.rows.arrivedHidden', selected.finished)}
                   </p>
                 ) : null}
                 {edge(shift.earlier < MAX_EARLIER_STEPS, earlierButton, t('flightPages.board.earlierLimit'))}

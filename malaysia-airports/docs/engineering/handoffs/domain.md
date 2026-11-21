@@ -142,7 +142,7 @@ error). About 430 keys in sections `common`, `nav`, `journey`, `flights`, `prove
 | Hook | Returns |
 |---|---|
 | `useNow(intervalMs = 30000)` | `number \| null` (epoch ms; `null` on the server and until the first tick) |
-| `useFlightProvider(intervalMs?)` | `DemoFlightProvider \| null`, rebuilt every 30 s; memoise derived lists on it |
+| `useFlightFeed(requests, options?)` (`@/lib/providers/use-flight-feed`) | `{ provider, status, updatedAt, ageSeconds, retry, … }`: the boards asked for, from the server feed, refreshed every 30 s; memoise derived lists on `provider`. Replaced `useFlightProvider` in round 3 (E-03), so the generator never ships to the browser |
 | `useAirportContext()` | `{ selection, airport, choice, set(selection), clear(), hydrated }`; `selection` is `null` until the user chooses |
 | `useJourneyMode()` | `{ mode, effectiveMode, set(mode), clear(), hydrated }` |
 | `useSavedJourney()` | `{ journey: { flights, places, parkedCar }, saveFlight, removeFlight, isFlightSaved, savePlace, removePlace, isPlaceSaved, setParkedCar, clearParkedCar, clearAll, hydrated }` |
@@ -195,9 +195,9 @@ Client flight board:
 
 ```tsx
 'use client';
-const provider = useFlightProvider(); // null until hydrated
+const { provider } = useFlightFeed((at) => [{ airport, date: dateKey(at), direction }]); // null until loaded
 const flights = useMemo(
-  () => provider?.listFlightsSync({ airport, direction, terminal, ...boardWindow(provider.now) }) ?? null,
+  () => provider?.listFlightsSync({ airport, direction, terminal, from: addMinutes(provider.now, -45), to: addMinutes(provider.now, 360) }) ?? null,
   [provider, airport, direction, terminal],
 );
 if (!flights) return <BoardSkeleton />; // then render rows + DemoDataBanner (provider.meta().disclaimer)

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import { Suspense, lazy, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { getAirport } from '@/content/airports';
 import type { Notice, Source } from '@/content/types';
 import type { Flight } from '@/lib/flights';
@@ -11,19 +11,23 @@ import { useFlightFeed, type FeedRequest } from '@/lib/providers/use-flight-feed
 import type { SavedFlight } from '@/lib/stores';
 import { DemoDataBanner } from '@/components/common/demo-data-banner';
 import { Freshness } from '@/components/common/freshness';
+import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { flightAvailability } from './board-model';
-import { ClearJourney } from './clear-journey';
 import { FeedNotice } from './feed-notice';
 import { useFlightAlerts } from './flight-alerts';
 import { FlightWatcher } from './flight-watcher';
-import { flightTitle } from './identify-flight';
+import { flightTitle } from './flight-title';
 import { JOURNEY_EMPTY_HEADING_ID, JourneyEmpty } from './journey-empty';
 import { JourneyTimeline, modesForFlight, useJourneyPreferences } from './journey-timeline';
 import { NeedsControl } from './needs-control';
 import { ParkedCarCard, type CarParkOption } from './parked-car-card';
 import { SavedFlightCard } from './saved-flight-card';
 import { SavedPlaces } from './saved-places';
+
+// The confirmation dialog (Radix Dialog with its scroll lock, 7.6 KB gzip) loads when there is
+// something to clear, not with the page (round 3, E-03: first-load JavaScript under 250 KB).
+const ClearJourney = lazy(() => import('./clear-journey').then((module) => ({ default: module.ClearJourney })));
 
 export interface MyJourneyProps {
   carParks: readonly CarParkOption[];
@@ -227,12 +231,20 @@ export function MyJourney({ carParks }: MyJourneyProps) {
 
       {nothingSaved ? null : (
         <div className="flex justify-end border-t border-line pt-6">
-          <ClearJourney
-            onCleared={() => {
-              setAnnouncement(t('flightPages.journey.clear.done'));
-              document.getElementById(JOURNEY_EMPTY_HEADING_ID)?.focus();
-            }}
-          />
+          <Suspense
+            fallback={
+              <Button variant="quiet" iconStart="trash-2">
+                {t('journey.saved.clearAll')}
+              </Button>
+            }
+          >
+            <ClearJourney
+              onCleared={() => {
+                setAnnouncement(t('flightPages.journey.clear.done'));
+                document.getElementById(JOURNEY_EMPTY_HEADING_ID)?.focus();
+              }}
+            />
+          </Suspense>
         </div>
       )}
       <p role="status" className="sr-only">

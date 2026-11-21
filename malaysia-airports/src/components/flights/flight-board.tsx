@@ -22,7 +22,7 @@ export interface FlightBoardProps {
   /** A separate line under the heading: the airport, or what the list covers. */
   subtitle?: ReactNode;
   headingLevel?: 2 | 3;
-  /** `provider.meta().generatedAt`, or `null` while loading. */
+  /** When the boards shown were generated (`feed.updatedAt`), or `null` while loading. */
   updatedAt: Instant | null;
   refreshSeconds?: number;
   /** Shown before the freshness time: the airport code and the day. */
@@ -75,10 +75,10 @@ export interface FlightBoardProps {
  * when the text size is large, so nothing scrolls sideways on a phone.
  *
  * @example
- * const provider = useFlightProvider();
- * const flights = useMemo(() => provider?.listFlightsSync({ airport, direction, ...boardWindow(provider.meta().generatedAt) }) ?? null, [provider, airport, direction]);
+ * const feed = useFlightFeed((at) => [{ airport, date: dateKey(at), direction }]);
+ * const flights = useMemo(() => feed.provider?.listFlightsSync({ airport, direction }) ?? null, [feed.provider, airport, direction]);
  * <FlightBoard flights={flights} direction={direction} title={t('flights.board.departuresTitle')} subtitle={airport.name}
- *   updatedAt={provider?.meta().generatedAt ?? null} refreshSeconds={provider?.meta().refreshSeconds} />
+ *   updatedAt={feed.provider ? feed.updatedAt : null} refreshSeconds={feed.refreshSeconds} />
  */
 export function FlightBoard({
   flights,

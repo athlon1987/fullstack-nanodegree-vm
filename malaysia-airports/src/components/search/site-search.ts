@@ -6,13 +6,19 @@
  *  - Documents are built on the server (`buildSearchDocuments(lang)`) and served as a static
  *    JSON file per language (`/[lang]/search/index.json`). They are fetched the first time a
  *    search surface opens, so no page pays for them up front.
- *  - Flights are looked up in the demo provider and must be shown with the demonstration label.
+ *  - Flights come from the server flight feed (round 3, E-03: the demo generator no longer ships
+ *    to the browser), only while a query is typed, and must be shown with the demonstration label.
  *  - Recent searches stay on the device.
  */
 import { useEffect, useMemo, useSyncExternalStore } from 'react';
+import { FEATURED_AIRPORT_SLUGS, getAirport } from '@/content/airports';
 import type { Lang } from '@/content/types';
 import type { Flight } from '@/lib/flights';
-import { useFlightProvider, useStore } from '@/lib/hooks';
+import { useStore } from '@/lib/hooks/use-store';
+import { useFlightFeed, type FeedRequest } from '@/lib/providers/use-flight-feed';
+import { dateKey } from '@/lib/time';
+import { hasSection } from '@/components/shell/sections';
+import { useSectionAvailability } from '@/components/shell/shell-context';
 import { createSearchIndex, looksLikeFlightQuery, searchAll, type SearchDocument, type SearchGroup, type SearchIndex } from '@/lib/search/engine';
 import { check, createStore, validator } from '@/lib/storage';
 
@@ -98,8 +104,17 @@ export interface SiteSearchOptions {
 /** Search content and demo flights for a query. Empty and one-letter queries return nothing. */
 export function useSiteSearch(lang: Lang, query: string, { airport, limit = 5, flightLimit = 4, enabled = true }: SiteSearchOptions = {}): SiteSearchResults {
   const state = useSearchIndex(lang, enabled);
-  const provider = useFlightProvider();
+  const sections = useSectionAvailability();
   const text = query.trim();
+  const wantFlights = enabled && text.length >= 2 && flightLimit > 0;
+  // Today's boards, both directions: the chosen airport's, or the featured airports' (as the demo
+  // generator searched them), fetched only while a query is typed.
+  const scope = airport ? getAirport(airport)?.slug : undefined;
+  const slugs = (scope ? [scope] : FEATURED_AIRPORT_SLUGS).filter((slug) => hasSection(sections, slug, 'flights'));
+  const feed = useFlightFeed((at): FeedRequest[] =>
+    wantFlights ? slugs.flatMap((slug) => (['d', 'a'] as const).map((direction) => ({ airport: slug, date: dateKey(at, getAirport(slug)?.timezone), direction }))) : [],
+  );
+  const provider = wantFlights ? feed.provider : null;
   return useMemo(() => {
     const active = enabled && text.length >= 2;
     const flights = active && provider && flightLimit > 0 ? provider.searchSync({ q: text, airport, limit: flightLimit }) : [];

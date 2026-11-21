@@ -1,7 +1,7 @@
 import { isMultiTerminal, terminalLabel } from '@/content';
 import { getT, toLang } from '@/lib/i18n';
 import { localAirport, airportSectionMetadata, loadAirportPageFor, mapEmptyState, type AirportPageParams } from '@/components/airport/section-page';
-import { MissingAirportPage } from '@/components/airport/missing-airport-page';
+import { MissingPage } from '@/components/common/missing-page';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { PageHeader } from '@/components/common/page-header';
 import { TranslationNotice } from '@/components/common/translation-notice';
@@ -59,7 +59,7 @@ export default function MapPage({ params }: PageProps<'/[lang]/[airport]/map'>) 
 
 async function TerminalMap({ params }: { params: AirportPageParams }) {
   const { airport: slug } = await params;
-  if (!generateStaticParams().some((listed) => listed.airport === slug)) return <MissingAirportPage />;
+  if (!generateStaticParams().some((listed) => listed.airport === slug)) return <MissingPage />;
   const { lang, t, airport, content, sections } = await loadAirportPageFor(params, (has) => has.includes('map') || mapEmptyState(has));
   const maps = content.maps.map((model) => buildMapView(model, content, lang));
   const official = officialPages(content);

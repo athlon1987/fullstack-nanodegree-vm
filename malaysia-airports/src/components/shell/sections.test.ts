@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { AIRPORTS } from '@/content';
 import { en } from '@/lib/i18n/en';
 import { ms } from '@/lib/i18n/ms';
+import { DEMO_AIRPORT_SLUGS } from '@/lib/providers/demo-routes';
 import { JOURNEY_ACTIONS } from '@/components/home/journey-actions';
 import {
   AIRPORT_SECTIONS,
@@ -123,5 +124,13 @@ describe('Malay wording (A-25)', () => {
   it('uses everyday terms: no "pelepasan" and no bare "Lounge"', () => {
     expect(shell.filter((value) => /pelepasan/i.test(value))).toEqual([]);
     expect(shell.filter((value) => /(^|[^(])\bLounge\b/.test(value))).toEqual([]);
+  });
+});
+
+describe('the flights section stands in for the demo route table on the client (round 3, E-03)', () => {
+  it('lists exactly the airports with a demonstration board', () => {
+    const withFlights = AIRPORTS.filter((airport) => hasSection(availability, airport.slug, 'flights')).map((airport) => airport.slug);
+    expect([...withFlights].sort()).toEqual([...DEMO_AIRPORT_SLUGS].sort());
+    expect(withFlights).toHaveLength(21);
   });
 });

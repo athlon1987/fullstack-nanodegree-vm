@@ -271,6 +271,8 @@ export const flightPagesEn = {
     showMore: { one: 'Show {count} more flight', other: 'Show {count} more flights' },
     shownOf: 'Showing {shown} of {total}',
     departedHidden: { one: '{count} flight has already left. Use Earlier to see it.', other: '{count} flights have already left. Use Earlier to see them.' },
+    // Round 3: the Arrivals tab sets aside completed arrivals, which have not "left".
+    arrivedHidden: { one: '{count} flight has already arrived. Use Earlier to see it.', other: '{count} flights have already arrived. Use Earlier to see them.' },
   },
   checkInCard: {
     published: 'Published by {airline}',
@@ -577,6 +579,7 @@ export const flightPagesMs: typeof flightPagesEn = {
     showMore: { one: 'Tunjukkan {count} lagi penerbangan', other: 'Tunjukkan {count} lagi penerbangan' },
     shownOf: 'Memaparkan {shown} daripada {total}',
     departedHidden: { one: '{count} penerbangan telah berlepas. Gunakan Lebih awal untuk melihatnya.', other: '{count} penerbangan telah berlepas. Gunakan Lebih awal untuk melihatnya.' },
+    arrivedHidden: { one: '{count} penerbangan telah tiba. Gunakan Lebih awal untuk melihatnya.', other: '{count} penerbangan telah tiba. Gunakan Lebih awal untuk melihatnya.' },
   },
   checkInCard: {
     published: 'Diterbitkan oleh {airline}',

@@ -8,7 +8,7 @@ import { useAirportContext, useJourneyMode, useNow } from '@/lib/hooks';
 import { useLang, useT } from '@/lib/i18n/client';
 import type { JourneyMode } from '@/lib/journey/modes';
 import { formatDate } from '@/lib/time';
-import { noticeViewState, pickHeadlineNotice, type NoticeView } from '@/components/airport/notice-utils';
+import { pickHeadlineNotice, type NoticeView } from '@/components/airport/notice-utils';
 import { LocaleLink } from '@/components/common/locale-link';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { sectionHref, type AirportSectionId } from '@/components/shell/sections';
@@ -48,8 +48,11 @@ export function NoticeStrip({ notices, status, className }: { notices: readonly 
 
   const notice = pickHeadlineNotice(notices, now, airport?.slug);
   const style = notice ? SEVERITY[notice.severity] : SEVERITY.info;
-  const upcoming = notice && now !== null && noticeViewState(notice, now) === 'upcoming';
-  const period = notice?.validFrom && upcoming ? t('notices.from', { date: formatDate(notice.validFrom, lang, 'medium') }) : null;
+  // The start date shows whether the notice is upcoming or already in effect ("From 28 Nov 2026"
+  // is true of both), so the server HTML already has the line: when it appeared only after the
+  // clock arrived, the card grew by a line after hydration and moved the first screen (round 3,
+  // desktop CLS 0.018 to 0.023).
+  const period = notice?.validFrom ? t('notices.from', { date: formatDate(notice.validFrom, lang, 'medium') }) : null;
 
   const airportName = airport ? (selection?.terminal ? terminalLabel(airport, selection.terminal, lang) : airport.shortName) : t('home.strip.anyAirport');
   const mode = MODE_LINK[effectiveMode];

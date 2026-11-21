@@ -6,6 +6,7 @@ import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { EmptyState } from '@/components/common/empty-state';
 import { ExternalLink } from '@/components/common/external-link';
 import { LocaleLink } from '@/components/common/locale-link';
+import { MissingPage } from '@/components/common/missing-page';
 import { PageHeader } from '@/components/common/page-header';
 import { ProvenanceLegend } from '@/components/common/provenance-legend';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
@@ -20,7 +21,6 @@ import { OpsStatusSection } from '@/components/flights/ops-status-section';
 import { airportsWithSection } from '@/components/shell/sections.server';
 import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
-import { Skeleton } from '@/components/ui/skeleton';
 import type { Translator } from '@/lib/i18n/translate';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
 
@@ -44,36 +44,39 @@ export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/
     params,
     'transit',
     airport
-      ? { title: t('guidePages.transit.metaTitle', { airport: airport.shortName }), description: t('guidePages.transit.metaDescription', { airport: airport.name }) }
+      ? {
+          title: t('guidePages.transit.metaTitle', { airport: airport.shortName }),
+          description: t('guidePages.transit.metaDescription', { airport: airport.name }),
+        }
       : {},
     { emptyState: transitEmptyState },
   );
 }
 
-/** Connections and transit: an interactive planner at KLIA, honest guidance everywhere else. */
+/**
+ * Connections and transit: an interactive planner at KLIA, honest guidance everywhere else.
+ *
+ * No page-level `<Suspense>` (round 3, the static shell round 2 gave the airport overview, board and
+ * map): every listed airport is complete in the static HTML, so the heading and the first content
+ * paint with the document instead of waiting for React's throttled `$RC` reveal script (LCP 4.3 s on
+ * transport). Any other airport gets `MissingPage`, a 404 with the site shell.
+ */
 export default function TransitPage({ params }: PageProps<'/[lang]/[airport]/transit'>) {
   return (
     <I18nPageScope namespaces={['guidePages', 'transportPages']}>
-      <Suspense
-        fallback={
-          <Container className="py-10" aria-hidden="true">
-            <Skeleton className="h-10 w-72" />
-            <Skeleton className="mt-8 h-96 w-full" />
-          </Container>
-        }
-      >
-        <Transit params={params} />
-      </Suspense>
-  
+      <Transit params={params} />
     </I18nPageScope>
   );
 }
 
 async function Transit({ params }: { params: AirportPageParams }) {
+  const { airport: slug } = await params;
+  if (!generateStaticParams().some((listed) => listed.airport === slug)) return <MissingPage />;
   // KLIA's planner, or the honest simple page for another airport with content; others are a 404.
   const { lang, t, airport, content, sections } = await loadAirportPageFor(params, (has, slug) => has.includes('transit') || transitAirports().includes(slug));
   const data = transitData(content, lang, t, sections.includes('lounges'));
-  const planner = airport.terminals.some((terminal) => terminal.id === 'T1') && airport.terminals.some((terminal) => terminal.id === 'T2') && data.options.length > 0;
+  const planner =
+    airport.terminals.some((terminal) => terminal.id === 'T1') && airport.terminals.some((terminal) => terminal.id === 'T2') && data.options.length > 0;
   const header = (
     <PageHeader
       eyebrow={airport.shortName}
@@ -96,7 +99,15 @@ async function Transit({ params }: { params: AirportPageParams }) {
               <ul className="grid items-start gap-3 lg:grid-cols-2">
                 {notes.map((note) => (
                   <li key={note.id} className="min-w-0">
-                    <FactCard fact={{ id: note.id, title: pick(note.title, lang), body: pick(note.body, lang), provenance: note.provenance, sources: resolveSources(note.sources) }} />
+                    <FactCard
+                      fact={{
+                        id: note.id,
+                        title: pick(note.title, lang),
+                        body: pick(note.body, lang),
+                        provenance: note.provenance,
+                        sources: resolveSources(note.sources),
+                      }}
+                    />
                   </li>
                 ))}
               </ul>
@@ -106,12 +117,21 @@ async function Transit({ params }: { params: AirportPageParams }) {
             icon="arrow-left-right"
             headingLevel={2}
             title={t('guidePages.transit.simple.emptyTitle', { airport: airport.shortName })}
-            action={official ? <ExternalLink href={official.url} variant="action">{t('common.actions.openOfficialSite')}</ExternalLink> : undefined}
+            action={
+              official ? (
+                <ExternalLink href={official.url} variant="action">
+                  {t('common.actions.openOfficialSite')}
+                </ExternalLink>
+              ) : undefined
+            }
           >
             {t('guidePages.transit.simple.emptyBody')}
           </EmptyState>
           <Basics t={t} />
-          <section aria-labelledby="transit-klia-title" className="flex min-w-0 flex-wrap items-center justify-between gap-4 rounded-xl border border-line-strong bg-page-subtle p-5">
+          <section
+            aria-labelledby="transit-klia-title"
+            className="flex min-w-0 flex-wrap items-center justify-between gap-4 rounded-xl border border-line-strong bg-page-subtle p-5"
+          >
             <div className="min-w-0">
               <h2 id="transit-klia-title" className="type-title-md text-ink">
                 {t('guidePages.transit.simple.kliaTitle')}
@@ -168,12 +188,22 @@ async function Transit({ params }: { params: AirportPageParams }) {
 
 function Basics({ t }: { t: Translator }) {
   const items = [
-    { id: 'protected', icon: 'ticket-check' as const, title: t('guidePages.transit.simple.protectedTitle'), body: t('guidePages.transit.simple.protectedBody') },
+    {
+      id: 'protected',
+      icon: 'ticket-check' as const,
+      title: t('guidePages.transit.simple.protectedTitle'),
+      body: t('guidePages.transit.simple.protectedBody'),
+    },
     { id: 'self', icon: 'ticket' as const, title: t('guidePages.transit.simple.selfTitle'), body: t('guidePages.transit.simple.selfBody') },
   ];
   return (
     <section aria-labelledby="transit-basics-title">
-      <SectionHeading id="transit-basics-title" title={t('guidePages.transit.simple.basicsTitle')} variant="title" action={<ProvenanceTag provenance="estimated" />} />
+      <SectionHeading
+        id="transit-basics-title"
+        title={t('guidePages.transit.simple.basicsTitle')}
+        variant="title"
+        action={<ProvenanceTag provenance="estimated" />}
+      />
       <ul className="grid gap-4 md:grid-cols-2">
         {items.map((item) => (
           <li key={item.id} className="flex min-w-0 gap-4 rounded-lg border border-line-strong bg-surface p-5">

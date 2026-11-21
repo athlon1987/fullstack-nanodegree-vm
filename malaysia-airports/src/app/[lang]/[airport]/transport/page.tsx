@@ -5,6 +5,7 @@ import { localAirport, airportSectionMetadata, loadAirportPage, sectionStaticPar
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { ExternalLink } from '@/components/common/external-link';
 import { LocaleLink } from '@/components/common/locale-link';
+import { MissingPage } from '@/components/common/missing-page';
 import { NotPublished } from '@/components/common/not-published';
 import { PageHeader } from '@/components/common/page-header';
 import { PrototypeGapsLink } from '@/components/common/prototype-gaps-link';
@@ -18,7 +19,6 @@ import { TransportPlannerFromUrl } from '@/components/transport/transport-planne
 import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
-import { Skeleton } from '@/components/ui/skeleton';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 export const generateStaticParams = () => sectionStaticParams('transport');
@@ -42,27 +42,25 @@ export async function generateMetadata({ params }: PageProps<'/[lang]/[airport]/
   );
 }
 
-/** Ground transport planner: compare the published ways to and from the airport, and between its terminals. */
+/**
+ * Ground transport planner: compare the published ways to and from the airport, and between its terminals.
+ *
+ * No page-level `<Suspense>` (round 3, the static shell round 2 gave the airport overview, board and
+ * map): every listed airport is complete in the static HTML, so the heading and the first content
+ * paint with the document instead of waiting for React's throttled `$RC` reveal script (LCP 4.3 s on
+ * transport). Any other airport gets `MissingPage`, a 404 with the site shell.
+ */
 export default function TransportPage({ params }: PageProps<'/[lang]/[airport]/transport'>) {
   return (
     <I18nPageScope namespaces={['transportPages']}>
-      <Suspense
-        fallback={
-          <Container className="py-10" aria-hidden="true">
-            <Skeleton className="h-10 w-72" />
-            <Skeleton className="mt-8 h-40 w-full" />
-            <Skeleton className="mt-6 h-96 w-full" />
-          </Container>
-        }
-      >
-        <Transport params={params} />
-      </Suspense>
-  
+      <Transport params={params} />
     </I18nPageScope>
   );
 }
 
 async function Transport({ params }: { params: AirportPageParams }) {
+  const { airport: slug } = await params;
+  if (!generateStaticParams().some((listed) => listed.airport === slug)) return <MissingPage />;
   const { lang, t, airport, sections, content } = await loadAirportPage(params, 'transport');
   const model = transportPageModel(content, lang);
   const plannerData = { context: model.context, options: model.planner };

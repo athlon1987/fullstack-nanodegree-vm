@@ -1,12 +1,11 @@
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { Suspense } from 'react';
 import { getHelpTopic, helpTopicSlugs, pick } from '@/content';
 import { getT, toLang } from '@/lib/i18n';
 import type { Translator } from '@/lib/i18n/translate';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { EmptyState } from '@/components/common/empty-state';
 import { LocaleLink } from '@/components/common/locale-link';
+import { MissingPage } from '@/components/common/missing-page';
 import { PageHeader } from '@/components/common/page-header';
 import { ProvenanceLegend } from '@/components/common/provenance-legend';
 import { SectionHeading } from '@/components/common/section-heading';
@@ -19,7 +18,6 @@ import { OfficialLinks } from '@/components/help/official-links';
 import { WhoHandles } from '@/components/help/who-handles';
 import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
-import { Skeleton } from '@/components/ui/skeleton';
 import type { Lang } from '@/content/types';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
 
@@ -39,20 +37,16 @@ export async function generateMetadata({ params }: PageProps<'/[lang]/help/[topi
   return { title: `${pick(record.title, lang)}: ${t('guidePages.help.title')}`, description: pick(record.summary, lang) };
 }
 
+/**
+ * No page-level `<Suspense>` (round 3, the static shell round 2 gave the airport overview, board and
+ * map): every listed topic is complete in the static HTML, so the heading and the first content paint
+ * with the document instead of waiting for React's throttled `$RC` reveal script (LCP 4.3 s on
+ * transport). Any other topic gets `MissingPage`, a 404 with the site shell.
+ */
 export default function HelpTopicPage({ params }: PageProps<'/[lang]/help/[topic]'>) {
   return (
     <I18nPageScope namespaces={['guidePages']}>
-      <Suspense
-        fallback={
-          <Container className="py-10" aria-hidden="true">
-            <Skeleton className="h-12 w-2/3" />
-            <Skeleton className="mt-8 h-96 w-full" />
-          </Container>
-        }
-      >
-        <HelpTopic params={params} />
-      </Suspense>
-  
+      <HelpTopic params={params} />
     </I18nPageScope>
   );
 }
@@ -96,7 +90,7 @@ async function HelpTopic({ params }: { params: PageProps<'/[lang]/help/[topic]'>
   const { lang: rawLang, topic } = await params;
   const lang = toLang(rawLang);
   const record = getHelpTopic(topic);
-  if (!record) notFound();
+  if (!record) return <MissingPage />;
   const t = getT(lang);
   const title = pick(record.title, lang);
   const faqs = faqViews(lang, topic);
@@ -117,7 +111,12 @@ async function HelpTopic({ params }: { params: PageProps<'/[lang]/help/[topic]'>
           <div className="flex min-w-0 flex-col gap-14">
             <TopicLead topic={topic} t={t} lang={lang} />
             <section aria-labelledby="topic-faq-title">
-              <SectionHeading id="topic-faq-title" title={t('guidePages.help.topic.faqTitle')} lead={t.count('guidePages.help.topicCount', faqs.length)} variant="title" />
+              <SectionHeading
+                id="topic-faq-title"
+                title={t('guidePages.help.topic.faqTitle')}
+                lead={t.count('guidePages.help.topicCount', faqs.length)}
+                variant="title"
+              />
               {faqs.length > 0 ? (
                 <>
                   <FaqAccordion faqs={faqs} />
@@ -154,7 +153,10 @@ async function HelpTopic({ params }: { params: PageProps<'/[lang]/help/[topic]'>
             <ProvenanceLegend headingLevel={2} />
           </div>
 
-          <aside aria-labelledby="topic-others-title" className="flex min-w-0 flex-col gap-8 lg:sticky lg:top-[calc(var(--spacing-header)+1.5rem)] lg:self-start">
+          <aside
+            aria-labelledby="topic-others-title"
+            className="flex min-w-0 flex-col gap-8 lg:sticky lg:top-[calc(var(--spacing-header)+1.5rem)] lg:self-start"
+          >
             <div className="rounded-lg border border-line-strong bg-surface p-5">
               <h2 className="type-title-sm text-ink">{t('guidePages.help.topic.stillNeed')}</h2>
               <p className="type-body-sm mt-1 text-ink-2">{t('guidePages.help.topic.stillNeedBody')}</p>

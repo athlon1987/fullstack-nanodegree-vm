@@ -3,10 +3,14 @@
  * day, so the flight's identity (airline, number, route, scheduled time, terminal) can be
  * resolved on the server from the id alone. Its status depends on the current time and is
  * computed on the client.
+ *
+ * Server only (round 3, E-03): it runs the demo generator. Client Components take the title from
+ * `flight-title.ts`, which imported from here used to put the generator in the journey and flight
+ * pages' JavaScript.
  */
+import 'server-only';
 import { getAirport } from '@/content/airports';
-import { decodeFlightId, formatFlightNumber, type Flight } from '@/lib/flights';
-import type { Translator } from '@/lib/i18n/translate';
+import { decodeFlightId, type Flight } from '@/lib/flights';
 import { createDemoProvider, hasDemoRoutes } from '@/lib/providers';
 import { zonedDateTime } from '@/lib/time';
 
@@ -18,12 +22,4 @@ export function identifyFlight(id: string, airportSlug: string): Flight | null {
   // A fixed instant on the flight's own date: only the identity fields are read from this snapshot.
   const provider = createDemoProvider(zonedDateTime(parts.date, 12 * 60, airport.timezone));
   return provider.getFlightSync(id, airport.slug);
-}
-
-/** "MH 2610 to London" or "MH 2611 from London". */
-export function flightTitle(flight: Flight, t: Translator): string {
-  const number = formatFlightNumber(flight);
-  return flight.direction === 'd'
-    ? t('flightPages.detail.titleDeparture', { number, city: flight.destination.city })
-    : t('flightPages.detail.titleArrival', { number, city: flight.origin.city });
 }

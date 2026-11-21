@@ -660,13 +660,12 @@ export class DemoFlightProvider implements FlightDataProvider {
 }
 
 /**
- * Convenience for Client Components: a demo provider for a given instant, or for the current
- * moment when called without one.
+ * A demo provider for a given instant, or for the current moment when called without one.
  *
- * Calling it WITHOUT an argument reads the clock, so do that only in event handlers or
- * subscriptions, never during render (it fails the build under Cache Components). In render,
- * pass the value from `useNow()`: `const provider = now ? createDemoProvider(now) : null`, or
- * use the `useFlightProvider()` hook, which does exactly that.
+ * Calling it WITHOUT an argument reads the clock, so do that only in route handlers, event
+ * handlers or subscriptions, never during render (it fails the build under Cache Components).
+ * Client Components do not use the generator at all since round 3 (E-03): they read the server
+ * flight feed (`useFlightFeed()`), which keeps this module out of the browser.
  */
 export function createDemoProvider(now?: Instant): DemoFlightProvider {
   return new DemoFlightProvider(now ?? Date.now());

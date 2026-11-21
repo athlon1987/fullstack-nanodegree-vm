@@ -11,7 +11,8 @@ import { AirlineFacts, hasAirlineFacts } from '@/components/flights/airline-fact
 import { DisruptionHelp } from '@/components/flights/disruption-help';
 import { FlightDetail } from '@/components/flights/flight-detail';
 import { FlightNotFound } from '@/components/flights/flight-not-found';
-import { flightTitle, identifyFlight } from '@/components/flights/identify-flight';
+import { flightTitle } from '@/components/flights/flight-title';
+import { identifyFlight } from '@/components/flights/identify-flight';
 import { journeyExtras, publishedCheckInFor } from '@/components/flights/journey-content';
 import { Container } from '@/components/ui/container';
 import { Skeleton } from '@/components/ui/skeleton';

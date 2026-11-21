@@ -1,0 +1,72 @@
+{
+ "key": "en-guides",
+ "url": "http://localhost:3100/en/guides",
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-21T09:36:39.934Z",
+ "median": {
+  "performance": 99,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1062,
+  "lcp_ms": 1062,
+  "tbt_ms": 103,
+  "cls": 0,
+  "si_ms": 1062,
+  "totalBytes": 555541,
+  "requests": 38
+ },
+ "a11yFailures": [],
+ "rows": [
+  {
+   "finalUrl": "http://localhost:3100/en/guides",
+   "runtimeError": null,
+   "performance": 96,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1066,
+   "lcp_ms": 1066,
+   "tbt_ms": 217,
+   "cls": 0,
+   "si_ms": 1066,
+   "totalBytes": 555543,
+   "requests": 38,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "http://localhost:3100/en/guides",
+   "runtimeError": null,
+   "performance": 99,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1062,
+   "lcp_ms": 1062,
+   "tbt_ms": 103,
+   "cls": 0,
+   "si_ms": 1062,
+   "totalBytes": 555541,
+   "requests": 38,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "http://localhost:3100/en/guides",
+   "runtimeError": null,
+   "performance": 99,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1060,
+   "lcp_ms": 1060,
+   "tbt_ms": 95,
+   "cls": 0,
+   "si_ms": 1060,
+   "totalBytes": 555541,
+   "requests": 38,
+   "a11yFailures": []
+  }
+ ],
+ "caveat": "Lab measurement: Lighthouse mobile emulation with simulated throttling, run from a shared cloud container; hosts outside the session allowlist (analytics, some CDNs) were blocked, which changes page weight and timings. Indicative only; not field data and not comparable to CrUX."
+}

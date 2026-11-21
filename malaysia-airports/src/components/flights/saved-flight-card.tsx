@@ -17,7 +17,7 @@ import { Icon } from '@/components/ui/icon';
 import { IconButton } from '@/components/ui/icon-button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { flightHref } from './flight-row';
-import { flightTitle } from './identify-flight';
+import { flightTitle } from './flight-title';
 
 export interface SavedFlightCardProps {
   saved: SavedFlight;

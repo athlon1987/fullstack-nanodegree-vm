@@ -1,0 +1,1074 @@
+{
+ "key": "en",
+ "url": "http://localhost:3100/en",
+ "preset": "mobile (Lighthouse default)",
+ "profile": null,
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-21T10:04:05.331Z",
+ "median": {
+  "performance": 92,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1086,
+  "lcp_ms": 1086,
+  "tbt_ms": 345,
+  "cls": 0,
+  "si_ms": 1086,
+  "totalBytes": 621871,
+  "requests": 42
+ },
+ "medianRunIndex": 2,
+ "diagnostics": {
+  "observed": {
+   "fcp": 220,
+   "lcp": 220,
+   "dcl": 377,
+   "load": 380,
+   "cls": 0
+  },
+  "tti_ms": 4407,
+  "maxPotentialFid_ms": 228,
+  "lcpElement": {
+   "selector": "div.mx-auto > div.flex > div.min-w-0 > h1#home-title",
+   "label": "Your journey, beautifully connected.",
+   "snippet": "<h1 id=\"home-title\" class=\"type-display-lg text-ink max-sm:text-[1.625rem] max-xs:text-2xl\">"
+  },
+  "lcpPhases": {
+   "timeToFirstByte": 14,
+   "elementRenderDelay": 206
+  },
+  "renderBlocking": [
+   {
+    "url": "/_next/static/chunks/2gw_grol6hakm.css",
+    "bytes": 22522,
+    "ms": 159
+   }
+  ],
+  "layoutShifts": [],
+  "longTasks": [
+   {
+    "url": "/_next/static/chunks/324lcj6uw2r7c.js",
+    "start": 3927,
+    "dur": 228
+   },
+   {
+    "url": "/en",
+    "start": 1066,
+    "dur": 173
+   },
+   {
+    "url": "Unattributable",
+    "start": 909,
+    "dur": 112
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 4514,
+    "dur": 76
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 4155,
+    "dur": 74
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 4447,
+    "dur": 67
+   },
+   {
+    "url": "/_next/static/chunks/324lcj6uw2r7c.js",
+    "start": 3072,
+    "dur": 63
+   },
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "start": 4386,
+    "dur": 61
+   }
+  ],
+  "bootup": [
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "total": 934,
+    "scripting": 784,
+    "parse": 23
+   },
+   {
+    "url": "/en",
+    "total": 932,
+    "scripting": 57,
+    "parse": 60
+   },
+   {
+    "url": "/_next/static/chunks/324lcj6uw2r7c.js",
+    "total": 375,
+    "scripting": 315,
+    "parse": 16
+   },
+   {
+    "url": "Unattributable",
+    "total": 364,
+    "scripting": 10,
+    "parse": 0
+   }
+  ],
+  "mainThread": {
+   "scriptEvaluation": 1247,
+   "other": 630,
+   "styleLayout": 431,
+   "scriptParseCompile": 162,
+   "parseHTML": 148,
+   "paintCompositeRender": 121,
+   "garbageCollection": 43
+  },
+  "resources": {
+   "total": {
+    "n": 40,
+    "bytes": 621871
+   },
+   "script": {
+    "n": 26,
+    "bytes": 356062
+   },
+   "font": {
+    "n": 3,
+    "bytes": 130216
+   },
+   "document": {
+    "n": 1,
+    "bytes": 64390
+   },
+   "other": {
+    "n": 9,
+    "bytes": 48681
+   },
+   "stylesheet": {
+    "n": 1,
+    "bytes": 22522
+   },
+   "image": {
+    "n": 0,
+    "bytes": 0
+   },
+   "media": {
+    "n": 0,
+    "bytes": 0
+   },
+   "third-party": {
+    "n": 0,
+    "bytes": 0
+   }
+  },
+  "topRequests": [
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "type": "Script",
+    "transfer": 73619,
+    "size": 229318
+   },
+   {
+    "url": "/_next/static/media/fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+    "type": "Font",
+    "transfer": 68998,
+    "size": 67304
+   },
+   {
+    "url": "/en",
+    "type": "Document",
+    "transfer": 64390,
+    "size": 308235
+   },
+   {
+    "url": "/_next/static/chunks/324lcj6uw2r7c.js",
+    "type": "Script",
+    "transfer": 47500,
+    "size": 166010
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "type": "Font",
+    "transfer": 36397,
+    "size": 34704
+   },
+   {
+    "url": "/_next/static/chunks/1yboimee1ysi-.js",
+    "type": "Script",
+    "transfer": 25303,
+    "size": 72695
+   },
+   {
+    "url": "/_next/static/media/geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+    "type": "Font",
+    "transfer": 24821,
+    "size": 23128
+   },
+   {
+    "url": "/_next/static/chunks/2gw_grol6hakm.css",
+    "type": "Stylesheet",
+    "transfer": 22522,
+    "size": 113847
+   },
+   {
+    "url": "/_next/static/chunks/44ve2b4mg19b9.js",
+    "type": "Script",
+    "transfer": 19416,
+    "size": 58645
+   },
+   {
+    "url": "/en/flights/feed?date=2026-11-21&dir=d&at=1795255410000&airports=kul,pen,bki,kch,lgk,szb",
+    "type": "Fetch",
+    "transfer": 18518,
+    "size": 215874
+   }
+  ],
+  "fonts": [
+   {
+    "url": "fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+    "transfer": 68998,
+    "start": 49
+   },
+   {
+    "url": "hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "transfer": 36397,
+    "start": 51
+   },
+   {
+    "url": "geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+    "transfer": 24821,
+    "start": 178
+   }
+  ],
+  "prefetchFetches": 5,
+  "unusedJs": [
+   {
+    "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+    "total": 71846,
+    "wasted": 22323
+   }
+  ],
+  "domSize": [],
+  "a11yFailures": [],
+  "seoFailures": [
+   {
+    "id": "is-crawlable",
+    "n": 2,
+    "sample": [
+     "<meta name=\"robots\" content=\"noindex, nofollow\" />"
+    ]
+   }
+  ],
+  "bpFailures": [
+   {
+    "id": "inspector-issues",
+    "n": 1,
+    "sample": []
+   }
+  ]
+ },
+ "allDiagnostics": [
+  {
+   "observed": {
+    "fcp": 261,
+    "lcp": 261,
+    "dcl": 336,
+    "load": 337,
+    "cls": 0
+   },
+   "tti_ms": 4260,
+   "maxPotentialFid_ms": 169,
+   "lcpElement": {
+    "selector": "div.mx-auto > div.flex > div.min-w-0 > h1#home-title",
+    "label": "Your journey, beautifully connected.",
+    "snippet": "<h1 id=\"home-title\" class=\"type-display-lg text-ink max-sm:text-[1.625rem] max-xs:text-2xl\">"
+   },
+   "lcpPhases": {
+    "timeToFirstByte": 24,
+    "elementRenderDelay": 237
+   },
+   "renderBlocking": [
+    {
+     "url": "/_next/static/chunks/2gw_grol6hakm.css",
+     "bytes": 22522,
+     "ms": 159
+    }
+   ],
+   "layoutShifts": [],
+   "longTasks": [
+    {
+     "url": "/en",
+     "start": 1062,
+     "dur": 169
+    },
+    {
+     "url": "/_next/static/chunks/324lcj6uw2r7c.js",
+     "start": 3928,
+     "dur": 159
+    },
+    {
+     "url": "Unattributable",
+     "start": 909,
+     "dur": 98
+    },
+    {
+     "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+     "start": 4251,
+     "dur": 78
+    },
+    {
+     "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+     "start": 4194,
+     "dur": 57
+    },
+    {
+     "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+     "start": 4087,
+     "dur": 55
+    },
+    {
+     "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+     "start": 4142,
+     "dur": 52
+    },
+    {
+     "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+     "start": 4329,
+     "dur": 52
+    }
+   ],
+   "bootup": [
+    {
+     "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+     "total": 720,
+     "scripting": 593,
+     "parse": 15
+    },
+    {
+     "url": "/en",
+     "total": 701,
+     "scripting": 31,
+     "parse": 38
+    },
+    {
+     "url": "Unattributable",
+     "total": 300,
+     "scripting": 9,
+     "parse": 0
+    },
+    {
+     "url": "/_next/static/chunks/324lcj6uw2r7c.js",
+     "total": 242,
+     "scripting": 209,
+     "parse": 10
+    }
+   ],
+   "mainThread": {
+    "scriptEvaluation": 911,
+    "other": 478,
+    "styleLayout": 382,
+    "scriptParseCompile": 104,
+    "parseHTML": 99,
+    "paintCompositeRender": 80,
+    "garbageCollection": 43
+   },
+   "resources": {
+    "total": {
+     "n": 40,
+     "bytes": 621871
+    },
+    "script": {
+     "n": 26,
+     "bytes": 356062
+    },
+    "font": {
+     "n": 3,
+     "bytes": 130216
+    },
+    "document": {
+     "n": 1,
+     "bytes": 64392
+    },
+    "other": {
+     "n": 9,
+     "bytes": 48679
+    },
+    "stylesheet": {
+     "n": 1,
+     "bytes": 22522
+    },
+    "image": {
+     "n": 0,
+     "bytes": 0
+    },
+    "media": {
+     "n": 0,
+     "bytes": 0
+    },
+    "third-party": {
+     "n": 0,
+     "bytes": 0
+    }
+   },
+   "topRequests": [
+    {
+     "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+     "type": "Script",
+     "transfer": 73619,
+     "size": 229318
+    },
+    {
+     "url": "/_next/static/media/fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+     "type": "Font",
+     "transfer": 68998,
+     "size": 67304
+    },
+    {
+     "url": "/en",
+     "type": "Document",
+     "transfer": 64392,
+     "size": 308235
+    },
+    {
+     "url": "/_next/static/chunks/324lcj6uw2r7c.js",
+     "type": "Script",
+     "transfer": 47500,
+     "size": 166010
+    },
+    {
+     "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+     "type": "Font",
+     "transfer": 36397,
+     "size": 34704
+    },
+    {
+     "url": "/_next/static/chunks/1yboimee1ysi-.js",
+     "type": "Script",
+     "transfer": 25303,
+     "size": 72695
+    },
+    {
+     "url": "/_next/static/media/geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+     "type": "Font",
+     "transfer": 24821,
+     "size": 23128
+    },
+    {
+     "url": "/_next/static/chunks/2gw_grol6hakm.css",
+     "type": "Stylesheet",
+     "transfer": 22522,
+     "size": 113847
+    },
+    {
+     "url": "/_next/static/chunks/44ve2b4mg19b9.js",
+     "type": "Script",
+     "transfer": 19416,
+     "size": 58645
+    },
+    {
+     "url": "/en/flights/feed?date=2026-11-21&dir=d&at=1795255380000&airports=kul,pen,bki,kch,lgk,szb",
+     "type": "Fetch",
+     "transfer": 18516,
+     "size": 215874
+    }
+   ],
+   "fonts": [
+    {
+     "url": "fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+     "transfer": 68998,
+     "start": 54
+    },
+    {
+     "url": "hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+     "transfer": 36397,
+     "start": 55
+    },
+    {
+     "url": "geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+     "transfer": 24821,
+     "start": 226
+    }
+   ],
+   "prefetchFetches": 5,
+   "unusedJs": [
+    {
+     "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+     "total": 71846,
+     "wasted": 22387
+    }
+   ],
+   "domSize": [],
+   "a11yFailures": [],
+   "seoFailures": [
+    {
+     "id": "is-crawlable",
+     "n": 2,
+     "sample": [
+      "<meta name=\"robots\" content=\"noindex, nofollow\" />"
+     ]
+    }
+   ],
+   "bpFailures": [
+    {
+     "id": "inspector-issues",
+     "n": 1,
+     "sample": []
+    }
+   ]
+  },
+  {
+   "observed": {
+    "fcp": 226,
+    "lcp": 226,
+    "dcl": 393,
+    "load": 395,
+    "cls": 0
+   },
+   "tti_ms": 4395,
+   "maxPotentialFid_ms": 436,
+   "lcpElement": {
+    "selector": "div.mx-auto > div.flex > div.min-w-0 > h1#home-title",
+    "label": "Your journey, beautifully connected.",
+    "snippet": "<h1 id=\"home-title\" class=\"type-display-lg text-ink max-sm:text-[1.625rem] max-xs:text-2xl\">"
+   },
+   "lcpPhases": {
+    "timeToFirstByte": 14,
+    "elementRenderDelay": 212
+   },
+   "renderBlocking": [
+    {
+     "url": "/_next/static/chunks/2gw_grol6hakm.css",
+     "bytes": 22522,
+     "ms": 164
+    }
+   ],
+   "layoutShifts": [],
+   "longTasks": [
+    {
+     "url": "_lighthouse-eval.js",
+     "start": 3504,
+     "dur": 436
+    },
+    {
+     "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+     "start": 3941,
+     "dur": 173
+    },
+    {
+     "url": "/en",
+     "start": 1059,
+     "dur": 138
+    },
+    {
+     "url": "Unattributable",
+     "start": 914,
+     "dur": 91
+    },
+    {
+     "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+     "start": 4330,
+     "dur": 85
+    },
+    {
+     "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+     "start": 4156,
+     "dur": 74
+    },
+    {
+     "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+     "start": 4415,
+     "dur": 70
+    },
+    {
+     "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+     "start": 4485,
+     "dur": 62
+    }
+   ],
+   "bootup": [
+    {
+     "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+     "total": 1008,
+     "scripting": 874,
+     "parse": 19
+    },
+    {
+     "url": "/en",
+     "total": 972,
+     "scripting": 59,
+     "parse": 49
+    },
+    {
+     "url": "Unattributable",
+     "total": 308,
+     "scripting": 8,
+     "parse": 0
+    },
+    {
+     "url": "/_next/static/chunks/324lcj6uw2r7c.js",
+     "total": 112,
+     "scripting": 78,
+     "parse": 17
+    }
+   ],
+   "mainThread": {
+    "scriptEvaluation": 1491,
+    "other": 562,
+    "styleLayout": 440,
+    "parseHTML": 177,
+    "scriptParseCompile": 142,
+    "paintCompositeRender": 106,
+    "garbageCollection": 41
+   },
+   "resources": {
+    "total": {
+     "n": 40,
+     "bytes": 621871
+    },
+    "script": {
+     "n": 26,
+     "bytes": 356062
+    },
+    "font": {
+     "n": 3,
+     "bytes": 130216
+    },
+    "document": {
+     "n": 1,
+     "bytes": 64390
+    },
+    "other": {
+     "n": 9,
+     "bytes": 48681
+    },
+    "stylesheet": {
+     "n": 1,
+     "bytes": 22522
+    },
+    "image": {
+     "n": 0,
+     "bytes": 0
+    },
+    "media": {
+     "n": 0,
+     "bytes": 0
+    },
+    "third-party": {
+     "n": 0,
+     "bytes": 0
+    }
+   },
+   "topRequests": [
+    {
+     "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+     "type": "Script",
+     "transfer": 73619,
+     "size": 229318
+    },
+    {
+     "url": "/_next/static/media/fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+     "type": "Font",
+     "transfer": 68998,
+     "size": 67304
+    },
+    {
+     "url": "/en",
+     "type": "Document",
+     "transfer": 64390,
+     "size": 308235
+    },
+    {
+     "url": "/_next/static/chunks/324lcj6uw2r7c.js",
+     "type": "Script",
+     "transfer": 47500,
+     "size": 166010
+    },
+    {
+     "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+     "type": "Font",
+     "transfer": 36397,
+     "size": 34704
+    },
+    {
+     "url": "/_next/static/chunks/1yboimee1ysi-.js",
+     "type": "Script",
+     "transfer": 25303,
+     "size": 72695
+    },
+    {
+     "url": "/_next/static/media/geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+     "type": "Font",
+     "transfer": 24821,
+     "size": 23128
+    },
+    {
+     "url": "/_next/static/chunks/2gw_grol6hakm.css",
+     "type": "Stylesheet",
+     "transfer": 22522,
+     "size": 113847
+    },
+    {
+     "url": "/_next/static/chunks/44ve2b4mg19b9.js",
+     "type": "Script",
+     "transfer": 19416,
+     "size": 58645
+    },
+    {
+     "url": "/en/flights/feed?date=2026-11-21&dir=d&at=1795255410000&airports=kul,pen,bki,kch,lgk,szb",
+     "type": "Fetch",
+     "transfer": 18518,
+     "size": 215874
+    }
+   ],
+   "fonts": [
+    {
+     "url": "fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+     "transfer": 68998,
+     "start": 51
+    },
+    {
+     "url": "hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+     "transfer": 36397,
+     "start": 53
+    },
+    {
+     "url": "geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+     "transfer": 24821,
+     "start": 192
+    }
+   ],
+   "prefetchFetches": 5,
+   "unusedJs": [
+    {
+     "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+     "total": 71846,
+     "wasted": 22304
+    }
+   ],
+   "domSize": [],
+   "a11yFailures": [],
+   "seoFailures": [
+    {
+     "id": "is-crawlable",
+     "n": 2,
+     "sample": [
+      "<meta name=\"robots\" content=\"noindex, nofollow\" />"
+     ]
+    }
+   ],
+   "bpFailures": [
+    {
+     "id": "inspector-issues",
+     "n": 1,
+     "sample": []
+    }
+   ]
+  },
+  {
+   "observed": {
+    "fcp": 220,
+    "lcp": 220,
+    "dcl": 377,
+    "load": 380,
+    "cls": 0
+   },
+   "tti_ms": 4407,
+   "maxPotentialFid_ms": 228,
+   "lcpElement": {
+    "selector": "div.mx-auto > div.flex > div.min-w-0 > h1#home-title",
+    "label": "Your journey, beautifully connected.",
+    "snippet": "<h1 id=\"home-title\" class=\"type-display-lg text-ink max-sm:text-[1.625rem] max-xs:text-2xl\">"
+   },
+   "lcpPhases": {
+    "timeToFirstByte": 14,
+    "elementRenderDelay": 206
+   },
+   "renderBlocking": [
+    {
+     "url": "/_next/static/chunks/2gw_grol6hakm.css",
+     "bytes": 22522,
+     "ms": 159
+    }
+   ],
+   "layoutShifts": [],
+   "longTasks": [
+    {
+     "url": "/_next/static/chunks/324lcj6uw2r7c.js",
+     "start": 3927,
+     "dur": 228
+    },
+    {
+     "url": "/en",
+     "start": 1066,
+     "dur": 173
+    },
+    {
+     "url": "Unattributable",
+     "start": 909,
+     "dur": 112
+    },
+    {
+     "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+     "start": 4514,
+     "dur": 76
+    },
+    {
+     "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+     "start": 4155,
+     "dur": 74
+    },
+    {
+     "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+     "start": 4447,
+     "dur": 67
+    },
+    {
+     "url": "/_next/static/chunks/324lcj6uw2r7c.js",
+     "start": 3072,
+     "dur": 63
+    },
+    {
+     "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+     "start": 4386,
+     "dur": 61
+    }
+   ],
+   "bootup": [
+    {
+     "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+     "total": 934,
+     "scripting": 784,
+     "parse": 23
+    },
+    {
+     "url": "/en",
+     "total": 932,
+     "scripting": 57,
+     "parse": 60
+    },
+    {
+     "url": "/_next/static/chunks/324lcj6uw2r7c.js",
+     "total": 375,
+     "scripting": 315,
+     "parse": 16
+    },
+    {
+     "url": "Unattributable",
+     "total": 364,
+     "scripting": 10,
+     "parse": 0
+    }
+   ],
+   "mainThread": {
+    "scriptEvaluation": 1247,
+    "other": 630,
+    "styleLayout": 431,
+    "scriptParseCompile": 162,
+    "parseHTML": 148,
+    "paintCompositeRender": 121,
+    "garbageCollection": 43
+   },
+   "resources": {
+    "total": {
+     "n": 40,
+     "bytes": 621871
+    },
+    "script": {
+     "n": 26,
+     "bytes": 356062
+    },
+    "font": {
+     "n": 3,
+     "bytes": 130216
+    },
+    "document": {
+     "n": 1,
+     "bytes": 64390
+    },
+    "other": {
+     "n": 9,
+     "bytes": 48681
+    },
+    "stylesheet": {
+     "n": 1,
+     "bytes": 22522
+    },
+    "image": {
+     "n": 0,
+     "bytes": 0
+    },
+    "media": {
+     "n": 0,
+     "bytes": 0
+    },
+    "third-party": {
+     "n": 0,
+     "bytes": 0
+    }
+   },
+   "topRequests": [
+    {
+     "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+     "type": "Script",
+     "transfer": 73619,
+     "size": 229318
+    },
+    {
+     "url": "/_next/static/media/fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+     "type": "Font",
+     "transfer": 68998,
+     "size": 67304
+    },
+    {
+     "url": "/en",
+     "type": "Document",
+     "transfer": 64390,
+     "size": 308235
+    },
+    {
+     "url": "/_next/static/chunks/324lcj6uw2r7c.js",
+     "type": "Script",
+     "transfer": 47500,
+     "size": 166010
+    },
+    {
+     "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+     "type": "Font",
+     "transfer": 36397,
+     "size": 34704
+    },
+    {
+     "url": "/_next/static/chunks/1yboimee1ysi-.js",
+     "type": "Script",
+     "transfer": 25303,
+     "size": 72695
+    },
+    {
+     "url": "/_next/static/media/geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+     "type": "Font",
+     "transfer": 24821,
+     "size": 23128
+    },
+    {
+     "url": "/_next/static/chunks/2gw_grol6hakm.css",
+     "type": "Stylesheet",
+     "transfer": 22522,
+     "size": 113847
+    },
+    {
+     "url": "/_next/static/chunks/44ve2b4mg19b9.js",
+     "type": "Script",
+     "transfer": 19416,
+     "size": 58645
+    },
+    {
+     "url": "/en/flights/feed?date=2026-11-21&dir=d&at=1795255410000&airports=kul,pen,bki,kch,lgk,szb",
+     "type": "Fetch",
+     "transfer": 18518,
+     "size": 215874
+    }
+   ],
+   "fonts": [
+    {
+     "url": "fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+     "transfer": 68998,
+     "start": 49
+    },
+    {
+     "url": "hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+     "transfer": 36397,
+     "start": 51
+    },
+    {
+     "url": "geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+     "transfer": 24821,
+     "start": 178
+    }
+   ],
+   "prefetchFetches": 5,
+   "unusedJs": [
+    {
+     "url": "/_next/static/chunks/01t2i9pe5vz2-.js",
+     "total": 71846,
+     "wasted": 22323
+    }
+   ],
+   "domSize": [],
+   "a11yFailures": [],
+   "seoFailures": [
+    {
+     "id": "is-crawlable",
+     "n": 2,
+     "sample": [
+      "<meta name=\"robots\" content=\"noindex, nofollow\" />"
+     ]
+    }
+   ],
+   "bpFailures": [
+    {
+     "id": "inspector-issues",
+     "n": 1,
+     "sample": []
+    }
+   ]
+  }
+ ],
+ "rows": [
+  {
+   "finalUrl": "/en",
+   "runtimeError": null,
+   "performance": 96,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1090,
+   "lcp_ms": 1090,
+   "tbt_ms": 222,
+   "cls": 0,
+   "si_ms": 1090,
+   "totalBytes": 621871,
+   "requests": 42,
+   "benchmarkIndex": 2505,
+   "throttling": "simulate {\"rttMs\":150,\"throughputKbps\":1638.4,\"requestLatencyMs\":562.5,\"downloadThroughputKbps\":1474.5600000000002,\"uploadThroughputKbps\":675,\"cpuSlowdownMultiplier\":4}",
+   "formFactor": "mobile"
+  },
+  {
+   "finalUrl": "/en",
+   "runtimeError": null,
+   "performance": 84,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1077,
+   "lcp_ms": 1077,
+   "tbt_ms": 643,
+   "cls": 0,
+   "si_ms": 1077,
+   "totalBytes": 621871,
+   "requests": 42,
+   "benchmarkIndex": 2233.5,
+   "throttling": "simulate {\"rttMs\":150,\"throughputKbps\":1638.4,\"requestLatencyMs\":562.5,\"downloadThroughputKbps\":1474.5600000000002,\"uploadThroughputKbps\":675,\"cpuSlowdownMultiplier\":4}",
+   "formFactor": "mobile"
+  },
+  {
+   "finalUrl": "/en",
+   "runtimeError": null,
+   "performance": 92,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1086,
+   "lcp_ms": 1086,
+   "tbt_ms": 345,
+   "cls": 0,
+   "si_ms": 1086,
+   "totalBytes": 621871,
+   "requests": 42,
+   "benchmarkIndex": 2379.5,
+   "throttling": "simulate {\"rttMs\":150,\"throughputKbps\":1638.4,\"requestLatencyMs\":562.5,\"downloadThroughputKbps\":1474.5600000000002,\"uploadThroughputKbps\":675,\"cpuSlowdownMultiplier\":4}",
+   "formFactor": "mobile"
+  }
+ ],
+ "caveat": "Lab measurement (Lighthouse 13.6, headless Chromium 1243) against next start on localhost in a shared 4-vCPU cloud container; other evaluators used the same CPU. Not field data."
+}

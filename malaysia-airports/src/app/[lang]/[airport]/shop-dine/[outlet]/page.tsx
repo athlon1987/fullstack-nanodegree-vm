@@ -1,11 +1,10 @@
 import type { Metadata } from 'next';
-import { Suspense } from 'react';
-import { notFound } from 'next/navigation';
 import { AIRPORTS, getAirportContent, resolveSources, terminalLabel } from '@/content';
 import { getT, toLang } from '@/lib/i18n';
 import { loadAirportPage } from '@/components/airport/section-page';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { LocaleLink } from '@/components/common/locale-link';
+import { MissingPage } from '@/components/common/missing-page';
 import { PageHeader } from '@/components/common/page-header';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { TranslationNotice } from '@/components/common/translation-notice';
@@ -19,7 +18,6 @@ import { sectionPath } from '@/components/shell/sections';
 import { Chip } from '@/components/ui/chip';
 import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
-import { Skeleton } from '@/components/ui/skeleton';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 type OutletPageProps = PageProps<'/[lang]/[airport]/shop-dine/[outlet]'>;
@@ -32,6 +30,9 @@ export function generateStaticParams() {
   // Cache Components rejects an empty list; this fallback answers with the not-found page.
   return params.length > 0 ? params : [{ airport: AIRPORTS[0].slug, outlet: 'directory' }];
 }
+
+/** Fully static for the listed outlets; any other outlet or airport gets a 404 on the first request (round 3). */
+export const ensureStatic = 'navigation';
 
 export async function generateMetadata({ params }: OutletPageProps): Promise<Metadata> {
   const { lang: rawLang, airport: slug, outlet: outletSlug } = await params;
@@ -47,33 +48,29 @@ export async function generateMetadata({ params }: OutletPageProps): Promise<Met
   };
 }
 
+/**
+ * No page-level `<Suspense>` (round 3, the static shell round 2 gave the airport overview, board and
+ * map): every listed outlet is complete in the static HTML, so the heading and the first content paint
+ * with the document instead of waiting for React's throttled `$RC` reveal script (LCP 4.3 s on
+ * transport). Any other outlet gets `MissingPage`, a 404 with the site shell.
+ */
 export default function OutletPage({ params }: OutletPageProps) {
   return (
     <I18nPageScope namespaces={['commercePages']}>
-      <Suspense
-        fallback={
-          <Container className="py-10" aria-hidden="true">
-            <Skeleton className="h-4 w-56" />
-            <Skeleton className="mt-6 h-12 w-80 max-w-full" />
-            <Skeleton className="mt-10 h-72 w-full" />
-          </Container>
-        }
-      >
-        <Outlet params={params} />
-      </Suspense>
-  
+      <Outlet params={params} />
     </I18nPageScope>
   );
 }
 
 async function Outlet({ params }: { params: OutletPageProps['params'] }) {
-  const { outlet: outletSlug } = await params;
+  const { airport: slug, outlet: outletSlug } = await params;
+  if (!generateStaticParams().some((listed) => listed.airport === slug && listed.outlet === outletSlug)) return <MissingPage />;
   const { lang, t, airport, content, sections } = await loadAirportPage(params, 'shop-dine');
   const record = content.outlets.find((item) => item.slug === outletSlug);
-  if (!record) notFound();
+  if (!record) return <MissingPage />;
   const items = outletViews(content, lang, t);
   const outlet = items.find((item) => item.id === record.id);
-  if (!outlet) notFound();
+  if (!outlet) return <MissingPage />;
 
   const multiTerminal = airport.terminals.length > 1;
   const directory = officialDirectory(content);
@@ -93,9 +90,7 @@ async function Outlet({ params }: { params: OutletPageProps['params'] }) {
         title={outlet.name}
         lead={outlet.description}
         breadcrumbs={
-          <Breadcrumbs
-            items={[{ label: airport.shortName, href: `/${airport.slug}` }, { label: t('nav.shopDine'), href: shopDine }, { label: outlet.name }]}
-          />
+          <Breadcrumbs items={[{ label: airport.shortName, href: `/${airport.slug}` }, { label: t('nav.shopDine'), href: shopDine }, { label: outlet.name }]} />
         }
         meta={
           <>
