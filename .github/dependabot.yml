@@ -1,0 +1,26 @@
+# Dependency updates for the Malaysia Airports concept site (malaysia-airports/) and the
+# workflows. Security updates arrive as soon as an advisory is published; version updates weekly.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /malaysia-airports
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: Asia/Kuala_Lumpur
+    open-pull-requests-limit: 5
+    groups:
+      framework:
+        patterns: ['next', 'react', 'react-dom', 'eslint-config-next', '@types/react', '@types/react-dom']
+      testing:
+        patterns: ['vitest', '@playwright/test', '@axe-core/playwright']
+      styling:
+        patterns: ['tailwindcss', '@tailwindcss/*']
+    labels: ['dependencies', 'malaysia-airports']
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: Asia/Kuala_Lumpur
+    labels: ['dependencies', 'ci']

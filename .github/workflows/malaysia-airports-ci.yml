@@ -1,0 +1,136 @@
+# CI for the Malaysia Airports concept site (malaysia-airports/). The parent curriculum site keeps
+# its own deploy.yml. Runs on pull requests that touch the app, and by hand.
+#
+# Gates (docs/engineering/security.md, section 9): types, lint, unit tests, a production build,
+# Playwright on desktop, phone and WebKit phone with the shared axe scan (WCAG 2.0 to 2.2 A and AA),
+# npm audit of production dependencies, Lighthouse budgets (lighthouserc.json), CodeQL, and
+# gitleaks over the full git history. Dependabot keeps dependencies current (.github/dependabot.yml).
+name: malaysia-airports CI
+
+on:
+  pull_request:
+    paths:
+      - 'malaysia-airports/**'
+      - '.github/workflows/malaysia-airports-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: malaysia-airports-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: malaysia-airports
+
+env:
+  NEXT_TELEMETRY_DISABLED: '1'
+  # Repeatable builds: the service worker and the "new version" prompt key on this.
+  APP_VERSION: ${{ github.sha }}
+
+jobs:
+  verify:
+    name: Types, lint, tests, build, e2e, budgets
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: malaysia-airports/package-lock.json
+      - name: Install
+        run: npm ci
+      - name: Audit production dependencies (gate)
+        run: npm audit --omit=dev --audit-level=high
+      - name: Audit all dependencies (report only; accepted dev risks are listed in docs/engineering/security.md)
+        run: npm audit --audit-level=high || true
+      - name: Route types
+        run: npx next typegen
+      - name: Type check
+        run: npx tsc --noEmit
+      - name: Lint
+        run: npm run lint
+      - name: Unit tests
+        run: npm test
+      - name: Production build
+        run: npm run build
+      - name: Install browsers
+        run: npx playwright install --with-deps chromium webkit
+      - name: End-to-end tests (desktop, phone, WebKit phone)
+        env:
+          CI: 'true'
+          PLAYWRIGHT_WEBKIT: '1'
+          PLAYWRIGHT_BASE_URL: http://localhost:3100
+          # The server below is `next start`, so the status-code checks (map.spec.ts, C-06) apply.
+          E2E_STATUS_CODES: '1'
+          # Configured like production: rate limits key on a trusted client header, and each
+          # Playwright worker sends its own address (playwright.config.ts).
+          TRUSTED_CLIENT_IP_HEADER: x-e2e-client-ip
+        run: |
+          setsid npx next start -p 3100 > next-start.log 2>&1 &
+          SERVER=$!
+          for attempt in $(seq 1 60); do curl -sf http://localhost:3100/en > /dev/null && break; sleep 1; done
+          status=0
+          npx playwright test || status=$?
+          kill -- -"$SERVER" || true
+          exit $status
+      - name: Lighthouse budgets (mobile, median of 3)
+        run: |
+          setsid npx next start -p 3100 > next-start.log 2>&1 &
+          SERVER=$!
+          for attempt in $(seq 1 60); do curl -sf http://localhost:3100/en > /dev/null && break; sleep 1; done
+          # One flight page: demonstration ids carry today's date, so ask the API for a current one.
+          FLIGHT=$(curl -s 'http://localhost:3100/api/flights?airport=kul&limit=1' | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>console.log(JSON.parse(s).flights[0].id))")
+          URLS=$(node -e "const c=require('./lighthouserc.json');console.log([...c.ci.collect.url,'http://localhost:3100/en/kul/flights/$FLIGHT'].map(u=>'--collect.url='+u).join(' '))")
+          kill -- -"$SERVER" || true
+          sleep 2
+          # lighthouserc.json starts its own server for the runs.
+          npx --yes @lhci/cli@0.16.0 autorun $URLS
+      - name: Keep reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: malaysia-airports-reports
+          path: |
+            malaysia-airports/playwright-report
+            malaysia-airports/.lighthouseci
+            malaysia-airports/next-start.log
+          if-no-files-found: ignore
+
+  codeql:
+    name: CodeQL
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: github/codeql-action/init@v3
+        with:
+          languages: javascript-typescript
+          config: |
+            paths:
+              - malaysia-airports/src
+              - malaysia-airports/e2e
+            paths-ignore:
+              - malaysia-airports/node_modules
+      - uses: github/codeql-action/analyze@v3
+        with:
+          category: malaysia-airports
+
+  secrets:
+    name: Secret scan (gitleaks, full history)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: gitleaks
+        run: docker run --rm -v "$PWD:/repo" ghcr.io/gitleaks/gitleaks:v8.18.4 detect --source /repo --redact --verbose --exit-code 1
