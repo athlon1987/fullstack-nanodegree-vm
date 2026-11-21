@@ -1,0 +1,210 @@
+[
+  {
+    "name": "maxNumericValue",
+    "expected": 200,
+    "actual": 260.00000000000045,
+    "values": [
+      260.00000000000045
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "total-blocking-time",
+    "level": "error",
+    "url": "http://localhost:3100/en",
+    "auditTitle": "Total Blocking Time",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/lighthouse-total-blocking-time/"
+  },
+  {
+    "name": "maxNumericValue",
+    "expected": 256000,
+    "actual": 359697,
+    "values": [
+      359697
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditProperty": "script.size",
+    "auditId": "resource-summary",
+    "level": "error",
+    "url": "http://localhost:3100/en",
+    "auditTitle": "Resources Summary"
+  },
+  {
+    "name": "maxNumericValue",
+    "expected": 200,
+    "actual": 209.5,
+    "values": [
+      209.5
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "total-blocking-time",
+    "level": "error",
+    "url": "http://localhost:3100/ms",
+    "auditTitle": "Total Blocking Time",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/lighthouse-total-blocking-time/"
+  },
+  {
+    "name": "maxNumericValue",
+    "expected": 256000,
+    "actual": 359697,
+    "values": [
+      359697
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditProperty": "script.size",
+    "auditId": "resource-summary",
+    "level": "error",
+    "url": "http://localhost:3100/ms",
+    "auditTitle": "Resources Summary"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.95,
+    "actual": 0.76,
+    "values": [
+      0.76
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditProperty": "performance",
+    "auditId": "categories",
+    "level": "error",
+    "url": "http://localhost:3100/en/kul/flights"
+  },
+  {
+    "name": "maxNumericValue",
+    "expected": 200,
+    "actual": 332.02229999999986,
+    "values": [
+      332.02229999999986
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "total-blocking-time",
+    "level": "error",
+    "url": "http://localhost:3100/en/kul/flights",
+    "auditTitle": "Total Blocking Time",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/lighthouse-total-blocking-time/"
+  },
+  {
+    "name": "maxNumericValue",
+    "expected": 2500,
+    "actual": 4734.355049999998,
+    "values": [
+      4734.355049999998
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "largest-contentful-paint",
+    "level": "error",
+    "url": "http://localhost:3100/en/kul/flights",
+    "auditTitle": "Largest Contentful Paint",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/lighthouse-largest-contentful-paint/"
+  },
+  {
+    "name": "maxNumericValue",
+    "expected": 512000,
+    "actual": 566381,
+    "values": [
+      566381
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditProperty": "total.size",
+    "auditId": "resource-summary",
+    "level": "error",
+    "url": "http://localhost:3100/en/guides/baggage",
+    "auditTitle": "Resources Summary"
+  },
+  {
+    "name": "maxNumericValue",
+    "expected": 200,
+    "actual": 223.49999999999977,
+    "values": [
+      223.49999999999977
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "total-blocking-time",
+    "level": "error",
+    "url": "http://localhost:3100/en/kul/parking",
+    "auditTitle": "Total Blocking Time",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/lighthouse-total-blocking-time/"
+  },
+  {
+    "name": "maxNumericValue",
+    "expected": 512000,
+    "actual": 622504,
+    "values": [
+      622504
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditProperty": "total.size",
+    "auditId": "resource-summary",
+    "level": "error",
+    "url": "http://localhost:3100/en/kul/parking",
+    "auditTitle": "Resources Summary"
+  },
+  {
+    "name": "maxNumericValue",
+    "expected": 40,
+    "actual": 41,
+    "values": [
+      41
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditProperty": "total.count",
+    "auditId": "resource-summary",
+    "level": "error",
+    "url": "http://localhost:3100/en/kul/parking",
+    "auditTitle": "Resources Summary"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.95,
+    "actual": 0.75,
+    "values": [
+      0.75
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditProperty": "performance",
+    "auditId": "categories",
+    "level": "error",
+    "url": "http://localhost:3100/en/kul/flights/ak6336-20261121-d"
+  },
+  {
+    "name": "maxNumericValue",
+    "expected": 200,
+    "actual": 356.2594999999992,
+    "values": [
+      356.2594999999992
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "total-blocking-time",
+    "level": "error",
+    "url": "http://localhost:3100/en/kul/flights/ak6336-20261121-d",
+    "auditTitle": "Total Blocking Time",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/lighthouse-total-blocking-time/"
+  },
+  {
+    "name": "maxNumericValue",
+    "expected": 2500,
+    "actual": 4692.076000000002,
+    "values": [
+      4692.076000000002
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "largest-contentful-paint",
+    "level": "error",
+    "url": "http://localhost:3100/en/kul/flights/ak6336-20261121-d",
+    "auditTitle": "Largest Contentful Paint",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/lighthouse-largest-contentful-paint/"
+  }
+]

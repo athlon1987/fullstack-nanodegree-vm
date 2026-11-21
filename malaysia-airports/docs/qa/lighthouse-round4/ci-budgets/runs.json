@@ -1,0 +1,250 @@
+{
+ "note": "Lighthouse CI 0.16.0 (lighthouserc.json, preset perf, mobile, simulated throttling), run locally on a CI-style build (no NEXT_PUBLIC_SITE_URL, APP_VERSION set) on 21 Nov 2026 between 23:17 and 23:21 Kuala Lumpur time; the board window then held no departures. Local additions: Playwright Chromium, --no-sandbox.",
+ "runs": {
+  "http://localhost:3100/en": [
+   {
+    "performance": 97,
+    "lcp_ms": 1126,
+    "tbt_ms": 184,
+    "cls": 0,
+    "scriptBytes": 359697,
+    "totalBytes": 642793,
+    "requests": 41,
+    "lcpElement": "Your journey, beautifully connected.",
+    "fetchTime": "2026-11-21T15:16:24.535Z"
+   },
+   {
+    "performance": 92,
+    "lcp_ms": 1092,
+    "tbt_ms": 332,
+    "cls": 0,
+    "scriptBytes": 359697,
+    "totalBytes": 642793,
+    "requests": 41,
+    "lcpElement": "Your journey, beautifully connected.",
+    "fetchTime": "2026-11-21T15:16:37.445Z"
+   },
+   {
+    "performance": 95,
+    "lcp_ms": 1120,
+    "tbt_ms": 260,
+    "cls": 0,
+    "scriptBytes": 359697,
+    "totalBytes": 642793,
+    "requests": 41,
+    "lcpElement": "Your journey, beautifully connected.",
+    "fetchTime": "2026-11-21T15:16:50.165Z"
+   }
+  ],
+  "http://localhost:3100/ms": [
+   {
+    "performance": 94,
+    "lcp_ms": 1135,
+    "tbt_ms": 279,
+    "cls": 0,
+    "scriptBytes": 359697,
+    "totalBytes": 644553,
+    "requests": 41,
+    "lcpElement": "Semak penerbangan, rancang perjalanan anda.",
+    "fetchTime": "2026-11-21T15:17:02.666Z"
+   },
+   {
+    "performance": 99,
+    "lcp_ms": 1070,
+    "tbt_ms": 136,
+    "cls": 0,
+    "scriptBytes": 359697,
+    "totalBytes": 644551,
+    "requests": 41,
+    "lcpElement": "Semak penerbangan, rancang perjalanan anda.",
+    "fetchTime": "2026-11-21T15:17:15.379Z"
+   },
+   {
+    "performance": 97,
+    "lcp_ms": 1136,
+    "tbt_ms": 210,
+    "cls": 0,
+    "scriptBytes": 359697,
+    "totalBytes": 644551,
+    "requests": 41,
+    "lcpElement": "Semak penerbangan, rancang perjalanan anda.",
+    "fetchTime": "2026-11-21T15:17:27.907Z"
+   }
+  ],
+  "http://localhost:3100/en/kul/flights": [
+   {
+    "performance": 78,
+    "lcp_ms": 4720,
+    "tbt_ms": 267,
+    "cls": 0,
+    "scriptBytes": 359137,
+    "totalBytes": 621431,
+    "requests": 44,
+    "lcpElement": "Show later flights to look further ahead, or earlier ones to see what has gone.",
+    "fetchTime": "2026-11-21T15:17:40.489Z"
+   },
+   {
+    "performance": 77,
+    "lcp_ms": 4758,
+    "tbt_ms": 242,
+    "cls": 0.071,
+    "scriptBytes": 349855,
+    "totalBytes": 605636,
+    "requests": 41,
+    "lcpElement": "Show later flights to look further ahead, or earlier ones to see what has gone.",
+    "fetchTime": "2026-11-21T15:17:52.752Z"
+   },
+   {
+    "performance": 76,
+    "lcp_ms": 4734,
+    "tbt_ms": 332,
+    "cls": 0.003,
+    "scriptBytes": 349855,
+    "totalBytes": 603206,
+    "requests": 40,
+    "lcpElement": "Show later flights to look further ahead, or earlier ones to see what has gone.",
+    "fetchTime": "2026-11-21T15:18:04.968Z"
+   }
+  ],
+  "http://localhost:3100/en/journey": [
+   {
+    "performance": 96,
+    "lcp_ms": 924,
+    "tbt_ms": 236,
+    "cls": 0,
+    "scriptBytes": 322597,
+    "totalBytes": 538494,
+    "requests": 34,
+    "lcpElement": "Save a flight and this page shows its status, what to do and when, and a note o…",
+    "fetchTime": "2026-11-21T15:18:17.279Z"
+   },
+   {
+    "performance": 99,
+    "lcp_ms": 916,
+    "tbt_ms": 123,
+    "cls": 0,
+    "scriptBytes": 322597,
+    "totalBytes": 538492,
+    "requests": 34,
+    "lcpElement": "Save a flight and this page shows its status, what to do and when, and a note o…",
+    "fetchTime": "2026-11-21T15:18:29.052Z"
+   },
+   {
+    "performance": 98,
+    "lcp_ms": 920,
+    "tbt_ms": 178,
+    "cls": 0,
+    "scriptBytes": 322597,
+    "totalBytes": 538492,
+    "requests": 34,
+    "lcpElement": "Save a flight and this page shows its status, what to do and when, and a note o…",
+    "fetchTime": "2026-11-21T15:18:40.744Z"
+   }
+  ],
+  "http://localhost:3100/en/guides/baggage": [
+   {
+    "performance": 98,
+    "lcp_ms": 1072,
+    "tbt_ms": 163,
+    "cls": 0,
+    "scriptBytes": 330340,
+    "totalBytes": 566381,
+    "requests": 37,
+    "lcpElement": "Weight, size and number of bags depend on your airline and fare. Check your boo…",
+    "fetchTime": "2026-11-21T15:18:52.413Z"
+   },
+   {
+    "performance": 98,
+    "lcp_ms": 1067,
+    "tbt_ms": 154,
+    "cls": 0,
+    "scriptBytes": 330340,
+    "totalBytes": 566379,
+    "requests": 37,
+    "lcpElement": "Weight, size and number of bags depend on your airline and fare. Check your boo…",
+    "fetchTime": "2026-11-21T15:19:04.166Z"
+   },
+   {
+    "performance": 99,
+    "lcp_ms": 1066,
+    "tbt_ms": 146,
+    "cls": 0,
+    "scriptBytes": 330340,
+    "totalBytes": 566379,
+    "requests": 37,
+    "lcpElement": "Weight, size and number of bags depend on your airline and fare. Check your boo…",
+    "fetchTime": "2026-11-21T15:19:15.877Z"
+   }
+  ],
+  "http://localhost:3100/en/kul/parking": [
+   {
+    "performance": 94,
+    "lcp_ms": 1105,
+    "tbt_ms": 297,
+    "cls": 0,
+    "scriptBytes": 373342,
+    "totalBytes": 622506,
+    "requests": 41,
+    "lcpElement": "What a stay costs at each car park, an estimate for your dates and a note of wh…",
+    "fetchTime": "2026-11-21T15:19:27.618Z"
+   },
+   {
+    "performance": 97,
+    "lcp_ms": 1095,
+    "tbt_ms": 198,
+    "cls": 0.003,
+    "scriptBytes": 382624,
+    "totalBytes": 635867,
+    "requests": 43,
+    "lcpElement": "What a stay costs at each car park, an estimate for your dates and a note of wh…",
+    "fetchTime": "2026-11-21T15:19:39.973Z"
+   },
+   {
+    "performance": 96,
+    "lcp_ms": 1119,
+    "tbt_ms": 223,
+    "cls": 0.003,
+    "scriptBytes": 373342,
+    "totalBytes": 622504,
+    "requests": 41,
+    "lcpElement": "What a stay costs at each car park, an estimate for your dates and a note of wh…",
+    "fetchTime": "2026-11-21T15:19:52.112Z"
+   }
+  ],
+  "http://localhost:3100/en/kul/flights/ak6336-20261121-d": [
+   {
+    "performance": 68,
+    "lcp_ms": 4235,
+    "tbt_ms": 322,
+    "cls": 0.207,
+    "scriptBytes": 390086,
+    "totalBytes": 686330,
+    "requests": 45,
+    "lcpElement": "AK 6336 to Penang",
+    "fetchTime": "2026-11-21T15:20:04.455Z"
+   },
+   {
+    "performance": 75,
+    "lcp_ms": 4692,
+    "tbt_ms": 356,
+    "cls": 0.004,
+    "scriptBytes": 390086,
+    "totalBytes": 686329,
+    "requests": 45,
+    "lcpElement": "AK 6336 to Penang",
+    "fetchTime": "2026-11-21T15:20:17.023Z"
+   },
+   {
+    "performance": 74,
+    "lcp_ms": 4906,
+    "tbt_ms": 337,
+    "cls": 0.006,
+    "scriptBytes": 390086,
+    "totalBytes": 686327,
+    "requests": 45,
+    "lcpElement": "AK 6336 to Penang",
+    "fetchTime": "2026-11-21T15:20:29.322Z"
+   }
+  ]
+ }
+}
