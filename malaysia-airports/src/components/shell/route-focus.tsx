@@ -92,13 +92,14 @@ const FOLLOW_MS = 15_000;
  * the browser has scrolled to the section, focus moves to it (`tabindex="-1"` where needed, no
  * second scroll). When the section is a placeholder that a lazily loaded part then replaces under
  * the same id (the flight page's needs control), focus follows to the part. Links whose click
- * was handled by a script (`preventDefault`) are left alone. Mounted once by `GlobalOverlays`.
+ * was handled by a script (`preventDefault`) are left alone, unless the URL then carries the
+ * link's fragment (a Next.js `Link`, verification round 6). Mounted once by `GlobalOverlays`.
  */
 export function InPageFocus() {
   useEffect(() => {
     let follow: number | undefined;
     const onClick = (event: MouseEvent) => {
-      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       const link = event.target instanceof Element ? event.target.closest('a[href]') : null;
       if (!(link instanceof HTMLAnchorElement) || (link.target && link.target !== '_self')) return;
       const url = new URL(link.href, window.location.href);
@@ -106,7 +107,13 @@ export function InPageFocus() {
       if (!url.hash || url.origin !== here.origin || url.pathname !== here.pathname || url.search !== here.search) return;
       const id = decodeURIComponent(url.hash.slice(1));
       if (!id) return;
-      requestAnimationFrame(() => {
+      // Verification round 6: a Next.js `Link` to a part of the same page ("contacts" in the
+      // overview's status lines) also calls preventDefault and then sets the fragment itself. Follow
+      // such a click once the URL carries the fragment; other script-handled clicks stay alone.
+      const handledByScript = event.defaultPrevented;
+      const schedule = (run: () => void) => (handledByScript ? window.setTimeout(run, 120) : requestAnimationFrame(run));
+      schedule(() => {
+        if (handledByScript && window.location.hash !== url.hash) return;
         const focused = focusSection(id);
         window.clearInterval(follow);
         if (!focused) return;

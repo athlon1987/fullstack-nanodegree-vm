@@ -218,7 +218,8 @@ function Directory({
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] lg:gap-10">
-        <div className="flex min-w-0 flex-col gap-4 lg:sticky lg:top-[calc(var(--spacing-sticky)+1rem)] lg:self-start">
+        {/* Verification round 6 (WCAG 2.4.7, 2.4.11): scrolls within the window, so a focused filter can be scrolled into view. */}
+        <div className="flex min-w-0 flex-col gap-4 lg:sticky lg:top-[calc(var(--spacing-sticky)+1rem)] lg:-m-1 lg:max-h-[calc(100dvh-var(--spacing-sticky)-2rem)] lg:self-start lg:overflow-y-auto lg:overscroll-contain lg:p-1">
           <GatePanel
             airport={airport}
             terminalLabels={terminalLabels}

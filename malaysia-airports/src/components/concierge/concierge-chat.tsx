@@ -358,7 +358,9 @@ export function ConciergeChat({ variant, initialQuestion, toolbarEnd }: Concierg
             <span className="type-body-sm text-ink">{t('conciergePage.scope.noAirport')}</span>
           )}
           {savedFlight ? (
-            <FilterChip pressed={useFlight} onPressedChange={onFlightChange} icon="plane">
+            // Verification round 6 (WCAG 1.4.10): the chip may wrap, so with a saved flight the page
+            // no longer scrolls sideways at 320 px with 125% text or at 400% zoom (Malay: 129 px).
+            <FilterChip pressed={useFlight} onPressedChange={onFlightChange} icon="plane" className="h-auto min-h-9 max-w-full shrink py-1.5 text-start whitespace-normal touch:h-auto touch:min-h-11">
               {t('conciergePage.scope.useFlight', { flight: savedFlight.number })}
             </FilterChip>
           ) : null}

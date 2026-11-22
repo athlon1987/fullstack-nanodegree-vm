@@ -230,7 +230,9 @@ export function FlightStatusHero({ flight, pending = false, updatedAt, refreshSe
             ) : null}
             {flight.aircraft ? (
               <Fact label={t('flights.detail.aircraft')}>
-                <span className="type-data-md whitespace-nowrap">{flight.aircraft}</span>
+                {/* Verification round 6: only the model number stays whole ("A330-300"), so a long
+                    name can still wrap at its space instead of being cut by the card at 320 px. */}
+                <span className="type-data-md">{keepRanges(flight.aircraft)}</span>
               </Fact>
             ) : null}
           </dl>

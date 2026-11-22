@@ -120,7 +120,12 @@ function Directory({
 
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,17.5rem)_minmax(0,1fr)] lg:gap-10">
-      <section aria-labelledby="facility-filters-title" className="min-w-0 lg:sticky lg:top-[calc(var(--spacing-sticky)+1rem)] lg:self-start">
+      {/* Verification round 6 (WCAG 2.4.7, 2.4.11): the sticky filters scroll within the window, so a
+          filter that takes focus is scrolled into view (at 1280 x 720 six were below the window). */}
+      <section
+        aria-labelledby="facility-filters-title"
+        className="min-w-0 lg:sticky lg:top-[calc(var(--spacing-sticky)+1rem)] lg:-m-1 lg:max-h-[calc(100dvh-var(--spacing-sticky)-2rem)] lg:self-start lg:overflow-y-auto lg:overscroll-contain lg:p-1"
+      >
         <div className="flex items-center justify-between gap-3">
           <h2 id="facility-filters-title" className="type-title-md sr-only text-ink lg:not-sr-only">
             {t('mapPages.facilities.filtersTitle')}
