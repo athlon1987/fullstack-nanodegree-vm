@@ -72,7 +72,9 @@ export function SiteHeader({ lang }: { lang: Lang }) {
             <LocaleLink href="/" aria-label={t('shell.homeLabel', { name: t('common.appName') })} className="shrink-0 rounded-sm">
               {/* With no airport chosen, a narrow header (320 px, or 125% text) keeps the mark and
                   hides the name visually, so "Choose airport" fits (A-16). The link keeps its name. */}
-              <Wordmark name={t('common.appName')} size="sm" className="sm:hidden" nameClassName="@max-[21rem]:group-has-[[data-no-airport]]/hdr:sr-only" />
+              {/* Round 6 (review-3 9.1 item 9): with the device's text at 200% the name gives way to the
+                  mark (the header is measured in rem), so the airport control stays on screen. */}
+              <Wordmark name={t('common.appName')} size="sm" className="sm:hidden" nameClassName="@max-[21rem]:group-has-[[data-no-airport]]/hdr:sr-only @max-[14rem]:sr-only" />
               <Wordmark name={t('common.appName')} className="max-sm:hidden" />
             </LocaleLink>
             <PrimaryNav className={cn('ml-3', at.nav)} />

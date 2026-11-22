@@ -83,6 +83,8 @@ test.describe('item 1: a script that cannot be fetched, with a saved flight (P8)
       await context.setOffline(false);
       const clear = main.getByRole('button', { name: lang === 'en' ? 'Clear my journey' : 'Kosongkan perjalanan saya' });
       await expect(main.getByRole('button', { name: retry })).toHaveCount(0, { timeout: 20_000 });
+      // The real control (it opens a confirmation), not the placeholder shown while it loads.
+      await expect(clear).toHaveAttribute('aria-haspopup', 'dialog', { timeout: 20_000 });
       await clear.click();
       await expect(page.getByRole('alertdialog').or(page.getByRole('dialog'))).toBeVisible();
     });
@@ -153,7 +155,8 @@ test.describe('item 3: hierarchy and density', () => {
   });
 
   for (const lang of ['en', 'ms'] as const) {
-    test(`five board rows above a 900 px desktop fold (${lang})`, async ({ page }) => {
+    test(`five board rows above a 900 px desktop fold (${lang})`, async ({ page }, testInfo) => {
+      test.skip(testInfo.project.name !== 'desktop', 'a desktop fold: touch screens get taller rows');
       await page.setViewportSize({ width: 1440, height: 900 });
       await page.goto(`/${lang}/kul/flights`);
       const rows = page.locator('main table tbody tr').filter({ has: page.locator('a[href*="/flights/"]') });
@@ -209,8 +212,12 @@ test.describe('item 3: hierarchy and density', () => {
 
   test('on a phone the map brings a chosen route into view, and no route chip covers a label', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto('/en/kul/map');
-    await page.locator('#map-route-from').selectOption('l5-kerb');
+    await page.goto('/en/kul/map', { waitUntil: 'networkidle' });
+    // Choices made before hydration are not kept: choose until the page has the start in its URL.
+    await expect(async () => {
+      await page.locator('#map-route-from').selectOption('l5-kerb');
+      await expect(page).toHaveURL(/from=l5-kerb/, { timeout: 1000 });
+    }).toPass({ timeout: 15_000 });
     await page.locator('#map-route-to').selectOption('g-gates-c');
     const drawing = page.locator('[data-map-disclaimer]').locator('..');
     await expect(drawing).toBeInViewport({ ratio: 0.9 });

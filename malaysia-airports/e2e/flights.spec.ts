@@ -165,7 +165,8 @@ test.describe('flight page', () => {
 
   test('works in Bahasa Malaysia', async ({ page }) => {
     await page.goto('/ms/kul/flights/mh2626-20261118-d');
-    await expect(page.getByRole('main').getByRole('heading', { level: 1, name: 'MH 2626 ke Singapore' })).toBeVisible();
+    // Round 6 (review-3 9.1 item 8, intended change): the city in Malay, as the board names it.
+    await expect(page.getByRole('main').getByRole('heading', { level: 1, name: 'MH 2626 ke Singapura' })).toBeVisible();
     await expect(page.getByRole('main').getByRole('button', { name: 'Simpan penerbangan' })).toBeVisible();
   });
 });

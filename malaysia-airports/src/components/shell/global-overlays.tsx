@@ -2,10 +2,9 @@
 
 import { EARLY_TAP_SCRIPT } from '@/lib/inline-scripts';
 import { usePathname } from 'next/navigation';
-import { Suspense, lazy, useEffect, useRef, useState, type ReactNode } from 'react';
+import { Component, Suspense, lazy, useEffect, useRef, useState, type ReactNode } from 'react';
 import { usePreferencesSync } from '@/lib/hooks';
 import { retryingImport } from '@/lib/retrying-import';
-import { PartBoundary } from '@/components/common/part-boundary';
 import { closeOverlay, openOverlay, useOverlayOpen, type OverlayName } from './overlay-store';
 import { InPageFocus, RouteFocus } from './route-focus';
 
@@ -28,15 +27,29 @@ const PreferencesPanel = lazy(() => loadPanels().then((module) => ({ default: mo
 const MenuPanel = lazy(() => loadPanels().then((module) => ({ default: module.MenuPanel })));
 const ConciergePanel = lazy(() => loadConcierge().then((module) => ({ default: module.ConciergePanel })));
 
+/**
+ * An overlay that fails renders nothing instead of reaching the root error boundary (round 6). Kept
+ * here rather than the common part boundary, so the shell's first-load script does not carry its message.
+ */
+class SilentBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  render() {
+    return this.state.failed ? null : this.props.children;
+  }
+}
+
 /** Mounts an overlay once the page has been idle (`ready`) or once it is first opened. */
 function Deferred({ name, ready, children }: { name: OverlayName; ready: boolean; children: ReactNode }) {
   const open = useOverlayOpen(name);
   const [wanted, setWanted] = useState(false);
   if ((open || ready) && !wanted) setWanted(true);
   return wanted ? (
-    <PartBoundary silent>
+    <SilentBoundary>
       <Suspense fallback={null}>{children}</Suspense>
-    </PartBoundary>
+    </SilentBoundary>
   ) : null;
 }
 
@@ -143,11 +156,11 @@ export function GlobalOverlays() {
         <ConciergePanel />
       </Deferred>
       {paletteWanted ? (
-        <PartBoundary silent>
+        <SilentBoundary>
           <Suspense fallback={null}>
             <CommandPalette />
           </Suspense>
-        </PartBoundary>
+        </SilentBoundary>
       ) : null}
       <Suspense fallback={null}>
         <CloseOnNavigation />

@@ -247,7 +247,9 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
             <button
               type="button"
               onClick={() => setDirection(direction === 'd' ? 'a' : 'd')}
-              className="link-action type-body-sm shrink-0 text-ink-2 hover:text-ink"
+              // Round 6 (review-3 9.1 item 9): it may shrink and wrap between words; at 200%
+              // device text it ran past the card's edge and was cut ("Cari penerbangan ti").
+              className="link-action type-body-sm max-w-full min-w-0 text-left text-ink-2 hover:text-ink"
             >
               <Icon name={direction === 'd' ? 'plane-landing' : 'plane-takeoff'} size="sm" strokeWidth={1.75} />
               {direction === 'd' ? t('shellExtras.homeSearch.arrivalsInstead') : t('shellExtras.homeSearch.departuresInstead')}

@@ -43,8 +43,9 @@ export function SiteFooter({ lang }: { lang: Lang }) {
       <Container className="py-10 sm:py-14">
         <div className="grid gap-x-12 gap-y-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,2fr)]">
           <div className="min-w-0">
-            <LocaleLink href="/" aria-label={t('shell.homeLabel', { name: t('common.appName') })} className="inline-flex rounded-sm">
-              <Wordmark name={t('common.appName')} />
+            <LocaleLink href="/" aria-label={t('shell.homeLabel', { name: t('common.appName') })} className="inline-flex max-w-full rounded-sm">
+              {/* Round 6 (review-3 9.1 item 9): the name may take two lines at 200% device text. */}
+              <Wordmark name={t('common.appName')} nameClassName="whitespace-normal" />
             </LocaleLink>
             <p className="type-body-sm mt-3 text-ink-2">{t('common.tagline')}</p>
             <div className="mt-6 rounded-lg border border-line-strong bg-surface p-4 sm:p-5">

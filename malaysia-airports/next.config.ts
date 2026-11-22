@@ -57,6 +57,10 @@ const nextConfig: NextConfig = {
   // Unmatched URLs outside `[lang]` (the root layout lives there) get `src/app/global-not-found.tsx`.
   experimental: {
     globalNotFound: true,
+    // Round 6 (review-3 9.1 item 2, E-02): `inlineCss: true` was tried and is not kept. It cut the
+    // congested Wi-Fi LCP (/en 2.61 to 1.62 s, board 2.67 to 1.54 s) but slowed the normal mobile
+    // profile (/en 1.07 to 1.29 s, board 0.91 to 1.22 s): the styles are sent twice, in the head
+    // and in the RSC payload (/en HTML 98.8 KB gzip). Numbers in docs/qa/fixes/round6-access.md.
   },
   poweredByHeader: false,
   // Verification round two: React's own `Link` preload header (the fonts) made Next.js copy the
