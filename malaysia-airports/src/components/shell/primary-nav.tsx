@@ -42,16 +42,22 @@ function NavLinks({ variant = 'bar', className, pathname }: PrimaryNavProps & { 
               className={
                 variant === 'bar'
                   ? cn(
-                      'relative inline-flex h-11 items-center rounded-md px-2 text-[0.9375rem] font-medium whitespace-nowrap text-ink-2 transition-colors duration-fast hover:bg-page-subtle hover:text-ink',
-                      'aria-[current]:text-ink aria-[current]:after:absolute aria-[current]:after:inset-x-2 aria-[current]:after:bottom-1 aria-[current]:after:h-0.5 aria-[current]:after:rounded-pill aria-[current]:after:bg-primary',
+                      // The header is a midnight bar (on-media): light words, a soft pill on hover,
+                      // a short gold rule under the current section.
+                      'relative inline-flex h-11 items-center rounded-pill px-2.5 text-[0.9375rem] font-medium whitespace-nowrap text-ink-2 transition-colors duration-fast hover:bg-[rgb(255_255_255/0.08)] hover:text-ink',
+                      'aria-[current]:text-ink aria-[current]:after:absolute aria-[current]:after:inset-x-3 aria-[current]:after:bottom-1 aria-[current]:after:h-0.5 aria-[current]:after:rounded-pill aria-[current]:after:bg-gold-bright',
                     )
                   : cn(
-                      'flex min-h-13 items-center gap-3.5 rounded-md px-2 text-lg font-semibold text-ink transition-colors duration-fast hover:bg-page-subtle',
-                      'aria-[current]:bg-primary-soft aria-[current]:text-primary-ink',
+                      'group/nav flex min-h-14 items-center gap-4 rounded-2xl px-2 text-lg font-semibold text-ink transition-colors duration-fast hover:bg-fill',
+                      'aria-[current]:bg-fill',
                     )
               }
             >
-              {variant === 'list' ? <Icon name={item.icon} className="text-primary-ink" /> : null}
+              {variant === 'list' ? (
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-fill text-ink ring-1 ring-line-strong group-aria-[current]/nav:bg-gold group-aria-[current]/nav:text-on-gold group-aria-[current]/nav:ring-gold">
+                  <Icon name={item.icon} size="md" strokeWidth={1.75} />
+                </span>
+              ) : null}
               <span className={variant === 'list' ? 'min-w-0 flex-1' : undefined}>
                 {t(item.labelKey)}
                 {missing && airport ? (

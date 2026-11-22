@@ -1,0 +1,290 @@
+{
+ "key": "flight-page",
+ "url": "http://localhost:3101/en/kul/flights/ak6336-20261123-d",
+ "preset": "mobile (Lighthouse default)",
+ "profile": null,
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-22T18:05:24.948Z",
+ "median": {
+  "performance": 81,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1513,
+  "lcp_ms": 4172,
+  "tbt_ms": 250,
+  "cls": 0,
+  "si_ms": 1513,
+  "totalBytes": 820004,
+  "requests": 52
+ },
+ "a11yFailures": [],
+ "rows": [
+  {
+   "finalUrl": "/en/kul/flights/ak6336-20261123-d",
+   "runtimeError": null,
+   "performance": 81,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1513,
+   "lcp_ms": 4172,
+   "tbt_ms": 250,
+   "cls": 0,
+   "si_ms": 1513,
+   "totalBytes": 820026,
+   "requests": 52,
+   "benchmarkIndex": 2517.5,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en/kul/flights/ak6336-20261123-d",
+   "runtimeError": null,
+   "performance": 82,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1513,
+   "lcp_ms": 4165,
+   "tbt_ms": 218,
+   "cls": 0,
+   "si_ms": 1612,
+   "totalBytes": 820004,
+   "requests": 52,
+   "benchmarkIndex": 2419,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en/kul/flights/ak6336-20261123-d",
+   "runtimeError": null,
+   "performance": 78,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1509,
+   "lcp_ms": 4470,
+   "tbt_ms": 303,
+   "cls": 0.004,
+   "si_ms": 1509,
+   "totalBytes": 820002,
+   "requests": 52,
+   "benchmarkIndex": 2378.5,
+   "a11yFailures": []
+  }
+ ],
+ "medianRunIndex": 0,
+ "diagnostics": {
+  "observed": {
+   "fcp": 356,
+   "lcp": 422,
+   "dcl": 477,
+   "load": 477
+  },
+  "lcpElement": {
+   "selector": "div.flex > div.on-media > div.on-media > img.object-cover",
+   "label": "div.flex > div.on-media > div.on-media > img.object-cover"
+  },
+  "lcpPhases": {
+   "timeToFirstByte": 33,
+   "resourceLoadDelay": 286,
+   "resourceLoadDuration": 11,
+   "elementRenderDelay": 92
+  },
+  "renderBlocking": [
+   {
+    "url": "/_next/static/chunks/1ehse3l2pyqk4.css",
+    "bytes": 31733,
+    "ms": 456
+   },
+   {
+    "url": "/_next/static/chunks/15hzgv72ioqav.css",
+    "bytes": 2364,
+    "ms": 156
+   }
+  ],
+  "longTasks": [
+   {
+    "url": "/_next/static/chunks/turbopack-2u1d16houkiyo.js",
+    "start": 4226,
+    "dur": 253
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4632,
+    "dur": 120
+   },
+   {
+    "url": "/en/kul/flights/ak6336-20261123-d",
+    "start": 1160,
+    "dur": 116
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4521,
+    "dur": 78
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4781,
+    "dur": 62
+   },
+   {
+    "url": "Unattributable",
+    "start": 1056,
+    "dur": 59
+   },
+   {
+    "url": "_lighthouse-eval.js",
+    "start": 3176,
+    "dur": 55
+   },
+   {
+    "url": "/en/kul/flights/ak6336-20261123-d",
+    "start": 1309,
+    "dur": 54
+   }
+  ],
+  "bootup": [
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "total": 974,
+    "scripting": 807
+   },
+   {
+    "url": "/en/kul/flights/ak6336-20261123-d",
+    "total": 658,
+    "scripting": 28
+   },
+   {
+    "url": "Unattributable",
+    "total": 386,
+    "scripting": 9
+   },
+   {
+    "url": "/_next/static/chunks/turbopack-2u1d16houkiyo.js",
+    "total": 244,
+    "scripting": 230
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "total": 140,
+    "scripting": 104
+   }
+  ],
+  "mainThread": {
+   "scriptEvaluation": 1305,
+   "other": 596,
+   "styleLayout": 381,
+   "scriptParseCompile": 188,
+   "parseHTML": 89,
+   "paintCompositeRender": 57,
+   "garbageCollection": 39
+  },
+  "resources": {
+   "total": {
+    "n": 51,
+    "bytes": 820026
+   },
+   "script": {
+    "n": 34,
+    "bytes": 424194
+   },
+   "font": {
+    "n": 3,
+    "bytes": 130216
+   },
+   "document": {
+    "n": 1,
+    "bytes": 103895
+   },
+   "image": {
+    "n": 1,
+    "bytes": 77132
+   },
+   "other": {
+    "n": 10,
+    "bytes": 50492
+   },
+   "stylesheet": {
+    "n": 2,
+    "bytes": 34097
+   },
+   "media": {
+    "n": 0,
+    "bytes": 0
+   },
+   "third-party": {
+    "n": 0,
+    "bytes": 0
+   }
+  },
+  "topRequests": [
+   {
+    "url": "/en/kul/flights/ak6336-20261123-d",
+    "type": "Document",
+    "transfer": 103895
+   },
+   {
+    "url": "/_next/image?url=%2Fimages%2Fprobe%2Fprobe-kul-terminal.jpg&w=750&q=75",
+    "type": "Image",
+    "transfer": 77132
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "type": "Script",
+    "transfer": 73535
+   },
+   {
+    "url": "/_next/static/media/fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+    "type": "Font",
+    "transfer": 68998
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "type": "Script",
+    "transfer": 47500
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "type": "Font",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/chunks/1ehse3l2pyqk4.css",
+    "type": "Stylesheet",
+    "transfer": 31733
+   },
+   {
+    "url": "/_next/static/media/geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+    "type": "Font",
+    "transfer": 24821
+   },
+   {
+    "url": "/_next/static/chunks/3j1l1kho__eu-.js",
+    "type": "Script",
+    "transfer": 21878
+   },
+   {
+    "url": "/_next/static/chunks/2n0z0k54rhl_n.js",
+    "type": "Script",
+    "transfer": 15918
+   }
+  ],
+  "fonts": [
+   {
+    "url": "/_next/static/media/fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+    "transfer": 68998
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/media/geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+    "transfer": 24821
+   }
+  ]
+ },
+ "caveat": "Lab measurement: Lighthouse with simulated (or, with --profile, applied) throttling against a local next start. Indicative only; not field data."
+}

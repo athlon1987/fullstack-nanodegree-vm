@@ -52,7 +52,7 @@ export function JourneyLink({ className }: { className?: string }) {
       href="/journey"
       aria-label={count > 0 ? t.count('shell.journey.count', count) : t('shell.journey.empty')}
       className={cn(
-        'relative inline-flex size-11 shrink-0 items-center justify-center rounded-md text-ink transition-colors duration-fast hover:bg-page-subtle',
+        'relative inline-flex size-11 shrink-0 items-center justify-center rounded-full text-ink transition-colors duration-fast hover:bg-fill',
         className,
       )}
     >
@@ -60,7 +60,7 @@ export function JourneyLink({ className }: { className?: string }) {
       {count > 0 ? (
         <span
           aria-hidden="true"
-          className="type-data-xs absolute top-1 right-0.5 flex h-4.5 min-w-4.5 items-center justify-center rounded-pill bg-primary px-1 font-bold text-on-primary"
+          className="type-data-xs absolute top-1 right-0.5 flex h-4.5 min-w-4.5 items-center justify-center rounded-pill bg-gold px-1 font-bold text-on-gold"
         >
           {count}
         </span>
@@ -104,7 +104,7 @@ export function MenuButton({ className }: { className?: string }) {
   );
 }
 
-/** "Display settings" in the utility bar: opens theme, text size, contrast and motion. */
+/** "Display settings" in the utility strip (midnight): opens theme, text size, contrast and motion. */
 export function DisplaySettingsButton({ className }: { className?: string }) {
   const t = useT();
   const open = useOverlayOpen('preferences');
@@ -115,7 +115,7 @@ export function DisplaySettingsButton({ className }: { className?: string }) {
       aria-expanded={open}
       onClick={() => overlays.openPreferences()}
       className={cn(
-        'type-caption inline-flex h-7 items-center gap-1.5 rounded-xs px-1.5 font-semibold text-on-inverse-dim transition-colors duration-fast hover:text-on-inverse',
+        'type-caption inline-flex h-7 items-center gap-1.5 rounded-pill px-2 font-semibold text-on-midnight-dim transition-colors duration-fast hover:bg-[rgb(255_255_255/0.08)] hover:text-on-midnight',
         className,
       )}
     >

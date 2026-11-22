@@ -16,7 +16,9 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 /**
- * Network home. Everything on it that depends on the clock, the remembered airport or the
+ * Network home (Direction v2): the cinematic first screen, then the next flights, the destinations,
+ * the journey timeline, the concierge (a midnight band) and shop and dine (the one ivory band).
+ * Everything on it that depends on the clock, the remembered airport or the
  * journey mode is a Client Component fed with server-prepared content, so the page itself is
  * fully static in both languages.
  */
@@ -28,10 +30,10 @@ export default async function HomePage() {
         <JsonLd data={[websiteJsonLd(lang), organizationJsonLd(lang)]} />
         <HomeHero lang={lang} notices={toNoticeViews(getNotices(), lang, 'compact')} />
         <HomeBoard lang={lang} />
-        <HomeJourney lang={lang} />
         <HomeNetwork lang={lang} />
-        <HomeShopDine lang={lang} />
+        <HomeJourney lang={lang} />
         <HomeConcierge lang={lang} />
+        <HomeShopDine lang={lang} />
       </>
     </I18nPageScope>
   );

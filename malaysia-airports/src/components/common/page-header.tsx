@@ -26,8 +26,8 @@ export interface PageHeaderProps {
   meta?: ReactNode;
   /** Line art on the right from `lg` up (an `AirportVignette`). Decorative. */
   art?: ReactNode;
-  /** `subtle` puts the header on the quieter page tone with a rule under it. */
-  tone?: 'page' | 'subtle';
+  /** `subtle` puts the header on the quieter page tone with a rule under it; `midnight` is a compact app-like band (redesign round one, My journey). */
+  tone?: 'page' | 'subtle' | 'midnight';
   /** `lg` for landing pages, `md` (default) for everything else. */
   size?: 'md' | 'lg';
   width?: ContainerProps['size'];
@@ -43,7 +43,7 @@ export interface PageHeaderProps {
  */
 export function PageHeader({ eyebrow, title, lead, leadClassName, tightOnPhones = false, compactOnDesktop = false, breadcrumbs, actions, meta, art, tone = 'page', size = 'md', width = 'page', className }: PageHeaderProps) {
   return (
-    <header className={cn(tone === 'subtle' && 'border-b border-line bg-page-subtle', className)}>
+    <header className={cn(tone === 'subtle' && 'border-b border-line bg-page-subtle', tone === 'midnight' && 'on-media surface-midnight text-ink', className)}>
       <Container size={width} className={cn('pb-8 sm:pb-10', tightOnPhones && 'max-sm:pb-5', breadcrumbs ? 'pt-3 sm:pt-4' : 'pt-8 sm:pt-12')}>
         {breadcrumbs ? (
           <div data-page-breadcrumbs="" className={cn('mb-4 sm:mb-6', compactOnDesktop && 'lg:mb-3')}>

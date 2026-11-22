@@ -8,6 +8,9 @@ import { AirportDirectory, AirportDirectoryView } from '@/components/airport/air
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { PageHeader } from '@/components/common/page-header';
 import { Container } from '@/components/ui/container';
+import { toMediaImage, type MediaImage } from '@/components/ui/media';
+import { AIRPORT_HERO_IMAGES, IMAGES } from '@/content/images';
+import { toLang } from '@/lib/i18n';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getT(await routeLang());
@@ -21,7 +24,15 @@ export async function generateMetadata(): Promise<Metadata> {
  * same directory without the continuation, which is also what visitors without JavaScript get.
  */
 export default async function AirportsPage() {
-  const t = getT(await routeLang());
+  const lang = toLang(await routeLang());
+  const t = getT(lang);
+  // Redesign round one: photo-led cards for airports with their own photograph (never the
+  // Malaysia fallback: a directory card shows the airport itself). Decorative: the name is the link.
+  const photos: Record<string, MediaImage> = {};
+  for (const airport of AIRPORTS) {
+    const id = AIRPORT_HERO_IMAGES[airport.slug]?.[0];
+    if (id !== undefined) photos[airport.slug] = toMediaImage(IMAGES[id], lang, { decorative: true });
+  }
   return (
     <>
       <PageHeader
@@ -31,8 +42,8 @@ export default async function AirportsPage() {
         breadcrumbs={<Breadcrumbs items={[{ label: t('nav.airports') }]} />}
       />
       <Container className="pb-section">
-        <Suspense fallback={<AirportDirectoryView />}>
-          <AirportDirectory />
+        <Suspense fallback={<AirportDirectoryView photos={photos} />}>
+          <AirportDirectory photos={photos} />
         </Suspense>
       </Container>
     </>

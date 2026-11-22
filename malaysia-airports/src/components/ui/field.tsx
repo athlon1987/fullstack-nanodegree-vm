@@ -2,10 +2,10 @@ import type { ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 import { Icon } from './icon';
 
-/** Shared look of text inputs and selects: 44px tall, 16px text, a 3:1 boundary. */
+/** Shared look of text inputs and selects: 48px tall, soft 12px corners, 16px text, a 3:1 boundary. */
 export const controlClasses =
-  'h-11 w-full rounded-md border border-line-control bg-surface px-3 text-base text-ink transition-colors duration-fast ' +
-  'placeholder:text-ink-3 hover:border-ink disabled:border-line disabled:bg-neutral-bg disabled:text-ink-3 ' +
+  'h-12 w-full rounded-md border border-line-control bg-surface px-4 text-base text-ink shadow-xs transition-[border-color,box-shadow] duration-fast ' +
+  'placeholder:text-ink-3 hover:border-ink-2 disabled:border-line disabled:bg-fill disabled:text-ink-3 disabled:shadow-none ' +
   'aria-invalid:border-critical-fg aria-invalid:border-2';
 
 export interface FieldProps {

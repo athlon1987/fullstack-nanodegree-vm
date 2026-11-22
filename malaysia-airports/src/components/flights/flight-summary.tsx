@@ -27,7 +27,8 @@ export interface FlightSummaryProps {
 const FRAME =
   // Round 5: the frame is the same while the feed loads and after, so the answer is filled in
   // place (no new block, no jump); placeholders keep room for two lines and the step link.
-  'flex min-h-14 flex-wrap items-center gap-x-4 gap-y-2 rounded-lg border border-line-strong bg-surface px-4 py-3';
+  // Redesign round one: smoky glass on the flight page's midnight band (an `on-media` scope).
+  'glass-dark flex min-h-14 flex-wrap items-center gap-x-4 gap-y-2 rounded-2xl px-4 py-3 sm:px-5 sm:py-3.5';
 
 /**
  * The answer first (first-time-access-03, usability-10): one line under the title with the next
@@ -47,7 +48,7 @@ export function FlightSummary({ flight, steps, now }: FlightSummaryProps) {
     return (
       <div data-flight-summary="" data-pending="" className={FRAME}>
         <p className="type-body min-w-0 flex-1 basis-64 text-ink">
-          <span className="type-eyebrow mr-2 text-ink-2">{t('flightPages.summary.label')}</span>
+          <span className="type-eyebrow mr-2 text-gold-bright">{t('flightPages.summary.label')}</span>
           <span role="status">
             <Skeleton className="inline-block h-4 w-48 max-w-full align-middle" />
             <span className="sr-only">{t('flightPages.summary.loading')}</span>
@@ -128,7 +129,7 @@ export function FlightSummary({ flight, steps, now }: FlightSummaryProps) {
   return (
     <div data-flight-summary="" className={FRAME}>
       <p className="type-body min-w-0 flex-1 basis-64 text-ink">
-        <span className="type-eyebrow mr-2 text-ink-2">{t('flightPages.summary.label')}</span>
+        <span className="type-eyebrow mr-2 text-gold-bright">{t('flightPages.summary.label')}</span>
         {delayed ? (
           <span data-summary-delayed="" className="mr-1.5 inline-flex items-baseline gap-1 font-semibold text-ink">
             <Icon name="clock-alert" size="sm" className="shrink-0 self-center" />

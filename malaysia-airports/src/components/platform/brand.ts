@@ -5,15 +5,15 @@
  */
 export const BRAND_COLORS = {
   /** `--color-page`: splash screen and browser chrome. */
-  page: '#faf5ea',
+  page: '#f6f7f9',
   /** `--color-primary`: icon tile. */
-  primary: '#252a6c',
+  primary: '#0b1640',
   /** `--color-on-primary`: the mark on the tile. */
-  onPrimary: '#fbf6ea',
+  onPrimary: '#ffffff',
   /** `--color-gold` (dark theme): the lozenge on the indigo tile. */
-  goldOnDark: '#d2ac62',
+  goldOnDark: '#d6b46e',
   /** `--color-page` (dark theme). */
-  pageDark: '#0c0e24',
+  pageDark: '#060a18',
 } as const;
 
 /** Icon files in `src/app` (generated from the brand mark; see the platform hand-off). */

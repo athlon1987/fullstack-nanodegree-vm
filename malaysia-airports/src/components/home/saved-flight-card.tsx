@@ -66,7 +66,7 @@ export function SavedFlightCard({ flights }: { flights: readonly SavedFlight[] }
   // Only past flights saved: nothing to fetch, so nothing to show (as before the feed).
   const today = feed.now === null ? null : dateKey(feed.now);
   if (today !== null && !flights.some((saved) => saved.date >= today)) return null;
-  if (!provider) return feed.status === 'error' ? <FeedNotice feed={feed} /> : <div aria-hidden="true" className="saved-flight-size rounded-lg border border-line-strong bg-surface" />;
+  if (!provider) return feed.status === 'error' ? <FeedNotice feed={feed} /> : <div aria-hidden="true" className="saved-flight-size rounded-2xl border border-[rgb(255_255_255/0.4)] bg-surface shadow-lg" />;
   if (!picked) return null;
 
   const { flight, others } = picked;
@@ -80,7 +80,7 @@ export function SavedFlightCard({ flights }: { flights: readonly SavedFlight[] }
   return (
     <section
       aria-labelledby="saved-flight-title"
-      className="saved-flight-size flex flex-col gap-2 rounded-lg border border-ink bg-surface px-3 py-2.5 shadow-sm sm:px-4 sm:py-3"
+      className="saved-flight-size flex flex-col gap-2 rounded-2xl border border-[rgb(255_255_255/0.4)] bg-surface px-3 py-2.5 shadow-lg sm:px-4 sm:py-3"
     >
       <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
         <h2 id="saved-flight-title" className="type-eyebrow flex items-center gap-1.5 text-ink-2">

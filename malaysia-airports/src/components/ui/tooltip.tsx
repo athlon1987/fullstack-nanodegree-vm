@@ -112,7 +112,7 @@ export function Tooltip({ content, side = 'top', children }: TooltipProps) {
           id={id}
           role="tooltip"
           style={{ position: 'fixed', top: 0, left: 0, visibility: 'hidden' }}
-          className="type-caption z-50 max-w-64 animate-fade-in rounded-sm border border-transparent bg-inverse px-2.5 py-1.5 font-medium text-on-inverse shadow-md"
+          className="type-caption z-50 max-w-64 animate-fade-in rounded-md border border-transparent bg-inverse px-3 py-1.5 font-medium text-on-inverse shadow-lg"
           onPointerEnter={clear}
           onPointerLeave={() => hide(CLOSE_DELAY_MS)}
         >

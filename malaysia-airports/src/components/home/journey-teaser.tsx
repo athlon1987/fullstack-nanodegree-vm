@@ -110,7 +110,7 @@ export function JourneyTeaser({ facts, arrival, fallback }: JourneyTeaserProps) 
   };
 
   return (
-    <div className="overflow-hidden rounded-lg border border-line-strong bg-surface shadow-sm">
+    <div className="overflow-hidden rounded-3xl bg-surface shadow-lg ring-1 ring-line">
       <div className="flex min-h-18 flex-wrap items-center justify-between gap-x-5 gap-y-2 border-b border-line bg-page-subtle px-5 py-4 sm:px-6">
         <div className="min-w-0">
           <p className="type-eyebrow flex flex-wrap items-center gap-2 text-ink-2">

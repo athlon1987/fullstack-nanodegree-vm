@@ -206,6 +206,7 @@ export function ConciergeChat({ variant, initialQuestion, toolbarEnd }: Concierg
   const formRef = useRef<HTMLFormElement>(null);
   const focusInput = () => formRef.current?.querySelector('input')?.focus();
   const logRef = useRef<HTMLOListElement>(null);
+  const privacyRef = useRef<HTMLDivElement>(null);
   const askedInitial = useRef<string | null>(null);
   const pendingInitial = useRef<string | null>(initialQuestion ?? null);
 
@@ -220,7 +221,14 @@ export function ConciergeChat({ variant, initialQuestion, toolbarEnd }: Concierg
         // The answer's start comes into view; the composer stays on screen (sticky on the page,
         // inside the panel's own scroll area), so the focused field never leaves the viewport.
         const element = logRef.current?.querySelector<HTMLElement>(`[data-turn="${turn.id}"]`);
-        element?.scrollIntoView({ block: 'start', behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+        // On the page, the first answer brings the privacy line above it into view with it.
+        // Scrolled to the turn alone, that line's button was left half under the sticky header
+        // (a partly hidden target: axe target-size on every phone run after the redesigned
+        // header, round seven). Not when the line is tall (the opt-in form open).
+        const privacy = privacyRef.current;
+        const first = variant === 'page' && element !== null && element === logRef.current?.firstElementChild;
+        const target = first && privacy && privacy.getBoundingClientRect().height < window.innerHeight / 3 ? privacy : element;
+        target?.scrollIntoView({ block: 'start', behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
       }
     });
   };
@@ -381,7 +389,7 @@ export function ConciergeChat({ variant, initialQuestion, toolbarEnd }: Concierg
 
       {/* In the panel the conversation scrolls on its own, so the question field stays in view. */}
       <div className={cn('flex flex-col gap-8', variant === 'panel' && '-mx-1 min-h-0 flex-1 overflow-y-auto overscroll-contain px-1 pb-2')}>
-        <div className="flex flex-col gap-4">
+        <div ref={privacyRef} className="flex flex-col gap-4">
           <PrivacyNotice consent={consent} expanded={optIn !== null} onTurnOn={() => setOptIn((value) => (value ? null : 'service'))} onTurnOff={turnOff} />
           {optIn && !consent ? <Consent onAccept={acceptOptIn} onDecline={() => setOptIn(null)} /> : null}
         </div>

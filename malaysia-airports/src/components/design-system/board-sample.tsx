@@ -1,17 +1,27 @@
 import { AIRPORTS, getAirport } from '@/content/airports';
 import type { Lang } from '@/content/types';
 import { cn } from '@/lib/cn';
-import { formatFlightNumber } from '@/lib/flights';
+import { flightStatusLabel, flightStatusMeta, formatFlightNumber, type FlightStatus } from '@/lib/flights';
 import type { Translator } from '@/lib/i18n/translate';
 import { boardWindow, createDemoProvider } from '@/lib/providers';
 import { formatDate, formatTime } from '@/lib/time';
 import { WeaveTexture } from '@/components/art/patterns';
 import { AirportCode } from '@/components/common/airport-code';
 import { DemoDataBanner } from '@/components/common/demo-data-banner';
-import { FlightStatusChip } from '@/components/common/flight-status-chip';
 import { Freshness } from '@/components/common/freshness';
 import { TerminalBadge } from '@/components/common/terminal-badge';
+import { StatusPill, flightStatusPill } from '@/components/ui/status-pill';
 import { Table, TableScroll, TBody, Td, Th, THead, Tr } from '@/components/ui/table';
+
+/** Direction v2 preview: the board's status as a StatusPill (the live board still uses FlightStatusChip). */
+function BoardStatus({ status, lang, size = 'md' }: { status: FlightStatus; lang: Lang; size?: 'sm' | 'md' }) {
+  const pill = flightStatusPill(status);
+  return (
+    <StatusPill tone={pill.tone} variant={pill.variant} size={size} icon={flightStatusMeta(status).icon}>
+      {flightStatusLabel(status, lang)}
+    </StatusPill>
+  );
+}
 
 /**
  * A fixed instant, so this server-rendered specimen is deterministic (Server Components never
@@ -43,7 +53,7 @@ export function BoardSample({ t, lang }: { t: Translator; lang: Lang }) {
   return (
     <div>
       <DemoDataBanner attached />
-      <div className="surface-board @container relative overflow-hidden rounded-b-lg border border-t-0 border-line">
+      <div className="surface-board @container relative overflow-hidden rounded-b-xl border border-t-0 border-line">
         <WeaveTexture className="absolute right-0 bottom-0 h-14 w-2/5 max-sm:hidden" />
         <div className="relative flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-b border-line px-4 py-4 sm:px-5">
           <div>
@@ -89,7 +99,7 @@ export function BoardSample({ t, lang }: { t: Translator; lang: Lang }) {
                       <TerminalBadge terminal={flight.terminal} size="sm" />
                       {gateOf(flight.gate)}
                     </span>
-                    <FlightStatusChip status={flight.status} size="sm" />
+                    <BoardStatus status={flight.status} lang={lang} size="sm" />
                   </div>
                 </div>
               </li>
@@ -141,7 +151,7 @@ export function BoardSample({ t, lang }: { t: Translator; lang: Lang }) {
                       </span>
                     </Td>
                     <Td>
-                      <FlightStatusChip status={flight.status} />
+                      <BoardStatus status={flight.status} lang={lang} />
                     </Td>
                   </Tr>
                 );

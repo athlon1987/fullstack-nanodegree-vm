@@ -44,7 +44,7 @@ export function TimelineItem({ state = 'upcoming', stateLabel, time, eyebrow, ti
         aria-hidden="true"
         className={cn(
           'absolute top-7 bottom-1 left-[0.71875rem] w-px group-last/step:hidden',
-          state === 'done' || state === 'past' ? 'bg-ink-3' : 'border-l border-dashed border-line-control',
+          state === 'done' || state === 'past' ? 'bg-ink-3' : 'border-l-2 border-dotted border-line-control',
         )}
       />
       <span
@@ -52,7 +52,7 @@ export function TimelineItem({ state = 'upcoming', stateLabel, time, eyebrow, ti
         className={cn(
           'relative mt-0.5 flex size-6 items-center justify-center rounded-full border',
           state === 'done' && 'border-ink bg-ink text-page',
-          state === 'current' && 'border-2 border-ink bg-surface',
+          state === 'current' && 'border-2 border-ink bg-surface ring-4 ring-primary-soft',
           state === 'upcoming' && 'border-line-control bg-surface',
           state === 'past' && 'border-ink-3 bg-surface',
         )}

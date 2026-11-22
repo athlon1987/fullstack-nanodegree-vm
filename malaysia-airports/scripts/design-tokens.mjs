@@ -41,6 +41,15 @@ const boardOverrides = block('board');
 const hcLight = block('hc-light');
 const hcDark = block('hc-dark');
 const hcBoard = block('hc-board');
+// Direction v2 (design-system lead, redesign round 1): the over-media scope and the glass and
+// scrim alphas, so text over photographs is measured against its worst case.
+const mediaOverrides = block('media');
+const alpha = (name) => {
+  const match = css.match(new RegExp(`--${name}:\\s*([0-9.]+)%`));
+  if (!match) throw new Error(`Alpha not found: --${name}`);
+  return Number(match[1]) / 100;
+};
+const ALPHAS = { glass: alpha('glass-light-alpha'), glassDark: alpha('glass-dark-alpha'), scrim: alpha('scrim-text-alpha') };
 
 const drift = Object.keys({ ...darkOverrides, ...fallback }).filter((key) => darkOverrides[key] !== fallback[key]);
 
@@ -55,7 +64,23 @@ const THEMES = {
     label: 'High contrast, board',
     tokens: { ...light, ...hcLight, ...darkOverrides, ...boardOverrides, ...hcDark, ...hcBoard },
   },
+  media: { label: 'Over media', tokens: { ...light, ...darkOverrides, ...mediaOverrides } },
+  'hc-media': { label: 'High contrast, over media', tokens: { ...light, ...hcLight, ...darkOverrides, ...mediaOverrides, ...hcDark } },
 };
+
+/** `fg` at `opacity` over `bg`, as a hex colour (alpha compositing in sRGB, as browsers paint). */
+function composite(fg, opacity, bg) {
+  const channel = (hex, index) => parseInt(hex.slice(index, index + 2), 16);
+  return `#${[1, 3, 5].map((index) => Math.round(channel(fg, index) * opacity + channel(bg, index) * (1 - opacity)).toString(16).padStart(2, '0')).join('')}`;
+}
+// Worst cases for text over photographs: each glass or scrim composited on pure white and pure black.
+for (const theme of Object.values(THEMES)) {
+  const tokens = theme.tokens;
+  tokens['glass@white'] = composite(tokens.surface, ALPHAS.glass, '#ffffff');
+  tokens['glass@black'] = composite(tokens.surface, ALPHAS.glass, '#000000');
+  tokens['glass-dark@white'] = composite(tokens['glass-dark'], ALPHAS.glassDark, '#ffffff');
+  tokens['scrim@white'] = composite(tokens.scrim, ALPHAS.scrim, '#ffffff');
+}
 
 function luminance(hex) {
   const channel = (index) => {
@@ -86,6 +111,19 @@ for (const bg of ['page', 'page-subtle', 'surface', 'surface-raised', 'primary-s
 add('brand', 'on-primary', 'primary', 'text');
 add('brand', 'on-primary', 'primary-hover', 'text');
 for (const bg of ['page', 'surface']) add('brand', 'primary', bg, 'ui', 'button fill against its surroundings');
+add('brand', 'on-gold', 'gold', 'text', 'gold button label');
+add('brand', 'on-gold', 'gold-hover', 'text');
+for (const bg of ['fill', 'fill-hover']) {
+  add('surfaces', 'ink', bg, 'text', 'secondary button, track');
+  add('surfaces', 'ink-2', bg, 'text');
+}
+add('surfaces', 'ink', 'ivory', 'text');
+add('surfaces', 'ink-2', 'ivory', 'text');
+for (const bg of ['midnight', 'midnight-2']) {
+  add('surfaces', 'on-midnight', bg, 'text');
+  add('surfaces', 'on-midnight-dim', bg, 'text');
+  add('surfaces', 'gold-bright', bg, 'text');
+}
 add('surfaces', 'on-inverse', 'inverse', 'text');
 add('surfaces', 'on-inverse-dim', 'inverse', 'text');
 for (const bg of ['page', 'page-subtle', 'surface', 'gold-soft']) add('accents', 'gold-ink', bg, 'text');
@@ -113,6 +151,23 @@ for (const tone of PROVENANCE) {
   }
 }
 add('provenance', 'official-bg', 'page', 'ui', 'solid tag against the page');
+for (const tone of ['scheduled', 'ontime', 'boarding', 'delayed', 'cancelled', 'landed', 'departed']) {
+  add('flight', `flight-${tone}-fg`, `flight-${tone}-bg`, 'text', 'soft pill');
+  add('flight', `flight-${tone}-fg`, 'page', 'text');
+  add('flight', `flight-${tone}-fg`, 'surface', 'text');
+  add('flight', `flight-${tone}-on`, `flight-${tone}-solid`, 'text', 'solid pill');
+}
+// Glass that follows the theme: ink and ink-2 (ink-3 is raised to ink-2 inside glass).
+for (const bg of ['glass@white', 'glass@black']) {
+  add('glass', 'ink', bg, 'text', 'theme glass over a white or black photograph');
+  add('glass', 'ink-2', bg, 'text');
+}
+// Over photographs: white and dim text, gold and focus on the dark glass and the scrim text zone.
+for (const bg of ['glass-dark@white', 'scrim@white']) {
+  add('media', 'on-midnight', bg, 'text', 'worst case: a pure white photograph behind');
+  add('media', 'on-midnight-dim', bg, 'text');
+  add('media', 'gold-bright', bg, 'ui', 'large text and icons only');
+}
 for (const bg of ['board', 'board-raised']) {
   add('board', 'board-ink', bg, 'text');
   add('board', 'board-dim', bg, 'text');

@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { getT } from '@/lib/i18n';
-import { RebungRule } from '@/components/art/patterns';
 import { Wordmark } from '@/components/art/wordmark';
 import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
@@ -17,16 +16,16 @@ export function NotFoundContent() {
   const ms = getT('ms');
   return (
     <>
-      <header className="border-b border-line">
+      <header className="on-media border-b border-[rgb(255_255_255/0.1)] bg-midnight text-ink">
         <Container className="flex h-header items-center justify-between gap-4">
           <Link href="/en" className="rounded-sm">
             <Wordmark name={en('common.appName')} />
           </Link>
           <nav aria-label={en('nav.languageLabel')} className="hidden items-center gap-1 sm:flex">
-            <Link href="/en" hrefLang="en" className="type-body-sm link-action rounded-sm px-2 font-semibold text-ink-2 hover:text-ink">
+            <Link href="/en" hrefLang="en" className="type-body-sm link-action rounded-pill px-2 font-semibold text-ink-2 hover:text-ink">
               {en('nav.switchToEnglish')}
             </Link>
-            <Link href="/ms" hrefLang="ms" lang="ms" className="type-body-sm link-action rounded-sm px-2 font-semibold text-ink-2 hover:text-ink">
+            <Link href="/ms" hrefLang="ms" lang="ms" className="type-body-sm link-action rounded-pill px-2 font-semibold text-ink-2 hover:text-ink">
               {ms('nav.switchToMalay')}
             </Link>
           </nav>
@@ -36,12 +35,12 @@ export function NotFoundContent() {
       <main id="main" className="relative flex flex-1 flex-col justify-center overflow-hidden py-16 sm:py-24">
         <span aria-hidden="true" className="pattern-tabur-fade absolute inset-y-0 right-0 hidden w-1/3 text-gold opacity-40 lg:block" />
         <Container size="narrow" className="relative">
-          <p className="type-data-lg text-ink-3">404</p>
+          <p className="type-data-xl text-gold-ink">404</p>
           <h1 className="type-display-xl mt-3 text-ink">{en('errors.notFoundTitle')}</h1>
           <p lang="ms" className="type-display-sm mt-3 font-display text-ink-2 italic">
             {ms('errors.notFoundTitle')}
           </p>
-          <RebungRule className="mt-7 max-w-40" />
+          <span aria-hidden="true" className="rule-gold mt-7 block max-w-40" />
 
           <div className="mt-7 grid gap-x-10 gap-y-4 md:grid-cols-2">
             <p className="type-body-lg text-ink-2">{en('platformPages.notFound.lead')}</p>
@@ -101,7 +100,7 @@ export function NotFoundContent() {
         </Container>
       </main>
 
-      <footer className="border-t border-line bg-page-subtle">
+      <footer className="on-media bg-midnight text-ink">
         <Container className="type-caption py-5 text-ink-2">{en('footer.disclaimer')}</Container>
       </footer>
     </>

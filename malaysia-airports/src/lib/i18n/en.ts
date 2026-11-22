@@ -19,6 +19,7 @@ import { guidePagesEn } from './features/guides';
 import { conciergePageEn } from './features/concierge';
 import { corporatePagesEn } from './features/corporate';
 import { platformPagesEn } from './features/platform';
+import { creditsPagesEn } from './features/credits';
 
 export const en = {
   common: {
@@ -746,6 +747,8 @@ export const en = {
       contactsNote: 'Group contacts published by Malaysia Airports. They are not lines to a specific airport.',
       backToTop: 'Back to top',
       helpCentre: 'Help centre',
+      // Visual redesign, round one: the credits page for the site's photographs.
+      photoCredits: 'Photo credits',
     },
   },
   home: {
@@ -874,6 +877,17 @@ export const en = {
       preview: 'Preview',
       previewNote: 'An example answer, built from the same verified content the concierge uses.',
       sampleQuestion: 'Where are the C gates at KLIA Terminal 1?',
+    },
+    // Visual redesign, round one (home): the board intro and the destinations rail.
+    v2: {
+      boardTitle: 'The next flights, at a glance',
+      // Redesign round one (critique item 5): the glance panel on the home hero.
+      departingNow: 'Departing now',
+      arrivingNow: 'Arriving now',
+      boardLead: 'Times, gates and status for the next flights. The board follows your airport and what you are doing today.',
+      discoverTitle: 'Discover Malaysia',
+      discoverLead: 'Islands, rainforest and mountain air: each airport opens a different Malaysia. Choose one and the whole site follows.',
+      gatewaysTitle: 'Gateways to Kuala Lumpur',
     },
   },
   airportsPage: {
@@ -1054,6 +1068,8 @@ export const en = {
   conciergePage: conciergePageEn,
   corporatePages: corporatePagesEn,
   platformPages: platformPagesEn,
+  // Visual redesign: the photo credits page (server only, see SCOPED_NAMESPACES).
+  creditsPages: creditsPagesEn,
   // Round 6 (third review 9.1 item 5, package ask): copy for the search documents only. Built on
   // the server (`src/lib/search/documents.ts`) and never sent with the root dictionary
   // (`SCOPED_NAMESPACES`), so it adds nothing to every page's HTML.

@@ -3,16 +3,17 @@
 import { memo } from 'react';
 import { getAirport, localizeAirport } from '@/content/airports';
 import { cn } from '@/lib/cn';
+import { Icon } from '@/components/ui/icon';
 import { formatFlightNumber, placeCity, remotePlace, type Flight } from '@/lib/flights';
 import { useT } from '@/lib/i18n/client';
 import { dateKey, formatDate, formatTime, shiftDateKey, type Instant } from '@/lib/time';
 import type { Translator } from '@/lib/i18n/translate';
 import { AirportCode } from '@/components/common/airport-code';
-import { FlightStatusChip } from '@/components/common/flight-status-chip';
 import { LocaleLink } from '@/components/common/locale-link';
 import { TerminalBadge } from '@/components/common/terminal-badge';
 import { IconButton } from '@/components/ui/icon-button';
 import { Td, Tr } from '@/components/ui/table';
+import { AirlineBadge, FlightStatusPill } from './flight-status-pill';
 
 /**
  * The day of the time a row shows, when it is not today at the airport: "Tomorrow", "Yesterday"
@@ -111,6 +112,8 @@ function FlightRowView({ flight, layout = 'card', showAirport = false, onNavigat
   );
 
   if (layout === 'table') {
+    // Redesign round one: the airline's code badge with the flight number, the place in large
+    // type, the gate with its terminal, and a colour status pill (icon and words always).
     return (
       <Tr muted={cancelled} className={className}>
         <Td mono className="whitespace-nowrap">
@@ -130,17 +133,21 @@ function FlightRowView({ flight, layout = 'card', showAirport = false, onNavigat
           <span className="sr-only">{timeWordsWithDay}</span>
         </Td>
         <Td mono className="whitespace-nowrap">
-          <LocaleLink
-            href={flightHref(flight)}
-            aria-label={linkLabel}
-            onClick={onNavigate}
-            className="rounded-xs underline decoration-line-control decoration-1 underline-offset-4 hover:decoration-current hover:decoration-2"
-          >
-            {number}
-          </LocaleLink>
+          <span className="inline-flex items-center gap-2.5">
+            <AirlineBadge code={flight.airline.code} />
+            <LocaleLink
+              href={flightHref(flight)}
+              aria-label={linkLabel}
+              onClick={onNavigate}
+              className="group/num inline-flex items-center gap-1 rounded-xs font-semibold underline decoration-transparent decoration-1 underline-offset-4 hover:decoration-current"
+            >
+              {number}
+              <Icon name="chevron-right" size="xs" strokeWidth={2} className="text-ink-3 transition-transform duration-fast group-hover/num:translate-x-0.5 motion-reduce:transition-none" />
+            </LocaleLink>
+          </span>
         </Td>
         <Td className="whitespace-nowrap">
-          <span className={cn('font-semibold', cancelled && 'line-through')}>{place.city}</span>{' '}
+          <span className={cn('type-title-md', cancelled && 'line-through')}>{place.city}</span>{' '}
           <AirportCode code={place.code} size="sm" className="ml-1 text-ink-2" />
         </Td>
         <Td className="text-ink-2">{flight.airline.name}</Td>
@@ -152,32 +159,32 @@ function FlightRowView({ flight, layout = 'card', showAirport = false, onNavigat
         <Td mono className="whitespace-nowrap">
           <span className="inline-flex items-center gap-2">
             <TerminalBadge terminal={flight.terminal} size="sm" />
-            {standValue}
+            <span className="type-data-lg">{standValue}</span>
           </span>
         </Td>
         <Td>
-          <FlightStatusChip status={flight.status} />
+          <FlightStatusPill status={flight.status} size="md" />
         </Td>
         {saveButton ? <Td className="w-px">{saveButton}</Td> : null}
       </Tr>
     );
   }
 
+  // Phones and narrow boards: one card per flight.
+  // Redesign round one (critique item 9): a fixed two-row grid, about 76 px instead of 120 to 150.
+  // [time | city and code ... status pill pinned right], [day or old time | flight · airline
+  // (the airline truncates first) ... terminal and gate, save]. The pill no longer drops to a
+  // second line for long city names, so the status column does not zig-zag.
   return (
     <li
       className={cn(
-        'relative flex gap-3 border-b border-line px-4 py-3 transition-colors duration-fast last:border-b-0 hover:bg-page-subtle has-[a:focus-visible]:focus-ring-inset sm:px-5',
+        'relative grid grid-cols-[3.75rem_minmax(0,1fr)] gap-x-2.5 gap-y-0.5 rounded-xl border border-line bg-surface px-3.5 py-2 transition-[border-color,background-color,box-shadow,translate] duration-fast hover:border-line-strong hover:bg-surface-raised has-[a:focus-visible]:focus-ring motion-ok:hover:-translate-y-px sm:px-4',
         cancelled && 'text-ink-3',
         className,
       )}
     >
-      <p className="flex w-[4.25rem] shrink-0 flex-col">
+      <p className="row-span-2 flex flex-col pt-0.5">
         <span className="sr-only">{timeWordsWithDay}</span>
-        {moved && !cancelled ? (
-          <s aria-hidden="true" className="type-data-sm text-ink-2">
-            {formatTime(flight.scheduled)}
-          </s>
-        ) : null}
         {cancelled ? (
           <s aria-hidden="true" className="type-data-lg">
             {formatTime(flight.scheduled)}
@@ -187,39 +194,59 @@ function FlightRowView({ flight, layout = 'card', showAirport = false, onNavigat
             {formatTime(moved ? flight.estimated : flight.scheduled)}
           </span>
         )}
+        {moved && !cancelled ? (
+          <s aria-hidden="true" className="type-data-sm mt-0.5 text-ink-2">
+            {formatTime(flight.scheduled)}
+          </s>
+        ) : null}
         {dayMark}
       </p>
-      <div className="flex min-w-0 flex-1 flex-wrap items-center justify-between gap-x-5 gap-y-2">
-        <div className="min-w-0 grow basis-52">
-          <p className="type-title-sm">
-            <LocaleLink
-              href={flightHref(flight)}
-              aria-label={linkLabel}
-              onClick={onNavigate}
-              className={cn('outline-none after:absolute after:inset-0', cancelled && 'line-through')}
-            >
-              {place.city}
-            </LocaleLink>{' '}
-            <AirportCode code={place.code} size="sm" className="ml-1 text-ink-2" />
-          </p>
-          <p className="type-data-sm mt-0.5 text-ink-2">
-            {number} <span aria-hidden="true">·</span> <span className="font-sans">{flight.airline.name}</span>
-          </p>
-        </div>
-        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 @max-lg:basis-full">
-          <span className="type-data-md inline-flex flex-wrap items-center gap-x-3 gap-y-1">
+      {/* Each line keeps room for its fixed parts (the code; the airline badge and flight number) and
+          wraps instead of overlapping: when the pill or the gate block does not fit beside them (a
+          360 px phone, or 125% text), it moves to the next line, right-aligned. At 390 px with
+          normal text both lines stay as designed. */}
+      <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
+        <p className="type-title-md flex min-w-[4.5rem] flex-1 items-baseline gap-1.5 leading-snug">
+          <LocaleLink
+            href={flightHref(flight)}
+            aria-label={linkLabel}
+            onClick={onNavigate}
+            className={cn('min-w-0 truncate outline-none after:absolute after:inset-0 after:rounded-xl', cancelled && 'line-through')}
+          >
+            {place.city}
+          </LocaleLink>
+          <AirportCode code={place.code} size="sm" className="shrink-0 text-ink-2" />
+        </p>
+        {/* Alone on its line and still wider than it (320 px, large text), the label wraps. */}
+        <FlightStatusPill status={flight.status} className="ml-auto h-auto min-h-6 max-w-full shrink-0 py-0.5 whitespace-normal" />
+      </div>
+      {/* Three items: the badge and flight number (never shrink), the airline with its dot (no width
+          of its own, `w-0 grow`: it fills what is left and truncates first), and the gate block
+          with the save button (moves to the next line, right-aligned, when it does not fit). */}
+      <div className="flex min-w-0 flex-wrap items-center gap-y-1">
+        <p className="type-body-sm inline-flex shrink-0 items-center gap-1.5 text-ink-2">
+          <AirlineBadge code={flight.airline.code} size="sm" />
+          <span className="font-mono tabular-nums">{number}</span>
+        </p>
+        <span className="type-body-sm w-0 min-w-0 grow truncate text-ink-2">
+          <span aria-hidden="true" className="mx-1.5">
+            ·
+          </span>
+          {flight.airline.name}
+        </span>
+        <span className="ml-auto inline-flex max-w-full shrink-0 flex-wrap items-center justify-end gap-x-2 gap-y-1 pl-2">
+          <span className="type-data-md inline-flex flex-wrap items-center justify-end gap-x-2 gap-y-1">
             {boardAirport ? <AirportCode code={boardAirport.code} name={boardAirport.name} size="sm" variant="boxed" /> : null}
             <span className="inline-flex items-center gap-1.5">
               <TerminalBadge terminal={flight.terminal} size="sm" />
               {/* Visible on cards: a bare "2" next to an airport code does not say it is a gate. */}
               <span className="type-caption font-sans text-ink-2">{standLabel}</span>
-              {standValue}
+              <span className="font-semibold">{standValue}</span>
             </span>
           </span>
-          <FlightStatusChip status={flight.status} size="sm" />
-        </div>
+          {saveButton ? <span className="-my-2 -mr-1.5 flex shrink-0 items-center sm:-mr-2">{saveButton}</span> : null}
+        </span>
       </div>
-      {saveButton ? <div className="-mr-1.5 flex items-center sm:-mr-2">{saveButton}</div> : null}
     </li>
   );
 }

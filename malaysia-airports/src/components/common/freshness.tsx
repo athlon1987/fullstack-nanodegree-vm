@@ -31,14 +31,14 @@ export interface FreshnessProps {
 export function Freshness({ updatedAt, refreshSeconds, intervalClassName, context, live = 'polite', className }: FreshnessProps) {
   const t = useT();
   return (
-    <p className={cn('type-data-sm flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 text-ink-2', className)}>
+    <p className={cn('type-caption flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 text-ink-2', className)}>
       {context ? <span className="text-ink">{context}</span> : null}
       <span className="inline-flex items-center gap-1.5" role={live === 'polite' ? 'status' : undefined} aria-live={live} aria-atomic="true">
         <Icon name="refresh-cw" size="xs" strokeWidth={2} />
         {updatedAt === null ? (
           <span>{t('common.labels.loading')}</span>
         ) : (
-          <time dateTime={toIsoWithOffset(updatedAt)} className="text-ink">
+          <time dateTime={toIsoWithOffset(updatedAt)} className="text-ink tabular-nums">
             {t('freshness.updated', { time: formatTime(updatedAt) })}
           </time>
         )}

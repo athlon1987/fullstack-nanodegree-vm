@@ -1,0 +1,278 @@
+{
+ "key": "en-airports",
+ "url": "http://localhost:3101/en/airports",
+ "preset": "mobile (Lighthouse default)",
+ "profile": null,
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-22T18:06:10.476Z",
+ "median": {
+  "performance": 97,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1368,
+  "lcp_ms": 1368,
+  "tbt_ms": 190,
+  "cls": 0,
+  "si_ms": 1368,
+  "totalBytes": 974441,
+  "requests": 45
+ },
+ "a11yFailures": [],
+ "rows": [
+  {
+   "finalUrl": "/en/airports",
+   "runtimeError": null,
+   "performance": 96,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1373,
+   "lcp_ms": 1373,
+   "tbt_ms": 221,
+   "cls": 0,
+   "si_ms": 1373,
+   "totalBytes": 979335,
+   "requests": 47,
+   "benchmarkIndex": 2510,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en/airports",
+   "runtimeError": null,
+   "performance": 98,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1363,
+   "lcp_ms": 1363,
+   "tbt_ms": 151,
+   "cls": 0,
+   "si_ms": 1363,
+   "totalBytes": 974441,
+   "requests": 45,
+   "benchmarkIndex": 2500.5,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en/airports",
+   "runtimeError": null,
+   "performance": 97,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1368,
+   "lcp_ms": 1368,
+   "tbt_ms": 190,
+   "cls": 0,
+   "si_ms": 1368,
+   "totalBytes": 974441,
+   "requests": 45,
+   "benchmarkIndex": 2455.5,
+   "a11yFailures": []
+  }
+ ],
+ "medianRunIndex": 2,
+ "diagnostics": {
+  "observed": {
+   "fcp": 194,
+   "lcp": 194,
+   "dcl": 316,
+   "load": 324
+  },
+  "lcpElement": {
+   "selector": "div.mx-auto > div.grid > div.min-w-0 > p.type-body-lg",
+   "label": "All 39 airports that Malaysia Airports operates in Malaysia, grouped the way th…"
+  },
+  "lcpPhases": {
+   "timeToFirstByte": 13,
+   "elementRenderDelay": 182
+  },
+  "renderBlocking": [
+   {
+    "url": "/_next/static/chunks/1ehse3l2pyqk4.css",
+    "bytes": 31733,
+    "ms": 459
+   },
+   {
+    "url": "/_next/static/chunks/15hzgv72ioqav.css",
+    "bytes": 2364,
+    "ms": 159
+   }
+  ],
+  "longTasks": [
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "start": 4086,
+    "dur": 180
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4343,
+    "dur": 167
+   },
+   {
+    "url": "/en/airports",
+    "start": 1049,
+    "dur": 153
+   },
+   {
+    "url": "Unattributable",
+    "start": 909,
+    "dur": 93
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4510,
+    "dur": 80
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4266,
+    "dur": 77
+   },
+   {
+    "url": "/en/airports",
+    "start": 1271,
+    "dur": 50
+   }
+  ],
+  "bootup": [
+   {
+    "url": "/en/airports",
+    "total": 875,
+    "scripting": 34
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "total": 732,
+    "scripting": 577
+   },
+   {
+    "url": "Unattributable",
+    "total": 393,
+    "scripting": 8
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "total": 283,
+    "scripting": 256
+   }
+  ],
+  "mainThread": {
+   "scriptEvaluation": 977,
+   "styleLayout": 576,
+   "other": 549,
+   "scriptParseCompile": 132,
+   "paintCompositeRender": 111,
+   "parseHTML": 101,
+   "garbageCollection": 42
+  },
+  "resources": {
+   "total": {
+    "n": 40,
+    "bytes": 974441
+   },
+   "image": {
+    "n": 5,
+    "bytes": 397426
+   },
+   "script": {
+    "n": 23,
+    "bytes": 337541
+   },
+   "font": {
+    "n": 3,
+    "bytes": 130216
+   },
+   "document": {
+    "n": 1,
+    "bytes": 44268
+   },
+   "stylesheet": {
+    "n": 2,
+    "bytes": 34097
+   },
+   "other": {
+    "n": 6,
+    "bytes": 30893
+   },
+   "media": {
+    "n": 0,
+    "bytes": 0
+   },
+   "third-party": {
+    "n": 0,
+    "bytes": 0
+   }
+  },
+  "topRequests": [
+   {
+    "url": "/_next/image?url=%2Fimages%2Fprobe%2Fprobe-kch.jpg&w=750&q=75",
+    "type": "Image",
+    "transfer": 82229
+   },
+   {
+    "url": "/_next/image?url=%2Fimages%2Fprobe%2Fprobe-lgk.jpg&w=750&q=75",
+    "type": "Image",
+    "transfer": 81967
+   },
+   {
+    "url": "/_next/image?url=%2Fimages%2Fprobe%2Fprobe-bki.jpg&w=750&q=75",
+    "type": "Image",
+    "transfer": 78165
+   },
+   {
+    "url": "/_next/image?url=%2Fimages%2Fprobe%2Fprobe-pen.jpg&w=750&q=75",
+    "type": "Image",
+    "transfer": 77933
+   },
+   {
+    "url": "/_next/image?url=%2Fimages%2Fprobe%2Fprobe-kul-terminal.jpg&w=750&q=75",
+    "type": "Image",
+    "transfer": 77132
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "type": "Script",
+    "transfer": 73535
+   },
+   {
+    "url": "/_next/static/media/fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+    "type": "Font",
+    "transfer": 68998
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "type": "Script",
+    "transfer": 47500
+   },
+   {
+    "url": "/en/airports",
+    "type": "Document",
+    "transfer": 44268
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "type": "Font",
+    "transfer": 36397
+   }
+  ],
+  "fonts": [
+   {
+    "url": "/_next/static/media/fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+    "transfer": 68998
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/media/geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+    "transfer": 24821
+   }
+  ]
+ },
+ "caveat": "Lab measurement: Lighthouse with simulated (or, with --profile, applied) throttling against a local next start. Indicative only; not field data."
+}

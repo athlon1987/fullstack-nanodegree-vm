@@ -121,6 +121,8 @@ describe('client dictionary (performance-09)', () => {
       home: [/^components\/home\//, /^components\/flights\/flight-search-box\.tsx$/],
       // Round 6: read only by the server-built search documents; no Client Component may read it.
       searchIndex: [],
+      // Visual redesign: the photo credits page is a Server Component; no Client Component may read it.
+      creditsPages: [],
     };
     const offenders: string[] = [];
     const walk = (dir: string) => {

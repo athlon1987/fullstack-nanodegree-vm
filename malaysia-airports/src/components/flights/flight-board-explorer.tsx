@@ -22,6 +22,7 @@ import {
   MAX_EARLIER_STEPS,
   MAX_LATER_STEPS,
   STATUS_GROUPS,
+  WINDOW_STEP_HOURS,
   boardQueryString,
   boardRange,
   countByGroup,
@@ -66,6 +67,9 @@ export interface FlightBoardExplorerProps {
  * render until "Show more". Refreshing can be paused, and waits while a row has focus or the
  * pointer (WCAG 2.2.2).
  */
+/** How many flights a quiet window extends to (critique item 1). */
+const NEXT_FLIGHTS = 12;
+
 export function FlightBoardExplorer({ airport }: FlightBoardExplorerProps) {
   const record = getAirport(airport);
   if (!record) return null;
@@ -114,7 +118,12 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
     }
   }
 
-  const rangeAt = (at: number, dir: FlightDirection) => (searching ? searchRange(at, zone) : boardRange(at, shift.earlier, shift.later, dir));
+  /* Redesign round one (critique item 1): the default view with nothing still to come (a quiet
+     night) extends itself to the next flights instead of opening on an empty board. */
+  const quietDefault = !searching && shift.earlier === 0 && shift.later === 0 && params.groups.length === 0;
+  const [reachAhead, setReachAhead] = useState(false);
+  const rangeAt = (at: number, dir: FlightDirection) =>
+    searching ? searchRange(at, zone) : boardRange(at, shift.earlier, quietDefault && reachAhead ? MAX_LATER_STEPS : shift.later, dir);
   const feed = useFlightFeed(
     (at): FeedRequest[] =>
       (['d', 'a'] as const).flatMap((dir) =>
@@ -198,7 +207,21 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
     });
     return searching || shift.earlier > 0 || params.groups.length > 0 ? { shown: list, finished: 0 } : setAsideFinished(list, direction);
   }, [searched, direction, params.groups, searching, shift.earlier]);
-  const shown: Flight[] | null = selected?.shown ?? null;
+  const nextFlights = useMemo(() => {
+    if (!provider || !selected || !range || selected.shown.length > 0 || !quietDefault) return null;
+    const ahead = provider.listFlightsSync({
+      airport: airport.slug,
+      terminal: params.terminal,
+      from: range.to,
+      to: boardRange(provider.now, 0, MAX_LATER_STEPS, direction).to,
+      direction,
+    });
+    const upcoming = setAsideFinished(ahead, direction).shown.slice(0, NEXT_FLIGHTS);
+    return upcoming.length > 0 ? upcoming : null;
+  }, [provider, selected, range, quietDefault, airport.slug, params.terminal, direction]);
+  if (provider && selected && selected.shown.length === 0 && quietDefault && !reachAhead) setReachAhead(true);
+  const extended = nextFlights !== null;
+  const shown: Flight[] | null = nextFlights ?? selected?.shown ?? null;
 
   /* Saved flights at this airport, looked up wherever they sit in time, for the announcer. */
   const savedIds = useMemo(() => new Set(journey.flights.map((flight) => flight.id)), [journey.flights]);
@@ -278,6 +301,8 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
       )
     : searching
       ? t('flightPages.board.searchWindow', { query: query.trim() })
+      : extended && nextFlights
+        ? t.count('flightPages.board.nextWindow', nextFlights.length, { from: formatTime(nextFlights[0].scheduled, zone) })
       : params.terminal
         ? t('flightPages.board.windowTerminal', {
             terminal: terminalLabel(airport, params.terminal, lang),
@@ -296,10 +321,22 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
     </Button>
   );
   const laterButton = (
-    <Button variant="quiet" size="sm" iconStart="arrow-down" onClick={() => setShift((current) => ({ ...current, later: current.later + 1 }))}>
+    <Button
+      variant="quiet"
+      size="sm"
+      iconStart="arrow-down"
+      onClick={() =>
+        setShift((current) => ({
+          ...current,
+          // From the next flights, one step past the last of them (so the board does not shrink).
+          later: extended && nextFlights && range ? Math.min(MAX_LATER_STEPS, Math.ceil((Date.parse(nextFlights[nextFlights.length - 1].scheduled) - range.to.getTime()) / (WINDOW_STEP_HOURS * 3_600_000)) + 1) : current.later + 1,
+        }))
+      }
+    >
       {t('flights.board.later')}
     </Button>
   );
+  const earlierInHeader = !searching && !extended && shift.earlier < MAX_EARLIER_STEPS && (shown?.length ?? 0) > 0;
   const edge = (canMove: boolean, button: ReactNode, limit: string) => (
     <div className="flex justify-center px-4 py-0.5 sm:px-5 sm:py-1.5 lg:py-0.5">{canMove ? button : <p className="type-body-sm py-2 text-ink-2">{limit}</p>}</div>
   );
@@ -428,9 +465,21 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
           refreshSeconds={feed.paused ? undefined : feed.refreshSeconds}
           headerActions={
             provider ? (
-              <Button variant="quiet" size="sm" aria-pressed={userPaused} onClick={togglePause} className="shrink-0">
-                {userPaused ? t('flightPages.feed.resume') : t('flightPages.feed.pause')}
-              </Button>
+              <>
+                {/* Redesign round one: on wide screens "Show earlier flights" sits in this row instead
+                    of a row of its own above the rows, so more flights reach the first screen. */}
+                {earlierInHeader ? (
+                  <span className="mr-1 max-lg:hidden">
+                    {selected && selected.finished > 0 ? (
+                      <span className="sr-only">{t.count(direction === 'd' ? 'flightPages.rows.departedHidden' : 'flightPages.rows.arrivedHidden', selected.finished)}</span>
+                    ) : null}
+                    {earlierButton}
+                  </span>
+                ) : null}
+                <Button variant="quiet" size="sm" aria-pressed={userPaused} onClick={togglePause} className="shrink-0">
+                  {userPaused ? t('flightPages.feed.resume') : t('flightPages.feed.pause')}
+                </Button>
+              </>
             ) : (
               // Round 5: the size of the Pause button, so the header does not grow when it appears.
               <Skeleton className="h-9 w-36 shrink-0 rounded-md touch:h-11" />
@@ -463,8 +512,20 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
           loading={loading}
           savedIds={savedIds}
           onSaveChange={(flight, saved) => (saved ? saveFlight(toSavedFlight(flight, t)) : removeFlight(flight.id))}
+          beforeClassName={earlierInHeader && !extended ? 'lg:hidden' : undefined}
           before={
-            searching ? undefined : (
+            searching ? undefined : extended && range ? (
+              <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-2 sm:px-5">
+                <p className="type-body-sm flex items-center gap-2 text-ink">
+                  <Icon name="moon" size="sm" className="shrink-0 text-board-accent" />
+                  {t(direction === 'd' ? 'flightPages.board.nextTitleDepartures' : 'flightPages.board.nextTitleArrivals', {
+                    from: formatTime(range.from, zone),
+                    to: formatTime(range.to, zone),
+                  })}
+                </p>
+                {earlierButton}
+              </div>
+            ) : (
               <>
                 {/* On phones the note is left to screen readers and "Show earlier flights" stays, so
                   the first row reaches the first 664 px in both languages (A-01, round 2). From sm up
@@ -538,7 +599,8 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
       <TabsTrigger value={value} className="h-12 text-lg lg:h-10">
         <Icon name={value === 'd' ? 'plane-takeoff' : 'plane-landing'} size="sm" />
         {value === 'd' ? t('common.labels.departures') : t('common.labels.arrivals')}
-        {count !== null ? <span className="type-data-sm rounded-xs border border-line-control px-1.5 text-ink-2">{count}</span> : null}
+        {/* The tab's own colour (the selected tab is an ink pill in v2), so the count reads on both. */}
+        {count !== null ? <span className="type-data-sm rounded-pill border border-current px-1.5">{count}</span> : null}
       </TabsTrigger>
     );
   };

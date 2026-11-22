@@ -24,14 +24,14 @@ export function DemoTag({ size = 'sm', className, ...rest }: DemoTagProps) {
     <span
       data-demo-marker=""
       className={cn(
-        'type-caption relative inline-flex shrink-0 items-center overflow-hidden rounded-xs border border-demo-border bg-demo-bg pr-1.5 pl-3 leading-none font-bold whitespace-nowrap text-demo-fg forced-colors:border-[CanvasText]',
+        'type-caption relative inline-flex shrink-0 items-center gap-1.5 overflow-hidden rounded-pill border border-demo-border/70 bg-demo-bg pr-2 pl-1.5 leading-none font-bold whitespace-nowrap text-demo-fg forced-colors:border-[CanvasText]',
         // Round 6 (A-14): the caption size, as on `ProvenanceTag`; a 12 px size of its own was a ninth type size on the home.
         size === 'sm' ? 'h-5' : 'h-6',
         className,
       )}
       {...rest}
     >
-      <span aria-hidden="true" className="hazard-stripes absolute inset-y-0 left-0 w-1.5" />
+      <span aria-hidden="true" className="size-1.5 shrink-0 rounded-full bg-demo-border forced-colors:bg-[CanvasText]" />
       <span aria-hidden="true">{t('provenance.demo.short')}</span>
       <span className="sr-only">{t('provenance.demo.label')}</span>
     </span>

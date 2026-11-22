@@ -1,0 +1,28 @@
+{
+ "en": {
+  "performance": 87,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 69,
+  "fcp_ms": 1365,
+  "lcp_ms": 3847,
+  "tbt_ms": 141,
+  "cls": 0,
+  "si_ms": 1365,
+  "totalBytes": 728648,
+  "requests": 54
+ },
+ "en-kul": {
+  "performance": 89,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1365,
+  "lcp_ms": 3501,
+  "tbt_ms": 143,
+  "cls": 0,
+  "si_ms": 1365,
+  "totalBytes": 694466,
+  "requests": 47
+ }
+}

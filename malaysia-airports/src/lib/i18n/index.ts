@@ -49,6 +49,8 @@ export const SCOPED_NAMESPACES = [
   'home',
   // Round 6 (package ask): copy only the server-built search documents read.
   'searchIndex',
+  // Visual redesign: the photo credits page is a Server Component; no Client Component reads it.
+  'creditsPages',
 ] as const satisfies readonly (keyof Dictionary)[];
 
 /**

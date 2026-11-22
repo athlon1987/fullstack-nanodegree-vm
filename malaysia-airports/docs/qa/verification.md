@@ -1814,3 +1814,330 @@ Files changed in this round: `src/lib/retrying-import.ts` and `src/lib/retrying-
 `src/components/platform/platform-runtime-lazy.tsx` and `src/components/flights/flight-detail.tsx` (G3 items 1 and
 2), `e2e/speed-round5.spec.ts` (two tests added), `scripts/qa/` (three new scripts, four changed, the README),
 `docs/qa/lighthouse-round5/`, and this section.
+
+# Round seven: visual redesign, stage one
+
+Owner: release and verification. Date: 22 to 23 November 2026 (measurements 00:26 to 02:45 Kuala Lumpur time on 23
+November, so the boards were in their night window). Scope: stage one of the visual redesign (design system, photo
+library, shell, home, airport overview, flight board, flight page, My journey, airports directory; logs
+`docs/qa/fixes/redesign1-home.md`, `redesign1-flights.md`, `redesign1-polish.md`, `docs/design/critique-redesign1.md`,
+`docs/design/photography.md` and the design-system and images hand-offs), checked on a production build (`.next`
+deleted, then `NEXT_PUBLIC_SITE_URL=http://localhost:3100 npx next build`, served by
+`TRUSTED_CLIENT_IP_HEADER=x-e2e-client-ip npx next start -p 3100`). Round six's code is in this build; its verification
+was paused before its report (round six's own tests cite its sections as "H"), so this round uses **S** for its
+sections, and this is also the first full run of round six's specs on a production build. Rounds one to five above
+are unchanged.
+
+**Result.** Types, lint, **614 unit tests** (1 skipped by design: the photo library's count test, while the library is
+empty; 8 of 8 clean runs), `npm audit` (0 and 0) and the build (0 warnings, 366 static pages) pass. End to end, the
+delivered build gave **639 passed, 3 failed, 30 skipped of 672**; the final build gives **642 passed, 0 failed, 30
+skipped**, plus 16 of 16 in a new spec. **Three regressions were found and fixed** (S3): the redesigned phone flight
+row painted its pieces over each other and collapsed its flight link to 0 px on a 360 px phone and at 112 to 125%
+text (57 of 72 width, text-size, language and page cases; on the Malay home even at 390 px); the new queue-estimate
+card broke Malay words mid-word at 360 px and 125%; and the redesigned header left the concierge's privacy button half
+covered after the first answer (axe `target-size`, 20 of 20 phone runs). **axe: 0 violations** in every scan of the
+final run, in 16 scans of the style guide (the only page that shows images) and in 80 scans of a probe build with
+test photographs, in light, dark and both high-contrast themes at 390 and 1440 px. Links: **0 broken, 0 missing
+anchors**; canonicals 278 of 278; hreflang now in the head on **278 of 278** (round five 152); `$RC` reveals the `h1`
+on **0 of 278**. **No photograph exists yet**: the library is empty, `public/images` does not exist, no page serves an
+`<img>`, and the credits page says so in both languages. Lighthouse (8 pages, 3 runs): **LCP 2.5 s or less on 8 of 8**
+(1.21 to 1.51 s, text or the first paint in every case), but **0.25 to 0.31 s later than round five on every page**
+(render-blocking CSS 22.6 KB in one file → 31.0 KB plus a separate 2.3 KB font-face file); performance 95 or more on
+6 of 8 (not `/en` 94, the flight page 91); 0 image bytes. **With test photographs in the hero slots (a probe build,
+S2.5), the photograph becomes the LCP element at 3.9 s (home), 4.4 s (KLIA) and 4.2 s (flight page)**, still 3.5 to
+3.9 s with a 10 KB image, and two hero texts fall below their contrast minimum over a bright photograph (the home
+`h1`'s gold line 1.3:1, KLIA's "Find a flight at KLIA" 2.6:1, against 3:1). Neither is shipped today, because no
+photograph is; both must be solved before photographs are added (S5 items 1 and 2).
+
+## S1. Clean-up before the checks
+
+- Nothing from this checkout was running: the process list had no node, Next.js, Playwright or Chromium process. (`ss`
+  is not installed in this container, so the first port check proved nothing on its own; listening ports were then
+  read from `/proc/net/tcp`: nothing on 3100 or 3280 to 3295.) There was no `.next-*` folder, and `tsconfig.json` and
+  `next-env.d.ts` named only `.next` (copies kept in the session scratch folder and compared at the end: identical).
+- `.next` held build `q73mIArNv4R358u47yGGh` (03:05, before the redesign); it was deleted and rebuilt from clean five
+  times: as delivered (`-HHOEickjmbTcvLGLMj-F`), after the first fixes (`gUKPcxYlmQXM2kA2jNlw8`), two intermediate
+  attempts at the flight row (`uXhrj5N4YlHbLou5jcDGd`, `5kAqSFDUnpplxth0Ei5mC`, S3 item 1), and the final build,
+  **`mtoowUsZs-pq4uj8BqLJH`, left in `.next`**.
+- The photo probe (S2.5) built into `.next-photo` and served on port 3101 from a temporarily edited
+  `src/content/images.ts` and five test images in `public/images/probe/`. Afterwards `images.ts` was restored (SHA-256
+  identical to before), `public/images` and `.next-photo` were deleted, and `tsconfig.json` and `next-env.d.ts`, to
+  which Next.js had added `.next-photo` lines, were restored from the start copies (SHA-256 identical).
+- Every server was stopped by its process group. Playwright's output went to the session scratch folder;
+  `test-results/` (an older `.last-run.json`) and the metric file the servers write (`.data/`, git-ignored) were
+  removed at the end. Scripts, logs and screenshots stayed in the session scratch folder.
+- One `git status` ran by mistake inside a longer command line (its output was discarded; it reads the repository and
+  may refresh the index's file-time cache). No other git command was run.
+
+## S2. Results
+
+### S2.1 Static checks, unit tests and build
+
+| Check | Result |
+|---|---|
+| `npx tsc --noEmit` | 0 errors (full check with `--incremental false`, before and after the fixes) |
+| `npx eslint .` | 0 problems (final tree, `scripts/qa/` and the new spec included) |
+| `npx vitest run` | 43 files, **614 passed, 1 skipped**, in **8 of 8** clean runs (5 before the fixes, 3 on the final tree). The skipped test is the photo library's "has a photo for every use the redesign needs", skipped by design while the library is empty. The concierge engine property test the images log reported as flaky passed in all 9 runs (the probe run included). (One run during the photo probe failed 2 tests in `images.test.ts` because of the probe's test entries, as expected; not counted) |
+| `npm audit --omit=dev` / `npm audit` | 0 vulnerabilities / 0 vulnerabilities |
+| `NEXT_PUBLIC_SITE_URL=http://localhost:3100 npx next build` | Succeeds from clean in 42 to 44 s, **0 warnings**, **366 static pages** (round five 363: the route table differs only by `/[lang]/credits`, its two pages and its fallback shell) |
+
+### S2.2 End-to-end and accessibility (production build, desktop 1440x900 and phone Pixel 7 390x844, `--trace off`)
+
+| Run | Build | Clock | Tests | Passed | Failed | Skipped | Notes |
+|---|---|---|---|---|---|---|---|
+| 1 | As delivered | Real, 00:26 to 00:41 | 672 | 639 | **3** | 30 | S3 items 1 to 3 |
+| Repeats | After the first fixes | Real | 30 | 30 | 0 | 0 | The three failing tests, `--repeat-each=5`, both projects |
+| 2 (final) | Final | Real, 01:11 to 01:26 | 672 | **642** | **0** | 30 | 14.9 min, 2 workers |
+| New spec | Final | Pinned (18 Nov 09:40) | 16 | **16** | 0 | 0 | `e2e/verify-round7.spec.ts` (S4), both projects |
+
+- 672 tests against round five's 526: round six's `ask-round6`, `access-round6` and `verify-round6` specs and the
+  redesign's own additions. The 30 skips are all deliberate project-specific ones (desktop-only tests on the phone
+  project and the reverse): round five's 14 plus 16 in round six's specs. No test was skipped for this round.
+- The concierge's "works in Bahasa Malaysia" failure is the element round five recorded once as an intermittent
+  desktop result (G3 item 5); on the delivered redesign it failed **20 of 20** times on the phone (S3 item 3).
+- The two fixes the polish log checked only on its dev server, "access-round6 item 10" (night board CLS at 1440 px, en
+  and ms) and shell A-13 (`/ms/kul` section tabs at 1280 px), **pass on this production build**. So do the shell,
+  smoke and 404 tests the design-system and home logs saw failing under dev-server load.
+- **axe: 0 violations in run 2**: the shared helper at 55 call sites in 14 specs plus 7 local `AxeBuilder` scans,
+  with the shared tags (wcag2a, wcag2aa, wcag21a, wcag21aa, wcag22aa), on both projects.
+- **Text over images** (axe cannot judge text over a picture; it lists such text as "needs review", 39 to 145 nodes
+  per page in this round). A pixel check (`media-contrast.mjs`, session scratch folder) scrolls each image into view, takes the
+  text runs painted above it (visible, not inside a closed `<details>`, not visually hidden), makes all text
+  transparent, and compares each run's colour with every pixel under its line box; pass is a 5th-percentile ratio of
+  4.5 or more (3 for large text). On the final build only the style guide (`/en` and `/ms/design-system`, `noindex`,
+  not in the sitemap) shows images: four generated gradient samples, one of them a white "high-key" field kept as the
+  worst case. **16 scans (light, dark, high-contrast light and dark; 390 and 1440 px; en and ms): axe 0, 53 to 58
+  text runs over images per scan, 0 under the minimum**; lowest 4.85:1 (high-contrast light), 6.2 (light), 7.61
+  (dark), 8.63 (high-contrast dark). The probe build's photographs are in S2.5.
+
+### S2.3 Links, search index, canonicals and `$RC` (`scripts/qa/`; a fresh client address per request)
+
+| Check | Result (final build) |
+|---|---|
+| Static HTML (`crawl-static.py`) | **278 sitemap URLs** (round five 276: the two credits pages), 440 pages, **1,178 unique links, 0 broken, 0 missing anchors, 0 redirected, 0 pages not 200** |
+| Search index (`search-index.mjs`) | **470 documents** (round five 446), 318 pages, 172 anchors, **0 broken, 0 missing** |
+| Canonical and hreflang (`canonical.py`, plus the flight page `ak6336-20261123-d` in both languages, `/en/kul/zzz`, `/ms/kul/zzz` and `/en/credits`) | **278 of 278** self-canonical with `en` and `ms` alternates; exactly one canonical `<link>` in the head and in the document, and one per response (one `Link` header) on 278 of 278; the extra paths the same (the 404s answer 404). **Hreflang alternates in the head on 278 of 278** (round five 152; E-14's remaining part, closed by round six) |
+| `$RC` (`rc-scan.py`) | **`h1` in a hidden segment: 0 of 278**; no page without an `h1` in its HTML; 1,270 reveals (3 on 112 pages, up to 10) |
+| Images in the server HTML (`img-scan.py`, session scratch folder) | **0 of 278 pages** carry an `<img>`, a `/_next/image` or `/images/` reference, or an image preload |
+
+### S2.4 Lighthouse mobile (`scripts/qa/lighthouse.mjs --diagnostics`, Lighthouse 13.6, Moto G Power, simulated slow 4G, 4x CPU; 3 runs, median)
+
+Final build, 01:54 to 02:00 Kuala Lumpur time, nothing else running; results in `docs/qa/lighthouse-redesign1/`.
+Before = round five (`docs/qa/lighthouse-round5/`, set 1 / set 2). At this hour the board shows the 02:15 red-eye
+departure and then the next morning's flights (the redesign's night extension). The flight page is AK 6336 on 23
+November (round five: the same flight on 22 November). KB = 1,024 bytes. **Image bytes: 0 on every page.**
+
+| Page | Performance before → now (runs) | LCP before → now; LCP element now | TBT before → now (runs) | CLS | KB before → now | Requests | First-load JS, gzip KB (round five → now) |
+|---|---|---|---|---|---|---|---|
+| `/en` | 95 / 95 → **94** (94/93/94) | 1.09 → **1.37 s**; the `h1` | 257 / 272 → 278 (278/305/270) | 0 | 624 / 607 → 672 | 43 → 44 | 195.7 → 208.7 |
+| `/ms` | 94 / 91 → **98** (92/99/98) | 1.12 → **1.37 s**; the `h1` | 293 / 377 → **167** (349/133/167) | 0 | 625 / 608 → 673 | 43 → 44 | 195.7 → 208.7 |
+| `/en/kul` | 94 / 93 → **96** (96/96/94) | 1.11 → **1.37 s**; the `h1` | 301 / 323 → 217 (202/217/271) | 0 | 621 / 611 → 668 | 44 → 46 | 196.3 → 209.1 |
+| `/en/kul/flights` | 96 / 96 → **97** (95/98/97) | 0.92 → **1.22 s**; first paint | 212 / 242 → **193** (248/180/193) | 0.003 → 0.005 | 587 / 569 → 627 | 41 → 44 | 197.6 → 208.0 |
+| Flight page | 94 / 96 → **91** (89/91/95) | 1.22 → **1.51 s**; the `h1` "AK 6336 to Penang" | 301 / 218 → 359 (422/359/252) | 0.003 → 0 | 674 → 723 | 48 → 51 | 198.3 → 208.7 |
+| `/en/journey` | 99 → **100** (100/100/99) | 0.91 → **1.22 s**; the lead | 126 → **71** (71/65/116) | 0 | 519 → 560 | 35 → 37 | 212.2 → 224.2 |
+| `/en/airports` | not measured → **98** (98/99/96) | **1.22 s**; the lead | **169** (169/134/238) | 0 | 563 | 35 | 170.9 → 182.9 |
+| `/en/credits` (new) | **100** (100/100/100) | **1.21 s**; the lead | **83** (91/69/83) | 0 | 547 | 38 | 170.7 |
+
+- Against the brief: **LCP 2.5 s or less on 8 of 8** (largest 1.51 s); performance 95 or more on **6 of 8** (not `/en`
+  94, the flight page 91); TBT 200 ms or less on **5 of 8** (not `/en` 278, `/en/kul` 217, the flight page 359); CLS
+  0.1 or less on 8 of 8 (largest 0.005). Accessibility 100, best practices 96 and SEO 66 in every run, as in round five.
+- **Every page's LCP is 0.25 to 0.31 s later than in round five.** LCP equals the first paint on every page, and the
+  first paint waits for render-blocking CSS: round five had one stylesheet of 22.6 KB (161 ms of blocking in
+  Lighthouse's estimate); this build has two, the main sheet of 31.0 KB (462 ms) and a new 2.3 KB sheet holding the
+  `next/font` face rules (162 ms). The HTML also grew (`/en` 56.0 → 66.5 KB transferred, the flight page 89.0 → 99.4).
+  Still well inside 2.5 s on this profile; on congested Wi-Fi (E-02, round five 2.57 s on `/en`, not re-measured here)
+  it will be worse.
+- TBT moved both ways within this container's 60 to 100 ms spread (`/ms` and `/en/kul` lower, the flight page higher,
+  its three runs 422/359/252), so no change is attributed to the redesign. The longest tasks are still the
+  framework's chunk (`3iz8_hoapa1o_.js`, 176 to 236 ms) and the HTML document.
+
+### S2.5 Photographs: what is served, the credits page, and a probe with test photographs
+
+**What is served.** `src/content/images.ts` lists 0 photographs (`IMAGE_COUNT` 0); `public/images` does not exist; no
+sitemap page carries an `<img>` (S2.3); the only images on the site are the style guide's four generated gradient
+samples (bundled under `/_next/static/media`, no licence needed, `noindex`). **The credits page lists every image in
+`public/images`, which is none**: `/en/credits` and `/ms/credits` answer 200 with one `h1`, 0 images, and the lead
+"This site does not show any photographs yet. When it does, each one will be listed here with its photographer,
+licence and source." / "Laman ini belum memaparkan sebarang gambar. …"; the footer links to it in both languages.
+The licence rule itself (`ALLOWED_LICENCES`, CC0, public domain, CC BY and CC BY-SA 2.0 to 4.0) is enforced by
+`images.test.ts` on every entry and has nothing to check yet.
+
+**The probe.** To answer "LCP with the hero photographs" and "contrast over photographs" for the real slots, a
+separate build (`.next-photo`, port 3101; S1) registered five photo-like test images (a sky gradient with multi-scale
+noise so they compress like photographs: 2560x1600 JPEG, 887 to 936 KB each, 74 to 79 KB as the 750 px WebP the
+phone profile requests) as the home hero, KLIA's hero (also the flight page's band) and the four destination cards,
+in a dark "dusk" variant and a white "high-key" variant (about 10 KB at 750 px). Nothing of it remains (S1).
+
+| Page (probe) | Performance | LCP (runs) | LCP element | TBT | Image bytes (requests) | Total KB |
+|---|---|---|---|---|---|---|
+| `/en` | 84 (84/85/82) | **3.95 s** (3.95/3.94/3.95) | the hero photograph, preloaded, `fetchPriority="high"` | 207 | 302 KB (5: the hero 75 KB and four destination cards at 640 px, 55 to 58 KB each, though below the fold) | 970 |
+| `/en/kul` | 84 (84/85/83) | **4.39 s** (4.41/4.10/4.39) | KLIA's hero photograph (preloaded) | 132 | 75 KB (1) | 743 |
+| Flight page | 81 (81/82/78) | **4.17 s** (4.17/4.17/4.47) | the band's photograph, behind its 72% veil, not preloaded (load delay 286 ms in the trace) | 250 | 75 KB (1) | 801 |
+| `/en/airports` | 97 (96/98/97) | 1.37 s, the lead (cards below the fold) | text | 190 | 388 KB (5 at 750 px) | 952 |
+| `/en/credits` | 99 (99/100/99) | 1.22 s, the lead | text | 108 | 75 KB (5 thumbnails at 256 px) | 628 |
+| `/en`, high-key images (10 KB hero) | 87 | **3.85 s** (4.25/3.58/3.85) | the hero photograph | 141 | 44 KB (5) | 712 |
+| `/en/kul`, high-key images | 89 | **3.50 s** (3.50/3.47/3.77) | the hero photograph | 143 | 10 KB (1) | 678 |
+
+So **the 2.5 s LCP target is not met once a hero photograph is added** (3.9 to 4.4 s), and image weight is only part of
+it: with a 10 KB image the home is still at 3.85 s and KLIA at 3.50 s. Observed without throttling the photograph
+paints at 250 to 360 ms; under the simulated slow 4G it waits behind the first load's two stylesheets, three preloaded
+fonts (127 KB) and about 370 KB of script. Summaries: `docs/qa/lighthouse-redesign1/photo-probe/` (and `highkey/`);
+their URLs name port 3101, the probe. Lab estimates with synthetic images; to be repeated with the real photographs.
+
+**Contrast over photographs (probe: home, KLIA, the flight page and the directory; light, dark, high-contrast light
+and dark; 390 and 1440 px; 32 scans per variant, the dusk scans of the home and KLIA repeated once the check skipped
+visually hidden text).** axe: **0 violations in all 80 scans** (and 11 to 145 "needs review" text nodes per page,
+which is why the pixel check exists).
+
+| Slot | Dark "dusk" photographs | White "high-key" photographs |
+|---|---|---|
+| Home hero (headline, search card, journey modes, quick-action tiles, notice strip) | 0 runs under the minimum; lowest 4.97:1 (the gold `h1` line, large text) and 6.15 (the search placeholder) | **The `h1`'s gold line "beautifully connected." (`rgb(232, 203, 140)`, large text) at 1.27 to 1.38:1 in all 8 theme and width cases** (3:1 needed); every other run passes: the glass panels and tiles carry their own contrast |
+| KLIA hero (name, code, time, terminal control, "Find a flight at KLIA", the search card) | 0 under; lowest 5.04:1 ("Find a flight at KLIA") | **"Find a flight at KLIA" (white) at 2.58 to 2.65:1 in all 8 cases**; the rest passes |
+| Flight page band (72% veil) | 0 under; lowest 8.4:1 | 0 under; lowest 8.4:1 |
+| Directory photo cards | 0 under; lowest 9.28:1 | 0 under; lowest 8.76:1 |
+
+The scrim behind the home headline is tuned for white text and does not cover the gold line's needs; KLIA's
+"Find a flight" heading sits on the photograph with no scrim of its own. Both pass today because the art behind them
+is dark, as the critique warned ("must be re-measured on each real photo, not assumed from the fill").
+
+### S2.6 First-load JavaScript and CSS (`scripts/qa/first-load-js.mjs`, gzip KB; 40 page routes; framework 128.7)
+
+- Shared shell (the catch-all route minus the framework) 33.0 → **35.8**; the redesigned routes **+8 to +13 KB**: home
+  195.7 → 208.7, overview 196.3 → 209.1, board 197.6 → 208.0, flight page 198.3 → 208.7, My journey 212.2 → **224.2**
+  (the largest), directory 170.9 → 182.9; airport section pages +8 to +9; other pages +2.5 to +3.5.
+- At 170 or less (content and guidance target): **15 of 40** (round five 18 of 39); over 250: 0; the home's budget of
+  250 holds. The final build's fixes changed these by 0.1 KB at most.
+- CSS: the main stylesheet 181 KB raw, **29.6 KB gzip** in the first-load table (round five 20.7), plus the 0.6 KB
+  gzip font-face sheet (S2.4).
+
+### S2.7 Screens looked at
+
+14 screens from the final build at the real clock (02:07), Playwright Chromium: the home 1440 light (en) and 390 dark
+(ms); KLIA 1440 dark (en) and 390 light (ms, scrolled); the board 1440 light (en) and 390 dark (ms); the flight page
+(AK 6336) 1440 light (en) and 390 dark (ms); My journey with that flight saved, 390 light (en) and 1440 dark (ms); the
+directory 1440 light (en) and 390 dark (ms, scrolled); the credits page 1440 dark (en) and 390 light (ms). Each has one
+`h1`, 0 images, no sideways scroll and no console error. Seen: the critique's must-fix items 1 (the night board shows
+the red-eye departure and the next morning instead of an empty state), 3 (one quiet demo line on the board and the
+flight card), 4 (time, status and gate on the flight page's first screen at both sizes), 5 (KLIA's "Services now"
+tiles) and 6 (the Malay header pill on one line) hold; item 2 (photography) is blocked, as its log says. Also seen: in
+Malay at 390 px the directory's airport-type control breaks over two rows ("STOLport" alone on the second; S5 item 6),
+and the phone flight rows of S3 item 1 before and after (8 more captures).
+
+## S3. Regressions found and fixed
+
+Each fix was followed by `tsc`, `eslint`, a clean build and the tests named; then the full run 2 above.
+
+1. **Phone flight rows painted over each other (flights package, polish item 9), fixed.** The redesigned row
+   (`src/components/flights/flight-row.tsx`, used by the board and the home's preview on narrow widths) is two fixed
+   lines. Its left parts (the city with the airport code; the airline badge and flight number) and its right parts
+   (the status pill; the airport, terminal and gate) could neither shrink nor wrap, so on a 360 px phone with normal
+   text the flight number ran under the airport badge ("QR 863" under "KUL"), and at 112 to 125% text the city link
+   collapsed to **0 px** (so it was not visible, failing shell A-27 at 360 px and 125%), the code slid under the pill,
+   and parts stuck out of the card. Measured on the delivered build: overlaps, collapsed links or parts outside the
+   card in **57 of 72 cases** (320, 360, 390 and 412 px; 100, 112 and 125% text; en and ms; the home, the board and
+   the overview), including the Malay home preview at 390 px with normal text. Fix: each line wraps instead of
+   overlapping. The badge and flight number never shrink; the airline name (with its dot) has no width of its own and
+   fills what is left, truncating first; the gate block and save button move together to the next line,
+   right-aligned, when they do not fit, and wrap inside when wider than the line; the status pill moves to its own
+   line and wraps its label only when wider than the line; the city keeps at least 4.5rem. After: **0 of 72**; at 390
+   px with normal text English rows stay at their designed 69 and 73 px, and Malay home rows grow to 97 px only where
+   they used to overlap. Two intermediate builds were needed: a fixed 6.5rem minimum for the badge and number wrapped
+   the 390 px board (101 px rows), and relying on the flex item's automatic minimum let Chrome squeeze the number
+   below its content (59 px for 80). New regression spec: S4.
+2. **Queue estimates broke Malay words mid-word (flights package, polish item 6), fixed.** In KLIA's "Services now",
+   each queue row kept the wait time ("kira-kira 5 min", 158 px in the data type at 125%) from shrinking, so at 360 px
+   and 125% text the checkpoint name got 73 px and "Pemeriksaan keselamatan" and "Imigresen (berlepas)" broke inside
+   words (`layout-round4` 6.1.6, "no word breaks mid-word", failed). Fix
+   (`src/components/flights/ops-status.tsx`): the row wraps, and the time moves under the name, right-aligned, only
+   when both do not fit. The test passes 5 of 5 on both projects and in run 2.
+3. **The concierge's privacy button left half under the redesigned header (shell, with the concierge page), fixed.**
+   After the first answer the page scrolls the new turn to the top (2rem under the header), which leaves the privacy
+   line's "AI wording and saved flight" button ("Susunan kata AI dan penerbangan simpanan") under the header. The
+   redesigned header's larger airport pill and round buttons now overlap it, so axe reported `target-size` (serious;
+   12.7 px of the 52 px target unobscured) on **20 of 20** phone runs of "works in Bahasa Malaysia" (round five saw it
+   once, on the desktop, G3 item 5). The header itself is fully hit-testable (no tap passes through it; 686 points
+   sampled). Fix (`src/components/concierge/concierge-chat.tsx`): on the page, the first answer brings the privacy
+   line into view with the question below it, unless the line is taller than a third of the window (the opt-in form
+   open); later answers and the panel scroll as before. 5 of 5 on both projects and in run 2.
+
+Wrong-way numbers, not fixed (S5): LCP 0.25 to 0.31 s later on every page; first-load JavaScript +8 to +13 KB on the
+redesigned routes; performance 94 on `/en` (95) and 91 on the flight page (94 and 96); and, with test photographs,
+LCP 3.5 to 4.4 s and two hero texts under their contrast minimum over a bright photograph.
+
+## S4. Tests changed in this round, and why
+
+- **No existing test was changed, skipped or deleted in this round.**
+- **Added `e2e/verify-round7.spec.ts` (16 tests, 16 of 16 on the final build):** for the home preview and the board,
+  in English and Malay, at 360 px with normal text and 390 px at 125%, on both projects, every visible flight row has
+  no two pieces painted over each other (boxes clipped by any truncating parent), no piece outside the row, and a
+  flight link at least 8 px wide. The same check, run as a probe on the delivered build, failed in all 8 of these
+  width, text-size, language and page cases.
+- **Changed by the redesign packages (read and checked here, as their logs record).** `e2e/access-round6.spec.ts`
+  item 10 now waits for the night board's first flight link instead of the empty state, because KLIA's board has a
+  red-eye band at 23:30; its limit (CLS 0.01 or less at 1440 px) is unchanged. `e2e/flight-round5.spec.ts`'s night
+  test became "a quiet night extends the board to the next flights, in the block already painted": at 23:30 on
+  Penang's board it asserts the line "No departures between hh:mm and hh:mm. The next departures:", flight rows, both
+  "Show earlier flights" and "Show later flights", the board block in the first paint and no largest paint after the
+  feed's delay (unchanged limits). Both reflect intended changes and loosen no limit; the consequence is that the
+  empty night state is no longer exercised by any test (S5 item 6).
+
+## S5. Open issues, ranked
+
+"Team" = fixable by the delivery team. "Owner" = needs the owner's decision. "MAHB" = depends on MAHB.
+
+1. **LCP with hero photographs: 3.9 s (home), 4.4 s (KLIA) and 4.2 s (flight page) in the probe, against 2.5 s**
+   (S2.5). Team, before any photograph ships. Lighter images alone do not reach it (3.5 to 3.9 s with a 10 KB image).
+   Candidates: AVIF and a lower quality (`images.formats` and `images.qualities`, the images hand-off), a smaller phone
+   rendition; fewer bytes competing in the first load (two stylesheets, 127 KB of fonts, 370 KB of script); not making
+   a veiled background the LCP on the flight page; on phones, a hero whose largest element stays text. The destination
+   cards' images also load with the home (four at 640 px, 227 KB) though they are below the fold. Re-measure with the
+   real photographs.
+2. **Contrast over bright photographs** (S2.5). Team (design owner). With a white test photograph the home `h1`'s gold
+   line is at 1.27 to 1.38:1 and KLIA's "Find a flight at KLIA" at 2.58 to 2.65:1, in every theme. Give both a scrim
+   (or move them onto the glass panel) that holds 3:1 for large text and 4.5:1 otherwise over any photograph, as
+   `docs/design/photography.md` requires, and re-measure on each real photograph. The flight band and the directory
+   cards hold (8.4:1 or more).
+3. **No photographs** (critique must-fix 2). Owner. The library is empty because Wikimedia refused the research
+   requests; the four ways to unblock it are in `docs/design/photography.md`. Until then the site shows the designed
+   no-photo state, and the client should be told so before the meeting.
+4. **The redesign's weight on every page** (A-09, E-01, E-03). Team. LCP +0.25 to 0.31 s everywhere (render-blocking
+   CSS 22.6 → 31.0 KB plus a separate font-face sheet); performance 94 on `/en` and 91 on the flight page; TBT over
+   200 ms on `/en` (278), `/en/kul` (217) and the flight page (359); first-load JavaScript +8 to +13 KB on the
+   redesigned routes, 15 of 40 routes at 170 KB or less (18 of 39). Merge the font-face rules into the main sheet (or
+   inline them), trim the CSS, and look at the redesigned Client Components on the home and flight page.
+5. **Congested Wi-Fi LCP (E-02) not re-measured.** Team. Round five measured 2.57 s on `/en`; with about 47% more
+   render-blocking CSS it is likely worse. Measure it with `lighthouse.mjs --profile=airport-wifi,250,1500,500,4`.
+6. **Low, team:** in Malay at 390 px the directory's airport-type control breaks over two rows; the empty night board
+   state is no longer covered by a test (add one with a status filter or an airport whose next flights are beyond the
+   extension); at 320 px with 125% text a flight row is now three to four lines (up to 190 px) where it used to
+   overlap; the polish log's open items stand: My journey's heading, count and demo line above the card on phones,
+   the home's phone first screen (a product decision, item 19), the directory's empty top right on desktops, the
+   timeline's "next three steps" control.
+7. **Carried over from round five** (G8): CI and WebKit have never run on a runner (E-06), the offline toast waits
+   for the runtime's script, the rate limits behind an undeclared CDN, and the facts only MAHB, airlines or partners
+   can supply. Round six's own report was never written; this round ran its specs (all pass) but did not re-check its
+   claims one by one.
+
+## S6. How to reproduce
+
+```bash
+npx tsc --noEmit && npx eslint . && npx vitest run && npm audit --omit=dev
+rm -rf .next && NEXT_PUBLIC_SITE_URL=http://localhost:3100 npx next build
+TRUSTED_CLIENT_IP_HEADER=x-e2e-client-ip npx next start -p 3100 &   # stop it by its process group afterwards
+npx playwright test --trace off
+mkdir -p out   # or any folder outside the repository (scripts/qa/README.md)
+python3 scripts/qa/crawl-static.py http://localhost:3100 out/crawl-static.json && node scripts/qa/search-index.mjs
+python3 scripts/qa/canonical.py http://localhost:3100 out/canonical.json /en/kul/flights/<id> /en/kul/zzz /en/credits
+python3 scripts/qa/rc-scan.py http://localhost:3100 out/rc-scan.json && node scripts/qa/first-load-js.mjs .next out/fljs.json
+B=http://localhost:3100; LIGHTHOUSE_CLI=<separate install>/node_modules/lighthouse/cli/index.js node scripts/qa/lighthouse.mjs \
+  docs/qa/lighthouse-redesign1 3 --diagnostics en=$B/en ms=$B/ms en-kul=$B/en/kul en-kul-flights=$B/en/kul/flights \
+  flight-page=$B/en/kul/flights/<id> en-journey=$B/en/journey en-airports=$B/en/airports en-credits=$B/en/credits
+```
+
+The photo probe (S2.5) is not repeatable from the repository by design: it needs test images and a temporary edit
+of `src/content/images.ts`, which were removed. With real photographs in the library, run the same Lighthouse command
+and the contrast check on the home, KLIA, a flight page and the directory instead.
+
+Files changed in this round: `src/components/flights/flight-row.tsx` (S3 item 1),
+`src/components/flights/ops-status.tsx` (S3 item 2), `src/components/concierge/concierge-chat.tsx` (S3 item 3),
+`e2e/verify-round7.spec.ts` (new, S4), `docs/qa/lighthouse-redesign1/` (new), and this section.

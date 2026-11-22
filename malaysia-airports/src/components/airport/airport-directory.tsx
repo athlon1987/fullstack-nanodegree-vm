@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { AIRPORTS, AIRPORT_CHOICES, CLASSIFICATION_LABELS, localizeAirport } from '@/content/airports';
@@ -20,6 +21,8 @@ import { Icon } from '@/components/ui/icon';
 import { NativeSelect } from '@/components/ui/native-select';
 import { SearchField } from '@/components/ui/search-field';
 import { SegmentedControl } from '@/components/ui/segmented-control';
+import { objectPosition, placeholderProps, type MediaImage } from '@/components/ui/media';
+import { AirportVignette } from '@/components/art/airport-vignette';
 import { MapMarker, NetworkMap } from './network-map';
 import { DEPTH_COPY, DEPTH_ORDER, airportDepthLabel } from './airport-depth';
 
@@ -41,14 +44,26 @@ const normalise = (value: string): string =>
 export interface AirportDirectoryViewProps {
   /** The section to continue to after choosing (`?then=`), when there is one. */
   then?: AirportSectionId;
+  /**
+   * Photographs of airports that have their own in the photo library, by slug (redesign round
+   * one), resolved on the server (`src/content/images.ts` stays out of the browser bundle).
+   */
+  photos?: Readonly<Record<string, MediaImage>>;
 }
+
+/** The type filter's short labels (the legend and the group headings keep the full names). */
+const SHORT_TYPE_LABELS = {
+  international: { en: 'International', ms: 'Antarabangsa' },
+  domestic: { en: 'Domestic', ms: 'Domestik' },
+  stolport: { en: 'STOLport', ms: 'STOLport' },
+} as const;
 
 /**
  * The airport chooser and directory: all 39 airports grouped by Malaysia Airports' own
  * classification, with a search, a state filter and a type filter, beside a schematic map.
  * Choosing an airport remembers it and goes to its home, or straight to the `then` section.
  */
-export function AirportDirectoryView({ then }: AirportDirectoryViewProps) {
+export function AirportDirectoryView({ then, photos = {} }: AirportDirectoryViewProps) {
   const t = useT();
   const lang = useLang();
   const availability = useSectionAvailability();
@@ -85,55 +100,120 @@ export function AirportDirectoryView({ then }: AirportDirectoryViewProps) {
     setType('all');
   };
 
-  const card = (airport: Airport) => {
-    const place = airport.city === airport.state ? airport.city : `${airport.city}, ${airport.state}`;
+  /** What both card shapes share: the link (named by the airport), the chips and terminal links. */
+  const parts = (airport: Airport) => {
     const terminals = AIRPORT_CHOICES.filter((choice) => choice.airport === airport.slug && choice.terminal);
     const reachable = hasSection(availability, airport.slug, target);
     const depth = airportDepthLabel(availability, airport.slug);
     const current = selection?.airport === airport.slug;
+    const link = (
+      <CardLink
+        href={sectionHref(target, airport.slug, availability)}
+        onClick={() => set({ airport: airport.slug })}
+        aria-label={targetLabel && reachable ? t('airportsPage.goToSection', { section: targetLabel, airport: airport.name }) : undefined}
+      >
+        {airport.name}
+      </CardLink>
+    );
+    const chips = (
+      <div className="flex flex-wrap items-center gap-1.5 empty:hidden">
+        {current ? (
+          <Chip tone="primary" icon="check">
+            {t('shell.switcher.selected')}
+          </Chip>
+        ) : null}
+        {/* What this site has for the airport, from its real sections (round 4, 6.1.8). */}
+        <Chip icon={DEPTH_COPY[depth].icon} data-depth={depth}>
+          {t(DEPTH_COPY[depth].label)}
+        </Chip>
+        {terminals.map((choice) => (
+          <LocaleLink
+            key={choice.id}
+            href={sectionHref(target, { airport: choice.airport, terminal: choice.terminal }, availability)}
+            onClick={() => set({ airport: choice.airport, terminal: choice.terminal })}
+            className="relative z-10 inline-flex h-7 items-center rounded-pill border border-line-control bg-surface px-3 text-sm font-medium text-ink transition-colors duration-fast hover:border-ink touch:h-11"
+          >
+            {pick(choice.label, lang)}
+          </LocaleLink>
+        ))}
+      </div>
+    );
+    return { depth, link, chips };
+  };
+
+  /**
+   * Redesign round one: airports with their own photograph, or a full guide here, get a photo-led
+   * card: the photograph (or the airport's own line drawing on midnight while the library has
+   * none; never another airport's picture), the words on their own scrim.
+   */
+  const featured = (airport: Airport) => Boolean(photos[airport.slug]) || airportDepthLabel(availability, airport.slug) === 'guide';
+
+  const featureCard = (airport: Airport) => {
+    const place = airport.city === airport.state ? airport.city : `${airport.city}, ${airport.state}`;
+    const { link, chips } = parts(airport);
+    const photo = photos[airport.slug];
     return (
-      <Card as="li" key={airport.slug} interactive padding="sm" className="flex min-w-0 items-start gap-3.5" data-airport={airport.slug}>
-        <AirportCode code={airport.code} variant="boxed" className="mt-0.5 w-13 shrink-0 justify-center text-center" />
-        <div className="min-w-0 flex-1">
-          <h3 className="type-title-sm text-ink">
-            <CardLink
-              href={sectionHref(target, airport.slug, availability)}
-              onClick={() => set({ airport: airport.slug })}
-              aria-label={targetLabel && reachable ? t('airportsPage.goToSection', { section: targetLabel, airport: airport.name }) : undefined}
-            >
-              {airport.name}
-            </CardLink>
-          </h3>
-          <p className="type-body-sm mt-0.5 text-ink-2">{place}</p>
-          <div className="mt-2 flex flex-wrap items-center gap-1.5 empty:hidden">
-            {current ? (
-              <Chip tone="primary" icon="check">
-                {t('shell.switcher.selected')}
-              </Chip>
-            ) : null}
-            {/* What this site has for the airport, from its real sections (round 4, 6.1.8). */}
-            <Chip icon={DEPTH_COPY[depth].icon} data-depth={depth}>
-              {t(DEPTH_COPY[depth].label)}
-            </Chip>
-            {terminals.map((choice) => (
-              <LocaleLink
-                key={choice.id}
-                href={sectionHref(target, { airport: choice.airport, terminal: choice.terminal }, availability)}
-                onClick={() => set({ airport: choice.airport, terminal: choice.terminal })}
-                className="relative z-10 inline-flex h-7 items-center rounded-md border border-line-control bg-surface px-2.5 text-sm font-medium text-ink transition-colors duration-fast hover:border-ink touch:h-11"
-              >
-                {pick(choice.label, lang)}
-              </LocaleLink>
-            ))}
-          </div>
+      <Card
+        as="li"
+        key={airport.slug}
+        interactive
+        variant="midnight"
+        data-airport={airport.slug}
+        className="group/media isolate flex min-h-[17rem] min-w-0 flex-col justify-end overflow-hidden rounded-2xl border-0 p-0 sm:min-h-[19rem]"
+      >
+        <div aria-hidden="true" className="absolute inset-0 -z-10 overflow-hidden rounded-[inherit]">
+          {photo ? (
+            <Image
+              src={photo.src}
+              alt=""
+              fill
+              sizes="(min-width: 80rem) 33vw, (min-width: 40rem) 50vw, 100vw"
+              {...placeholderProps(photo)}
+              style={{ objectPosition: objectPosition(photo.focal) }}
+              className="object-cover transition-[scale] duration-slower ease-out motion-ok:group-hover/media:scale-[1.04]"
+            />
+          ) : (
+            <>
+              <span className="absolute inset-0 bg-[radial-gradient(70%_90%_at_100%_0%,color-mix(in_srgb,var(--color-gold)_20%,transparent),transparent_70%)]" />
+              <AirportVignette
+                code={airport.code}
+                terminal={airport.slug === 'kul' ? 'T1' : undefined}
+                ground="sunken"
+                className="absolute top-3 -right-4 w-[85%] bg-transparent text-on-midnight-dim opacity-40 transition-transform duration-slower ease-out motion-ok:group-hover/media:scale-[1.03]"
+              />
+            </>
+          )}
         </div>
-        <Icon name="arrow-right" size="sm" strokeWidth={1.75} className="mt-1 shrink-0 text-ink-3" />
+        <div className="scrim-behind flex flex-col gap-2 rounded-b-[inherit] p-5 pt-10 sm:p-6">
+          <AirportCode code={airport.code} size="sm" className="inline-flex h-7 w-fit items-center rounded-pill bg-gold px-2.5 text-on-gold" />
+          <h3 className="type-title-lg text-ink">{link}</h3>
+          <p className="type-body-sm text-ink-2">{place}</p>
+          <div className="mt-1">{chips}</div>
+        </div>
       </Card>
     );
   };
 
-  // The choices most visitors want, as large buttons above the filters (A-26): KLIA Terminal 1,
-  // KLIA Terminal 2 and the last airport used on this device.
+  const row = (airport: Airport) => {
+    const place = airport.city === airport.state ? airport.city : `${airport.city}, ${airport.state}`;
+    const { link, chips } = parts(airport);
+    return (
+      <li
+        key={airport.slug}
+        data-airport={airport.slug}
+        className="group/card relative flex min-w-0 items-center gap-4 rounded-xl px-3 py-3 transition-colors duration-fast hover:bg-page-subtle has-[[data-card-link]:focus-visible]:focus-ring sm:px-4"
+      >
+        <AirportCode code={airport.code} className="flex h-11 w-14 shrink-0 items-center justify-center rounded-xl bg-midnight text-sm text-gold-bright" />
+        <div className="min-w-0 flex-1">
+          <h3 className="type-title-sm text-ink">{link}</h3>
+          <p className="type-body-sm mt-0.5 text-ink-2">{place}</p>
+          <div className="mt-1.5">{chips}</div>
+        </div>
+        <Icon name="arrow-right" size="sm" strokeWidth={1.75} className="shrink-0 text-ink-3 transition-transform duration-fast motion-ok:group-hover/card:translate-x-0.5" />
+      </li>
+    );
+  };
+
   const pinned = AIRPORT_CHOICES.filter((choice) => choice.airport === 'kul' && choice.terminal);
   const last = selection ? AIRPORT_CHOICES.find((choice) => choice.airport === selection.airport && (choice.terminal ?? undefined) === selection.terminal) : undefined;
   const quick = last && !pinned.some((choice) => choice.id === last.id) ? [last, ...pinned] : pinned;
@@ -158,9 +238,9 @@ export function AirportDirectoryView({ then }: AirportDirectoryViewProps) {
                 <LocaleLink
                   href={sectionHref(target, { airport: choice.airport, terminal: choice.terminal }, availability)}
                   onClick={() => set(choice.terminal ? { airport: choice.airport, terminal: choice.terminal } : { airport: choice.airport })}
-                  className="flex min-h-14 w-full min-w-0 items-center gap-3 rounded-lg border border-line-strong bg-surface px-3 py-2 text-ink transition-colors duration-fast hover:border-ink hover:bg-page-subtle"
+                  className="flex min-h-16 w-full min-w-0 items-center gap-3 rounded-2xl border border-line bg-surface px-3 py-2.5 text-ink shadow-sm transition-[box-shadow,border-color] duration-base hover:border-line-strong hover:shadow-md"
                 >
-                  <AirportCode code={choice.code} variant="boxed" className="w-13 shrink-0 justify-center text-center" />
+                  <AirportCode code={choice.code} className="flex h-11 w-14 shrink-0 items-center justify-center rounded-xl bg-midnight text-sm text-gold-bright" />
                   <span className="min-w-0 flex-1">
                     <span className="type-title-sm block">{pick(choice.label, lang)}</span>
                     {isLast ? <span className="type-caption block text-ink-2">{t('shellExtras.directory.lastUsed')}</span> : null}
@@ -193,7 +273,8 @@ export function AirportDirectoryView({ then }: AirportDirectoryViewProps) {
             onValueChange={setType}
             options={[
               { value: 'all', label: t('common.labels.all') },
-              ...AIRPORT_CLASSIFICATIONS.map((classification) => ({ value: classification, label: pick(CLASSIFICATION_LABELS[classification], lang) })),
+              // Redesign round one (critique item 25): short labels, so no segment wraps on a phone.
+              ...AIRPORT_CLASSIFICATIONS.map((classification) => ({ value: classification, label: SHORT_TYPE_LABELS[classification][lang] })),
             ]}
           />
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -220,13 +301,15 @@ export function AirportDirectoryView({ then }: AirportDirectoryViewProps) {
           </div>
         </form>
 
-        <figure className="min-w-0 rounded-lg border border-line bg-surface p-4 sm:p-5">
+        {/* Redesign round one: the network map as a night chart on midnight (an `on-media` scope). */}
+        <figure className="on-media surface-midnight relative isolate min-w-0 overflow-hidden rounded-3xl p-5 text-ink shadow-lg sm:p-7">
+          <span aria-hidden="true" className="absolute inset-0 -z-10 bg-[radial-gradient(60%_80%_at_100%_0%,color-mix(in_srgb,var(--color-gold)_16%,transparent),transparent_70%)]" />
           <NetworkMap
             titles={{ peninsular: t('airportsPage.map.peninsular'), borneo: t('airportsPage.map.borneo') }}
             alt={t('airportsPage.map.alt', { count: AIRPORTS.length })}
             highlight={filtered ? highlight : undefined}
           />
-          <figcaption className="mt-4 border-t border-line pt-3">
+          <figcaption className="mt-5 border-t border-line-strong pt-4">
             <ul className="type-caption flex flex-wrap gap-x-5 gap-y-1.5 text-ink">
               {AIRPORT_CLASSIFICATIONS.map((classification) => (
                 <li key={classification} className="flex items-center gap-1.5">
@@ -245,11 +328,16 @@ export function AirportDirectoryView({ then }: AirportDirectoryViewProps) {
         if (group.length === 0) return null;
         return (
           <section key={classification} aria-labelledby={`airports-${classification}`}>
-            <h2 id={`airports-${classification}`} className="type-display-sm mb-4 flex items-baseline gap-3 border-b border-line-strong pb-3 text-ink">
+            <h2 id={`airports-${classification}`} className="type-display-sm mb-5 flex items-center gap-3 text-ink">
               {t(GROUP_TITLES[classification])}
-              <span className="type-data-md text-ink-2">{group.length}</span>
+              <span className="type-data-md rounded-pill bg-fill px-2.5 py-0.5 text-ink-2">{group.length}</span>
             </h2>
-            <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{group.map(card)}</ul>
+            {group.some(featured) ? <ul className="mb-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">{group.filter(featured).map(featureCard)}</ul> : null}
+            {group.some((airport) => !featured(airport)) ? (
+              <ul className="grid gap-x-6 gap-y-1 rounded-2xl border border-line bg-surface p-2 shadow-sm sm:p-3 lg:grid-cols-2">
+                {group.filter((airport) => !featured(airport)).map(row)}
+              </ul>
+            ) : null}
           </section>
         );
       })}
@@ -267,7 +355,7 @@ export function AirportDirectoryView({ then }: AirportDirectoryViewProps) {
 }
 
 /** Reads `?then=` and renders the directory. Wrap it in `<Suspense>` (it uses `useSearchParams`). */
-export function AirportDirectory() {
+export function AirportDirectory({ photos }: Pick<AirportDirectoryViewProps, 'photos'>) {
   const then = useSearchParams().get('then');
-  return <AirportDirectoryView then={isAirportSection(then) ? then : undefined} />;
+  return <AirportDirectoryView then={isAirportSection(then) ? then : undefined} photos={photos} />;
 }

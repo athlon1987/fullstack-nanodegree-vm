@@ -17,8 +17,14 @@ import { useSectionAvailability } from './shell-context';
 
 // Round 6 (review-3 9.1 item 9): no minimum width of its own (44 px became 88 px at 200% device
 // text and pushed Menu off a 390 px screen); the columns are at least 50 px at 320 px anyway.
+// Direction v2: an app tab bar. The current item's icon sits in a soft pill and its label turns
+// to full ink, so the state never rests on colour alone.
 const ITEM =
-  'relative flex min-h-14 w-full min-w-0 flex-col items-center justify-center gap-0.5 rounded-md text-xs leading-tight font-semibold text-ink-2 transition-colors duration-fast aria-[current]:text-ink';
+  'group/tab relative flex min-h-14 w-full min-w-0 flex-col items-center justify-center gap-0.5 rounded-xl text-xs leading-tight font-semibold text-ink-2 transition-colors duration-fast hover:text-ink aria-[current]:text-ink';
+
+/** The pill behind the icon: filled for the current item. */
+const ICON_PILL =
+  'relative flex h-7 w-12 items-center justify-center rounded-pill transition-colors duration-base group-aria-[current]/tab:bg-primary-soft group-aria-[current]/tab:text-primary-ink';
 
 function Label({ icon, children, badge }: { icon: IconName; children: ReactNode; badge?: number }) {
   // The label comes first in the DOM and the icon is moved above it with `order-first`, so the
@@ -29,10 +35,10 @@ function Label({ icon, children, badge }: { icon: IconName; children: ReactNode;
       <span data-bar-label="" className="whitespace-nowrap">
         {children}
       </span>{' '}
-      <span className="relative order-first">
-        <Icon name={icon} size="lg" />
+      <span className={cn(ICON_PILL, 'order-first')}>
+        <Icon name={icon} size="md" strokeWidth={1.75} />
         {badge ? (
-          <span aria-hidden="true" className="type-data-xs absolute -top-1 -right-2.5 flex h-4.5 min-w-4.5 items-center justify-center rounded-pill bg-primary px-1 font-bold text-on-primary">
+          <span aria-hidden="true" className="type-data-xs absolute -top-1 right-0.5 flex h-4.5 min-w-4.5 items-center justify-center rounded-pill bg-gold px-1 font-bold text-on-gold">
             {badge}
           </span>
         ) : null}
@@ -89,10 +95,15 @@ function Bar() {
       aria-label={t('shell.bottomBar.label')}
       data-print="hidden"
       data-mobile-bar=""
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-line-strong bg-surface pb-[env(safe-area-inset-bottom)] md:hidden"
+      className={cn(
+        'fixed inset-x-0 bottom-0 z-40 border-t border-line pb-[env(safe-area-inset-bottom)] shadow-[0_-10px_30px_-12px_rgb(7_12_34/0.28)] md:hidden',
+        // Frosted glass that follows the theme; solid for "reduce transparency" and high contrast.
+        'bg-[color-mix(in_srgb,var(--color-surface)_var(--glass-light-alpha),transparent)] backdrop-blur-xl backdrop-saturate-150',
+        'hc:bg-surface [@media(prefers-reduced-transparency:reduce)]:bg-surface [@media(prefers-reduced-transparency:reduce)]:backdrop-blur-none',
+      )}
     >
       {/* Flights and Journey get the widest columns: their Malay labels are the longest. */}
-      <ul className="mx-auto grid max-w-lg grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)_minmax(0,0.85fr)_minmax(0,1.3fr)_minmax(0,0.85fr)] items-end px-1">
+      <ul className="mx-auto grid max-w-lg grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)_minmax(0,0.85fr)_minmax(0,1.3fr)_minmax(0,0.85fr)] items-end px-1 pt-0.5">
         <li>
           <LocaleLink href="/" aria-current={onHome ? 'page' : undefined} className={ITEM}>
             <Label icon="home">{t('shellExtras.bottomBar.home')}</Label>
@@ -116,7 +127,7 @@ function Bar() {
           >
             {/* Inside the bar, not raised above it: an overhang covered tile labels on the home
                 first screen (A-11). */}
-            <span className="flex size-8 items-center justify-center rounded-full bg-primary text-on-primary">
+            <span className="flex h-8 w-12 items-center justify-center rounded-pill bg-primary text-on-primary shadow-sm">
               <Icon name="search" size="md" strokeWidth={2} />
             </span>
             <span data-bar-label="" className="whitespace-nowrap">

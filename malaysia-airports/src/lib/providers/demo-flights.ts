@@ -75,6 +75,12 @@ function localPlace(airport: Airport): FlightPlace {
   return { code: airport.code, city: known?.city ?? airport.city, country: 'Malaysia' };
 }
 
+/** The red-eye band (00:00 to 02:30 local) of a 24-hour hub: airline and destination of each extra long-haul flight. */
+const RED_EYE: Readonly<Record<string, readonly (readonly [string, string])[]>> = {
+  kul: [['MH', 'LHR'], ['EK', 'DXB'], ['QR', 'DOH'], ['TK', 'IST'], ['MH', 'SYD']],
+};
+const RED_EYE_END = 150;
+
 /**
  * The stable daily timetable for an airport and direction. Deterministic and cached: the same
  * inputs always give the same list, sorted by time.
@@ -133,6 +139,39 @@ export function buildDemoTimetable(airportSlug: string, direction: FlightDirecti
       }
     }
   }
+
+  // Redesign round one (critique item 1): KLIA runs 24 hours, so its board also carries a red-eye
+  // band of long-haul flights each way. Added after the day's flights, so no other flight's number
+  // or time changes; numbers continue each route's own series.
+  const redEye = RED_EYE[airport.slug] ?? [];
+  redEye.forEach(([code, destinationCode], index) => {
+    const template = (DEMO_ROUTES[airport.slug] ?? []).find((item) => item.code === code && item.destinations.some((d) => d.code === destinationCode));
+    const destination = template?.destinations.find((d) => d.code === destinationCode);
+    if (!template || !destination) return;
+    const profile = DEMO_AIRLINES[code];
+    const [min, max] = profile.numbers;
+    const slots = Math.max(1, Math.floor((max - min) / 2));
+    const pairKey = [local, destination.code].sort().join('-');
+    const departs = direction === 'd' ? local : destination.code;
+    const arrives = direction === 'd' ? destination.code : local;
+    const random = seededRandom(`${airport.slug}|${direction}|redeye|${code}|${destination.code}`);
+    let number = min + (hashString(`${code}|${pairKey}`) % slots) * 2 + destination.daily * 2 + (departs < arrives ? 0 : 1);
+    while (used.has(`${code}${number}`)) number += 2;
+    used.add(`${code}${number}`);
+    const slot = ((index + 0.15 + 0.7 * random()) * RED_EYE_END) / redEye.length;
+    entries.push({
+      airlineCode: code,
+      airlineName: template.name,
+      digits: String(number),
+      direction,
+      terminal: template.terminal ?? airport.terminals[0].id,
+      remote: { code: destination.code, city: destination.city, country: destination.country },
+      minuteOfDay: Math.min(RED_EYE_END, Math.round(slot / 5) * 5),
+      durationMinutes: destination.minutes,
+      aircraft: profile.aircraft.long ?? profile.aircraft.short,
+      international: destination.country !== 'Malaysia',
+    });
+  });
 
   entries.sort(
     (a, b) => a.minuteOfDay - b.minuteOfDay || `${a.airlineCode}${a.digits}`.localeCompare(`${b.airlineCode}${b.digits}`),

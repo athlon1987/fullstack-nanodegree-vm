@@ -18,7 +18,7 @@ import { useSectionAvailability } from '@/components/shell/shell-context';
 import { AIRPORT_SECTIONS, hasSection } from '@/components/shell/sections';
 import { Icon } from '@/components/ui/icon';
 import { SegmentedControl } from '@/components/ui/segmented-control';
-import { Timeline, TimelineItem } from '@/components/ui/timeline';
+import type { LiHTMLAttributes, ReactNode } from 'react';
 import { stepAnchor } from './flight-summary';
 import { OpsStatus } from './ops-status';
 
@@ -107,20 +107,25 @@ export function JourneyTimeline({ flight, content, sources, now, notices, title,
       ) : null}
       {untranslated ? <TranslationNotice className="mt-4" /> : null}
 
-      <Timeline className="mt-6">
+      <ol className="mt-6 flex flex-col">
         {steps.map((step, index) => {
+          // Redesign round one: the first step after "now" is marked "Next".
+          const next = step.state === 'upcoming' && (index === 0 ? true : steps[index - 1].state !== 'upcoming');
           const actions = step.actions.filter((action) => allowed(action.href));
           // Round 5 (A-14, one Demo label per view): a run of simulated steps (boarding, then
           // departure) shares the label of its first step, a few lines above in the same view.
           const demoAbove = step.provenance === 'demo' && index > 0 && steps[index - 1].provenance === 'demo';
           const leading = steps.slice(0, index + 1).every((item) => item.provenance === 'demo');
           return (
-            <TimelineItem
+            <JourneyStepItem
               key={step.id}
+              next={next}
+              nowLabel={t('flightPages.journey.now')}
+              nextLabel={t('flightPages.journey.next')}
               id={stepAnchor(step.id)}
               tabIndex={-1}
               data-step={step.id}
-              className="scroll-mt-28 focus-visible:focus-ring"
+              className="scroll-mt-32 focus-visible:focus-ring"
               state={step.state}
               stateLabel={step.flightStatus ? t('flightPages.timeline.flightStatus') : stateLabel[step.state]}
               time={step.time ? <time dateTime={step.time}>{formatTime(step.time, zone)}</time> : undefined}
@@ -201,10 +206,10 @@ export function JourneyTimeline({ flight, content, sources, now, notices, title,
                   ))}
                 </ul>
               ) : null}
-            </TimelineItem>
+            </JourneyStepItem>
           );
         })}
-      </Timeline>
+      </ol>
       {/* Round 5 (A-14): one source list for the timeline instead of a toggle on every step and
           note; each source names the steps and notes it supports. */}
       <SectionSourceList
@@ -215,5 +220,100 @@ export function JourneyTimeline({ flight, content, sources, now, notices, title,
         ])}
       />
     </section>
+  );
+}
+
+interface JourneyStepItemProps extends Omit<LiHTMLAttributes<HTMLLIElement>, 'title'> {
+  state: 'done' | 'past' | 'current' | 'upcoming';
+  /** The first upcoming step after the current one. */
+  next: boolean;
+  /** The state in words for assistive technology. */
+  stateLabel: string;
+  nowLabel: string;
+  nextLabel: string;
+  time?: ReactNode;
+  eyebrow?: ReactNode;
+  title: ReactNode;
+  meta?: ReactNode;
+  actions?: ReactNode;
+  children?: ReactNode;
+}
+
+/**
+ * One step of the day-of-travel journey (redesign round one): a time rail on the left, a node on a
+ * thread, and the step. States read by shape and words, never colour alone: done (a filled check),
+ * past (a muted open circle on a solid thread: its time has gone but nothing confirms it), now (a
+ * gold-ringed node and a raised card with a "Now" pill; `aria-current="step"`), next (an ink ring
+ * and a "Next" pill) and upcoming (an open circle on a dotted thread).
+ */
+function JourneyStepItem({ state, next, stateLabel, nowLabel, nextLabel, time, eyebrow, title, meta, actions, className, children, ...rest }: JourneyStepItemProps) {
+  const current = state === 'current';
+  const gone = state === 'done' || state === 'past';
+  return (
+    <li
+      aria-current={current ? 'step' : undefined}
+      // Redesign round one (critique item 10): on phones the time sits above the step, so the
+      // gutter is only the dot (about 38 px instead of 110) and the step cards get the width.
+      className={cn('group/step relative grid grid-cols-[1.75rem_minmax(0,1fr)] gap-x-2.5 pb-7 last:pb-0 sm:grid-cols-[4.5rem_2rem_minmax(0,1fr)] sm:gap-x-4', className)}
+      {...rest}
+    >
+      <span
+        className={cn(
+          'type-data-lg text-right tabular-nums max-sm:col-start-2 max-sm:row-start-1 max-sm:pb-1 max-sm:text-left max-sm:text-[0.875rem] max-sm:leading-[1.6] max-sm:empty:hidden sm:pt-2',
+          gone ? 'text-ink-3' : 'text-ink',
+          current && 'sm:pt-5',
+        )}
+      >
+        {time}
+      </span>
+      <span aria-hidden="true" className="relative flex justify-center max-sm:col-start-1 max-sm:row-span-2 max-sm:row-start-1">
+        {/* The thread to the next step: solid once a step's time has gone, dotted ahead. */}
+        <span
+          className={cn(
+            'absolute top-8 -bottom-7 left-1/2 -translate-x-1/2 group-last/step:hidden',
+            gone ? 'w-0.5 bg-ink-3' : current ? 'w-0.5 bg-[linear-gradient(to_bottom,var(--color-gold),var(--color-line-control))]' : 'border-l-2 border-dotted border-line-control',
+          )}
+        />
+        <span
+          className={cn(
+            'relative mt-2 flex size-7 items-center justify-center rounded-full border-2 sm:size-8',
+            state === 'done' && 'border-ink bg-ink text-page',
+            state === 'past' && 'border-ink-3 bg-surface',
+            current && 'mt-4 border-gold bg-midnight ring-4 ring-gold/25 sm:mt-5',
+            state === 'upcoming' && (next ? 'border-ink bg-surface' : 'border-line-control bg-surface'),
+          )}
+        >
+          {state === 'done' ? <Icon name="check" size="xs" strokeWidth={2.5} /> : null}
+          {current ? (
+            <span className="relative flex size-2.5">
+              <span className="absolute inset-0 rounded-full bg-gold-bright opacity-0 motion-ok:animate-pulse-ring" />
+              <span className="relative size-2.5 rounded-full bg-gold-bright" />
+            </span>
+          ) : null}
+          {next ? <span className="size-2 rounded-full bg-ink" /> : null}
+        </span>
+      </span>
+      <div className={cn('min-w-0 max-sm:col-start-2', current ? 'rounded-2xl border border-gold/60 bg-surface p-4 shadow-lg sm:p-5' : next ? 'rounded-2xl border border-line bg-surface p-4 shadow-sm sm:p-5' : 'pt-1.5')}>
+        <span className="sr-only">{stateLabel}: </span>
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+          {current ? (
+            <span aria-hidden="true" className="type-caption inline-flex h-6 items-center gap-1.5 rounded-pill bg-gold px-2.5 font-semibold text-on-gold">
+              {nowLabel}
+            </span>
+          ) : next ? (
+            <span aria-hidden="true" className="type-caption inline-flex h-6 items-center rounded-pill bg-primary-soft px-2.5 font-semibold text-primary-ink">
+              {nextLabel}
+            </span>
+          ) : null}
+          {eyebrow ? <span className="type-eyebrow text-ink-3">{eyebrow}</span> : null}
+        </div>
+        <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <h3 className={cn('type-title-md', gone ? 'text-ink-2' : 'text-ink')}>{title}</h3>
+          {meta}
+        </div>
+        {children ? <div className={cn('type-body mt-1.5 max-w-reading', gone ? 'text-ink-3' : 'text-ink-2')}>{children}</div> : null}
+        {actions ? <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2">{actions}</div> : null}
+      </div>
+    </li>
   );
 }

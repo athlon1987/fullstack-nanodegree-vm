@@ -86,7 +86,7 @@ function SourceItems({ sources, citedBy }: Pick<SourceNoteProps, 'sources' | 'ci
             )}
             {/* Every title in the registry is English, our own pages' included. */}
             {titleForeign ? (
-              <span className="ml-1.5 inline-flex h-4 items-center rounded-xs border border-line-control px-1 align-middle text-[0.6875rem] font-semibold text-ink-2">
+              <span className="ml-1.5 inline-flex h-4 items-center rounded-xs border border-line-control px-1 align-middle text-[0.8125rem] font-semibold text-ink-2">
                 <span aria-hidden="true">{t('shellExtras.sources.english')}</span>
                 <span className="sr-only">({t('shellExtras.sources.inEnglish')})</span>
               </span>

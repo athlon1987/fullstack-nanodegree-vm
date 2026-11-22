@@ -3,377 +3,857 @@
  * Colour token values for every theme, and the measured WCAG contrast of every pair.
  */
 
-export type TokenThemeId = 'light' | 'dark' | 'board' | 'hc-light' | 'hc-dark' | 'hc-board';
+export type TokenThemeId = 'light' | 'dark' | 'board' | 'hc-light' | 'hc-dark' | 'hc-board' | 'media' | 'hc-media';
 
-export const TOKEN_THEME_IDS: readonly TokenThemeId[] = ["light","dark","board","hc-light","hc-dark","hc-board"];
+export const TOKEN_THEME_IDS: readonly TokenThemeId[] = ["light","dark","board","hc-light","hc-dark","hc-board","media","hc-media"];
 
 /** Hex value of every colour token, per theme. */
 export const TOKEN_VALUES: Record<TokenThemeId, Record<string, string>> = {
   "light": {
-    "page": "#faf5ea",
-    "page-subtle": "#f3ecdc",
-    "surface": "#fffdf8",
-    "surface-raised": "#ffffff",
-    "surface-sunken": "#f5efe1",
-    "ink": "#181b3a",
-    "ink-2": "#454867",
-    "ink-3": "#5c5f7b",
-    "line": "#e3dccb",
-    "line-strong": "#cbc4b6",
-    "line-control": "#7f7c95",
-    "inverse": "#181b3a",
-    "on-inverse": "#f6f0e2",
-    "on-inverse-dim": "#c2c0d6",
-    "primary": "#252a6c",
-    "primary-hover": "#181c4f",
-    "on-primary": "#fbf6ea",
-    "primary-soft": "#e7e8f4",
-    "primary-ink": "#252a6c",
-    "gold": "#a57b2b",
-    "gold-ink": "#7a5814",
-    "gold-soft": "#f2e7cc",
-    "leaf": "#1f6b4a",
-    "leaf-soft": "#e0eee3",
-    "focus": "#a6157f",
-    "board": "#080b16",
-    "board-raised": "#121627",
-    "board-ink": "#f3f1ea",
-    "board-dim": "#a9aec2",
-    "board-line": "#2b3148",
-    "board-accent": "#ffc24a",
-    "positive-fg": "#1a6245",
-    "positive-bg": "#e2f0e6",
-    "positive-border": "#458a6a",
-    "warning-fg": "#874a00",
-    "warning-bg": "#faeacd",
-    "warning-border": "#ad7320",
-    "critical-fg": "#a02925",
-    "critical-bg": "#fae3df",
-    "critical-border": "#c55f57",
-    "info-fg": "#0f5873",
-    "info-bg": "#ddeef3",
-    "info-border": "#41869f",
-    "neutral-fg": "#494c66",
-    "neutral-bg": "#eae5da",
-    "neutral-border": "#7f7c95",
-    "official-fg": "#fbf6ea",
-    "official-bg": "#181b3a",
-    "official-border": "#181b3a",
-    "estimated-fg": "#181b3a",
-    "estimated-bg": "#fffdf8",
-    "estimated-border": "#454867",
-    "suggestion-fg": "#252a6c",
-    "suggestion-bg": "#e7e8f4",
-    "suggestion-border": "#252a6c",
-    "demo-fg": "#1f1600",
-    "demo-bg": "#ffc233",
-    "demo-border": "#8a6400"
-  },
-  "dark": {
-    "page": "#0c0e24",
-    "page-subtle": "#11142f",
-    "surface": "#171a3d",
-    "surface-raised": "#1f2350",
-    "surface-sunken": "#090b1d",
-    "ink": "#f4eedf",
-    "ink-2": "#c9c7da",
-    "ink-3": "#a2a1bd",
-    "line": "#2a2c48",
-    "line-strong": "#454866",
-    "line-control": "#7d80a3",
-    "inverse": "#1d2152",
-    "on-inverse": "#f4eedf",
-    "on-inverse-dim": "#c2c0d6",
-    "primary": "#c5c9fb",
-    "primary-hover": "#dfe1ff",
-    "on-primary": "#14163a",
-    "primary-soft": "#20245a",
-    "primary-ink": "#c7ccff",
-    "gold": "#d2ac62",
-    "gold-ink": "#e2c383",
-    "gold-soft": "#2b2946",
-    "leaf": "#8fd3ae",
-    "leaf-soft": "#12382b",
-    "focus": "#ff9fdc",
-    "board": "#080b16",
-    "board-raised": "#121627",
-    "board-ink": "#f3f1ea",
-    "board-dim": "#a9aec2",
-    "board-line": "#2b3148",
-    "board-accent": "#ffc24a",
-    "positive-fg": "#8fddb5",
-    "positive-bg": "#12382b",
-    "positive-border": "#3e8f6b",
-    "warning-fg": "#f5c46e",
-    "warning-bg": "#47300a",
-    "warning-border": "#a87a2a",
-    "critical-fg": "#ffa99e",
-    "critical-bg": "#4c1b1d",
-    "critical-border": "#c0625c",
-    "info-fg": "#8cd3ec",
-    "info-bg": "#0e3646",
-    "info-border": "#3f8ca8",
-    "neutral-fg": "#cdcedd",
-    "neutral-bg": "#2b2e50",
-    "neutral-border": "#7d80a3",
-    "official-fg": "#14163a",
-    "official-bg": "#f4eedf",
-    "official-border": "#f4eedf",
-    "estimated-fg": "#f4eedf",
-    "estimated-bg": "#171a3d",
-    "estimated-border": "#c9c7da",
-    "suggestion-fg": "#c7ccff",
-    "suggestion-bg": "#20245a",
-    "suggestion-border": "#c7ccff",
-    "demo-fg": "#1f1600",
-    "demo-bg": "#ffc233",
-    "demo-border": "#ffc233"
-  },
-  "board": {
-    "page": "#080b16",
-    "page-subtle": "#121627",
-    "surface": "#121627",
-    "surface-raised": "#1a1f33",
-    "surface-sunken": "#04060d",
-    "ink": "#f3f1ea",
-    "ink-2": "#a9aec2",
-    "ink-3": "#a9aec2",
-    "line": "#2b3148",
-    "line-strong": "#3d4563",
-    "line-control": "#7279a0",
-    "inverse": "#1d2152",
-    "on-inverse": "#f4eedf",
-    "on-inverse-dim": "#c2c0d6",
-    "primary": "#c5c9fb",
-    "primary-hover": "#dfe1ff",
-    "on-primary": "#14163a",
-    "primary-soft": "#20245a",
-    "primary-ink": "#c7ccff",
-    "gold": "#d2ac62",
-    "gold-ink": "#e2c383",
-    "gold-soft": "#2b2946",
-    "leaf": "#8fd3ae",
-    "leaf-soft": "#12382b",
-    "focus": "#ff9fdc",
-    "board": "#080b16",
-    "board-raised": "#121627",
-    "board-ink": "#f3f1ea",
-    "board-dim": "#a9aec2",
-    "board-line": "#2b3148",
-    "board-accent": "#ffc24a",
-    "positive-fg": "#8fddb5",
-    "positive-bg": "#12382b",
-    "positive-border": "#3e8f6b",
-    "warning-fg": "#f5c46e",
-    "warning-bg": "#47300a",
-    "warning-border": "#a87a2a",
-    "critical-fg": "#ffa99e",
-    "critical-bg": "#4c1b1d",
-    "critical-border": "#c0625c",
-    "info-fg": "#8cd3ec",
-    "info-bg": "#0e3646",
-    "info-border": "#3f8ca8",
-    "neutral-fg": "#cdcedd",
-    "neutral-bg": "#262c44",
-    "neutral-border": "#7279a0",
-    "official-fg": "#14163a",
-    "official-bg": "#f4eedf",
-    "official-border": "#f4eedf",
-    "estimated-fg": "#f4eedf",
-    "estimated-bg": "#121627",
-    "estimated-border": "#c9c7da",
-    "suggestion-fg": "#c7ccff",
-    "suggestion-bg": "#20245a",
-    "suggestion-border": "#c7ccff",
-    "demo-fg": "#1f1600",
-    "demo-bg": "#ffc233",
-    "demo-border": "#ffc233"
-  },
-  "hc-light": {
-    "page": "#fffcf4",
-    "page-subtle": "#f6f0e0",
+    "page": "#f6f7f9",
+    "page-subtle": "#eceef3",
     "surface": "#ffffff",
     "surface-raised": "#ffffff",
-    "surface-sunken": "#f6f0e0",
-    "ink": "#0d0f26",
-    "ink-2": "#25284a",
-    "ink-3": "#35385a",
-    "line": "#8c899c",
-    "line-strong": "#5d5a73",
-    "line-control": "#25284a",
-    "inverse": "#181b3a",
-    "on-inverse": "#f6f0e2",
-    "on-inverse-dim": "#c2c0d6",
-    "primary": "#171b52",
-    "primary-hover": "#0d0f33",
-    "on-primary": "#fbf6ea",
-    "primary-soft": "#e7e8f4",
-    "primary-ink": "#171b52",
-    "gold": "#7a5814",
+    "surface-sunken": "#eef0f4",
+    "ivory": "#faf7f0",
+    "ink": "#0b1230",
+    "ink-2": "#3d4560",
+    "ink-3": "#5a6178",
+    "line": "#e2e5ec",
+    "line-strong": "#cdd2dc",
+    "line-control": "#80879c",
+    "fill": "#e9ecf2",
+    "fill-hover": "#dfe3eb",
+    "inverse": "#0b1230",
+    "on-inverse": "#ffffff",
+    "on-inverse-dim": "#c3c9dc",
+    "midnight": "#070c22",
+    "midnight-2": "#0f1a3d",
+    "on-midnight": "#ffffff",
+    "on-midnight-dim": "#d6dbe9",
+    "primary": "#0b1640",
+    "primary-hover": "#1b2a63",
+    "on-primary": "#ffffff",
+    "primary-soft": "#e7eaf5",
+    "primary-ink": "#1f3080",
+    "gold": "#c49a50",
+    "gold-hover": "#d2ab64",
+    "on-gold": "#0b1230",
+    "gold-ink": "#7f5b16",
+    "gold-soft": "#f6eddb",
+    "gold-bright": "#e8cb8c",
+    "leaf": "#1a6a48",
+    "leaf-soft": "#e1f1e8",
+    "focus": "#a6157f",
+    "board": "#070b1c",
+    "board-raised": "#0f1530",
+    "board-ink": "#f4f6fb",
+    "board-dim": "#aab1c8",
+    "board-line": "#232a48",
+    "board-accent": "#f3c96e",
+    "positive-fg": "#0b6b3f",
+    "positive-bg": "#e3f5eb",
+    "positive-border": "#3d9a6c",
+    "warning-fg": "#8c4500",
+    "warning-bg": "#fff0d9",
+    "warning-border": "#ad7412",
+    "critical-fg": "#b0121e",
+    "critical-bg": "#fde8e9",
+    "critical-border": "#d9605f",
+    "info-fg": "#0a4fc2",
+    "info-bg": "#e6eeff",
+    "info-border": "#4c7fd9",
+    "neutral-fg": "#3d4560",
+    "neutral-bg": "#eceef3",
+    "neutral-border": "#80879c",
+    "flight-scheduled-fg": "#3d4560",
+    "flight-scheduled-bg": "#eceef3",
+    "flight-scheduled-solid": "#3d4560",
+    "flight-scheduled-on": "#ffffff",
+    "flight-ontime-fg": "#0b6b3f",
+    "flight-ontime-bg": "#e3f5eb",
+    "flight-ontime-solid": "#0e7a47",
+    "flight-ontime-on": "#ffffff",
+    "flight-boarding-fg": "#0a4fc2",
+    "flight-boarding-bg": "#e6eeff",
+    "flight-boarding-solid": "#1557d4",
+    "flight-boarding-on": "#ffffff",
+    "flight-delayed-fg": "#8c4500",
+    "flight-delayed-bg": "#fff0d9",
+    "flight-delayed-solid": "#f0a032",
+    "flight-delayed-on": "#0b1230",
+    "flight-cancelled-fg": "#b0121e",
+    "flight-cancelled-bg": "#fde8e9",
+    "flight-cancelled-solid": "#c41e2a",
+    "flight-cancelled-on": "#ffffff",
+    "flight-landed-fg": "#09636d",
+    "flight-landed-bg": "#dff3f4",
+    "flight-landed-solid": "#0c707c",
+    "flight-landed-on": "#ffffff",
+    "flight-departed-fg": "#585f75",
+    "flight-departed-bg": "#eceef3",
+    "flight-departed-solid": "#5f667c",
+    "flight-departed-on": "#ffffff",
+    "official-fg": "#ffffff",
+    "official-bg": "#0b1230",
+    "official-border": "#0b1230",
+    "estimated-fg": "#0b1230",
+    "estimated-bg": "#ffffff",
+    "estimated-border": "#5a6178",
+    "suggestion-fg": "#1f3080",
+    "suggestion-bg": "#e7eaf5",
+    "suggestion-border": "#1f3080",
+    "demo-fg": "#4a3200",
+    "demo-bg": "#fbecc4",
+    "demo-border": "#a87a12",
+    "glass-light": "#ffffff",
+    "glass-dark": "#0a1130",
+    "scrim": "#050918",
+    "glass@white": "#ffffff",
+    "glass@black": "#d6d6d6",
+    "glass-dark@white": "#4f546a",
+    "scrim@white": "#3c3f4b"
+  },
+  "dark": {
+    "page": "#060a18",
+    "page-subtle": "#0b1124",
+    "surface": "#10172e",
+    "surface-raised": "#172040",
+    "surface-sunken": "#04060f",
+    "ivory": "#0f1426",
+    "ink": "#f4f6fb",
+    "ink-2": "#c2c8db",
+    "ink-3": "#9aa2ba",
+    "line": "#1e2640",
+    "line-strong": "#2f3858",
+    "line-control": "#7a84a6",
+    "fill": "#1c2547",
+    "fill-hover": "#263058",
+    "inverse": "#121a38",
+    "on-inverse": "#f4f6fb",
+    "on-inverse-dim": "#c2c8db",
+    "midnight": "#070c22",
+    "midnight-2": "#0f1a3d",
+    "on-midnight": "#ffffff",
+    "on-midnight-dim": "#d6dbe9",
+    "primary": "#eef1fa",
+    "primary-hover": "#ffffff",
+    "on-primary": "#0b1230",
+    "primary-soft": "#1a2550",
+    "primary-ink": "#b4c2ff",
+    "gold": "#d6b46e",
+    "gold-hover": "#e3c382",
+    "on-gold": "#0b1230",
+    "gold-ink": "#e5c88a",
+    "gold-soft": "#2a2416",
+    "gold-bright": "#e8cb8c",
+    "leaf": "#8fd3ae",
+    "leaf-soft": "#12382b",
+    "focus": "#ff9fdc",
+    "board": "#070b1c",
+    "board-raised": "#0f1530",
+    "board-ink": "#f4f6fb",
+    "board-dim": "#aab1c8",
+    "board-line": "#232a48",
+    "board-accent": "#f3c96e",
+    "positive-fg": "#6ee0a2",
+    "positive-bg": "#0e3324",
+    "positive-border": "#3c9f6e",
+    "warning-fg": "#ffc66e",
+    "warning-bg": "#3d2a08",
+    "warning-border": "#b8862e",
+    "critical-fg": "#ffa0a5",
+    "critical-bg": "#4a161c",
+    "critical-border": "#c9606a",
+    "info-fg": "#a3c2ff",
+    "info-bg": "#13285c",
+    "info-border": "#5b86d6",
+    "neutral-fg": "#c9cfe0",
+    "neutral-bg": "#1b2340",
+    "neutral-border": "#7a84a6",
+    "flight-scheduled-fg": "#c9cfe0",
+    "flight-scheduled-bg": "#1b2340",
+    "flight-scheduled-solid": "#c9cfe0",
+    "flight-scheduled-on": "#0b1230",
+    "flight-ontime-fg": "#6ee0a2",
+    "flight-ontime-bg": "#0e3324",
+    "flight-ontime-solid": "#3ccf82",
+    "flight-ontime-on": "#06101f",
+    "flight-boarding-fg": "#a3c2ff",
+    "flight-boarding-bg": "#13285c",
+    "flight-boarding-solid": "#5b95ff",
+    "flight-boarding-on": "#06101f",
+    "flight-delayed-fg": "#ffc66e",
+    "flight-delayed-bg": "#3d2a08",
+    "flight-delayed-solid": "#f6b24c",
+    "flight-delayed-on": "#06101f",
+    "flight-cancelled-fg": "#ffa0a5",
+    "flight-cancelled-bg": "#4a161c",
+    "flight-cancelled-solid": "#ff737a",
+    "flight-cancelled-on": "#06101f",
+    "flight-landed-fg": "#72d7de",
+    "flight-landed-bg": "#0b3439",
+    "flight-landed-solid": "#3cc5cf",
+    "flight-landed-on": "#06101f",
+    "flight-departed-fg": "#a3aac0",
+    "flight-departed-bg": "#171e38",
+    "flight-departed-solid": "#a3aac0",
+    "flight-departed-on": "#06101f",
+    "official-fg": "#0b1230",
+    "official-bg": "#f4f6fb",
+    "official-border": "#f4f6fb",
+    "estimated-fg": "#f4f6fb",
+    "estimated-bg": "#10172e",
+    "estimated-border": "#c2c8db",
+    "suggestion-fg": "#b4c2ff",
+    "suggestion-bg": "#1a2550",
+    "suggestion-border": "#b4c2ff",
+    "demo-fg": "#ffdc8f",
+    "demo-bg": "#33270a",
+    "demo-border": "#c99a2e",
+    "glass-light": "#ffffff",
+    "glass-dark": "#0a1130",
+    "scrim": "#050918",
+    "glass@white": "#363c4f",
+    "glass@black": "#0d1327",
+    "glass-dark@white": "#4f546a",
+    "scrim@white": "#3c3f4b"
+  },
+  "board": {
+    "page": "#070b1c",
+    "page-subtle": "#0f1530",
+    "surface": "#0f1530",
+    "surface-raised": "#172042",
+    "surface-sunken": "#04060f",
+    "ivory": "#0f1426",
+    "ink": "#f4f6fb",
+    "ink-2": "#aab1c8",
+    "ink-3": "#aab1c8",
+    "line": "#232a48",
+    "line-strong": "#343d62",
+    "line-control": "#7680a6",
+    "fill": "#1c2547",
+    "fill-hover": "#263058",
+    "inverse": "#121a38",
+    "on-inverse": "#f4f6fb",
+    "on-inverse-dim": "#c2c8db",
+    "midnight": "#070c22",
+    "midnight-2": "#0f1a3d",
+    "on-midnight": "#ffffff",
+    "on-midnight-dim": "#d6dbe9",
+    "primary": "#eef1fa",
+    "primary-hover": "#ffffff",
+    "on-primary": "#0b1230",
+    "primary-soft": "#1a2550",
+    "primary-ink": "#b4c2ff",
+    "gold": "#d6b46e",
+    "gold-hover": "#e3c382",
+    "on-gold": "#0b1230",
+    "gold-ink": "#e5c88a",
+    "gold-soft": "#2a2416",
+    "gold-bright": "#e8cb8c",
+    "leaf": "#8fd3ae",
+    "leaf-soft": "#12382b",
+    "focus": "#ff9fdc",
+    "board": "#070b1c",
+    "board-raised": "#0f1530",
+    "board-ink": "#f4f6fb",
+    "board-dim": "#aab1c8",
+    "board-line": "#232a48",
+    "board-accent": "#f3c96e",
+    "positive-fg": "#6ee0a2",
+    "positive-bg": "#0e3324",
+    "positive-border": "#3c9f6e",
+    "warning-fg": "#ffc66e",
+    "warning-bg": "#3d2a08",
+    "warning-border": "#b8862e",
+    "critical-fg": "#ffa0a5",
+    "critical-bg": "#4a161c",
+    "critical-border": "#c9606a",
+    "info-fg": "#a3c2ff",
+    "info-bg": "#13285c",
+    "info-border": "#5b86d6",
+    "neutral-fg": "#c9cfe0",
+    "neutral-bg": "#1d2546",
+    "neutral-border": "#7680a6",
+    "flight-scheduled-fg": "#c9cfe0",
+    "flight-scheduled-bg": "#1b2340",
+    "flight-scheduled-solid": "#c9cfe0",
+    "flight-scheduled-on": "#0b1230",
+    "flight-ontime-fg": "#6ee0a2",
+    "flight-ontime-bg": "#0e3324",
+    "flight-ontime-solid": "#3ccf82",
+    "flight-ontime-on": "#06101f",
+    "flight-boarding-fg": "#a3c2ff",
+    "flight-boarding-bg": "#13285c",
+    "flight-boarding-solid": "#5b95ff",
+    "flight-boarding-on": "#06101f",
+    "flight-delayed-fg": "#ffc66e",
+    "flight-delayed-bg": "#3d2a08",
+    "flight-delayed-solid": "#f6b24c",
+    "flight-delayed-on": "#06101f",
+    "flight-cancelled-fg": "#ffa0a5",
+    "flight-cancelled-bg": "#4a161c",
+    "flight-cancelled-solid": "#ff737a",
+    "flight-cancelled-on": "#06101f",
+    "flight-landed-fg": "#72d7de",
+    "flight-landed-bg": "#0b3439",
+    "flight-landed-solid": "#3cc5cf",
+    "flight-landed-on": "#06101f",
+    "flight-departed-fg": "#a3aac0",
+    "flight-departed-bg": "#171e38",
+    "flight-departed-solid": "#a3aac0",
+    "flight-departed-on": "#06101f",
+    "official-fg": "#0b1230",
+    "official-bg": "#f4f6fb",
+    "official-border": "#f4f6fb",
+    "estimated-fg": "#f4f6fb",
+    "estimated-bg": "#0f1530",
+    "estimated-border": "#c2c8db",
+    "suggestion-fg": "#b4c2ff",
+    "suggestion-bg": "#1a2550",
+    "suggestion-border": "#b4c2ff",
+    "demo-fg": "#ffdc8f",
+    "demo-bg": "#33270a",
+    "demo-border": "#c99a2e",
+    "glass-light": "#ffffff",
+    "glass-dark": "#0a1130",
+    "scrim": "#050918",
+    "glass@white": "#353a51",
+    "glass@black": "#0d1228",
+    "glass-dark@white": "#4f546a",
+    "scrim@white": "#3c3f4b"
+  },
+  "hc-light": {
+    "page": "#ffffff",
+    "page-subtle": "#f1f2f6",
+    "surface": "#ffffff",
+    "surface-raised": "#ffffff",
+    "surface-sunken": "#f1f2f6",
+    "ivory": "#ffffff",
+    "ink": "#000824",
+    "ink-2": "#1b2140",
+    "ink-3": "#262d4d",
+    "line": "#7d8399",
+    "line-strong": "#4b5168",
+    "line-control": "#1b2140",
+    "fill": "#e3e6ee",
+    "fill-hover": "#d4d8e3",
+    "inverse": "#0b1230",
+    "on-inverse": "#ffffff",
+    "on-inverse-dim": "#c3c9dc",
+    "midnight": "#070c22",
+    "midnight-2": "#0f1a3d",
+    "on-midnight": "#ffffff",
+    "on-midnight-dim": "#d6dbe9",
+    "primary": "#050b2a",
+    "primary-hover": "#000000",
+    "on-primary": "#ffffff",
+    "primary-soft": "#e7eaf5",
+    "primary-ink": "#0b1a5c",
+    "gold": "#a67c2e",
+    "gold-hover": "#d2ab64",
+    "on-gold": "#0b1230",
     "gold-ink": "#5a3f07",
-    "gold-soft": "#f2e7cc",
-    "leaf": "#124a32",
-    "leaf-soft": "#e0eee3",
+    "gold-soft": "#f6eddb",
+    "gold-bright": "#e8cb8c",
+    "leaf": "#0f4a31",
+    "leaf-soft": "#e1f1e8",
     "focus": "#86095f",
-    "board": "#080b16",
-    "board-raised": "#121627",
-    "board-ink": "#f3f1ea",
+    "board": "#070b1c",
+    "board-raised": "#0f1530",
+    "board-ink": "#f4f6fb",
     "board-dim": "#d5d9e8",
     "board-line": "#636b8c",
-    "board-accent": "#ffc24a",
-    "positive-fg": "#0d4a32",
-    "positive-bg": "#e2f0e6",
-    "positive-border": "#0d4a32",
-    "warning-fg": "#643600",
-    "warning-bg": "#faeacd",
-    "warning-border": "#643600",
-    "critical-fg": "#7c1814",
-    "critical-bg": "#fae3df",
-    "critical-border": "#7c1814",
-    "info-fg": "#084256",
-    "info-bg": "#ddeef3",
-    "info-border": "#084256",
-    "neutral-fg": "#2c2f4e",
-    "neutral-bg": "#eae5da",
-    "neutral-border": "#2c2f4e",
-    "official-fg": "#fbf6ea",
-    "official-bg": "#0d0f26",
-    "official-border": "#0d0f26",
-    "estimated-fg": "#0d0f26",
-    "estimated-bg": "#fffdf8",
-    "estimated-border": "#0d0f26",
-    "suggestion-fg": "#171b52",
-    "suggestion-bg": "#e7e8f4",
-    "suggestion-border": "#171b52",
-    "demo-fg": "#1f1600",
-    "demo-bg": "#ffc233",
-    "demo-border": "#1f1600"
+    "board-accent": "#f3c96e",
+    "positive-fg": "#064d2c",
+    "positive-bg": "#e3f5eb",
+    "positive-border": "#064d2c",
+    "warning-fg": "#613000",
+    "warning-bg": "#fff0d9",
+    "warning-border": "#613000",
+    "critical-fg": "#7c0b14",
+    "critical-bg": "#fde8e9",
+    "critical-border": "#7c0b14",
+    "info-fg": "#06358a",
+    "info-bg": "#e6eeff",
+    "info-border": "#06358a",
+    "neutral-fg": "#1b2140",
+    "neutral-bg": "#eceef3",
+    "neutral-border": "#1b2140",
+    "flight-scheduled-fg": "#1b2140",
+    "flight-scheduled-bg": "#eceef3",
+    "flight-scheduled-solid": "#3d4560",
+    "flight-scheduled-on": "#ffffff",
+    "flight-ontime-fg": "#064d2c",
+    "flight-ontime-bg": "#e3f5eb",
+    "flight-ontime-solid": "#075a34",
+    "flight-ontime-on": "#ffffff",
+    "flight-boarding-fg": "#06358a",
+    "flight-boarding-bg": "#e6eeff",
+    "flight-boarding-solid": "#0b3fa6",
+    "flight-boarding-on": "#ffffff",
+    "flight-delayed-fg": "#613000",
+    "flight-delayed-bg": "#fff0d9",
+    "flight-delayed-solid": "#f0a032",
+    "flight-delayed-on": "#0b1230",
+    "flight-cancelled-fg": "#7c0b14",
+    "flight-cancelled-bg": "#fde8e9",
+    "flight-cancelled-solid": "#8e101b",
+    "flight-cancelled-on": "#ffffff",
+    "flight-landed-fg": "#04464d",
+    "flight-landed-bg": "#dff3f4",
+    "flight-landed-solid": "#06525b",
+    "flight-landed-on": "#ffffff",
+    "flight-departed-fg": "#262d4d",
+    "flight-departed-bg": "#eceef3",
+    "flight-departed-solid": "#262d4d",
+    "flight-departed-on": "#ffffff",
+    "official-fg": "#ffffff",
+    "official-bg": "#000824",
+    "official-border": "#000824",
+    "estimated-fg": "#000824",
+    "estimated-bg": "#ffffff",
+    "estimated-border": "#000824",
+    "suggestion-fg": "#0b1a5c",
+    "suggestion-bg": "#e7eaf5",
+    "suggestion-border": "#0b1a5c",
+    "demo-fg": "#2e1f00",
+    "demo-bg": "#fbecc4",
+    "demo-border": "#2e1f00",
+    "glass-light": "#ffffff",
+    "glass-dark": "#0a1130",
+    "scrim": "#050918",
+    "glass@white": "#ffffff",
+    "glass@black": "#d6d6d6",
+    "glass-dark@white": "#4f546a",
+    "scrim@white": "#3c3f4b"
   },
   "hc-dark": {
-    "page": "#05061a",
-    "page-subtle": "#0a0c26",
-    "surface": "#0f1233",
-    "surface-raised": "#171b45",
-    "surface-sunken": "#020312",
+    "page": "#000000",
+    "page-subtle": "#05081a",
+    "surface": "#070b20",
+    "surface-raised": "#0e1430",
+    "surface-sunken": "#000000",
+    "ivory": "#070b20",
     "ink": "#ffffff",
-    "ink-2": "#e6e4f2",
-    "ink-3": "#cfcde2",
-    "line": "#6e7198",
-    "line-strong": "#a2a4c4",
-    "line-control": "#e6e4f2",
-    "inverse": "#1d2152",
-    "on-inverse": "#f4eedf",
-    "on-inverse-dim": "#c2c0d6",
-    "primary": "#dde0ff",
-    "primary-hover": "#f1f2ff",
-    "on-primary": "#14163a",
-    "primary-soft": "#20245a",
-    "primary-ink": "#dde0ff",
-    "gold": "#e2c383",
-    "gold-ink": "#f0d9a4",
-    "gold-soft": "#2b2946",
+    "ink-2": "#e8eaf3",
+    "ink-3": "#d3d7e6",
+    "line": "#6e7598",
+    "line-strong": "#a2a8c4",
+    "line-control": "#e8eaf3",
+    "fill": "#1a2244",
+    "fill-hover": "#242e58",
+    "inverse": "#121a38",
+    "on-inverse": "#f4f6fb",
+    "on-inverse-dim": "#c2c8db",
+    "midnight": "#070c22",
+    "midnight-2": "#0f1a3d",
+    "on-midnight": "#ffffff",
+    "on-midnight-dim": "#d6dbe9",
+    "primary": "#ffffff",
+    "primary-hover": "#e8eaf3",
+    "on-primary": "#0b1230",
+    "primary-soft": "#1a2550",
+    "primary-ink": "#dde4ff",
+    "gold": "#e8cb8c",
+    "gold-hover": "#e3c382",
+    "on-gold": "#0b1230",
+    "gold-ink": "#f2dcaa",
+    "gold-soft": "#2a2416",
+    "gold-bright": "#e8cb8c",
     "leaf": "#b6f2d2",
     "leaf-soft": "#12382b",
     "focus": "#ffc2e9",
-    "board": "#080b16",
-    "board-raised": "#121627",
-    "board-ink": "#f3f1ea",
+    "board": "#070b1c",
+    "board-raised": "#0f1530",
+    "board-ink": "#f4f6fb",
     "board-dim": "#d5d9e8",
     "board-line": "#636b8c",
-    "board-accent": "#ffc24a",
+    "board-accent": "#f3c96e",
     "positive-fg": "#b6f2d2",
-    "positive-bg": "#12382b",
+    "positive-bg": "#0e3324",
     "positive-border": "#b6f2d2",
     "warning-fg": "#ffd88f",
-    "warning-bg": "#47300a",
+    "warning-bg": "#3d2a08",
     "warning-border": "#ffd88f",
-    "critical-fg": "#ffc7bf",
-    "critical-bg": "#4c1b1d",
-    "critical-border": "#ffc7bf",
-    "info-fg": "#b5e6f7",
-    "info-bg": "#0e3646",
-    "info-border": "#b5e6f7",
+    "critical-fg": "#ffc7ca",
+    "critical-bg": "#4a161c",
+    "critical-border": "#ffc7ca",
+    "info-fg": "#c8daff",
+    "info-bg": "#13285c",
+    "info-border": "#c8daff",
     "neutral-fg": "#e8e9f3",
-    "neutral-bg": "#2b2e50",
+    "neutral-bg": "#1b2340",
     "neutral-border": "#e8e9f3",
-    "official-fg": "#05061a",
+    "flight-scheduled-fg": "#e8e9f3",
+    "flight-scheduled-bg": "#1b2340",
+    "flight-scheduled-solid": "#c9cfe0",
+    "flight-scheduled-on": "#0b1230",
+    "flight-ontime-fg": "#b6f2d2",
+    "flight-ontime-bg": "#0e3324",
+    "flight-ontime-solid": "#3ccf82",
+    "flight-ontime-on": "#06101f",
+    "flight-boarding-fg": "#c8daff",
+    "flight-boarding-bg": "#13285c",
+    "flight-boarding-solid": "#5b95ff",
+    "flight-boarding-on": "#06101f",
+    "flight-delayed-fg": "#ffd88f",
+    "flight-delayed-bg": "#3d2a08",
+    "flight-delayed-solid": "#f6b24c",
+    "flight-delayed-on": "#06101f",
+    "flight-cancelled-fg": "#ffc7ca",
+    "flight-cancelled-bg": "#4a161c",
+    "flight-cancelled-solid": "#ff737a",
+    "flight-cancelled-on": "#06101f",
+    "flight-landed-fg": "#b2eef2",
+    "flight-landed-bg": "#0b3439",
+    "flight-landed-solid": "#3cc5cf",
+    "flight-landed-on": "#06101f",
+    "flight-departed-fg": "#d3d7e6",
+    "flight-departed-bg": "#171e38",
+    "flight-departed-solid": "#a3aac0",
+    "flight-departed-on": "#06101f",
+    "official-fg": "#000000",
     "official-bg": "#ffffff",
     "official-border": "#ffffff",
     "estimated-fg": "#ffffff",
-    "estimated-bg": "#171a3d",
+    "estimated-bg": "#10172e",
     "estimated-border": "#ffffff",
-    "suggestion-fg": "#dde0ff",
-    "suggestion-bg": "#20245a",
-    "suggestion-border": "#dde0ff",
-    "demo-fg": "#1f1600",
-    "demo-bg": "#ffc233",
-    "demo-border": "#ffc233"
+    "suggestion-fg": "#dde4ff",
+    "suggestion-bg": "#1a2550",
+    "suggestion-border": "#dde4ff",
+    "demo-fg": "#ffe4a8",
+    "demo-bg": "#33270a",
+    "demo-border": "#ffd88f",
+    "glass-light": "#ffffff",
+    "glass-dark": "#0a1130",
+    "scrim": "#050918",
+    "glass@white": "#2f3244",
+    "glass@black": "#06091b",
+    "glass-dark@white": "#4f546a",
+    "scrim@white": "#3c3f4b"
   },
   "hc-board": {
-    "page": "#04060d",
-    "page-subtle": "#0e1220",
-    "surface": "#0e1220",
-    "surface-raised": "#171c2e",
-    "surface-sunken": "#020312",
+    "page": "#03050d",
+    "page-subtle": "#0b1022",
+    "surface": "#0b1022",
+    "surface-raised": "#141a33",
+    "surface-sunken": "#000000",
+    "ivory": "#070b20",
     "ink": "#ffffff",
     "ink-2": "#d5d9e8",
     "ink-3": "#d5d9e8",
     "line": "#636b8c",
     "line-strong": "#8d95b5",
-    "line-control": "#e6e4f2",
-    "inverse": "#1d2152",
-    "on-inverse": "#f4eedf",
-    "on-inverse-dim": "#c2c0d6",
-    "primary": "#dde0ff",
-    "primary-hover": "#f1f2ff",
-    "on-primary": "#14163a",
-    "primary-soft": "#20245a",
-    "primary-ink": "#dde0ff",
-    "gold": "#e2c383",
-    "gold-ink": "#f0d9a4",
-    "gold-soft": "#2b2946",
+    "line-control": "#e8eaf3",
+    "fill": "#1a2244",
+    "fill-hover": "#242e58",
+    "inverse": "#121a38",
+    "on-inverse": "#f4f6fb",
+    "on-inverse-dim": "#c2c8db",
+    "midnight": "#070c22",
+    "midnight-2": "#0f1a3d",
+    "on-midnight": "#ffffff",
+    "on-midnight-dim": "#d6dbe9",
+    "primary": "#ffffff",
+    "primary-hover": "#e8eaf3",
+    "on-primary": "#0b1230",
+    "primary-soft": "#1a2550",
+    "primary-ink": "#dde4ff",
+    "gold": "#e8cb8c",
+    "gold-hover": "#e3c382",
+    "on-gold": "#0b1230",
+    "gold-ink": "#f2dcaa",
+    "gold-soft": "#2a2416",
+    "gold-bright": "#e8cb8c",
     "leaf": "#b6f2d2",
     "leaf-soft": "#12382b",
     "focus": "#ffc2e9",
-    "board": "#080b16",
-    "board-raised": "#121627",
-    "board-ink": "#f3f1ea",
+    "board": "#070b1c",
+    "board-raised": "#0f1530",
+    "board-ink": "#f4f6fb",
     "board-dim": "#d5d9e8",
     "board-line": "#636b8c",
-    "board-accent": "#ffc24a",
+    "board-accent": "#f3c96e",
     "positive-fg": "#b6f2d2",
-    "positive-bg": "#12382b",
+    "positive-bg": "#0e3324",
     "positive-border": "#b6f2d2",
     "warning-fg": "#ffd88f",
-    "warning-bg": "#47300a",
+    "warning-bg": "#3d2a08",
     "warning-border": "#ffd88f",
-    "critical-fg": "#ffc7bf",
-    "critical-bg": "#4c1b1d",
-    "critical-border": "#ffc7bf",
-    "info-fg": "#b5e6f7",
-    "info-bg": "#0e3646",
-    "info-border": "#b5e6f7",
+    "critical-fg": "#ffc7ca",
+    "critical-bg": "#4a161c",
+    "critical-border": "#ffc7ca",
+    "info-fg": "#c8daff",
+    "info-bg": "#13285c",
+    "info-border": "#c8daff",
     "neutral-fg": "#e8e9f3",
-    "neutral-bg": "#262c44",
+    "neutral-bg": "#1d2546",
     "neutral-border": "#e8e9f3",
-    "official-fg": "#05061a",
+    "flight-scheduled-fg": "#e8e9f3",
+    "flight-scheduled-bg": "#1b2340",
+    "flight-scheduled-solid": "#c9cfe0",
+    "flight-scheduled-on": "#0b1230",
+    "flight-ontime-fg": "#b6f2d2",
+    "flight-ontime-bg": "#0e3324",
+    "flight-ontime-solid": "#3ccf82",
+    "flight-ontime-on": "#06101f",
+    "flight-boarding-fg": "#c8daff",
+    "flight-boarding-bg": "#13285c",
+    "flight-boarding-solid": "#5b95ff",
+    "flight-boarding-on": "#06101f",
+    "flight-delayed-fg": "#ffd88f",
+    "flight-delayed-bg": "#3d2a08",
+    "flight-delayed-solid": "#f6b24c",
+    "flight-delayed-on": "#06101f",
+    "flight-cancelled-fg": "#ffc7ca",
+    "flight-cancelled-bg": "#4a161c",
+    "flight-cancelled-solid": "#ff737a",
+    "flight-cancelled-on": "#06101f",
+    "flight-landed-fg": "#b2eef2",
+    "flight-landed-bg": "#0b3439",
+    "flight-landed-solid": "#3cc5cf",
+    "flight-landed-on": "#06101f",
+    "flight-departed-fg": "#d3d7e6",
+    "flight-departed-bg": "#171e38",
+    "flight-departed-solid": "#a3aac0",
+    "flight-departed-on": "#06101f",
+    "official-fg": "#000000",
     "official-bg": "#ffffff",
     "official-border": "#ffffff",
     "estimated-fg": "#ffffff",
-    "estimated-bg": "#0e1220",
+    "estimated-bg": "#0b1022",
     "estimated-border": "#ffffff",
-    "suggestion-fg": "#dde0ff",
-    "suggestion-bg": "#20245a",
-    "suggestion-border": "#dde0ff",
-    "demo-fg": "#1f1600",
-    "demo-bg": "#ffc233",
-    "demo-border": "#ffc233"
+    "suggestion-fg": "#dde4ff",
+    "suggestion-bg": "#1a2550",
+    "suggestion-border": "#dde4ff",
+    "demo-fg": "#ffe4a8",
+    "demo-bg": "#33270a",
+    "demo-border": "#ffd88f",
+    "glass-light": "#ffffff",
+    "glass-dark": "#0a1130",
+    "scrim": "#050918",
+    "glass@white": "#323645",
+    "glass@black": "#090d1d",
+    "glass-dark@white": "#4f546a",
+    "scrim@white": "#3c3f4b"
+  },
+  "media": {
+    "page": "#060a18",
+    "page-subtle": "#0b1124",
+    "surface": "#10172e",
+    "surface-raised": "#172040",
+    "surface-sunken": "#04060f",
+    "ivory": "#0f1426",
+    "ink": "#ffffff",
+    "ink-2": "#e3e7f2",
+    "ink-3": "#d6dbe9",
+    "line": "#2c3558",
+    "line-strong": "#46507a",
+    "line-control": "#aeb6d2",
+    "fill": "#1f2a52",
+    "fill-hover": "#2a3664",
+    "inverse": "#121a38",
+    "on-inverse": "#f4f6fb",
+    "on-inverse-dim": "#c2c8db",
+    "midnight": "#070c22",
+    "midnight-2": "#0f1a3d",
+    "on-midnight": "#ffffff",
+    "on-midnight-dim": "#d6dbe9",
+    "primary": "#eef1fa",
+    "primary-hover": "#ffffff",
+    "on-primary": "#0b1230",
+    "primary-soft": "#1a2550",
+    "primary-ink": "#c9d4ff",
+    "gold": "#d6b46e",
+    "gold-hover": "#e3c382",
+    "on-gold": "#0b1230",
+    "gold-ink": "#e8cb8c",
+    "gold-soft": "#2a2416",
+    "gold-bright": "#e8cb8c",
+    "leaf": "#8fd3ae",
+    "leaf-soft": "#12382b",
+    "focus": "#ffb8e8",
+    "board": "#070b1c",
+    "board-raised": "#0f1530",
+    "board-ink": "#f4f6fb",
+    "board-dim": "#aab1c8",
+    "board-line": "#232a48",
+    "board-accent": "#f3c96e",
+    "positive-fg": "#6ee0a2",
+    "positive-bg": "#0e3324",
+    "positive-border": "#3c9f6e",
+    "warning-fg": "#ffc66e",
+    "warning-bg": "#3d2a08",
+    "warning-border": "#b8862e",
+    "critical-fg": "#ffa0a5",
+    "critical-bg": "#4a161c",
+    "critical-border": "#c9606a",
+    "info-fg": "#a3c2ff",
+    "info-bg": "#13285c",
+    "info-border": "#5b86d6",
+    "neutral-fg": "#c9cfe0",
+    "neutral-bg": "#1b2340",
+    "neutral-border": "#7a84a6",
+    "flight-scheduled-fg": "#c9cfe0",
+    "flight-scheduled-bg": "#1b2340",
+    "flight-scheduled-solid": "#c9cfe0",
+    "flight-scheduled-on": "#0b1230",
+    "flight-ontime-fg": "#6ee0a2",
+    "flight-ontime-bg": "#0e3324",
+    "flight-ontime-solid": "#3ccf82",
+    "flight-ontime-on": "#06101f",
+    "flight-boarding-fg": "#a3c2ff",
+    "flight-boarding-bg": "#13285c",
+    "flight-boarding-solid": "#5b95ff",
+    "flight-boarding-on": "#06101f",
+    "flight-delayed-fg": "#ffc66e",
+    "flight-delayed-bg": "#3d2a08",
+    "flight-delayed-solid": "#f6b24c",
+    "flight-delayed-on": "#06101f",
+    "flight-cancelled-fg": "#ffa0a5",
+    "flight-cancelled-bg": "#4a161c",
+    "flight-cancelled-solid": "#ff737a",
+    "flight-cancelled-on": "#06101f",
+    "flight-landed-fg": "#72d7de",
+    "flight-landed-bg": "#0b3439",
+    "flight-landed-solid": "#3cc5cf",
+    "flight-landed-on": "#06101f",
+    "flight-departed-fg": "#a3aac0",
+    "flight-departed-bg": "#171e38",
+    "flight-departed-solid": "#a3aac0",
+    "flight-departed-on": "#06101f",
+    "official-fg": "#0b1230",
+    "official-bg": "#f4f6fb",
+    "official-border": "#f4f6fb",
+    "estimated-fg": "#f4f6fb",
+    "estimated-bg": "#10172e",
+    "estimated-border": "#c2c8db",
+    "suggestion-fg": "#b4c2ff",
+    "suggestion-bg": "#1a2550",
+    "suggestion-border": "#b4c2ff",
+    "demo-fg": "#ffdc8f",
+    "demo-bg": "#33270a",
+    "demo-border": "#c99a2e",
+    "glass-light": "#ffffff",
+    "glass-dark": "#0a1130",
+    "scrim": "#050918",
+    "glass@white": "#363c4f",
+    "glass@black": "#0d1327",
+    "glass-dark@white": "#4f546a",
+    "scrim@white": "#3c3f4b"
+  },
+  "hc-media": {
+    "page": "#000000",
+    "page-subtle": "#05081a",
+    "surface": "#070b20",
+    "surface-raised": "#0e1430",
+    "surface-sunken": "#000000",
+    "ivory": "#070b20",
+    "ink": "#ffffff",
+    "ink-2": "#e8eaf3",
+    "ink-3": "#d3d7e6",
+    "line": "#6e7598",
+    "line-strong": "#a2a8c4",
+    "line-control": "#e8eaf3",
+    "fill": "#1a2244",
+    "fill-hover": "#242e58",
+    "inverse": "#121a38",
+    "on-inverse": "#f4f6fb",
+    "on-inverse-dim": "#c2c8db",
+    "midnight": "#070c22",
+    "midnight-2": "#0f1a3d",
+    "on-midnight": "#ffffff",
+    "on-midnight-dim": "#d6dbe9",
+    "primary": "#ffffff",
+    "primary-hover": "#e8eaf3",
+    "on-primary": "#0b1230",
+    "primary-soft": "#1a2550",
+    "primary-ink": "#dde4ff",
+    "gold": "#e8cb8c",
+    "gold-hover": "#e3c382",
+    "on-gold": "#0b1230",
+    "gold-ink": "#f2dcaa",
+    "gold-soft": "#2a2416",
+    "gold-bright": "#e8cb8c",
+    "leaf": "#b6f2d2",
+    "leaf-soft": "#12382b",
+    "focus": "#ffc2e9",
+    "board": "#070b1c",
+    "board-raised": "#0f1530",
+    "board-ink": "#f4f6fb",
+    "board-dim": "#d5d9e8",
+    "board-line": "#636b8c",
+    "board-accent": "#f3c96e",
+    "positive-fg": "#b6f2d2",
+    "positive-bg": "#0e3324",
+    "positive-border": "#b6f2d2",
+    "warning-fg": "#ffd88f",
+    "warning-bg": "#3d2a08",
+    "warning-border": "#ffd88f",
+    "critical-fg": "#ffc7ca",
+    "critical-bg": "#4a161c",
+    "critical-border": "#ffc7ca",
+    "info-fg": "#c8daff",
+    "info-bg": "#13285c",
+    "info-border": "#c8daff",
+    "neutral-fg": "#e8e9f3",
+    "neutral-bg": "#1b2340",
+    "neutral-border": "#e8e9f3",
+    "flight-scheduled-fg": "#e8e9f3",
+    "flight-scheduled-bg": "#1b2340",
+    "flight-scheduled-solid": "#c9cfe0",
+    "flight-scheduled-on": "#0b1230",
+    "flight-ontime-fg": "#b6f2d2",
+    "flight-ontime-bg": "#0e3324",
+    "flight-ontime-solid": "#3ccf82",
+    "flight-ontime-on": "#06101f",
+    "flight-boarding-fg": "#c8daff",
+    "flight-boarding-bg": "#13285c",
+    "flight-boarding-solid": "#5b95ff",
+    "flight-boarding-on": "#06101f",
+    "flight-delayed-fg": "#ffd88f",
+    "flight-delayed-bg": "#3d2a08",
+    "flight-delayed-solid": "#f6b24c",
+    "flight-delayed-on": "#06101f",
+    "flight-cancelled-fg": "#ffc7ca",
+    "flight-cancelled-bg": "#4a161c",
+    "flight-cancelled-solid": "#ff737a",
+    "flight-cancelled-on": "#06101f",
+    "flight-landed-fg": "#b2eef2",
+    "flight-landed-bg": "#0b3439",
+    "flight-landed-solid": "#3cc5cf",
+    "flight-landed-on": "#06101f",
+    "flight-departed-fg": "#d3d7e6",
+    "flight-departed-bg": "#171e38",
+    "flight-departed-solid": "#a3aac0",
+    "flight-departed-on": "#06101f",
+    "official-fg": "#000000",
+    "official-bg": "#ffffff",
+    "official-border": "#ffffff",
+    "estimated-fg": "#ffffff",
+    "estimated-bg": "#10172e",
+    "estimated-border": "#ffffff",
+    "suggestion-fg": "#dde4ff",
+    "suggestion-bg": "#1a2550",
+    "suggestion-border": "#dde4ff",
+    "demo-fg": "#ffe4a8",
+    "demo-bg": "#33270a",
+    "demo-border": "#ffd88f",
+    "glass-light": "#ffffff",
+    "glass-dark": "#0a1130",
+    "scrim": "#050918",
+    "glass@white": "#2f3244",
+    "glass@black": "#06091b",
+    "glass-dark@white": "#4f546a",
+    "scrim@white": "#3c3f4b"
   }
 };
 
 export type ContrastKind = 'text' | 'ui' | 'deco';
 
-export type ContrastGroup = 'ink' | 'brand' | 'surfaces' | 'accents' | 'lines' | 'status' | 'provenance' | 'board';
+export type ContrastGroup = 'ink' | 'brand' | 'surfaces' | 'accents' | 'lines' | 'status' | 'provenance' | 'flight' | 'glass' | 'media' | 'board';
 
 export interface ContrastPair {
   group: ContrastGroup;
@@ -392,152 +872,174 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "page",
     "kind": "text",
     "ratios": {
-      "light": 15.36,
-      "dark": 16.43,
-      "board": 17.36,
-      "hc-light": 18.39,
-      "hc-dark": 20.04,
-      "hc-board": 20.25
+      "light": 17.13,
+      "dark": 18.24,
+      "board": 18.08,
+      "hc-light": 19.8,
+      "hc-dark": 21,
+      "hc-board": 20.36,
+      "media": 19.73,
+      "hc-media": 21
     }
   },
   {
     "group": "ink",
     "fg": "ink-2",
     "bg": "page",
-    "kind": "text",
-    "ratios": {
-      "light": 8.12,
-      "dark": 11.47,
-      "board": 8.89,
-      "hc-light": 13.82,
-      "hc-dark": 15.98,
-      "hc-board": 14.38
-    }
-  },
-  {
-    "group": "ink",
-    "fg": "ink-3",
-    "bg": "page",
-    "kind": "text",
-    "ratios": {
-      "light": 5.71,
-      "dark": 7.58,
-      "board": 8.89,
-      "hc-light": 10.98,
-      "hc-dark": 12.87,
-      "hc-board": 14.38
-    }
-  },
-  {
-    "group": "ink",
-    "fg": "ink",
-    "bg": "page-subtle",
-    "kind": "text",
-    "ratios": {
-      "light": 14.19,
-      "dark": 15.57,
-      "board": 15.88,
-      "hc-light": 16.57,
-      "hc-dark": 19.2,
-      "hc-board": 18.64
-    }
-  },
-  {
-    "group": "ink",
-    "fg": "ink-2",
-    "bg": "page-subtle",
-    "kind": "text",
-    "ratios": {
-      "light": 7.51,
-      "dark": 10.87,
-      "board": 8.13,
-      "hc-light": 12.46,
-      "hc-dark": 15.31,
-      "hc-board": 13.24
-    }
-  },
-  {
-    "group": "ink",
-    "fg": "ink-3",
-    "bg": "page-subtle",
-    "kind": "text",
-    "ratios": {
-      "light": 5.28,
-      "dark": 7.18,
-      "board": 8.13,
-      "hc-light": 9.89,
-      "hc-dark": 12.33,
-      "hc-board": 13.24
-    }
-  },
-  {
-    "group": "ink",
-    "fg": "ink",
-    "bg": "surface",
-    "kind": "text",
-    "ratios": {
-      "light": 16.43,
-      "dark": 14.49,
-      "board": 15.88,
-      "hc-light": 18.86,
-      "hc-dark": 18.18,
-      "hc-board": 18.64
-    }
-  },
-  {
-    "group": "ink",
-    "fg": "ink-2",
-    "bg": "surface",
-    "kind": "text",
-    "ratios": {
-      "light": 8.69,
-      "dark": 10.11,
-      "board": 8.13,
-      "hc-light": 14.17,
-      "hc-dark": 14.5,
-      "hc-board": 13.24
-    }
-  },
-  {
-    "group": "ink",
-    "fg": "ink-3",
-    "bg": "surface",
-    "kind": "text",
-    "ratios": {
-      "light": 6.11,
-      "dark": 6.68,
-      "board": 8.13,
-      "hc-light": 11.26,
-      "hc-dark": 11.67,
-      "hc-board": 13.24
-    }
-  },
-  {
-    "group": "ink",
-    "fg": "ink",
-    "bg": "surface-raised",
-    "kind": "text",
-    "ratios": {
-      "light": 16.71,
-      "dark": 12.82,
-      "board": 14.42,
-      "hc-light": 18.86,
-      "hc-dark": 16.41,
-      "hc-board": 16.9
-    }
-  },
-  {
-    "group": "ink",
-    "fg": "ink-2",
-    "bg": "surface-raised",
     "kind": "text",
     "ratios": {
       "light": 8.83,
-      "dark": 8.95,
-      "board": 7.39,
-      "hc-light": 14.17,
-      "hc-dark": 13.09,
-      "hc-board": 12.01
+      "dark": 11.81,
+      "board": 9.15,
+      "hc-light": 15.69,
+      "hc-dark": 17.49,
+      "hc-board": 14.46,
+      "media": 15.95,
+      "hc-media": 17.49
+    }
+  },
+  {
+    "group": "ink",
+    "fg": "ink-3",
+    "bg": "page",
+    "kind": "text",
+    "ratios": {
+      "light": 5.73,
+      "dark": 7.75,
+      "board": 9.15,
+      "hc-light": 13.41,
+      "hc-dark": 14.63,
+      "hc-board": 14.46,
+      "media": 14.25,
+      "hc-media": 14.63
+    }
+  },
+  {
+    "group": "ink",
+    "fg": "ink",
+    "bg": "page-subtle",
+    "kind": "text",
+    "ratios": {
+      "light": 15.82,
+      "dark": 17.34,
+      "board": 16.59,
+      "hc-light": 17.7,
+      "hc-dark": 19.88,
+      "hc-board": 18.89,
+      "media": 18.75,
+      "hc-media": 19.88
+    }
+  },
+  {
+    "group": "ink",
+    "fg": "ink-2",
+    "bg": "page-subtle",
+    "kind": "text",
+    "ratios": {
+      "light": 8.15,
+      "dark": 11.23,
+      "board": 8.4,
+      "hc-light": 14.02,
+      "hc-dark": 16.56,
+      "hc-board": 13.42,
+      "media": 15.16,
+      "hc-media": 16.56
+    }
+  },
+  {
+    "group": "ink",
+    "fg": "ink-3",
+    "bg": "page-subtle",
+    "kind": "text",
+    "ratios": {
+      "light": 5.29,
+      "dark": 7.36,
+      "board": 8.4,
+      "hc-light": 11.99,
+      "hc-dark": 13.85,
+      "hc-board": 13.42,
+      "media": 13.54,
+      "hc-media": 13.85
+    }
+  },
+  {
+    "group": "ink",
+    "fg": "ink",
+    "bg": "surface",
+    "kind": "text",
+    "ratios": {
+      "light": 18.36,
+      "dark": 16.4,
+      "board": 16.59,
+      "hc-light": 19.8,
+      "hc-dark": 19.48,
+      "hc-board": 18.89,
+      "media": 17.73,
+      "hc-media": 19.48
+    }
+  },
+  {
+    "group": "ink",
+    "fg": "ink-2",
+    "bg": "surface",
+    "kind": "text",
+    "ratios": {
+      "light": 9.46,
+      "dark": 10.62,
+      "board": 8.4,
+      "hc-light": 15.69,
+      "hc-dark": 16.23,
+      "hc-board": 13.42,
+      "media": 14.33,
+      "hc-media": 16.23
+    }
+  },
+  {
+    "group": "ink",
+    "fg": "ink-3",
+    "bg": "surface",
+    "kind": "text",
+    "ratios": {
+      "light": 6.14,
+      "dark": 6.96,
+      "board": 8.4,
+      "hc-light": 13.41,
+      "hc-dark": 13.57,
+      "hc-board": 13.42,
+      "media": 12.81,
+      "hc-media": 13.57
+    }
+  },
+  {
+    "group": "ink",
+    "fg": "ink",
+    "bg": "surface-raised",
+    "kind": "text",
+    "ratios": {
+      "light": 18.36,
+      "dark": 14.74,
+      "board": 14.69,
+      "hc-light": 19.8,
+      "hc-dark": 18.08,
+      "hc-board": 17.13,
+      "media": 15.94,
+      "hc-media": 18.08
+    }
+  },
+  {
+    "group": "ink",
+    "fg": "ink-2",
+    "bg": "surface-raised",
+    "kind": "text",
+    "ratios": {
+      "light": 9.46,
+      "dark": 9.55,
+      "board": 7.43,
+      "hc-light": 15.69,
+      "hc-dark": 15.06,
+      "hc-board": 12.17,
+      "media": 12.89,
+      "hc-media": 15.06
     }
   },
   {
@@ -546,12 +1048,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface-raised",
     "kind": "text",
     "ratios": {
-      "light": 6.21,
-      "dark": 5.91,
-      "board": 7.39,
-      "hc-light": 11.26,
-      "hc-dark": 10.54,
-      "hc-board": 12.01
+      "light": 6.14,
+      "dark": 6.26,
+      "board": 7.43,
+      "hc-light": 13.41,
+      "hc-dark": 12.59,
+      "hc-board": 12.17,
+      "media": 11.51,
+      "hc-media": 12.59
     }
   },
   {
@@ -560,12 +1064,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface-sunken",
     "kind": "text",
     "ratios": {
-      "light": 14.57,
-      "dark": 16.84,
-      "board": 17.91,
-      "hc-light": 16.57,
-      "hc-dark": 20.5,
-      "hc-board": 20.5
+      "light": 16.09,
+      "dark": 18.7,
+      "board": 18.7,
+      "hc-light": 17.7,
+      "hc-dark": 21,
+      "hc-board": 21,
+      "media": 20.22,
+      "hc-media": 21
     }
   },
   {
@@ -574,12 +1080,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface-sunken",
     "kind": "text",
     "ratios": {
-      "light": 7.7,
-      "dark": 11.75,
-      "board": 9.18,
-      "hc-light": 12.46,
-      "hc-dark": 16.34,
-      "hc-board": 14.56
+      "light": 8.29,
+      "dark": 12.11,
+      "board": 9.47,
+      "hc-light": 14.02,
+      "hc-dark": 17.49,
+      "hc-board": 14.91,
+      "media": 16.35,
+      "hc-media": 17.49
     }
   },
   {
@@ -588,12 +1096,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface-sunken",
     "kind": "text",
     "ratios": {
-      "light": 5.42,
-      "dark": 7.76,
-      "board": 9.18,
-      "hc-light": 9.89,
-      "hc-dark": 13.16,
-      "hc-board": 14.56
+      "light": 5.38,
+      "dark": 7.94,
+      "board": 9.47,
+      "hc-light": 11.99,
+      "hc-dark": 14.63,
+      "hc-board": 14.91,
+      "media": 14.61,
+      "hc-media": 14.63
     }
   },
   {
@@ -602,12 +1112,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "page",
     "kind": "text",
     "ratios": {
-      "light": 11.87,
-      "dark": 12.23,
-      "board": 12.62,
-      "hc-light": 15.57,
-      "hc-dark": 15.44,
-      "hc-board": 15.6
+      "light": 10.92,
+      "dark": 11.36,
+      "board": 11.27,
+      "hc-light": 15.95,
+      "hc-dark": 16.61,
+      "hc-board": 16.11,
+      "media": 13.47,
+      "hc-media": 16.61
     }
   },
   {
@@ -616,12 +1128,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "page-subtle",
     "kind": "text",
     "ratios": {
-      "light": 10.97,
-      "dark": 11.59,
-      "board": 11.54,
-      "hc-light": 14.03,
-      "hc-dark": 14.79,
-      "hc-board": 14.36
+      "light": 10.09,
+      "dark": 10.8,
+      "board": 10.34,
+      "hc-light": 14.25,
+      "hc-dark": 15.73,
+      "hc-board": 14.94,
+      "media": 12.8,
+      "hc-media": 15.73
     }
   },
   {
@@ -630,12 +1144,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface",
     "kind": "text",
     "ratios": {
-      "light": 12.7,
-      "dark": 10.79,
-      "board": 11.54,
-      "hc-light": 15.96,
-      "hc-dark": 14.01,
-      "hc-board": 14.36
+      "light": 11.71,
+      "dark": 10.22,
+      "board": 10.34,
+      "hc-light": 15.95,
+      "hc-dark": 15.41,
+      "hc-board": 14.94,
+      "media": 12.11,
+      "hc-media": 15.41
     }
   },
   {
@@ -644,12 +1160,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface-raised",
     "kind": "text",
     "ratios": {
-      "light": 12.91,
-      "dark": 9.55,
-      "board": 10.49,
-      "hc-light": 15.96,
-      "hc-dark": 12.64,
-      "hc-board": 13.02
+      "light": 11.71,
+      "dark": 9.18,
+      "board": 9.15,
+      "hc-light": 15.95,
+      "hc-dark": 14.3,
+      "hc-board": 13.56,
+      "media": 10.89,
+      "hc-media": 14.3
     }
   },
   {
@@ -658,12 +1176,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "primary-soft",
     "kind": "text",
     "ratios": {
-      "light": 10.6,
-      "dark": 9.24,
-      "board": 9.24,
-      "hc-light": 13.11,
-      "hc-dark": 11.07,
-      "hc-board": 11.07
+      "light": 9.75,
+      "dark": 8.49,
+      "board": 8.49,
+      "hc-light": 13.28,
+      "hc-dark": 11.66,
+      "hc-board": 11.66,
+      "media": 10.07,
+      "hc-media": 11.66
     }
   },
   {
@@ -672,12 +1192,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "primary",
     "kind": "text",
     "ratios": {
-      "light": 11.97,
-      "dark": 10.88,
-      "board": 10.88,
-      "hc-light": 14.8,
-      "hc-dark": 13.42,
-      "hc-board": 13.42
+      "light": 17.45,
+      "dark": 16.26,
+      "board": 16.26,
+      "hc-light": 19.3,
+      "hc-dark": 18.36,
+      "hc-board": 18.36,
+      "media": 16.26,
+      "hc-media": 18.36
     }
   },
   {
@@ -686,12 +1208,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "primary-hover",
     "kind": "text",
     "ratios": {
-      "light": 14.77,
-      "dark": 13.56,
-      "board": 13.56,
-      "hc-light": 17.18,
-      "hc-dark": 15.66,
-      "hc-board": 15.66
+      "light": 13.47,
+      "dark": 18.36,
+      "board": 18.36,
+      "hc-light": 21,
+      "hc-dark": 15.29,
+      "hc-board": 15.29,
+      "media": 18.36,
+      "hc-media": 15.29
     }
   },
   {
@@ -700,12 +1224,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "page",
     "kind": "ui",
     "ratios": {
-      "light": 11.87,
-      "dark": 11.88,
-      "board": 12.26,
-      "hc-light": 15.57,
-      "hc-dark": 15.44,
-      "hc-board": 15.6
+      "light": 16.28,
+      "dark": 17.47,
+      "board": 17.32,
+      "hc-light": 19.3,
+      "hc-dark": 21,
+      "hc-board": 20.36,
+      "media": 17.47,
+      "hc-media": 21
     }
   },
   {
@@ -714,12 +1240,238 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface",
     "kind": "ui",
     "ratios": {
-      "light": 12.7,
-      "dark": 10.48,
-      "board": 11.21,
-      "hc-light": 15.96,
-      "hc-dark": 14.01,
-      "hc-board": 14.36
+      "light": 17.45,
+      "dark": 15.7,
+      "board": 15.89,
+      "hc-light": 19.3,
+      "hc-dark": 19.48,
+      "hc-board": 18.89,
+      "media": 15.7,
+      "hc-media": 19.48
+    }
+  },
+  {
+    "group": "brand",
+    "fg": "on-gold",
+    "bg": "gold",
+    "kind": "text",
+    "ratios": {
+      "light": 7.07,
+      "dark": 9.28,
+      "board": 9.28,
+      "hc-light": 4.84,
+      "hc-dark": 11.67,
+      "hc-board": 11.67,
+      "media": 9.28,
+      "hc-media": 11.67
+    }
+  },
+  {
+    "group": "brand",
+    "fg": "on-gold",
+    "bg": "gold-hover",
+    "kind": "text",
+    "ratios": {
+      "light": 8.52,
+      "dark": 10.83,
+      "board": 10.83,
+      "hc-light": 8.52,
+      "hc-dark": 10.83,
+      "hc-board": 10.83,
+      "media": 10.83,
+      "hc-media": 10.83
+    }
+  },
+  {
+    "group": "surfaces",
+    "fg": "ink",
+    "bg": "fill",
+    "kind": "text",
+    "ratios": {
+      "light": 15.51,
+      "dark": 13.82,
+      "board": 13.82,
+      "hc-light": 15.86,
+      "hc-dark": 15.48,
+      "hc-board": 15.48,
+      "media": 13.89,
+      "hc-media": 15.48
+    }
+  },
+  {
+    "group": "surfaces",
+    "fg": "ink-2",
+    "bg": "fill",
+    "kind": "text",
+    "ratios": {
+      "light": 7.99,
+      "dark": 8.95,
+      "board": 6.99,
+      "hc-light": 12.56,
+      "hc-dark": 12.89,
+      "hc-board": 11,
+      "media": 11.23,
+      "hc-media": 12.89
+    }
+  },
+  {
+    "group": "surfaces",
+    "fg": "ink",
+    "bg": "fill-hover",
+    "kind": "text",
+    "ratios": {
+      "light": 14.27,
+      "dark": 11.79,
+      "board": 11.79,
+      "hc-light": 13.89,
+      "hc-dark": 13.07,
+      "hc-board": 13.07,
+      "media": 11.6,
+      "hc-media": 13.07
+    }
+  },
+  {
+    "group": "surfaces",
+    "fg": "ink-2",
+    "bg": "fill-hover",
+    "kind": "text",
+    "ratios": {
+      "light": 7.35,
+      "dark": 7.64,
+      "board": 5.97,
+      "hc-light": 11,
+      "hc-dark": 10.88,
+      "hc-board": 9.28,
+      "media": 9.37,
+      "hc-media": 10.88
+    }
+  },
+  {
+    "group": "surfaces",
+    "fg": "ink",
+    "bg": "ivory",
+    "kind": "text",
+    "ratios": {
+      "light": 17.16,
+      "dark": 16.91,
+      "board": 16.91,
+      "hc-light": 19.8,
+      "hc-dark": 19.48,
+      "hc-board": 19.48,
+      "media": 18.28,
+      "hc-media": 19.48
+    }
+  },
+  {
+    "group": "surfaces",
+    "fg": "ink-2",
+    "bg": "ivory",
+    "kind": "text",
+    "ratios": {
+      "light": 8.84,
+      "dark": 10.95,
+      "board": 8.56,
+      "hc-light": 15.69,
+      "hc-dark": 16.23,
+      "hc-board": 13.84,
+      "media": 14.78,
+      "hc-media": 16.23
+    }
+  },
+  {
+    "group": "surfaces",
+    "fg": "on-midnight",
+    "bg": "midnight",
+    "kind": "text",
+    "ratios": {
+      "light": 19.35,
+      "dark": 19.35,
+      "board": 19.35,
+      "hc-light": 19.35,
+      "hc-dark": 19.35,
+      "hc-board": 19.35,
+      "media": 19.35,
+      "hc-media": 19.35
+    }
+  },
+  {
+    "group": "surfaces",
+    "fg": "on-midnight-dim",
+    "bg": "midnight",
+    "kind": "text",
+    "ratios": {
+      "light": 13.98,
+      "dark": 13.98,
+      "board": 13.98,
+      "hc-light": 13.98,
+      "hc-dark": 13.98,
+      "hc-board": 13.98,
+      "media": 13.98,
+      "hc-media": 13.98
+    }
+  },
+  {
+    "group": "surfaces",
+    "fg": "gold-bright",
+    "bg": "midnight",
+    "kind": "text",
+    "ratios": {
+      "light": 12.3,
+      "dark": 12.3,
+      "board": 12.3,
+      "hc-light": 12.3,
+      "hc-dark": 12.3,
+      "hc-board": 12.3,
+      "media": 12.3,
+      "hc-media": 12.3
+    }
+  },
+  {
+    "group": "surfaces",
+    "fg": "on-midnight",
+    "bg": "midnight-2",
+    "kind": "text",
+    "ratios": {
+      "light": 16.99,
+      "dark": 16.99,
+      "board": 16.99,
+      "hc-light": 16.99,
+      "hc-dark": 16.99,
+      "hc-board": 16.99,
+      "media": 16.99,
+      "hc-media": 16.99
+    }
+  },
+  {
+    "group": "surfaces",
+    "fg": "on-midnight-dim",
+    "bg": "midnight-2",
+    "kind": "text",
+    "ratios": {
+      "light": 12.27,
+      "dark": 12.27,
+      "board": 12.27,
+      "hc-light": 12.27,
+      "hc-dark": 12.27,
+      "hc-board": 12.27,
+      "media": 12.27,
+      "hc-media": 12.27
+    }
+  },
+  {
+    "group": "surfaces",
+    "fg": "gold-bright",
+    "bg": "midnight-2",
+    "kind": "text",
+    "ratios": {
+      "light": 10.8,
+      "dark": 10.8,
+      "board": 10.8,
+      "hc-light": 10.8,
+      "hc-dark": 10.8,
+      "hc-board": 10.8,
+      "media": 10.8,
+      "hc-media": 10.8
     }
   },
   {
@@ -728,12 +1480,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "inverse",
     "kind": "text",
     "ratios": {
-      "light": 14.7,
-      "dark": 13.03,
-      "board": 13.03,
-      "hc-light": 14.7,
-      "hc-dark": 13.03,
-      "hc-board": 13.03
+      "light": 18.36,
+      "dark": 15.78,
+      "board": 15.78,
+      "hc-light": 18.36,
+      "hc-dark": 15.78,
+      "hc-board": 15.78,
+      "media": 15.78,
+      "hc-media": 15.78
     }
   },
   {
@@ -742,12 +1496,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "inverse",
     "kind": "text",
     "ratios": {
-      "light": 9.39,
-      "dark": 8.48,
-      "board": 8.48,
-      "hc-light": 9.39,
-      "hc-dark": 8.48,
-      "hc-board": 8.48
+      "light": 11.11,
+      "dark": 10.22,
+      "board": 10.22,
+      "hc-light": 11.11,
+      "hc-dark": 10.22,
+      "hc-board": 10.22,
+      "media": 10.22,
+      "hc-media": 10.22
     }
   },
   {
@@ -756,12 +1512,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "page",
     "kind": "text",
     "ratios": {
-      "light": 5.97,
-      "dark": 11.2,
-      "board": 11.56,
-      "hc-light": 9.53,
-      "hc-dark": 14.47,
-      "hc-board": 14.62
+      "light": 5.74,
+      "dark": 12.17,
+      "board": 12.07,
+      "hc-light": 9.77,
+      "hc-dark": 15.59,
+      "hc-board": 15.11,
+      "media": 12.54,
+      "hc-media": 15.59
     }
   },
   {
@@ -770,12 +1528,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "page-subtle",
     "kind": "text",
     "ratios": {
-      "light": 5.51,
-      "dark": 10.61,
-      "board": 10.57,
-      "hc-light": 8.59,
-      "hc-dark": 13.86,
-      "hc-board": 13.46
+      "light": 5.3,
+      "dark": 11.57,
+      "board": 11.07,
+      "hc-light": 8.73,
+      "hc-dark": 14.76,
+      "hc-board": 14.02,
+      "media": 11.92,
+      "hc-media": 14.76
     }
   },
   {
@@ -784,12 +1544,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface",
     "kind": "text",
     "ratios": {
-      "light": 6.38,
-      "dark": 9.88,
-      "board": 10.57,
+      "light": 6.15,
+      "dark": 10.94,
+      "board": 11.07,
       "hc-light": 9.77,
-      "hc-dark": 13.13,
-      "hc-board": 13.46
+      "hc-dark": 14.46,
+      "hc-board": 14.02,
+      "media": 11.27,
+      "hc-media": 14.46
     }
   },
   {
@@ -798,12 +1560,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "gold-soft",
     "kind": "text",
     "ratios": {
-      "light": 5.28,
-      "dark": 8.19,
-      "board": 8.19,
-      "hc-light": 7.94,
-      "hc-dark": 10.05,
-      "hc-board": 10.05
+      "light": 5.29,
+      "dark": 9.51,
+      "board": 9.51,
+      "hc-light": 8.4,
+      "hc-dark": 11.44,
+      "hc-board": 11.44,
+      "media": 9.8,
+      "hc-media": 11.44
     }
   },
   {
@@ -812,12 +1576,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "page",
     "kind": "deco",
     "ratios": {
-      "light": 3.53,
-      "dark": 8.89,
-      "board": 9.17,
-      "hc-light": 6.33,
-      "hc-dark": 11.8,
-      "hc-board": 11.92
+      "light": 2.42,
+      "dark": 9.97,
+      "board": 9.88,
+      "hc-light": 3.78,
+      "hc-dark": 13.35,
+      "hc-board": 12.94,
+      "media": 9.97,
+      "hc-media": 13.35
     }
   },
   {
@@ -826,12 +1592,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface",
     "kind": "deco",
     "ratios": {
-      "light": 3.77,
-      "dark": 7.84,
-      "board": 8.39,
-      "hc-light": 6.49,
-      "hc-dark": 10.71,
-      "hc-board": 10.98
+      "light": 2.59,
+      "dark": 8.96,
+      "board": 9.06,
+      "hc-light": 3.78,
+      "hc-dark": 12.38,
+      "hc-board": 12.01,
+      "media": 8.96,
+      "hc-media": 12.38
     }
   },
   {
@@ -840,12 +1608,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "page",
     "kind": "text",
     "ratios": {
-      "light": 5.92,
-      "dark": 10.95,
-      "board": 11.3,
-      "hc-light": 9.98,
-      "hc-dark": 15.86,
-      "hc-board": 16.02
+      "light": 6.12,
+      "dark": 11.36,
+      "board": 11.26,
+      "hc-light": 10.27,
+      "hc-dark": 16.62,
+      "hc-board": 16.11,
+      "media": 11.36,
+      "hc-media": 16.62
     }
   },
   {
@@ -854,12 +1624,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface",
     "kind": "text",
     "ratios": {
-      "light": 6.33,
-      "dark": 9.66,
-      "board": 10.34,
-      "hc-light": 10.23,
-      "hc-dark": 14.39,
-      "hc-board": 14.75
+      "light": 6.56,
+      "dark": 10.21,
+      "board": 10.33,
+      "hc-light": 10.27,
+      "hc-dark": 15.42,
+      "hc-board": 14.95,
+      "media": 10.21,
+      "hc-media": 15.42
     }
   },
   {
@@ -868,12 +1640,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "leaf-soft",
     "kind": "text",
     "ratios": {
-      "light": 5.37,
+      "light": 5.61,
       "dark": 7.43,
       "board": 7.43,
-      "hc-light": 8.53,
+      "hc-light": 8.78,
       "hc-dark": 10.21,
-      "hc-board": 10.21
+      "hc-board": 10.21,
+      "media": 7.43,
+      "hc-media": 10.21
     }
   },
   {
@@ -882,12 +1656,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "page",
     "kind": "ui",
     "ratios": {
-      "light": 6.36,
-      "dark": 10.18,
-      "board": 10.51,
-      "hc-light": 9.23,
-      "hc-dark": 13.5,
-      "hc-board": 13.64
+      "light": 6.45,
+      "dark": 10.56,
+      "board": 10.47,
+      "hc-light": 9.46,
+      "hc-dark": 14.14,
+      "hc-board": 13.71,
+      "media": 12.47,
+      "hc-media": 14.14
     }
   },
   {
@@ -896,12 +1672,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "page-subtle",
     "kind": "ui",
     "ratios": {
-      "light": 5.87,
-      "dark": 9.65,
-      "board": 9.61,
-      "hc-light": 8.32,
-      "hc-dark": 12.93,
-      "hc-board": 12.56
+      "light": 5.96,
+      "dark": 10.04,
+      "board": 9.6,
+      "hc-light": 8.46,
+      "hc-dark": 13.39,
+      "hc-board": 12.72,
+      "media": 11.85,
+      "hc-media": 13.39
     }
   },
   {
@@ -910,12 +1688,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface",
     "kind": "ui",
     "ratios": {
-      "light": 6.8,
-      "dark": 8.98,
-      "board": 9.61,
+      "light": 6.91,
+      "dark": 9.49,
+      "board": 9.6,
       "hc-light": 9.46,
-      "hc-dark": 12.25,
-      "hc-board": 12.56
+      "hc-dark": 13.12,
+      "hc-board": 12.72,
+      "media": 11.21,
+      "hc-media": 13.12
     }
   },
   {
@@ -925,11 +1705,13 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "kind": "ui",
     "ratios": {
       "light": 6.91,
-      "dark": 7.94,
-      "board": 8.73,
+      "dark": 8.53,
+      "board": 8.5,
       "hc-light": 9.46,
-      "hc-dark": 11.05,
-      "hc-board": 11.38
+      "hc-dark": 12.17,
+      "hc-board": 11.54,
+      "media": 10.07,
+      "hc-media": 12.17
     }
   },
   {
@@ -938,12 +1720,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface-sunken",
     "kind": "ui",
     "ratios": {
-      "light": 6.03,
-      "dark": 10.43,
-      "board": 10.84,
-      "hc-light": 8.32,
-      "hc-dark": 13.8,
-      "hc-board": 13.8
+      "light": 6.06,
+      "dark": 10.83,
+      "board": 10.83,
+      "hc-light": 8.46,
+      "hc-dark": 14.14,
+      "hc-board": 14.14,
+      "media": 12.78,
+      "hc-media": 14.14
     }
   },
   {
@@ -952,12 +1736,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "primary-soft",
     "kind": "ui",
     "ratios": {
-      "light": 5.68,
-      "dark": 7.69,
-      "board": 7.69,
-      "hc-light": 7.77,
-      "hc-dark": 9.67,
-      "hc-board": 9.67
+      "light": 5.76,
+      "dark": 7.89,
+      "board": 7.89,
+      "hc-light": 7.88,
+      "hc-dark": 9.93,
+      "hc-board": 9.93,
+      "media": 9.31,
+      "hc-media": 9.93
     }
   },
   {
@@ -966,12 +1752,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "page",
     "kind": "ui",
     "ratios": {
-      "light": 3.7,
-      "dark": 4.97,
-      "board": 4.63,
-      "hc-light": 13.82,
-      "hc-dark": 15.98,
-      "hc-board": 16.14
+      "light": 3.34,
+      "dark": 5.33,
+      "board": 5.03,
+      "hc-light": 15.69,
+      "hc-dark": 17.49,
+      "hc-board": 16.96,
+      "media": 9.79,
+      "hc-media": 17.49
     }
   },
   {
@@ -980,12 +1768,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "page-subtle",
     "kind": "ui",
     "ratios": {
-      "light": 3.41,
-      "dark": 4.71,
-      "board": 4.23,
-      "hc-light": 12.46,
-      "hc-dark": 15.31,
-      "hc-board": 14.86
+      "light": 3.08,
+      "dark": 5.07,
+      "board": 4.62,
+      "hc-light": 14.02,
+      "hc-dark": 16.56,
+      "hc-board": 15.74,
+      "media": 9.3,
+      "hc-media": 16.56
     }
   },
   {
@@ -994,12 +1784,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface",
     "kind": "ui",
     "ratios": {
-      "light": 3.95,
-      "dark": 4.38,
-      "board": 4.23,
-      "hc-light": 14.17,
-      "hc-dark": 14.5,
-      "hc-board": 14.86
+      "light": 3.58,
+      "dark": 4.79,
+      "board": 4.62,
+      "hc-light": 15.69,
+      "hc-dark": 16.23,
+      "hc-board": 15.74,
+      "media": 8.8,
+      "hc-media": 16.23
     }
   },
   {
@@ -1008,12 +1800,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface-raised",
     "kind": "ui",
     "ratios": {
-      "light": 4.02,
-      "dark": 3.88,
-      "board": 3.85,
-      "hc-light": 14.17,
-      "hc-dark": 13.09,
-      "hc-board": 13.48
+      "light": 3.58,
+      "dark": 4.31,
+      "board": 4.09,
+      "hc-light": 15.69,
+      "hc-dark": 15.06,
+      "hc-board": 14.27,
+      "media": 7.91,
+      "hc-media": 15.06
     }
   },
   {
@@ -1022,12 +1816,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface-sunken",
     "kind": "ui",
     "ratios": {
-      "light": 3.5,
-      "dark": 5.09,
-      "board": 4.78,
-      "hc-light": 12.46,
-      "hc-dark": 16.34,
-      "hc-board": 16.34
+      "light": 3.13,
+      "dark": 5.47,
+      "board": 5.21,
+      "hc-light": 14.02,
+      "hc-dark": 17.49,
+      "hc-board": 17.49,
+      "media": 10.03,
+      "hc-media": 17.49
     }
   },
   {
@@ -1036,40 +1832,46 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "page",
     "kind": "deco",
     "ratios": {
-      "light": 1.25,
-      "dark": 1.4,
-      "board": 1.52,
-      "hc-light": 3.31,
-      "hc-dark": 4.27,
-      "hc-board": 3.86
-    }
-  },
-  {
-    "group": "lines",
-    "fg": "line-strong",
-    "bg": "page",
-    "kind": "deco",
-    "ratios": {
-      "light": 1.59,
-      "dark": 2.14,
-      "board": 2.08,
-      "hc-light": 6.45,
-      "hc-dark": 8.25,
-      "hc-board": 6.84
-    }
-  },
-  {
-    "group": "lines",
-    "fg": "line",
-    "bg": "surface",
-    "kind": "deco",
-    "ratios": {
-      "light": 1.34,
-      "dark": 1.24,
+      "light": 1.17,
+      "dark": 1.32,
       "board": 1.39,
-      "hc-light": 3.4,
-      "hc-dark": 3.87,
-      "hc-board": 3.56
+      "hc-light": 3.76,
+      "hc-dark": 4.66,
+      "hc-board": 3.89,
+      "media": 1.65,
+      "hc-media": 4.66
+    }
+  },
+  {
+    "group": "lines",
+    "fg": "line-strong",
+    "bg": "page",
+    "kind": "deco",
+    "ratios": {
+      "light": 1.41,
+      "dark": 1.71,
+      "board": 1.85,
+      "hc-light": 7.84,
+      "hc-dark": 8.93,
+      "hc-board": 6.88,
+      "media": 2.52,
+      "hc-media": 8.93
+    }
+  },
+  {
+    "group": "lines",
+    "fg": "line",
+    "bg": "surface",
+    "kind": "deco",
+    "ratios": {
+      "light": 1.26,
+      "dark": 1.18,
+      "board": 1.27,
+      "hc-light": 3.76,
+      "hc-dark": 4.32,
+      "hc-board": 3.6,
+      "media": 1.48,
+      "hc-media": 4.32
     }
   },
   {
@@ -1078,12 +1880,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface",
     "kind": "deco",
     "ratios": {
-      "light": 1.7,
-      "dark": 1.89,
-      "board": 1.9,
-      "hc-light": 6.61,
-      "hc-dark": 7.48,
-      "hc-board": 6.3
+      "light": 1.51,
+      "dark": 1.54,
+      "board": 1.7,
+      "hc-light": 7.84,
+      "hc-dark": 8.28,
+      "hc-board": 6.38,
+      "media": 2.27,
+      "hc-media": 8.28
     }
   },
   {
@@ -1092,12 +1896,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "positive-bg",
     "kind": "text",
     "ratios": {
-      "light": 6.2,
-      "dark": 8.1,
-      "board": 8.1,
-      "hc-light": 8.73,
-      "hc-dark": 10.21,
-      "hc-board": 10.21
+      "light": 5.8,
+      "dark": 8.46,
+      "board": 8.46,
+      "hc-light": 8.79,
+      "hc-dark": 10.95,
+      "hc-board": 10.95,
+      "media": 8.46,
+      "hc-media": 10.95
     }
   },
   {
@@ -1106,12 +1912,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "page",
     "kind": "text",
     "ratios": {
-      "light": 6.71,
-      "dark": 11.93,
-      "board": 12.31,
-      "hc-light": 10.02,
-      "hc-dark": 15.86,
-      "hc-board": 16.02
+      "light": 6.14,
+      "dark": 12.07,
+      "board": 11.96,
+      "hc-light": 9.97,
+      "hc-dark": 16.62,
+      "hc-board": 16.11,
+      "media": 12.07,
+      "hc-media": 16.62
     }
   },
   {
@@ -1120,12 +1928,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface",
     "kind": "text",
     "ratios": {
-      "light": 7.18,
-      "dark": 10.52,
-      "board": 11.26,
-      "hc-light": 10.28,
-      "hc-dark": 14.39,
-      "hc-board": 14.75
+      "light": 6.58,
+      "dark": 10.85,
+      "board": 10.97,
+      "hc-light": 9.97,
+      "hc-dark": 15.42,
+      "hc-board": 14.95,
+      "media": 10.85,
+      "hc-media": 15.42
     }
   },
   {
@@ -1134,12 +1944,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "page",
     "kind": "ui",
     "ratios": {
-      "light": 3.78,
-      "dark": 4.84,
-      "board": 4.99,
-      "hc-light": 10.02,
-      "hc-dark": 15.86,
-      "hc-board": 16.02
+      "light": 3.24,
+      "dark": 5.99,
+      "board": 5.93,
+      "hc-light": 9.97,
+      "hc-dark": 16.62,
+      "hc-board": 16.11,
+      "media": 5.99,
+      "hc-media": 16.62
     }
   },
   {
@@ -1148,12 +1960,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface",
     "kind": "ui",
     "ratios": {
-      "light": 4.05,
-      "dark": 4.27,
-      "board": 4.57,
-      "hc-light": 10.28,
-      "hc-dark": 14.39,
-      "hc-board": 14.75
+      "light": 3.47,
+      "dark": 5.38,
+      "board": 5.44,
+      "hc-light": 9.97,
+      "hc-dark": 15.42,
+      "hc-board": 14.95,
+      "media": 5.38,
+      "hc-media": 15.42
     }
   },
   {
@@ -1162,12 +1976,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "warning-bg",
     "kind": "text",
     "ratios": {
-      "light": 5.88,
-      "dark": 7.67,
-      "board": 7.67,
-      "hc-light": 8.56,
-      "hc-dark": 9.12,
-      "hc-board": 9.12
+      "light": 6.31,
+      "dark": 8.84,
+      "board": 8.84,
+      "hc-light": 9.69,
+      "hc-dark": 10.09,
+      "hc-board": 10.09,
+      "media": 8.84,
+      "hc-media": 10.09
     }
   },
   {
@@ -1176,12 +1992,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "page",
     "kind": "text",
     "ratios": {
-      "light": 6.41,
-      "dark": 11.77,
-      "board": 12.15,
-      "hc-light": 9.89,
-      "hc-dark": 14.77,
-      "hc-board": 14.91
+      "light": 6.6,
+      "dark": 12.73,
+      "board": 12.62,
+      "hc-light": 10.87,
+      "hc-dark": 15.47,
+      "hc-board": 15,
+      "media": 12.73,
+      "hc-media": 15.47
     }
   },
   {
@@ -1190,12 +2008,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface",
     "kind": "text",
     "ratios": {
-      "light": 6.86,
-      "dark": 10.38,
-      "board": 11.11,
-      "hc-light": 10.14,
-      "hc-dark": 13.39,
-      "hc-board": 13.73
+      "light": 7.07,
+      "dark": 11.44,
+      "board": 11.58,
+      "hc-light": 10.87,
+      "hc-dark": 14.35,
+      "hc-board": 13.91,
+      "media": 11.44,
+      "hc-media": 14.35
     }
   },
   {
@@ -1204,12 +2024,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "page",
     "kind": "ui",
     "ratios": {
-      "light": 3.67,
-      "dark": 4.96,
-      "board": 5.12,
-      "hc-light": 9.89,
-      "hc-dark": 14.77,
-      "hc-board": 14.91
+      "light": 3.7,
+      "dark": 6.09,
+      "board": 6.04,
+      "hc-light": 10.87,
+      "hc-dark": 15.47,
+      "hc-board": 15,
+      "media": 6.09,
+      "hc-media": 15.47
     }
   },
   {
@@ -1218,12 +2040,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface",
     "kind": "ui",
     "ratios": {
-      "light": 3.93,
-      "dark": 4.38,
-      "board": 4.68,
-      "hc-light": 10.14,
-      "hc-dark": 13.39,
-      "hc-board": 13.73
+      "light": 3.97,
+      "dark": 5.47,
+      "board": 5.54,
+      "hc-light": 10.87,
+      "hc-dark": 14.35,
+      "hc-board": 13.91,
+      "media": 5.47,
+      "hc-media": 14.35
     }
   },
   {
@@ -1232,12 +2056,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "critical-bg",
     "kind": "text",
     "ratios": {
-      "light": 6.03,
-      "dark": 7.7,
-      "board": 7.7,
-      "hc-light": 8.56,
-      "hc-dark": 9.56,
-      "hc-board": 9.56
+      "light": 6.06,
+      "dark": 7.6,
+      "board": 7.6,
+      "hc-light": 9.34,
+      "hc-dark": 10.03,
+      "hc-board": 10.03,
+      "media": 7.6,
+      "hc-media": 10.03
     }
   },
   {
@@ -1246,12 +2072,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "page",
     "kind": "text",
     "ratios": {
-      "light": 6.8,
-      "dark": 10.34,
-      "board": 10.67,
-      "hc-light": 10.25,
-      "hc-dark": 13.53,
-      "hc-board": 13.66
+      "light": 6.63,
+      "dark": 10.16,
+      "board": 10.08,
+      "hc-light": 10.96,
+      "hc-dark": 14.27,
+      "hc-board": 13.83,
+      "media": 10.16,
+      "hc-media": 14.27
     }
   },
   {
@@ -1260,12 +2088,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface",
     "kind": "text",
     "ratios": {
-      "light": 7.27,
-      "dark": 9.12,
-      "board": 9.76,
-      "hc-light": 10.51,
-      "hc-dark": 12.27,
-      "hc-board": 12.58
+      "light": 7.11,
+      "dark": 9.14,
+      "board": 9.24,
+      "hc-light": 10.96,
+      "hc-dark": 13.24,
+      "hc-board": 12.84,
+      "media": 9.14,
+      "hc-media": 13.24
     }
   },
   {
@@ -1274,12 +2104,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "page",
     "kind": "ui",
     "ratios": {
-      "light": 3.75,
-      "dark": 4.65,
-      "board": 4.8,
-      "hc-light": 10.25,
-      "hc-dark": 13.53,
-      "hc-board": 13.66
+      "light": 3.38,
+      "dark": 5.04,
+      "board": 4.99,
+      "hc-light": 10.96,
+      "hc-dark": 14.27,
+      "hc-board": 13.83,
+      "media": 5.04,
+      "hc-media": 14.27
     }
   },
   {
@@ -1288,12 +2120,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface",
     "kind": "ui",
     "ratios": {
-      "light": 4.01,
-      "dark": 4.1,
-      "board": 4.39,
-      "hc-light": 10.51,
-      "hc-dark": 12.27,
-      "hc-board": 12.58
+      "light": 3.62,
+      "dark": 4.53,
+      "board": 4.58,
+      "hc-light": 10.96,
+      "hc-dark": 13.24,
+      "hc-board": 12.84,
+      "media": 4.53,
+      "hc-media": 13.24
     }
   },
   {
@@ -1302,12 +2136,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "info-bg",
     "kind": "text",
     "ratios": {
-      "light": 6.6,
-      "dark": 7.73,
-      "board": 7.73,
-      "hc-light": 9.14,
-      "hc-dark": 9.55,
-      "hc-board": 9.55
+      "light": 6.19,
+      "dark": 7.88,
+      "board": 7.88,
+      "hc-light": 9.57,
+      "hc-dark": 10.04,
+      "hc-board": 10.04,
+      "media": 7.88,
+      "hc-media": 10.04
     }
   },
   {
@@ -1316,12 +2152,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "page",
     "kind": "text",
     "ratios": {
-      "light": 7.25,
-      "dark": 11.45,
-      "board": 11.81,
-      "hc-light": 10.64,
-      "hc-dark": 14.91,
-      "hc-board": 15.06
+      "light": 6.73,
+      "dark": 11,
+      "board": 10.91,
+      "hc-light": 11.14,
+      "hc-dark": 14.92,
+      "hc-board": 14.47,
+      "media": 11,
+      "hc-media": 14.92
     }
   },
   {
@@ -1330,12 +2168,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface",
     "kind": "text",
     "ratios": {
-      "light": 7.75,
-      "dark": 10.1,
-      "board": 10.8,
-      "hc-light": 10.91,
-      "hc-dark": 13.53,
-      "hc-board": 13.87
+      "light": 7.21,
+      "dark": 9.89,
+      "board": 10.01,
+      "hc-light": 11.14,
+      "hc-dark": 13.85,
+      "hc-board": 13.43,
+      "media": 9.89,
+      "hc-media": 13.85
     }
   },
   {
@@ -1344,12 +2184,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "page",
     "kind": "ui",
     "ratios": {
-      "light": 3.76,
-      "dark": 5,
-      "board": 5.16,
-      "hc-light": 10.64,
-      "hc-dark": 14.91,
-      "hc-board": 15.06
+      "light": 3.66,
+      "dark": 5.47,
+      "board": 5.42,
+      "hc-light": 11.14,
+      "hc-dark": 14.92,
+      "hc-board": 14.47,
+      "media": 5.47,
+      "hc-media": 14.92
     }
   },
   {
@@ -1358,12 +2200,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface",
     "kind": "ui",
     "ratios": {
-      "light": 4.02,
-      "dark": 4.41,
-      "board": 4.72,
-      "hc-light": 10.91,
-      "hc-dark": 13.53,
-      "hc-board": 13.87
+      "light": 3.92,
+      "dark": 4.92,
+      "board": 4.97,
+      "hc-light": 11.14,
+      "hc-dark": 13.85,
+      "hc-board": 13.43,
+      "media": 4.92,
+      "hc-media": 13.85
     }
   },
   {
@@ -1372,12 +2216,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "neutral-bg",
     "kind": "text",
     "ratios": {
-      "light": 6.66,
-      "dark": 8.36,
-      "board": 8.82,
-      "hc-light": 10.29,
-      "hc-dark": 10.79,
-      "hc-board": 11.38
+      "light": 8.15,
+      "dark": 9.9,
+      "board": 9.59,
+      "hc-light": 13.51,
+      "hc-dark": 12.77,
+      "hc-board": 12.36,
+      "media": 9.9,
+      "hc-media": 12.77
     }
   },
   {
@@ -1386,12 +2232,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "page",
     "kind": "text",
     "ratios": {
-      "light": 7.69,
-      "dark": 12.2,
-      "board": 12.58,
-      "hc-light": 12.61,
-      "hc-dark": 16.59,
-      "hc-board": 16.76
+      "light": 8.83,
+      "dark": 12.66,
+      "board": 12.55,
+      "hc-light": 15.69,
+      "hc-dark": 17.38,
+      "hc-board": 16.85,
+      "media": 12.66,
+      "hc-media": 17.38
     }
   },
   {
@@ -1400,12 +2248,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface",
     "kind": "text",
     "ratios": {
-      "light": 8.23,
-      "dark": 10.76,
-      "board": 11.51,
-      "hc-light": 12.93,
-      "hc-dark": 15.05,
-      "hc-board": 15.43
+      "light": 9.46,
+      "dark": 11.38,
+      "board": 11.52,
+      "hc-light": 15.69,
+      "hc-dark": 16.12,
+      "hc-board": 15.63,
+      "media": 11.38,
+      "hc-media": 16.12
     }
   },
   {
@@ -1414,12 +2264,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "page",
     "kind": "ui",
     "ratios": {
-      "light": 3.7,
-      "dark": 4.97,
-      "board": 4.63,
-      "hc-light": 12.61,
-      "hc-dark": 16.59,
-      "hc-board": 16.76
+      "light": 3.34,
+      "dark": 5.33,
+      "board": 5.03,
+      "hc-light": 15.69,
+      "hc-dark": 17.38,
+      "hc-board": 16.85,
+      "media": 5.33,
+      "hc-media": 17.38
     }
   },
   {
@@ -1428,12 +2280,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface",
     "kind": "ui",
     "ratios": {
-      "light": 3.95,
-      "dark": 4.38,
-      "board": 4.23,
-      "hc-light": 12.93,
-      "hc-dark": 15.05,
-      "hc-board": 15.43
+      "light": 3.58,
+      "dark": 4.79,
+      "board": 4.62,
+      "hc-light": 15.69,
+      "hc-dark": 16.12,
+      "hc-board": 15.63,
+      "media": 4.79,
+      "hc-media": 16.12
     }
   },
   {
@@ -1442,12 +2296,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "critical-fg",
     "kind": "text",
     "ratios": {
-      "light": 6.8,
-      "dark": 10.34,
-      "board": 10.67,
-      "hc-light": 10.25,
-      "hc-dark": 13.53,
-      "hc-board": 13.66
+      "light": 6.63,
+      "dark": 10.16,
+      "board": 10.08,
+      "hc-light": 10.96,
+      "hc-dark": 14.27,
+      "hc-board": 13.83,
+      "media": 10.16,
+      "hc-media": 14.27
     }
   },
   {
@@ -1456,12 +2312,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "official-bg",
     "kind": "text",
     "ratios": {
-      "light": 15.49,
-      "dark": 15.04,
-      "board": 15.04,
-      "hc-light": 17.48,
-      "hc-dark": 20.04,
-      "hc-board": 20.04
+      "light": 18.36,
+      "dark": 16.98,
+      "board": 16.98,
+      "hc-light": 19.8,
+      "hc-dark": 21,
+      "hc-board": 21,
+      "media": 16.98,
+      "hc-media": 21
     }
   },
   {
@@ -1470,12 +2328,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "estimated-bg",
     "kind": "text",
     "ratios": {
-      "light": 16.43,
-      "dark": 14.49,
-      "board": 15.5,
-      "hc-light": 18.55,
-      "hc-dark": 16.77,
-      "hc-board": 18.64
+      "light": 18.36,
+      "dark": 16.4,
+      "board": 16.59,
+      "hc-light": 19.8,
+      "hc-dark": 17.73,
+      "hc-board": 18.89,
+      "media": 16.4,
+      "hc-media": 17.73
     }
   },
   {
@@ -1484,12 +2344,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "page",
     "kind": "ui",
     "ratios": {
-      "light": 8.12,
-      "dark": 11.47,
-      "board": 11.83,
-      "hc-light": 18.39,
-      "hc-dark": 20.04,
-      "hc-board": 20.25
+      "light": 5.73,
+      "dark": 11.81,
+      "board": 11.71,
+      "hc-light": 19.8,
+      "hc-dark": 21,
+      "hc-board": 20.36,
+      "media": 11.81,
+      "hc-media": 21
     }
   },
   {
@@ -1498,12 +2360,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface",
     "kind": "ui",
     "ratios": {
-      "light": 8.69,
-      "dark": 10.11,
-      "board": 10.82,
-      "hc-light": 18.86,
-      "hc-dark": 18.18,
-      "hc-board": 18.64
+      "light": 6.14,
+      "dark": 10.62,
+      "board": 10.74,
+      "hc-light": 19.8,
+      "hc-dark": 19.48,
+      "hc-board": 18.89,
+      "media": 10.62,
+      "hc-media": 19.48
     }
   },
   {
@@ -1512,12 +2376,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "suggestion-bg",
     "kind": "text",
     "ratios": {
-      "light": 10.6,
-      "dark": 9.24,
-      "board": 9.24,
-      "hc-light": 13.11,
-      "hc-dark": 11.07,
-      "hc-board": 11.07
+      "light": 9.75,
+      "dark": 8.49,
+      "board": 8.49,
+      "hc-light": 13.28,
+      "hc-dark": 11.66,
+      "hc-board": 11.66,
+      "media": 8.49,
+      "hc-media": 11.66
     }
   },
   {
@@ -1526,12 +2392,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "page",
     "kind": "ui",
     "ratios": {
-      "light": 11.87,
-      "dark": 12.23,
-      "board": 12.62,
-      "hc-light": 15.57,
-      "hc-dark": 15.44,
-      "hc-board": 15.6
+      "light": 10.92,
+      "dark": 11.36,
+      "board": 11.27,
+      "hc-light": 15.95,
+      "hc-dark": 16.61,
+      "hc-board": 16.11,
+      "media": 11.36,
+      "hc-media": 16.61
     }
   },
   {
@@ -1540,12 +2408,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface",
     "kind": "ui",
     "ratios": {
-      "light": 12.7,
-      "dark": 10.79,
-      "board": 11.54,
-      "hc-light": 15.96,
-      "hc-dark": 14.01,
-      "hc-board": 14.36
+      "light": 11.71,
+      "dark": 10.22,
+      "board": 10.34,
+      "hc-light": 15.95,
+      "hc-dark": 15.41,
+      "hc-board": 14.94,
+      "media": 10.22,
+      "hc-media": 15.41
     }
   },
   {
@@ -1554,12 +2424,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "demo-bg",
     "kind": "text",
     "ratios": {
-      "light": 11.09,
-      "dark": 11.09,
-      "board": 11.09,
-      "hc-light": 11.09,
-      "hc-dark": 11.09,
-      "hc-board": 11.09
+      "light": 10.24,
+      "dark": 11.06,
+      "board": 11.06,
+      "hc-light": 13.63,
+      "hc-dark": 11.78,
+      "hc-board": 11.78,
+      "media": 11.06,
+      "hc-media": 11.78
     }
   },
   {
@@ -1568,12 +2440,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "page",
     "kind": "ui",
     "ratios": {
-      "light": 4.94,
-      "dark": 11.79,
-      "board": 12.16,
-      "hc-light": 17.46,
-      "hc-dark": 12.42,
-      "hc-board": 12.55
+      "light": 3.58,
+      "dark": 7.65,
+      "board": 7.58,
+      "hc-light": 16,
+      "hc-dark": 15.47,
+      "hc-board": 15,
+      "media": 7.65,
+      "hc-media": 15.47
     }
   },
   {
@@ -1582,12 +2456,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "surface",
     "kind": "ui",
     "ratios": {
-      "light": 5.29,
-      "dark": 10.4,
-      "board": 11.12,
-      "hc-light": 17.9,
-      "hc-dark": 11.27,
-      "hc-board": 11.55
+      "light": 3.84,
+      "dark": 6.87,
+      "board": 6.96,
+      "hc-light": 16,
+      "hc-dark": 14.35,
+      "hc-board": 13.91,
+      "media": 6.87,
+      "hc-media": 14.35
     }
   },
   {
@@ -1596,12 +2472,622 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "page",
     "kind": "ui",
     "ratios": {
-      "light": 15.36,
-      "dark": 16.43,
-      "board": 16.95,
-      "hc-light": 18.39,
-      "hc-dark": 20.04,
-      "hc-board": 20.25
+      "light": 17.13,
+      "dark": 18.24,
+      "board": 18.08,
+      "hc-light": 19.8,
+      "hc-dark": 21,
+      "hc-board": 20.36,
+      "media": 18.24,
+      "hc-media": 21
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-scheduled-fg",
+    "bg": "flight-scheduled-bg",
+    "kind": "text",
+    "ratios": {
+      "light": 8.15,
+      "dark": 9.9,
+      "board": 9.9,
+      "hc-light": 13.51,
+      "hc-dark": 12.77,
+      "hc-board": 12.77,
+      "media": 9.9,
+      "hc-media": 12.77
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-scheduled-fg",
+    "bg": "page",
+    "kind": "text",
+    "ratios": {
+      "light": 8.83,
+      "dark": 12.66,
+      "board": 12.55,
+      "hc-light": 15.69,
+      "hc-dark": 17.38,
+      "hc-board": 16.85,
+      "media": 12.66,
+      "hc-media": 17.38
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-scheduled-fg",
+    "bg": "surface",
+    "kind": "text",
+    "ratios": {
+      "light": 9.46,
+      "dark": 11.38,
+      "board": 11.52,
+      "hc-light": 15.69,
+      "hc-dark": 16.12,
+      "hc-board": 15.63,
+      "media": 11.38,
+      "hc-media": 16.12
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-scheduled-on",
+    "bg": "flight-scheduled-solid",
+    "kind": "text",
+    "ratios": {
+      "light": 9.46,
+      "dark": 11.79,
+      "board": 11.79,
+      "hc-light": 9.46,
+      "hc-dark": 11.79,
+      "hc-board": 11.79,
+      "media": 11.79,
+      "hc-media": 11.79
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-ontime-fg",
+    "bg": "flight-ontime-bg",
+    "kind": "text",
+    "ratios": {
+      "light": 5.8,
+      "dark": 8.46,
+      "board": 8.46,
+      "hc-light": 8.79,
+      "hc-dark": 10.95,
+      "hc-board": 10.95,
+      "media": 8.46,
+      "hc-media": 10.95
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-ontime-fg",
+    "bg": "page",
+    "kind": "text",
+    "ratios": {
+      "light": 6.14,
+      "dark": 12.07,
+      "board": 11.96,
+      "hc-light": 9.97,
+      "hc-dark": 16.62,
+      "hc-board": 16.11,
+      "media": 12.07,
+      "hc-media": 16.62
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-ontime-fg",
+    "bg": "surface",
+    "kind": "text",
+    "ratios": {
+      "light": 6.58,
+      "dark": 10.85,
+      "board": 10.97,
+      "hc-light": 9.97,
+      "hc-dark": 15.42,
+      "hc-board": 14.95,
+      "media": 10.85,
+      "hc-media": 15.42
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-ontime-on",
+    "bg": "flight-ontime-solid",
+    "kind": "text",
+    "ratios": {
+      "light": 5.39,
+      "dark": 9.47,
+      "board": 9.47,
+      "hc-light": 8.32,
+      "hc-dark": 9.47,
+      "hc-board": 9.47,
+      "media": 9.47,
+      "hc-media": 9.47
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-boarding-fg",
+    "bg": "flight-boarding-bg",
+    "kind": "text",
+    "ratios": {
+      "light": 6.19,
+      "dark": 7.88,
+      "board": 7.88,
+      "hc-light": 9.57,
+      "hc-dark": 10.04,
+      "hc-board": 10.04,
+      "media": 7.88,
+      "hc-media": 10.04
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-boarding-fg",
+    "bg": "page",
+    "kind": "text",
+    "ratios": {
+      "light": 6.73,
+      "dark": 11,
+      "board": 10.91,
+      "hc-light": 11.14,
+      "hc-dark": 14.92,
+      "hc-board": 14.47,
+      "media": 11,
+      "hc-media": 14.92
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-boarding-fg",
+    "bg": "surface",
+    "kind": "text",
+    "ratios": {
+      "light": 7.21,
+      "dark": 9.89,
+      "board": 10.01,
+      "hc-light": 11.14,
+      "hc-dark": 13.85,
+      "hc-board": 13.43,
+      "media": 9.89,
+      "hc-media": 13.85
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-boarding-on",
+    "bg": "flight-boarding-solid",
+    "kind": "text",
+    "ratios": {
+      "light": 6.27,
+      "dark": 6.52,
+      "board": 6.52,
+      "hc-light": 9.22,
+      "hc-dark": 6.52,
+      "hc-board": 6.52,
+      "media": 6.52,
+      "hc-media": 6.52
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-delayed-fg",
+    "bg": "flight-delayed-bg",
+    "kind": "text",
+    "ratios": {
+      "light": 6.31,
+      "dark": 8.84,
+      "board": 8.84,
+      "hc-light": 9.69,
+      "hc-dark": 10.09,
+      "hc-board": 10.09,
+      "media": 8.84,
+      "hc-media": 10.09
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-delayed-fg",
+    "bg": "page",
+    "kind": "text",
+    "ratios": {
+      "light": 6.6,
+      "dark": 12.73,
+      "board": 12.62,
+      "hc-light": 10.87,
+      "hc-dark": 15.47,
+      "hc-board": 15,
+      "media": 12.73,
+      "hc-media": 15.47
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-delayed-fg",
+    "bg": "surface",
+    "kind": "text",
+    "ratios": {
+      "light": 7.07,
+      "dark": 11.44,
+      "board": 11.58,
+      "hc-light": 10.87,
+      "hc-dark": 14.35,
+      "hc-board": 13.91,
+      "media": 11.44,
+      "hc-media": 14.35
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-delayed-on",
+    "bg": "flight-delayed-solid",
+    "kind": "text",
+    "ratios": {
+      "light": 8.55,
+      "dark": 10.34,
+      "board": 10.34,
+      "hc-light": 8.55,
+      "hc-dark": 10.34,
+      "hc-board": 10.34,
+      "media": 10.34,
+      "hc-media": 10.34
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-cancelled-fg",
+    "bg": "flight-cancelled-bg",
+    "kind": "text",
+    "ratios": {
+      "light": 6.06,
+      "dark": 7.6,
+      "board": 7.6,
+      "hc-light": 9.34,
+      "hc-dark": 10.03,
+      "hc-board": 10.03,
+      "media": 7.6,
+      "hc-media": 10.03
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-cancelled-fg",
+    "bg": "page",
+    "kind": "text",
+    "ratios": {
+      "light": 6.63,
+      "dark": 10.16,
+      "board": 10.08,
+      "hc-light": 10.96,
+      "hc-dark": 14.27,
+      "hc-board": 13.83,
+      "media": 10.16,
+      "hc-media": 14.27
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-cancelled-fg",
+    "bg": "surface",
+    "kind": "text",
+    "ratios": {
+      "light": 7.11,
+      "dark": 9.14,
+      "board": 9.24,
+      "hc-light": 10.96,
+      "hc-dark": 13.24,
+      "hc-board": 12.84,
+      "media": 9.14,
+      "hc-media": 13.24
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-cancelled-on",
+    "bg": "flight-cancelled-solid",
+    "kind": "text",
+    "ratios": {
+      "light": 5.88,
+      "dark": 7.24,
+      "board": 7.24,
+      "hc-light": 9.37,
+      "hc-dark": 7.24,
+      "hc-board": 7.24,
+      "media": 7.24,
+      "hc-media": 7.24
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-landed-fg",
+    "bg": "flight-landed-bg",
+    "kind": "text",
+    "ratios": {
+      "light": 6.05,
+      "dark": 7.98,
+      "board": 7.98,
+      "hc-light": 9.18,
+      "hc-dark": 10.48,
+      "hc-board": 10.48,
+      "media": 7.98,
+      "hc-media": 10.48
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-landed-fg",
+    "bg": "page",
+    "kind": "text",
+    "ratios": {
+      "light": 6.49,
+      "dark": 11.73,
+      "board": 11.63,
+      "hc-light": 10.56,
+      "hc-dark": 16.4,
+      "hc-board": 15.9,
+      "media": 11.73,
+      "hc-media": 16.4
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-landed-fg",
+    "bg": "surface",
+    "kind": "text",
+    "ratios": {
+      "light": 6.96,
+      "dark": 10.54,
+      "board": 10.67,
+      "hc-light": 10.56,
+      "hc-dark": 15.22,
+      "hc-board": 14.76,
+      "media": 10.54,
+      "hc-media": 15.22
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-landed-on",
+    "bg": "flight-landed-solid",
+    "kind": "text",
+    "ratios": {
+      "light": 5.79,
+      "dark": 9.14,
+      "board": 9.14,
+      "hc-light": 8.87,
+      "hc-dark": 9.14,
+      "hc-board": 9.14,
+      "media": 9.14,
+      "hc-media": 9.14
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-departed-fg",
+    "bg": "flight-departed-bg",
+    "kind": "text",
+    "ratios": {
+      "light": 5.46,
+      "dark": 7.08,
+      "board": 7.08,
+      "hc-light": 11.55,
+      "hc-dark": 11.43,
+      "hc-board": 11.43,
+      "media": 7.08,
+      "hc-media": 11.43
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-departed-fg",
+    "bg": "page",
+    "kind": "text",
+    "ratios": {
+      "light": 5.92,
+      "dark": 8.52,
+      "board": 8.44,
+      "hc-light": 13.41,
+      "hc-dark": 14.63,
+      "hc-board": 14.18,
+      "media": 8.52,
+      "hc-media": 14.63
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-departed-fg",
+    "bg": "surface",
+    "kind": "text",
+    "ratios": {
+      "light": 6.34,
+      "dark": 7.65,
+      "board": 7.74,
+      "hc-light": 13.41,
+      "hc-dark": 13.57,
+      "hc-board": 13.16,
+      "media": 7.65,
+      "hc-media": 13.57
+    }
+  },
+  {
+    "group": "flight",
+    "fg": "flight-departed-on",
+    "bg": "flight-departed-solid",
+    "kind": "text",
+    "ratios": {
+      "light": 5.7,
+      "dark": 8.23,
+      "board": 8.23,
+      "hc-light": 13.41,
+      "hc-dark": 8.23,
+      "hc-board": 8.23,
+      "media": 8.23,
+      "hc-media": 8.23
+    }
+  },
+  {
+    "group": "glass",
+    "fg": "ink",
+    "bg": "glass@white",
+    "kind": "text",
+    "ratios": {
+      "light": 18.36,
+      "dark": 10.13,
+      "board": 10.35,
+      "hc-light": 19.8,
+      "hc-dark": 12.64,
+      "hc-board": 12,
+      "media": 10.95,
+      "hc-media": 12.64
+    }
+  },
+  {
+    "group": "glass",
+    "fg": "ink-2",
+    "bg": "glass@white",
+    "kind": "text",
+    "ratios": {
+      "light": 9.46,
+      "dark": 6.56,
+      "board": 5.24,
+      "hc-light": 15.69,
+      "hc-dark": 10.53,
+      "hc-board": 8.52,
+      "media": 8.86,
+      "hc-media": 10.53
+    }
+  },
+  {
+    "group": "glass",
+    "fg": "ink",
+    "bg": "glass@black",
+    "kind": "text",
+    "ratios": {
+      "light": 12.63,
+      "dark": 17.04,
+      "board": 17.12,
+      "hc-light": 13.62,
+      "hc-dark": 19.76,
+      "hc-board": 19.32,
+      "media": 18.42,
+      "hc-media": 19.76
+    }
+  },
+  {
+    "group": "glass",
+    "fg": "ink-2",
+    "bg": "glass@black",
+    "kind": "text",
+    "ratios": {
+      "light": 6.51,
+      "dark": 11.03,
+      "board": 8.66,
+      "hc-light": 10.79,
+      "hc-dark": 16.46,
+      "hc-board": 13.72,
+      "media": 14.89,
+      "hc-media": 16.46
+    }
+  },
+  {
+    "group": "media",
+    "fg": "on-midnight",
+    "bg": "glass-dark@white",
+    "kind": "text",
+    "ratios": {
+      "light": 7.47,
+      "dark": 7.47,
+      "board": 7.47,
+      "hc-light": 7.47,
+      "hc-dark": 7.47,
+      "hc-board": 7.47,
+      "media": 7.47,
+      "hc-media": 7.47
+    }
+  },
+  {
+    "group": "media",
+    "fg": "on-midnight-dim",
+    "bg": "glass-dark@white",
+    "kind": "text",
+    "ratios": {
+      "light": 5.4,
+      "dark": 5.4,
+      "board": 5.4,
+      "hc-light": 5.4,
+      "hc-dark": 5.4,
+      "hc-board": 5.4,
+      "media": 5.4,
+      "hc-media": 5.4
+    }
+  },
+  {
+    "group": "media",
+    "fg": "gold-bright",
+    "bg": "glass-dark@white",
+    "kind": "ui",
+    "ratios": {
+      "light": 4.75,
+      "dark": 4.75,
+      "board": 4.75,
+      "hc-light": 4.75,
+      "hc-dark": 4.75,
+      "hc-board": 4.75,
+      "media": 4.75,
+      "hc-media": 4.75
+    }
+  },
+  {
+    "group": "media",
+    "fg": "on-midnight",
+    "bg": "scrim@white",
+    "kind": "text",
+    "ratios": {
+      "light": 10.47,
+      "dark": 10.47,
+      "board": 10.47,
+      "hc-light": 10.47,
+      "hc-dark": 10.47,
+      "hc-board": 10.47,
+      "media": 10.47,
+      "hc-media": 10.47
+    }
+  },
+  {
+    "group": "media",
+    "fg": "on-midnight-dim",
+    "bg": "scrim@white",
+    "kind": "text",
+    "ratios": {
+      "light": 7.56,
+      "dark": 7.56,
+      "board": 7.56,
+      "hc-light": 7.56,
+      "hc-dark": 7.56,
+      "hc-board": 7.56,
+      "media": 7.56,
+      "hc-media": 7.56
+    }
+  },
+  {
+    "group": "media",
+    "fg": "gold-bright",
+    "bg": "scrim@white",
+    "kind": "ui",
+    "ratios": {
+      "light": 6.66,
+      "dark": 6.66,
+      "board": 6.66,
+      "hc-light": 6.66,
+      "hc-dark": 6.66,
+      "hc-board": 6.66,
+      "media": 6.66,
+      "hc-media": 6.66
     }
   },
   {
@@ -1610,12 +3096,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "board",
     "kind": "text",
     "ratios": {
-      "light": 17.36,
-      "dark": 17.36,
-      "board": 17.36,
-      "hc-light": 17.36,
-      "hc-dark": 17.36,
-      "hc-board": 17.36
+      "light": 18.08,
+      "dark": 18.08,
+      "board": 18.08,
+      "hc-light": 18.08,
+      "hc-dark": 18.08,
+      "hc-board": 18.08,
+      "media": 18.08,
+      "hc-media": 18.08
     }
   },
   {
@@ -1624,12 +3112,14 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "board",
     "kind": "text",
     "ratios": {
-      "light": 8.89,
-      "dark": 8.89,
-      "board": 8.89,
-      "hc-light": 13.94,
-      "hc-dark": 13.94,
-      "hc-board": 13.94
+      "light": 9.15,
+      "dark": 9.15,
+      "board": 9.15,
+      "hc-light": 13.89,
+      "hc-dark": 13.89,
+      "hc-board": 13.89,
+      "media": 9.15,
+      "hc-media": 13.89
     }
   },
   {
@@ -1638,82 +3128,94 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     "bg": "board",
     "kind": "text",
     "ratios": {
-      "light": 12.21,
-      "dark": 12.21,
-      "board": 12.21,
-      "hc-light": 12.21,
-      "hc-dark": 12.21,
-      "hc-board": 12.21
+      "light": 12.47,
+      "dark": 12.47,
+      "board": 12.47,
+      "hc-light": 12.47,
+      "hc-dark": 12.47,
+      "hc-board": 12.47,
+      "media": 12.47,
+      "hc-media": 12.47
     }
   },
   {
     "group": "board",
     "fg": "board-line",
     "bg": "board",
-    "kind": "deco",
-    "ratios": {
-      "light": 1.52,
-      "dark": 1.52,
-      "board": 1.52,
-      "hc-light": 3.75,
-      "hc-dark": 3.75,
-      "hc-board": 3.75
-    }
-  },
-  {
-    "group": "board",
-    "fg": "board-ink",
-    "bg": "board-raised",
-    "kind": "text",
-    "ratios": {
-      "light": 15.88,
-      "dark": 15.88,
-      "board": 15.88,
-      "hc-light": 15.88,
-      "hc-dark": 15.88,
-      "hc-board": 15.88
-    }
-  },
-  {
-    "group": "board",
-    "fg": "board-dim",
-    "bg": "board-raised",
-    "kind": "text",
-    "ratios": {
-      "light": 8.13,
-      "dark": 8.13,
-      "board": 8.13,
-      "hc-light": 12.75,
-      "hc-dark": 12.75,
-      "hc-board": 12.75
-    }
-  },
-  {
-    "group": "board",
-    "fg": "board-accent",
-    "bg": "board-raised",
-    "kind": "text",
-    "ratios": {
-      "light": 11.17,
-      "dark": 11.17,
-      "board": 11.17,
-      "hc-light": 11.17,
-      "hc-dark": 11.17,
-      "hc-board": 11.17
-    }
-  },
-  {
-    "group": "board",
-    "fg": "board-line",
-    "bg": "board-raised",
     "kind": "deco",
     "ratios": {
       "light": 1.39,
       "dark": 1.39,
       "board": 1.39,
+      "hc-light": 3.73,
+      "hc-dark": 3.73,
+      "hc-board": 3.73,
+      "media": 1.39,
+      "hc-media": 3.73
+    }
+  },
+  {
+    "group": "board",
+    "fg": "board-ink",
+    "bg": "board-raised",
+    "kind": "text",
+    "ratios": {
+      "light": 16.59,
+      "dark": 16.59,
+      "board": 16.59,
+      "hc-light": 16.59,
+      "hc-dark": 16.59,
+      "hc-board": 16.59,
+      "media": 16.59,
+      "hc-media": 16.59
+    }
+  },
+  {
+    "group": "board",
+    "fg": "board-dim",
+    "bg": "board-raised",
+    "kind": "text",
+    "ratios": {
+      "light": 8.4,
+      "dark": 8.4,
+      "board": 8.4,
+      "hc-light": 12.74,
+      "hc-dark": 12.74,
+      "hc-board": 12.74,
+      "media": 8.4,
+      "hc-media": 12.74
+    }
+  },
+  {
+    "group": "board",
+    "fg": "board-accent",
+    "bg": "board-raised",
+    "kind": "text",
+    "ratios": {
+      "light": 11.44,
+      "dark": 11.44,
+      "board": 11.44,
+      "hc-light": 11.44,
+      "hc-dark": 11.44,
+      "hc-board": 11.44,
+      "media": 11.44,
+      "hc-media": 11.44
+    }
+  },
+  {
+    "group": "board",
+    "fg": "board-line",
+    "bg": "board-raised",
+    "kind": "deco",
+    "ratios": {
+      "light": 1.27,
+      "dark": 1.27,
+      "board": 1.27,
       "hc-light": 3.42,
       "hc-dark": 3.42,
-      "hc-board": 3.42
+      "hc-board": 3.42,
+      "media": 1.27,
+      "hc-media": 3.42
     }
   }
 ];

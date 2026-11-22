@@ -1,7 +1,7 @@
 'use client';
 
 import { useSelectedLayoutSegment } from 'next/navigation';
-import { Suspense, useEffect, useId, useRef, useState, type KeyboardEvent } from 'react';
+import { Suspense, useEffect, useId, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import type { TerminalId } from '@/content/types';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n/client';
@@ -26,6 +26,8 @@ export interface AirportBarProps {
   /** KLIA terminals with their short labels; empty for single-terminal airports. */
   terminals: readonly { id: TerminalId; label: string }[];
   sections: readonly AirportSectionId[];
+  /** The picture behind the bar (`AirportBackdrop variant="band"`), rendered on the server. */
+  backdrop?: ReactNode;
 }
 
 function ActiveTerminal({ slug }: { slug: string }) {
@@ -46,9 +48,9 @@ function SectionLinks({ slug, sections, terminal, onNavigate }: { slug: string; 
               href={sectionPath(slug, section.id, terminal)}
               aria-current={current ? 'page' : undefined}
               onClick={onNavigate}
-              className="flex min-h-11 w-full min-w-0 items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium text-ink-2 hover:bg-surface hover:text-ink aria-[current]:bg-surface aria-[current]:font-semibold aria-[current]:text-ink aria-[current]:shadow-[inset_3px_0_0_0_var(--color-primary)]"
+              className="flex min-h-11 w-full min-w-0 items-center gap-2.5 rounded-pill px-3 py-1.5 text-sm font-medium text-ink-2 hover:bg-fill hover:text-ink aria-[current]:bg-ink aria-[current]:font-semibold aria-[current]:text-page"
             >
-              <Icon name={section.icon} size="sm" className={current ? 'text-primary-ink' : 'text-ink-3'} />
+              <Icon name={section.icon} size="sm" className={current ? 'text-page' : 'text-ink-3'} />
               <span className="min-w-0">{t(section.labelKey)}</span>
             </LocaleLink>
           </li>
@@ -69,7 +71,7 @@ function SectionLinksForRoute(props: { slug: string; sections: readonly AirportS
  * time, and the airport's sections behind one "Sections" control. From `md` up the terminal
  * chips sit in the row and the section tabs show under it instead of the control.
  */
-export function AirportBar({ slug, name, fullName, code, timeZone, terminals, sections }: AirportBarProps) {
+export function AirportBar({ slug, name, fullName, code, timeZone, terminals, sections, backdrop }: AirportBarProps) {
   const t = useT();
   const panelId = useId();
   const [open, setOpen] = useState(false);
@@ -99,48 +101,56 @@ export function AirportBar({ slug, name, fullName, code, timeZone, terminals, se
 
   return (
     <>
-      {/* 55 px plus the 1 px rule: at most 56 px on a phone at 100% text (A-01). The bar is a
-          size container, so at 360 px or 125% text it drops the boxed code (the name stays) and
-          shows the Sections control as an icon, instead of squeezing the name letter by letter. */}
-      <Container className="@container flex min-h-[3.4375rem] items-center gap-x-3 py-1 md:min-h-13">
-        <LocaleLink
-          href={`/${slug}`}
-          className="flex min-h-11 min-w-0 items-center gap-2 rounded-md text-ink hover:text-primary-ink"
-        >
-          <AirportCode code={code} name={fullName} variant="boxed" size="sm" className="@max-[21rem]:hidden" />
-          <span className="type-title-sm min-w-0 leading-tight [overflow-wrap:normal]">{name}</span>
-          <span className="sr-only">{t('shellExtras.airportBar.overviewSuffix')}</span>
-        </LocaleLink>
-        {terminals.length > 0 ? (
-          <span className="md:hidden">
-            <Suspense fallback={null}>
-              <ActiveTerminal slug={slug} />
-            </Suspense>
+      {/* Redesign round one: a slim midnight band (the airport's photograph behind a veil, or the
+          branded pattern), the same in both themes; its words take the light ink (`on-media`).
+          55 px: at most 56 px on a phone at 100% text (A-01). The bar is a size container, so at
+          360 px or 125% text it drops the code pill (the name stays) and shows the Sections
+          control as an icon, instead of squeezing the name letter by letter. */}
+      <div className="on-media relative isolate overflow-hidden bg-midnight text-ink">
+        {backdrop}
+        <Container className="@container flex min-h-[3.4375rem] items-center gap-x-3 py-1 md:min-h-13">
+          <LocaleLink href={`/${slug}`} className="group/name flex min-h-11 min-w-0 items-center gap-2.5 rounded-md text-ink">
+            <AirportCode
+              code={code}
+              name={fullName}
+              size="sm"
+              className="inline-flex h-7 items-center rounded-pill bg-gold px-2.5 font-semibold text-on-gold @max-[21rem]:hidden"
+            />
+            <span className="type-title-md min-w-0 leading-tight [overflow-wrap:normal] group-hover/name:underline group-hover/name:decoration-gold-bright group-hover/name:underline-offset-4">{name}</span>
+            <span className="sr-only">{t('shellExtras.airportBar.overviewSuffix')}</span>
+          </LocaleLink>
+          {terminals.length > 0 ? (
+            <span className="md:hidden">
+              <Suspense fallback={null}>
+                <ActiveTerminal slug={slug} />
+              </Suspense>
+            </span>
+          ) : null}
+          <span className="inline-flex h-8 items-center gap-1.5 rounded-pill border border-white/15 bg-white/[0.06] px-3 max-xs:border-0 max-xs:bg-transparent max-xs:px-0">
+            <Icon name="clock" size="xs" className="text-gold-bright max-xs:hidden" />
+            <span className="type-caption text-ink-2 max-xs:sr-only">{t('shellExtras.airportBar.time')}</span>
+            <LocalTime timeZone={timeZone} zone="never" />
           </span>
-        ) : null}
-        <span className="inline-flex items-baseline gap-1.5">
-          <span className="type-caption text-ink-2 max-xs:sr-only">{t('shellExtras.airportBar.time')}</span>
-          <LocalTime timeZone={timeZone} zone="never" />
-        </span>
-        {terminals.length > 0 ? (
-          <div className="ml-auto max-md:hidden">
-            <TerminalChips slug={slug} terminals={terminals} />
-          </div>
-        ) : null}
-        <button
-          ref={button}
-          type="button"
-          aria-expanded={open}
-          aria-controls={panelId}
-          onClick={() => setOpen((value) => !value)}
-          className="ml-auto inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-md border border-line-control bg-surface px-3 text-sm font-semibold text-ink transition-colors duration-fast hover:border-ink md:hidden"
-        >
-          <Icon name="layers" size="sm" strokeWidth={2} />
-          <span className="@max-[19rem]:sr-only">{t('shellExtras.airportBar.sections')}</span>
-          <Icon name="chevron-down" size="sm" strokeWidth={2} className={cn('transition-transform duration-fast', open && 'rotate-180')} />
-        </button>
-      </Container>
-      <div id={panelId} hidden={!open} onKeyDown={onPanelKeyDown} className="border-t border-line bg-page-subtle md:hidden">
+          {terminals.length > 0 ? (
+            <div className="ml-auto max-md:hidden">
+              <TerminalChips slug={slug} terminals={terminals} />
+            </div>
+          ) : null}
+          <button
+            ref={button}
+            type="button"
+            aria-expanded={open}
+            aria-controls={panelId}
+            onClick={() => setOpen((value) => !value)}
+            className="ml-auto inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-pill border border-line-control bg-surface px-3.5 text-sm font-semibold text-ink transition-colors duration-fast hover:border-ink md:hidden"
+          >
+            <Icon name="layers" size="sm" strokeWidth={2} />
+            <span className="@max-[19rem]:sr-only">{t('shellExtras.airportBar.sections')}</span>
+            <Icon name="chevron-down" size="sm" strokeWidth={2} className={cn('transition-transform duration-fast', open && 'rotate-180')} />
+          </button>
+        </Container>
+      </div>
+      <div id={panelId} hidden={!open} onKeyDown={onPanelKeyDown} className="border-b border-line bg-page shadow-md md:hidden">
         <Container className="flex flex-col gap-3 py-3">
           <nav aria-label={t('airportPage.sectionsLabel', { airport: name })}>
             <Suspense fallback={<SectionLinks slug={slug} sections={sections} onNavigate={() => setOpen(false)} />}>

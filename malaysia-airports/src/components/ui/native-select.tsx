@@ -27,17 +27,17 @@ export function NativeSelect({ label, hideLabel, hint, error, iconStart, fieldCl
   return (
     <Field id={selectId} label={label} hideLabel={hideLabel} hint={hint} error={error} className={fieldClassName}>
       <div className="relative">
-        {iconStart ? <Icon name={iconStart} className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-ink-3" /> : null}
+        {iconStart ? <Icon name={iconStart} className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-ink-3" /> : null}
         <select
           id={selectId}
           aria-describedby={describedBy(selectId, hint, error)}
           aria-invalid={error ? true : undefined}
-          className={cn(controlClasses, 'appearance-none truncate pr-10 font-medium', iconStart && 'pl-10', className)}
+          className={cn(controlClasses, 'appearance-none truncate pr-11 font-medium', iconStart && 'pl-11', className)}
           {...rest}
         >
           {children}
         </select>
-        <Icon name="chevron-down" size="sm" strokeWidth={2} className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-ink-2" />
+        <Icon name="chevron-down" size="sm" strokeWidth={2} className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-ink-2" />
       </div>
     </Field>
   );

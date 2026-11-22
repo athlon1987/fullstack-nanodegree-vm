@@ -224,7 +224,7 @@ export function MyJourney({ carParks }: MyJourneyProps) {
                   // Round 5 (A-14): from lg up the timeline sits beside the saved flights, directly
                   // under the demonstration banner, so its first simulated step needs no tag of its own.
                   leadingDemoTagClassName="lg:hidden"
-                  className="scroll-mt-24 rounded-xl border border-line-strong bg-surface p-5 sm:p-7"
+                  className="scroll-mt-24 rounded-3xl border border-line bg-surface p-5 shadow-sm sm:p-8"
                 />
               ) : provider === null ? (
                 <Skeleton className="h-96 w-full" />

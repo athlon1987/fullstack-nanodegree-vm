@@ -28,12 +28,12 @@ export function Input({ label, hideLabel, hint, error, optionalLabel, iconStart,
   return (
     <Field id={inputId} label={label} hideLabel={hideLabel} hint={hint} error={error} optionalLabel={optionalLabel} className={fieldClassName}>
       <div className="relative">
-        {iconStart ? <Icon name={iconStart} className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-ink-3" /> : null}
+        {iconStart ? <Icon name={iconStart} className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-ink-3" /> : null}
         <input
           id={inputId}
           aria-describedby={describedBy(inputId, hint, error)}
           aria-invalid={error ? true : undefined}
-          className={cn(controlClasses, iconStart && 'pl-10', mono && 'font-mono tabular-nums', className)}
+          className={cn(controlClasses, iconStart && 'pl-11', mono && 'font-mono tabular-nums', className)}
           {...rest}
         />
       </div>

@@ -18,6 +18,8 @@ export interface ModeQuickActionsProps {
    */
   airport?: string;
   terminal?: TerminalId;
+  /** `media`: glass tiles over the home hero. Default: white tiles on the page. */
+  tone?: 'default' | 'media';
   className?: string;
 }
 
@@ -26,8 +28,8 @@ export interface ModeQuickActionsProps {
  * one-line hint is hidden so that the whole first screen stays above the fold.
  */
 const TILE =
-  'w-full gap-1 p-2 sm:gap-2 sm:p-3.5 ' +
-  'max-sm:[&_.type-body-sm]:hidden max-sm:[&_[data-emphasis-label]]:hidden max-sm:[&_.type-title-sm]:text-[0.8125rem] max-sm:[&_.type-title-sm]:leading-tight max-sm:[&_svg]:size-5 ' +
+  'w-full gap-1.5 p-2.5 sm:gap-2.5 sm:p-3.5 ' +
+  'max-sm:[&_.type-body-sm]:hidden max-sm:[&_[data-emphasis-label]]:hidden max-sm:[&_.type-title-sm]:text-[0.8125rem] max-sm:[&_.type-title-sm]:leading-tight max-sm:[&_svg]:size-5 max-sm:[&_[data-action-badge]]:size-8 ' +
   'sm:[&_.type-title-sm]:text-base sm:[&_.type-title-sm]:leading-snug sm:[&_.type-body-sm]:text-[0.8125rem] ' +
   '[@media(max-height:50rem)]:[&_.type-body-sm]:hidden [&>svg]:hidden';
 
@@ -37,7 +39,7 @@ const LG_COLUMNS: Record<number, string> = { 1: 'lg:grid-cols-3', 2: 'lg:grid-co
  * Six quick actions, ordered and worded for the current journey mode. The first one is marked
  * "Start here".
  */
-export function ModeQuickActions({ airport, terminal, className }: ModeQuickActionsProps) {
+export function ModeQuickActions({ airport, terminal, tone = 'default', className }: ModeQuickActionsProps) {
   const t = useT();
   const { effectiveMode } = useJourneyMode();
   const context = useAirportContext();
@@ -55,7 +57,7 @@ export function ModeQuickActions({ airport, terminal, className }: ModeQuickActi
         // Round 4 (layout package): on phones, three tiles a row only while each is at least 6.25rem
         // wide (rem follows the text size), so Malay titles and 125% text drop to two a row instead of
         // breaking mid-word ("Pengangk|utan").
-        'grid grid-cols-3 gap-2 max-sm:grid-cols-[repeat(auto-fill,minmax(min(100%,6.25rem),1fr))] sm:gap-2.5',
+        'grid grid-cols-3 gap-2 max-sm:grid-cols-[repeat(auto-fill,minmax(min(100%,6.25rem),1fr))] sm:gap-3',
         LG_COLUMNS[Math.min(actions.length, 6)],
         className,
       )}
@@ -74,8 +76,9 @@ export function ModeQuickActions({ airport, terminal, className }: ModeQuickActi
               href={sectionHref(action.section, selection, availability)}
               emphasis={index === 0 && !missing}
               emphasisLabel={t('home.actions.startHere')}
+              tone={tone}
               /* Compact tiles for the first screen: on phones the hint is hidden and the type is smaller. */
-              className={cn(TILE, missing && 'border-dashed')}
+              className={cn(TILE, missing && 'after:pointer-events-none after:absolute after:inset-1 after:rounded-[calc(var(--radius-2xl)-0.25rem)] after:border after:border-dashed after:border-current/45')}
             />
           </li>
         );

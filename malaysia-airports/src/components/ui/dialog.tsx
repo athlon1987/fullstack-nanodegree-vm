@@ -57,34 +57,37 @@ export function DialogContent({
   const t = useT();
   return (
     <DialogPrimitive.Portal>
-      <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-board/60 data-[state=closed]:animate-fade-out data-[state=open]:animate-fade-in" />
+      <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-midnight/60 data-[state=closed]:animate-fade-out data-[state=open]:animate-fade-in" />
       <DialogPrimitive.Content
         {...(description ? {} : { 'aria-describedby': undefined })}
         className={cn(
-          'fixed z-50 flex flex-col border border-line-strong bg-surface-raised text-ink shadow-lg outline-none',
+          'fixed z-50 flex flex-col border border-line bg-surface-raised text-ink shadow-xl outline-none',
           variant === 'modal'
             ? [
-                'inset-x-3 top-1/2 max-h-[calc(100dvh-1.5rem)] -translate-y-1/2 rounded-xl sm:inset-x-auto sm:left-1/2 sm:w-full sm:-translate-x-1/2',
-                'data-[state=closed]:animate-fade-out data-[state=open]:animate-fade-in',
+                'inset-x-3 top-1/2 max-h-[calc(100dvh-1.5rem)] -translate-y-1/2 rounded-3xl sm:inset-x-auto sm:left-1/2 sm:w-full sm:-translate-x-1/2',
+                'data-[state=closed]:animate-fade-out data-[state=open]:animate-scale-in',
                 MODAL_SIZES[size],
               ]
             : [
-                'inset-x-0 bottom-0 max-h-[88dvh] rounded-t-xl border-b-0 pb-[env(safe-area-inset-bottom)]',
+                // Phones: a bottom sheet with a grabber. Wider screens: a floating side panel inset
+                // 12 px from the window edges, with the same 28 px corners.
+                'inset-x-0 bottom-0 max-h-[88dvh] rounded-t-3xl border-b-0 pb-[env(safe-area-inset-bottom)]',
                 'data-[state=closed]:animate-sheet-out-bottom data-[state=open]:animate-sheet-in-bottom',
-                'sm:inset-x-auto sm:inset-y-0 sm:right-0 sm:max-h-none sm:w-[28rem] sm:max-w-[calc(100vw-3rem)] sm:rounded-none sm:border-y-0 sm:border-r-0 sm:border-b sm:pb-0',
+                'sm:inset-x-auto sm:inset-y-3 sm:right-3 sm:max-h-none sm:w-[28rem] sm:max-w-[calc(100vw-1.5rem)] sm:rounded-3xl sm:border-b sm:pb-0',
                 'sm:data-[state=closed]:animate-sheet-out-right sm:data-[state=open]:animate-sheet-in-right',
               ],
           className,
         )}
         {...rest}
       >
+        {variant === 'sheet' ? <span aria-hidden="true" className="mx-auto mt-2 block h-1 w-10 shrink-0 rounded-full bg-line-strong sm:hidden" /> : null}
         <header className={cn('flex items-start justify-between gap-4 py-3 pr-3 pl-5 sm:pl-6', !hideTitle && 'border-b border-line')}>
           <div className={cn('min-w-0 py-1.5', hideTitle && 'sr-only')}>
             <DialogPrimitive.Title className="type-title-lg text-ink">{title}</DialogPrimitive.Title>
             {description ? <DialogPrimitive.Description className="type-body-sm mt-1 text-ink-2">{description}</DialogPrimitive.Description> : null}
           </div>
           <DialogPrimitive.Close asChild>
-            <IconButton icon="x" label={t('common.actions.close')} className="ml-auto" />
+            <IconButton icon="x" label={t('common.actions.close')} className="ml-auto bg-fill hover:bg-fill-hover" />
           </DialogPrimitive.Close>
         </header>
         <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-5 sm:px-6">{children}</div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { DemoMarkedList } from '@/components/common/demo-tag';
+import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n/client';
 import { FlightSearchBox } from '@/components/flights/flight-search-box';
 import { BoardPreview } from '@/components/home/board-preview';
@@ -20,6 +21,11 @@ export interface AirportFlightToolsProps {
   hasFlights: boolean;
 }
 
+export interface AirportFlightSearchProps extends AirportFlightToolsProps {
+  /** On the airport's midnight header (redesign round one): the heading takes the light ink. */
+  onMedia?: boolean;
+}
+
 /**
  * The scoped tools of an airport overview below the notices: journey modes with their quick
  * actions and a board preview, narrowed to the terminal in the URL (`?t=`) at KLIA. The flight
@@ -34,13 +40,13 @@ export interface AirportFlightToolsProps {
  * notices, so on a phone it is on the first screen instead of below a long notice (it was at
  * 2,236 px). Renders nothing for an airport without a demonstration board.
  */
-export function AirportFlightSearch({ slug, name, hasFlights }: AirportFlightToolsProps) {
+export function AirportFlightSearch({ slug, name, hasFlights, onMedia = false }: AirportFlightSearchProps) {
   const t = useT();
   const terminal = useTerminalParam(slug);
   if (!hasFlights) return null;
   return (
     <section aria-labelledby="airport-search-title">
-      <h2 id="airport-search-title" className="type-title-lg mb-3 text-ink">
+      <h2 id="airport-search-title" className={cn('type-title-lg mb-3 text-ink', onMedia && 'on-media')}>
         {t('airportPage.searchTitle', { airport: name })}
       </h2>
       <FlightSearchBox id="flight-search" airport={slug} terminal={terminal} />

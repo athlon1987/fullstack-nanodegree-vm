@@ -8,7 +8,7 @@ import { cn } from '@/lib/cn';
  * @example <Skeleton className="h-row w-full" />
  */
 export function Skeleton({ className, ...rest }: HTMLAttributes<HTMLSpanElement>) {
-  return <span aria-hidden="true" className={cn('block max-w-full animate-shimmer rounded-sm bg-neutral-bg', className)} {...rest} />;
+  return <span aria-hidden="true" className={cn('block max-w-full animate-shimmer rounded-md bg-fill', className)} {...rest} />;
 }
 
 /** Lines of placeholder text; the last line is shorter. */

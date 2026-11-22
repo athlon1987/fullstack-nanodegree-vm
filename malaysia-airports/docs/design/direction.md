@@ -1,59 +1,140 @@
-# Design direction: decision record
+# Direction v2: premium, clean, app-like
 
-Date: 17 November 2026. Inputs: three working homepage concepts in `docs/design/concepts/`
-(A Tenun, B Rimba, C Laluan) and the independent panel's evaluation in
-`docs/design/concepts/evaluation.md`.
+Date: 22 November 2026. Owner: design director and design-system lead (redesign round one).
+Inputs: the client's verdict on the working prototype ("The UI/UX of this looks really bad. It's so
+basic."), the reference captures in `docs/research/screenshots/` (Hamad, Dubai, Changi) and the
+current screens in `docs/prototype/screenshots/`. The living specification is
+`docs/design/design-system.md` and the style guide at `/en/design-system`.
 
-## What the panel found
+## History
 
-| Concept | Utility 25% | Craft 20% | Identity 15% | Data 15% | Accessibility 15% | Mobile 10% | Weighted |
-|---|---|---|---|---|---|---|---|
-| A Tenun (woven light) | 7 | 8 | 8 | 7 | 7 | 7 | 7.4 |
-| B Rimba (forest canopy) | 8 | 7 | 7 | 7 | 8 | 8 | 7.5 |
-| C Laluan (wayfinding) | 8 | 7 | 5 | 8 | 7 | 7 | 7.1 |
+- **v1 (17 November 2026)** was a synthesis of three concepts (A Tenun, B Rimba, C Laluan; panel
+  record in `docs/design/concepts/evaluation.md`): warm paper neutrals, songket indigo, a single
+  gold hairline, Fraunces headings, small radii, outline cards and line-drawn vignettes. It earned
+  its keep on structure, honesty and accessibility, and all of that stays.
+- **What went wrong** is visual: beige everywhere, outline-only cards, icon tiles in place of
+  pictures, small type and many small labels made a product that reads like a government form. No
+  photography, no depth, no hierarchy of drama. The client is right.
+- **v2 (this document)** keeps every structural, data and accessibility rule of v1 and replaces the
+  visual language.
 
-The panel named B the winner by 0.1 and said plainly that the result is narrow: B has the most
-useful first screen, the cleanest accessibility build and the best phone design; A is "clearly the
-more premium and more distinctly Malaysian direction"; C handles operational data best. No cell
-reached 9, so none of the three is good enough as it stands.
+## The idea in one line
 
-## Decision
+The calm luxury of a great Gulf hub (deep colour, gold, cinematic photography) with the clarity of
+Apple and Airbnb (big confident type, white space, smooth motion) and the immediacy of a travel app
+(live flight status first, cards, glass, a phone UI that feels native).
 
-We implement a **synthesis**, not any single concept. Each concept contributes the layer it won:
+## What we saw in the references
 
-| Layer | Taken from | Why |
-|---|---|---|
-| Structure: first-screen composition, responsive behaviour, accessibility build, phone patterns | **B Rimba** (the panel's winner) | Utility, accessibility and mobile are properties of structure. B's one-line headline, full-width search with a scope sentence, modes and six actions in one row, 44 px targets, native controls, live regions and full-screen phone menu are carried over as built. |
-| Visual identity: palette, typography, hairline detailing, illustration family, provenance tags | **A Tenun** | Premium and distinctly Malaysian are two of the five required qualities of the proposition, and A leads on both craft and identity. The panel's own must-fix list for B ("raise the premium register: smaller radii, fewer pills, finer rules, quieter hero", "redraw the illustrations as one family") moves B to where A already is. A's indigo and gold also remove the collision the panel flagged in B, where brand green and brand red doubled as the On time, Cancelled, focus and Suggestion colours. |
-| Data language: board, status chips, badges, demo banner, freshness, dense tables | **C Laluan** | The product is mostly operational data once past the homepage. C's neutral ink board, shape-coded status chips, T1/T2 badges, hazard-striped demonstration banner, freshness row and mono tabular figures become the rules for every data-dense screen. |
+- **Hamad**: one full-bleed photograph does the emotional work; a white search bar and a row of
+  white tiles sit straight on it. Deep navy, a single brand accent. Lesson: let the picture lead,
+  keep the tools solid and legible on top of it.
+- **Dubai**: "Find your flight status" in very large type on a soft panel, departures and arrivals
+  one tap away, rounded tiles for the next intents. Lesson: flight status is the product; big type
+  and pill controls make it feel effortless.
+- **Changi**: a cinematic photograph, a frosted search field over it, cards with photographs
+  instead of icons. Lesson: images on cards turn a directory into a place you want to visit.
+- **Our current screens**: correct, dense and pale. Lesson: keep the content and the truthfulness,
+  change almost everything about how it looks.
 
-This is a judgement call by the design lead that departs from the panel's nominal ranking, so it
-is recorded here rather than presented as the panel's verdict. The panel's ranking stands as
-evidence; the synthesis follows the panel's own graft and must-fix lists (reproduced in the
-evaluation) and changes only which concept supplies the colour and type.
+## Mood
 
-## The resulting system in one paragraph
+Arriving at night into a great terminal: midnight sky, warm light, polished floors, gold detail,
+nothing shouting. Confident, unhurried, precise. Premium is expressed through restraint, scale and
+finish, never through ornament.
 
-Warm paper neutrals and deep songket indigo, with a single gold-thread hairline used as decoration
-only (never as a status colour) and rainforest green kept as the secondary, living accent for
-illustration and positive states. Fraunces for editorial display headings, used sparingly; Hanken
-Grotesk for all interface text; Geist Mono for times, gates, codes and tables. Finer rules, small
-radii, few pills. A search-first first screen that fits at 1280 by 720 and 360 by 800. A dark,
-neutral "board" surface for flight data in both themes. Status always carried by icon, shape and
-words. Malaysian identity through pucuk rebung hairlines, a scattered bunga tabur field, line-drawn
-airport vignettes and the canopy geometry of KLIA, never through flags or clip-art.
+## Colour
 
-## Binding requirements carried into the design system
+- **Midnight navy is the brand base** (`midnight` #070c22, `primary` #0b1640). Hero bands, the
+  footer, primary buttons, the board. In the dark theme the page itself becomes midnight and the
+  primary action turns near-white.
+- **Gold is the accent, used sparingly** (`gold` #c49a50, `gold-bright` on midnight). One gold
+  action or one gold rule per view: a hero call to action, a kicker line, a hairline under a
+  number. Gold is never a status colour.
+- **Surfaces are white and cool grey** (`page` #f6f7f9, `surface` #ffffff, `page-subtle`
+  #eceef3). Warm ivory (`ivory` #faf7f0) survives as one editorial band per page at most. Beige is
+  retired.
+- **Ink is navy-black**, never pure black (`ink` #0b1230, `ink-2`, `ink-3`).
+- **Status colours are tuned for flights**: scheduled (slate), on time (green), boarding (blue),
+  delayed (amber), cancelled (red), landed (teal), departed (muted). Each has a soft pill (tinted
+  fill, coloured words) and a solid pill (strong fill) and passes AA on white, on the page, on the
+  dark theme and on the board.
+- **Focus stays orchid**, its own colour, light orchid over media.
 
-From the panel's must-fix list (all apply to the synthesis):
+## Type
 
-1. Brand colour is never a status colour. Focus has its own non-semantic colour.
-2. Real search parsing with inline, demo-labelled results (no "reads as" guess).
-3. Journey mode sets Departures or Arrivals, renames actions and rewrites the guidance strip.
-4. The unset airport state is solid and clearly highlighted, never dashed.
-5. One illustration family with true dark-theme versions.
-6. Placeholders never clip below 400 px; nothing truncates between 360 and 1600 px.
-7. Stylesheet-only system-theme fallback, a contrast setting, forced-colours support.
-8. Opaque sticky header, no blur.
-9. Dense table, directory and map tokens defined up front (row heights, tabular figures, badges).
-10. All touch targets at least 44 px on phones; UI boundaries at least 3:1.
+- **Hanken Grotesk (licensed, already self-hosted) for headings and the interface.** Display sizes
+  are big and tight: 44 to 88 px for a hero (`type-display-2xl`), 38 to 72 px for a page title,
+  weight 650, tracking -0.03 to -0.04 em. Reading text stays at 16 to 18 px with generous leading.
+- **Fraunces becomes the accent, not the voice**: the wordmark, an occasional serif phrase or pull
+  quote (`type-serif-*`). Never a whole page of headings.
+- **Geist Mono** keeps times, gates, codes and figures tabular.
+- No new font files: the payload is unchanged (Hanken 35 KB and Fraunces 67 KB preloaded, mono on
+  demand). Hanken now carries the `h1`, so it takes Fraunces's old rule: preloaded and
+  `display: optional`, so a large heading never rewraps after first paint.
+
+## Imagery
+
+- **Real, licensed photography** of our airports and of Malaysia (library in
+  `src/content/images.ts`, credits on the credits page). Architecture, light, people in motion,
+  local texture. No stock clichés, no AI imagery presented as real places.
+- **Full-bleed heroes** with the photograph doing the emotional work, the words on a **gradient
+  scrim** behind them. Text over a photograph always sits on a scrim zone or on a glass panel, and
+  meets 4.5:1 even if the photograph behind it is pure white (measured; see the design system).
+- **Glass panels over photos** for the tools that live on a hero: flight search, the next
+  departure, quick actions. The blur is decoration; the fill alone carries the contrast, and it
+  turns solid for "reduce transparency", without `backdrop-filter`, and in high contrast.
+- **Rounded media**: cards 20 px, media cards 24 px, hero insets and sheets 28 px. Images reserve
+  their space (aspect ratios or minimum heights), so nothing shifts while they load.
+- Line drawings and woven motifs from v1 remain for empty states, maps and quiet decoration, not as
+  substitutes for pictures.
+
+## Elevation and surfaces
+
+- Cards lift off the page by a soft, layered shadow plus a hairline, not by an outline alone.
+- Three planes: the page (cool grey), cards (white, `shadow-sm`), floating things (popovers,
+  dialogs, glass: `shadow-lg` to `shadow-xl`).
+- Bands separate by colour and space (white, cool grey, midnight, one ivory), not by rules.
+- The board stays a neutral midnight data surface in both themes.
+
+## Controls
+
+- **Pills** for actions, chips, tabs, segmented controls and the search field. Buttons: solid
+  midnight (primary), solid gold (the one premium accent), frosted surface glass (secondary),
+  smoky midnight glass (over photographs), quiet text buttons.
+- **Large, soft inputs**: 48 px fields, 56 to 64 px hero search with an inset icon.
+- Selected states are strong (ink fill), never a faint tint, so they meet 3:1 without colour alone.
+
+## Motion
+
+- Smooth and short: 140 ms for controls, 240 ms for lifts and popovers, 420 ms for sheets, 700 ms
+  for an image easing in on hover. One easing family (`cubic-bezier(0.22, 1, 0.36, 1)`).
+- Movement only where it explains: a card lifts 2 px on hover, a photograph eases in 4 %, a sheet
+  slides from its edge, a live boarding dot breathes.
+- Under `prefers-reduced-motion` **and** the site's own reduced-motion setting, every duration
+  token drops to zero and nothing moves (`motion-ok:` variant). No scroll-triggered reveals, ever:
+  the `h1` and the first content are in the static HTML and never animate in.
+
+## Stop doing
+
+- Beige everywhere. One ivory band per page at most.
+- Outline-only cards and icon tiles where a photograph or a real preview belongs.
+- Too many labels: eyebrows on every block, numbered section prefixes, three tags on one card.
+  One eyebrow per section, one provenance tag per item, words before chips.
+- Small headings. If it is the most important thing on the screen, it is big.
+- Hairlines as the main way to separate content.
+- Hazard stripes that shout. Demonstration data stays labelled on every view that shows it (the
+  words never go), but the label is quiet and elegant.
+
+## Keep (non-negotiable)
+
+- Every feature, route, piece of content and data source.
+- Truthful demonstration labels and provenance tags; the "Concept prototype, not official" notice.
+- WCAG 2.2 AA: 4.5:1 text (including over photographs), 3:1 boundaries and focus, visible focus,
+  44 px targets on phones, reduced motion, high contrast, forced colours, keyboard use.
+- English and Malay; the dark theme; no layout shift; the static-shell rules
+  (`docs/engineering/next16-notes.md`, `docs/qa/fixes/round3-performance.md`).
+- v1's binding requirements 1, 4, 6, 7, 9 and 10 (brand never a status, solid unset airport state,
+  no clipping from 360 px, stylesheet-only theme fallback, dense data tokens, 44 px targets and 3:1
+  boundaries on form fields). Requirement 8 (opaque header, no blur) is now the shell team's call:
+  a glass header is allowed over a hero only if it keeps the 4.5:1 rule above.

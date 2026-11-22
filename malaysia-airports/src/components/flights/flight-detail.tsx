@@ -9,7 +9,9 @@ import type { JourneyAirportContent } from '@/lib/journey';
 import { useFlightFeed, type FeedRequest } from '@/lib/providers/use-flight-feed';
 import { retryableLazy, retryingImport } from '@/lib/retrying-import';
 import { dateKey } from '@/lib/time';
+import { cn } from '@/lib/cn';
 import { PartBoundary } from '@/components/common/part-boundary';
+import { Container } from '@/components/ui/container';
 import { Skeleton } from '@/components/ui/skeleton';
 import { flightAvailability, sameFlightOn } from './board-model';
 import { FeedNotice } from './feed-notice';
@@ -78,6 +80,13 @@ export interface FlightDetailProps {
   disruption: ReactNode;
   /** Published facts about the airline at this airport, rendered on the server. */
   airlineFacts?: ReactNode;
+  /**
+   * Redesign round one: the page's midnight header band, rendered on the server. `header` holds
+   * the eyebrow and the `h1` (in the first flush: nothing above them waits), `backdrop` the
+   * airport's photograph or branded pattern. The next-step summary sits on the band and the
+   * flight card overlaps its lower edge.
+   */
+  band: { header: ReactNode; backdrop?: ReactNode };
 }
 
 /**
@@ -107,7 +116,7 @@ function LowerPlaceholder() {
  * LCP was the summary, painted after the feed at 4.2 to 5.3 s on a slow phone), and nothing
  * below them moves when the status arrives.
  */
-export function FlightDetail({ flightId, airport, title, identity, journeyContent, sources, notices, publishedCheckIn, disruption, airlineFacts }: FlightDetailProps) {
+export function FlightDetail({ flightId, airport, title, identity, journeyContent, sources, notices, publishedCheckIn, disruption, airlineFacts, band }: FlightDetailProps) {
   const t = useT();
   const zone = journeyContent.airport.timezone;
   const parts = decodeFlightId(flightId);
@@ -144,11 +153,16 @@ export function FlightDetail({ flightId, airport, title, identity, journeyConten
     const todayId = sameFlightOn(flightId, dateKey(provider.now, zone));
     const today = todayId && todayId !== flightId.toLowerCase() ? provider.getFlightSync(todayId, airport) : null;
     return (
-      <PartBoundary onRetry={FlightNotFound.renew}>
-        <Suspense fallback={<LowerPlaceholder />}>
-          <FlightNotFound airport={airport} reason={!flight || availability === 'current' ? 'unknown' : (availability ?? 'unknown')} sameToday={today} />
-        </Suspense>
-      </PartBoundary>
+      <div className="flex flex-col">
+        <Band band={band} overlap={false} />
+        <Container className="pt-8 pb-section sm:pt-10">
+          <PartBoundary onRetry={FlightNotFound.renew}>
+            <Suspense fallback={<LowerPlaceholder />}>
+              <FlightNotFound airport={airport} reason={!flight || availability === 'current' ? 'unknown' : (availability ?? 'unknown')} sameToday={today} />
+            </Suspense>
+          </PartBoundary>
+        </Container>
+      </div>
     );
   }
 
@@ -162,10 +176,13 @@ export function FlightDetail({ flightId, airport, title, identity, journeyConten
 
   return (
     // The answer is declared once there is one (E-17), as before round 5.
-    <div className="flex flex-col gap-10 lg:gap-14" data-answer-task={live ? 'flight-status' : undefined} data-answer-state={live ? 'demo' : undefined}>
-      <div className="flex flex-col gap-4">
+    <div className="flex flex-col" data-answer-task={live ? 'flight-status' : undefined} data-answer-state={live ? 'demo' : undefined}>
+      <Band band={band} overlap={!failed}>
         {failed ? null : <FlightSummary flight={live} steps={live ? summarySteps : null} now={now?.getTime() ?? 0} />}
         <FeedNotice feed={feed} timeZone={zone} />
+      </Band>
+      <Container className="relative flex flex-col gap-10 pb-section lg:gap-14">
+      <div className={cn('flex flex-col gap-4', failed ? 'pt-8' : '-mt-20 sm:-mt-24')}>
         {failed ? null : live ? (
           <FlightStatusHero flight={live} updatedAt={feed.updatedAt} refreshSeconds={feed.refreshSeconds} publishedCheckIn={publishedCheckIn} />
         ) : (
@@ -208,7 +225,28 @@ export function FlightDetail({ flightId, airport, title, identity, journeyConten
       ) : failed ? null : (
         <LowerPlaceholder />
       )}
+      </Container>
       {live ? <FlightWatcher flights={watched} announce={saved} alertIds={alerts.ids} timeZone={zone} /> : null}
+    </div>
+  );
+}
+
+/**
+ * The flight page's header band (redesign round one): midnight in both themes, the airport's
+ * photograph or branded pattern behind it, the eyebrow and `h1`, then the next-step summary as a
+ * dark panel (an `on-media` scope: light words, light focus ring). With `overlap`, room at the
+ * bottom for the flight card to rise into.
+ */
+function Band({ band, overlap, children }: { band: FlightDetailProps['band']; overlap: boolean; children?: ReactNode }) {
+  return (
+    <div className="on-media relative isolate overflow-hidden bg-midnight text-ink">
+      {band.backdrop}
+      {/* Redesign round one (critique item 4): from lg the next step sits beside the title, so the
+          status card under them (time, status, gate) starts in the first view. */}
+      <Container className={cn('pt-4 sm:pt-8 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,34rem)] lg:items-end lg:gap-x-10', overlap ? 'pb-24 sm:pb-28' : 'pb-8 sm:pb-10')}>
+        <div className="min-w-0">{band.header}</div>
+        {children ? <div className="mt-4 flex min-w-0 flex-col gap-3 empty:hidden sm:mt-6 lg:mt-0">{children}</div> : null}
+      </Container>
     </div>
   );
 }

@@ -30,9 +30,12 @@ const MODE_LINK: Record<JourneyMode, { section: AirportSectionId; icon: IconName
 };
 
 const LINK =
-  'group flex min-h-12 min-w-0 items-center gap-3 px-3 py-2 text-ink transition-colors duration-fast hover:bg-page-subtle focus-visible:focus-ring-inset sm:px-4';
+  'group flex min-h-12 min-w-0 items-center gap-3 px-3 py-2 text-ink transition-colors duration-fast hover:bg-[rgb(255_255_255/0.06)] focus-visible:focus-ring-inset sm:px-4';
 
 /**
+ * Direction v2: a slim strip of smoky glass at the foot of the home hero (an `on-media` scope, so
+ * every token inside takes the light ink and meets 4.5:1 over the hero art or a photograph).
+ *
  * The strip that closes the first screen: one operational notice (the most serious one that is
  * current for the chosen airport, or for the network), then "getting there" and "terminal
  * guidance" links that are rewritten for the journey mode and the chosen airport, and an
@@ -61,12 +64,16 @@ export function NoticeStrip({ notices, status, className }: { notices: readonly 
   return (
     <section
       aria-label={t('home.strip.label')}
-      className={cn('grid overflow-hidden rounded-lg border border-line-strong bg-surface lg:grid-cols-[minmax(0,1.9fr)_minmax(0,1fr)_minmax(0,1fr)]', className)}
+      className={cn('glass-dark on-media grid overflow-hidden rounded-2xl text-ink lg:grid-cols-[minmax(0,1fr)_auto_auto]', className)}
     >
       {notice ? (
-        <div data-severity={notice.severity} className={cn('flex min-w-0 items-center gap-3 px-3 py-2 sm:px-4 sm:py-2.5', style.box)}>
-          <Icon name={style.icon} className={cn('max-xs:hidden', style.text)} />
-          <div className="min-w-0 flex-1">
+        <div data-severity={notice.severity} className="flex min-w-0 items-center gap-3 px-3 py-2 sm:px-4 sm:py-2.5">
+          <span className={cn('flex size-9 shrink-0 items-center justify-center rounded-full max-xs:hidden', style.box, style.text)}>
+            <Icon name={style.icon} size="sm" strokeWidth={2} />
+          </span>
+          {/* Redesign round one (critique item 5): one alert line ("Operational notice · KLIA
+              Terminal 1 — No Aerotrain from midnight… · From 28 Nov 2026 · Details") from lg. */}
+          <div className="min-w-0 flex-1 lg:flex lg:flex-wrap lg:items-baseline lg:gap-x-2.5">
             <h2 className={cn('type-eyebrow flex flex-wrap items-center gap-x-1.5 gap-y-0.5', style.text)}>
               <span className="max-sm:sr-only">{t('home.notice.label')}</span>
               <span aria-hidden="true" className="max-sm:hidden">
@@ -75,8 +82,8 @@ export function NoticeStrip({ notices, status, className }: { notices: readonly 
               <span className="text-ink-2">{notice.scope ?? t('home.notice.network')}</span>
               {notice.provenance === 'demo' ? <ProvenanceTag provenance="demo" length="short" className="ml-1" /> : null}
             </h2>
-            <p className="type-body-sm mt-1 font-semibold text-ink">{notice.title}</p>
-            {period ? <p className="type-caption mt-0.5 text-ink-2 max-sm:hidden [@media(max-height:50rem)]:hidden">{period}</p> : null}
+            <p className="type-body-sm mt-1 font-semibold text-ink lg:mt-0">{notice.title}</p>
+            {period ? <p className="type-caption mt-0.5 text-ink-2 max-sm:hidden lg:mt-0 [@media(max-height:50rem)]:hidden">{period}</p> : null}
           </div>
           <LocaleLink
             href={`/notices#${notice.id}`}
@@ -87,8 +94,10 @@ export function NoticeStrip({ notices, status, className }: { notices: readonly 
           </LocaleLink>
         </div>
       ) : (
-        <div className="flex min-w-0 items-center gap-3 bg-page-subtle px-3 py-2.5 sm:px-4">
-          <Icon name="circle-check" className="text-ink-2" />
+        <div className="flex min-w-0 items-center gap-3 px-3 py-2.5 sm:px-4">
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-[rgb(255_255_255/0.1)] text-ink-2 max-xs:hidden">
+            <Icon name="circle-check" size="sm" strokeWidth={2} />
+          </span>
           <p className="type-body-sm min-w-0 flex-1 text-ink-2">{t('notices.none')}</p>
           <LocaleLink href="/notices" className="link-action type-body-sm shrink-0 text-ink">
             {t('notices.viewAll')}
@@ -96,22 +105,20 @@ export function NoticeStrip({ notices, status, className }: { notices: readonly 
         </div>
       )}
 
-      <div className="grid grid-cols-2 divide-x divide-line border-t border-line lg:contents lg:divide-x-0 lg:border-t-0">
-        <LocaleLink href={sectionHref(mode.section, selection, availability)} className={cn(LINK, 'lg:border-l lg:border-line')}>
-          <Icon name={mode.icon} className="text-primary-ink max-xs:hidden" />
+      <div className="grid grid-cols-2 divide-x divide-[rgb(255_255_255/0.12)] border-t border-[rgb(255_255_255/0.12)] lg:contents lg:divide-x-0 lg:border-t-0">
+        <LocaleLink href={sectionHref(mode.section, selection, availability)} className={cn(LINK, 'lg:border-l lg:border-[rgb(255_255_255/0.12)]')}>
+          <Icon name={mode.icon} className="text-ink-2 max-xs:hidden" />
           <span className="min-w-0 flex-1">
             <span className="type-body-sm block font-semibold">{t(`home.strip.${effectiveMode}.title`, { airport: airportName })}</span>
-            <span className="type-caption block text-ink-2 max-sm:hidden">{t(`home.strip.${effectiveMode}.body`)}</span>
+            <span className="sr-only">{t(`home.strip.${effectiveMode}.body`)}</span>
           </span>
           <Icon name="arrow-right" size="sm" strokeWidth={1.75} className="text-ink-3 transition-transform duration-base group-hover:translate-x-0.5 max-sm:hidden" />
         </LocaleLink>
-        <LocaleLink href={klia ? '/help/terminals' : sectionHref('overview', selection, availability)} className={cn(LINK, 'lg:border-l lg:border-line')}>
-          <Icon name="building-2" className="text-primary-ink max-xs:hidden" />
+        <LocaleLink href={klia ? '/help/terminals' : sectionHref('overview', selection, availability)} className={cn(LINK, 'lg:border-l lg:border-[rgb(255_255_255/0.12)]')}>
+          <Icon name="building-2" className="text-ink-2 max-xs:hidden" />
           <span className="min-w-0 flex-1">
             <span className="type-body-sm block font-semibold">{t('home.strip.terminalTitle')}</span>
-            <span className="type-caption block text-ink-2 max-sm:hidden">
-              {klia ? t('home.strip.terminalKlia') : t('home.strip.terminalAirport', { airport: airportName })}
-            </span>
+            <span className="sr-only">{klia ? t('home.strip.terminalKlia') : t('home.strip.terminalAirport', { airport: airportName })}</span>
           </span>
           <Icon name="arrow-right" size="sm" strokeWidth={1.75} className="text-ink-3 transition-transform duration-base group-hover:translate-x-0.5 max-sm:hidden" />
         </LocaleLink>

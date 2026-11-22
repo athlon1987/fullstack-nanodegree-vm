@@ -1,6 +1,8 @@
 import { CLASSIFICATION_LABELS, airportSlugs, formatAsOf, getNotices, getSource, pick, resolveSources, type Provenance } from '@/content';
 import { GROUP_CONTACTS, terminalLabel } from '@/content/airports';
 import { AirportFlightSearch, AirportFlightTools } from '@/components/airport/airport-flight-tools';
+import { opsServicesFor } from '@/lib/providers/demo-operations';
+import { cn } from '@/lib/cn';
 import { AirportBanner } from '@/components/airport/airport-header';
 import { MissingPage } from '@/components/common/missing-page';
 import { NoticeList } from '@/components/airport/notice-list';
@@ -21,6 +23,14 @@ import { Icon } from '@/components/ui/icon';
 import { Section } from '@/components/ui/section';
 import { JsonLd, airportJsonLd } from '@/lib/seo';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
+
+/**
+ * Redesign round one (critique items 7 and 8): Explore shows four large midnight media cards
+ * (the places people come to the overview for), not eight pastel icon tiles that repeated the
+ * section tabs and the "What do you need" module. Every other section stays one tap away in the
+ * section tabs, the Sections sheet and the persona module.
+ */
+const FEATURED_SECTIONS: readonly AirportSectionId[] = ['flights', 'map', 'shop-dine', 'lounges'];
 
 /** Every airport in the registry gets an overview page, including directory-only ones. */
 export function generateStaticParams() {
@@ -74,7 +84,9 @@ async function Overview({ params }: { params: AirportPageParams }) {
     'shop-dine': content.outlets.length,
     lounges: content.facilities.filter((facility) => facility.category === 'lounge' || facility.category === 'hotel').length,
   };
-  const explore = AIRPORT_SECTIONS.filter((section) => section.id !== 'overview' && sections.includes(section.id));
+  const available = AIRPORT_SECTIONS.filter((section) => section.id !== 'overview' && sections.includes(section.id));
+  const featured = available.filter((section) => FEATURED_SECTIONS.includes(section.id));
+  const explore = (featured.length >= 2 ? featured : available).slice(0, 4);
   // Fast Track, one record per KLIA terminal (D-02 hand-off, round 2). The records share their
   // provenance and sources, so both are shown once for the group (A-14).
   const bookable = content.facilities.filter((facility) => facility.id.endsWith('-fast-track') && facility.bookingUrl);
@@ -89,70 +101,105 @@ async function Overview({ params }: { params: AirportPageParams }) {
   const ownContacts = airport.contacts.filter((contact) => !groupValues.has(contact.value));
   const bookableSources = resolveSources([...new Set(bookable.flatMap((facility) => facility.sources))]);
 
+  // Redesign round one: at-a-glance tiles for the sections a traveller checks first, with the
+  // honest label of what is behind each (the board is a demonstration; counts are of our sources).
+  const glance = [
+    sections.includes('flights')
+      ? { id: 'flights' as const, icon: 'plane-takeoff' as const, label: t('nav.flights'), value: t('flightPages.look.flightsValue'), note: t('flightPages.look.flightsNote') }
+      : null,
+    sections.includes('transport') && content.transport.length > 0
+      ? { id: 'transport' as const, icon: 'train-front' as const, label: t('nav.groundTransport'), value: t.count('flightPages.look.transportValue', content.transport.length), note: t('flightPages.look.transportNote') }
+      : null,
+    sections.includes('parking') && content.carParks.length > 0
+      ? { id: 'parking' as const, icon: 'square-parking' as const, label: t('nav.parking'), value: t.count('flightPages.look.parkingValue', content.carParks.length), note: t('flightPages.look.parkingNote') }
+      : null,
+  ].filter((item): item is NonNullable<typeof item> => item !== null);
+
   return (
     <>
       <JsonLd data={airportJsonLd(airport, lang)} />
-      <AirportBanner airport={airport} lang={lang} sections={sections} />
       {/* Round 6 (review-3 9.1 item 7): the flight search first, on the first phone screen; the
-          notices follow it, still within the first phone screens (A-20, BR-08). */}
-      {sections.includes('flights') ? (
-        <Section as="div" spacing="sm" className="pb-6 sm:pb-8">
-          <AirportFlightSearch slug={airport.slug} name={airport.shortName} hasFlights />
+          notices follow it. Redesign round one: it sits on the airport's cinematic header. */}
+      <AirportBanner
+        airport={airport}
+        lang={lang}
+        sections={sections}
+        search={sections.includes('flights') ? <AirportFlightSearch slug={airport.slug} name={airport.shortName} hasFlights onMedia /> : undefined}
+      />
+
+      {glance.length > 0 || opsServicesFor(airport.slug).length > 0 ? (
+        <Section spacing="sm" aria-labelledby="airport-glance-title" className="pb-4 sm:pb-6">
+          <h2 id="airport-glance-title" className="type-title-lg mb-4 text-ink">
+            {t('flightPages.look.glanceTitle')}
+          </h2>
+          {glance.length > 0 ? (
+            <ul className={cn('grid gap-3 sm:grid-cols-2', glance.length >= 3 ? 'lg:grid-cols-3' : '')}>
+              {glance.map((item) => (
+                <Card as="li" key={item.id} interactive className="flex min-w-0 items-center gap-4 rounded-2xl p-4 sm:p-5">
+                  <span aria-hidden="true" className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-midnight text-gold-bright shadow-sm">
+                    <Icon name={item.icon} size="md" />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="type-caption font-semibold text-ink-2">{item.label}</p>
+                    <h3 className="type-title-md text-ink">
+                      <CardLink href={sectionPath(airport.slug, item.id)}>{item.value}</CardLink>
+                    </h3>
+                    <p className="type-caption mt-0.5 text-ink-2">{item.note}</p>
+                  </div>
+                  <Icon name="arrow-right" size="sm" className="shrink-0 text-ink-2 transition-transform duration-fast motion-ok:group-hover/card:translate-x-0.5" />
+                </Card>
+              ))}
+            </ul>
+          ) : null}
+          {/* Service status tiles with demo queue estimates (B-01 hand-off, round 2), now tiles.
+              Renders nothing for an airport without any of the services. */}
+          <OpsStatusSection airport={airport.slug} headingLevel={3} variant="tiles" className={glance.length > 0 ? 'mt-8' : undefined} />
         </Section>
       ) : null}
-      <Section tone="subtle" spacing="sm" aria-labelledby="airport-notices-title">
-        <SectionHeading
-          id="airport-notices-title"
-          eyebrow={t('nav.notices')}
-          title={t('airportPage.noticesTitle', { airport: airport.shortName })}
-          variant="title"
-        />
-        <NoticeList
-          notices={notices}
-          emptyText={t('notices.none')}
-          linkToAll
-          listClassName={notices.length > 1 ? 'grid items-start lg:grid-cols-2' : 'max-w-narrow'}
-        />
-        {/* Service status lines with demo queue estimates, under the notices (B-01 hand-off, round 2).
-            Renders nothing for an airport without any of the services. */}
-        <OpsStatusSection airport={airport.slug} headingLevel={3} className="mt-6 max-w-narrow" />
+
+      <Section spacing="sm" aria-labelledby="airport-notices-title" className="pt-6 sm:pt-8">
+        <div className="mb-4 flex flex-wrap items-end justify-between gap-x-6 gap-y-1">
+          <h2 id="airport-notices-title" className="type-title-lg text-ink">
+            {t('airportPage.noticesTitle', { airport: airport.shortName })}
+          </h2>
+        </div>
+        <NoticeList notices={notices} emptyText={t('notices.none')} linkToAll compact className="max-w-narrow" />
       </Section>
 
-      <Section spacing="md">
-        <div className="flex flex-col gap-10">
-          {limited ? (
-            <Callout tone="neutral" icon="info" title={t('airportPage.limited.title')}>
-              <p>{airport.depth === 'listing' ? t('airportPage.limited.listing') : t('airportPage.limited.noContent')}</p>
-              <p className="mt-1.5">{t('airportPage.limited.pointer')}</p>
-            </Callout>
-          ) : null}
-          <AirportFlightTools slug={airport.slug} name={airport.shortName} hasFlights={sections.includes('flights')} />
-        </div>
-      </Section>
+      {limited ? (
+        <Section spacing="sm" className="pt-0">
+          <Callout tone="neutral" icon="info" title={t('airportPage.limited.title')} className="max-w-narrow">
+            <p>{airport.depth === 'listing' ? t('airportPage.limited.listing') : t('airportPage.limited.noContent')}</p>
+            <p className="mt-1.5">{t('airportPage.limited.pointer')}</p>
+          </Callout>
+        </Section>
+      ) : null}
 
       {explore.length > 0 ? (
-        <Section spacing="md" aria-labelledby="airport-explore-title">
-          <SectionHeading
-            id="airport-explore-title"
-            title={t('airportPage.exploreTitle', {
-              airport: airport.shortName,
-            })}
-            lead={t('airportPage.exploreLead')}
-            variant="title"
-          />
-          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <Section tone="subtle" spacing="md" aria-labelledby="airport-explore-title">
+          <div className="mb-6 flex flex-col gap-1">
+            <p className="type-caption font-semibold tracking-[0.14em] text-ink-2 uppercase">{t('flightPages.look.exploreKicker')}</p>
+            <h2 id="airport-explore-title" className="type-title-lg text-ink">
+              {t('airportPage.exploreTitle', { airport: airport.shortName })}
+            </h2>
+            <p className="type-body-sm text-ink-2">{t('airportPage.exploreLead')}</p>
+          </div>
+          <ul className={cn('grid gap-3 sm:grid-cols-2 sm:gap-4', explore.length >= 4 ? 'lg:grid-cols-4' : explore.length === 3 ? 'lg:grid-cols-3' : '')}>
             {explore.map((section) => {
               const count = counts[section.id];
               return (
-                <Card as="li" key={section.id} interactive padding="md" className="flex min-w-0 flex-col gap-2.5">
-                  <div className="flex items-center justify-between gap-3">
-                    <Icon name={section.icon} size="lg" className="text-primary-ink" />
-                    {count ? <span className="type-data-sm text-ink-2">{count}</span> : null}
-                  </div>
-                  <h3 className="type-title-md text-ink">
+                <Card as="li" key={section.id} interactive className="on-media relative isolate flex min-h-52 min-w-0 flex-col justify-end overflow-hidden rounded-3xl border-0 bg-midnight p-5 text-ink sm:min-h-64 sm:p-6">
+                  {/* The vignette: a deep gradient and the section's line icon drawn large and faint (decoration). */}
+                  <span aria-hidden="true" className="absolute inset-0 -z-10 bg-[radial-gradient(120%_90%_at_100%_0%,color-mix(in_oklab,var(--color-gold)_24%,transparent),transparent_60%),linear-gradient(160deg,var(--color-midnight-2),var(--color-midnight))]" />
+                  <span aria-hidden="true" className="absolute -top-3 -right-3 -z-10 text-gold-bright/25 transition-transform duration-slow ease-out motion-ok:group-hover/card:scale-105">
+                    <Icon name={section.icon} strokeWidth={0.75} className="size-36 sm:size-44" />
+                  </span>
+                  {count ? <span className="type-display-md text-gold-bright tabular-nums">{count}</span> : null}
+                  <h3 className="type-title-lg mt-1 text-ink">
                     <CardLink href={sectionPath(airport.slug, section.id)}>{t(section.labelKey)}</CardLink>
                   </h3>
-                  {section.descriptionKey ? <p className="type-body-sm text-ink-2">{t(section.descriptionKey)}</p> : null}
+                  {section.descriptionKey ? <p className="type-body-sm mt-1 text-ink-2">{t(section.descriptionKey)}</p> : null}
+                  <Icon name="arrow-right" size="sm" strokeWidth={1.75} className="mt-4 text-gold-bright transition-transform duration-base motion-ok:group-hover/card:translate-x-1" />
                 </Card>
               );
             })}
@@ -160,12 +207,16 @@ async function Overview({ params }: { params: AirportPageParams }) {
         </Section>
       ) : null}
 
+      <Section spacing="md">
+        <AirportFlightTools slug={airport.slug} name={airport.shortName} hasFlights={sections.includes('flights')} />
+      </Section>
+
       {bookable.length > 0 ? (
         <Section spacing="md" aria-labelledby="airport-services-title" className="pt-0">
           <SectionHeading id="airport-services-title" title={t('airportPage.servicesTitle')} lead={t('airportPage.servicesLead')} variant="title" />
-          <ul className="grid gap-3 sm:grid-cols-2">
+          <ul className="grid gap-4 sm:grid-cols-2">
             {bookable.map((facility) => (
-              <Card as="li" key={facility.id} padding="md" className="flex min-w-0 flex-col gap-2">
+              <Card as="li" key={facility.id} variant="midnight" className="flex min-w-0 flex-col gap-2 rounded-2xl p-5 sm:p-6">
                 <h3 className="type-title-md text-ink">
                   {pick(facility.name, lang)}
                   {facility.terminal ? <span className="type-body-sm ml-2 font-normal text-ink-2">{terminalLabel(airport, facility.terminal, lang)}</span> : null}
@@ -177,7 +228,7 @@ async function Overview({ params }: { params: AirportPageParams }) {
                     <Icon name="arrow-right" size="sm" strokeWidth={1.75} />
                   </LocaleLink>
                   {facility.bookingUrl ? (
-                    <ExternalLink href={facility.bookingUrl} variant="action" className="type-body-sm text-ink" data-handoff="fast-track-booking">
+                    <ExternalLink href={facility.bookingUrl} variant="action" className="type-body-sm text-gold-bright" data-handoff="fast-track-booking">
                       {t('airportPage.fastTrackBook')}
                     </ExternalLink>
                   ) : null}
@@ -238,8 +289,10 @@ async function Overview({ params }: { params: AirportPageParams }) {
         ) : null}
         <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {airport.contacts.map((contact) => (
-            <li key={`${contact.kind}-${contact.value}`} className="flex min-w-0 gap-3 rounded-lg border border-line-strong bg-surface p-4">
-              <Icon name={contact.kind} className="mt-0.5 text-primary-ink" />
+            <li key={`${contact.kind}-${contact.value}`} className="flex min-w-0 gap-3.5 rounded-xl border border-line bg-surface p-4 shadow-sm">
+              <span aria-hidden="true" className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary-ink">
+                <Icon name={contact.kind} size="sm" />
+              </span>
               <div className="min-w-0">
                 <p className="type-body-sm text-ink-2">{pick(contact.label, lang)}</p>
                 {contact.href ? (

@@ -25,8 +25,8 @@ export function PopoverContent({ className, sideOffset = 8, collisionPadding = 1
         collisionPadding={collisionPadding}
         align={align}
         className={cn(
-          'z-50 w-80 max-w-[calc(100vw-1.5rem)] rounded-lg border border-line-strong bg-surface-raised p-4 text-ink shadow-lg outline-none',
-          'data-[state=open]:animate-rise-in',
+          'z-50 w-80 max-w-[calc(100vw-1.5rem)] rounded-2xl border border-line bg-surface-raised p-4 text-ink shadow-xl outline-none',
+          'data-[state=open]:animate-scale-in',
           className,
         )}
         {...rest}

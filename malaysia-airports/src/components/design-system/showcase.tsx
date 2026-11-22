@@ -2,7 +2,7 @@ import { resolveSources } from '@/content';
 import { AIRPORTS, CLASSIFICATION_LABELS, FEATURED_AIRPORTS, airportsByClassification, getAirport } from '@/content/airports';
 import { PROVENANCES, pick } from '@/content/values';
 import type { Lang } from '@/content/types';
-import { FLIGHT_STATUSES, formatFlightNumber } from '@/lib/flights';
+import { FLIGHT_STATUSES, flightStatusLabel, flightStatusMeta, formatFlightNumber } from '@/lib/flights';
 import type { Translator } from '@/lib/i18n/translate';
 import { addMinutes, formatTime } from '@/lib/time';
 import { AirportVignette, VIGNETTE_KEYS } from '@/components/art/airport-vignette';
@@ -31,9 +31,13 @@ import { TranslationNotice } from '@/components/common/translation-notice';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Callout } from '@/components/ui/callout';
-import { Card, CardBody, CardFooter, CardHeader, CardLink } from '@/components/ui/card';
+import { Card, CardBody, CardFooter, CardHeader, CardLink, CardMedia } from '@/components/ui/card';
 import { Chip } from '@/components/ui/chip';
 import { DataList, DataListItem } from '@/components/ui/data-list';
+import { GlassPanel } from '@/components/ui/glass-panel';
+import { HeroMedia } from '@/components/ui/hero-media';
+import { MediaCard } from '@/components/ui/media-card';
+import { StatusPill, flightStatusPill } from '@/components/ui/status-pill';
 import { Icon } from '@/components/ui/icon';
 import { IconButton } from '@/components/ui/icon-button';
 import { Input } from '@/components/ui/input';
@@ -44,13 +48,17 @@ import { Skeleton, SkeletonText } from '@/components/ui/skeleton';
 import { Stat } from '@/components/ui/stat';
 import { Table, TableScroll, TBody, Td, Th, THead, Tr } from '@/components/ui/table';
 import { Timeline, TimelineItem } from '@/components/ui/timeline';
+import Image from 'next/image';
 import { sampleFlights } from './board-sample';
+import type { DsCopy } from './copy';
+import { SAMPLE_MEDIA, styleGuideMedia } from './sample-media';
 import { AccordionDemo, FilterChipDemo, OverlayDemo, SearchFieldDemo, SegmentedDemo, SwitchDemo, TabsDemo } from './interactive';
 import { Demo, DemoGrid, DsGroup, Stated } from './parts';
 
 interface ShowcaseProps {
   t: Translator;
   lang: Lang;
+  c: DsCopy;
 }
 
 /* ------------------------------------------------------------------------------------------ */
@@ -61,6 +69,9 @@ export function ActionsShowcase({ t }: ShowcaseProps) {
     <DemoGrid>
       <Demo name="Button · variant">
         <Button>{label}</Button>
+        <Button variant="gold" iconEnd="arrow-right">
+          {t('common.actions.viewAll')}
+        </Button>
         <Button variant="secondary">{t('common.actions.change')}</Button>
         <Button variant="ghost">{t('common.actions.viewAll')}</Button>
         <Button variant="quiet">{t('common.actions.cancel')}</Button>
@@ -106,6 +117,15 @@ export function ActionsShowcase({ t }: ShowcaseProps) {
         <ExternalLink variant="action" href="https://www.malaysiaairports.com.my/">
           {t('footer.officialSite')}
         </ExternalLink>
+      </Demo>
+      <Demo name="Button glass · IconButton glass · over a photograph" bare className="relative isolate flex min-h-44 flex-wrap items-end gap-3 p-5 sm:p-6">
+        <Image src={SAMPLE_MEDIA.dusk.src} alt="" fill sizes="(min-width: 64rem) 40vw, 100vw" className="-z-10 object-cover" />
+        <Button variant="glass" iconStart="plane-takeoff">
+          {label}
+        </Button>
+        <Button variant="gold">{t('common.actions.viewAll')}</Button>
+        <IconButton icon="bookmark" label={t('common.actions.save')} variant="glass" />
+        <IconButton icon="share-2" label={t('common.actions.share')} variant="glass" />
       </Demo>
       <Demo name="IconButton · label required">
         <IconButton icon="search" label={t('nav.search')} />
@@ -197,17 +217,38 @@ export function FormsShowcase({ t }: ShowcaseProps) {
 
 /* ------------------------------------------------------------------------------------------ */
 
-export function ContainersShowcase({ t }: ShowcaseProps) {
+export function ContainersShowcase({ t, c }: ShowcaseProps) {
   return (
     <DemoGrid>
-      <Demo name="Card · outline · raised · sunken" className="grid items-stretch gap-4 sm:grid-cols-3" frameClassName="bg-page">
-        {(['outline', 'raised', 'sunken'] as const).map((variant) => (
-          <Card key={variant} variant={variant} padding="sm">
+      <Demo name="Card · outline · raised · sunken · midnight" className="grid items-stretch gap-4 sm:grid-cols-2" frameClassName="bg-page">
+        {(['outline', 'raised', 'sunken', 'midnight'] as const).map((variant) => (
+          <Card key={variant} variant={variant} padding="md">
             <p className="type-data-xs text-ink-3">{variant}</p>
-            <p className="type-title-sm mt-2 text-ink">{t('nav.facilities')}</p>
+            <p className="type-title-md mt-2 text-ink">{t('nav.facilities')}</p>
             <p className="type-body-sm mt-1 text-ink-2">{t('journey.actions.viewFacilities')}</p>
           </Card>
         ))}
+      </Demo>
+      <Demo name="Card interactive · CardMedia (image slot) · CardLink" className="grid items-stretch gap-4 sm:grid-cols-2" frameClassName="bg-page">
+        <Card interactive>
+          <CardMedia image={SAMPLE_MEDIA.canopy} aspect="landscape" overlay={<ProvenanceTag provenance="demo" length="short" />} />
+          <CardBody>
+            <p className="type-caption font-semibold text-ink-3">{c.samples.cardEyebrow}</p>
+            <h4 className="type-title-lg mt-1 text-ink">
+              <CardLink href="/design-system#media">{c.samples.cardTitle}</CardLink>
+            </h4>
+            <p className="type-body-sm mt-1.5 text-ink-2">{c.samples.cardBody}</p>
+          </CardBody>
+        </Card>
+        <Card interactive>
+          <CardMedia image={SAMPLE_MEDIA.warm} aspect="landscape" />
+          <CardBody>
+            <p className="type-caption font-semibold text-ink-3">{c.samples.card3Eyebrow}</p>
+            <h4 className="type-title-lg mt-1 text-ink">
+              <CardLink href="/design-system#media">{c.samples.card3Title}</CardLink>
+            </h4>
+          </CardBody>
+        </Card>
       </Demo>
       <Demo name="Card interactive · CardLink" className="grid items-stretch gap-4 sm:grid-cols-2" frameClassName="bg-page">
         <Card interactive padding="sm">
@@ -460,6 +501,204 @@ export function StatusShowcase({ t }: ShowcaseProps) {
         <div className="grid gap-4">
           <DemoDataBanner />
           <DemoDataBanner compact />
+        </div>
+      </DsGroup>
+    </>
+  );
+}
+
+/* ------------------------------------------------------------------------------------------ */
+
+/** Photography, glass and media: the Direction v2 primitives. */
+export function MediaShowcase({ t, lang, c }: ShowcaseProps) {
+  const media = styleGuideMedia(lang);
+  return (
+    <>
+      <DsGroup title={c.groups.hero}>
+        <Demo name="HeroMedia · inset · scrim left · size medium" bare className="py-5 sm:py-6" frameClassName="bg-page">
+          <HeroMedia as="div" image={media.hero} inset size="medium" scrim="left" credit={media.heroIsSample ? c.heroNote : undefined}>
+            <p className="type-overline text-gold-bright">{c.notes.sample}</p>
+            <p className="type-display-lg mt-3 text-ink">{c.samples.heroTitle}</p>
+            <p className="type-lead mt-3 text-ink-2">{c.samples.heroLead}</p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Button variant="gold" iconEnd="arrow-right">
+                {c.samples.heroAction}
+              </Button>
+              <Button variant="glass">{c.samples.heroSecondary}</Button>
+            </div>
+          </HeroMedia>
+        </Demo>
+      </DsGroup>
+      <DsGroup title={c.groups.mediaCards}>
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <MediaCard
+            image={media.cards[0]}
+            eyebrow={c.samples.cardEyebrow}
+            title={c.samples.cardTitle}
+            description={c.samples.cardBody}
+            href="/design-system#media"
+            headingLevel={4}
+            meta={<ProvenanceTag provenance="suggestion" length="short" />}
+          />
+          <MediaCard image={media.cards[1]} eyebrow={c.samples.card2Eyebrow} title={c.samples.card2Title} href="/design-system#media" headingLevel={4} />
+          <MediaCard
+            image={media.cards[2]}
+            eyebrow={c.samples.card3Eyebrow}
+            title={c.samples.card3Title}
+            href="/design-system#media"
+            headingLevel={4}
+            footer={<StatusPill tone="ontime" size="sm">{t('common.labels.openNow')}</StatusPill>}
+          />
+        </div>
+      </DsGroup>
+      <DsGroup title={c.groups.glassPanels} note={c.notes.glass}>
+        <div className="relative isolate grid gap-5 overflow-hidden rounded-3xl p-5 sm:grid-cols-2 sm:p-8">
+          <Image src={SAMPLE_MEDIA.dusk.src} alt="" fill sizes="(min-width: 80rem) 77.5rem, 100vw" className="-z-10 object-cover" />
+          <GlassPanel>
+            <p className="type-caption font-semibold text-ink-3">{c.samples.glassAuto}</p>
+            <p className="type-title-lg mt-1 text-ink">{c.samples.glassTitle}</p>
+            <p className="type-body-sm mt-1 text-ink-2">{c.samples.glassBody}</p>
+            <div className="mt-4 flex flex-wrap items-center gap-3">
+              <StatusPill tone="boarding" live>
+                {t('flights.statuses.boarding')}
+              </StatusPill>
+              <span className="type-data-lg text-ink">C12</span>
+            </div>
+          </GlassPanel>
+          <GlassPanel tone="dark">
+            <p className="type-caption font-semibold text-ink-3">{c.samples.glassDark}</p>
+            <p className="type-title-lg mt-1 text-ink">{c.samples.glassTitle}</p>
+            <p className="type-body-sm mt-1 text-ink-2">{c.samples.glassBody}</p>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <Button size="sm">{c.samples.heroAction}</Button>
+              <Button size="sm" variant="secondary">
+                {t('common.actions.save')}
+              </Button>
+            </div>
+          </GlassPanel>
+        </div>
+      </DsGroup>
+      <DsGroup title={c.groups.scrims} note={c.notes.scrims}>
+        <DemoGrid>
+          <Demo name="scrim-behind (bottom) · on a white photograph" bare frameClassName="bg-page">
+            <div className="relative isolate flex aspect-[16/10] flex-col justify-end overflow-hidden">
+              <Image src={SAMPLE_MEDIA.highkey.src} alt="" fill sizes="(min-width: 64rem) 40vw, 100vw" className="-z-10 object-cover" />
+              <div className="on-media scrim-behind p-5 text-ink sm:p-6">
+                <p className="type-caption font-semibold text-ink-2">{c.samples.bottom}</p>
+                <p className="type-title-lg mt-1 text-ink">{c.samples.scrimText}</p>
+              </div>
+            </div>
+          </Demo>
+          <Demo name="scrim-behind-left · on a white photograph" bare frameClassName="bg-page">
+            <div className="relative isolate flex aspect-[16/10] overflow-hidden">
+              <Image src={SAMPLE_MEDIA.highkey.src} alt="" fill sizes="(min-width: 64rem) 40vw, 100vw" className="-z-10 object-cover" />
+              <div className="on-media scrim-behind-left flex w-3/5 flex-col justify-end p-5 text-ink sm:p-6">
+                <p className="type-caption font-semibold text-ink-2">{c.samples.left}</p>
+                <p className="type-title-lg mt-1 text-ink">{c.samples.scrimText}</p>
+              </div>
+            </div>
+          </Demo>
+        </DemoGrid>
+        <p className="type-caption mt-3 text-ink-3">{c.notes.worstCase}</p>
+      </DsGroup>
+    </>
+  );
+}
+
+/** Flight status: the StatusPill family and how the flight model maps onto it. */
+export function FlightStatusShowcase({ t, lang, c }: ShowcaseProps) {
+  const examples = ['scheduled', 'check-in-open', 'boarding', 'final-call', 'delayed', 'cancelled', 'landed', 'departed'] as const;
+  return (
+    <>
+      <DsGroup title={c.groups.pills} note={c.notes.pills}>
+        <DemoGrid>
+          <Demo name="StatusPill · soft · solid" className="block">
+            <div className="flex flex-wrap gap-2.5">
+              {examples.map((status) => {
+                const pill = flightStatusPill(status);
+                return (
+                  <StatusPill key={status} tone={pill.tone} variant={pill.variant} icon={flightStatusMeta(status).icon}>
+                    {flightStatusLabel(status, lang)}
+                  </StatusPill>
+                );
+              })}
+            </div>
+            <div className="mt-4 flex flex-wrap gap-2.5">
+              {(['ontime', 'boarding', 'delayed', 'cancelled', 'landed'] as const).map((tone) => (
+                <StatusPill key={tone} tone={tone} variant="solid">
+                  {flightStatusLabel(tone === 'ontime' ? 'check-in-open' : tone, lang)}
+                </StatusPill>
+              ))}
+            </div>
+          </Demo>
+          <Demo name="StatusPill · surface-board" frameClassName="surface-board border-line" className="block">
+            <div className="flex flex-wrap gap-2.5">
+              {examples.map((status) => {
+                const pill = flightStatusPill(status);
+                return (
+                  <StatusPill key={status} tone={pill.tone} variant={pill.variant} icon={flightStatusMeta(status).icon}>
+                    {flightStatusLabel(status, lang)}
+                  </StatusPill>
+                );
+              })}
+            </div>
+          </Demo>
+          <Demo name={`StatusPill · size ${c.samples.sizes} · live · detail`} className="items-end">
+            <StatusPill tone="boarding" size="sm" live>
+              {flightStatusLabel('boarding', lang)}
+            </StatusPill>
+            <StatusPill tone="delayed" icon="clock-alert" detail="15:40">
+              {flightStatusLabel('delayed', lang)}
+            </StatusPill>
+            <StatusPill tone="boarding" size="lg" variant="solid" icon="door-open">
+              {flightStatusLabel('final-call', lang)}
+            </StatusPill>
+          </Demo>
+          <Demo name="StatusPill · on-media" bare className="relative isolate flex min-h-36 flex-wrap items-end gap-2.5 p-5 sm:p-6">
+            <Image src={SAMPLE_MEDIA.canopy.src} alt="" fill sizes="(min-width: 64rem) 40vw, 100vw" className="-z-10 object-cover" />
+            <GlassPanel tone="dark" padding="sm" className="flex flex-wrap gap-2.5">
+              <StatusPill tone="ontime" icon="ticket-check">
+                {flightStatusLabel('check-in-open', lang)}
+              </StatusPill>
+              <StatusPill tone="cancelled" icon="circle-x">
+                {flightStatusLabel('cancelled', lang)}
+              </StatusPill>
+            </GlassPanel>
+          </Demo>
+        </DemoGrid>
+      </DsGroup>
+      <DsGroup title={c.groups.mapping} note={c.notes.mapping}>
+        <div className="overflow-hidden rounded-xl border border-line bg-surface shadow-sm">
+          <TableScroll label={c.groups.mapping}>
+            <Table density="dense">
+              <caption className="sr-only">{c.groups.mapping}</caption>
+              <THead>
+                <Tr>
+                  <Th>{t('common.labels.status')}</Th>
+                  <Th>StatusPill</Th>
+                  <Th className="max-sm:hidden">FlightStatusChip</Th>
+                </Tr>
+              </THead>
+              <TBody>
+                {FLIGHT_STATUSES.map((status) => {
+                  const pill = flightStatusPill(status);
+                  return (
+                    <Tr key={status}>
+                      <Td mono>{status}</Td>
+                      <Td>
+                        <StatusPill tone={pill.tone} variant={pill.variant} size="sm" icon={flightStatusMeta(status).icon}>
+                          {flightStatusLabel(status, lang)}
+                        </StatusPill>
+                      </Td>
+                      <Td className="max-sm:hidden">
+                        <FlightStatusChip status={status} size="sm" />
+                      </Td>
+                    </Tr>
+                  );
+                })}
+              </TBody>
+            </Table>
+          </TableScroll>
         </div>
       </DsGroup>
     </>

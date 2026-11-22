@@ -77,7 +77,7 @@ function NavList({ slug, name, sections, segment, terminal }: SectionNavProps & 
       <ul
         ref={list}
         style={{ '--fade-start': edges.start ? '3rem' : '0px', '--fade-end': edges.end ? '3rem' : '0px' } as CSSProperties}
-        className="scroll-fade-x flex gap-1 overflow-x-auto scroll-px-12 px-gutter [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="scroll-fade-x flex items-center gap-1 overflow-x-auto scroll-px-12 px-gutter py-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {AIRPORT_SECTIONS.filter((section) => sections.includes(section.id)).map((section) => {
           const current = section.id === currentId;
@@ -87,9 +87,10 @@ function NavList({ slug, name, sections, segment, terminal }: SectionNavProps & 
                 href={sectionPath(slug, section.id, terminal)}
                 aria-current={current ? 'page' : undefined}
                 className={cn(
-                  'relative inline-flex h-12 items-center gap-1.5 px-2.5 text-sm font-medium whitespace-nowrap text-ink-2 transition-colors duration-fast hover:text-ink focus-visible:focus-ring-inset',
-                  'after:absolute after:inset-x-3 after:bottom-0 after:h-0.5 after:rounded-pill after:bg-transparent hover:after:bg-line-control',
-                  'aria-[current]:font-semibold aria-[current]:text-ink aria-[current]:after:bg-primary',
+                  // Redesign round one: app-like pills; the current section is an ink pill (a strong
+                  // selected state, never a tint alone) and is also marked with aria-current.
+                  'relative inline-flex h-9 items-center gap-1.5 rounded-pill px-3.5 text-sm font-medium whitespace-nowrap text-ink-2 transition-colors duration-fast hover:bg-fill hover:text-ink focus-visible:focus-ring-inset touch:h-11',
+                  'aria-[current]:bg-ink aria-[current]:font-semibold aria-[current]:text-page aria-[current]:shadow-sm aria-[current]:hover:bg-ink aria-[current]:hover:text-page',
                 )}
               >
                 {/* Labels only: without icons all nine tabs fit at 1280 px and up in both
@@ -107,9 +108,11 @@ function NavList({ slug, name, sections, segment, terminal }: SectionNavProps & 
           tabIndex={-1}
           aria-hidden="true"
           onClick={() => scrollBy(-1)}
-          className="absolute inset-y-0 left-0 flex w-10 items-center justify-center bg-page-subtle text-ink-2 hover:text-ink touch:hidden"
+          className="group/scroll absolute inset-y-0 left-0 flex w-12 items-center justify-center bg-page text-ink-2 hover:text-ink touch:hidden"
         >
-          <Icon name="chevron-left" size="sm" strokeWidth={2} />
+          <span className="flex size-8 items-center justify-center rounded-full border border-line bg-surface shadow-sm transition-shadow duration-fast group-hover/scroll:shadow-md">
+            <Icon name="chevron-left" size="sm" strokeWidth={2} />
+          </span>
         </button>
       ) : null}
       {edges.end ? (
@@ -118,9 +121,11 @@ function NavList({ slug, name, sections, segment, terminal }: SectionNavProps & 
           tabIndex={-1}
           aria-hidden="true"
           onClick={() => scrollBy(1)}
-          className="absolute inset-y-0 right-0 flex w-10 items-center justify-center bg-page-subtle text-ink-2 hover:text-ink touch:hidden"
+          className="group/scroll absolute inset-y-0 right-0 flex w-12 items-center justify-center bg-page text-ink-2 hover:text-ink touch:hidden"
         >
-          <Icon name="chevron-right" size="sm" strokeWidth={2} />
+          <span className="flex size-8 items-center justify-center rounded-full border border-line bg-surface shadow-sm transition-shadow duration-fast group-hover/scroll:shadow-md">
+            <Icon name="chevron-right" size="sm" strokeWidth={2} />
+          </span>
         </button>
       ) : null}
     </nav>
@@ -156,15 +161,19 @@ export interface TerminalChipsProps {
   terminals: readonly { id: TerminalId; label: string }[];
 }
 
+/* Redesign round one: refined pills. They take the theme's tokens, so the same chips work on the
+   page and inside the midnight airport header (an `on-media` scope: dark fill, light words). */
+// Redesign round one (critique item 17): the terminals are one segmented control (a track with
+// the chosen segment filled), so they no longer look like the identity and data pills beside them.
 const CHIP =
-  'inline-flex h-8 items-center gap-1.5 rounded-md border px-2.5 text-sm font-medium whitespace-nowrap transition-colors duration-fast touch:h-11 ' +
-  'border-line-control bg-surface text-ink hover:border-ink aria-[current]:border-ink aria-[current]:bg-ink aria-[current]:text-page';
+  'inline-flex h-8 items-center gap-1.5 rounded-pill px-3.5 text-sm font-medium whitespace-nowrap text-ink-2 transition-colors duration-fast touch:h-10 ' +
+  'hover:text-ink hover:bg-fill aria-[current]:bg-ink aria-[current]:font-semibold aria-[current]:text-page aria-[current]:shadow-sm';
 
 function Chips({ slug, terminals, active, hrefFor, onChoose }: TerminalChipsProps & { active?: TerminalId; hrefFor: (terminal?: TerminalId) => string; onChoose?: (selection: AirportSelection) => void }) {
   const t = useT();
   const options: { id: TerminalId | undefined; label: string }[] = [{ id: undefined, label: t('flights.filters.allTerminals') }, ...terminals];
   return (
-    <ul aria-label={t('airportPage.terminalFilter')} className="flex flex-wrap items-center gap-1.5">
+    <ul aria-label={t('airportPage.terminalFilter')} className="inline-flex max-w-full flex-wrap items-center gap-0.5 rounded-pill border border-line-control bg-surface/60 p-0.5">
       {options.map((option) => {
         const current = option.id === active;
         return (

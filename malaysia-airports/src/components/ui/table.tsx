@@ -55,7 +55,7 @@ export interface TrProps extends HTMLAttributes<HTMLTableRowElement> {
 export function Tr({ muted = false, className, ...rest }: TrProps) {
   return (
     <tr
-      className={cn('border-b border-line transition-colors duration-fast [tbody>&]:hover:bg-page-subtle', muted && 'text-ink-3', className)}
+      className={cn('border-b border-line transition-colors duration-fast [tbody>&]:hover:bg-fill/45', muted && 'text-ink-3', className)}
       {...rest}
     />
   );
@@ -75,7 +75,7 @@ export function Th({ numeric = false, scope = 'col', className, ...rest }: ThPro
       scope={scope}
       className={cn(
         'type-data-xs px-3 py-2.5 align-bottom font-medium whitespace-nowrap text-ink-3 first:pl-4 last:pr-4 sm:px-4 sm:first:pl-5 sm:last:pr-5',
-        '[thead_&]:border-b [thead_&]:border-line-strong',
+        '[thead_&]:border-b [thead_&]:border-line',
         numeric && 'text-right',
         className,
       )}

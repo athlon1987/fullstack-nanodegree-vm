@@ -2,21 +2,27 @@ import type { ElementType, HTMLAttributes, ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 import { Container, type ContainerProps } from './container';
 
+/* Direction v2: bands are separated by colour and space, not by rules. */
 const TONES = {
   page: '',
-  /** A quiet band between page sections. */
-  subtle: 'border-y border-line bg-page-subtle',
-  surface: 'border-y border-line bg-surface',
+  /** A quiet cool-grey band between page sections. */
+  subtle: 'bg-page-subtle',
+  /** A white band (cards on it use `raised` or `sunken`). */
+  surface: 'bg-surface',
+  /** Warm ivory: one editorial band per page at most. */
+  ivory: 'bg-ivory',
   /** Ink band with light text (the "all 39 airports" band, the footer). */
   inverse: 'bg-inverse text-on-inverse',
+  /** The brand's midnight with a soft lift of light. Components inside take the light ink. */
+  midnight: 'surface-midnight on-media text-ink',
   /** The dark data surface. Everything inside takes board colours. */
   board: 'surface-board',
 } as const;
 
 const SPACING = {
   none: '',
-  sm: 'py-8',
-  md: 'py-12',
+  sm: 'py-10',
+  md: 'py-14 md:py-16',
   lg: 'py-section',
 } as const;
 

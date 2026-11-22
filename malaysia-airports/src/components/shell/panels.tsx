@@ -28,20 +28,29 @@ export function PreferencesPanel() {
 
 function MenuHeading({ children }: { children: ReactNode }) {
   return (
-    <h3 className="type-eyebrow mb-1.5 flex items-center gap-2.5 text-ink-2">
+    <h3 className="type-eyebrow mb-2 flex items-center gap-2.5 text-gold-ink">
       <span aria-hidden="true" className="h-px w-5 bg-gold" />
       {children}
     </h3>
   );
 }
 
-const ROW = 'flex min-h-12 w-full items-center gap-3.5 rounded-md px-2 text-left text-base font-medium text-ink transition-colors duration-fast hover:bg-page-subtle';
+const ROW = 'flex min-h-12 w-full items-center gap-3.5 rounded-2xl px-2 text-left text-base font-medium text-ink transition-colors duration-fast hover:bg-fill';
+
+/** A round icon badge, as in the primary list above. */
+function RowIcon({ icon }: { icon: IconName }) {
+  return (
+    <span className="flex size-9 shrink-0 items-center justify-center rounded-full text-ink-2 ring-1 ring-line-strong">
+      <Icon name={icon} size="sm" strokeWidth={1.75} />
+    </span>
+  );
+}
 
 function MenuLink({ href, icon, children }: { href: string; icon: IconName; children: ReactNode }) {
   return (
     <li>
       <LocaleLink href={href} onClick={() => closeOverlay()} className={ROW}>
-        <Icon name={icon} className="text-ink-2" />
+        <RowIcon icon={icon} />
         <span className="min-w-0 flex-1">{children}</span>
       </LocaleLink>
     </li>
@@ -51,7 +60,8 @@ function MenuLink({ href, icon, children }: { href: string; icon: IconName; chil
 /**
  * The menu: the airport, primary navigation, more destinations, language, and the display
  * settings (theme, text size, contrast, motion). Full screen on phones, a side panel on tablets
- * and narrow desktops where the navigation row does not fit.
+ * and narrow desktops where the navigation row does not fit. Direction v2: a midnight sheet (an
+ * `on-media` scope, so every control inside takes the light ink) with large, app-like rows.
  */
 /** The group phone line from the content layer (client-safe registry), one tap from the menu. */
 const GROUP_PHONE = GROUP_CONTACTS.find((contact) => contact.kind === 'phone' && contact.href);
@@ -65,9 +75,9 @@ export function MenuPanel() {
       <SheetContent
         title={t('shell.menu.title')}
         onCloseAutoFocus={dialog.onCloseAutoFocus}
-        className="max-sm:top-0 max-sm:max-h-none max-sm:rounded-none max-sm:border-0"
+        className="on-media border-[rgb(255_255_255/0.1)] bg-midnight max-sm:top-0 max-sm:max-h-none max-sm:rounded-none max-sm:border-0"
       >
-        <div className="flex flex-col gap-7">
+        <div className="flex flex-col gap-8">
           <AirportSwitcherButton variant="row" />
 
           <section>
@@ -78,7 +88,9 @@ export function MenuPanel() {
               // A verified number one tap from the menu (package D hand-off, D-15).
               <div className="-mx-2 mt-1">
                 <a href={GROUP_PHONE.href} className={ROW}>
-                  <Icon name="phone" className="text-primary-ink" />
+                  <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-fill text-ink ring-1 ring-line-strong">
+                    <Icon name="phone" size="md" strokeWidth={1.75} />
+                  </span>
                   <span className="min-w-0 flex-1">
                     <span className="block font-semibold">{t('shellExtras.nav.callLabel')}</span>
                     <span className="type-caption block text-ink-2">
@@ -104,7 +116,7 @@ export function MenuPanel() {
               </MenuLink>
               <li>
                 <button type="button" onClick={() => overlays.openConcierge()} className={ROW}>
-                  <Icon name="sparkles" className="text-ink-2" />
+                  <RowIcon icon="sparkles" />
                   <span className="min-w-0 flex-1">{t('concierge.open')}</span>
                 </button>
               </li>

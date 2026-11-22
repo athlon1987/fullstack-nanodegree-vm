@@ -33,7 +33,7 @@ export interface ProvenanceTagProps extends HTMLAttributes<HTMLSpanElement> {
 /**
  * Says what kind of guidance something is. Required wherever the product gives guidance
  * (build-spec section 1): official is solid, estimated is outlined, a suggestion is dashed and
- * demonstration data is hazard-striped.
+ * demonstration data is amber with its flask (Direction v2: quiet, never loud; the words stay).
  *
  * @example <ProvenanceTag provenance={step.provenance} />
  */
@@ -46,16 +46,13 @@ export function ProvenanceTag({ provenance, length = 'full', className, ...rest 
       data-demo-marker={provenance === 'demo' ? '' : undefined}
       className={cn(
         // Wraps between words instead of widening the page at 320 px and 125% text (A-16); 20 px
-        // tall otherwise. Round 4: no `overflow-hidden`, so a label is never clipped ("Estimatec");
-        // the hazard stripe rounds its own corners instead.
-        'type-caption relative inline-flex min-h-5 max-w-full items-center gap-1 rounded-xs border py-px pr-1.5 pl-1 leading-tight font-semibold',
-        provenance === 'demo' && 'pl-3.5',
+        // tall otherwise. Round 4: no `overflow-hidden`, so a label is never clipped ("Estimatec").
+        'type-caption relative inline-flex min-h-5 max-w-full items-center gap-1 rounded-pill border py-px pr-2 pl-1.5 leading-tight font-semibold',
         form.box,
         className,
       )}
       {...rest}
     >
-      {provenance === 'demo' ? <span aria-hidden="true" className="hazard-stripes absolute inset-y-0 left-0 w-2 rounded-l-xs" /> : null}
       <Icon name={form.icon} size="xs" strokeWidth={2} className="shrink-0" />
       {t(`provenance.${provenance}.${length === 'short' ? 'short' : 'label'}`)}
     </span>

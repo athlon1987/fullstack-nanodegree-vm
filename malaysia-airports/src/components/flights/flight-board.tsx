@@ -73,6 +73,8 @@ export interface FlightBoardProps {
   rowDay?: (flight: Flight) => string | undefined;
   /** Inside the board, above the rows (for example "Show earlier flights"). Hidden while loading or empty. */
   before?: ReactNode;
+  /** Classes for the row that holds `before` (the explorer hides it on wide screens, where its button moves to the header). */
+  beforeClassName?: string;
   /** Inside the board, below the rows (for example "Show later flights"). Shown unless loading. */
   after?: ReactNode;
   /** Ids of flights in My journey; used with `onSaveChange`. */
@@ -123,6 +125,7 @@ export function FlightBoard({
   dayLabel,
   rowDay,
   before,
+  beforeClassName,
   after,
   savedIds,
   onSaveChange,
@@ -175,14 +178,16 @@ export function FlightBoard({
   );
 
   return (
-    <div className={className}>
+    // Redesign round one: banner and board read as one rounded, lifted panel. `overflow-clip`
+    // (never hidden) keeps the corners without breaking the sticky hour headings.
+    <div className={cn('overflow-clip rounded-2xl shadow-lg dark:shadow-xl dark:ring-1 dark:ring-line-strong', className)}>
       {hideBanner ? null : (
         <div ref={trackBanner}>
           <DemoDataBanner attached compact={compactBanner} />
         </div>
       )}
       {/* overflow-clip (not hidden) keeps the rounded corners without breaking the sticky hour headers. */}
-      <div className={cn('surface-board @container relative overflow-clip border border-line', hideBanner ? 'rounded-lg' : 'rounded-b-lg border-t-0')}>
+      <div className={cn('surface-board @container relative overflow-clip border border-line', hideBanner ? 'rounded-2xl' : 'rounded-b-2xl border-t-0')}>
         <WeaveTexture className="absolute right-0 bottom-0 h-14 w-2/5 max-sm:hidden" />
         <div
           className={cn(
@@ -190,7 +195,9 @@ export function FlightBoard({
             compactHeader && 'max-sm:grid max-sm:grid-cols-[minmax(min-content,1fr)_auto] max-sm:items-center max-sm:gap-x-3 max-sm:gap-y-1 max-sm:py-2.5 sm:items-center sm:justify-start sm:py-2.5 lg:py-1.5',
           )}
         >
-          <div className="min-w-0">
+          {/* Redesign round one: in the compact header the time window keeps a minimum width, so the
+              freshness line after it does not slide when the placeholder becomes the times (night CLS). */}
+          <div className={cn('min-w-0', compactHeader && 'sm:min-w-36')}>
             {/* Round 6 (A-14): the card title size (22 px was a ninth type size on the home at 1440 px). */}
             <Heading className={cn('type-title-md text-ink', compactHeader && 'sr-only')}>{title}</Heading>
             {subtitle ? <p className={cn('type-body-sm mt-0.5 text-ink-2', compactHeader && 'mt-0')}>{subtitle}</p> : null}
@@ -237,7 +244,7 @@ export function FlightBoard({
           )
         ) : (
           <>
-            {before ? <div className="relative border-b border-line">{before}</div> : null}
+            {before ? <div className={cn('relative border-b border-line', beforeClassName)}>{before}</div> : null}
             {groups ? (
               <div className="relative @4xl:hidden">
                 {groupMarker}
@@ -246,20 +253,22 @@ export function FlightBoard({
                   return (
                     <section key={id} aria-labelledby={id}>
                       {/* Sticky, with a demo label: every scrolled view of the board shows one (content-integrity-01). */}
-                      <GroupHeading id={id} className="sticky top-sticky z-20 flex items-center justify-between gap-3 border-b border-line bg-board-raised px-4 py-1.5 sm:px-5">
-                        <span className="type-data-sm text-ink">{groupLabel(group)}</span>
+                      <GroupHeading id={id} className="sticky top-sticky z-20 flex items-center justify-between gap-3 border-y border-line bg-board-raised/95 px-4 py-1.5 backdrop-blur-sm sm:px-5">
+                        <span className="type-data-sm font-semibold text-board-accent">{groupLabel(group)}</span>
                         <span className="flex items-center gap-2">
                           <span className="type-caption text-ink-2">{groupCount(group)}</span>
                           {markerSpace}
                         </span>
                       </GroupHeading>
-                      <ul aria-labelledby={id}>{group.flights.map((flight) => row(flight, 'card'))}</ul>
+                      <ul aria-labelledby={id} className="flex flex-col gap-2 p-2.5 sm:p-3">
+                        {group.flights.map((flight) => row(flight, 'card'))}
+                      </ul>
                     </section>
                   );
                 })}
               </div>
             ) : (
-              <ul aria-label={title} className="relative @4xl:hidden">
+              <ul aria-label={title} className="relative flex flex-col gap-2 p-2.5 sm:p-3 @4xl:hidden">
                 {flights.map((flight) => row(flight, 'card'))}
               </ul>
             )}
@@ -295,7 +304,7 @@ export function FlightBoard({
                         <tr className="border-b border-line bg-board-raised">
                           <th scope="rowgroup" colSpan={columns} className="sticky top-sticky z-20 bg-board-raised px-4 py-1.5 text-left font-normal sm:px-5">
                             <span className="flex items-center gap-2">
-                              <span className="type-data-sm text-ink">{groupLabel(group)}</span>
+                              <span className="type-data-sm font-semibold text-board-accent">{groupLabel(group)}</span>
                               <span className="type-caption text-ink-2">{groupCount(group)}</span>
                             </span>
                           </th>

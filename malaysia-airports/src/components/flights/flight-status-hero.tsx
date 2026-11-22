@@ -5,21 +5,20 @@ import { getAirport, terminalLabel } from '@/content/airports';
 import { pick } from '@/content/values';
 import type { Provenance, Source } from '@/content/types';
 import { cn } from '@/lib/cn';
-import { checkInLines, formatFlightNumber, placeCity, type Flight } from '@/lib/flights';
+import { checkInDesks, checkInLines, formatFlightNumber, placeCity, type Flight } from '@/lib/flights';
 import { formatDuration } from '@/lib/format';
 import { useLang, useT } from '@/lib/i18n/client';
 import { formatDate, formatTime, minutesBetween, type Instant } from '@/lib/time';
 import { keepRanges } from '@/components/common/keep-ranges';
 import { AirportCode } from '@/components/common/airport-code';
 import { DemoDataBanner } from '@/components/common/demo-data-banner';
-import { FlightStatusChip } from '@/components/common/flight-status-chip';
 import { Freshness } from '@/components/common/freshness';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { SourceNote } from '@/components/common/source-note';
 import { TerminalBadge } from '@/components/common/terminal-badge';
 import { Icon } from '@/components/ui/icon';
 import { Skeleton } from '@/components/ui/skeleton';
-import { DemoMark } from './demo-mark';
+import { AirlineBadge, FlightStatusPill } from './flight-status-pill';
 import type { FlightIdentity } from './flight-identity';
 
 /** The airline's published check-in area, shown when the flight has no row yet (B-12). */
@@ -47,17 +46,13 @@ export type FlightStatusHeroProps = {
   | { flight: FlightIdentity; pending: true }
 );
 
-function Fact({ label, children, wide = false, demo = false }: { label: string; children: ReactNode; wide?: boolean; demo?: boolean }) {
+function Fact({ label, children, className }: { label: string; children: ReactNode; className?: string }) {
   return (
-    <div className={cn('min-w-0', wide && 'col-span-2')}>
-      <dt className="type-eyebrow flex items-center gap-2 text-ink-2">
-        {label}
-        {/* The value is simulated: the label sits in the same view as the value (content-integrity-03).
-            Round 5 (A-14): not where the card is two columns wide (@3xl): there the card is short and
-            its demonstration banner, directly above these values, is in the same view. */}
-        {demo ? <DemoMark className="@3xl:hidden" /> : null}
-      </dt>
-      <dd className="mt-1 text-ink">{children}</dd>
+    <div className={cn('min-w-0', className)}>
+      {/* Redesign round one: no Demo label per value. The card is short enough that its
+          demonstration line, directly above, is in the same view as every value (content-integrity-03). */}
+      <dt className="type-eyebrow text-ink-2">{label}</dt>
+      <dd className="mt-1 min-h-7 text-ink">{children}</dd>
     </div>
   );
 }
@@ -86,103 +81,205 @@ export function FlightStatusHero({ flight, pending = false, updatedAt, refreshSe
   // One line per cabin and the bag drop, from the same helper as the timeline (ux-frequent-08).
   const checkIn = live ? checkInLines(live).map((line) => pick(line, lang)) : [];
 
+  // Rows of the check-in desks, for the fact grid ("Row H, D"); the counters go in the disclosure.
+  const rows = live ? [...new Set(checkInDesks(live).map((desk) => desk.row).filter(Boolean))] : [];
+  const shownTime = live && !cancelled ? live.estimated : flight.scheduled;
+
+  // The place at each end of the route, as on a boarding pass: the code in large type and the city
+  // (struck through on a cancelled flight). The airport's own end carries the time.
+  const end = (label: string, place: typeof flight.origin, align: 'start' | 'end', here: boolean) => (
+    <span className={cn('flex min-w-0 flex-col', align === 'end' && 'items-end text-right')}>
+      <span className="type-caption text-ink-2 max-sm:hidden">{label}</span>
+      <span className="type-display-md tracking-tight text-ink">{place.code}</span>
+      <span className={cn('type-body-sm text-ink-2', cancelled && 'line-through')}>{placeCity(place, lang)}</span>
+      {here ? (
+        <span className="mt-3 flex flex-col max-sm:hidden">
+          {/* The answer in display size (critique item 4): the time at this airport, tabular. */}
+          {!live ? (
+            waiting('h-11 w-28')
+          ) : (
+            <span className={cn('type-display-md font-mono tabular-nums tracking-tight', cancelled ? 'text-ink-2 line-through' : moved ? 'text-board-accent' : 'text-ink')}>{time(shownTime)}</span>
+          )}
+          <span className="type-caption mt-1 text-ink-2">
+            {!live ? (
+              <>
+                {t('common.labels.scheduled')} {time(flight.scheduled)}
+              </>
+            ) : moved ? (
+              <>
+                <s>
+                  {t('common.labels.scheduled')} {time(flight.scheduled)}
+                </s>{' '}
+                · {t.count('flightPages.detail.minutesLate', late)}
+              </>
+            ) : cancelled ? (
+              <>
+                {t('common.labels.scheduled')} {time(flight.scheduled)}
+              </>
+            ) : (
+              t('flightPages.detail.onSchedule')
+            )}
+          </span>
+          {live?.actual ? (
+            <span className="type-caption text-ink-2">
+              {t('common.labels.actual')} {time(live.actual)}
+            </span>
+          ) : null}
+        </span>
+      ) : null}
+    </span>
+  );
+
   return (
-    <section aria-labelledby="flight-status-title" aria-busy={pending || undefined} data-flight-hero={pending ? 'pending' : 'live'}>
+    // Redesign round one (critique items 4 and 11): a boarding pass. The quiet demonstration line
+    // caps it (every value in it is simulated); then the status, the route with the time in display
+    // size, and a 2 x 3 grid of where and when (terminal, gate, boarding, gate closes, check-in
+    // row, aircraft), so time, status and gate are in the first view on a phone and a desktop. The
+    // counters (six lines at KLIA) wait in a disclosure instead of filling the stub.
+    <section
+      aria-labelledby="flight-status-title"
+      aria-busy={pending || undefined}
+      data-flight-hero={pending ? 'pending' : 'live'}
+      className="overflow-clip rounded-3xl shadow-xl"
+    >
       <DemoDataBanner attached />
-      <div className="surface-board @container relative overflow-hidden rounded-b-lg border border-t-0 border-line">
-        <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-b border-line px-4 py-3 sm:px-6">
-          <h2 id="flight-status-title" className="type-title-md text-ink">
+      <div className="surface-board @container relative overflow-hidden rounded-b-3xl border border-t-0 border-line">
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b border-line px-5 py-2 sm:px-7 sm:py-2.5">
+          <h2 id="flight-status-title" className="type-body font-semibold text-ink">
             {t('flightPages.detail.statusTitle')}
           </h2>
           <Freshness
             live="off"
             updatedAt={updatedAt}
             refreshSeconds={refreshSeconds}
+            intervalClassName="max-sm:sr-only"
             context={
               airport ? (
-                <>
+                // Phones: the date is in the eyebrow above, so the header stays one row.
+                <span className="max-sm:sr-only">
                   <AirportCode code={airport.code} name={airport.name} size="sm" /> <span aria-hidden="true">·</span> {formatDate(flight.scheduled, lang, 'weekday', zone)}
-                </>
+                </span>
               ) : undefined
             }
           />
         </div>
 
-        <div className="grid gap-x-10 gap-y-8 px-4 py-6 sm:px-6 sm:py-7 @3xl:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
-          <div className="flex min-w-0 flex-col gap-6">
+        <div className="grid @3xl:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
+          <div className="flex min-w-0 flex-col gap-4 px-5 py-4 sm:gap-5 sm:px-7 sm:py-6">
             <div className="flex flex-wrap items-center gap-3">
               {live ? (
-                <FlightStatusChip status={live.status} className="h-8 px-2.5 text-base" />
+                <FlightStatusPill status={live.status} size="lg" />
               ) : (
-                <span role="status" className="inline-flex h-8 items-center">
-                  {waiting('h-8 w-28')}
+                <span role="status" className="inline-flex h-10 items-center">
+                  {waiting('h-10 w-32 rounded-pill')}
                   <span className="sr-only">{t('flightPages.detail.loading')}</span>
                 </span>
               )}
-              <span className="type-data-sm text-ink-2">
-                {flight.airline.name} <span aria-hidden="true">·</span> {formatFlightNumber(flight)}
-              </span>
-            </div>
-
-            <p className="sr-only">{t('flights.detail.route', { origin: `${placeCity(flight.origin, lang)} (${flight.origin.code})`, destination: `${placeCity(flight.destination, lang)} (${flight.destination.code})` })}</p>
-            <div aria-hidden="true" className="grid grid-cols-[auto_minmax(2rem,1fr)_auto] items-center gap-x-3 sm:gap-x-5">
-              <span className="type-data-xl text-ink">{flight.origin.code}</span>
-              <span className="relative flex items-center">
-                <span className="h-px w-full border-t border-dashed border-line-control" />
-                <Icon name="plane" className="absolute left-1/2 box-content -translate-x-1/2 bg-board px-1.5 text-ink-2" />
-              </span>
-              <span className="type-data-xl text-right text-ink">{flight.destination.code}</span>
-              <span className={cn('type-body-sm text-ink-2', cancelled && 'line-through')}>{placeCity(flight.origin, lang)}</span>
-              <span />
-              <span className={cn('type-body-sm text-right text-ink-2', cancelled && 'line-through')}>{placeCity(flight.destination, lang)}</span>
-            </div>
-
-            <dl className="grid grid-cols-2 gap-x-6 gap-y-4 border-t border-line pt-5 xs:grid-cols-3">
-              <Fact label={t('common.labels.scheduled')}>
-                {moved || cancelled ? <s className="type-data-lg text-ink-2">{time(flight.scheduled)}</s> : <span className="type-data-lg">{time(flight.scheduled)}</span>}
-              </Fact>
-              <Fact label={t('common.labels.estimated')}>
+              {/* Phones: the time beside the status, so both are on the first screen (critique item 4). */}
+              <span aria-hidden="true" className="ml-auto flex flex-col items-end text-right sm:hidden">
                 {!live ? (
-                  <>
-                    {waiting('h-8 w-20')}
-                    <span className="type-caption mt-0.5 block">{waiting('h-3.5 w-24')}</span>
-                  </>
-                ) : cancelled ? (
-                  <span className="type-body text-ink-2">–</span>
+                  waiting('h-7 w-20')
                 ) : (
-                  <>
-                    <span className="type-data-lg text-board-accent">{time(live.estimated)}</span>
-                    <span className="type-caption mt-0.5 block text-ink-2">{moved ? t.count('flightPages.detail.minutesLate', late) : t('flightPages.detail.onSchedule')}</span>
-                  </>
+                  <span className={cn('type-data-xl', cancelled ? 'text-ink-2 line-through' : moved ? 'text-board-accent' : 'text-ink')}>{time(shownTime)}</span>
                 )}
+                <span className="type-caption mt-0.5 text-ink-2">{live && moved ? t.count('flightPages.detail.minutesLate', late) : live && !cancelled ? t('flightPages.detail.onSchedule') : `${t('common.labels.scheduled')} ${time(flight.scheduled)}`}</span>
+              </span>
+              <span className="type-body-sm inline-flex items-center gap-2 text-ink-2 max-sm:basis-full">
+                <AirlineBadge code={flight.airline.code} />
+                <span>
+                  {flight.airline.name} <span aria-hidden="true">·</span> <span className="font-mono tabular-nums">{formatFlightNumber(flight)}</span>
+                </span>
+              </span>
+            </div>
+
+            <p className="sr-only">
+              {t('flights.detail.route', { origin: `${placeCity(flight.origin, lang)} (${flight.origin.code})`, destination: `${placeCity(flight.destination, lang)} (${flight.destination.code})` })}.{' '}
+              {t('common.labels.scheduled')} {time(flight.scheduled)}.
+              {live && !cancelled ? ` ${t('common.labels.estimated')} ${time(live.estimated)}, ${moved ? t.count('flightPages.detail.minutesLate', late) : t('flightPages.detail.onSchedule')}.` : ''}
+              {live?.actual ? ` ${t('common.labels.actual')} ${time(live.actual)}.` : ''}
+              {flight.durationMinutes ? ` ${t('flightPages.detail.flightTime')} ${formatDuration(flight.durationMinutes, lang)}.` : ''}
+            </p>
+            <div aria-hidden="true" className="grid grid-cols-[auto_minmax(2.5rem,1fr)_auto] items-start gap-x-3 sm:gap-x-6">
+              {end(t('flightPages.look.from'), flight.origin, 'start', departure)}
+              <span className="relative mt-4 flex flex-col items-center gap-2 sm:mt-11">
+                <span className="relative flex w-full items-center">
+                  <span className="h-px w-full border-t-2 border-dotted border-line-control" />
+                  <span className="absolute left-1/2 flex size-9 -translate-x-1/2 items-center justify-center rounded-full border border-line bg-board-raised text-board-accent">
+                    <Icon name="plane" size="sm" />
+                  </span>
+                </span>
+                {flight.durationMinutes ? <span className="type-caption mt-4 text-center text-ink-2 max-xs:hidden">{formatDuration(flight.durationMinutes, lang)}</span> : null}
+              </span>
+              {end(t('flightPages.look.to'), flight.destination, 'end', !departure)}
+            </div>
+          </div>
+
+          {/* The stub: a perforated edge (decoration) and where and when, two columns of three. */}
+          {/* Phones: three columns of two rows, so every value sits within one screen of the
+              demonstration line above (content-integrity-03) and the card stays short. */}
+          <div className="relative flex min-w-0 flex-col gap-4 border-t-2 border-dashed border-line-strong bg-board-raised/60 px-5 py-4 sm:px-7 sm:py-6 @3xl:border-t-0 @3xl:border-l-2">
+            <dl className="grid grid-cols-3 content-start gap-x-4 gap-y-4 @xl:gap-x-6 @3xl:grid-cols-2">
+              <Fact label={t('common.labels.terminal')}>
+                <span className="inline-flex flex-wrap items-center gap-2">
+                  <TerminalBadge terminal={flight.terminal} size="sm" />
+                  <span className="type-body font-semibold">{airport ? terminalLabel(airport, flight.terminal, lang, { short: true }) : flight.terminal}</span>
+                </span>
               </Fact>
-              {live?.actual ? (
-                <Fact label={t('common.labels.actual')}>
-                  <span className="type-data-lg">{time(live.actual)}</span>
+              {departure ? (
+                <>
+                  <Fact label={t('common.labels.gate')}>
+                    {!live ? waiting('h-8 w-16') : live.gate ? <span className="type-data-xl text-board-accent">{live.gate}</span> : notAssigned(t('flights.board.gateNotAssigned'))}
+                  </Fact>
+                  <Fact label={t('flightPages.detail.boardingFrom')}>
+                    {!live ? waiting('h-6 w-14') : live.boardingAt && !cancelled ? <span className="type-data-lg">{time(live.boardingAt)}</span> : notAssigned('–')}
+                  </Fact>
+                  <Fact label={t('flightPages.detail.gateCloses')}>
+                    {!live ? waiting('h-6 w-14') : live.gateClosesAt && !cancelled ? <span className="type-data-lg">{time(live.gateClosesAt)}</span> : notAssigned('–')}
+                  </Fact>
+                  <Fact label={t('common.labels.checkIn')}>
+                    {!live ? (
+                      waiting('h-6 w-20')
+                    ) : rows.length > 0 ? (
+                      <span className="type-body font-semibold">
+                        {t('common.labels.row')} {rows.join(', ')}
+                      </span>
+                    ) : (
+                      notAssigned(t('flightPages.detail.checkInNotShown'))
+                    )}
+                  </Fact>
+                </>
+              ) : (
+                <Fact label={t('common.labels.belt')}>
+                  {!live ? waiting('h-8 w-16') : live.belt ? <span className="type-data-xl text-board-accent">{live.belt}</span> : notAssigned(t('flights.board.beltNotAssigned'))}
+                </Fact>
+              )}
+              {flight.aircraft ? (
+                <Fact label={t('flights.detail.aircraft')}>
+                  {/* Verification round 6: only the model number stays whole ("A330-300"), so a long
+                      name can still wrap at its space instead of being cut by the card at 320 px. */}
+                  <span className="type-body-sm">{keepRanges(flight.aircraft)}</span>
+                </Fact>
+              ) : null}
+              {!departure && flight.durationMinutes ? (
+                <Fact label={t('flightPages.detail.flightTime')}>
+                  <span className="type-body-sm">{formatDuration(flight.durationMinutes, lang)}</span>
                 </Fact>
               ) : null}
             </dl>
-          </div>
 
-          <dl className="grid min-w-0 grid-cols-2 content-start gap-x-6 gap-y-5 @3xl:border-l @3xl:border-line @3xl:pl-10">
-            {/* On an arrival the terminal heads the column with no gate or counters below it, so it carries the label. */}
-            <Fact label={t('common.labels.terminal')} wide demo={flight.isDemo && !departure}>
-              <span className="inline-flex flex-wrap items-center gap-2">
-                <TerminalBadge terminal={flight.terminal} size="sm" />
-                <span className="type-body font-semibold">{airport ? terminalLabel(airport, flight.terminal, lang) : flight.terminal}</span>
-              </span>
-            </Fact>
             {departure ? (
-              <>
-                {/* While pending, the labels the values will carry are already there, so the timetable
-                    facts around them are labelled in every view (content-integrity-03). */}
-                <Fact label={t('common.labels.checkIn')} wide demo={pending || checkIn.length > 0}>
+              <details className="group rounded-xl border border-line bg-board/60 [&_summary::-webkit-details-marker]:hidden">
+                <summary className="type-body-sm flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 rounded-xl px-3.5 font-semibold text-ink">
+                  {t('flightPages.detail.countersTitle')}
+                  <Icon name="chevron-down" size="sm" className="shrink-0 text-ink-2 transition-transform duration-fast motion-reduce:transition-none group-open:rotate-180" />
+                </summary>
+                <div className="border-t border-line px-3.5 py-3">
                   {!live ? (
                     waiting('h-6 w-48')
                   ) : checkIn.length > 0 ? (
-                    <ul className="flex flex-col gap-0.5">
+                    <ul className="flex flex-col gap-1">
                       {checkIn.map((line) => (
-                        <li key={line} className="type-data-md">
+                        <li key={line} className="type-body-sm text-ink">
                           {keepRanges(line)}
                         </li>
                       ))}
@@ -203,43 +300,14 @@ export function FlightStatusHero({ flight, pending = false, updatedAt, refreshSe
                   ) : (
                     notAssigned(t('flightPages.detail.checkInNotShown'))
                   )}
-                </Fact>
-                <Fact label={t('common.labels.gate')} wide demo={pending || Boolean(live?.gate)}>
-                  {!live ? waiting('h-8 w-16') : live.gate ? <span className="type-data-xl text-board-accent">{live.gate}</span> : notAssigned(t('flights.board.gateNotAssigned'))}
-                </Fact>
-                {live?.boardingAt && !cancelled ? (
-                  <Fact label={t('flightPages.detail.boardingFrom')}>
-                    <span className="type-data-md">{time(live.boardingAt)}</span>
-                  </Fact>
-                ) : null}
-                {live?.gateClosesAt && !cancelled ? (
-                  <Fact label={t('flightPages.detail.gateCloses')}>
-                    <span className="type-data-md">{time(live.gateClosesAt)}</span>
-                  </Fact>
-                ) : null}
-              </>
-            ) : (
-              <Fact label={t('common.labels.belt')} wide demo={flight.isDemo}>
-                {!live ? waiting('h-8 w-16') : live.belt ? <span className="type-data-xl text-board-accent">{live.belt}</span> : notAssigned(t('flights.board.beltNotAssigned'))}
-              </Fact>
-            )}
-            {flight.durationMinutes ? (
-              <Fact label={t('flightPages.detail.flightTime')}>
-                <span className="type-data-md">{formatDuration(flight.durationMinutes, lang)}</span>
-              </Fact>
+                </div>
+              </details>
             ) : null}
-            {flight.aircraft ? (
-              <Fact label={t('flights.detail.aircraft')}>
-                {/* Verification round 6: only the model number stays whole ("A330-300"), so a long
-                    name can still wrap at its space instead of being cut by the card at 320 px. */}
-                <span className="type-data-md">{keepRanges(flight.aircraft)}</span>
-              </Fact>
-            ) : null}
-          </dl>
+          </div>
         </div>
 
         {flight.codeshares && flight.codeshares.length > 0 ? (
-          <p className="type-body-sm flex flex-wrap items-baseline gap-x-3 gap-y-1 border-t border-line px-4 py-3 text-ink-2 sm:px-6">
+          <p className="type-body-sm flex flex-wrap items-baseline gap-x-3 gap-y-1 border-t border-line px-5 py-3 text-ink-2 sm:px-7">
             <span className="type-eyebrow">{t('flightPages.detail.codeshares')}</span>
             <span className="type-data-sm text-ink">{flight.codeshares.join(' · ')}</span>
           </p>

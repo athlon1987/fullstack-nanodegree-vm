@@ -20,7 +20,7 @@ export function Stat({ value, label, hint, mono = false, size = 'md', className,
   return (
     <div className={cn('flex min-w-0 flex-col-reverse gap-1.5', className)} {...rest}>
       <div className="min-w-0">
-        <p className="type-eyebrow text-ink-3">{label}</p>
+        <p className="type-caption font-semibold text-ink-3">{label}</p>
         {hint ? <p className="type-caption mt-1 text-ink-2">{hint}</p> : null}
       </div>
       <p className={cn('text-ink', mono ? (size === 'lg' ? 'type-data-xl' : 'type-data-lg') : size === 'lg' ? 'type-display-lg' : 'type-display-md')}>{value}</p>

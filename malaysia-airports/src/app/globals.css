@@ -1,8 +1,9 @@
 /*
- * Malaysia Airports design tokens and base styles (Tailwind CSS 4).
+ * Malaysia Airports design tokens and base styles (Tailwind CSS 4). Direction v2: premium, clean,
+ * app-like (docs/design/direction.md).
  *
  * Everything a component may use is a token declared in `@theme` below, which Tailwind turns
- * into utilities (`bg-page`, `text-ink-2`, `border-line`, `rounded-md`, `shadow-md`, `px-gutter`,
+ * into utilities (`bg-page`, `text-ink-2`, `border-line`, `rounded-2xl`, `shadow-md`, `px-gutter`,
  * `h-row`, `type-title-md`, ...). Components never use raw hex values.
  *
  * Themes are switched by attributes that `PREFERENCES_INIT_SCRIPT` sets on <html> before paint:
@@ -10,8 +11,13 @@
  *   data-motion="normal|reduce"
  * Without JavaScript no attribute is set and the stylesheet follows `prefers-color-scheme`.
  *
+ * Scopes repaint a subtree with the dark token set, so every component works inside them:
+ *   .surface-board   the flight board (neutral midnight data surface, both themes)
+ *   .on-media        anything over a photograph, a scrim, a dark glass panel or a midnight band
+ *
  * Measured contrast for every pair is in docs/design/design-system.md; regenerate it with
- * `node scripts/design-tokens.mjs` after changing a colour (the script reads THIS file).
+ * `node scripts/design-tokens.mjs` after changing a colour (the script reads THIS file, including
+ * the glass and scrim alphas below, and measures text over them composited on white and black).
  */
 @import 'tailwindcss';
 
@@ -44,6 +50,19 @@
 /* on-board: inside the dark flight-board surface. */
 @custom-variant on-board (&:where(.surface-board, .surface-board *));
 
+/* on-media: over a photograph, a scrim, a dark glass panel or a midnight band. */
+@custom-variant on-media (&:where(.on-media, .on-media *));
+
+/* motion-ok: motion is allowed by the system AND by the site's own setting. Use it for every
+   transform that moves something (hover lift, image zoom); colour fades may stay unguarded. */
+@custom-variant motion-ok {
+  @media (prefers-reduced-motion: no-preference) {
+    &:where(html:not([data-motion='reduce'], [data-motion='reduced']) *) {
+      @slot;
+    }
+  }
+}
+
 /* ------------------------------------------------------------------------------------------
  * Tokens (light theme values; other themes override the same variables further down)
  * --------------------------------------------------------------------------------------- */
@@ -55,94 +74,154 @@
   --inset-shadow-*: initial;
   --drop-shadow-*: initial;
 
-  /* --- Colour: surfaces --- */
-  --color-page: #faf5ea;
-  --color-page-subtle: #f3ecdc;
-  --color-surface: #fffdf8;
+  /* --- Colour: surfaces. A cool, airy page; white cards lift off it by shadow, not by outline. --- */
+  --color-page: #f6f7f9;
+  --color-page-subtle: #eceef3;
+  --color-surface: #ffffff;
   --color-surface-raised: #ffffff;
-  --color-surface-sunken: #f5efe1;
+  --color-surface-sunken: #eef0f4;
+  /* Warm ivory: an editorial band, used sparingly (one per page at most). */
+  --color-ivory: #faf7f0;
 
-  /* --- Colour: ink --- */
-  --color-ink: #181b3a;
-  --color-ink-2: #454867;
-  --color-ink-3: #5c5f7b;
+  /* --- Colour: ink (a deep navy-black, never pure black) --- */
+  --color-ink: #0b1230;
+  --color-ink-2: #3d4560;
+  --color-ink-3: #5a6178;
 
-  /* --- Colour: lines. `line` and `line-strong` divide; `line-control` bounds controls (3:1). --- */
-  --color-line: #e3dccb;
-  --color-line-strong: #cbc4b6;
-  --color-line-control: #7f7c95;
+  /* --- Colour: lines. `line` and `line-strong` divide; `line-control` bounds form fields (3:1). --- */
+  --color-line: #e2e5ec;
+  --color-line-strong: #cdd2dc;
+  --color-line-control: #80879c;
 
-  /* --- Colour: inverse surface (ink bands, footer, tooltips) --- */
-  --color-inverse: #181b3a;
-  --color-on-inverse: #f6f0e2;
-  --color-on-inverse-dim: #c2c0d6;
+  /* --- Colour: fills. Neutral tints for secondary buttons, tracks and hover states. --- */
+  --color-fill: #e9ecf2;
+  --color-fill-hover: #dfe3eb;
 
-  /* --- Colour: brand primary, songket indigo. Never used as a status colour. --- */
-  --color-primary: #252a6c;
-  --color-primary-hover: #181c4f;
-  --color-on-primary: #fbf6ea;
-  --color-primary-soft: #e7e8f4;
-  --color-primary-ink: #252a6c;
+  /* --- Colour: inverse surface (midnight bands, footer, tooltips) --- */
+  --color-inverse: #0b1230;
+  --color-on-inverse: #ffffff;
+  --color-on-inverse-dim: #c3c9dc;
 
-  /* --- Colour: gold thread. Decoration only: rules, ornaments, eyebrows. Never a status. --- */
-  --color-gold: #a57b2b;
-  --color-gold-ink: #7a5814;
-  --color-gold-soft: #f2e7cc;
+  /* --- Colour: midnight, the brand base. The same in both themes: photo scrims, hero bands. --- */
+  --color-midnight: #070c22;
+  --color-midnight-2: #0f1a3d;
+  --color-on-midnight: #ffffff;
+  --color-on-midnight-dim: #d6dbe9;
+
+  /* --- Colour: brand primary, deep midnight navy. Never used as a status colour. --- */
+  --color-primary: #0b1640;
+  --color-primary-hover: #1b2a63;
+  --color-on-primary: #ffffff;
+  --color-primary-soft: #e7eaf5;
+  --color-primary-ink: #1f3080;
+
+  /* --- Colour: gold. A refined warm accent used sparingly: one gold action or rule per view.
+         Decoration and emphasis only, never a status. --- */
+  --color-gold: #c49a50;
+  --color-gold-hover: #d2ab64;
+  --color-on-gold: #0b1230;
+  --color-gold-ink: #7f5b16;
+  --color-gold-soft: #f6eddb;
+  /* Gold on midnight and over photographs (large text, rules, icons). */
+  --color-gold-bright: #e8cb8c;
 
   /* --- Colour: leaf green, the secondary living accent for illustration. --- */
-  --color-leaf: #1f6b4a;
-  --color-leaf-soft: #e0eee3;
+  --color-leaf: #1a6a48;
+  --color-leaf-soft: #e1f1e8;
 
   /* --- Colour: focus. Orchid: not a brand colour and not a status colour. --- */
   --color-focus: #a6157f;
 
-  /* --- Colour: the board. A neutral dark data surface, the same in both themes. --- */
-  --color-board: #080b16;
-  --color-board-raised: #121627;
-  --color-board-ink: #f3f1ea;
-  --color-board-dim: #a9aec2;
-  --color-board-line: #2b3148;
-  --color-board-accent: #ffc24a;
+  /* --- Colour: the board. A neutral midnight data surface, the same in both themes. --- */
+  --color-board: #070b1c;
+  --color-board-raised: #0f1530;
+  --color-board-ink: #f4f6fb;
+  --color-board-dim: #aab1c8;
+  --color-board-line: #232a48;
+  --color-board-accent: #f3c96e;
 
   /* --- Colour: status tones. Always paired with an icon and words. --- */
-  --color-positive-fg: #1a6245;
-  --color-positive-bg: #e2f0e6;
-  --color-positive-border: #458a6a;
-  --color-warning-fg: #874a00;
-  --color-warning-bg: #faeacd;
-  --color-warning-border: #ad7320;
-  --color-critical-fg: #a02925;
-  --color-critical-bg: #fae3df;
-  --color-critical-border: #c55f57;
-  --color-info-fg: #0f5873;
-  --color-info-bg: #ddeef3;
-  --color-info-border: #41869f;
-  --color-neutral-fg: #494c66;
-  --color-neutral-bg: #eae5da;
-  --color-neutral-border: #7f7c95;
+  --color-positive-fg: #0b6b3f;
+  --color-positive-bg: #e3f5eb;
+  --color-positive-border: #3d9a6c;
+  --color-warning-fg: #8c4500;
+  --color-warning-bg: #fff0d9;
+  --color-warning-border: #ad7412;
+  --color-critical-fg: #b0121e;
+  --color-critical-bg: #fde8e9;
+  --color-critical-border: #d9605f;
+  --color-info-fg: #0a4fc2;
+  --color-info-bg: #e6eeff;
+  --color-info-border: #4c7fd9;
+  --color-neutral-fg: #3d4560;
+  --color-neutral-bg: #eceef3;
+  --color-neutral-border: #80879c;
 
-  /* --- Colour: provenance tones (solid, outlined, dashed, striped) --- */
-  --color-official-fg: #fbf6ea;
-  --color-official-bg: #181b3a;
-  --color-official-border: #181b3a;
-  --color-estimated-fg: #181b3a;
-  --color-estimated-bg: #fffdf8;
-  --color-estimated-border: #454867;
-  --color-suggestion-fg: #252a6c;
-  --color-suggestion-bg: #e7e8f4;
-  --color-suggestion-border: #252a6c;
-  --color-demo-fg: #1f1600;
-  --color-demo-bg: #ffc233;
-  --color-demo-border: #8a6400;
+  /* --- Colour: flight status (StatusPill). fg on bg (soft pill), on on solid (strong pill). --- */
+  --color-flight-scheduled-fg: #3d4560;
+  --color-flight-scheduled-bg: #eceef3;
+  --color-flight-scheduled-solid: #3d4560;
+  --color-flight-scheduled-on: #ffffff;
+  --color-flight-ontime-fg: #0b6b3f;
+  --color-flight-ontime-bg: #e3f5eb;
+  --color-flight-ontime-solid: #0e7a47;
+  --color-flight-ontime-on: #ffffff;
+  --color-flight-boarding-fg: #0a4fc2;
+  --color-flight-boarding-bg: #e6eeff;
+  --color-flight-boarding-solid: #1557d4;
+  --color-flight-boarding-on: #ffffff;
+  --color-flight-delayed-fg: #8c4500;
+  --color-flight-delayed-bg: #fff0d9;
+  --color-flight-delayed-solid: #f0a032;
+  --color-flight-delayed-on: #0b1230;
+  --color-flight-cancelled-fg: #b0121e;
+  --color-flight-cancelled-bg: #fde8e9;
+  --color-flight-cancelled-solid: #c41e2a;
+  --color-flight-cancelled-on: #ffffff;
+  --color-flight-landed-fg: #09636d;
+  --color-flight-landed-bg: #dff3f4;
+  --color-flight-landed-solid: #0c707c;
+  --color-flight-landed-on: #ffffff;
+  --color-flight-departed-fg: #585f75;
+  --color-flight-departed-bg: #eceef3;
+  --color-flight-departed-solid: #5f667c;
+  --color-flight-departed-on: #ffffff;
+
+  /* --- Colour: provenance tones (solid, outlined, soft, striped). Quiet, never removed. --- */
+  --color-official-fg: #ffffff;
+  --color-official-bg: #0b1230;
+  --color-official-border: #0b1230;
+  --color-estimated-fg: #0b1230;
+  --color-estimated-bg: #ffffff;
+  --color-estimated-border: #5a6178;
+  --color-suggestion-fg: #1f3080;
+  --color-suggestion-bg: #e7eaf5;
+  --color-suggestion-border: #1f3080;
+  --color-demo-fg: #4a3200;
+  --color-demo-bg: #fbecc4;
+  --color-demo-border: #a87a12;
+
+  /* --- Colour: glass and scrims. Hex here; the alphas are in :root below. --- */
+  --color-glass-light: #ffffff;
+  --color-glass-dark: #0a1130;
+  --color-scrim: #050918;
 
   /* --- Shadow colour (used by the shadow tokens) --- */
-  --elevation-rgb: 24 27 58;
+  --elevation-rgb: 11 18 48;
   --elevation-alpha: 1;
 
-  /* --- Type families (the variables come from next/font in src/fonts) --- */
+  /* --- Type families (the variables come from next/font in src/fonts) ---
+     heading  Hanken Grotesk: every `type-display-*` and `type-title-*` (big, confident, tight)
+     sans     Hanken Grotesk: all interface and reading text
+     serif    Fraunces: the wordmark and rare editorial accents (`type-serif-*`). `font-display` is
+              kept as an alias of `font-serif` for the wordmark.
+     mono     Geist Mono: times, gates, codes and tables (`type-data-*`) */
+  --font-heading: var(--font-hanken), system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: var(--font-hanken), system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: var(--font-fraunces), 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --font-serif--font-variation-settings: 'opsz' 144;
   --font-display: var(--font-fraunces), 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
   --font-display--font-variation-settings: 'opsz' 144;
-  --font-sans: var(--font-hanken), system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
   /* --- Type sizes (prefer the composite `type-*` utilities below) --- */
@@ -153,53 +232,75 @@
   --text-base: 1rem;
   --text-base--line-height: 1.55;
   --text-lg: 1.125rem;
-  --text-lg--line-height: 1.6;
+  --text-lg--line-height: 1.55;
   --text-xl: 1.375rem;
-  --text-xl--line-height: 1.25;
-  --text-2xl: 1.625rem;
-  --text-2xl--line-height: 1.18;
-  --text-3xl: 2.25rem;
-  --text-3xl--line-height: 1.1;
-  --text-4xl: 3.25rem;
+  --text-xl--line-height: 1.3;
+  --text-2xl: 1.75rem;
+  --text-2xl--line-height: 1.15;
+  --text-3xl: 2.5rem;
+  --text-3xl--line-height: 1.08;
+  --text-4xl: 3.5rem;
   --text-4xl--line-height: 1.04;
   --text-5xl: 4.5rem;
   --text-5xl--line-height: 1;
+  --text-6xl: 5.5rem;
+  --text-6xl--line-height: 0.98;
 
+  --tracking-display: -0.038em;
+  --tracking-tight: -0.02em;
   --tracking-eyebrow: 0.14em;
+  --tracking-overline: 0.16em;
   --tracking-data: 0.04em;
 
-  /* --- Radii: fine corners, few pills --- */
-  --radius-xs: 0.1875rem;
-  --radius-sm: 0.3125rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
+  /* --- Radii: soft, generous corners. Controls 12, cards 20, media 24 to 28, pills for actions. --- */
+  --radius-xs: 0.375rem;
+  --radius-sm: 0.625rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 1.75rem;
   --radius-pill: 999px;
 
-  /* --- Elevation: restrained --- */
+  /* --- Elevation: soft and layered (a contact shadow plus one or two ambient layers) --- */
   --shadow-xs: 0 1px 2px rgb(var(--elevation-rgb) / calc(0.06 * var(--elevation-alpha)));
   --shadow-sm:
-    0 1px 2px rgb(var(--elevation-rgb) / calc(0.05 * var(--elevation-alpha))),
-    0 6px 16px -8px rgb(var(--elevation-rgb) / calc(0.14 * var(--elevation-alpha)));
+    0 1px 2px rgb(var(--elevation-rgb) / calc(0.04 * var(--elevation-alpha))),
+    0 2px 8px -2px rgb(var(--elevation-rgb) / calc(0.08 * var(--elevation-alpha)));
   --shadow-md:
-    0 1px 2px rgb(var(--elevation-rgb) / calc(0.05 * var(--elevation-alpha))),
-    0 18px 40px -18px rgb(var(--elevation-rgb) / calc(0.22 * var(--elevation-alpha)));
+    0 1px 2px rgb(var(--elevation-rgb) / calc(0.04 * var(--elevation-alpha))),
+    0 4px 12px -4px rgb(var(--elevation-rgb) / calc(0.07 * var(--elevation-alpha))),
+    0 16px 36px -12px rgb(var(--elevation-rgb) / calc(0.12 * var(--elevation-alpha)));
   --shadow-lg:
-    0 2px 4px rgb(var(--elevation-rgb) / calc(0.06 * var(--elevation-alpha))),
-    0 24px 60px -16px rgb(var(--elevation-rgb) / calc(0.3 * var(--elevation-alpha)));
+    0 2px 4px rgb(var(--elevation-rgb) / calc(0.04 * var(--elevation-alpha))),
+    0 12px 24px -8px rgb(var(--elevation-rgb) / calc(0.1 * var(--elevation-alpha))),
+    0 32px 64px -20px rgb(var(--elevation-rgb) / calc(0.2 * var(--elevation-alpha)));
+  --shadow-xl:
+    0 4px 8px rgb(var(--elevation-rgb) / calc(0.05 * var(--elevation-alpha))),
+    0 24px 48px -12px rgb(var(--elevation-rgb) / calc(0.16 * var(--elevation-alpha))),
+    0 56px 96px -28px rgb(var(--elevation-rgb) / calc(0.3 * var(--elevation-alpha)));
+  /* Glass: a top highlight and a deep, soft drop. */
+  --shadow-glass:
+    inset 0 1px 0 rgb(255 255 255 / 0.18),
+    0 1px 2px rgb(0 0 0 / 0.12),
+    0 20px 48px -16px rgb(0 0 0 / 0.45);
 
-  /* --- Motion --- */
-  --duration-fast: 120ms;
-  --duration-base: 200ms;
-  --duration-slow: 360ms;
-  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
-  --ease-in-out: cubic-bezier(0.65, 0, 0.25, 1);
+  /* --- Motion: smooth, short, never decorative for its own sake. All zero under reduced motion. --- */
+  --duration-instant: 80ms;
+  --duration-fast: 140ms;
+  --duration-base: 240ms;
+  --duration-slow: 420ms;
+  --duration-slower: 700ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
   --default-transition-duration: 160ms;
-  --default-transition-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --default-transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 
   --animate-fade-in: fade-in var(--duration-base) var(--ease-out) both;
   --animate-fade-out: fade-out var(--duration-fast) var(--ease-out) both;
   --animate-rise-in: rise-in var(--duration-base) var(--ease-out) both;
+  --animate-scale-in: scale-in var(--duration-base) var(--ease-out) both;
   --animate-sheet-in-right: sheet-in-right var(--duration-slow) var(--ease-out) both;
   --animate-sheet-out-right: sheet-out-right var(--duration-base) var(--ease-in-out) both;
   --animate-sheet-in-bottom: sheet-in-bottom var(--duration-slow) var(--ease-out) both;
@@ -207,6 +308,9 @@
   --animate-collapse-down: collapse-down var(--duration-base) var(--ease-out);
   --animate-collapse-up: collapse-up var(--duration-base) var(--ease-out);
   --animate-shimmer: shimmer 1.6s var(--ease-in-out) infinite;
+  /* A soft ring that breathes out of a live status dot. Its resting state is invisible, so with
+     reduced motion (one 0.01 ms iteration) nothing shows. */
+  --animate-pulse-ring: pulse-ring 1.8s var(--ease-out) infinite;
 
   @keyframes fade-in {
     from {
@@ -221,7 +325,13 @@
   @keyframes rise-in {
     from {
       opacity: 0;
-      transform: translateY(0.375rem);
+      transform: translateY(0.5rem);
+    }
+  }
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.25rem) scale(0.97);
     }
   }
   @keyframes sheet-in-right {
@@ -262,7 +372,17 @@
   }
   @keyframes shimmer {
     50% {
-      opacity: 0.45;
+      opacity: 0.5;
+    }
+  }
+  @keyframes pulse-ring {
+    from {
+      opacity: 0.55;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(2.6);
     }
   }
 
@@ -273,7 +393,9 @@
   --container-page: 77.5rem;
   --container-wide: 90rem;
   --spacing-gutter: clamp(1rem, 4vw, 3rem);
-  --spacing-section: clamp(3rem, 2rem + 4vw, 5rem);
+  /* Generous sections: 56 px on phones to 112 px on wide screens. */
+  --spacing-section: clamp(3.5rem, 2rem + 5vw, 7rem);
+  --spacing-section-sm: clamp(2.5rem, 1.75rem + 2.5vw, 4rem);
   --spacing-header: 4.25rem;
   /* Round 4 (6.1.6, WCAG 2.4.11): where sticky content starts. It follows the header: the header's
      height while the header shows, 0 while ScrollChrome has slid it away (see the end of this file). */
@@ -295,6 +417,13 @@
 @layer theme {
   :root {
     color-scheme: light;
+    /* Glass and scrim strengths. `scripts/design-tokens.mjs` reads these four numbers and measures
+       on-media text over each one composited on pure white and pure black (the worst cases). */
+    --glass-light-alpha: 84%;
+    --glass-dark-alpha: 72%;
+    --scrim-text-alpha: 78%;
+    --scrim-edge-alpha: 35%;
+    --glass-blur: 20px;
     /* Patterns are masks, so they take any token colour. */
     --pattern-rebung: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='6'%3E%3Cpath d='M0 6 6 .5l6 5.5' fill='none' stroke='%23000'/%3E%3C/svg%3E");
     --pattern-rebung-lg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='20'%3E%3Cpath d='M1 20 12 2l11 18M6.5 20 12 11l5.5 9M12 20v-4' fill='none' stroke='%23000'/%3E%3C/svg%3E");
@@ -302,63 +431,99 @@
     --pattern-weave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath d='M0 3h12M0 9h12M15 0v12M21 0v12M3 12v12M9 12v12M12 15h12M12 21h12' fill='none' stroke='%23000'/%3E%3C/svg%3E");
   }
 
-  /* The board scope shares the dark values, so every component works on it unchanged. */
+  /* The board and media scopes share the dark values, so every component works on them unchanged. */
   /* tokens:dark:start */
   html[data-theme='dark'],
-  .surface-board {
+  .surface-board,
+  .on-media {
     color-scheme: dark;
-    --color-page: #0c0e24;
-    --color-page-subtle: #11142f;
-    --color-surface: #171a3d;
-    --color-surface-raised: #1f2350;
-    --color-surface-sunken: #090b1d;
-    --color-ink: #f4eedf;
-    --color-ink-2: #c9c7da;
-    --color-ink-3: #a2a1bd;
-    --color-line: #2a2c48;
-    --color-line-strong: #454866;
-    --color-line-control: #7d80a3;
-    --color-inverse: #1d2152;
-    --color-on-inverse: #f4eedf;
-    --color-on-inverse-dim: #c2c0d6;
-    --color-primary: #c5c9fb;
-    --color-primary-hover: #dfe1ff;
-    --color-on-primary: #14163a;
-    --color-primary-soft: #20245a;
-    --color-primary-ink: #c7ccff;
-    --color-gold: #d2ac62;
-    --color-gold-ink: #e2c383;
-    --color-gold-soft: #2b2946;
+    --color-page: #060a18;
+    --color-page-subtle: #0b1124;
+    --color-surface: #10172e;
+    --color-surface-raised: #172040;
+    --color-surface-sunken: #04060f;
+    --color-ivory: #0f1426;
+    --color-ink: #f4f6fb;
+    --color-ink-2: #c2c8db;
+    --color-ink-3: #9aa2ba;
+    --color-line: #1e2640;
+    --color-line-strong: #2f3858;
+    --color-line-control: #7a84a6;
+    --color-fill: #1c2547;
+    --color-fill-hover: #263058;
+    --color-inverse: #121a38;
+    --color-on-inverse: #f4f6fb;
+    --color-on-inverse-dim: #c2c8db;
+    --color-primary: #eef1fa;
+    --color-primary-hover: #ffffff;
+    --color-on-primary: #0b1230;
+    --color-primary-soft: #1a2550;
+    --color-primary-ink: #b4c2ff;
+    --color-gold: #d6b46e;
+    --color-gold-hover: #e3c382;
+    --color-on-gold: #0b1230;
+    --color-gold-ink: #e5c88a;
+    --color-gold-soft: #2a2416;
     --color-leaf: #8fd3ae;
     --color-leaf-soft: #12382b;
     --color-focus: #ff9fdc;
-    --color-positive-fg: #8fddb5;
-    --color-positive-bg: #12382b;
-    --color-positive-border: #3e8f6b;
-    --color-warning-fg: #f5c46e;
-    --color-warning-bg: #47300a;
-    --color-warning-border: #a87a2a;
-    --color-critical-fg: #ffa99e;
-    --color-critical-bg: #4c1b1d;
-    --color-critical-border: #c0625c;
-    --color-info-fg: #8cd3ec;
-    --color-info-bg: #0e3646;
-    --color-info-border: #3f8ca8;
-    --color-neutral-fg: #cdcedd;
-    --color-neutral-bg: #2b2e50;
-    --color-neutral-border: #7d80a3;
-    --color-official-fg: #14163a;
-    --color-official-bg: #f4eedf;
-    --color-official-border: #f4eedf;
-    --color-estimated-fg: #f4eedf;
-    --color-estimated-bg: #171a3d;
-    --color-estimated-border: #c9c7da;
-    --color-suggestion-fg: #c7ccff;
-    --color-suggestion-bg: #20245a;
-    --color-suggestion-border: #c7ccff;
-    --color-demo-border: #ffc233;
+    --color-positive-fg: #6ee0a2;
+    --color-positive-bg: #0e3324;
+    --color-positive-border: #3c9f6e;
+    --color-warning-fg: #ffc66e;
+    --color-warning-bg: #3d2a08;
+    --color-warning-border: #b8862e;
+    --color-critical-fg: #ffa0a5;
+    --color-critical-bg: #4a161c;
+    --color-critical-border: #c9606a;
+    --color-info-fg: #a3c2ff;
+    --color-info-bg: #13285c;
+    --color-info-border: #5b86d6;
+    --color-neutral-fg: #c9cfe0;
+    --color-neutral-bg: #1b2340;
+    --color-neutral-border: #7a84a6;
+    --color-flight-scheduled-fg: #c9cfe0;
+    --color-flight-scheduled-bg: #1b2340;
+    --color-flight-scheduled-solid: #c9cfe0;
+    --color-flight-scheduled-on: #0b1230;
+    --color-flight-ontime-fg: #6ee0a2;
+    --color-flight-ontime-bg: #0e3324;
+    --color-flight-ontime-solid: #3ccf82;
+    --color-flight-ontime-on: #06101f;
+    --color-flight-boarding-fg: #a3c2ff;
+    --color-flight-boarding-bg: #13285c;
+    --color-flight-boarding-solid: #5b95ff;
+    --color-flight-boarding-on: #06101f;
+    --color-flight-delayed-fg: #ffc66e;
+    --color-flight-delayed-bg: #3d2a08;
+    --color-flight-delayed-solid: #f6b24c;
+    --color-flight-delayed-on: #06101f;
+    --color-flight-cancelled-fg: #ffa0a5;
+    --color-flight-cancelled-bg: #4a161c;
+    --color-flight-cancelled-solid: #ff737a;
+    --color-flight-cancelled-on: #06101f;
+    --color-flight-landed-fg: #72d7de;
+    --color-flight-landed-bg: #0b3439;
+    --color-flight-landed-solid: #3cc5cf;
+    --color-flight-landed-on: #06101f;
+    --color-flight-departed-fg: #a3aac0;
+    --color-flight-departed-bg: #171e38;
+    --color-flight-departed-solid: #a3aac0;
+    --color-flight-departed-on: #06101f;
+    --color-official-fg: #0b1230;
+    --color-official-bg: #f4f6fb;
+    --color-official-border: #f4f6fb;
+    --color-estimated-fg: #f4f6fb;
+    --color-estimated-bg: #10172e;
+    --color-estimated-border: #c2c8db;
+    --color-suggestion-fg: #b4c2ff;
+    --color-suggestion-bg: #1a2550;
+    --color-suggestion-border: #b4c2ff;
+    --color-demo-fg: #ffdc8f;
+    --color-demo-bg: #33270a;
+    --color-demo-border: #c99a2e;
     --elevation-rgb: 0 0 0;
-    --elevation-alpha: 2.4;
+    --elevation-alpha: 2.6;
   }
   /* tokens:dark:end */
 
@@ -367,58 +532,93 @@
     /* tokens:dark-fallback:start */
     html:not([data-theme]) {
       color-scheme: dark;
-      --color-page: #0c0e24;
-      --color-page-subtle: #11142f;
-      --color-surface: #171a3d;
-      --color-surface-raised: #1f2350;
-      --color-surface-sunken: #090b1d;
-      --color-ink: #f4eedf;
-      --color-ink-2: #c9c7da;
-      --color-ink-3: #a2a1bd;
-      --color-line: #2a2c48;
-      --color-line-strong: #454866;
-      --color-line-control: #7d80a3;
-      --color-inverse: #1d2152;
-      --color-on-inverse: #f4eedf;
-      --color-on-inverse-dim: #c2c0d6;
-      --color-primary: #c5c9fb;
-      --color-primary-hover: #dfe1ff;
-      --color-on-primary: #14163a;
-      --color-primary-soft: #20245a;
-      --color-primary-ink: #c7ccff;
-      --color-gold: #d2ac62;
-      --color-gold-ink: #e2c383;
-      --color-gold-soft: #2b2946;
+      --color-page: #060a18;
+      --color-page-subtle: #0b1124;
+      --color-surface: #10172e;
+      --color-surface-raised: #172040;
+      --color-surface-sunken: #04060f;
+      --color-ivory: #0f1426;
+      --color-ink: #f4f6fb;
+      --color-ink-2: #c2c8db;
+      --color-ink-3: #9aa2ba;
+      --color-line: #1e2640;
+      --color-line-strong: #2f3858;
+      --color-line-control: #7a84a6;
+      --color-fill: #1c2547;
+      --color-fill-hover: #263058;
+      --color-inverse: #121a38;
+      --color-on-inverse: #f4f6fb;
+      --color-on-inverse-dim: #c2c8db;
+      --color-primary: #eef1fa;
+      --color-primary-hover: #ffffff;
+      --color-on-primary: #0b1230;
+      --color-primary-soft: #1a2550;
+      --color-primary-ink: #b4c2ff;
+      --color-gold: #d6b46e;
+      --color-gold-hover: #e3c382;
+      --color-on-gold: #0b1230;
+      --color-gold-ink: #e5c88a;
+      --color-gold-soft: #2a2416;
       --color-leaf: #8fd3ae;
       --color-leaf-soft: #12382b;
       --color-focus: #ff9fdc;
-      --color-positive-fg: #8fddb5;
-      --color-positive-bg: #12382b;
-      --color-positive-border: #3e8f6b;
-      --color-warning-fg: #f5c46e;
-      --color-warning-bg: #47300a;
-      --color-warning-border: #a87a2a;
-      --color-critical-fg: #ffa99e;
-      --color-critical-bg: #4c1b1d;
-      --color-critical-border: #c0625c;
-      --color-info-fg: #8cd3ec;
-      --color-info-bg: #0e3646;
-      --color-info-border: #3f8ca8;
-      --color-neutral-fg: #cdcedd;
-      --color-neutral-bg: #2b2e50;
-      --color-neutral-border: #7d80a3;
-      --color-official-fg: #14163a;
-      --color-official-bg: #f4eedf;
-      --color-official-border: #f4eedf;
-      --color-estimated-fg: #f4eedf;
-      --color-estimated-bg: #171a3d;
-      --color-estimated-border: #c9c7da;
-      --color-suggestion-fg: #c7ccff;
-      --color-suggestion-bg: #20245a;
-      --color-suggestion-border: #c7ccff;
-      --color-demo-border: #ffc233;
+      --color-positive-fg: #6ee0a2;
+      --color-positive-bg: #0e3324;
+      --color-positive-border: #3c9f6e;
+      --color-warning-fg: #ffc66e;
+      --color-warning-bg: #3d2a08;
+      --color-warning-border: #b8862e;
+      --color-critical-fg: #ffa0a5;
+      --color-critical-bg: #4a161c;
+      --color-critical-border: #c9606a;
+      --color-info-fg: #a3c2ff;
+      --color-info-bg: #13285c;
+      --color-info-border: #5b86d6;
+      --color-neutral-fg: #c9cfe0;
+      --color-neutral-bg: #1b2340;
+      --color-neutral-border: #7a84a6;
+      --color-flight-scheduled-fg: #c9cfe0;
+      --color-flight-scheduled-bg: #1b2340;
+      --color-flight-scheduled-solid: #c9cfe0;
+      --color-flight-scheduled-on: #0b1230;
+      --color-flight-ontime-fg: #6ee0a2;
+      --color-flight-ontime-bg: #0e3324;
+      --color-flight-ontime-solid: #3ccf82;
+      --color-flight-ontime-on: #06101f;
+      --color-flight-boarding-fg: #a3c2ff;
+      --color-flight-boarding-bg: #13285c;
+      --color-flight-boarding-solid: #5b95ff;
+      --color-flight-boarding-on: #06101f;
+      --color-flight-delayed-fg: #ffc66e;
+      --color-flight-delayed-bg: #3d2a08;
+      --color-flight-delayed-solid: #f6b24c;
+      --color-flight-delayed-on: #06101f;
+      --color-flight-cancelled-fg: #ffa0a5;
+      --color-flight-cancelled-bg: #4a161c;
+      --color-flight-cancelled-solid: #ff737a;
+      --color-flight-cancelled-on: #06101f;
+      --color-flight-landed-fg: #72d7de;
+      --color-flight-landed-bg: #0b3439;
+      --color-flight-landed-solid: #3cc5cf;
+      --color-flight-landed-on: #06101f;
+      --color-flight-departed-fg: #a3aac0;
+      --color-flight-departed-bg: #171e38;
+      --color-flight-departed-solid: #a3aac0;
+      --color-flight-departed-on: #06101f;
+      --color-official-fg: #0b1230;
+      --color-official-bg: #f4f6fb;
+      --color-official-border: #f4f6fb;
+      --color-estimated-fg: #f4f6fb;
+      --color-estimated-bg: #10172e;
+      --color-estimated-border: #c2c8db;
+      --color-suggestion-fg: #b4c2ff;
+      --color-suggestion-bg: #1a2550;
+      --color-suggestion-border: #b4c2ff;
+      --color-demo-fg: #ffdc8f;
+      --color-demo-bg: #33270a;
+      --color-demo-border: #c99a2e;
       --elevation-rgb: 0 0 0;
-      --elevation-alpha: 2.4;
+      --elevation-alpha: 2.6;
     }
     /* tokens:dark-fallback:end */
   }
@@ -426,109 +626,159 @@
   /* The board: dark values (above) with the surfaces remapped to the board set. */
   /* tokens:board:start */
   .surface-board {
-    --color-page: #080b16;
-    --color-page-subtle: #121627;
-    --color-surface: #121627;
-    --color-surface-raised: #1a1f33;
-    --color-surface-sunken: #04060d;
-    --color-ink: #f3f1ea;
-    --color-ink-2: #a9aec2;
-    --color-ink-3: #a9aec2;
-    --color-line: #2b3148;
-    --color-line-strong: #3d4563;
-    --color-line-control: #7279a0;
-    --color-estimated-bg: #121627;
-    --color-neutral-bg: #262c44;
-    --color-neutral-border: #7279a0;
+    --color-page: #070b1c;
+    --color-page-subtle: #0f1530;
+    --color-surface: #0f1530;
+    --color-surface-raised: #172042;
+    --color-surface-sunken: #04060f;
+    --color-ink: #f4f6fb;
+    --color-ink-2: #aab1c8;
+    --color-ink-3: #aab1c8;
+    --color-line: #232a48;
+    --color-line-strong: #343d62;
+    --color-line-control: #7680a6;
+    --color-estimated-bg: #0f1530;
+    --color-neutral-bg: #1d2546;
+    --color-neutral-border: #7680a6;
   }
   /* tokens:board:end */
+
+  /* Over photographs and midnight: white text, brighter secondary ink, a lighter focus ring.
+     Surfaces stay dark so a nested card or input still reads as a solid panel. */
+  /* tokens:media:start */
+  .on-media {
+    --color-ink: #ffffff;
+    --color-ink-2: #e3e7f2;
+    --color-ink-3: #d6dbe9;
+    --color-line: #2c3558;
+    --color-line-strong: #46507a;
+    --color-line-control: #aeb6d2;
+    --color-fill: #1f2a52;
+    --color-fill-hover: #2a3664;
+    --color-primary-ink: #c9d4ff;
+    --color-gold-ink: #e8cb8c;
+    --color-focus: #ffb8e8;
+  }
+  /* tokens:media:end */
 
   /* High contrast, light. */
   /* tokens:hc-light:start */
   html[data-contrast='more'],
   html[data-contrast='high'] {
-    --color-page: #fffcf4;
-    --color-page-subtle: #f6f0e0;
+    --color-page: #ffffff;
+    --color-page-subtle: #f1f2f6;
     --color-surface: #ffffff;
     --color-surface-raised: #ffffff;
-    --color-surface-sunken: #f6f0e0;
-    --color-ink: #0d0f26;
-    --color-ink-2: #25284a;
-    --color-ink-3: #35385a;
-    --color-line: #8c899c;
-    --color-line-strong: #5d5a73;
-    --color-line-control: #25284a;
-    --color-primary: #171b52;
-    --color-primary-hover: #0d0f33;
-    --color-primary-ink: #171b52;
-    --color-gold: #7a5814;
+    --color-surface-sunken: #f1f2f6;
+    --color-ivory: #ffffff;
+    --color-ink: #000824;
+    --color-ink-2: #1b2140;
+    --color-ink-3: #262d4d;
+    --color-line: #7d8399;
+    --color-line-strong: #4b5168;
+    --color-line-control: #1b2140;
+    --color-fill: #e3e6ee;
+    --color-fill-hover: #d4d8e3;
+    --color-primary: #050b2a;
+    --color-primary-hover: #000000;
+    --color-primary-ink: #0b1a5c;
+    --color-gold: #a67c2e;
     --color-gold-ink: #5a3f07;
-    --color-leaf: #124a32;
+    --color-leaf: #0f4a31;
     --color-focus: #86095f;
     --color-board-dim: #d5d9e8;
     --color-board-line: #636b8c;
-    --color-positive-fg: #0d4a32;
-    --color-positive-border: #0d4a32;
-    --color-warning-fg: #643600;
-    --color-warning-border: #643600;
-    --color-critical-fg: #7c1814;
-    --color-critical-border: #7c1814;
-    --color-info-fg: #084256;
-    --color-info-border: #084256;
-    --color-neutral-fg: #2c2f4e;
-    --color-neutral-border: #2c2f4e;
-    --color-official-bg: #0d0f26;
-    --color-official-border: #0d0f26;
-    --color-estimated-fg: #0d0f26;
-    --color-estimated-border: #0d0f26;
-    --color-suggestion-fg: #171b52;
-    --color-suggestion-border: #171b52;
-    --color-demo-border: #1f1600;
+    --color-positive-fg: #064d2c;
+    --color-positive-border: #064d2c;
+    --color-warning-fg: #613000;
+    --color-warning-border: #613000;
+    --color-critical-fg: #7c0b14;
+    --color-critical-border: #7c0b14;
+    --color-info-fg: #06358a;
+    --color-info-border: #06358a;
+    --color-neutral-fg: #1b2140;
+    --color-neutral-border: #1b2140;
+    --color-flight-scheduled-fg: #1b2140;
+    --color-flight-ontime-fg: #064d2c;
+    --color-flight-ontime-solid: #075a34;
+    --color-flight-boarding-fg: #06358a;
+    --color-flight-boarding-solid: #0b3fa6;
+    --color-flight-delayed-fg: #613000;
+    --color-flight-cancelled-fg: #7c0b14;
+    --color-flight-cancelled-solid: #8e101b;
+    --color-flight-landed-fg: #04464d;
+    --color-flight-landed-solid: #06525b;
+    --color-flight-departed-fg: #262d4d;
+    --color-flight-departed-solid: #262d4d;
+    --color-official-bg: #000824;
+    --color-official-border: #000824;
+    --color-estimated-fg: #000824;
+    --color-estimated-border: #000824;
+    --color-suggestion-fg: #0b1a5c;
+    --color-suggestion-border: #0b1a5c;
+    --color-demo-fg: #2e1f00;
+    --color-demo-border: #2e1f00;
   }
   /* tokens:hc-light:end */
 
-  /* High contrast, dark (and the board in high contrast). */
+  /* High contrast, dark (and the board and media scopes in high contrast). */
   /* tokens:hc-dark:start */
   html[data-theme='dark'][data-contrast='more'],
   html[data-theme='dark'][data-contrast='high'],
-  html[data-contrast='more'] .surface-board,
-  html[data-contrast='high'] .surface-board {
-    --color-page: #05061a;
-    --color-page-subtle: #0a0c26;
-    --color-surface: #0f1233;
-    --color-surface-raised: #171b45;
-    --color-surface-sunken: #020312;
+  html[data-contrast='more'] :is(.surface-board, .on-media),
+  html[data-contrast='high'] :is(.surface-board, .on-media) {
+    --color-page: #000000;
+    --color-page-subtle: #05081a;
+    --color-surface: #070b20;
+    --color-surface-raised: #0e1430;
+    --color-surface-sunken: #000000;
+    --color-ivory: #070b20;
     --color-ink: #ffffff;
-    --color-ink-2: #e6e4f2;
-    --color-ink-3: #cfcde2;
-    --color-line: #6e7198;
-    --color-line-strong: #a2a4c4;
-    --color-line-control: #e6e4f2;
-    --color-primary: #dde0ff;
-    --color-primary-hover: #f1f2ff;
-    --color-primary-ink: #dde0ff;
-    --color-gold: #e2c383;
-    --color-gold-ink: #f0d9a4;
+    --color-ink-2: #e8eaf3;
+    --color-ink-3: #d3d7e6;
+    --color-line: #6e7598;
+    --color-line-strong: #a2a8c4;
+    --color-line-control: #e8eaf3;
+    --color-fill: #1a2244;
+    --color-fill-hover: #242e58;
+    --color-primary: #ffffff;
+    --color-primary-hover: #e8eaf3;
+    --color-primary-ink: #dde4ff;
+    --color-gold: #e8cb8c;
+    --color-gold-ink: #f2dcaa;
     --color-leaf: #b6f2d2;
     --color-focus: #ffc2e9;
     --color-positive-fg: #b6f2d2;
     --color-positive-border: #b6f2d2;
     --color-warning-fg: #ffd88f;
     --color-warning-border: #ffd88f;
-    --color-critical-fg: #ffc7bf;
-    --color-critical-border: #ffc7bf;
-    --color-info-fg: #b5e6f7;
-    --color-info-border: #b5e6f7;
+    --color-critical-fg: #ffc7ca;
+    --color-critical-border: #ffc7ca;
+    --color-info-fg: #c8daff;
+    --color-info-border: #c8daff;
     --color-neutral-fg: #e8e9f3;
     --color-neutral-border: #e8e9f3;
-    --color-official-fg: #05061a;
+    --color-flight-scheduled-fg: #e8e9f3;
+    --color-flight-ontime-fg: #b6f2d2;
+    --color-flight-boarding-fg: #c8daff;
+    --color-flight-delayed-fg: #ffd88f;
+    --color-flight-cancelled-fg: #ffc7ca;
+    --color-flight-landed-fg: #b2eef2;
+    --color-flight-departed-fg: #d3d7e6;
+    --color-flight-ontime-solid: #3ccf82;
+    --color-flight-boarding-solid: #5b95ff;
+    --color-flight-cancelled-solid: #ff737a;
+    --color-flight-landed-solid: #3cc5cf;
+    --color-flight-departed-solid: #a3aac0;
+    --color-official-fg: #000000;
     --color-official-bg: #ffffff;
     --color-official-border: #ffffff;
     --color-estimated-fg: #ffffff;
     --color-estimated-border: #ffffff;
-    --color-suggestion-fg: #dde0ff;
-    --color-suggestion-border: #dde0ff;
-    --color-demo-border: #ffc233;
+    --color-suggestion-fg: #dde4ff;
+    --color-suggestion-border: #dde4ff;
+    --color-demo-fg: #ffe4a8;
+    --color-demo-border: #ffd88f;
   }
   /* tokens:hc-dark:end */
 
@@ -536,15 +786,15 @@
   /* tokens:hc-board:start */
   html[data-contrast='more'] .surface-board,
   html[data-contrast='high'] .surface-board {
-    --color-page: #04060d;
-    --color-page-subtle: #0e1220;
-    --color-surface: #0e1220;
-    --color-surface-raised: #171c2e;
+    --color-page: #03050d;
+    --color-page-subtle: #0b1022;
+    --color-surface: #0b1022;
+    --color-surface-raised: #141a33;
     --color-ink-2: #d5d9e8;
     --color-ink-3: #d5d9e8;
     --color-line: #636b8c;
     --color-line-strong: #8d95b5;
-    --color-estimated-bg: #0e1220;
+    --color-estimated-bg: #0b1022;
   }
   /* tokens:hc-board:end */
 }
@@ -657,56 +907,97 @@
 
 /* ------------------------------------------------------------------------------------------
  * Type styles: family, size, leading, tracking and weight in one utility
+ *
+ * Display: big, confident and tight, in the heading face (Hanken Grotesk 650). 44 to 88 px for a
+ * hero, 38 to 72 px for a page title. Titles and body stay comfortable for reading. Serif
+ * (Fraunces) is an accent for a phrase or a pull quote, never a whole page's headings.
  * --------------------------------------------------------------------------------------- */
+@utility type-display-2xl {
+  font-family: var(--font-heading);
+  font-size: clamp(2.75rem, 1.4rem + 5.4vw, 5.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.042em;
+  font-weight: 650;
+}
 @utility type-display-xl {
-  font-family: var(--font-display);
-  font-variation-settings: 'opsz' 144;
-  font-size: clamp(2.375rem, 1.25rem + 4.6vw, 4.5rem);
+  font-family: var(--font-heading);
+  font-size: clamp(2.375rem, 1.3rem + 4.2vw, 4.5rem);
   line-height: 1;
-  letter-spacing: -0.028em;
-  font-weight: 380;
+  letter-spacing: -0.038em;
+  font-weight: 650;
 }
 @utility type-display-lg {
-  font-family: var(--font-display);
-  font-variation-settings: 'opsz' 144;
-  font-size: clamp(2rem, 1.3rem + 2.8vw, 3.25rem);
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 1.35rem + 2.6vw, 3.5rem);
   line-height: 1.04;
-  letter-spacing: -0.024em;
-  font-weight: 380;
+  letter-spacing: -0.032em;
+  font-weight: 650;
 }
 @utility type-display-md {
-  font-family: var(--font-display);
-  font-variation-settings: 'opsz' 144;
-  font-size: clamp(1.625rem, 1.25rem + 1.5vw, 2.25rem);
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  font-weight: 380;
+  font-family: var(--font-heading);
+  font-size: clamp(1.625rem, 1.25rem + 1.5vw, 2.5rem);
+  line-height: 1.08;
+  letter-spacing: -0.026em;
+  font-weight: 650;
 }
 @utility type-display-sm {
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
+  font-size: clamp(1.375rem, 1.2rem + 0.7vw, 1.75rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: 650;
+}
+/* Editorial serif accents (Fraunces). Lighter weights read as elegant at size. */
+@utility type-serif-xl {
+  font-family: var(--font-serif);
+  font-variation-settings: 'opsz' 144;
+  font-size: clamp(2.25rem, 1.3rem + 3.8vw, 4.25rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  font-weight: 360;
+}
+@utility type-serif-lg {
+  font-family: var(--font-serif);
+  font-variation-settings: 'opsz' 144;
+  font-size: clamp(1.75rem, 1.3rem + 1.8vw, 2.75rem);
+  line-height: 1.08;
+  letter-spacing: -0.016em;
+  font-weight: 380;
+}
+@utility type-serif-md {
+  font-family: var(--font-serif);
   font-variation-settings: 'opsz' 72;
-  font-size: clamp(1.375rem, 1.25rem + 0.5vw, 1.625rem);
-  line-height: 1.18;
-  letter-spacing: -0.014em;
+  font-size: clamp(1.375rem, 1.2rem + 0.8vw, 1.875rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
   font-weight: 400;
 }
 @utility type-title-lg {
+  font-family: var(--font-heading);
   font-size: 1.375rem;
   line-height: 1.25;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.018em;
   font-weight: 650;
 }
 @utility type-title-md {
+  font-family: var(--font-heading);
   font-size: 1.125rem;
   line-height: 1.3;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.012em;
   font-weight: 650;
 }
 @utility type-title-sm {
+  font-family: var(--font-heading);
   font-size: 1rem;
   line-height: 1.35;
-  letter-spacing: -0.005em;
+  letter-spacing: -0.006em;
   font-weight: 650;
+}
+/* A hero or page lead: larger, airy, one or two sentences. */
+@utility type-lead {
+  font-size: clamp(1.125rem, 1rem + 0.45vw, 1.3125rem);
+  line-height: 1.5;
+  letter-spacing: -0.006em;
 }
 @utility type-body-lg {
   font-size: 1.125rem;
@@ -732,6 +1023,15 @@
   line-height: 1.25;
   letter-spacing: 0.01em;
   font-weight: 600;
+}
+/* A small capitalised kicker for premium moments (a hero, a feature band): at most one per view.
+   Short words only; Malay copy stays readable in capitals at this size. */
+@utility type-overline {
+  font-size: 0.75rem;
+  line-height: 1.2;
+  letter-spacing: 0.16em;
+  font-weight: 650;
+  text-transform: uppercase;
 }
 @utility type-data-xl {
   font-family: var(--font-mono);
@@ -765,10 +1065,12 @@
   letter-spacing: 0.01em;
   font-weight: 500;
 }
+/* Redesign round one (critique item 24): codes are read, so 13 px, the caption size (it was
+   11 px; one size fewer on a page, A-14). */
 @utility type-data-xs {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums lining-nums;
-  font-size: 0.6875rem;
+  font-size: 0.8125rem;
   line-height: 1.2;
   letter-spacing: 0.06em;
   font-weight: 500;
@@ -849,8 +1151,171 @@
 }
 
 /* Hazard stripes for demonstration data. Paint it on an amber block. */
+/* Demonstration data: quiet diagonal threads in the demo border colour. The words carry the
+   meaning; the stripes only make the block recognisable at a glance. */
 @utility hazard-stripes {
-  background-image: repeating-linear-gradient(-45deg, var(--color-demo-fg) 0 6px, transparent 6px 12px);
+  background-image: repeating-linear-gradient(-45deg, var(--color-demo-border) 0 3px, transparent 3px 9px);
+}
+
+/* ------------------------------------------------------------------------------------------
+ * Glass, scrims and media (Direction v2)
+ *
+ * Text over a photograph always sits on a scrim zone or on a glass panel. The alphas in :root
+ * are chosen so that white text passes 4.5:1 even if the photograph behind is pure white
+ * (measured by scripts/design-tokens.mjs). Glass falls back to a solid panel when
+ * backdrop-filter is missing, when the visitor asks for less transparency, and in high contrast.
+ * --------------------------------------------------------------------------------------- */
+
+/* Theme-following glass: frosted white in the light theme, frosted midnight in the dark theme.
+   Tertiary ink is raised to secondary inside, because the photograph behind is unknown. */
+@utility glass {
+  --color-ink-3: var(--color-ink-2);
+  background-color: color-mix(in srgb, var(--color-surface) var(--glass-light-alpha), transparent);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.6);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.6);
+  border: 1px solid color-mix(in srgb, var(--color-surface) 55%, transparent);
+  box-shadow: var(--shadow-lg);
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    background-color: var(--color-surface);
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    background-color: var(--color-surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  :where([data-contrast='more'], [data-contrast='high']) & {
+    background-color: var(--color-surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border-color: var(--color-line-strong);
+  }
+}
+
+/* Smoky midnight glass for content over photographs, in both themes. Pair it with the `on-media`
+   class (GlassPanel does) so the text inside takes the light ink. */
+@utility glass-dark {
+  --color-ink-3: var(--color-ink-2);
+  background-color: color-mix(in srgb, var(--color-glass-dark) var(--glass-dark-alpha), transparent);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.4);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.4);
+  border: 1px solid rgb(255 255 255 / 0.16);
+  box-shadow: var(--shadow-glass);
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    background-color: color-mix(in srgb, var(--color-glass-dark) 92%, transparent);
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    background-color: var(--color-glass-dark);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  :where([data-contrast='more'], [data-contrast='high']) & {
+    background-color: #000000;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border-color: rgb(255 255 255 / 0.7);
+  }
+}
+
+/* Scrims: paint them on an absolutely positioned layer between the image and the text. The text
+   zone (where words may sit) is the first 40 % from the named edge; beyond it the photograph
+   breathes. `scrim-full` sets mood only: put text over it on a GlassPanel. */
+@utility scrim-bottom {
+  background-image: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--color-scrim) var(--scrim-text-alpha), transparent) 0%,
+    color-mix(in srgb, var(--color-scrim) var(--scrim-text-alpha), transparent) 40%,
+    color-mix(in srgb, var(--color-scrim) var(--scrim-edge-alpha), transparent) 70%,
+    transparent 100%
+  );
+}
+@utility scrim-left {
+  background-image: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--color-scrim) var(--scrim-text-alpha), transparent) 0%,
+    color-mix(in srgb, var(--color-scrim) var(--scrim-text-alpha), transparent) 40%,
+    color-mix(in srgb, var(--color-scrim) var(--scrim-edge-alpha), transparent) 72%,
+    transparent 100%
+  );
+}
+@utility scrim-top {
+  background-image: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--color-scrim) var(--scrim-text-alpha), transparent) 0%,
+    color-mix(in srgb, var(--color-scrim) var(--scrim-edge-alpha), transparent) 55%,
+    transparent 100%
+  );
+}
+/* Content-relative scrim: put it on the block that holds the words over a photograph. A layer
+   behind the block holds the text alpha under every line however tall the block grows (Malay,
+   125 % text) and fades out 6rem above it. The block's own bottom corners are inherited. */
+@utility scrim-behind {
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -6rem 0 0 0;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: inherit;
+    background-image: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--color-scrim) var(--scrim-text-alpha), transparent) 0%,
+      color-mix(in srgb, var(--color-scrim) var(--scrim-text-alpha), transparent) calc(100% - 6rem),
+      transparent 100%
+    );
+  }
+  @media (forced-colors: active) {
+    &::before {
+      display: none;
+    }
+  }
+}
+/* The same, beside the words: the layer fades out 8rem to the right of the block. */
+@utility scrim-behind-left {
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0 -8rem 0 0;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: 0;
+    background-image: linear-gradient(
+      to right,
+      color-mix(in srgb, var(--color-scrim) var(--scrim-text-alpha), transparent) 0%,
+      color-mix(in srgb, var(--color-scrim) var(--scrim-text-alpha), transparent) calc(100% - 8rem),
+      transparent 100%
+    );
+  }
+  @media (forced-colors: active) {
+    &::before {
+      display: none;
+    }
+  }
+}
+@utility scrim-full {
+  background-color: color-mix(in srgb, var(--color-scrim) var(--scrim-edge-alpha), transparent);
+}
+
+/* A midnight band: the brand base with a soft lift of navy light from the top. Pair it with
+   `on-media` so components inside take the light ink. */
+@utility surface-midnight {
+  background-color: var(--color-midnight);
+  background-image:
+    radial-gradient(120% 80% at 85% -10%, color-mix(in srgb, var(--color-midnight-2) 90%, transparent) 0%, transparent 60%),
+    radial-gradient(80% 60% at 0% 110%, color-mix(in srgb, var(--color-midnight-2) 70%, transparent) 0%, transparent 55%);
+  color: var(--color-on-midnight);
+}
+
+/* A hairline of gold that fades at both ends: decoration only. */
+@utility rule-gold {
+  height: 1px;
+  background-image: linear-gradient(90deg, transparent, var(--color-gold) 18%, var(--color-gold) 82%, transparent);
+  @media (forced-colors: active) {
+    forced-color-adjust: none;
+    background-image: none;
+    background-color: CanvasText;
+  }
 }
 
 /* Small-caps style numerals for section numbers. */
@@ -879,8 +1344,19 @@ body {
 
 /* ------------------------------------------------------------------------------------------
  * Reduced motion: the system setting and the in-app setting
+ *
+ * Every duration token drops to zero (so JavaScript reading them gets 0 too), every animation and
+ * transition finishes at once, and movement on hover (`motion-ok:` lifts and image zooms) is not
+ * applied at all.
  * --------------------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-instant: 0ms;
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-slow: 0ms;
+    --duration-slower: 0ms;
+  }
   *,
   *::before,
   *::after {
@@ -894,6 +1370,13 @@ body {
   ::view-transition-new(*) {
     animation-duration: 0.01ms !important;
   }
+}
+html:where([data-motion='reduce'], [data-motion='reduced']) {
+  --duration-instant: 0ms;
+  --duration-fast: 0ms;
+  --duration-base: 0ms;
+  --duration-slow: 0ms;
+  --duration-slower: 0ms;
 }
 html:where([data-motion='reduce'], [data-motion='reduced']) *,
 html:where([data-motion='reduce'], [data-motion='reduced']) *::before,
@@ -954,6 +1437,23 @@ html:where([data-motion='reduce'], [data-motion='reduced'])::view-transition-new
   [aria-disabled='true'] {
     color: GrayText;
     border-color: GrayText;
+  }
+}
+
+/* Forced colours: glass becomes a plain system surface with a boundary; scrims step aside, since
+   the system draws its own backplate behind text over images. */
+@media (forced-colors: active) {
+  .glass,
+  .glass-dark {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border: 1px solid CanvasText;
+  }
+  .scrim-bottom,
+  .scrim-left,
+  .scrim-top,
+  .scrim-full {
+    display: none;
   }
 }
 
@@ -1099,6 +1599,22 @@ html[data-compact-chrome] [data-mobile-bar] [data-bar-label] {
    React revealed only after the page body (late LCP and a layout shift on /en/kul). */
 main:has([data-airport-chrome='full']) :is([data-airport-chrome='compact'], [data-airport-header-skeleton]) {
   display: none;
+}
+
+/* Redesign round one (critique items 4 and 18): a flight page leads with its own midnight band
+   (breadcrumb, flight, time, status and gate), so the compact airport bar and the section tabs are
+   not repeated above it (they took 100 px on a desktop and 52 px on a phone before the answer).
+   The marker is in the band's first flush, with the h1. Nothing sticks under a missing tab bar. */
+main:has([data-flight-page]) :is([data-airport-chrome='compact'], [data-airport-header-skeleton]) {
+  display: none;
+}
+@media (width >= 48rem) {
+  main [data-airport-page]:has([data-flight-page]) {
+    --spacing-sticky: var(--spacing-header);
+  }
+  html[data-scroll-chrome='hidden'] main [data-airport-page]:has([data-flight-page]) {
+    --spacing-sticky: 0px;
+  }
 }
 
 /* Airport section pages on phones: the compact airport bar already links back to the airport,

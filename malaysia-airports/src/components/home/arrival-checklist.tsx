@@ -33,7 +33,7 @@ export function ArrivalChecklist({ item }: { item: ArrivalChecklistItem }) {
   const { effectiveMode } = useJourneyMode();
   if (effectiveMode !== 'arriving') return null;
   return (
-    <section aria-labelledby="home-arrival-title" className="rounded-lg border border-line-strong bg-surface p-4 sm:p-5">
+    <section aria-labelledby="home-arrival-title" className="glass-dark on-media rounded-2xl p-4 text-ink sm:p-5">
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
         <h2 id="home-arrival-title" className="type-eyebrow flex items-center gap-2 text-gold-ink">
           <Icon name="id-card" size="sm" />

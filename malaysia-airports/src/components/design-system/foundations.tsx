@@ -3,6 +3,8 @@ import { cn } from '@/lib/cn';
 import type { Translator } from '@/lib/i18n/translate';
 import { Icon, type IconName } from '@/components/ui/icon';
 import { Table, TableScroll, TBody, Td, Th, THead, Tr } from '@/components/ui/table';
+import { StatusPill, type StatusPillTone } from '@/components/ui/status-pill';
+import type { DsCopy } from './copy';
 import { Demo, DemoGrid, DsGroup } from './parts';
 import { CONTRAST_PAIRS, TOKEN_VALUES, type ContrastPair, type TokenThemeId } from './token-data';
 
@@ -11,13 +13,15 @@ import { CONTRAST_PAIRS, TOKEN_VALUES, type ContrastPair, type TokenThemeId } fr
  * --------------------------------------------------------------------------------------- */
 
 const COLOUR_GROUPS = [
-  { key: 'surfaces', tokens: ['page', 'page-subtle', 'surface', 'surface-raised', 'surface-sunken', 'inverse'] },
-  { key: 'ink', tokens: ['ink', 'ink-2', 'ink-3', 'on-inverse', 'on-inverse-dim'] },
-  { key: 'lines', tokens: ['line', 'line-strong', 'line-control'] },
-  { key: 'brand', tokens: ['primary', 'primary-hover', 'on-primary', 'primary-soft', 'primary-ink'] },
-  { key: 'accents', tokens: ['gold', 'gold-ink', 'gold-soft', 'leaf', 'leaf-soft', 'focus'] },
-  { key: 'board', tokens: ['board', 'board-raised', 'board-ink', 'board-dim', 'board-line', 'board-accent'] },
+  { key: 'brand', local: true, tokens: ['midnight', 'midnight-2', 'primary', 'primary-hover', 'primary-soft', 'primary-ink', 'inverse', 'on-midnight-dim'] },
+  { key: 'surfaces', local: true, tokens: ['page', 'page-subtle', 'surface', 'surface-sunken', 'ivory', 'fill', 'fill-hover'] },
+  { key: 'ink', local: false, tokens: ['ink', 'ink-2', 'ink-3', 'on-inverse', 'on-inverse-dim'] },
+  { key: 'lines', local: false, tokens: ['line', 'line-strong', 'line-control'] },
+  { key: 'accents', local: true, tokens: ['gold', 'gold-hover', 'on-gold', 'gold-ink', 'gold-soft', 'gold-bright', 'leaf', 'focus'] },
+  { key: 'board', local: false, tokens: ['board', 'board-raised', 'board-ink', 'board-dim', 'board-line', 'board-accent'] },
 ] as const;
+
+const FLIGHT_TONES: StatusPillTone[] = ['scheduled', 'ontime', 'boarding', 'delayed', 'cancelled', 'landed', 'departed'];
 
 const TONE_ROWS = {
   status: ['positive', 'warning', 'critical', 'info', 'neutral'],
@@ -29,7 +33,7 @@ const swatchStyle = (token: string): CSSProperties => ({ backgroundColor: `var(-
 function Swatch({ token }: { token: string }) {
   return (
     <div className="min-w-0">
-      <div className="h-14 rounded-md border border-line-control" style={swatchStyle(token)} />
+      <div className="h-16 rounded-lg border border-line shadow-xs" style={swatchStyle(token)} />
       <p className="type-data-sm mt-2 break-words text-ink">{token}</p>
       <p className="type-data-xs mt-0.5 text-ink-3">
         {TOKEN_VALUES.light[token]} · {TOKEN_VALUES.dark[token]}
@@ -47,7 +51,7 @@ function ToneSwatch({ tone }: { tone: string }) {
   };
   return (
     <div className="min-w-0">
-      <div className="type-title-sm flex h-14 items-center rounded-md border px-3" style={style}>
+      <div className="type-title-sm flex h-14 items-center rounded-lg border px-3" style={style}>
         {tone}
       </div>
       <p className="type-data-xs mt-2 text-ink-3">
@@ -57,22 +61,46 @@ function ToneSwatch({ tone }: { tone: string }) {
   );
 }
 
-export function ColourTokens({ t }: { t: Translator }) {
+/** A flight tone as its soft and solid pills, with the token values under them. */
+function FlightToneSwatch({ tone }: { tone: StatusPillTone }) {
+  return (
+    <div className="min-w-0">
+      <div className="flex flex-wrap gap-2">
+        <StatusPill tone={tone}>{tone}</StatusPill>
+        <StatusPill tone={tone} variant="solid">
+          {tone}
+        </StatusPill>
+      </div>
+      <p className="type-data-xs mt-2 text-ink-3">
+        fg {TOKEN_VALUES.light[`flight-${tone}-fg`]} · solid {TOKEN_VALUES.light[`flight-${tone}-solid`]}
+      </p>
+    </div>
+  );
+}
+
+export function ColourTokens({ t, c }: { t: Translator; c: DsCopy }) {
   return (
     <>
       {COLOUR_GROUPS.map((group) => (
         <DsGroup
           key={group.key}
-          title={t(`designSystem.groups.${group.key}`)}
-          note={group.key === 'accents' ? `${t('designSystem.notes.gold')} ${t('designSystem.notes.focus')}` : undefined}
+          title={group.local ? c.groups[group.key as 'brand' | 'surfaces' | 'accents'] : t(`designSystem.groups.${group.key as 'ink' | 'lines' | 'board'}`)}
+          note={group.key === 'accents' ? `${c.notes.gold} ${c.notes.focus}` : undefined}
         >
-          <div className="grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-3 lg:grid-cols-6">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-4 lg:grid-cols-8">
             {group.tokens.map((token) => (
               <Swatch key={token} token={token} />
             ))}
           </div>
         </DsGroup>
       ))}
+      <DsGroup title={c.groups.flightTones} note={c.notes.pills}>
+        <div className="grid grid-cols-1 gap-x-4 gap-y-5 xs:grid-cols-2 lg:grid-cols-4">
+          {FLIGHT_TONES.map((tone) => (
+            <FlightToneSwatch key={tone} tone={tone} />
+          ))}
+        </div>
+      </DsGroup>
       {(['status', 'provenance'] as const).map((kind) => (
         <DsGroup key={kind} title={t(`designSystem.groups.${kind}`)}>
           <div className="grid grid-cols-1 gap-x-4 gap-y-5 xs:grid-cols-2 lg:grid-cols-5">
@@ -106,7 +134,13 @@ function Ratio({ pair, theme }: { pair: ContrastPair; theme: TokenThemeId }) {
   );
 }
 
-export function ContrastTables({ t }: { t: Translator }) {
+const LOCAL_GROUPS = ['flight', 'glass', 'media'] as const;
+
+export function ContrastTables({ t, c }: { t: Translator; c: DsCopy }) {
+  const groupLabel = (group: string) =>
+    (LOCAL_GROUPS as readonly string[]).includes(group)
+      ? c.groups[group as (typeof LOCAL_GROUPS)[number]]
+      : t(`designSystem.groups.${group as 'surfaces' | 'ink' | 'lines' | 'brand' | 'accents' | 'board' | 'status' | 'provenance'}`);
   const measured = CONTRAST_PAIRS.filter((pair) => pair.kind !== 'deco');
   const lowest = (kind: 'text' | 'ui') =>
     Math.min(...measured.filter((pair) => pair.kind === kind).flatMap((pair) => Object.values(pair.ratios))).toFixed(2);
@@ -117,7 +151,7 @@ export function ContrastTables({ t }: { t: Translator }) {
         <Icon name="shield-check" className="mt-0.5 text-positive-fg" />
         <span>{t('designSystem.table.summary', { text: lowest('text'), ui: lowest('ui'), count: CONTRAST_PAIRS.length })}</span>
       </p>
-      <div className="rounded-lg border border-line-strong bg-surface">
+      <div className="overflow-hidden rounded-xl border border-line bg-surface shadow-sm">
         <TableScroll label={t('designSystem.table.caption')}>
           {/* Phones show the pair in one cell with the two standard themes; the background, the
               threshold and the high-contrast columns join as the screen widens. */}
@@ -147,7 +181,7 @@ export function ContrastTables({ t }: { t: Translator }) {
                 <TBody key={group}>
                   <Tr>
                     <Th scope="colgroup" colSpan={7} className="bg-page-subtle pt-3 text-ink">
-                      {t(`designSystem.groups.${group}`)}
+                      {groupLabel(group)}
                     </Th>
                   </Tr>
                   {CONTRAST_PAIRS.filter((pair) => pair.group === group).map((pair) => (
@@ -187,71 +221,58 @@ export function ContrastTables({ t }: { t: Translator }) {
  * --------------------------------------------------------------------------------------- */
 
 const TYPE_SCALE = [
-  { cls: 'type-display-xl', name: 'type-display-xl', spec: '38–72 / 1.0 / Fraunces 380', numeric: false },
-  { cls: 'type-display-lg', name: 'type-display-lg', spec: '32–52 / 1.04 / Fraunces 380', numeric: false },
-  { cls: 'type-display-md', name: 'type-display-md', spec: '26–36 / 1.1 / Fraunces 380', numeric: false },
-  { cls: 'type-display-sm', name: 'type-display-sm', spec: '22–26 / 1.18 / Fraunces 400', numeric: false },
-  { cls: 'type-title-lg', name: 'type-title-lg', spec: '22 / 1.25 / Hanken 650', numeric: false },
-  { cls: 'type-title-md', name: 'type-title-md', spec: '18 / 1.3 / Hanken 650', numeric: false },
-  { cls: 'type-title-sm', name: 'type-title-sm', spec: '16 / 1.35 / Hanken 650', numeric: false },
-  { cls: 'type-body-lg', name: 'type-body-lg', spec: '18 / 1.6 / Hanken 400', numeric: false },
-  { cls: 'type-body', name: 'type-body', spec: '16 / 1.55 / Hanken 400', numeric: false },
-  { cls: 'type-body-sm', name: 'type-body-sm', spec: '14 / 1.5 / Hanken 400', numeric: false },
-  { cls: 'type-caption', name: 'type-caption', spec: '13 / 1.4 / Hanken 400', numeric: false },
-  { cls: 'type-eyebrow', name: 'type-eyebrow', spec: '12 / 1.2 / +0.14em / Hanken 600', numeric: false },
-  { cls: 'type-data-xl', name: 'type-data-xl', spec: '24 / 1.0 / Geist Mono 600', numeric: true },
-  { cls: 'type-data-lg', name: 'type-data-lg', spec: '20 / 1.1 / Geist Mono 600', numeric: true },
-  { cls: 'type-data-md', name: 'type-data-md', spec: '14 / 1.3 / Geist Mono 500', numeric: true },
-  { cls: 'type-data-sm', name: 'type-data-sm', spec: '13 / 1.3 / Geist Mono 500', numeric: true },
-  { cls: 'type-data-xs', name: 'type-data-xs', spec: '11 / 1.2 / +0.06em / Geist Mono 500', numeric: true },
+  { cls: 'type-display-2xl', spec: '44–88 / 0.98 / −0.042em / Hanken 650', numeric: false },
+  { cls: 'type-display-xl', spec: '38–72 / 1.0 / −0.038em / Hanken 650', numeric: false },
+  { cls: 'type-display-lg', spec: '32–56 / 1.04 / −0.032em / Hanken 650', numeric: false },
+  { cls: 'type-display-md', spec: '26–40 / 1.08 / −0.026em / Hanken 650', numeric: false },
+  { cls: 'type-display-sm', spec: '22–28 / 1.15 / −0.02em / Hanken 650', numeric: false },
+  { cls: 'type-serif-lg', spec: '28–44 / 1.08 / Fraunces 380', numeric: false },
+  { cls: 'type-title-lg', spec: '22 / 1.25 / Hanken 650', numeric: false },
+  { cls: 'type-title-md', spec: '18 / 1.3 / Hanken 650', numeric: false },
+  { cls: 'type-title-sm', spec: '16 / 1.35 / Hanken 650', numeric: false },
+  { cls: 'type-lead', spec: '18–21 / 1.5 / Hanken 400', numeric: false },
+  { cls: 'type-body', spec: '16 / 1.55 / Hanken 400', numeric: false },
+  { cls: 'type-body-sm', spec: '14 / 1.5 / Hanken 400', numeric: false },
+  { cls: 'type-caption', spec: '13 / 1.4 / Hanken 400', numeric: false },
+  { cls: 'type-overline', spec: '12 / 1.2 / +0.16em / Hanken 650 caps', numeric: false },
+  { cls: 'type-data-xl', spec: '24 / 1.0 / Geist Mono 600', numeric: true },
+  { cls: 'type-data-md', spec: '14 / 1.3 / Geist Mono 500', numeric: true },
+  { cls: 'type-data-xs', spec: '11 / 1.2 / +0.06em / Geist Mono 500', numeric: true },
 ] as const;
 
 const DATA_SAMPLE = '14:05  MH 2610  C12  KUL';
 
-export function TypeSpecimens({ t }: { t: Translator }) {
+export function TypeSpecimens({ t, c }: { t: Translator; c: DsCopy }) {
   const tagline = t('common.tagline');
-  const [first, ...rest] = tagline.split(', ');
   return (
     <>
       <DsGroup title={t('designSystem.groups.families')}>
         <DemoGrid cols={3}>
-          <Demo name="font-display · Fraunces" className="block">
-            <p className="type-display-lg text-ink">
-              {first}
-              {rest.length ? (
-                <>
-                  ,<br />
-                  <em className="font-[330]">{rest.join(', ')}</em>
-                </>
-              ) : null}
-            </p>
-            <p className="type-caption mt-4 text-ink-2">{t('designSystem.notes.display')}</p>
+          <Demo name="font-heading · Hanken Grotesk 650" className="block">
+            <p className="type-display-lg text-ink">{c.samples.heroTitle}</p>
+            <p className="type-caption mt-4 text-ink-2">{c.notes.display}</p>
           </Demo>
-          <Demo name="font-sans · Hanken Grotesk" className="block">
-            <p className="type-title-lg text-ink">{t('journey.timeline.title')}</p>
-            <p className="type-body mt-2 text-ink-2">{t('journey.modes.hint')}</p>
-            <p className="mt-4 flex flex-wrap gap-x-5 gap-y-1 text-ink">
-              <span className="font-normal">400</span>
-              <span className="font-medium">500</span>
-              <span className="font-semibold">600</span>
-              <span className="font-[650]">650</span>
+          <Demo name="font-serif · Fraunces (accent)" className="block">
+            <p className="type-serif-lg text-ink">
+              <span className="text-gold-ink">Selamat datang.</span> {tagline}
             </p>
+            <p className="type-caption mt-4 text-ink-2">{c.notes.serif}</p>
           </Demo>
           <Demo name="font-mono · Geist Mono" className="block">
             <p className="type-data-xl text-ink">14:05 → 16:20</p>
             <p className="type-data-md mt-3 text-ink-2">MH 2610 · AK 6124 · OD 1802</p>
             <p className="type-data-md mt-1 text-ink-2">C12 · H08 · L3 · KUL · PEN · BKI</p>
-            <p className="type-caption mt-4 text-ink-2">{t('designSystem.notes.mono')}</p>
+            <p className="type-caption mt-4 text-ink-2">{c.notes.mono}</p>
           </Demo>
         </DemoGrid>
       </DsGroup>
       <DsGroup title={t('designSystem.groups.scale')}>
-        <ul className="border-t border-line-strong">
+        <ul className="border-t border-line">
           {TYPE_SCALE.map((step) => (
-            <li key={step.name} className="grid items-baseline gap-x-6 gap-y-1 border-b border-line py-3 md:grid-cols-[minmax(0,1fr)_17rem]">
+            <li key={step.cls} className="grid items-baseline gap-x-6 gap-y-1 border-b border-line py-4 md:grid-cols-[minmax(0,1fr)_17rem]">
               <p className={cn(step.cls, 'min-w-0 text-ink')}>{step.numeric ? DATA_SAMPLE : tagline}</p>
               <p className="type-data-sm text-ink-3">
-                <span className="text-ink-2">{step.name}</span>
+                <span className="text-ink-2">{step.cls}</span>
                 <br />
                 {step.spec}
               </p>
@@ -280,19 +301,22 @@ const SPACING = [
 ] as const;
 
 const RADII = [
-  { cls: 'rounded-xs', name: 'rounded-xs', px: '3', use: 'Badge, Kbd' },
-  { cls: 'rounded-sm', name: 'rounded-sm', px: '5', use: 'Chip, ProvenanceTag' },
-  { cls: 'rounded-md', name: 'rounded-md', px: '8', use: 'Button, Input' },
-  { cls: 'rounded-lg', name: 'rounded-lg', px: '12', use: 'Card, Callout' },
-  { cls: 'rounded-xl', name: 'rounded-xl', px: '16', use: 'Dialog, Sheet' },
-  { cls: 'rounded-pill', name: 'rounded-pill', px: '999', use: 'Switch' },
+  { cls: 'rounded-xs', name: 'rounded-xs', px: '6', use: 'Badge, Kbd' },
+  { cls: 'rounded-sm', name: 'rounded-sm', px: '10', use: 'Small tiles' },
+  { cls: 'rounded-md', name: 'rounded-md', px: '12', use: 'Input, Select, Tooltip' },
+  { cls: 'rounded-lg', name: 'rounded-lg', px: '16', use: 'Swatch, tile' },
+  { cls: 'rounded-xl', name: 'rounded-xl', px: '20', use: 'Card, Callout' },
+  { cls: 'rounded-2xl', name: 'rounded-2xl', px: '24', use: 'MediaCard, Popover, GlassPanel' },
+  { cls: 'rounded-3xl', name: 'rounded-3xl', px: '28', use: 'HeroMedia inset, Dialog, Sheet' },
+  { cls: 'rounded-pill', name: 'rounded-pill', px: '999', use: 'Button, Chip, Tabs, Search, StatusPill' },
 ] as const;
 
 const SHADOWS = [
-  { cls: 'shadow-xs', name: 'shadow-xs', use: 'Button' },
-  { cls: 'shadow-sm', name: 'shadow-sm', use: 'Card interactive' },
-  { cls: 'shadow-md', name: 'shadow-md', use: 'Card raised' },
-  { cls: 'shadow-lg', name: 'shadow-lg', use: 'Dialog, Popover' },
+  { cls: 'shadow-xs', name: 'shadow-xs', use: 'Input, Kbd' },
+  { cls: 'shadow-sm', name: 'shadow-sm', use: 'Card, Button' },
+  { cls: 'shadow-md', name: 'shadow-md', use: 'Card raised, MediaCard' },
+  { cls: 'shadow-lg', name: 'shadow-lg', use: 'Hover lift, glass' },
+  { cls: 'shadow-xl', name: 'shadow-xl', use: 'Dialog, Popover' },
 ] as const;
 
 const DENSE = [
@@ -306,11 +330,13 @@ const DENSE = [
 ] as const;
 
 const MOTION = [
-  { name: 'duration-fast', value: '120ms', use: 'Button, FilterChip' },
-  { name: 'duration-base', value: '200ms', use: 'Popover, Tooltip, Accordion' },
-  { name: 'duration-slow', value: '360ms', use: 'Dialog, Sheet' },
-  { name: 'ease-out', value: 'cubic-bezier(.2,.7,.2,1)', use: 'data-state=open' },
-  { name: 'ease-in-out', value: 'cubic-bezier(.65,0,.25,1)', use: 'data-state=closed' },
+  { name: 'duration-fast', value: '140ms', use: 'Button, FilterChip, Tabs' },
+  { name: 'duration-base', value: '240ms', use: 'Card lift, Popover, Accordion' },
+  { name: 'duration-slow', value: '420ms', use: 'Dialog, Sheet' },
+  { name: 'duration-slower', value: '700ms', use: 'Image zoom on hover' },
+  { name: 'ease-out', value: 'cubic-bezier(.22,1,.36,1)', use: 'Entrances, hover' },
+  { name: 'ease-in-out', value: 'cubic-bezier(.65,0,.35,1)', use: 'Exits' },
+  { name: 'motion-ok:', value: 'variant', use: 'Movement only when allowed' },
 ] as const;
 
 const WIDTHS = [
@@ -319,12 +345,13 @@ const WIDTHS = [
   { name: 'max-w-page', value: '77.5rem / 1240', use: 'Container page' },
   { name: 'max-w-wide', value: '90rem / 1440', use: 'Container wide' },
   { name: 'px-gutter', value: 'clamp(16, 4vw, 48)', use: 'Container' },
-  { name: 'py-section', value: 'clamp(48, 32 + 4vw, 80)', use: 'Section lg' },
+  { name: 'py-section', value: 'clamp(56, 32 + 5vw, 112)', use: 'Section lg' },
+  { name: 'py-section-sm', value: 'clamp(40, 28 + 2.5vw, 64)', use: 'Compact bands' },
 ] as const;
 
 const BREAKPOINTS = 'xs 400 · sm 640 · md 768 · lg 1024 · xl 1280 · 2xl 1536';
 
-export function LayoutTokens({ t }: { t: Translator }) {
+export function LayoutTokens({ t, c }: { t: Translator; c: DsCopy }) {
   return (
     <DemoGrid cols={2}>
       <DsGroup title={t('designSystem.groups.spacing')} note="4 px">
@@ -339,10 +366,10 @@ export function LayoutTokens({ t }: { t: Translator }) {
         </ul>
       </DsGroup>
       <DsGroup title={t('designSystem.groups.radii')}>
-        <ul className="grid grid-cols-2 gap-4 xs:grid-cols-3">
+        <ul className="grid grid-cols-2 gap-4 xs:grid-cols-4">
           {RADII.map((step) => (
             <li key={step.name}>
-              <span className={cn('block h-14 border border-line-control bg-surface', step.cls)} />
+              <span className={cn('block h-14 border border-line-strong bg-page-subtle', step.cls)} />
               <span className="type-data-sm mt-2 block text-ink">
                 {step.name} <span className="text-ink-3">{step.px}</span>
               </span>
@@ -352,10 +379,10 @@ export function LayoutTokens({ t }: { t: Translator }) {
         </ul>
       </DsGroup>
       <DsGroup title={t('designSystem.groups.elevation')}>
-        <ul className="grid grid-cols-2 gap-5 sm:grid-cols-4">
+        <ul className="grid grid-cols-2 gap-5 sm:grid-cols-3">
           {SHADOWS.map((step) => (
             <li key={step.name}>
-              <span className={cn('block h-16 rounded-lg border border-line bg-surface-raised', step.cls)} />
+              <span className={cn('block h-16 rounded-xl border border-line bg-surface-raised', step.cls)} />
               <span className="type-data-sm mt-3 block text-ink">{step.name}</span>
               <span className="type-caption block text-ink-2">{step.use}</span>
             </li>
@@ -372,7 +399,7 @@ export function LayoutTokens({ t }: { t: Translator }) {
           ))}
         </ul>
       </DsGroup>
-      <DsGroup title={t('designSystem.groups.motion')}>
+      <DsGroup title={t('designSystem.groups.motion')} note={c.notes.motion}>
         <TokenList rows={MOTION} t={t} />
       </DsGroup>
       <DsGroup title={t('designSystem.groups.widths')} note={BREAKPOINTS}>

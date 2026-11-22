@@ -5,11 +5,11 @@ const TONES = {
   neutral: 'border-line-control text-ink',
   solid: 'border-ink bg-ink text-page',
   primary: 'border-transparent bg-primary-soft text-primary-ink',
-  gold: 'border-gold text-gold-ink',
-  positive: 'border-positive-border bg-positive-bg text-positive-fg',
-  warning: 'border-warning-border bg-warning-bg text-warning-fg',
-  critical: 'border-critical-border bg-critical-bg text-critical-fg',
-  info: 'border-info-border bg-info-bg text-info-fg',
+  gold: 'border-gold bg-gold-soft text-gold-ink',
+  positive: 'border-positive-border/50 bg-positive-bg text-positive-fg',
+  warning: 'border-warning-border/50 bg-warning-bg text-warning-fg',
+  critical: 'border-critical-border/50 bg-critical-bg text-critical-fg',
+  info: 'border-info-border/50 bg-info-bg text-info-fg',
 } as const;
 
 const SIZES = {

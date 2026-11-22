@@ -39,9 +39,9 @@ export function HomeOpsStatus({ notices, sources }: HomeOpsStatusProps) {
     ...opsServicesFor('kul').map((_, index) => ({ key: `affected-${index + 1}`, text: t.count('home.strip.opsAffected', index + 1) })),
   ];
   return (
-    <details className="group border-t border-line lg:col-span-3" onToggle={(event) => setOpen(event.currentTarget.open)}>
-      <summary className="flex min-h-11 cursor-pointer list-none items-center gap-3 px-3 py-1.5 text-ink transition-colors duration-fast hover:bg-page-subtle focus-visible:focus-ring-inset sm:px-4 [&::-webkit-details-marker]:hidden">
-        <Icon name="train-front" className="text-primary-ink max-xs:hidden" />
+    <details className="group border-t border-[rgb(255_255_255/0.12)] lg:col-span-3" onToggle={(event) => setOpen(event.currentTarget.open)}>
+      <summary className="flex min-h-11 cursor-pointer list-none items-center gap-3 px-3 py-1.5 text-ink transition-colors duration-fast hover:bg-[rgb(255_255_255/0.06)] focus-visible:focus-ring-inset sm:px-4 [&::-webkit-details-marker]:hidden">
+        <Icon name="train-front" className="text-gold-bright max-xs:hidden" />
         <span className="type-body-sm flex min-w-0 flex-1 flex-wrap gap-x-1">
           <span className="font-semibold">{t('home.strip.opsTitle')}</span>
           {/* The summary needs the clock, so it arrives after hydration. Every summary it can show

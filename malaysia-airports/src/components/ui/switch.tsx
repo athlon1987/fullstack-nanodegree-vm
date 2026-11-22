@@ -41,7 +41,7 @@ export function Switch({ label, hint, className, id, ...rest }: SwitchProps) {
       >
         <span
           className={cn(
-            'flex h-7 w-12 items-center rounded-pill border border-line-control bg-surface-sunken transition-colors duration-fast',
+            'flex h-7 w-12 items-center rounded-pill border border-line-control bg-fill transition-colors duration-base',
             'group-focus-visible:focus-ring group-data-[state=checked]:border-primary group-data-[state=checked]:bg-primary',
             'group-disabled:border-line group-disabled:bg-neutral-bg',
             'forced-colors:group-data-[state=checked]:forced-color-adjust-none forced-colors:group-data-[state=checked]:bg-[Highlight]',
@@ -49,7 +49,7 @@ export function Switch({ label, hint, className, id, ...rest }: SwitchProps) {
         >
           <SwitchPrimitive.Thumb
             className={cn(
-              'flex size-5 translate-x-0.5 items-center justify-center rounded-full bg-ink-2 text-transparent transition-transform duration-fast',
+              'flex size-5 translate-x-0.5 items-center justify-center rounded-full bg-ink-2 text-transparent shadow-sm transition-[translate,background-color] duration-base ease-out',
               'data-[state=checked]:translate-x-6 data-[state=checked]:bg-on-primary data-[state=checked]:text-primary',
               'group-disabled:bg-ink-3',
               'forced-colors:data-[state=checked]:forced-color-adjust-none forced-colors:data-[state=checked]:bg-[HighlightText] forced-colors:data-[state=checked]:text-[Highlight]',

@@ -30,16 +30,18 @@ export function FilterChip({ pressed, onPressedChange, icon, count, className, c
         if (!event.defaultPrevented) onPressedChange?.(!pressed);
       }}
       className={cn(
-        'inline-flex h-9 shrink-0 items-center gap-1.5 rounded-md border px-3 text-sm font-medium whitespace-nowrap transition-colors duration-fast touch:h-11',
-        pressed ? 'border-ink bg-ink text-page' : 'border-line-control bg-surface text-ink hover:border-ink hover:bg-page-subtle',
-        'disabled:border-line disabled:bg-neutral-bg disabled:text-ink-3',
+        'inline-flex h-10 shrink-0 items-center gap-1.5 rounded-pill border px-3.5 text-sm font-semibold whitespace-nowrap transition-[background-color,border-color,color,box-shadow,scale] duration-fast motion-ok:active:scale-[0.97] touch:h-11',
+        pressed
+          ? 'border-transparent bg-ink text-page shadow-sm'
+          : 'border-line-strong bg-surface text-ink shadow-xs hover:border-line-control hover:bg-page-subtle',
+        'disabled:border-transparent disabled:bg-fill disabled:text-ink-3 disabled:shadow-none',
         className,
       )}
       {...rest}
     >
       {pressed ? <Icon name="check" size="sm" strokeWidth={2.25} /> : icon ? <Icon name={icon} size="sm" /> : null}
       {children}
-      {count !== undefined ? <span className="type-data-sm opacity-80">{count}</span> : null}
+      {count !== undefined ? <span className="type-data-sm opacity-75">{count}</span> : null}
     </button>
   );
 }

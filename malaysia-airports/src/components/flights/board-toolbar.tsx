@@ -1,5 +1,6 @@
 'use client';
 
+import { cn } from '@/lib/cn';
 import { useEffect, useId, useRef, useState, type CSSProperties, type FormEvent } from 'react';
 import { terminalLabel } from '@/content/airports';
 import type { Airport, TerminalId } from '@/content/types';
@@ -46,7 +47,11 @@ export function BoardToolbar({ airport, direction, query, initialQuery, searchKe
   // room, invisible, so the strip and the search beside it do not move when the feed answers (the
   // strip shrank to its label and the search grew: CLS 0.023 en, 0.041 ms at 1440 px).
   const noFlights = Boolean(counts) && STATUS_GROUPS[direction].every((group) => (counts?.[group.id] ?? 0) === 0) && groups.length === 0;
-  const visibleGroups = STATUS_GROUPS[direction].filter((group) => noFlights || !counts || (counts[group.id] ?? 0) > 0 || groups.includes(group.id));
+  // Redesign round one: no chips until the feed answers (the strip keeps its size: a fixed width
+  // beside the search, a fixed height when stacked), then only the statuses that have flights, so
+  // nothing that was painted moves (round 6 kept invisible chips for that; with a red-eye band the
+  // night board has flights, and the chips that remained jumped 330 px: CLS 0.013 en, 0.25 ms).
+  const visibleGroups = counts ? STATUS_GROUPS[direction].filter((group) => (counts[group.id] ?? 0) > 0 || groups.includes(group.id)) : [];
   const [strip, edges] = useOverflowEdges<HTMLDivElement>();
 
   const toggle = (group: StatusGroupId, pressed: boolean) => {
@@ -74,14 +79,25 @@ export function BoardToolbar({ airport, direction, query, initialQuery, searchKe
             on each side that has more chips, as on the section tabs, so the row reads as scrollable. */}
         <div
           ref={strip}
-          role="group"
-          aria-labelledby={statusLabelId}
+          // Redesign round one (critique item 1): with no status to filter by (a quiet night) the
+          // strip keeps its height but shows nothing, not an orphan "Status" label, and is not a
+          // scroll region (an empty one failed axe scrollable-region-focusable on phones).
+          role={visibleGroups.length === 0 && !terminal ? undefined : 'group'}
+          aria-labelledby={visibleGroups.length === 0 && !terminal ? undefined : statusLabelId}
+          aria-hidden={visibleGroups.length === 0 && !terminal ? true : undefined}
           data-overflow-start={edges.start || undefined}
           data-overflow-end={edges.end || undefined}
           style={{ '--fade-start': edges.start ? '2.5rem' : '0px', '--fade-end': edges.end ? '2.5rem' : '0px' } as CSSProperties}
-          className="flex min-h-9 items-center gap-2 max-sm:scroll-fade-x max-sm:-mx-gutter max-sm:min-h-10 max-sm:overflow-x-auto max-sm:px-gutter max-sm:pb-1 sm:flex-wrap touch:min-h-11 max-sm:touch:min-h-12"
+          className={cn(
+            'flex min-h-9 items-center gap-2 max-sm:-mx-gutter max-sm:min-h-10 max-sm:px-gutter max-sm:pb-1 sm:flex-wrap touch:min-h-11 max-sm:touch:min-h-12',
+            // Beside the search (wide toolbars): a fixed width that scrolls sideways like the phone
+            // row, so the chips arriving never resize the search or wrap the toolbar.
+            // One fixed height too, so the row's vertical centre does not move when the chips arrive.
+            '@[70rem]:h-11 @[70rem]:w-[min(40rem,50%)] @[70rem]:shrink-0 @[70rem]:flex-nowrap @[70rem]:py-0',
+            noFlights || !counts ? 'overflow-hidden' : 'max-sm:scroll-fade-x max-sm:overflow-x-auto @[70rem]:scroll-fade-x @[70rem]:overflow-x-auto',
+          )}
         >
-          <span id={statusLabelId} className="type-eyebrow mr-1 shrink-0 text-ink-2">
+          <span id={statusLabelId} className={cn('type-eyebrow mr-1 shrink-0 text-ink-2', visibleGroups.length === 0 && !terminal && 'invisible')}>
             {t('flightPages.board.statusLabel')}
           </span>
           {terminal ? (
@@ -92,12 +108,11 @@ export function BoardToolbar({ airport, direction, query, initialQuery, searchKe
           {visibleGroups.map((group) => (
             <FilterChip
               key={group.id}
-              {...(noFlights ? { 'aria-hidden': true, tabIndex: -1, className: 'invisible' } : {})}
               pressed={groups.includes(group.id)}
               onPressedChange={(pressed) => toggle(group.id, pressed)}
               icon={group.icon}
-              // At night the invisible chips keep the width they had before the feed (no count).
-              count={counts && !noFlights ? (counts[group.id] ?? 0) : undefined}
+              className="shrink-0"
+              count={counts ? (counts[group.id] ?? 0) : undefined}
             >
               {t(group.labelKey)}
             </FilterChip>

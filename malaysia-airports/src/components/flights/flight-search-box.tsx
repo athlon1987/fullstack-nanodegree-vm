@@ -14,7 +14,6 @@ import { retryableLazy } from '@/lib/retrying-import';
 import { PartBoundary, PartLoading } from '@/components/common/part-boundary';
 import { useFlightFeed, type FeedRequest } from '@/lib/providers/use-flight-feed';
 import { dateKey } from '@/lib/time';
-import { RebungRule } from '@/components/art/patterns';
 import { LocaleLink } from '@/components/common/locale-link';
 import { DemoTag } from '@/components/common/demo-tag';
 import { AirportSwitcherButton } from '@/components/shell/airport-switcher';
@@ -91,6 +90,8 @@ export interface FlightSearchBoxProps {
   showAirportSelector?: boolean;
   /** Anchor id, so other parts of the page can link to the search (`#flight-search`). */
   id?: string;
+  /** Show the example searches only while the search has focus, at every size (the home hero). */
+  examplesOnFocus?: boolean;
   className?: string;
 }
 
@@ -102,7 +103,7 @@ export interface FlightSearchBoxProps {
  * Queries are read by the real parser in `@/lib/flights` and answered by the demo provider, so
  * the results are always labelled as demonstration data.
  */
-export function FlightSearchBox({ airport, terminal, showAirportSelector = false, id, className }: FlightSearchBoxProps) {
+export function FlightSearchBox({ airport, terminal, showAirportSelector = false, id, examplesOnFocus = false, className }: FlightSearchBoxProps) {
   const t = useT();
   const lang = useLang();
   const router = useRouter();
@@ -236,8 +237,8 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
 
   return (
     <section id={id} aria-label={t('home.deskLabel')} className={cn('group/desk relative scroll-mt-24', className)}>
-      <div className="relative overflow-hidden rounded-xl border border-line-strong bg-surface shadow-md">
-        <div className="flex flex-col gap-2 p-2 sm:gap-2.5 sm:p-3">
+      <div className="relative overflow-hidden rounded-3xl border border-line bg-surface shadow-xl">
+        <div className="flex flex-col gap-2 p-2.5 sm:gap-3 sm:p-4">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 px-1">
             {showAirportSelector ? <AirportSwitcherButton variant="desk" className="w-full sm:w-auto sm:min-w-72 sm:flex-none" /> : null}
             {/* The journey mode sets the direction (A-17); one small link switches it. */}
@@ -279,7 +280,7 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
                   <button
                     type="submit"
                     aria-label={t('flights.search.submit')}
-                    className="inline-flex size-11 items-center justify-center rounded-md bg-primary text-on-primary transition-colors duration-fast hover:bg-primary-hover sm:hidden"
+                    className="inline-flex size-11 items-center justify-center rounded-full bg-primary text-on-primary transition-colors duration-fast hover:bg-primary-hover sm:hidden"
                   >
                     <Icon name="arrow-right" strokeWidth={1.75} />
                   </button>
@@ -290,7 +291,13 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
 
           {examples.length > 0 && !searching ? (
             /* On phones the examples appear once the search has focus, so the first screen stays short. */
-            <div className="flex items-center gap-2 max-sm:-mx-2 max-sm:hidden max-sm:overflow-x-auto max-sm:px-2 max-sm:group-focus-within/desk:flex sm:flex-wrap">
+            <div
+              className={cn(
+                'flex items-center gap-2 max-sm:-mx-2 max-sm:hidden max-sm:overflow-x-auto max-sm:px-2 max-sm:group-focus-within/desk:flex sm:flex-wrap',
+                // Redesign round one (critique item 5): on the home hero the examples wait for focus at every size.
+                examplesOnFocus && 'sm:hidden sm:group-focus-within/desk:flex',
+              )}
+            >
               <span className="type-eyebrow shrink-0 text-ink-2">{t('flights.search.examplesLabel')}</span>
               <ul className="flex items-center gap-1.5 sm:flex-wrap">
                 {examples.map((example) => (
@@ -301,7 +308,7 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
                         setQuery(example.query);
                         focusInput();
                       }}
-                      className="inline-flex h-8 items-center gap-2 rounded-md border border-line-strong bg-surface px-2.5 text-sm whitespace-nowrap text-ink transition-colors duration-fast hover:border-ink hover:bg-page-subtle touch:h-11"
+                      className="inline-flex h-8 items-center gap-2 rounded-pill border border-line bg-page-subtle px-3 text-sm whitespace-nowrap text-ink transition-colors duration-fast hover:border-ink hover:bg-surface touch:h-11"
                     >
                       <span className="type-caption text-ink-2">{t(kindLabels[example.kind])}</span>
                       <span className="font-semibold">{example.label}</span>
@@ -398,7 +405,7 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
             ) : null}
           </div>
         </div>
-        <RebungRule className="absolute inset-x-3 bottom-0 text-gold opacity-70" />
+        {/* Redesign round one (critique item 15): no gold zig-zag along the card's edge (it read as a torn ticket). */}
       </div>
     </section>
   );

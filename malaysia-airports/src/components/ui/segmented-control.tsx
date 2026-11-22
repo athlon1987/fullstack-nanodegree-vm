@@ -66,7 +66,7 @@ export function SegmentedControl<T extends string = string>({
           equally. */}
       <div
         className={cn(
-          'flex flex-wrap gap-1 rounded-lg border border-line-control bg-page-subtle p-1',
+          'flex flex-wrap gap-1 rounded-[1.625rem] bg-fill p-1',
           stackOnPhone && 'sm:grid sm:auto-cols-fr sm:grid-flow-col',
           !block && 'inline-flex',
         )}
@@ -75,9 +75,9 @@ export function SegmentedControl<T extends string = string>({
           <label
             key={option.value}
             className={cn(
-              'relative flex flex-1 items-center justify-center gap-2 rounded-md px-3 text-center font-semibold [overflow-wrap:normal] text-ink-2 transition-colors duration-fast select-none',
+              'relative flex flex-1 items-center justify-center gap-2 rounded-[1.375rem] px-3.5 text-center font-semibold [overflow-wrap:normal] text-ink-2 transition-[background-color,color,box-shadow] duration-fast select-none',
               size === 'lg' ? 'min-h-13 text-base sm:px-5' : 'min-h-11 text-sm sm:text-base',
-              'hover:text-ink has-[:checked]:bg-ink has-[:checked]:text-page has-[:checked]:shadow-xs',
+              'hover:bg-fill-hover hover:text-ink has-[:checked]:bg-ink has-[:checked]:text-page has-[:checked]:shadow-sm',
               'has-[:focus-visible]:focus-ring has-[:disabled]:cursor-not-allowed has-[:disabled]:text-ink-3',
               'forced-colors:has-[:checked]:forced-color-adjust-none forced-colors:has-[:checked]:bg-[Highlight] forced-colors:has-[:checked]:text-[HighlightText]',
             )}

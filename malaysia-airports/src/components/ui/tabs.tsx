@@ -48,12 +48,14 @@ export function TabsList({ className, ...rest }: ComponentProps<typeof TabsPrimi
 
   const fade = { '--fade-start': more.start ? FADE : '0px', '--fade-end': more.end ? FADE : '0px' } as CSSProperties;
 
+  // Direction v2: app-like pills on a soft track. The track hugs the tabs and scrolls sideways
+  // (with the edge fade) when they are wider than the screen.
   return (
-    <div className="border-b border-line-strong">
+    <div className="flex min-w-0">
       <TabsPrimitive.List
         ref={ref}
         style={fade}
-        className={cn('scroll-fade-x flex gap-1 overflow-x-auto [scrollbar-width:none]', className)}
+        className={cn('scroll-fade-x flex max-w-full gap-1 overflow-x-auto rounded-pill bg-fill p-1 [scrollbar-width:none]', className)}
         {...rest}
       />
     </div>
@@ -64,10 +66,9 @@ export function TabsTrigger({ className, ...rest }: ComponentProps<typeof TabsPr
   return (
     <TabsPrimitive.Trigger
       className={cn(
-        'relative inline-flex h-11 shrink-0 items-center gap-2 px-3 text-base font-semibold whitespace-nowrap text-ink-2 transition-colors duration-fast sm:px-4',
-        'after:absolute after:inset-x-3 after:bottom-0 after:h-0.5 after:bg-transparent hover:text-ink focus-visible:focus-ring-inset',
-        'data-[state=active]:text-ink data-[state=active]:after:bg-ink disabled:text-ink-3',
-        'forced-colors:data-[state=active]:after:bg-[HighlightText]',
+        'relative inline-flex h-9 shrink-0 items-center gap-2 rounded-pill px-4 text-[0.9375rem] font-semibold whitespace-nowrap text-ink-2 transition-[background-color,color,box-shadow] duration-fast touch:h-11 sm:px-5',
+        'hover:bg-fill-hover hover:text-ink focus-visible:focus-ring-inset',
+        'data-[state=active]:bg-ink data-[state=active]:text-page data-[state=active]:shadow-sm disabled:text-ink-3',
         className,
       )}
       {...rest}

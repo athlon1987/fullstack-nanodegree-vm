@@ -341,7 +341,10 @@ test.describe('item 10: the night board does not shift on a desktop', () => {
         }).observe({ type: 'layout-shift', buffered: true });
       });
       await page.goto(`/${lang}/kul/flights`, { waitUntil: 'networkidle' });
-      await expect(page.locator('[data-board-state="empty"]')).toBeVisible();
+      // Redesign round one (critique item 1), intended change: KLIA's board now carries a red-eye
+      // band of long-haul flights (00:00 to 02:30), so at 23:30 it shows rows instead of the empty
+      // state. The measurement is the same: the night board, once the feed has answered.
+      await expect(page.locator('main .surface-board a[href*="/flights/"]').filter({ visible: true }).first()).toBeVisible();
       await page.waitForTimeout(1000);
       expect(await page.evaluate(() => (window as unknown as { __shift: number }).__shift)).toBeLessThanOrEqual(0.01);
     });

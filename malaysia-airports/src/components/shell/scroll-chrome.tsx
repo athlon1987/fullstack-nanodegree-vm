@@ -22,6 +22,10 @@ const IDLE_MS = 700;
  *   `"header"` while scrolling up (header only), removed when scrolling stops or near the top.
  *
  * Focus moving into the header or the bar always brings them back. Mounted once by `MobileBar`.
+ *
+ * Direction v2: also sets `data-scrolled` on `<html>` once the page has scrolled at all, on every
+ * window size. The header reads it over a hero (home) in browsers without CSS scroll-driven
+ * animations, to fade its bar in (`SiteHeader`).
  */
 export function ScrollChrome() {
   useEffect(() => {
@@ -47,7 +51,14 @@ export function ScrollChrome() {
         show();
       }
     };
+    const markScrolled = () => {
+      const scrolled = window.scrollY > 8;
+      if (scrolled === ('scrolled' in html.dataset)) return;
+      if (scrolled) html.dataset.scrolled = '';
+      else delete html.dataset.scrolled;
+    };
     const onScroll = () => {
+      markScrolled();
       if (!enabled || frame) return;
       frame = requestAnimationFrame(() => {
         frame = 0;
@@ -69,6 +80,7 @@ export function ScrollChrome() {
     };
 
     evaluate();
+    markScrolled();
     // The text size is an attribute the display settings change at any time.
     const observer = new MutationObserver(evaluate);
     observer.observe(html, { attributes: true, attributeFilter: ['data-text-size'] });
@@ -88,6 +100,7 @@ export function ScrollChrome() {
       clearTimeout(idle);
       show();
       delete html.dataset.compactChrome;
+      delete html.dataset.scrolled;
     };
   }, []);
   return null;

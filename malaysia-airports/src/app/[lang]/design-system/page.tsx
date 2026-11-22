@@ -1,33 +1,38 @@
 import { languageAlternates } from '@/lib/seo/metadata';
 import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
-import { AirportVignette } from '@/components/art/airport-vignette';
-import { TaburField } from '@/components/art/patterns';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
-import { PageHeader } from '@/components/common/page-header';
+import { dsCopy } from '@/components/design-system/copy';
 import { BoardSample } from '@/components/design-system/board-sample';
 import { ColourTokens, ContrastTables, IconSamples, LayoutTokens, TypeSpecimens } from '@/components/design-system/foundations';
 import { DsSection } from '@/components/design-system/parts';
+import { styleGuideMedia } from '@/components/design-system/sample-media';
 import {
   ActionsShowcase,
   ArtShowcase,
   ContainersShowcase,
   DataShowcase,
+  FlightStatusShowcase,
   FormsShowcase,
+  MediaShowcase,
   PageFurnitureShowcase,
   StatusShowcase,
 } from '@/components/design-system/showcase';
+import { CONTRAST_PAIRS, TOKEN_THEME_IDS } from '@/components/design-system/token-data';
 import { PreviewToolbar } from '@/components/design-system/toolbar';
 import { Container } from '@/components/ui/container';
+import { HeroMedia } from '@/components/ui/hero-media';
 import { Icon, type IconName } from '@/components/ui/icon';
 import { I18nScope, getT, toLang } from '@/lib/i18n';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const t = getT(await routeLang());
-  return { alternates: languageAlternates(await routeLang(), '/design-system'), title: t('designSystem.eyebrow'), description: t('designSystem.lead') };
+  const lang = toLang(await routeLang());
+  const c = dsCopy(lang);
+  return { alternates: languageAlternates(lang, '/design-system'), title: getT(lang)('designSystem.eyebrow'), description: c.lead };
 }
 
-const SECTIONS = ['principles', 'colour', 'contrast', 'type', 'layout', 'icons', 'actions', 'forms', 'containers', 'data', 'status', 'board', 'page', 'art'] as const;
+const SECTIONS = ['principles', 'colour', 'contrast', 'type', 'layout', 'media', 'icons', 'actions', 'forms', 'containers', 'data', 'flight', 'status', 'board', 'page', 'art'] as const;
+type SectionId = (typeof SECTIONS)[number];
 
 const PRINCIPLES: { key: 'calm' | 'honest' | 'inclusive' | 'malaysian'; icon: IconName }[] = [
   { key: 'calm', icon: 'compass' },
@@ -40,35 +45,53 @@ const PRINCIPLES: { key: 'calm' | 'honest' | 'inclusive' | 'malaysian'; icon: Ic
 export default async function DesignSystemPage() {
   const lang = toLang(await routeLang());
   const t = getT(lang);
-  const props = { t, lang };
+  const c = dsCopy(lang);
+  const props = { t, lang, c };
+  const title = (id: SectionId) => (id === 'media' || id === 'flight' ? c.sections[id] : t(`designSystem.sections.${id}`));
+  const number = (id: SectionId) => SECTIONS.indexOf(id) + 1;
+  const media = styleGuideMedia(lang);
+  const lowestText = Math.min(...CONTRAST_PAIRS.filter((pair) => pair.kind === 'text').flatMap((pair) => Object.values(pair.ratios))).toFixed(2);
 
   return (
     // Package E (fix round, performance-09): design-system copy is no longer in the root dictionary.
     <I18nScope lang={lang} namespaces={['designSystem']}>
-      <div className="relative overflow-hidden">
-        <TaburField fade className="absolute top-0 right-0 hidden h-72 w-1/2 sm:block" />
-        <PageHeader
-          className="relative"
-          eyebrow={t('designSystem.eyebrow')}
-          title={t('designSystem.title')}
-          lead={t('designSystem.lead')}
-          breadcrumbs={<Breadcrumbs items={[{ label: t('footer.designSystem') }]} />}
-          art={<AirportVignette code="kul" terminal="T1" />}
-        />
-      </div>
+      <HeroMedia as="header" image={media.hero} preload scrim="left" size="tall" credit={media.heroIsSample ? c.heroNote : undefined}>
+        <div data-page-breadcrumbs="" className="mb-8">
+          <Breadcrumbs items={[{ label: t('footer.designSystem') }]} />
+        </div>
+        <p className="type-overline flex items-center gap-3 text-gold-bright">
+          <span aria-hidden="true" className="h-px w-8 bg-gold-bright" />
+          {c.eyebrow}
+        </p>
+        <h1 className="type-display-xl mt-5 text-ink">{c.title}</h1>
+        <p className="type-lead mt-5 text-ink-2">{c.lead}</p>
+        <dl className="mt-8 grid grid-cols-3 gap-4 border-t border-line-strong pt-6">
+          {[
+            { label: c.stats.pairs, value: CONTRAST_PAIRS.length },
+            { label: c.stats.themes, value: TOKEN_THEME_IDS.length },
+            { label: c.stats.lowest, value: `${lowestText}:1` },
+          ].map((stat) => (
+            <div key={stat.label} className="flex min-w-0 flex-col-reverse gap-1">
+              <dt className="type-caption text-ink-2">{stat.label}</dt>
+              <dd className="type-display-sm text-ink tabular">{stat.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </HeroMedia>
 
-      <Container className="pb-4">
+      <Container className="pt-10 pb-4 sm:pt-12">
         <PreviewToolbar />
-        <nav aria-label={t('designSystem.contents')} className="mt-8">
-          <h2 className="type-eyebrow mb-3 text-ink-3">{t('designSystem.contents')}</h2>
-          <ol className="grid grid-cols-1 border-t border-line-strong xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {SECTIONS.map((id, index) => (
-              <li key={id} className="border-b border-line">
-                <a href={`#${id}`} className="group flex min-h-11 items-center gap-3 py-2 pr-3 text-ink hover:text-primary-ink">
-                  <span className="type-data-sm w-6 text-ink-3">{String(index + 1).padStart(2, '0')}</span>
-                  <span className="type-body-sm font-semibold underline decoration-transparent underline-offset-4 group-hover:decoration-gold">
-                    {t(`designSystem.sections.${id}`)}
-                  </span>
+        <nav aria-label={t('designSystem.contents')} className="mt-10">
+          <h2 className="type-title-md mb-4 text-ink">{t('designSystem.contents')}</h2>
+          <ol className="flex flex-wrap gap-2">
+            {SECTIONS.map((id) => (
+              <li key={id}>
+                <a
+                  href={`#${id}`}
+                  className="group inline-flex min-h-11 items-center gap-2.5 rounded-pill border border-line bg-surface py-1.5 pr-4 pl-3 text-ink shadow-xs transition-[border-color,box-shadow] duration-fast hover:border-line-strong hover:shadow-sm"
+                >
+                  <span className="type-data-xs flex size-7 items-center justify-center rounded-full bg-fill text-ink-2">{String(number(id)).padStart(2, '0')}</span>
+                  <span className="type-body-sm font-semibold">{title(id)}</span>
                 </a>
               </li>
             ))}
@@ -76,67 +99,77 @@ export default async function DesignSystemPage() {
         </nav>
       </Container>
 
-      <DsSection id="principles" number={1} title={t('designSystem.sections.principles')}>
-        <ul className="grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
+      <DsSection id="principles" number={number('principles')} tone="midnight" title={title('principles')}>
+        <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {PRINCIPLES.map((principle) => (
-            <li key={principle.key} className="border-t border-line-strong pt-4">
-              <Icon name={principle.icon} size="lg" className="text-primary-ink" />
-              <h3 className="type-display-sm mt-3 text-ink">{t(`designSystem.principles.${principle.key}.title`)}</h3>
+            <li key={principle.key} className="rounded-xl border border-line bg-surface/60 p-6">
+              <span className="flex size-11 items-center justify-center rounded-full bg-gold-soft text-gold-bright">
+                <Icon name={principle.icon} />
+              </span>
+              <h3 className="type-title-lg mt-5 text-ink">{t(`designSystem.principles.${principle.key}.title`)}</h3>
               <p className="type-body mt-2 text-ink-2">{t(`designSystem.principles.${principle.key}.body`)}</p>
             </li>
           ))}
         </ul>
       </DsSection>
 
-      <DsSection id="colour" number={2} tone="subtle" title={t('designSystem.sections.colour')} intro={t('designSystem.intro.colour')}>
-        <ColourTokens t={t} />
+      <DsSection id="colour" number={number('colour')} tone="subtle" title={title('colour')} intro={c.intro.colour}>
+        <ColourTokens t={t} c={c} />
       </DsSection>
 
-      <DsSection id="contrast" number={3} title={t('designSystem.sections.contrast')} intro={t('designSystem.intro.contrast')}>
-        <ContrastTables t={t} />
+      <DsSection id="contrast" number={number('contrast')} title={title('contrast')} intro={c.intro.contrast}>
+        <ContrastTables t={t} c={c} />
       </DsSection>
 
-      <DsSection id="type" number={4} tone="subtle" title={t('designSystem.sections.type')} intro={t('designSystem.intro.type')}>
-        <TypeSpecimens t={t} />
+      <DsSection id="type" number={number('type')} tone="subtle" title={title('type')} intro={c.intro.type}>
+        <TypeSpecimens t={t} c={c} />
       </DsSection>
 
-      <DsSection id="layout" number={5} title={t('designSystem.sections.layout')} intro={t('designSystem.intro.layout')}>
-        <LayoutTokens t={t} />
+      <DsSection id="layout" number={number('layout')} title={title('layout')} intro={c.intro.layout}>
+        <LayoutTokens t={t} c={c} />
       </DsSection>
 
-      <DsSection id="icons" number={6} tone="subtle" title={t('designSystem.sections.icons')} intro={t('designSystem.intro.icons')}>
+      <DsSection id="media" number={number('media')} tone="subtle" title={title('media')} intro={c.intro.media}>
+        <MediaShowcase {...props} />
+      </DsSection>
+
+      <DsSection id="icons" number={number('icons')} title={title('icons')} intro={t('designSystem.intro.icons')}>
         <IconSamples />
       </DsSection>
 
-      <DsSection id="actions" number={7} title={t('designSystem.sections.actions')} intro={t('designSystem.intro.actions')}>
+      <DsSection id="actions" number={number('actions')} tone="subtle" title={title('actions')} intro={t('designSystem.intro.actions')}>
         <ActionsShowcase {...props} />
       </DsSection>
 
-      <DsSection id="forms" number={8} tone="subtle" title={t('designSystem.sections.forms')} intro={t('designSystem.intro.forms')}>
+      <DsSection id="forms" number={number('forms')} title={title('forms')} intro={t('designSystem.intro.forms')}>
         <FormsShowcase {...props} />
       </DsSection>
 
-      <DsSection id="containers" number={9} title={t('designSystem.sections.containers')} intro={t('designSystem.intro.containers')}>
+      <DsSection id="containers" number={number('containers')} tone="subtle" title={title('containers')} intro={t('designSystem.intro.containers')}>
         <ContainersShowcase {...props} />
       </DsSection>
 
-      <DsSection id="data" number={10} tone="subtle" title={t('designSystem.sections.data')} intro={t('designSystem.intro.data')}>
+      <DsSection id="data" number={number('data')} title={title('data')} intro={t('designSystem.intro.data')}>
         <DataShowcase {...props} />
       </DsSection>
 
-      <DsSection id="status" number={11} title={t('designSystem.sections.status')} intro={t('designSystem.intro.status')}>
+      <DsSection id="flight" number={number('flight')} tone="subtle" title={title('flight')} intro={c.intro.flight}>
+        <FlightStatusShowcase {...props} />
+      </DsSection>
+
+      <DsSection id="status" number={number('status')} title={title('status')} intro={t('designSystem.intro.status')}>
         <StatusShowcase {...props} />
       </DsSection>
 
-      <DsSection id="board" number={12} tone="subtle" title={t('designSystem.sections.board')} intro={t('designSystem.intro.board')}>
+      <DsSection id="board" number={number('board')} tone="subtle" title={title('board')} intro={t('designSystem.intro.board')}>
         <BoardSample {...props} />
       </DsSection>
 
-      <DsSection id="page" number={13} title={t('designSystem.sections.page')} intro={t('designSystem.intro.page')}>
+      <DsSection id="page" number={number('page')} title={title('page')} intro={t('designSystem.intro.page')}>
         <PageFurnitureShowcase {...props} />
       </DsSection>
 
-      <DsSection id="art" number={14} tone="subtle" title={t('designSystem.sections.art')} intro={t('designSystem.intro.art')}>
+      <DsSection id="art" number={number('art')} tone="subtle" title={title('art')} intro={t('designSystem.intro.art')}>
         <ArtShowcase {...props} />
       </DsSection>
     </I18nScope>

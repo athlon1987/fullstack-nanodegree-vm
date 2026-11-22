@@ -151,7 +151,7 @@ export function NetworkMap({ titles, alt, highlight, className }: NetworkMapProp
             <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`${alt} ${titles[panel.id]}.`} className="block h-auto w-full" focusable="false">
               <polygon
                 points={panel.outline.map(([lon, lat]) => `${x(panel, lon)},${y(panel, lat)}`).join(' ')}
-                className="fill-surface-sunken stroke-line-strong"
+                className="fill-fill stroke-line-control"
                 strokeWidth={1}
                 strokeLinejoin="round"
               />
@@ -163,7 +163,7 @@ export function NetworkMap({ titles, alt, highlight, className }: NetworkMapProp
                     cx={x(panel, airport.coordinates.lon)}
                     cy={y(panel, airport.coordinates.lat)}
                     r={7}
-                    className="fill-surface-sunken stroke-line-strong"
+                    className="fill-fill stroke-line-control"
                     strokeWidth={1}
                   />
                 ))}
@@ -176,14 +176,14 @@ export function NetworkMap({ titles, alt, highlight, className }: NetworkMapProp
                 return (
                   <g key={airport.slug} opacity={dim ? 0.22 : 1}>
                     {international ? (
-                      <circle cx={cx} cy={cy} r={5} className="fill-primary stroke-surface" strokeWidth={1.5} />
+                      <circle cx={cx} cy={cy} r={5} className="fill-gold stroke-surface" strokeWidth={1.5} />
                     ) : airport.classification === 'domestic' ? (
-                      <circle cx={cx} cy={cy} r={3.6} className="fill-surface stroke-primary" strokeWidth={1.6} />
+                      <circle cx={cx} cy={cy} r={3.6} className="fill-surface stroke-ink" strokeWidth={1.6} />
                     ) : (
                       <rect x={cx - 2.3} y={cy - 2.3} width={4.6} height={4.6} transform={`rotate(45 ${cx} ${cy})`} className="fill-ink-2" />
                     )}
                     {label ? (
-                      <text x={label.x} y={label.y} textAnchor={label.anchor} className="fill-ink font-mono text-[11px] font-semibold" style={{ paintOrder: 'stroke' }}>
+                      <text x={label.x} y={label.y} textAnchor={label.anchor} className="fill-ink font-mono text-xs font-semibold" style={{ paintOrder: 'stroke' }}>
                         {label.text}
                       </text>
                     ) : null}
@@ -203,9 +203,9 @@ export function MapMarker({ kind, className }: { kind: Airport['classification']
   return (
     <svg viewBox="0 0 14 14" aria-hidden="true" focusable="false" className={cn('size-3.5 shrink-0', className)}>
       {kind === 'international' ? (
-        <circle cx={7} cy={7} r={5} className="fill-primary" />
+        <circle cx={7} cy={7} r={5} className="fill-gold" />
       ) : kind === 'domestic' ? (
-        <circle cx={7} cy={7} r={4} className="fill-surface stroke-primary" strokeWidth={1.8} />
+        <circle cx={7} cy={7} r={4} className="fill-surface stroke-ink" strokeWidth={1.8} />
       ) : (
         <rect x={4.2} y={4.2} width={5.6} height={5.6} transform="rotate(45 7 7)" className="fill-ink-2" />
       )}

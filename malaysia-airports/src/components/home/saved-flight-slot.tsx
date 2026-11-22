@@ -40,7 +40,7 @@ export function SavedFlightSlot({ className }: { className?: string }) {
           <Suspense
             fallback={
               <PartLoading className="saved-flight-size">
-                <div aria-hidden="true" className="saved-flight-size rounded-lg border border-line-strong bg-surface" />
+                <div aria-hidden="true" className="saved-flight-size rounded-2xl border border-[rgb(255_255_255/0.4)] bg-surface shadow-lg" />
               </PartLoading>
             }
           >

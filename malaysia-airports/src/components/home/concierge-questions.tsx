@@ -18,11 +18,11 @@ export function ConciergeQuestions({ questions }: { questions: readonly string[]
               <button
                 type="button"
                 onClick={() => overlays.openConcierge(question)}
-                className="group flex min-h-12 w-full items-center gap-3 rounded-md border border-line-strong bg-surface px-3.5 py-2.5 text-left text-ink transition-colors duration-fast hover:border-ink-3 hover:bg-surface-raised"
+                className="group flex min-h-13 w-full items-center gap-3 rounded-2xl border border-line-strong bg-surface px-4 py-2.5 text-left text-ink transition-colors duration-fast hover:border-ink-3 hover:bg-surface-raised"
               >
-                <Icon name="messages-square" size="sm" className="text-primary-ink" />
+                <Icon name="messages-square" size="sm" className="text-gold-ink" />
                 <span className="type-body min-w-0 flex-1 font-medium">{question}</span>
-                <Icon name="arrow-right" size="sm" strokeWidth={1.75} className="text-ink-3 transition-transform duration-base group-hover:translate-x-0.5" />
+                <Icon name="arrow-right" size="sm" strokeWidth={1.75} className="text-ink-3 transition-transform duration-base motion-ok:group-hover:translate-x-0.5" />
               </button>
             </li>
           ))}

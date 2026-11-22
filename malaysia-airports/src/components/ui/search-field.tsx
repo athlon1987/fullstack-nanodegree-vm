@@ -5,9 +5,17 @@ import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n/client';
 import { Icon, type IconName } from './icon';
 
+/* Direction v2: a soft pill with an inset icon. `md` 44 px keeps dense data screens (the board) compact;
+   `lg` is the hero search (56 px, 64 px from `sm`). */
 const SIZES = {
-  md: { field: 'min-h-11', input: 'h-11 text-base', pad: 'pl-10', icon: 'left-3', gap: 'left-10' },
-  lg: { field: 'min-h-13', input: 'h-13 text-base sm:text-lg', pad: 'pl-12', icon: 'left-4', gap: 'left-12' },
+  md: { field: 'min-h-11 shadow-xs', input: 'h-11 text-base', pad: 'pl-11', icon: 'left-4', gap: 'left-11' },
+  lg: {
+    field: 'min-h-14 shadow-md sm:min-h-16',
+    input: 'h-14 text-base sm:h-16 sm:text-lg',
+    pad: 'pl-12 sm:pl-14',
+    icon: 'left-4 sm:left-5',
+    gap: 'left-12 sm:left-14',
+  },
 } as const;
 
 export interface SearchFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size' | 'onChange' | 'value' | 'defaultValue'> {
@@ -25,7 +33,7 @@ export interface SearchFieldProps extends Omit<InputHTMLAttributes<HTMLInputElem
   placeholderShort?: string;
   /** Leading icon; `null` for none. */
   icon?: IconName | null;
-  /** md 44px (default), lg 52px. */
+  /** md 44px (default), lg 56px (64px from `sm`). */
   size?: keyof typeof SIZES;
   /** Rendered inside the field after the clear button: usually the submit `Button`. */
   trailing?: ReactNode;
@@ -91,8 +99,8 @@ export function SearchField({
       </label>
       <div
         className={cn(
-          'group relative flex items-center rounded-md border border-line-control bg-surface transition-colors duration-fast',
-          'hover:border-ink has-[input:focus-visible]:focus-ring has-[input:focus-visible]:border-ink',
+          'group relative flex items-center rounded-pill border border-line-control bg-surface transition-[border-color,box-shadow] duration-fast',
+          'hover:border-ink-2 has-[input:focus-visible]:focus-ring has-[input:focus-visible]:border-ink',
           s.field,
         )}
       >
@@ -110,9 +118,9 @@ export function SearchField({
             {...(value !== undefined ? { value } : { defaultValue })}
             onChange={(event) => onValueChange?.(event.target.value)}
             className={cn(
-              'peer block w-full min-w-0 appearance-none rounded-md bg-transparent pr-2 text-ink outline-none',
+              'peer block w-full min-w-0 appearance-none rounded-pill bg-transparent pr-2 text-ink outline-none',
               s.input,
-              icon ? s.pad : 'pl-3',
+              icon ? s.pad : 'pl-4',
               className,
             )}
             {...rest}
@@ -123,7 +131,7 @@ export function SearchField({
               className={cn(
                 'pointer-events-none absolute top-1/2 right-2 hidden -translate-y-1/2 truncate text-ink-3 peer-placeholder-shown:block',
                 size === 'lg' ? 'text-base sm:text-lg' : 'text-base',
-                icon ? s.gap : 'left-3',
+                icon ? s.gap : 'left-4',
               )}
             >
               {placeholderShort ? (
@@ -141,11 +149,11 @@ export function SearchField({
           type="button"
           onClick={clear}
           aria-label={t('common.actions.clear')}
-          className="mr-1 inline-flex size-9 shrink-0 items-center justify-center rounded-sm text-ink-2 transition-colors duration-fast group-has-[input:placeholder-shown]:hidden hover:bg-page-subtle hover:text-ink touch:size-11"
+          className="mr-1.5 inline-flex size-9 shrink-0 items-center justify-center rounded-full text-ink-2 transition-colors duration-fast group-has-[input:placeholder-shown]:hidden hover:bg-fill hover:text-ink touch:size-11"
         >
           <Icon name="x" size="sm" strokeWidth={2} />
         </button>
-        {trailing ? <div className="relative mr-1 flex shrink-0 items-center">{trailing}</div> : null}
+        {trailing ? <div className="relative mr-1.5 flex shrink-0 items-center">{trailing}</div> : null}
       </div>
       {hint ? (
         <p id={`${inputId}-hint`} className="type-caption text-ink-2">

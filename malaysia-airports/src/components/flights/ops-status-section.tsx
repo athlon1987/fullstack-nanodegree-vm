@@ -9,6 +9,8 @@ export interface OpsStatusSectionProps {
   services?: readonly OpsServiceId[];
   terminal?: TerminalId;
   headingLevel?: 2 | 3;
+  /** `card` (default) or `tiles` (the airport overview, redesign round one). */
+  variant?: 'card' | 'tiles';
   className?: string;
 }
 
@@ -20,11 +22,11 @@ export interface OpsStatusSectionProps {
  *
  * @example <OpsStatusSection airport="kul" services={['aerotrain', 'inter-terminal-train', 'inter-terminal-shuttle']} />
  */
-export function OpsStatusSection({ airport, services, terminal, headingLevel, className }: OpsStatusSectionProps) {
+export function OpsStatusSection({ airport, services, terminal, headingLevel, variant, className }: OpsStatusSectionProps) {
   const available = opsServicesFor(airport);
   const wanted = (services ?? available).filter((service) => available.includes(service));
   if (wanted.length === 0) return null;
   const notices = getNotices(airport);
   const sources: Record<string, Source> = Object.fromEntries(resolveSources([...new Set(notices.flatMap((notice) => notice.sources))]).map((source) => [source.id, source]));
-  return <OpsStatus airport={airport} notices={notices} sources={sources} services={wanted} terminal={terminal} headingLevel={headingLevel} className={className} />;
+  return <OpsStatus airport={airport} notices={notices} sources={sources} services={wanted} terminal={terminal} headingLevel={headingLevel} variant={variant} className={className} />;
 }

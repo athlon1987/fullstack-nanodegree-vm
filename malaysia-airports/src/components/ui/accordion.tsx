@@ -15,7 +15,7 @@ import { Icon } from './icon';
  * </Accordion>
  */
 export function Accordion({ className, ...rest }: ComponentProps<typeof AccordionPrimitive.Root>) {
-  return <AccordionPrimitive.Root className={cn('border-t border-line-strong', className)} {...rest} />;
+  return <AccordionPrimitive.Root className={cn('border-t border-line', className)} {...rest} />;
 }
 
 export interface AccordionItemProps extends Omit<ComponentProps<typeof AccordionPrimitive.Item>, 'title'> {
@@ -28,21 +28,22 @@ export interface AccordionItemProps extends Omit<ComponentProps<typeof Accordion
 export function AccordionItem({ title, headingLevel = 3, className, children, ...rest }: AccordionItemProps) {
   const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4';
   return (
-    <AccordionPrimitive.Item className={cn('border-b border-line-strong', className)} {...rest}>
+    <AccordionPrimitive.Item className={cn('border-b border-line', className)} {...rest}>
       <AccordionPrimitive.Header asChild>
         <Heading>
-          <AccordionPrimitive.Trigger className="group type-title-sm flex min-h-13 w-full items-center justify-between gap-4 py-3 text-left text-ink transition-colors duration-fast hover:text-primary-ink">
+          <AccordionPrimitive.Trigger className="group type-title-md flex min-h-16 w-full items-center justify-between gap-4 py-4 text-left text-ink transition-colors duration-fast hover:text-primary-ink">
             <span className="min-w-0">{title}</span>
-            <Icon
-              name="chevron-down"
-              strokeWidth={1.75}
-              className="text-ink-2 transition-transform duration-base group-data-[state=open]:rotate-180"
-            />
+            <span
+              aria-hidden="true"
+              className="flex size-9 shrink-0 items-center justify-center rounded-full bg-fill text-ink-2 transition-[background-color,rotate] duration-base ease-out group-hover:bg-fill-hover group-data-[state=open]:rotate-180"
+            >
+              <Icon name="chevron-down" size="sm" strokeWidth={2} />
+            </span>
           </AccordionPrimitive.Trigger>
         </Heading>
       </AccordionPrimitive.Header>
       <AccordionPrimitive.Content className="overflow-hidden data-[state=closed]:animate-collapse-up data-[state=open]:animate-collapse-down">
-        <div className="max-w-reading pb-5 text-ink-2">{children}</div>
+        <div className="max-w-reading pb-6 text-ink-2">{children}</div>
       </AccordionPrimitive.Content>
     </AccordionPrimitive.Item>
   );

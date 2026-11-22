@@ -12,7 +12,7 @@ export function PreviewToolbar() {
   const t = useT();
   const { preferences, set, reset } = usePreferences();
   return (
-    <section aria-label={t('designSystem.previewTitle')} className="rounded-lg border border-line-strong bg-surface p-4 sm:p-5">
+    <section aria-label={t('designSystem.previewTitle')} className="rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">
       <div className="flex flex-wrap items-end gap-x-8 gap-y-4">
         <SegmentedControl<ThemeChoice>
           label={t('preferences.theme')}

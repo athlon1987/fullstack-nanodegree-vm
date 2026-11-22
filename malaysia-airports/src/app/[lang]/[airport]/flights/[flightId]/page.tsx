@@ -7,7 +7,6 @@ import { formatDate } from '@/lib/time';
 import { localAirport, loadAirportPage, sectionStaticParams } from '@/components/airport/section-page';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { MissingPage } from '@/components/common/missing-page';
-import { PageHeader } from '@/components/common/page-header';
 import { AirlineFacts, hasAirlineFacts } from '@/components/flights/airline-facts';
 import { DisruptionHelp } from '@/components/flights/disruption-help';
 import { FlightDetail } from '@/components/flights/flight-detail';
@@ -15,7 +14,7 @@ import { flightIdentity } from '@/components/flights/flight-identity';
 import { flightTitle } from '@/components/flights/flight-title';
 import { identifyFlight } from '@/components/flights/identify-flight';
 import { journeyExtras, publishedCheckInFor } from '@/components/flights/journey-content';
-import { Container } from '@/components/ui/container';
+import { AirportBackdrop } from '@/components/airport/airport-backdrop';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 type FlightPageProps = PageProps<'/[lang]/[airport]/flights/[flightId]'>;
@@ -113,32 +112,37 @@ async function Flight({ params }: { params: FlightPageProps['params'] }) {
   );
 
   return (
-    <>
-      <PageHeader
-        eyebrow={airlineLabel}
-        // Lining, tabular figures for the flight number in the display face (ux-frequent-20).
-        title={<span className="lining-nums tabular-nums">{title}</span>}
-        breadcrumbs={<Breadcrumbs items={[...crumbs, { label: formatFlightNumber(flight) }]} />}
-        // Verification round two: on phones the trail stays hidden here, as before round 2's outlet
-        // change (globals.css keeps four-item trails for outlets). Its "< Flights" line put this h1
-        // at 244 px (A-01: at most 200); the compact airport bar and the bottom bar lead to the board.
-        className="[&>div]:pb-5 sm:[&>div]:pb-6 max-sm:[&_[data-page-breadcrumbs]]:hidden"
-      />
-      <Container className="pb-section">
-        <FlightDetail
-          flightId={flight.id}
-          airport={airport.slug}
-          title={title}
-          identity={flightIdentity(flight)}
-          journeyContent={{ airport, guidesNotes: content.guidesNotes, ...extras }}
-          sources={sources}
-          notices={notices}
-          publishedCheckIn={flight.direction === 'd' && airline ? publishedCheckInFor(airline, lang) : undefined}
-          disruption={<DisruptionHelp lang={lang} airline={flight.airline.name} />}
-          airlineFacts={airline && hasAirlineFacts(airline) ? <AirlineFacts lang={lang} airport={airport} airline={airline} /> : undefined}
-        />
-      </Container>
-    </>
+    <FlightDetail
+      flightId={flight.id}
+      airport={airport.slug}
+      title={title}
+      identity={flightIdentity(flight)}
+      journeyContent={{ airport, guidesNotes: content.guidesNotes, ...extras }}
+      sources={sources}
+      notices={notices}
+      publishedCheckIn={flight.direction === 'd' && airline ? publishedCheckInFor(airline, lang) : undefined}
+      disruption={<DisruptionHelp lang={lang} airline={flight.airline.name} />}
+      airlineFacts={airline && hasAirlineFacts(airline) ? <AirlineFacts lang={lang} airport={airport} airline={airline} /> : undefined}
+      // Redesign round one: the header is a midnight band (the airport's photograph or pattern),
+      // the flight card rises into its lower edge. The eyebrow and h1 are server HTML, inline.
+      band={{
+        backdrop: <AirportBackdrop slug={airport.slug} code={airport.code} lang={lang} variant="band" />,
+        header: (
+          <>
+            {/* Redesign round one (critique items 4 and 18): a flight page has no airport bar or
+                section tabs (globals.css, `data-flight-page`), so on phones the trail is back as its
+                one "< Flights" link: the h1 still starts above 200 px (A-01). */}
+            <div data-flight-page="" className="mb-2 sm:mb-4">
+              <Breadcrumbs items={[...crumbs, { label: formatFlightNumber(flight) }]} />
+            </div>
+            <p className="type-caption font-semibold text-gold-bright">{airlineLabel}</p>
+            {/* Lining, tabular figures for the flight number in the display face (ux-frequent-20). */}
+            <h1 className="type-display-md mt-2 text-balance text-ink">
+              <span className="lining-nums tabular-nums">{title}</span>
+            </h1>
+          </>
+        ),
+      }}
+    />
   );
 }
-

@@ -1,0 +1,67 @@
+{
+ "en": {
+  "performance": 84,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 69,
+  "fcp_ms": 1373,
+  "lcp_ms": 3945,
+  "tbt_ms": 207,
+  "cls": 0,
+  "si_ms": 1373,
+  "totalBytes": 993205,
+  "requests": 54
+ },
+ "en-kul": {
+  "performance": 84,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1374,
+  "lcp_ms": 4392,
+  "tbt_ms": 132,
+  "cls": 0,
+  "si_ms": 1411,
+  "totalBytes": 761232,
+  "requests": 47
+ },
+ "flight-page": {
+  "performance": 81,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1513,
+  "lcp_ms": 4172,
+  "tbt_ms": 250,
+  "cls": 0,
+  "si_ms": 1513,
+  "totalBytes": 820004,
+  "requests": 52
+ },
+ "en-airports": {
+  "performance": 97,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1368,
+  "lcp_ms": 1368,
+  "tbt_ms": 190,
+  "cls": 0,
+  "si_ms": 1368,
+  "totalBytes": 974441,
+  "requests": 45
+ },
+ "en-credits": {
+  "performance": 99,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 69,
+  "fcp_ms": 1216,
+  "lcp_ms": 1216,
+  "tbt_ms": 108,
+  "cls": 0,
+  "si_ms": 1216,
+  "totalBytes": 643341,
+  "requests": 48
+ }
+}

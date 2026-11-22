@@ -8,20 +8,17 @@ import {
   getAirportContent,
   getNotices,
   isMultiTerminal,
-  localizeAirport,
   pick,
   resolveSources,
-  type Airport,
   type GuideNote,
   type Lang,
   type Source,
-  type Terminal,
 } from '@/content';
+import { localizeAirport } from '@/content/airports';
+import { HOME_HERO_IMAGES, IMAGES, type SiteImage } from '@/content/images';
 import { ARRIVAL_TIME_RULE } from '@/content/planning-rules';
 import { getT } from '@/lib/i18n';
-import { AirportVignette } from '@/components/art/airport-vignette';
-import { RebungRule, TaburField } from '@/components/art/patterns';
-import { AirportCode } from '@/components/common/airport-code';
+import { cn } from '@/lib/cn';
 import { LocaleLink } from '@/components/common/locale-link';
 import { ProvenanceLegend } from '@/components/common/provenance-legend';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
@@ -29,17 +26,18 @@ import { SectionHeading } from '@/components/common/section-heading';
 import { SourceNote } from '@/components/common/source-note';
 import type { NoticeView } from '@/components/airport/notice-utils';
 import { FlightSearchBox } from '@/components/flights/flight-search-box';
-import { sectionPath } from '@/components/shell/sections';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardLink } from '@/components/ui/card';
 import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
 import { Section } from '@/components/ui/section';
 import { DemoMarkedList } from '@/components/common/demo-tag';
 import { ArrivalChecklist, type ArrivalChecklistItem } from './arrival-checklist';
 import { BoardPreview } from './board-preview';
+import { DepartingNow } from './departing-now';
 import { ConciergeQuestions } from './concierge-questions';
-import { JourneyModeGuidance, JourneyModes } from './journey-modes';
+import { DestinationCard } from './destination-card';
+import { HeroBackdrop } from './hero-backdrop';
+import { JourneyModes } from './journey-modes';
 import { JourneyTeaser, type TeaserOfficialFact } from './journey-teaser';
 import { ModeQuickActions } from './mode-quick-actions';
 import { HomeOpsStatus } from './home-ops-status';
@@ -49,11 +47,6 @@ import { ShopDineStrip, type ShopDineFilter } from './shop-dine-strip';
 
 /* ---- First screen ---------------------------------------------------------------------------- */
 
-/**
- * The first screen: headline, flight search with the airport selector, journey modes, six quick
- * actions, and one notice with the getting-there and terminal-guidance strip. Vertical spacing
- * scales with the height of the window so all of it sits above the fold at 1280 by 720.
- */
 /** The arrival-card step of the Arriving guide, for the home's Arriving mode (A-18). */
 function arrivalChecklist(lang: Lang): ArrivalChecklistItem | null {
   const guide = GUIDES.find((item) => item.slug === 'arriving');
@@ -80,64 +73,107 @@ function kliaStatusData() {
   return { notices, sources };
 }
 
+/**
+ * The first screen (Direction v2): a full-bleed cinematic hero that runs up under the header (the
+ * header is transparent over it until the page scrolls; `data-hero-under-header`). Over the
+ * picture: the headline, the flight search on a frosted panel, the saved flight, the journey
+ * modes and six quick actions on smoky glass, and the notice strip. All of it stays above the
+ * fold at 1280 by 720 and on a 390 by 844 phone (smoke tests), so vertical spacing follows the
+ * window height.
+ *
+ * The picture is the first photograph of `HOME_HERO_IMAGES` (preloaded, the LCP element) or,
+ * while the library is empty, the illustrated "KLIA at dusk". The `h1` is in the static HTML.
+ */
 export function HomeHero({ lang, notices }: { lang: Lang; notices: readonly NoticeView[] }) {
   const t = getT(lang);
   const arrival = arrivalChecklist(lang);
+  const photoId = HOME_HERO_IMAGES[0];
+  // Typed as a library photo: while the library is empty the id type is `never`.
+  const photo: SiteImage | undefined = photoId === undefined ? undefined : (IMAGES[photoId] as SiteImage);
   return (
-    <section aria-labelledby="home-title" className="relative isolate overflow-hidden border-b border-line">
-      <TaburField fade className="absolute top-0 right-0 -z-10 h-52 w-[44rem] max-w-[65%] opacity-45 max-md:hidden" />
-      <Container className="flex flex-col gap-[clamp(0.5rem,1.9vh,1.25rem)] pt-[clamp(0.625rem,2.4vh,2rem)] pb-[clamp(1.25rem,3.2vh,2.75rem)] max-sm:gap-2.5 max-sm:pt-2.5">
-        <div className="flex items-end justify-between gap-x-10 gap-y-2">
-          <div className="min-w-0">
-            <p className="type-eyebrow mb-2.5 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-gold-ink max-sm:hidden">
-              <span aria-hidden="true" className="h-px w-7 bg-gold" />
-              <span lang="ms">{t('home.greeting')}</span>
-              <span aria-hidden="true">·</span>
-              <span>{t('home.eyebrow', { count: AIRPORTS.length })}</span>
-            </p>
-            <h1 id="home-title" className="type-display-lg text-ink max-sm:text-[1.625rem] max-xs:text-2xl">
-              {/* Upright, in colour: the italic face (81 KB) is no longer loaded (A-10). */}
-              {t('home.headlineTaskLead')} <span className="text-primary-ink">{t('home.headlineTaskAccent')}</span>
-            </h1>
-          </div>
-          <p className="type-body-sm max-w-80 shrink-0 pb-1 text-ink-2 max-xl:hidden">{t('home.lead')}</p>
-        </div>
+    <section
+      aria-labelledby="home-title"
+      data-hero-under-header=""
+      className="relative isolate -mt-header flex flex-col justify-end bg-midnight md:min-h-[calc(100svh-2rem)] lg:min-h-[min(62rem,calc(100svh-2rem))]"
+    >
+      <HeroBackdrop photo={photo} lang={lang} />
+      <Container className="flex flex-col gap-[clamp(0.625rem,1.5vh,1rem)] pt-[calc(var(--spacing-header)+clamp(1rem,3.5vh,3.5rem))] pb-[clamp(1.25rem,3.5vh,3rem)]">
+        {/* Redesign round one (critique item 5): from 1440 px the headline and the search share the
+            left of the hero with a glass "Departing now" panel on the right (live status in the
+            hero); 48 px between the h1 and the search; the example searches wait for focus. */}
+        <div className="min-[90rem]:grid min-[90rem]:grid-cols-[minmax(0,1fr)_22rem] min-[90rem]:items-end min-[90rem]:gap-x-10">
+          <div className="flex min-w-0 flex-col gap-[clamp(1rem,3vh,3rem)]">
+            <div className={cn('on-media max-w-[60rem] text-ink', photo && 'scrim-behind')}>
+              <p className="type-caption mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 font-semibold tracking-[0.16em] text-ink-2 uppercase max-sm:hidden [@media(max-height:46rem)]:hidden">
+                <span aria-hidden="true" className="h-px w-8 bg-gold-bright" />
+                <span lang="ms">{t('home.greeting')}</span>
+                <span aria-hidden="true">·</span>
+                <span>{t('home.eyebrow', { count: AIRPORTS.length })}</span>
+              </p>
+              <h1
+                id="home-title"
+                className="font-heading text-[clamp(1.875rem,min(5vw,6.8vh),4.5rem)] leading-[1.02] font-[650] tracking-[-0.04em] text-balance text-ink"
+              >
+                {t('home.headlineTaskLead')} <span className="text-gold-bright">{t('home.headlineTaskAccent')}</span>
+              </h1>
+              <p className="type-body-lg mt-4 max-w-[36rem] text-ink-2 max-lg:hidden [@media(max-height:60rem)]:hidden">{t('home.lead')}</p>
+            </div>
 
-        {/* The airport is chosen once, in the header (A-17). */}
-        <FlightSearchBox id="flight-search" />
+            {/* The flight search on a frosted panel: the brightest thing on the screen. The airport is
+                chosen once, in the header (A-17). */}
+            <FlightSearchBox
+              id="flight-search"
+              examplesOnFocus
+              className={cn(
+                'max-w-[60rem] [&_.pattern-rebung]:hidden',
+                '[&>div]:rounded-3xl [&>div]:border-[rgb(255_255_255/0.5)] [&>div]:shadow-xl [&>div]:backdrop-blur-[20px] [&>div]:backdrop-saturate-150',
+                '[&>div]:bg-[color-mix(in_srgb,var(--color-surface)_94%,transparent)]',
+                'hc:[&>div]:bg-surface [@media(prefers-reduced-transparency:reduce)]:[&>div]:bg-surface',
+              )}
+            />
+          </div>
+          <DepartingNow className="min-h-[19rem] max-[89.99rem]:hidden" />
+        </div>
 
         {/* The visitor's saved flight, above the journey modes (A-08). The flag runs during HTML
             parsing so the slot reserves its height before first paint. */}
         <SavedFlightFlag />
-        <SavedFlightSlot />
+        <SavedFlightSlot className="max-w-[60rem]" />
 
-        <div className="flex flex-col gap-[clamp(0.5rem,1.3vh,0.875rem)] max-sm:gap-2.5">
-          <JourneyModes />
-          <JourneyModeGuidance className="px-1 max-sm:hidden [@media(max-height:50rem)]:hidden" />
-          <ModeQuickActions />
+        <div className="flex flex-col gap-[clamp(0.5rem,1.3vh,0.875rem)]">
+          <JourneyModes tone="media" className="lg:max-w-[52rem]" />
+          <ModeQuickActions tone="media" />
         </div>
 
         <NoticeStrip notices={notices} status={<HomeOpsStatus {...kliaStatusData()} />} />
         {arrival ? <ArrivalChecklist item={arrival} /> : null}
       </Container>
+      {photo ? (
+        <p className="type-caption absolute right-3 bottom-2 z-10 rounded-pill bg-[color-mix(in_srgb,var(--color-scrim)_78%,transparent)] px-2.5 py-0.5 text-xs text-on-midnight-dim max-md:hidden">
+          {`${lang === 'ms' ? 'Foto' : 'Photo'}: ${photo.credit.author}, ${photo.credit.licence}`}
+        </p>
+      ) : null}
     </section>
   );
 }
 
 /* ---- Board preview --------------------------------------------------------------------------- */
 
+/**
+ * The next flights: an introduction on the left (it stays in view while the list scrolls past on
+ * a desktop) and the board as app-like cards on the right. The board's own heading becomes an h3.
+ * Its demonstration label stays with it, quiet but present, and a "Demo" marker stays in view
+ * while the rows scroll past on a phone (A-04).
+ */
 export function HomeBoard({ lang }: { lang: Lang }) {
   const t = getT(lang);
   return (
-    <Section aria-label={t('flights.board.title')} spacing="md">
-      <p className="type-eyebrow mb-4 flex items-center gap-2.5 text-gold-ink">
-        <span aria-hidden="true" className="h-px w-7 bg-gold" />
-        <span className="tabular font-medium text-ink-3">01</span>
-        {t('home.board.eyebrow')}
-      </p>
-      {/* A "Demo" marker stays in view while the rows scroll past on a phone (A-04). */}
-      <DemoMarkedList>
-        <BoardPreview rows={8} />
+    <Section aria-labelledby="home-board-title" spacing="lg" className="relative">
+      {/* Redesign round one (critique items 16 and 9): the heading above a board as wide as the
+          container (the table layout from 1024 px, no empty column beside it), five rows on phones. */}
+      <SectionHeading id="home-board-title" eyebrow={t('home.board.eyebrow')} title={t('home.v2.boardTitle')} lead={t('home.v2.boardLead')} />
+      <DemoMarkedList className="min-w-0 max-sm:[&_ul>li:nth-child(n+6)]:hidden">
+        <BoardPreview rows={8} headingLevel={3} className="shadow-xl" />
       </DemoMarkedList>
     </Section>
   );
@@ -171,9 +207,9 @@ export function HomeJourney({ lang }: { lang: Lang }) {
   const phone = GROUP_CONTACTS.find((contact) => contact.kind === 'phone');
   return (
     <Section tone="subtle" aria-labelledby="home-journey-title">
-      <div className="grid gap-x-14 gap-y-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)]">
+      <div className="grid gap-x-16 gap-y-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)]">
         <div className="min-w-0">
-          <SectionHeading id="home-journey-title" number={2} eyebrow={t('home.journey.eyebrow')} title={t('journey.timeline.title')} lead={t('home.journey.lead')} />
+          <SectionHeading id="home-journey-title" eyebrow={t('home.journey.eyebrow')} title={t('journey.timeline.title')} lead={t('home.journey.lead')} />
           <ProvenanceLegend kinds={['official', 'estimated', 'suggestion']} />
           <p className="type-caption mt-3 text-ink-2">{t('journey.timeline.intro')}</p>
         </div>
@@ -192,57 +228,29 @@ export function HomeJourney({ lang }: { lang: Lang }) {
   );
 }
 
-/* ---- The network ----------------------------------------------------------------------------- */
+/* ---- Discover Malaysia (the network) --------------------------------------------------------- */
 
-function AirportCard({ airport: record, terminal, lang, large = false }: { airport: Airport; terminal?: Terminal; lang: Lang; large?: boolean }) {
-  const t = getT(lang);
-  // Names, city and state in the page language (D-09 hand-off, round 2).
-  const airport = localizeAirport(record, lang);
-  const title = terminal ? pick(terminal.name, lang) : airport.shortName;
-  const place = airport.city === airport.state ? airport.city : `${airport.city}, ${airport.state}`;
-  return (
-    <Card as="li" interactive className="flex min-w-0 flex-col overflow-hidden">
-      <div className="border-b border-line">
-        <AirportVignette code={airport.code} terminal={terminal?.id} ground="sunken" className={large ? 'aspect-[16/7] object-cover' : undefined} />
-      </div>
-      <div className={large ? 'flex flex-1 flex-col gap-1.5 p-5 sm:p-6' : 'flex flex-1 flex-col gap-1 p-4'}>
-        {/* Wraps at 320 px and 125% text instead of pushing the code out of the card (A-16). */}
-        <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-1">
-          {/* Round 6 (A-14): one title size for every card (22 px was a ninth size on the home at 1440 px). */}
-          <h3 className="type-title-md min-w-0 text-ink">
-            <CardLink href={sectionPath(airport.slug, 'overview', terminal?.id)}>{title}</CardLink>
-          </h3>
-          <AirportCode code={airport.code} name={airport.name} variant="boxed" size="sm" className="mt-0.5 shrink-0" />
-        </div>
-        <p className="type-body-sm text-ink-2">{terminal ? `${airport.name}, ${place}` : airport.name}</p>
-        {terminal ? null : <p className="type-caption text-ink-3">{place}</p>}
-        <p className="type-body-sm mt-auto flex items-center gap-1.5 pt-2 font-semibold text-ink">
-          {t('home.network.airportHome')}
-          <Icon name="arrow-right" size="sm" strokeWidth={1.75} className="text-ink-3" />
-        </p>
-      </div>
-    </Card>
-  );
-}
+/** The destinations rail, in this order; the Kuala Lumpur gateways get their own row. */
+const DESTINATIONS = ['pen', 'bki', 'lgk', 'kch'] as const;
 
 export function HomeNetwork({ lang }: { lang: Lang }) {
   const t = getT(lang);
   const groups = airportsByClassification();
-  const multi = FEATURED_AIRPORTS.filter(isMultiTerminal);
-  const single = FEATURED_AIRPORTS.filter((airport) => !isMultiTerminal(airport));
+  const featured = new Map(FEATURED_AIRPORTS.map((airport) => [airport.slug, airport]));
+  const destinations = DESTINATIONS.flatMap((slug) => (featured.has(slug) ? [featured.get(slug)!] : []));
+  const gateways = FEATURED_AIRPORTS.filter((airport) => !(DESTINATIONS as readonly string[]).includes(airport.slug));
   const stats = [
     { value: groups.international.length, label: t('airportSwitcher.international') },
     { value: groups.domestic.length, label: t('airportSwitcher.domestic') },
     { value: groups.stolport.length, label: t('airportSwitcher.stolports') },
   ];
   return (
-    <Section aria-labelledby="home-network-title">
+    <Section tone="surface" aria-labelledby="home-network-title">
       <SectionHeading
         id="home-network-title"
-        number={3}
         eyebrow={t('home.network.eyebrow')}
-        title={t('home.network.title', { count: AIRPORTS.length })}
-        lead={t('home.network.lead')}
+        title={t('home.v2.discoverTitle')}
+        lead={t('home.v2.discoverLead')}
         action={
           <LocaleLink href="/airports" className="link-action text-ink">
             {t('nav.airports')}
@@ -250,33 +258,53 @@ export function HomeNetwork({ lang }: { lang: Lang }) {
           </LocaleLink>
         }
       />
-      <ul aria-label={t('home.network.featuredLabel')} className="grid gap-4 sm:grid-cols-2 lg:gap-5">
-        {multi.flatMap((airport) => airport.terminals.map((terminal) => <AirportCard key={`${airport.slug}-${terminal.id}`} airport={airport} terminal={terminal} lang={lang} large />))}
-      </ul>
-      <ul aria-label={t('home.network.featuredLabel')} className="mt-4 grid grid-cols-[repeat(auto-fill,minmax(min(100%,9rem),1fr))] gap-4 sm:grid-cols-3 lg:mt-5 lg:grid-cols-5 lg:gap-5">
-        {single.map((airport) => (
-          <AirportCard key={airport.slug} airport={airport} lang={lang} />
+      {/* A swipeable rail on phones (the next card peeks in), four up from `lg`. */}
+      <ul
+        aria-labelledby="home-network-title"
+        className="-mx-gutter flex snap-x snap-mandatory scroll-px-gutter gap-4 overflow-x-auto px-gutter pt-1 pb-4 [scrollbar-width:none] lg:mx-0 lg:grid lg:grid-cols-4 lg:gap-5 lg:overflow-visible lg:px-0 lg:pb-0 [&::-webkit-scrollbar]:hidden"
+      >
+        {destinations.map((airport) => (
+          <DestinationCard
+            key={airport.slug}
+            airport={airport}
+            lang={lang}
+            sizes="(min-width: 64rem) 25vw, (min-width: 40rem) 45vw, 78vw"
+            className="w-[78%] max-w-[22rem] shrink-0 snap-start sm:w-[45%] lg:w-auto lg:max-w-none"
+          />
         ))}
       </ul>
 
-      <div className="relative mt-6 overflow-hidden rounded-lg bg-inverse text-on-inverse lg:mt-8">
-        <RebungRule size="lg" className="absolute inset-x-0 top-0 opacity-70" />
-        <div className="grid items-center gap-x-12 gap-y-6 px-5 pt-11 pb-7 sm:px-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:pt-12 lg:pb-8">
+      <h3 id="home-gateways-title" className="type-title-lg mt-12 mb-5 text-[1.25rem] text-ink sm:mt-14">
+        {t('home.v2.gatewaysTitle')}
+      </h3>
+      <ul aria-labelledby="home-gateways-title" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1.2fr)_minmax(0,1fr)] lg:gap-5">
+        {gateways.flatMap((airport) =>
+          isMultiTerminal(airport)
+            ? airport.terminals.map((terminal) => (
+                <DestinationCard key={`${airport.slug}-${terminal.id}`} airport={airport} terminal={terminal} lang={lang} shape="landscape" sizes="(min-width: 64rem) 36vw, (min-width: 40rem) 50vw, 100vw" />
+              ))
+            : [<DestinationCard key={airport.slug} airport={airport} lang={lang} shape="landscape" sizes="(min-width: 64rem) 28vw, (min-width: 40rem) 50vw, 100vw" />],
+        )}
+      </ul>
+
+      <div className="surface-midnight on-media relative mt-12 overflow-hidden rounded-3xl text-ink shadow-lg sm:mt-14">
+        <span aria-hidden="true" className="rule-gold absolute inset-x-8 top-0" />
+        <div className="grid items-center gap-x-12 gap-y-7 px-6 py-9 sm:px-10 sm:py-11 lg:grid-cols-[minmax(0,1fr)_auto]">
           <div className="min-w-0">
-            <h3 className="type-display-md">{t('home.network.bandTitle', { count: AIRPORTS.length })}</h3>
-            <p className="type-body mt-2 max-w-reading text-on-inverse-dim">{t('home.network.bandLead')}</p>
-            <dl className="mt-6 grid max-w-xl grid-cols-[repeat(auto-fit,minmax(min(100%,6.5rem),1fr))] gap-x-6 gap-y-4">
+            <h3 className="type-display-md">{t('home.network.title', { count: AIRPORTS.length })}</h3>
+            <p className="type-body mt-3 max-w-reading text-ink-2">{t('home.network.bandLead')}</p>
+            <dl className="mt-7 grid max-w-xl grid-cols-[repeat(auto-fit,minmax(min(100%,6.5rem),1fr))] gap-x-8 gap-y-5">
               {stats.map((stat) => (
-                <div key={stat.label} className="flex flex-col-reverse gap-1 border-t border-on-inverse-dim/40 pt-3">
-                  <dt className="type-caption text-on-inverse-dim">{stat.label}</dt>
-                  <dd className="type-data-lg">{stat.value}</dd>
+                <div key={stat.label} className="flex flex-col-reverse gap-1.5">
+                  <dt className="type-caption text-ink-2">{stat.label}</dt>
+                  <dd className="type-data-lg text-gold-bright">{stat.value}</dd>
                 </div>
               ))}
             </dl>
           </div>
           <LocaleLink
             href="/airports"
-            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-on-inverse px-5 text-base font-semibold text-inverse transition-opacity duration-fast hover:opacity-90"
+            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-pill bg-gold px-6 text-base font-semibold text-on-gold shadow-sm transition-[background-color,box-shadow] duration-fast hover:bg-gold-hover hover:shadow-md"
           >
             {t('home.network.browse')}
             <Icon name="arrow-right" size="sm" strokeWidth={1.75} />
@@ -288,6 +316,17 @@ export function HomeNetwork({ lang }: { lang: Lang }) {
 }
 
 /* ---- Shop and dine --------------------------------------------------------------------------- */
+
+/**
+ * Redesign round one (critique item 20): beside the filters, typographic cards with real content
+ * (the airport, how many places there are and three of their names) instead of gradient frames
+ * that looked like images that failed to load. Each links to that airport's listing.
+ */
+const SHOP_CARD_GROUNDS = [
+  'linear-gradient(150deg, #3a1f12 0%, #7a4220 65%, #a8693a 100%)',
+  'linear-gradient(150deg, #0b1640 0%, #1d2d6b 100%)',
+  'linear-gradient(150deg, #0d3b33 0%, #1f5e50 100%)',
+] as const;
 
 export function HomeShopDine({ lang }: { lang: Lang }) {
   const t = getT(lang);
@@ -309,11 +348,50 @@ export function HomeShopDine({ lang }: { lang: Lang }) {
       return [slug, usable] as const;
     }),
   );
+  // The airports with the most published outlets, with a few names each (content, no clock).
+  const showcase = airportsWithContent()
+    .map((slug) => ({ slug, outlets: getAirportContent(slug)?.outlets ?? [] }))
+    .filter((item) => item.outlets.length > 0)
+    .sort((a, b) => b.outlets.length - a.outlets.length)
+    .slice(0, 3)
+    .map((item) => {
+      const airport = AIRPORTS.find((entry) => entry.slug === item.slug);
+      const dine = item.outlets.filter((outlet) => outlet.kind === 'dine');
+      return {
+        slug: item.slug,
+        count: item.outlets.length,
+        name: airport ? localizeAirport(airport, lang).shortName : item.slug.toUpperCase(),
+        names: [...new Set((dine.length >= 3 ? dine : item.outlets).map((outlet) => outlet.name))].slice(0, 3),
+      };
+    });
   return (
-    <Section tone="subtle" aria-labelledby="home-shop-title">
-      <div className="grid items-end gap-x-14 gap-y-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)]">
-        <SectionHeading id="home-shop-title" number={4} eyebrow={t('home.shop.eyebrow')} title={t('home.shop.title')} lead={t('home.shop.lead')} className="mb-0 sm:mb-0" />
-        <ShopDineStrip outletCounts={outletCounts} usableFilters={usableFilters} />
+    <Section tone="ivory" aria-labelledby="home-shop-title">
+      <div className="grid items-center gap-x-16 gap-y-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+        <div className="min-w-0">
+          <SectionHeading id="home-shop-title" eyebrow={t('home.shop.eyebrow')} title={t('home.shop.title')} lead={t('home.shop.lead')} />
+          <ShopDineStrip outletCounts={outletCounts} usableFilters={usableFilters} />
+        </div>
+        <ul className="grid gap-3 sm:grid-cols-2">
+          {showcase.map((item, index) => (
+            <li
+              key={item.slug}
+              className={cn('on-media group/shop relative isolate flex min-h-44 flex-col justify-end overflow-hidden rounded-3xl p-5 text-ink shadow-md sm:p-6', index === 0 && 'sm:row-span-2 sm:min-h-[22rem]')}
+              style={{ backgroundImage: SHOP_CARD_GROUNDS[index % SHOP_CARD_GROUNDS.length] }}
+            >
+              <Icon name={index === 0 ? 'utensils' : index === 1 ? 'shopping-bag' : 'glass-water'} strokeWidth={0.75} className="absolute -top-4 -right-4 -z-10 size-36 text-[rgb(255_255_255/0.16)] transition-transform duration-slow ease-out motion-ok:group-hover/shop:scale-105" />
+              <span aria-hidden="true" className="type-display-md text-gold-bright tabular-nums">
+                {item.count}
+              </span>
+              <span className="sr-only">{t.count('home.shop.published', item.count, { airport: item.name })}</span>
+              <h3 className="type-title-md mt-1 text-ink">
+                <LocaleLink href={`/${item.slug}/shop-dine`} className="outline-none after:absolute after:inset-0 after:rounded-3xl focus-visible:after:focus-ring">
+                  {t('home.shop.browseAt', { airport: item.name })}
+                </LocaleLink>
+              </h3>
+              <p className="type-body-sm mt-1.5 line-clamp-2 text-ink-2">{item.names.join(' · ')}</p>
+            </li>
+          ))}
+        </ul>
       </div>
     </Section>
   );
@@ -328,24 +406,26 @@ export function HomeConcierge({ lang }: { lang: Lang }) {
   const t = getT(lang);
   const note = getAirportContent(SAMPLE_ANSWER.airport)?.guidesNotes.find((item) => item.id === SAMPLE_ANSWER.note);
   return (
-    <Section aria-labelledby="home-concierge-title">
-      <div className="grid gap-x-14 gap-y-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)]">
+    <Section tone="midnight" aria-labelledby="home-concierge-title" className="relative overflow-hidden">
+      <div className="grid gap-x-16 gap-y-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)]">
         <div className="min-w-0">
-          <SectionHeading id="home-concierge-title" number={5} eyebrow={t('home.concierge.eyebrow')} title={t('home.concierge.title')} lead={t('concierge.intro')} />
+          <SectionHeading id="home-concierge-title" eyebrow={t('home.concierge.eyebrow')} title={t('home.concierge.title')} lead={t('concierge.intro')} />
           <ConciergeQuestions questions={[t('home.concierge.q1'), t('home.concierge.q2'), t('home.concierge.q3')]} />
         </div>
         {note ? (
-          <figure className="min-w-0 self-start rounded-lg border border-line-strong bg-surface shadow-sm">
-            <figcaption className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-line px-5 py-3.5 sm:px-6">
+          <figure className="glass-dark min-w-0 self-start rounded-3xl">
+            <figcaption className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-[rgb(255_255_255/0.12)] px-5 py-4 sm:px-6">
               <span className="type-eyebrow flex items-center gap-2 text-ink-2">
-                <Icon name="sparkles" size="sm" className="text-primary-ink" />
+                <span className="flex size-8 items-center justify-center rounded-full bg-gold text-on-gold">
+                  <Icon name="sparkles" size="sm" />
+                </span>
                 {t('concierge.title')}
               </span>
               <Badge tone="gold">{t('home.concierge.preview')}</Badge>
             </figcaption>
-            <div className="flex flex-col gap-4 px-5 py-5 sm:px-6">
-              <p className="type-body ml-auto max-w-[85%] rounded-lg rounded-br-xs bg-primary px-4 py-2.5 font-medium text-on-primary">{t('home.concierge.sampleQuestion')}</p>
-              <div className="max-w-[92%] rounded-lg rounded-bl-xs border border-line bg-page-subtle px-4 py-3.5">
+            <div className="flex flex-col gap-4 px-5 py-6 sm:px-6">
+              <p className="type-body ml-auto max-w-[85%] rounded-2xl rounded-br-sm bg-primary px-4 py-2.5 font-medium text-on-primary">{t('home.concierge.sampleQuestion')}</p>
+              <div className="max-w-[92%] rounded-2xl rounded-bl-sm bg-[rgb(255_255_255/0.06)] px-4 py-3.5 ring-1 ring-[rgb(255_255_255/0.12)]">
                 <p className="type-title-sm text-ink">{pick(note.title, lang)}</p>
                 <p className="type-body mt-1.5 text-ink-2">{pick(note.body, lang)}</p>
                 <div className="mt-3 flex flex-wrap items-start gap-x-4 gap-y-1">
@@ -361,3 +441,4 @@ export function HomeConcierge({ lang }: { lang: Lang }) {
     </Section>
   );
 }
+

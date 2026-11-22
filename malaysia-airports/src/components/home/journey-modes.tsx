@@ -35,7 +35,7 @@ function EarlyModeCapture() {
  * The same pattern as `SegmentedControl` (native radios, one tab stop, arrow keys), laid out
  * four-up on every screen: on phones the icon sits above the label and the sub-label is dropped.
  */
-export function JourneyModes({ className }: { className?: string }) {
+export function JourneyModes({ className, tone = 'default' }: { className?: string; /** `media`: smoky glass over the home hero. */ tone?: 'default' | 'media' }) {
   const t = useT();
   const group = useId();
   const { effectiveMode, set } = useJourneyMode();
@@ -68,14 +68,19 @@ export function JourneyModes({ className }: { className?: string }) {
       <EarlyModeCapture />
       <fieldset className={cn('min-w-0', className)}>
         <legend className="sr-only">{t('journey.modes.title')}</legend>
-        <div className="grid grid-cols-4 gap-1 rounded-lg border border-line-control bg-page-subtle p-1">
+        <div
+          className={cn(
+            'grid grid-cols-4 gap-1 rounded-2xl p-1 sm:rounded-pill',
+            tone === 'media' ? 'glass-dark on-media' : 'bg-fill ring-1 ring-line-control/60',
+          )}
+        >
           {JOURNEY_MODES.map((mode) => (
             <label
               key={mode}
               className={cn(
-                'relative flex min-h-12 min-w-0 cursor-pointer flex-col items-center justify-center gap-0.5 rounded-md px-1 py-1 text-center font-semibold text-ink-2 transition-colors duration-fast select-none',
-                'sm:min-h-13 sm:flex-row sm:gap-2.5 sm:px-4 sm:py-1.5',
-                'hover:text-ink has-[:checked]:bg-ink has-[:checked]:text-page has-[:checked]:shadow-xs has-[:focus-visible]:focus-ring',
+                'relative flex min-h-12 min-w-0 cursor-pointer flex-col items-center justify-center gap-0.5 rounded-xl px-1 py-1 text-center font-semibold text-ink-2 transition-[background-color,color,box-shadow] duration-base ease-out select-none',
+                'sm:min-h-12 sm:flex-row sm:gap-2.5 sm:rounded-pill sm:px-4 sm:py-1.5',
+                'hover:text-ink has-[:checked]:bg-ink has-[:checked]:text-page has-[:checked]:shadow-md has-[:focus-visible]:focus-ring',
                 'forced-colors:has-[:checked]:forced-color-adjust-none forced-colors:has-[:checked]:bg-[Highlight] forced-colors:has-[:checked]:text-[HighlightText]',
               )}
             >
@@ -92,7 +97,8 @@ export function JourneyModes({ className }: { className?: string }) {
               <Icon name={mode} size="md" strokeWidth={1.75} className="sm:size-4" />
               <span className="flex min-w-0 flex-col leading-tight">
                 <span className="text-[0.8125rem] sm:text-base">{t(`journey.modes.${mode}.label`)}</span>
-                <span className="type-caption mt-0.5 font-medium opacity-80 max-sm:hidden">{t(`home.modes.sub.${mode}`)}</span>
+                {/* Dropped on phones and on short windows (720 px laptops), like the quick actions' hints. */}
+                <span className="type-caption mt-0.5 font-medium opacity-80 max-sm:hidden [@media(max-height:50rem)]:hidden">{t(`home.modes.sub.${mode}`)}</span>
               </span>
             </label>
           ))}

@@ -19,6 +19,7 @@ import { guidePagesMs } from './features/guides';
 import { conciergePageMs } from './features/concierge';
 import { corporatePagesMs } from './features/corporate';
 import { platformPagesMs } from './features/platform';
+import { creditsPagesMs } from './features/credits';
 
 export const ms: Dictionary = {
   common: {
@@ -744,6 +745,8 @@ export const ms: Dictionary = {
       contactsNote: 'Maklumat hubungan kumpulan yang diterbitkan oleh Malaysia Airports. Ia bukan talian khusus untuk sesebuah lapangan terbang.',
       backToTop: 'Kembali ke atas',
       helpCentre: 'Pusat bantuan',
+      // Visual redesign, round one: the credits page for the site's photographs.
+      photoCredits: 'Kredit foto',
     },
   },
   home: {
@@ -871,6 +874,16 @@ export const ms: Dictionary = {
       preview: 'Pratonton',
       previewNote: 'Contoh jawapan, dibina daripada kandungan disahkan yang sama digunakan oleh Tanya Kami.',
       sampleQuestion: 'Di manakah pintu C di KLIA Terminal 1?',
+    },
+    // Visual redesign, round one (home): the board intro and the destinations rail.
+    v2: {
+      boardTitle: 'Penerbangan seterusnya, sepintas lalu',
+      departingNow: 'Berlepas sekarang',
+      arrivingNow: 'Tiba sekarang',
+      boardLead: 'Masa, pintu dan status penerbangan seterusnya. Papan ini mengikut lapangan terbang anda dan apa yang anda lakukan hari ini.',
+      discoverTitle: 'Terokai Malaysia',
+      discoverLead: 'Pulau, hutan hujan dan udara pergunungan: setiap lapangan terbang membuka Malaysia yang berbeza. Pilih satu dan seluruh laman ini menurut.',
+      gatewaysTitle: 'Pintu masuk ke Kuala Lumpur',
     },
   },
   airportsPage: {
@@ -1047,6 +1060,8 @@ export const ms: Dictionary = {
   conciergePage: conciergePageMs,
   corporatePages: corporatePagesMs,
   platformPages: platformPagesMs,
+  // Visual redesign: the photo credits page (server only, see SCOPED_NAMESPACES).
+  creditsPages: creditsPagesMs,
   // Pusingan 6: teks untuk dokumen carian sahaja (dibina di pelayan, tidak dihantar ke pelayar).
   searchIndex: {
     gaps: {
