@@ -17,7 +17,8 @@ export function SectionIndex({ t }: { t: Translator }) {
               <Icon name={section.icon} size="md" strokeWidth={1.5} />
             </span>
             <div className="min-w-0 flex-1">
-              <h3 className="type-title-lg text-ink">
+              {/* Round 6 (A-14, third review 9.1 item 7): title-md, so the hub keeps to 8 type sizes. */}
+              <h3 className="type-title-md text-ink">
                 <LocaleLink href={section.href} className="outline-none after:absolute after:inset-0 group-hover:underline group-hover:decoration-1 group-hover:underline-offset-4">
                   {t(section.label)}
                 </LocaleLink>

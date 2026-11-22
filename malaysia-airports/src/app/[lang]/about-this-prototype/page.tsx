@@ -1,3 +1,4 @@
+import { languageAlternates } from '@/lib/seo/metadata';
 import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
 import { ALL_SOURCES, CORPORATE_SOURCES, airportsWithContent, formatAsOf, getAirportContent, localizeAirport, pick, resolveSources } from '@/content';
@@ -18,7 +19,7 @@ import { RowHeader } from '@/components/corporate/row-header';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getT(toLang(await routeLang()));
-  return { title: t('corporatePages.prototype.title'), description: t('corporatePages.prototype.metaDescription') };
+  return { alternates: languageAlternates(await routeLang(), '/about-this-prototype'), title: t('corporatePages.prototype.title'), description: t('corporatePages.prototype.metaDescription') };
 }
 
 type Status = 'verified' | 'mixed' | 'demo' | 'grounded';

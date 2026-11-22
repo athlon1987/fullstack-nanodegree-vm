@@ -5,6 +5,7 @@ import type { TerminalId, TransportOption } from '@/content/types';
 import { cn } from '@/lib/cn';
 import { formatList } from '@/lib/format';
 import { useLang, useT } from '@/lib/i18n/client';
+import { MoreOnPhones } from '@/components/common/more-on-phones';
 import { NotPublished } from '@/components/common/not-published';
 import { ExternalLink } from '@/components/common/external-link';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
@@ -122,41 +123,45 @@ export function TransportOptionCard({ option, placeKey, context, day, terminal, 
 
       <div className="flex flex-col gap-5 border-t border-line p-4 sm:p-5">
         {option.mode === 'taxi' || option.mode === 'e-hailing' ? <ToutsWarning context={context} variant="inline" mode={option.mode} /> : null}
-        {option.description ? <p className="type-body-sm max-w-reading text-ink-2">{pick(option.description, lang)}</p> : null}
-        <dl className="grid grid-cols-1 gap-x-8 gap-y-5 @md:grid-cols-2 @4xl:grid-cols-4">
-          {route ? (
-            <Fact label={t('transportPages.fields.route')}>
-              <span className="type-body-sm text-ink">{route}</span>
+        {/* Round 6 (review-3 9.1 item 7): on phones the details sit behind a disclosure that names
+            them, so the page is a list of options with fares and times first (11,952 px at 390 px). */}
+        <MoreOnPhones from="card" summary={t('transportPages.fields.moreDetails')} contentClassName="flex flex-col gap-5">
+          {option.description ? <p className="type-body-sm max-w-reading text-ink-2">{pick(option.description, lang)}</p> : null}
+          <dl className="grid grid-cols-1 gap-x-8 gap-y-5 @md:grid-cols-2 @4xl:grid-cols-4">
+            {route ? (
+              <Fact label={t('transportPages.fields.route')}>
+                <span className="type-body-sm text-ink">{route}</span>
+              </Fact>
+            ) : null}
+            {hasFrequency ? (
+              <Fact label={t('transportPages.fields.frequency')}>
+                <FrequencyValue option={option} />
+              </Fact>
+            ) : null}
+            {hasHours ? (
+              <Fact label={t('transportPages.fields.hours')}>
+                <HoursValue hours={option.hours} />
+              </Fact>
+            ) : null}
+            {hasPayment ? (
+              <Fact label={t('transportPages.fields.payment')}>
+                <PaymentValue option={option} />
+              </Fact>
+            ) : null}
+            <Fact label={t('transportPages.fields.accessibility')}>
+              <AccessValue option={option} />
             </Fact>
-          ) : null}
-          {hasFrequency ? (
-            <Fact label={t('transportPages.fields.frequency')}>
-              <FrequencyValue option={option} />
+            <Fact label={t('transportPages.fields.boarding')} className="@md:col-span-2">
+              <BoardingList option={option} context={context} terminal={terminal} />
             </Fact>
-          ) : null}
-          {hasHours ? (
-            <Fact label={t('transportPages.fields.hours')}>
-              <HoursValue hours={option.hours} />
-            </Fact>
-          ) : null}
-          {hasPayment ? (
-            <Fact label={t('transportPages.fields.payment')}>
-              <PaymentValue option={option} />
-            </Fact>
-          ) : null}
-          <Fact label={t('transportPages.fields.accessibility')}>
-            <AccessValue option={option} />
-          </Fact>
-          <Fact label={t('transportPages.fields.boarding')} className="@md:col-span-2">
-            <BoardingList option={option} context={context} terminal={terminal} />
-          </Fact>
-          {note ? (
-            <Fact label={t('transportPages.fields.note')} className="@md:col-span-2">
-              <span className="type-body-sm block text-ink-2">{pick(note, lang)}</span>
-            </Fact>
-          ) : null}
-        </dl>
-        {missing.length > 0 ? <NotPublished label={t('transportPages.fields.missing', { facts: formatList(missing, lang) })} /> : null}
+            {note ? (
+              <Fact label={t('transportPages.fields.note')} className="@md:col-span-2">
+                <span className="type-body-sm block text-ink-2">{pick(note, lang)}</span>
+              </Fact>
+            ) : null}
+          </dl>
+          {missing.length > 0 ? <NotPublished label={t('transportPages.fields.missing', { facts: formatList(missing, lang) })} /> : null}
+        </MoreOnPhones>
       </div>
 
       <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-line px-4 py-1.5 sm:px-5">

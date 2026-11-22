@@ -1,6 +1,6 @@
 import { CLASSIFICATION_LABELS, airportSlugs, formatAsOf, getNotices, getSource, pick, resolveSources, type Provenance } from '@/content';
 import { GROUP_CONTACTS, terminalLabel } from '@/content/airports';
-import { AirportFlightTools } from '@/components/airport/airport-flight-tools';
+import { AirportFlightSearch, AirportFlightTools } from '@/components/airport/airport-flight-tools';
 import { AirportBanner } from '@/components/airport/airport-header';
 import { MissingPage } from '@/components/common/missing-page';
 import { NoticeList } from '@/components/airport/notice-list';
@@ -93,8 +93,13 @@ async function Overview({ params }: { params: AirportPageParams }) {
     <>
       <JsonLd data={airportJsonLd(airport, lang)} />
       <AirportBanner airport={airport} lang={lang} sections={sections} />
-      {/* Operational notices first, directly under the airport header, inside the first phone
-          screen (A-20, BR-08). */}
+      {/* Round 6 (review-3 9.1 item 7): the flight search first, on the first phone screen; the
+          notices follow it, still within the first phone screens (A-20, BR-08). */}
+      {sections.includes('flights') ? (
+        <Section as="div" spacing="sm" className="pb-6 sm:pb-8">
+          <AirportFlightSearch slug={airport.slug} name={airport.shortName} hasFlights />
+        </Section>
+      ) : null}
       <Section tone="subtle" spacing="sm" aria-labelledby="airport-notices-title">
         <SectionHeading
           id="airport-notices-title"

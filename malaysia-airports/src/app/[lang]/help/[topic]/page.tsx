@@ -1,3 +1,4 @@
+import { languageAlternates } from '@/lib/seo/metadata';
 import type { Metadata } from 'next';
 import { getHelpTopic, helpTopicSlugs, pick } from '@/content';
 import { getT, toLang } from '@/lib/i18n';
@@ -34,7 +35,7 @@ export async function generateMetadata({ params }: PageProps<'/[lang]/help/[topi
   const t = getT(lang);
   const record = getHelpTopic(topic);
   if (!record) return { title: t('errors.notFoundTitle') };
-  return { title: `${pick(record.title, lang)}: ${t('guidePages.help.title')}`, description: pick(record.summary, lang) };
+  return { alternates: languageAlternates(lang, `/help/${topic}`), title: `${pick(record.title, lang)}: ${t('guidePages.help.title')}`, description: pick(record.summary, lang) };
 }
 
 /**

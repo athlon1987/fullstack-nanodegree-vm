@@ -17,6 +17,17 @@ const AXE_TAGS = [...SHARED_AXE_TAGS];
 type AxePage = ConstructorParameters<typeof AxeBuilder>[0]['page'];
 
 async function expectNoAxeViolations(page: Page) {
+  // Round 6: scan the page at rest. After an answer the page scrolls smoothly to it, and a frame in
+  // the middle of that scroll leaves the privacy row's button half under the sticky header, which
+  // axe reports as target-size (G3 item 5: 3 of 30 repeats); at rest it is either clear of the
+  // header or wholly behind it.
+  await expect
+    .poll(async () => {
+      const before = await page.evaluate(() => window.scrollY);
+      await page.waitForTimeout(250);
+      return (await page.evaluate(() => window.scrollY)) === before;
+    }, { timeout: 10_000 })
+    .toBe(true);
   const results = await new AxeBuilder({ page: page as unknown as AxePage }).withTags(AXE_TAGS).analyze();
   const summary = results.violations.map((v) => `${v.id} (${v.impact}): ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`);
   expect(summary, 'axe violations').toEqual([]);

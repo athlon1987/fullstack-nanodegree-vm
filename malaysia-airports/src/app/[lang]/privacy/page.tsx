@@ -1,3 +1,4 @@
+import { languageAlternates } from '@/lib/seo/metadata';
 import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
 import { CORPORATE_LINKS } from '@/content';
@@ -20,7 +21,7 @@ import { RowHeader } from '@/components/corporate/row-header';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getT(toLang(await routeLang()));
-  return { title: t('corporatePages.privacy.title'), description: t('corporatePages.privacy.metaDescription') };
+  return { alternates: languageAlternates(await routeLang(), '/privacy'), title: t('corporatePages.privacy.title'), description: t('corporatePages.privacy.metaDescription') };
 }
 
 const SUMMARY_ICONS: readonly IconName[] = ['key-round', 'eye', 'smartphone', 'messages-square'];

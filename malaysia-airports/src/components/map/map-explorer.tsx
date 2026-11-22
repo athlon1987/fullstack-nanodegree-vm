@@ -330,6 +330,34 @@ function MapWorkspace({ map, query, sources, facilitiesHref, officialMapUrl, off
     setActiveStep(null);
     if (complete && startLevel) changeView(startLevel, fitView(levelBounds(map, startLevel)), startLevel === level.id);
     setStatus(describe(fromId, toId, stepFree));
+    if (complete) revealDrawing();
+  };
+
+  /*
+   * Round 6 (review-3 9.1 item 7): on phones the From and To fields come before the drawing, so a
+   * chosen route was drawn below the first screen (the drawing started at 933 px). Once a route is
+   * complete the drawing is scrolled up under the header, unless it is already in full view. Focus
+   * stays where it is. A keyboard user's focused field is kept in view (WCAG 2.4.7, 2.4.11): the
+   * page then scrolls only as far as that allows, which still shows most of the drawing.
+   */
+  const drawing = useRef<HTMLDivElement>(null);
+  const revealDrawing = () => {
+    requestAnimationFrame(() => {
+      const element = drawing.current;
+      if (!element || window.matchMedia('(min-width: 64rem)').matches) return;
+      const box = element.getBoundingClientRect();
+      if (box.top >= 0 && box.bottom <= window.innerHeight) return;
+      const behavior = prefersReducedMotion() ? 'auto' : 'smooth';
+      const active = document.activeElement;
+      const keyboard = active instanceof HTMLElement && active !== document.body && !element.contains(active) && active.matches(':focus-visible');
+      if (!keyboard) {
+        element.scrollIntoView({ block: 'start', behavior });
+        return;
+      }
+      const top = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+      const delta = Math.min(box.top - top, box.bottom - window.innerHeight + 8, active.getBoundingClientRect().top - top);
+      if (delta > 0) window.scrollBy({ top: delta, behavior });
+    });
   };
 
   const defaultOrigin = (destination: string): string | undefined => {
@@ -463,7 +491,7 @@ function MapWorkspace({ map, query, sources, facilitiesHref, officialMapUrl, off
             }))}
           />
           {level.note ? <p className="type-body-sm mt-2 flex gap-2 text-ink-2"><Icon name="info" size="sm" className="mt-0.5" />{level.note}</p> : null}
-          <div className="mt-3">
+          <div ref={drawing} className="mt-3">
             <MapCanvas
               map={map}
               level={level}

@@ -488,8 +488,11 @@ export const en = {
     from: 'From {date}',
     until: 'Until {date}',
     untilFurtherNotice: 'Until further notice',
-    none: 'There are no notices for this airport right now.',
+    // Round 6 (third review 9.1 item 6): there is no live feed, so "right now" overclaimed.
+    none: 'No notices in our sources for this airport.',
     viewAll: 'All travel notices',
+    // Round 6: a change announced ahead of its date ("RM65 from 1 January 2027") is not "In effect now".
+    announced: 'Announced; applies from {date}',
     severity: {
       info: 'Information',
       advisory: 'Advisory',
@@ -1051,6 +1054,36 @@ export const en = {
   conciergePage: conciergePageEn,
   corporatePages: corporatePagesEn,
   platformPages: platformPagesEn,
+  // Round 6 (third review 9.1 item 5, package ask): copy for the search documents only. Built on
+  // the server (`src/lib/search/documents.ts`) and never sent with the root dictionary
+  // (`SCOPED_NAMESPACES`), so it adds nothing to every page's HTML.
+  searchIndex: {
+    gaps: {
+      pharmacy: {
+        title: 'Pharmacies: not published yet',
+        summary: 'We have not published where pharmacies are at any airport. Ask at an information counter, or contact Malaysia Airports before you travel.',
+      },
+      charging: {
+        title: 'Charging points: not published yet',
+        summary: 'We have not published where you can charge a phone or laptop at any airport. Ask at an information counter or check the official airport page.',
+      },
+    },
+    // A query that names an airport and something it does not publish ("kuching parking").
+    sectionGaps: {
+      parking: 'Parking at {airport}: not published',
+      transport: 'Ground transport at {airport}: not published',
+      lounges: 'Lounges at {airport}: not published',
+      shopDine: 'Shops and food at {airport}: not published',
+      facilities: 'Facilities at {airport}: not published',
+      atm: 'ATMs at {airport}: not published',
+      pharmacy: 'Pharmacies at {airport}: not published',
+      moneyChanger: 'Money changers at {airport}: not published',
+      lostProperty: 'Lost and found at {airport}: not published',
+      charging: 'Charging points at {airport}: not published',
+      summary: 'Our sources do not publish this for {airport} yet. Check the official airport website or call Malaysia Airports before you travel.',
+      illustrative: '(illustrative position)',
+    },
+  },
 };
 
 /** Shape of an interface dictionary. `ms.ts` must match it exactly. */

@@ -1,3 +1,4 @@
+import { languageAlternates } from '@/lib/seo/metadata';
 import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
 import { AirportVignette } from '@/components/art/airport-vignette';
@@ -23,7 +24,7 @@ import { I18nScope, getT, toLang } from '@/lib/i18n';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getT(await routeLang());
-  return { title: t('designSystem.eyebrow'), description: t('designSystem.lead') };
+  return { alternates: languageAlternates(await routeLang(), '/design-system'), title: t('designSystem.eyebrow'), description: t('designSystem.lead') };
 }
 
 const SECTIONS = ['principles', 'colour', 'contrast', 'type', 'layout', 'icons', 'actions', 'forms', 'containers', 'data', 'status', 'board', 'page', 'art'] as const;

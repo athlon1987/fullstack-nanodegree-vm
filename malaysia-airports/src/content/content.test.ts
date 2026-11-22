@@ -574,3 +574,44 @@ describe('one fact, one answer: parking rates (6.1.3)', async () => {
     for (const id of ltcp.sources) expect(faq.sources, id).toContain(id);
   });
 });
+
+/* -------------------------------------------------------------------------------------------
+ * Round 6 (third review 9.1 item 6): a change announced ahead of its date is never "in effect".
+ * --------------------------------------------------------------------------------------- */
+
+describe('round 6: announced changes are not labelled in effect', async () => {
+  const { getNotices: allNotices, noticeAnnounced: announced } = await import('./index');
+  const { noticeViewState } = await import('@/components/airport/notice-utils');
+  /** A fixed clock: the day the third review read "In effect now · RM65 from 1 January 2027". */
+  const NOW = Date.parse('2026-11-22T06:40:00+08:00');
+  const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+
+  it('no notice whose start date is in the future is labelled in effect (fixed clock)', () => {
+    for (const notice of allNotices()) {
+      const state = noticeViewState(notice, NOW);
+      const starts = [notice.validFrom, notice.appliesFrom].filter((value): value is string => Boolean(value)).map((value) => Date.parse(value));
+      if (starts.some((start) => start > NOW)) expect(state, notice.id).not.toBe('active');
+      // A date in the title ("RM65 from 1 January 2027") that is still ahead must be the notice's appliesFrom.
+      const match = /\bfrom (\d{1,2}) ([A-Za-z]+) (\d{4})\b/.exec(notice.title.en);
+      if (match && MONTHS.includes(match[2].toLowerCase())) {
+        const titled = Date.parse(`${match[3]}-${String(MONTHS.indexOf(match[2].toLowerCase()) + 1).padStart(2, '0')}-${match[1].padStart(2, '0')}T00:00:00+08:00`);
+        if (titled > NOW && noticeViewState(notice, NOW) !== 'upcoming') {
+          expect(notice.appliesFrom, notice.id).toBeDefined();
+          expect(state, notice.id).toBe('announced');
+        }
+      }
+    }
+  });
+
+  it('the KLIA Ekspres fare notice reads "announced" until 1 January 2027, then "in effect" (and stays shown throughout)', () => {
+    const notice = allNotices().find((item) => item.id === 'kul-klia-ekspres-fare-rise-2027')!;
+    expect(noticeViewState(notice, NOW)).toBe('announced');
+    expect(announced(notice, new Date(NOW))).toBe(true);
+    expect(noticeViewState(notice, Date.parse('2026-12-31T23:59:00+08:00'))).toBe('announced');
+    expect(noticeViewState(notice, Date.parse('2027-01-01T00:10:00+08:00'))).toBe('active');
+    expect(announced(notice, new Date('2027-01-01T00:10:00+08:00'))).toBe(false);
+    expect(noticeViewState(notice, Date.parse('2027-02-15T12:00:00+08:00'))).toBe('expired');
+    // Shown on the airport page and the home strip while announced (D-10 unchanged).
+    expect(noticeState(notice, new Date(NOW))).toBe('active');
+  });
+});

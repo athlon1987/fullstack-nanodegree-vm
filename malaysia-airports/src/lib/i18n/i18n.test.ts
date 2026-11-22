@@ -119,6 +119,8 @@ describe('client dictionary (performance-09)', () => {
       commercePages: [/^components\/commerce\//],
       mapPages: [/^components\/(map|facilities)\//],
       home: [/^components\/home\//, /^components\/flights\/flight-search-box\.tsx$/],
+      // Round 6: read only by the server-built search documents; no Client Component may read it.
+      searchIndex: [],
     };
     const offenders: string[] = [];
     const walk = (dir: string) => {

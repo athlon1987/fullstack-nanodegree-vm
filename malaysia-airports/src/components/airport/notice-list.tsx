@@ -62,7 +62,10 @@ export function NoticeList({ notices, airport, severities, show = 'current', hea
     return t('notices.untilFurtherNotice');
   };
 
-  const stateLabel: Record<NoticeViewState, string> = { active: t('notices.active'), upcoming: t('notices.upcoming'), expired: t('noticesPage.ended') };
+  const stateLabel = (notice: NoticeView, state: NoticeViewState): string =>
+    state === 'announced' && notice.appliesFrom
+      ? t('notices.announced', { date: formatDate(notice.appliesFrom, lang, 'long') })
+      : { active: t('notices.active'), announced: t('notices.active'), upcoming: t('notices.upcoming'), expired: t('noticesPage.ended') }[state];
 
   return (
     <div className={cn('flex flex-col gap-4', className)}>
@@ -82,14 +85,16 @@ export function NoticeList({ notices, airport, severities, show = 'current', hea
               <NoticeCard
                 severity={notice.severity}
                 title={notice.title}
-                provenance={notice.provenance}
+                // Round 6 (third review 9.1 item 6): no "Estimated" chip on a notice; its sources say
+                // who reports it. Demonstration notices keep their label, official ones theirs.
+                provenance={notice.provenance === 'demo' || notice.provenance === 'official' ? notice.provenance : undefined}
                 scope={notice.scope ?? t('noticesPage.network')}
                 headingLevel={headingLevel}
                 period={
                   <span className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
                     {state ? (
-                      <Chip tone={state === 'active' ? 'outline' : 'neutral'} icon={state === 'active' ? 'circle-dot' : state === 'upcoming' ? 'calendar-days' : 'history'}>
-                        {stateLabel[state]}
+                      <Chip tone={state === 'active' ? 'outline' : 'neutral'} icon={state === 'active' ? 'circle-dot' : state === 'upcoming' || state === 'announced' ? 'calendar-days' : 'history'}>
+                        {stateLabel(notice, state)}
                       </Chip>
                     ) : null}
                     <span>{period(notice)}</span>

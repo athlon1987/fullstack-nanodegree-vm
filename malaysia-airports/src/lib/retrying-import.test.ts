@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { retryingImport } from './retrying-import';
+import { getWaitingImports, retryableLazy, retryingImport, retryWaitingImports, subscribeWaitingImports } from './retrying-import';
 
 /** A browser-like `window` for the Node test environment: events and timers only. */
 function fakeWindow() {
@@ -56,5 +56,47 @@ describe('retryingImport (verification round 5: a failed chunk must not take the
   it('on the server a failure is passed through', async () => {
     vi.unstubAllGlobals();
     await expect(retryingImport(() => Promise.reject(new Error('server')))).rejects.toThrow('server');
+  });
+});
+
+describe('round 6: failed imports a visitor can retry (review-3 9.1 item 1)', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.stubGlobal('window', fakeWindow());
+  });
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    vi.useRealTimers();
+  });
+
+  it('counts an import that failed as waiting, and "Try again" fetches it afresh at once', async () => {
+    const load = vi.fn().mockRejectedValueOnce(new Error('Failed to load chunk')).mockResolvedValue('module');
+    const changed = vi.fn();
+    const unsubscribe = subscribeWaitingImports(changed);
+    const settled = vi.fn();
+    void retryingImport(load, 60_000).then(settled);
+    await vi.advanceTimersByTimeAsync(0);
+    expect(getWaitingImports()).toBe(1);
+    expect(changed).toHaveBeenCalledTimes(1);
+    // Long before the pause is over: the visitor presses "Try again".
+    retryWaitingImports();
+    await vi.advanceTimersByTimeAsync(0);
+    expect(load).toHaveBeenCalledTimes(2);
+    expect(settled).toHaveBeenCalledWith('module');
+    expect(getWaitingImports()).toBe(0);
+    // The pause's timer and the online listener are gone: no third fetch.
+    await vi.advanceTimersByTimeAsync(120_000);
+    window.dispatchEvent(new Event('online'));
+    expect(load).toHaveBeenCalledTimes(2);
+    unsubscribe();
+  });
+
+  it('a retryable lazy component imports again after renew (never the failed or cached promise)', () => {
+    const load = vi.fn(async () => () => null);
+    const Part = retryableLazy(load);
+    const first = Part({});
+    Part.renew();
+    const second = Part({});
+    expect(first.type).not.toBe(second.type);
   });
 });

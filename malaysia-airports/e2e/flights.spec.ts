@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page, type TestInfo } from '@playwright/test';
 import { AXE_TAGS as SHARED_AXE_TAGS } from './support/axe';
 
 /**
@@ -13,6 +13,14 @@ import { AXE_TAGS as SHARED_AXE_TAGS } from './support/axe';
  */
 
 const AXE_TAGS = [...SHARED_AXE_TAGS];
+
+/** A client address for this test alone (as `shell.spec.ts` gives A-03), so other tests' requests cannot use up its rate limits. */
+async function ownClientAddress(page: Page, testInfo: TestInfo) {
+  const key = `${testInfo.project.name}|${testInfo.titlePath.join('|')}|${testInfo.repeatEachIndex}|${testInfo.retry}`;
+  let hash = 0;
+  for (const char of key) hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
+  await page.setExtraHTTPHeaders({ 'x-e2e-client-ip': `10.204.${(hash >>> 8) % 250}.${(hash % 250) + 1}` });
+}
 const MORNING = new Date('2026-11-18T09:40:00+08:00');
 const FLIGHT = '/en/kul/flights/mh2626-20261118-d';
 
@@ -114,8 +122,12 @@ test.describe('flight page', () => {
     const save = main.getByRole('button', { name: 'Save flight' });
     await expect(save).toHaveAttribute('aria-pressed', 'false');
     await save.click();
-    await expect(save).toHaveAttribute('aria-pressed', 'true');
+    // Round 6 (review-3 9.1 item 7, intended change): the pressed state also reads "Saved".
+    const saved = main.getByRole('button', { name: 'Saved', exact: true });
+    await expect(saved).toHaveAttribute('aria-pressed', 'true');
     await expect(main.getByText('Saved to My journey.')).toBeVisible();
+    await saved.click();
+    await expect(save).toHaveAttribute('aria-pressed', 'false');
   });
 
   test('adds the flight to a calendar as a demonstration event', async ({ page, isMobile }) => {
@@ -169,7 +181,7 @@ test.describe('my journey', () => {
 
     await page.goto(FLIGHT);
     await page.getByRole('main').getByRole('button', { name: 'Save flight' }).click();
-    await expect(page.getByRole('main').getByRole('button', { name: 'Save flight' })).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByRole('main').getByRole('button', { name: 'Saved', exact: true })).toHaveAttribute('aria-pressed', 'true');
 
     await page.goto('/en/journey');
     await expect(main.getByRole('link', { name: 'MH 2626 to Singapore' })).toBeVisible();
@@ -301,7 +313,11 @@ test.describe('fix round B: flight board', () => {
     await expect(fresh.getByRole('main').locator('[data-status]').filter({ visible: true }).first()).toBeVisible();
   });
 
-  test('announces a change to a saved flight once, politely', async ({ page }) => {
+  test('announces a change to a saved flight once, politely', async ({ page }, testInfo) => {
+    // Round 6 (G8 item 9): its own client address, as A-03 has. The board refreshes about 18
+    // times while the clock runs forward, and on the worker's shared address a repeat met the
+    // feed's rate limit (14 of 20 with --repeat-each=10). The assertions are unchanged.
+    await ownClientAddress(page, testInfo);
     // A minute before MH 2626 starts boarding (11:15 on this timetable, after its delay), so a
     // slow first load on a busy server cannot run past the change before the first snapshot.
     await page.clock.install({ time: new Date('2026-11-18T11:14:00+08:00') });

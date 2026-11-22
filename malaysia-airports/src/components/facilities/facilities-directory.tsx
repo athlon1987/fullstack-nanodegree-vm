@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { facilityCategoryLabel } from '@/content/values';
 import type { FacilityCategory, Source, TerminalId } from '@/content/types';
@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/cn';
 import { FilterChip } from '@/components/ui/filter-chip';
 import { Switch } from '@/components/ui/switch';
+import { MoreOnPhones } from '@/components/common/more-on-phones';
 import { FacilityCard } from './facility-card';
 import { AsOf } from './facility-values';
 import {
@@ -114,6 +115,8 @@ function Directory({
     .filter((group) => group.items.length > 0);
   const active = activeFilterCount(filters);
   const update = (patch: Partial<FacilityFilters>) => write({ ...filters, ...patch });
+  const collapseGroups = active === 0;
+  useOpenTargetDetails();
 
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,17.5rem)_minmax(0,1fr)] lg:gap-10">
@@ -249,26 +252,39 @@ function Directory({
               const label = (item: FacilityView) =>
                 group.items.some((other) => other !== item && other.name === item.name) ? `${item.name} (${item.terminalLabel})` : item.name;
               const listed = sectionSources(group.items, (item) => item.sourceIds, label, sources);
+              const card = (item: FacilityView) => (
+                <FacilityCard
+                  key={item.id}
+                  facility={item}
+                  sources={sources}
+                  showTerminal={multiTerminal}
+                  airport={airport}
+                  defaultProvenance={defaultProvenance}
+                  groupedSources
+                  showAsOf={!sameDate}
+                />
+              );
               return (
                 <section key={group.id} aria-labelledby={`facility-group-${group.id}`}>
                   <h2 id={`facility-group-${group.id}`} className="type-title-lg mb-4 flex items-baseline gap-3 border-b border-line pb-2 text-ink">
                     {group.label}
                     <span className="type-data-sm text-ink-3">{group.items.length}</span>
                   </h2>
+                  {/* Round 6 (review-3 9.1 item 7): with no filter, a long group shows its first
+                      cards and keeps the rest behind a disclosure on phones (the page was 15,451 px
+                      at 390 px). A link to a card inside it opens it (`useOpenTargetDetails`). */}
                   <div className="grid gap-4 @3xl:grid-cols-2">
-                    {group.items.map((item) => (
-                      <FacilityCard
-                        key={item.id}
-                        facility={item}
-                        sources={sources}
-                        showTerminal={multiTerminal}
-                        airport={airport}
-                        defaultProvenance={defaultProvenance}
-                        groupedSources
-                        showAsOf={!sameDate}
-                      />
-                    ))}
+                    {(collapseGroups ? group.items.slice(0, GROUP_SHOWN) : group.items).map(card)}
                   </div>
+                  {collapseGroups && group.items.length > GROUP_SHOWN ? (
+                    <MoreOnPhones
+                      className="mt-3"
+                      contentClassName="grid gap-4 @3xl:grid-cols-2 md:pt-4"
+                      summary={t('mapPages.facilities.moreInGroup', { count: group.items.length - GROUP_SHOWN, group: group.label })}
+                    >
+                      {group.items.slice(GROUP_SHOWN).map(card)}
+                    </MoreOnPhones>
+                  ) : null}
                   {listed.sources.length > 0 || (sameDate && first.asOf) ? (
                     <div data-section-sources="" className="mt-2 flex flex-wrap items-center gap-x-4">
                       <SourceNote sources={listed.sources} citedBy={group.items.length > 1 ? listed.citedBy : undefined} label={t('shellExtras.sourceLists.section')} />
@@ -319,4 +335,28 @@ function Directory({
       </div>
     </div>
   );
+}
+
+/** Cards a group shows before "N more" on phones when no filter is chosen (round 6). */
+const GROUP_SHOWN = 3;
+
+/**
+ * A link to a card that sits in a closed disclosure (`#kul-t1-fast-track` from the overview or a
+ * flight page) opens the disclosure first, on load and on later in-page links, in browsers that do
+ * not do so themselves.
+ */
+function useOpenTargetDetails() {
+  useEffect(() => {
+    const open = () => {
+      const id = decodeURIComponent(window.location.hash.slice(1));
+      const target = id ? document.getElementById(id) : null;
+      const details = target?.closest('details');
+      if (!target || !details || details.open) return;
+      details.open = true;
+      target.scrollIntoView({ block: 'start' });
+    };
+    open();
+    window.addEventListener('hashchange', open);
+    return () => window.removeEventListener('hashchange', open);
+  }, []);
 }

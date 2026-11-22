@@ -1,3 +1,4 @@
+import { languageAlternates } from '@/lib/seo/metadata';
 import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
 import { getDictionary, getT, toLang } from '@/lib/i18n';
@@ -8,7 +9,7 @@ import { Icon } from '@/components/ui/icon';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getT(toLang(await routeLang()));
-  return { title: t('corporatePages.terms.title'), description: t('corporatePages.terms.metaDescription') };
+  return { alternates: languageAlternates(await routeLang(), '/terms'), title: t('corporatePages.terms.title'), description: t('corporatePages.terms.metaDescription') };
 }
 
 /** Terms of use for the prototype: plain, numbered, short. */

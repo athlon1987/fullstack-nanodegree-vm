@@ -1,3 +1,4 @@
+import { languageAlternates } from '@/lib/seo/metadata';
 import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
 import { CORPORATE_IDENTITY, CORPORATE_LINKS } from '@/content';
@@ -12,7 +13,7 @@ import { Container } from '@/components/ui/container';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getT(toLang(await routeLang()));
-  return { title: t('corporatePages.governance.title'), description: t('corporatePages.governance.metaDescription') };
+  return { alternates: languageAlternates(await routeLang(), '/corporate/governance'), title: t('corporatePages.governance.title'), description: t('corporatePages.governance.metaDescription') };
 }
 
 /** Governance: ownership and oversight, agreements, privacy, scam alerts, concerns and company details. */

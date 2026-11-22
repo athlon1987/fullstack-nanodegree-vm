@@ -203,8 +203,11 @@ test.describe('accessibility statement (6.1.10)', () => {
   test('describes focus, the test scope, the review date and the contact, in both languages', async ({ page }) => {
     await page.goto('/en/accessibility#statement');
     const statement = page.locator('#statement');
-    await expect(statement).toContainText('Last reviewed 21 November 2026');
+    // Round 6: re-dated after the sixth round of fixes (the date is the intended change).
+    await expect(statement).toContainText('Last reviewed 22 November 2026, after the sixth round of fixes');
     await expect(statement).toContainText('keyboard focus moves to that page');
+    await expect(statement).toContainText('moves focus to that part');
+    await expect(statement).toContainText('125 per cent browser zoom');
     await expect(statement).not.toContainText('focus stays where it was');
     await expect(statement).toContainText('200 and 400 per cent');
     await expect(statement).toContainText('Safari on iPhone and iPad (WebKit) has not been tested');
@@ -214,7 +217,8 @@ test.describe('accessibility statement (6.1.10)', () => {
 
     await page.goto('/ms/accessibility#statement');
     const ms = page.locator('#statement');
-    await expect(ms).toContainText('21 November 2026');
+    await expect(ms).toContainText('22 November 2026, selepas pusingan pembaikan keenam');
+    await expect(ms).toContainText('memindahkan fokus ke bahagian itu');
     await expect(ms).toContainText('fokus papan kekunci berpindah ke tajuk utama');
     await expect(ms).toContainText('200 dan 400 peratus');
     await expect(ms.locator('[data-accessibility-contact]')).toContainText('tidak menerbitkan saluran kebolehcapaian');

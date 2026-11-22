@@ -1,3 +1,4 @@
+import { languageAlternates } from '@/lib/seo/metadata';
 import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
 import { CORPORATE_IDENTITY, CORPORATE_LINKS } from '@/content';
@@ -14,7 +15,7 @@ import { Container } from '@/components/ui/container';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getT(toLang(await routeLang()));
-  return { title: t('corporatePages.contact.title'), description: t('corporatePages.contact.metaDescription') };
+  return { alternates: languageAlternates(await routeLang(), '/corporate/contact'), title: t('corporatePages.contact.title'), description: t('corporatePages.contact.metaDescription') };
 }
 
 /** Contact: sourced channels only, the corporate office, and where other enquiries go. */

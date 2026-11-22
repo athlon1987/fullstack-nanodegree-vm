@@ -101,6 +101,12 @@ export const platformPagesEn = {
     airports: 'Choose an airport',
     help: 'Help centre',
   },
+  // Round 6 (review-3 9.1 item 1): a lazily loaded part that has not arrived, or could not be shown.
+  part: {
+    waiting: 'This part has not loaded yet because the connection dropped. It loads by itself when the connection is back.',
+    failed: 'This part of the page could not be shown. The rest of the page still works.',
+    retry: 'Try again',
+  },
 };
 
 export const platformPagesMs: typeof platformPagesEn = {
@@ -195,5 +201,10 @@ export const platformPagesMs: typeof platformPagesEn = {
     home: 'Pergi ke laman utama',
     airports: 'Pilih lapangan terbang',
     help: 'Pusat bantuan',
+  },
+  part: {
+    waiting: 'Bahagian ini belum dimuatkan kerana sambungan terputus. Ia akan dimuatkan sendiri apabila sambungan pulih.',
+    failed: 'Bahagian halaman ini tidak dapat dipaparkan. Bahagian lain halaman ini masih berfungsi.',
+    retry: 'Cuba lagi',
   },
 };

@@ -1,3 +1,4 @@
+import { languageAlternates } from '@/lib/seo/metadata';
 import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
 import {
@@ -33,7 +34,7 @@ import { Container } from '@/components/ui/container';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getT(toLang(await routeLang()));
-  return { title: t('corporatePages.about.title'), description: t('corporatePages.about.metaDescription') };
+  return { alternates: languageAlternates(await routeLang(), '/corporate/about'), title: t('corporatePages.about.title'), description: t('corporatePages.about.metaDescription') };
 }
 
 function personView(person: CorporatePerson, lang: Lang, t: Translator): PersonView {

@@ -1,3 +1,4 @@
+import { languageAlternates } from '@/lib/seo/metadata';
 import type { Metadata } from 'next';
 import { CORPORATE_LINKS, getAirport, localizeAirport } from '@/content';
 import { getT, toLang } from '@/lib/i18n';
@@ -28,7 +29,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const lang = toLang(rawLang);
   const item = mediaView(slug, lang);
   if (!item) return { title: getT(lang)('errors.notFoundTitle') };
-  return { title: item.title, description: item.summary };
+  return { alternates: languageAlternates(lang, `/corporate/news/${slug}`), title: item.title, description: item.summary };
 }
 
 /**

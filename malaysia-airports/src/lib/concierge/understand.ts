@@ -57,17 +57,55 @@ const RULES: readonly Rule[] = [
   ['notices', 2, ['notice', 'notices', 'advisory', 'disruption', 'closure', 'closed', 'works', 'running', 'operating', 'beroperasi', 'notis', 'gangguan']],
   ['contact', 3, ['contact', 'phone number', 'call', 'email', 'speak to', 'talk to', 'human', 'customer service', 'complain', 'complaint', 'feedback', 'hubungi', 'telefon', 'nombor telefon', 'khidmat pelanggan', 'aduan', 'maklum balas']],
   ['flight-status', 1, ['status', 'on time', 'what time', 'when does', 'landed', 'departed', 'arrive', 'arrival', 'depart', 'departure', 'bila', 'pukul berapa', 'tepat masa']],
+  // Round 6 (9.1 item 4): "What is the queue at immigration right now?" is about the wait, not the rules.
+  ['queue', 7, ['queue', 'queues', 'queuing', 'queueing', 'wait time', 'waiting time', 'waiting times', 'how long is the wait', 'how long is the line', 'line at', 'barisan', 'beratur', 'masa menunggu', 'berapa lama menunggu', 'berapa lama barisan']],
+  // Business enquiries: the corporate pages say which dedicated channels are not published.
+  [
+    'business',
+    8,
+    [
+      'advertising', 'advertise', 'advertisement', 'advertisements', 'billboard', 'billboards', 'retail space', 'shop space', 'commercial space', 'office space', 'rent space', 'rent a space', 'lease space', 'leasing', 'tenancy', 'tenant', 'concession', 'concessions',
+      'tender', 'tenders', 'procurement', 'supplier', 'suppliers', 'become a supplier', 'vendor registration', 'route development', 'new route', 'new routes', 'aeropolis', 'cargo', 'freight',
+      'iklan', 'mengiklan', 'pengiklanan', 'papan iklan', 'ruang runcit', 'ruang niaga', 'ruang komersial', 'sewa ruang', 'sewa kedai', 'pajakan', 'penyewa', 'konsesi', 'perolehan', 'pembekal', 'laluan baharu', 'kargo',
+    ],
+  ],
+];
+
+/**
+ * Requests that ask the concierge to act ("book me a taxi", "tolong tempah teksi"): it cannot
+ * book, order or pay for anything, and says so before pointing to where it is done (round 6).
+ * Only requests addressed to it: "How do I book a taxi?" and "Boleh saya tempah?" are questions.
+ */
+const ACT_PHRASES = [
+  'book me', 'book for me', 'book it for me', 'book one for me', 'can you book', 'could you book', 'would you book', 'will you book', 'please book', 'pls book',
+  'reserve me', 'reserve for me', 'can you reserve', 'could you reserve', 'please reserve', 'order me', 'can you order', 'could you order', 'please order',
+  'call me a', 'get me a', 'can you get me', 'could you get me', 'can you call', 'could you call', 'can you pay', 'pay for me', 'buy me', 'can you buy', 'could you buy', 'buy for me',
+  'tempahkan', 'tolong tempah', 'boleh tempah', 'bolehkah tempah', 'awak tempah', 'anda tempah', 'tempah untuk saya', 'pesankan', 'tolong pesan', 'panggilkan', 'tolong panggil', 'belikan', 'tolong beli', 'bayarkan', 'tolong bayar',
+];
+
+/**
+ * Topics outside what the concierge covers. They never go to the airport's support line, which
+ * cannot answer them either (round 6; third review: "weather goes to the airport support line").
+ * A question that also scores an airport topic (weather delaying a flight) keeps that topic.
+ */
+const OUT_OF_SCOPE = [
+  'weather', 'forecast', 'rain', 'raining', 'rainy', 'temperature', 'humidity', 'haze', 'sunny', 'thunderstorm',
+  'cuaca', 'ramalan cuaca', 'hujan', 'suhu', 'jerebu', 'panas terik', 'ribut petir',
+  'football', 'bola sepak', 'recipe', 'resipi', 'joke', 'jenaka', 'lottery', 'loteri', 'horoscope', 'horoskop', 'poem', 'puisi',
 ];
 
 /** When scores tie, the earlier intent wins. */
 const PRIORITY: readonly ConciergeIntent[] = [
+  'cannot-do',
   'fast-track',
   'service-status',
   'airline-terminal',
   'fare',
   'duty-free',
   'arrival-time',
+  'queue',
   'immigration',
+  'business',
   'lounge',
   'flight-delay',
   'terminal-transfer',
@@ -279,6 +317,8 @@ export function understand(question: string, knowledge: ConciergeKnowledge, cont
   if (duration !== undefined && (scores.get('layover') ?? 0) > 0) bump('layover', 2);
   const words = text.split(' ').filter(Boolean);
   if (words.length <= 4 && GREETINGS.some((greeting) => text === greeting || text.startsWith(`${greeting} `))) bump('greeting', 5);
+  // Round 6: a request to book, order or pay ("Can you book me a taxi?") outranks the topic it names.
+  if (ACT_PHRASES.some((item) => hasPhrase(text, item))) bump('cannot-do', 12);
 
   let intent: ConciergeIntent = 'unknown';
   let score = 0;
@@ -290,12 +330,19 @@ export function understand(question: string, knowledge: ConciergeKnowledge, cont
     }
   }
 
+  // Round 6: outside what we cover (the weather), unless an airport topic scored as well
+  // ("Will the rain delay my flight?" is a delay question).
+  if (intent !== 'cannot-do' && score < 5 && OUT_OF_SCOPE.some((item) => hasPhrase(text, item))) {
+    intent = 'out-of-scope';
+    score = 5;
+  }
+
   // Airport after intent: a flight's destination is not the airport.
   let airport = matchAirport(text, raw, knowledge, intent);
   const destinations = destinationKeys(knowledge, airport);
   const destinationHit = destinations.filter((item) => hasPhrase(text, item.key)).sort((a, b) => b.key.length - a.key.length)[0];
   if (destinationHit) {
-    if (intent === 'unknown' || intent === 'transport' || score < 4) {
+    if ((intent === 'unknown' || intent === 'transport' || score < 4) && intent !== 'out-of-scope') {
       intent = 'transport';
       score = Math.max(score, 6);
     }

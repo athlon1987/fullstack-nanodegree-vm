@@ -5,6 +5,8 @@ import { useEffect } from 'react';
 /** Below this window height, or at 112% and 125% text, the fixed chrome gives way while reading. */
 const SHORT_WINDOW = '(max-height: 40rem)';
 const LARGE_TEXT = new Set(['112', '125']);
+/** A root font size from this many pixels (the device's or browser's text size, 112.5% and up) compacts the chrome too. */
+const DEVICE_LARGE_TEXT_PX = 18;
 /** Pixels of movement before the chrome reacts, so a jittery thumb does not make it flicker. */
 const THRESHOLD = 8;
 /** After scrolling stops, the bottom bar comes back. */
@@ -34,7 +36,11 @@ export function ScrollChrome() {
       delete html.dataset.scrollChrome;
     };
     const evaluate = () => {
-      enabled = query.matches || LARGE_TEXT.has(html.dataset.textSize ?? '');
+      // Round 6 (review-3 9.1 item 9): text enlarged by the device or browser (a root font size
+      // above 18 px), not only by this site's setting, also gets the compact chrome: at 200% the
+      // bottom bar's labels overlapped and its last item was pushed off a 390 px screen.
+      const rootSize = parseFloat(getComputedStyle(html).fontSize) || 16;
+      enabled = query.matches || LARGE_TEXT.has(html.dataset.textSize ?? '') || rootSize >= DEVICE_LARGE_TEXT_PX;
       if (enabled) html.dataset.compactChrome = 'true';
       else {
         delete html.dataset.compactChrome;
@@ -67,11 +73,15 @@ export function ScrollChrome() {
     const observer = new MutationObserver(evaluate);
     observer.observe(html, { attributes: true, attributeFilter: ['data-text-size'] });
     query.addEventListener('change', evaluate);
+    // A device text size changed while the page is open reaches the root font size; a resize
+    // event follows most such changes, and it is cheap to re-check then.
+    window.addEventListener('resize', evaluate);
     window.addEventListener('scroll', onScroll, { passive: true });
     document.addEventListener('focusin', onFocusIn);
     return () => {
       observer.disconnect();
       query.removeEventListener('change', evaluate);
+      window.removeEventListener('resize', evaluate);
       window.removeEventListener('scroll', onScroll);
       document.removeEventListener('focusin', onFocusIn);
       cancelAnimationFrame(frame);

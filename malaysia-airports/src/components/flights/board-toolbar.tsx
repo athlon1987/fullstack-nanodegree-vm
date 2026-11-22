@@ -1,6 +1,6 @@
 'use client';
 
-import { useId, useState, type FormEvent } from 'react';
+import { useEffect, useId, useRef, useState, type CSSProperties, type FormEvent } from 'react';
 import { terminalLabel } from '@/content/airports';
 import type { Airport, TerminalId } from '@/content/types';
 import type { FlightDirection } from '@/lib/flights';
@@ -42,8 +42,13 @@ export function BoardToolbar({ airport, direction, query, initialQuery, searchKe
   const id = useId();
   const statusLabelId = `${id}-status`;
   const reading = readQueryKind(query);
-  const visibleGroups = STATUS_GROUPS[direction].filter((group) => !counts || (counts[group.id] ?? 0) > 0 || groups.includes(group.id));
+  // Round 6 (G8 item 9): when the window has no flights at all (at night), the chips keep their
+  // room, invisible, so the strip and the search beside it do not move when the feed answers (the
+  // strip shrank to its label and the search grew: CLS 0.023 en, 0.041 ms at 1440 px).
+  const noFlights = Boolean(counts) && STATUS_GROUPS[direction].every((group) => (counts?.[group.id] ?? 0) === 0) && groups.length === 0;
+  const visibleGroups = STATUS_GROUPS[direction].filter((group) => noFlights || !counts || (counts[group.id] ?? 0) > 0 || groups.includes(group.id));
 
+  const [strip, edges] = useOverflowEdges<HTMLDivElement>();
   const toggle = (group: StatusGroupId, pressed: boolean) => {
     const next = pressed ? [...groups, group] : groups.filter((item) => item !== group);
     // Keep the life-cycle order in the URL, whatever order they were pressed in.
@@ -62,11 +67,16 @@ export function BoardToolbar({ airport, direction, query, initialQuery, searchKe
 
       {/* One row that scrolls sideways on phones, so the board stays near the top of the screen.
           Round 5: as tall as a chip even when no status has flights (at night), so the board under
-          it does not move up when the feed answers. */}
+          it does not move up when the feed answers. Round 6 (review-3 9.1 item 7): an edge fade
+          on each side that has more chips, as on the section tabs, so the row reads as scrollable. */}
       <div
+        ref={strip}
         role="group"
         aria-labelledby={statusLabelId}
-        className="flex min-h-9 items-center gap-2 max-sm:-mx-gutter max-sm:min-h-10 max-sm:overflow-x-auto max-sm:px-gutter max-sm:pb-1 sm:flex-wrap touch:min-h-11 max-sm:touch:min-h-12"
+        data-overflow-start={edges.start || undefined}
+        data-overflow-end={edges.end || undefined}
+        style={{ '--fade-start': edges.start ? '2.5rem' : '0px', '--fade-end': edges.end ? '2.5rem' : '0px' } as CSSProperties}
+        className="flex min-h-9 items-center gap-2 max-sm:scroll-fade-x max-sm:-mx-gutter max-sm:min-h-10 max-sm:overflow-x-auto max-sm:px-gutter max-sm:pb-1 sm:flex-wrap touch:min-h-11 max-sm:touch:min-h-12"
       >
         <span id={statusLabelId} className="type-eyebrow mr-1 shrink-0 text-ink-2">
           {t('flightPages.board.statusLabel')}
@@ -79,6 +89,7 @@ export function BoardToolbar({ airport, direction, query, initialQuery, searchKe
         {visibleGroups.map((group) => (
           <FilterChip
             key={group.id}
+            {...(noFlights ? { 'aria-hidden': true, tabIndex: -1, className: 'invisible' } : {})}
             pressed={groups.includes(group.id)}
             onPressedChange={(pressed) => toggle(group.id, pressed)}
             icon={group.icon}
@@ -129,4 +140,32 @@ function BoardSearchField({ initial, onQueryChange }: { initial: string; onQuery
       autoComplete="off"
     />
   );
+}
+
+/** Which ends of a sideways-scrolling row have more content past them (for the edge fades). */
+function useOverflowEdges<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+  const [edges, setEdges] = useState({ start: false, end: false });
+  useEffect(() => {
+    const scroller = ref.current;
+    if (!scroller) return;
+    const measure = () => {
+      const start = scroller.scrollLeft > 2;
+      const end = scroller.scrollLeft + scroller.clientWidth < scroller.scrollWidth - 2;
+      setEdges((current) => (current.start === start && current.end === end ? current : { start, end }));
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(scroller);
+    // Chips arrive and change their counts after the feed answers.
+    const changes = new MutationObserver(measure);
+    changes.observe(scroller, { childList: true, subtree: true, characterData: true });
+    scroller.addEventListener('scroll', measure, { passive: true });
+    return () => {
+      observer.disconnect();
+      changes.disconnect();
+      scroller.removeEventListener('scroll', measure);
+    };
+  }, []);
+  return [ref, edges] as const;
 }

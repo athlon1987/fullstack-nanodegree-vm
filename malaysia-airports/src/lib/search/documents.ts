@@ -41,7 +41,33 @@ const UNPUBLISHED_TOPICS = [
   { id: 'accessibleToilet', href: '/accessibility#not-published', keywords: ['accessible toilet', 'accessible toilets', 'disabled toilet', 'tandas oku', 'oku toilet'] },
   { id: 'wifi', href: '/help', keywords: ['wifi', 'wi-fi', 'internet', 'wireless', 'free wifi', 'wifi percuma'] },
   { id: 'smoking', href: '/help', keywords: ['smoking', 'smoking room', 'smoking rooms', 'smoke', 'merokok', 'bilik merokok', 'rokok'] },
+  // Round 6 (third review 9.1 item 5): "pharmacy" found nothing, "charging" found the trains.
+  { id: 'pharmacy', href: '/help', keywords: ['pharmacy', 'pharmacies', 'chemist', 'farmasi', 'medicine', 'ubat'] },
+  { id: 'charging', href: '/help', keywords: ['charging', 'charging point', 'charging points', 'charger', 'phone charging', 'power socket', 'mengecas', 'pengecas', 'cas telefon'] },
 ] as const;
+
+/**
+ * Templates for "not published at this airport" (round 6, 9.1 item 5): a query that names an
+ * airport and a section or service it does not publish ("kuching parking", "langkawi taxi") gets
+ * this first, filled in by the engine (`searchAll`). Kept out of the index itself.
+ */
+const SECTION_GAP_TEMPLATES = [
+  { id: 'parking', key: 'parking', href: '/airports/not-published?section=parking' },
+  { id: 'transport', key: 'transport', href: '/airports/not-published?section=transport' },
+  { id: 'lounges', key: 'lounges', href: '/airports/not-published?section=lounges' },
+  { id: 'shop-dine', key: 'shopDine', href: '/airports/not-published?section=shop-dine' },
+  { id: 'facilities', key: 'facilities', href: '/airports/not-published?section=facilities' },
+  { id: 'atm', key: 'atm', href: '/airports/not-published?section=facilities' },
+  { id: 'pharmacy', key: 'pharmacy', href: '/airports/not-published?section=facilities' },
+  { id: 'money-changer', key: 'moneyChanger', href: '/airports/not-published?section=facilities' },
+  { id: 'lost-property', key: 'lostProperty', href: '/airports/not-published?section=facilities' },
+  { id: 'charging', key: 'charging', href: '/airports/not-published?section=facilities' },
+] as const;
+
+/** Words of corporate pages that passengers' words do not reach (round 6: "advertising" led with the privacy FAQ). */
+const CORPORATE_KEYWORDS: Readonly<Record<string, readonly string[]>> = {
+  business: ['advertising', 'advertise', 'retail space', 'commercial space', 'tender', 'tenders', 'procurement', 'supplier', 'cargo', 'aeropolis', 'route development', 'iklan', 'pengiklanan', 'ruang runcit', 'perolehan', 'pembekal', 'kargo'],
+};
 
 /** Car parks by how a long-stay driver should meet them: long-stay first, premium last (A-12). */
 const CAR_PARK_RANK: Readonly<Record<string, number>> = { 'long-term': 1.3, preferred: 0.6, premium: 0.6 };
@@ -111,6 +137,8 @@ export function buildSearchDocuments(lang: Lang): SearchDocument[] {
         ...(lang === 'en' ? [] : [local.name, local.shortName, local.city, local.state]),
         ...both(CLASSIFICATION_LABELS[airport.classification]),
       ].filter(Boolean),
+      // Names a query can use for this airport (round 6: "kuching parking" names Kuching).
+      aliases: [...new Set([airport.shortName, airport.city, local.shortName, local.city].filter(Boolean).map((name) => name.toLowerCase()))],
     });
     if (isMultiTerminal(airport)) {
       for (const terminal of airport.terminals) {
@@ -186,10 +214,14 @@ export function buildSearchDocuments(lang: Lang): SearchDocument[] {
         const levelName = map.levels.find((level) => level.id === poi.level)?.name;
         places.set(`place:${map.id}:${poi.id}`, levelName ? pick(levelName, lang).split(':')[0].trim() : poi.level);
         const kindLabel = (MAP_POI_KIND_LABELS as Partial<Record<string, LocalizedText>>)[poi.kind];
+        // Round 6 (9.1 item 5): every demonstration place says it is illustrative, lifts included
+        // ("Lifts to Levels 3 and 1" read as a surveyed lift).
+        const illustrative = t('searchIndex.sectionGaps.illustrative');
+        const name = pick(poi.name, lang);
         documents.push({
           id: `place:${map.id}:${poi.id}`,
           type: 'place',
-          title: pick(poi.name, lang),
+          title: poi.provenance === 'demo' && !name.includes(illustrative) ? `${name} ${illustrative}` : name,
           summary: `${pick(map.name, lang)} · ${poi.level}`,
           href: `/${airport.slug}/map?t=${map.terminal}&level=${encodeURIComponent(poi.level)}&poi=${encodeURIComponent(poi.id)}`,
           airport: airport.slug,
@@ -289,7 +321,7 @@ export function buildSearchDocuments(lang: Lang): SearchDocument[] {
       title: pick(page.title, lang),
       summary: pick(page.summary, lang),
       href: `/corporate/${page.slug}`,
-      keywords: [page.section, 'corporate', 'korporat', 'Malaysia Airports'],
+      keywords: [page.section, 'corporate', 'korporat', 'Malaysia Airports', ...(CORPORATE_KEYWORDS[page.slug] ?? [])],
     });
   }
   for (const item of NEWS_ITEMS) {
@@ -328,10 +360,22 @@ export function buildSearchDocuments(lang: Lang): SearchDocument[] {
     documents.push({
       id: `unpublished:${gap.id}`,
       type: 'unpublished',
-      title: t(`shellExtras.searchGaps.${gap.id}.title`),
-      summary: t(`shellExtras.searchGaps.${gap.id}.summary`),
+      // Round 6: the newer gaps' copy is search-only (`searchIndex`, never sent to the browser).
+      title: gap.id === 'pharmacy' || gap.id === 'charging' ? t(`searchIndex.gaps.${gap.id}.title`) : t(`shellExtras.searchGaps.${gap.id}.title`),
+      summary: gap.id === 'pharmacy' || gap.id === 'charging' ? t(`searchIndex.gaps.${gap.id}.summary`) : t(`shellExtras.searchGaps.${gap.id}.summary`),
       href: gap.href,
       keywords: [...gap.keywords],
+    });
+  }
+  for (const gap of SECTION_GAP_TEMPLATES) {
+    documents.push({
+      id: `gap-section:${gap.id}`,
+      type: 'unpublished',
+      // `{airport}` stays a placeholder: the engine fills it with the airport the query names.
+      title: t(`searchIndex.sectionGaps.${gap.key}`, { airport: '{airport}' }),
+      summary: t('searchIndex.sectionGaps.summary', { airport: '{airport}' }),
+      href: gap.href,
+      keywords: [],
     });
   }
   for (const section of CORPORATE_SECTIONS) {
@@ -342,7 +386,7 @@ export function buildSearchDocuments(lang: Lang): SearchDocument[] {
       title: t(section.label),
       summary: t(section.description),
       href: section.href,
-      keywords: [section.id, 'corporate', 'korporat', 'Malaysia Airports'],
+      keywords: [section.id, 'corporate', 'korporat', 'Malaysia Airports', ...(CORPORATE_KEYWORDS[section.id] ?? [])],
     });
   }
 

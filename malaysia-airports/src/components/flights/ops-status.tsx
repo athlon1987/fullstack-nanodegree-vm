@@ -98,7 +98,8 @@ export function OpsStatus({ airport, notices, sources = {}, services, terminal, 
               </span>
             </p>
             <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
-              <ProvenanceTag provenance={item.notice.provenance} length="short" />
+              {/* Round 6 (9.1 item 6): no "Estimated" chip on a notice; the sources say who reports it. */}
+              {item.notice.provenance === 'demo' || item.notice.provenance === 'official' ? <ProvenanceTag provenance={item.notice.provenance} length="short" /> : null}
               {noticeSources.length > 0 ? <SourceNote sources={noticeSources} /> : null}
               <LocaleLink href={`/notices#${item.notice.id}`} className="link type-body-sm">
                 {t('flightPages.ops.readNotice')}
@@ -112,7 +113,8 @@ export function OpsStatus({ airport, notices, sources = {}, services, terminal, 
             {waits.map((wait) => (
               <span key={`${wait.terminal}-${wait.checkpoint}`} className="type-body-sm text-ink">
                 {t(`flightPages.ops.checkpoints.${CHECKPOINT_KEYS[wait.checkpoint]}` as 'flightPages.ops.checkpoints.security')}
-                {terminal || item.terminal ? '' : ` ${wait.terminal}`}: <span className="type-data-sm">{t('flightPages.ops.wait', { minutes: wait.minutes })}</span>
+                {/* Round 6 (9.1 item 6): "Security MAIN" at one-terminal airports; only a real terminal is named. */}
+                {terminal || item.terminal || wait.terminal === 'MAIN' ? '' : ` ${wait.terminal}`}: <span className="type-data-sm">{t('flightPages.ops.wait', { minutes: wait.minutes })}</span>
               </span>
             ))}
             <DemoMark />

@@ -25,7 +25,8 @@ export function DemoTag({ size = 'sm', className, ...rest }: DemoTagProps) {
       data-demo-marker=""
       className={cn(
         'type-caption relative inline-flex shrink-0 items-center overflow-hidden rounded-xs border border-demo-border bg-demo-bg pr-1.5 pl-3 leading-none font-bold whitespace-nowrap text-demo-fg forced-colors:border-[CanvasText]',
-        size === 'sm' ? 'h-5 text-[0.75rem]' : 'h-6',
+        // Round 6 (A-14): the caption size, as on `ProvenanceTag`; a 12 px size of its own was a ninth type size on the home.
+        size === 'sm' ? 'h-5' : 'h-6',
         className,
       )}
       {...rest}

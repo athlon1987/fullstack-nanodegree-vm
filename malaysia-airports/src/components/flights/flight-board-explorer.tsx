@@ -41,6 +41,13 @@ import { useFlightDirection } from './flight-direction';
 import { FlightWatcher } from './flight-watcher';
 import { toSavedFlight } from './saved-flight';
 
+/**
+ * Round 6 (G8 item 9): the loading message and the empty board start at the left from sm up. When
+ * the feed answered at night the centred loading title was replaced by a longer one and slid
+ * sideways (CLS 0.023 en, 0.041 ms at 1440 px); left-aligned, only its width changes.
+ */
+const STATE_ALIGN = 'sm:items-start sm:text-left sm:[&>div:last-child]:justify-start';
+
 export interface FlightBoardExplorerProps {
   /** Airport slug: `kul`. */
   airport: string;
@@ -294,7 +301,7 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
     </Button>
   );
   const edge = (canMove: boolean, button: ReactNode, limit: string) => (
-    <div className="flex justify-center px-4 py-0.5 sm:px-5 sm:py-1.5">{canMove ? button : <p className="type-body-sm py-2 text-ink-2">{limit}</p>}</div>
+    <div className="flex justify-center px-4 py-0.5 sm:px-5 sm:py-1.5 lg:py-0.5">{canMove ? button : <p className="type-body-sm py-2 text-ink-2">{limit}</p>}</div>
   );
 
   const empty = (() => {
@@ -302,6 +309,7 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
       return (
         <EmptyState
           variant="plain"
+          className={STATE_ALIGN}
           icon="search-x"
           title={t('flightPages.board.noResultsTitle', { query: query.trim() })}
           action={
@@ -318,6 +326,7 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
       return (
         <EmptyState
           variant="plain"
+          className={STATE_ALIGN}
           icon="list-filter"
           title={t('flightPages.board.noFilterResultsTitle')}
           action={
@@ -334,6 +343,7 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
     return (
       <EmptyState
         variant="plain"
+        className={STATE_ALIGN}
         icon={direction === 'd' ? 'plane-takeoff' : 'plane-landing'}
         title={direction === 'd' ? t('flightPages.board.emptyTitleDepartures', vars) : t('flightPages.board.emptyTitleArrivals', vars)}
         // Round 5: both steps, as the message says (only Earlier was offered, under a line that
@@ -357,14 +367,14 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
   // fills what is already on screen (it painted as a new block after the feed: LCP 4.7 s). It
   // says what the board will hold, not that anything is live.
   const loading = (
-    <EmptyState variant="plain" icon={direction === 'd' ? 'plane-takeoff' : 'plane-landing'} title={t('flightPages.board.loadingTitle')}>
+    <EmptyState variant="plain" className={STATE_ALIGN} icon={direction === 'd' ? 'plane-takeoff' : 'plane-landing'} title={t('flightPages.board.loadingTitle')}>
       {t('flightPages.board.loadingBody')}
     </EmptyState>
   );
 
   // Tighter on phones so the first rows reach the first screen (A-01, round 2).
   const panel = (
-    <div className="flex flex-col gap-3 sm:gap-5">
+    <div className="flex flex-col gap-3 sm:gap-5 lg:gap-3">
       <BoardToolbar
         airport={airport}
         direction={direction}
@@ -380,7 +390,7 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
       />
 
       {/* The live region stays in the page; while empty it takes no gap of its own. */}
-      <FeedNotice feed={feed} timeZone={zone} className="empty:-mt-3 sm:empty:-mt-5" />
+      <FeedNotice feed={feed} timeZone={zone} className="empty:-mt-3 sm:empty:-mt-5 lg:empty:-mt-3" />
 
       {savedOnBoard > 0 ? (
         <p className="type-body-sm flex flex-wrap items-center gap-x-3 gap-y-0.5 rounded-md border border-line bg-page-subtle py-1 pr-1 pl-3 text-ink-2">
@@ -438,6 +448,7 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
           }
           live="off"
           compactHeader
+          compactBanner
           groupByHour
           timeZone={zone}
           dayLabel={(date) => {
@@ -524,7 +535,7 @@ function BoardView({ airport, params }: { airport: Airport; params: BoardParams 
   const tab = (value: FlightDirection) => {
     const count = searching && searched ? searched[value].length : null;
     return (
-      <TabsTrigger value={value} className="h-12 text-lg">
+      <TabsTrigger value={value} className="h-12 text-lg lg:h-10">
         <Icon name={value === 'd' ? 'plane-takeoff' : 'plane-landing'} size="sm" />
         {value === 'd' ? t('common.labels.departures') : t('common.labels.arrivals')}
         {count !== null ? <span className="type-data-sm rounded-xs border border-line-control px-1.5 text-ink-2">{count}</span> : null}

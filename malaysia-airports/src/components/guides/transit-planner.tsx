@@ -425,7 +425,9 @@ function VerdictCard({ verdict, estimate, layover, self, late }: { verdict: Time
           <p className="type-body mt-1 text-ink-2">{t(copy.body)}</p>
         </div>
       </div>
-      <dl className="grid grid-cols-2 gap-3">
+      {/* Round 6 (review-3 9.1 item 8): side by side while their labels fit, stacked when they do not
+          ("penerbangan" broke in a 96 px column at 360 px and 125% text). */}
+      <dl className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,9rem),1fr))] gap-3">
         <div className="min-w-0 rounded-lg bg-page-subtle p-3">
           <dt className="type-caption text-ink-2">{t('guidePages.transit.time.estimate')}</dt>
           <dd className="type-data-md mt-1 text-ink">{t('guidePages.transit.time.range', { min: formatDuration(estimate.min, lang), max: formatDuration(estimate.max, lang) })}</dd>

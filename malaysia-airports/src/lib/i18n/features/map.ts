@@ -65,6 +65,8 @@ export const mapPagesEn = {
     panRight: 'Move the map right',
     skipToList: 'Skip to the list of places',
     toLevel: 'To {level}',
+    // Round 6 (review-3 9.1 item 7): the level changes of a route, in a strip above the drawing.
+    continues: 'The route continues:',
     marker: '{name}. {kind}. {level}.',
     markerStart: 'Start of route',
     markerEnd: 'End of route',
@@ -80,6 +82,8 @@ export const mapPagesEn = {
     ride: 'Train ride',
   },
   details: {
+    // Round 6 (review-3 9.1 item 7): a facility card's further facts, behind a disclosure on phones.
+    more: 'Who can use it, area and operator',
     close: 'Close details',
     kind: 'Type',
     level: 'Level',
@@ -175,6 +179,8 @@ export const mapPagesEn = {
     sources: 'Where the map comes from',
   },
   facilities: {
+    // Round 6 (review-3 9.1 item 7): the rest of a long group, behind a disclosure on phones.
+    moreInGroup: 'Show {count} more: {group}',
     lead: 'What our sources confirm at {airport}, each with its source. Where a detail is not published, we say so.',
     metaDescription: 'Facilities and services at {airport}: prayer rooms, assistance, lounges and more, each with its source.',
     filtersTitle: 'Filter facilities',
@@ -258,6 +264,7 @@ export const mapPagesMs: typeof mapPagesEn = {
     panRight: 'Gerakkan peta ke kanan',
     skipToList: 'Langkau ke senarai tempat',
     toLevel: 'Ke {level}',
+    continues: 'Laluan bersambung:',
     marker: '{name}. {kind}. {level}.',
     markerStart: 'Permulaan laluan',
     markerEnd: 'Penghujung laluan',
@@ -273,6 +280,7 @@ export const mapPagesMs: typeof mapPagesEn = {
     ride: 'Perjalanan tren',
   },
   details: {
+    more: 'Siapa boleh guna, kawasan dan pengendali',
     close: 'Tutup butiran',
     kind: 'Jenis',
     level: 'Aras',
@@ -367,6 +375,7 @@ export const mapPagesMs: typeof mapPagesEn = {
     sources: 'Sumber peta',
   },
   facilities: {
+    moreInGroup: 'Tunjuk {count} lagi: {group}',
     lead: 'Apa yang disahkan oleh sumber kami di {airport}, setiap satu dengan sumbernya. Jika sesuatu butiran tidak diterbitkan, kami nyatakannya.',
     metaDescription: 'Kemudahan dan perkhidmatan di {airport}: surau, bantuan khas, lounge dan banyak lagi, setiap satu dengan sumbernya.',
     filtersTitle: 'Tapis kemudahan',

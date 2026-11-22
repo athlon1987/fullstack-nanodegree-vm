@@ -1,3 +1,4 @@
+import { languageAlternates } from '@/lib/seo/metadata';
 import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
 import { airportsWithContent, getAirportContent, pick } from '@/content';
@@ -12,7 +13,7 @@ import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getT(toLang(await routeLang()));
-  return { title: t('journey.saved.title'), description: t('flightPages.journey.metaDescription'), robots: { index: false, follow: true } };
+  return { alternates: languageAlternates(await routeLang(), '/journey'), title: t('journey.saved.title'), description: t('flightPages.journey.metaDescription'), robots: { index: false, follow: true } };
 }
 
 /**

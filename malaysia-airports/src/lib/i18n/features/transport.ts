@@ -64,6 +64,8 @@ export const transportPagesEn = {
     tickets: 'Tickets on the operator’s website',
   },
   fields: {
+    // Round 6 (review-3 9.1 item 7): the disclosure that holds a card's details on phones.
+    moreDetails: 'Hours, boarding points, payment and accessibility',
     fare: 'Fare',
     fareToday: 'Fare today',
     time: 'Journey time',
@@ -361,6 +363,7 @@ export const transportPagesMs: typeof transportPagesEn = {
     tickets: 'Tiket di laman web pengendali',
   },
   fields: {
+    moreDetails: 'Waktu operasi, tempat menaiki, bayaran dan kebolehcapaian',
     fare: 'Tambang',
     fareToday: 'Tambang hari ini',
     time: 'Tempoh perjalanan',

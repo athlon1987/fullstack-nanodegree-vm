@@ -3,6 +3,7 @@
 import type { Source } from '@/content/types';
 import { useSavedJourney } from '@/lib/hooks';
 import { useT } from '@/lib/i18n/client';
+import { MoreOnPhones } from '@/components/common/more-on-phones';
 import { ExternalLink } from '@/components/common/external-link';
 import { LocaleLink } from '@/components/common/locale-link';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
@@ -30,17 +31,25 @@ export interface FacilityCardProps {
 /** One facility: what it is, where, when, for whom, how sure we are and where that comes from. */
 export function FacilityCard({ facility, sources, showTerminal, airport, defaultProvenance, groupedSources = false, showAsOf = false }: FacilityCardProps) {
   const t = useT();
+  const secondary = [
+    ...(facility.access ? [{ label: t('mapPages.details.access'), value: facility.access }] : []),
+    ...(facility.zone !== 'unknown' ? [{ label: t('mapPages.details.area'), value: <AreaValue side={facility.zone} /> }] : []),
+    ...(facility.operator ? [{ label: t('mapPages.details.operator'), value: facility.operator }] : []),
+  ];
+  const collapse = secondary.length >= 2 || (facility.access?.length ?? 0) > 90;
   return (
     <article
       id={facility.id}
       aria-labelledby={`${facility.id}-title`}
       className="flex min-w-0 scroll-mt-32 flex-col rounded-xl border border-line-strong bg-surface p-4 shadow-xs target:border-ink target:shadow-md sm:p-5"
     >
-      <div className="flex items-start gap-3">
+      {/* Round 6 (review-3 9.1 item 8): the title is never narrower than its longest word
+          ("ketidakupayaan" broke at 360 px and 125% text); the save button moves under it instead. */}
+      <div className="flex flex-wrap items-start gap-3">
         <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-page-subtle text-ink">
           <Icon name={facility.icon} />
         </span>
-        <h3 id={`${facility.id}-title`} className="type-title-md min-w-0 flex-1 self-center text-ink">
+        <h3 id={`${facility.id}-title`} className="type-title-md flex-1 basis-0 self-center [overflow-wrap:normal] text-ink">
           {facility.name}
         </h3>
         {airport ? <SaveFacility airport={airport} facility={facility} /> : null}
@@ -56,18 +65,24 @@ export function FacilityCard({ facility, sources, showTerminal, airport, default
 
       <p className="type-body mt-3 text-ink-2">{facility.description}</p>
 
+      {/* Round 6 (review-3 9.1 item 7): where and when stay on the card; who may use it, the area
+          and the operator go behind a disclosure on phones when there are two or more of them or
+          the access rules are long (facilities was 15,451 px at 390 px). Accessibility stays out. */}
       <FactList
         className="mt-4"
         facts={[
           { label: t('mapPages.details.location'), value: facility.locationNote },
           { label: t('mapPages.details.level'), value: facility.levelName },
-          { label: t('mapPages.details.area'), value: facility.zone !== 'unknown' ? <AreaValue side={facility.zone} /> : undefined },
           { label: t('mapPages.details.hours'), value: facility.hours ? <HoursValue hours={facility.hours} /> : undefined },
           { label: t('mapPages.details.accessibility'), value: facility.accessible !== undefined ? <AccessibleValue accessible={facility.accessible} /> : undefined },
-          ...(facility.access ? [{ label: t('mapPages.details.access'), value: facility.access }] : []),
-          ...(facility.operator ? [{ label: t('mapPages.details.operator'), value: facility.operator }] : []),
+          ...(collapse ? [] : secondary),
         ]}
       />
+      {collapse ? (
+        <MoreOnPhones className="mt-3" summary={<>{t('mapPages.details.more')}<span className="sr-only">: {facility.name}</span></>}>
+          <FactList facts={secondary} />
+        </MoreOnPhones>
+      ) : null}
 
       <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-1 pt-4">
         {facility.mapHref ? (

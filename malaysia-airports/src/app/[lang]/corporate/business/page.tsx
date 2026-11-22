@@ -1,3 +1,4 @@
+import { languageAlternates } from '@/lib/seo/metadata';
 import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
 import { CORPORATE_LINKS, GROUP_COMPANIES, LEADERSHIP_CHECKED, LEADERSHIP_UNNAMED_ROLES, SUSTAINABILITY_TARGETS, pick, type CorporateFact, type Lang } from '@/content';
@@ -19,7 +20,7 @@ import type { IconName } from '@/components/ui/icon';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getT(toLang(await routeLang()));
-  return { title: t('corporatePages.business.title'), description: t('corporatePages.business.metaDescription') };
+  return { alternates: languageAlternates(await routeLang(), '/corporate/business'), title: t('corporatePages.business.title'), description: t('corporatePages.business.metaDescription') };
 }
 
 type AreaId = 'procurement' | 'commercial' | 'advertising' | 'airlines' | 'cargo' | 'aeropolis' | 'consultancy';

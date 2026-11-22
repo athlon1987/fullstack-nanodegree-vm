@@ -1,3 +1,4 @@
+import { languageAlternates } from '@/lib/seo/metadata';
 import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
 import { CORPORATE_LINKS } from '@/content';
@@ -16,7 +17,7 @@ import { Icon } from '@/components/ui/icon';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getT(toLang(await routeLang()));
-  return { title: t('corporatePages.careers.title'), description: t('corporatePages.careers.metaDescription') };
+  return { alternates: languageAlternates(await routeLang(), '/corporate/careers'), title: t('corporatePages.careers.title'), description: t('corporatePages.careers.metaDescription') };
 }
 
 /** Careers: the official portal, what is not published, and how to apply safely. */

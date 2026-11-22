@@ -1,6 +1,8 @@
 'use client';
 
-import { Suspense, lazy, useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
+import { retryableLazy } from '@/lib/retrying-import';
+import { PartBoundary, PartLoading } from '@/components/common/part-boundary';
 import type { Flight } from '@/lib/flights';
 import { useSavedJourney } from '@/lib/hooks/use-saved-journey';
 import { useLang, useT } from '@/lib/i18n/client';
@@ -25,7 +27,8 @@ const loadIcs = () => import('./ics');
 
 /** Anchor of the "My needs" control on the flight page (`NeedsControl`'s section). */
 export const NEEDS_CONTROL_ID = 'needs-control';
-const FollowPanel = lazy(() => loadFollowPanel().then((module) => ({ default: module.FollowPanel })));
+// Round 6 (review-3 9.1 item 1): a failed fetch waits for the connection and the panel's errors stay in the panel.
+const FollowPanel = retryableLazy(() => loadFollowPanel().then((module) => module.FollowPanel));
 
 /** The current page without its hash, for sharing and for the calendar entry. */
 const pageUrl = (): string => window.location.href.split('#')[0];
@@ -47,10 +50,10 @@ export function FlightActions({ flight, title }: FlightActionsProps) {
   useEffect(() => {
     const idle = typeof window.requestIdleCallback === 'function';
     const handle = idle
-      ? window.requestIdleCallback(() => void Promise.all([loadFollowPanel(), loadIcs()]), {
+      ? window.requestIdleCallback(() => void Promise.all([loadFollowPanel(), loadIcs()]).catch(() => undefined), {
           timeout: 5000,
         })
-      : window.setTimeout(() => void Promise.all([loadFollowPanel(), loadIcs()]), 3000);
+      : window.setTimeout(() => void Promise.all([loadFollowPanel(), loadIcs()]).catch(() => undefined), 3000);
     return () => (idle ? window.cancelIdleCallback(handle) : window.clearTimeout(handle));
   }, []);
 
@@ -79,8 +82,16 @@ export function FlightActions({ flight, title }: FlightActionsProps) {
   };
 
   const addToCalendar = async () => {
-    const { buildIcs, flightCalendarEvent, icsFileName } = await loadIcs();
-    const ics = buildIcs(
+    let ics: typeof import('./ics');
+    try {
+      ics = await loadIcs();
+    } catch {
+      // The builder's script could not be fetched (round 6): say so; the button works again later.
+      setMessage(t('errors.loadFailed'));
+      return;
+    }
+    const { buildIcs, flightCalendarEvent, icsFileName } = ics;
+    const file = buildIcs(
       flightCalendarEvent(flight, {
         t,
         lang,
@@ -88,7 +99,7 @@ export function FlightActions({ flight, title }: FlightActionsProps) {
         stamp: Date.now(),
       }),
     );
-    const href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar;charset=utf-8' }));
+    const href = URL.createObjectURL(new Blob([file], { type: 'text/calendar;charset=utf-8' }));
     const link = document.createElement('a');
     link.href = href;
     link.download = icsFileName(flight);
@@ -109,7 +120,8 @@ export function FlightActions({ flight, title }: FlightActionsProps) {
           className={saved ? 'border-ink bg-ink text-page hover:border-ink hover:bg-ink' : undefined}
           onClick={() => (saved ? removeFlight(flight.id) : saveFlight(toSavedFlight(flight, t)))}
         >
-          {t('flightPages.detail.save')}
+          {/* Round 6 (review-3 9.1 item 7): the pressed state also reads "Saved". */}
+          {saved ? t('flightPages.detail.savedButton') : t('flightPages.detail.save')}
         </Button>
         <Button
           variant="secondary"
@@ -150,9 +162,11 @@ export function FlightActions({ flight, title }: FlightActionsProps) {
         {message ? <span>{message}</span> : null}
       </p>
       {followOpen ? (
-        <Suspense fallback={null}>
-          <FollowPanel flight={flight} />
-        </Suspense>
+        <PartBoundary onRetry={FollowPanel.renew}>
+          <Suspense fallback={<PartLoading />}>
+            <FollowPanel flight={flight} />
+          </Suspense>
+        </PartBoundary>
       ) : null}
     </div>
   );

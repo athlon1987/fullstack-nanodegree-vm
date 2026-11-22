@@ -1,3 +1,4 @@
+import { languageAlternates } from '@/lib/seo/metadata';
 import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
 import { CORPORATE_LINKS, TRAFFIC_FIGURES, TRAFFIC_RELEASE_PATTERN } from '@/content';
@@ -15,7 +16,7 @@ import { Container } from '@/components/ui/container';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getT(toLang(await routeLang()));
-  return { title: t('corporatePages.media.title'), description: t('corporatePages.media.metaDescription') };
+  return { alternates: languageAlternates(await routeLang(), '/corporate/news'), title: t('corporatePages.media.title'), description: t('corporatePages.media.metaDescription') };
 }
 
 /** Media centre: traffic statistics as reported, then company news, newest first. */

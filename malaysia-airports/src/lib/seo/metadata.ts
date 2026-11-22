@@ -16,7 +16,7 @@
 import type { Metadata } from 'next';
 import { LANGS } from '@/content/values';
 import type { Lang } from '@/content/types';
-import { getT } from '@/lib/i18n';
+import { getT, toLang } from '@/lib/i18n';
 import { OG_LOCALE, localePaths } from './site';
 
 export interface PageMetadataInput {
@@ -31,16 +31,26 @@ export interface PageMetadataInput {
   type?: 'website' | 'article';
 }
 
+/**
+ * Round 6 (E-14, third review 9.1 item 10): the canonical and the hreflang alternates for both
+ * languages, for a page whose `generateMetadata` sets its own title and description. It replaces
+ * the root layout's inherited canonical (segments merge shallowly), so the head still names
+ * exactly one canonical, the same URL as the `Link` header.
+ *
+ * @example return { title, description, alternates: languageAlternates(await routeLang(), '/notices') };
+ */
+export function languageAlternates(lang: Lang | string, path: string): NonNullable<Metadata['alternates']> {
+  const paths = localePaths(path);
+  return { canonical: paths[toLang(lang)], languages: { ...paths, 'x-default': paths.en } };
+}
+
 export function pageMetadata({ lang, path, title, description, noindex, type = 'website' }: PageMetadataInput): Metadata {
   const paths = localePaths(path);
   const t = getT(lang);
   return {
     title,
     description,
-    alternates: {
-      canonical: paths[lang],
-      languages: { ...paths, 'x-default': paths.en },
-    },
+    alternates: languageAlternates(lang, path),
     openGraph: {
       type,
       siteName: t('common.appName'),

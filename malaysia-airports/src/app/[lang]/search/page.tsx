@@ -1,3 +1,4 @@
+import { languageAlternates } from '@/lib/seo/metadata';
 import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
 import { Suspense } from 'react';
@@ -10,7 +11,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getT(await routeLang());
-  return { title: t('search.title'), description: t('search.pageLead') };
+  return { alternates: languageAlternates(await routeLang(), '/search'), title: t('search.title'), description: t('search.pageLead') };
 }
 
 /**

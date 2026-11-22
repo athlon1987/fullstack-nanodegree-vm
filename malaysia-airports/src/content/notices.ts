@@ -40,6 +40,14 @@ export function noticeState(notice: Notice, now: Date): NoticeState {
   return 'active';
 }
 
+/**
+ * True while a notice is shown but the change it announces has not started (round 6, third
+ * review 9.1 item 6): "Announced; applies from 1 January 2027", never "In effect now".
+ */
+export function noticeAnnounced(notice: Notice, now: Date): boolean {
+  return Boolean(notice.appliesFrom) && noticeState(notice, now) === 'active' && now.getTime() < Date.parse(notice.appliesFrom as string);
+}
+
 const SEVERITY_RANK: Record<NoticeSeverity, number> = { critical: 0, warning: 1, advisory: 2, info: 3 };
 
 /** Sort notices by severity (most serious first), then by start date (soonest first). */

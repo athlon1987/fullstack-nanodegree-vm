@@ -29,6 +29,7 @@ export function toNoticeViews(notices: readonly Notice[], lang: Lang, detail: 'f
     provenance: notice.provenance,
     ...(notice.validFrom ? { validFrom: notice.validFrom } : {}),
     ...(notice.validTo ? { validTo: notice.validTo } : {}),
+    ...(notice.appliesFrom ? { appliesFrom: notice.appliesFrom } : {}),
     translated: hasTranslation(notice.title, lang) && hasTranslation(notice.body, lang),
     ...(detail === 'full' ? { body: pick(notice.body, lang), sources: resolveSources(notice.sources) } : {}),
   }));

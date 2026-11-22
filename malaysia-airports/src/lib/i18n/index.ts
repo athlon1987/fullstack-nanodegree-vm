@@ -47,6 +47,8 @@ export const SCOPED_NAMESPACES = [
   'commercePages',
   'mapPages',
   'home',
+  // Round 6 (package ask): copy only the server-built search documents read.
+  'searchIndex',
 ] as const satisfies readonly (keyof Dictionary)[];
 
 /**

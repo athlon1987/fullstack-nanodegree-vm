@@ -248,6 +248,8 @@ export const guidePagesEn = {
       title: 'Hidden disabilities: the Butterfly Effect',
       lead: 'Support at KLIA for autism, ADHD and other hidden disabilities.',
       calmTitle: 'Calm Rooms and sensory walls',
+      // Round 6 (review-3 9.1 item 7): the places, behind a disclosure on phones.
+      calmMore: 'Where they are ({count})',
       action: 'Read the full guide',
       directory: 'Show Calm Rooms in the directory',
     },
@@ -275,13 +277,16 @@ export const guidePagesEn = {
     statement: {
       title: 'Accessibility statement',
       // Round 4 (6.1.10): brought up to date with the current focus behaviour, test scope, date and contact.
-      reviewed: 'Last reviewed 21 November 2026, after the fourth round of fixes. Next review: before any public launch, and at least every six months.',
+      // Round 6 (review-3 9.1 item 3, 4.2 row 10): every sentence checked against the build after round six.
+      reviewed: 'Last reviewed 22 November 2026, after the sixth round of fixes. Next review: before any public launch, and at least every six months.',
       intro: 'This site is an independent concept prototype, not an official Malaysia Airports service. We aim for it to meet the Web Content Accessibility Guidelines (WCAG) 2.2 at level AA.',
       focusTitle: 'How keyboard focus behaves',
       focus:
-        'When a link takes you to another page, keyboard focus moves to that page\'s main heading and the new page title is announced, so the next Tab continues from the top of the new content. A link to a section moves focus to that section. Focus stays put while you are typing in a field or using an open dialog. Sticky headings and the bars at the top and bottom of the screen move out of the way when the page is magnified, so they do not hide the item that has focus.',
+        'When a link takes you to another page, keyboard focus moves to that page\'s main heading and the new page title is announced, so the next Tab continues from the top of the new content. A link to another part of the same page, such as "My needs" on a flight page or the list at the top of this page, moves focus to that part. Focus stays put while you are typing in a field or using an open dialog. When the page scrolls to the item that has focus, it leaves room for the header at the top of the window and, on the concierge page, for the question box at the bottom, so neither covers that item, including at 125 per cent browser zoom on a laptop or desktop screen. In short windows, as at 200 and 400 per cent zoom, and at this site\'s larger text sizes, the header and the phone\'s bottom bar slide away while you scroll, and the question box stays in the page instead of sticking to the bottom of the window.',
+      // Round 6 (review-3 9.1 item 7): tests and limits, behind a disclosure on phones.
+      moreTitle: 'How we test, and known limitations',
       testedTitle: 'How we test',
-      tested1: 'Automated checks with axe-core against WCAG 2.0, 2.1 and 2.2 at levels A and AA on every page we build, in English and Bahasa Malaysia.',
+      tested1: 'Automated checks with axe-core against WCAG 2.0, 2.1 and 2.2 at levels A and AA on each kind of page in the site, in English and Bahasa Malaysia, at desktop and phone sizes.',
       tested2: 'Keyboard-only use of every control: visible focus, a skip link, logical order and no traps.',
       tested3: 'Screens from 320 pixels wide to large desktops, in light, dark and high-contrast themes and at 100, 112 and 125 per cent text size.',
       tested4: 'Reduced motion, both from your device setting and from the setting on this site.',
@@ -633,6 +638,7 @@ export const guidePagesMs: typeof guidePagesEn = {
       title: 'Ketidakupayaan tersembunyi: The Butterfly Effect',
       lead: 'Sokongan di KLIA untuk autisme, ADHD dan ketidakupayaan tersembunyi lain.',
       calmTitle: 'Bilik Tenang dan dinding deria',
+      calmMore: 'Lokasinya ({count})',
       action: 'Baca panduan penuh',
       directory: 'Tunjukkan Bilik Tenang dalam direktori',
     },
@@ -659,13 +665,14 @@ export const guidePagesMs: typeof guidePagesEn = {
     },
     statement: {
       title: 'Penyata kebolehcapaian',
-      reviewed: 'Kali terakhir disemak pada 21 November 2026, selepas pusingan pembaikan keempat. Semakan seterusnya: sebelum sebarang pelancaran awam, dan sekurang-kurangnya setiap enam bulan.',
+      reviewed: 'Kali terakhir disemak pada 22 November 2026, selepas pusingan pembaikan keenam. Semakan seterusnya: sebelum sebarang pelancaran awam, dan sekurang-kurangnya setiap enam bulan.',
       intro: 'Laman ini ialah prototaip konsep bebas, bukan perkhidmatan rasmi Malaysia Airports. Kami menyasarkan laman ini memenuhi Garis Panduan Kebolehcapaian Kandungan Web (WCAG) 2.2 tahap AA.',
       focusTitle: 'Cara fokus papan kekunci berfungsi',
       focus:
-        'Apabila pautan membawa anda ke halaman lain, fokus papan kekunci berpindah ke tajuk utama halaman itu dan tajuk halaman baharu diumumkan, jadi Tab seterusnya bermula dari atas kandungan baharu. Pautan ke sesuatu bahagian memindahkan fokus ke bahagian itu. Fokus kekal semasa anda menaip dalam medan atau menggunakan dialog yang terbuka. Tajuk melekit serta bar di bahagian atas dan bawah skrin beralih apabila halaman dibesarkan, supaya item yang difokus tidak terlindung.',
+        'Apabila pautan membawa anda ke halaman lain, fokus papan kekunci berpindah ke tajuk utama halaman itu dan tajuk halaman baharu diumumkan, jadi Tab seterusnya bermula dari atas kandungan baharu. Pautan ke bahagian lain dalam halaman yang sama, seperti "Keperluan saya" pada halaman penerbangan atau senarai di bahagian atas halaman ini, memindahkan fokus ke bahagian itu. Fokus kekal semasa anda menaip dalam medan atau menggunakan dialog yang terbuka. Apabila halaman ditatal ke item yang difokus, ruang dikhaskan untuk pengepala di bahagian atas tetingkap dan, pada halaman Tanya Kami, untuk kotak soalan di bahagian bawah, supaya item itu tidak terlindung, termasuk pada zum pelayar 125 peratus di skrin komputer riba atau desktop. Dalam tetingkap yang rendah, seperti pada zum 200 dan 400 peratus, dan pada saiz teks yang lebih besar di laman ini, pengepala dan bar bawah telefon beralih ke tepi semasa anda menatal, dan kotak soalan kekal di dalam halaman, tidak melekat di bahagian bawah tetingkap.',
+      moreTitle: 'Cara kami menguji, dan had yang diketahui',
       testedTitle: 'Cara kami menguji',
-      tested1: 'Semakan automatik dengan axe-core berdasarkan WCAG 2.0, 2.1 dan 2.2 tahap A dan AA pada setiap halaman yang kami bina, dalam bahasa Inggeris dan Bahasa Malaysia.',
+      tested1: 'Semakan automatik dengan axe-core berdasarkan WCAG 2.0, 2.1 dan 2.2 tahap A dan AA pada setiap jenis halaman di laman ini, dalam bahasa Inggeris dan Bahasa Malaysia, pada saiz desktop dan telefon.',
       tested2: 'Penggunaan setiap kawalan dengan papan kekunci sahaja: fokus yang kelihatan, pautan langkau, susunan logik dan tiada perangkap.',
       tested3: 'Skrin selebar 320 piksel hingga desktop besar, dalam tema cerah, gelap dan kontras tinggi serta saiz teks 100, 112 dan 125 peratus.',
       tested4: 'Gerakan dikurangkan, sama ada daripada tetapan peranti anda atau tetapan di laman ini.',

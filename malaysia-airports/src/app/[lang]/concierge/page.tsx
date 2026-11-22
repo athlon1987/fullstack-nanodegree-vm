@@ -1,3 +1,4 @@
+import { languageAlternates } from '@/lib/seo/metadata';
 import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
 import { GROUP_CONTACTS, pick, resolveSources } from '@/content';
@@ -14,7 +15,7 @@ import { Icon, type IconName } from '@/components/ui/icon';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getT(await routeLang());
-  return { title: t('conciergePage.metaTitle'), description: t('conciergePage.metaDescription') };
+  return { alternates: languageAlternates(await routeLang(), '/concierge'), title: t('conciergePage.metaTitle'), description: t('conciergePage.metaDescription') };
 }
 
 const CONTACT_ICONS: Record<string, IconName> = { phone: 'phone', email: 'mail', web: 'globe', chat: 'messages-square', app: 'smartphone' };

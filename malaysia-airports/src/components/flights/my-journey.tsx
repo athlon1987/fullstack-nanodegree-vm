@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, lazy, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import { Suspense, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { getAirport } from '@/content/airports';
 import type { Notice, Source } from '@/content/types';
 import type { Flight } from '@/lib/flights';
@@ -9,7 +9,9 @@ import { useLang, useT } from '@/lib/i18n/client';
 import { buildJourney, nextDeadline, nextStepSummary, type JourneyAirportContent, type StepSummary, type TravelDeadline } from '@/lib/journey';
 import { useFlightFeed, type FeedRequest } from '@/lib/providers/use-flight-feed';
 import type { SavedFlight } from '@/lib/stores';
+import { retryableLazy } from '@/lib/retrying-import';
 import { DemoDataBanner } from '@/components/common/demo-data-banner';
+import { PartBoundary, PartLoading } from '@/components/common/part-boundary';
 import { Freshness } from '@/components/common/freshness';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -27,7 +29,9 @@ import { SavedPlaces } from './saved-places';
 
 // The confirmation dialog (Radix Dialog with its scroll lock, 7.6 KB gzip) loads when there is
 // something to clear, not with the page (round 3, E-03: first-load JavaScript under 250 KB).
-const ClearJourney = lazy(() => import('./clear-journey').then((module) => ({ default: module.ClearJourney })));
+// Round 6 (review-3 9.1 item 1): a fetch that fails waits for the connection (with a "Try again"
+// in place of the button) instead of replacing My journey with "Something went wrong".
+const ClearJourney = retryableLazy(() => import('./clear-journey').then((module) => module.ClearJourney));
 
 export interface MyJourneyProps {
   carParks: readonly CarParkOption[];
@@ -175,8 +179,9 @@ export function MyJourney({ carParks }: MyJourneyProps) {
           <section aria-labelledby={SAVED_FLIGHTS_HEADING_ID} className="flex flex-col gap-5">
             <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
               <div>
-                <h2 id={SAVED_FLIGHTS_HEADING_ID} ref={savedHeading} tabIndex={-1} className="type-display-sm text-ink">
-                  {t('journey.saved.flights')}
+                {/* Round 6 (A-14): the section title size of the page (26 px was its ninth size at 1440 px). */}
+                <h2 id={SAVED_FLIGHTS_HEADING_ID} ref={savedHeading} tabIndex={-1} className="type-title-lg text-ink">
+                  {t('flightPages.journey.savedFlightsTitle')}
                 </h2>
                 <p className="type-body-sm mt-1 text-ink-2">{t.count('flightPages.journey.flightsCount', journey.flights.length)}</p>
               </div>
@@ -236,20 +241,24 @@ export function MyJourney({ carParks }: MyJourneyProps) {
 
       {nothingSaved ? null : (
         <div className="flex justify-end border-t border-line pt-6">
-          <Suspense
-            fallback={
-              <Button variant="quiet" iconStart="trash-2">
-                {t('journey.saved.clearAll')}
-              </Button>
-            }
-          >
-            <ClearJourney
-              onCleared={() => {
-                setAnnouncement(t('flightPages.journey.clear.done'));
-                document.getElementById(JOURNEY_EMPTY_HEADING_ID)?.focus();
-              }}
-            />
-          </Suspense>
+          <PartBoundary onRetry={ClearJourney.renew} compact>
+            <Suspense
+              fallback={
+                <PartLoading compact>
+                  <Button variant="quiet" iconStart="trash-2">
+                    {t('journey.saved.clearAll')}
+                  </Button>
+                </PartLoading>
+              }
+            >
+              <ClearJourney
+                onCleared={() => {
+                  setAnnouncement(t('flightPages.journey.clear.done'));
+                  document.getElementById(JOURNEY_EMPTY_HEADING_ID)?.focus();
+                }}
+              />
+            </Suspense>
+          </PartBoundary>
         </div>
       )}
       <p role="status" className="sr-only">

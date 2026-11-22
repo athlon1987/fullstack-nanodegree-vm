@@ -1,12 +1,16 @@
 'use client';
 
 import { SAVED_FLIGHT_FLAG_SCRIPT } from '@/lib/inline-scripts';
-import { Suspense, lazy } from 'react';
+import { Suspense } from 'react';
 import { cn } from '@/lib/cn';
 import { useSavedJourney } from '@/lib/hooks';
+import { retryableLazy } from '@/lib/retrying-import';
+import { PartBoundary, PartLoading } from '@/components/common/part-boundary';
 
 // The card brings the journey builder with it: only visitors with a saved flight download it.
-const SavedFlightCard = lazy(() => import('./saved-flight-card').then((module) => ({ default: module.SavedFlightCard })));
+// Round 6 (review-3 9.1 item 1): a fetch that fails waits for the connection instead of replacing
+// the home with "Something went wrong"; an error inside the card stays in the card.
+const SavedFlightCard = retryableLazy(() => import('./saved-flight-card').then((module) => module.SavedFlightCard));
 
 /**
  * Runs `SAVED_FLIGHT_FLAG_SCRIPT` during HTML parsing. Rendered as plain text on the client so
@@ -32,9 +36,17 @@ export function SavedFlightSlot({ className }: { className?: string }) {
   return (
     <div data-saved-flight-slot="" className={cn('empty:hidden', className)}>
       {has ? (
-        <Suspense fallback={<div aria-hidden="true" className="saved-flight-size rounded-lg border border-line-strong bg-surface" />}>
-          <SavedFlightCard flights={journey.flights} />
-        </Suspense>
+        <PartBoundary onRetry={SavedFlightCard.renew} className="saved-flight-size">
+          <Suspense
+            fallback={
+              <PartLoading className="saved-flight-size">
+                <div aria-hidden="true" className="saved-flight-size rounded-lg border border-line-strong bg-surface" />
+              </PartLoading>
+            }
+          >
+            <SavedFlightCard flights={journey.flights} />
+          </Suspense>
+        </PartBoundary>
       ) : null}
     </div>
   );

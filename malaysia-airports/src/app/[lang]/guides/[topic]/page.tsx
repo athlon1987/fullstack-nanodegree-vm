@@ -1,3 +1,4 @@
+import { languageAlternates } from '@/lib/seo/metadata';
 import type { Metadata } from 'next';
 import { getGuide, guideSlugs, GUIDES } from '@/content';
 import { getT, toLang } from '@/lib/i18n';
@@ -36,7 +37,7 @@ export async function generateMetadata({ params }: PageProps<'/[lang]/guides/[to
   const guide = getGuide(topic);
   if (!guide) return { title: getT(lang)('errors.notFoundTitle') };
   const view = toGuideView(guide, lang);
-  return { title: view.title, description: view.summary };
+  return { alternates: languageAlternates(lang, `/guides/${topic}`), title: view.title, description: view.summary };
 }
 
 /**

@@ -4,6 +4,7 @@ import { pick } from '@/content/values';
 import { useLang, useT } from '@/lib/i18n/client';
 import type { StepSummary, TravelDeadline } from '@/lib/journey';
 import { formatTime } from '@/lib/time';
+import { keepRanges } from '@/components/common/keep-ranges';
 
 /** Dictionary keys of the deadline labels on the saved-flight cards (home and My journey; round 4, 6.1.2). */
 export const DEADLINE_KEYS = {
@@ -25,7 +26,7 @@ export function StepLine({ summary, hideTime = false }: { summary: StepSummary; 
   const time = summary.time && !hideTime && !title.includes(formatTime(summary.time)) ? formatTime(summary.time) : null;
   return (
     <>
-      <span className="font-semibold text-ink">{title}</span>
+      <span className="font-semibold text-ink">{keepRanges(title)}</span>
       {time ? (
         <span className="type-data-md ml-1.5 font-normal text-ink-2">{summary.timeRole === 'ends' ? t('flightPages.journey.until', { time }) : time}</span>
       ) : null}

@@ -19,18 +19,25 @@ export interface NoticeView {
   provenance: Provenance;
   validFrom?: string;
   validTo?: string;
+  /** When the announced change takes effect, if later than `validFrom` (round 6). */
+  appliesFrom?: string;
   sources?: Source[];
   /** False when the page language had to fall back to English for this notice. */
   translated: boolean;
 }
 
 /** Where a notice stands at a moment in time. */
-export type NoticeViewState = 'upcoming' | 'active' | 'expired';
+export type NoticeViewState = 'upcoming' | 'announced' | 'active' | 'expired';
 
-/** `upcoming` before `validFrom`, `expired` after `validTo`, otherwise `active`. Pure: pass the time in. */
-export function noticeViewState(notice: Pick<NoticeView, 'validFrom' | 'validTo'>, now: number): NoticeViewState {
+/**
+ * `upcoming` before `validFrom`, `expired` after `validTo`, otherwise `active`; `announced` while
+ * it is shown but the change it announces has not started (round 6: "Announced; applies from
+ * 1 January 2027", never "In effect now"). Pure: pass the time in.
+ */
+export function noticeViewState(notice: Pick<NoticeView, 'validFrom' | 'validTo' | 'appliesFrom'>, now: number): NoticeViewState {
   if (notice.validFrom && now < Date.parse(notice.validFrom)) return 'upcoming';
   if (notice.validTo && now > Date.parse(notice.validTo)) return 'expired';
+  if (notice.appliesFrom && now < Date.parse(notice.appliesFrom)) return 'announced';
   return 'active';
 }
 
@@ -60,7 +67,7 @@ export function currentNoticeViews<T extends Pick<NoticeView, 'severity' | 'vali
   return sortNoticeViews(
     notices.filter((notice) => {
       const state = noticeViewState(notice, now);
-      if (state === 'active') return true;
+      if (state === 'active' || state === 'announced') return true;
       return state === 'upcoming' && Date.parse(notice.validFrom as string) <= now + upcomingWithinDays * DAY;
     }),
   );

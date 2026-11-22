@@ -1208,6 +1208,8 @@ const notices: Notice[] = [
     // KLIA page and the home strip on the day the new fare applies (D-10).
     validFrom: '2026-10-01T00:00:00+08:00',
     validTo: '2027-01-31T23:59:59+08:00',
+    // Round 6: announced in October; the new fare applies from 1 January 2027.
+    appliesFrom: '2027-01-01T00:00:00+08:00',
     provenance: 'estimated',
     asOf: '2026-10-01',
     sources: ['thestar-klia-ekspres-fares-2027', 'businesstoday-klia-ekspres-fares-2027', 'soyacincau-klia-ekspres-fares-2027'],

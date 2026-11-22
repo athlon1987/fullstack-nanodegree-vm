@@ -15,8 +15,10 @@ import { overlays, useOverlayOpen } from './overlay-store';
 import { sectionHref } from './sections';
 import { useSectionAvailability } from './shell-context';
 
+// Round 6 (review-3 9.1 item 9): no minimum width of its own (44 px became 88 px at 200% device
+// text and pushed Menu off a 390 px screen); the columns are at least 50 px at 320 px anyway.
 const ITEM =
-  'relative flex min-h-14 w-full min-w-11 flex-col items-center justify-center gap-0.5 rounded-md text-xs leading-tight font-semibold text-ink-2 transition-colors duration-fast aria-[current]:text-ink';
+  'relative flex min-h-14 w-full min-w-0 flex-col items-center justify-center gap-0.5 rounded-md text-xs leading-tight font-semibold text-ink-2 transition-colors duration-fast aria-[current]:text-ink';
 
 function Label({ icon, children, badge }: { icon: IconName; children: ReactNode; badge?: number }) {
   // The label comes first in the DOM and the icon is moved above it with `order-first`, so the

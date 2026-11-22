@@ -1,3 +1,4 @@
+import { languageAlternates } from '@/lib/seo/metadata';
 import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
 import { BRAND_FACTS, CORPORATE_KEY_FIGURES, CORPORATE_LINKS } from '@/content';
@@ -18,7 +19,7 @@ import { Section } from '@/components/ui/section';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getT(toLang(await routeLang()));
-  return { title: t('corporatePages.title'), description: t('corporatePages.home.metaDescription') };
+  return { alternates: languageAlternates(await routeLang(), '/corporate'), title: t('corporatePages.title'), description: t('corporatePages.home.metaDescription') };
 }
 
 /** Corporate home: the company in numbers, its purpose, the sections and the latest news. Fully static. */

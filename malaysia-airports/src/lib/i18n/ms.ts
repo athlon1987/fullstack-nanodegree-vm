@@ -489,8 +489,9 @@ export const ms: Dictionary = {
     from: 'Mulai {date}',
     until: 'Hingga {date}',
     untilFurtherNotice: 'Sehingga diberitahu kelak',
-    none: 'Tiada notis untuk lapangan terbang ini buat masa ini.',
+    none: 'Tiada notis dalam sumber kami bagi lapangan terbang ini.',
     viewAll: 'Semua notis perjalanan',
+    announced: 'Diumumkan; berkuat kuasa mulai {date}',
     severity: {
       info: 'Makluman',
       advisory: 'Nasihat',
@@ -1046,4 +1047,32 @@ export const ms: Dictionary = {
   conciergePage: conciergePageMs,
   corporatePages: corporatePagesMs,
   platformPages: platformPagesMs,
+  // Pusingan 6: teks untuk dokumen carian sahaja (dibina di pelayan, tidak dihantar ke pelayar).
+  searchIndex: {
+    gaps: {
+      pharmacy: {
+        title: 'Farmasi: belum diterbitkan',
+        summary: 'Kami belum menerbitkan lokasi farmasi di mana-mana lapangan terbang. Tanya di kaunter pertanyaan, atau hubungi Malaysia Airports sebelum perjalanan.',
+      },
+      charging: {
+        title: 'Tempat mengecas: belum diterbitkan',
+        summary: 'Kami belum menerbitkan tempat untuk mengecas telefon atau komputer riba di mana-mana lapangan terbang. Tanya di kaunter pertanyaan atau semak laman rasmi lapangan terbang.',
+      },
+    },
+    // A query that names an airport and something it does not publish ("kuching parking").
+    sectionGaps: {
+      parking: 'Parkir di {airport}: belum diterbitkan',
+      transport: 'Pengangkutan darat di {airport}: belum diterbitkan',
+      lounges: 'Ruang menunggu (lounge) di {airport}: belum diterbitkan',
+      shopDine: 'Kedai dan makanan di {airport}: belum diterbitkan',
+      facilities: 'Kemudahan di {airport}: belum diterbitkan',
+      atm: 'ATM di {airport}: belum diterbitkan',
+      pharmacy: 'Farmasi di {airport}: belum diterbitkan',
+      moneyChanger: 'Pengurup wang di {airport}: belum diterbitkan',
+      lostProperty: 'Barang hilang di {airport}: belum diterbitkan',
+      charging: 'Tempat mengecas di {airport}: belum diterbitkan',
+      summary: 'Sumber kami belum menerbitkan perkara ini bagi {airport}. Semak laman web rasmi lapangan terbang atau hubungi Malaysia Airports sebelum perjalanan.',
+      illustrative: '(kedudukan ilustrasi)',
+    },
+  },
 };

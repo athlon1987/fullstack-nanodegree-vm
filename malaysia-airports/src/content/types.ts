@@ -616,6 +616,12 @@ export const NoticeSchema = z.strictObject({
   validFrom: IsoDateTimeSchema.optional(),
   /** End of the period. Omit for "until further notice". */
   validTo: IsoDateTimeSchema.optional(),
+  /**
+   * When the change the notice announces takes effect, if later than `validFrom` (round 6: a fare
+   * from 1 January 2027 announced in October). Until then the notice reads "Announced; applies
+   * from …", never "In effect now".
+   */
+  appliesFrom: IsoDateTimeSchema.optional(),
   /** `demo` marks a simulated notice that must carry the demonstration label. */
   provenance: ProvenanceSchema,
   asOf: AsOfSchema.optional(),

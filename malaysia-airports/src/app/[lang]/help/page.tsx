@@ -1,3 +1,4 @@
+import { languageAlternates } from '@/lib/seo/metadata';
 import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
 import { getT, toLang } from '@/lib/i18n';
@@ -22,7 +23,7 @@ import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getT(toLang(await routeLang()));
-  return { title: t('guidePages.help.title'), description: t('guidePages.help.metaDescription') };
+  return { alternates: languageAlternates(await routeLang(), '/help'), title: t('guidePages.help.title'), description: t('guidePages.help.metaDescription') };
 }
 
 /**

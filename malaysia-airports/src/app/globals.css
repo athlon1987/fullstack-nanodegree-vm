@@ -1147,3 +1147,25 @@ html[data-saved-flight] [data-saved-flight-slot]:empty {
 .saved-flight-size {
   min-height: var(--saved-flight-height);
 }
+
+/*
+ * Round 6 (review-3 9.1 item 7): `MoreOnPhones`. The disclosure is open in the server HTML; from
+ * `md` (or, for `card`, in a container 42rem wide) its summary is not shown, so it reads as plain
+ * content there. Where the summary shows (phones), the component closes it once it has loaded.
+ */
+@media (width >= 48rem) {
+  details[data-more-on-phones='md'] > summary {
+    display: none;
+  }
+  details[data-more-on-phones='md'] > summary + div {
+    padding-top: 0;
+  }
+}
+@container (width >= 42rem) {
+  details[data-more-on-phones='card'] > summary {
+    display: none;
+  }
+  details[data-more-on-phones='card'] > summary + div {
+    padding-top: 0;
+  }
+}

@@ -24,6 +24,7 @@ import { OpsStatus } from './ops-status';
 
 // Moved to `journey-preferences.ts` in round 5 (the flight page needs them before this module loads).
 import { modesForFlight, useJourneyPreferences } from './journey-preferences';
+import { keepRanges } from '@/components/common/keep-ranges';
 export { modesForFlight, useJourneyPreferences };
 
 export interface JourneyTimelineProps {
@@ -149,7 +150,7 @@ export function JourneyTimeline({ flight, content, sources, now, notices, title,
                   : undefined
               }
             >
-              <p>{pick(step.body, lang)}</p>
+              <p>{keepRanges(pick(step.body, lang))}</p>
               {step.warning ? (
                 <p data-step-warning="" className="type-body-sm mt-2 flex items-start gap-2 rounded-md border border-warning-border bg-warning-bg px-3 py-2 text-warning-fg">
                   <Icon name="triangle-alert" size="sm" className="mt-0.5 shrink-0" />

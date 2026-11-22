@@ -81,7 +81,9 @@ test.describe('one fact, one answer: parking rates (6.1.3)', () => {
 test.describe('concierge (6.1.4, 6.1.10)', () => {
   test('says plainly it cannot answer, and names the official contact', async ({ page }) => {
     await page.goto('/en/concierge');
-    const turn = await ask(page, 'What will the weather be like tomorrow?');
+    // Round 6, intended change: the weather is outside what the concierge covers and no longer goes
+    // to the airport's support line (e2e/ask-round6.spec.ts); an airport question it cannot answer does.
+    const turn = await ask(page, 'Can I bring durian in my hand luggage?');
     await expect(turn.getByText(/^I can’t answer that from our verified content\. For a definite answer, contact .*\+60/)).toBeVisible();
     await expect(turn.getByRole('list', { name: 'Details' })).toHaveCount(0);
     // The official contacts show at once, even on a phone: they are the answer here.
@@ -132,7 +134,8 @@ test.describe('concierge (6.1.4, 6.1.10)', () => {
     await page.goto('/ms/concierge');
     await expect(page.getByRole('heading', { level: 1, name: 'Tanya Kami' })).toBeVisible();
     const toilet = await ask(page, 'Di mana tandas OKU di KLIA berhampiran pintu C?', 'ms');
-    await expect(toilet.getByText('Lokasi tandas OKU di KLIA belum diterbitkan dalam sumber kami.', { exact: true })).toBeVisible();
+    // Round 6, intended change: gate C is in Terminal 1, so the answer names the terminal.
+    await expect(toilet.getByText('Lokasi tandas OKU di KLIA Terminal 1 belum diterbitkan dalam sumber kami.', { exact: true })).toBeVisible();
     const wheelchair = await ask(page, 'kerusi roda untuk penerbangan AirAsia di KLIA T2', 'ms');
     await expect(wheelchair.getByText(/^Peraturan bantuan AirAsia tidak diterbitkan dalam sumber kami\./)).toBeVisible();
     await expect(wheelchair.getByText('Bilik Tenang')).toHaveCount(0);

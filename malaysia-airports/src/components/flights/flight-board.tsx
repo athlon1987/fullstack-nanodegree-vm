@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, type ReactNode } from 'react';
+import { Fragment, useEffect, useState, type ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 import { groupFlightsByHour, type Flight, type FlightDirection, type FlightHourGroup } from '@/lib/flights';
 import { useT } from '@/lib/i18n/client';
@@ -51,10 +51,16 @@ export interface FlightBoardProps {
   /** Leave out the demonstration banner. Only when the same view already shows one directly above. */
   hideBanner?: boolean;
   /**
-   * A shorter header on phones, for a board under its own Departures/Arrivals tabs (A-01, round
-   * 2): the heading and the refresh interval are left to screen readers (the selected tab names
-   * the direction, the Pause button says the board is live) and the header actions share the
-   * first row with the subtitle.
+   * Round 6 (review-3 9.1 item 7): the banner as one line (its title, "Do not use this data to plan
+   * travel" and the link), for a board under its own tabs, so more rows reach the first screen.
+   */
+  compactBanner?: boolean;
+  /**
+   * A shorter header, for a board under its own Departures/Arrivals tabs (A-01, round 2; on wider
+   * screens too since round 6): the heading is left to screen readers (the selected tab names the
+   * direction) and the header is one row. On phones the refresh interval is also left to screen
+   * readers (the Pause button says the board is live) and the actions share the first row with
+   * the subtitle.
    */
   compactHeader?: boolean;
   /** Group rows under the local hour of their scheduled time ("From 14:00"). */
@@ -110,6 +116,7 @@ export function FlightBoard({
   skeletonRows = 6,
   loading,
   hideBanner = false,
+  compactBanner = false,
   compactHeader = false,
   groupByHour = false,
   timeZone,
@@ -145,24 +152,53 @@ export function FlightBoard({
     return day ? t('flightPages.board.hourGroupDay', { time: group.label, day }) : t('flightPages.board.hourGroup', { time: group.label });
   };
   const groupCount = (group: FlightHourGroup) => t.count('flights.board.count', group.flights.length);
+  const [bannerInView, trackBanner] = useBannerInView(!hideBanner);
+  /*
+   * Round 6 (review-3 9.1 item 7, A-14: one Demo marker per view). Every hour header carried its
+   * own Demo label, so a view of a filtered board showed up to 18. Now one label floats over
+   * whichever hour header is stuck at the top (a sticky layer of the header's height), and only
+   * once the banner above has scrolled out of view: every view of the board still shows exactly
+   * one label (content-integrity-01). The headers keep an invisible copy for its width.
+   */
+  const groupMarker = (
+    <div
+      data-board-demo-marker=""
+      className={cn('pointer-events-none sticky top-sticky z-30 -mb-8 flex h-8 items-center justify-end px-4 sm:px-5', bannerInView && 'invisible')}
+    >
+      <DemoMark />
+    </div>
+  );
+  const markerSpace = (
+    <span aria-hidden="true" className="invisible">
+      <DemoMark />
+    </span>
+  );
 
   return (
     <div className={className}>
-      {hideBanner ? null : <DemoDataBanner attached />}
+      {hideBanner ? null : (
+        <div ref={trackBanner}>
+          <DemoDataBanner attached compact={compactBanner} />
+        </div>
+      )}
       {/* overflow-clip (not hidden) keeps the rounded corners without breaking the sticky hour headers. */}
       <div className={cn('surface-board @container relative overflow-clip border border-line', hideBanner ? 'rounded-lg' : 'rounded-b-lg border-t-0')}>
         <WeaveTexture className="absolute right-0 bottom-0 h-14 w-2/5 max-sm:hidden" />
         <div
           className={cn(
             'relative flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-b border-line px-4 py-4 sm:px-5',
-            compactHeader && 'max-sm:grid max-sm:grid-cols-[minmax(0,1fr)_auto] max-sm:items-center max-sm:gap-x-3 max-sm:gap-y-1 max-sm:py-2.5',
+            compactHeader && 'max-sm:grid max-sm:grid-cols-[minmax(min-content,1fr)_auto] max-sm:items-center max-sm:gap-x-3 max-sm:gap-y-1 max-sm:py-2.5 sm:items-center sm:justify-start sm:py-2.5 lg:py-1.5',
           )}
         >
           <div className="min-w-0">
-            <Heading className={cn('type-title-lg text-ink', compactHeader && 'max-sm:sr-only')}>{title}</Heading>
-            {subtitle ? <p className={cn('type-body-sm mt-0.5 text-ink-2', compactHeader && 'max-sm:mt-0')}>{subtitle}</p> : null}
+            {/* Round 6 (A-14): the card title size (22 px was a ninth type size on the home at 1440 px). */}
+            <Heading className={cn('type-title-md text-ink', compactHeader && 'sr-only')}>{title}</Heading>
+            {subtitle ? <p className={cn('type-body-sm mt-0.5 text-ink-2', compactHeader && 'mt-0')}>{subtitle}</p> : null}
           </div>
-          <div className={cn('flex flex-wrap items-center gap-x-3 gap-y-1', compactHeader && 'max-sm:contents')}>
+          {/* Compact (round 6, G8 item 9): from sm the freshness line starts after the time window and
+              the actions sit at the right edge, so the line growing when the feed answers moves
+              neither (it was right-aligned and slid left). */}
+          <div className={cn('flex flex-wrap items-center gap-x-3 gap-y-1', compactHeader && 'max-sm:contents sm:flex-1')}>
             <Freshness
               live={live}
               updatedAt={updatedAt}
@@ -172,7 +208,7 @@ export function FlightBoard({
               context={context}
               className={compactHeader ? 'max-sm:col-span-2' : undefined}
             />
-            {headerActions ? <div className={cn('contents', compactHeader && 'max-sm:col-start-2 max-sm:row-start-1 max-sm:block')}>{headerActions}</div> : null}
+            {headerActions ? <div className={cn('contents', compactHeader && 'max-sm:col-start-2 max-sm:row-start-1 max-sm:block sm:ml-auto sm:block')}>{headerActions}</div> : null}
           </div>
         </div>
 
@@ -204,6 +240,7 @@ export function FlightBoard({
             {before ? <div className="relative border-b border-line">{before}</div> : null}
             {groups ? (
               <div className="relative @4xl:hidden">
+                {groupMarker}
                 {groups.map((group) => {
                   const id = `board-${direction}-${group.date}-${group.hour}`;
                   return (
@@ -213,7 +250,7 @@ export function FlightBoard({
                         <span className="type-data-sm text-ink">{groupLabel(group)}</span>
                         <span className="flex items-center gap-2">
                           <span className="type-caption text-ink-2">{groupCount(group)}</span>
-                          <DemoMark />
+                          {markerSpace}
                         </span>
                       </GroupHeading>
                       <ul aria-labelledby={id}>{group.flights.map((flight) => row(flight, 'card'))}</ul>
@@ -229,6 +266,7 @@ export function FlightBoard({
             {/* The table only shows when the board is wide enough for it, so it never needs to scroll
                 sideways; visible overflow lets its hour headers stick while the page scrolls. */}
             <TableScroll label={title} className="relative overflow-x-visible @max-4xl:hidden">
+              {groups ? groupMarker : null}
               <Table density="default">
                 <caption className="sr-only">
                   {title}
@@ -259,7 +297,6 @@ export function FlightBoard({
                             <span className="flex items-center gap-2">
                               <span className="type-data-sm text-ink">{groupLabel(group)}</span>
                               <span className="type-caption text-ink-2">{groupCount(group)}</span>
-                              <DemoMark className="ml-auto" />
                             </span>
                           </th>
                         </tr>
@@ -280,4 +317,39 @@ export function FlightBoard({
       </div>
     </div>
   );
+}
+
+/**
+ * Whether the element passed to `ref` (the banner) can still be seen: its bottom is below the
+ * sticky top edge that the hour headers stick to (`stickyTop` from the floating label's computed
+ * `top`, which follows the header as it slides away). Starts `true` when `enabled`, the usual
+ * case at load (the banner is at the top of the board), so the floating label does not flash
+ * beside it. Checked once per frame while scrolling.
+ */
+function useBannerInView(enabled: boolean) {
+  const [node, setNode] = useState<HTMLElement | null>(null);
+  const [visible, setVisible] = useState(enabled);
+  useEffect(() => {
+    if (!node) return;
+    let frame = 0;
+    const check = () => {
+      frame = 0;
+      const marker = node.parentElement?.querySelector<HTMLElement>('[data-board-demo-marker]');
+      const stickyTop = marker ? parseFloat(getComputedStyle(marker).top) || 0 : 0;
+      const box = node.getBoundingClientRect();
+      setVisible(box.bottom > stickyTop + 4 && box.top < window.innerHeight);
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(check);
+    };
+    check();
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+    };
+  }, [node]);
+  return [enabled && visible, setNode] as const;
 }

@@ -4,20 +4,25 @@ import { EARLY_TAP_SCRIPT } from '@/lib/inline-scripts';
 import { usePathname } from 'next/navigation';
 import { Suspense, lazy, useEffect, useRef, useState, type ReactNode } from 'react';
 import { usePreferencesSync } from '@/lib/hooks';
+import { retryingImport } from '@/lib/retrying-import';
+import { PartBoundary } from '@/components/common/part-boundary';
 import { closeOverlay, openOverlay, useOverlayOpen, type OverlayName } from './overlay-store';
-import { RouteFocus } from './route-focus';
+import { InPageFocus, RouteFocus } from './route-focus';
 
 // The palette brings the search engine with it: load it the first time it is opened.
-const CommandPalette = lazy(() => import('@/components/search/command-palette').then((module) => ({ default: module.CommandPalette })));
+// Round 6 (review-3 9.1 item 1): every overlay script is fetched again when the connection allows
+// (`retryingImport`); a failed fetch no longer reaches the root error boundary or leaves an
+// unhandled rejection from the idle preload.
+const CommandPalette = lazy(() => retryingImport(() => import('@/components/search/command-palette')).then((module) => ({ default: module.CommandPalette })));
 
 /*
  * The other overlays (round 2, E-03 and E-01): Radix Dialog, the switcher, the menu, display
  * settings and the concierge panel were in every page's first-load script and evaluated during
  * start-up. They load when the page is first idle, or at once when one is opened before that.
  */
-const loadSwitcher = () => import('./airport-switcher-dialog');
-const loadPanels = () => import('./panels');
-const loadConcierge = () => import('@/components/concierge/concierge-panel');
+const loadSwitcher = () => retryingImport(() => import('./airport-switcher-dialog'));
+const loadPanels = () => retryingImport(() => import('./panels'));
+const loadConcierge = () => retryingImport(() => import('@/components/concierge/concierge-panel'));
 const AirportSwitcherDialog = lazy(() => loadSwitcher().then((module) => ({ default: module.AirportSwitcherDialog })));
 const PreferencesPanel = lazy(() => loadPanels().then((module) => ({ default: module.PreferencesPanel })));
 const MenuPanel = lazy(() => loadPanels().then((module) => ({ default: module.MenuPanel })));
@@ -28,7 +33,11 @@ function Deferred({ name, ready, children }: { name: OverlayName; ready: boolean
   const open = useOverlayOpen(name);
   const [wanted, setWanted] = useState(false);
   if ((open || ready) && !wanted) setWanted(true);
-  return wanted ? <Suspense fallback={null}>{children}</Suspense> : null;
+  return wanted ? (
+    <PartBoundary silent>
+      <Suspense fallback={null}>{children}</Suspense>
+    </PartBoundary>
+  ) : null;
 }
 
 /**
@@ -134,14 +143,17 @@ export function GlobalOverlays() {
         <ConciergePanel />
       </Deferred>
       {paletteWanted ? (
-        <Suspense fallback={null}>
-          <CommandPalette />
-        </Suspense>
+        <PartBoundary silent>
+          <Suspense fallback={null}>
+            <CommandPalette />
+          </Suspense>
+        </PartBoundary>
       ) : null}
       <Suspense fallback={null}>
         <CloseOnNavigation />
         <RouteFocus />
       </Suspense>
+      <InPageFocus />
     </>
   );
 }

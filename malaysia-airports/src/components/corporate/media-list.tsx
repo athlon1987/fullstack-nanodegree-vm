@@ -58,7 +58,8 @@ export function MediaList({ items, t, variant = 'list', headingLevel = 3 }: Medi
           </div>
           <article className="min-w-0">
             <KindBadge item={item} t={t} />
-            <Heading className="type-title-lg mt-2 text-ink">
+            {/* Round 6 (A-14): title-md, so the media centre keeps to 8 type sizes. */}
+            <Heading className="type-title-md mt-2 text-ink">
               <LocaleLink href={`/corporate/news/${item.slug}`} className="decoration-1 underline-offset-4 hover:underline">
                 {item.title}
               </LocaleLink>

@@ -2,6 +2,7 @@
 
 import { Activity, Component, lazy, type ReactNode } from 'react';
 import { retryingImport } from '@/lib/retrying-import';
+import { ConnectionNotice } from './connection-notice';
 
 /*
  * Verification, round 5: when this script could not be fetched (the connection dropped while the
@@ -28,14 +29,23 @@ class RuntimeBoundary extends Component<{ children: ReactNode }, { failed: boole
  * HTML still has the runtime's (empty) live region; in the browser the script loads during
  * hydration and the runtime hydrates in its own pass when it arrives (an Activity boundary: written
  * in place, never revealed late like a Suspense boundary). It shows nothing until
- * the connection or an update changes, and registers the worker after the network is idle anyway.
+ * an update is ready, and registers the worker after the network is idle anyway. The connection
+ * notice is not part of it (round 6): it is rendered here directly, with only the small shared
+ * state of `connectivity.ts`, so "You are offline" appears even when this script has not arrived.
  */
 export function PlatformRuntimeLazy() {
   return (
-    <RuntimeBoundary>
-      <Activity mode="visible">
-        <Runtime />
-      </Activity>
-    </RuntimeBoundary>
+    <div
+      data-print="hidden"
+      className="pointer-events-none fixed inset-x-0 bottom-[calc(5rem+env(safe-area-inset-bottom))] z-30 flex flex-col items-center gap-2 px-4 md:bottom-6"
+    >
+      <RuntimeBoundary>
+        <Activity mode="visible">
+          <Runtime />
+        </Activity>
+      </RuntimeBoundary>
+      {/* Round 6 (G8 item 8): in the first load, so it does not wait for the runtime's script. */}
+      <ConnectionNotice />
+    </div>
   );
 }

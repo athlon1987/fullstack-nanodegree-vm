@@ -1,3 +1,4 @@
+import { languageAlternates } from '@/lib/seo/metadata';
 import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
 import { getNotices } from '@/content';
@@ -11,7 +12,7 @@ import { Container } from '@/components/ui/container';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getT(await routeLang());
-  return { title: t('notices.title'), description: t('noticesPage.metaDescription') };
+  return { alternates: languageAlternates(await routeLang(), '/notices'), title: t('notices.title'), description: t('noticesPage.metaDescription') };
 }
 
 /**

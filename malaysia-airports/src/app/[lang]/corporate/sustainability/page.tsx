@@ -1,3 +1,4 @@
+import { languageAlternates } from '@/lib/seo/metadata';
 import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
 import { CARBON_ACCREDITATIONS, CORPORATE_LINKS, SUSTAINABILITY_TARGETS, getAirport, localizeAirport, pick } from '@/content';
@@ -18,7 +19,7 @@ import { RowHeader } from '@/components/corporate/row-header';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getT(toLang(await routeLang()));
-  return { title: t('corporatePages.sustainability.title'), description: t('corporatePages.sustainability.metaDescription') };
+  return { alternates: languageAlternates(await routeLang(), '/corporate/sustainability'), title: t('corporatePages.sustainability.title'), description: t('corporatePages.sustainability.metaDescription') };
 }
 
 /** Sustainability: climate targets, Airport Carbon Accreditation by airport, related news. */

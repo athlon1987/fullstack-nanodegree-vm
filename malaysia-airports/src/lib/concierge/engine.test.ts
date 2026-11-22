@@ -324,9 +324,13 @@ function derived(answer: ConciergeAnswer, knowledge: ConciergeKnowledge, context
   const minutes = understand(answer.question, knowledge, context).slots.durationMinutes;
   if (minutes === undefined) return '';
   const parts = [minutes, Math.floor(minutes / 60), minutes % 60, minutes / 60].map(String);
+  // Round 6: whole days, and the upper bound a daily maximum gives for them (the parking page's "≤ RM 96").
+  const days = Math.ceil(minutes / 1440);
+  parts.push(String(days));
   for (const park of knowledge.carParks as CarPark[]) {
     const result = calculateParking(park, minutes);
     if (!result.unavailable) parts.push(result.total.toFixed(2), String(result.total));
+    if (park.dailyMax !== undefined) parts.push(String(park.dailyMax * days));
   }
   return parts.join(' ');
 }
@@ -547,10 +551,11 @@ describe('round 4: fallback, access qualifiers, named airline, grammar (6.1.4)',
   };
 
   it('says plainly it cannot answer, and names the official contact from the content (EN and MS)', () => {
+    // Round 6, intended change: the weather is outside what the concierge covers and no longer
+    // goes to the airport's support line (tested below); these airport questions still do.
     for (const [question, lang] of [
-      ['What will the weather be like tomorrow?', 'en'],
       ['Can I bring durian in my hand luggage?', 'en'],
-      ['Bagaimana cuaca esok?', 'ms'],
+      ['Bolehkah saya bawa durian dalam beg tangan?', 'ms'],
     ] as const) {
       const answer = ask(question, kul, lang);
       const contact = officialContact(lang === 'ms' ? ms : en);
@@ -568,8 +573,9 @@ describe('round 4: fallback, access qualifiers, named airline, grammar (6.1.4)',
   it('a new question that names the same airport is not a follow-up of the last topic', () => {
     const first = ask('Where is the accessible toilet?', { airport: 'kul' });
     const weather = ask('What will the weather be like tomorrow at KLIA?', first.context);
-    expect(weather.intent).toBe('unknown');
-    expect(weather.text).toMatch(/^I can’t answer that/);
+    // Round 6, intended change: outside what it covers, rather than "I can't answer that".
+    expect(weather.intent).toBe('out-of-scope');
+    expect(weather.text).toMatch(/^I can’t give weather forecasts/);
     // An elliptical follow-up still keeps the topic.
     const parking = ask('How much does parking cost at KLIA?');
     expect(ask('And at Penang?', parking.context).intent).toBe('parking');
@@ -611,7 +617,8 @@ describe('round 4: fallback, access qualifiers, named airline, grammar (6.1.4)',
   it('"tandas OKU" and "accessible toilet" ask where the toilet is, and say it is not published, in natural grammar', () => {
     const malay = ask('Di mana tandas OKU berhampiran pintu C?', kul, 'ms');
     expect(malay.intent).toBe('facility');
-    expect(malay.text).toBe('Lokasi tandas OKU di KLIA belum diterbitkan dalam sumber kami.');
+    // Round 6, intended change: gate C is in Terminal 1, so the answer names the terminal.
+    expect(malay.text).toBe('Lokasi tandas OKU di KLIA Terminal 1 belum diterbitkan dalam sumber kami.');
     const english = ask('Where is the accessible toilet?', kul);
     expect(english.text).toBe('Our sources do not publish where the accessible toilets are at KLIA yet.');
     expect(english.actions.some((action) => action.kind === 'link' && action.href === '/accessibility#not-published')).toBe(true);
@@ -645,5 +652,168 @@ describe('round 4: fallback, access qualifiers, named airline, grammar (6.1.4)',
       expect(titles, question).not.toMatch(/In effect|Berkuat kuasa/);
       expect(titles, question).toMatch(/RM65 from 1 January 2027|RM65 mulai 1 Januari 2027/);
     }
+  });
+});
+
+/* -------------------------------------------------------------------------------------------
+ * Round 6 (third review, section 9.1 item 4): intents it cannot perform, "now" questions, leads
+ * that answer, departing citizens, outside its scope, gate letters, business channels, parking.
+ * --------------------------------------------------------------------------------------- */
+
+describe('round 6: concierge intent and length (9.1 item 4)', () => {
+  const kul = { airport: 'kul' } as const;
+  const SUPPORT_LINE = '+60 3 8777 0000';
+  const everyText = (answer: ConciergeAnswer) => [answer.text, ...answer.statements.map((item) => item.text), ...answer.limits].join(' ');
+
+  it('"book me a taxi" says it cannot book and gives the official taxi coupon counter, with no booking promised (EN and MS)', () => {
+    for (const [question, lang, context, lead] of [
+      ['Can you book me a taxi?', 'en', kul, /^I can’t book a taxi for you\. Airport taxis are paid for by coupon at a counter before you ride\.$/],
+      ['Book me a taxi to KL Sentral', 'en', {}, /^I can’t book a taxi for you\./],
+      ['Boleh tempah teksi untuk saya?', 'ms', kul, /^Saya tidak boleh menempah teksi untuk anda\. Teksi lapangan terbang dibayar dengan kupon/],
+    ] as const) {
+      const answer = ask(question, context, lang);
+      expect(answer.intent, question).toBe('cannot-do');
+      expect(answer.text, question).toMatch(lead);
+      expect(answer.cards[0], question).toMatchObject({ type: 'transport', id: 'kul-coupon-taxi' });
+      expect(answer.cards.every((card) => card.type === 'transport' && card.id === 'kul-coupon-taxi'), question).toBe(true);
+      expect(everyText(answer), question).not.toMatch(/\b(?:I have booked|booked for you|your booking is|telah ditempah)\b/i);
+      expect(answer.escalation, question).toBeUndefined();
+    }
+    // A how-to question is not a request to act.
+    expect(ask('How do I book a taxi?', kul).intent).not.toBe('cannot-do');
+    expect(ask('Boleh saya tempah teksi di KLIA?', {}, 'ms').intent).not.toBe('cannot-do');
+  });
+
+  it('asked to book parking or a flight, it says it cannot, then points to the official place', () => {
+    const parking = ask('Can you book parking for me at KLIA?');
+    expect(parking.text).toMatch(/^I can’t book parking for you\. The parking page links to the official booking site/);
+    expect(parking.cards.some((card) => card.type === 'car-park')).toBe(true);
+    const flight = ask('Please book me a flight to Penang');
+    expect(flight.intent).toBe('cannot-do');
+    expect(flight.text).toBe('I can’t book or change flights for you. Your airline or travel agent can.');
+    expect(flight.escalation).toBeUndefined();
+  });
+
+  it('"now" queue questions say there is no live queue data and give the demonstration estimates with their label (EN and MS)', () => {
+    for (const [question, lang, context, checkpoint] of [
+      ['What is the queue at immigration right now?', 'en', kul, /Immigration \(leaving\)/],
+      ['How long is the security queue now at KLIA T1?', 'en', {}, /Security at Terminal 1, about \d+ min/],
+      ['Berapa lama barisan imigresen sekarang di KLIA?', 'ms', {}, /Imigresen \(berlepas\)/],
+      ['How long is the queue at immigration when I arrive at KLIA?', 'en', {}, /Immigration \(arriving\)/],
+    ] as const) {
+      const answer = ask(question, context, lang);
+      expect(answer.intent, question).toBe('queue');
+      expect(answer.text, question).toBe(lang === 'en' ? 'There is no live queue data yet. The waiting times we show are demonstration estimates, not measurements.' : 'Belum ada data barisan secara langsung. Masa menunggu yang kami paparkan ialah anggaran demonstrasi, bukan ukuran sebenar.');
+      expect(answer.statements[0]?.provenance, question).toBe('demo');
+      expect(answer.statements[0]?.text, question).toMatch(checkpoint);
+      expect(answer.statements[0]?.text, question).toMatch(lang === 'en' ? /not measurements\.$/ : /bukan ukuran sebenar\.$/);
+      expect(answer.demo, question).toBe(true);
+      // The airport's support line cannot tell a queue either.
+      expect(answer.escalation, question).toBeUndefined();
+    }
+  });
+
+  it('"is it running now" answers from the status lines and says there is no live feed', () => {
+    const answer = ask('Is the Aerotrain running now?', kul);
+    expect(answer.intent).toBe('service-status');
+    expect(answer.limits).toContain('We have no live operations feed yet: this comes from dated notices.');
+  });
+
+  it('leads with the answer, never "Here is what our sources say", when a detail follows (EN and MS)', () => {
+    for (const [question, lang] of [
+      ['How do I buy Fast Track?', 'en'],
+      ['Where do I check in?', 'en'],
+      ['I need a wheelchair at the airport', 'en'],
+      ['My flight is delayed. What should I do?', 'en'],
+      ['Can visitors use the autogate on arrival?', 'en'],
+      ['Di mana saya daftar masuk?', 'ms'],
+      ['Bagaimana membeli Fast Track?', 'ms'],
+      ['Penerbangan saya lewat. Apa yang patut saya buat?', 'ms'],
+    ] as const) {
+      const answer = ask(question, kul, lang);
+      expect(answer.statements.length, question).toBeGreaterThan(0);
+      expect(answer.text, question).not.toMatch(/Here is what our sources say|Ini yang dinyatakan oleh sumber kami|Inilah yang dinyatakan sumber kami/);
+    }
+    expect(ask('How do I buy Fast Track?', kul).text).toBe('Fast Track at KLIA: an optional service you book on a separate website, myairportfasttrack.com.');
+    expect(ask('Where do I check in?', kul).text).toBe('The departure hall and check-in counters are on Level 5 of the Main Terminal Building.');
+  });
+
+  it('departure, citizen and older-traveller autogate questions lead with the departing-citizen card; arrival questions keep the arrival card (EN and MS)', () => {
+    const departing = [
+      ['Can my elderly mother use the autogate when leaving Malaysia?', 'en'],
+      ['Can Malaysian citizens use the departure autogate?', 'en'],
+      ['Bolehkah ibu saya yang warga emas guna autogate semasa berlepas?', 'ms'],
+      ['Siapa boleh guna autogate berlepas di KLIA?', 'ms'],
+      ['Warga Malaysia guna autogate semasa keluar negara?', 'ms'],
+    ] as const;
+    for (const [question, lang] of departing) {
+      const answer = ask(question, kul, lang);
+      expect(answer.intent, question).toBe('immigration');
+      expect(answer.text, question).toMatch(lang === 'en' ? /^Our sources do not publish who may use the departure autogates/ : /^Sumber kami tidak menerbitkan siapa yang boleh menggunakan autogate berlepas/);
+      expect(answer.statements[0]?.title, question).toMatch(/Leaving Malaysia|Meninggalkan Malaysia/);
+      // Never the visitor autogates and the arrival card, which answer another question.
+      expect(everyText(answer), question).not.toMatch(/MDAC|63 (?:countries|negara)/);
+    }
+    for (const [question, lang] of [
+      ['Can visitors use the autogate on arrival?', 'en'],
+      ['Bolehkah pelawat guna autogate semasa tiba?', 'ms'],
+    ] as const) {
+      const answer = ask(question, kul, lang);
+      expect(answer.statements[0]?.title, question).toMatch(/Malaysia Digital Arrival Card|Kad Ketibaan Digital Malaysia/);
+    }
+  });
+
+  it('keeps questions outside what it covers away from the airport support line (EN and MS)', () => {
+    for (const [question, lang] of [
+      ['What will the weather be like tomorrow at KLIA?', 'en'],
+      ['What will the weather be like tomorrow?', 'en'],
+      ['Bagaimana cuaca esok di KLIA?', 'ms'],
+      ['Tell me a joke', 'en'],
+    ] as const) {
+      const answer = ask(question, {}, lang);
+      expect(answer.intent, question).toBe('out-of-scope');
+      expect(answer.escalation, question).toBeUndefined();
+      expect(answer.text, question).not.toContain(SUPPORT_LINE);
+      expect(answer.cards, question).toEqual([]);
+    }
+    // An airport topic with weather in it keeps its topic.
+    expect(ask('Will the rain delay my flight?', kul).intent).toBe('flight-delay');
+  });
+
+  it('infers KLIA from a gate letter only KLIA has, and its terminal', () => {
+    const eat = ask('Where can I eat near gate C?');
+    expect(eat.clarify).toBeUndefined();
+    expect(eat.context).toMatchObject({ airport: 'kul', terminal: 'T1' });
+    const toilet = ask('Where is the accessible toilet near gate C?');
+    expect(toilet.text).toBe('Our sources do not publish where the accessible toilets are at KLIA Terminal 1 yet.');
+    // A letter no airport publishes still asks which airport.
+    expect(ask('Where is the prayer room near gate Z?').clarify).toBeDefined();
+  });
+
+  it('says when a dedicated business channel is not published, with the group contacts and the business page (EN and MS)', () => {
+    for (const [question, lang, topic] of [
+      ['Advertising space at KLIA?', 'en', 'advertising'],
+      ['How do I rent retail space at KLIA?', 'en', 'commercial and retail space'],
+      ['How do I become a supplier to Malaysia Airports?', 'en', 'procurement and tender'],
+      ['Bagaimana untuk mengiklan di KLIA?', 'ms', 'pengiklanan'],
+    ] as const) {
+      const answer = ask(question, {}, lang);
+      expect(answer.intent, question).toBe('business');
+      expect(answer.text, question).toContain(topic);
+      expect(answer.text, question).toMatch(lang === 'en' ? /^A dedicated channel for .+ enquiries is not published in our sources\./ : /^Saluran khusus untuk pertanyaan .+ tidak diterbitkan dalam sumber kami\./);
+      expect(answer.actions.some((action) => action.kind === 'link' && action.href === '/corporate/business'), question).toBe(true);
+      expect(answer.escalation?.contacts.map((contact) => contact.value), question).toEqual((lang === 'ms' ? ms : en).groupContacts.map((contact) => contact.value));
+    }
+  });
+
+  it('a stay of days gets the upper bound from the daily maximum, and quoted prices carry "not verified"', () => {
+    const answer = ask('How much is parking for 3 days at the long term car park?', kul);
+    // formatCurrency puts a no-break space after "RM".
+    expect(answer.text).toMatch(/^For 3 days, at most RM\s96 at Long Term Car Park \(LTCP\), from the daily maximum in our sources\. Rates not verified\.$/);
+    const longStay = answer.statements.find((statement) => /more than a day/.test(statement.title ?? ''));
+    expect(longStay?.text).toMatch(/costs at most RM32 a day from 1 May 2026/);
+    expect(longStay?.text).toMatch(/Rates not verified: our sources give a daily maximum of RM\s32/);
+    const malay = ask('Berapa kos parkir 3 hari di KLIA?', kul, 'ms');
+    expect(malay.text).toMatch(/^Untuk 3 hari, paling banyak RM\s96 di Tempat Letak Kereta Jangka Panjang/);
   });
 });

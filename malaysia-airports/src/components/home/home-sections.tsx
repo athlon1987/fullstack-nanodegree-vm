@@ -18,7 +18,6 @@ import {
   type Terminal,
 } from '@/content';
 import { ARRIVAL_TIME_RULE } from '@/content/planning-rules';
-import { cn } from '@/lib/cn';
 import { getT } from '@/lib/i18n';
 import { AirportVignette } from '@/components/art/airport-vignette';
 import { RebungRule, TaburField } from '@/components/art/patterns';
@@ -209,7 +208,8 @@ function AirportCard({ airport: record, terminal, lang, large = false }: { airpo
       <div className={large ? 'flex flex-1 flex-col gap-1.5 p-5 sm:p-6' : 'flex flex-1 flex-col gap-1 p-4'}>
         {/* Wraps at 320 px and 125% text instead of pushing the code out of the card (A-16). */}
         <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-1">
-          <h3 className={cn('min-w-0', large ? 'type-title-lg text-ink' : 'type-title-md text-ink')}>
+          {/* Round 6 (A-14): one title size for every card (22 px was a ninth size on the home at 1440 px). */}
+          <h3 className="type-title-md min-w-0 text-ink">
             <CardLink href={sectionPath(airport.slug, 'overview', terminal?.id)}>{title}</CardLink>
           </h3>
           <AirportCode code={airport.code} name={airport.name} variant="boxed" size="sm" className="mt-0.5 shrink-0" />

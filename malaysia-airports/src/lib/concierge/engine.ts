@@ -22,7 +22,9 @@ import { formatFlightNumber, isInternationalFlight } from '@/lib/flights/query';
 import { flightStatusLabel } from '@/lib/flights/status';
 import type { Flight } from '@/lib/flights/types';
 import { calculateParking, rateFacts, rateStatusText } from '@/lib/parking';
+import { DemoWaitTimeProvider } from '@/lib/providers/demo-operations';
 import { OPS_SERVICES } from '@/lib/providers/ops-services';
+import type { WaitCheckpoint } from '@/lib/providers/types';
 import { formatTime } from '@/lib/time';
 import { ANSWER_LIMITS, CONCIERGE_MAX_QUESTION } from './constants';
 import { hrefFor, retrievePassages, searchKnowledge, type PassageQuery } from './retrieve';
@@ -62,6 +64,8 @@ class Builder {
   fallback = false;
   /** The answer is complete and honest as it is: do not add loosely related passages (B-08). */
   direct = false;
+  /** The lead only frames what follows: the first detail's own answer replaces it (round 6). */
+  framed = false;
   private seen = new Set<string>();
   private said: Set<string>[] = [];
 
@@ -78,6 +82,16 @@ class Builder {
 
   say(key: EnginePhrase, vars?: Record<string, string | number>): string {
     return phrase(this.lang, key, vars);
+  }
+
+  /**
+   * A lead that only introduces the details ("Here is what our sources say about …"). Round 6
+   * (third review 9.1 item 4): when a detail follows, its first sentence becomes the lead, so the
+   * answer comes first; the framing line stays only when nothing does.
+   */
+  frame(key: EnginePhrase, vars?: Record<string, string | number>): void {
+    this.text = this.say(key, vars);
+    this.framed = true;
   }
 
   once(key: string): boolean {
@@ -478,7 +492,7 @@ const checkIn: Handler = (s) => {
     }
     passages(s, { text: `${s.question} check in`, airline: code, topics: ['check-in'], require: CHECK_IN_WORDS, limit: 2, minScore: 4 });
   } else {
-    s.b.text = s.b.say('checkInGeneral', { airport: placeName(s) });
+    s.b.frame('checkInGeneral', { airport: placeName(s) });
     passages(s, { text: `${s.question} check in counter`, topics: ['check-in'], require: CHECK_IN_WORDS, limit: 3, minScore: 4 });
     s.b.hint = s.b.say('checkInAskFlight');
   }
@@ -544,7 +558,7 @@ function accessibleTransport(s: Scope, options: readonly TransportOption[]): voi
   const names = list(shown.map((option) => midSentence(shortName(s.b.pick(option.name)), s.lang)), s.lang);
   const known = shown.filter((option) => option.accessibility && (option.accessibility.stepFree !== undefined || option.accessibility.note));
   if (known.length > 0) {
-    s.b.text = s.b.say('accessibleTransport', { options: names });
+    s.b.frame('accessibleTransport', { options: names });
     for (const option of known) {
       const note = option.accessibility?.note ? s.b.pick(option.accessibility.note) : '';
       s.b.statement({ title: s.b.pick(option.name), text: note || s.b.say('accessibleTransport', { options: shortName(s.b.pick(option.name)) }), provenance: option.provenance, sourceIds: option.sources }, `access:${option.id}`);
@@ -754,6 +768,15 @@ const parking: Handler = (s) => {
       carParkCard(s, park);
     }
   }
+  // Round 6: "parking for 3 days" gets the upper bound the parking page shows from the daily
+  // maximum (≤ RM 96), not only the daily figure, and says it is not verified.
+  const days = duration !== undefined && duration >= 1440 ? Math.ceil(duration / 1440) : 0;
+  const bounded = s.b.statements.length === 0 && days > 0 && lowest && fact(lowest).basis === 'daily-max' ? lowest : undefined;
+  if (bounded) {
+    const total = formatCurrency((fact(bounded).dailyMax ?? 0) * days, s.lang);
+    const span = s.lang === 'ms' ? `${days} hari` : `${days} ${days === 1 ? 'day' : 'days'}`;
+    s.b.statement({ text: s.b.say('parkingUpperBound', { duration: span, total, carPark: s.b.pick(bounded.name) }), provenance: 'estimated', sourceIds: bounded.sources, href: hrefFor(s.k, 'parking', bounded.id) }, `bound:${bounded.id}`);
+  }
   const estimate = s.b.statements[0];
   if (estimate) s.b.text = estimate.text;
   else if (published[0]) s.b.text = s.b.say('parkingRates', { carPark: s.b.pick(published[0].name) });
@@ -796,7 +819,8 @@ const assistance: Handler = (s) => {
       s.b.text = s.b.say('assistanceAirlineMissing', { airline: airline.name });
     }
   } else {
-    s.b.text = s.airport ? s.b.say('assistance', { airport: s.airport.shortName }) : s.b.say('assistanceGeneral');
+    if (s.airport) s.b.frame('assistance', { airport: s.airport.shortName });
+    else s.b.frame('assistanceGeneral');
   }
   const topics = hidden ? ['neurodivergent', 'assistance', 'accessibility'] : ['reduced-mobility', 'assistance', 'accessibility', 'older-travellers'];
   for (const { passage } of retrievePassages(s.k, { text: s.question, airport: s.airport?.slug, topics, limit: 6, minScore: 4 })) {
@@ -850,7 +874,7 @@ const gate: Handler = (s) => {
   if (needAirport(s)) return;
   const airport = s.airport as KnowledgeAirport;
   const gateSlot = s.u.slots.gate;
-  s.b.text = s.b.say('gate', { airport: placeName(s) });
+  s.b.frame('gate', { airport: placeName(s) });
   const named = s.k.transport.filter((option) => option.airport === airport.slug && (namedIn(s.question, option.name.en) || (option.mode === 'inter-terminal' && option.destinations.some((row) => gateSlot && mentions(row.name.en, `${gateSlot[0]} gates`)))));
   for (const option of named) {
     transportCard(s, option, option.destinations);
@@ -875,7 +899,8 @@ const notices: Handler = (s) => {
 };
 
 const contact: Handler = (s) => {
-  s.b.text = s.airport ? s.b.say('contact', { who: s.airport.name }) : s.b.say('topic');
+  if (s.airport) s.b.text = s.b.say('contact', { who: s.airport.name });
+  else s.b.frame('topic');
   passages(s, { text: `${s.question} contact`, terminal: undefined, topics: ['contact', 'feedback'], limit: 2, minScore: 3 });
   escalate(s, 'human');
   if (s.k.helpTopics.includes('contact')) s.b.link(s.b.say('actionContactHelp'), '/help/contact', 'phone');
@@ -904,7 +929,9 @@ function vocabulary(k: ConciergeKnowledge): Set<string> {
 
 /** The first sentence of a passage, or two when the first is a bare "Yes." or "No.". */
 function leadSentence(text: string): string {
-  const sentences = text.match(/[^.!?]+[.!?]+(?:\s|$)/g)?.map((item) => item.trim()) ?? [text];
+  // Split where a full stop is followed by a space, so "myairportfasttrack.com." stays whole (round 6).
+  const sentences = text.split(/(?<=[.!?])\s+/).map((item) => item.trim()).filter(Boolean);
+  if (sentences.length === 0) return text.trim();
   return (sentences[0].length < 40 && sentences[1] ? `${sentences[0]} ${sentences[1]}` : sentences[0]).trim();
 }
 
@@ -1100,12 +1127,18 @@ const fastTrack: Handler = (s) => {
   const records = s.k.facilities.filter((item) => item.airport === airport.slug && pattern.test(`${item.id} ${item.name.en} ${item.name.ms ?? ''}`));
   const found = s.k.passages.filter((item) => (item.airports.length === 0 || item.airports.includes(airport.slug)) && pattern.test(`${item.title.en} ${item.body.en}`));
   if (records.length > 0 || found.length > 0) {
-    s.b.text = s.b.say('fastTrack', { airport: airport.shortName });
+    s.b.frame('fastTrack', { airport: airport.shortName });
     for (const item of records) {
       facilityStatement(s, item);
       facilityCard(s, item);
     }
     for (const item of found.slice(0, 2)) s.b.passage(item);
+    // Round 6: "Fast Track at KLIA: an optional service you book on a separate website, …".
+    const first = s.b.statements[0];
+    if (first) {
+      s.b.text = s.b.say('fastTrackLead', { airport: airport.shortName, detail: lowerFirstWord(leadSentence(first.text), s.lang) });
+      s.b.framed = false;
+    }
   } else {
     // Honest, and never a loosely related programme instead (exec-commerce-17).
     s.b.text = s.b.say('fastTrackMissing', { airport: airport.shortName });
@@ -1188,9 +1221,44 @@ const serviceStatus: Handler = (s) => {
   s.b.link(s.b.say('actionAllNotices'), '/notices', 'megaphone');
 };
 
+/** Leaving Malaysia, Malaysian citizens and older travellers (round 6; inclusion review weakness 4). */
+const DEPARTING_WORDS = ['leave', 'leaving', 'depart', 'departing', 'departure', 'departures', 'outbound', 'exit', 'exiting', 'going abroad', 'travel abroad', 'travelling abroad', 'traveling abroad', 'fly out', 'flying out', 'berlepas', 'keluar negara', 'ke luar negara', 'meninggalkan malaysia', 'luar negara'];
+const CITIZEN_WORDS = ['malaysian', 'malaysians', 'citizen', 'citizens', 'mykad', 'warga malaysia', 'warganegara', 'rakyat malaysia', 'pasport malaysia'];
+const OLDER_WORDS = ['elderly', 'older', 'senior', 'seniors', 'warga emas', 'tua', 'pesara'];
+/** Arrival questions keep the visitor autogate and arrival card (MDAC) content. */
+const ARRIVING_WORDS = ['arrive', 'arriving', 'arrival', 'arrivals', 'tiba', 'ketibaan', 'mdac', 'arrival card', 'visitor', 'visitors', 'tourist', 'tourists', 'pelawat', 'pelancong', 'enter malaysia', 'entering malaysia', 'masuk malaysia', 'masuk ke malaysia'];
+
+/**
+ * Departure, citizen and older-traveller autogate questions get the departing-citizen card first,
+ * in both languages, and never the visitor and arrival-card content, which answers another
+ * question (round 6; "Bolehkah ibu saya yang warga emas guna autogate semasa berlepas?").
+ */
+function departingImmigration(s: Scope): boolean {
+  const text = normalise(s.question);
+  const has = (words: readonly string[]) => words.some((word) => hasPhrase(text, word));
+  if (has(ARRIVING_WORDS) || !(has(DEPARTING_WORDS) || has(CITIZEN_WORDS) || has(OLDER_WORDS))) return false;
+  const notes = s.k.passages.filter((item) => /departing-immigration/.test(item.id));
+  const note = s.airport ? notes.find((item) => item.airports.includes(s.airport?.slug ?? '') || item.airports.length === 0) : notes[0];
+  if (note) {
+    s.b.passage(note);
+    s.b.text = leadSentence(s.b.pick(note.body));
+  } else {
+    s.b.text = s.b.say('immigrationDepartingMissing');
+    s.b.statement({ text: s.b.text, provenance: 'suggestion', sourceIds: [] }, 'departing-missing');
+    escalate(s, 'missing');
+  }
+  if (has(OLDER_WORDS) || s.u.slots.accessible) {
+    passages(s, { text: `${s.question} older travellers assistance wheelchair`, terminal: undefined, topics: ['older-travellers', 'assistance', 'reduced-mobility'], limit: 1, minScore: 3 });
+  }
+  s.b.direct = true;
+  if (s.k.guides.includes('immigration-customs')) s.b.link(s.b.say('actionImmigrationGuide'), '/guides/immigration-customs', 'file-text');
+  return true;
+}
+
 const immigration: Handler = (s) => {
+  if (departingImmigration(s)) return;
   const where = s.airport ? placeName(s) : '';
-  s.b.text = s.airport ? s.b.say('immigration', { airport: where }) : s.b.say('immigration', { airport: s.k.featured[0]?.label ?? '' });
+  s.b.frame('immigration', { airport: s.airport ? where : (s.k.featured[0]?.label ?? '') });
   passages(s, { text: `${s.question} autogate autogates immigration passport`, terminal: undefined, require: ['autogate', 'autogates', 'immigration', 'imigresen', 'passport', 'pasport'], limit: 3, minScore: 3 });
   if (s.u.slots.accessible) passages(s, { text: `${s.question} older travellers assistance`, terminal: undefined, topics: ['older-travellers', 'assistance', 'accessibility', 'reduced-mobility'], limit: 1, minScore: 3 });
   if (s.b.statements.length === 0) {
@@ -1217,6 +1285,190 @@ const arrivalTime: Handler = (s) => {
   if (s.u.slots.accessible) s.b.link(s.b.say('actionAssistanceAndAccessibility'), '/accessibility', 'accessibility');
 };
 
+/* ---- round 6: what it cannot do, "now" queues, business, outside its scope ------------------- */
+
+const TAXI_WORDS = ['taxi', 'taxis', 'teksi', 'cab', 'cabs'];
+const RIDE_WORDS = ['grab', 'e hailing', 'ehailing', 'ride hailing', 'ride', 'rides'];
+const PARK_WORDS = ['park', 'parking', 'car park', 'carpark', 'parkir', 'letak kereta'];
+const FLIGHT_BOOK_WORDS = ['flight', 'flights', 'plane ticket', 'air ticket', 'seat', 'seats', 'penerbangan', 'tiket penerbangan', 'tiket kapal terbang'];
+
+/**
+ * "Can you book me a taxi?": it cannot book, order or pay, says so first, then gives the official
+ * way to do it from the content (the coupon counter, the app's pick-up area, the parking page),
+ * and never implies a booking was made (round 6; design and business lenses).
+ */
+const cannotDo: Handler = (s) => {
+  const text = normalise(s.question);
+  const has = (words: readonly string[]) => words.some((word) => hasPhrase(text, word));
+  const taxi = has(TAXI_WORDS);
+  if (taxi || has(RIDE_WORDS)) {
+    const key: EnginePhrase = taxi ? 'cannotBookTaxi' : 'cannotBookRide';
+    if (needAirport(s)) {
+      s.b.text = `${s.b.say(key, { detail: '' }).trim()} ${s.b.say('clarifyAirport')}`;
+      return;
+    }
+    const airport = s.airport as KnowledgeAirport;
+    const options = s.k.transport.filter((option) => option.airport === airport.slug && option.mode === (taxi ? 'taxi' : 'e-hailing'));
+    if (options.length === 0) {
+      s.b.text = s.b.say('cannotBookTransportNone', { airport: airport.shortName });
+      escalate(s, 'missing');
+    } else {
+      const first = options[0];
+      s.b.text = s.b.say(key, { detail: first.description ? leadSentence(s.b.pick(first.description)) : '' }).trim();
+      for (const option of options) {
+        transportCard(s, option, option.destinations);
+        if (option.description) s.b.statement({ title: s.b.pick(option.name), text: s.b.pick(option.description), provenance: option.provenance, sourceIds: option.sources, href: hrefFor(s.k, 'transport', option.id) }, `transport:${option.id}`);
+      }
+    }
+    s.b.direct = true;
+    s.b.link(s.b.say('actionCompareAllTransport'), sectionHref({ ...s, terminal: undefined }, 'transport'), 'train-front');
+    return;
+  }
+  if (has(PARK_WORDS)) {
+    parking(s);
+    if (!s.b.clarify) s.b.text = s.b.say('cannotBookParking');
+    return;
+  }
+  s.b.text = s.b.say(has(FLIGHT_BOOK_WORDS) ? 'cannotBookFlight' : 'cannotBookGeneral');
+  s.b.direct = true;
+};
+
+const QUEUE_CHECKPOINTS: readonly [WaitCheckpoint, EnginePhrase, readonly string[]][] = [
+  ['check-in', 'queueCheckIn', ['check in', 'checkin', 'daftar masuk', 'bag drop']],
+  ['security', 'queueSecurity', ['security', 'screening', 'keselamatan', 'pemeriksaan']],
+  ['customs', 'queueCustoms', ['customs', 'kastam']],
+  ['taxi-queue', 'queueTaxi', ['taxi', 'taxis', 'teksi']],
+  ['immigration-departure', 'queueImmigrationDeparture', ['immigration', 'imigresen', 'passport control', 'kawalan pasport', 'autogate', 'autogates']],
+];
+
+/**
+ * "What is the queue at immigration right now?": there is no live queue feed, so it says so
+ * first, then gives the overview's demonstration estimates with their label, never as a
+ * measurement (round 6; business lens).
+ */
+const queue: Handler = (s) => {
+  if (needAirport(s)) return;
+  const airport = s.airport as KnowledgeAirport;
+  const text = normalise(s.question);
+  const arriving = ARRIVING_WORDS.some((word) => hasPhrase(text, word));
+  let wanted = QUEUE_CHECKPOINTS.filter(([, , words]) => words.some((word) => hasPhrase(text, word))).map(([checkpoint]) => checkpoint);
+  if (arriving) wanted = wanted.map((checkpoint) => (checkpoint === 'immigration-departure' ? 'immigration-arrival' : checkpoint));
+  if (wanted.length === 0) wanted = arriving ? ['immigration-arrival', 'customs'] : ['security', 'immigration-departure'];
+  const label = (checkpoint: WaitCheckpoint): string =>
+    s.b.say(checkpoint === 'immigration-arrival' ? 'queueImmigrationArrival' : (QUEUE_CHECKPOINTS.find(([item]) => item === checkpoint)?.[1] ?? 'queueSecurity'));
+  const waits = new DemoWaitTimeProvider(s.now)
+    .getWaitTimesSync({ airport: airport.slug, terminal: s.terminal })
+    .filter((wait) => wanted.includes(wait.checkpoint))
+    .slice(0, 4);
+  s.b.text = s.b.say('queueNoLive');
+  if (waits.length > 0) {
+    const place = (terminal: TerminalId) => (airport.terminals.length > 1 ? (terminalName(s, terminal, true) ?? airport.shortName) : airport.shortName);
+    const items = waits.map((wait) => s.b.say('queueItem', { checkpoint: label(wait.checkpoint), terminal: place(wait.terminal), minutes: wait.minutes }));
+    s.b.statement({ text: s.b.say('queueDemo', { items: list(items, s.lang) }), provenance: 'demo', sourceIds: [], href: `/${airport.slug}` }, 'queue-demo');
+  } else {
+    s.b.statement({ text: s.b.say('queueNone', { airport: airport.shortName }), provenance: 'suggestion', sourceIds: [] }, 'queue-none');
+  }
+  // A dated notice about immigration still applies; the status line says "not available" without one.
+  const service = OPS_SERVICES.find((item) => item.id === 'immigration');
+  if (service && wanted.some((checkpoint) => checkpoint.startsWith('immigration'))) {
+    for (const notice of liveNotices(s, (notice) => service.pattern.test(notice.id) || service.pattern.test(notice.title.en)).slice(0, 1)) addNotice(s, notice);
+  }
+  s.b.direct = true;
+  s.b.link(s.b.say('actionStatusAndQueues', { airport: airport.shortName }), `/${airport.slug}`, 'timer');
+};
+
+const BUSINESS_TOPICS: readonly [EnginePhrase, readonly string[]][] = [
+  ['businessAdvertising', ['advertising', 'advertise', 'advertisement', 'advertisements', 'billboard', 'billboards', 'iklan', 'mengiklan', 'pengiklanan', 'papan iklan']],
+  ['businessProcurement', ['tender', 'tenders', 'procurement', 'supplier', 'suppliers', 'become a supplier', 'vendor registration', 'perolehan', 'pembekal']],
+  ['businessRoutes', ['route development', 'new route', 'new routes', 'laluan baharu']],
+  ['businessCargo', ['cargo', 'freight', 'kargo']],
+  ['businessAeropolis', ['aeropolis']],
+  ['businessRetail', ['retail space', 'shop space', 'commercial space', 'office space', 'rent space', 'lease', 'tenancy', 'tenant', 'concession', 'ruang runcit', 'ruang niaga', 'ruang komersial', 'sewa ruang', 'sewa kedai', 'pajakan', 'penyewa', 'konsesi']],
+];
+
+/**
+ * Business enquiries (advertising, retail space, tenders, routes, cargo): no dedicated channel is
+ * published, as the corporate business page says, so it says that and names the group contacts
+ * (round 6; business lens: "Advertising space at KLIA?").
+ */
+const business: Handler = (s) => {
+  const text = normalise(s.question);
+  const key = BUSINESS_TOPICS.find(([, words]) => words.some((word) => hasPhrase(text, word)))?.[0] ?? 'businessRetail';
+  s.b.text = s.b.say('businessNotPublished', { topic: s.b.say(key) });
+  s.b.statement({ text: s.b.text, provenance: 'suggestion', sourceIds: [], href: '/corporate/business' }, 'business');
+  // The group's own contacts, not an airport's passenger lines.
+  s.b.escalation = {
+    reason: 'missing',
+    text: s.b.say('escalateMissing'),
+    contacts: s.k.groupContacts.map((contact) => toContact(s.b, contact)),
+    airline: false,
+    officialUrl: s.k.officialSiteUrl,
+  };
+  s.b.direct = true;
+  s.b.link(s.b.say('actionBusinessPage'), '/corporate/business', 'building-2');
+};
+
+const WEATHER_WORDS = ['weather', 'forecast', 'rain', 'raining', 'rainy', 'temperature', 'humidity', 'haze', 'sunny', 'thunderstorm', 'cuaca', 'ramalan cuaca', 'hujan', 'suhu', 'jerebu', 'panas terik', 'ribut petir'];
+
+/** Outside what it covers: says so, without sending the visitor to the airport's support line. */
+const outOfScope: Handler = (s) => {
+  const weather = WEATHER_WORDS.some((word) => hasPhrase(normalise(s.question), word));
+  s.b.text = s.b.say(weather ? 'outOfScopeWeather' : 'outOfScope');
+  s.b.direct = true;
+  if (weather && s.k.helpTopics.includes('flights')) s.b.link(s.b.say('actionFlightsAndDisruptionHelp'), '/help/flights', 'circle-help');
+};
+
+/** Intents whose answer never sends the visitor to the airport's support line. */
+const NO_ESCALATION: ReadonlySet<ConciergeIntent> = new Set<ConciergeIntent>(['greeting', 'out-of-scope', 'cannot-do', 'queue']);
+
+/** "an optional service …", "Ia …": a leading function word is lower-cased after a colon. */
+function lowerFirstWord(text: string, lang: Lang): string {
+  const words = lang === 'ms' ? ['Ia', 'Ini', 'Anda', 'Satu', 'Sebuah'] : ['A', 'An', 'The', 'It', 'This', 'You', 'Your', 'There'];
+  const first = text.split(' ')[0];
+  return words.includes(first) ? text.charAt(0).toLowerCase() + text.slice(1) : text;
+}
+
+/** Which airport (and terminal) a gate letter belongs to, when only one has it ("gate C" is KLIA Terminal 1). */
+const gateIndexCache = new WeakMap<ConciergeKnowledge, Map<string, { airports: Set<string>; terminals: Set<TerminalId> }>>();
+function gateHome(k: ConciergeKnowledge, letter: string): { airport: string; terminal?: TerminalId } | undefined {
+  let index = gateIndexCache.get(k);
+  if (!index) {
+    const built = new Map<string, { airports: Set<string>; terminals: Set<TerminalId> }>();
+    const add = (prefix: string, airport: string, terminal?: TerminalId) => {
+      const entry = built.get(prefix) ?? { airports: new Set<string>(), terminals: new Set<TerminalId>() };
+      entry.airports.add(airport);
+      if (terminal) entry.terminals.add(terminal);
+      built.set(prefix, entry);
+    };
+    for (const passage of k.passages) for (const prefix of passage.gatePrefixes ?? []) for (const airport of passage.airports) add(prefix.toUpperCase(), airport, passage.terminal);
+    for (const item of k.facilities) for (const prefix of gatePrefixesOf(item.locationNote?.en)) add(prefix, item.airport, item.terminal);
+    for (const item of k.outlets) for (const prefix of gatePrefixesOf(item.locationNote?.en)) add(prefix, item.airport, item.terminal);
+    gateIndexCache.set(k, built);
+    index = built;
+  }
+  const entry = index.get(letter.toUpperCase());
+  if (!entry || entry.airports.size !== 1) return undefined;
+  return { airport: [...entry.airports][0], terminal: entry.terminals.size === 1 ? [...entry.terminals][0] : undefined };
+}
+
+/**
+ * A passage that quotes an unverified car park's price carries the same qualifier as the car
+ * park's card and the parking page (round 6, 9.1 item 6: the long-stay card said "costs at most
+ * RM32 a day" with no "not verified").
+ */
+function qualifyParkingPrices(b: Builder, k: ConciergeKnowledge): void {
+  const unverified = k.carParks.filter((park) => !rateFacts(park).verified && rateFacts(park).basis !== 'none');
+  for (const statement of b.statements) {
+    if (!/RM\s?\d/.test(statement.text) || /not verified|belum disahkan/i.test(statement.text)) continue;
+    // The car park whose own figure is quoted ("Long Term Car Park costs at most RM32"), not
+    // another named in passing ("Terminal 1 Car Park Level 2").
+    const quoted = (item: CarPark) => new RegExp(`RM\\s?${rateFacts(item).lowestDaily}(?![\\d.])`).test(statement.text);
+    const named = (item: CarPark) => mentions(statement.text, shortName(b.pick(item.name))) || mentions(statement.text, shortName(item.name.en));
+    const park = unverified.find((item) => named(item) && quoted(item));
+    if (park) statement.text = `${statement.text} ${b.pick(rateStatusText(park, (id) => k.sources.find((source) => source.id === id)))}`;
+  }
+}
+
 const HANDLERS: Record<ConciergeIntent, Handler> = {
   'check-in': checkIn,
   'terminal-transfer': terminalTransfer,
@@ -1240,6 +1492,10 @@ const HANDLERS: Record<ConciergeIntent, Handler> = {
   'service-status': serviceStatus,
   immigration,
   'arrival-time': arrivalTime,
+  'cannot-do': cannotDo,
+  queue,
+  business,
+  'out-of-scope': outOfScope,
   greeting,
   unknown: fallback,
 };
@@ -1293,6 +1549,9 @@ export function answerQuestion(input: ConciergeInput, deps: ConciergeDeps): Conc
   const multiTerminal = k.airports.filter((airport) => airport.terminals.length > 1);
   let airportSlug = u.slots.airport;
   if (!airportSlug && u.slots.terminals.length > 0 && multiTerminal.length === 1) airportSlug = multiTerminal[0].slug;
+  // Round 6: a gate letter only one airport has implies it ("near gate C" is KLIA Terminal 1).
+  const gateAt = u.slots.gate ? gateHome(k, u.slots.gate[0]) : undefined;
+  if (!airportSlug && gateAt && (!context.airport || context.airport === gateAt.airport)) airportSlug = gateAt.airport;
   const { flight, missing, unavailable } = resolveFlight(u, context, deps, airportSlug ?? context.airport);
   if (!airportSlug && flight && u.intent !== 'flight-delay') airportSlug = flight.airport;
   airportSlug ??= context.airport;
@@ -1300,7 +1559,11 @@ export function answerQuestion(input: ConciergeInput, deps: ConciergeDeps): Conc
 
   let terminal: TerminalId | undefined;
   if (airport && airport.terminals.length > 1) {
-    terminal = u.slots.terminals[0] ?? (flight && flight.airport === airport.slug ? flight.terminal : undefined) ?? (context.airport === airport.slug ? context.terminal : undefined);
+    terminal =
+      u.slots.terminals[0] ??
+      (gateAt?.airport === airport.slug ? gateAt.terminal : undefined) ??
+      (flight && flight.airport === airport.slug ? flight.terminal : undefined) ??
+      (context.airport === airport.slug ? context.terminal : undefined);
     if (u.intent === 'terminal-transfer') terminal = undefined;
   }
 
@@ -1312,7 +1575,10 @@ export function answerQuestion(input: ConciergeInput, deps: ConciergeDeps): Conc
   if (!b.clarify && !b.grounded && !b.direct && u.intent !== 'greeting' && u.intent !== 'unknown') {
     fallback(scope, true);
   }
-  if (!b.clarify && !b.grounded && u.intent !== 'greeting' && !b.escalation) escalate(scope, 'missing');
+  if (!b.clarify && !b.grounded && !NO_ESCALATION.has(u.intent) && !b.escalation) escalate(scope, 'missing');
+  // Round 6 (9.1 item 4): lead with the answer, not "Here is what our sources say".
+  if (b.framed && !b.clarify && b.statements[0]) b.text = leadSentence(b.statements[0].text);
+  qualifyParkingPrices(b, k);
 
   const ids = new Set<string>();
   for (const item of b.statements) item.sourceIds.forEach((id) => ids.add(id));

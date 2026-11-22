@@ -13,6 +13,11 @@ export interface PageHeaderProps {
   leadClassName?: string;
   /** Less space under the header on phones, where a tool follows directly (A-01, round 2). */
   tightOnPhones?: boolean;
+  /**
+   * From `lg` up, the lead on the title's line instead of under it, and a smaller title: for a
+   * page whose tool must reach the first screen (the flight board, round 6).
+   */
+  compactOnDesktop?: boolean;
   /** `<Breadcrumbs>` for the page. */
   breadcrumbs?: ReactNode;
   /** Primary actions for the page (buttons or links). */
@@ -36,25 +41,25 @@ export interface PageHeaderProps {
  * <PageHeader eyebrow={airport.shortName} title={t('parking.title')} lead={...}
  *   breadcrumbs={<Breadcrumbs items={[{ label: airport.shortName, href: `/${airport.slug}` }, { label: t('nav.parking') }]} />} />
  */
-export function PageHeader({ eyebrow, title, lead, leadClassName, tightOnPhones = false, breadcrumbs, actions, meta, art, tone = 'page', size = 'md', width = 'page', className }: PageHeaderProps) {
+export function PageHeader({ eyebrow, title, lead, leadClassName, tightOnPhones = false, compactOnDesktop = false, breadcrumbs, actions, meta, art, tone = 'page', size = 'md', width = 'page', className }: PageHeaderProps) {
   return (
     <header className={cn(tone === 'subtle' && 'border-b border-line bg-page-subtle', className)}>
       <Container size={width} className={cn('pb-8 sm:pb-10', tightOnPhones && 'max-sm:pb-5', breadcrumbs ? 'pt-3 sm:pt-4' : 'pt-8 sm:pt-12')}>
         {breadcrumbs ? (
-          <div data-page-breadcrumbs="" className="mb-4 sm:mb-6">
+          <div data-page-breadcrumbs="" className={cn('mb-4 sm:mb-6', compactOnDesktop && 'lg:mb-3')}>
             {breadcrumbs}
           </div>
         ) : null}
         <div className={cn('grid items-end gap-x-12 gap-y-6', art && 'lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]')}>
-          <div className="min-w-0">
+          <div className={cn('min-w-0', compactOnDesktop && 'lg:flex lg:items-baseline lg:gap-x-6')}>
             {eyebrow ? (
               <p className="type-eyebrow mb-3 flex items-center gap-2.5 text-gold-ink">
                 <span aria-hidden="true" className="h-px w-7 bg-gold" />
                 {eyebrow}
               </p>
             ) : null}
-            <h1 className={cn('text-ink', size === 'lg' ? 'type-display-xl' : 'type-display-lg')}>{title}</h1>
-            {lead ? <p className={cn('type-body-lg mt-4 max-w-reading text-ink-2', leadClassName)}>{lead}</p> : null}
+            <h1 className={cn('text-ink', size === 'lg' ? 'type-display-xl' : compactOnDesktop ? 'type-display-lg lg:shrink-0 lg:type-display-md' : 'type-display-lg')}>{title}</h1>
+            {lead ? <p className={cn('type-body-lg mt-4 max-w-reading text-ink-2', compactOnDesktop && 'lg:mt-0 lg:min-w-0', leadClassName)}>{lead}</p> : null}
             {meta ? <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2">{meta}</div> : null}
             {actions ? <div className="mt-6 flex flex-wrap items-center gap-3">{actions}</div> : null}
           </div>

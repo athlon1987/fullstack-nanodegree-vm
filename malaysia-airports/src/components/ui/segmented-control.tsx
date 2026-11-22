@@ -60,18 +60,22 @@ export function SegmentedControl<T extends string = string>({
   return (
     <fieldset className={cn('min-w-0', block && 'w-full', className)}>
       <legend className={cn(showLabel ? 'type-body-sm mb-1.5 font-semibold text-ink' : 'sr-only')}>{label}</legend>
+      {/* Round 6 (review-3 9.1 item 8): options share a row while their words fit and wrap to the
+          next row when they do not, so a word is never broken inside ("Antarab / angsa" at 360 px
+          and 125% text). Each option is as wide as its longest word at least, and they grow
+          equally. */}
       <div
         className={cn(
-          'gap-1 rounded-lg border border-line-control bg-page-subtle p-1',
-          stackOnPhone ? 'grid grid-cols-2 sm:auto-cols-fr sm:grid-flow-col sm:grid-cols-none' : 'grid auto-cols-fr grid-flow-col',
-          !block && 'inline-grid',
+          'flex flex-wrap gap-1 rounded-lg border border-line-control bg-page-subtle p-1',
+          stackOnPhone && 'sm:grid sm:auto-cols-fr sm:grid-flow-col',
+          !block && 'inline-flex',
         )}
       >
         {options.map((option) => (
           <label
             key={option.value}
             className={cn(
-              'relative flex min-w-0 items-center justify-center gap-2 rounded-md px-3 text-center font-semibold text-ink-2 transition-colors duration-fast select-none',
+              'relative flex flex-1 items-center justify-center gap-2 rounded-md px-3 text-center font-semibold [overflow-wrap:normal] text-ink-2 transition-colors duration-fast select-none',
               size === 'lg' ? 'min-h-13 text-base sm:px-5' : 'min-h-11 text-sm sm:text-base',
               'hover:text-ink has-[:checked]:bg-ink has-[:checked]:text-page has-[:checked]:shadow-xs',
               'has-[:focus-visible]:focus-ring has-[:disabled]:cursor-not-allowed has-[:disabled]:text-ink-3',
@@ -89,7 +93,7 @@ export function SegmentedControl<T extends string = string>({
                 : { defaultChecked: defaultValue === option.value, onChange: () => onValueChange?.(option.value) })}
             />
             {option.icon ? <Icon name={option.icon} size="sm" strokeWidth={1.75} /> : null}
-            <span className="flex min-w-0 flex-col leading-tight">
+            <span className="flex flex-col leading-tight">
               <span>{option.label}</span>
               {option.hint ? <span className="type-caption mt-0.5 font-medium opacity-80">{option.hint}</span> : null}
             </span>

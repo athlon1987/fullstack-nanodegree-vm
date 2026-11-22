@@ -69,3 +69,69 @@ export function RouteFocus() {
 
   return null;
 }
+
+const FOCUSABLE = 'a[href], button, input, select, textarea, summary, [tabindex]';
+
+/** Focus the element with this id (making it focusable with `tabindex="-1"` if it is not). */
+function focusSection(id: string): HTMLElement | null {
+  const target = document.getElementById(id);
+  if (!target || target === document.activeElement) return target;
+  if (!target.matches(FOCUSABLE)) target.setAttribute('tabindex', '-1');
+  target.focus({ preventScroll: true });
+  return target;
+}
+
+/** How long a moved-to section is watched for being replaced (a lazy part arriving in its placeholder). */
+const FOLLOW_MS = 15_000;
+
+/**
+ * Round 6 (review-3 9.1 item 3, A-05 residual): a link to a section of the same page ("My needs"
+ * on the flight page, the accessibility hub's contents, "Skip to the list") scrolled there but
+ * left keyboard focus on `<body>`, so screen readers that follow focus stayed where they were and
+ * the accessibility statement's "a link to a section moves focus to that section" was untrue. After
+ * the browser has scrolled to the section, focus moves to it (`tabindex="-1"` where needed, no
+ * second scroll). When the section is a placeholder that a lazily loaded part then replaces under
+ * the same id (the flight page's needs control), focus follows to the part. Links whose click
+ * was handled by a script (`preventDefault`) are left alone. Mounted once by `GlobalOverlays`.
+ */
+export function InPageFocus() {
+  useEffect(() => {
+    let follow: number | undefined;
+    const onClick = (event: MouseEvent) => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const link = event.target instanceof Element ? event.target.closest('a[href]') : null;
+      if (!(link instanceof HTMLAnchorElement) || (link.target && link.target !== '_self')) return;
+      const url = new URL(link.href, window.location.href);
+      const here = window.location;
+      if (!url.hash || url.origin !== here.origin || url.pathname !== here.pathname || url.search !== here.search) return;
+      const id = decodeURIComponent(url.hash.slice(1));
+      if (!id) return;
+      requestAnimationFrame(() => {
+        const focused = focusSection(id);
+        window.clearInterval(follow);
+        if (!focused) return;
+        const started = Date.now();
+        follow = window.setInterval(() => {
+          const active = document.activeElement;
+          if (Date.now() - started > FOLLOW_MS || (focused.isConnected && active !== focused)) {
+            window.clearInterval(follow);
+            return;
+          }
+          if (focused.isConnected) return;
+          // Replaced: follow it, unless the visitor has moved on meanwhile.
+          if (active && active !== document.body) window.clearInterval(follow);
+          else if (document.getElementById(id)) {
+            focusSection(id);
+            window.clearInterval(follow);
+          }
+        }, 200);
+      });
+    };
+    document.addEventListener('click', onClick);
+    return () => {
+      document.removeEventListener('click', onClick);
+      window.clearInterval(follow);
+    };
+  }, []);
+  return null;
+}

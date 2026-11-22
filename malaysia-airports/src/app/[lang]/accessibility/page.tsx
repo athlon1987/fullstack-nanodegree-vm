@@ -1,9 +1,11 @@
+import { languageAlternates } from '@/lib/seo/metadata';
 import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
 import { getT, toLang } from '@/lib/i18n';
 import type { TKey } from '@/lib/i18n/translate';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { LocaleLink } from '@/components/common/locale-link';
+import { MoreOnPhones } from '@/components/common/more-on-phones';
 import { PageHeader } from '@/components/common/page-header';
 import { ExternalLink } from '@/components/common/external-link';
 import { ProvenanceLegend } from '@/components/common/provenance-legend';
@@ -24,7 +26,7 @@ import { Section } from '@/components/ui/section';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getT(toLang(await routeLang()));
-  return { title: t('guidePages.accessibility.title'), description: t('guidePages.accessibility.metaDescription') };
+  return { alternates: languageAlternates(await routeLang(), '/accessibility'), title: t('guidePages.accessibility.title'), description: t('guidePages.accessibility.metaDescription') };
 }
 
 const NAV: readonly { id: string; label: TKey; icon: IconKey }[] = [
@@ -144,13 +146,16 @@ export default async function AccessibilityPage() {
             <GuideSteps steps={data.butterflySteps} label={t('guidePages.accessibility.butterfly.title')} t={t} />
             <div className="min-w-0">
               <h3 className="type-title-lg mb-4 text-ink">{t('guidePages.accessibility.butterfly.calmTitle')}</h3>
-              <ul className="flex flex-col gap-3">
-                {data.quietSpaces.map((fact) => (
-                  <li key={fact.id}>
-                    <FactCard fact={fact} headingLevel={4} />
-                  </li>
-                ))}
-              </ul>
+              {/* Round 6 (review-3 9.1 item 7): the places behind a disclosure on phones. */}
+              <MoreOnPhones summary={t('guidePages.accessibility.butterfly.calmMore', { count: data.quietSpaces.length })}>
+                <ul className="flex flex-col gap-3">
+                  {data.quietSpaces.map((fact) => (
+                    <li key={fact.id}>
+                      <FactCard fact={fact} headingLevel={4} />
+                    </li>
+                  ))}
+                </ul>
+              </MoreOnPhones>
               <LocaleLink href="/kul/facilities?cat=calm-room" className="link-action type-body-sm mt-3 text-ink">
                 {t('guidePages.accessibility.butterfly.directory')}
                 <Icon name="arrow-right" size="sm" />
@@ -253,23 +258,26 @@ export default async function AccessibilityPage() {
               <h3 className="type-title-md text-ink">{t('guidePages.accessibility.statement.focusTitle')}</h3>
               <p className="type-body mt-2 text-ink-2">{t('guidePages.accessibility.statement.focus')}</p>
             </div>
-            <div>
-              <h3 className="type-title-md text-ink">{t('guidePages.accessibility.statement.testedTitle')}</h3>
-              <ul className="type-body mt-2 flex list-disc flex-col gap-2 pl-5 text-ink-2">
-                {statementTested.map((key) => (
-                  <li key={key}>{t(key)}</li>
-                ))}
-              </ul>
-              <p className="type-body-sm mt-2 text-ink-2">{t('guidePages.accessibility.statement.testedBrowsers')}</p>
-            </div>
-            <div>
-              <h3 className="type-title-md text-ink">{t('guidePages.accessibility.statement.limitsTitle')}</h3>
-              <ul className="type-body mt-2 flex list-disc flex-col gap-2 pl-5 text-ink-2">
-                {statementLimits.map((key) => (
-                  <li key={key}>{t(key)}</li>
-                ))}
-              </ul>
-            </div>
+            {/* Round 6 (review-3 9.1 item 7): tests and limits behind a disclosure on phones. */}
+            <MoreOnPhones summary={t('guidePages.accessibility.statement.moreTitle')} contentClassName="flex flex-col gap-8">
+              <div>
+                <h3 className="type-title-md text-ink">{t('guidePages.accessibility.statement.testedTitle')}</h3>
+                <ul className="type-body mt-2 flex list-disc flex-col gap-2 pl-5 text-ink-2">
+                  {statementTested.map((key) => (
+                    <li key={key}>{t(key)}</li>
+                  ))}
+                </ul>
+                <p className="type-body-sm mt-2 text-ink-2">{t('guidePages.accessibility.statement.testedBrowsers')}</p>
+              </div>
+              <div>
+                <h3 className="type-title-md text-ink">{t('guidePages.accessibility.statement.limitsTitle')}</h3>
+                <ul className="type-body mt-2 flex list-disc flex-col gap-2 pl-5 text-ink-2">
+                  {statementLimits.map((key) => (
+                    <li key={key}>{t(key)}</li>
+                  ))}
+                </ul>
+              </div>
+            </MoreOnPhones>
             <div>
               <h3 className="type-title-md text-ink">{t('guidePages.accessibility.statement.reportTitle')}</h3>
               <p className="type-body mt-2 text-ink-2" data-accessibility-contact="">

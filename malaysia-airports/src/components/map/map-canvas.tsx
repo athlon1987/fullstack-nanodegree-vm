@@ -160,8 +160,6 @@ export function MapCanvas({
     return () => svg.removeEventListener('wheel', onWheel);
   }, []);
 
-  const toScreen = (x: number, y: number) => ({ x: (x - box.x) * box.scale, y: (y - box.y) * box.scale });
-
   const zoneLabels = useMemo(() => {
     const out: { id: string; x: number; y: number; anchor: 'start' | 'middle'; text: string; screen: { x1: number; y1: number; x2: number; y2: number } }[] = [];
     for (const zone of map.zones) {
@@ -289,6 +287,26 @@ export function MapCanvas({
         <Icon name="flask-conical" size="xs" strokeWidth={2} className="shrink-0" />
         {t('mapPages.schematicLabel')}
       </p>
+      {/* Round 6 (review-3 9.1 item 7): where the route changes level, as buttons in a strip
+          above the drawing. Floating over the drawing, the "To Gates" chip covered the
+          "Immigration and security" label (and "To Level 3" a check-in row): no chip is drawn
+          over a place or its label any more. */}
+      {connectors.length > 0 ? (
+        <div data-route-connectors="" className="flex flex-wrap items-center gap-x-3 gap-y-1.5 border-b border-line bg-surface px-3 py-2">
+          <span className="type-body-sm text-ink-2">{t('mapPages.canvas.continues')}</span>
+          {connectors.map((connector) => (
+            <button
+              key={connector.key}
+              type="button"
+              onClick={() => onLevelChange(connector.toLevel)}
+              className="type-caption inline-flex min-h-8 items-center gap-1 rounded-pill border border-primary bg-surface px-2.5 font-semibold whitespace-nowrap text-primary-ink shadow-xs hover:bg-primary-soft focus-visible:focus-ring touch:min-h-11"
+            >
+              <Icon name={connector.direction === 'up' ? 'arrow-up' : 'arrow-down'} size="xs" strokeWidth={2.25} />
+              {t('mapPages.canvas.toLevel', { level: connector.label })}
+            </button>
+          ))}
+        </div>
+      ) : null}
       <div
         ref={frameRef}
         onKeyDown={onKeyDown}
@@ -432,24 +450,6 @@ export function MapCanvas({
             })}
           </g>
         </svg>
-
-        {connectors.map((connector) => {
-          const point = toScreen(connector.x, connector.y);
-          if (point.x < 0 || point.y < 0 || point.x > frame.width || point.y > frame.height) return null;
-          return (
-            <button
-              key={connector.key}
-              type="button"
-              onClick={() => onLevelChange(connector.toLevel)}
-              // The chip hangs above its point (translate -100%): keep its top edge inside the drawing.
-              style={{ left: point.x, top: Math.max(point.y - radius - 10, 48) }}
-              className="type-caption absolute inline-flex min-h-8 -translate-x-1/2 -translate-y-full items-center gap-1 rounded-pill border border-primary bg-surface px-2.5 font-semibold whitespace-nowrap text-primary-ink shadow-md hover:bg-primary-soft touch:min-h-11"
-            >
-              <Icon name={connector.direction === 'up' ? 'arrow-up' : 'arrow-down'} size="xs" strokeWidth={2.25} />
-              {t('mapPages.canvas.toLevel', { level: connector.label })}
-            </button>
-          );
-        })}
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-t border-line bg-surface px-2 py-1.5">

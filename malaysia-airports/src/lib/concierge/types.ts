@@ -130,6 +130,12 @@ export const CONCIERGE_INTENTS = [
   'service-status',
   'immigration',
   'arrival-time',
+  // Round 6 (third review 9.1 item 4): requests it cannot carry out ("book me a taxi"), "right
+  // now" queue questions, business enquiries and questions outside what it covers (the weather).
+  'cannot-do',
+  'queue',
+  'business',
+  'out-of-scope',
   'greeting',
   'unknown',
 ] as const;

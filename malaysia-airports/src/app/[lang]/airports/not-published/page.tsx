@@ -1,3 +1,4 @@
+import { languageAlternates } from '@/lib/seo/metadata';
 import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
 import { Suspense } from 'react';
@@ -9,6 +10,7 @@ import { Container } from '@/components/ui/container';
 export async function generateMetadata(): Promise<Metadata> {
   const t = getT(await routeLang());
   return {
+    alternates: languageAlternates(await routeLang(), '/airports/not-published'),
     title: t('shellExtras.notPublished.metaTitle'),
     description: t('shellExtras.notPublished.metaDescription'),
     // A state, not content: keep it out of search results.

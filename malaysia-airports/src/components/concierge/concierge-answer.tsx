@@ -122,17 +122,41 @@ export function ConciergeAnswerView({ answer, mode, note, onAsk, busy }: Concier
   const [expanded, setExpanded] = useState(false);
   const firstCards = answer.cards.slice(0, PHONE_ITEMS);
   const moreCards = answer.cards.slice(PHONE_ITEMS);
-  const statementRoom = Math.max(0, PHONE_ITEMS - firstCards.length);
-  const firstStatements = answer.statements.slice(0, statementRoom);
-  const moreStatements = answer.statements.slice(statementRoom);
-  // With room to spare (no cards, at most one detail), the official contacts show at once: for
+  // Round 6 (third review 9.1 item 4): one lead line and at most two cards before "More". With
+  // cards, the details wait behind "More" (the fare was stated in the lead, a card and a detail);
+  // the detail the lead was taken from is labelled under the lead and also waits there.
+  const leadSource = answer.statements.find((statement) => statement.text.startsWith(answer.text.replace(/\.$/, '')));
+  // A detail that only repeats the lead word for word is not shown twice: its label and link sit under the lead.
+  const leadOnly = leadSource !== undefined && !leadSource.title && leadSource.text.trim() === answer.text.trim();
+  const rest = answer.statements.filter((statement) => statement !== leadSource);
+  const statementRoom = firstCards.length > 0 ? 0 : 1;
+  const firstStatements = rest.slice(0, statementRoom);
+  const moreStatements = [...(leadSource && !leadOnly ? [leadSource] : []), ...rest.slice(statementRoom)];
+  // With nothing else to show (no card, no detail), the official contacts show at once: for
   // "I can't answer that" they are the answer, with numbers to tap.
-  const escalationFirst = answer.escalation !== undefined && firstCards.length + firstStatements.length < PHONE_ITEMS;
+  const escalationFirst = answer.escalation !== undefined && firstCards.length + firstStatements.length === 0;
   const hiddenCount = moreCards.length + moreStatements.length + answer.limits.length + (answer.escalation && !escalationFirst ? 1 : 0) + (answer.actions.length > 0 ? 1 : 0);
 
   return (
     <div className="@container flex min-w-0 flex-col gap-4">
-      <p className="type-body-lg text-ink">{answer.text}</p>
+      <div className="flex flex-col gap-1.5">
+        <p className="type-body-lg text-ink">{answer.text}</p>
+        {leadSource ? (
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+            <ProvenanceTag provenance={leadSource.provenance} length="short" />
+            {leadOnly && leadSource.href ? (
+              <LocaleLink
+                href={leadSource.href}
+                aria-label={t('conciergePage.answer.detailsFor', { name: leadSource.text.slice(0, 60) })}
+                className="link-action type-body-sm inline-flex items-center gap-1"
+              >
+                {t('conciergePage.answer.details_link')}
+                <Icon name="arrow-right" size="xs" />
+              </LocaleLink>
+            ) : null}
+          </div>
+        ) : null}
+      </div>
       {answer.hint ? (
         <p className="type-body flex items-start gap-2 text-ink-2">
           <Icon name="lightbulb" size="sm" className="mt-1 shrink-0" />

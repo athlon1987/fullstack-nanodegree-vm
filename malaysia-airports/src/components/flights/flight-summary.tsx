@@ -6,6 +6,9 @@ import { checkInLines, type Flight } from '@/lib/flights';
 import { useLang, useT } from '@/lib/i18n/client';
 import { nextDeadline, nextStepSummary, type JourneyStep } from '@/lib/journey';
 import { formatTime } from '@/lib/time';
+import { ExternalLink } from '@/components/common/external-link';
+import { keepRanges } from '@/components/common/keep-ranges';
+import { LocaleLink } from '@/components/common/locale-link';
 import { Icon } from '@/components/ui/icon';
 import { Skeleton } from '@/components/ui/skeleton';
 import { DEADLINE_KEYS } from './step-line';
@@ -116,6 +119,12 @@ export function FlightSummary({ flight, steps, now }: FlightSummaryProps) {
     if (flight.belt) parts.push(t('flightPages.summary.belt', { belt: flight.belt }));
   }
 
+  // Round 6 (review-3 9.1 item 7): an international departure with a Fast Track record says it is
+  // there, as an option, with its details and its booking site as a measured hand-off.
+  const fastTrack = flight.direction === 'd' && !terminal ? steps.find((step) => step.id === 'fast-track') : undefined;
+  const fastTrackDetails = fastTrack?.actions.find((action) => !action.handoff);
+  const fastTrackBooking = fastTrack?.actions.find((action) => action.handoff === 'fast-track-booking');
+
   return (
     <div data-flight-summary="" className={FRAME}>
       <p className="type-body min-w-0 flex-1 basis-64 text-ink">
@@ -129,14 +138,14 @@ export function FlightSummary({ flight, steps, now }: FlightSummaryProps) {
             </span>
           </span>
         ) : null}
-        <strong className="font-semibold">{lead}</strong>
+        <strong className="font-semibold">{keepRanges(lead)}</strong>
         {estimate ? <span className="text-ink-2"> ({t('flightPages.summary.estimate')})</span> : null}
         {parts.map((part) => (
           <span key={part}>
             <span aria-hidden="true" className="mx-1.5 text-ink-3">
               ·
             </span>
-            {part}
+            {keepRanges(part)}
           </span>
         ))}
       </p>
@@ -148,6 +157,21 @@ export function FlightSummary({ flight, steps, now }: FlightSummaryProps) {
           <Icon name="arrow-down" size="sm" strokeWidth={1.75} />
         </a>
       </span>
+      {fastTrack && (fastTrackDetails || fastTrackBooking) ? (
+        <p data-summary-fast-track="" className="type-body-sm flex basis-full flex-wrap items-center gap-x-4 gap-y-1 border-t border-line pt-2 text-ink-2">
+          <span>{pick(fastTrack.title, lang)}</span>
+          {fastTrackDetails ? (
+            <LocaleLink href={fastTrackDetails.href} className="link-action text-ink">
+              {t(fastTrackDetails.labelKey)}
+            </LocaleLink>
+          ) : null}
+          {fastTrackBooking ? (
+            <ExternalLink href={fastTrackBooking.href} variant="action" className="text-ink" data-handoff="fast-track-booking">
+              {t(fastTrackBooking.labelKey)}
+            </ExternalLink>
+          ) : null}
+        </p>
+      ) : null}
     </div>
   );
 }

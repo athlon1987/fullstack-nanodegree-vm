@@ -67,7 +67,10 @@ export function SiteFooter({ lang }: { lang: Lang }) {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-x-8 gap-y-9 sm:grid-cols-4">
+          {/* Round 6 (review-3 9.1 item 9): as many columns as fit at the text size (two on a
+              phone, four on a desktop at 100%, fewer when the device's text is enlarged), so a
+              phone number or an address never runs off the page at 200% text. */}
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,9rem),1fr))] gap-x-8 gap-y-9">
             <Column
               title={t('footer.passengers')}
               links={[
@@ -131,10 +134,13 @@ export function SiteFooter({ lang }: { lang: Lang }) {
   );
 }
 
-/** A web or e-mail address with a line-break opportunity after each dot, @ or slash. */
+/**
+ * A web or e-mail address with a line-break opportunity after each dot, @ or slash; a part longer
+ * than the column (at 200% text) breaks where it must instead of running off the page (round 6).
+ */
 function breakable(value: string) {
   return value.split(/(?<=[.@/])/).map((part, index) => (
-    <span key={index} className="whitespace-nowrap">
+    <span key={index} className="[overflow-wrap:anywhere]">
       {part}
       <wbr />
     </span>

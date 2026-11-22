@@ -1,3 +1,4 @@
+import { languageAlternates } from '@/lib/seo/metadata';
 import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
 import {
@@ -27,7 +28,7 @@ import { Icon } from '@/components/ui/icon';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getT(toLang(await routeLang()));
-  return { title: t('corporatePages.network.title'), description: t('corporatePages.network.metaDescription') };
+  return { alternates: languageAlternates(await routeLang(), '/corporate/network'), title: t('corporatePages.network.title'), description: t('corporatePages.network.metaDescription') };
 }
 
 /** Our airports: how the network is organised, how busy it is, and what is being built. */

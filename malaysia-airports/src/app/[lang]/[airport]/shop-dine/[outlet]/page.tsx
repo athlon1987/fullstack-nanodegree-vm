@@ -1,3 +1,4 @@
+import { languageAlternates } from '@/lib/seo/metadata';
 import type { Metadata } from 'next';
 import { AIRPORTS, getAirportContent, resolveSources, terminalLabel } from '@/content';
 import { getT, toLang } from '@/lib/i18n';
@@ -43,6 +44,7 @@ export async function generateMetadata({ params }: OutletPageProps): Promise<Met
   if (!content || !outlet) return { title: t('errors.notFoundTitle') };
   const place = terminalLabel(content.airport, outlet.terminal, lang);
   return {
+    alternates: languageAlternates(lang, `/${slug}/shop-dine/${outletSlug}`),
     title: `${outlet.name}, ${place}`,
     description: t('commercePages.outlet.metaDescription', { name: outlet.name, airport: place }),
   };

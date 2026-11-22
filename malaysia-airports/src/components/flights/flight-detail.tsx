@@ -1,14 +1,15 @@
 'use client';
 
-import { Suspense, lazy, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { Suspense, useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { Notice, Source } from '@/content/types';
 import { decodeFlightId } from '@/lib/flights';
 import { useSavedJourney } from '@/lib/hooks/use-saved-journey';
 import { useT } from '@/lib/i18n/client';
 import type { JourneyAirportContent } from '@/lib/journey';
 import { useFlightFeed, type FeedRequest } from '@/lib/providers/use-flight-feed';
-import { retryingImport } from '@/lib/retrying-import';
+import { retryableLazy, retryingImport } from '@/lib/retrying-import';
 import { dateKey } from '@/lib/time';
+import { PartBoundary } from '@/components/common/part-boundary';
 import { Skeleton } from '@/components/ui/skeleton';
 import { flightAvailability, sameFlightOn } from './board-model';
 import { FeedNotice } from './feed-notice';
@@ -32,9 +33,10 @@ const loadTimeline = () => retryingImport(() => import('./journey-timeline'));
 const loadNeeds = () => retryingImport(() => import('./needs-control'));
 const loadNotFound = () => retryingImport(() => import('./flight-not-found'));
 const loadJourney = () => retryingImport(() => import('@/lib/journey'));
-const JourneyTimeline = lazy(() => loadTimeline().then((module) => ({ default: module.JourneyTimeline })));
-const NeedsControl = lazy(() => loadNeeds().then((module) => ({ default: module.NeedsControl })));
-const FlightNotFound = lazy(() => loadNotFound().then((module) => ({ default: module.FlightNotFound })));
+// Round 6 (review-3 9.1 item 1): each part also sits in its own `PartBoundary` below.
+const JourneyTimeline = retryableLazy(() => loadTimeline().then((module) => module.JourneyTimeline));
+const NeedsControl = retryableLazy(() => loadNeeds().then((module) => module.NeedsControl));
+const FlightNotFound = retryableLazy(() => loadNotFound().then((module) => module.FlightNotFound));
 
 type JourneyModule = Awaited<ReturnType<typeof loadJourney>>;
 let journeyModule: JourneyModule | null = null;
@@ -142,9 +144,11 @@ export function FlightDetail({ flightId, airport, title, identity, journeyConten
     const todayId = sameFlightOn(flightId, dateKey(provider.now, zone));
     const today = todayId && todayId !== flightId.toLowerCase() ? provider.getFlightSync(todayId, airport) : null;
     return (
-      <Suspense fallback={<LowerPlaceholder />}>
-        <FlightNotFound airport={airport} reason={!flight || availability === 'current' ? 'unknown' : (availability ?? 'unknown')} sameToday={today} />
-      </Suspense>
+      <PartBoundary onRetry={FlightNotFound.renew}>
+        <Suspense fallback={<LowerPlaceholder />}>
+          <FlightNotFound airport={airport} reason={!flight || availability === 'current' ? 'unknown' : (availability ?? 'unknown')} sameToday={today} />
+        </Suspense>
+      </PartBoundary>
     );
   }
 
@@ -173,6 +177,13 @@ export function FlightDetail({ flightId, airport, title, identity, journeyConten
       {live && now ? (
         // Round 4 (re-review 6.1.6): on phones "My needs" comes before the timeline (it was eleven
         // screens down); on wide screens it heads the side column, as before.
+        <PartBoundary
+          id={NEEDS_CONTROL_ID}
+          onRetry={() => {
+            NeedsControl.renew();
+            JourneyTimeline.renew();
+          }}
+        >
         <Suspense fallback={<LowerPlaceholder />}>
           <div className="grid items-start gap-x-14 gap-y-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,23rem)] lg:gap-y-5">
             <NeedsControl id={NEEDS_CONTROL_ID} tripOptions={live.direction === 'd'} className="lg:col-start-2 lg:row-start-1" />
@@ -193,6 +204,7 @@ export function FlightDetail({ flightId, airport, title, identity, journeyConten
             </div>
           </div>
         </Suspense>
+        </PartBoundary>
       ) : failed ? null : (
         <LowerPlaceholder />
       )}

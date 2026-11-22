@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { AIRPORTS, getAirportContent } from '@/content';
 import { SEARCH_DOC_TYPES, buildSearchDocuments, createSearchIndex, expandQuery, looksLikeFlightQuery, searchAll } from './index';
 
 const english = buildSearchDocuments('en');
@@ -317,5 +318,107 @@ describe('every search document field is plain text in its language (round 5)', 
       expect(en!.summary).not.toContain('[object');
       expect(ms!.summary).not.toContain('[object');
     }
+  });
+});
+
+/* -------------------------------------------------------------------------------------------
+ * Round 6 (third review, section 9.1 item 5): an airport the query names, vocabulary with
+ * honest "not published" lines, noise, and demonstration places marked as illustrative.
+ * --------------------------------------------------------------------------------------- */
+
+describe('round 6: search (9.1 item 5)', () => {
+  const hits = (searchIndex: typeof index, query: string, options: Parameters<typeof searchAll>[2] = {}) =>
+    searchAll(searchIndex, query, { limit: 50, ...options }).groups.flatMap((group) => group.hits).sort((a, b) => b.score - a.score);
+
+  it('"kuching parking" leads with "Parking at Kuching: not published" and its official page, before other airports (EN, MS, code, scoped)', () => {
+    for (const [searchIndex, query, title, options] of [
+      [index, 'kuching parking', 'Parking at Kuching International Airport: not published', {}],
+      [index, 'KCH parking', 'Parking at Kuching International Airport: not published', {}],
+      [index, 'kuching parking', 'Parking at Kuching International Airport: not published', { airport: 'kul' }],
+      [malayIndex, 'parkir kuching', 'Parkir di Lapangan Terbang Antarabangsa Kuching: belum diterbitkan', {}],
+    ] as const) {
+      const [first, ...rest] = hits(searchIndex, query, options);
+      expect(first?.title, query).toBe(title);
+      expect(first?.type, query).toBe('unpublished');
+      expect(first?.href, query).toBe('/airports/not-published?airport=kch&section=parking');
+      // Other airports' parking pages come after it, never before.
+      expect(rest.every((hit) => hit.score < (first?.score ?? 0)), query).toBe(true);
+    }
+    // Scoped to KLIA, a query naming Kuching shows Kuching, not KLIA's car parks.
+    expect(hits(index, 'kuching parking', { airport: 'kul' }).some((hit) => hit.airport === 'kul')).toBe(false);
+  });
+
+  it('"langkawi taxi" says ground transport is not published at Langkawi first (EN and MS)', () => {
+    expect(hits(index, 'langkawi taxi')[0]).toMatchObject({ title: 'Ground transport at Langkawi International Airport: not published', href: '/airports/not-published?airport=lgk&section=transport' });
+    expect(hits(malayIndex, 'teksi langkawi')[0]?.title).toBe('Pengangkutan darat di Lapangan Terbang Antarabangsa Langkawi: belum diterbitkan');
+  });
+
+  it('an airport that publishes the section leads with its own page, with no gap line', () => {
+    const [first] = hits(index, 'penang parking');
+    expect(first?.id).toBe('parking:pen');
+    expect(hits(index, 'penang parking').some((hit) => hit.type === 'unpublished' && hit.airport === 'pen')).toBe(false);
+  });
+
+  it('"pharmacy" and "farmasi" answer "not published" instead of nothing', () => {
+    expect(hits(index, 'pharmacy').map((hit) => hit.title)).toEqual(['Pharmacies: not published yet']);
+    expect(hits(malayIndex, 'farmasi')[0]?.title).toBe('Farmasi: belum diterbitkan');
+  });
+
+  it('"charging" answers "not published" and no longer lists the trains', () => {
+    const found = hits(index, 'charging');
+    expect(found[0]?.title).toBe('Charging points: not published yet');
+    expect(found.some((hit) => hit.type === 'transport')).toBe(false);
+  });
+
+  it('"atm" finds the ATMs; "atm penang" says ATMs are not published at Penang first', () => {
+    expect(hits(index, 'atm')[0]?.id).toBe('facility:kul-t1-atms');
+    expect(hits(index, 'atm penang')[0]?.title).toBe('ATMs at Penang International Airport: not published');
+  });
+
+  it('"money changer" is the honest gap alone, without unrelated trains, airlines or car parks', () => {
+    expect(hits(index, 'money changer').map((hit) => hit.title)).toEqual(['Money changers: not published yet']);
+    expect(hits(malayIndex, 'pengurup wang')[0]?.title).toBe('Pengurup wang: belum diterbitkan');
+  });
+
+  it('"lost and found" leads with Lost & Found and drops the lounges and unrelated pages (134 results before)', () => {
+    const found = hits(index, 'lost and found');
+    expect(found[0]?.id).toBe('facility:kul-t1-lost-and-found');
+    expect(found.length).toBeLessThanOrEqual(10);
+    expect(found.some((hit) => /lounge|medical|kepler/i.test(hit.title))).toBe(false);
+    expect(hits(malayIndex, 'barang hilang')[0]?.id).toBe('facility:kul-t1-lost-and-found');
+  });
+
+  it('"advertising" leads with the business page, not the privacy FAQ; "grab" has no vendor-scam item', () => {
+    expect(hits(index, 'advertising')[0]?.href).toBe('/corporate/business');
+    expect(hits(index, 'grab').some((hit) => /vendor/i.test(hit.title))).toBe(false);
+  });
+
+  it('marks every demonstration place as illustrative, lifts included (EN and MS)', () => {
+    for (const [searchIndex, query, marker] of [
+      [index, 'lift', '(illustrative position)'],
+      [malayIndex, 'lif', '(kedudukan ilustrasi)'],
+    ] as const) {
+      const places = hits(searchIndex, query).filter((hit) => hit.type === 'place');
+      expect(places.length, query).toBeGreaterThan(0);
+      for (const place of places) expect(place.title, query).toContain(marker);
+    }
+    // Every demonstration point on every schematic map that has its own result says so.
+    for (const [documents, marker] of [
+      [english, 'illustrative position'],
+      [malay, 'kedudukan ilustrasi'],
+    ] as const) {
+      const unmarked = AIRPORTS.flatMap((airport) => getAirportContent(airport.slug)?.maps ?? []).flatMap((map) =>
+        map.pois
+          .filter((poi) => poi.provenance === 'demo')
+          .map((poi) => documents.find((document) => document.id === `place:${map.id}:${poi.id}`))
+          .filter((document) => document !== undefined && !document.title.includes(marker)),
+      );
+      expect(unmarked.map((document) => document?.title)).toEqual([]);
+    }
+  });
+
+  it('the "not published at this airport" templates stay out of ordinary results', () => {
+    expect(allIds('parking').some((id) => id.startsWith('gap-section:'))).toBe(false);
+    expect(allIds('not published').some((id) => id.startsWith('gap-section:'))).toBe(false);
   });
 });

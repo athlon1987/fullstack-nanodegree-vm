@@ -9,6 +9,7 @@ import { checkInLines, formatFlightNumber, placeCity, type Flight } from '@/lib/
 import { formatDuration } from '@/lib/format';
 import { useLang, useT } from '@/lib/i18n/client';
 import { formatDate, formatTime, minutesBetween, type Instant } from '@/lib/time';
+import { keepRanges } from '@/components/common/keep-ranges';
 import { AirportCode } from '@/components/common/airport-code';
 import { DemoDataBanner } from '@/components/common/demo-data-banner';
 import { FlightStatusChip } from '@/components/common/flight-status-chip';
@@ -182,7 +183,7 @@ export function FlightStatusHero({ flight, pending = false, updatedAt, refreshSe
                     <ul className="flex flex-col gap-0.5">
                       {checkIn.map((line) => (
                         <li key={line} className="type-data-md">
-                          {line}
+                          {keepRanges(line)}
                         </li>
                       ))}
                     </ul>
@@ -229,7 +230,7 @@ export function FlightStatusHero({ flight, pending = false, updatedAt, refreshSe
             ) : null}
             {flight.aircraft ? (
               <Fact label={t('flights.detail.aircraft')}>
-                <span className="type-data-md">{flight.aircraft}</span>
+                <span className="type-data-md whitespace-nowrap">{flight.aircraft}</span>
               </Fact>
             ) : null}
           </dl>

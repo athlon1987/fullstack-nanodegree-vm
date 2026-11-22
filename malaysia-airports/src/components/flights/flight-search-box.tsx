@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Suspense, lazy, startTransition, useDeferredValue, useEffect, useId, useMemo, useState, type FormEvent } from 'react';
+import { Suspense, startTransition, useDeferredValue, useEffect, useId, useMemo, useState, type FormEvent } from 'react';
 import { getAirport, localizeAirport, terminalLabel } from '@/content/airports';
 import type { TerminalId } from '@/content/types';
 import { cn } from '@/lib/cn';
@@ -10,6 +10,8 @@ import { useAirportContext } from '@/lib/hooks';
 import { useLang, useT } from '@/lib/i18n/client';
 import type { TKey } from '@/lib/i18n/translate';
 import { localeHref } from '@/lib/locale';
+import { retryableLazy } from '@/lib/retrying-import';
+import { PartBoundary, PartLoading } from '@/components/common/part-boundary';
 import { useFlightFeed, type FeedRequest } from '@/lib/providers/use-flight-feed';
 import { dateKey } from '@/lib/time';
 import { RebungRule } from '@/components/art/patterns';
@@ -28,8 +30,9 @@ import { useFlightDirection } from './flight-direction';
 import { FlightRow, rowDayLabel, flightHref } from './flight-row';
 
 // Site results (and the search engine) load only once someone searches (A-03, A-09).
-const InlineSiteResults = lazy(() => import('@/components/search/inline-site-results').then((module) => ({ default: module.InlineSiteResults })));
-const TopicStatus = lazy(() => import('./topic-status').then((module) => ({ default: module.TopicStatus })));
+// Round 6 (review-3 9.1 item 1): fetched again when the connection allows; never the page's error.
+const InlineSiteResults = retryableLazy(() => import('@/components/search/inline-site-results').then((module) => module.InlineSiteResults));
+const TopicStatus = retryableLazy(() => import('./topic-status').then((module) => module.TopicStatus));
 
 /** Run `work` when the browser is idle (or soon after), never during hydration. */
 function whenIdle(work: () => void): () => void {
@@ -321,9 +324,11 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
                     line names the page result offered below instead. */}
                 <strong className="font-semibold">
                   {results && results.length === 0 ? (
-                    <Suspense fallback={t('flightPages.search.topicNoFlights', { query: deferredText.trim() })}>
-                      <TopicStatus query={deferredText} airport={scopeSlug} />
-                    </Suspense>
+                    <PartBoundary silent>
+                      <Suspense fallback={t('flightPages.search.topicNoFlights', { query: deferredText.trim() })}>
+                        <TopicStatus query={deferredText} airport={scopeSlug} />
+                      </Suspense>
+                    </PartBoundary>
                   ) : results ? (
                     t.count('flights.search.resultsCount', results.length)
                   ) : feed.status === 'error' ? null : (
@@ -383,9 +388,11 @@ export function FlightSearchBox({ airport, terminal, showAirportSelector = false
 
             {/* Not only flights (A-03): places, services and pages that match, after any flights. */}
             {searching ? (
-              <Suspense fallback={null}>
-                <InlineSiteResults query={deferredText} airport={scopeSlug} noFlights={results !== null && results.length === 0} />
-              </Suspense>
+              <PartBoundary onRetry={InlineSiteResults.renew}>
+                <Suspense fallback={<PartLoading />}>
+                  <InlineSiteResults query={deferredText} airport={scopeSlug} noFlights={results !== null && results.length === 0} />
+                </Suspense>
+              </PartBoundary>
             ) : null}
           </div>
         </div>

@@ -56,8 +56,11 @@ async function Flights({ params }: { params: AirportPageParams }) {
         leadClassName="max-sm:sr-only lg:max-w-none"
         tightOnPhones
         // Round 4 (re-review 6.1.6): a one-line lead and a shorter gap under it on desktop, so the
-        // first board row is above the fold at 1440 x 900 (it was at 935 px).
-        className="lg:[&>div]:pb-6"
+        // first board row is above the fold at 1440 x 900 (it was at 935 px). Round 6 (review-3
+        // 9.1 item 7): the lead beside the title on desktop, so five rows are above that fold.
+        compactOnDesktop
+        // The airport bar above names the airport and marks Flights, so the trail is left out there.
+        className="lg:[&>div]:pb-4 lg:[&_[data-page-breadcrumbs]]:hidden"
         breadcrumbs={<Breadcrumbs items={[{ label: airport.shortName, href: `/${airport.slug}` }, { label: t('nav.flights') }]} />}
       />
       <Container className="pb-section">

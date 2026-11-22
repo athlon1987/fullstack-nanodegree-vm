@@ -1,3 +1,4 @@
+import { languageAlternates } from '@/lib/seo/metadata';
 import type { Metadata } from 'next';
 import { getNotices, resolveSources, type Source } from '@/content';
 import { formatFlightNumber } from '@/lib/flights';
@@ -55,6 +56,7 @@ export async function generateMetadata({ params }: FlightPageProps): Promise<Met
   // Demonstration flights change every day: keep them out of search engines.
   if (!airport || !flight) return { title: t('flightPages.notFound.title'), robots: { index: false } };
   return {
+    alternates: languageAlternates(lang, `/${slug}/flights/${flightId}`),
     title: `${flightTitle(flight, t)}: ${airport.shortName}`,
     description: t('flightPages.detail.metaDescription', { number: formatFlightNumber(flight), airport: airport.name }),
     robots: { index: false, follow: true },
