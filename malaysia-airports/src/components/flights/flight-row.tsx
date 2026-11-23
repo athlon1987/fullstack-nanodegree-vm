@@ -206,12 +206,16 @@ function FlightRowView({ flight, layout = 'card', showAirport = false, onNavigat
           360 px phone, or 125% text), it moves to the next line, right-aligned. At 390 px with
           normal text both lines stay as designed. */}
       <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
-        <p className="type-title-md flex min-w-[4.5rem] flex-1 items-baseline gap-1.5 leading-snug">
+        {/* Polish 1b (critique-redesign1b item 5): the destination is the answer, so it is never cut
+            ("Langk…", "Tokyo (…"). It keeps its whole width (and wraps if it must); the status pill
+            moves to the next line, right-aligned, when the two do not fit side by side. The link is
+            the whole city name, so its own target is never squeezed under 24 px. */}
+        <p className="type-title-md flex max-w-full min-w-0 flex-none items-baseline gap-1.5 leading-snug">
           <LocaleLink
             href={flightHref(flight)}
             aria-label={linkLabel}
             onClick={onNavigate}
-            className={cn('min-w-0 truncate outline-none after:absolute after:inset-0 after:rounded-xl', cancelled && 'line-through')}
+            className={cn('min-w-0 [overflow-wrap:anywhere] outline-none after:absolute after:inset-0 after:rounded-xl', cancelled && 'line-through')}
           >
             {place.city}
           </LocaleLink>
@@ -228,13 +232,14 @@ function FlightRowView({ flight, layout = 'card', showAirport = false, onNavigat
           <AirlineBadge code={flight.airline.code} size="sm" />
           <span className="font-mono tabular-nums">{number}</span>
         </p>
-        <span className="type-body-sm w-0 min-w-0 grow truncate text-ink-2">
+        {/* Phones: the badge and the number say which airline; the name stays for screen readers. */}
+        <span className="type-body-sm w-0 min-w-0 grow truncate text-ink-2 max-sm:sr-only">
           <span aria-hidden="true" className="mx-1.5">
             ·
           </span>
           {flight.airline.name}
         </span>
-        <span className="ml-auto inline-flex max-w-full shrink-0 flex-wrap items-center justify-end gap-x-2 gap-y-1 pl-2">
+        <span className="ml-auto inline-flex max-w-full shrink-0 flex-wrap items-center justify-end gap-x-2 gap-y-1 pl-2 max-sm:grow">
           <span className="type-data-md inline-flex flex-wrap items-center justify-end gap-x-2 gap-y-1">
             {boardAirport ? <AirportCode code={boardAirport.code} name={boardAirport.name} size="sm" variant="boxed" /> : null}
             <span className="inline-flex items-center gap-1.5">

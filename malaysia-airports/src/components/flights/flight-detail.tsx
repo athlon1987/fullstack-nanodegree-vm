@@ -19,7 +19,7 @@ import { FlightActions, NEEDS_CONTROL_ID } from './flight-actions';
 import { useFlightAlerts } from './flight-alerts';
 import type { FlightIdentity } from './flight-identity';
 import { FlightStatusHero, type PublishedCheckIn } from './flight-status-hero';
-import { FlightSummary } from './flight-summary';
+import { FlightSummary, fastTrackFor } from './flight-summary';
 import { FlightWatcher } from './flight-watcher';
 import { modesForFlight, useJourneyPreferences } from './journey-preferences';
 
@@ -178,7 +178,7 @@ export function FlightDetail({ flightId, airport, title, identity, journeyConten
     // The answer is declared once there is one (E-17), as before round 5.
     <div className="flex flex-col" data-answer-task={live ? 'flight-status' : undefined} data-answer-state={live ? 'demo' : undefined}>
       <Band band={band} overlap={!failed}>
-        {failed ? null : <FlightSummary flight={live} steps={live ? summarySteps : null} now={now?.getTime() ?? 0} />}
+        {failed ? null : <FlightSummary flight={live} steps={live ? summarySteps : null} now={now?.getTime() ?? 0} fastTrack={fastTrackFor(identity, journeyContent)} />}
         <FeedNotice feed={feed} timeZone={zone} />
       </Band>
       <Container className="relative flex flex-col gap-10 pb-section lg:gap-14">

@@ -159,7 +159,7 @@ export function AirportDirectoryView({ then, photos = {} }: AirportDirectoryView
         interactive
         variant="midnight"
         data-airport={airport.slug}
-        className="group/media isolate flex min-h-[17rem] min-w-0 flex-col justify-end overflow-hidden rounded-2xl border-0 p-0 sm:min-h-[19rem]"
+        className="group/media isolate flex min-h-[18rem] min-w-0 flex-col justify-end overflow-hidden rounded-2xl border-0 p-0 sm:min-h-[21rem]"
       >
         <div aria-hidden="true" className="absolute inset-0 -z-10 overflow-hidden rounded-[inherit]">
           {photo ? (
@@ -185,7 +185,9 @@ export function AirportDirectoryView({ then, photos = {} }: AirportDirectoryView
             </>
           )}
         </div>
-        <div className="scrim-behind flex flex-col gap-2 rounded-b-[inherit] p-5 pt-10 sm:p-6">
+        {/* Polish 1b (critique-redesign1b item 7): a scrim only under the words, fading out 3rem above
+            them, instead of a veil over the whole card. */}
+        <div className="scrim-behind flex flex-col gap-2 rounded-b-[inherit] p-5 pt-6 [--scrim-behind-fade:3rem] sm:p-6 sm:pt-8">
           <AirportCode code={airport.code} size="sm" className="inline-flex h-7 w-fit items-center rounded-pill bg-gold px-2.5 text-on-gold" />
           <h3 className="type-title-lg text-ink">{link}</h3>
           <p className="type-body-sm text-ink-2">{place}</p>

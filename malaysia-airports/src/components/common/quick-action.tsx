@@ -36,9 +36,11 @@ const TONES = {
   },
   media: {
     tile: 'glass-dark on-media text-ink hover:bg-[color-mix(in_srgb,var(--color-glass-dark)_86%,transparent)]',
-    emphasis: 'on-media bg-ink text-page shadow-glass ring-1 ring-[rgb(255_255_255/0.4)]',
+    // Polish 1b (critique-redesign1b item 8): the first tile is outlined in gold, not filled white,
+    // so it no longer reads as a second "selected" state under the journey mode switch.
+    emphasis: 'glass-dark on-media text-ink ring-2 ring-gold-bright hover:bg-[color-mix(in_srgb,var(--color-glass-dark)_86%,transparent)]',
     badge: 'bg-[rgb(255_255_255/0.1)] text-ink ring-1 ring-[rgb(255_255_255/0.15)]',
-    badgeEmphasis: 'bg-page/10 text-page',
+    badgeEmphasis: 'bg-gold text-on-gold',
   },
 } as const;
 
@@ -74,7 +76,7 @@ export function QuickAction({ icon, title, hint, href, emphasis = false, emphasi
       </span>
       <span className="min-w-0 flex-1">
         <span className="type-title-sm block sm:text-lg">{title}</span>
-        {hint ? <span className={cn('type-body-sm mt-0.5 block', emphasis ? 'opacity-85' : 'text-ink-2')}>{hint}</span> : null}
+        {hint ? <span className={cn('type-body-sm mt-0.5 block', emphasis && tone !== 'media' ? 'opacity-85' : 'text-ink-2')}>{hint}</span> : null}
         {emphasis && emphasisLabel && layout === 'tile' ? <span className="sr-only">, {emphasisLabel}</span> : null}
         {children}
       </span>
@@ -85,7 +87,7 @@ export function QuickAction({ icon, title, hint, href, emphasis = false, emphasi
         className={cn(
           'shrink-0 transition-transform duration-base motion-ok:group-hover:translate-x-0.5',
           layout === 'tile' ? 'absolute right-4 bottom-4 hidden sm:block' : '',
-          emphasis ? 'text-page' : 'text-ink-3',
+          emphasis && tone !== 'media' ? 'text-page' : 'text-ink-3',
           layout === 'tile' && emphasis && emphasisLabel ? 'sm:hidden' : '',
         )}
       />

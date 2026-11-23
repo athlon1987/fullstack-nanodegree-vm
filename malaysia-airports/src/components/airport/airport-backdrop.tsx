@@ -42,6 +42,9 @@ export function airportHasPhoto(slug: string): boolean {
 const HERO_FRAMING: Partial<Record<string, Parameters<typeof artDirection>[1]>> = {
   // The KLIA Terminal 1 canopy: phones follow the main white branch up to the roof.
   'klia-t1-canopy': { base: { x: 0.58, y: 0.5 }, md: { x: 0.7, y: 0.6 } },
+  // The KLIA Terminal 1 roofline across the airfield (polish 1b): phones centre the domes under the
+  // sky; wide screens keep the whole row of domes with the sky above the words.
+  'klia-t1-airfield': { base: { x: 0.55, y: 0.55 }, md: { x: 0.5, y: 0.55 } },
   // Kota Kinabalu: keep the terminal's own name board in the band on wide screens.
   'bki-terminal': { md: { x: 0.55, y: 0.3 } },
   // Langkawi: frame low on wide screens, so the band shows the entrance doors under the
@@ -58,7 +61,10 @@ export function AirportBackdrop({ slug, code, lang, variant }: AirportBackdropPr
     // 65, AVIF or WebP, no animation. The words carry their own feathered scrim
     // (`scrim-feather`); the photograph keeps only a soft veil at the top and depth at the foot.
     return (
-      <div aria-hidden="true" className="on-media absolute inset-0 -z-10 overflow-hidden bg-midnight">
+      // Polish 1b (critique-redesign1b item 11): on a phone the photograph is a band at the top
+      // (19rem, the whole frame of a wide photograph instead of a dark slice), melting into the
+      // midnight ground under the words; the site header above has its own ground, so no top veil.
+      <div aria-hidden="true" className="on-media absolute inset-0 -z-10 overflow-hidden bg-midnight max-sm:bottom-auto max-sm:h-[19rem]">
         <Image
           src={image.src}
           alt=""
@@ -71,8 +77,9 @@ export function AirportBackdrop({ slug, code, lang, variant }: AirportBackdropPr
           style={artDirection(image.focal, HERO_FRAMING[entry.id])}
           className={cn('object-cover', ART_DIRECTED_POSITION)}
         />
-        <span className="absolute inset-x-0 top-0 h-32 scrim-top opacity-50" />
-        <span className="absolute inset-x-0 bottom-0 h-1/2 scrim-bottom opacity-40" />
+        <span className="absolute inset-x-0 top-0 h-32 scrim-top opacity-50 max-sm:hidden" />
+        <span className="absolute inset-x-0 bottom-0 h-1/2 scrim-bottom opacity-40 max-sm:hidden" />
+        <span className="absolute inset-x-0 bottom-0 h-16 bg-linear-to-t from-midnight to-transparent sm:hidden" />
       </div>
     );
   }

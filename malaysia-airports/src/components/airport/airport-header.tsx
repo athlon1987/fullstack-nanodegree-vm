@@ -77,8 +77,10 @@ export function AirportBanner({ airport, lang, sections, search }: AirportHeader
             scrim (no visible box; 4.5:1 or more over the brightest part of any photograph). On a
             phone the photograph has the top of the banner to itself, then fades under the words,
             like a travel app's image header. */}
-        <Container className={cn('relative pb-8 md:pb-12', photo ? 'pt-36 sm:pt-28 md:pt-20 lg:pt-24' : 'pt-7 sm:pt-12 md:pt-16 lg:pt-20')}>
-          <div className={cn('max-w-[56rem]', photo && 'scrim-feather')}>
+        {/* Polish 1b (critique-redesign1b item 11): on a phone the photograph is a 19rem band of its
+            own above the words (13rem of it clear), and their scrim rises only 2.5rem above them. */}
+        <Container className={cn('relative pb-8 md:pb-12', photo ? 'pt-52 sm:pt-28 md:pt-20 lg:pt-24' : 'pt-7 sm:pt-12 md:pt-16 lg:pt-20')}>
+          <div className={cn('max-w-[56rem]', photo && 'scrim-feather max-sm:[--scrim-feather-top:2.5rem]')}>
             <div className="on-media text-ink">
               <p className="type-caption flex flex-wrap items-center gap-x-3 gap-y-1 font-semibold tracking-[0.16em] text-ink-2 uppercase">
                 <span aria-hidden="true" className="h-px w-8 bg-gold-bright" />

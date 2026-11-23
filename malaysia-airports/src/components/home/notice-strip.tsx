@@ -109,7 +109,7 @@ export function NoticeStrip({ notices, status, className }: { notices: readonly 
         <LocaleLink href={sectionHref(mode.section, selection, availability)} className={cn(LINK, 'lg:border-l lg:border-[rgb(255_255_255/0.12)]')}>
           <Icon name={mode.icon} className="text-ink-2 max-xs:hidden" />
           <span className="min-w-0 flex-1">
-            <span className="type-body-sm block font-semibold">{t(`home.strip.${effectiveMode}.title`, { airport: airportName })}</span>
+            <span className="type-body-sm block font-semibold text-balance">{t(`home.strip.${effectiveMode}.title`, { airport: airportName })}</span>
             <span className="sr-only">{t(`home.strip.${effectiveMode}.body`)}</span>
           </span>
           <Icon name="arrow-right" size="sm" strokeWidth={1.75} className="text-ink-3 transition-transform duration-base group-hover:translate-x-0.5 max-sm:hidden" />
@@ -117,7 +117,7 @@ export function NoticeStrip({ notices, status, className }: { notices: readonly 
         <LocaleLink href={klia ? '/help/terminals' : sectionHref('overview', selection, availability)} className={cn(LINK, 'lg:border-l lg:border-[rgb(255_255_255/0.12)]')}>
           <Icon name="building-2" className="text-ink-2 max-xs:hidden" />
           <span className="min-w-0 flex-1">
-            <span className="type-body-sm block font-semibold">{t('home.strip.terminalTitle')}</span>
+            <span className="type-body-sm block font-semibold text-balance">{t('home.strip.terminalTitle')}</span>
             <span className="sr-only">{klia ? t('home.strip.terminalKlia') : t('home.strip.terminalAirport', { airport: airportName })}</span>
           </span>
           <Icon name="arrow-right" size="sm" strokeWidth={1.75} className="text-ink-3 transition-transform duration-base group-hover:translate-x-0.5 max-sm:hidden" />

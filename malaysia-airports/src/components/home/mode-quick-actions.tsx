@@ -33,6 +33,13 @@ const TILE =
   'sm:[&_.type-title-sm]:text-base sm:[&_.type-title-sm]:leading-snug sm:[&_.type-body-sm]:text-[0.8125rem] ' +
   '[@media(max-height:50rem)]:[&_.type-body-sm]:hidden [&>svg]:hidden';
 
+/**
+ * Polish 1b (critique-redesign1b item 2): over the home photograph on a phone, each tile is a
+ * compact pill (the icon beside the title) in one row that scrolls sideways, about 52 px tall
+ * instead of two rows of 76 px tiles.
+ */
+const MEDIA_PHONE_TILE = 'max-sm:flex-row max-sm:items-center max-sm:gap-2 max-sm:rounded-pill max-sm:py-2 max-sm:pr-4 max-sm:pl-2 max-sm:whitespace-nowrap';
+
 const LG_COLUMNS: Record<number, string> = { 1: 'lg:grid-cols-3', 2: 'lg:grid-cols-3', 3: 'lg:grid-cols-3', 4: 'lg:grid-cols-4', 5: 'lg:grid-cols-5', 6: 'lg:grid-cols-6' };
 
 /**
@@ -59,6 +66,11 @@ export function ModeQuickActions({ airport, terminal, tone = 'default', classNam
         // breaking mid-word ("Pengangk|utan").
         'grid grid-cols-3 gap-2 max-sm:grid-cols-[repeat(auto-fill,minmax(min(100%,6.25rem),1fr))] sm:gap-3',
         LG_COLUMNS[Math.min(actions.length, 6)],
+        // Polish 1b (critique-redesign1b item 2): over the home photograph on a phone, one row that
+        // scrolls sideways (from edge to edge, snapping to each tile) instead of two rows of three,
+        // so the photograph keeps the top of the first screen.
+        tone === 'media' &&
+          'max-sm:-mx-gutter max-sm:flex max-sm:snap-x max-sm:snap-mandatory max-sm:scroll-px-gutter max-sm:overflow-x-auto max-sm:overscroll-x-contain max-sm:px-gutter max-sm:pb-1 max-sm:[scrollbar-width:none] max-sm:[&::-webkit-scrollbar]:hidden',
         className,
       )}
     >
@@ -68,7 +80,7 @@ export function ModeQuickActions({ airport, terminal, tone = 'default', classNam
         const missing = isSectionMissing(action.section, selection, availability) && context.airport;
         const title = t(actionTitleKey(action.copy));
         return (
-          <li key={action.copy} className="flex min-w-0">
+          <li key={action.copy} className={cn('flex min-w-0', tone === 'media' && 'max-sm:shrink-0 max-sm:snap-start')}>
             <QuickAction
               icon={action.icon}
               title={missing ? t('shellExtras.notPublished.navSuffix', { section: title, airport: context.airport!.shortName }) : title}
@@ -78,7 +90,7 @@ export function ModeQuickActions({ airport, terminal, tone = 'default', classNam
               emphasisLabel={t('home.actions.startHere')}
               tone={tone}
               /* Compact tiles for the first screen: on phones the hint is hidden and the type is smaller. */
-              className={cn(TILE, missing && 'after:pointer-events-none after:absolute after:inset-1 after:rounded-[calc(var(--radius-2xl)-0.25rem)] after:border after:border-dashed after:border-current/45')}
+              className={cn(TILE, tone === 'media' && MEDIA_PHONE_TILE, missing && 'after:pointer-events-none after:absolute after:inset-1 after:rounded-[calc(var(--radius-2xl)-0.25rem)] after:border after:border-dashed after:border-current/45')}
             />
           </li>
         );

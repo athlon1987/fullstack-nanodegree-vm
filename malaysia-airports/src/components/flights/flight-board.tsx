@@ -187,7 +187,15 @@ export function FlightBoard({
         </div>
       )}
       {/* overflow-clip (not hidden) keeps the rounded corners without breaking the sticky hour headers. */}
-      <div className={cn('surface-board @container relative overflow-clip border border-line', hideBanner ? 'rounded-2xl' : 'rounded-b-2xl border-t-0')}>
+      {/* Polish 1b (critique-redesign1b item 17): in dark mode the board is one step above the
+          midnight page, with a fine top highlight, so it reads as an object instead of dissolving. */}
+      <div
+        className={cn(
+          'surface-board @container relative overflow-clip border border-line',
+          'dark:[--color-page:#0c1430] dark:shadow-[inset_0_1px_0_0_rgb(255_255_255/0.09)]',
+          hideBanner ? 'rounded-2xl' : 'rounded-b-2xl border-t-0',
+        )}
+      >
         <WeaveTexture className="absolute right-0 bottom-0 h-14 w-2/5 max-sm:hidden" />
         <div
           className={cn(

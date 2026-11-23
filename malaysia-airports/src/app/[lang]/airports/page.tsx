@@ -9,7 +9,7 @@ import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { PageHeader } from '@/components/common/page-header';
 import { Container } from '@/components/ui/container';
 import { toMediaImage, type MediaImage } from '@/components/ui/media';
-import { AIRPORT_HERO_IMAGES, IMAGES } from '@/content/images';
+import { AIRPORT_HERO_IMAGES, DIRECTORY_IMAGES, IMAGES } from '@/content/images';
 import { toLang } from '@/lib/i18n';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -30,7 +30,7 @@ export default async function AirportsPage() {
   // Malaysia fallback: a directory card shows the airport itself). Decorative: the name is the link.
   const photos: Record<string, MediaImage> = {};
   for (const airport of AIRPORTS) {
-    const id = AIRPORT_HERO_IMAGES[airport.slug]?.[0];
+    const id = DIRECTORY_IMAGES[airport.slug] ?? AIRPORT_HERO_IMAGES[airport.slug]?.[0];
     if (id !== undefined) photos[airport.slug] = toMediaImage(IMAGES[id], lang, { decorative: true });
   }
   return (

@@ -425,9 +425,11 @@
     --scrim-edge-alpha: 35%;
     /* Redesign 1b: the feathered scrim under a hero's words, and the veil under the header over a
        hero (lighter on phones, where the header holds only the logo and the airport pill on its
-       own ground; the text alpha from 768 px, where the navigation links sit on it). */
+       own ground; the text alpha from 768 px, where the navigation links sit on it). Polish 1b:
+       60 % on phones (was 52 %), because the home photograph now has white canopy rims under the
+       wordmark: 4.02:1 at 52 %, 5.2:1 at 60 % over pure white. */
     --scrim-feather-alpha: 70%;
-    --scrim-header-alpha: 52%;
+    --scrim-header-alpha: 60%;
     --glass-blur: 20px;
     /* Patterns are masks, so they take any token colour. */
     --pattern-rebung: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='6'%3E%3Cpath d='M0 6 6 .5l6 5.5' fill='none' stroke='%23000'/%3E%3C/svg%3E");
@@ -1263,14 +1265,15 @@
   &::before {
     content: '';
     position: absolute;
-    inset: -6rem 0 0 0;
+    /* Polish 1b: how far the layer fades out above the block (`--scrim-behind-fade`, 6rem by default). */
+    inset: calc(-1 * var(--scrim-behind-fade, 6rem)) 0 0 0;
     z-index: -1;
     pointer-events: none;
     border-radius: inherit;
     background-image: linear-gradient(
       to top,
       color-mix(in srgb, var(--color-scrim) var(--scrim-text-alpha), transparent) 0%,
-      color-mix(in srgb, var(--color-scrim) var(--scrim-text-alpha), transparent) calc(100% - 6rem),
+      color-mix(in srgb, var(--color-scrim) var(--scrim-text-alpha), transparent) calc(100% - var(--scrim-behind-fade, 6rem)),
       transparent 100%
     );
   }
@@ -1314,7 +1317,8 @@
   &::before {
     content: '';
     position: absolute;
-    inset: -7rem -12rem -2rem -100vw;
+    /* Polish 1b: how far the scrim rises above the words (`--scrim-feather-top`, 7rem by default). */
+    inset: calc(-1 * var(--scrim-feather-top, 7rem)) -12rem -2rem -100vw;
     z-index: -1;
     pointer-events: none;
     border-radius: 0;
@@ -1322,11 +1326,11 @@
     background-color: color-mix(in srgb, var(--color-scrim) var(--scrim-feather-alpha), transparent);
     -webkit-mask-image:
       linear-gradient(to right, #000 calc(100% - 12rem), transparent),
-      linear-gradient(to bottom, transparent, #000 7rem, #000 calc(100% - 2rem), transparent);
+      linear-gradient(to bottom, transparent, #000 var(--scrim-feather-top, 7rem), #000 calc(100% - 2rem), transparent);
     -webkit-mask-composite: source-in;
     mask-image:
       linear-gradient(to right, #000 calc(100% - 12rem), transparent),
-      linear-gradient(to bottom, transparent, #000 7rem, #000 calc(100% - 2rem), transparent);
+      linear-gradient(to bottom, transparent, #000 var(--scrim-feather-top, 7rem), #000 calc(100% - 2rem), transparent);
     mask-composite: intersect;
   }
   :where([data-contrast='more'], [data-contrast='high']) &::before {

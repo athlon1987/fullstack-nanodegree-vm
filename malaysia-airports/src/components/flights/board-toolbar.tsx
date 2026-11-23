@@ -93,7 +93,7 @@ export function BoardToolbar({ airport, direction, query, initialQuery, searchKe
             // Beside the search (wide toolbars): a fixed width that scrolls sideways like the phone
             // row, so the chips arriving never resize the search or wrap the toolbar.
             // One fixed height too, so the row's vertical centre does not move when the chips arrive.
-            '@[70rem]:h-11 @[70rem]:w-[min(40rem,50%)] @[70rem]:shrink-0 @[70rem]:flex-nowrap @[70rem]:py-0',
+            '@[70rem]:h-11 @[70rem]:w-[min(56rem,64%)] @[70rem]:shrink-0 @[70rem]:flex-nowrap @[70rem]:py-0',
             noFlights || !counts ? 'overflow-hidden' : 'max-sm:scroll-fade-x max-sm:overflow-x-auto @[70rem]:scroll-fade-x @[70rem]:overflow-x-auto',
           )}
         >

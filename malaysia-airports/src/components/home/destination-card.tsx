@@ -32,11 +32,20 @@ const GROUNDS: Record<string, string> = {
  * never the home hero's own photograph either, so the KLIA Terminal 1 card shows a second view of
  * the terminal instead of repeating the picture at the top of the page.
  */
+/** Photographs a place card prefers, best first (ids from the library; the rest follow in library order). */
+const PLACE_PREFERENCE: Readonly<Partial<Record<string, readonly string[]>>> = {
+  kul: ['klia-t1-aerial', 'klia-t1-airfield'],
+};
+
 export function placePhoto(slug: string, terminal?: string): SiteImage | undefined {
   const group = slug === 'kul' ? (terminal === 'T2' ? 'klia2' : 'klia') : undefined;
   const hero = HOME_HERO_IMAGES[0];
   const candidates = ALL_IMAGES.filter((image) => image.place === slug && (group ? image.group === group : true) && (slug !== 'kul' || image.subject === 'terminal' || image.subject === 'interior'));
-  return candidates.find((image) => image.id !== hero) ?? candidates[0];
+  // Polish 1b: a card is small, so an outside view reads better than an interior close-up (the
+  // timber ceiling came out as brown texture); the preferred photographs come first.
+  const preferred = PLACE_PREFERENCE[slug] ?? [];
+  const ranked = [...preferred.flatMap((id) => candidates.filter((image) => image.id === id)), ...candidates];
+  return ranked.find((image) => image.id !== hero) ?? ranked[0];
 }
 
 export interface DestinationCardProps {
@@ -99,7 +108,9 @@ export function DestinationCard({ airport: record, terminal, lang, shape = 'port
           />
         )}
       </div>
-      <div className="on-media scrim-behind rounded-b-[inherit] p-5 pt-10 text-ink sm:p-6 sm:pt-12">
+      {/* Polish 1b (critique-redesign1b item 14): the scrim stays under the words and fades out
+          3rem above them, so most of the photograph (blue skies included) is untinted. */}
+      <div className="on-media scrim-behind rounded-b-[inherit] p-5 pt-6 text-ink [--scrim-behind-fade:3rem] sm:p-6 sm:pt-8">
         {/* Redesign round one (critique item 21): the place and the code on one line above, the
             city in display type (the section-title size already on the home, so no new size). */}
         <p className="type-caption flex items-center gap-2 font-semibold text-ink-2">

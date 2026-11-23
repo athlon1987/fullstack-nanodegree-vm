@@ -35,6 +35,14 @@ export interface SavedFlightCardProps {
   onRemove: () => void;
 }
 
+/**
+ * The next-step strip: a midnight band with a gold hairline (redesign round one). Polish 1b: it
+ * keeps the room of its two lines (the deadline and the next step) even when there is only one,
+ * so the card is the same height before and after the feed answers.
+ */
+const STRIP =
+  'on-media surface-midnight flex min-h-[5.25rem] flex-col justify-center gap-1.5 border-b border-line px-4 py-3.5 shadow-[inset_0_1px_0_0_var(--color-gold)] sm:px-5';
+
 /** A saved flight in My journey: demo status, time, where to go, the next step, and controls. */
 export function SavedFlightCard({ saved, flight, now, next, deadline, selected, alertsOn, onSelect, onRemove }: SavedFlightCardProps) {
   const t = useT();
@@ -45,6 +53,43 @@ export function SavedFlightCard({ saved, flight, now, next, deadline, selected, 
   const remove = (
     <IconButton icon="trash-2" label={t('flightPages.journey.remove', { number })} size="sm" variant="quiet" onClick={onRemove} />
   );
+
+  if (flight === undefined) {
+    // Polish 1b (critique-redesign1b item 1): while the feed loads, the card already has the
+    // loaded card's three parts at their sizes (ticket top, next-step strip, actions), so "My
+    // needs" and the steps under it do not move when it fills (CLS 0.055 on a phone: 112 to 257 px).
+    return (
+      <li aria-busy="true" className="relative overflow-hidden rounded-2xl border border-line bg-surface shadow-sm">
+        <div className="on-media surface-midnight relative px-4 pt-4 pb-4 text-ink sm:px-5">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex min-w-0 gap-3">
+              <AirlineBadge code={saved.number.slice(0, 2)} size="md" className="mt-1" />
+              <div className="min-w-0">
+                <p className="type-caption font-semibold text-gold-bright">{airport?.shortName ?? saved.airport.toUpperCase()}</p>
+                <h3 className="type-title-md mt-0.5 text-ink">{number}</h3>
+                <p className="type-body-sm mt-0.5 text-ink-2">
+                  <Skeleton className="inline-block h-4 w-28 align-middle" />
+                </p>
+              </div>
+            </div>
+            <Skeleton className="mt-1 h-7 w-16" />
+          </div>
+          <div className="mt-3.5 flex flex-wrap items-center gap-x-3 gap-y-2">
+            <Skeleton className="h-6 w-32 rounded-pill" />
+            <Skeleton className="h-6 w-24" />
+          </div>
+        </div>
+        <div className={STRIP}>
+          <Skeleton className="h-7 w-40" />
+          <Skeleton className="h-5 w-56 max-w-full" />
+        </div>
+        <div className="flex items-center justify-between gap-2 px-4 py-3 sm:px-5">
+          <Skeleton className="h-9 w-40 rounded-pill" />
+          {remove}
+        </div>
+      </li>
+    );
+  }
 
   if (!flight) {
     return (
@@ -143,7 +188,7 @@ export function SavedFlightCard({ saved, flight, now, next, deadline, selected, 
 
       {deadline || next ? (
         // Redesign round one (critique item 10): a midnight strip with a gold hairline, not the retired ivory band.
-        <div className="on-media surface-midnight flex flex-col gap-1.5 border-b border-line px-4 py-3.5 shadow-[inset_0_1px_0_0_var(--color-gold)] sm:px-5">
+        <div className={STRIP}>
           {deadline ? (
             <p data-deadline={deadline.kind} className="type-body-sm flex flex-wrap items-center gap-x-2 gap-y-1 text-ink">
               <span className="type-eyebrow text-gold-ink">{t(DEADLINE_KEYS[deadline.kind])}</span>

@@ -176,7 +176,7 @@ export const ms: Dictionary = {
       departing: { label: 'Berlepas', description: 'Terbang dari lapangan terbang ini' },
       arriving: { label: 'Tiba', description: 'Mendarat di sini dan meneruskan perjalanan' },
       transiting: { label: 'Transit', description: 'Menyambung ke penerbangan lain' },
-      meeting: { label: 'Menjemput seseorang', description: 'Menjemput atau menghantar seseorang' },
+      meeting: { label: 'Menjemput', description: 'Menjemput atau menghantar seseorang' },
     },
     timeline: {
       title: 'Perjalanan anda, langkah demi langkah',

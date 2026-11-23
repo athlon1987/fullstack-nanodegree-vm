@@ -76,6 +76,8 @@ export const flightPagesEn = {
       'Status, times, terminal and a step-by-step journey for {number} at {airport}. Flight information in this prototype is demonstration data.',
     statusTitle: 'Flight status',
     minutesLate: { one: '{count} minute later than scheduled', other: '{count} minutes later than scheduled' },
+    /** Polish 1b: the phone status row's caption beside the time (the full sentence is read out). */
+    minutesLateShort: { one: '{count} min late', other: '{count} min late' },
     onSchedule: 'On schedule',
     checkInRow: 'Row {row}',
     checkInCounters: 'Counters {counters}',
@@ -250,6 +252,8 @@ export const flightPagesEn = {
     planned: 'Planned from {date}',
     noticeDated: 'Notice dated {date}',
     unknown: 'Status not available',
+    /** Polish 1b (critique-redesign1b item 10): beside queue estimates, so the two do not read as a contradiction. */
+    demoEstimates: 'demo estimates below',
     unknownWhere: '“Status not available”: our sources have no notice about the service, and there is no live feed. Check the signs at the airport or ask at an information counter.',
     basis: 'From published notices; no live feed.',
     basisDated: 'From notices published up to {date}; no live feed.',
@@ -470,6 +474,7 @@ export const flightPagesMs: typeof flightPagesEn = {
       'Status, waktu, terminal dan perjalanan langkah demi langkah untuk {number} di {airport}. Maklumat penerbangan dalam prototaip ini ialah data demonstrasi.',
     statusTitle: 'Status penerbangan',
     minutesLate: { one: '{count} minit lewat daripada jadual', other: '{count} minit lewat daripada jadual' },
+    minutesLateShort: { one: 'Lewat {count} min', other: 'Lewat {count} min' },
     onSchedule: 'Mengikut jadual',
     checkInRow: 'Baris {row}',
     checkInCounters: 'Kaunter {counters}',
@@ -639,6 +644,7 @@ export const flightPagesMs: typeof flightPagesEn = {
     planned: 'Dirancang mulai {date}',
     noticeDated: 'Notis bertarikh {date}',
     unknown: 'Status tidak tersedia',
+    demoEstimates: 'anggaran demo di bawah',
     unknownWhere: '“Status tidak tersedia”: sumber kami tiada notis mengenai perkhidmatan itu, dan tiada suapan langsung. Semak papan tanda di lapangan terbang atau tanya di kaunter maklumat.',
     basis: 'Daripada notis yang diterbitkan; tiada suapan langsung.',
     basisDated: 'Daripada notis yang diterbitkan sehingga {date}; tiada suapan langsung.',

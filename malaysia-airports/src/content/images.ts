@@ -468,7 +468,7 @@ const DATA = {
     place: 'lgk',
     subject: 'destination',
     group: 'langkawi',
-    focal: { x: 0.8, y: 0.55 },
+    focal: { x: 0.35, y: 0.55 },
     blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAJABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABAIF/8QAIhAAAgEDAgcAAAAAAAAAAAAAAQMAAgQRMUESEyEyNHGx/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAL/xAAWEQADAAAAAAAAAAAAAAAAAAAAAhP/2gAMAwEAAhEDEQA/AHmlF1nlLrJ02x9gGWTFs8bjAHUUsGc+9Jq2+0t/cJNWE1P/2Q==',
     credit: {
       author: 'NickLubushko',
@@ -733,7 +733,9 @@ export function objectPosition(image: Pick<SiteImage, 'focal'>): string {
 }
 
 /** Candidates for the home page hero, best first. */
-export const HOME_HERO_IMAGES: readonly ImageId[] = ['klia-t1-canopy', 'klia-t1-aerial', 'kl-petronas'];
+// Polish 1b (critique-redesign1b item 3): the bright Terminal 1 roof canopies against the sky lead;
+// the timber ceiling (warm and low in contrast, it read as brown texture under the words) is second.
+export const HOME_HERO_IMAGES: readonly ImageId[] = ['klia-t1-roof', 'klia-t1-canopy', 'klia-t1-aerial'];
 
 /** Destination cards (the places the airports serve), in display order. */
 export const DESTINATION_IMAGES: readonly ImageId[] = ['kl-petronas', 'penang-bridge', 'mount-kinabalu', 'langkawi-beach', 'kuching-waterfront', 'langkawi-sky-bridge', 'george-town-blue-mansion'];
@@ -746,11 +748,36 @@ export const DISCOVER_IMAGES: readonly ImageId[] = ['klia-t1-roof', 'nasi-lemak'
  * never another airport. Airports not listed get `FALLBACK_HERO`.
  */
 export const AIRPORT_HERO_IMAGES: Readonly<Partial<Record<string, readonly ImageId[]>>> = {
-  kul: ['klia-t1-canopy', 'klia-t1-aerial'],
+  // Polish 1b (critique-redesign1b item 11): the terminal's roofline under the sky leads, bright on a
+  // phone too (the timber ceiling was a band of near-black there); the home hero has the roof canopies.
+  kul: ['klia-t1-airfield', 'klia-t1-canopy', 'klia-t1-aerial'],
   pen: ['pen-terminal', 'penang-bridge'],
   bki: ['bki-terminal', 'mount-kinabalu'],
   lgk: ['lgk-terminal', 'langkawi-beach'],
   kch: ['kch-terminal', 'kuching-waterfront'],
+};
+
+/**
+ * Polish 1b (critique-redesign1b item 7): the directory card (`/airports`) for an airport whose
+ * first photograph carries a sign across the frame that any card crop cuts mid-word: Kota Kinabalu
+ * shows its terminal across the airfield (no name board), Langkawi the beach by its runway, Pantai
+ * Cenang (its only airport photograph has "Perlepasan / Departure" across the top third).
+ */
+export const DIRECTORY_IMAGES: Readonly<Partial<Record<string, ImageId>>> = {
+  bki: 'bki-airfield',
+  lgk: 'langkawi-beach',
+};
+
+/**
+ * Polish 1b (critique-redesign1b item 9): photographs for the "Explore" cards of an airport's
+ * overview, by section. Only that airport's own photographs (or a Malaysian dish for food);
+ * sections without one keep their line drawing.
+ */
+export const EXPLORE_IMAGES: Readonly<Partial<Record<string, Readonly<Partial<Record<string, ImageId>>>>>> = {
+  kul: { flights: 'apron-night', map: 'klia-t1-aerial', 'shop-dine': 'nasi-lemak', lounges: 'klia-t1-canopy' },
+  pen: { flights: 'pen-terminal', 'shop-dine': 'george-town-street' },
+  bki: { flights: 'bki-airfield' },
+  kch: { flights: 'kch-terminal' },
 };
 
 /** For airports without their own photo: a Malaysia image that shows no particular airport. */

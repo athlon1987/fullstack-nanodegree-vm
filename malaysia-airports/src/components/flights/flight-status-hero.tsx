@@ -176,13 +176,16 @@ export function FlightStatusHero({ flight, pending = false, updatedAt, refreshSe
                 </span>
               )}
               {/* Phones: the time beside the status, so both are on the first screen (critique item 4). */}
-              <span aria-hidden="true" className="ml-auto flex flex-col items-end text-right sm:hidden">
+              {/* Polish 1b (critique-redesign1b item 1): a one-line caption, so the time stays on the
+                  status pill's line when the feed answers (the long sentence wrapped it onto a line
+                  of its own and pushed the card down 48 px). The full sentence is in the sr-only line. */}
+              <span aria-hidden="true" className="ml-auto flex shrink-0 flex-col items-end text-right whitespace-nowrap sm:hidden">
                 {!live ? (
-                  waiting('h-7 w-20')
+                  waiting('h-6 w-20')
                 ) : (
                   <span className={cn('type-data-xl', cancelled ? 'text-ink-2 line-through' : moved ? 'text-board-accent' : 'text-ink')}>{time(shownTime)}</span>
                 )}
-                <span className="type-caption mt-0.5 text-ink-2">{live && moved ? t.count('flightPages.detail.minutesLate', late) : live && !cancelled ? t('flightPages.detail.onSchedule') : `${t('common.labels.scheduled')} ${time(flight.scheduled)}`}</span>
+                <span className="type-caption mt-0.5 text-ink-2">{live && moved ? t.count('flightPages.detail.minutesLateShort', late) : live && !cancelled ? t('flightPages.detail.onSchedule') : `${t('common.labels.scheduled')} ${time(flight.scheduled)}`}</span>
               </span>
               <span className="type-body-sm inline-flex items-center gap-2 text-ink-2 max-sm:basis-full">
                 <AirlineBadge code={flight.airline.code} />
@@ -228,7 +231,7 @@ export function FlightStatusHero({ flight, pending = false, updatedAt, refreshSe
               {departure ? (
                 <>
                   <Fact label={t('common.labels.gate')}>
-                    {!live ? waiting('h-8 w-16') : live.gate ? <span className="type-data-xl text-board-accent">{live.gate}</span> : notAssigned(t('flights.board.gateNotAssigned'))}
+                    {!live ? waiting('h-7 w-16 align-top') : live.gate ? <span className="type-data-xl text-board-accent">{live.gate}</span> : notAssigned(t('flights.board.gateNotAssigned'))}
                   </Fact>
                   <Fact label={t('flightPages.detail.boardingFrom')}>
                     {!live ? waiting('h-6 w-14') : live.boardingAt && !cancelled ? <span className="type-data-lg">{time(live.boardingAt)}</span> : notAssigned('–')}
@@ -250,7 +253,7 @@ export function FlightStatusHero({ flight, pending = false, updatedAt, refreshSe
                 </>
               ) : (
                 <Fact label={t('common.labels.belt')}>
-                  {!live ? waiting('h-8 w-16') : live.belt ? <span className="type-data-xl text-board-accent">{live.belt}</span> : notAssigned(t('flights.board.beltNotAssigned'))}
+                  {!live ? waiting('h-7 w-16 align-top') : live.belt ? <span className="type-data-xl text-board-accent">{live.belt}</span> : notAssigned(t('flights.board.beltNotAssigned'))}
                 </Fact>
               )}
               {flight.aircraft ? (

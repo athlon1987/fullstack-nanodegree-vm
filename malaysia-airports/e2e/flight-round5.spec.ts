@@ -244,3 +244,54 @@ test.describe('round 5: density on the flight page, My journey and the airport o
     });
   }
 });
+
+/*
+ * Polish 1b (docs/qa/fixes/redesign1b-polish.md, critique-redesign1b item 1): a delayed flight whose
+ * check-in has closed has the longest next-step answer and the Fast Track row. The summary panel
+ * grew from 174 to 237 px when it arrived (CLS 0.106 at 1440, 0.081 at 390), and on My journey the
+ * saved-flight card grew from 112 to 257 px under "My needs" (0.055 on a phone).
+ */
+test.describe('polish 1b: nothing moves when a delayed flight answers', () => {
+  const DELAYED_AT = new Date('2026-11-23T09:44:00+08:00');
+  const DELAYED = 'cx767-20261123-d';
+  const watchMainShifts = (page: Page) =>
+    page.addInitScript(() => {
+      const w = window as unknown as { __cls: number };
+      w.__cls = 0;
+      new PerformanceObserver((list) => {
+        for (const entry of list.getEntries() as (PerformanceEntry & { value: number; hadRecentInput: boolean; sources?: { node?: Node | null }[] })[]) {
+          const inMain = (entry.sources ?? []).some((source) => source.node instanceof Element && source.node.closest('main'));
+          if (!entry.hadRecentInput && inMain) w.__cls += entry.value;
+        }
+      }).observe({ type: 'layout-shift', buffered: true });
+    });
+
+  for (const [width, height] of [
+    [390, 844],
+    [1440, 900],
+  ] as const) {
+    test(`the flight page of a delayed flight at ${width} px`, async ({ page }) => {
+      await page.setViewportSize({ width, height });
+      await page.clock.setFixedTime(DELAYED_AT);
+      await watchMainShifts(page);
+      await page.goto(`/en/kul/flights/${DELAYED}`, { waitUntil: 'load' });
+      await expect(page.locator('[data-flight-summary]:not([data-pending])')).toBeVisible();
+      await expect(page.locator('[data-summary-delayed]')).toBeVisible();
+      await page.waitForTimeout(1000);
+      expect(await page.evaluate(() => (window as unknown as { __cls: number }).__cls)).toBeLessThanOrEqual(0.01);
+    });
+
+    test(`My journey with that flight saved at ${width} px`, async ({ page }) => {
+      await page.setViewportSize({ width, height });
+      await page.clock.setFixedTime(DELAYED_AT);
+      await page.addInitScript((id) => {
+        localStorage.setItem('ma:journey:v1', JSON.stringify({ flights: [{ id, airport: 'kul', number: 'CX767', direction: 'd', date: '2026-11-23', route: 'Kuala Lumpur to Hong Kong', savedAt: '2026-11-23T00:30:00.000Z' }], places: [], parkedCar: null }));
+      }, DELAYED);
+      await watchMainShifts(page);
+      await page.goto('/en/journey', { waitUntil: 'load' });
+      await expect(page.locator('[data-next-step]').first()).toBeVisible();
+      await page.waitForTimeout(1000);
+      expect(await page.evaluate(() => (window as unknown as { __cls: number }).__cls)).toBeLessThanOrEqual(0.01);
+    });
+  }
+});

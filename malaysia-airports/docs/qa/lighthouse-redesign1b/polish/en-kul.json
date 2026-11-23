@@ -1,0 +1,285 @@
+{
+ "key": "en-kul",
+ "url": "http://localhost:3299/en/kul",
+ "preset": "mobile (Lighthouse default)",
+ "profile": null,
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-23T02:41:16.451Z",
+ "median": {
+  "performance": 88,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1366,
+  "lcp_ms": 3494,
+  "tbt_ms": 177,
+  "cls": 0,
+  "si_ms": 1409,
+  "totalBytes": 693633,
+  "requests": 49
+ },
+ "a11yFailures": [],
+ "rows": [
+  {
+   "finalUrl": "/en/kul",
+   "runtimeError": null,
+   "performance": 87,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1366,
+   "lcp_ms": 3774,
+   "tbt_ms": 141,
+   "cls": 0,
+   "si_ms": 1409,
+   "totalBytes": 693635,
+   "requests": 49,
+   "benchmarkIndex": 2004.5,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en/kul",
+   "runtimeError": null,
+   "performance": 88,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1368,
+   "lcp_ms": 3494,
+   "tbt_ms": 177,
+   "cls": 0,
+   "si_ms": 1368,
+   "totalBytes": 693633,
+   "requests": 49,
+   "benchmarkIndex": 2328,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en/kul",
+   "runtimeError": null,
+   "performance": 89,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1359,
+   "lcp_ms": 3309,
+   "tbt_ms": 206,
+   "cls": 0.004,
+   "si_ms": 1422,
+   "totalBytes": 693633,
+   "requests": 49,
+   "benchmarkIndex": 2148,
+   "a11yFailures": []
+  }
+ ],
+ "medianRunIndex": 1,
+ "diagnostics": {
+  "observed": {
+   "fcp": 241,
+   "lcp": 241,
+   "dcl": 431,
+   "load": 440
+  },
+  "lcpElement": {
+   "selector": "div.contents > div.relative > div.on-media > img.object-cover",
+   "label": "div.contents > div.relative > div.on-media > img.object-cover"
+  },
+  "lcpPhases": {
+   "timeToFirstByte": 11,
+   "resourceLoadDelay": 43,
+   "resourceLoadDuration": 30,
+   "elementRenderDelay": 157
+  },
+  "renderBlocking": [
+   {
+    "url": "/_next/static/chunks/1ip8ucwd88czo.css",
+    "bytes": 33409,
+    "ms": 459
+   },
+   {
+    "url": "/_next/static/chunks/15hzgv72ioqav.css",
+    "bytes": 2364,
+    "ms": 159
+   }
+  ],
+  "longTasks": [
+   {
+    "url": "/en/kul",
+    "start": 1082,
+    "dur": 163
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4244,
+    "dur": 163
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4596,
+    "dur": 117
+   },
+   {
+    "url": "Unattributable",
+    "start": 909,
+    "dur": 106
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4713,
+    "dur": 81
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4516,
+    "dur": 80
+   },
+   {
+    "url": "/en/kul",
+    "start": 1339,
+    "dur": 60
+   },
+   {
+    "url": "/en/kul",
+    "start": 1023,
+    "dur": 59
+   }
+  ],
+  "bootup": [
+   {
+    "url": "/en/kul",
+    "total": 1352,
+    "scripting": 78
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "total": 1288,
+    "scripting": 1068
+   },
+   {
+    "url": "Unattributable",
+    "total": 528,
+    "scripting": 10
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "total": 112,
+    "scripting": 85
+   }
+  ],
+  "mainThread": {
+   "scriptEvaluation": 1375,
+   "other": 828,
+   "styleLayout": 796,
+   "parseHTML": 202,
+   "scriptParseCompile": 153,
+   "paintCompositeRender": 147,
+   "garbageCollection": 53
+  },
+  "resources": {
+   "total": {
+    "n": 44,
+    "bytes": 693633
+   },
+   "script": {
+    "n": 28,
+    "bytes": 403619
+   },
+   "font": {
+    "n": 3,
+    "bytes": 130216
+   },
+   "document": {
+    "n": 1,
+    "bytes": 61703
+   },
+   "other": {
+    "n": 9,
+    "bytes": 49798
+   },
+   "stylesheet": {
+    "n": 2,
+    "bytes": 35773
+   },
+   "image": {
+    "n": 1,
+    "bytes": 12524
+   },
+   "media": {
+    "n": 0,
+    "bytes": 0
+   },
+   "third-party": {
+    "n": 0,
+    "bytes": 0
+   }
+  },
+  "topRequests": [
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "type": "Script",
+    "transfer": 73535
+   },
+   {
+    "url": "/_next/static/media/fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+    "type": "Font",
+    "transfer": 68998
+   },
+   {
+    "url": "/en/kul",
+    "type": "Document",
+    "transfer": 61703
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "type": "Script",
+    "transfer": 47500
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "type": "Font",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/chunks/1ip8ucwd88czo.css",
+    "type": "Stylesheet",
+    "transfer": 33409
+   },
+   {
+    "url": "/_next/static/chunks/0a06gscv8ov_y.js",
+    "type": "Script",
+    "transfer": 27893
+   },
+   {
+    "url": "/_next/static/media/geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+    "type": "Font",
+    "transfer": 24821
+   },
+   {
+    "url": "/_next/static/chunks/2-hfem4v5s7k1.js",
+    "type": "Script",
+    "transfer": 20825
+   },
+   {
+    "url": "/_next/static/chunks/3kvsxc7bwhbp8.js",
+    "type": "Script",
+    "transfer": 15940
+   }
+  ],
+  "fonts": [
+   {
+    "url": "/_next/static/media/fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+    "transfer": 68998
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/media/geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+    "transfer": 24821
+   }
+  ]
+ },
+ "caveat": "Lab measurement: Lighthouse with simulated (or, with --profile, applied) throttling against a local next start. Indicative only; not field data."
+}

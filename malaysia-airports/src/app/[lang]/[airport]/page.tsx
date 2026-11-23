@@ -18,6 +18,8 @@ import { SectionHeading } from '@/components/common/section-heading';
 import { SourceNote } from '@/components/common/source-note';
 import { AIRPORT_SECTIONS, sectionPath, type AirportSectionId } from '@/components/shell/sections';
 import { Callout } from '@/components/ui/callout';
+import { DeferredImage } from '@/components/ui/deferred-image';
+import { EXPLORE_IMAGES, IMAGES, objectPosition } from '@/content/images';
 import { Card, CardLink } from '@/components/ui/card';
 import { Icon } from '@/components/ui/icon';
 import { Section } from '@/components/ui/section';
@@ -187,19 +189,43 @@ async function Overview({ params }: { params: AirportPageParams }) {
           <ul className={cn('grid gap-3 sm:grid-cols-2 sm:gap-4', explore.length >= 4 ? 'lg:grid-cols-4' : explore.length === 3 ? 'lg:grid-cols-3' : '')}>
             {explore.map((section) => {
               const count = counts[section.id];
+              // Polish 1b (critique-redesign1b item 9): the airport's own photograph where the library
+              // has one for the section (decorative: the title is the link), requested near the
+              // viewport only; the words keep a scrim under them. Otherwise the line drawing.
+              const photoId = EXPLORE_IMAGES[airport.slug]?.[section.id];
+              const photo = photoId ? IMAGES[photoId] : undefined;
               return (
                 <Card as="li" key={section.id} interactive className="on-media relative isolate flex min-h-52 min-w-0 flex-col justify-end overflow-hidden rounded-3xl border-0 bg-midnight p-5 text-ink sm:min-h-64 sm:p-6">
-                  {/* The vignette: a deep gradient and the section's line icon drawn large and faint (decoration). */}
-                  <span aria-hidden="true" className="absolute inset-0 -z-10 bg-[radial-gradient(120%_90%_at_100%_0%,color-mix(in_oklab,var(--color-gold)_24%,transparent),transparent_60%),linear-gradient(160deg,var(--color-midnight-2),var(--color-midnight))]" />
-                  <span aria-hidden="true" className="absolute -top-3 -right-3 -z-10 text-gold-bright/25 transition-transform duration-slow ease-out motion-ok:group-hover/card:scale-105">
-                    <Icon name={section.icon} strokeWidth={0.75} className="size-36 sm:size-44" />
-                  </span>
-                  {count ? <span className="type-display-md text-gold-bright tabular-nums">{count}</span> : null}
-                  <h3 className="type-title-lg mt-1 text-ink">
-                    <CardLink href={sectionPath(airport.slug, section.id)}>{t(section.labelKey)}</CardLink>
-                  </h3>
-                  {section.descriptionKey ? <p className="type-body-sm mt-1 text-ink-2">{t(section.descriptionKey)}</p> : null}
-                  <Icon name="arrow-right" size="sm" strokeWidth={1.75} className="mt-4 text-gold-bright transition-transform duration-base motion-ok:group-hover/card:translate-x-1" />
+                  {photo ? (
+                    <span aria-hidden="true" className="absolute inset-0 -z-10">
+                      <DeferredImage
+                        src={photo.src}
+                        alt=""
+                        fill
+                        sizes="(min-width: 64rem) 25vw, (min-width: 40rem) 50vw, 100vw"
+                        quality={60}
+                        blurDataURL={photo.blurDataURL}
+                        style={{ objectPosition: objectPosition(photo) }}
+                        className="object-cover transition-[scale] duration-slower ease-out motion-ok:group-hover/card:scale-[1.04]"
+                      />
+                    </span>
+                  ) : (
+                    <>
+                      {/* The vignette: a deep gradient and the section's line icon drawn large and faint (decoration). */}
+                      <span aria-hidden="true" className="absolute inset-0 -z-10 bg-[radial-gradient(120%_90%_at_100%_0%,color-mix(in_oklab,var(--color-gold)_24%,transparent),transparent_60%),linear-gradient(160deg,var(--color-midnight-2),var(--color-midnight))]" />
+                      <span aria-hidden="true" className="absolute -top-3 -right-3 -z-10 text-gold-bright/25 transition-transform duration-slow ease-out motion-ok:group-hover/card:scale-105">
+                        <Icon name={section.icon} strokeWidth={0.75} className="size-36 sm:size-44" />
+                      </span>
+                    </>
+                  )}
+                  <div className={cn('flex flex-col', photo && 'scrim-behind -mx-5 -mb-5 rounded-b-[inherit] px-5 pt-6 pb-5 [--scrim-behind-fade:3rem] sm:-mx-6 sm:-mb-6 sm:px-6 sm:pb-6')}>
+                    {count ? <span className="type-display-md text-gold-bright tabular-nums">{count}</span> : null}
+                    <h3 className="type-title-lg mt-1 text-ink">
+                      <CardLink href={sectionPath(airport.slug, section.id)}>{t(section.labelKey)}</CardLink>
+                    </h3>
+                    {section.descriptionKey ? <p className="type-body-sm mt-1 text-ink-2">{t(section.descriptionKey)}</p> : null}
+                    <Icon name="arrow-right" size="sm" strokeWidth={1.75} className="mt-4 text-gold-bright transition-transform duration-base motion-ok:group-hover/card:translate-x-1" />
+                  </div>
                 </Card>
               );
             })}

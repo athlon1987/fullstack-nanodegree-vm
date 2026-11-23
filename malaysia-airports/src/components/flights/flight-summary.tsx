@@ -2,15 +2,16 @@
 
 import { getAirport, terminalLabel } from '@/content/airports';
 import { pick } from '@/content/values';
-import { checkInLines, type Flight } from '@/lib/flights';
+import { checkInLines, isInternationalFlight, type Flight } from '@/lib/flights';
 import { useLang, useT } from '@/lib/i18n/client';
-import { nextDeadline, nextStepSummary, type JourneyStep } from '@/lib/journey';
+import { nextDeadline, nextStepSummary, type JourneyAirportContent, type JourneyService, type JourneyStep } from '@/lib/journey';
 import { formatTime } from '@/lib/time';
 import { ExternalLink } from '@/components/common/external-link';
 import { keepRanges } from '@/components/common/keep-ranges';
 import { LocaleLink } from '@/components/common/locale-link';
 import { Icon } from '@/components/ui/icon';
 import { Skeleton } from '@/components/ui/skeleton';
+import { cn } from '@/lib/cn';
 import { DEADLINE_KEYS } from './step-line';
 
 /** Anchor id of a timeline step, shared with `JourneyTimeline`. */
@@ -22,46 +23,81 @@ export interface FlightSummaryProps {
   /** The journey steps as built for this flight and the visitor's needs and options. */
   steps: readonly JourneyStep[] | null;
   now: number;
+  /**
+   * Polish 1b (critique-redesign1b item 1): the Fast Track record for this flight, known before the
+   * feed answers (it depends on the timetable's route and terminal and on the airport's content,
+   * never on the clock), so its row is in the frame from the first paint and nothing grows later.
+   */
+  fastTrack?: JourneyService;
+}
+
+/** The Fast Track record that applies to a departure: its terminal's own, else the airport's; none for a domestic flight. */
+export function fastTrackFor(identity: Pick<Flight, 'direction' | 'terminal' | 'origin' | 'destination'>, content: JourneyAirportContent): JourneyService | undefined {
+  if (identity.direction !== 'd' || !isInternationalFlight(identity)) return undefined;
+  return (identity.terminal ? content.fastTrackByTerminal?.[identity.terminal] : undefined) ?? content.fastTrack;
 }
 
 const FRAME =
   // Round 5: the frame is the same while the feed loads and after, so the answer is filled in
-  // place (no new block, no jump); placeholders keep room for two lines and the step link.
-  // Redesign round one: smoky glass on the flight page's midnight band (an `on-media` scope).
-  'glass-dark flex min-h-14 flex-wrap items-center gap-x-4 gap-y-2 rounded-2xl px-4 py-3 sm:px-5 sm:py-3.5';
+  // place (no new block, no jump). Redesign round one: smoky glass on the flight page's midnight
+  // band (an `on-media` scope). Polish 1b (critique-redesign1b item 1): every row of the frame has
+  // a fixed height, whatever the answer says. The sentence holds exactly three lines on phones and
+  // two from 640 px (clamped; the "See this step" link leads to the whole step), the link row is
+  // as tall as the link, and the Fast Track row is there from the first paint. The panel grew from
+  // 174 to 237 px when a delayed flight's answer arrived (CLS 0.106 at 1440, 0.081 at 390).
+  'glass-dark flex flex-wrap items-center gap-x-4 gap-y-2 rounded-2xl px-4 py-3 sm:px-5 sm:py-3.5';
+/** The sentence: a fixed number of lines (`lh`: the paragraph's own line height, so it follows text size). */
+const SENTENCE = 'type-body min-w-0 flex-1 basis-64 text-ink line-clamp-3 h-[3lh] sm:line-clamp-2 sm:h-[2lh]';
+/** The link's row: as tall as `link-action` (44 px on phones and touch screens, 32 px otherwise). */
+const LINK_ROW = 'flex min-h-8 items-center gap-3 max-md:min-h-11 touch:min-h-11';
 
-/**
- * The answer first (first-time-access-03, usability-10): one line under the title with the next
- * action and its time, for example "Be at KLIA Terminal 1 by 19:30 (estimate) · Check in:
- * Economy: Row H, counters 1-18 · Boarding 21:45", linking to that step of the timeline. A
- * departed or cancelled flight shows its terminal state instead.
- *
- * Round 4 (6.1.2): a delayed flight says so first ("Delayed: now 19:45"), every time follows the
- * estimated time (as the timeline does), and once the arrive-by time has passed the card names
- * the deadline that still matters ("Check-in closes 19:00") and never a past time.
- */
-export function FlightSummary({ flight, steps, now }: FlightSummaryProps) {
+/** "Fast Track at Terminal 1 · Fast Track · Book Fast Track": content only, the same before and after the feed. */
+function FastTrackRow({ service, hidden }: { service: JourneyService; hidden?: boolean }) {
+  const t = useT();
+  const lang = useLang();
+  return (
+    <p
+      data-summary-fast-track=""
+      // A departed or cancelled flight keeps the row's room (no shift) but not its words.
+      className={cn('type-body-sm flex basis-full flex-wrap items-center gap-x-4 gap-y-1 border-t border-line pt-2 text-ink-2', hidden && 'invisible')}
+    >
+      <span>{pick(service.title, lang)}</span>
+      {service.href ? (
+        <LocaleLink href={service.href} className="link-action text-ink">
+          {t('flightPages.timeline.viewFastTrack')}
+        </LocaleLink>
+      ) : null}
+      {service.bookingUrl ? (
+        <ExternalLink href={service.bookingUrl} variant="action" className="text-ink" data-handoff="fast-track-booking">
+          {t('airportPage.fastTrackBook')}
+        </ExternalLink>
+      ) : null}
+    </p>
+  );
+}
+
+export function FlightSummary({ flight, steps, now, fastTrack }: FlightSummaryProps) {
   const t = useT();
   const lang = useLang();
   // Both branches return the same root element and paragraph, so React fills them in place.
   if (!flight || !steps) {
     return (
       <div data-flight-summary="" data-pending="" className={FRAME}>
-        <p className="type-body min-w-0 flex-1 basis-64 text-ink">
+        <p className={SENTENCE}>
           <span className="type-eyebrow mr-2 text-gold-bright">{t('flightPages.summary.label')}</span>
           <span role="status">
             <Skeleton className="inline-block h-4 w-48 max-w-full align-middle" />
             <span className="sr-only">{t('flightPages.summary.loading')}</span>
           </span>
-          {/* Phones: room for the lines the answer usually takes (Malay runs a line longer). */}
-          <Skeleton className="mt-2 h-4 w-3/4 sm:hidden" />
-          {lang === 'ms' ? <Skeleton className="mt-2 h-4 w-1/2 sm:hidden" /> : null}
         </p>
-        {/* Where the "See this step" link goes, as tall as that link (`link-action`: 44 px on
-            phones and touch screens, 32 px otherwise). */}
-        <span className="flex min-h-8 items-center gap-3 max-md:min-h-11 touch:min-h-11">
-          <Skeleton className="h-5 w-28" />
+        {/* Where the "See this step" link goes: the same words, unseen, so the row is as wide and tall. */}
+        <span aria-hidden="true" className={LINK_ROW}>
+          <span className="link-action type-body-sm invisible">
+            {t('flightPages.summary.seeStep')}
+            <Icon name="arrow-down" size="sm" strokeWidth={1.75} />
+          </span>
         </span>
+        {fastTrack && (fastTrack.href || fastTrack.bookingUrl) ? <FastTrackRow service={fastTrack} /> : null}
       </div>
     );
   }
@@ -121,14 +157,13 @@ export function FlightSummary({ flight, steps, now }: FlightSummaryProps) {
   }
 
   // Round 6 (review-3 9.1 item 7): an international departure with a Fast Track record says it is
-  // there, as an option, with its details and its booking site as a measured hand-off.
-  const fastTrack = flight.direction === 'd' && !terminal ? steps.find((step) => step.id === 'fast-track') : undefined;
-  const fastTrackDetails = fastTrack?.actions.find((action) => !action.handoff);
-  const fastTrackBooking = fastTrack?.actions.find((action) => action.handoff === 'fast-track-booking');
-
+  // there, as an option, with its details and its booking site as a measured hand-off. Polish 1b:
+  // the record comes from the timetable and the content (`fastTrack`), so the row is already there
+  // before the feed answers; a departed or cancelled flight keeps its room without the words.
+  const fastTrackHidden = Boolean(terminal) || flight.direction !== 'd';
   return (
     <div data-flight-summary="" className={FRAME}>
-      <p className="type-body min-w-0 flex-1 basis-64 text-ink">
+      <p className={SENTENCE}>
         <span className="type-eyebrow mr-2 text-gold-bright">{t('flightPages.summary.label')}</span>
         {delayed ? (
           <span data-summary-delayed="" className="mr-1.5 inline-flex items-baseline gap-1 font-semibold text-ink">
@@ -152,27 +187,13 @@ export function FlightSummary({ flight, steps, now }: FlightSummaryProps) {
       </p>
       {/* Round 5 (A-14): no Demo label of its own; the demonstration banner that caps the status
           card directly below is in the same view on every screen size. */}
-      <span className="flex items-center gap-3">
+      <span className={LINK_ROW}>
         <a href={`#${stepAnchor(anchor)}`} className="link-action type-body-sm text-ink">
           {t('flightPages.summary.seeStep')}
           <Icon name="arrow-down" size="sm" strokeWidth={1.75} />
         </a>
       </span>
-      {fastTrack && (fastTrackDetails || fastTrackBooking) ? (
-        <p data-summary-fast-track="" className="type-body-sm flex basis-full flex-wrap items-center gap-x-4 gap-y-1 border-t border-line pt-2 text-ink-2">
-          <span>{pick(fastTrack.title, lang)}</span>
-          {fastTrackDetails ? (
-            <LocaleLink href={fastTrackDetails.href} className="link-action text-ink">
-              {t(fastTrackDetails.labelKey)}
-            </LocaleLink>
-          ) : null}
-          {fastTrackBooking ? (
-            <ExternalLink href={fastTrackBooking.href} variant="action" className="text-ink" data-handoff="fast-track-booking">
-              {t(fastTrackBooking.labelKey)}
-            </ExternalLink>
-          ) : null}
-        </p>
-      ) : null}
+      {fastTrack && (fastTrack.href || fastTrack.bookingUrl) ? <FastTrackRow service={fastTrack} hidden={fastTrackHidden} /> : null}
     </div>
   );
 }

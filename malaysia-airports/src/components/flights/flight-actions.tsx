@@ -123,8 +123,10 @@ export function FlightActions({ flight, title }: FlightActionsProps) {
           {/* Round 6 (review-3 9.1 item 7): the pressed state also reads "Saved". */}
           {saved ? t('flightPages.detail.savedButton') : t('flightPages.detail.save')}
         </Button>
+        {/* Polish 1b (critique-redesign1b item 20): Save is the one filled button; the other four
+            are quiet icon-and-label buttons. */}
         <Button
-          variant="secondary"
+          variant="quiet"
           iconStart={following ? 'bell-ring' : 'bell'}
           aria-expanded={followOpen}
           aria-controls={FOLLOW_PANEL_ID}
@@ -132,16 +134,16 @@ export function FlightActions({ flight, title }: FlightActionsProps) {
         >
           {following ? t('flightPages.follow.following') : t('flightPages.follow.button')}
         </Button>
-        <Button variant="secondary" iconStart="share-2" onClick={share}>
+        <Button variant="quiet" iconStart="share-2" onClick={share}>
           {t('flightPages.detail.share')}
         </Button>
-        <Button variant="secondary" iconStart="calendar-days" onClick={() => void addToCalendar()}>
+        <Button variant="quiet" iconStart="calendar-days" onClick={() => void addToCalendar()}>
           {t('flightPages.detail.calendar')}
         </Button>
         {/* Round 4 (re-review 6.1.6, inclusion weakness 10): "My needs" from the first phone
             screens, beside Follow; it jumps to the control, which on phones now sits above the
             timeline. */}
-        <Button asChild variant="secondary" iconStart="accessibility">
+        <Button asChild variant="quiet" iconStart="accessibility">
           <a href={`#${NEEDS_CONTROL_ID}`} data-needs-link="">
             {needs.length > 0 ? t('flightPages.needs.linkCount', { count: needs.length }) : t('flightPages.needs.title')}
           </a>

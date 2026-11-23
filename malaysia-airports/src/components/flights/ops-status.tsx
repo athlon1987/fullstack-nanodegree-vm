@@ -214,7 +214,10 @@ export function OpsStatus({ airport, notices, sources = {}, services, terminal, 
             </span>
             <p className="min-w-0 flex-1">
               <span className="type-body block font-semibold text-ink">{pick(item.name, lang)}</span>
-              <span className="type-caption text-ink-2">{item.state === 'unknown' ? t('flightPages.ops.unknown') : t('flightPages.ops.waitsLabel')}</span>
+              {/* Polish 1b (critique-redesign1b item 10): with estimates under it, the line says what they are. */}
+              <span className="type-caption text-ink-2">
+                {item.state === 'unknown' ? `${t('flightPages.ops.unknown')} · ${t('flightPages.ops.demoEstimates')}` : t('flightPages.ops.waitsLabel')}
+              </span>
             </p>
           </div>
           <div className="flex flex-col gap-1.5 rounded-lg bg-page-subtle px-3.5 py-3">

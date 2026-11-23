@@ -95,7 +95,8 @@ export function HomeHero({ lang, notices }: { lang: Lang; notices: readonly Noti
     <section
       aria-labelledby="home-title"
       data-hero-under-header=""
-      className="relative isolate -mt-header flex flex-col justify-end overflow-x-clip bg-midnight md:min-h-[calc(100svh-2rem)] lg:min-h-[min(62rem,calc(100svh-2rem))]"
+      // Polish 1b: `--hero-band` is the photograph's band on phones (the header and 14.5rem under it).
+      className="relative isolate -mt-header flex flex-col justify-end overflow-x-clip bg-midnight [--hero-band:calc(var(--spacing-header)+14.5rem)] md:min-h-[calc(100svh-2rem)] lg:min-h-[min(62rem,calc(100svh-2rem))]"
     >
       <HeroBackdrop photo={photo} lang={lang} />
       <Container className="flex flex-col gap-[clamp(0.625rem,1.5vh,1rem)] pt-[calc(var(--spacing-header)+clamp(1rem,3.5vh,3.5rem))] pb-[clamp(1.25rem,3.5vh,3rem)]">
@@ -106,7 +107,11 @@ export function HomeHero({ lang, notices }: { lang: Lang; notices: readonly Noti
           <div className="flex min-w-0 flex-col gap-[clamp(1rem,3vh,3rem)]">
             {/* Redesign 1b: over the photograph the words sit on a feathered scrim (no visible box);
                 the gold line keeps 4:1 or more over the brightest part of any photograph. */}
-            <div className={cn('on-media max-w-[60rem] text-ink', photo && 'scrim-feather')}>
+            {/* Polish 1b (critique-redesign1b item 2): on a phone the headline stands at the foot of
+                the photograph's band (this box reaches down to 2rem above the band's lower edge, where
+                the search card overlaps it), on a scrim that rises only 4rem above the words. */}
+            <div className={cn('flex flex-col justify-end', photo && 'max-md:min-h-[calc(12.5rem-clamp(1rem,3vh,3rem)-clamp(1rem,3.5vh,3.5rem))]')}>
+            <div className={cn('on-media max-w-[60rem] text-ink', photo && 'scrim-feather max-md:[--scrim-feather-top:4rem]')}>
               <p className="type-caption mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 font-semibold tracking-[0.16em] text-ink-2 uppercase max-sm:hidden [@media(max-height:46rem)]:hidden">
                 <span aria-hidden="true" className="h-px w-8 bg-gold-bright" />
                 <span lang="ms">{t('home.greeting')}</span>
@@ -120,6 +125,7 @@ export function HomeHero({ lang, notices }: { lang: Lang; notices: readonly Noti
                 {t('home.headlineTaskLead')} <span className="text-gold-bright">{t('home.headlineTaskAccent')}</span>
               </h1>
               <p className="type-body-lg mt-4 max-w-[36rem] text-ink-2 max-lg:hidden [@media(max-height:60rem)]:hidden">{t('home.lead')}</p>
+            </div>
             </div>
 
             {/* The flight search on a frosted panel: the brightest thing on the screen. The airport is

@@ -28,11 +28,17 @@ import { HeroArt } from './hero-art';
  */
 const HOME_HERO_FRAMING: Partial<Record<string, Parameters<typeof artDirection>[1]>> = {
   'klia-t1-canopy': { base: { x: 0.6, y: 0.5 }, md: { x: 0.8, y: 0.5 } },
+  // Polish 1b: the Terminal 1 roof canopies against the sky. Phones (a band about as tall as it is
+  // wide) keep the first canopies and the sky beside them; wide screens keep the canopy tops.
+  'klia-t1-roof': { base: { x: 0.3, y: 0.45 }, md: { x: 0.5, y: 0.4 } },
 };
 
 export function HeroBackdrop({ photo, lang }: { photo?: SiteImage; lang: Lang }) {
   return (
-    <div aria-hidden={photo ? undefined : true} className="absolute inset-0 -z-10 overflow-hidden bg-midnight">
+    // Polish 1b (critique-redesign1b item 2): on phones the photograph is a band at the top of the
+    // hero (`--hero-band`, set by the hero), not a slice behind every control; the controls below
+    // it sit on midnight.
+    <div aria-hidden={photo ? undefined : true} className="absolute inset-0 -z-10 overflow-hidden bg-midnight max-md:bottom-auto max-md:h-[var(--hero-band,100%)]">
       {photo ? (
         <>
           <Image
@@ -49,8 +55,11 @@ export function HeroBackdrop({ photo, lang }: { photo?: SiteImage; lang: Lang })
             className={cn('object-cover', ART_DIRECTED_POSITION)}
           />
           <span aria-hidden="true" className="scrim-header absolute inset-x-0 top-0 h-[calc(var(--spacing-header)+6rem)]" />
-          {/* Depth at the foot of the hero, where the glass panels sit. */}
-          <span aria-hidden="true" className="scrim-bottom absolute inset-x-0 bottom-0 h-2/3 opacity-55" />
+          {/* Polish 1b (critique-redesign1b item 3): depth only in the bottom third, behind the tiles
+              (solid glass panels of their own), so the rest of the photograph is at full strength;
+              the words carry their own feathered scrim. On phones, the band's foot melts into the
+              midnight ground under the search card. */}
+          <span aria-hidden="true" className="scrim-bottom absolute inset-x-0 bottom-0 h-1/3 opacity-55 max-md:h-12 max-md:opacity-100" />
         </>
       ) : (
         <HeroArt className="absolute inset-0" />
