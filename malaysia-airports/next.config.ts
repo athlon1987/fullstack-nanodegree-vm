@@ -4,7 +4,7 @@ import type { NextConfig } from 'next';
 import { legacyRedirects } from './src/lib/seo/legacy-redirects';
 import { alternateLinkRules } from './src/lib/seo/link-headers';
 import { API_HEADERS, NOINDEX_HEADERS, ROUTE_SECURITY_OVERRIDES, overrideHeaders, securityHeaders } from './src/lib/seo/security-headers';
-import { EARLY_MODE_SCRIPT, EARLY_TAP_SCRIPT, SAVED_FLIGHT_FLAG_SCRIPT } from './src/lib/inline-scripts';
+import { EARLY_MODE_SCRIPT, EARLY_TAP_SCRIPT, MAP_ROUTE_NAMES_SCRIPT, MAP_ROUTE_STRIP_SCRIPT, SAVED_FLIGHT_FLAG_SCRIPT } from './src/lib/inline-scripts';
 import { PREFERENCES_INIT_SCRIPT } from './src/lib/preferences';
 import { IMAGE_DEVICE_SIZES, IMAGE_QUALITIES, IMAGE_SIZES } from './src/components/ui/image-config';
 
@@ -23,12 +23,13 @@ const indexable = process.env.SITE_INDEXING === 'allow';
 const appVersion = process.env.APP_VERSION ?? new Date().toISOString().replace(/\D/g, '').slice(0, 12);
 /**
  * Hashes of our own inline scripts, allowed by the report-only CSP (security-07): the preferences
- * script and, since round 2 (E-09 hand-off), the early-tap, early-mode and saved-flight scripts.
+ * script and, since round 2 (E-09 hand-off), the early-tap, early-mode and saved-flight scripts;
+ * since the closing fix, the map's route-names and route-strip scripts.
  */
 const headerOptions = {
   dev: isDev,
   https: siteUrl.startsWith('https://'),
-  scriptHashes: [PREFERENCES_INIT_SCRIPT, EARLY_TAP_SCRIPT, EARLY_MODE_SCRIPT, SAVED_FLIGHT_FLAG_SCRIPT].map((script) => createHash('sha256').update(script).digest('base64')),
+  scriptHashes: [PREFERENCES_INIT_SCRIPT, EARLY_TAP_SCRIPT, EARLY_MODE_SCRIPT, SAVED_FLIGHT_FLAG_SCRIPT, MAP_ROUTE_NAMES_SCRIPT, MAP_ROUTE_STRIP_SCRIPT].map((script) => createHash('sha256').update(script).digest('base64')),
 };
 
 const nextConfig: NextConfig = {

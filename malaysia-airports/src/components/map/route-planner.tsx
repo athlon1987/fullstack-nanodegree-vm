@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import type { PathResult, WalkProfile } from '@/lib/map';
 import { formatDistance, formatDuration, formatList } from '@/lib/format';
 import { cn } from '@/lib/cn';
+import { MAP_ROUTE_NAMES_SCRIPT } from '@/lib/inline-scripts';
 import { useLang, useT } from '@/lib/i18n/client';
 import type { Translator } from '@/lib/i18n/translate';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
@@ -276,11 +277,13 @@ export function RoutePlanner({
       </div>
 
       {/* From and To in one well, like a travel app's route card (full width, so a long place
-          name is not cut short in the field). */}
-      <div className="mt-4 rounded-2xl bg-page-subtle p-3 sm:p-4">
+          name is not cut short in the field). Closing fix (VA6 item 3): a route in the address is
+          written into both fields during parsing, by the script right after the well. */}
+      <div data-route-fields="" data-terminal={map.terminal} className="mt-4 rounded-2xl bg-page-subtle p-3 sm:p-4">
         <div className="flex flex-col gap-3">
           <PlaceSelect
             id={ROUTE_FROM_ID}
+            end="from"
             label={t('mapPages.route.from')}
             icon="circle-dot"
             value={fromId ?? ''}
@@ -292,6 +295,7 @@ export function RoutePlanner({
           </PlaceSelect>
           <PlaceSelect
             id={ROUTE_TO_ID}
+            end="to"
             label={t('mapPages.route.to')}
             icon="map-pin"
             value={toId ?? ''}
@@ -303,6 +307,7 @@ export function RoutePlanner({
           </PlaceSelect>
         </div>
       </div>
+      <RouteNamesScript />
 
       <div className="mt-4">
         <Switch label={t('mapPages.route.stepFree')} hint={t('mapPages.route.stepFreeHint')} checked={stepFree} onCheckedChange={onStepFreeChange} />
@@ -334,6 +339,7 @@ export function RoutePlanner({
  */
 function PlaceSelect({
   id,
+  end,
   label,
   icon,
   value,
@@ -342,6 +348,8 @@ function PlaceSelect({
   children,
 }: {
   id: string;
+  /** The address parameter this field reads (`from` or `to`), for `MAP_ROUTE_NAMES_SCRIPT`. */
+  end: 'from' | 'to';
   label: string;
   icon: IconName;
   value: string;
@@ -351,7 +359,12 @@ function PlaceSelect({
 }) {
   return (
     <Field id={id} label={label}>
+      {/* `suppressHydrationWarning` (this element and the drawn name only): with a route in the
+          address the script has already written the name and dropped `text-ink-2` before React
+          hydrates with an empty query; React keeps them, then renders the same name. */}
       <div
+        data-place-select={end}
+        suppressHydrationWarning
         className={cn(
           controlClasses,
           'relative flex h-auto min-h-12 items-center gap-3 py-2.5 pr-11 pl-4 has-[select:focus-visible]:focus-ring',
@@ -359,7 +372,7 @@ function PlaceSelect({
         )}
       >
         <Icon name={icon} className="shrink-0 text-ink-3" />
-        <span aria-hidden="true" className="type-body min-w-0 font-medium [overflow-wrap:anywhere] [text-wrap:pretty]">
+        <span data-place-shown="" aria-hidden="true" suppressHydrationWarning className="type-body min-w-0 font-medium [overflow-wrap:anywhere] [text-wrap:pretty]">
           {shown}
         </span>
         <Icon name="chevron-down" size="sm" strokeWidth={2} className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-ink-2" />
@@ -368,5 +381,20 @@ function PlaceSelect({
         </select>
       </div>
     </Field>
+  );
+}
+
+/**
+ * Runs `MAP_ROUTE_NAMES_SCRIPT` during HTML parsing, right after the From and To well. Rendered as
+ * plain text on the client, so React never creates a script element after hydration (the Next.js
+ * notes, section 4; the same pattern as the home's saved-flight flag).
+ */
+function RouteNamesScript() {
+  return (
+    <script
+      suppressHydrationWarning
+      type={typeof window === 'undefined' ? 'text/javascript' : 'text/plain'}
+      dangerouslySetInnerHTML={{ __html: MAP_ROUTE_NAMES_SCRIPT }}
+    />
   );
 }

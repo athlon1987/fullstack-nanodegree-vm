@@ -805,14 +805,31 @@ export const EXPLORE_IMAGES: Readonly<Partial<Record<string, Readonly<Partial<Re
  * lounges (the overview's "Lounges" card), the jets in front of Terminal 1 for transit. Parking
  * keeps the aerial (the library has no car park).
  */
-export const SERVICE_IMAGES: Readonly<Partial<Record<string, Readonly<Partial<Record<string, ImageId>>>>>> = {
-  kul: { transport: 'klia-ekspres', facilities: 'klia-t1-roof', 'shop-dine': 'nasi-lemak', lounges: 'klia-t1-canopy', transit: 'aircraft-terminal-1' },
+export const SERVICE_IMAGES: Readonly<Partial<Record<string, Readonly<Partial<Record<string, ServiceImage>>>>>> = {
+  kul: {
+    transport: 'klia-ekspres',
+    // Closing fix (verification VA6 item 8, the phone log's open item 4): the band is a strip
+    // much wider than this 4:3 photograph (390 x 140 on a phone, 1440 x 220 on a desktop), so
+    // only the focal height matters. At the photograph's own 0.5 a phone showed the underside of
+    // one canopy and a column top beside sky; at 0.8 it shows the main column, the row of
+    // canopies on their tapered columns receding to the trees, and at 1440 px the column with
+    // four canopies. Only the band: the corporate About and Departing guide heroes keep the
+    // photograph's own focal point (their words sit over it, and their contrast was measured so).
+    facilities: { id: 'klia-t1-roof', focal: { x: 0.35, y: 0.8 } },
+    'shop-dine': 'nasi-lemak',
+    lounges: 'klia-t1-canopy',
+    transit: 'aircraft-terminal-1',
+  },
 };
+
+/** A band's photograph, with its own focal point where the band's crop needs one. */
+export type ServiceImage = ImageId | { id: ImageId; focal: SiteImage['focal'] };
 
 /** The place band of a service page: the section's own photograph where there is one, else the airport's. */
 export function serviceImageFor(code: string, section: string): SiteImage | undefined {
-  const id = SERVICE_IMAGES[code.toLowerCase()]?.[section];
-  return id === undefined ? heroForAirport(code) : IMAGES[id];
+  const entry = SERVICE_IMAGES[code.toLowerCase()]?.[section];
+  if (entry === undefined) return heroForAirport(code);
+  return typeof entry === 'string' ? IMAGES[entry] : { ...IMAGES[entry.id], focal: entry.focal };
 }
 
 /** For airports without their own photo: a Malaysia image that shows no particular airport. */

@@ -85,6 +85,14 @@ function kliaStatusData() {
  *
  * The picture is the first photograph of `HOME_HERO_IMAGES` (preloaded, the LCP element) or,
  * while the library is empty, the illustrated "KLIA at dusk". The `h1` is in the static HTML.
+ *
+ * Closing fix (verification VA6 item 1): the layout does not depend on how much of the hero's HTML
+ * has been parsed when the browser first paints. On a slow CPU the first paint can come with only
+ * the headline in the DOM; the content used to be anchored to the foot of the hero, so it rose by
+ * up to 350 px as the search, the switch and the strip were parsed (CLS 0.04 to 0.44 at 1440 px).
+ * Now the hero keeps its fixed minimum height (`--hero-min`) and its content starts at the top, so
+ * whatever is parsed later only adds below what is already on screen. The leftover room (17 to 61
+ * px from 768 px up, none on a phone) sits under the strip, over the photograph.
  */
 export function HomeHero({ lang, notices }: { lang: Lang; notices: readonly NoticeView[] }) {
   const t = getT(lang);
@@ -97,14 +105,22 @@ export function HomeHero({ lang, notices }: { lang: Lang; notices: readonly Noti
       aria-labelledby="home-title"
       data-hero-under-header=""
       // Polish 1b: `--hero-band` is the photograph's band on phones (the header and 14.5rem under it).
-      className="relative isolate -mt-header flex flex-col justify-end overflow-x-clip bg-midnight [--hero-band:calc(var(--spacing-header)+14.5rem)] md:min-h-[calc(100svh-2rem)] lg:min-h-[min(62rem,calc(100svh-2rem))]"
+      // Closing fix: `--hero-min` is the hero's height from 768 px (the backdrop's lower scrim is
+      // placed from it too), and the content is top-anchored (no `justify-end`): see above.
+      className="relative isolate -mt-header flex flex-col overflow-x-clip bg-midnight [--hero-band:calc(var(--spacing-header)+14.5rem)] md:min-h-(--hero-min) md:[--hero-min:calc(100svh-2rem)] lg:[--hero-min:min(62rem,calc(100svh-2rem))]"
     >
       <HeroBackdrop photo={photo} lang={lang} />
       <Container className="flex flex-col gap-[clamp(0.625rem,1.5vh,1rem)] pt-[calc(var(--spacing-header)+clamp(1rem,3.5vh,3.5rem))] pb-[clamp(1.25rem,3.5vh,3rem)]">
         {/* Redesign round one (critique item 5): from 1440 px the headline and the search share the
             left of the hero with a glass "Departing now" panel on the right (live status in the
-            hero); 48 px between the h1 and the search; the example searches wait for focus. */}
-        <div className="min-[90rem]:grid min-[90rem]:grid-cols-[minmax(0,1fr)_22rem] min-[90rem]:items-end min-[90rem]:gap-x-10">
+            hero); 48 px between the h1 and the search; the example searches wait for focus.
+            Closing fix: the row is reserved at the panel's height (21.5rem) before either column is
+            parsed, and nothing in it is anchored to a foot that moves while the HTML is parsed: the
+            left column starts at the top of the row (it was bottom-aligned, so the headline moved
+            when the search, then the panel, arrived), and the panel comes after it in the HTML, so
+            the row's height is final when the panel is placed. A search that grows on focus
+            (examples, results) pushes down, never up. */}
+        <div className="min-[90rem]:grid min-[90rem]:grid-cols-[minmax(0,1fr)_22rem] min-[90rem]:grid-rows-[minmax(21.5rem,auto)] min-[90rem]:gap-x-10">
           <div className="flex min-w-0 flex-col gap-[clamp(1rem,3vh,3rem)]">
             {/* Redesign 1b: over the photograph the words sit on a feathered scrim (no visible box);
                 the gold line keeps 4:1 or more over the brightest part of any photograph. */}
@@ -142,7 +158,10 @@ export function HomeHero({ lang, notices }: { lang: Lang; notices: readonly Noti
               )}
             />
           </div>
-          <DepartingNow className="min-h-[19rem] max-[89.99rem]:hidden" />
+          {/* Closing fix: 21.5rem, the row's reserved height (its three rows, title and footer take
+              21.3rem), so the panel never changes the row; at the row's foot when the left column
+              is taller (the lead from 960 px of height, a long Malay headline). */}
+          <DepartingNow className="min-h-[21.5rem] self-end max-[89.99rem]:hidden" />
         </div>
 
         {/* The visitor's saved flight, above the journey modes (A-08). The flag runs during HTML

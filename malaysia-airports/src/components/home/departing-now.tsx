@@ -44,6 +44,11 @@ const useWide = () =>
  * the client asked. It follows the remembered airport and the Departures/Arrivals switch; the
  * rows come from the same batched flight feed as the board preview below (shared cache, no extra
  * request). Fixed height with placeholder rows, so nothing moves when the feed answers.
+ *
+ * Closing fix (verification VA6 item 1): late in the evening today's board has fewer than three
+ * flights left, and the panel asks for tomorrow's. Until that board arrives, the missing rows are
+ * placeholder rows, and the list keeps three rows' height in any case (fewer flights, none, or a
+ * board that failed), so the panel never shrinks and grows back (it moved the hero by 37 px).
  */
 export function DepartingNow({ className }: { className?: string }) {
   const t = useT();
@@ -71,6 +76,13 @@ export function DepartingNow({ className }: { className?: string }) {
     return previewFlights(provider.listFlightsSync({ airport: slug, direction, ...glanceRange(provider.now) }), provider.now.getTime(), ROWS);
   }, [provider, wide, slug, direction]);
   if (!nextDay && flights && flights.length < ROWS) setNextDay(true);
+  // Rows that may still come: a board this panel needs (tomorrow's, late in the day) is not held
+  // yet and has not failed. Shown as placeholders, so the panel keeps its rows while it loads.
+  const waiting =
+    flights !== null && provider !== null && flights.length < ROWS && feed.status !== 'error' && feed.status !== 'stale'
+      ? !nextDay || datesInRange(glanceRange(provider.now), zone).some((date) => !provider.has(slug, date, direction))
+      : false;
+  const placeholders = flights === null ? ROWS : waiting ? ROWS - flights.length : 0;
   const name = airport ? localizeAirport(airport, lang).shortName : '';
   const titleId = 'home-departing-now';
 
@@ -82,49 +94,52 @@ export function DepartingNow({ className }: { className?: string }) {
         </h2>
         <span className="type-caption text-ink-2">{name}</span>
       </div>
-      <ul className="mt-3 flex flex-col divide-y divide-line">
-        {flights === null
-          ? Array.from({ length: ROWS }, (_, index) => (
-              <li key={index} aria-hidden="true" className="flex h-16 items-center gap-3">
-                <Skeleton className="h-5 w-12" />
-                <span className="flex flex-1 flex-col gap-1.5">
-                  <Skeleton className="h-5 w-3/4" />
-                  <Skeleton className="h-5 w-full rounded-pill" />
+      {/* Three rows' height (4rem each and the two rules between them) whatever the list holds. */}
+      <ul className="mt-3 flex min-h-[calc(3*4rem+2px)] flex-col divide-y divide-line">
+        {(flights ?? []).map((flight) => {
+          const place = remotePlace(flight);
+          const day = provider ? rowDayLabel(flight, provider.now, t) : undefined;
+          const moved = flight.estimated !== flight.scheduled && flight.status !== 'cancelled';
+          return (
+            <li key={flight.id} className="relative flex h-16 items-center gap-3">
+              <span className="flex w-[4.25rem] shrink-0 flex-col whitespace-nowrap">
+                <span className="type-data-lg text-gold-bright">{formatTime(moved ? flight.estimated : flight.scheduled, zone)}</span>
+                {day ? <span className="type-caption text-ink-2">{day}</span> : null}
+              </span>
+              {/* Polish 1b (critique-redesign1b item 4): the destination is never cut. It has the
+                  row's whole width (the status moved to line 2, the airline name is gone: the
+                  flight number is enough) and may wrap; line 2 holds the number and the status. */}
+              <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+                <LocaleLink
+                  href={flightHref(flight)}
+                  className="type-body leading-tight font-semibold [overflow-wrap:anywhere] text-ink outline-none after:absolute after:inset-0 after:rounded-lg focus-visible:after:focus-ring"
+                  aria-label={`${t('flights.search.viewFlight', { number: formatFlightNumber(flight) })}, ${placeCity(place, lang)}`}
+                >
+                  {placeCity(place, lang)}
+                </LocaleLink>
+                <span className="type-caption flex items-center gap-2 whitespace-nowrap text-ink-2">
+                  <span className="font-mono tabular-nums">{formatFlightNumber(flight)}</span>
+                  <FlightStatusPill status={flight.status} className="ml-auto shrink-0" />
                 </span>
-              </li>
-            ))
-          : flights.map((flight) => {
-              const place = remotePlace(flight);
-              const day = provider ? rowDayLabel(flight, provider.now, t) : undefined;
-              const moved = flight.estimated !== flight.scheduled && flight.status !== 'cancelled';
-              return (
-                <li key={flight.id} className="relative flex h-16 items-center gap-3">
-                  <span className="flex w-[4.25rem] shrink-0 flex-col whitespace-nowrap">
-                    <span className="type-data-lg text-gold-bright">{formatTime(moved ? flight.estimated : flight.scheduled, zone)}</span>
-                    {day ? <span className="type-caption text-ink-2">{day}</span> : null}
-                  </span>
-                  {/* Polish 1b (critique-redesign1b item 4): the destination is never cut. It has the
-                      row's whole width (the status moved to line 2, the airline name is gone: the
-                      flight number is enough) and may wrap; line 2 holds the number and the status. */}
-                  <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-                    <LocaleLink
-                      href={flightHref(flight)}
-                      className="type-body leading-tight font-semibold [overflow-wrap:anywhere] text-ink outline-none after:absolute after:inset-0 after:rounded-lg focus-visible:after:focus-ring"
-                      aria-label={`${t('flights.search.viewFlight', { number: formatFlightNumber(flight) })}, ${placeCity(place, lang)}`}
-                    >
-                      {placeCity(place, lang)}
-                    </LocaleLink>
-                    <span className="type-caption flex items-center gap-2 whitespace-nowrap text-ink-2">
-                      <span className="font-mono tabular-nums">{formatFlightNumber(flight)}</span>
-                      <FlightStatusPill status={flight.status} className="ml-auto shrink-0" />
-                    </span>
-                  </span>
-                </li>
-              );
-            })}
-        {flights !== null && flights.length === 0 ? <li className="type-body-sm py-4 text-ink-2">{t('flights.board.noFlights')}</li> : null}
+              </span>
+            </li>
+          );
+        })}
+        {Array.from({ length: placeholders }, (_, index) => (
+          <li key={`placeholder-${index}`} aria-hidden="true" className="flex h-16 items-center gap-3">
+            <Skeleton className="h-5 w-12" />
+            <span className="flex flex-1 flex-col gap-1.5">
+              <Skeleton className="h-5 w-3/4" />
+              <Skeleton className="h-5 w-full rounded-pill" />
+            </span>
+          </li>
+        ))}
+        {flights !== null && flights.length === 0 && !waiting ? <li className="type-body-sm py-4 text-ink-2">{t('flights.board.noFlights')}</li> : null}
       </ul>
-      <div className="mt-auto flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-line pt-3">
+      {/* Closing fix: straight under the list (no `mt-auto`), so the footer's place is fixed by the
+          list's reserved height as soon as it is parsed; at the panel's foot it rose by 45 px when
+          its link, parsed last, wrapped to a second line (a 0.0005 shift on a slow CPU). */}
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-line pt-3">
         {/* The quiet demonstration line: every value in the panel is simulated. */}
         <p role="note" aria-label={t('demo.bannerTitle')} data-demo-marker="" className="type-caption flex items-center gap-1.5 text-ink-2">
           <Icon name="flask-conical" size="xs" strokeWidth={2} className="text-gold-bright" />

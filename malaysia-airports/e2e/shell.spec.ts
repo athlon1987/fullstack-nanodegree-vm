@@ -540,3 +540,59 @@ test.describe('A-09 early taps', () => {
     await expect(desk.getByRole('status').first()).toContainText(/flights? found/, { timeout: 30_000 });
   });
 });
+
+/**
+ * Closing fix (verification VA6 item 1): the home's first screen must not move while it loads on a
+ * slower CPU. With a 4x CPU slowdown the browser paints before the hero's HTML is fully parsed;
+ * the hero's content was anchored to its foot, so it rose by up to 350 px as the rest arrived (CLS
+ * 0.04 to 0.44 at 1440 px, over 0.1 in 9 of 12 loads), and late in the evening "Departing now"
+ * shrank by 37 px while tomorrow's board loaded. Measured as `scripts/qa/layout-shift.mjs` does:
+ * every shift without input, from the start of the load until the page has settled. Runs in both
+ * projects (1440 x 900 and the 390 x 844 phone), by day and by night, in both languages.
+ */
+test.describe('home layout shift on a slower CPU (VA6 item 1)', () => {
+  const CLOCKS = {
+    day: new Date('2026-11-24T12:00:00+08:00'),
+    // Late in the evening: today's board has fewer than three departures left, so the desktop
+    // "Departing now" panel asks for tomorrow's board after the first one arrives.
+    night: new Date('2026-11-24T23:40:00+08:00'),
+  } as const;
+  for (const lang of ['en', 'ms'] as const) {
+    for (const when of ['day', 'night'] as const) {
+      test(`CLS 0.01 or less with a 4x slower CPU (${lang}, ${when})`, async ({ page, browserName, request }, testInfo) => {
+        test.skip(browserName !== 'chromium', 'CPU throttling is a Chromium DevTools setting');
+        const csp = (await request.get('/en/offline')).headers()['content-security-policy'] ?? '';
+        test.skip(csp.includes('unsafe-eval'), 'layout shift is measured on a production build');
+        await ownClientAddress(page, testInfo);
+        await page.clock.setFixedTime(CLOCKS[when]);
+        const cdp = await page.context().newCDPSession(page);
+        await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+        await page.addInitScript(() => {
+          const store = window as unknown as { __shifts: { value: number; at: number; nodes: string[] }[] };
+          store.__shifts = [];
+          new PerformanceObserver((list) => {
+            for (const entry of list.getEntries() as unknown as { value: number; hadRecentInput: boolean; startTime: number; sources?: { node?: Node | null }[] }[]) {
+              if (entry.hadRecentInput) continue;
+              const nodes = (entry.sources ?? []).map(({ node }) => {
+                const element = node instanceof Element ? node : (node?.parentElement ?? null);
+                return element ? `${element.tagName.toLowerCase()}${element.id ? `#${element.id}` : ''}.${String(element.getAttribute('class') ?? '').split(' ').slice(0, 2).join('.')}` : '?';
+              });
+              store.__shifts.push({ value: entry.value, at: Math.round(entry.startTime), nodes });
+            }
+          }).observe({ type: 'layout-shift', buffered: true });
+        });
+        await page.goto(`/${lang}`, { waitUntil: 'load' });
+        await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+        const panel = page.locator('aside[aria-labelledby="home-departing-now"]');
+        if (await panel.isVisible()) {
+          // From 1440 px: wait for the panel's three flights (tomorrow's board, at night).
+          await expect(panel.locator('a[href*="/flights/"]')).toHaveCount(3, { timeout: 20_000 });
+        }
+        await page.waitForTimeout(2_500);
+        const shifts = await page.evaluate(() => (window as unknown as { __shifts: { value: number; at: number; nodes: string[] }[] }).__shifts);
+        const total = shifts.reduce((sum, shift) => sum + shift.value, 0);
+        expect(total, `layout shift (${JSON.stringify(shifts)})`).toBeLessThanOrEqual(0.01);
+      });
+    }
+  }
+});

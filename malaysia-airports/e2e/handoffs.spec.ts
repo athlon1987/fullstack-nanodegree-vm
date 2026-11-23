@@ -73,7 +73,16 @@ test.describe('round 2 hand-offs', () => {
   });
 
   test('B-09: the home flight search says so when the flight feed fails, with a retry', async ({ page }) => {
-    await page.route('**/flights/feed?**', (route) => route.fulfill({ status: 503, body: 'unavailable' }));
+    // Closing fix (verification VA6 item 7), a test change: the feed comes back when "Try again" is
+    // pressed, not when the test removes its failing route. Before, a refresh that landed between
+    // `unroute` and the click (the 30-second one, about 1 run in 100) loaded the flights first, so
+    // the error notice the test was about to click had already become a stale-data notice and the
+    // click missed. Every request before the click still fails, so the notices cannot change under
+    // the test; every assertion is as before.
+    await page.route('**/flights/feed?**', async (route) => {
+      const back = await page.evaluate(() => (window as unknown as { __feedBack?: boolean }).__feedBack === true).catch(() => false);
+      return back ? route.fallback() : route.fulfill({ status: 503, body: 'unavailable' });
+    });
     await page.goto('/en');
     const search = page.getByRole('search', { name: 'Search flights' });
     await search.getByRole('searchbox').fill('MH');
@@ -85,7 +94,18 @@ test.describe('round 2 hand-offs', () => {
     await expect(notice).toBeVisible({ timeout: 10_000 });
     await expect(notice).toContainText('We could not load flight information.');
     await expect(page.locator('[data-feed-state="error"]')).toHaveCount(2);
-    await page.unroute('**/flights/feed?**');
+    // The feed is back from the moment "Try again" is pressed (a document capture listener runs
+    // before the page's own click handler, so the retry's request already finds it back).
+    await page.evaluate(() =>
+      document.addEventListener(
+        'click',
+        (event) => {
+          const button = event.target instanceof Element ? event.target.closest('button') : null;
+          if (button?.textContent?.trim() === 'Try again') (window as unknown as { __feedBack?: boolean }).__feedBack = true;
+        },
+        { capture: true },
+      ),
+    );
     await notice.getByRole('button', { name: 'Try again' }).click();
     await expect(search.getByText(/^\d+ flights? found$/).or(page.getByRole('main').getByText(/^\d+ flights? found$/)).first()).toBeVisible({ timeout: 10_000 });
   });

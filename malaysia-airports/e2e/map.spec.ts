@@ -227,6 +227,63 @@ test.describe('facilities directory', () => {
   });
 });
 
+/**
+ * Closing fix (verification VA6 items 3 and 5): a route in the address no longer moves the controls
+ * when it is applied (the From name was written after hydration and grew from one line to two or
+ * three: CLS 0.044 in English and 0.052 in Malay at 1440 px), and on the 390 x 844 phone no
+ * control on the first screen is cut by the fixed phone bar (the pan and zoom buttons were at y
+ * 765 to 809, the bar starts at 785).
+ */
+test.describe('terminal map: closing fix', () => {
+  for (const lang of ['en', 'ms'] as const) {
+    test(`a route in the address moves nothing when it is applied (CLS 0.01 or less, ${lang})`, async ({ page, request }) => {
+      const csp = (await request.get('/en/offline')).headers()['content-security-policy'] ?? '';
+      test.skip(csp.includes('unsafe-eval'), 'layout shift is measured on a production build');
+      await page.addInitScript(() => {
+        const store = window as unknown as { __shift: number };
+        store.__shift = 0;
+        new PerformanceObserver((list) => {
+          for (const entry of list.getEntries() as unknown as { value: number; hadRecentInput: boolean }[]) if (!entry.hadRecentInput) store.__shift += entry.value;
+        }).observe({ type: 'layout-shift', buffered: true });
+      });
+      await page.goto(`/${lang}/kul/map?from=l5-kerb&to=g-gates-c`, { waitUntil: 'load' });
+      // The full names are in the fields from the first paint, and stay after hydration.
+      const from = lang === 'en' ? 'Departures drop-off · Level 5' : 'Kawasan menurunkan penumpang berlepas · Aras 5';
+      const fields = page.getByRole('main').locator('[data-route-fields]');
+      await expect(fields.locator('[data-place-select="from"] [data-place-shown]')).toHaveText(from);
+      await expect(page.getByRole('main').getByRole('region', { name: lang === 'en' ? 'Your route' : /Laluan anda/ })).toBeVisible();
+      await expect(fields.getByRole('combobox').first()).toHaveValue('l5-kerb');
+      await page.waitForTimeout(1_500);
+      expect(await page.evaluate(() => (window as unknown as { __shift: number }).__shift)).toBeLessThanOrEqual(0.01);
+    });
+  }
+
+  test('on the first phone screen no map control is cut by the phone bar', async ({ page, isMobile }) => {
+    test.skip(!isMobile, 'the fixed phone bar is a phone layout');
+    await page.setViewportSize({ width: 390, height: 844 });
+    for (const path of ['/en/kul/map', '/en/kul/map?from=l5-kerb&to=g-gates-c', '/ms/kul/map?from=l5-kerb&to=g-gates-c']) {
+      await page.goto(path);
+      const zoomIn = page.getByRole('main').getByRole('button', { name: /^(Zoom in|Zum masuk)$/ });
+      await expect(zoomIn).toBeVisible();
+      if (path.includes('from=')) await expect(page.locator('[data-route-connectors]')).toBeVisible();
+      const cut = await page.evaluate(() => {
+        const bar = [...document.querySelectorAll('nav')].find((nav) => getComputedStyle(nav).position === 'fixed' && nav.getBoundingClientRect().top > innerHeight / 2);
+        const top = bar ? bar.getBoundingClientRect().top : innerHeight;
+        return [...document.querySelectorAll('main a[href], main button, main select, main input, main [tabindex="0"]')]
+          .filter((element) => {
+            const box = element.getBoundingClientRect();
+            return box.height > 0 && box.top < top - 0.5 && box.bottom > top + 0.5;
+          })
+          .map((element) => `${element.getAttribute('aria-label') ?? element.textContent?.trim().slice(0, 40)}`);
+      });
+      expect(cut, path).toEqual([]);
+      // The pan and zoom buttons are all on the first screen, above the bar.
+      const group = page.getByRole('main').getByRole('group', { name: /^(Map controls|Kawalan peta)$/ });
+      for (const button of await group.getByRole('button').all()) await expect(button).toBeInViewport({ ratio: 1 });
+    }
+  });
+});
+
 test.describe('missing airport sections (C-06)', () => {
   // Status codes only behave for real on `next start` (docs/engineering/next16-notes.md, section 5):
   // the dev server always answers 200. Run against a production server, or set E2E_STATUS_CODES=1.

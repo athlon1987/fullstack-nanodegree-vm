@@ -44,16 +44,20 @@ export default async function ConciergePage() {
           <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,21rem)] lg:gap-14">
             <div className="flex min-w-0 flex-col gap-4 sm:gap-6">
               <header className="flex flex-col gap-2.5">
+                {/* Closing fix (VA6 item 6): the title starts at the page's text edge, as on every
+                    other page (x 148 at 1440 px, 16 at 390), and the sparkle tile follows it as the
+                    concierge's mark. It came first, so the h1 started at x 220 and 72. Same row
+                    height, so nothing below it moves. */}
                 <div className="flex items-center gap-3 sm:gap-4">
+                  <div className="min-w-0">
+                    <h1 className="type-display-md text-balance text-ink">{t('conciergePage.pageTitle')}</h1>
+                  </div>
                   <span
                     aria-hidden="true"
                     className="surface-midnight flex size-11 shrink-0 items-center justify-center rounded-2xl text-gold-bright shadow-md ring-1 ring-gold/40 sm:size-14"
                   >
                     <Icon name="sparkles" className="sm:size-6" />
                   </span>
-                  <div className="min-w-0">
-                    <h1 className="type-display-md text-balance text-ink">{t('conciergePage.pageTitle')}</h1>
-                  </div>
                 </div>
                 <p className="type-body max-w-reading text-ink-2 [text-wrap:pretty]">{t('conciergePage.shortLead')}</p>
                 <HowAnswers id="concierge-how" title={t('conciergePage.aside.howTitle')} lead={t('conciergePage.lead')} steps={how} />

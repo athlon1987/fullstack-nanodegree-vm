@@ -61,7 +61,10 @@ export function HeroBackdrop({ photo, lang }: { photo?: SiteImage; lang: Lang })
               (solid glass panels of their own), so the rest of the photograph is at full strength;
               the words carry their own feathered scrim. On phones, the band's foot melts into the
               midnight ground under the search card. */}
-          <span aria-hidden="true" className="scrim-bottom absolute inset-x-0 bottom-0 h-1/3 opacity-55 max-md:h-12 max-md:opacity-100" />
+          {/* Closing fix (VA6 item 1): from 768 px the scrim starts two thirds down the hero's fixed
+              height (`--hero-min`, set by the hero) rather than a third of its final height, so it
+              does not move when content parsed late makes the hero taller (Malay at 1440 px). */}
+          <span aria-hidden="true" className="scrim-bottom absolute inset-x-0 bottom-0 h-1/3 opacity-55 max-md:h-12 max-md:opacity-100 md:top-[calc(var(--hero-min,100%)*2/3)] md:h-auto" />
         </>
       ) : (
         <HeroArt className="absolute inset-0" />

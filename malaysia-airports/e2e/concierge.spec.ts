@@ -229,6 +229,20 @@ test.describe('fix round B: concierge', () => {
   }
 });
 
+test.describe('closing fix: concierge page top', () => {
+  // Verification VA6 item 6: every page's h1 starts at the text edge (x 148 at 1440 px, 16 at 390),
+  // where its breadcrumbs start; the concierge's started after its sparkle tile (x 220 and 72).
+  for (const lang of ['en', 'ms'] as const) {
+    test(`the title starts where the breadcrumbs start (${lang})`, async ({ page }) => {
+      await page.goto(`/${lang}/concierge`);
+      const main = page.getByRole('main');
+      const title = (await main.getByRole('heading', { level: 1 }).boundingBox())!;
+      const crumbs = (await main.locator('[data-page-breadcrumbs] ol').first().boundingBox())!;
+      expect(Math.abs(title.x - crumbs.x), `h1 at x ${title.x}, breadcrumbs at x ${crumbs.x}`).toBeLessThanOrEqual(1);
+    });
+  }
+});
+
 test.describe('concierge API', () => {
   test('validates input and answers with a mode', async ({ request }) => {
     const bad = await request.post('/api/concierge', { data: { question: '', lang: 'xx' } });

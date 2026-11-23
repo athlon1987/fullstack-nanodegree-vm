@@ -2,7 +2,9 @@
 
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from 'react';
 import { cn } from '@/lib/cn';
+import { useHydrated } from '@/lib/hooks/use-store';
 import { useT } from '@/lib/i18n/client';
+import { MAP_ROUTE_STRIP_SCRIPT } from '@/lib/inline-scripts';
 import { Icon } from '@/components/ui/icon';
 import { IconButton } from '@/components/ui/icon-button';
 import {
@@ -126,6 +128,8 @@ export function MapCanvas({
   onFrameChange,
 }: MapCanvasProps) {
   const t = useT();
+  // Closing fix: false in the server HTML and while hydrating (the strip's placeholder), true after.
+  const hydrated = useHydrated();
   const instructionsId = useId();
   const patternId = `map${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`;
   const frameRef = useRef<HTMLDivElement>(null);
@@ -343,6 +347,18 @@ export function MapCanvas({
           'has-[[data-map-surface]:focus-visible]:focus-ring-inset',
         )}
       >
+        {/* Closing fix (VA6 item 5): the skip link comes before the drawing, where it skips the
+            places on it (each a button) and the controls, and shows over the drawing's corner when
+            it has focus, like the site's own skip link. It was the first item of the bar under the
+            drawing, after every marker, and its own row on a phone pushed the zoom and pan buttons
+            half under the phone bar. */}
+        <a
+          href="#map-places"
+          onKeyDown={(event) => event.stopPropagation()}
+          className="type-body-sm sr-only rounded-pill bg-ink px-4 py-2.5 font-semibold text-page shadow-lg focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-20 focus-visible:focus-ring"
+        >
+          {t('mapPages.canvas.skipToList')}
+        </a>
         <p id={instructionsId} className="sr-only">
           {t('mapPages.canvas.instructions')}
         </p>
@@ -480,16 +496,16 @@ export function MapCanvas({
         </svg>
       </div>
 
-      <div className="col-span-full flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 border-t border-line bg-surface px-3 py-2">
-        <a href="#map-places" className="link-action type-body-sm px-1.5 text-ink-2 hover:text-ink">
-          {t('mapPages.canvas.skipToList')}
-        </a>
-        <div role="group" aria-label={t('mapPages.canvas.controls')} className="flex flex-wrap items-center justify-center gap-0.5 rounded-2xl bg-page-subtle p-1">
+      {/* Closing fix (VA6 item 5): the pan and zoom buttons are the bar's only row. On a phone they
+          share the card's width (seven 44 px buttons, no divider), so at 390 x 844 they sit at y
+          715 to 759, clear of the phone bar from y 785 (they were at 765 to 809, half under it). */}
+      <div className="col-span-full flex flex-wrap items-center justify-end border-t border-line bg-surface px-2 py-2 sm:px-3">
+        <div role="group" aria-label={t('mapPages.canvas.controls')} className="flex flex-wrap items-center justify-center gap-0.5 rounded-2xl bg-page-subtle p-1 max-sm:w-full max-sm:justify-between">
           <IconButton size="sm" icon="arrow-left" label={t('mapPages.canvas.panLeft')} onClick={() => pan(-frame.width * 0.25, 0)} />
           <IconButton size="sm" icon="arrow-up" label={t('mapPages.canvas.panUp')} onClick={() => pan(0, -frame.height * 0.25)} />
           <IconButton size="sm" icon="arrow-down" label={t('mapPages.canvas.panDown')} onClick={() => pan(0, frame.height * 0.25)} />
           <IconButton size="sm" icon="arrow-right" label={t('mapPages.canvas.panRight')} onClick={() => pan(frame.width * 0.25, 0)} />
-          <span aria-hidden="true" className="mx-1 h-6 w-px bg-line" />
+          <span aria-hidden="true" className="mx-1 h-6 w-px bg-line max-sm:hidden" />
           <IconButton size="sm" icon="zoom-out" label={t('map.zoomOut')} onClick={() => zoom(1 / 1.6)} disabled={view.k <= MIN_ZOOM + 0.001} />
           <IconButton size="sm" icon="zoom-in" label={t('map.zoomIn')} onClick={() => zoom(1.6)} disabled={view.k >= MAX_ZOOM - 0.001} />
           <IconButton size="sm" icon="locate-fixed" label={t('map.resetView')} onClick={reset} />
@@ -503,24 +519,55 @@ export function MapCanvas({
           "Immigration and security" label (and "To Level 3" a check-in row): no chip is drawn
           over a place or its label any more. */}
       {connectors.length > 0 ? (
-        <div data-route-connectors="" className="col-span-full flex flex-wrap items-center gap-x-3 gap-y-1.5 border-t border-line bg-surface px-4 py-2.5">
-          <span className="type-body-sm text-ink-2">{t('mapPages.canvas.continues')}</span>
+        <div data-route-connectors="" className={STRIP_CLASSES}>
+          {/* Closing fix: on a phone the words take their own line and the buttons the next, so
+              on the first 390 x 844 screen no button is cut by the phone bar (the strip starts
+              just above it; the buttons begin under it, in full, and come into view on scrolling). */}
+          <span className={STRIP_LABEL_CLASSES}>{t('mapPages.canvas.continues')}</span>
           {connectors.map((connector) => (
-            <button
-              key={connector.key}
-              type="button"
-              onClick={() => onLevelChange(connector.toLevel)}
-              className="type-caption inline-flex min-h-8 items-center gap-1 rounded-pill bg-primary px-3 font-semibold whitespace-nowrap text-on-primary shadow-sm hover:bg-primary-hover focus-visible:focus-ring touch:min-h-11"
-            >
+            <button key={connector.key} type="button" onClick={() => onLevelChange(connector.toLevel)} className={STRIP_BUTTON_CLASSES}>
               <Icon name={connector.direction === 'up' ? 'arrow-up' : 'arrow-down'} size="xs" strokeWidth={2.25} />
               {t('mapPages.canvas.toLevel', { level: connector.label })}
             </button>
           ))}
         </div>
+      ) : !hydrated ? (
+        <>
+          {/* Closing fix: the strip's room, held from the first paint when the address has a route
+              that will show it (the script decides; see `MAP_ROUTE_STRIP_SCRIPT`). The same
+              classes and one invisible button, so it is exactly the strip's height; hidden in the
+              HTML, and gone once hydrated, when the strip itself takes its place. */}
+          <div
+            data-route-strip-placeholder=""
+            data-terminal={map.terminal}
+            data-levels={JSON.stringify(Object.fromEntries(map.pois.map((poi) => [poi.id, poi.level])))}
+            hidden
+            aria-hidden="true"
+            suppressHydrationWarning
+            className={cn(STRIP_CLASSES, '[&>*]:invisible')}
+          >
+            <span className={STRIP_LABEL_CLASSES}>{t('mapPages.canvas.continues')}</span>
+            <span className={STRIP_BUTTON_CLASSES}>
+              <Icon name="arrow-down" size="xs" strokeWidth={2.25} />
+              {t('mapPages.canvas.toLevel', { level: map.levels[0]?.label ?? '' })}
+            </span>
+          </div>
+          <script
+            suppressHydrationWarning
+            type={typeof window === 'undefined' ? 'text/javascript' : 'text/plain'}
+            dangerouslySetInnerHTML={{ __html: MAP_ROUTE_STRIP_SCRIPT }}
+          />
+        </>
       ) : null}
     </div>
   );
 }
+
+/** The "route continues" strip, its words and its buttons (shared with its placeholder). */
+const STRIP_CLASSES = 'col-span-full flex flex-wrap items-center gap-x-3 gap-y-1.5 border-t border-line bg-surface px-4 py-2.5';
+const STRIP_LABEL_CLASSES = 'type-body-sm text-ink-2 max-sm:w-full';
+const STRIP_BUTTON_CLASSES =
+  'type-caption inline-flex min-h-8 items-center gap-1 rounded-pill bg-primary px-3 font-semibold whitespace-nowrap text-on-primary shadow-sm hover:bg-primary-hover focus-visible:focus-ring touch:min-h-11';
 
 function Marker({ poi, radius, iconSize, variant }: { poi: PoiView; radius: number; iconSize: number; variant: 'default' | 'selected' | 'start' | 'end' }) {
   const illustrative = poi.provenance === 'demo';
