@@ -24,6 +24,7 @@ import { Icon, type IconKey } from '@/components/ui/icon';
 import { IconButton } from '@/components/ui/icon-button';
 import { Kbd } from '@/components/ui/kbd';
 import { focusDestination } from './focus-destination';
+import { Highlight } from './highlight';
 import { clearRecentSearches, loadSearchIndex, rememberSearch, useRecentSearches, useSiteSearch } from './site-search';
 
 type Item =
@@ -46,7 +47,7 @@ interface Group {
  * theme (WCAG 1.4.11), because DOM focus stays in the combobox.
  */
 const OPTION =
-  'relative flex min-h-12 w-full cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-left text-ink outline-none ' +
+  'relative flex min-h-13 w-full cursor-pointer items-center gap-3 rounded-xl px-2.5 py-2 text-left text-ink outline-none ' +
   'aria-selected:bg-primary-soft aria-selected:text-primary-ink aria-selected:outline-2 aria-selected:outline-solid aria-selected:-outline-offset-2 aria-selected:outline-focus aria-selected:shadow-[inset_4px_0_0_0_var(--color-focus)] ' +
   'forced-colors:aria-selected:outline-[Highlight]';
 
@@ -227,7 +228,9 @@ export function CommandPalette() {
     if (item.kind === 'recent') {
       return (
         <div key={item.id} {...common} onClick={() => activate(item)}>
-          <Icon name="history" size="sm" className="text-ink-3" />
+          <span aria-hidden="true" className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-fill text-ink-2">
+            <Icon name="history" size="sm" />
+          </span>
           <span className="min-w-0 flex-1">{item.query}</span>
         </div>
       );
@@ -251,11 +254,22 @@ export function CommandPalette() {
         </LocaleLink>
       );
     }
+    // Redesign stage two: a type icon on a soft tile, the query's words marked in the title, and an
+    // honest "not published" answer marked as such (a dashed tile in gold, never an error colour).
+    const gap = item.kind === 'link' && item.icon === 'unpublished';
     return (
       <LocaleLink key={item.id} {...common} href={item.href} onClick={() => go(item.href)}>
-        <Icon name={item.kind === 'all' ? 'search' : item.icon} size="sm" className="text-ink-3" />
+        <span
+          aria-hidden="true"
+          className={cn(
+            'flex size-9 shrink-0 items-center justify-center rounded-lg',
+            item.kind === 'all' ? 'bg-primary text-on-primary' : gap ? 'border border-dashed border-gold bg-gold-soft text-gold-ink' : 'bg-fill text-ink-2',
+          )}
+        >
+          <Icon name={item.kind === 'all' ? 'search' : item.icon} size="sm" />
+        </span>
         <span className="min-w-0 flex-1">
-          <span className={item.kind === 'all' ? 'font-semibold' : 'font-medium'}>{item.label}</span>
+          <span className={item.kind === 'all' ? 'font-semibold' : 'font-medium'}>{item.kind === 'link' && searching ? <Highlight text={item.label} query={text} /> : item.label}</span>
         </span>
         {item.kind === 'link' && item.meta ? <span className="type-caption shrink-0 text-ink-2">{item.meta}</span> : null}
         <Icon name="arrow-right" size="sm" strokeWidth={1.75} className={cn('shrink-0 text-ink-3', !selected && 'opacity-0')} />
@@ -272,14 +286,14 @@ export function CommandPalette() {
           onCloseAutoFocus={onCloseAutoFocus}
           className={cn(
             'fixed inset-0 z-50 flex flex-col bg-surface-raised text-ink shadow-lg outline-none data-[state=closed]:animate-fade-out data-[state=open]:animate-fade-in',
-            'sm:inset-x-auto sm:top-[9vh] sm:bottom-auto sm:left-1/2 sm:max-h-[min(42rem,82vh)] sm:w-[min(44rem,calc(100vw-2rem))] sm:-translate-x-1/2 sm:rounded-xl sm:border sm:border-line-strong',
+            'sm:inset-x-auto sm:top-[9vh] sm:bottom-auto sm:left-1/2 sm:max-h-[min(42rem,82vh)] sm:w-[min(44rem,calc(100vw-2rem))] sm:-translate-x-1/2 sm:overflow-hidden sm:rounded-3xl sm:border sm:border-line sm:shadow-xl',
           )}
         >
           <DialogPrimitive.Title className="sr-only">{t('search.title')}</DialogPrimitive.Title>
 
           {/* DOM focus lives in the text field: its row shows the standard focus ring (WCAG 2.4.7). */}
-          <div className="flex items-center gap-1 border-b border-line py-1.5 pr-1.5 pl-4 has-[input:focus-visible]:focus-ring-inset">
-            <Icon name="search" className="shrink-0 text-ink-3" />
+          <div className="flex items-center gap-1 border-b border-line py-2 pr-2 pl-5 has-[input:focus-visible]:focus-ring-inset">
+            <Icon name="search" className="shrink-0 text-ink-2" />
             <input
               role="combobox"
               type="text"
@@ -324,7 +338,7 @@ export function CommandPalette() {
                     setEverywhere(option.everywhere);
                     setActive(0);
                   }}
-                  className="inline-flex h-8 items-center gap-1.5 rounded-md border border-line-control px-2.5 text-sm font-medium text-ink transition-colors duration-fast hover:border-ink aria-pressed:border-ink aria-pressed:bg-ink aria-pressed:text-page touch:h-11"
+                  className="inline-flex h-8 items-center gap-1.5 rounded-pill border border-line-control px-3 text-sm font-medium text-ink transition-colors duration-fast hover:border-ink aria-pressed:border-ink aria-pressed:bg-ink aria-pressed:text-page touch:h-11"
                 >
                   {everywhere === option.everywhere ? <Icon name="check" size="sm" strokeWidth={2.25} /> : null}
                   {option.label}
@@ -355,7 +369,7 @@ export function CommandPalette() {
             </div>
 
             {searching && results.status === 'error' ? (
-              <div className="m-2 flex flex-wrap items-center justify-between gap-3 rounded-md border border-line bg-page-subtle p-4">
+              <div className="m-2 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-page-subtle p-4">
                 <p className="type-body-sm text-ink">{t('search.failed')}</p>
                 <Button variant="secondary" size="sm" iconStart="refresh-cw" onClick={() => loadSearchIndex(lang)}>
                   {t('common.actions.retry')}
@@ -363,7 +377,7 @@ export function CommandPalette() {
               </div>
             ) : null}
             {searching && results.status === 'ready' && found === 0 ? (
-              <div className="m-2 rounded-md border border-line bg-page-subtle p-4">
+              <div className="m-2 rounded-2xl bg-page-subtle p-5">
                 <p className="type-body font-semibold text-ink">{t('search.noResults', { query: text })}</p>
                 <p className="type-body-sm mt-1 text-ink-2">{t('search.noResultsHint')}</p>
                 <Button variant="secondary" size="sm" iconStart="sparkles" className="mt-3" onClick={() => overlays.openConcierge(text)}>

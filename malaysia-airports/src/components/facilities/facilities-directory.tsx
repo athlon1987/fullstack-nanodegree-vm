@@ -150,9 +150,9 @@ function Directory({
           {t('mapPages.facilities.filtersTitle')}
           {active > 0 ? ` (${active})` : null}
         </Button>
-        <div id="facility-filters-panel" className={cn('mt-4 flex-col gap-5 rounded-xl border border-line-strong bg-surface p-4 lg:flex', open ? 'flex' : 'hidden')}>
+        <div id="facility-filters-panel" className={cn('mt-4 flex-col gap-6 rounded-3xl border border-line bg-surface p-5 shadow-sm lg:flex', open ? 'flex' : 'hidden')}>
           <div role="group" aria-labelledby="facility-type-label">
-            <p id="facility-type-label" className="type-body-sm mb-2 font-semibold text-ink">
+            <p id="facility-type-label" className="type-eyebrow mb-2.5 text-ink-2">
               {t('mapPages.facilities.category')}
             </p>
             <div className="flex flex-wrap gap-2">
@@ -185,7 +185,7 @@ function Directory({
 
           {multiTerminal ? (
             <div role="group" aria-labelledby="facility-terminal-label">
-              <p id="facility-terminal-label" className="type-body-sm mb-2 font-semibold text-ink">
+              <p id="facility-terminal-label" className="type-eyebrow mb-2.5 text-ink-2">
                 {t('mapPages.facilities.terminal')}
               </p>
               <div className="flex flex-wrap gap-2">
@@ -204,7 +204,7 @@ function Directory({
           ) : null}
 
           <div role="group" aria-labelledby="facility-area-label">
-            <p id="facility-area-label" className="type-body-sm mb-2 font-semibold text-ink">
+            <p id="facility-area-label" className="type-eyebrow mb-2.5 text-ink-2">
               {t('mapPages.facilities.area')}
             </p>
             <div className="flex flex-wrap gap-2">
@@ -225,8 +225,8 @@ function Directory({
         </div>
       </section>
 
-      <div className="min-w-0">
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+      <div id="facility-results" className="min-w-0 scroll-mt-32">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
           <p className="type-data-sm text-ink-2" aria-live="polite">
             {t.count('mapPages.facilities.results', shown.length)}
           </p>
@@ -247,7 +247,7 @@ function Directory({
             {t('mapPages.facilities.emptyBody')}
           </EmptyState>
         ) : (
-          <div className="flex flex-col gap-10 @container">
+          <div className="flex flex-col gap-14 @container">
             {groups.map((group) => {
               // Round 4 (A-14): one source list per section, not a toggle on every card. Each source
               // names the facilities it supports. The date is said once when the cards share it;
@@ -271,9 +271,9 @@ function Directory({
               );
               return (
                 <section key={group.id} aria-labelledby={`facility-group-${group.id}`}>
-                  <h2 id={`facility-group-${group.id}`} className="type-title-lg mb-4 flex items-baseline gap-3 border-b border-line pb-2 text-ink">
+                  <h2 id={`facility-group-${group.id}`} className="type-display-sm mb-5 flex items-center gap-3 text-ink">
                     {group.label}
-                    <span className="type-data-sm text-ink-3">{group.items.length}</span>
+                    <span className="type-data-sm rounded-pill bg-fill px-2.5 py-0.5 text-ink-2">{group.items.length}</span>
                   </h2>
                   {/* Round 6 (review-3 9.1 item 7): with no filter, a long group shows its first
                       cards and keeps the rest behind a disclosure on phones (the page was 15,451 px
@@ -301,7 +301,7 @@ function Directory({
             })}
             {placeholders.length > 0 ? (
               <section aria-labelledby="facility-group-unpublished" data-facility-placeholders="">
-                <h2 id="facility-group-unpublished" className="type-title-lg mb-1 border-b border-line pb-2 text-ink">
+                <h2 id="facility-group-unpublished" className="type-display-sm mb-2 text-ink">
                   {t('mapPages.facilities.placeholderTitle')}
                 </h2>
                 <p className="type-body-sm text-ink-2">{t('mapPages.facilities.placeholderLead', { airport: airportName ?? '' })}</p>
@@ -314,10 +314,10 @@ function Directory({
                       key={category}
                       id={`facility-unpublished-${category}`}
                       aria-labelledby={`facility-unpublished-${category}-title`}
-                      className="flex min-w-0 scroll-mt-32 flex-col gap-3 rounded-xl border border-dashed border-line-strong bg-page-subtle p-4 sm:p-5"
+                      className="flex min-w-0 scroll-mt-32 flex-col gap-3 rounded-2xl border border-dashed border-line-strong bg-page-subtle p-5 sm:p-6"
                     >
                       <div className="flex items-start gap-3">
-                        <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-surface text-ink-2">
+                        <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-surface text-ink-2">
                           <Icon name={category} />
                         </span>
                         <h3 id={`facility-unpublished-${category}-title`} className="type-title-md min-w-0 text-ink">

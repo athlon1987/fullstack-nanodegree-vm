@@ -73,7 +73,7 @@ export function ParkedCarControl({ slug, timezone, carParks, premiumWarning }: P
 
   return (
     <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
-      <div className="rounded-xl border border-line-strong bg-surface p-4 shadow-xs sm:p-5">
+      <div className="rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">
         <h3 ref={heading} tabIndex={-1} className="type-title-md flex items-center gap-2.5 text-ink focus:outline-none focus-visible:focus-ring">
           <Icon name="car-front" />
           {here && !editing ? t('transportPages.parked.current') : t('transportPages.parked.title')}
@@ -198,7 +198,7 @@ export function ParkedCarControl({ slug, timezone, carParks, premiumWarning }: P
         </p>
       </div>
 
-      <div className="flex flex-col gap-3 rounded-xl border border-line bg-page-subtle p-4 sm:p-5">
+      <div className="flex flex-col gap-3 rounded-2xl bg-page-subtle p-4 sm:p-5">
         <p className="type-body-sm flex items-start gap-2.5 text-ink-2">
           <Icon name="shield-check" size="sm" className="mt-0.5 shrink-0 text-ink" />
           {t('transportPages.parked.deviceOnly')}

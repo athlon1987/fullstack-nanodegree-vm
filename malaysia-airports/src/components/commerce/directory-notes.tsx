@@ -77,7 +77,7 @@ export function Coverage({ lang, stats }: CoverageProps) {
     { key: 'price', value: stats.price },
   ] as const;
   return (
-    <section aria-labelledby="coverage-title" className="mt-16 border-t border-line pt-10">
+    <section aria-labelledby="coverage-title" className="mt-16">
       <div className="grid gap-x-10 gap-y-3 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)]">
         <h2 id="coverage-title" className="type-title-lg text-ink">
           {t('commercePages.coverage.title')}

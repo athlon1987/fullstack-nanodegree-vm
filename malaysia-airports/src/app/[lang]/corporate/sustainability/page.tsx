@@ -41,7 +41,7 @@ export default async function CorporateSustainabilityPage() {
           </ExternalLink>
         }
       />
-      <Container className="flex flex-col gap-14 pb-section">
+      <Container className="flex flex-col gap-20 pt-12 pb-section sm:gap-24 sm:pt-16">
         <PageSection id="targets" first number={1} title={t('corporatePages.sustainability.targetsTitle')}>
           <FactList facts={factViews(SUSTAINABILITY_TARGETS, lang)} t={t} layout="grid" />
         </PageSection>

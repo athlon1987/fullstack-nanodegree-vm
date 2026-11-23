@@ -41,15 +41,15 @@ export function FacilityCard({ facility, sources, showTerminal, airport, default
     <article
       id={facility.id}
       aria-labelledby={`${facility.id}-title`}
-      className="flex min-w-0 scroll-mt-32 flex-col rounded-xl border border-line-strong bg-surface p-4 shadow-xs target:border-ink target:shadow-md sm:p-5"
+      className="flex min-w-0 scroll-mt-32 flex-col rounded-2xl border border-line bg-surface p-5 shadow-sm target:border-ink target:shadow-lg sm:p-6"
     >
       {/* Round 6 (review-3 9.1 item 8): the title is never narrower than its longest word
           ("ketidakupayaan" broke at 360 px and 125% text); the save button moves under it instead. */}
       <div className="flex flex-wrap items-start gap-3">
-        <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-page-subtle text-ink">
+        <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-primary-soft text-primary-ink">
           <Icon name={facility.icon} />
         </span>
-        <h3 id={`${facility.id}-title`} className="type-title-md flex-1 basis-0 self-center [overflow-wrap:normal] text-ink">
+        <h3 id={`${facility.id}-title`} className="type-title-lg flex-1 basis-0 self-center [overflow-wrap:normal] text-ink">
           {facility.name}
         </h3>
         {airport ? <SaveFacility airport={airport} facility={facility} /> : null}
@@ -63,7 +63,7 @@ export function FacilityCard({ facility, sources, showTerminal, airport, default
         </div>
       ) : null}
 
-      <p className="type-body mt-3 text-ink-2">{facility.description}</p>
+      <p className="type-body mt-4 text-ink-2">{facility.description}</p>
 
       {/* Round 6 (review-3 9.1 item 7): where and when stay on the card; who may use it, the area
           and the operator go behind a disclosure on phones when there are two or more of them or

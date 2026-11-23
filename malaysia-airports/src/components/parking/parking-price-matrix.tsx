@@ -9,6 +9,8 @@ import { SectionSourceList } from '@/components/common/section-source-list';
 import { TerminalBadge } from '@/components/common/terminal-badge';
 import { sourcesFor } from '@/components/transport/transport-types';
 import { Icon } from '@/components/ui/icon';
+import { buttonClasses } from '@/components/ui/button';
+import { SERVICE_TOOL } from '@/components/facilities/service-frame';
 import { TableScroll } from '@/components/ui/table';
 import { MATRIX_DAYS, priceRow, type PriceCell } from './parking-logic';
 import type { CarParkView, ParkingPageData } from './parking-types';
@@ -39,20 +41,22 @@ export function ParkingPriceMatrix({ data, t, lang, transportLink }: ParkingPric
   const money = (amount: number) => formatCurrency(amount, lang, { alwaysShowSen: !Number.isInteger(amount) });
 
   return (
-    <section aria-labelledby="parking-prices-title" data-parking-matrix="" data-answer-task="parking-price" data-answer-state={answerState} className="flex flex-col gap-3">
-      <div>
-        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
-          <h2 id="parking-prices-title" className="type-title-lg text-ink">
+    <section aria-labelledby="parking-prices-title" data-parking-matrix="" data-answer-task="parking-price" data-answer-state={answerState} className={cn(SERVICE_TOOL, 'flex flex-col overflow-hidden')}>
+      {/* Redesign stage two: the answer of the page in one raised panel (heading, table, sources and
+          the booking hand-off), the table full bleed inside it. */}
+      <div className="px-4 pt-5 pb-4 sm:px-7 sm:pt-6">
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1.5">
+          <h2 id="parking-prices-title" className="type-display-sm text-ink">
             {t('transportPages.matrix.title')}
           </h2>
           <ProvenanceTag provenance="estimated" length="short" />
         </div>
-        <p className="type-body-sm mt-1 max-w-reading text-ink-2">{allPublished ? t('transportPages.matrix.leadPublished') : t('transportPages.matrix.leadCeiling')}</p>
+        <p className="type-body-sm mt-1.5 max-w-reading text-ink-2">{allPublished ? t('transportPages.matrix.leadPublished') : t('transportPages.matrix.leadCeiling')}</p>
       </div>
 
       {/* A scroll region, not `overflow-hidden`: at 320 px and 125% text the table is wider than
           the screen, and clipping hid the 7-day column and scrolled the page (verification round, A-16). */}
-      <TableScroll label={t('transportPages.matrix.caption', { airport: data.airportName })} className="rounded-xl border border-line-strong bg-surface shadow-xs">
+      <TableScroll label={t('transportPages.matrix.caption', { airport: data.airportName })} className="border-y border-line">
         <table className="w-full border-collapse text-left">
           <caption className="sr-only">{t('transportPages.matrix.caption', { airport: data.airportName })}</caption>
           <colgroup>
@@ -62,12 +66,12 @@ export function ParkingPriceMatrix({ data, t, lang, transportLink }: ParkingPric
             ))}
           </colgroup>
           <thead>
-            <tr className="border-b border-line-strong bg-page-subtle">
-              <th scope="col" className="type-caption py-2 pr-2 pl-3 font-semibold text-ink-2 sm:pl-4">
+            <tr className="border-b border-line bg-page-subtle">
+              <th scope="col" className="type-caption py-2.5 pr-2 pl-4 font-semibold text-ink-2 sm:pl-7">
                 {t('transportPages.parking.carPark')}
               </th>
               {MATRIX_DAYS.map((days) => (
-                <th key={days} scope="col" className="type-caption px-2 py-2 text-right font-semibold text-ink-2 last:pr-3 sm:last:pr-4">
+                <th key={days} scope="col" className="type-caption px-1 py-2.5 text-right font-semibold text-ink-2 last:pr-4 sm:px-2 sm:last:pr-7">
                   {t.count('common.units.days', days)}
                 </th>
               ))}
@@ -76,15 +80,15 @@ export function ParkingPriceMatrix({ data, t, lang, transportLink }: ParkingPric
           {rows.map(({ carPark, cells }) => (
             <tbody key={carPark.id} data-car-park={carPark.id} className="border-b border-line last:border-b-0">
               <tr>
-                <th scope="row" className="py-2.5 pr-2 pl-3 align-top font-normal sm:pl-4">
-                  <span className="type-body-sm block font-semibold text-ink">{carPark.name}</span>
+                <th scope="row" className="pt-3.5 pr-2 pb-2 pl-4 align-top font-normal sm:pl-7">
+                  <span className="type-body-sm sm:type-title-sm block font-semibold text-ink">{carPark.name}</span>
                   <span className="type-caption mt-0.5 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-ink-2">
                     {t(`transportPages.parking.types.${carPark.type}`)}
                     {multi && carPark.terminal ? <TerminalBadge terminal={carPark.terminal} size="sm" /> : null}
                   </span>
                 </th>
                 {cells.every((cell) => cell.kind === 'none') ? (
-                  <td colSpan={MATRIX_DAYS.length} className="type-body-sm px-2 py-2.5 pr-3 text-right align-top font-medium text-ink-2 sm:pr-4">
+                  <td colSpan={MATRIX_DAYS.length} className="type-body-sm px-2 pt-3.5 pb-2 pr-4 text-right align-top font-medium text-ink-2 sm:pr-7">
                     <span className="inline-flex items-center gap-1.5">
                       <Icon name="circle-dashed" size="sm" />
                       {t('transportPages.matrix.none')}
@@ -95,7 +99,7 @@ export function ParkingPriceMatrix({ data, t, lang, transportLink }: ParkingPric
                 )}
               </tr>
               <tr>
-                <td colSpan={MATRIX_DAYS.length + 1} className="px-3 pb-2.5 sm:px-4">
+                <td colSpan={MATRIX_DAYS.length + 1} className="px-4 pb-3.5 sm:px-7">
                   <RowNote carPark={carPark} cells={cells} data={data} t={t} />
                 </td>
               </tr>
@@ -106,25 +110,28 @@ export function ParkingPriceMatrix({ data, t, lang, transportLink }: ParkingPric
 
       {/* Round 5 (A-14, 6.1.7): one source list for the table (each source names its car parks),
           instead of a toggle under every row. */}
-      <SectionSourceList items={rows.filter(({ carPark }) => carPark.type !== 'preferred' || !data.premiumWarning).map(({ carPark, cells }) => ({ name: carPark.name, sources: rowSources(carPark, cells, data) }))} />
+      <div className="flex flex-col gap-4 px-4 pt-3 pb-5 sm:px-7 sm:pb-6">
+        <SectionSourceList items={rows.filter(({ carPark }) => carPark.type !== 'preferred' || !data.premiumWarning).map(({ carPark, cells }) => ({ name: carPark.name, sources: rowSources(carPark, cells, data) }))} />
 
-      <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-        {/* Measurement (round 4, 6.1.9): the main booking hand-off, like the car-park cards' links. */}
-        <ExternalLink href={data.officialUrl} variant="action" className="type-body-sm font-semibold" data-handoff="parking-booking">
-          {t('transportPages.parking.bookAction')}
-        </ExternalLink>
-        <a href="#parking-calculator-title" className="link-action type-body-sm text-ink">
-          {t('transportPages.matrix.estimateYours')}
-          <Icon name="arrow-down" size="sm" />
-        </a>
-        {transportLink}
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+          {/* Measurement (round 4, 6.1.9): the main booking hand-off, like the car-park cards' links.
+              Redesign stage two: the page's one primary action. */}
+          <ExternalLink href={data.officialUrl} variant="plain" className={buttonClasses({ variant: 'primary' })} data-handoff="parking-booking">
+            {t('transportPages.parking.bookAction')}
+          </ExternalLink>
+          <a href="#parking-calculator-title" className="link-action type-body-sm text-ink">
+            {t('transportPages.matrix.estimateYours')}
+            <Icon name="arrow-down" size="sm" />
+          </a>
+          {transportLink}
+        </div>
       </div>
     </section>
   );
 }
 
 function MatrixCell({ cell, money, t }: { cell: PriceCell; money: (amount: number) => string; t: Translator }) {
-  const base = 'type-data-sm px-1.5 py-2.5 text-right align-top whitespace-nowrap last:pr-3 sm:px-2 sm:last:pr-4';
+  const base = 'type-data-sm sm:type-data-md px-1 pt-3.5 pb-2 text-right align-top whitespace-nowrap last:pr-4 sm:px-2 sm:last:pr-7';
   if (cell.kind === 'none') {
     return (
       <td className={cn(base, 'text-ink-2')}>
@@ -154,7 +161,7 @@ function RowNote({ carPark, cells, data, t }: { carPark: CarParkView; cells: Pri
 
   if (warning) {
     return (
-      <div className="flex items-start gap-2 rounded-md border border-warning-border bg-warning-bg px-2.5 py-1.5 text-warning-fg">
+      <div className="flex items-start gap-2 rounded-xl border border-warning-border/40 bg-warning-bg px-3 py-2 text-warning-fg hc:border-warning-border">
         <Icon name="triangle-alert" size="sm" className="mt-0.5 shrink-0" />
         <p className="type-body-sm min-w-0">
           <span className="font-semibold">{warning.title}</span>{' '}

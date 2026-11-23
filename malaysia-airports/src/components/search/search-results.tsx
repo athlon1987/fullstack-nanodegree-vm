@@ -18,6 +18,8 @@ import { FilterChip } from '@/components/ui/filter-chip';
 import { Icon } from '@/components/ui/icon';
 import { SearchField } from '@/components/ui/search-field';
 import { Skeleton } from '@/components/ui/skeleton';
+import { cn } from '@/lib/cn';
+import { Highlight } from './highlight';
 import { loadSearchIndex, rememberSearch, useSiteSearch } from './site-search';
 
 /**
@@ -50,9 +52,9 @@ export function SearchResults() {
   const flights =
     results.flights.length > 0 ? (
       <section aria-labelledby="search-flights" className="min-w-0">
-        <h2 id="search-flights" className="type-title-lg mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-ink">
+        <h2 id="search-flights" className="type-title-lg mb-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-ink">
           {t('search.types.flight')}
-          <span className="type-data-sm text-ink-2">{results.flights.length}</span>
+          <span className="type-data-sm inline-flex h-6 min-w-6 items-center justify-center rounded-pill bg-fill px-2 text-ink-2">{results.flights.length}</span>
         </h2>
         <DemoDataBanner compact attached />
         {/* A "Demo" marker stays in view while the rows scroll past on a phone (A-04). */}
@@ -77,7 +79,7 @@ export function SearchResults() {
           event.preventDefault();
           rememberSearch(text);
         }}
-        className="flex flex-col gap-3"
+        className="flex flex-col gap-3 rounded-3xl bg-surface p-3 shadow-lg ring-1 ring-line sm:p-4"
       >
         <SearchField
           label={t('search.label')}
@@ -90,7 +92,7 @@ export function SearchResults() {
           autoFocus
         />
         {airport ? (
-          <div role="group" aria-label={t('search.scopeLabel')} className="flex flex-wrap items-center gap-2">
+          <div role="group" aria-label={t('search.scopeLabel')} className="flex flex-wrap items-center gap-2 px-1">
             <span className="type-body-sm text-ink-2">{t('search.scopeLabel')}</span>
             <FilterChip pressed={!everywhere} onPressedChange={() => setEverywhere(false)}>
               {airport.shortName}
@@ -102,7 +104,7 @@ export function SearchResults() {
         ) : null}
       </form>
 
-      <p role="status" className="type-body text-ink-2">
+      <p role="status" className="type-body px-1 text-ink-2">
         {!searching
           ? t('search.pagePrompt')
           : results.status === 'error'
@@ -132,29 +134,48 @@ export function SearchResults() {
 
       {results.groups.map((group) => (
         <section key={group.type} aria-labelledby={`search-${group.type}`} className="min-w-0">
-          <h2 id={`search-${group.type}`} className="type-title-lg mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-ink">
+          <h2 id={`search-${group.type}`} className="type-title-lg mb-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-ink">
             {t(`search.types.${group.type}` as `search.types.${SearchDocType}`)}
-            <span className="type-data-sm text-ink-2">{group.total}</span>
+            <span className="type-data-sm inline-flex h-6 min-w-6 items-center justify-center rounded-pill bg-fill px-2 text-ink-2">{group.total}</span>
           </h2>
           <ul className="grid gap-3 lg:grid-cols-2">
             {group.hits.map((hit) => {
               const place = hit.airport ? getAirport(hit.airport) : undefined;
+              const gap = hit.type === 'unpublished';
               return (
-                <Card as="li" key={hit.id} interactive padding="sm" className="flex min-w-0 gap-3.5">
-                  <Icon name={hit.type} className="mt-0.5 text-primary-ink" />
+                <Card
+                  as="li"
+                  key={hit.id}
+                  interactive
+                  padding="sm"
+                  // An honest "not published" answer (its title says so) is styled as help, not as an
+                  // error: a dashed edge and a soft gold tile; its link leads to the official place to ask.
+                  className={cn('flex min-w-0 gap-4 rounded-2xl sm:p-5', gap && 'border-dashed border-line-strong bg-surface')}
+                >
+                  <span
+                    aria-hidden="true"
+                    className={cn('flex size-11 shrink-0 items-center justify-center rounded-xl', gap ? 'bg-gold-soft text-gold-ink' : 'bg-primary-soft text-primary-ink')}
+                  >
+                    <Icon name={hit.type} />
+                  </span>
                   <div className="min-w-0 flex-1">
                     <h3 className="type-title-sm text-ink">
                       <CardLink href={hit.href} onClick={() => rememberSearch(text)}>
-                        {hit.title}
+                        <Highlight text={hit.title} query={text} />
                       </CardLink>
                     </h3>
-                    {hit.summary ? <p className="type-body-sm mt-1 text-ink-2">{hit.summary}</p> : null}
+                    {hit.summary ? (
+                      <p className="type-body-sm mt-1 text-ink-2">
+                        <Highlight text={hit.summary} query={text} />
+                      </p>
+                    ) : null}
                     {place ? (
                       <Chip className="mt-2.5" icon="map-pin">
                         {place.shortName}
                       </Chip>
                     ) : null}
                   </div>
+                  <Icon name="arrow-right" size="sm" className="mt-1 shrink-0 text-ink-3 transition-transform duration-fast group-hover/card:translate-x-0.5 group-hover/card:text-ink" />
                 </Card>
               );
             })}

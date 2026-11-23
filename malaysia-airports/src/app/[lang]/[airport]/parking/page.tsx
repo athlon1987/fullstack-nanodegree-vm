@@ -4,9 +4,8 @@ import { localAirport, airportSectionMetadata, loadAirportPage, sectionStaticPar
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { LocaleLink } from '@/components/common/locale-link';
 import { MissingPage } from '@/components/common/missing-page';
-import { PageHeader } from '@/components/common/page-header';
 import { PrototypeGapsLink } from '@/components/common/prototype-gaps-link';
-import { SectionHeading } from '@/components/common/section-heading';
+import { ServiceBody, ServiceHeading, ServiceIntro, SERVICE_JUMP } from '@/components/facilities/service-frame';
 import { TranslationNotice } from '@/components/common/translation-notice';
 import { CarParkList } from '@/components/parking/car-park-list';
 import { CarParkListFromUrl } from '@/components/parking/car-park-list-url';
@@ -15,7 +14,6 @@ import { ParkedCarControl } from '@/components/parking/parked-car-control';
 import { ParkingCalculator } from '@/components/parking/parking-calculator';
 import { ParkingCalculatorFromUrl } from '@/components/parking/parking-calculator-url';
 import { ParkingPriceMatrix } from '@/components/parking/parking-price-matrix';
-import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
 
@@ -67,14 +65,29 @@ async function Parking({ params }: { params: AirportPageParams }) {
 
   return (
     <>
-      <PageHeader
+      {/* Redesign stage two: the service-page frame. The price matrix is the answer, the first
+          panel under the intro (C-01: on the first phone screen, before the calculator). */}
+      <ServiceIntro
         eyebrow={airport.shortName}
         title={t('transportPages.parking.title', { airport: airport.shortName })}
-        lead={t('transportPages.parking.lead')}
+        summary={t('transportPages.parking.lead')}
+        summaryClassName="max-sm:sr-only"
         breadcrumbs={<Breadcrumbs items={[{ label: airport.shortName, href: `/${airport.slug}` }, { label: t('nav.parking') }]} />}
-        className="[&>div]:pb-5 sm:[&>div]:pb-8"
+        className="[&>div]:pb-5 sm:[&>div]:pb-10"
+        meta={
+          <nav aria-label={t('transportPages.transport.jumpsLabel')} className="flex flex-wrap gap-2">
+            <a href="#parking-calculator-title" className={SERVICE_JUMP}>
+              <Icon name="calculator" size="sm" />
+              {t('transportPages.calculator.title')}
+            </a>
+            <a href="#parked-car-title" className={SERVICE_JUMP}>
+              <Icon name="map-pin" size="sm" />
+              {t('transportPages.parked.title')}
+            </a>
+          </nav>
+        }
       />
-      <Container className="flex flex-col gap-14 pb-section">
+      <ServiceBody>
         <ParkingPriceMatrix
           data={data}
           t={t}
@@ -92,11 +105,11 @@ async function Parking({ params }: { params: AirportPageParams }) {
         {translationMissing ? <TranslationNotice /> : null}
 
         <section aria-labelledby="parking-calculator-title">
-          <SectionHeading
+          <ServiceHeading
             id="parking-calculator-title"
             title={t('transportPages.calculator.title')}
             lead={t('transportPages.calculator.lead')}
-            variant="title"
+           
           />
           <Suspense fallback={<ParkingCalculator data={data} />}>
             <ParkingCalculatorFromUrl data={data} />
@@ -104,14 +117,14 @@ async function Parking({ params }: { params: AirportPageParams }) {
         </section>
 
         <section aria-labelledby="car-parks-title">
-          <SectionHeading id="car-parks-title" title={t('transportPages.parking.listTitle')} lead={t('transportPages.parking.listLead')} variant="title" />
+          <ServiceHeading id="car-parks-title" title={t('transportPages.parking.listTitle')} lead={t('transportPages.parking.listLead')} />
           <Suspense fallback={<CarParkList data={data} />}>
             <CarParkListFromUrl data={data} />
           </Suspense>
         </section>
 
         <section aria-labelledby="parked-car-title" id="where-i-parked" className="scroll-mt-32">
-          <SectionHeading id="parked-car-title" title={t('transportPages.parked.title')} lead={t('transportPages.parked.lead')} variant="title" />
+          <ServiceHeading id="parked-car-title" title={t('transportPages.parked.title')} lead={t('transportPages.parked.lead')} />
           <ParkedCarControl
             slug={airport.slug}
             timezone={airport.timezone}
@@ -130,7 +143,7 @@ async function Parking({ params }: { params: AirportPageParams }) {
           officialHref={data.officialUrl}
           officialLabel={t('transportPages.parking.officialPage')}
         />
-      </Container>
+      </ServiceBody>
     </>
   );
 }

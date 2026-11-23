@@ -21,6 +21,7 @@ import { getT, toLang, type Translator } from '@/lib/i18n';
 import { ExternalLink } from '@/components/common/external-link';
 import { BrandStatement } from '@/components/corporate/brand-statement';
 import { CorporateHeader } from '@/components/corporate/corporate-header';
+import { corporateImage } from '@/components/corporate/corporate-images';
 import { factViews, formatPartialDate, provenanceOf, resolveCorporateSources } from '@/components/corporate/corporate-data.server';
 import { FactList } from '@/components/corporate/fact-list';
 import { FactMeta } from '@/components/corporate/fact-meta';
@@ -86,15 +87,16 @@ export default async function CorporateAboutPage() {
       <CorporateHeader
         t={t}
         current="about"
+        image={corporateImage('about', lang)}
         title={t('corporatePages.about.title')}
         lead={t('corporatePages.about.lead')}
         meta={<JumpNav label={t('corporatePages.common.onThisPage')} items={jump} />}
       />
-      <Container className="flex flex-col gap-14 pb-section">
+      <Container className="flex flex-col gap-20 pt-12 pb-section sm:gap-24 sm:pt-16">
         <PageSection id="history" first number={1} title={t('corporatePages.about.history.title')} lead={t('corporatePages.about.history.lead')}>
           <div className="grid gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,1fr)_18rem]">
             <MilestoneList items={milestones} />
-            <aside aria-labelledby="history-earlier" className="self-start rounded-lg border border-line-strong bg-page-subtle p-5">
+            <aside aria-labelledby="history-earlier" className="self-start rounded-2xl bg-page-subtle p-5 sm:p-6">
               <h3 id="history-earlier" className="type-title-sm text-ink">
                 {t('corporatePages.about.history.earlierTitle')}
               </h3>

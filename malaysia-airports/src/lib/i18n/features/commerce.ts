@@ -226,6 +226,17 @@ export const commercePagesEn = {
     officialAirport: 'Official airport page',
     facilitiesLink: 'All facilities and services',
   },
+  // Redesign stage two (service-page frame): the answer panels of the directory and lounges pages.
+  frame: {
+    atAGlance: 'At a glance',
+    confirmed: { one: '{count} place a named source confirms', other: '{count} places named sources confirm' },
+    kindCount: {
+      dine: { one: '{count} place to eat or drink', other: '{count} places to eat or drink' },
+      shop: { one: '{count} shop', other: '{count} shops' },
+      service: { one: '{count} service', other: '{count} services' },
+    },
+    sides: 'Each card says which side of security it is on.',
+  },
 };
 
 export const commercePagesMs: typeof commercePagesEn = {
@@ -450,5 +461,15 @@ export const commercePagesMs: typeof commercePagesEn = {
     officialListing: 'Senarai lounge rasmi',
     officialAirport: 'Halaman rasmi lapangan terbang',
     facilitiesLink: 'Semua kemudahan dan perkhidmatan',
+  },
+  frame: {
+    atAGlance: 'Sepintas lalu',
+    confirmed: { one: '{count} tempat yang disahkan oleh sumber yang dinamakan', other: '{count} tempat yang disahkan oleh sumber yang dinamakan' },
+    kindCount: {
+      dine: { one: '{count} tempat makan atau minum', other: '{count} tempat makan atau minum' },
+      shop: { one: '{count} kedai', other: '{count} kedai' },
+      service: { one: '{count} perkhidmatan', other: '{count} perkhidmatan' },
+    },
+    sides: 'Setiap kad menyatakan sama ada ia sebelum atau selepas pemeriksaan keselamatan.',
   },
 };

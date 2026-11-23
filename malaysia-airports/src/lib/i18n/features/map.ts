@@ -205,6 +205,16 @@ export const mapPagesEn = {
     placeholderFields: 'Not published: location, level and opening hours',
     placeholderAction: 'Find an information counter',
   },
+  // Redesign stage two (service-page frame): the facilities page's quick finds and the map's quiet labels.
+  frame: {
+    quickTitle: 'Most looked for',
+    quickCount: { one: '{count} place', other: '{count} places' },
+    quickMissing: 'Not published yet: ask at an information counter',
+    accessibility: 'Accessibility and assistance',
+    mapSchematic: 'Schematic map, not a floor plan',
+    mapLevels: { one: '{count} level', other: '{count} levels' },
+    mapPlaces: { one: '{count} place', other: '{count} places' },
+  },
 };
 
 export const mapPagesMs: typeof mapPagesEn = {
@@ -399,5 +409,14 @@ export const mapPagesMs: typeof mapPagesEn = {
     placeholderBody: 'Kami belum mengesahkan lokasinya di {airport}. Tanya di kaunter pertanyaan atau mana-mana kakitangan: mereka boleh menunjukkan yang terdekat.',
     placeholderFields: 'Tidak diterbitkan: lokasi, aras dan waktu operasi',
     placeholderAction: 'Cari kaunter pertanyaan',
+  },
+  frame: {
+    quickTitle: 'Paling kerap dicari',
+    quickCount: { one: '{count} tempat', other: '{count} tempat' },
+    quickMissing: 'Belum diterbitkan: tanya di kaunter pertanyaan',
+    accessibility: 'Kebolehcapaian dan bantuan',
+    mapSchematic: 'Peta skematik, bukan pelan lantai',
+    mapLevels: { one: '{count} aras', other: '{count} aras' },
+    mapPlaces: { one: '{count} tempat', other: '{count} tempat' },
   },
 };

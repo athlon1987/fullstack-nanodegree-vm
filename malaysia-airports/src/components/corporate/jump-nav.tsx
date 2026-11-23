@@ -14,7 +14,7 @@ export function JumpNav({ label, items }: JumpNavProps) {
           <li key={item.id}>
             <a
               href={`#${item.id}`}
-              className="type-body-sm inline-flex min-h-11 items-center gap-2 rounded-pill border border-line-control bg-surface px-4 text-ink transition-colors duration-fast hover:border-ink"
+              className="type-body-sm inline-flex min-h-11 items-center gap-2 rounded-pill bg-surface px-4 font-medium text-ink shadow-xs ring-1 ring-line transition-[box-shadow,color] duration-fast hover:shadow-sm hover:ring-line-strong"
             >
               {item.icon ? <Icon name={item.icon} size="sm" /> : null}
               {item.label}

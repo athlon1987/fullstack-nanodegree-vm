@@ -305,6 +305,10 @@ export const transportPagesEn = {
     deviceOnly: 'Saved on this device only. Nothing is sent to us.',
     edit: 'Edit',
   },
+  // Redesign stage two (service-page frame): one-line summaries and the frame's quiet labels.
+  frame: {
+    transportSummary: 'Published fares and journey times for every way in and out, each with its source and date.',
+  },
 };
 
 export const transportPagesMs: typeof transportPagesEn = {
@@ -599,5 +603,8 @@ export const transportPagesMs: typeof transportPagesEn = {
     openJourney: 'Buka Perjalanan saya',
     deviceOnly: 'Disimpan pada peranti ini sahaja. Tiada apa-apa dihantar kepada kami.',
     edit: 'Sunting',
+  },
+  frame: {
+    transportSummary: 'Tambang dan masa perjalanan yang diterbitkan bagi setiap cara ke dan dari lapangan terbang, setiap satu dengan sumber dan tarikhnya.',
   },
 };

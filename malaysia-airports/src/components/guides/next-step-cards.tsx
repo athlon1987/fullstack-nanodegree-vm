@@ -8,23 +8,29 @@ const CARDS: readonly { id: string; icon: IconKey; href: string; title: 'guidePa
   { id: 'help', icon: 'circle-help', href: '/help', title: 'guidePages.hub.help.title', body: 'guidePages.hub.help.body', action: 'guidePages.hub.help.action' },
 ];
 
-/** Three ways onward from the guides: the KLIA transit planner, My journey and the help centre. */
+/**
+ * Three ways onward from the guides: the KLIA transit planner, My journey and the help centre.
+ * Redesign stage two: cards on the midnight band that closes the hub, the whole card one link.
+ */
 export function NextStepCards({ t }: { t: Translator }) {
   return (
-    <ul className="grid gap-6 md:grid-cols-3">
+    <ul className="grid gap-4 md:grid-cols-3 lg:gap-6">
       {CARDS.map((card) => (
-        <li key={card.id} className="flex min-w-0 gap-4">
-          <span aria-hidden="true" className="flex size-11 shrink-0 items-center justify-center rounded-lg border border-line-strong bg-surface text-ink">
-            <Icon name={card.icon} />
+        <li
+          key={card.id}
+          className="group relative flex min-w-0 flex-col gap-4 rounded-2xl bg-on-midnight/6 p-6 ring-1 ring-on-midnight/12 transition-[background-color,translate] duration-base ease-out hover:bg-on-midnight/10 motion-ok:hover:-translate-y-0.5 has-[a:focus-visible]:focus-ring sm:p-7"
+        >
+          <span aria-hidden="true" className="flex size-12 items-center justify-center rounded-full bg-on-midnight/8 text-gold-bright ring-1 ring-gold/40">
+            <Icon name={card.icon} size="md" />
           </span>
           <div className="min-w-0">
-            <h2 className="type-title-md text-ink">{t(card.title)}</h2>
-            <p className="type-body-sm mt-1 text-ink-2">{t(card.body)}</p>
-            <LocaleLink href={card.href} className="link-action type-body-sm mt-1 text-ink">
-              {t(card.action)}
-              <Icon name="arrow-right" size="sm" />
-            </LocaleLink>
+            <h2 className="type-title-lg text-ink">{t(card.title)}</h2>
+            <p className="type-body-sm mt-1.5 text-ink-2">{t(card.body)}</p>
           </div>
+          <LocaleLink href={card.href} className="link-action type-body-sm mt-auto text-ink outline-none after:absolute after:inset-0 after:rounded-2xl">
+            {t(card.action)}
+            <Icon name="arrow-right" size="sm" />
+          </LocaleLink>
         </li>
       ))}
     </ul>

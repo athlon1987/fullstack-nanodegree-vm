@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import type { Lang } from '@/content/types';
 import { getT, type Translator } from '@/lib/i18n';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
-import { PageHeader } from '@/components/common/page-header';
+import { PageHero } from '@/components/guides/page-hero';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { QuickAction } from '@/components/common/quick-action';
 import { Container } from '@/components/ui/container';
@@ -22,9 +22,10 @@ export function OfflinePageContent({ lang }: { lang: Lang }) {
   const t = getT(lang);
   return (
     <>
-      <PageHeader title={t('platformPages.title')} lead={t('platformPages.lead')} breadcrumbs={<Breadcrumbs items={[{ label: t('platformPages.title') }]} />} />
+      {/* Redesign stage two (content pages): the light editorial header shared with guides and the transparency pages. */}
+      <PageHero tone="light" emblem="wifi-off" title={t('platformPages.title')} lead={t('platformPages.lead')} breadcrumbs={<Breadcrumbs items={[{ label: t('platformPages.title') }]} />} />
 
-      <Container className="pb-section">
+      <Container className="pt-6 pb-section sm:pt-10">
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-10">
           <div className="flex min-w-0 flex-col gap-8 lg:col-span-7">
             <div className="flex flex-col gap-4">
@@ -75,7 +76,7 @@ export function OfflinePageContent({ lang }: { lang: Lang }) {
 
 function Capabilities({ title, icon, items }: { title: string; icon: IconName; items: string[] }) {
   return (
-    <section className="rounded-xl border border-line-strong bg-surface p-5 sm:p-6">
+    <section className="rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">
       <h2 className="type-title-md flex items-center gap-2.5 text-ink">
         <Icon name={icon} className="text-primary-ink" />
         {title}

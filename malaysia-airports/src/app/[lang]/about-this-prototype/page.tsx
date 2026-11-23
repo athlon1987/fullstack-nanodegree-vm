@@ -67,11 +67,12 @@ export default async function AboutPrototypePage() {
       <CorporateHeader
         t={t}
         current={null}
+        emblem="flask-conical"
         title={t('corporatePages.prototype.title')}
         lead={t('corporatePages.prototype.lead')}
         meta={<JumpNav label={t('corporatePages.common.onThisPage')} items={jump} />}
       />
-      <Container className="flex flex-col gap-14 pb-section">
+      <Container className="flex flex-col gap-20 pt-12 pb-section sm:gap-24 sm:pt-16">
         <PageSection id="what" first number={1} title={t('corporatePages.prototype.what.title')}>
           <div className="grid gap-5 md:grid-cols-2">
             {(
@@ -80,7 +81,7 @@ export default async function AboutPrototypePage() {
                 ['isNotTitle', copy.what.isNot, 'circle-x'],
               ] as const
             ).map(([titleKey, list, icon]) => (
-              <div key={titleKey} className="rounded-lg border border-line-strong bg-surface p-5 sm:p-6">
+              <div key={titleKey} className="rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">
                 <h3 className="type-title-md text-ink">{t(`corporatePages.prototype.what.${titleKey}`)}</h3>
                 <ul className="mt-4 flex flex-col gap-3">
                   {Object.values(list).map((item) => (
@@ -138,7 +139,7 @@ export default async function AboutPrototypePage() {
             <ol className="flex flex-col gap-5">
               {Object.values(copy.sourcing.steps).map((step, index) => (
                 <li key={step} className="grid grid-cols-[2.5rem_minmax(0,1fr)] gap-x-3">
-                  <span aria-hidden="true" className="type-data-md tabular flex size-10 items-center justify-center rounded-pill border border-line-strong text-ink">
+                  <span aria-hidden="true" className="type-data-md tabular flex size-10 items-center justify-center rounded-pill bg-primary text-on-primary">
                     {index + 1}
                   </span>
                   <p className="type-body pt-1.5 text-ink-2">{step}</p>
@@ -146,13 +147,13 @@ export default async function AboutPrototypePage() {
               ))}
             </ol>
             <dl className="flex flex-col gap-6 self-start">
-              <div className="flex flex-col gap-1 border-t border-ink pt-4">
+              <div className="flex flex-col gap-1 rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">
                 <dt className="type-body-sm text-ink-2">{t('corporatePages.prototype.sourcing.countLabel')}</dt>
-                <dd className="type-data-xl order-first text-ink">{sourceCount}</dd>
+                <dd className="type-display-md tabular order-first pb-2 text-ink after:mt-3 after:block after:h-0.5 after:w-8 after:rounded-pill after:bg-gold">{sourceCount}</dd>
               </div>
-              <div className="flex flex-col gap-1 border-t border-line-strong pt-4">
+              <div className="flex flex-col gap-1 rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">
                 <dt className="type-body-sm text-ink-2">{t('corporatePages.prototype.sourcing.corporateCountLabel')}</dt>
-                <dd className="type-data-lg order-first text-ink">{CORPORATE_SOURCES.length}</dd>
+                <dd className="type-display-sm tabular order-first text-ink">{CORPORATE_SOURCES.length}</dd>
               </div>
             </dl>
           </div>
@@ -163,9 +164,9 @@ export default async function AboutPrototypePage() {
         </PageSection>
 
         <PageSection id="gaps" number={4} title={t('corporatePages.prototype.gaps.title')} lead={t('corporatePages.prototype.gaps.lead')}>
-          <ul className="flex flex-col border-t border-line">
+          <ul className="flex flex-col divide-y divide-line rounded-2xl border border-line bg-surface px-5 shadow-sm sm:px-7">
             {gapLists.map((airport) => (
-              <li key={airport.slug} id={`gaps-${airport.slug}`} className="scroll-mt-32 border-b border-line py-6">
+              <li key={airport.slug} id={`gaps-${airport.slug}`} className="scroll-mt-32 py-6">
                 <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
                   <h3 className="type-title-md text-ink">{airport.name}</h3>
                   <LocaleLink href={`/${airport.slug}`} className="link-action type-body-sm text-ink">
@@ -234,7 +235,7 @@ export default async function AboutPrototypePage() {
                 ['perfTitle', copy.targets.perf, 'timer'],
               ] as const
             ).map(([titleKey, list, icon]) => (
-              <div key={titleKey} className="rounded-lg border border-line-strong bg-surface p-5 sm:p-6">
+              <div key={titleKey} className="rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">
                 <h3 className="type-title-md flex items-center gap-3 text-ink">
                   <Icon name={icon} size="md" strokeWidth={1.5} />
                   {t(`corporatePages.prototype.targets.${titleKey}`)}
@@ -253,9 +254,9 @@ export default async function AboutPrototypePage() {
         </PageSection>
 
         <PageSection id="limits" number={7} title={t('corporatePages.prototype.limits.title')}>
-          <ul className="grid gap-x-10 border-t border-line md:grid-cols-2">
+          <ul className="grid gap-3 md:grid-cols-2">
             {Object.values(copy.limits.items).map((item) => (
-              <li key={item} className="type-body flex gap-3 border-b border-line py-4 text-ink-2">
+              <li key={item} className="type-body flex gap-3 rounded-2xl bg-page-subtle p-4 text-ink-2 sm:p-5">
                 <Icon name="info" size="md" strokeWidth={1.5} className="mt-0.5 shrink-0 text-ink-3" />
                 <span className="min-w-0">{item}</span>
               </li>

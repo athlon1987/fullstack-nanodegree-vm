@@ -23,8 +23,8 @@ export function MilestoneList({ items }: { items: readonly MilestoneView[] }) {
       {items.map((item, index) => {
         const showYear = index === 0 || items[index - 1].year !== item.year;
         return (
-          <li key={item.id} className="grid grid-cols-[4.25rem_minmax(0,1fr)] gap-x-5 border-t border-line py-5 sm:grid-cols-[7rem_minmax(0,1fr)] sm:gap-x-10">
-            <p className="type-display-sm tabular text-ink" aria-hidden={showYear ? undefined : true}>
+          <li key={item.id} className="grid grid-cols-[4.25rem_minmax(0,1fr)] gap-x-5 border-t border-line py-6 first:border-t-0 first:pt-0 sm:grid-cols-[7rem_minmax(0,1fr)] sm:gap-x-10">
+            <p className="type-display-sm tabular text-gold-ink" aria-hidden={showYear ? undefined : true}>
               {showYear ? item.year : null}
             </p>
             <div className="min-w-0">

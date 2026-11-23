@@ -7,7 +7,7 @@ import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { EmptyState } from '@/components/common/empty-state';
 import { LocaleLink } from '@/components/common/locale-link';
 import { MissingPage } from '@/components/common/missing-page';
-import { PageHeader } from '@/components/common/page-header';
+import { PageHero } from '@/components/guides/page-hero';
 import { ProvenanceLegend } from '@/components/common/provenance-legend';
 import { SectionHeading } from '@/components/common/section-heading';
 import { ContactList } from '@/components/help/contact-list';
@@ -95,21 +95,27 @@ async function HelpTopic({ params }: { params: PageProps<'/[lang]/help/[topic]'>
   const t = getT(lang);
   const title = pick(record.title, lang);
   const faqs = faqViews(lang, topic);
-  const others = helpTopicViews(lang).filter((item) => item.slug !== topic);
+  const topicViews = helpTopicViews(lang);
+  const others = topicViews.filter((item) => item.slug !== topic);
+  const icon = topicViews.find((item) => item.slug === topic)?.icon ?? 'circle-help';
   const related = TOPIC_RELATED[topic] ?? [];
   const official = officialLinks(topic, t);
 
   return (
     <>
-      <PageHeader
+      {/* Redesign stage two: the quiet editorial header with the topic's emblem, answers in a
+          white card, "still need help" as the one midnight card. */}
+      <PageHero
+        tone="light"
+        emblem={icon}
         eyebrow={t('guidePages.help.title')}
         title={title}
         lead={pick(record.summary, lang)}
         breadcrumbs={<Breadcrumbs items={[{ label: t('nav.help'), href: '/help' }, { label: title }]} />}
       />
-      <Container className="pb-section">
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_16rem] lg:gap-16">
-          <div className="flex min-w-0 flex-col gap-14">
+      <Container className="pt-6 pb-section sm:pt-10">
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_18rem] lg:gap-16">
+          <div className="flex min-w-0 flex-col gap-16">
             <TopicLead topic={topic} t={t} lang={lang} />
             <section aria-labelledby="topic-faq-title">
               <SectionHeading
@@ -158,8 +164,11 @@ async function HelpTopic({ params }: { params: PageProps<'/[lang]/help/[topic]'>
             aria-labelledby="topic-others-title"
             className="flex min-w-0 flex-col gap-8 lg:sticky lg:top-[calc(var(--spacing-header)+1.5rem)] lg:self-start"
           >
-            <div className="rounded-lg border border-line-strong bg-surface p-5">
-              <h2 className="type-title-sm text-ink">{t('guidePages.help.topic.stillNeed')}</h2>
+            <div className="surface-midnight on-media rounded-2xl p-6 text-ink shadow-md">
+              <span aria-hidden="true" className="mb-4 flex size-11 items-center justify-center rounded-full bg-on-midnight/8 text-gold-bright ring-1 ring-gold/40">
+                <Icon name="messages-square" />
+              </span>
+              <h2 className="type-title-md text-ink">{t('guidePages.help.topic.stillNeed')}</h2>
               <p className="type-body-sm mt-1 text-ink-2">{t('guidePages.help.topic.stillNeedBody')}</p>
               <LocaleLink href="/help#contacts" className="link-action type-body-sm mt-1 text-ink">
                 {t('guidePages.help.topic.contactAction')}
@@ -167,13 +176,17 @@ async function HelpTopic({ params }: { params: PageProps<'/[lang]/help/[topic]'>
               </LocaleLink>
             </div>
             <nav aria-labelledby="topic-others-title">
-              <h2 id="topic-others-title" className="type-eyebrow mb-2 text-ink-3">
+              <h2 id="topic-others-title" className="type-overline mb-3 text-ink-2">
                 {t('guidePages.help.topic.otherTopics')}
               </h2>
-              <ul className="flex flex-col border-l border-line-strong pl-4">
+              <ul className="flex flex-col gap-0.5">
                 {others.map((item) => (
                   <li key={item.slug}>
-                    <LocaleLink href={`/help/${item.slug}`} className="link-action type-body-sm text-ink-2 hover:text-ink">
+                    <LocaleLink
+                      href={`/help/${item.slug}`}
+                      className="type-body-sm flex min-h-11 items-center gap-3 rounded-xl px-2 py-1.5 text-ink-2 transition-colors duration-fast hover:bg-surface hover:text-ink hover:shadow-xs"
+                    >
+                      <Icon name={item.icon} size="sm" className="text-primary-ink" />
                       {item.title}
                     </LocaleLink>
                   </li>

@@ -28,28 +28,35 @@ export function MediaList({ items, t, variant = 'list', headingLevel = 3 }: Medi
     return (
       <ul className="grid gap-4 md:grid-cols-3 lg:gap-5">
         {items.map((item) => (
-          <li key={item.slug} className="relative flex min-w-0 flex-col gap-3 rounded-lg border border-line-strong bg-surface p-5 transition-colors duration-fast has-[a:hover]:border-ink has-[a:focus-visible]:focus-ring">
+          <li
+            key={item.slug}
+            className="relative flex min-h-56 min-w-0 flex-col gap-4 rounded-2xl border border-line bg-surface p-6 shadow-sm transition-[box-shadow,translate,border-color] duration-base ease-out has-[a:hover]:border-line-strong has-[a:hover]:shadow-lg has-[a:focus-visible]:focus-ring motion-ok:has-[a:hover]:-translate-y-0.5"
+          >
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
               <time dateTime={item.date} className="type-caption tabular font-semibold text-ink-2">
                 {item.dateLabel}
               </time>
               <KindBadge item={item} t={t} />
             </div>
-            <Heading className="type-title-md text-ink">
-              <LocaleLink href={`/corporate/news/${item.slug}`} className="outline-none after:absolute after:inset-0 after:rounded-lg">
+            {/* title-md, so the corporate hub keeps to eight type sizes (A-14). */}
+            <Heading className="type-title-md text-ink [text-wrap:balance]">
+              <LocaleLink href={`/corporate/news/${item.slug}`} className="outline-none after:absolute after:inset-0 after:rounded-2xl">
                 {item.title}
               </LocaleLink>
             </Heading>
-            <p className="type-caption mt-auto text-ink-3">{t(`corporatePages.media.topic.${item.topic}`)}</p>
+            <p className="type-caption mt-auto flex items-center gap-2 border-t border-line pt-3 font-medium text-ink-2">
+              <Icon name="newspaper" size="xs" />
+              {t(`corporatePages.media.topic.${item.topic}`)}
+            </p>
           </li>
         ))}
       </ul>
     );
   }
   return (
-    <ol className="border-b border-line">
+    <ol className="flex flex-col gap-4">
       {items.map((item) => (
-        <li key={item.slug} className="grid gap-x-10 gap-y-2 border-t border-line py-6 md:grid-cols-[10rem_minmax(0,1fr)]">
+        <li key={item.slug} className="grid gap-x-10 gap-y-2 rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-7 md:grid-cols-[10rem_minmax(0,1fr)]">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 md:flex-col md:items-start">
             <time dateTime={item.date} className="type-body-sm tabular font-semibold text-ink">
               {item.dateLabel}

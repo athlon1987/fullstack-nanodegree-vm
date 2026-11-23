@@ -24,7 +24,7 @@ export function NoticesBrowser({ notices }: { notices: readonly NoticeView[] }) 
 
   return (
     <div className="flex flex-col gap-6">
-      <form aria-label={t('noticesPage.filtersLabel')} onSubmit={(event) => event.preventDefault()} className="grid gap-x-8 gap-y-4 rounded-lg border border-line bg-page-subtle p-4 sm:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] sm:p-5">
+      <form aria-label={t('noticesPage.filtersLabel')} onSubmit={(event) => event.preventDefault()} className="grid gap-x-8 gap-y-4 rounded-3xl bg-surface p-4 shadow-sm ring-1 ring-line sm:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] sm:p-5">
         <NativeSelect label={t('common.labels.airport')} value={airport} onChange={(event) => setAirport(event.target.value)} iconStart="tower-control">
           <option value="">{t('search.everywhere')}</option>
           <option value="network">{t('noticesPage.network')}</option>
@@ -53,7 +53,8 @@ export function NoticesBrowser({ notices }: { notices: readonly NoticeView[] }) 
           </div>
         </fieldset>
       </form>
-      <NoticeList notices={notices} airport={airport || undefined} severities={severities} show="all" headingLevel={2} emptyText={t('noticesPage.none')} />
+      {/* Redesign stage two: compact expandable rows (severity, title, dates and state on one line). */}
+      <NoticeList notices={notices} airport={airport || undefined} severities={severities} show="all" headingLevel={2} emptyText={t('noticesPage.none')} compact periodInSummary />
     </div>
   );
 }

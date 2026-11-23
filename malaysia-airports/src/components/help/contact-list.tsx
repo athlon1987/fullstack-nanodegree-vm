@@ -6,10 +6,12 @@ import type { ContactView } from './help-views.server';
 /** Official contact channels with their scope, note and sources. Server-rendered. */
 export function ContactList({ contacts }: { contacts: readonly ContactView[] }) {
   return (
-    <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+    <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
       {contacts.map((contact) => (
-        <li key={contact.id} className="flex min-w-0 gap-3 rounded-lg border border-line-strong bg-surface p-4">
-          <Icon name={contact.kind} className="mt-0.5 shrink-0 text-primary-ink" />
+        <li key={contact.id} className="flex min-w-0 gap-4 rounded-xl border border-line bg-surface p-5 shadow-sm">
+          <span aria-hidden="true" className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary-ink">
+            <Icon name={contact.kind} />
+          </span>
           <div className="min-w-0">
             <p className="type-caption text-ink-2">{contact.label}</p>
             <p className="type-title-sm mt-0.5 break-words text-ink">
@@ -49,9 +51,11 @@ export function CallRow({ contacts, title, allLabel, max = 2 }: { contacts: read
           <li key={phone.id} className="min-w-0">
             <a
               href={phone.href}
-              className="type-body-sm inline-flex min-h-11 max-w-full items-center gap-2 rounded-pill border border-line-control bg-surface px-4 py-1.5 text-ink transition-colors duration-fast hover:border-ink"
+              className="type-body-sm inline-flex min-h-11 max-w-full items-center gap-2.5 rounded-pill border border-line-control bg-surface py-1.5 pr-4 pl-1.5 text-ink shadow-xs transition-colors duration-fast hover:border-ink"
             >
-              <Icon name="phone" size="sm" className="shrink-0 text-primary-ink" />
+              <span aria-hidden="true" className="flex size-8 shrink-0 items-center justify-center rounded-full bg-gold text-on-gold">
+                <Icon name="phone" size="sm" />
+              </span>
               <span className="min-w-0">
                 <span className="tabular font-semibold">{phone.value}</span>
                 <span className="text-ink-2"> · {phone.label}</span>

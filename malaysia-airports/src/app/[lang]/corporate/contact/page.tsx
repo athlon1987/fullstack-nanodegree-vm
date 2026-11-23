@@ -26,7 +26,7 @@ export default async function CorporateContactPage() {
   return (
     <>
       <CorporateHeader t={t} current="contact" title={t('corporatePages.contact.title')} lead={t('corporatePages.contact.lead')} />
-      <Container className="flex flex-col gap-14 pb-section">
+      <Container className="flex flex-col gap-20 pt-12 pb-section sm:gap-24 sm:pt-16">
         <PageSection id="channels" first title={t('corporatePages.contact.channelsTitle')}>
           <ContactChannelList label={t('corporatePages.contact.channelsTitle')} channels={corporateChannels(lang, t)} />
         </PageSection>

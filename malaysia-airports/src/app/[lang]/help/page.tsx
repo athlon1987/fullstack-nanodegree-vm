@@ -4,7 +4,7 @@ import { lang as routeLang } from 'next/root-params';
 import { getT, toLang } from '@/lib/i18n';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { LocaleLink } from '@/components/common/locale-link';
-import { PageHeader } from '@/components/common/page-header';
+import { PageHero } from '@/components/guides/page-hero';
 import { ProvenanceLegend } from '@/components/common/provenance-legend';
 import { SectionHeading } from '@/components/common/section-heading';
 import { CallRow, ContactList } from '@/components/help/contact-list';
@@ -43,36 +43,67 @@ export default async function HelpPage() {
   return (
     <I18nPageScope namespaces={['guidePages']}>
       <>
-        <PageHeader
+        {/* Redesign stage two: a calm midnight band with the call lines, then one big search on a
+            white card that overlaps the band (the Dubai pattern), then topics and answers. */}
+        <PageHero
+          tone="midnight"
+          size="lg"
+          emblem="circle-help"
           title={t('guidePages.help.title')}
           lead={t('guidePages.help.lead')}
           breadcrumbs={<Breadcrumbs items={[{ label: t('nav.help') }]} />}
           meta={<CallRow contacts={contacts} title={t('guidePages.help.callTitle')} allLabel={t('guidePages.help.callAll')} />}
+          className="pb-12 sm:pb-16"
         />
-        <Container className="flex flex-col gap-16 pb-16">
-          <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
-            <div className="flex min-w-0 flex-col gap-8">
-              <HelpSearch items={faqs.map(({ id, topic, topicTitle, question, answer }) => ({ id, topic, topicTitle, question, answer }))} />
-              <section aria-labelledby="help-popular-title">
-                <h2 id="help-popular-title" className="type-title-md mb-2 text-ink">
-                  {t('guidePages.help.popularTitle')}
-                </h2>
-                <ul className="flex flex-col divide-y divide-line border-y border-line">
-                  {popular.map((faq) => (
-                    <li key={faq.id}>
-                      <LocaleLink href={`/help/${faq.topic}#${faq.id}`} className="group flex min-h-13 items-center justify-between gap-4 py-3 focus-visible:focus-ring-inset">
-                        <span className="type-body min-w-0 text-ink group-hover:underline">{faq.question}</span>
-                        <Icon name="chevron-right" size="sm" className="shrink-0 text-ink-2" />
-                      </LocaleLink>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            </div>
+        <Container className="relative z-10 -mt-10 sm:-mt-12">
+          <div className="rounded-3xl bg-surface p-3 shadow-xl ring-1 ring-line sm:p-4">
+            <HelpSearch items={faqs.map(({ id, topic, topicTitle, question, answer }) => ({ id, topic, topicTitle, question, answer }))} />
+          </div>
+        </Container>
+        <Container className="flex flex-col gap-16 pt-12 pb-section sm:gap-20 sm:pt-16">
+          <section aria-labelledby="help-topics-title">
+            <SectionHeading id="help-topics-title" title={t('guidePages.help.topicsTitle')} />
+            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {topics.map((topic) => (
+                <Card as="li" key={topic.slug} interactive padding="md" className="flex min-w-0 flex-col gap-3">
+                  <div className="flex items-start justify-between gap-3">
+                    <span aria-hidden="true" className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-primary-soft text-primary-ink">
+                      <Icon name={topic.icon} size="lg" />
+                    </span>
+                    <span className="type-caption rounded-pill bg-fill px-2.5 py-0.5 font-medium text-ink-2">{t.count('guidePages.help.topicCount', topic.count)}</span>
+                  </div>
+                  <h3 className="type-title-lg mt-1 text-ink">
+                    <CardLink href={`/help/${topic.slug}`}>{topic.title}</CardLink>
+                  </h3>
+                  <p className="type-body-sm text-ink-2">{topic.summary}</p>
+                </Card>
+              ))}
+            </ul>
+          </section>
+
+          <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:gap-12">
+            <section aria-labelledby="help-popular-title" className="min-w-0">
+              <h2 id="help-popular-title" className="type-display-sm mb-6 text-ink">
+                {t('guidePages.help.popularTitle')}
+              </h2>
+              <ul className="flex flex-col divide-y divide-line overflow-hidden rounded-2xl border border-line bg-surface shadow-sm">
+                {popular.map((faq) => (
+                  <li key={faq.id}>
+                    <LocaleLink href={`/help/${faq.topic}#${faq.id}`} className="group flex min-h-14 items-center justify-between gap-4 px-5 py-3.5 transition-colors duration-fast hover:bg-page-subtle focus-visible:focus-ring-inset sm:px-6">
+                      <span className="type-body min-w-0 font-medium text-ink">{faq.question}</span>
+                      <span aria-hidden="true" className="flex size-8 shrink-0 items-center justify-center rounded-full bg-fill text-ink-2 transition-colors duration-fast group-hover:bg-primary group-hover:text-on-primary">
+                        <Icon name="chevron-right" size="sm" />
+                      </span>
+                    </LocaleLink>
+                  </li>
+                ))}
+              </ul>
+            </section>
             <Callout
               tone="warning"
               icon="shield-check"
               title={t('guidePages.help.scam.title')}
+              className="lg:mt-14"
               actions={
                 <LocaleLink href="/help/scams" className="link-action type-body-sm text-ink">
                   {t('guidePages.help.scam.action')}
@@ -83,28 +114,10 @@ export default async function HelpPage() {
               <p>{t('guidePages.help.scam.body')}</p>
             </Callout>
           </div>
-
-          <section aria-labelledby="help-topics-title">
-            <SectionHeading id="help-topics-title" title={t('guidePages.help.topicsTitle')} variant="title" />
-            <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {topics.map((topic) => (
-                <Card as="li" key={topic.slug} interactive padding="md" className="flex min-w-0 flex-col gap-2">
-                  <div className="flex items-center justify-between gap-3">
-                    <Icon name={topic.icon} size="lg" className="text-primary-ink" />
-                    <span className="type-caption text-ink-2">{t.count('guidePages.help.topicCount', topic.count)}</span>
-                  </div>
-                  <h3 className="type-title-md text-ink">
-                    <CardLink href={`/help/${topic.slug}`}>{topic.title}</CardLink>
-                  </h3>
-                  <p className="type-body-sm text-ink-2">{topic.summary}</p>
-                </Card>
-              ))}
-            </ul>
-          </section>
         </Container>
 
-        <Section tone="subtle" spacing="md" aria-labelledby="help-who-title">
-          <div className="grid gap-12 lg:grid-cols-2">
+        <Section tone="subtle" spacing="lg" aria-labelledby="help-who-title">
+          <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
             <div className="min-w-0">
               <SectionHeading id="help-who-title" title={t('guidePages.help.whoTitle')} lead={t('guidePages.help.whoLead')} variant="title" />
               <WhoHandles t={t} faqs={byId} />
@@ -116,9 +129,9 @@ export default async function HelpPage() {
           </div>
         </Section>
 
-        <Container className="flex flex-col gap-12 py-section">
+        <Container className="flex flex-col gap-14 py-section">
           <section id="contacts" aria-labelledby="help-contacts-title" className="scroll-mt-32">
-            <SectionHeading id="help-contacts-title" title={t('guidePages.help.contactsTitle')} lead={t('guidePages.help.contactsLead')} variant="title" />
+            <SectionHeading id="help-contacts-title" title={t('guidePages.help.contactsTitle')} lead={t('guidePages.help.contactsLead')} />
             <ContactList contacts={contacts} />
           </section>
           <OfficialLinks links={official} title={t('guidePages.help.officialTitle')} />

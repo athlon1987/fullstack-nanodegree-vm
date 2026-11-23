@@ -29,7 +29,7 @@ export default async function CorporateCareersPage() {
   return (
     <>
       <CorporateHeader t={t} current="careers" title={t('corporatePages.careers.title')} lead={t('corporatePages.careers.lead')} />
-      <Container className="flex flex-col gap-10 pb-section">
+      <Container className="flex flex-col gap-12 pt-12 pb-section sm:pt-16">
         <section aria-labelledby="careers-portal" className="relative overflow-hidden rounded-xl bg-inverse px-5 py-8 text-on-inverse sm:px-10 sm:py-12">
           <RebungRule size="lg" className="absolute inset-x-0 top-0 opacity-70" />
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
@@ -60,11 +60,11 @@ export default async function CorporateCareersPage() {
           <LinkOutCard icon="landmark" title={t('corporatePages.about.leadership.title')} links={[{ href: CORPORATE_LINKS.careersLeaders.url, label: t('corporatePages.careers.leadersAction') }]} sources={resolveCorporateSources(CORPORATE_LINKS.careersLeaders.sources)}>
             {t('corporatePages.careers.leadersBody')}
           </LinkOutCard>
-          <div className="flex min-w-0 flex-col gap-3 rounded-lg border border-line-strong bg-surface p-5 sm:p-6">
+          <div className="flex min-w-0 flex-col gap-3 rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">
             <h2 className="type-title-md text-ink">{t('corporatePages.careers.programmesTitle')}</h2>
             <MissingFact t={t} officialUrl={CORPORATE_LINKS.careers.url} />
           </div>
-          <div className="flex min-w-0 flex-col gap-3 rounded-lg border border-line-strong bg-surface p-5 sm:p-6">
+          <div className="flex min-w-0 flex-col gap-3 rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h2 className="type-title-md text-ink">{t('corporatePages.careers.safetyTitle')}</h2>
               <ProvenanceTag provenance="suggestion" length="short" />

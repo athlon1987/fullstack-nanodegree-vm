@@ -19,9 +19,9 @@ export interface BusinessAreaCardProps {
  */
 export function BusinessAreaCard({ id, icon, title, body, facts, t }: BusinessAreaCardProps) {
   return (
-    <article aria-labelledby={`area-${id}`} className="grid gap-x-10 gap-y-4 py-7 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)_11rem]">
+    <article aria-labelledby={`area-${id}`} className="grid gap-x-10 gap-y-4 rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-7 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)_11rem]">
       <div className="flex min-w-0 gap-4">
-        <span aria-hidden="true" className="flex size-11 shrink-0 items-center justify-center rounded-md bg-primary-soft text-primary-ink">
+        <span aria-hidden="true" className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary-ink">
           <Icon name={icon} size="lg" strokeWidth={1.5} />
         </span>
         <div className="min-w-0">

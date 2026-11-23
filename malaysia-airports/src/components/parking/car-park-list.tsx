@@ -98,7 +98,7 @@ export function CarParkList({ data, terminal, allHref }: CarParkListProps) {
       </div>
 
       {view === 'table' ? (
-        <TableScroll label={caption} className="relative rounded-xl border border-line-strong bg-surface">
+        <TableScroll label={caption} className="relative rounded-2xl border border-line bg-surface shadow-sm">
           <Table density="dense" className="min-w-[60rem]">
             <caption className="sr-only">{caption}</caption>
             <THead>

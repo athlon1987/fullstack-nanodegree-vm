@@ -7,7 +7,7 @@ import { I18nPageScope } from '@/lib/i18n/page-scope';
 import { ConciergeChat } from '@/components/concierge/concierge-chat';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { ExternalLink } from '@/components/common/external-link';
-import { PageHeader } from '@/components/common/page-header';
+import { PageHero } from '@/components/guides/page-hero';
 import { ProvenanceLegend } from '@/components/common/provenance-legend';
 import { SourceNote } from '@/components/common/source-note';
 import { Container } from '@/components/ui/container';
@@ -31,14 +31,22 @@ export default async function ConciergePage() {
   const how = [t('conciergePage.aside.how1'), t('conciergePage.aside.how2'), t('conciergePage.aside.how3')];
   return (
     <>
-      <PageHeader
+      {/* Redesign stage two: the midnight band with the concierge's emblem; the conversation is a
+          white card that rises into the band, the explanation and official contacts beside it. */}
+      <PageHero
+        tone="midnight"
+        emblem="sparkles"
         eyebrow={t('conciergePage.eyebrow')}
         title={t('conciergePage.pageTitle')}
         lead={t('conciergePage.lead')}
         breadcrumbs={<Breadcrumbs items={[{ label: t('conciergePage.title') }]} />}
+        className="pb-8 sm:pb-12"
       />
-      <Container className="grid items-start gap-10 pb-section lg:grid-cols-[minmax(0,1fr)_minmax(0,21rem)] lg:gap-12">
-        <section aria-labelledby="concierge-conversation" className="min-w-0 sm:rounded-xl sm:border sm:border-line-strong sm:bg-surface sm:p-7 sm:shadow-sm">
+      <Container className="grid items-start gap-10 pb-section max-sm:pt-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,21rem)] lg:gap-12">
+        <section
+          aria-labelledby="concierge-conversation"
+          className="relative z-10 min-w-0 sm:-mt-12 sm:rounded-3xl sm:border sm:border-line sm:bg-surface sm:p-8 sm:shadow-xl"
+        >
           <h2 id="concierge-conversation" className="sr-only">
             {t('conciergePage.log.label')}
           </h2>
@@ -51,7 +59,7 @@ export default async function ConciergePage() {
           </I18nPageScope>
         </section>
 
-        <aside className="flex min-w-0 flex-col gap-10" aria-label={t('conciergePage.aside.howTitle')}>
+        <aside className="flex min-w-0 flex-col gap-10 lg:pt-10" aria-label={t('conciergePage.aside.howTitle')}>
           <section aria-labelledby="concierge-how">
             <h2 id="concierge-how" className="type-title-md mb-4 text-ink">
               {t('conciergePage.aside.howTitle')}
@@ -61,7 +69,7 @@ export default async function ConciergePage() {
                 <li key={text} className="flex items-start gap-3">
                   <span
                     aria-hidden="true"
-                    className="type-data-sm flex size-7 shrink-0 items-center justify-center rounded-pill border border-line-strong text-ink-2"
+                    className="type-data-sm flex size-8 shrink-0 items-center justify-center rounded-pill bg-primary text-on-primary"
                   >
                     {index + 1}
                   </span>
@@ -73,7 +81,7 @@ export default async function ConciergePage() {
 
           <ProvenanceLegend headingLevel={2} />
 
-          <section aria-labelledby="concierge-contacts" className="rounded-lg border border-line bg-page-subtle p-5">
+          <section aria-labelledby="concierge-contacts" className="rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">
             <h2 id="concierge-contacts" className="type-title-md text-ink">
               {t('conciergePage.aside.contactsTitle')}
             </h2>

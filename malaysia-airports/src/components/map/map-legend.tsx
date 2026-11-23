@@ -7,9 +7,9 @@ import { useT } from '@/lib/i18n/client';
 export function MapLegend({ showRoute }: { showRoute: boolean }) {
   const t = useT();
   return (
-    <div className="mt-3 px-1">
+    <div className="mt-3 rounded-2xl bg-page-subtle px-4 py-3">
       <h2 className="sr-only">{t('mapPages.legend.title')}</h2>
-      <ul className="type-caption grid grid-cols-2 items-start gap-x-4 gap-y-2 text-ink-2 sm:flex sm:flex-wrap sm:items-center sm:gap-x-5">
+      <ul className="type-caption grid grid-cols-2 items-start gap-x-4 gap-y-2.5 text-ink-2 sm:flex sm:flex-wrap sm:items-center sm:gap-x-6">
         <Item label={t('mapPages.legend.landside')}>
           <rect x="1" y="3" width="22" height="14" rx="4" className="fill-surface stroke-line-strong" strokeWidth="1.25" />
         </Item>
@@ -34,10 +34,10 @@ export function MapLegend({ showRoute }: { showRoute: boolean }) {
         {showRoute ? (
           <>
             <Item label={t('mapPages.legend.route')}>
-              <path d="M2 10 H22" className="stroke-primary" strokeWidth="4" strokeLinecap="round" />
+              <path d="M2 10 H22" className="stroke-primary" strokeWidth="5" strokeLinecap="round" />
             </Item>
             <Item label={t('mapPages.legend.ride')}>
-              <path d="M2 10 H22" className="stroke-primary" strokeWidth="4" strokeLinecap="round" strokeDasharray="0.1 6" />
+              <path d="M2 10 H22" className="stroke-primary" strokeWidth="5" strokeLinecap="round" strokeDasharray="0.1 6" />
             </Item>
           </>
         ) : null}

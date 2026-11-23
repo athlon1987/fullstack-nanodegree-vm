@@ -19,7 +19,7 @@ export function PersonList({ people, variant = 'compact', label }: { people: rea
   return (
     <ul aria-label={label} className={cn('grid gap-x-8', lead ? 'gap-y-8 md:grid-cols-2' : 'gap-y-0 sm:grid-cols-2 lg:grid-cols-3')}>
       {people.map((person) => (
-        <li key={person.id} className={cn('min-w-0 border-t', lead ? 'border-ink pt-5' : 'border-line py-4')}>
+        <li key={person.id} className={cn('min-w-0', lead ? 'rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6' : 'border-t border-line py-4')}>
           <p className={cn('text-ink', lead ? 'type-title-lg' : 'type-title-sm')}>{person.name}</p>
           <p className={cn('text-ink-2', lead ? 'type-body mt-1' : 'type-body-sm mt-0.5')}>{person.role}</p>
           {person.since ? <p className="type-caption mt-1 font-semibold text-ink-3">{person.since}</p> : null}

@@ -3,7 +3,7 @@ import type { Lang, TransportOption } from '@/content/types';
 import type { Translator } from '@/lib/i18n/translate';
 import { ProvenanceDefault, ProvenanceTag } from '@/components/common/provenance-tag';
 import { sharedProvenance } from '@/components/common/shared-provenance';
-import { SectionHeading } from '@/components/common/section-heading';
+import { ServiceHeading } from '@/components/facilities/service-frame';
 import { sectionSources } from '@/components/common/section-sources';
 import { SourceNote } from '@/components/common/source-note';
 import { Callout } from '@/components/ui/callout';
@@ -29,8 +29,8 @@ export function TerminalTransfers({ t, lang, context, between, inside, notes }: 
   return (
     <>
       {between.length > 0 ? (
-        <section id="between-terminals" aria-labelledby="between-terminals-title" className="scroll-mt-32 border-t border-line pt-10">
-          <SectionHeading id="between-terminals-title" title={t('transportPages.terminals.title')} lead={t('transportPages.terminals.lead')} variant="title" />
+        <section id="between-terminals" aria-labelledby="between-terminals-title" className="scroll-mt-32">
+          <ServiceHeading id="between-terminals-title" title={t('transportPages.terminals.title')} lead={t('transportPages.terminals.lead')} />
           <div className="flex flex-col gap-4">
             {notes.map((note) => (
               <Callout key={note.id} tone="warning" title={note.title} className="max-w-narrow">
@@ -59,7 +59,7 @@ export function TerminalTransfers({ t, lang, context, between, inside, notes }: 
 
       {inside.length > 0 ? (
         <section aria-labelledby="inside-terminal-title" className="border-t border-line pt-10">
-          <SectionHeading id="inside-terminal-title" title={t('transportPages.terminals.insideTitle')} lead={t('transportPages.terminals.insideLead')} variant="title" />
+          <ServiceHeading id="inside-terminal-title" title={t('transportPages.terminals.insideTitle')} lead={t('transportPages.terminals.insideLead')} />
           <ul className="grid items-start gap-4 xl:grid-cols-2">
             {inside.map((option) => (
               <li key={option.id} className="min-w-0">

@@ -261,7 +261,7 @@ function Directory({
 
             <div
               id="outlet-filters-panel"
-              className={cn('mt-3 flex-col divide-y divide-line rounded-xl border border-line-strong bg-surface px-4 lg:flex', open ? 'flex' : 'hidden')}
+              className={cn('mt-3 flex-col divide-y divide-line rounded-2xl border border-line bg-surface shadow-sm px-4 lg:flex', open ? 'flex' : 'hidden')}
             >
               <FilterGroup id="outlet-category" label={t('commercePages.filters.category')}>
                 {visibleCategories.map((category) => (

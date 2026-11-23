@@ -6,6 +6,7 @@ import type { GuideScope } from './guide-scopes';
 import type { GuideNoteTopic } from '@/content/types';
 import type { TKey } from '@/lib/i18n/translate';
 import type { IconKey } from '@/components/ui/icon';
+import type { ImageId } from '@/content/images';
 
 /** Icon per guide slug; unknown slugs fall back to the generic guide icon. */
 export const GUIDE_ICONS: Readonly<Record<string, IconKey>> = {
@@ -25,6 +26,22 @@ export const GUIDE_ICONS: Readonly<Record<string, IconKey>> = {
 export function guideIcon(slug: string): IconKey {
   return GUIDE_ICONS[slug] ?? 'file-text';
 }
+
+/**
+ * Redesign stage two: photographs from the library for guides about travel itself, where a
+ * picture is truthful. Each shows what its alt text says (a KLIA gate area, the outside of a
+ * KLIA terminal, the KLIA Ekspres, a window seat over Malaysia) and is never presented as another
+ * airport. Procedural guides (security, baggage, borders, care) have no truthful photograph in the
+ * library and keep their line icon.
+ */
+export const GUIDE_IMAGES: Readonly<Partial<Record<string, ImageId>>> = {
+  'first-time': 'wing-window',
+  departing: 'klia-t1-roof',
+  arriving: 'klia-ekspres',
+};
+
+/** The guides hub's header photograph: the timber-lined roof over the C gates at KLIA Terminal 1. */
+export const GUIDES_HUB_IMAGE: ImageId = 'klia-t1-canopy';
 
 export type GuideGroupId = 'before' | 'borders' | 'care';
 

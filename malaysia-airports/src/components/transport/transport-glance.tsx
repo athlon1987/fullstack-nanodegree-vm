@@ -11,6 +11,7 @@ import { dateKey } from '@/lib/time';
 import { compareTransport } from '@/lib/transport';
 import { NotPublished } from '@/components/common/not-published';
 import { Icon } from '@/components/ui/icon';
+import { SERVICE_ICON_SM, SERVICE_TOOL } from '@/components/facilities/service-frame';
 import { fareInfo, optionsForDay, placeChoices, placeKey, type FareInfo, type FarePeriod } from './transport-logic';
 import type { PlannerData, TransportContext } from './transport-types';
 import { dayLabel, DurationValue, moneyText } from './transport-values';
@@ -64,18 +65,23 @@ export function TransportGlance({ context, options }: PlannerData) {
   const placeName = pick(place.name, lang);
 
   return (
-    <section aria-labelledby="transport-glance-title" data-transport-glance="" className="rounded-xl border border-line-strong bg-surface p-4 shadow-xs sm:p-5">
-      <h2 id="transport-glance-title" className="type-title-md text-ink">
+    <section aria-labelledby="transport-glance-title" data-transport-glance="" className={cn(SERVICE_TOOL, 'p-4 sm:p-6')}>
+      <h2 id="transport-glance-title" className="type-title-lg flex items-center gap-2.5 text-ink">
+        <Icon name="coins" size="sm" className="text-gold-ink" />
         {t('transportPages.glance.title', { destination: placeName })}
       </h2>
-      <ul className="mt-3 flex flex-col divide-y divide-line">
+      <ul className="mt-4 flex flex-col divide-y divide-line">
         {rows.map((option) => {
           const info = fareInfo(option, key, day);
           return (
-            <li key={option.id} data-glance-row="" className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-start gap-x-3 py-3 first:pt-0 last:pb-0">
-              <Icon name={option.mode} className="mt-0.5 text-ink-2" />
+            <li key={option.id} data-glance-row="" className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-3.5 py-4 first:pt-0 last:pb-0 sm:grid-cols-[auto_minmax(0,1fr)_auto]">
+              {/* The icon tile from `sm` up: on a phone at 125% text its width went to the name,
+                  which otherwise broke inside words ("Ekspres" over three lines at 360 px). */}
+              <span className={cn(SERVICE_ICON_SM, 'max-sm:hidden')}>
+                <Icon name={option.mode} size="sm" />
+              </span>
               <div className="min-w-0">
-                <a href={`#transport-${option.id}`} className="link type-body font-semibold text-ink">
+                <a href={`#transport-${option.id}`} className="link type-title-sm text-ink">
                   {pick(option.name, lang)}
                 </a>
                 <p className="type-body-sm mt-0.5 flex flex-wrap items-center gap-x-1.5 text-ink-2">
@@ -89,7 +95,7 @@ export function TransportGlance({ context, options }: PlannerData) {
           );
         })}
       </ul>
-      <p className="type-caption mt-3 text-ink-2">{t('transportPages.glance.note')}</p>
+      <p className="type-caption mt-4 border-t border-line pt-3 text-ink-2">{t('transportPages.glance.note')}</p>
     </section>
   );
 }
@@ -175,7 +181,7 @@ function GlanceFareLines({ info, day, context, lang, t }: { info: FareInfo; day:
     return fare ? moneyText(fare, lang, t).amount : t('transportPages.fare.notPublished');
   };
   return (
-    <ul data-glance-periods="" className="col-span-2 col-start-2 mt-2 flex flex-col gap-1">
+    <ul data-glance-periods="" className="col-span-2 col-start-1 mt-2 flex flex-col gap-1 sm:col-start-2">
       {info.place.periods.map((period) => {
         const amount = amountOf(period);
         let tone: 'positive' | 'neutral' = 'neutral';

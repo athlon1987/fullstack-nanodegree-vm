@@ -23,8 +23,8 @@ export function ContactChannelList({ channels, label }: { channels: readonly Cha
       {channels.map((channel) => {
         const external = channel.href?.startsWith('http');
         return (
-          <li key={channel.id} className="flex min-w-0 gap-4 rounded-lg border border-line-strong bg-surface p-5">
-            <span aria-hidden="true" className="flex size-10 shrink-0 items-center justify-center rounded-md bg-primary-soft text-primary-ink">
+          <li key={channel.id} className="flex min-w-0 gap-4 rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">
+            <span aria-hidden="true" className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary-ink">
               <Icon name={channel.icon} size="md" strokeWidth={1.5} />
             </span>
             <div className="min-w-0 flex-1">

@@ -26,9 +26,9 @@ export interface LinkOutCardProps {
 export function LinkOutCard({ icon, title, children, links = [], sources = [], notPublished, headingLevel = 3, className }: LinkOutCardProps) {
   const Heading = `h${headingLevel}` as 'h2' | 'h3';
   return (
-    <div className={cn('flex min-w-0 flex-col gap-3 rounded-lg border border-line-strong bg-surface p-5 sm:p-6', className)}>
+    <div className={cn('flex min-w-0 flex-col gap-3 rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6', className)}>
       <div className="flex items-start gap-3">
-        <span aria-hidden="true" className="flex size-10 shrink-0 items-center justify-center rounded-md bg-primary-soft text-primary-ink">
+        <span aria-hidden="true" className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary-ink">
           <Icon name={icon} size="md" strokeWidth={1.5} />
         </span>
         <Heading className="type-title-md min-w-0 pt-1.5 text-ink">{title}</Heading>

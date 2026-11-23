@@ -36,8 +36,10 @@ export function ToutsWarning({ context, variant = 'banner', mode = 'taxi', class
 
   if (variant === 'inline') {
     return (
-      <div className={cn('flex items-start gap-2.5 rounded-lg border border-warning-border bg-warning-bg px-3 py-2.5 text-warning-fg', className)}>
-        <Icon name="triangle-alert" size="sm" className="mt-0.5 shrink-0" />
+      <div className={cn('flex items-start gap-3 rounded-xl border border-warning-border/40 bg-warning-bg px-3.5 py-3 text-warning-fg hc:border-warning-border', className)}>
+        <span aria-hidden="true" className="flex size-7 shrink-0 items-center justify-center rounded-full bg-surface/70">
+          <Icon name="triangle-alert" size="sm" strokeWidth={2} />
+        </span>
         <div className="min-w-0">
           <p className="type-body-sm font-semibold">{mode === 'e-hailing' ? t('transportPages.touts.ehailing') : t('transportPages.touts.taxi')}</p>
           <div className="mt-0.5">{help}</div>
@@ -51,7 +53,9 @@ export function ToutsWarning({ context, variant = 'banner', mode = 'taxi', class
       tone="warning"
       icon="triangle-alert"
       title={t('transportPages.touts.title')}
-      className={cn('border-2', className)}
+      // Redesign stage two: a refined callout (the soft amber panel, the tone's round icon, one
+      // quiet provenance line), no longer a 2 px frame. The words, sources and link are unchanged.
+      className={cn('sm:p-6', className)}
       actions={
         <>
           {help}

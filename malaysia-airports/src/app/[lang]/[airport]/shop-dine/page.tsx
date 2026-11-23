@@ -4,7 +4,6 @@ import { localAirport, airportSectionMetadata, loadAirportPage, sectionStaticPar
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { LocaleLink } from '@/components/common/locale-link';
 import { MissingPage } from '@/components/common/missing-page';
-import { PageHeader } from '@/components/common/page-header';
 import { TranslationNotice } from '@/components/common/translation-notice';
 import { coverage } from '@/components/commerce/commerce-view';
 import { needsTranslationNotice, officialDirectory, outletViews, sourceLookup } from '@/components/commerce/commerce-view.server';
@@ -12,7 +11,9 @@ import { Coverage, PartialNote } from '@/components/commerce/directory-notes';
 import { OutletDirectory } from '@/components/commerce/outlet-directory';
 import { sectionPath } from '@/components/shell/sections';
 import { Button } from '@/components/ui/button';
-import { Container } from '@/components/ui/container';
+import { ServiceBody, ServiceIntro } from '@/components/facilities/service-frame';
+import { GlancePanel, sectionPhoto } from '@/components/commerce/glance-panel';
+import { KIND_ICONS } from '@/components/commerce/category-art';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 export const generateStaticParams = () => sectionStaticParams('shop-dine');
@@ -43,6 +44,8 @@ export default function ShopDinePage({ params }: PageProps<'/[lang]/[airport]/sh
   );
 }
 
+const OUTLET_KINDS = ['dine', 'shop', 'service'] as const;
+
 async function ShopDine({ params }: { params: AirportPageParams }) {
   const { airport: slug } = await params;
   if (!generateStaticParams().some((listed) => listed.airport === slug)) return <MissingPage />;
@@ -58,11 +61,27 @@ async function ShopDine({ params }: { params: AirportPageParams }) {
 
   return (
     <>
-      <PageHeader
+      {/* Redesign stage two: the service-page frame; the answer is what the directory holds, by
+          kind, each row opening the directory filtered to it, under the section's photograph. */}
+      <ServiceIntro
         eyebrow={airport.shortName}
         title={t('nav.shopDine')}
-        lead={t('commercePages.lead')}
+        summary={t('commercePages.lead')}
+        summaryClassName="max-sm:sr-only"
         breadcrumbs={<Breadcrumbs items={[{ label: airport.shortName, href: `/${airport.slug}` }, { label: t('nav.shopDine') }]} />}
+        answer={
+          items.length > 0 ? (
+            <GlancePanel
+              title={t('commercePages.frame.atAGlance')}
+              photo={sectionPhoto(airport.slug, 'shop-dine', lang)}
+              rows={OUTLET_KINDS.flatMap((kind) => {
+                const count = items.filter((item) => item.kind === kind).length;
+                return count > 0 ? [{ key: kind, icon: KIND_ICONS[kind], label: t.count(`commercePages.frame.kindCount.${kind}`, count), href: `/${airport.slug}/shop-dine?kind=${kind}` }] : [];
+              })}
+              footer={t.count('commercePages.frame.confirmed', items.length)}
+            />
+          ) : undefined
+        }
         actions={
           loungesHref ? (
             <Button asChild variant="secondary" iconStart="armchair">
@@ -71,8 +90,8 @@ async function ShopDine({ params }: { params: AirportPageParams }) {
           ) : undefined
         }
       />
-      <Container className="pb-section">
-        {translationMissing ? <TranslationNotice className="mb-6" /> : null}
+      <ServiceBody className="gap-12 sm:gap-16">
+        {translationMissing ? <TranslationNotice /> : null}
         <OutletDirectory
           airport={airport.slug}
           items={items}
@@ -84,7 +103,7 @@ async function ShopDine({ params }: { params: AirportPageParams }) {
           }
         />
         <Coverage lang={lang} stats={coverage(items)} />
-      </Container>
+      </ServiceBody>
     </>
   );
 }

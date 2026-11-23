@@ -62,7 +62,7 @@ export function ConciergePanel() {
                   onClick={() => closeOverlay()}
                   aria-label={t('conciergePage.openFullPage')}
                   title={t('conciergePage.openFullPage')}
-                  className="flex size-9 items-center justify-center rounded-md text-ink-2 transition-colors duration-fast hover:bg-page-subtle hover:text-ink touch:size-11"
+                  className="flex size-9 items-center justify-center rounded-full text-ink-2 transition-colors duration-fast hover:bg-page-subtle hover:text-ink touch:size-11"
                 >
                   <Icon name="arrow-up-right" size="sm" />
                 </LocaleLink>

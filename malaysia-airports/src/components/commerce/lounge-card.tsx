@@ -1,3 +1,4 @@
+import { CategoryArt } from './category-art';
 import type { Lang } from '@/content/types';
 import { getT } from '@/lib/i18n';
 import { ExternalLink } from '@/components/common/external-link';
@@ -29,70 +30,71 @@ export function LoungeCard({ item, lang, showTerminal, headingLevel = 4 }: Loung
     <article
       id={item.id}
       aria-labelledby={`${item.id}-title`}
-      className="flex min-w-0 scroll-mt-32 flex-col rounded-xl border border-line-strong bg-surface p-4 shadow-xs target:border-ink target:shadow-md sm:p-5"
+      className="flex min-w-0 scroll-mt-32 flex-col overflow-hidden rounded-2xl border border-line bg-surface shadow-sm target:border-ink target:shadow-lg"
     >
-      <div className="flex items-start gap-3.5">
-        <span aria-hidden="true" className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-page-subtle text-ink">
-          <Icon name={item.category} />
-        </span>
-        <div className="min-w-0 flex-1">
-          <p className="type-caption text-ink-2">
-            {item.categoryLabel}
-            {item.operator ? <span className="text-ink-3"> · </span> : null}
-            {item.operator}
-          </p>
-          <Heading id={`${item.id}-title`} className="type-title-md mt-0.5 text-ink">
-            {item.name}
-          </Heading>
-          <div className="mt-2 flex flex-wrap items-center gap-2">
-            <ProvenanceTag provenance={item.provenance} length="short" />
-            {showTerminal ? <Badge size="sm">{item.terminalLabel}</Badge> : null}
-            {item.zone === 'airside' ? <Chip icon="scan-line">{t('commercePages.card.zone.airside')}</Chip> : null}
-            {item.zone === 'landside' ? <Chip icon="door-open">{t('commercePages.card.zone.landside')}</Chip> : null}
-            <OpenStatus hours={item.hours} />
+      {/* Redesign stage two: category art in the picture slot (no lounge in our sources has a licensed photograph). */}
+      <CategoryArt name={item.name} tone={item.category === 'lounge' || item.category === 'hotel' ? 'lounge' : 'service'} icon={item.category} />
+      <div className="flex flex-1 flex-col p-5 sm:p-6">
+        <div className="flex items-start gap-3.5">
+          <div className="min-w-0 flex-1">
+            <p className="type-caption text-ink-2">
+              {item.categoryLabel}
+              {item.operator ? <span className="text-ink-3"> · </span> : null}
+              {item.operator}
+            </p>
+            <Heading id={`${item.id}-title`} className="type-title-lg mt-0.5 text-ink">
+              {item.name}
+            </Heading>
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              <ProvenanceTag provenance={item.provenance} length="short" />
+              {showTerminal ? <Badge size="sm">{item.terminalLabel}</Badge> : null}
+              {item.zone === 'airside' ? <Chip icon="scan-line">{t('commercePages.card.zone.airside')}</Chip> : null}
+              {item.zone === 'landside' ? <Chip icon="door-open">{t('commercePages.card.zone.landside')}</Chip> : null}
+              <OpenStatus hours={item.hours} />
+            </div>
           </div>
         </div>
-      </div>
 
-      <p className="type-body mt-3.5 text-ink-2">{item.description}</p>
+        <p className="type-body mt-3.5 text-ink-2">{item.description}</p>
 
-      <FactRows
-        className="mt-4"
-        facts={[
-          { label: t('commercePages.lounges.location'), value: item.locationNote },
-          { label: t('commercePages.lounges.level'), value: item.levelName },
-          { label: t('commercePages.lounges.hours'), value: item.hours ? <HoursText hours={item.hours} /> : undefined },
-          { label: t('commercePages.lounges.access'), value: item.access },
-          // No operator publishes prices here yet (C-11, OOS-04): said once, in the grouped line.
-          { label: t('commercePages.lounges.price'), value: undefined },
-        ]}
-      />
+        <FactRows
+          className="mt-4"
+          facts={[
+            { label: t('commercePages.lounges.location'), value: item.locationNote },
+            { label: t('commercePages.lounges.level'), value: item.levelName },
+            { label: t('commercePages.lounges.hours'), value: item.hours ? <HoursText hours={item.hours} /> : undefined },
+            { label: t('commercePages.lounges.access'), value: item.access },
+            // No operator publishes prices here yet (C-11, OOS-04): said once, in the grouped line.
+            { label: t('commercePages.lounges.price'), value: undefined },
+          ]}
+        />
 
-      <div aria-hidden="true" className="min-h-3 flex-1" />
-      {item.mapHref || item.operatorUrl || item.bookingUrl ? (
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-1 pt-3">
-          {item.mapHref ? (
-            <LocaleLink href={item.mapHref} aria-label={`${t('commercePages.outlet.showOnMap')}: ${item.name}`} className="link-action type-body-sm inline-flex items-center gap-1.5">
-              <Icon name="map" size="sm" />
-              {t('commercePages.outlet.showOnMap')}
-            </LocaleLink>
-          ) : null}
-          {/* E-17 (round 4): the operator's page is a commercial hand-off too (where lounge access is sold). */}
-          {item.operatorUrl ? (
-            <ExternalLink href={item.operatorUrl} variant="action" className="type-body-sm" data-handoff="lounge-operator">
-              {t('commercePages.lounges.operatorPage')}
-            </ExternalLink>
-          ) : null}
-          {item.bookingUrl ? (
-            <ExternalLink href={item.bookingUrl} variant="action" className="type-body-sm" data-handoff="lounge-booking">
-              {t('commercePages.lounges.book')}
-            </ExternalLink>
-          ) : null}
+        <div aria-hidden="true" className="min-h-3 flex-1" />
+        {item.mapHref || item.operatorUrl || item.bookingUrl ? (
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-1 pt-3">
+            {item.mapHref ? (
+              <LocaleLink href={item.mapHref} aria-label={`${t('commercePages.outlet.showOnMap')}: ${item.name}`} className="link-action type-body-sm inline-flex items-center gap-1.5">
+                <Icon name="map" size="sm" />
+                {t('commercePages.outlet.showOnMap')}
+              </LocaleLink>
+            ) : null}
+            {/* E-17 (round 4): the operator's page is a commercial hand-off too (where lounge access is sold). */}
+            {item.operatorUrl ? (
+              <ExternalLink href={item.operatorUrl} variant="action" className="type-body-sm" data-handoff="lounge-operator">
+                {t('commercePages.lounges.operatorPage')}
+              </ExternalLink>
+            ) : null}
+            {item.bookingUrl ? (
+              <ExternalLink href={item.bookingUrl} variant="action" className="type-body-sm" data-handoff="lounge-booking">
+                {t('commercePages.lounges.book')}
+              </ExternalLink>
+            ) : null}
+          </div>
+        ) : null}
+        <div className="mt-1 flex flex-wrap items-center gap-x-4">
+          <SourceNote sources={item.sources} />
+          {item.asOf ? <AsOfText value={item.asOf} /> : null}
         </div>
-      ) : null}
-      <div className="mt-1 flex flex-wrap items-center gap-x-4">
-        <SourceNote sources={item.sources} />
-        {item.asOf ? <AsOfText value={item.asOf} /> : null}
       </div>
     </article>
   );

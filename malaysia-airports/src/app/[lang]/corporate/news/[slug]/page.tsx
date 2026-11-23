@@ -72,7 +72,7 @@ async function NewsItem({ params }: { params: Params }) {
           </>
         }
       />
-      <Container className="flex flex-col gap-14 pb-section">
+      <Container className="flex flex-col gap-20 pt-12 pb-section sm:gap-24 sm:pt-16">
         <div className="grid gap-x-16 gap-y-10 lg:grid-cols-[minmax(0,1fr)_20rem]">
           <article className="min-w-0">
             <p className="type-body-lg max-w-reading text-ink">{item.summary}</p>
@@ -106,7 +106,7 @@ async function NewsItem({ params }: { params: Params }) {
               {t('corporatePages.media.back')}
             </LocaleLink>
           </article>
-          <aside aria-labelledby="story-sources" className="self-start rounded-lg border border-line-strong bg-surface p-5">
+          <aside aria-labelledby="story-sources" className="self-start rounded-2xl border border-line bg-surface p-5 shadow-sm">
             <h2 id="story-sources" className="type-title-sm text-ink">
               {t('corporatePages.media.sourcesTitle')}
             </h2>
@@ -116,7 +116,7 @@ async function NewsItem({ params }: { params: Params }) {
         </div>
 
         {more.length ? (
-          <section aria-labelledby="story-more" className="border-t border-line pt-12">
+          <section aria-labelledby="story-more">
             <h2 id="story-more" className="type-display-sm mb-6 text-ink">
               {t('corporatePages.media.moreTitle')}
             </h2>

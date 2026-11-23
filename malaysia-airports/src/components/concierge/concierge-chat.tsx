@@ -41,7 +41,7 @@ function Consent({ onAccept, onDecline }: { onAccept: () => void; onDecline?: ()
     { icon: 'info', title: t('conciergePage.consent.limitsTitle'), body: t('conciergePage.consent.limits') },
   ];
   return (
-    <section aria-labelledby={titleId} className="flex flex-col gap-5 rounded-lg border border-line-strong bg-surface p-4 sm:p-5">
+    <section aria-labelledby={titleId} className="flex flex-col gap-5 rounded-2xl border border-line bg-surface p-5 shadow-md sm:p-6">
       <div>
         <h3 id={titleId} className="type-title-md text-ink">
           {t('conciergePage.onDevice.optInTitle')}
@@ -51,7 +51,7 @@ function Consent({ onAccept, onDecline }: { onAccept: () => void; onDecline?: ()
       <ul className="flex flex-col gap-4">
         {items.map((item) => (
           <li key={item.title} className="flex items-start gap-3">
-            <span aria-hidden="true" className="flex size-9 shrink-0 items-center justify-center rounded-md bg-primary-soft text-primary-ink">
+            <span aria-hidden="true" className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary-ink">
               <Icon name={item.icon} size="sm" />
             </span>
             <div className="min-w-0">
@@ -85,8 +85,8 @@ function Consent({ onAccept, onDecline }: { onAccept: () => void; onDecline?: ()
 function PrivacyNotice({ consent, onTurnOn, onTurnOff, expanded }: { consent: boolean; onTurnOn: () => void; onTurnOff: () => void; expanded: boolean }) {
   const t = useT();
   return (
-    <div data-concierge-privacy={consent ? 'service' : 'device'} className="flex flex-wrap items-start gap-x-3 gap-y-2 rounded-md border border-line bg-page-subtle px-3.5 py-2.5">
-      <Icon name={consent ? 'sparkles' : 'shield-check'} size="sm" className="mt-0.5 shrink-0 text-ink-2" />
+    <div data-concierge-privacy={consent ? 'service' : 'device'} className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-2xl bg-page-subtle py-2 pr-2 pl-3.5">
+      <Icon name={consent ? 'sparkles' : 'shield-check'} size="sm" className="shrink-0 text-ink-2" />
       <p className="type-body-sm min-w-0 flex-1 basis-56 text-ink-2">
         {consent ? t('conciergePage.onDevice.noticeServer') : t('conciergePage.onDevice.noticeLocal')}{' '}
         <LocaleLink href="/privacy" className="link">
@@ -111,23 +111,23 @@ function Examples({ keys, onAsk, disabled }: { keys: readonly (typeof EXAMPLE_KE
   const titleId = useId();
   return (
     <section aria-labelledby={titleId}>
-      <h3 id={titleId} className="type-eyebrow mb-2.5 text-ink-2">
+      <h3 id={titleId} className="type-overline mb-3 text-ink-2">
         {t('conciergePage.examplesTitle')}
       </h3>
-      <ul className="grid gap-2 @2xl:grid-cols-2">
+      {/* Redesign stage two: suggestion chips. They wrap (never scroll sideways) and grow to two lines. */}
+      <ul className="flex flex-wrap gap-2">
         {keys.map((key) => {
           const question = t(`conciergePage.examples.${key}`);
           return (
-            <li key={key} className="flex">
+            <li key={key} className="flex max-w-full">
               <button
                 type="button"
                 disabled={disabled}
                 onClick={() => onAsk(question)}
-                className="group flex min-h-12 w-full items-center gap-3 rounded-md border border-line-strong bg-surface px-3.5 py-2.5 text-left text-ink transition-colors duration-fast hover:border-ink-3 hover:bg-surface-raised disabled:opacity-60"
+                className="type-body-sm group flex min-h-11 max-w-full items-center gap-2 rounded-pill border border-line-control/60 bg-surface py-2 pr-4 pl-3 text-left font-medium text-ink shadow-xs transition-[border-color,background-color,translate] duration-fast hover:border-ink hover:bg-surface-raised disabled:opacity-60 motion-ok:hover:-translate-y-px"
               >
-                <Icon name="messages-square" size="sm" className="shrink-0 text-primary-ink" />
-                <span className="type-body min-w-0 flex-1">{question}</span>
-                <Icon name="arrow-right" size="sm" className="shrink-0 text-ink-3 transition-transform duration-base group-hover:translate-x-0.5" />
+                <Icon name="sparkles" size="sm" className="shrink-0 text-gold-ink" />
+                <span className="min-w-0">{question}</span>
               </button>
             </li>
           );
@@ -142,15 +142,15 @@ function Turn({ turn, onAsk, onRetry, busy }: { turn: ConciergeTurn; onAsk: (que
   const failed = turn.status === 'error' || isInterrupted(turn);
   return (
     <li data-turn={turn.id} className="flex scroll-mt-4 flex-col gap-4">
-      <h3 className="type-body ml-auto max-w-[85%] rounded-lg rounded-br-xs bg-primary px-4 py-2.5 font-medium break-words text-on-primary">
+      <h3 className="type-body ml-auto max-w-[85%] rounded-3xl rounded-br-md bg-primary px-5 py-3 font-medium break-words text-on-primary shadow-sm">
         <span className="sr-only">{t('conciergePage.log.you')}: </span>
         {turn.question}
       </h3>
       <div className="flex min-w-0 items-start gap-3">
-        <span aria-hidden="true" className="mt-0.5 hidden size-8 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary-ink @md:flex">
+        <span aria-hidden="true" className="surface-midnight mt-1 hidden size-9 shrink-0 items-center justify-center rounded-full text-gold-bright shadow-sm ring-1 ring-gold/50 @md:flex">
           <Icon name="sparkles" size="sm" />
         </span>
-        <div className="min-w-0 flex-1">
+        <div className="min-w-0 flex-1 rounded-3xl rounded-tl-md bg-page-subtle p-4 @md:p-5">
           <p className="sr-only">{t('conciergePage.log.concierge')}</p>
           {turn.status === 'done' && turn.answer ? (
             <ConciergeAnswerView answer={turn.answer} mode={turn.mode ?? 'grounded'} note={turn.note} onAsk={onAsk} busy={busy} />
@@ -418,12 +418,15 @@ export function ConciergeChat({ variant, initialQuestion, toolbarEnd }: Concierg
           stuck &&
             // Round 4 (layout package, WCAG 2.4.11/2.4.12): the offset follows the bottom bar (0 while it is slid
             // away), and on short windows `data-sticky-bottom` turns sticking off (globals.css).
-            'sticky bottom-[calc(var(--spacing-sticky-bottom)+env(safe-area-inset-bottom))] z-10 -mx-4 border-t border-line bg-page px-4 py-3 sm:-mx-7 sm:bg-surface sm:px-7 md:bottom-0',
+            // Redesign stage two: a glass strip under the composer pill. Its fill carries the contrast
+            // (the blur is decoration) and the page's scroll padding keeps any focused item above it.
+            'glass sticky bottom-[calc(var(--spacing-sticky-bottom)+env(safe-area-inset-bottom))] z-10 -mx-4 border-x-0 border-b-0 px-4 py-3 shadow-none sm:-mx-8 sm:px-8 md:bottom-0',
           // Fills the strip between the composer and the phone's bottom bar, so answers do not show through.
-          stuck && 'after:absolute after:inset-x-0 after:top-full after:h-6 after:bg-page sm:after:bg-surface md:after:hidden',
+          stuck && 'after:absolute after:inset-x-0 after:top-full after:h-6 after:bg-page md:after:hidden',
         )}
       >
-        <div className="flex items-end gap-2">
+        {/* One pill: the field and the send button. The pill carries the field's 3:1 boundary and its focus ring. */}
+        <div className="flex items-center gap-1.5 rounded-pill bg-surface p-1.5 shadow-md ring-1 ring-line-control transition-shadow duration-fast has-[input:focus-visible]:focus-ring">
           <Input
             label={t('conciergePage.composer.label')}
             hideLabel
@@ -434,6 +437,7 @@ export function ConciergeChat({ variant, initialQuestion, toolbarEnd }: Concierg
             autoComplete="off"
             enterKeyHint="send"
             fieldClassName="min-w-0 flex-1"
+            className="rounded-pill border-transparent bg-transparent pl-4 shadow-none hover:border-transparent focus-visible:outline-none"
           />
           <Button type="submit" loading={busy} loadingLabel={t('conciergePage.composer.sending')} iconEnd="send" disabled={!draft.trim()}>
             {t('conciergePage.composer.send')}

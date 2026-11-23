@@ -61,7 +61,7 @@ export function GatePanel({ airport, terminalLabels, value, context, onChange }:
   if (areas.length === 0 && !flight) return null;
 
   return (
-    <section aria-labelledby="gate-panel-title" className="rounded-xl border border-line-strong bg-surface p-4">
+    <section aria-labelledby="gate-panel-title" className="rounded-3xl border border-line bg-surface p-5 shadow-md">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h2 id="gate-panel-title" className="type-title-sm flex items-center gap-2 text-ink">
           <Icon name="navigation" size="sm" className="text-ink-2" />

@@ -61,6 +61,8 @@ const VERDICT: Record<TimeVerdict, { tone: 'positive' | 'warning' | 'critical'; 
 };
 
 const TONE_TEXT = { positive: 'text-positive-fg', warning: 'text-warning-fg', critical: 'text-critical-fg' } as const;
+/** Redesign stage two: the verdict's icon sits in a disc of its tone's soft fill. */
+const TONE_DISC = { positive: 'bg-positive-bg', warning: 'bg-warning-bg', critical: 'bg-critical-bg' } as const;
 
 /** Steps the official inter-terminal note covers when the traveller changes terminals. */
 const OFFICIAL_WHEN_CHANGING: readonly TransitStepId[] = ['immigration', 'bags', 'travel', 'check-in'];
@@ -161,7 +163,7 @@ export function TransitPlanner({ data, initial }: TransitPlannerProps) {
         aria-labelledby="transit-planner-title"
         onSubmit={(event) => event.preventDefault()}
         // The sticky verdict summary covers the top of the window on phones: focused fields keep clear of it (WCAG 2.4.11).
-        className="flex min-w-0 flex-col gap-5 rounded-xl border border-line-strong bg-surface p-5 shadow-sm max-lg:[@media(min-height:40rem)]:[&_:is(input,select,button)]:scroll-mt-40 lg:sticky lg:top-[calc(var(--spacing-sticky)+1.5rem)]"
+        className="flex min-w-0 flex-col gap-5 rounded-3xl border border-line bg-surface p-5 shadow-md sm:p-6 max-lg:[@media(min-height:40rem)]:[&_:is(input,select,button)]:scroll-mt-40 lg:sticky lg:top-[calc(var(--spacing-sticky)+1.5rem)]"
       >
         <h2 id="transit-planner-title" className="type-title-lg text-ink">
           {t('guidePages.transit.planner.title')}
@@ -206,8 +208,8 @@ export function TransitPlanner({ data, initial }: TransitPlannerProps) {
       <div className="flex min-w-0 flex-col gap-8">
         <VerdictCard verdict={verdict} estimate={estimate} layover={input.layover} self={input.ticket === 'self'} late={data.late.length > 0} />
 
-        <section aria-labelledby="transit-case-title" className="flex min-w-0 gap-4 rounded-xl border border-ink bg-surface p-5">
-          <span aria-hidden="true" className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-inverse text-on-inverse">
+        <section aria-labelledby="transit-case-title" className="flex min-w-0 gap-4 rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">
+          <span aria-hidden="true" className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-inverse text-on-inverse">
             <Icon name={caseCopy.icon} />
           </span>
           <div className="min-w-0">
@@ -226,8 +228,9 @@ export function TransitPlanner({ data, initial }: TransitPlannerProps) {
           </div>
         </section>
 
-        <section aria-labelledby="transit-steps-title">
-          <h3 id="transit-steps-title" className="type-title-md mb-5 text-ink">
+        {/* Redesign stage two: the steps as one app-like card, step by step. */}
+        <section aria-labelledby="transit-steps-title" className="rounded-3xl border border-line bg-surface p-5 shadow-sm sm:p-7">
+          <h3 id="transit-steps-title" className="type-title-lg mb-6 text-ink">
             {t('guidePages.transit.planner.stepsTitle')}
           </h3>
           {/* Round 4 (A-14): the tag most steps share is said once; one source list for the steps. */}
@@ -267,7 +270,7 @@ export function TransitPlanner({ data, initial }: TransitPlannerProps) {
                     <OpsStatus airport={data.airportSlug} notices={data.aerotrain.notices} sources={data.aerotrain.sources} services={['aerotrain']} variant="inline" />
                   ) : null}
                   {facts.length > 0 ? (
-                    <div className="mt-3 flex flex-col gap-3 border-l-2 border-line-strong pl-4">
+                    <div className="mt-3 flex flex-col gap-3 rounded-2xl bg-page-subtle p-4">
                       {facts.map((fact) => (
                         <FactCard key={fact.id} fact={fact} headingLevel={4} variant="plain" />
                       ))}
@@ -284,7 +287,7 @@ export function TransitPlanner({ data, initial }: TransitPlannerProps) {
           ) : null}
         </section>
 
-        <section aria-labelledby="transit-time-title" className="rounded-xl border border-line-strong bg-surface p-5">
+        <section aria-labelledby="transit-time-title" className="rounded-3xl border border-line bg-surface p-5 shadow-sm sm:p-6">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="min-w-0">
               <h3 id="transit-time-title" className="type-title-md text-ink">
@@ -375,7 +378,7 @@ function VerdictSummary({ verdict, estimate, layover }: { verdict: TimeVerdict; 
     <div
       data-verdict-summary={verdict}
       className={cn(
-        'z-10 -mx-2 flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 rounded-lg border-2 bg-surface px-3 py-2 shadow-sm lg:hidden',
+        'z-10 -mx-2 flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl border-2 bg-surface px-3.5 py-2.5 shadow-md lg:hidden',
         '[@media(min-height:40rem)]:sticky [@media(min-height:40rem)]:top-[calc(var(--spacing-sticky)+0.5rem)]',
         border,
       )}
@@ -411,15 +414,20 @@ function VerdictCard({ verdict, estimate, layover, self, late }: { verdict: Time
   const copy = VERDICT[verdict];
   const border = verdict === 'comfortable' ? 'border-positive-border' : verdict === 'tight' ? 'border-warning-border' : 'border-critical-border';
   return (
-    <section aria-labelledby="transit-verdict-title" data-transit-verdict={verdict} className={cn('flex min-w-0 flex-col gap-4 rounded-xl border-2 bg-surface p-5 shadow-sm', border)}>
+    // Redesign stage two: the verdict is the page's answer: a raised card, the verdict word large
+    // beside its icon in a tinted disc, the two times as big figures. The tone stays in the icon,
+    // the word and a 2 px edge, never in colour alone.
+    <section aria-labelledby="transit-verdict-title" data-transit-verdict={verdict} className={cn('flex min-w-0 flex-col gap-5 rounded-3xl border-2 bg-surface p-5 shadow-md sm:p-6', border)}>
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <p className="type-eyebrow text-ink-3">{t('guidePages.transit.time.title')}</p>
+        <p className="type-eyebrow text-ink-2">{t('guidePages.transit.time.title')}</p>
         <ProvenanceTag provenance="estimated" length="short" />
       </div>
-      <div className="flex min-w-0 gap-3">
-        <Icon name={copy.icon} className={cn('mt-1 shrink-0', TONE_TEXT[copy.tone])} />
+      <div className="flex min-w-0 items-start gap-4">
+        <span aria-hidden="true" className={cn('flex size-12 shrink-0 items-center justify-center rounded-full', TONE_DISC[copy.tone])}>
+          <Icon name={copy.icon} className={TONE_TEXT[copy.tone]} strokeWidth={2} />
+        </span>
         <div className="min-w-0">
-          <h3 id="transit-verdict-title" className="type-title-lg text-ink">
+          <h3 id="transit-verdict-title" className="type-display-sm text-ink">
             {t(copy.title)}
           </h3>
           <p className="type-body mt-1 text-ink-2">{t(copy.body)}</p>
@@ -428,13 +436,13 @@ function VerdictCard({ verdict, estimate, layover, self, late }: { verdict: Time
       {/* Round 6 (review-3 9.1 item 8): side by side while their labels fit, stacked when they do not
           ("penerbangan" broke in a 96 px column at 360 px and 125% text). */}
       <dl className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,9rem),1fr))] gap-3">
-        <div className="min-w-0 rounded-lg bg-page-subtle p-3">
+        <div className="min-w-0 rounded-2xl bg-page-subtle p-4">
           <dt className="type-caption text-ink-2">{t('guidePages.transit.time.estimate')}</dt>
-          <dd className="type-data-md mt-1 text-ink">{t('guidePages.transit.time.range', { min: formatDuration(estimate.min, lang), max: formatDuration(estimate.max, lang) })}</dd>
+          <dd className="type-data-lg mt-1.5 text-ink">{t('guidePages.transit.time.range', { min: formatDuration(estimate.min, lang), max: formatDuration(estimate.max, lang) })}</dd>
         </div>
-        <div className="min-w-0 rounded-lg bg-page-subtle p-3">
+        <div className="min-w-0 rounded-2xl bg-page-subtle p-4">
           <dt className="type-caption text-ink-2">{t('guidePages.transit.time.yours')}</dt>
-          <dd className="type-data-md mt-1 text-ink">{formatDuration(layover, lang)}</dd>
+          <dd className="type-data-lg mt-1.5 text-ink">{formatDuration(layover, lang)}</dd>
         </div>
       </dl>
       {self ? (

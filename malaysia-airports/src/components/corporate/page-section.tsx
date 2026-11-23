@@ -18,7 +18,8 @@ export interface PageSectionProps {
 /** A numbered, linkable section of a long corporate or transparency page. */
 export function PageSection({ id, title, number, eyebrow, lead, action, first = false, children, className }: PageSectionProps) {
   return (
-    <section id={id} aria-labelledby={`${id}-title`} className={cn('scroll-mt-32', !first && 'border-t border-line pt-12 sm:pt-14', className)}>
+    // Redesign stage two: sections separate by space, not by rules (`first` is kept for compatibility).
+    <section id={id} aria-labelledby={`${id}-title`} data-first={first ? '' : undefined} className={cn('scroll-mt-32', className)}>
       <SectionHeading id={`${id}-title`} number={number} eyebrow={eyebrow} title={title} lead={lead} action={action} />
       {children}
     </section>

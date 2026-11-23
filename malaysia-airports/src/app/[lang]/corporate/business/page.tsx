@@ -10,6 +10,7 @@ import { BusinessAreaCard } from '@/components/corporate/business-area-card';
 import { ContactChannelList } from '@/components/corporate/contact-channel-list';
 import { corporateChannels } from '@/components/corporate/contact-views.server';
 import { CorporateHeader } from '@/components/corporate/corporate-header';
+import { corporateImage } from '@/components/corporate/corporate-images';
 import { factViews, formatPartialDate, resolveCorporateSources, type FactView } from '@/components/corporate/corporate-data.server';
 import { FactMeta } from '@/components/corporate/fact-meta';
 import { PageSection } from '@/components/corporate/page-section';
@@ -70,8 +71,9 @@ export default async function CorporateBusinessPage() {
 
   return (
     <>
-      <CorporateHeader t={t} current="business" title={t('corporatePages.business.title')} lead={t('corporatePages.business.lead')} />
-      <Container className="flex flex-col gap-14 pb-section">
+      <CorporateHeader t={t} current="business"
+        image={corporateImage('business', lang)} title={t('corporatePages.business.title')} lead={t('corporatePages.business.lead')} />
+      <Container className="flex flex-col gap-20 pt-12 pb-section sm:gap-24 sm:pt-16">
         <Callout tone="warning" title={t('corporatePages.business.scamTitle')}>
           <p>{t('corporatePages.business.scamBody')}</p>
           <div className="mt-2 flex flex-wrap items-center gap-x-5 gap-y-1">
@@ -86,7 +88,7 @@ export default async function CorporateBusinessPage() {
           <h2 id="areas-title" className="sr-only">
             {t('corporatePages.business.title')}
           </h2>
-          <ul className="divide-y divide-line border-y border-line">
+          <ul className="flex flex-col gap-4">
             {AREAS.map((area) => (
               <li key={area.id}>
                 <BusinessAreaCard

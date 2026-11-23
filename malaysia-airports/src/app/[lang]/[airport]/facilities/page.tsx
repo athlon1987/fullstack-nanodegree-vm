@@ -4,13 +4,13 @@ import { localAirport, airportSectionMetadata, loadAirportPage, sectionStaticPar
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { LocaleLink } from '@/components/common/locale-link';
 import { MissingPage } from '@/components/common/missing-page';
-import { PageHeader } from '@/components/common/page-header';
 import { PrototypeGapsLink } from '@/components/common/prototype-gaps-link';
 import { TranslationNotice } from '@/components/common/translation-notice';
 import { FacilitiesDirectory } from '@/components/facilities/facilities-directory';
 import { facilityViews, needsTranslationNotice, officialPages, sourceLookup } from '@/components/map/map-view.server';
 import { Button } from '@/components/ui/button';
-import { Container } from '@/components/ui/container';
+import { FacilityQuickFinds } from '@/components/facilities/facility-quick-finds';
+import { ServiceBody, ServiceIntro } from '@/components/facilities/service-frame';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 export const generateStaticParams = () => sectionStaticParams('facilities');
@@ -54,11 +54,15 @@ async function Facilities({ params }: { params: AirportPageParams }) {
 
   return (
     <>
-      <PageHeader
+      {/* Redesign stage two: the service-page frame, with the places travellers look for first
+          (prayer rooms, accessibility and assistance, toilets) as the answer beside the title. */}
+      <ServiceIntro
         eyebrow={airport.shortName}
         title={t('nav.facilities')}
-        lead={t('mapPages.facilities.lead', { airport: airport.shortName })}
+        summary={t('mapPages.facilities.lead', { airport: airport.shortName })}
+        summaryClassName="max-sm:sr-only"
         breadcrumbs={<Breadcrumbs items={[{ label: airport.shortName, href: `/${airport.slug}` }, { label: t('nav.facilities') }]} />}
+        answer={<FacilityQuickFinds items={items} airport={airport.slug} lang={lang} t={t} />}
         actions={
           sections.includes('map') ? (
             <Button asChild variant="secondary" iconStart="map">
@@ -67,8 +71,8 @@ async function Facilities({ params }: { params: AirportPageParams }) {
           ) : undefined
         }
       />
-      <Container className="pb-section">
-        {translationMissing ? <TranslationNotice className="mb-6" /> : null}
+      <ServiceBody className="gap-12 sm:gap-16">
+        {translationMissing ? <TranslationNotice /> : null}
         <FacilitiesDirectory
           items={items}
           sources={sourceLookup(items.flatMap((item) => item.sourceIds))}
@@ -87,7 +91,7 @@ async function Facilities({ params }: { params: AirportPageParams }) {
           officialHref={official.airport}
           officialLabel={t('mapPages.officialAirportPage')}
         />
-      </Container>
+      </ServiceBody>
     </>
   );
 }

@@ -86,7 +86,7 @@ function TerminalWithoutMap({ terminal, maps, airportSlug, terminalLabels, facil
   const label = terminalLabels[terminal] ?? terminal;
   const other = maps[0];
   return (
-    <div className="max-w-narrow rounded-xl border border-line-strong bg-surface p-6 sm:p-8">
+    <div className="max-w-narrow rounded-2xl border border-line bg-surface shadow-sm p-6 sm:p-8">
       <span className="flex size-12 items-center justify-center rounded-lg bg-page-subtle text-ink-2">
         <Icon name="map" size="lg" />
       </span>
@@ -423,7 +423,7 @@ function MapWorkspace({ map, query, sources, facilitiesHref, officialMapUrl, off
             </p>
             {searching && results.length === 0 ? <p className="type-body-sm text-ink-2">{t('mapPages.search.noResultsHint')}</p> : null}
             {results.length > 0 ? (
-              <ul className="mt-2 overflow-hidden rounded-lg border border-line-strong bg-surface shadow-sm">
+              <ul className="mt-2 overflow-hidden rounded-2xl border border-line bg-surface shadow-md">
                 {results.map((poi) => (
                   <li key={poi.id} className="border-b border-line last:border-b-0">
                     <button

@@ -2,6 +2,7 @@
 
 import { useId, useState } from 'react';
 import { pick } from '@/content/values';
+import { cn } from '@/lib/cn';
 import { formatCurrency, formatDuration } from '@/lib/format';
 import { useNow } from '@/lib/hooks';
 import { useLang, useT } from '@/lib/i18n/client';
@@ -10,7 +11,7 @@ import { formatDateTime, timezoneLabel } from '@/lib/time';
 import { ExternalLink } from '@/components/common/external-link';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { SourceNote } from '@/components/common/source-note';
-import { Button } from '@/components/ui/button';
+import { Button, buttonClasses } from '@/components/ui/button';
 import { Callout } from '@/components/ui/callout';
 import { Chip } from '@/components/ui/chip';
 import { Icon } from '@/components/ui/icon';
@@ -88,11 +89,13 @@ export function ParkingCalculator({ data, initial }: { data: ParkingPageData; in
             : t('transportPages.calculator.noFigureTitle');
 
   return (
-    <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+    // Redesign stage two: one app-like tool, the form and the answer side by side in a raised
+    // panel (the answer in a soft well), the booking hand-off as its primary action.
+    <div className="grid items-stretch gap-2 rounded-3xl border border-line bg-surface p-2 shadow-md sm:p-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
       <form
         aria-labelledby={`${id}-form`}
         onSubmit={(event) => event.preventDefault()}
-        className="flex flex-col gap-5 rounded-xl border border-line-strong bg-surface p-4 shadow-xs sm:p-5"
+        className="flex flex-col gap-5 p-3 sm:p-4"
       >
         <span id={`${id}-form`} className="sr-only">
           {t('transportPages.calculator.title')}
@@ -150,7 +153,7 @@ export function ParkingCalculator({ data, initial }: { data: ParkingPageData; in
         {now !== null ? <p className="type-caption text-ink-2">{t('transportPages.calculator.timezone', { zone: timezoneLabel(now, data.timezone) })}</p> : null}
       </form>
 
-      <section aria-labelledby={`${id}-result`} className="flex flex-col gap-4 rounded-xl border border-line-strong bg-surface-sunken p-4 sm:p-5">
+      <section aria-labelledby={`${id}-result`} className="flex flex-col gap-4 rounded-xl bg-page-subtle p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h3 id={`${id}-result`} className="type-eyebrow text-ink-3">
             {t('transportPages.calculator.resultLabel')}
@@ -164,7 +167,7 @@ export function ParkingCalculator({ data, initial }: { data: ParkingPageData; in
         ) : null}
         <div>
           {estimate ? <p className="type-body-sm text-ink-2">{t('transportPages.calculator.total')}</p> : null}
-          <p role="status" className={estimate || ceiling ? 'type-display-sm text-ink' : 'type-title-md text-ink'}>
+          <p role="status" className={estimate || ceiling ? 'type-display-md text-ink' : 'type-title-lg text-ink'}>
             {headline}
           </p>
           {minutes !== null && minutes > 0 ? (
@@ -218,7 +221,7 @@ export function ParkingCalculator({ data, initial }: { data: ParkingPageData; in
           <div className="flex flex-col gap-2">
             {!ceiling ? <p className="type-body-sm text-ink-2">{t('transportPages.calculator.noFigureBody')}</p> : null}
             {carPark.description ? (
-              <div className="rounded-lg border border-line bg-surface p-3.5">
+              <div className="rounded-xl bg-surface p-4 shadow-xs">
                 <p className="type-eyebrow text-ink-3">{t('transportPages.parking.fields.whatSourcesSay')}</p>
                 <p className="type-body-sm mt-1.5 text-ink-2">{carPark.description}</p>
                 <SourceNote sources={sourcesFor(carPark.sourceIds, data.sources)} className="mt-1" />
@@ -237,8 +240,8 @@ export function ParkingCalculator({ data, initial }: { data: ParkingPageData; in
 
         {carPark.bookingUrl ? (
           // The official site takes no product or dates in its link, so the dates go beside it (C-01).
-          <div className="flex flex-col gap-1 border-t border-line pt-3">
-            <ExternalLink href={carPark.bookingUrl} variant="action" className="type-body-sm self-start font-semibold" data-handoff="parking-booking">
+          <div className="mt-auto flex flex-col gap-2 border-t border-line pt-4">
+            <ExternalLink href={carPark.bookingUrl} variant="plain" className={cn(buttonClasses({ variant: 'primary' }), 'self-start')} data-handoff="parking-booking">
               {t('transportPages.calculator.bookAction', { carPark: carPark.name })}
             </ExternalLink>
             {entryAt && exitAt && minutes !== null && minutes > 0 ? (

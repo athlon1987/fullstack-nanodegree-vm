@@ -18,6 +18,7 @@ import {
 import { getT, toLang } from '@/lib/i18n';
 import { LocaleLink } from '@/components/common/locale-link';
 import { CorporateHeader } from '@/components/corporate/corporate-header';
+import { corporateImage } from '@/components/corporate/corporate-images';
 import { factViews, formatMillions, mediaView, provenanceOf, resolveCorporateSources } from '@/components/corporate/corporate-data.server';
 import { FactList } from '@/components/corporate/fact-list';
 import { FactMeta } from '@/components/corporate/fact-meta';
@@ -59,8 +60,9 @@ export default async function CorporateNetworkPage() {
 
   return (
     <>
-      <CorporateHeader t={t} current="network" title={t('corporatePages.network.title')} lead={t('corporatePages.network.lead')} />
-      <Container className="flex flex-col gap-14 pb-section">
+      <CorporateHeader t={t} current="network"
+        image={corporateImage('network', lang)} title={t('corporatePages.network.title')} lead={t('corporatePages.network.lead')} />
+      <Container className="flex flex-col gap-20 pt-12 pb-section sm:gap-24 sm:pt-16">
         <PageSection
           id="structure"
           first
@@ -78,9 +80,9 @@ export default async function CorporateNetworkPage() {
           <div className="mt-10 grid gap-x-12 gap-y-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
             <div className="min-w-0">
               <h3 className="type-title-md text-ink">{t('corporatePages.network.internationalTitle')}</h3>
-              <ul className="mt-3 border-t border-line">
+              <ul className="mt-3 divide-y divide-line overflow-hidden rounded-2xl border border-line bg-surface px-5 shadow-sm sm:px-6">
                 {groups.international.map((airport) => (
-                  <li key={airport.slug} className="border-b border-line">
+                  <li key={airport.slug}>
                     <LocaleLink href={`/${airport.slug}`} className="group flex min-h-12 items-center justify-between gap-4 py-2 text-ink">
                       <span className="flex min-w-0 items-baseline gap-3">
                         <span className="type-data-sm w-10 shrink-0 text-ink-3">{airport.code}</span>
@@ -134,7 +136,7 @@ export default async function CorporateNetworkPage() {
               const airport = getAirport(project.airport);
               const shown = airport ? localizeAirport(airport, lang) : undefined;
               return (
-                <li key={project.id} className="flex min-w-0 flex-col gap-4 rounded-lg border border-line-strong bg-surface p-5 sm:p-6">
+                <li key={project.id} className="flex min-w-0 flex-col gap-4 rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">
                   <div>
                     {shown ? <p className="type-eyebrow text-gold-ink">{shown.shortName}</p> : null}
                     <h3 className="type-title-md mt-1.5 text-ink">{pick(project.title, lang)}</h3>
@@ -144,7 +146,7 @@ export default async function CorporateNetworkPage() {
               );
             })}
             {kotaBharu ? (
-              <li className="flex min-w-0 flex-col gap-4 rounded-lg border border-line-strong bg-surface p-5 sm:p-6">
+              <li className="flex min-w-0 flex-col gap-4 rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">
                 <div>
                   <p className="type-eyebrow text-gold-ink">{getAirport('kbr')?.shortName}</p>
                   <h3 className="type-title-md mt-1.5 text-ink">{kotaBharu.title}</h3>

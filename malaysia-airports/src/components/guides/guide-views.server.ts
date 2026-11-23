@@ -16,7 +16,9 @@ import {
   type Provenance,
   type Source,
 } from '@/content';
-import { GUIDE_GROUPS, GUIDE_NOTE_DIRECTION, GUIDE_NOTE_TOPICS, guideIcon, type GuideGroupId } from './guide-meta';
+import { GUIDE_GROUPS, GUIDE_IMAGES, GUIDE_NOTE_DIRECTION, GUIDE_NOTE_TOPICS, guideIcon, type GuideGroupId } from './guide-meta';
+import { IMAGES } from '@/content/images';
+import { toMediaImage, type MediaImage } from '@/components/ui/media';
 import { guideScopes, guideStepScopes, type GuideScope } from './guide-scopes';
 import type { IconKey } from '@/components/ui/icon';
 
@@ -50,6 +52,8 @@ export interface GuideCardView {
   icon: IconKey;
   scopes: GuideScope[];
   stepCount: number;
+  /** A truthful library photograph for the guide (`GUIDE_IMAGES`), decorative on cards: the title names it. */
+  image?: MediaImage;
 }
 
 export interface GuideView extends GuideCardView {
@@ -84,6 +88,7 @@ function guideTranslated(guide: Guide, lang: Lang): boolean {
 }
 
 export function toGuideCard(guide: Guide, lang: Lang): GuideCardView {
+  const imageId = GUIDE_IMAGES[guide.slug];
   return {
     slug: guide.slug,
     title: pick(guide.title, lang),
@@ -91,6 +96,7 @@ export function toGuideCard(guide: Guide, lang: Lang): GuideCardView {
     icon: guideIcon(guide.slug),
     scopes: guideScopes(guide),
     stepCount: stepCount(guide),
+    ...(imageId ? { image: toMediaImage(IMAGES[imageId], lang, { decorative: true }) } : {}),
   };
 }
 

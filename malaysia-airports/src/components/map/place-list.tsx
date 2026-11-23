@@ -55,9 +55,9 @@ export function PlaceList({ levels, pois, total, filters, selectedId, onShow, on
       ) : null}
 
       {pois.length === 0 ? (
-        <p className="type-body mt-6 rounded-lg border border-dashed border-line-strong p-5 text-ink-2">{t('mapPages.list.empty')}</p>
+        <p className="type-body mt-6 rounded-2xl border border-dashed border-line-strong p-5 text-ink-2">{t('mapPages.list.empty')}</p>
       ) : (
-        <div className="mt-6 flex flex-col gap-8 @container">
+        <div className="mt-8 flex flex-col gap-10 @container">
           {levels.map((level) => {
             const items = pois.filter((poi) => poi.level === level.id);
             if (items.length === 0) return null;
@@ -66,15 +66,15 @@ export function PlaceList({ levels, pois, total, filters, selectedId, onShow, on
             const shared = levelProvenance(items);
             return (
               <div key={level.id}>
-                <h3 className="type-title-md flex flex-wrap items-baseline gap-x-3 border-b border-line pb-2 text-ink">
+                <h3 className="type-title-lg flex flex-wrap items-center gap-x-3 text-ink">
                   {level.name}
-                  <span className="type-data-sm text-ink-3">{items.length}</span>
+                  <span className="type-data-sm rounded-pill bg-fill px-2.5 py-0.5 text-ink-2">{items.length}</span>
                 </h3>
                 {shared ? <ProvenanceDefault provenance={shared} className="mt-2" /> : null}
-                <ul className="grid gap-x-6 @2xl:grid-cols-2 @5xl:grid-cols-3">
+                <ul className="mt-3 grid gap-x-6 overflow-hidden rounded-2xl border border-line bg-surface px-4 shadow-sm @2xl:grid-cols-2 @5xl:grid-cols-3 sm:px-5">
                   {items.map((poi) => (
-                    <li key={poi.id} className="flex min-w-0 items-start gap-3 border-b border-line py-3" aria-current={poi.id === selectedId ? 'true' : undefined}>
-                      <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-md bg-page-subtle text-ink">
+                    <li key={poi.id} className="-mb-px flex min-w-0 items-start gap-3 border-b border-line py-3" aria-current={poi.id === selectedId ? 'true' : undefined}>
+                      <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary-ink">
                         <Icon name={poi.kind} size="sm" />
                       </span>
                       <div className="min-w-0 flex-1">

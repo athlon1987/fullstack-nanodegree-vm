@@ -65,24 +65,28 @@ export function CarParkCard({ carPark, sources, timezone, availability, showTerm
       id={`car-park-${carPark.id}`}
       aria-labelledby={titleId}
       className={cn(
-        '@container flex min-w-0 scroll-mt-32 flex-col overflow-hidden rounded-xl border bg-surface shadow-xs',
-        premium ? 'border-warning-border border-2' : 'border-line-strong',
+        // Redesign stage two: an elegant card (24 px corners, hairline, soft shadow); the premium car
+        // park keeps its warning as a soft amber band and a faint amber edge (full in high contrast).
+        '@container flex min-w-0 scroll-mt-32 flex-col overflow-hidden rounded-2xl border bg-surface shadow-sm',
+        premium ? 'border-warning-border/50 hc:border-warning-border' : 'border-line',
       )}
     >
       {premium ? (
-        <div className="flex items-start gap-2.5 border-b border-warning-border bg-warning-bg px-4 py-3 text-warning-fg sm:px-5">
-          <Icon name="triangle-alert" className="mt-0.5 shrink-0" />
+        <div className="flex items-start gap-3 border-b border-warning-border/40 bg-warning-bg px-5 py-3.5 text-warning-fg hc:border-warning-border sm:px-6">
+          <span aria-hidden="true" className="flex size-7 shrink-0 items-center justify-center rounded-full bg-surface/70">
+            <Icon name="triangle-alert" size="sm" strokeWidth={2} />
+          </span>
           <p className="type-body-sm font-semibold">{premiumWarning?.title ?? t('transportPages.parking.longStayCheck')}</p>
         </div>
       ) : null}
 
-      <div className="flex flex-col gap-4 p-4 sm:p-5">
-        <div className="flex items-start gap-3">
-          <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-page-subtle text-ink">
+      <div className="flex flex-col gap-5 p-5 sm:p-6">
+        <div className="flex items-start gap-3.5">
+          <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-primary-soft text-primary-ink">
             <Icon name="square-parking" />
           </span>
           <div className="min-w-0 flex-1">
-            <h3 id={titleId} className="type-title-md text-ink">
+            <h3 id={titleId} className="type-title-lg text-ink">
               {carPark.name}
             </h3>
             <p className="type-body-sm mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-ink-2">
@@ -145,7 +149,7 @@ export function CarParkCard({ carPark, sources, timezone, availability, showTerm
         </dl>
         {missing.length > 0 ? <NotPublished label={t('transportPages.fields.missing', { facts: formatList(missing, lang) })} /> : null}
 
-        <div className={cn('rounded-lg border p-4', notVerified ? 'border-line-strong bg-page-subtle' : 'border-line bg-surface')}>
+        <div className={cn('rounded-xl p-4', notVerified ? 'bg-page-subtle' : 'border border-line bg-surface')}>
           <h4 className="type-title-sm text-ink">{t('transportPages.parking.fields.rates')}</h4>
           {/* One fact, one answer (round 4, 6.1.3): the same sentence as the price table, the concierge and the help FAQ.
               Round 5: the status chip beside the heading said the sentence's first words again; the icon keeps its cue. */}
@@ -194,7 +198,7 @@ export function CarParkCard({ carPark, sources, timezone, availability, showTerm
       </div>
 
       {footer ? (
-        <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-line px-4 py-1.5 sm:px-5">
+        <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-line px-5 py-2 sm:px-6">
           {groupedSources ? null : <SourceNote sources={sourcesFor(carPark.sourceIds, sources)} />}
           {carPark.asOf ? <AsOf value={carPark.asOf} timeZone={timezone} /> : null}
           {booking ? (

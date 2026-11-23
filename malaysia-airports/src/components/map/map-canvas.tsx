@@ -280,10 +280,11 @@ export function MapCanvas({
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border border-line-strong bg-surface shadow-xs">
+    <div className="flex flex-col overflow-hidden rounded-3xl border border-line bg-surface shadow-md">
       {/* Round 4 (6.1.6): the disclaimer is a strip above the drawing, not an overlay on it, so no
-          level chip, pin or label can ever cover it (on phones the "To Gates" chip did). */}
-      <p data-map-disclaimer="" className="type-caption flex items-center gap-1.5 border-b border-line bg-inverse px-3 py-1.5 font-semibold text-on-inverse">
+          level chip, pin or label can ever cover it (on phones the "To Gates" chip did).
+          Redesign stage two: a quiet chip in the card's top bar, the same words. */}
+      <p data-map-disclaimer="" className="type-caption mx-3 my-2.5 inline-flex items-center gap-1.5 self-start rounded-pill bg-fill px-3 py-1 font-medium text-ink-2">
         <Icon name="flask-conical" size="xs" strokeWidth={2} className="shrink-0" />
         {t('mapPages.schematicLabel')}
       </p>
@@ -292,14 +293,14 @@ export function MapCanvas({
           "Immigration and security" label (and "To Level 3" a check-in row): no chip is drawn
           over a place or its label any more. */}
       {connectors.length > 0 ? (
-        <div data-route-connectors="" className="flex flex-wrap items-center gap-x-3 gap-y-1.5 border-b border-line bg-surface px-3 py-2">
+        <div data-route-connectors="" className="flex flex-wrap items-center gap-x-3 gap-y-1.5 border-t border-line bg-surface px-4 py-2.5">
           <span className="type-body-sm text-ink-2">{t('mapPages.canvas.continues')}</span>
           {connectors.map((connector) => (
             <button
               key={connector.key}
               type="button"
               onClick={() => onLevelChange(connector.toLevel)}
-              className="type-caption inline-flex min-h-8 items-center gap-1 rounded-pill border border-primary bg-surface px-2.5 font-semibold whitespace-nowrap text-primary-ink shadow-xs hover:bg-primary-soft focus-visible:focus-ring touch:min-h-11"
+              className="type-caption inline-flex min-h-8 items-center gap-1 rounded-pill bg-primary px-3 font-semibold whitespace-nowrap text-on-primary shadow-sm hover:bg-primary-hover focus-visible:focus-ring touch:min-h-11"
             >
               <Icon name={connector.direction === 'up' ? 'arrow-up' : 'arrow-down'} size="xs" strokeWidth={2.25} />
               {t('mapPages.canvas.toLevel', { level: connector.label })}
@@ -311,7 +312,7 @@ export function MapCanvas({
         ref={frameRef}
         onKeyDown={onKeyDown}
         className={cn(
-          'relative aspect-square w-full overflow-hidden bg-surface-sunken xs:aspect-[5/4] sm:aspect-[16/10] lg:aspect-auto lg:h-[min(64vh,42rem)] lg:min-h-[26rem]',
+          'relative aspect-square w-full overflow-hidden border-t border-line bg-surface-sunken xs:aspect-[5/4] sm:aspect-[16/10] lg:aspect-auto lg:h-[min(64vh,42rem)] lg:min-h-[26rem]',
           'has-[[data-map-surface]:focus-visible]:focus-ring-inset',
         )}
       >
@@ -396,11 +397,11 @@ export function MapCanvas({
               const dim = stepActive && !line.active;
               return (
                 <g key={line.key} className={cn('animate-fade-in transition-opacity duration-base', dim && 'opacity-35')}>
-                  <polyline points={points} className="fill-none stroke-surface" strokeWidth={line.active ? 13 : 11} strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+                  <polyline points={points} className="fill-none stroke-surface" strokeWidth={line.active ? 16 : 13} strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
                   <polyline
                     points={points}
                     className="fill-none stroke-primary"
-                    strokeWidth={line.active ? 7 : 5}
+                    strokeWidth={line.active ? 9 : 6.5}
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeDasharray={line.ride ? '0.1 11' : undefined}
@@ -452,11 +453,11 @@ export function MapCanvas({
         </svg>
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-t border-line bg-surface px-2 py-1.5">
-        <a href="#map-places" className="link-action type-body-sm px-2 text-ink-2 hover:text-ink">
+      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 border-t border-line bg-surface px-3 py-2">
+        <a href="#map-places" className="link-action type-body-sm px-1.5 text-ink-2 hover:text-ink">
           {t('mapPages.canvas.skipToList')}
         </a>
-        <div role="group" aria-label={t('mapPages.canvas.controls')} className="flex flex-wrap items-center gap-0.5">
+        <div role="group" aria-label={t('mapPages.canvas.controls')} className="flex flex-wrap items-center justify-center gap-0.5 rounded-2xl bg-page-subtle p-1">
           <IconButton size="sm" icon="arrow-left" label={t('mapPages.canvas.panLeft')} onClick={() => pan(-frame.width * 0.25, 0)} />
           <IconButton size="sm" icon="arrow-up" label={t('mapPages.canvas.panUp')} onClick={() => pan(0, -frame.height * 0.25)} />
           <IconButton size="sm" icon="arrow-down" label={t('mapPages.canvas.panDown')} onClick={() => pan(0, frame.height * 0.25)} />

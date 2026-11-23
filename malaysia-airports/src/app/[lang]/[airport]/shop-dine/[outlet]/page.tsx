@@ -6,7 +6,6 @@ import { loadAirportPage } from '@/components/airport/section-page';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { LocaleLink } from '@/components/common/locale-link';
 import { MissingPage } from '@/components/common/missing-page';
-import { PageHeader } from '@/components/common/page-header';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { TranslationNotice } from '@/components/common/translation-notice';
 import { relatedOutlets } from '@/components/commerce/commerce-view';
@@ -17,7 +16,8 @@ import { SavePlaceButton } from '@/components/commerce/save-place-button';
 import { airportsWithSection } from '@/components/shell/sections.server';
 import { sectionPath } from '@/components/shell/sections';
 import { Chip } from '@/components/ui/chip';
-import { Container } from '@/components/ui/container';
+import { ServiceBody, ServiceIntro } from '@/components/facilities/service-frame';
+import { CategoryArt, KIND_ICONS } from '@/components/commerce/category-art';
 import { Icon } from '@/components/ui/icon';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
 
@@ -87,10 +87,13 @@ async function Outlet({ params }: { params: OutletPageProps['params'] }) {
 
   return (
     <>
-      <PageHeader
+      {/* Redesign stage two: the service-page frame. No outlet has a licensed photograph, so the
+          picture beside the title is the outlet's category art (its monogram), never a stand-in photo. */}
+      <ServiceIntro
         eyebrow={`${outlet.categoryLabel} · ${outlet.terminalLabel}`}
         title={outlet.name}
-        lead={outlet.description}
+        summary={outlet.description}
+        answer={<CategoryArt name={outlet.name} tone={outlet.kind} icon={KIND_ICONS[outlet.kind]} size="feature" className="max-lg:hidden" />}
         breadcrumbs={
           <Breadcrumbs items={[{ label: airport.shortName, href: `/${airport.slug}` }, { label: t('nav.shopDine'), href: shopDine }, { label: outlet.name }]} />
         }
@@ -108,7 +111,7 @@ async function Outlet({ params }: { params: OutletPageProps['params'] }) {
         }
         actions={<SavePlaceButton id={outlet.id} airport={airport.slug} title={outlet.name} href={outlet.href} />}
       />
-      <Container className="pb-section">
+      <ServiceBody className="gap-0 sm:gap-0">
         {translationMissing ? <TranslationNotice className="mb-6" /> : null}
         <OutletDetails
           outlet={outlet}
@@ -119,9 +122,9 @@ async function Outlet({ params }: { params: OutletPageProps['params'] }) {
         />
 
         {related.length > 0 ? (
-          <section aria-labelledby="related-title" className="mt-16 border-t border-line pt-10">
+          <section aria-labelledby="related-title" className="mt-20">
             <div className="mb-5 flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
-              <h2 id="related-title" className="type-title-lg text-ink">
+              <h2 id="related-title" className="type-display-sm text-ink">
                 {t('commercePages.outlet.relatedTitle', { airport: airport.shortName })}
               </h2>
               <LocaleLink href={shopDine} className="link-action type-body-sm inline-flex items-center gap-1.5">
@@ -138,7 +141,7 @@ async function Outlet({ params }: { params: OutletPageProps['params'] }) {
             </ul>
           </section>
         ) : null}
-      </Container>
+      </ServiceBody>
     </>
   );
 }

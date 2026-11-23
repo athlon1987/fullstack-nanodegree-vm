@@ -5,7 +5,6 @@ import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { ExternalLink } from '@/components/common/external-link';
 import { LocaleLink } from '@/components/common/locale-link';
 import { MissingPage } from '@/components/common/missing-page';
-import { PageHeader } from '@/components/common/page-header';
 import { TranslationNotice } from '@/components/common/translation-notice';
 import {
   REST_CATEGORIES,
@@ -19,9 +18,9 @@ import { LoungeCard } from '@/components/commerce/lounge-card';
 import { RestExplainer } from '@/components/commerce/rest-explainer';
 import { TerminalSections } from '@/components/commerce/terminal-sections';
 import { sectionPath } from '@/components/shell/sections';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Container } from '@/components/ui/container';
+import { ServiceBody, ServiceIntro } from '@/components/facilities/service-frame';
+import { GlancePanel, sectionPhoto } from '@/components/commerce/glance-panel';
 import { Icon } from '@/components/ui/icon';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
 
@@ -110,16 +109,24 @@ async function Lounges({ params }: { params: AirportPageParams }) {
 
   return (
     <>
-      <PageHeader
+      {/* Redesign stage two: the service-page frame; the answer is what the page lists, under the
+          photograph of the airport's own airside architecture (the overview's "Lounges" card). */}
+      <ServiceIntro
         eyebrow={airport.shortName}
         title={t('nav.lounges')}
-        lead={t('commercePages.lounges.lead')}
+        summary={t('commercePages.lounges.lead')}
+        summaryClassName="max-sm:sr-only"
         breadcrumbs={<Breadcrumbs items={[{ label: airport.shortName, href: `/${airport.slug}` }, { label: t('nav.lounges') }]} />}
-        meta={counts.map((entry) => (
-          <Badge key={entry.category} size="md" className="type-body-sm px-2.5">
-            {t.count(`commercePages.lounges.count.${entry.category}`, entry.count)}
-          </Badge>
-        ))}
+        answer={
+          counts.length > 0 ? (
+            <GlancePanel
+              title={t('commercePages.frame.atAGlance')}
+              photo={sectionPhoto(airport.slug, 'lounges', lang)}
+              rows={counts.map((entry) => ({ key: entry.category, icon: entry.category, label: t.count(`commercePages.lounges.count.${entry.category}`, entry.count) }))}
+              footer={t('commercePages.frame.sides')}
+            />
+          ) : undefined
+        }
         actions={
           sections.includes('shop-dine') ? (
             <Button asChild variant="secondary" iconStart="utensils">
@@ -128,8 +135,8 @@ async function Lounges({ params }: { params: AirportPageParams }) {
           ) : undefined
         }
       />
-      <Container className="pb-section">
-        {translationMissing ? <TranslationNotice className="mb-6" /> : null}
+      <ServiceBody className="gap-0 sm:gap-0">
+        {translationMissing ? <TranslationNotice className="mb-10" /> : null}
         {multiTerminal ? (
           <TerminalSections
             sections={airport.terminals.map((terminal) => {
@@ -161,7 +168,7 @@ async function Lounges({ params }: { params: AirportPageParams }) {
 
         <section
           aria-labelledby="lounges-gaps-title"
-          className="mt-14 grid gap-6 border-t border-line pt-10 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] lg:gap-10"
+          className="mt-16 grid gap-6 rounded-3xl bg-page-subtle p-6 sm:p-8 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] lg:gap-10"
         >
           <h2 id="lounges-gaps-title" className="type-title-lg text-ink">
             {t('commercePages.lounges.gapsTitle')}
@@ -191,7 +198,7 @@ async function Lounges({ params }: { params: AirportPageParams }) {
             </ul>
           </div>
         </section>
-      </Container>
+      </ServiceBody>
     </>
   );
 }

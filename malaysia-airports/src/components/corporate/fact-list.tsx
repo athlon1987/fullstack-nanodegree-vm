@@ -19,9 +19,9 @@ export interface FactListProps {
 export function FactList({ facts, t, layout = 'grid', className }: FactListProps) {
   if (layout === 'rows') {
     return (
-      <dl className={className}>
+      <dl className={cn('divide-y divide-line overflow-hidden rounded-2xl border border-line bg-surface shadow-sm', className)}>
         {facts.map((fact) => (
-          <div key={fact.id} className="grid gap-x-10 gap-y-1.5 border-t border-line py-5 md:grid-cols-[minmax(0,15rem)_minmax(0,1fr)]">
+          <div key={fact.id} className="grid gap-x-10 gap-y-1.5 px-5 py-5 sm:px-7 sm:py-6 md:grid-cols-[minmax(0,15rem)_minmax(0,1fr)]">
             <dt className="type-body-sm font-semibold text-ink-2">{fact.label}</dt>
             <dd className="min-w-0">
               <p className="type-body-lg text-ink">{fact.value}</p>
@@ -35,11 +35,19 @@ export function FactList({ facts, t, layout = 'grid', className }: FactListProps
   }
   const figures = layout === 'figures';
   return (
-    <dl className={cn('grid gap-x-8 gap-y-10 sm:grid-cols-2', figures ? 'lg:grid-cols-4' : 'lg:grid-cols-3', className)}>
+    <dl className={cn('grid gap-4 sm:grid-cols-2 lg:gap-5', figures ? 'lg:grid-cols-4' : 'lg:grid-cols-3', className)}>
       {facts.map((fact) => (
-        <div key={fact.id} className={cn('flex min-w-0 flex-col gap-2 border-t pt-4', figures ? 'border-ink' : 'border-line-strong')}>
-          <dt className={cn(figures ? 'type-body-sm text-ink-2' : 'type-eyebrow text-ink-3')}>{fact.label}</dt>
-          <dd className={cn('text-ink', figures ? 'type-data-xl order-first' : 'type-title-md')}>{fact.value}</dd>
+        // Redesign stage two: each fact is a card; a key figure is a big Hanken number over a short gold rule.
+        <div key={fact.id} className="flex min-w-0 flex-col gap-2 rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">
+          <dt className={cn(figures ? 'type-body-sm text-ink-2' : 'type-caption font-semibold text-ink-2')}>{fact.label}</dt>
+          <dd
+            className={cn(
+              'text-ink',
+              figures ? 'type-display-sm tabular order-first pb-3 after:mt-3 after:block after:h-0.5 after:w-8 after:rounded-pill after:bg-gold' : 'type-title-md',
+            )}
+          >
+            {fact.value}
+          </dd>
           {fact.note ? <dd className="type-body-sm text-ink-2">{fact.note}</dd> : null}
           <dd className="mt-auto pt-1">
             <FactMeta provenance={fact.provenance} dateLabel={t('corporatePages.common.asOf', { date: fact.asOf })} sources={fact.sources} />

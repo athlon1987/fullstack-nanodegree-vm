@@ -3,13 +3,13 @@ import { getT, toLang } from '@/lib/i18n';
 import { localAirport, airportSectionMetadata, loadAirportPageFor, mapEmptyState, type AirportPageParams } from '@/components/airport/section-page';
 import { MissingPage } from '@/components/common/missing-page';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
-import { PageHeader } from '@/components/common/page-header';
 import { TranslationNotice } from '@/components/common/translation-notice';
 import { MapExplorer } from '@/components/map/map-explorer';
 import { MapUnavailable } from '@/components/map/map-unavailable';
 import { buildMapView, mapSourceIds, needsTranslationNotice, officialPages, sourceLookup } from '@/components/map/map-view.server';
 import { airportsWithSection } from '@/components/shell/sections.server';
-import { Container } from '@/components/ui/container';
+import { ServiceBody, ServiceIntro } from '@/components/facilities/service-frame';
+import { Icon } from '@/components/ui/icon';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 /**
@@ -72,14 +72,29 @@ async function TerminalMap({ params }: { params: AirportPageParams }) {
 
   return (
     <>
-      <PageHeader
+      {/* Redesign stage two: the service-page frame; the facts of the drawing as quiet chips. */}
+      <ServiceIntro
         eyebrow={maps.length > 0 && isMultiTerminal(airport) ? maps.map((map) => map.terminalLabel).join(' · ') : airport.shortName}
         title={t('mapPages.title')}
-        lead={maps.length > 0 ? t('mapPages.lead') : undefined}
+        summary={maps.length > 0 ? t('mapPages.lead') : undefined}
         breadcrumbs={<Breadcrumbs items={[{ label: airport.shortName, href: `/${airport.slug}` }, { label: t('nav.map') }]} />}
+        className="[&>div]:pb-6 sm:[&>div]:pb-10"
+        meta={
+          maps.length > 0 ? (
+            <ul className="flex flex-wrap gap-2">
+              {maps.map((map) => (
+                <li key={map.id} className="type-caption inline-flex items-center gap-1.5 rounded-pill bg-fill px-3 py-1 font-medium text-ink-2">
+                  <Icon name="layers" size="xs" strokeWidth={2} />
+                  {isMultiTerminal(airport) ? `${map.terminalLabel}: ` : null}
+                  {t.count('mapPages.frame.mapLevels', map.levels.length)} · {t.count('mapPages.frame.mapPlaces', map.pois.length)}
+                </li>
+              ))}
+            </ul>
+          ) : undefined
+        }
       />
-      <Container className="pb-section">
-        {translationMissing ? <TranslationNotice className="mb-6" /> : null}
+      <ServiceBody>
+        {translationMissing ? <TranslationNotice className="-mb-8 sm:-mb-12" /> : null}
         {maps.length > 0 ? (
           <MapExplorer
             maps={maps}
@@ -93,7 +108,7 @@ async function TerminalMap({ params }: { params: AirportPageParams }) {
         ) : (
           <MapUnavailable t={t} airportName={airport.name} facilitiesHref={facilitiesHref} officialAirportUrl={official.airport} />
         )}
-      </Container>
+      </ServiceBody>
     </>
   );
 }

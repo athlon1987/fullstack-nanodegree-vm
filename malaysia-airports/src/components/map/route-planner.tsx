@@ -141,16 +141,17 @@ export function RoutePlanner({
 
   const levelPath = route ? route.levels.map((id) => levelsById.get(id)?.label ?? id) : [];
 
-  const card = 'rounded-xl border border-line-strong bg-surface p-4 shadow-xs sm:p-5';
+  // Redesign stage two: the route panel is an app-like tool (28 px corners, a deeper shadow).
+  const card = 'rounded-3xl border border-line bg-surface p-5 shadow-md sm:p-6';
   const result =
     route && minutes ? (
       <>
         <div className="grid grid-cols-2 gap-3">
-          <div className="rounded-lg bg-page-subtle p-3">
+          <div className="rounded-2xl bg-page-subtle p-4">
             <p className="type-body-sm text-ink-2">{t('mapPages.route.standard')}</p>
             <p className="type-title-lg tabular mt-1 text-ink">{t('mapPages.route.minutes', { minutes: minutes.standard })}</p>
           </div>
-          <div className="rounded-lg bg-page-subtle p-3">
+          <div className="rounded-2xl bg-page-subtle p-4">
             <p className="type-body-sm text-ink-2">{t('mapPages.route.reduced')}</p>
             <p className="type-title-lg tabular mt-1 text-ink">{t('mapPages.route.minutes', { minutes: minutes.reduced })}</p>
             <p className="type-caption mt-1 text-ink-2">{t('mapPages.route.reducedHint')}</p>
@@ -182,10 +183,10 @@ export function RoutePlanner({
         ) : null}
         <p className="type-caption mt-3 text-ink-2">{t('mapPages.route.estimateNote')}</p>
 
-        <h3 className="type-title-md mt-6 text-ink">
+        <h3 className="type-title-md mt-7 text-ink">
           {t('mapPages.route.stepsTitle')}
         </h3>
-        <ol className="mt-3 flex flex-col">
+        <ol className="mt-4 flex flex-col">
           {steps.map((step, index) => {
             const instruction = stepInstruction(step, t, levelsById);
             const level = levelsById.get(step.level);
@@ -203,14 +204,14 @@ export function RoutePlanner({
                   >
                     <Icon name={stepIcon(step)} size="sm" strokeWidth={2} />
                   </span>
-                  {!last ? <span aria-hidden="true" className="w-0.5 flex-1 bg-line-strong" /> : null}
+                  {!last ? <span aria-hidden="true" className="my-0.5 w-[3px] flex-1 rounded-pill bg-primary/20" /> : null}
                 </div>
                 <button
                   type="button"
                   onClick={() => onStepSelect(step)}
                   aria-pressed={activeStep === step.key}
                   className={cn(
-                    'mb-2 min-w-0 flex-1 rounded-md px-2 py-1 text-left transition-colors duration-fast hover:bg-page-subtle',
+                    'mb-2 min-w-0 flex-1 rounded-xl px-3 py-1.5 text-left transition-colors duration-fast hover:bg-page-subtle',
                     activeStep === step.key && 'bg-primary-soft hover:bg-primary-soft',
                   )}
                 >
@@ -268,15 +269,19 @@ export function RoutePlanner({
         />
       </div>
 
-      <div className="mt-4 flex flex-col gap-3">
-        <NativeSelect id={ROUTE_FROM_ID} label={t('mapPages.route.from')} iconStart="circle-dot" value={fromId ?? ''} onChange={(event) => onFromChange(event.target.value || undefined)}>
-          <option value="">{t('mapPages.route.choose')}</option>
-          {options}
-        </NativeSelect>
-        <NativeSelect id={ROUTE_TO_ID} label={t('mapPages.route.to')} iconStart="map-pin" value={toId ?? ''} onChange={(event) => onToChange(event.target.value || undefined)}>
-          <option value="">{t('mapPages.route.choose')}</option>
-          {options}
-        </NativeSelect>
+      {/* From and To in one well, like a travel app's route card (full width, so a long place
+          name is not cut short in the field). */}
+      <div className="mt-4 rounded-2xl bg-page-subtle p-3 sm:p-4">
+        <div className="flex flex-col gap-3">
+          <NativeSelect id={ROUTE_FROM_ID} label={t('mapPages.route.from')} iconStart="circle-dot" value={fromId ?? ''} onChange={(event) => onFromChange(event.target.value || undefined)}>
+            <option value="">{t('mapPages.route.choose')}</option>
+            {options}
+          </NativeSelect>
+          <NativeSelect id={ROUTE_TO_ID} label={t('mapPages.route.to')} iconStart="map-pin" value={toId ?? ''} onChange={(event) => onToChange(event.target.value || undefined)}>
+            <option value="">{t('mapPages.route.choose')}</option>
+            {options}
+          </NativeSelect>
+        </div>
       </div>
 
       <div className="mt-4">

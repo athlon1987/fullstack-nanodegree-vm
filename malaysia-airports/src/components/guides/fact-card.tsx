@@ -27,7 +27,8 @@ export interface FactCardProps {
 export function FactCard({ fact, headingLevel = 3, variant = 'card', groupedSources = false, className }: FactCardProps) {
   const Heading = `h${headingLevel}` as 'h3' | 'h4';
   return (
-    <div className={cn('flex min-w-0 flex-col gap-2', variant === 'card' && 'rounded-lg border border-line-strong bg-surface p-4', className)}>
+    // Redesign stage two: an elegant fact card (20 px corners, hairline and soft shadow), as the guides' airport notes.
+    <div className={cn('flex min-w-0 flex-col gap-2', variant === 'card' && 'rounded-xl border border-line bg-surface p-5 shadow-sm', className)}>
       <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-1.5">
         <Heading className="type-title-sm min-w-0 text-ink">{fact.title}</Heading>
         <ProvenanceTag provenance={fact.provenance} length="short" />

@@ -25,7 +25,7 @@ export default async function CorporateGovernancePage() {
   return (
     <>
       <CorporateHeader t={t} current="governance" title={t('corporatePages.governance.title')} lead={t('corporatePages.governance.lead')} />
-      <Container className="flex flex-col gap-14 pb-section">
+      <Container className="flex flex-col gap-20 pt-12 pb-section sm:gap-24 sm:pt-16">
         <ul className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           <li className="flex">
             <LinkOutCard

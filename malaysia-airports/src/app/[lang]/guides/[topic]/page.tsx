@@ -6,18 +6,19 @@ import { formatDate } from '@/lib/time';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { LocaleLink } from '@/components/common/locale-link';
 import { MissingPage } from '@/components/common/missing-page';
-import { PageHeader } from '@/components/common/page-header';
 import { ProvenanceLegend } from '@/components/common/provenance-legend';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
-import { SectionHeading } from '@/components/common/section-heading';
 import { SourceNote } from '@/components/common/source-note';
 import { TranslationNotice } from '@/components/common/translation-notice';
 import { GuideCard } from '@/components/guides/guide-card';
-import { RELATED_GUIDES } from '@/components/guides/guide-meta';
+import { GUIDE_IMAGES, RELATED_GUIDES } from '@/components/guides/guide-meta';
+import { PageHero } from '@/components/guides/page-hero';
+import { ReadingLayout, ReadingToc } from '@/components/guides/reading-layout';
+import { toMediaImage } from '@/components/ui/media';
+import { IMAGES } from '@/content/images';
 import { GuideSteps } from '@/components/guides/guide-steps';
 import { airportNotesForGuide, toGuideCard, toGuideView } from '@/components/guides/guide-views.server';
 import { ScopeChips } from '@/components/guides/scope-chips';
-import { Badge } from '@/components/ui/badge';
 import { Callout } from '@/components/ui/callout';
 import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
@@ -67,120 +68,119 @@ async function Guide({ params }: { params: PageProps<'/[lang]/guides/[topic]'>['
     .filter((item): item is (typeof GUIDES)[number] => Boolean(item))
     .map((item) => toGuideCard(item, lang));
 
+  const imageId = GUIDE_IMAGES[guide.slug];
+  const toc = [
+    ...view.sections.map((section) => ({ id: `section-${section.id}`, label: section.title })),
+    ...(notes.length > 0 ? [{ id: 'guide-airports', label: t('guidePages.guide.airportNotesTitle') }] : []),
+  ];
+
   return (
     <>
-      <PageHeader
+      {/* Redesign stage two: a photograph for the travel guides that have a truthful one, otherwise a
+          quiet editorial header with the guide's emblem. */}
+      <PageHero
+        image={imageId ? toMediaImage(IMAGES[imageId], lang, { credit: true }) : undefined}
+        tone="light"
+        emblem={view.icon}
         eyebrow={t('guidePages.guide.eyebrow')}
         title={view.title}
         lead={view.summary}
         breadcrumbs={<Breadcrumbs items={[{ label: t('nav.plan'), href: '/guides' }, { label: view.title }]} />}
         meta={
           <>
-            <span className="type-body-sm inline-flex items-center gap-2 text-ink-2">
+            <span className="type-body-sm inline-flex items-center gap-2 font-semibold text-ink">
               <Icon name={view.icon} size="sm" />
               {t.count('guidePages.hub.steps', view.stepCount)}
             </span>
-            {view.asOf ? <span className="type-body-sm text-ink-2">{t('guidePages.guide.checked', { date: formatDate(view.asOf, lang, 'long') })}</span> : null}
+            {view.asOf ? (
+              <span className="type-body-sm inline-flex items-center gap-2 text-ink-2">
+                <Icon name="calendar-days" size="sm" />
+                {t('guidePages.guide.checked', { date: formatDate(view.asOf, lang, 'long') })}
+              </span>
+            ) : null}
             <ScopeChips scopes={view.scopes} t={t} showLabel />
           </>
         }
       />
-      <Container className="pb-section">
+      <Container className="pt-10 pb-section sm:pt-14">
         {view.translationMissing ? <TranslationNotice className="mb-8" /> : null}
-        <div className="grid gap-10 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-16">
-          <nav aria-labelledby="guide-toc-title" className="min-w-0 border-l border-line-strong pl-4 lg:sticky lg:top-sticky lg:self-start lg:pt-6">
-            <p id="guide-toc-title" className="type-eyebrow mb-2 text-ink-3">
-              {t('guidePages.guide.onThisPage')}
-            </p>
-            <ol className="flex flex-col">
-              {view.sections.map((section) => (
-                <li key={section.id}>
-                  <a href={`#section-${section.id}`} className="link-action type-body-sm text-ink-2 hover:text-ink">
-                    {section.title}
-                  </a>
-                </li>
-              ))}
-              {notes.length > 0 ? (
-                <li>
-                  <a href="#guide-airports" className="link-action type-body-sm text-ink-2 hover:text-ink">
-                    {t('guidePages.guide.airportNotesTitle')}
-                  </a>
-                </li>
-              ) : null}
-            </ol>
-          </nav>
+        <ReadingLayout toc={<ReadingToc items={toc} title={t('guidePages.guide.onThisPage')} titleId="guide-toc-title" />}>
+          {view.sections.map((section) => (
+            <section key={section.id} aria-labelledby={`section-${section.id}`} className="max-w-[48rem] scroll-mt-32">
+              <h2 id={`section-${section.id}`} className="type-display-sm scroll-mt-32 text-ink [text-wrap:balance]">
+                {section.title}
+              </h2>
+              {section.intro ? <p className="type-body-lg mt-3 mb-8 max-w-reading text-ink-2 [text-wrap:pretty]">{section.intro}</p> : <div className="mb-8" />}
+              <GuideSteps steps={section.steps} label={t('guidePages.guide.stepsLabel', { section: section.title })} t={t} />
+            </section>
+          ))}
 
-          <div className="flex min-w-0 flex-col gap-14">
-            {view.sections.map((section, index) => (
-              <section key={section.id} aria-labelledby={`section-${section.id}`} className="scroll-mt-32">
-                <SectionHeading id={`section-${section.id}`} number={index + 1} title={section.title} lead={section.intro} variant="title" />
-                <GuideSteps steps={section.steps} label={t('guidePages.guide.stepsLabel', { section: section.title })} t={t} />
-              </section>
-            ))}
-
-            {notes.length > 0 ? (
-              <section aria-labelledby="guide-airports" className="scroll-mt-32 border-t border-line pt-10">
-                <SectionHeading
-                  id="guide-airports"
-                  title={t('guidePages.guide.airportNotesTitle')}
-                  lead={t('guidePages.guide.airportNotesLead')}
-                  variant="title"
-                />
-                <ul className="grid items-start gap-3 xl:grid-cols-2">
-                  {notes.map((note) => (
-                    <li key={note.id} className="flex min-w-0 flex-col gap-2 rounded-lg border border-line-strong bg-surface p-4">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <Badge tone="neutral">
+          {notes.length > 0 ? (
+            <section aria-labelledby="guide-airports" className="scroll-mt-32">
+              <h2 id="guide-airports" className="type-display-sm text-ink">
+                {t('guidePages.guide.airportNotesTitle')}
+              </h2>
+              <p className="type-body-lg mt-3 mb-8 max-w-reading text-ink-2">{t('guidePages.guide.airportNotesLead')}</p>
+              <ul className="grid items-start gap-4 xl:grid-cols-2">
+                {notes.map((note) => (
+                  <li key={note.id} className="flex min-w-0 flex-col gap-3 rounded-xl border border-line bg-surface p-5 shadow-sm sm:p-6">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <span className="inline-flex items-center gap-2">
+                        <span className="type-data-sm inline-flex h-7 items-center rounded-pill bg-primary-soft px-2.5 font-semibold text-primary-ink">
                           <abbr title={note.airportName} className="no-underline">
                             {note.airportCode}
                           </abbr>
-                        </Badge>
-                        <ProvenanceTag provenance={note.provenance} length="short" />
-                      </div>
-                      <h3 className="type-title-sm text-ink">{note.title}</h3>
-                      <p className="type-body-sm text-ink-2">{note.body}</p>
-                      <SourceNote sources={note.sources} />
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            ) : null}
-
-            <section aria-labelledby="guide-sources" className="border-t border-line pt-10">
-              <h2 id="guide-sources" className="type-title-md text-ink">
-                {t('guidePages.guide.sourcesTitle')}
-              </h2>
-              <p className="type-body-sm mt-1 mb-2 text-ink-2">{t('guidePages.guide.sourcesLead')}</p>
-              <SourceNote sources={view.sources} />
+                        </span>
+                        <span className="type-caption text-ink-2">{note.airportName}</span>
+                      </span>
+                      <ProvenanceTag provenance={note.provenance} length="short" />
+                    </div>
+                    <h3 className="type-title-md text-ink">{note.title}</h3>
+                    <p className="type-body-sm text-ink-2">{note.body}</p>
+                    <SourceNote sources={note.sources} />
+                  </li>
+                ))}
+              </ul>
             </section>
+          ) : null}
 
-            {related.length > 0 ? (
-              <section aria-labelledby="guide-related">
-                <SectionHeading id="guide-related" title={t('guidePages.guide.relatedTitle')} variant="title" />
-                <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                  {related.map((card) => (
-                    <GuideCard key={card.slug} guide={card} />
-                  ))}
-                </ul>
-              </section>
-            ) : null}
+          <section aria-labelledby="guide-sources" className="max-w-[48rem] rounded-2xl bg-page-subtle p-5 sm:p-6">
+            <h2 id="guide-sources" className="type-title-sm flex items-center gap-2 text-ink">
+              <Icon name="file-text" size="sm" className="text-ink-2" />
+              {t('guidePages.guide.sourcesTitle')}
+            </h2>
+            <p className="type-body-sm mt-1 mb-2 text-ink-2">{t('guidePages.guide.sourcesLead')}</p>
+            <SourceNote sources={view.sources} />
+          </section>
 
-            <Callout
-              tone="neutral"
-              icon="circle-help"
-              title={t('guidePages.guide.helpTitle')}
-              actions={
-                <Button asChild variant="secondary" size="sm" iconEnd="arrow-right">
-                  <LocaleLink href="/help">{t('guidePages.guide.helpAction')}</LocaleLink>
-                </Button>
-              }
-            >
-              <p>{t('guidePages.guide.helpBody')}</p>
-            </Callout>
+          {related.length > 0 ? (
+            <section aria-labelledby="guide-related">
+              <h2 id="guide-related" className="type-display-sm mb-8 text-ink">
+                {t('guidePages.guide.relatedTitle')}
+              </h2>
+              <ul className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+                {related.map((card) => (
+                  <GuideCard key={card.slug} guide={card} />
+                ))}
+              </ul>
+            </section>
+          ) : null}
 
-            <ProvenanceLegend headingLevel={2} />
-          </div>
-        </div>
+          <Callout
+            tone="neutral"
+            icon="circle-help"
+            title={t('guidePages.guide.helpTitle')}
+            actions={
+              <Button asChild variant="secondary" size="sm" iconEnd="arrow-right">
+                <LocaleLink href="/help">{t('guidePages.guide.helpAction')}</LocaleLink>
+              </Button>
+            }
+          >
+            <p>{t('guidePages.guide.helpBody')}</p>
+          </Callout>
+
+          <ProvenanceLegend headingLevel={2} />
+        </ReadingLayout>
       </Container>
     </>
   );

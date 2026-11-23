@@ -9,9 +9,14 @@ export function BrandStatement({ statements, asOfLabel }: { statements: readonly
   return (
     <div className="grid gap-x-12 gap-y-10 lg:grid-cols-2">
       {statements.map((statement) => (
-        <figure key={statement.id} className="flex min-w-0 flex-col border-t-2 border-gold pt-5">
-          <figcaption className="type-eyebrow text-gold-ink">{statement.label}</figcaption>
-          <blockquote lang="en" className="type-display-md mt-4 text-ink">
+        <figure key={statement.id} className="flex min-w-0 flex-col">
+          <figcaption className="type-eyebrow flex items-center gap-3 text-gold-ink">
+            <span aria-hidden="true" className="h-px w-8 bg-gold" />
+            {statement.label}
+          </figcaption>
+          {/* Fraunces as the editorial accent: the one serif pull quote of the page, at the section
+              heading's size so the corporate hub keeps to eight type sizes (A-14). */}
+          <blockquote lang="en" className="type-serif-lg mt-5 text-[length:clamp(1.625rem,1.25rem_+_1.5vw,2.5rem)]! text-ink [text-wrap:balance]">
             <p>“{statement.value}”</p>
           </blockquote>
           {statement.note ? <p className="type-body-sm mt-4 max-w-reading text-ink-2">{statement.note}</p> : null}

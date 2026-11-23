@@ -38,15 +38,16 @@ export default async function PrivacyPage() {
       <CorporateHeader
         t={t}
         current={null}
+        emblem="shield-check"
         title={t('corporatePages.privacy.title')}
         lead={t('corporatePages.privacy.lead')}
         meta={<JumpNav label={t('corporatePages.common.onThisPage')} items={jump} />}
       />
-      <Container className="flex flex-col gap-14 pb-section">
+      <Container className="flex flex-col gap-20 pt-12 pb-section sm:gap-24 sm:pt-16">
         <PageSection id="summary" first number={1} title={t('corporatePages.privacy.summary.title')}>
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {Object.values(copy.summary.points).map((point, index) => (
-              <li key={point} className="flex flex-col gap-3 rounded-lg border border-line-strong bg-surface p-5">
+              <li key={point} className="flex flex-col gap-3 rounded-2xl border border-line bg-surface p-5 shadow-sm">
                 <span aria-hidden="true" className="flex size-10 items-center justify-center rounded-md bg-primary-soft text-primary-ink">
                   <Icon name={SUMMARY_ICONS[index] ?? 'check'} size="md" strokeWidth={1.5} />
                 </span>
@@ -57,9 +58,9 @@ export default async function PrivacyPage() {
         </PageSection>
 
         <PageSection id="stored" number={2} title={t('corporatePages.privacy.stored.title')} lead={t('corporatePages.privacy.stored.lead')}>
-          <ul aria-label={t('corporatePages.privacy.stored.tableCaption')} className="border-t border-line sm:hidden">
+          <ul aria-label={t('corporatePages.privacy.stored.tableCaption')} className="divide-y divide-line rounded-2xl border border-line bg-surface px-5 shadow-sm sm:hidden">
             {DEVICE_KEYS.map((item) => (
-              <li key={item.key} className="border-b border-line py-3">
+              <li key={item.key} className="py-3.5">
                 <code className="type-data-sm break-all text-ink">{item.key}</code>
                 <p className="type-body-sm mt-1 text-ink">{t(item.label)}</p>
                 <p className="type-caption mt-0.5 text-ink-3">{t(`corporatePages.privacy.stored.${item.area}`)}</p>
@@ -93,9 +94,9 @@ export default async function PrivacyPage() {
 
         <PageSection id="concierge" number={3} title={t('corporatePages.privacy.concierge.title')} lead={t('corporatePages.privacy.concierge.lead')}>
           <div className="grid gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,1fr)_20rem]">
-            <ol className="flex flex-col border-t border-line">
+            <ol className="flex flex-col divide-y divide-line rounded-2xl border border-line bg-surface px-5 shadow-sm sm:px-6">
               {Object.values(copy.concierge.items).map((item, index) => (
-                <li key={item} className="grid grid-cols-[2rem_minmax(0,1fr)] gap-x-3 border-b border-line py-4">
+                <li key={item} className="grid grid-cols-[2rem_minmax(0,1fr)] gap-x-3 py-4">
                   <span aria-hidden="true" className="type-data-sm tabular pt-0.5 text-ink-3">
                     {String(index + 1).padStart(2, '0')}
                   </span>
@@ -103,7 +104,7 @@ export default async function PrivacyPage() {
                 </li>
               ))}
             </ol>
-            <div className="self-start rounded-lg border border-line-strong bg-page-subtle p-5">
+            <div className="self-start rounded-2xl bg-page-subtle p-5 sm:p-6">
               <h3 className="type-title-sm flex items-center gap-2 text-ink">
                 <Icon name="bell" size="sm" />
                 {t('corporatePages.privacy.concierge.notificationsTitle')}
@@ -115,9 +116,9 @@ export default async function PrivacyPage() {
 
         <PageSection id="measurement" number={4} title={t('corporatePages.privacy.measurement.title')} lead={t('corporatePages.privacy.measurement.lead')}>
           <div className="grid gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,1fr)_20rem]">
-            <ul className="flex flex-col border-t border-line">
+            <ul className="flex flex-col divide-y divide-line rounded-2xl border border-line bg-surface px-5 shadow-sm sm:px-6">
               {Object.values(copy.measurement.items).map((item) => (
-                <li key={item} className="border-b border-line py-4">
+                <li key={item} className="py-4">
                   <p className="type-body text-ink-2">{item}</p>
                 </li>
               ))}
@@ -147,9 +148,9 @@ export default async function PrivacyPage() {
           <Callout tone="info" title={t('corporatePages.privacy.production.disclaimerTitle')} className="mb-8">
             {t('corporatePages.privacy.production.disclaimer')}
           </Callout>
-          <ul className="grid gap-x-10 border-t border-line md:grid-cols-2 lg:grid-cols-3">
+          <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {Object.values(copy.production.items).map((item) => (
-              <li key={item.title} className="border-b border-line py-5">
+              <li key={item.title} className="rounded-2xl border border-line bg-surface p-5 shadow-sm">
                 <h3 className="type-title-sm text-ink">{item.title}</h3>
                 <p className="type-body-sm mt-1.5 text-ink-2">{item.body}</p>
               </li>
@@ -158,7 +159,7 @@ export default async function PrivacyPage() {
           <div className="mt-6">
             <ProvenanceTag provenance="suggestion" />
           </div>
-          <div className="mt-10 max-w-reading rounded-lg border border-line-strong bg-surface p-5 sm:p-6">
+          <div className="mt-10 max-w-reading rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">
             <h3 className="type-title-md text-ink">{t('corporatePages.privacy.production.officialTitle')}</h3>
             <p className="type-body mt-1.5 text-ink-2">{t('corporatePages.privacy.production.officialBody')}</p>
             <ExternalLink variant="action" href={CORPORATE_LINKS.privacyNotice.url} className="type-body-sm mt-1 text-ink">

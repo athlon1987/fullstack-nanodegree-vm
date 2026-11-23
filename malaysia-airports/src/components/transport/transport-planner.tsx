@@ -100,7 +100,7 @@ export function TransportPlanner({ context, options, state, onStateChange, termi
       <div
         role="group"
         aria-label={t('transportPages.planner.controlsLabel')}
-        className="grid gap-5 rounded-xl border border-line-strong bg-surface p-4 shadow-xs sm:p-5 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:gap-8"
+        className="grid gap-5 rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:gap-8"
       >
         <NativeSelect
           label={t('transportPages.planner.destination')}
@@ -188,7 +188,7 @@ export function TransportPlanner({ context, options, state, onStateChange, termi
       )}
 
       {unlisted.length > 0 ? (
-        <section aria-labelledby={`${id}-unlisted`} className="rounded-xl border border-line bg-page-subtle p-4 sm:p-5">
+        <section aria-labelledby={`${id}-unlisted`} className="rounded-2xl bg-page-subtle p-4 sm:p-5">
           <h3 id={`${id}-unlisted`} className="type-title-sm text-ink">
             {t('transportPages.planner.notListedTitle', { destination: placeLabel })}
           </h3>
@@ -198,7 +198,7 @@ export function TransportPlanner({ context, options, state, onStateChange, termi
               const places = listedPlaces(option, lang);
               return (
                 // Same anchor as a ranked card, so search results can land on the option either way.
-                <li key={option.id} id={`transport-${option.id}`} className="flex min-w-0 scroll-mt-32 items-start gap-3 rounded-lg border border-line-strong bg-surface p-3.5">
+                <li key={option.id} id={`transport-${option.id}`} className="flex min-w-0 scroll-mt-32 items-start gap-3 rounded-2xl border border-line bg-surface shadow-xs p-3.5">
                   <Icon name={option.mode} className="mt-0.5 shrink-0 text-ink-2" />
                   <div className="min-w-0">
                     <p className="type-body-sm font-semibold text-ink">{pick(option.name, lang)}</p>

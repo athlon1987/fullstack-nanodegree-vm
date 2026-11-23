@@ -3,6 +3,7 @@
  * Components. Client-safe: types only, plus tiny helpers that need no content.
  */
 import type { Provenance, Source, TerminalId, TransportOption } from '@/content/types';
+import type { MediaImage } from '@/components/ui/media';
 
 /** A terminal with its short label and level names, in the page language. */
 export interface TerminalInfo {
@@ -37,6 +38,8 @@ export interface TransportContext {
   officialUrl: string;
   /** Present where the airport has a sourced warning about ride touts (KLIA). */
   touts?: ToutsView;
+  /** Redesign stage two: the service's own photograph, by option id (only where the library has one). */
+  photos?: Readonly<Record<string, MediaImage>>;
 }
 
 /** Data for the planner: options compared by `compareTransport`, with their context. */

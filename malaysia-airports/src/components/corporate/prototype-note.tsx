@@ -6,8 +6,8 @@ import type { Translator } from '@/lib/i18n';
 /** The standing reminder that this corporate section is a concept, with the official site beside it. */
 export function PrototypeNote({ t, officialUrl }: { t: Translator; officialUrl: string }) {
   return (
-    <aside aria-labelledby="corporate-prototype-note" className="flex flex-col gap-4 rounded-lg border border-line-strong bg-page-subtle p-5 sm:flex-row sm:items-start sm:gap-5 sm:p-6">
-      <span aria-hidden="true" className="flex size-10 shrink-0 items-center justify-center rounded-md border border-line-strong bg-surface text-ink-2">
+    <aside aria-labelledby="corporate-prototype-note" className="flex flex-col gap-4 rounded-2xl bg-page-subtle p-5 sm:flex-row sm:items-start sm:gap-5 sm:p-7">
+      <span aria-hidden="true" className="flex size-11 shrink-0 items-center justify-center rounded-full bg-surface text-ink-2 shadow-xs">
         <Icon name="flask-conical" size="md" strokeWidth={1.5} />
       </span>
       <div className="min-w-0">

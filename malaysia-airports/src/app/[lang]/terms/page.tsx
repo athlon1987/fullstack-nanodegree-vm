@@ -20,12 +20,12 @@ export default async function TermsPage() {
 
   return (
     <>
-      <CorporateHeader t={t} current={null} title={t('corporatePages.terms.title')} lead={t('corporatePages.terms.lead')} meta={<p className="type-body-sm text-ink-2">{t('corporatePages.terms.updated')}</p>} />
-      <Container className="pb-section">
-        <ol className="max-w-narrow border-t border-line">
+      <CorporateHeader t={t} current={null} emblem="file-text" title={t('corporatePages.terms.title')} lead={t('corporatePages.terms.lead')} meta={<p className="type-body-sm text-ink-2">{t('corporatePages.terms.updated')}</p>} />
+      <Container className="pt-10 pb-section">
+        <ol className="max-w-narrow divide-y divide-line rounded-2xl border border-line bg-surface px-5 shadow-sm sm:px-8">
           {sections.map((section, index) => (
-            <li key={section.title} className="grid gap-x-8 gap-y-2 border-b border-line py-7 sm:grid-cols-[3rem_minmax(0,1fr)]">
-              <span aria-hidden="true" className="type-display-sm tabular text-ink-3">
+            <li key={section.title} className="grid gap-x-8 gap-y-2 py-7 sm:grid-cols-[3rem_minmax(0,1fr)]">
+              <span aria-hidden="true" className="type-display-sm tabular text-gold-ink">
                 {index + 1}
               </span>
               <div className="min-w-0">

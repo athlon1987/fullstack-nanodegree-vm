@@ -11,7 +11,7 @@ import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { Badge } from '@/components/ui/badge';
 import { Icon } from '@/components/ui/icon';
 
-const CARD = 'flex min-w-0 flex-col gap-3 rounded-lg border border-line-strong bg-surface p-4';
+const CARD = 'flex min-w-0 flex-col gap-3 rounded-2xl border border-line bg-surface p-4 shadow-xs sm:p-5';
 
 function Fact({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -36,7 +36,7 @@ function DetailsLink({ href, name }: { href?: string; name: string }) {
 function CardHead({ icon, title, meta }: { icon: string; title: string; meta?: React.ReactNode }) {
   return (
     <div className="flex items-start gap-3">
-      <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-page-subtle text-ink" aria-hidden="true">
+      <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary-ink" aria-hidden="true">
         <Icon name={icon} />
       </span>
       <div className="min-w-0 flex-1">
@@ -57,7 +57,7 @@ function Flight({ card }: { card: FlightCard }) {
   const t = useT();
   const delayed = card.estimated !== card.scheduled;
   return (
-    <div className="surface-board flex min-w-0 flex-col gap-3 rounded-lg bg-board p-4 text-board-ink">
+    <div className="surface-board flex min-w-0 flex-col gap-3 rounded-2xl bg-board p-4 text-board-ink shadow-md sm:p-5">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div className="min-w-0">
           <h4 className="type-data-lg text-board-ink">{card.number}</h4>

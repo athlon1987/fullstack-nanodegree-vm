@@ -37,7 +37,8 @@ export function FaqAccordion({ faqs, headingLevel = 3 }: { faqs: readonly FaqVie
   }
 
   return (
-    <Accordion type="multiple" value={open} onValueChange={setOpen}>
+    // Redesign stage two: the answers sit in one white card; rows are separated inside it.
+    <Accordion type="multiple" value={open} onValueChange={setOpen} className="rounded-2xl border border-line bg-surface px-5 shadow-sm sm:px-7 [&>*:last-child]:border-b-0">
       {faqs.map((faq) => (
         <AccordionItem key={faq.id} id={faq.id} value={faq.id} title={faq.question} headingLevel={headingLevel} className="scroll-mt-32">
           <p className="type-body text-ink">{faq.answer}</p>

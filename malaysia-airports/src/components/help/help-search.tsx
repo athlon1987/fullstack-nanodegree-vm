@@ -68,18 +68,20 @@ export function HelpSearch({ items }: { items: readonly HelpSearchItem[] }) {
           autoComplete="off"
         />
       </form>
-      <p role="status" className={active ? 'type-body-sm text-ink-2' : 'sr-only'}>
+      <p role="status" className={active ? 'type-body-sm px-2 text-ink-2' : 'sr-only'}>
         {active ? (results.length > 0 ? t.count('guidePages.help.results', results.length) : t('guidePages.help.noResults', { query: query.trim() })) : ''}
       </p>
       {active ? (
         results.length > 0 ? (
-          <ul className="flex flex-col divide-y divide-line rounded-lg border border-line-strong bg-surface">
+          <ul className="flex flex-col gap-1">
             {results.slice(0, LIMIT).map((item) => (
               <li key={item.id}>
-                <LocaleLink href={`/help/${item.topic}#${item.id}`} className="group flex min-h-13 items-start gap-3 px-4 py-3 focus-visible:focus-ring-inset">
-                  <Icon name="circle-help" size="sm" className="mt-0.5 shrink-0 text-ink-2" />
-                  <span className="min-w-0">
-                    <span className="type-body block text-ink group-hover:underline">{item.question}</span>
+                <LocaleLink href={`/help/${item.topic}#${item.id}`} className="group flex min-h-13 items-start gap-3 rounded-2xl px-3 py-3 transition-colors duration-fast hover:bg-page-subtle focus-visible:focus-ring-inset">
+                  <span aria-hidden="true" className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary-ink">
+                    <Icon name="circle-help" size="sm" />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="type-body block font-medium text-ink group-hover:underline">{item.question}</span>
                     <span className="type-caption block text-ink-2">{item.topicTitle}</span>
                   </span>
                 </LocaleLink>
@@ -87,7 +89,7 @@ export function HelpSearch({ items }: { items: readonly HelpSearchItem[] }) {
             ))}
           </ul>
         ) : (
-          <div className="rounded-lg border border-line-strong bg-surface p-4">
+          <div className="rounded-2xl bg-page-subtle p-4 sm:p-5">
             <p className="type-body-sm text-ink-2">{t('guidePages.help.noResultsHint')}</p>
             <LocaleLink href={`/search?q=${encodeURIComponent(query.trim())}`} className="link-action type-body-sm mt-1 text-ink">
               {t('guidePages.help.searchSite', { query: query.trim() })}

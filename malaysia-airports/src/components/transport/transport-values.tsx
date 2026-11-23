@@ -118,12 +118,12 @@ export function FareTimeline({ info, context, compact = false }: { info: FareInf
 }
 
 /** Published journey time, or "not published". */
-export function DurationValue({ info, shortLabel = false }: { info: FareInfo; shortLabel?: boolean }) {
+export function DurationValue({ info, shortLabel = false, size = 'md' }: { info: FareInfo; shortLabel?: boolean; size?: 'md' | 'lg' }) {
   const t = useT();
   const lang = useLang();
   const minutes = info.doorToDoor ? undefined : info.shown?.durationMinutes;
   return minutes !== undefined ? (
-    <span className="type-data-md text-ink">{formatDuration(minutes, lang)}</span>
+    <span className={cn('text-ink', size === 'lg' ? 'type-data-lg' : 'type-data-md')}>{formatDuration(minutes, lang)}</span>
   ) : (
     <NotPublished label={shortLabel ? undefined : t('transportPages.fare.timeNotPublished')} />
   );

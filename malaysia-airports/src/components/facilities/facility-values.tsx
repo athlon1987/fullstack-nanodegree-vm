@@ -59,9 +59,10 @@ export function FactList({ facts, className }: { facts: readonly Fact[]; classNa
   const present = facts.filter((fact) => fact.value !== undefined && fact.value !== null && fact.value !== '');
   const missing = facts.filter((fact) => !present.includes(fact)).map((fact) => fact.label);
   const row = 'grid gap-x-4 gap-y-0.5 py-2.5 @sm:grid-cols-[7.5rem_minmax(0,1fr)]';
+  // Redesign stage two: the facts in a soft well (where, when, who for), rows split by hairlines.
   return (
     <div className={cn('@container', className)}>
-      <dl className="divide-y divide-line border-y border-line">
+      <dl className="divide-y divide-line rounded-xl bg-page-subtle px-4">
         {present.map((fact) => (
           <div key={fact.label} className={row}>
             <dt className="type-body-sm text-ink-2">{fact.label}</dt>

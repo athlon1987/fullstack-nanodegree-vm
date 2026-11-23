@@ -42,7 +42,7 @@ export default async function CorporateMediaPage() {
           />
         }
       />
-      <Container className="flex flex-col gap-14 pb-section">
+      <Container className="flex flex-col gap-20 pt-12 pb-section sm:gap-24 sm:pt-16">
         <PageSection
           id="statistics"
           first

@@ -7,9 +7,7 @@ import { ExternalLink } from '@/components/common/external-link';
 import { LocaleLink } from '@/components/common/locale-link';
 import { MissingPage } from '@/components/common/missing-page';
 import { NotPublished } from '@/components/common/not-published';
-import { PageHeader } from '@/components/common/page-header';
 import { PrototypeGapsLink } from '@/components/common/prototype-gaps-link';
-import { SectionHeading } from '@/components/common/section-heading';
 import { TranslationNotice } from '@/components/common/translation-notice';
 import { TerminalTransfers } from '@/components/transport/terminal-transfers';
 import { ToutsWarning } from '@/components/transport/touts-warning';
@@ -17,7 +15,9 @@ import { TransportGlance } from '@/components/transport/transport-glance';
 import { transportPageModel } from '@/components/transport/transport-data.server';
 import { DEFAULT_PLANNER_STATE, TransportPlanner } from '@/components/transport/transport-planner';
 import { TransportPlannerFromUrl } from '@/components/transport/transport-planner-url';
-import { Container } from '@/components/ui/container';
+import { Button } from '@/components/ui/button';
+import { ServiceBody, ServiceHeading, ServiceIntro, SERVICE_CARD, SERVICE_ICON, SERVICE_ICON_SM, SERVICE_JUMP, SERVICE_WELL } from '@/components/facilities/service-frame';
+import { cn } from '@/lib/cn';
 import { Icon } from '@/components/ui/icon';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
 
@@ -68,44 +68,44 @@ async function Transport({ params }: { params: AirportPageParams }) {
 
   return (
     <>
-      <PageHeader
+      {/* Redesign stage two: the service-page frame. The answer (the cheapest published scheduled
+          fares, round 4's 6.1.6) sits beside the title from lg up and under it on phones, still
+          above the warning, which still precedes every taxi and e-hailing option (C-02). */}
+      <ServiceIntro
         eyebrow={airport.shortName}
         title={t('transportPages.transport.title', { airport: airport.shortName })}
-        lead={t('transportPages.transport.lead')}
+        summary={t('transportPages.frame.transportSummary')}
+        summaryClassName="max-sm:sr-only"
         breadcrumbs={<Breadcrumbs items={[{ label: airport.shortName, href: `/${airport.slug}` }, { label: t('nav.groundTransport') }]} />}
+        answer={model.planner.length > 0 ? <TransportGlance {...plannerData} /> : undefined}
+        meta={
+          model.between.length > 0 || hasParking ? (
+            // On phones the fares come straight under the title (6.1.6); the jumps show from `sm` up.
+            <nav aria-label={t('transportPages.transport.jumpsLabel')} className="flex flex-wrap gap-2 max-sm:hidden">
+              {model.between.length > 0 ? (
+                <a href="#between-terminals" className={SERVICE_JUMP}>
+                  <Icon name="arrow-left-right" size="sm" />
+                  {t('transportPages.transport.jumpToTerminals')}
+                </a>
+              ) : null}
+              {hasParking ? (
+                <LocaleLink href={`/${airport.slug}/parking`} className={SERVICE_JUMP}>
+                  <Icon name="square-parking" size="sm" />
+                  {t('transportPages.transport.parkingAction')}
+                </LocaleLink>
+              ) : null}
+            </nav>
+          ) : undefined
+        }
       />
-      <Container className="flex flex-col gap-14 pb-section">
+      <ServiceBody>
         {model.translationMissing ? <TranslationNotice /> : null}
 
-        {/* Round 4 (6.1.6, answer first): the cheapest published train and coach fares, above the
-            warning. Scheduled services only, so the warning still comes before any taxi or
-            e-hailing option (C-02). */}
-        {model.planner.length > 0 ? <TransportGlance {...plannerData} /> : null}
-
-        {/* Round 4: the two jumps sit under the answer as links (they were two stacked buttons
-            above it, 130 px on a phone). */}
-        {model.between.length > 0 || hasParking ? (
-          <nav aria-label={t('transportPages.transport.jumpsLabel')} className="-my-8 flex flex-wrap gap-x-6 gap-y-1">
-            {model.between.length > 0 ? (
-              <a href="#between-terminals" className="link-action type-body-sm text-ink">
-                <Icon name="arrow-left-right" size="sm" />
-                {t('transportPages.transport.jumpToTerminals')}
-              </a>
-            ) : null}
-            {hasParking ? (
-              <LocaleLink href={`/${airport.slug}/parking`} className="link-action type-body-sm text-ink">
-                <Icon name="square-parking" size="sm" />
-                {t('transportPages.transport.parkingAction')}
-              </LocaleLink>
-            ) : null}
-          </nav>
-        ) : null}
-
         {/* Before any taxi or e-hailing option: book rides only through official channels (C-02). */}
-        <ToutsWarning context={model.context} className="-mb-6" />
+        <ToutsWarning context={model.context} className="-mb-6 sm:-mb-8" />
 
         <section aria-labelledby="planner-title">
-          <SectionHeading id="planner-title" title={t('transportPages.planner.title')} variant="title" />
+          <ServiceHeading id="planner-title" title={t('transportPages.planner.title')} />
           {model.planner.length > 0 ? (
             <Suspense fallback={<TransportPlanner {...plannerData} state={DEFAULT_PLANNER_STATE} />}>
               <TransportPlannerFromUrl {...plannerData} />
@@ -116,39 +116,40 @@ async function Transport({ params }: { params: AirportPageParams }) {
         </section>
 
         {model.missingModes.length > 0 ? (
-          <section aria-labelledby="missing-modes-title" className="grid gap-6 lg:grid-cols-2">
-            <div className="min-w-0 rounded-xl border border-line bg-page-subtle p-5 lg:order-2">
-              <h2 id="missing-modes-title" className="type-title-md text-ink">
+          <section aria-labelledby="missing-modes-title" className="grid gap-4 lg:grid-cols-2 lg:gap-6">
+            <div className={cn(SERVICE_WELL, 'min-w-0 p-5 sm:p-6 lg:order-2')}>
+              <h2 id="missing-modes-title" className="type-title-lg text-ink">
                 {t('transportPages.planner.missingTitle')}
               </h2>
               <p className="type-body-sm mt-1 text-ink-2">{t('transportPages.planner.missingBody', { airport: airport.shortName })}</p>
-              <ul className="mt-3 flex flex-col gap-2">
+              <ul className="mt-4 flex flex-col gap-2.5">
                 {model.missingModes
                   .filter((mode) => !(mode === 'private-car' && hasParking))
                   .map((mode) => (
-                    <li key={mode} className="flex items-center gap-2.5">
-                      <Icon name={mode} size="sm" className="text-ink-2" />
+                    <li key={mode} className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                      <span className={cn(SERVICE_ICON_SM, 'size-9 bg-surface text-ink-2')}>
+                        <Icon name={mode} size="sm" />
+                      </span>
                       <span className="type-body-sm font-medium text-ink">{pick(TRANSPORT_MODE_LABELS[mode], lang)}</span>
                       <NotPublished />
                     </li>
                   ))}
               </ul>
-              <ExternalLink href={model.context.officialUrl} variant="action" className="type-body-sm mt-2">
+              <ExternalLink href={model.context.officialUrl} variant="action" className="type-body-sm mt-3">
                 {t('transportPages.gaps.officialSite')}
               </ExternalLink>
             </div>
             {model.missingModes.includes('private-car') && hasParking ? (
-              <div className="flex min-w-0 items-start gap-4 rounded-xl border border-line-strong bg-surface p-5 lg:order-1">
-                <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-page-subtle text-ink">
+              <div className={cn(SERVICE_CARD, 'flex min-w-0 items-start gap-4 p-5 sm:p-6 lg:order-1')}>
+                <span className={SERVICE_ICON}>
                   <Icon name="private-car" />
                 </span>
                 <div className="min-w-0">
-                  <h3 className="type-title-md text-ink">{t('transportPages.planner.privateCar')}</h3>
+                  <h3 className="type-title-lg text-ink">{t('transportPages.planner.privateCar')}</h3>
                   <p className="type-body-sm mt-1 text-ink-2">{t('transportPages.planner.privateCarBody')}</p>
-                  <LocaleLink href={`/${airport.slug}/parking`} className="link-action type-body-sm mt-2 text-ink">
-                    {t('transportPages.planner.seeParking')}
-                    <Icon name="arrow-right" size="sm" />
-                  </LocaleLink>
+                  <Button asChild variant="secondary" size="sm" iconEnd="arrow-right" className="mt-4">
+                    <LocaleLink href={`/${airport.slug}/parking`}>{t('transportPages.planner.seeParking')}</LocaleLink>
+                  </Button>
                 </div>
               </div>
             ) : null}
@@ -167,7 +168,7 @@ async function Transport({ params }: { params: AirportPageParams }) {
           officialHref={model.context.officialUrl}
           officialLabel={t('transportPages.gaps.officialSite')}
         />
-      </Container>
+      </ServiceBody>
     </>
   );
 }

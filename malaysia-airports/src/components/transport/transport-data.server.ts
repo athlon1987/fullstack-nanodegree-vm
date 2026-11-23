@@ -4,6 +4,8 @@
  * never import `@/content`.
  */
 import { FAQS, getGuide, getSource, hasTranslation, localizeAirport, pick, resolveSources, terminalLabel, type AirportContent, type GuideNote, type Lang, type LocalizedText, type Source } from '@/content';
+import { IMAGES, type ImageId } from '@/content/images';
+import { toMediaImage, type MediaImage } from '@/components/ui/media';
 import { PLANNER_MODES } from './transport-logic';
 import type { NoteView, TerminalInfo, ToutsView, TransportContext } from './transport-types';
 
@@ -83,6 +85,22 @@ export interface TransportPageModel {
   translationMissing: boolean;
 }
 
+/**
+ * Redesign stage two: a photograph on an option's card only where the library holds that service's
+ * own picture (the KLIA Ekspres train for the KLIA Ekspres). No other service gets a stand-in.
+ */
+const OPTION_PHOTOS: Readonly<Partial<Record<string, ImageId>>> = { 'kul-klia-ekspres': 'klia-ekspres' };
+
+/** The option photographs of an airport, by option id, in the page language (the card's title names the train, so the alt is dropped). */
+function optionPhotos(content: AirportContent, lang: Lang): Record<string, MediaImage> {
+  return Object.fromEntries(
+    content.transport.flatMap((option) => {
+      const id = OPTION_PHOTOS[option.id];
+      return id ? [[option.id, toMediaImage(IMAGES[id], lang, { decorative: true })]] : [];
+    }),
+  );
+}
+
 /** Build the transport page model for an airport. */
 export function transportPageModel(content: AirportContent, lang: Lang): TransportPageModel {
   const planner = content.transport.filter((option) => PLANNER_MODES.includes(option.mode));
@@ -123,6 +141,7 @@ export function transportPageModel(content: AirportContent, lang: Lang): Transpo
       sources: sourceLookup(sourceIds),
       officialUrl: officialSite(content),
       ...(touts ? { touts } : {}),
+      photos: optionPhotos(content, lang),
     },
     planner,
     between,

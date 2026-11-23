@@ -36,6 +36,11 @@ export interface NoticeListProps {
    * whether it is in effect), the body, period, provenance and sources behind a disclosure.
    */
   compact?: boolean;
+  /**
+   * Redesign stage two (the notices page): in the compact list, the period also shows on the
+   * notice's line, so dates scan without opening each notice.
+   */
+  periodInSummary?: boolean;
 }
 
 /** Severity as icon and colour for the compact list (words go with it: the title and the state). */
@@ -50,7 +55,7 @@ const SEVERITY_BADGE: Record<NoticeSeverity, { badge: string; icon: IconName }> 
  * A list of notices with their provenance, period and sources. Whether a notice is in effect,
  * coming up or ended depends on the clock, so that part appears after hydration.
  */
-export function NoticeList({ notices, airport, severities, show = 'current', headingLevel = 3, emptyText, linkToAll = false, className, listClassName, compact = false }: NoticeListProps) {
+export function NoticeList({ notices, airport, severities, show = 'current', headingLevel = 3, emptyText, linkToAll = false, className, listClassName, compact = false, periodInSummary = false }: NoticeListProps) {
   const t = useT();
   const lang = useLang();
   const now = useNow();
@@ -110,6 +115,12 @@ export function NoticeList({ notices, airport, severities, show = 'current', hea
                           {t(`notices.severity.${notice.severity}`)} · {notice.scope ?? t('noticesPage.network')}
                         </span>
                         <Heading className="type-body font-semibold text-ink">{notice.title}</Heading>
+                        {periodInSummary ? (
+                          <span className="type-caption mt-0.5 flex items-center gap-1.5 text-ink-2">
+                            <Icon name="calendar-days" size="xs" />
+                            {period(notice)}
+                          </span>
+                        ) : null}
                       </span>
                       {state ? (
                         <Chip
@@ -119,13 +130,17 @@ export function NoticeList({ notices, airport, severities, show = 'current', hea
                         >
                           {stateLabel(notice, state)}
                         </Chip>
-                      ) : null}
+                      ) : (
+                        // Redesign stage two: the state depends on the clock, so it arrives after
+                        // hydration; this placeholder holds its line on phones (no layout shift).
+                        <span aria-hidden="true" className="invisible min-h-chip w-24 max-sm:order-last max-sm:ml-12" />
+                      )}
                       <Icon name="chevron-down" size="sm" strokeWidth={2} className="shrink-0 text-ink-2 transition-transform duration-fast group-open/notice:rotate-180" />
                     </summary>
                     <div className="flex flex-col gap-3 border-t border-line bg-page-subtle px-4 py-4 sm:px-5 sm:pl-[4.25rem]">
                       {notice.body ? <div className="type-body-sm max-w-reading text-ink-2 sm:text-base">{notice.body}</div> : null}
                       <p className="type-data-sm flex flex-wrap items-center gap-x-3 gap-y-1.5 text-ink-2">
-                        <span>{period(notice)}</span>
+                        {periodInSummary ? null : <span>{period(notice)}</span>}
                         {notice.provenance === 'demo' || notice.provenance === 'official' ? <ProvenanceTag provenance={notice.provenance} length="short" /> : null}
                       </p>
                       {notice.sources?.length ? <SourceNote sources={notice.sources} /> : null}

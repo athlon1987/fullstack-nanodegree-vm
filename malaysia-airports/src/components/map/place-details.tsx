@@ -51,9 +51,9 @@ export function PlaceDetails({ poi, level, sources, facilitiesHref, isDestinatio
   };
 
   return (
-    <section aria-labelledby={DETAILS_HEADING_ID} className="animate-rise-in rounded-xl border border-line-strong bg-surface shadow-sm">
+    <section aria-labelledby={DETAILS_HEADING_ID} className="animate-rise-in rounded-3xl border border-line bg-surface shadow-md">
       <div className="flex items-start gap-3 p-4 pb-3 sm:p-5 sm:pb-3">
-        <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-ink text-page">
+        <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-ink text-page">
           <Icon name={poi.kind} />
         </span>
         <div className="min-w-0 flex-1">

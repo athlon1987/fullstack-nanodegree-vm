@@ -70,9 +70,9 @@ function Statements({ statements }: { statements: ConciergeAnswer['statements'] 
   const t = useT();
   if (statements.length === 0) return null;
   return (
-    <ul aria-label={t('conciergePage.answer.details')} className="flex flex-col divide-y divide-line overflow-hidden rounded-lg border border-line bg-surface">
+    <ul aria-label={t('conciergePage.answer.details')} className="flex flex-col divide-y divide-line overflow-hidden rounded-2xl border border-line bg-surface shadow-xs">
       {statements.map((statement, index) => (
-        <li key={`${index}:${statement.text.slice(0, 24)}`} className="flex flex-col gap-2 px-4 py-3.5">
+        <li key={`${index}:${statement.text.slice(0, 24)}`} className="flex flex-col gap-2 px-4 py-4 sm:px-5">
           {statement.title ? <p className="type-title-sm text-ink">{statement.title}</p> : null}
           <p className="type-body text-ink-2">{statement.text}</p>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
@@ -202,7 +202,7 @@ export function ConciergeAnswerView({ answer, mode, note, onAsk, busy }: Concier
           {/* Behind "More" on a phone; always shown on wider answers. */}
           <div id={moreId} className={cn('flex-col gap-4', expanded ? 'flex' : 'hidden @lg:flex')}>
             {answer.limits.length > 0 ? (
-              <div className="rounded-lg border border-dashed border-line-strong bg-page-subtle px-4 py-3">
+              <div className="rounded-2xl border border-dashed border-line-strong bg-surface px-4 py-3.5">
                 <p className="type-eyebrow mb-1.5 text-ink-2">{t('conciergePage.answer.limitsLabel')}</p>
                 <ul className="flex flex-col gap-1.5">
                   {answer.limits.map((limit) => (
@@ -241,9 +241,9 @@ export function ConciergeAnswerView({ answer, mode, note, onAsk, busy }: Concier
         </>
       ) : null}
 
-      <div className="flex flex-col gap-1.5 border-t border-line pt-3">
+      <div className="flex flex-col gap-1.5 border-t border-line pt-3.5">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-          <span className="type-caption inline-flex items-center gap-1.5 font-semibold text-ink-2">
+          <span className="type-caption inline-flex min-h-7 items-center gap-1.5 rounded-pill bg-fill px-2.5 font-semibold text-ink-2">
             <Icon name={note === 'private' ? 'shield-check' : MODE_ICON[mode]} size="xs" />
             {mode === 'grounded' ? t('conciergePage.mode.grounded') : mode === 'grounded-rephrased' ? t('conciergePage.mode.rephrased') : t('conciergePage.mode.local')}
           </span>

@@ -7,10 +7,9 @@ import { EmptyState } from '@/components/common/empty-state';
 import { ExternalLink } from '@/components/common/external-link';
 import { LocaleLink } from '@/components/common/locale-link';
 import { MissingPage } from '@/components/common/missing-page';
-import { PageHeader } from '@/components/common/page-header';
 import { ProvenanceLegend } from '@/components/common/provenance-legend';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
-import { SectionHeading } from '@/components/common/section-heading';
+import { ServiceBody, ServiceHeading, ServiceIntro, SERVICE_ICON } from '@/components/facilities/service-frame';
 import { FactCard, type FactView } from '@/components/guides/fact-card';
 import { SectionSourceList } from '@/components/common/section-source-list';
 import { transitData, type RestView, type TransitData } from '@/components/guides/transit-data.server';
@@ -19,7 +18,6 @@ import { TransitPlanner } from '@/components/guides/transit-planner';
 import { TransitPlannerFromUrl } from '@/components/guides/transit-planner-url';
 import { OpsStatusSection } from '@/components/flights/ops-status-section';
 import { airportsWithSection } from '@/components/shell/sections.server';
-import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
 import type { Translator } from '@/lib/i18n/translate';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
@@ -77,12 +75,17 @@ async function Transit({ params }: { params: AirportPageParams }) {
   const data = transitData(content, lang, t, sections.includes('lounges'));
   const planner =
     airport.terminals.some((terminal) => terminal.id === 'T1') && airport.terminals.some((terminal) => terminal.id === 'T2') && data.options.length > 0;
+  // Redesign stage two: the service-page frame. On the planner page the answer (the verdict) is
+  // the first thing beside the form on desktop and under it on phones (C-03), with its one-line
+  // summary pinned at the top of the form while it is answered.
   const header = (
-    <PageHeader
+    <ServiceIntro
       eyebrow={airport.shortName}
       title={t('guidePages.transit.title', { airport: airport.shortName })}
-      lead={planner ? t('guidePages.transit.lead') : t('guidePages.transit.leadSimple', { airport: airport.shortName })}
+      summary={planner ? t('guidePages.transit.lead') : t('guidePages.transit.leadSimple', { airport: airport.shortName })}
+      summaryClassName={planner ? 'max-sm:sr-only' : undefined}
       breadcrumbs={<Breadcrumbs items={[{ label: airport.shortName, href: `/${airport.slug}` }, { label: t('nav.transit') }]} />}
+      className={planner ? '[&>div]:pb-6 sm:[&>div]:pb-10' : undefined}
     />
   );
 
@@ -92,10 +95,10 @@ async function Transit({ params }: { params: AirportPageParams }) {
     return (
       <>
         {header}
-        <Container className="flex flex-col gap-14 pb-section">
+        <ServiceBody>
           {notes.length > 0 ? (
             <section aria-labelledby="transit-notes-title">
-              <SectionHeading id="transit-notes-title" title={t('guidePages.transit.simple.notesTitle', { airport: airport.shortName })} variant="title" />
+              <ServiceHeading id="transit-notes-title" title={t('guidePages.transit.simple.notesTitle', { airport: airport.shortName })} />
               <ul className="grid items-start gap-3 lg:grid-cols-2">
                 {notes.map((note) => (
                   <li key={note.id} className="min-w-0">
@@ -130,7 +133,7 @@ async function Transit({ params }: { params: AirportPageParams }) {
           <Basics t={t} />
           <section
             aria-labelledby="transit-klia-title"
-            className="flex min-w-0 flex-wrap items-center justify-between gap-4 rounded-xl border border-line-strong bg-page-subtle p-5"
+            className="flex min-w-0 flex-wrap items-center justify-between gap-4 rounded-3xl bg-page-subtle p-6 sm:p-8"
           >
             <div className="min-w-0">
               <h2 id="transit-klia-title" className="type-title-md text-ink">
@@ -145,7 +148,7 @@ async function Transit({ params }: { params: AirportPageParams }) {
           </section>
           <LateSection t={t} facts={data.late} />
           <ProvenanceLegend headingLevel={2} />
-        </Container>
+        </ServiceBody>
       </>
     );
   }
@@ -153,21 +156,21 @@ async function Transit({ params }: { params: AirportPageParams }) {
   return (
     <>
       {header}
-      <Container className="flex flex-col gap-16 pb-section">
+      <ServiceBody>
         <noscript>
-          <p className="type-body-sm rounded-lg border border-line-strong bg-page-subtle p-4 text-ink">{t('guidePages.transit.planner.noJs')}</p>
+          <p className="type-body-sm rounded-2xl bg-page-subtle p-4 text-ink">{t('guidePages.transit.planner.noJs')}</p>
         </noscript>
         <Suspense fallback={<TransitPlanner data={data} initial={DEFAULT_TRANSIT_INPUT} />}>
           <TransitPlannerFromUrl data={data} />
         </Suspense>
 
-        <section id="between-terminals" aria-labelledby="between-terminals-title" className="scroll-mt-32 border-t border-line pt-12">
-          <SectionHeading id="between-terminals-title" title={t('guidePages.transit.official.title', { airport: airport.shortName })} variant="title" />
+        <section id="between-terminals" aria-labelledby="between-terminals-title" className="scroll-mt-32">
+          <ServiceHeading id="between-terminals-title" title={t('guidePages.transit.official.title', { airport: airport.shortName })} />
           <div className="flex flex-col gap-4">
             {/* Whether the train and shuttle between terminals are running, from current notices (B-01 hand-off). */}
             <OpsStatusSection airport={airport.slug} services={['inter-terminal-train', 'inter-terminal-shuttle']} headingLevel={3} className="max-w-narrow" />
             {data.interTerminal ? <FactCard fact={data.interTerminal} className="max-w-narrow border-ink" groupedSources /> : null}
-            <h3 className="type-title-md mt-4 text-ink">{t('guidePages.transit.official.optionsTitle')}</h3>
+            <h3 className="type-title-lg mt-4 text-ink">{t('guidePages.transit.official.optionsTitle')}</h3>
             <ul className="grid items-start gap-4 lg:grid-cols-2">
               {data.options.map((option) => (
                 <li key={option.id} className="min-w-0">
@@ -183,7 +186,7 @@ async function Transit({ params }: { params: AirportPageParams }) {
         <RestSection t={t} data={data} />
         <LateSection t={t} facts={data.late} />
         <ProvenanceLegend headingLevel={2} />
-      </Container>
+      </ServiceBody>
     </>
   );
 }
@@ -200,16 +203,18 @@ function Basics({ t }: { t: Translator }) {
   ];
   return (
     <section aria-labelledby="transit-basics-title">
-      <SectionHeading
+      <ServiceHeading
         id="transit-basics-title"
         title={t('guidePages.transit.simple.basicsTitle')}
-        variant="title"
+       
         action={<ProvenanceTag provenance="estimated" />}
       />
       <ul className="grid gap-4 md:grid-cols-2">
         {items.map((item) => (
-          <li key={item.id} className="flex min-w-0 gap-4 rounded-lg border border-line-strong bg-surface p-5">
-            <Icon name={item.icon} className="mt-0.5 shrink-0 text-primary-ink" />
+          <li key={item.id} className="flex min-w-0 gap-4 rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-6">
+            <span aria-hidden="true" className={SERVICE_ICON}>
+              <Icon name={item.icon} />
+            </span>
             <div className="min-w-0">
               <h3 className="type-title-sm text-ink">{item.title}</h3>
               <p className="type-body-sm mt-1 text-ink-2">{item.body}</p>
@@ -223,7 +228,7 @@ function Basics({ t }: { t: Translator }) {
 
 function RestCard({ item, t }: { item: RestView; t: Translator }) {
   return (
-    <div className="flex min-w-0 flex-col gap-2 rounded-lg border border-line-strong bg-surface p-4">
+    <div className="flex min-w-0 flex-col gap-2 rounded-2xl border border-line bg-surface p-5 shadow-sm">
       <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-1.5">
         <h3 className="type-title-sm min-w-0 text-ink">{item.name}</h3>
         <ProvenanceTag provenance={item.provenance} length="short" />
@@ -252,12 +257,12 @@ function RestCard({ item, t }: { item: RestView; t: Translator }) {
 function RestSection({ t, data }: { t: Translator; data: TransitData }) {
   const leaving = [data.entry, data.mdac].filter((fact): fact is FactView => Boolean(fact));
   return (
-    <section id="transit-rest" aria-labelledby="transit-rest-title" className="scroll-mt-32 border-t border-line pt-12">
-      <SectionHeading
+    <section id="transit-rest" aria-labelledby="transit-rest-title" className="scroll-mt-32">
+      <ServiceHeading
         id="transit-rest-title"
         title={t('guidePages.transit.rest.title')}
         lead={t('guidePages.transit.rest.lead')}
-        variant="title"
+       
         action={
           data.hasLounges ? (
             <LocaleLink href={`/${data.airportSlug}/lounges`} className="link-action type-body-sm text-ink">
@@ -278,7 +283,7 @@ function RestSection({ t, data }: { t: Translator; data: TransitData }) {
       ) : null}
       {leaving.length > 0 ? (
         <>
-          <h3 className="type-title-md mt-10 mb-4 text-ink">{t('guidePages.transit.rest.leaveTitle')}</h3>
+          <h3 className="type-title-lg mt-10 mb-4 text-ink">{t('guidePages.transit.rest.leaveTitle')}</h3>
           <ul className="grid items-start gap-4 lg:grid-cols-2">
             {leaving.map((fact) => (
               <li key={fact.id} className="min-w-0">
@@ -300,12 +305,12 @@ function RestSection({ t, data }: { t: Translator; data: TransitData }) {
 function LateSection({ t, facts }: { t: Translator; facts: readonly FactView[] }) {
   if (facts.length === 0) return null;
   return (
-    <section id="transit-late" aria-labelledby="transit-late-title" className="scroll-mt-32 border-t border-line pt-12">
-      <SectionHeading
+    <section id="transit-late" aria-labelledby="transit-late-title" className="scroll-mt-32">
+      <ServiceHeading
         id="transit-late-title"
         title={t('guidePages.transit.late.title')}
         lead={t('guidePages.transit.late.lead')}
-        variant="title"
+       
         action={
           <LocaleLink href="/notices" className="link-action type-body-sm text-ink">
             {t('guidePages.transit.late.notices')}
