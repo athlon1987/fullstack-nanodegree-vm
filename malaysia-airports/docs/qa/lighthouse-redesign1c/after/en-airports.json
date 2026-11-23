@@ -1,0 +1,280 @@
+{
+ "key": "en-airports",
+ "url": "http://localhost:3296/en/airports",
+ "preset": "mobile (Lighthouse default)",
+ "profile": null,
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-23T04:51:21.617Z",
+ "median": {
+  "performance": 86,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1369,
+  "lcp_ms": 3731,
+  "tbt_ms": 182,
+  "cls": 0,
+  "si_ms": 1369,
+  "totalBytes": 569463,
+  "requests": 45
+ },
+ "a11yFailures": [],
+ "rows": [
+  {
+   "finalUrl": "/en/airports",
+   "runtimeError": null,
+   "performance": 87,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1373,
+   "lcp_ms": 3744,
+   "tbt_ms": 172,
+   "cls": 0,
+   "si_ms": 1373,
+   "totalBytes": 574366,
+   "requests": 47,
+   "benchmarkIndex": 1941.5,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en/airports",
+   "runtimeError": null,
+   "performance": 86,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1363,
+   "lcp_ms": 3731,
+   "tbt_ms": 194,
+   "cls": 0,
+   "si_ms": 1363,
+   "totalBytes": 569463,
+   "requests": 45,
+   "benchmarkIndex": 2094,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en/airports",
+   "runtimeError": null,
+   "performance": 86,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1369,
+   "lcp_ms": 3731,
+   "tbt_ms": 182,
+   "cls": 0,
+   "si_ms": 1369,
+   "totalBytes": 569463,
+   "requests": 45,
+   "benchmarkIndex": 2035,
+   "a11yFailures": []
+  }
+ ],
+ "medianRunIndex": 2,
+ "diagnostics": {
+  "observed": {
+   "fcp": 224,
+   "lcp": 295,
+   "dcl": 353,
+   "load": 361
+  },
+  "lcpElement": {
+   "selector": "ul.max-sm:-mx-gutter > li.group/card > div.absolute > img.object-cover",
+   "label": "ul.max-sm:-mx-gutter > li.group/card > div.absolute > img.object-cover"
+  },
+  "lcpPhases": {
+   "timeToFirstByte": 12,
+   "resourceLoadDelay": 171,
+   "resourceLoadDuration": 22,
+   "elementRenderDelay": 90
+  },
+  "renderBlocking": [
+   {
+    "url": "/_next/static/chunks/18aaddm568ae9.css",
+    "bytes": 33852,
+    "ms": 459
+   },
+   {
+    "url": "/_next/static/chunks/416av_omt2lgt.css",
+    "bytes": 2464,
+    "ms": 159
+   }
+  ],
+  "longTasks": [
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 3937,
+    "dur": 169
+   },
+   {
+    "url": "/en/airports",
+    "start": 1046,
+    "dur": 158
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4194,
+    "dur": 149
+   },
+   {
+    "url": "Unattributable",
+    "start": 909,
+    "dur": 84
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4106,
+    "dur": 60
+   },
+   {
+    "url": "/en/airports",
+    "start": 1433,
+    "dur": 57
+   },
+   {
+    "url": "_lighthouse-eval.js",
+    "start": 2906,
+    "dur": 57
+   }
+  ],
+  "bootup": [
+   {
+    "url": "/en/airports",
+    "total": 938,
+    "scripting": 64
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "total": 821,
+    "scripting": 705
+   },
+   {
+    "url": "Unattributable",
+    "total": 414,
+    "scripting": 9
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "total": 106,
+    "scripting": 69
+   }
+  ],
+  "mainThread": {
+   "scriptEvaluation": 971,
+   "other": 596,
+   "styleLayout": 523,
+   "scriptParseCompile": 148,
+   "parseHTML": 121,
+   "paintCompositeRender": 107,
+   "garbageCollection": 40
+  },
+  "resources": {
+   "total": {
+    "n": 40,
+    "bytes": 569463
+   },
+   "script": {
+    "n": 23,
+    "bytes": 333077
+   },
+   "image": {
+    "n": 5,
+    "bytes": 67517
+   },
+   "font": {
+    "n": 3,
+    "bytes": 56361
+   },
+   "document": {
+    "n": 1,
+    "bytes": 44898
+   },
+   "stylesheet": {
+    "n": 2,
+    "bytes": 36316
+   },
+   "other": {
+    "n": 6,
+    "bytes": 31294
+   },
+   "media": {
+    "n": 0,
+    "bytes": 0
+   },
+   "third-party": {
+    "n": 0,
+    "bytes": 0
+   }
+  },
+  "topRequests": [
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "type": "Script",
+    "transfer": 73535
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "type": "Script",
+    "transfer": 47500
+   },
+   {
+    "url": "/en/airports",
+    "type": "Document",
+    "transfer": 44898
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "type": "Font",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/chunks/18aaddm568ae9.css",
+    "type": "Stylesheet",
+    "transfer": 33852
+   },
+   {
+    "url": "/_next/static/chunks/1y6cqt8twi5k3.js",
+    "type": "Script",
+    "transfer": 23982
+   },
+   {
+    "url": "/_next/static/chunks/21y_j37winnmt.js",
+    "type": "Script",
+    "transfer": 18547
+   },
+   {
+    "url": "/_next/image?url=%2Fimages%2Fkuching%2Fairport-terminal.jpg&w=640&q=60",
+    "type": "Image",
+    "transfer": 17941
+   },
+   {
+    "url": "/_next/static/media/geist_mono_basic_wght_normal.0acs2vcv6dxqq.woff2",
+    "type": "Font",
+    "transfer": 16109
+   },
+   {
+    "url": "/_next/static/chunks/3mqrfn_jmecto.js",
+    "type": "Script",
+    "transfer": 14473
+   }
+  ],
+  "fonts": [
+   {
+    "url": "/_next/static/media/fraunces_wordmark_520-s.p.01133lvcr6pw1.woff2",
+    "transfer": 3855
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/media/geist_mono_basic_wght_normal.0acs2vcv6dxqq.woff2",
+    "transfer": 16109
+   }
+  ]
+ },
+ "caveat": "Lab measurement: Lighthouse with simulated (or, with --profile, applied) throttling against a local next start. Indicative only; not field data."
+}

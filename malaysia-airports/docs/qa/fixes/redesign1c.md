@@ -16,7 +16,7 @@ shade, the hero choice and the directory ran on a development server (`.next-rd1
 
 | Check | Before (build 1, or as stated) | After (build 3) |
 |---|---|---|
-| Airport hero shade at 1440 px: steepest change of the darkening over 60 px (1.0 = black to bare) | 0.21 on KLIA, Subang and Penang, at x = 1,045 to 1,131 px (the "panel edge") | **0.06 to 0.10** on KLIA, Penang, Kota Kinabalu and Subang at 1280, 1440 and 1920 px (Kuching 0.10 to 0.14; see item 1) |
+| Airport hero shade at 1440 px: steepest change of the darkening over 60 px (1.0 = black to bare) | 0.21 on KLIA, Subang and Penang, at x = 1,045 to 1,131 px (the "panel edge") | **0.06 to 0.11** on KLIA, Penang, Kota Kinabalu and Subang at 1280, 1440 and 1920 px (Kuching 0.10 to 0.14; see item 1) |
 | Text over photographs under 4.5:1 (every run, brightest 1 % of pixels; large text held to 4.5:1 too) | 0 of 2,388, lowest 4.93 (SA2.3) | **0 of 3,559** (120 page loads), lowest **5.36**; axe 0 violations |
 | Home hero | `klia-t1-roof`, overcast | **`mount-kinabalu`** at sunset (judged in place against five others) |
 | KLIA hero | `klia-t1-airfield` (at 1440 px mostly sky) | **`klia-t1-aerial`** (the terminal and pier from the air, 2026) |
@@ -32,7 +32,7 @@ shade, the hero choice and the directory ran on a development server (`.next-rd1
 | Directory first view at 1440 x 900 | no photograph | **five airport photographs** (a mosaic) above the search and filters; a row of tall cards on phones |
 | `platform.spec.ts` offline indicator | reads the card and the toast at two moments (flaky, SA5 item 5) | **one snapshot**; both assertions kept |
 | `tsc`, `eslint`, `vitest` | 0, 0, 616 / 616 | **0, 0, 616 / 616** |
-| End to end, the nine specs touched (both projects) | | TBD-E2E |
+| End to end, the nine specs touched (both projects) | SA2.2: 1 known race in this set | build 3: **336 passed, 0 failed, 14 skipped** of 350; the new directory test 10 / 10; the offline test 20 / 20 on repeat |
 
 ## 1. Airport hero scrim (SA5 item 4): a cinematic full-bleed shade
 
@@ -155,7 +155,9 @@ are all charged.
   shop and dine filters (`src/components/home/lazy-sections.tsx`) and the overview's journey modes, quick actions
   and board preview (`airport-flight-tools-lazy.tsx`; the hero's search moved to its own module,
   `airport-flight-search.tsx`) are code-split with `React.lazy`. Their HTML is still rendered on the server and is in
-  the static HTML; their scripts (about 30 KB gzip on `/en`) now load during hydration, after the paint. The imports
+  the static HTML; their scripts now load during hydration, after the paint (on `/en`, four chunks of 16 KB gzip
+  requested at 560 to 570 ms, against a paint at about 250 ms; first-load JavaScript home 209.6 → 201.7 KB, overview
+  209.7 → 200.5 KB). The imports
   go through the project's `retryingImport`, so a chunk that cannot be fetched waits and retries and the section
   keeps its server HTML (build 2 imported them plainly, and with every lazy chunk failing the phone home showed
   "Something went wrong": `access-round6` P8, two failures, fixed in build 3). "Departing now" is in the desktop
@@ -235,7 +237,8 @@ of the page), polls that snapshot until the offline toast is there, and judges t
 toast says "showing saved information"; otherwise the toast says "nothing is saved on this device yet", no status says
 "showing saved information", and the card does not say "not switched on". Both branches and all four assertions are
 kept, and the axe scan and "Back online" check after them are unchanged. A worker that takes control between two
-reads can no longer split them. TBD-PLATFORM.
+reads can no longer split them. On build 3: passed in the full run on both projects, and **20 of 20** with
+`--repeat-each=10`.
 
 Files: `e2e/platform.spec.ts`.
 
@@ -251,10 +254,93 @@ Files: `docs/design/photography.md`.
 
 ## End to end, static checks and screens
 
-TBD-E2E-DETAIL
+Against my own server (`PLAYWRIGHT_BASE_URL=http://localhost:3296`, 3 workers, `--trace off`, output in the session
+scratch folder), the nine specs named in the brief: `shell`, `smoke`, `flights`, `trust`, `access-round6`,
+`verify-round7`, `platform`, `handoffs`, `flight-round5`, on the desktop (1440 x 900) and phone (Pixel 7, 390 x 844)
+projects.
 
-TBD-SCREENS
+| Run | Tests | Passed | Failed | Skipped | Notes |
+|---|---|---|---|---|---|
+| Build 2 | 350 | 334 | **2** | 14 | `access-round6` "the home keeps its content, and 'Try again' brings the saved flight" (phone, en and ms): with every lazily loaded chunk failing, my new code-split sections rejected and the error boundary showed "Something went wrong". Fixed: their imports use `retryingImport` (item 3). Not a test change |
+| Build 3 | 350 | **336** | **0** | 14 | The 14 skips are the deliberate project-specific ones |
+| Build 3, `smoke.spec.ts` with the new test | 34 | 33 | 0 | 1 | |
+| Build 3, the new directory test, `--repeat-each=5` | 10 | 10 | 0 | 0 | |
+| Build 3, the offline indicator test, `--repeat-each=10` | 20 | 20 | 0 | 0 | |
+
+**Tests changed or added.** `platform.spec.ts`: the offline indicator test reads both states in one step (item 5;
+no assertion dropped). `smoke.spec.ts`: one new test, "the directory opens with photographs above the filters, and
+the search still narrows them" (a photograph in the first screen and above the filter form; five cards in the
+international group; "Penang" leaves one, "Ipoh" empties the group and shows Ipoh's row). `images.test.ts`: the
+credit's `modified` values now include "colour-graded" and must say so (stricter, not weaker). No test skipped or
+deleted.
+
+**Static checks** (final tree): `npx tsc --noEmit --incremental false` 0 errors; `npx eslint .` 0 problems (while my
+build folders existed, run with them ignored: they are generated code); `npx vitest run` 43 files, **616 passed**.
+
+**CLS** (`cls.mjs`: load, 2.5 s, then one screen of scroll): `/en` at 390, 1440 and 1920 and `/ms` at 390 and 1440:
+**0**; the directory at 390, 1280 and 1440 (en and ms): **0**; KLIA 0.0030 (1440) and 0.0043 (1280), Penang 0.0019,
+Subang 0.0007, each the header's airport pill (37 → 45 px) and the terminal chips nudged sideways when the clock fills
+in, both as before this pass (the polish log's 0.0036 is the pill). Lighthouse: CLS 0 on all five pages. Two shifts
+found on build 2 and removed: "Departing now" code-split (0.008 at 1440) and "All airports" beside the clock (0.0032).
+
+**Screens looked at** (11 of the 14 allowed, Playwright Chromium, device scale 1, all as contact sheets): the
+library before grading; the home and KLIA hero candidates in place (two sheets); the first frames of a cold home load;
+the grade before and after (14 files); the development server's heroes and directory (two sheets); and four of
+build 3: the six airport heroes on desktop (KLIA 1440, Kota Kinabalu 1440, Langkawi 1920 dark, Kuching 1280, Penang
+1440 dark in Malay, Subang 1920), seven phone screens (home in English and Malay dark, KLIA, Penang in Malay dark,
+Subang, the directory and the directory scrolled in Malay dark), the home at 1440 and in Malay at 1920 dark with the
+directory at 1440 and in Malay at 1280 dark, and the credits pages with the home's place cards. Each had one `h1`, no
+sideways scroll and no broken image. Seen: each airport photograph now reads as one picture, dark under the words and
+light falling off to the right, with no edge; the home's sunlit Kinabalu beside the headline and, on a phone, its
+summit under the header; KLIA from the air; the directory opening on five photographs at 1440 and a row of tall cards
+on a phone; the credits saying "colour-graded"; the Kota Kinabalu place card on the airfield photograph. Also seen:
+Langkawi's photograph has "Perlepasan / Departure" across its top third, which sits behind the eyebrow and the `h1` at
+1920 px; legible (6.29:1 or more) but busy (open item 2).
+
+## Open items
+
+1. **Hero LCP 2.5 s (SA5 item 1) is not met**: `/en` 3.03 s, `/en/kul` 3.48 s, `/en/pen` 3.35 s (item 3 gives the
+   reason and the numbers). It is a property of Lighthouse's simulation of an image LCP on a page with this much
+   first-load JavaScript and CSS; meeting it needs either a first screen whose largest paint is text (a product
+   decision against the brief's photographic first screen, not taken) or far less script, CSS and HTML before the
+   first paint (a framework-level budget, not a polish item). The directory now has the same cost (3.73 s).
+2. **Langkawi's hero** (`lgk-terminal`, 2014) carries burned-in signage behind the words on wide screens. Owner or
+   photo library: lead with `langkawi-beach` (already its directory card) or replace the file with Malaysia Airports'
+   own photograph; then re-run the pixel check.
+3. **Carried over, not changed here**: the first AVIF encode per size (SA5 item 2; warm the optimiser after each
+   deployment); TBT on the board and flight page (SA5 item 3); `aircraft-terminal-1` unused; the KLIA terminal chips
+   and the header pill moving a few pixels when the clock and the airport fill in (CLS 0.002 to 0.004, as before).
 
 ## Clean-up and how to reproduce
 
-TBD-CLEANUP
+- My processes, each stopped by its process group: production servers 4849 (build 1), 15840 (build 2) and 26606
+  (build 3) on port 3296; the development server 12422 on port 3297. No listener left on 3280 to 3299.
+- `.next-rd1c` and `.next-rd1c-dev` deleted; `tsconfig.json` and `next-env.d.ts` restored from the copies taken at the
+  start (SHA-256 identical: `bd034e40…`, `1862ac4b…`). `.data/metrics.json`, written by my servers, removed.
+  `tsconfig.tsbuildinfo` (git-ignored) was rewritten by `tsc`. `.next` was not touched; no git command was run.
+- Scripts and results in the session scratch folder (`rd1c/scripts/`): `grade.mjs` (the colour grade), `edge.mjs`
+  (the shade's darkening across the band), `hero-cands.mjs` (hero candidates in place), `lh-full.mjs` and
+  `lantern.mjs` (what Lantern charges an LCP), `trace.mjs`, `frames.mjs`, `paint-exp.mjs`, `stylecost.mjs` (paint and
+  style diagnostics), `cls.mjs`, `sheet.mjs`, and the verification's `photo-contrast.mjs` and `warm.mjs`. Font subsets:
+  fontTools 4.68 installed into the scratch folder (`pip install --target`), not into the project.
+
+```bash
+NEXT_DIST_DIR=.next-rd1c NEXT_PUBLIC_SITE_URL=http://localhost:3296 npx next build
+NEXT_DIST_DIR=.next-rd1c TRUSTED_CLIENT_IP_HEADER=x-e2e-client-ip npx next start -p 3296 &   # stop it by its process group
+PLAYWRIGHT_BASE_URL=http://localhost:3296 npx playwright test e2e/{shell,smoke,flights,trust,access-round6,verify-round7,platform,handoffs,flight-round5}.spec.ts --trace off --workers 3 --output=<scratch>
+# warm the image optimiser first (load each page at 412x823 and 1440x900, scrolling through)
+B=http://localhost:3296; LIGHTHOUSE_CLI=<separate install>/cli/index.js node scripts/qa/lighthouse.mjs docs/qa/lighthouse-redesign1c 3 --diagnostics \
+  en=$B/en ms=$B/ms en-kul=$B/en/kul en-pen=$B/en/pen en-airports=$B/en/airports
+node photo-contrast.mjs $B out.json <390|1280|1440|1920> light,dark,dark-more /en /en/kul /en/pen /en/bki /en/lgk /en/kch /en/szb /en/airports
+node scripts/qa/first-load-js.mjs .next-rd1c out/fljs.json
+```
+
+Files changed in this pass: `public/images/**` (30 files, re-exported with the grade); `src/content/images.ts`,
+`src/content/images.test.ts`; `src/app/globals.css`; `src/fonts/index.ts`, `src/fonts/fraunces-wordmark-520.woff2`
+(new), `src/fonts/geist-mono-basic-wght-normal.woff2` (new); `src/components/art/wordmark.tsx`;
+`src/components/airport/airport-backdrop.tsx`, `airport-header.tsx`, `airport-directory.tsx`,
+`airport-flight-tools.tsx`, `airport-flight-search.tsx` (new), `airport-flight-tools-lazy.tsx` (new);
+`src/app/[lang]/[airport]/page.tsx`; `src/components/home/hero-backdrop.tsx`, `home-sections.tsx`,
+`destination-card.tsx`, `lazy-sections.tsx` (new); `src/app/[lang]/credits/page.tsx`;
+`src/lib/i18n/features/credits.ts`; `e2e/platform.spec.ts`, `e2e/smoke.spec.ts`; `docs/design/photography.md`;
+`docs/qa/lighthouse-redesign1c/` (new: five page summaries, two `_summary-*.json`, `before/`); this log.

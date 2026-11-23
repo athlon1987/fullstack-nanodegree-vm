@@ -2409,3 +2409,284 @@ image scan, the credits check, the head-hreflang check and the screen captures a
 
 Files changed in this addendum: `docs/qa/lighthouse-redesign1b/` (eight page summaries and a `_summary-*.json` at the
 top of the folder, new) and this section. No product or test file was changed.
+
+# Round seven, addendum two: fixes
+
+Owner: release and verification. Date: 23 November 2026 (checks 13:20 to 14:10 Kuala Lumpur time, a weekday
+afternoon). Scope: the fix pass `docs/qa/fixes/redesign1c.md` (the airport hero shade, the hero choice and the colour
+grade, the hero load time, the photo-led directory, the offline-indicator test and `docs/design/photography.md`),
+checked against the open issues of "Round seven, addendum: photographs" (SA5) on a production build of the current
+tree (`.next` deleted, then `NEXT_PUBLIC_SITE_URL=http://localhost:3100 npx next build`, served by
+`TRUSTED_CLIENT_IP_HEADER=x-e2e-client-ip npx next start -p 3100`). The sections above are unchanged; this addendum
+uses **SB** for its sections. Methods and scripts as in SA6 and `scripts/qa/README.md`.
+
+**Result.** Types, lint, **616 unit tests**, `npm audit` (0 and 0) and the build (0 warnings, 366 static pages) pass.
+End to end: **668 passed, 0 failed, 30 skipped of 698** (the 30 skips are the same tests as in SA2.2), so **no product
+regression and no code or test changed** here; the offline-indicator test passed in the run and **20 of 20** on
+repeat. **axe: 0 violations** in every scan of the suite and in 104 further page loads. **Text over photographs:
+2,292 text runs measured on the brief's pages, 0 under the minimum and 0 under 4.5:1 even for large text, lowest
+5.36:1** (SA2.3: 2,388, lowest 4.93). The fix log's shade measurement reproduces to the digit, and on screen the
+panel edge of SA5 item 4 is gone. Links: **0 broken, 0 missing anchors**; canonicals and hreflang 278 of 278; `$RC`
+reveals the `h1` on **0 of 278**. **Every file in `public/images` (30 files, 12,004,275 bytes) is on the credits
+pages**, each item saying "colour-graded" ("warna dilaraskan"), licences unchanged. Lighthouse (8 pages, 3 valid runs
+each): the four photographic heroes are faster than in SA2.5 (`/en` 3.52 → **3.33 s**, `/ms` 3.79 → **3.32**,
+`/en/kul` 3.77 → **3.04**, `/en/pen` 3.93 → **3.05**; performance **91 to 93**) but **none reaches 2.5 s**, and the
+directory, whose first screen is now photographs, went from 1.37 to **3.74 s** (performance 96 → **85**). **LCP 2.5 s
+or less on 3 of 8** (SA2.5: 4 of 8). The fix pass's own target (LCP 2.5 s or less with performance 90 or more on
+`/en`, `/en/kul`, `/en/pen`) is **met on performance and missed on LCP**, as its log says.
+
+## SB1. Clean-up before the checks
+
+- Nothing from this checkout was running: no node, Next.js, Playwright, Chromium or Lighthouse process, and
+  `/proc/net/tcp` listed no listener on 3100 or 3280 to 3299 (only 2024 and two high ports outside this checkout).
+  The fix pass had stopped its servers on 3296 and 3297.
+- No `.next-*` folder existed (the fix log removed `.next-rd1c` and `.next-rd1c-dev`). `tsconfig.json` and
+  `next-env.d.ts` named only `.next` and matched the SHA-256 the fix log gives (`bd034e40…`, `1862ac4b…`); copies were
+  kept in the session scratch folder and compared at the end: identical. No `.data/`, `test-results/` or
+  `playwright-report/` was in the folder.
+- `.next` held the previous addendum's build (`uG6-03kAe4LxFllBFdyZ0`, from before this fix pass). It was deleted and
+  rebuilt once: **`aiZUN86VEcYRRrkB6dAVq`, left in `.next`**.
+- At the end the server was stopped by its process group (no listener left on 3100 or 3280 to 3299), and the metric
+  file it writes (`.data/metrics.json`, git-ignored) was removed with its folder. Playwright and Lighthouse's extra
+  runs wrote to the session scratch folder. No git command was run.
+
+## SB2. Results
+
+### SB2.1 Static checks, unit tests and build
+
+| Check | Result |
+|---|---|
+| `npx tsc --noEmit` | 0 errors (full check, `--incremental false`; `tsconfig.tsbuildinfo` not rewritten) |
+| `npx eslint .` | 0 problems (no build folder other than `.next`, so nothing to ignore) |
+| `npx vitest run` | 43 files, **616 passed, 0 skipped** (as SA2.1; `images.test.ts` now also requires "colour-graded" in each credit's `modified`) |
+| `npm audit --omit=dev` / `npm audit` | 0 vulnerabilities / 0 vulnerabilities |
+| `NEXT_PUBLIC_SITE_URL=http://localhost:3100 npx next build` | Succeeds from clean in 40 s, **0 warnings**, **366 static pages** (as SA2.1) |
+
+### SB2.2 End-to-end and accessibility (production build, desktop 1440x900 and phone Pixel 7 390x844, `--trace off`)
+
+| Run | Clock | Tests | Passed | Failed | Skipped | Notes |
+|---|---|---|---|---|---|---|
+| Full suite, once | Real, 13:22 to 13:38 | 698 | **668** | **0** | 30 | 15.5 min, 2 workers, image cache cold |
+| The offline-indicator test, `--repeat-each=10` | Real | 20 | **20** | 0 | 0 | Both projects, after Lighthouse |
+
+- 698 tests: SA2.2's 696 and the fix pass's new `smoke.spec.ts` test on both projects ("the directory opens with
+  photographs above the filters, and the search still narrows them": passed on desktop and phone). The 30 skips are
+  **the same 30 tests** as in SA2.2 (compared by title and project).
+- `platform.spec.ts` "the indicator appears when the connection drops, and agrees with the status card" (SA5 item 5)
+  passed in the run on both projects and 20 of 20 on repeat. Compared with the copy of the spec from before the fix
+  pass (session scratch folder): the four assertions are the same, the toast's text is read from visible
+  `[role="status"]` and `<output>` elements as `getByRole('status')` did, and the only change is that the card's
+  saving state and the statuses come from one snapshot. **Not loosened.**
+- **axe: 0 violations** in run 1: the shared helper (`e2e/support/axe.ts`, tags wcag2a, wcag2aa, wcag21a, wcag21aa,
+  wcag22aa) in 14 specs plus 7 local `AxeBuilder` scans, on both projects. The contrast check below ran axe with the
+  same tags on each of its **104 page loads** (96 for the brief's pages, 8 for Langkawi): **0 violations**, 0 console
+  errors.
+
+### SB2.3 Text over photographs, and the hero shade (pixel checks; session scratch folder)
+
+**Text.** `photo-contrast.mjs`, unchanged from SA2.3 (same method, the 1st percentile of the per-pixel ratios; pass
+4.5:1, or 3:1 for large text), on `/en`, `/ms`, `/en/kul`, `/ms/kul`, `/en/pen`, `/ms/pen`, `/en/szb`, `/ms/szb`
+(Subang, the fallback photograph `wing-window`), `/en/airports`, `/ms/airports`, `/en/credits`, `/ms/credits`; light,
+dark, high-contrast light and high-contrast dark; 390 x 844 (phone profile) and 1440 x 900, device scale 1: 96 loads,
+every one with one `h1`.
+
+| Pages (en and ms) | Runs (8 cases) | Under | Lowest at 390: light / dark / HC light / HC dark | Lowest at 1440: light / dark / HC light / HC dark |
+|---|---|---|---|---|
+| Home (now Mount Kinabalu) | 1,076 | **0** | 6.74 / 6.74 / 6.74 / 6.74 | **5.36** / 5.37 / 9.05 / 9.17 |
+| KLIA overview (now the 2026 aerial) | 432 | **0** | 7.27 / 7.27 / 9.09 / 9.09 | 6.15 / 6.97 / 7.99 / 7.99 |
+| Penang overview | 280 | **0** | 7.85 / 7.85 / 9.67 / 9.67 | 6.15 / 6.83 / 10.44 / 10.44 |
+| Subang overview (fallback photograph) | 248 | **0** | 9.49 / 9.49 / 15.13 / 15.13 | 6.15 / 6.97 / 12.79 / 12.79 |
+| Airports directory (now photo-led) | 256 | **0** | 9.28 / 9.28 / 11.14 / 11.14 | 9.28 / 9.28 / 9.71 / 9.71 |
+| Photo credits | 0 (30 thumbnails, no text over them) | 0 | | |
+
+- **2,292 runs, 0 under the minimum; 0 under 4.5:1 counting large text too.** Lowest overall **5.36:1**, the home's
+  gold line "rancang perjalanan anda." (Malay, 61 px, 1440, light; English "beautifully connected." 5.48), the same
+  run and value the fix log reports as its lowest. SA2.3's lowest, the journey-mode caption "Balai ketibaan" at 4.93,
+  is no longer lowest. The lowest normal-size run is the search box's placeholder on its own panel, 6.15.
+- Named texts: home `h1` 5.36 to 18.11:1; the airport `h1` on KLIA, Penang and Subang **7.32 or more**; "Find a flight
+  at …" 8.48 or more; the airport codes 9.28 or more; "All airports" 6.83 or more; the clock's "MYT (UTC+8)" 7.12 or
+  more; the header wordmark over the phone hero 6.74. 136 large-text runs, lowest 5.36.
+- **Langkawi** (not in the brief's list; checked because of the sign seen in SB2.7): `/en/lgk` and `/ms/lgk` at 1440
+  in the four themes, 224 runs, **0 under, lowest 6.15**; the `h1` 9.17:1 or more, "All airports" 8.30 or more.
+
+**The shade (SA5 item 4).** The fix log's `edge.mjs` (session scratch folder: every word and control hidden, the band
+captured with and without the scrims, the darkening per column as their ratio, the steepest change over 60 px), run on
+this build: KLIA 0.08 / 0.09 / 0.06 at 1280 / 1440 / 1920 px, Penang 0.08 / 0.08 / 0.07, Kota Kinabalu 0.11 / 0.10 /
+0.08, Subang 0.09 / 0.10 / 0.07, Kuching 0.14 / 0.14 / 0.10: **the fix log's table to the digit** (SA's panel edge:
+0.21). At the right edge KLIA keeps 132 of 153 (86 %) at 1440. On screen (SB2.7) the fall reads as light falling off
+on KLIA, Penang, Subang and Langkawi, with no edge.
+
+### SB2.4 Links, search index, canonicals, `$RC`, images and credits (`scripts/qa/`; a fresh client address per request)
+
+| Check | Result |
+|---|---|
+| Static HTML (`crawl-static.py`) | **278 sitemap URLs**, 440 pages, **1,178 unique links, 0 broken, 0 missing anchors, 0 redirected, 0 pages not 200** (as SA2.4) |
+| Search index (`search-index.mjs`) | **470 documents**, 318 pages, 172 anchors, **0 broken, 0 missing** |
+| Canonical and hreflang (`canonical.py`, plus the flight page `ak6336-20261123-d` in both languages, `/en/kul/zzz`, `/ms/kul/zzz`, `/en/credits`) | **278 of 278** self-canonical with `en` and `ms` alternates; one canonical in the head, in the document and in the `Link` header on 278 of 278; the extra paths the same (the 404s answer 404). Hreflang `en` and `ms` in the head on **278 of 278** (`hreflang-head.py`) |
+| `$RC` (`rc-scan.py`) | **`h1` in a hidden segment: 0 of 278**; no page without an `h1` in its HTML. Reveals **1,320** (SA2.4: 1,270): **+4 on `/en` and `/ms`** (the four code-split home sections: board preview, journey teaser, concierge questions, shop and dine strip) and **+1 on 42 overviews** (the code-split flight tools); every other page unchanged. See SB6 item 4 |
+| Images in the server HTML (`img-scan.py`) | 84 of 278 pages carry an `<img>`, 150 `<img>` elements, an image preload on 80 pages (as SA2.4). **555 distinct image URLs, every one 200 and `image/avif`** (SA: 556), covering all 30 files; quality 65 for heroes (56 URLs), 60 for directory cards (49), 75 for the credits thumbnails (450) |
+| Credits cover the files (`credits-check.mts`) | `public/images`: **30 files, 12,004,275 bytes** (limit 14 MB; the fix log's figure), 30 library entries, no file without an entry and no entry without a file. `/en/credits` and `/ms/credits` answer 200 with **30 thumbnails each**, each item with its author, licence name, licence link, Commons source and description in the page's language. **Licences: CC BY-SA 4.0 x 17, CC BY-SA 3.0 x 8, CC BY-SA 2.0 x 1, CC BY 4.0 x 2, CC0 1.0 x 2** (as SA2.4). Every item's changes say "colour-graded" (26 "Resized, colour-graded and compressed", 4 "Cropped, …"; Malay "warna dilaraskan" on 30 of 30), and the note on changes describes the grade in both languages |
+
+### SB2.5 Lighthouse mobile (`scripts/qa/lighthouse.mjs --diagnostics`, Lighthouse 13.6, Moto G Power, simulated slow 4G, 4x CPU; 3 runs, median)
+
+Final build, 13:49 to 13:56 Kuala Lumpur time, nothing else running; the image optimizer warmed first for these pages
+at three sizes (`warm.mjs`, as SA2.5). Results in `docs/qa/lighthouse-redesign1c/`: the eight `*.json` summaries at
+the top of the folder. To keep the fix pass's own numbers, **its "after" set (five summaries and two
+`_summary-*.json`) was moved from the top of the folder into `after/`**; its `before/` is untouched. My journey's
+first set had one run fail with Lighthouse's `NO_NAVSTART` (two valid runs); it was run again with three valid runs,
+which is the summary given, and both `_summary-*.json` files are in the folder. 1b = SA2.5
+(`docs/qa/lighthouse-redesign1b/`); "fix" = the fix log's build 3 (`after/`). The flight page is AK 6336 on 23
+November, as in SA2.5. KB = 1,024 bytes.
+
+| Page | Performance 1b → fix → now (runs) | LCP 1b → fix → now (runs); LCP element now | TBT now (runs); 1b | CLS (runs) | Image KB (requests) | KB / requests: 1b → now |
+|---|---|---|---|---|---|---|
+| `/en` | 90 → 90 → **92** (92/92/89) | 3.52 → 3.03 → **3.33 s** (3.08/3.33/3.63); the hero photograph (`mount-kinabalu`) | 104 (169/78/104); 127 | 0 | 15.4 (1) | 674 / 52 → 599 / 55 |
+| `/ms` | 87 → 91 → **91** (90/94/91) | 3.79 → 3.34 → **3.32 s** (3.33/3.02/3.32); the hero photograph | 95 (142/80/95); 81 | 0 | 15.4 (1) | 676 / 52 → 601 / 55 |
+| `/en/kul` | 88 → 89 → **93** (93/87/93) | 3.77 → 3.48 → **3.04 s** (3.04/3.49/3.03); the hero photograph (`klia-t1-aerial`) | 111 (111/208/101); 139 | 0 (0.004/0/0) | 20.2 (1) | 677 / 49 → 628 / 51 |
+| `/en/pen` | 87 → 90 → **92** (92/88/93) | 3.93 → 3.35 → **3.05 s** (3.33/3.04/3.05); the hero photograph (`pen-terminal`) | 104 (89/295/104); 102 | 0 (0/0.004/0) | 20.3 (1) | 675 / 46 → 616 / 48 |
+| `/en/kul/flights` (board) | 97 → not measured → **98** (98/98/96) | 1.22 → **1.22 s**; the first paint (text) | 157 (157/148/235); 203 | 0.004 | 0 | 616 / 41 → 547 / 42 |
+| Flight page | 95 → not measured → **96** (94/96/96) | 1.51 → **1.52 s**; the `h1` "AK 6336 to Penang" | 227 (288/227/219); 241 | 0.003 | 0 | 731 / 50 → 661 / 51 |
+| `/en/journey` | 100 → not measured → **100** (100/100/100) | 1.21 → **1.22 s**; the empty state's paragraph | 59 (59/60/58); 63 | 0 | 3.6 (1) | 573 / 39 → 491 / 39 |
+| `/en/airports` | 96 → 86 → **85** (86/85/85) | 1.37 → 3.73 → **3.74 s** (3.73/3.74/3.76); a card photograph (observed LCP 268 ms after an FCP of 200 ms) | 201 (201/219/200); 205 | 0 | 65.9 (5 cards) | 651 / 45 → 556 / 45 |
+
+- Against the brief: **LCP 2.5 s or less on 3 of 8** (the board, the flight page, My journey; SA2.5: 4 of 8, the
+  directory has moved out); performance 95 or more on **3 of 8** (the same three; the directory dropped from 96 to
+  85); TBT 200 ms or less on **6 of 8** (not the flight page 227, the directory 201); CLS 0.1 or less on 8 of 8
+  (largest 0.004: the board's three runs, and single runs on KLIA, Penang and the flight page). Accessibility 100 and
+  best practices 96 in every run; SEO 66 to 69 (the prototype is `noindex`).
+- **The fix pass's claims.** Fonts before the first paint: 3 fonts, **55 KB** (56,361 bytes; SA2.5: about 127 KB), so
+  every page measured carries 49 to 95 KB less than in SA2.5. Performance on `/en`, `/en/kul`, `/en/pen` is 92, 93,
+  92: **90 or more, met**. LCP **missed** on all three (3.33, 3.04, 3.05 s). The medians differ from the fix log's
+  (`/en` 3.03 there, 3.33 here; `/en/kul` 3.48 there, 3.04 here) with run spreads of 0.3 to 0.6 s in both sessions;
+  both agree that every photographic hero is between 3.0 and 3.5 s, 0.2 to 0.9 s faster than SA2.5. Lantern's byte
+  accounting (the fix log's 421.8 → 368.5 KB) was not re-derived here. Requests rose by 3 on the home (52 → 55) and by
+  2 on the two overviews measured.
+- **Applied throttling** (`--profile=slow4g-applied,150,1638,750,4`, 3 runs, session scratch folder, not in `docs/`):
+  the new heroes paint at **1.88 s** (`/en`), 1.89 (`/ms`), 1.94 (`/en/kul`) and 1.94 (`/en/pen`), and the directory
+  at 2.03 s, all under 2.5 s (SA2.5, the old heroes: 2.11 to 2.15 s). The gap to the simulated figures is the same
+  accounting as before: an image LCP is charged for every request finished before the frame, a text LCP only for the
+  HTML and CSS (FCP is 1.36 to 1.37 s on all four hero pages, where the photograph and the words paint together).
+
+### SB2.6 First-load JavaScript and CSS (`scripts/qa/first-load-js.mjs`, gzip KB; 40 page routes; framework 128.7)
+
+- SA2.6 → now: home 209.6 → **201.7**, overview 209.7 → **200.5**, board 208.1 → 207.2, flight page 208.9 → 208.1, My
+  journey 229.2 → 228.9, directory 184.0 → **183.4**, credits 170.7 → 169.9. The fix log's home, overview and
+  directory figures are confirmed.
+- At 170 or less (content and guidance target): **17 of 40** (SA2.6: 15: the credits page, 170.7 → 169.9, and the
+  guide pages, 170.3 → 169.5, crossed the line, as the shared chunks are 0.8 KB smaller on every route); over 250: 0;
+  the home's budget of 250 holds. CSS in the first load 31.3 → **31.8 KB** gzip.
+
+### SB2.7 Screens looked at
+
+10 screens from the final build at the real clock (14:05), Playwright Chromium, device scale 1, first screen: the home
+1440 light (en) and 390 dark (ms); KLIA 1440 light (en) and 390 light (ms); Penang 1440 dark (ms) and 390 light (en);
+the directory 1440 light (en) and 390 dark (ms); and two the fix log names, Subang 1440 dark (en) and Langkawi 1440
+light (en). Each has one `h1`, no sideways scroll, every photograph in view loaded (none broken) and no console error.
+Seen:
+
+- **Home**: Mount Kinabalu in warm evening light behind the headline at 1440, the jagged ridge either side of
+  "Departing now"; on the phone the summit fills the band under the header. A clear step up from the overcast roof.
+- **KLIA**: the aerial's terminal roof and the pier with aircraft in the open right half; the shade falls off with no
+  edge; on the phone the terminal fills the band. **Penang** (Malay, dark): the long `h1` runs onto the brighter
+  towers but stays crisp; no edge. **Subang**: the sky brightens evenly to the right; the panel SA2.7 saw (brightness
+  60 → 140 over 110 px) is gone.
+- **Directory**: at 1440 the page opens on a five-card mosaic with KLIA large, above the search and filters; on the
+  phone a row of tall cards with the next one peeking. Also seen: the scrims leave little of the four smaller
+  photographs at 1440 (Langkawi's beach and Kuching's terminal read as near-dark tiles), and on the phone the KLIA
+  card in Malay is mostly words and links over a dark photograph (SB6 item 2).
+- **Langkawi**: the burned-in "Perlepasan / Departure" sign sits directly behind "Langkawi International Airport" at
+  1440 px too, not only at 1920 as the fix log saw; legible (9.17:1 or more, SB2.3) but busy (SB6 item 3).
+
+## SB3. Regressions found and fixed
+
+None. Every check passed, so no product or test file was changed in this addendum.
+
+Wrong-way numbers, not fixed (SB6): the directory's LCP 1.37 → 3.74 s and performance 96 → 85 (the photo-led first
+view the brief asked for); `$RC` reveals 1,270 → 1,320 (the code-split sections); requests +3 on the home and +2 on
+the overviews; CSS in the first load +0.5 KB gzip; TBT on the flight page 227 and the directory 201, within the
+container's spread of SA2.5's 241 and 205.
+
+## SB4. Acceptance of the fix pass (`docs/qa/fixes/redesign1c.md`) and of SA5
+
+| Item | Claim | Verified here | Verdict |
+|---|---|---|---|
+| 1, SA5 item 4 | One full-width shade from 1024 px; steepest change 0.06 to 0.11 (Kuching 0.10 to 0.14); 0 of 3,559 runs under 4.5:1, lowest 5.36; axe 0 | Edge table reproduced to the digit; 0 of 2,292 runs under 4.5:1, lowest 5.36 (the same run); axe 0 in 104 loads; no edge seen on four airports | **Accepted; SA5 item 4 closed** |
+| 2 | Home hero `mount-kinabalu`, KLIA `klia-t1-aerial` (2,560 px files); 30 files graded, 12,004,275 bytes; every credit says "colour-graded", licences unchanged | LCP elements and credits name the new heroes; 30 files and the byte count match; 30 of 30 items say so in both languages; licence counts as SA2.4 | **Accepted** (SA5 item 7: the home and KLIA no longer upscale) |
+| 3, SA5 item 1 | LCP 2.5 s with performance 90 not met; fonts 130 → 55 KB; first-load JS home 201.7, overview 200.5 | Fonts 55 KB; JS figures exact; performance 92 / 93 / 92; LCP 3.33 / 3.04 / 3.05 s | **Accepted as reported: target missed; SA5 item 1 reduced, not closed** |
+| 4 | Directory opens with five photographs above the filters; search acts on them; LCP 3.73 s, performance 86 | Seen at 1440 and 390; the new test passes on both projects; 3.74 s, 85 | **Accepted** (wrong-way number recorded) |
+| 5, SA5 item 5 | Offline test reads one snapshot, all assertions kept; 20 of 20 | Passed in the full run on both projects; 20 of 20; assertions compared with the earlier spec | **Accepted; SA5 item 5 closed** |
+| 6, SA5 item 6 | `photography.md` matches the code | Home and airport hero lists, `PLACE_PREFERENCE`, `DIRECTORY_IMAGES`, `EXPLORE_IMAGES` compared with `src/content/images.ts`: they match | **Accepted; SA5 item 6 closed** |
+| Tests | tsc 0, eslint 0, vitest 616 / 616; nine specs 336 passed, 0 failed, 14 skipped | Same static results; the whole suite 668 / 0 / 30 of 698 | **Accepted** |
+| Clean-up | No server, no `.next-*`, config files restored, `.data/` removed, `.next` untouched | As found in SB1 | **Accepted** |
+
+## SB5. Tests changed in this addendum, and why
+
+- **No test was changed, skipped or deleted**, and no test was added.
+- Read and checked: the fix pass's change to `platform.spec.ts` (not loosened, SB2.2), its new `smoke.spec.ts`
+  directory test (passes on both projects), and the stricter `images.test.ts` (passes).
+
+## SB6. Open issues, ranked
+
+"Team" = fixable by the delivery team. "Owner" = needs the owner's decision. "Photo library" = the library's owner.
+
+1. **LCP on photographic first screens: `/en` 3.33 s, `/ms` 3.32, `/en/kul` 3.04, `/en/pen` 3.05 and now
+   `/en/airports` 3.74, against 2.5 s** (Lighthouse mobile, simulated; performance 91 to 93 on the heroes, 85 on the
+   directory). Owner, or team at framework level. With applied slow-4G throttling they paint at 1.88 to 2.03 s. The
+   fix pass took what a polish pass can (fonts 127 → 55 KB, four below-the-fold chunks deferred); what is left is the
+   first-load script, CSS and HTML that Lantern charges an image LCP, or a first screen whose largest paint is text,
+   which the brief rules out. SA5 item 1 reduced (0.2 to 0.9 s), not closed; the directory is a new instance.
+2. **The directory's photo-led first view.** Team (design) and owner. Performance 96 → 85 and LCP 1.37 → 3.74 s
+   (item 1). Seen in SB2.7: at 1440 the four smaller cards' scrims leave their photographs nearly dark, and on a phone
+   the KLIA card in Malay is mostly words over a dark photograph; a lighter or shorter scrim on the tiles, or fewer
+   words on the phone card, would show more of the pictures. Re-run the pixel check after any change (its lowest
+   there is 9.28, so there is room).
+3. **Langkawi's hero carries a burned-in sign behind the words** at 1440 px as well as 1920 (fix log open item 2).
+   Owner or photo library: lead with `langkawi-beach` (already its directory card) or replace the file with Malaysia
+   Airports' own photograph; the text passes (9.17:1 or more), so this is about a busy background, not contrast.
+4. **The code-split sections are hidden until React's inline script reveals them.** Team. The home's board preview,
+   journey teaser, concierge questions and shop and dine strip, and the overview's flight tools, arrive in `hidden`
+   segments that `$RC` moves into place while the page parses (reveals 1,270 → 1,320; no `h1` among them, 0 of 278).
+   With JavaScript on this is invisible to the visitor; with it off, the home's `main` shows 3,343 of the 4,638
+   characters it shows with JavaScript (7 hidden segments, 4 of them new), and crawlers that do not run scripts read
+   that text as hidden. Low; if it matters, render these sections' HTML outside the Suspense boundaries.
+5. **First AVIF encode is slow** (SA5 item 2). Platform. This round warmed the optimizer before Lighthouse; in
+   production each size of each photograph waits for its first visitor unless images are cached at the edge or
+   warmed after each deployment. The re-exported files make every cached size new.
+6. **Remaining budgets.** Team. TBT just over 200 ms on the flight page (227) and the directory (201), within the
+   run-to-run spread; first-load JavaScript at 170 KB or less on 17 of 40 routes; My journey 228.9 KB; render-blocking
+   CSS 31.8 KB gzip (round five 20.7). SA5 item 3 stands, slightly better.
+7. **Carried over, not changed here:** Kuching's hero `kch-terminal` is still a 1,920 px file (SA5 item 7; the home
+   and KLIA are now 2,560 px); the owner's checks before a public launch (the Langkawi 2014 and Kota Kinabalu 2015
+   photographs against the airports today; the client told these are Commons photographs credited on `/credits`);
+   `aircraft-terminal-1` unused; the KLIA terminal chips and header pill moving a few pixels when the clock fills in
+   (single Lighthouse runs at 0.004); the dev-server warning, congested Wi-Fi LCP and the critique items listed in
+   SA5 item 8.
+
+Closed by the fix pass and confirmed here: SA5 items 4 (the shade's panel edge), 5 (the intermittent test) and 6
+(`photography.md`).
+
+## SB7. How to reproduce
+
+```bash
+npx tsc --noEmit --incremental false && npx eslint . && npx vitest run && npm audit --omit=dev
+rm -rf .next && NEXT_PUBLIC_SITE_URL=http://localhost:3100 npx next build
+TRUSTED_CLIENT_IP_HEADER=x-e2e-client-ip npx next start -p 3100 &   # stop it by its process group afterwards
+npx playwright test --trace off --output=<folder outside the repository>
+python3 scripts/qa/crawl-static.py http://localhost:3100 out/crawl-static.json && node scripts/qa/search-index.mjs
+python3 scripts/qa/canonical.py http://localhost:3100 out/canonical.json /en/kul/flights/<id> /ms/kul/flights/<id> /en/kul/zzz /ms/kul/zzz /en/credits
+python3 scripts/qa/rc-scan.py http://localhost:3100 out/rc-scan.json && node scripts/qa/first-load-js.mjs .next out/fljs.json
+node warm.mjs http://localhost:3100 /en /ms /en/kul /en/pen /en/kul/flights /en/kul/flights/<id> /en/journey /en/airports
+B=http://localhost:3100; LIGHTHOUSE_CLI=<separate install>/node_modules/lighthouse/cli/index.js node scripts/qa/lighthouse.mjs \
+  docs/qa/lighthouse-redesign1c 3 --diagnostics en=$B/en ms=$B/ms en-kul=$B/en/kul en-pen=$B/en/pen \
+  en-kul-flights=$B/en/kul/flights flight-page=$B/en/kul/flights/<id> en-journey=$B/en/journey en-airports=$B/en/airports
+node photo-contrast.mjs $B out.json <390|1440> light,dark,light-more,dark-more /en /ms /en/kul /ms/kul /en/pen /ms/pen /en/szb /ms/szb /en/airports /ms/airports /en/credits /ms/credits
+node edge.mjs $B <1280|1440|1920> /en/kul /en/pen /en/bki /en/szb /en/kch
+```
+
+The pixel contrast check, the shade measurement (`edge.mjs`, from the fix pass), the image scan, the credits check,
+the head-hreflang check, the JavaScript-off check (`nojs.mjs`), the optimizer warm-up and the screen captures are in
+the session scratch folder (`rd1c-verify/scripts/`); they are not part of `scripts/qa/`.
+
+Files changed in this addendum: `docs/qa/lighthouse-redesign1c/` (eight page summaries and two `_summary-*.json` at
+the top of the folder, new; the fix pass's set moved, unchanged, into `after/`) and this section. No product or test
+file was changed.

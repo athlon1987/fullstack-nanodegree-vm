@@ -1,0 +1,15 @@
+{
+ "en-journey": {
+  "performance": 100,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1218,
+  "lcp_ms": 1218,
+  "tbt_ms": 59,
+  "cls": 0,
+  "si_ms": 1218,
+  "totalBytes": 502957,
+  "requests": 39
+ }
+}

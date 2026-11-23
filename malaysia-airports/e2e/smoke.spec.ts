@@ -142,14 +142,19 @@ test.describe('airport context', () => {
   // the filters, and the search still narrows every group, that one included.
   test('the directory opens with photographs above the filters, and the search still narrows them', async ({ page }) => {
     await page.goto('/en/airports');
-    const viewport = page.viewportSize();
+    const height = page.viewportSize()?.height ?? 0;
     const group = page.getByRole('main').getByRole('region', { name: /^International airports/ });
     const firstPhoto = group.locator('img').first();
+    const filters = page.getByRole('search', { name: 'Filter airports' });
     await expect(firstPhoto).toBeVisible();
-    const photo = await firstPhoto.boundingBox();
-    const filters = await page.getByRole('search', { name: 'Filter airports' }).boundingBox();
-    expect(photo && viewport && photo.y < viewport.height, 'a photograph in the first screen').toBe(true);
-    expect(photo && filters && photo.y < filters.y, 'the photographs come before the filters').toBe(true);
+    await expect(filters).toBeVisible();
+    // Measured once the directory has hydrated (its tree is replaced once, so retry the reading).
+    await expect(async () => {
+      const photo = (await firstPhoto.boundingBox())?.y ?? Infinity;
+      const form = (await filters.boundingBox())?.y ?? -Infinity;
+      expect(photo, 'a photograph in the first screen').toBeLessThan(height);
+      expect(photo, 'the photographs come before the filters').toBeLessThan(form);
+    }).toPass();
     await expect(group.locator('[data-airport]')).toHaveCount(5);
     const search = page.getByRole('search', { name: 'Filter airports' }).getByRole('searchbox');
     // The field listens once the page has hydrated: retry the typing until it is heard.

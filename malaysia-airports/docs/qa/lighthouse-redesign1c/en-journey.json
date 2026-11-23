@@ -1,0 +1,263 @@
+{
+ "key": "en-journey",
+ "url": "http://localhost:3100/en/journey",
+ "preset": "mobile (Lighthouse default)",
+ "profile": null,
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-23T05:56:55.813Z",
+ "median": {
+  "performance": 100,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1218,
+  "lcp_ms": 1218,
+  "tbt_ms": 59,
+  "cls": 0,
+  "si_ms": 1218,
+  "totalBytes": 502957,
+  "requests": 39
+ },
+ "a11yFailures": [],
+ "rows": [
+  {
+   "finalUrl": "/en/journey",
+   "runtimeError": null,
+   "performance": 100,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1219,
+   "lcp_ms": 1219,
+   "tbt_ms": 59,
+   "cls": 0,
+   "si_ms": 1219,
+   "totalBytes": 502959,
+   "requests": 39,
+   "benchmarkIndex": 2077,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en/journey",
+   "runtimeError": null,
+   "performance": 100,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1211,
+   "lcp_ms": 1211,
+   "tbt_ms": 60,
+   "cls": 0,
+   "si_ms": 1211,
+   "totalBytes": 502957,
+   "requests": 39,
+   "benchmarkIndex": 2024.5,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en/journey",
+   "runtimeError": null,
+   "performance": 100,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1218,
+   "lcp_ms": 1218,
+   "tbt_ms": 58,
+   "cls": 0,
+   "si_ms": 1218,
+   "totalBytes": 502957,
+   "requests": 39,
+   "benchmarkIndex": 2059,
+   "a11yFailures": []
+  }
+ ],
+ "medianRunIndex": 1,
+ "diagnostics": {
+  "observed": {
+   "fcp": 202,
+   "lcp": 202,
+   "dcl": 288,
+   "load": 290
+  },
+  "lcpElement": {
+   "selector": "section.overflow-hidden > div.on-media > div.sm:min-h-[13rem] > p.type-body-lg",
+   "label": "Save a flight and this page shows its status, what to do and when, and a note o…"
+  },
+  "lcpPhases": {
+   "timeToFirstByte": 13,
+   "elementRenderDelay": 189
+  },
+  "renderBlocking": [
+   {
+    "url": "/_next/static/chunks/18aaddm568ae9.css",
+    "bytes": 33852,
+    "ms": 455
+   },
+   {
+    "url": "/_next/static/chunks/416av_omt2lgt.css",
+    "bytes": 2464,
+    "ms": 155
+   }
+  ],
+  "longTasks": [
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "start": 3771,
+    "dur": 169
+   },
+   {
+    "url": "/en/journey",
+    "start": 906,
+    "dur": 106
+   },
+   {
+    "url": "Unattributable",
+    "start": 755,
+    "dur": 99
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 3940,
+    "dur": 50
+   }
+  ],
+  "bootup": [
+   {
+    "url": "/en/journey",
+    "total": 610,
+    "scripting": 53
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "total": 531,
+    "scripting": 464
+   },
+   {
+    "url": "Unattributable",
+    "total": 386,
+    "scripting": 8
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "total": 218,
+    "scripting": 186
+   }
+  ],
+  "mainThread": {
+   "scriptEvaluation": 790,
+   "other": 533,
+   "styleLayout": 277,
+   "scriptParseCompile": 115,
+   "parseHTML": 111,
+   "paintCompositeRender": 53,
+   "garbageCollection": 21
+  },
+  "resources": {
+   "total": {
+    "n": 37,
+    "bytes": 502957
+   },
+   "script": {
+    "n": 23,
+    "bytes": 333077
+   },
+   "font": {
+    "n": 3,
+    "bytes": 56361
+   },
+   "document": {
+    "n": 1,
+    "bytes": 42213
+   },
+   "stylesheet": {
+    "n": 2,
+    "bytes": 36316
+   },
+   "other": {
+    "n": 7,
+    "bytes": 31340
+   },
+   "image": {
+    "n": 1,
+    "bytes": 3650
+   },
+   "media": {
+    "n": 0,
+    "bytes": 0
+   },
+   "third-party": {
+    "n": 0,
+    "bytes": 0
+   }
+  },
+  "topRequests": [
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "type": "Script",
+    "transfer": 73535
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "type": "Script",
+    "transfer": 47500
+   },
+   {
+    "url": "/en/journey",
+    "type": "Document",
+    "transfer": 42213
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "type": "Font",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/chunks/18aaddm568ae9.css",
+    "type": "Stylesheet",
+    "transfer": 33852
+   },
+   {
+    "url": "/_next/static/chunks/23mprk3ydgm5l.js",
+    "type": "Script",
+    "transfer": 23982
+   },
+   {
+    "url": "/_next/static/chunks/21y_j37winnmt.js",
+    "type": "Script",
+    "transfer": 18547
+   },
+   {
+    "url": "/_next/static/media/geist_mono_basic_wght_normal.0acs2vcv6dxqq.woff2",
+    "type": "Font",
+    "transfer": 16109
+   },
+   {
+    "url": "/_next/static/chunks/3mqrfn_jmecto.js",
+    "type": "Script",
+    "transfer": 14473
+   },
+   {
+    "url": "/_next/static/chunks/3hpcf0we5dr9o.js",
+    "type": "Script",
+    "transfer": 13222
+   }
+  ],
+  "fonts": [
+   {
+    "url": "/_next/static/media/fraunces_wordmark_520-s.p.01133lvcr6pw1.woff2",
+    "transfer": 3855
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/media/geist_mono_basic_wght_normal.0acs2vcv6dxqq.woff2",
+    "transfer": 16109
+   }
+  ]
+ },
+ "caveat": "Lab measurement: Lighthouse with simulated (or, with --profile, applied) throttling against a local next start. Indicative only; not field data."
+}

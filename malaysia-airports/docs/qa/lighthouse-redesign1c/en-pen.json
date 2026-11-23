@@ -1,22 +1,22 @@
 {
  "key": "en-pen",
- "url": "http://localhost:3296/en/pen",
+ "url": "http://localhost:3100/en/pen",
  "preset": "mobile (Lighthouse default)",
  "profile": null,
  "runs": 3,
  "validRuns": 3,
- "measured": "2026-11-23T04:52:17.716Z",
+ "measured": "2026-11-23T05:52:50.111Z",
  "median": {
-  "performance": 90,
+  "performance": 92,
   "accessibility": 100,
   "bestPractices": 96,
   "seo": 66,
-  "fcp_ms": 1368,
-  "lcp_ms": 3349,
-  "tbt_ms": 187,
+  "fcp_ms": 1366,
+  "lcp_ms": 3046,
+  "tbt_ms": 104,
   "cls": 0,
-  "si_ms": 1368,
-  "totalBytes": 631154,
+  "si_ms": 1366,
+  "totalBytes": 631190,
   "requests": 48
  },
  "a11yFailures": [],
@@ -24,142 +24,137 @@
   {
    "finalUrl": "/en/pen",
    "runtimeError": null,
-   "performance": 87,
+   "performance": 92,
    "accessibility": 100,
    "bestPractices": 96,
    "seo": 66,
-   "fcp_ms": 1375,
-   "lcp_ms": 3349,
-   "tbt_ms": 260,
+   "fcp_ms": 1362,
+   "lcp_ms": 3325,
+   "tbt_ms": 89,
+   "cls": 0,
+   "si_ms": 1362,
+   "totalBytes": 631190,
+   "requests": 48,
+   "benchmarkIndex": 2153.5,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en/pen",
+   "runtimeError": null,
+   "performance": 88,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1366,
+   "lcp_ms": 3040,
+   "tbt_ms": 295,
    "cls": 0.004,
-   "si_ms": 1375,
-   "totalBytes": 631156,
+   "si_ms": 1366,
+   "totalBytes": 631188,
    "requests": 48,
-   "benchmarkIndex": 2103.5,
+   "benchmarkIndex": 1981.5,
    "a11yFailures": []
   },
   {
    "finalUrl": "/en/pen",
    "runtimeError": null,
-   "performance": 91,
+   "performance": 93,
    "accessibility": 100,
    "bestPractices": 96,
    "seo": 66,
-   "fcp_ms": 1365,
-   "lcp_ms": 3038,
-   "tbt_ms": 187,
+   "fcp_ms": 1369,
+   "lcp_ms": 3046,
+   "tbt_ms": 104,
    "cls": 0,
-   "si_ms": 1365,
-   "totalBytes": 631154,
+   "si_ms": 1369,
+   "totalBytes": 631190,
    "requests": 48,
-   "benchmarkIndex": 2133.5,
-   "a11yFailures": []
-  },
-  {
-   "finalUrl": "/en/pen",
-   "runtimeError": null,
-   "performance": 90,
-   "accessibility": 100,
-   "bestPractices": 96,
-   "seo": 66,
-   "fcp_ms": 1368,
-   "lcp_ms": 3485,
-   "tbt_ms": 90,
-   "cls": 0,
-   "si_ms": 1368,
-   "totalBytes": 631152,
-   "requests": 48,
-   "benchmarkIndex": 2144,
+   "benchmarkIndex": 2163,
    "a11yFailures": []
   }
  ],
- "medianRunIndex": 2,
+ "medianRunIndex": 0,
  "diagnostics": {
   "observed": {
-   "fcp": 223,
-   "lcp": 223,
-   "dcl": 357,
-   "load": 363
+   "fcp": 247,
+   "lcp": 247,
+   "dcl": 392,
+   "load": 398
   },
   "lcpElement": {
    "selector": "div.contents > div.relative > div.on-media > img.object-cover",
    "label": "div.contents > div.relative > div.on-media > img.object-cover"
   },
   "lcpPhases": {
-   "timeToFirstByte": 15,
-   "resourceLoadDelay": 34,
-   "resourceLoadDuration": 31,
-   "elementRenderDelay": 144
+   "timeToFirstByte": 20,
+   "resourceLoadDelay": 54,
+   "resourceLoadDuration": 51,
+   "elementRenderDelay": 122
   },
   "renderBlocking": [
    {
     "url": "/_next/static/chunks/18aaddm568ae9.css",
     "bytes": 33852,
-    "ms": 459
+    "ms": 456
    },
    {
     "url": "/_next/static/chunks/416av_omt2lgt.css",
     "bytes": 2464,
-    "ms": 159
+    "ms": 156
    }
   ],
   "longTasks": [
    {
     "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
-    "start": 4094,
-    "dur": 168
-   },
-   {
-    "url": "/en/pen",
-    "start": 1047,
-    "dur": 157
+    "start": 4081,
+    "dur": 159
    },
    {
     "url": "Unattributable",
-    "start": 909,
-    "dur": 91
+    "start": 906,
+    "dur": 143
+   },
+   {
+    "url": "/en/pen",
+    "start": 1096,
+    "dur": 121
    },
    {
     "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
-    "start": 4420,
-    "dur": 76
+    "start": 4361,
+    "dur": 77
    },
    {
     "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
-    "start": 4357,
-    "dur": 63
-   },
-   {
-    "url": "_lighthouse-eval.js",
-    "start": 3044,
-    "dur": 57
+    "start": 4289,
+    "dur": 72
    },
    {
     "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
-    "start": 4262,
-    "dur": 55
+    "start": 4512,
+    "dur": 67
    },
    {
-    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
-    "start": 4529,
-    "dur": 55
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "start": 3366,
+    "dur": 52
    }
   ],
   "bootup": [
    {
-    "url": "/en/pen",
-    "total": 1077,
-    "scripting": 57
-   },
-   {
     "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
-    "total": 983,
+    "total": 1012,
     "scripting": 845
    },
    {
+    "url": "/en/pen",
+    "total": 923,
+    "scripting": 62
+   },
+   {
     "url": "Unattributable",
-    "total": 420,
-    "scripting": 11
+    "total": 467,
+    "scripting": 10
    },
    {
     "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
@@ -168,26 +163,26 @@
    }
   ],
   "mainThread": {
-   "scriptEvaluation": 1289,
-   "other": 626,
-   "styleLayout": 587,
-   "scriptParseCompile": 174,
-   "parseHTML": 152,
-   "paintCompositeRender": 107,
-   "garbageCollection": 71
+   "scriptEvaluation": 1253,
+   "other": 690,
+   "styleLayout": 476,
+   "parseHTML": 191,
+   "scriptParseCompile": 157,
+   "paintCompositeRender": 89,
+   "garbageCollection": 38
   },
   "resources": {
    "total": {
     "n": 46,
-    "bytes": 631152
+    "bytes": 631190
    },
    "script": {
     "n": 30,
-    "bytes": 416959
+    "bytes": 416958
    },
    "document": {
     "n": 1,
-    "bytes": 56440
+    "bytes": 56442
    },
    "font": {
     "n": 3,
@@ -195,7 +190,7 @@
    },
    "other": {
     "n": 9,
-    "bytes": 44270
+    "bytes": 44307
    },
    "stylesheet": {
     "n": 2,
@@ -223,7 +218,7 @@
    {
     "url": "/en/pen",
     "type": "Document",
-    "transfer": 56440
+    "transfer": 56442
    },
    {
     "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
@@ -241,7 +236,7 @@
     "transfer": 33852
    },
    {
-    "url": "/_next/static/chunks/1y6cqt8twi5k3.js",
+    "url": "/_next/static/chunks/23mprk3ydgm5l.js",
     "type": "Script",
     "transfer": 23982
    },
@@ -261,9 +256,9 @@
     "transfer": 16109
    },
    {
-    "url": "/_next/static/chunks/2x1wlx1dx-pw1.js",
+    "url": "/_next/static/chunks/320s5p8ohetww.js",
     "type": "Script",
-    "transfer": 15717
+    "transfer": 15716
    }
   ],
   "fonts": [

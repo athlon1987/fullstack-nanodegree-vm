@@ -1,0 +1,285 @@
+{
+ "key": "en",
+ "url": "http://localhost:3296/en",
+ "preset": "mobile (Lighthouse default)",
+ "profile": null,
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-23T04:48:14.696Z",
+ "median": {
+  "performance": 90,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 69,
+  "fcp_ms": 1363,
+  "lcp_ms": 3026,
+  "tbt_ms": 222,
+  "cls": 0,
+  "si_ms": 1363,
+  "totalBytes": 613416,
+  "requests": 55
+ },
+ "a11yFailures": [],
+ "rows": [
+  {
+   "finalUrl": "/en",
+   "runtimeError": null,
+   "performance": 90,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 69,
+   "fcp_ms": 1360,
+   "lcp_ms": 3026,
+   "tbt_ms": 229,
+   "cls": 0,
+   "si_ms": 1360,
+   "totalBytes": 613416,
+   "requests": 55,
+   "benchmarkIndex": 1926,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en",
+   "runtimeError": null,
+   "performance": 95,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 69,
+   "fcp_ms": 1363,
+   "lcp_ms": 2732,
+   "tbt_ms": 136,
+   "cls": 0,
+   "si_ms": 1363,
+   "totalBytes": 613411,
+   "requests": 55,
+   "benchmarkIndex": 2009,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en",
+   "runtimeError": null,
+   "performance": 90,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 69,
+   "fcp_ms": 1372,
+   "lcp_ms": 3055,
+   "tbt_ms": 222,
+   "cls": 0,
+   "si_ms": 1372,
+   "totalBytes": 613432,
+   "requests": 55,
+   "benchmarkIndex": 1663.5,
+   "a11yFailures": []
+  }
+ ],
+ "medianRunIndex": 2,
+ "diagnostics": {
+  "observed": {
+   "fcp": 266,
+   "lcp": 266,
+   "dcl": 399,
+   "load": 400
+  },
+  "lcpElement": {
+   "selector": "main#main > section.relative > div.absolute > img.object-cover",
+   "label": "Mount Kinabalu in the evening light above forested hills, Sabah"
+  },
+  "lcpPhases": {
+   "timeToFirstByte": 18,
+   "resourceLoadDelay": 41,
+   "resourceLoadDuration": 37,
+   "elementRenderDelay": 169
+  },
+  "renderBlocking": [
+   {
+    "url": "/_next/static/chunks/18aaddm568ae9.css",
+    "bytes": 33852,
+    "ms": 461
+   },
+   {
+    "url": "/_next/static/chunks/416av_omt2lgt.css",
+    "bytes": 2464,
+    "ms": 161
+   }
+  ],
+  "longTasks": [
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4105,
+    "dur": 185
+   },
+   {
+    "url": "/en",
+    "start": 1077,
+    "dur": 168
+   },
+   {
+    "url": "Unattributable",
+    "start": 911,
+    "dur": 120
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "start": 3391,
+    "dur": 114
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4605,
+    "dur": 107
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4330,
+    "dur": 106
+   },
+   {
+    "url": "/en",
+    "start": 1527,
+    "dur": 64
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4551,
+    "dur": 54
+   }
+  ],
+  "bootup": [
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "total": 1396,
+    "scripting": 1199
+   },
+   {
+    "url": "/en",
+    "total": 1265,
+    "scripting": 70
+   },
+   {
+    "url": "Unattributable",
+    "total": 503,
+    "scripting": 13
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "total": 235,
+    "scripting": 165
+   }
+  ],
+  "mainThread": {
+   "scriptEvaluation": 1579,
+   "other": 879,
+   "styleLayout": 609,
+   "scriptParseCompile": 179,
+   "parseHTML": 173,
+   "paintCompositeRender": 158,
+   "garbageCollection": 70
+  },
+  "resources": {
+   "total": {
+    "n": 47,
+    "bytes": 613432
+   },
+   "script": {
+    "n": 30,
+    "bytes": 381980
+   },
+   "document": {
+    "n": 1,
+    "bytes": 63405
+   },
+   "other": {
+    "n": 10,
+    "bytes": 59639
+   },
+   "font": {
+    "n": 3,
+    "bytes": 56361
+   },
+   "stylesheet": {
+    "n": 2,
+    "bytes": 36316
+   },
+   "image": {
+    "n": 1,
+    "bytes": 15731
+   },
+   "media": {
+    "n": 0,
+    "bytes": 0
+   },
+   "third-party": {
+    "n": 0,
+    "bytes": 0
+   }
+  },
+  "topRequests": [
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "type": "Script",
+    "transfer": 73535
+   },
+   {
+    "url": "/en",
+    "type": "Document",
+    "transfer": 63405
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "type": "Script",
+    "transfer": 47500
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "type": "Font",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/chunks/18aaddm568ae9.css",
+    "type": "Stylesheet",
+    "transfer": 33852
+   },
+   {
+    "url": "/_next/static/chunks/1y6cqt8twi5k3.js",
+    "type": "Script",
+    "transfer": 23982
+   },
+   {
+    "url": "/_next/static/chunks/21y_j37winnmt.js",
+    "type": "Script",
+    "transfer": 18547
+   },
+   {
+    "url": "/en/flights/feed?date=2026-11-23&dir=d&at=1795409280000&airports=kul,pen,bki,kch,lgk,szb",
+    "type": "Fetch",
+    "transfer": 18253
+   },
+   {
+    "url": "/_next/static/chunks/105dvqwmbblsv.js",
+    "type": "Script",
+    "transfer": 16542
+   },
+   {
+    "url": "/_next/static/media/geist_mono_basic_wght_normal.0acs2vcv6dxqq.woff2",
+    "type": "Font",
+    "transfer": 16109
+   }
+  ],
+  "fonts": [
+   {
+    "url": "/_next/static/media/fraunces_wordmark_520-s.p.01133lvcr6pw1.woff2",
+    "transfer": 3855
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/media/geist_mono_basic_wght_normal.0acs2vcv6dxqq.woff2",
+    "transfer": 16109
+   }
+  ]
+ },
+ "caveat": "Lab measurement: Lighthouse with simulated (or, with --profile, applied) throttling against a local next start. Indicative only; not field data."
+}

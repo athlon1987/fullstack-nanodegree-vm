@@ -1,22 +1,22 @@
 {
  "key": "en-airports",
- "url": "http://localhost:3296/en/airports",
+ "url": "http://localhost:3100/en/airports",
  "preset": "mobile (Lighthouse default)",
  "profile": null,
  "runs": 3,
  "validRuns": 3,
- "measured": "2026-11-23T04:51:21.617Z",
+ "measured": "2026-11-23T05:55:41.594Z",
  "median": {
-  "performance": 86,
+  "performance": 85,
   "accessibility": 100,
   "bestPractices": 96,
   "seo": 66,
-  "fcp_ms": 1369,
-  "lcp_ms": 3731,
-  "tbt_ms": 182,
+  "fcp_ms": 1371,
+  "lcp_ms": 3742,
+  "tbt_ms": 201,
   "cls": 0,
-  "si_ms": 1369,
-  "totalBytes": 569463,
+  "si_ms": 1371,
+  "totalBytes": 569464,
   "requests": 45
  },
  "a11yFailures": [],
@@ -24,157 +24,144 @@
   {
    "finalUrl": "/en/airports",
    "runtimeError": null,
-   "performance": 87,
+   "performance": 86,
    "accessibility": 100,
    "bestPractices": 96,
    "seo": 66,
    "fcp_ms": 1373,
-   "lcp_ms": 3744,
-   "tbt_ms": 172,
+   "lcp_ms": 3734,
+   "tbt_ms": 201,
    "cls": 0,
    "si_ms": 1373,
-   "totalBytes": 574366,
-   "requests": 47,
-   "benchmarkIndex": 1941.5,
+   "totalBytes": 569464,
+   "requests": 45,
+   "benchmarkIndex": 2241.5,
    "a11yFailures": []
   },
   {
    "finalUrl": "/en/airports",
    "runtimeError": null,
-   "performance": 86,
+   "performance": 85,
    "accessibility": 100,
    "bestPractices": 96,
    "seo": 66,
-   "fcp_ms": 1363,
-   "lcp_ms": 3731,
-   "tbt_ms": 194,
+   "fcp_ms": 1367,
+   "lcp_ms": 3742,
+   "tbt_ms": 219,
    "cls": 0,
-   "si_ms": 1363,
-   "totalBytes": 569463,
+   "si_ms": 1367,
+   "totalBytes": 569462,
    "requests": 45,
-   "benchmarkIndex": 2094,
+   "benchmarkIndex": 1989,
    "a11yFailures": []
   },
   {
    "finalUrl": "/en/airports",
    "runtimeError": null,
-   "performance": 86,
+   "performance": 85,
    "accessibility": 100,
    "bestPractices": 96,
    "seo": 66,
-   "fcp_ms": 1369,
-   "lcp_ms": 3731,
-   "tbt_ms": 182,
+   "fcp_ms": 1371,
+   "lcp_ms": 3756,
+   "tbt_ms": 200,
    "cls": 0,
-   "si_ms": 1369,
-   "totalBytes": 569463,
+   "si_ms": 1371,
+   "totalBytes": 569466,
    "requests": 45,
-   "benchmarkIndex": 2035,
+   "benchmarkIndex": 2123,
    "a11yFailures": []
   }
  ],
  "medianRunIndex": 2,
  "diagnostics": {
   "observed": {
-   "fcp": 224,
-   "lcp": 295,
-   "dcl": 353,
-   "load": 361
+   "fcp": 200,
+   "lcp": 268,
+   "dcl": 348,
+   "load": 350
   },
-  "lcpElement": {
-   "selector": "ul.max-sm:-mx-gutter > li.group/card > div.absolute > img.object-cover",
-   "label": "ul.max-sm:-mx-gutter > li.group/card > div.absolute > img.object-cover"
-  },
+  "lcpElement": null,
   "lcpPhases": {
-   "timeToFirstByte": 12,
-   "resourceLoadDelay": 171,
-   "resourceLoadDuration": 22,
-   "elementRenderDelay": 90
+   "timeToFirstByte": 14,
+   "resourceLoadDelay": 148,
+   "resourceLoadDuration": 23,
+   "elementRenderDelay": 83
   },
   "renderBlocking": [
    {
     "url": "/_next/static/chunks/18aaddm568ae9.css",
     "bytes": 33852,
-    "ms": 459
+    "ms": 460
    },
    {
     "url": "/_next/static/chunks/416av_omt2lgt.css",
     "bytes": 2464,
-    "ms": 159
+    "ms": 160
    }
   ],
   "longTasks": [
    {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "start": 3941,
+    "dur": 190
+   },
+   {
     "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
-    "start": 3937,
-    "dur": 169
+    "start": 4185,
+    "dur": 166
    },
    {
     "url": "/en/airports",
-    "start": 1046,
-    "dur": 158
-   },
-   {
-    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
-    "start": 4194,
-    "dur": 149
+    "start": 1049,
+    "dur": 140
    },
    {
     "url": "Unattributable",
-    "start": 909,
-    "dur": 84
+    "start": 910,
+    "dur": 79
    },
    {
     "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
-    "start": 4106,
-    "dur": 60
-   },
-   {
-    "url": "/en/airports",
-    "start": 1433,
-    "dur": 57
-   },
-   {
-    "url": "_lighthouse-eval.js",
-    "start": 2906,
-    "dur": 57
+    "start": 4131,
+    "dur": 54
    }
   ],
   "bootup": [
    {
     "url": "/en/airports",
-    "total": 938,
-    "scripting": 64
+    "total": 942,
+    "scripting": 57
    },
    {
     "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
-    "total": 821,
-    "scripting": 705
+    "total": 664,
+    "scripting": 558
    },
    {
     "url": "Unattributable",
-    "total": 414,
+    "total": 381,
     "scripting": 9
    },
    {
     "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
-    "total": 106,
-    "scripting": 69
+    "total": 262,
+    "scripting": 235
    }
   ],
   "mainThread": {
-   "scriptEvaluation": 971,
-   "other": 596,
-   "styleLayout": 523,
-   "scriptParseCompile": 148,
-   "parseHTML": 121,
-   "paintCompositeRender": 107,
-   "garbageCollection": 40
+   "scriptEvaluation": 968,
+   "other": 567,
+   "styleLayout": 483,
+   "scriptParseCompile": 145,
+   "parseHTML": 142,
+   "paintCompositeRender": 121,
+   "garbageCollection": 33
   },
   "resources": {
    "total": {
     "n": 40,
-    "bytes": 569463
+    "bytes": 569466
    },
    "script": {
     "n": 23,
@@ -190,7 +177,7 @@
    },
    "document": {
     "n": 1,
-    "bytes": 44898
+    "bytes": 44896
    },
    "stylesheet": {
     "n": 2,
@@ -198,7 +185,7 @@
    },
    "other": {
     "n": 6,
-    "bytes": 31294
+    "bytes": 31299
    },
    "media": {
     "n": 0,
@@ -223,7 +210,7 @@
    {
     "url": "/en/airports",
     "type": "Document",
-    "transfer": 44898
+    "transfer": 44896
    },
    {
     "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
@@ -236,7 +223,7 @@
     "transfer": 33852
    },
    {
-    "url": "/_next/static/chunks/1y6cqt8twi5k3.js",
+    "url": "/_next/static/chunks/23mprk3ydgm5l.js",
     "type": "Script",
     "transfer": 23982
    },

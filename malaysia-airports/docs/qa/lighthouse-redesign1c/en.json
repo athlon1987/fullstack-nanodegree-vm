@@ -1,22 +1,22 @@
 {
  "key": "en",
- "url": "http://localhost:3296/en",
+ "url": "http://localhost:3100/en",
  "preset": "mobile (Lighthouse default)",
  "profile": null,
  "runs": 3,
  "validRuns": 3,
- "measured": "2026-11-23T04:48:14.696Z",
+ "measured": "2026-11-23T05:50:30.928Z",
  "median": {
-  "performance": 90,
+  "performance": 92,
   "accessibility": 100,
   "bestPractices": 96,
   "seo": 69,
-  "fcp_ms": 1363,
-  "lcp_ms": 3026,
-  "tbt_ms": 222,
+  "fcp_ms": 1366,
+  "lcp_ms": 3332,
+  "tbt_ms": 104,
   "cls": 0,
-  "si_ms": 1363,
-  "totalBytes": 613416,
+  "si_ms": 1366,
+  "totalBytes": 613470,
   "requests": 55
  },
  "a11yFailures": [],
@@ -24,62 +24,62 @@
   {
    "finalUrl": "/en",
    "runtimeError": null,
-   "performance": 90,
+   "performance": 92,
    "accessibility": 100,
    "bestPractices": 96,
    "seo": 69,
-   "fcp_ms": 1360,
-   "lcp_ms": 3026,
-   "tbt_ms": 229,
+   "fcp_ms": 1381,
+   "lcp_ms": 3076,
+   "tbt_ms": 169,
    "cls": 0,
-   "si_ms": 1360,
-   "totalBytes": 613416,
+   "si_ms": 1381,
+   "totalBytes": 613489,
    "requests": 55,
-   "benchmarkIndex": 1926,
+   "benchmarkIndex": 1919.5,
    "a11yFailures": []
   },
   {
    "finalUrl": "/en",
    "runtimeError": null,
-   "performance": 95,
+   "performance": 92,
    "accessibility": 100,
    "bestPractices": 96,
    "seo": 69,
-   "fcp_ms": 1363,
-   "lcp_ms": 2732,
-   "tbt_ms": 136,
+   "fcp_ms": 1366,
+   "lcp_ms": 3332,
+   "tbt_ms": 78,
    "cls": 0,
-   "si_ms": 1363,
-   "totalBytes": 613411,
+   "si_ms": 1366,
+   "totalBytes": 613470,
    "requests": 55,
-   "benchmarkIndex": 2009,
+   "benchmarkIndex": 2153,
    "a11yFailures": []
   },
   {
    "finalUrl": "/en",
    "runtimeError": null,
-   "performance": 90,
+   "performance": 89,
    "accessibility": 100,
    "bestPractices": 96,
    "seo": 69,
-   "fcp_ms": 1372,
-   "lcp_ms": 3055,
-   "tbt_ms": 222,
+   "fcp_ms": 1366,
+   "lcp_ms": 3632,
+   "tbt_ms": 104,
    "cls": 0,
-   "si_ms": 1372,
-   "totalBytes": 613432,
+   "si_ms": 1366,
+   "totalBytes": 613470,
    "requests": 55,
-   "benchmarkIndex": 1663.5,
+   "benchmarkIndex": 1884,
    "a11yFailures": []
   }
  ],
- "medianRunIndex": 2,
+ "medianRunIndex": 0,
  "diagnostics": {
   "observed": {
-   "fcp": 266,
-   "lcp": 266,
-   "dcl": 399,
-   "load": 400
+   "fcp": 283,
+   "lcp": 283,
+   "dcl": 513,
+   "load": 514
   },
   "lcpElement": {
    "selector": "main#main > section.relative > div.absolute > img.object-cover",
@@ -87,99 +87,99 @@
   },
   "lcpPhases": {
    "timeToFirstByte": 18,
-   "resourceLoadDelay": 41,
+   "resourceLoadDelay": 37,
    "resourceLoadDuration": 37,
-   "elementRenderDelay": 169
+   "elementRenderDelay": 191
   },
   "renderBlocking": [
    {
     "url": "/_next/static/chunks/18aaddm568ae9.css",
     "bytes": 33852,
-    "ms": 461
+    "ms": 465
    },
    {
     "url": "/_next/static/chunks/416av_omt2lgt.css",
     "bytes": 2464,
-    "ms": 161
+    "ms": 165
    }
   ],
   "longTasks": [
    {
     "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
-    "start": 4105,
-    "dur": 185
+    "start": 4126,
+    "dur": 271
    },
    {
     "url": "/en",
-    "start": 1077,
-    "dur": 168
+    "start": 1064,
+    "dur": 180
    },
    {
     "url": "Unattributable",
-    "start": 911,
-    "dur": 120
-   },
-   {
-    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
-    "start": 3391,
-    "dur": 114
+    "start": 915,
+    "dur": 96
    },
    {
     "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
-    "start": 4605,
-    "dur": 107
-   },
-   {
-    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
-    "start": 4330,
-    "dur": 106
+    "start": 4502,
+    "dur": 90
    },
    {
     "url": "/en",
-    "start": 1527,
-    "dur": 64
+    "start": 1560,
+    "dur": 59
    },
    {
     "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
-    "start": 4551,
-    "dur": 54
+    "start": 4397,
+    "dur": 57
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4592,
+    "dur": 57
+   },
+   {
+    "url": "/en",
+    "start": 1718,
+    "dur": 57
    }
   ],
   "bootup": [
    {
     "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
-    "total": 1396,
-    "scripting": 1199
+    "total": 1438,
+    "scripting": 1225
    },
    {
     "url": "/en",
-    "total": 1265,
-    "scripting": 70
+    "total": 1398,
+    "scripting": 91
    },
    {
     "url": "Unattributable",
-    "total": 503,
-    "scripting": 13
+    "total": 570,
+    "scripting": 12
    },
    {
     "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
-    "total": 235,
-    "scripting": 165
+    "total": 134,
+    "scripting": 99
    }
   ],
   "mainThread": {
-   "scriptEvaluation": 1579,
-   "other": 879,
-   "styleLayout": 609,
-   "scriptParseCompile": 179,
-   "parseHTML": 173,
-   "paintCompositeRender": 158,
-   "garbageCollection": 70
+   "scriptEvaluation": 1542,
+   "other": 942,
+   "styleLayout": 692,
+   "parseHTML": 197,
+   "scriptParseCompile": 192,
+   "paintCompositeRender": 161,
+   "garbageCollection": 53
   },
   "resources": {
    "total": {
     "n": 47,
-    "bytes": 613432
+    "bytes": 613489
    },
    "script": {
     "n": 30,
@@ -187,11 +187,11 @@
    },
    "document": {
     "n": 1,
-    "bytes": 63405
+    "bytes": 63404
    },
    "other": {
     "n": 10,
-    "bytes": 59639
+    "bytes": 59697
    },
    "font": {
     "n": 3,
@@ -223,7 +223,7 @@
    {
     "url": "/en",
     "type": "Document",
-    "transfer": 63405
+    "transfer": 63404
    },
    {
     "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
@@ -241,7 +241,7 @@
     "transfer": 33852
    },
    {
-    "url": "/_next/static/chunks/1y6cqt8twi5k3.js",
+    "url": "/_next/static/chunks/23mprk3ydgm5l.js",
     "type": "Script",
     "transfer": 23982
    },
@@ -251,9 +251,9 @@
     "transfer": 18547
    },
    {
-    "url": "/en/flights/feed?date=2026-11-23&dir=d&at=1795409280000&airports=kul,pen,bki,kch,lgk,szb",
+    "url": "/en/flights/feed?date=2026-11-23&dir=d&at=1795412970000&airports=kul,pen,bki,kch,lgk,szb",
     "type": "Fetch",
-    "transfer": 18253
+    "transfer": 18315
    },
    {
     "url": "/_next/static/chunks/105dvqwmbblsv.js",

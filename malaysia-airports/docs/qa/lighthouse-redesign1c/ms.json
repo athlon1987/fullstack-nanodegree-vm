@@ -1,22 +1,22 @@
 {
  "key": "ms",
- "url": "http://localhost:3296/ms",
+ "url": "http://localhost:3100/ms",
  "preset": "mobile (Lighthouse default)",
  "profile": null,
  "runs": 3,
  "validRuns": 3,
- "measured": "2026-11-23T04:49:03.870Z",
+ "measured": "2026-11-23T05:51:18.719Z",
  "median": {
   "performance": 91,
   "accessibility": 100,
   "bestPractices": 96,
   "seo": 69,
-  "fcp_ms": 1370,
-  "lcp_ms": 3340,
-  "tbt_ms": 125,
+  "fcp_ms": 1362,
+  "lcp_ms": 3324,
+  "tbt_ms": 95,
   "cls": 0,
-  "si_ms": 1370,
-  "totalBytes": 615077,
+  "si_ms": 1362,
+  "totalBytes": 615109,
   "requests": 55
  },
  "a11yFailures": [],
@@ -24,18 +24,35 @@
   {
    "finalUrl": "/ms",
    "runtimeError": null,
-   "performance": 91,
+   "performance": 90,
    "accessibility": 100,
    "bestPractices": 96,
    "seo": 69,
-   "fcp_ms": 1373,
-   "lcp_ms": 3345,
-   "tbt_ms": 125,
+   "fcp_ms": 1366,
+   "lcp_ms": 3333,
+   "tbt_ms": 142,
    "cls": 0,
-   "si_ms": 1373,
-   "totalBytes": 615077,
+   "si_ms": 1366,
+   "totalBytes": 615111,
    "requests": 55,
-   "benchmarkIndex": 2158,
+   "benchmarkIndex": 2103.5,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/ms",
+   "runtimeError": null,
+   "performance": 94,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 69,
+   "fcp_ms": 1360,
+   "lcp_ms": 3024,
+   "tbt_ms": 80,
+   "cls": 0,
+   "si_ms": 1360,
+   "totalBytes": 615109,
+   "requests": 55,
+   "benchmarkIndex": 2108.5,
    "a11yFailures": []
   },
   {
@@ -45,41 +62,24 @@
    "accessibility": 100,
    "bestPractices": 96,
    "seo": 69,
-   "fcp_ms": 1367,
-   "lcp_ms": 3042,
-   "tbt_ms": 195,
+   "fcp_ms": 1362,
+   "lcp_ms": 3324,
+   "tbt_ms": 95,
    "cls": 0,
-   "si_ms": 1367,
-   "totalBytes": 618123,
-   "requests": 56,
-   "benchmarkIndex": 1883.5,
-   "a11yFailures": []
-  },
-  {
-   "finalUrl": "/ms",
-   "runtimeError": null,
-   "performance": 91,
-   "accessibility": 100,
-   "bestPractices": 96,
-   "seo": 69,
-   "fcp_ms": 1370,
-   "lcp_ms": 3340,
-   "tbt_ms": 121,
-   "cls": 0,
-   "si_ms": 1370,
-   "totalBytes": 615058,
+   "si_ms": 1362,
+   "totalBytes": 615108,
    "requests": 55,
-   "benchmarkIndex": 1908,
+   "benchmarkIndex": 2061.5,
    "a11yFailures": []
   }
  ],
- "medianRunIndex": 1,
+ "medianRunIndex": 2,
  "diagnostics": {
   "observed": {
-   "fcp": 244,
-   "lcp": 244,
-   "dcl": 416,
-   "load": 418
+   "fcp": 242,
+   "lcp": 242,
+   "dcl": 407,
+   "load": 409
   },
   "lcpElement": {
    "selector": "main#main > section.relative > div.absolute > img.object-cover",
@@ -87,99 +87,89 @@
   },
   "lcpPhases": {
    "timeToFirstByte": 14,
-   "resourceLoadDelay": 40,
-   "resourceLoadDuration": 29,
-   "elementRenderDelay": 161
+   "resourceLoadDelay": 41,
+   "resourceLoadDuration": 27,
+   "elementRenderDelay": 160
   },
   "renderBlocking": [
    {
     "url": "/_next/static/chunks/18aaddm568ae9.css",
     "bytes": 33852,
-    "ms": 458
+    "ms": 456
    },
    {
     "url": "/_next/static/chunks/416av_omt2lgt.css",
     "bytes": 2464,
-    "ms": 158
+    "ms": 156
    }
   ],
   "longTasks": [
    {
-    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
-    "start": 4092,
-    "dur": 196
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "start": 4080,
+    "dur": 193
    },
    {
     "url": "/ms",
-    "start": 1038,
-    "dur": 166
+    "start": 1060,
+    "dur": 149
    },
    {
     "url": "Unattributable",
-    "start": 908,
-    "dur": 80
+    "start": 906,
+    "dur": 105
    },
    {
     "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
-    "start": 4518,
-    "dur": 80
+    "start": 4484,
+    "dur": 71
    },
    {
     "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
-    "start": 4598,
-    "dur": 79
+    "start": 4318,
+    "dur": 67
    },
    {
-    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
-    "start": 3378,
-    "dur": 79
-   },
-   {
-    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
-    "start": 4329,
-    "dur": 72
-   },
-   {
-    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
-    "start": 4764,
-    "dur": 70
+    "url": "_lighthouse-eval.js",
+    "start": 3018,
+    "dur": 54
    }
   ],
   "bootup": [
    {
-    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
-    "total": 1440,
-    "scripting": 1197
+    "url": "/ms",
+    "total": 1149,
+    "scripting": 68
    },
    {
-    "url": "/ms",
-    "total": 1198,
-    "scripting": 82
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "total": 958,
+    "scripting": 815
    },
    {
     "url": "Unattributable",
-    "total": 556,
-    "scripting": 12
+    "total": 532,
+    "scripting": 9
    },
    {
     "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
-    "total": 204,
-    "scripting": 154
+    "total": 280,
+    "scripting": 245
    }
   ],
   "mainThread": {
-   "scriptEvaluation": 1578,
-   "other": 915,
-   "styleLayout": 576,
-   "scriptParseCompile": 220,
-   "parseHTML": 196,
-   "paintCompositeRender": 134,
-   "garbageCollection": 62
+   "scriptEvaluation": 1265,
+   "other": 834,
+   "styleLayout": 550,
+   "parseHTML": 180,
+   "scriptParseCompile": 175,
+   "paintCompositeRender": 130,
+   "garbageCollection": 33
   },
   "resources": {
    "total": {
-    "n": 48,
-    "bytes": 618123
+    "n": 47,
+    "bytes": 615108
    },
    "script": {
     "n": 30,
@@ -187,11 +177,11 @@
    },
    "document": {
     "n": 1,
-    "bytes": 64843
+    "bytes": 64844
    },
    "other": {
-    "n": 11,
-    "bytes": 62892
+    "n": 10,
+    "bytes": 59876
    },
    "font": {
     "n": 3,
@@ -223,7 +213,7 @@
    {
     "url": "/ms",
     "type": "Document",
-    "transfer": 64843
+    "transfer": 64844
    },
    {
     "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
@@ -241,7 +231,7 @@
     "transfer": 33852
    },
    {
-    "url": "/_next/static/chunks/1y6cqt8twi5k3.js",
+    "url": "/_next/static/chunks/23mprk3ydgm5l.js",
     "type": "Script",
     "transfer": 23982
    },
@@ -249,6 +239,11 @@
     "url": "/_next/static/chunks/21y_j37winnmt.js",
     "type": "Script",
     "transfer": 18547
+   },
+   {
+    "url": "/ms/flights/feed?date=2026-11-23&dir=d&at=1795413060000&airports=kul,pen,bki,kch,lgk,szb",
+    "type": "Fetch",
+    "transfer": 18298
    },
    {
     "url": "/_next/static/chunks/105dvqwmbblsv.js",
@@ -259,11 +254,6 @@
     "url": "/_next/static/media/geist_mono_basic_wght_normal.0acs2vcv6dxqq.woff2",
     "type": "Font",
     "transfer": 16109
-   },
-   {
-    "url": "/_next/image?url=%2Fimages%2Fsabah%2Fmount-kinabalu.jpg&w=750&q=65",
-    "type": "Image",
-    "transfer": 15731
    }
   ],
   "fonts": [
