@@ -1,0 +1,283 @@
+{
+ "key": "flight-page",
+ "url": "http://localhost:3100/en/kul/flights/ak6336-20261123-d",
+ "preset": "mobile (Lighthouse default)",
+ "profile": null,
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-23T10:20:14.457Z",
+ "median": {
+  "performance": 94,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1513,
+  "lcp_ms": 1513,
+  "tbt_ms": 263,
+  "cls": 0.004,
+  "si_ms": 1513,
+  "totalBytes": 679729,
+  "requests": 51
+ },
+ "a11yFailures": [],
+ "rows": [
+  {
+   "finalUrl": "/en/kul/flights/ak6336-20261123-d",
+   "runtimeError": null,
+   "performance": 92,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1515,
+   "lcp_ms": 1515,
+   "tbt_ms": 324,
+   "cls": 0,
+   "si_ms": 1515,
+   "totalBytes": 679727,
+   "requests": 51,
+   "benchmarkIndex": 1779,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en/kul/flights/ak6336-20261123-d",
+   "runtimeError": null,
+   "performance": 96,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1513,
+   "lcp_ms": 1513,
+   "tbt_ms": 217,
+   "cls": 0.004,
+   "si_ms": 1513,
+   "totalBytes": 679729,
+   "requests": 51,
+   "benchmarkIndex": 2197,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en/kul/flights/ak6336-20261123-d",
+   "runtimeError": null,
+   "performance": 94,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1512,
+   "lcp_ms": 1512,
+   "tbt_ms": 263,
+   "cls": 0.004,
+   "si_ms": 1512,
+   "totalBytes": 679737,
+   "requests": 51,
+   "benchmarkIndex": 2166,
+   "a11yFailures": []
+  }
+ ],
+ "medianRunIndex": 2,
+ "diagnostics": {
+  "observed": {
+   "fcp": 237,
+   "lcp": 237,
+   "dcl": 350,
+   "load": 354
+  },
+  "lcpElement": {
+   "selector": "div.on-media > div.mx-auto > div.min-w-0 > h1.type-display-md",
+   "label": "AK 6336 to Penang"
+  },
+  "lcpPhases": {
+   "timeToFirstByte": 11,
+   "elementRenderDelay": 226
+  },
+  "renderBlocking": [
+   {
+    "url": "/_next/static/chunks/0h0ienxkzchvk.css",
+    "bytes": 36024,
+    "ms": 456
+   },
+   {
+    "url": "/_next/static/chunks/416av_omt2lgt.css",
+    "bytes": 2464,
+    "ms": 156
+   }
+  ],
+  "longTasks": [
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "start": 4075,
+    "dur": 185
+   },
+   {
+    "url": "Unattributable",
+    "start": 1056,
+    "dur": 155
+   },
+   {
+    "url": "_lighthouse-eval.js",
+    "start": 3037,
+    "dur": 129
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4370,
+    "dur": 109
+   },
+   {
+    "url": "/en/kul/flights/ak6336-20261123-d",
+    "start": 1259,
+    "dur": 100
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4306,
+    "dur": 64
+   },
+   {
+    "url": "/en/kul/flights/ak6336-20261123-d",
+    "start": 1517,
+    "dur": 58
+   },
+   {
+    "url": "/en/kul/flights/ak6336-20261123-d",
+    "start": 1359,
+    "dur": 53
+   }
+  ],
+  "bootup": [
+   {
+    "url": "/en/kul/flights/ak6336-20261123-d",
+    "total": 1152,
+    "scripting": 67
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "total": 964,
+    "scripting": 806
+   },
+   {
+    "url": "Unattributable",
+    "total": 553,
+    "scripting": 11
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "total": 294,
+    "scripting": 261
+   }
+  ],
+  "mainThread": {
+   "scriptEvaluation": 1379,
+   "other": 1014,
+   "styleLayout": 429,
+   "paintCompositeRender": 203,
+   "scriptParseCompile": 171,
+   "parseHTML": 107,
+   "garbageCollection": 34
+  },
+  "resources": {
+   "total": {
+    "n": 50,
+    "bytes": 679737
+   },
+   "script": {
+    "n": 34,
+    "bytes": 429453
+   },
+   "document": {
+    "n": 1,
+    "bytes": 103187
+   },
+   "font": {
+    "n": 3,
+    "bytes": 56361
+   },
+   "other": {
+    "n": 10,
+    "bytes": 52248
+   },
+   "stylesheet": {
+    "n": 2,
+    "bytes": 38488
+   },
+   "image": {
+    "n": 0,
+    "bytes": 0
+   },
+   "media": {
+    "n": 0,
+    "bytes": 0
+   },
+   "third-party": {
+    "n": 0,
+    "bytes": 0
+   }
+  },
+  "topRequests": [
+   {
+    "url": "/en/kul/flights/ak6336-20261123-d",
+    "type": "Document",
+    "transfer": 103187
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "type": "Script",
+    "transfer": 73535
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "type": "Script",
+    "transfer": 47500
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "type": "Font",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/chunks/0h0ienxkzchvk.css",
+    "type": "Stylesheet",
+    "transfer": 36024
+   },
+   {
+    "url": "/_next/static/chunks/3yy1gxyd-y-bg.js",
+    "type": "Script",
+    "transfer": 27941
+   },
+   {
+    "url": "/_next/static/chunks/0d0t-4gzbsp9w.js",
+    "type": "Script",
+    "transfer": 18563
+   },
+   {
+    "url": "/_next/static/media/geist_mono_basic_wght_normal.0acs2vcv6dxqq.woff2",
+    "type": "Font",
+    "transfer": 16109
+   },
+   {
+    "url": "/_next/static/chunks/0-e1u36i7-0xx.js",
+    "type": "Script",
+    "transfer": 15721
+   },
+   {
+    "url": "/_next/static/chunks/0iino7giz1mh-.js",
+    "type": "Script",
+    "transfer": 13944
+   }
+  ],
+  "fonts": [
+   {
+    "url": "/_next/static/media/fraunces_wordmark_520-s.p.01133lvcr6pw1.woff2",
+    "transfer": 3855
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/media/geist_mono_basic_wght_normal.0acs2vcv6dxqq.woff2",
+    "transfer": 16109
+   }
+  ]
+ },
+ "caveat": "Lab measurement: Lighthouse with simulated (or, with --profile, applied) throttling against a local next start. Indicative only; not field data."
+}

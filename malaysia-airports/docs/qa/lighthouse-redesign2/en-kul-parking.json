@@ -1,0 +1,285 @@
+{
+ "key": "en-kul-parking",
+ "url": "http://localhost:3100/en/kul/parking",
+ "preset": "mobile (Lighthouse default)",
+ "profile": null,
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-23T10:16:34.895Z",
+ "median": {
+  "performance": 91,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 69,
+  "fcp_ms": 1369,
+  "lcp_ms": 3053,
+  "tbt_ms": 140,
+  "cls": 0,
+  "si_ms": 1371,
+  "totalBytes": 616505,
+  "requests": 48
+ },
+ "a11yFailures": [],
+ "rows": [
+  {
+   "finalUrl": "/en/kul/parking",
+   "runtimeError": null,
+   "performance": 91,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 69,
+   "fcp_ms": 1369,
+   "lcp_ms": 3264,
+   "tbt_ms": 140,
+   "cls": 0,
+   "si_ms": 1477,
+   "totalBytes": 616507,
+   "requests": 48,
+   "benchmarkIndex": 1945.5,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en/kul/parking",
+   "runtimeError": null,
+   "performance": 94,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 69,
+   "fcp_ms": 1369,
+   "lcp_ms": 3048,
+   "tbt_ms": 84,
+   "cls": 0,
+   "si_ms": 1369,
+   "totalBytes": 616505,
+   "requests": 48,
+   "benchmarkIndex": 2097.5,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en/kul/parking",
+   "runtimeError": null,
+   "performance": 91,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 69,
+   "fcp_ms": 1371,
+   "lcp_ms": 3053,
+   "tbt_ms": 179,
+   "cls": 0,
+   "si_ms": 1371,
+   "totalBytes": 616505,
+   "requests": 48,
+   "benchmarkIndex": 1952,
+   "a11yFailures": []
+  }
+ ],
+ "medianRunIndex": 2,
+ "diagnostics": {
+  "observed": {
+   "fcp": 245,
+   "lcp": 245,
+   "dcl": 462,
+   "load": 464
+  },
+  "lcpElement": {
+   "selector": "div.mx-auto > div.flex > div.relative > img.-z-10",
+   "label": "div.mx-auto > div.flex > div.relative > img.-z-10"
+  },
+  "lcpPhases": {
+   "timeToFirstByte": 11,
+   "resourceLoadDelay": 41,
+   "resourceLoadDuration": 27,
+   "elementRenderDelay": 167
+  },
+  "renderBlocking": [
+   {
+    "url": "/_next/static/chunks/0h0ienxkzchvk.css",
+    "bytes": 36024,
+    "ms": 461
+   },
+   {
+    "url": "/_next/static/chunks/416av_omt2lgt.css",
+    "bytes": 2464,
+    "ms": 161
+   }
+  ],
+  "longTasks": [
+   {
+    "url": "/en/kul/parking",
+    "start": 1081,
+    "dur": 208
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4092,
+    "dur": 185
+   },
+   {
+    "url": "Unattributable",
+    "start": 911,
+    "dur": 123
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "start": 3390,
+    "dur": 95
+   },
+   {
+    "url": "_lighthouse-eval.js",
+    "start": 3074,
+    "dur": 85
+   },
+   {
+    "url": "/en/kul/parking",
+    "start": 1380,
+    "dur": 69
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4407,
+    "dur": 65
+   },
+   {
+    "url": "/en/kul/parking",
+    "start": 1449,
+    "dur": 53
+   }
+  ],
+  "bootup": [
+   {
+    "url": "/en/kul/parking",
+    "total": 1316,
+    "scripting": 66
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "total": 982,
+    "scripting": 855
+   },
+   {
+    "url": "Unattributable",
+    "total": 485,
+    "scripting": 10
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "total": 193,
+    "scripting": 153
+   }
+  ],
+  "mainThread": {
+   "scriptEvaluation": 1216,
+   "styleLayout": 762,
+   "other": 687,
+   "scriptParseCompile": 180,
+   "parseHTML": 159,
+   "paintCompositeRender": 159,
+   "garbageCollection": 58
+  },
+  "resources": {
+   "total": {
+    "n": 44,
+    "bytes": 616505
+   },
+   "script": {
+    "n": 28,
+    "bytes": 399721
+   },
+   "document": {
+    "n": 1,
+    "bytes": 62658
+   },
+   "font": {
+    "n": 3,
+    "bytes": 56361
+   },
+   "other": {
+    "n": 9,
+    "bytes": 41005
+   },
+   "stylesheet": {
+    "n": 2,
+    "bytes": 38488
+   },
+   "image": {
+    "n": 1,
+    "bytes": 18272
+   },
+   "media": {
+    "n": 0,
+    "bytes": 0
+   },
+   "third-party": {
+    "n": 0,
+    "bytes": 0
+   }
+  },
+  "topRequests": [
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "type": "Script",
+    "transfer": 73535
+   },
+   {
+    "url": "/en/kul/parking",
+    "type": "Document",
+    "transfer": 62658
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "type": "Script",
+    "transfer": 47500
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "type": "Font",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/chunks/0h0ienxkzchvk.css",
+    "type": "Stylesheet",
+    "transfer": 36024
+   },
+   {
+    "url": "/_next/static/chunks/3yy1gxyd-y-bg.js",
+    "type": "Script",
+    "transfer": 27941
+   },
+   {
+    "url": "/_next/static/chunks/0d0t-4gzbsp9w.js",
+    "type": "Script",
+    "transfer": 18563
+   },
+   {
+    "url": "/_next/image?url=%2Fimages%2Fklia%2Fterminal-1-aerial.jpg&w=750&q=60",
+    "type": "Image",
+    "transfer": 18272
+   },
+   {
+    "url": "/_next/static/chunks/1yzkmdlgft5yy.js",
+    "type": "Script",
+    "transfer": 16407
+   },
+   {
+    "url": "/_next/static/media/geist_mono_basic_wght_normal.0acs2vcv6dxqq.woff2",
+    "type": "Font",
+    "transfer": 16109
+   }
+  ],
+  "fonts": [
+   {
+    "url": "/_next/static/media/fraunces_wordmark_520-s.p.01133lvcr6pw1.woff2",
+    "transfer": 3855
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/media/geist_mono_basic_wght_normal.0acs2vcv6dxqq.woff2",
+    "transfer": 16109
+   }
+  ]
+ },
+ "caveat": "Lab measurement: Lighthouse with simulated (or, with --profile, applied) throttling against a local next start. Indicative only; not field data."
+}

@@ -2690,3 +2690,367 @@ the session scratch folder (`rd1c-verify/scripts/`); they are not part of `scrip
 Files changed in this addendum: `docs/qa/lighthouse-redesign1c/` (eight page summaries and two `_summary-*.json` at
 the top of the folder, new; the fix pass's set moved, unchanged, into `after/`) and this section. No product or test
 file was changed.
+
+# Round eight: visual redesign, stage two
+
+Owner: release and verification. Date: 23 November 2026 (checks 17:11 to 18:40 Kuala Lumpur time, a weekday
+evening). Scope: stage two of the visual redesign, as built (`docs/qa/fixes/redesign2-services.md`,
+`docs/qa/fixes/redesign2-content.md`), critiqued (`docs/design/critique-redesign2.md`, 6.9 / 10) and polished
+(`docs/qa/fixes/redesign2-polish.md`): the seven airport service pages and the outlet page, the guides, help,
+concierge, search, notices, accessibility, about, privacy, terms, offline and corporate pages. Checked on production
+builds of the current tree (`.next` deleted, then `NEXT_PUBLIC_SITE_URL=http://localhost:3100 npx next build`, served
+by `TRUSTED_CLIENT_IP_HEADER=x-e2e-client-ip npx next start -p 3100`). Methods and scripts as in SB7 and
+`scripts/qa/README.md`; the sections above are unchanged, and this round uses **V** for its sections.
+
+**Result.** Types, lint, **616 unit tests**, `npm audit` (0 and 0) and the build (0 warnings, 366 static pages) pass.
+End to end, the whole suite gave **675 passed, 1 failed, 30 skipped of 706** (the 30 skips are the same tests as in
+SB2.2). The failure is **not a stage-two regression**: the board's "every board row has a demo label in view" on a
+phone, an intermittent timing race in the round-six floating Demo label that stage two did not touch (1 in 20 and 1 in
+30 with 4 workers, 0 in 30 with 2; V3). A trial fix did not help and was reverted, so **no product or test
+file is changed by this round**. The polish's late change to the map (the "route continues" strip moved under the
+drawing after its last build, checked only on a development server) is now **confirmed on production** (map with a
+route: CLS 0.0074 at 1440, was 0.244 on the polish's build 3). **axe: 0 violations** in every scan of the suite, in
+**312 page loads** of 39 page types (English and Malay, light and dark, 390 and 1440 px) and in the 384 loads of the
+pixel check. **Text over photographs: 4,468 text runs on 48 pages, 0 under 4.5:1** (large text held to 4.5:1 too),
+lowest 4.85:1 (the guides hub's "Start here" pill in high-contrast light, the content log's figure); all 32 pages
+measured start their `h1` at x 148 at 1440 px. Links: **0 broken, 0 missing anchors**; canonicals and hreflang 278 of
+278; `$RC` reveals the `h1` on **0 of 278** (reveals 1,320, the same on every page as SB2.4). Credits cover all 30
+files.
+**Lighthouse (10 pages, 3 runs): LCP 2.5 s or less on 5 of 10.** The new photographs cost first paint: transport
+1.07 → **3.25 s** and parking 1.11 → **3.05 s** (round five; their largest paint is now the polish's place band,
+performance 95 and 96 → 91), the guides hub 0.91 → **3.18 s** (performance 98 → 93); the home (3.62 s) and KLIA
+(3.33 s) are within the run spread of SB2.5. Map, concierge, help, board and flight page paint text at 1.22 to 1.51 s.
+First-load JavaScript at 170 KB gzip or less fell from **17 to 4 of 40 routes** (the content pages' header now ships
+`next/image`'s client code even without a photograph). These are recorded as open issues (V6), not fixed here.
+
+## V1. Clean-up before the checks
+
+- Nothing from this checkout was running: no node, Next.js, Playwright, Chromium or Lighthouse process, and
+  `/proc/net/tcp` listed no listener on 3100 or 3340 to 3360 (only 2024 and two high ports outside this checkout). The
+  stage-two engineers had stopped their servers (3341, 3342, 3344, 3351, 3352, 3353, 3354).
+- No `.next-*` folder existed (the stage-two logs and the critique say they deleted theirs). `tsconfig.json` and
+  `next-env.d.ts` named only `.next` and matched the SHA-256 of SB1 (`bd034e40…`, `1862ac4b…`); copies were kept in
+  the session scratch folder and compared at the end: identical.
+- `.next` still held addendum two's build (`aiZUN86VEcYRRrkB6dAVq`, from before stage two). It was deleted and rebuilt
+  three times (V3): **`8ehcndFClgaEcb51XVknw`** (the full suite), `qtrhq_6_dmszfgYr3c7Om` (the trial, discarded) and
+  **`SZ6ewsjzdVLVrbOp5ih2f`, left in `.next`**. Builds 1 and 3 are the same source; their 66 client chunks (scripts
+  and CSS) have identical content-hashed names.
+- Two git-ignored leftovers were in the folder: `.data/metrics.json` (written by an earlier server) and
+  `test-results/.last-run.json` (an earlier Playwright run, 07:15 UTC). Both were removed at the end, with the
+  `.data/` my own server wrote. Playwright and Lighthouse's extra runs wrote to the session scratch folder.
+- The tree was not clean when the round began: the polish's last three files (`redesign2-polish.md`,
+  `map/map-canvas.tsx`, `shell/route-focus.tsx`) were uncommitted. They were measured as found. No git command that
+  changes anything was run in this round (only `status`, `diff`, `log`, `show`). An automatic commit
+  (`4b27438`, 17:41 Kuala Lumpur time) recorded those three files **and this round's trial edit of
+  `flights/flight-board.tsx`**, which was reverted afterwards (V3): the working tree's `flight-board.tsx` is identical
+  to the version before this round (`687fbd2`), so `git status` shows it modified until the next commit.
+- At the end the server was stopped by its process group (no listener left on 3100 or 3340 to 3360).
+
+## V2. Results
+
+### V2.1 Static checks, unit tests and build
+
+| Check | Result |
+|---|---|
+| `npx tsc --noEmit` | 0 errors (full check, `--incremental false`; `tsconfig.tsbuildinfo` not rewritten) |
+| `npx eslint .` | 0 problems (no build folder other than `.next`) |
+| `npx vitest run` | 43 files, **616 passed, 0 skipped** (as SB2.1) |
+| `npm audit --omit=dev` / `npm audit` | 0 vulnerabilities / 0 vulnerabilities |
+| `NEXT_PUBLIC_SITE_URL=http://localhost:3100 npx next build` | Succeeds from clean in 43 to 44 s, **0 warnings**, **366 static pages** (as SB2.1), three times |
+
+### V2.2 End-to-end and accessibility (production build, desktop 1440x900 and phone Pixel 7 390x844, `--trace off`)
+
+| Run | Build | Tests | Passed | Failed | Skipped | Notes |
+|---|---|---|---|---|---|---|
+| Full suite, once | 1 | 706 | **675** | **1** | 30 | 17:13 to 17:29, 16.0 min, 2 workers. The failure: phone, `flights.spec` "every board row has a demo label in view (`/ms/kul/flights?dir=d`)" (V3) |
+| That test, `--repeat-each=5`, both projects, all three boards | 1 | 30 | 30 | 0 | 0 | 2 workers |
+| That test, phone, Malay KLIA board, `--repeat-each=20` | 1 | 20 | 19 | 1 | 0 | 4 workers; the same row failed |
+| That test, phone, all three boards, `--repeat-each=10` | 3 | 30 | 29 | 1 | 0 | 4 workers; the failure on `/en/pen/flights?dir=d` |
+| `verify-round6` "the overview's link to its contacts moves focus there", `--repeat-each=10` | 3 | 40 | **40** | 0 | 0 | The test the services log saw fail 4 of 6 (fixed by the polish in `shell/route-focus.tsx`) |
+
+- 706 tests: SB2.2's 698, the polish's new `map.spec.ts` test ("with a route set, the drawing starts on the first
+  screen") on both projects, and the new `services-redesign2.spec.ts` (3 tests) on both. Every new test passed. The
+  30 skips are **the same 30 tests** as in SB2.2 (compared by title and project).
+- The full suite ran on build 1. Build 3, which is in `.next`, is the same source with the same client chunks; the
+  two tests above were repeated on it, and every other check in this section ran on build 3.
+- **axe in the suite: 0 violations**: the shared helper (`e2e/support/axe.ts`, tags wcag2a, wcag2aa, wcag21a,
+  wcag21aa, wcag22aa) in 15 specs plus 7 local `AxeBuilder` scans, on both projects.
+- **axe on every page type** (`axe-sweep.mjs`, session scratch folder; the same tags; theme set through the site's
+  own preference): home, KLIA overview, board, flight page, My journey, the map with a route and Kota Kinabalu's map
+  ("no map yet"), transport (KLIA and Penang), parking, facilities, shops and food, an outlet page, lounges, transit
+  (KLIA and Penang), guides hub, a guide with a photograph (departing) and one without (security), help and a help
+  topic, concierge, search results, notices, accessibility, about this prototype, privacy, terms, offline, the
+  corporate hub, about, careers, news and a news item, the airports directory and its "not published" page, credits,
+  the style guide and a 404: **39 page types x English and Malay x light and dark x 390 and 1440 px = 312 loads,
+  0 violations**, 0 px sideways scroll, exactly one `h1` on every page. 304 answered 200 and the 8 deliberate 404s
+  answered 404; the only console errors were on those 404 loads (the document's own 404; three of the four 1440 px
+  loads logged a second 404 that a later probe logging every response did not reproduce).
+
+### V2.3 Text over photographs (pixel check; `photo-contrast-v2.mjs`, session scratch folder)
+
+The method of SB2.3 (every visible text run whose line boxes overlap a photograph, a placeholder wash or a photo's
+blur wash; text made transparent; the 1st percentile of the per-pixel ratios; pass 4.5:1, or 3:1 for large text) with
+one correction. **Method fix:** the first run of the unchanged script failed four phone-bar labels ("Home", "Flights",
+"Journey", "Menu", 1.0 to 4.0:1) on `/en/guides` and `/ms/guides` at 390 px: the script hides the fixed bottom bar for
+every slice, so the bar's own labels were measured against the photograph under the bar, not against the bar.
+Version 2 measures labels inside a fixed or sticky element in the lower half of the screen at scroll 0 with that
+element showing (its frosted fill is their background); every other run is measured as before. With it the four labels
+measure **7.66:1 or more** (40 bar runs over photographs, all on the guides hub, where a card photograph sits under
+the bar on the first phone screen). The four process runs were restarted with v2; all numbers below are v2.
+
+Pages (each in English and Malay unless stated): home, KLIA, Penang and Subang overviews, the airports directory,
+credits, the guides hub, the first-time, departing and arriving guides, the corporate hub, about, network and business,
+KLIA's transport, parking, facilities, shops and food, lounges and transit, Penang's transport (English), lounges
+(Malay) and transit, Kota Kinabalu's parking (English) and facilities (Malay), and My journey (its 160 px empty-state
+picture has no text over it): **48 pages x light, dark, high-contrast light and high-contrast dark x 390 (phone
+profile) and 1440 px = 384 loads**, device scale 1, each with one `h1`. (A first list also held
+`/ms/szb/facilities`, which does not exist and answered 404; it was replaced by `/ms/bki/facilities`.)
+
+| Pages (en and ms) | Runs | Under | Lowest at 390: light / dark / HC light / HC dark | Lowest at 1440: light / dark / HC light / HC dark |
+|---|---|---|---|---|
+| Home | 1,076 | **0** | 6.74 / 6.74 / 6.74 / 6.74 | **5.36** / 5.37 / 9.05 / 6.52 |
+| KLIA, Penang, Subang overviews | 960 | **0** | 7.27 / 7.27 / 9.09 / 9.09 | 6.15 / 6.83 / 7.99 / 7.99 |
+| Airports directory | 256 | **0** | 9.28 / 9.28 / 11.14 / 11.14 | 9.28 / 9.28 / 9.71 / 9.71 |
+| Guides hub (new) | 336 | **0** | 7.07 / 7.66 / **4.85** / 7.79 | 7.07 / 7.61 / **4.85** / 7.86 |
+| Three guides with a photograph (new) | 576 | **0** | 6.78 / 6.78 / 7.92 / 7.92 | 6.47 / 6.47 / 8.97 / 8.97 |
+| Corporate hub, about, network, business (new) | 360 | **0** | 7.08 / 7.08 / 8.27 / 8.27 | 6.12 / 6.12 / 8.48 / 8.48 |
+| Service pages with the place band: KLIA (six), Penang (three), Kota Kinabalu (two) (new) | 904 | **0** | 8.53 / 8.53 / 8.53 / 8.53 | 8.04 / 8.04 / 8.04 / 8.04 |
+| Photo credits, My journey | 0 (no text over a picture) | 0 | | |
+
+- **4,468 runs, 0 under the minimum; 0 under 4.5:1 counting large text too.** Lowest overall **4.85:1**, the guides
+  hub's gold "Start here" / "Mula di sini" pill (13 px) in high-contrast light, the run and value the content log
+  reports as its lowest. Lowest in the light and dark themes: **5.36:1**, the home's gold line, unchanged from SB2.3 to
+  the digit, as are the overview, directory and Subang figures. One home figure differs: in high-contrast dark at 1440
+  the lowest is now a "Final call" / "Panggilan terakhir" status chip in the departing-now preview (6.52:1), a status
+  that depends on the clock (SB2.3 ran in the early afternoon, when no flight showed it); the headline is 9.17:1 as
+  before.
+- The service pages' only text over a photograph is the place band's credit pill ("Photo: Yu Chu Chin, CC BY-SA 4.0",
+  "Foto: HundenvonPenang, …", "Photo: CEphoto, Uwe Aranas, …"), 8.04:1 or more, plus the airport bar over its
+  photograph wash and, from 1024 px, the key-answer panel where it rises over the band (measured over its own solid
+  fill): 8.04:1 or more. The KLIA Ekspres photograph and the lounges panel's photograph carry no text.
+- **axe: 0 violations and 0 console errors on all 384 loads.**
+
+### V2.4 Links, search index, canonicals, `$RC`, images and credits (`scripts/qa/`; a fresh client address per request)
+
+| Check | Result |
+|---|---|
+| Static HTML (`crawl-static.py`) | **278 sitemap URLs**, 468 pages (SB: 440), **1,280 unique links (SB: 1,178), 0 broken, 0 missing anchors, 0 redirected, 0 pages not 200** |
+| Search index (`search-index.mjs`) | **470 documents**, 318 pages, 172 anchors, **0 broken, 0 missing** (as SB2.4) |
+| Canonical and hreflang (`canonical.py`, plus the flight page `ak6336-20261123-d` in both languages, `/en/kul/zzz`, `/ms/kul/zzz`, `/en/credits`) | **278 of 278** self-canonical with `en` and `ms` alternates; exactly one canonical in the head, in the document and in the `Link` header on 278 of 278; the extra paths the same (the 404s answer 404). Hreflang `en` and `ms` in the head on **278 of 278** (`hreflang-head.py`) |
+| `$RC` (`rc-scan.py`) | **`h1` in a hidden segment: 0 of 278**; no page without an `h1` in its HTML. Reveals **1,320, identical page by page to SB2.4**: stage two added no Suspense segment. On the pages with a new photograph the `h1` starts about 3.7 to 3.8 KB later in the HTML (transport 23,216 → 27,037 bytes, parking, the guides hub and the corporate hub alike), still in the first flush |
+| Images in the server HTML (`img-scan.py`) | **140 of 278 pages** carry an `<img>` (SB: 84), 250 `<img>` elements (SB: 150), an image preload on **124 pages** (SB: 80). **641 distinct image URLs, every one 200 and `image/avif`** (SB: 555), covering all 30 files; quality 60 (95 URLs; the place band asks for 60), 65 (96) and 75 (450, the credits thumbnails). The 56 new pages: 20 guide pages, 8 corporate pages and 28 service pages (KLIA, Penang and Kota Kinabalu). Of the 44 new preloads, 28 are on service pages, and there the preloaded image is the place band, the airport's own photograph (checked on all 32 service pages that answer 200, including Penang's and Kota Kinabalu's transit pages, which are not in the sitemap): React's server renderer preloads an image that is not lazy (V6 item 1) |
+| Credits cover the files (`credits-check.mts`) | `public/images`: **30 files, 12,004,275 bytes** (as SB2.4), 30 library entries, no file without an entry and no entry without a file. `/en/credits` and `/ms/credits` answer 200 with **30 thumbnails each**, each item with its author, licence, licence link, source and description in the page's language. **Licences: CC BY-SA 4.0 x 17, CC BY-SA 3.0 x 8, CC BY-SA 2.0 x 1, CC BY 4.0 x 2, CC0 1.0 x 2** (unchanged). Stage two added no photograph; every one it shows is a library file already credited |
+
+### V2.5 Lighthouse mobile (`scripts/qa/lighthouse.mjs --diagnostics`, Lighthouse 13.6, Moto G Power, simulated slow 4G, 4x CPU; 3 runs, median)
+
+Final build, 18:12 to 18:20 Kuala Lumpur time, nothing else running; the image optimizer warmed first for these pages
+at three sizes (`warm.mjs`, as SB2.5). Results in `docs/qa/lighthouse-redesign2/` (ten page summaries and one
+`_summary-*.json`); every page had 3 valid runs. R5 = round five (`docs/qa/lighthouse-round5/`, before the redesign);
+1c = SB2.5 (`docs/qa/lighthouse-redesign1c/`, measured only on the home, KLIA, the board and the flight page). Help
+had not been measured before. The flight page is AK 6336 on 23 November, as in SB2.5 (round five's was the same flight
+on 22 November). KB = 1,024 bytes.
+
+| Page | Performance R5 → 1c → now (runs) | LCP R5 → 1c → now (runs); LCP element now | TBT now (runs); R5 | CLS now (runs) | KB / requests: R5 → now |
+|---|---|---|---|---|---|
+| `/en` | 95 → 92 → **89** (89/90/87) | 1.09 → 3.33 → **3.62 s** (3.62/3.50/3.62); the hero photograph | 131 (122/131/191); 257 | 0 | 624 / 43 → 619 / 57 |
+| `/en/kul` | 94 → 93 → **90** (90/92/87) | 1.11 → 3.04 → **3.33 s** (3.50/3.07/3.33); the hero photograph | 165 (113/165/273); 301 | 0 (0.004/0/0) | 621 / 44 → 618 / 50 |
+| `/en/kul/map` | 96 → **98** (99/98/96) | 1.07 → **1.37 s** (1.37/1.36/1.37); the `h1` | 149 (116/149/210); 257 | 0 (0.004/0/0) | 605 / 40 → 585 / 43 |
+| `/en/kul/transport` | 95 → **91** (91/91/91) | 1.07 → **3.25 s** (3.25/3.26/3.04); **the place band** (`terminal-1-aerial`) | 145 (145/143/182); 268 | 0 (0.004/0/0) | 594 / 39 → 618 / 47 |
+| `/en/kul/parking` | 96 → **91** (91/94/91) | 1.11 → **3.05 s** (3.26/3.05/3.05); **the place band** | 140 (140/84/179); 221 | 0 | 602 / 43 → 602 / 48 |
+| `/en/guides` | 98 → **93** (94/91/93) | 0.91 → **3.18 s** (2.87/3.39/3.18); the hero photograph (`terminal-1-canopy`) | 81 (107/56/81); 162 | 0 | 539 / 37 → 576 / 48 |
+| `/en/concierge` | 97 → **99** (99/99/100) | 0.92 → **1.36 s** (1.37/1.36/1.36); the lead paragraph | 77 (122/67/77); 209 | 0 | 558 / 39 → 538 / 42 |
+| `/en/help` | not measured → **98** (95/98/99) | **1.37 s** (1.37/1.37/1.36); the lead paragraph | 142 (249/142/135) | 0 | 516 / 40 |
+| `/en/kul/flights` (board) | 96 → 98 → **96** (97/96/96) | 0.92 → 1.22 → **1.22 s** (1.22/1.22/1.22); the first paint (text) | 226 (205/226/226); 212 (1c 157) | 0.005 (all three) | 587 / 41 → 566 / 44 |
+| Flight page | 94 → 96 → **94** (92/96/94) | 1.22 → 1.52 → **1.51 s** (1.52/1.51/1.51); the `h1` | 263 (324/217/263); 301 (1c 227) | 0.004 (0/0.004/0.004) | 674 / 48 → 664 / 51 |
+
+- Against the brief: **LCP 2.5 s or less on 5 of 10** (map, concierge, help, board, flight page; round five: 9 of 9
+  measured), performance 95 or more on **4 of 10** (map 98, concierge 99, help 98, board 96), TBT 200 ms or less on
+  **8 of 10** (not the board, 226, or the flight page, 263; both within the container's spread of 1c's 157 and 227),
+  CLS 0.1 or less on **10 of 10** (largest 0.005, the board). Accessibility 100 and best practices 96 in every run;
+  SEO 66 to 69 (the prototype is `noindex`).
+- **What moved, and why.** First paint moved from about 0.9 to 1.2 s (round five) to 1.22 to 1.52 s with stage one
+  (fonts and CSS before the first paint; SB2.5). Stage two did not move it further on the four pages SB2.5 measured
+  (FCP home 1.37 → 1.37 s, KLIA 1.37 → 1.37, board 1.22 → 1.22, flight page 1.52 → 1.51), and the other six pages
+  paint first at 1.36 to 1.37 s like them. The three pages that now open on a photograph pay Lantern's image
+  accounting: **transport and parking** (the place band is the largest paint on a 412 px phone: 412 x 140 px), and the
+  **guides hub** (its hero). Observed in the browser, their LCP is 235 to 258 ms, with the photograph and the words
+  painting together. With applied slow-4G throttling (`--profile=slow4g-applied,150,1638,750,4`, 3 runs, session
+  scratch folder, not in `docs/`), they paint at **1.94 s** (transport), 1.92 (parking), 1.91 (guides) and 1.92 (home).
+- The home (3.33 → 3.62 s) and KLIA (3.04 → 3.33 s) moved by 0.3 s, within the 0.3 to 0.6 s run spread SB2.5 saw
+  (their 1c runs were 3.08/3.33/3.63 and 3.04/3.49/3.03), but on the wrong side; the home also carries 20 KB more
+  (CSS and the shared script chunk) and 2 more requests.
+
+### V2.6 First-load JavaScript and CSS (`scripts/qa/first-load-js.mjs`, gzip KB; 40 page routes; framework 128.7)
+
+- SB2.6 → now: home 201.7 → **202.4**, overview 200.5 → 200.5, board 207.2 → 207.2, flight page 208.1 → 208.1, My
+  journey 228.9 → 228.6, map 202.5 → 202.9, transport 188.4 → 190.3, parking 195.7 → 195.9, shops 196.2 → 196.3. The
+  service pages moved by 0.1 to 1.9 KB.
+- **The content pages grew by 5.2 to 6.5 KB each**: search 190.4 → **196.8**, concierge 184.7 → **190.9**, privacy
+  188.7 → 193.5, help topic 178.4 → 184.1, notices 172.0 → 178.3, offline 172.0 → 177.6, guide pages 169.5 →
+  **176.1**, guides hub 167.5 → **173.7**, about this prototype 168.1 → 173.6, nine corporate routes 167.9 →
+  **173.1** (business 168.1 → 173.7), terms 164.6 → 169.9. Their route chunk went from 1 to 4 KB to 6 to 10 KB gzip
+  and now carries `next/image`'s client code (its `data-nimg` marker is in each chunk, also on terms, privacy,
+  notices, help topics, search, concierge and offline, which show no photograph): `guides/page-hero.tsx` imports
+  `HeroMedia` statically, so every page that uses `PageHero` ships it.
+- At 170 or less (content and guidance target): **4 of 40** (SB2.6: 17): credits 169.9, terms 169.9, the "not
+  published" airports page 167.5 and the catch-all 163.6. Over 250: 0; the home's budget of 250 holds. CSS in the first
+  load 31.8 → **33.9 KB** gzip (36,024 bytes on the wire for the main sheet in Lighthouse).
+
+### V2.7 Layout shift, page tops and lengths (Playwright, production build 3)
+
+- **Layout shift** (`scripts/qa/layout-shift.mjs`, CPU 4x, 2 runs, 390 x 844 and 1440 x 900): the map with
+  `?from=l5-kerb&to=g-gates-c` **0.0063 / 0.0074 at 1440** (the polish's build 3: 0.244; its development-server
+  figure after the strip move: 0.0076) and 0.0036 at 390; in Malay 0.0038 / 0.0022 and 0.0067. Transport, parking,
+  facilities, shops, lounges and transit 0.0036 at 390 (the site header's own, as the polish log says) and 0.0006 to
+  0.0022 at 1440; guides hub, help, concierge, search `?q=lounge`, notices and the corporate hub 0 to 0.0007. Worst
+  **0.0074**.
+- **Page tops** (`page-tops.mjs`, 32 pages): the `h1` starts at **x 148 on every page at 1440** and x 16 at 390 (the
+  polish's "one page-top contract"). On the six service pages with a place band it sits at y 538 at 1440 (under the
+  220 px band) and **y 188 at 390** (A-01's 200 px holds). `/en/search?q=lounge` opens with nothing focused (no
+  autofocus; the empty search page keeps it). The map with a route: the drawing at **y 423 to 842 at 1440 x 900** (all
+  of it on the first screen; the polish's build 3: 476 to 895) with the "route continues" strip under it at y 903, and
+  **y 418 to 773 at 390 x 844** (355 px of drawing on the first screen; build 3: from y 483).
+- **Page lengths at 390 px**: corporate about 15,185, facilities 14,483, about this prototype 12,202, the map with a
+  route 11,406, accessibility 10,954, transit 10,694, parking 10,118 (the critique: facilities 14,673, map 11,721,
+  accessibility 10,902, transit 10,480, parking 10,033).
+
+### V2.8 Screens looked at
+
+14 screens from the final build at the real clock (18:28 to 18:29), Playwright Chromium, device scale 1, first screen
+unless stated: transport 1440 light (en) and 390 dark (ms); parking 390 light (en); facilities 1440 dark (ms); the map
+with a route 1440 light (en) and 390 dark (ms); shops and food 1440 dark (en); lounges 390 light (ms); transit 390 dark
+(en); the guides hub 1440 light (en); the departing guide 390 light (ms); help 1440 dark (en); the concierge answering
+"How much does parking cost at KLIA?" 1440 light (en, scrolled to the answer); the corporate hub 390 dark (ms). Two more
+to check item 6 of the critique: the shops cards 1440 light and the lounge cards 390 dark. The 14 each have one `h1`,
+no sideways scroll, every photograph in view loaded (none broken) and no console error. Seen:
+
+- **Service pages**: the KLIA aerial band with its credit pill and the key answer rising over its lower edge (fares on
+  transport, "Most looked for" on facilities, "At a glance" on shops); on phones the band follows the title and the
+  answer follows the band, in both languages and themes. They read as one product with the overview. The same aerial
+  crop opens all six KLIA service pages. On the lounges phone page two photographs stack on the first screen (the band,
+  then the panel's Terminal 1 canopy).
+- **Parking** (phone): "Prices at a glance" right under the band; each matrix row has the car park across the full
+  width and the three stays under it. **Transit** (phone, dark): the pinned verdict "Looks workable · Our estimate 55
+  min to 1 h 50 min; your time 2 h" wraps at word boundaries.
+- **Map**: with a route the whole drawing is on the first desktop screen and most of it on the phone's; the From field
+  still cuts "Departures drop-off · Lev…" at 1440 (the known limit). The route line runs through the label "Rows F and
+  G" ("Barisan F dan G" in Malay) at both widths (V6 item 4).
+- **Shops and lounges cards**: a round category medallion beside the name, no monograms and no picture in any card
+  (8 and 9 cards, 0 images); lounge cards open with "After security" over a coloured top edge.
+- **Content pages**: the guides hub's canopy photograph and the departing guide's roof canopy are crisp, with the words
+  on the scrim; help in dark mode leads with the two call lines in a card where the ringed emblem was (its scam callout
+  keeps an olive-brown fill in dark mode); the concierge's answer is one sentence bubble followed by cards at the
+  conversation's width; the Malay corporate `h1` takes three lines over the photograph on a phone.
+
+## V3. Regressions, defects and changes in this round
+
+**No stage-two regression was found.** One intermittent failure was investigated:
+
+- **`flights.spec` "every board row has a demo label in view", phone.** Failed once in the full run on the Malay KLIA
+  board (row "Kuala Terengganu TGG, Pintu ditutup", the third row) and again under load (above). The test centres each
+  row, waits two animation frames and asks whether a Demo marker is in view. Since round six one Demo label floats over
+  the stuck hour header once the board's banner has scrolled out of view (`flights/flight-board.tsx`,
+  `useBannerInView`), following the page's scroll event. A probe that runs the test's own logic at 6x CPU
+  (`board-race.mjs`, scratch) reproduced it (1 in 15) and showed why: centring the third row moves the banner from
+  in view (bottom 98 px) to out of view (bottom -11 px) in one step, and in every failing run Chromium delivered the
+  scroll event one frame later than usual, so the label appeared in the third frame, after the test had looked. The
+  board, the banner and the label were not changed in stage two; the race needs a jump past the banner and a late
+  scroll event, so it shows only under load. **Trial fix, reverted:** committing the label in the same frame
+  (`flushSync`) did not change the rate (5 in 40 and 1 in 12 under the probe on that build), because the delay is the
+  scroll event's, not React's; the edit was undone (V1). **Not fixed and the test not changed** (V6 item 2).
+
+Wrong-way numbers, not fixed (V6): LCP on transport, parking and the guides hub (photographs now lead them); first-load
+JavaScript on the content pages (+5.2 to 6.5 KB gzip; 4 of 40 routes at 170 KB or less); CSS +2.1 KB gzip;
+requests +8 on transport, +5 on parking, +11 on the guides hub (photographs and their preloads).
+
+## V4. Acceptance of stage two
+
+| Source | Claim | Verified here | Verdict |
+|---|---|---|---|
+| Services log | tsc 0, eslint 0, vitest 616 / 616; 174 e2e passed on its build | Same static results; the whole suite 675 / 1 / 30, the failure outside its pages | **Accepted** |
+| Services log | axe 0 in 112 loads; no sideways scroll | axe 0 in 312 loads of 39 page types and in 384 photo-page loads; 0 px sideways | **Accepted** |
+| Services log | No word broken mid-word at 360 px and 125 % text | Not re-measured in this round (the `verify-round7` 360 px and 125 % flight-row tests pass) | **Not re-checked** |
+| Services log | `verify-round6` contacts focus failed 4 of 6 on its build | Fixed by the polish (`shell/route-focus.tsx`); **40 of 40** here | **Closed** |
+| Services log, polish 7 | Only the KLIA Ekspres card has a photograph on transport; no outlet or lounge photograph; the shops panel has none (polish), the lounges panel keeps KLIA's canopy, Penang's none | `services-redesign2` passes on both projects; screens (V2.8) | **Accepted** |
+| Content log | 800 runs over photographs, 0 under 4.5:1, lowest 4.85 (high-contrast light) | 1,272 runs on its guides and corporate pages, 0 under 4.5:1, lowest **4.85** (the same pill) | **Accepted** |
+| Content log | axe 0; search and notices shift 0 after its fixes; corporate type sizes 7 / 8 | axe 0; search and notices 0 / 0; the A-14 type-size tests in `ask-round6` pass in the suite | **Accepted** |
+| Polish 1 | Place band on six service pages (220 / 176 / 140 px), credit pill only, not preloaded | Six pages, 220 and 140 px seen, credit 8.04:1 or more; but **React preloads the band** (V2.4) and it is now the LCP on transport and parking (V2.5) | **Accepted, with the LCP cost recorded** (V6 item 1) |
+| Polish 2, 3 | `h1` at x 148 on every page at 1440; emblems replaced by content | 32 of 32 pages at x 148; help seen leading with its call lines (notices and accessibility not looked at) | **Accepted** |
+| Polish 4 | Map route in the first view; the strip moved under the drawing after build 3, checked on a dev server only (0.0076) | **Production**: drawing at y 423 to 842 (1440) and 418 to 773 (390); CLS 0.0074 / 0.0036; `map` and `layout-round4` pass | **Accepted** (the late change now verified on production) |
+| Polish 6 | No monogram tiles on shops and lounges | Medallions seen; 0 images in 17 cards | **Accepted** |
+| Polish 8, 10, 11 | Parking key answer from 1024 px and the phone table; the four phone wraps; no autofocus on search results | Seen on the phone; transit summary unbroken; nothing focused on `/en/search?q=lounge` | **Accepted** |
+| Polish result table | Full suite on its build 3: 674 passed, 0 failed, 32 skipped | 675 / 1 / 30 here (the failure is V3's; the 30 skips are SB2.2's, two fewer than the polish counted) | **Accepted** |
+| Critique must-fixes 1 to 6 | | All six addressed; left open by the logs and seen here: the map's From and To still cut long names at 1440, the map's dashed drawing (item 5) | **Accepted** |
+
+## V5. Tests changed in this round, and why
+
+- **No test was changed, skipped or deleted in this round**, and no test was added.
+- Read and checked: stage two's test changes. `layout-round4.spec.ts` "map on a phone" (intended appearance change,
+  commented in the spec: the drawing now comes before From and To, on the first screen; the disclaimer-above-drawing,
+  no-chip-overlap and route-region assertions stay); `map.spec.ts`, a new test that the drawing starts on the first
+  screen with a route; `services-redesign2.spec.ts`, new (its shops-panel assertion changed by the polish for an
+  intended change, commented). None of them loosens an assertion.
+
+## V6. Open issues, ranked
+
+"Team" = fixable by the delivery team. "Owner" = needs the owner's decision.
+
+1. **LCP on photographic first screens now includes three more pages: transport 3.25 s, parking 3.05 s, the guides hub
+   3.18 s** (round five 1.07, 1.11, 0.91 s; performance 95, 96, 98 → 91, 91, 93), on top of the home 3.62 s and KLIA
+   3.33 s (SB6 item 1). Owner, then team. On the service pages the largest paint is the decorative place band (critique
+   must-fix 1); the polish log says the band is "not preloaded", but React's server renderer preloads every image
+   that is not lazy, so the band is preloaded on every service page that has one (32). Applied slow-4G throttling
+   paints them at 1.91 to 1.94 s. Options: accept, as for the heroes; or make the band smaller than the title block on
+   phones (it is 412 x 140 px there), or `loading="lazy"` with a fixed-height placeholder so the words stay the
+   largest paint; re-run Lighthouse after any change.
+2. **Intermittent board test on phones** (V3): "every board row has a demo label in view" fails about 1 in 20 to 1 in
+   30 with 4 workers (0 in 30 with 2, and once in the full run). Team, the board's owner. The product shows no Demo
+   label for one frame after a jump scroll on a busy phone; the test samples two frames after the scroll. Options:
+   drive the floating label's visibility from CSS (a scroll-driven animation on the banner, with today's script as
+   the fallback), or have the test wait for the page's scroll event before sampling (a test change, to be recorded as
+   such). Until then a CI run with retries absorbs it (`retries: 1` on CI).
+3. **First-load JavaScript on content pages +5.2 to 6.5 KB gzip** (V2.6): 4 of 40 routes at 170 KB or less (SB2.6:
+   17). Team. Move `PageHero`'s photograph form into its own module (or pass the media in as a slot) so pages without
+   a photograph do not ship `next/image`. CSS in the first load 33.9 KB gzip (round five 20.7).
+4. **Map** (critique item 5, polish "not done"): the From and To fields cut long names at 1440 ("Departures drop-off ·
+   Lev…"), and the route line crosses the label "Rows F and G" / "Barisan F dan G" at 1440 and 390. Team (design).
+5. **Repetition and length on the service pages.** Team (design) and owner. The same KLIA aerial crop opens all six
+   KLIA service pages and the overview; the lounges phone page stacks two photographs on its first screen; pages are
+   long on phones (facilities 14,483 px, corporate about 15,185).
+6. **Carried over, not changed here:** SB6 items 2 to 7 (the directory's photo-led first view and LCP 3.74 s; the
+   Langkawi sign; the code-split home and overview sections in `$RC` segments, still 1,320 reveals; the first AVIF
+   encode; TBT just over 200 ms on the board and the flight page; Kuching's 1,920 px hero; the owner's checks before
+   launch), and the critique's items left partly done by the polish (13 facilities filter bar, 14 honesty labels on
+   guides and corporate, 17 notices grouped by status, 24 home first view, 25 motion). The dark-mode scam callout on
+   help keeps the olive-brown fill the polish removed from the transport warning.
+
+Closed in this round: the services log's `verify-round6` contacts-focus failure (40 of 40) and the polish's
+unverified late change to the map (confirmed on production).
+
+## V7. How to reproduce
+
+```bash
+npx tsc --noEmit --incremental false && npx eslint . && npx vitest run && npm audit --omit=dev
+rm -rf .next && NEXT_PUBLIC_SITE_URL=http://localhost:3100 npx next build
+TRUSTED_CLIENT_IP_HEADER=x-e2e-client-ip npx next start -p 3100 &   # stop it by its process group afterwards
+npx playwright test --trace off --output=<folder outside the repository>
+npx playwright test e2e/flights.spec.ts --project=phone -g "every board row has a demo label in view" --repeat-each=10 --workers=4 --trace off
+PATHS='/en/kul/map?from=l5-kerb&to=g-gates-c,/en/kul/transport,...' VIEWPORTS=phone,desktop CPU=4 node scripts/qa/layout-shift.mjs http://localhost:3100 2 verbose
+python3 scripts/qa/crawl-static.py http://localhost:3100 out/crawl-static.json && node scripts/qa/search-index.mjs
+python3 scripts/qa/canonical.py http://localhost:3100 out/canonical.json /en/kul/flights/<id> /ms/kul/flights/<id> /en/kul/zzz /ms/kul/zzz /en/credits
+python3 scripts/qa/rc-scan.py http://localhost:3100 out/rc-scan.json && node scripts/qa/first-load-js.mjs .next out/fljs.json
+node warm.mjs http://localhost:3100 /en /en/kul /en/kul/map /en/kul/transport /en/kul/parking /en/guides /en/concierge /en/help /en/kul/flights /en/kul/flights/<id>
+B=http://localhost:3100; LIGHTHOUSE_CLI=<separate install>/node_modules/lighthouse/cli/index.js node scripts/qa/lighthouse.mjs \
+  docs/qa/lighthouse-redesign2 3 --diagnostics en=$B/en en-kul=$B/en/kul en-kul-map=$B/en/kul/map en-kul-transport=$B/en/kul/transport \
+  en-kul-parking=$B/en/kul/parking en-guides=$B/en/guides en-concierge=$B/en/concierge en-help=$B/en/help \
+  en-kul-flights=$B/en/kul/flights flight-page=$B/en/kul/flights/<id>
+node axe-sweep.mjs $B out.json <390|1440> light,dark en,ms
+node photo-contrast-v2.mjs $B out.json <390|1440> light,dark,light-more,dark-more <the 48 paths of V2.3>
+```
+
+The axe sweep, the pixel contrast check (v2, and the unchanged v1 it corrects), the page-top and board-race probes,
+the image scan, the credits check, the head-hreflang check, the optimizer warm-up and the screen captures are in the
+session scratch folder (`rd2-verify/scripts/`); they are not part of `scripts/qa/`.
+
+Files changed in this round: `docs/qa/lighthouse-redesign2/` (new: ten page summaries and one `_summary-*.json`) and
+this section. No product or test file was changed (the trial edit of `flights/flight-board.tsx` was reverted; V1).

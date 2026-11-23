@@ -1,0 +1,279 @@
+{
+ "key": "en-help",
+ "url": "http://localhost:3100/en/help",
+ "preset": "mobile (Lighthouse default)",
+ "profile": null,
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-23T10:18:43.556Z",
+ "median": {
+  "performance": 98,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1369,
+  "lcp_ms": 1369,
+  "tbt_ms": 142,
+  "cls": 0,
+  "si_ms": 1369,
+  "totalBytes": 528377,
+  "requests": 40
+ },
+ "a11yFailures": [],
+ "rows": [
+  {
+   "finalUrl": "/en/help",
+   "runtimeError": null,
+   "performance": 95,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1371,
+   "lcp_ms": 1371,
+   "tbt_ms": 249,
+   "cls": 0,
+   "si_ms": 1371,
+   "totalBytes": 528379,
+   "requests": 40,
+   "benchmarkIndex": 1810.5,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en/help",
+   "runtimeError": null,
+   "performance": 98,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1369,
+   "lcp_ms": 1369,
+   "tbt_ms": 142,
+   "cls": 0,
+   "si_ms": 1369,
+   "totalBytes": 528377,
+   "requests": 40,
+   "benchmarkIndex": 2110,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en/help",
+   "runtimeError": null,
+   "performance": 99,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 66,
+   "fcp_ms": 1363,
+   "lcp_ms": 1363,
+   "tbt_ms": 135,
+   "cls": 0,
+   "si_ms": 1363,
+   "totalBytes": 528377,
+   "requests": 40,
+   "benchmarkIndex": 2013,
+   "a11yFailures": []
+  }
+ ],
+ "medianRunIndex": 1,
+ "diagnostics": {
+  "observed": {
+   "fcp": 216,
+   "lcp": 216,
+   "dcl": 325,
+   "load": 327
+  },
+  "lcpElement": {
+   "selector": "div.mx-auto > div.flex > div.min-w-0 > p.type-lead",
+   "label": "Answers to common questions, official contacts, and who to ask when something g…"
+  },
+  "lcpPhases": {
+   "timeToFirstByte": 12,
+   "elementRenderDelay": 205
+  },
+  "renderBlocking": [
+   {
+    "url": "/_next/static/chunks/416av_omt2lgt.css",
+    "bytes": 2464,
+    "ms": 160
+   },
+   {
+    "url": "/_next/static/chunks/0h0ienxkzchvk.css",
+    "bytes": 36024,
+    "ms": 460
+   }
+  ],
+  "longTasks": [
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "start": 3629,
+    "dur": 176
+   },
+   {
+    "url": "/en/help",
+    "start": 1033,
+    "dur": 111
+   },
+   {
+    "url": "/en/help",
+    "start": 1144,
+    "dur": 80
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 3805,
+    "dur": 72
+   },
+   {
+    "url": "Unattributable",
+    "start": 910,
+    "dur": 65
+   },
+   {
+    "url": "/en/help",
+    "start": 980,
+    "dur": 53
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 3909,
+    "dur": 53
+   },
+   {
+    "url": "/en/help",
+    "start": 1382,
+    "dur": 53
+   }
+  ],
+  "bootup": [
+   {
+    "url": "/en/help",
+    "total": 893,
+    "scripting": 48
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "total": 670,
+    "scripting": 562
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "total": 324,
+    "scripting": 277
+   },
+   {
+    "url": "Unattributable",
+    "total": 284,
+    "scripting": 10
+   }
+  ],
+  "mainThread": {
+   "scriptEvaluation": 1014,
+   "other": 527,
+   "styleLayout": 370,
+   "scriptParseCompile": 174,
+   "parseHTML": 153,
+   "paintCompositeRender": 113,
+   "garbageCollection": 25
+  },
+  "resources": {
+   "total": {
+    "n": 39,
+    "bytes": 528377
+   },
+   "script": {
+    "n": 25,
+    "bytes": 349964
+   },
+   "document": {
+    "n": 1,
+    "bytes": 58292
+   },
+   "other": {
+    "n": 9,
+    "bytes": 41381
+   },
+   "font": {
+    "n": 2,
+    "bytes": 40252
+   },
+   "stylesheet": {
+    "n": 2,
+    "bytes": 38488
+   },
+   "image": {
+    "n": 0,
+    "bytes": 0
+   },
+   "media": {
+    "n": 0,
+    "bytes": 0
+   },
+   "third-party": {
+    "n": 0,
+    "bytes": 0
+   }
+  },
+  "topRequests": [
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "type": "Script",
+    "transfer": 73535
+   },
+   {
+    "url": "/en/help",
+    "type": "Document",
+    "transfer": 58292
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "type": "Script",
+    "transfer": 47500
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "type": "Font",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/chunks/0h0ienxkzchvk.css",
+    "type": "Stylesheet",
+    "transfer": 36024
+   },
+   {
+    "url": "/_next/static/chunks/3yy1gxyd-y-bg.js",
+    "type": "Script",
+    "transfer": 27941
+   },
+   {
+    "url": "/_next/static/chunks/0d0t-4gzbsp9w.js",
+    "type": "Script",
+    "transfer": 18563
+   },
+   {
+    "url": "/_next/static/chunks/3hpcf0we5dr9o.js",
+    "type": "Script",
+    "transfer": 13222
+   },
+   {
+    "url": "/_next/static/chunks/17vuex6052xot.js",
+    "type": "Script",
+    "transfer": 12630
+   },
+   {
+    "url": "/_next/static/chunks/0tgh-xbuli14q.js",
+    "type": "Script",
+    "transfer": 11981
+   }
+  ],
+  "fonts": [
+   {
+    "url": "/_next/static/media/fraunces_wordmark_520-s.p.01133lvcr6pw1.woff2",
+    "transfer": 3855
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "transfer": 36397
+   }
+  ]
+ },
+ "caveat": "Lab measurement: Lighthouse with simulated (or, with --profile, applied) throttling against a local next start. Indicative only; not field data."
+}
