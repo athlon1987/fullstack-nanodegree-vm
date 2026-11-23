@@ -10,6 +10,8 @@ import type { CarParkOption } from '@/components/flights/parked-car-card';
 import { Container } from '@/components/ui/container';
 import { Icon } from '@/components/ui/icon';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
+import { IMAGES } from '@/content/images';
+import { toMediaImage } from '@/components/ui/media';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = getT(toLang(await routeLang()));
@@ -55,7 +57,9 @@ export default async function JourneyPage() {
           breadcrumbs={<Breadcrumbs items={[{ label: t('nav.myJourney') }]} />}
         />
         <Container className="pt-6 pb-section sm:pt-8">
-          <MyJourney carParks={carParks} />
+          {/* Redesign 1b: the empty state's photograph (decorative), prepared here so the photo
+              library stays on the server. */}
+          <MyJourney carParks={carParks} emptyPhoto={toMediaImage(IMAGES['wing-window'], lang, { decorative: true })} />
           <p className="type-body-sm mt-10 inline-flex items-center gap-2 text-ink-2">
             <Icon name="shield-check" size="sm" className="text-ink" />
             {t('journey.saved.storedLocally')}

@@ -4,7 +4,7 @@ import { heroForAirport } from '@/content/images';
 import { cn } from '@/lib/cn';
 import { AirportVignette } from '@/components/art/airport-vignette';
 import { TaburField } from '@/components/art/patterns';
-import { objectPosition, placeholderProps, toMediaImage } from '@/components/ui/media';
+import { ART_DIRECTED_POSITION, artDirection, objectPosition, placeholderProps, toMediaImage } from '@/components/ui/media';
 
 export interface AirportBackdropProps {
   /** Airport slug: `kul`. */
@@ -35,11 +35,26 @@ export function airportHasPhoto(slug: string): boolean {
  *
  * A Server Component: the photo library stays on the server.
  */
+/**
+ * Framing per photograph (fractions of the photograph) where its focal point does not suit both a
+ * phone (a tall slice) and a wide desktop band; others use their focal point everywhere.
+ */
+const HERO_FRAMING: Partial<Record<string, Parameters<typeof artDirection>[1]>> = {
+  // The KLIA Terminal 1 canopy: phones follow the main white branch up to the roof.
+  'klia-t1-canopy': { base: { x: 0.58, y: 0.5 }, md: { x: 0.7, y: 0.6 } },
+  // Kota Kinabalu and Langkawi: keep the terminal's own name board in the band on wide screens.
+  'bki-terminal': { md: { x: 0.55, y: 0.3 } },
+  'lgk-terminal': { md: { x: 0.55, y: 0.35 } },
+};
+
 export function AirportBackdrop({ slug, code, lang, variant }: AirportBackdropProps) {
   const entry = heroForAirport(slug);
   const hero = variant === 'hero';
-  if (entry) {
+  if (entry && hero) {
     const image = toMediaImage(entry, lang, { decorative: true });
+    // The overview's hero (redesign 1b): in the static HTML, preloaded with high priority, quality
+    // 65, AVIF or WebP, no animation. The words carry their own feathered scrim
+    // (`scrim-feather`); the photograph keeps only a soft veil at the top and depth at the foot.
     return (
       <div aria-hidden="true" className="on-media absolute inset-0 -z-10 overflow-hidden bg-midnight">
         <Image
@@ -47,15 +62,33 @@ export function AirportBackdrop({ slug, code, lang, variant }: AirportBackdropPr
           alt=""
           fill
           sizes="100vw"
-          preload={hero}
-          {...(hero ? { fetchPriority: 'high' as const } : {})}
+          quality={65}
+          preload
+          fetchPriority="high"
           {...placeholderProps(image)}
-          style={{ objectPosition: objectPosition(image.focal) }}
-          className={cn('object-cover', !hero && 'opacity-55')}
+          style={artDirection(image.focal, HERO_FRAMING[entry.id])}
+          className={cn('object-cover', ART_DIRECTED_POSITION)}
         />
-        {/* A calm veil over the whole picture; the words add their own scrim zone. */}
-        <span className={cn('absolute inset-0', hero ? 'scrim-full' : 'bg-[color-mix(in_srgb,var(--color-scrim)_72%,transparent)]')} />
-        {hero ? <span className="absolute inset-x-0 top-0 h-32 scrim-top opacity-70" /> : null}
+        <span className="absolute inset-x-0 top-0 h-32 scrim-top opacity-50" />
+        <span className="absolute inset-x-0 bottom-0 h-1/2 scrim-bottom opacity-40" />
+      </div>
+    );
+  }
+  if (entry) {
+    // The slim band of the section pages (redesign 1b): a wash of the airport's own photograph made
+    // from its blur placeholder, already in the page, so the band costs no request and never
+    // becomes the page's largest paint (the flight page's LCP was this band's photograph, 4.4 s in
+    // Lighthouse mobile). Under a 72 % veil a full photograph showed little more than this.
+    return (
+      <div aria-hidden="true" className="on-media absolute inset-0 -z-10 overflow-hidden bg-midnight">
+        {entry.blurDataURL ? (
+          <span
+            className="absolute -inset-6 bg-cover opacity-70 blur-xl"
+            style={{ backgroundImage: `url("${entry.blurDataURL}")`, backgroundPosition: objectPosition(entry.focal) }}
+          />
+        ) : null}
+        <span className="absolute inset-0 bg-[color-mix(in_srgb,var(--color-scrim)_62%,transparent)]" />
+        <span className="absolute inset-x-0 bottom-0 h-px bg-[linear-gradient(90deg,transparent,color-mix(in_srgb,var(--color-gold)_55%,transparent)_30%,color-mix(in_srgb,var(--color-gold)_55%,transparent)_70%,transparent)]" />
       </div>
     );
   }

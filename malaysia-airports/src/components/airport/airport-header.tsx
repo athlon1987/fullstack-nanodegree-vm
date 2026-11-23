@@ -73,35 +73,40 @@ export function AirportBanner({ airport, lang, sections, search }: AirportHeader
     <div data-airport-chrome="full" className="contents">
       <div className="relative isolate overflow-hidden bg-midnight">
         <AirportBackdrop slug={airport.slug} code={airport.code} lang={lang} variant="hero" />
-        <Container className="relative pt-7 pb-8 sm:pt-12 md:pt-16 md:pb-12 lg:pt-20">
-          {/* Over a photograph the words sit on their own scrim (4.5:1 even over a white picture). */}
-          <div className={cn('on-media max-w-[56rem] text-ink', photo && 'scrim-behind rounded-b-3xl pb-2')}>
-            <p className="type-caption flex flex-wrap items-center gap-x-3 gap-y-1 font-semibold tracking-[0.16em] text-ink-2 uppercase">
-              <span aria-hidden="true" className="h-px w-8 bg-gold-bright" />
-              <span>{pick(CLASSIFICATION_LABELS[airport.classification], lang)}</span>
-              <span aria-hidden="true" className="max-sm:hidden">
-                ·
-              </span>
-              {/* On phones the place takes its own line rather than leaving the dot dangling. */}
-              <span className="text-ink-2 max-sm:basis-full">{place}</span>
-            </p>
-            <h1 className="type-display-xl mt-3 text-balance text-ink sm:mt-4">{airport.name}</h1>
-            <div className="mt-5 flex flex-wrap items-center gap-2 sm:mt-7">
-              {/* Redesign round one (critique item 17): identity and time are plain text, the
-                  terminals one segmented control, "All airports" a text link. */}
-              <span className="type-body-sm inline-flex min-h-9 items-center gap-2 text-ink-2 touch:min-h-11">
-                <AirportCode code={airport.code} name={airport.name} size="sm" className="font-semibold text-ink" />
-                <span aria-hidden="true">·</span>
-                <LocalTime showLabel timeZone={airport.timezone} className="flex-wrap whitespace-normal" />
-              </span>
-              {terminals.length > 0 ? <TerminalChips slug={airport.slug} terminals={terminals} /> : null}
-              <LocaleLink href="/airports" className="link-action type-body-sm ml-auto text-ink max-sm:hidden">
-                {t('nav.airports')}
-                <Icon name="arrow-right" size="sm" strokeWidth={1.75} />
-              </LocaleLink>
+        {/* Redesign 1b: over a photograph the words and the search heading sit on one feathered
+            scrim (no visible box; 4.5:1 or more over the brightest part of any photograph). On a
+            phone the photograph has the top of the banner to itself, then fades under the words,
+            like a travel app's image header. */}
+        <Container className={cn('relative pb-8 md:pb-12', photo ? 'pt-36 sm:pt-28 md:pt-20 lg:pt-24' : 'pt-7 sm:pt-12 md:pt-16 lg:pt-20')}>
+          <div className={cn('max-w-[56rem]', photo && 'scrim-feather')}>
+            <div className="on-media text-ink">
+              <p className="type-caption flex flex-wrap items-center gap-x-3 gap-y-1 font-semibold tracking-[0.16em] text-ink-2 uppercase">
+                <span aria-hidden="true" className="h-px w-8 bg-gold-bright" />
+                <span>{pick(CLASSIFICATION_LABELS[airport.classification], lang)}</span>
+                <span aria-hidden="true" className="max-sm:hidden">
+                  ·
+                </span>
+                {/* On phones the place takes its own line rather than leaving the dot dangling. */}
+                <span className="text-ink-2 max-sm:basis-full">{place}</span>
+              </p>
+              <h1 className="type-display-xl mt-3 text-balance text-ink sm:mt-4">{airport.name}</h1>
+              <div className="mt-5 flex flex-wrap items-center gap-2 sm:mt-7">
+                {/* Redesign round one (critique item 17): identity and time are plain text, the
+                    terminals one segmented control, "All airports" a text link. */}
+                <span className="type-body-sm inline-flex min-h-9 items-center gap-2 text-ink-2 touch:min-h-11">
+                  <AirportCode code={airport.code} name={airport.name} size="sm" className="font-semibold text-ink" />
+                  <span aria-hidden="true">·</span>
+                  <LocalTime showLabel timeZone={airport.timezone} className="flex-wrap whitespace-normal" />
+                </span>
+                {terminals.length > 0 ? <TerminalChips slug={airport.slug} terminals={terminals} /> : null}
+                <LocaleLink href="/airports" className="link-action type-body-sm ml-auto text-ink max-sm:hidden">
+                  {t('nav.airports')}
+                  <Icon name="arrow-right" size="sm" strokeWidth={1.75} />
+                </LocaleLink>
+              </div>
             </div>
+            {search ? <div className="relative mt-7 sm:mt-10">{search}</div> : null}
           </div>
-          {search ? <div className="relative mt-7 max-w-[56rem] sm:mt-10">{search}</div> : null}
         </Container>
         {credit ? (
           <p className="on-media type-caption absolute right-3 bottom-3 max-w-[60%] rounded-pill bg-[color-mix(in_srgb,var(--color-scrim)_78%,transparent)] px-2.5 py-0.5 text-xs text-on-midnight-dim max-md:hidden">

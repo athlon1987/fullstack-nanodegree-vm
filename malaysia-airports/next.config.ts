@@ -63,6 +63,13 @@ const nextConfig: NextConfig = {
     // and in the RSC payload (/en HTML 98.8 KB gzip). Numbers in docs/qa/fixes/round6-access.md.
   },
   poweredByHeader: false,
+  // Redesign stage 1b (docs/qa/fixes/redesign1b-integrate.md): photographs are served as AVIF
+  // where the browser accepts it (about 40 % smaller than WebP at the same look), else WebP. Every
+  // `quality` an `<Image>` uses must be listed: 65 for heroes, 60 for cards, 75 (the default) elsewhere.
+  images: {
+    formats: ['image/avif', 'image/webp'],
+    qualities: [60, 65, 75],
+  },
   // Verification round two: React's own `Link` preload header (the fonts) made Next.js copy the
   // response's whole `Link` value, including the canonical and hreflang links set below, into the
   // cached page each time it was regenerated. Served pages then carried one more copy of their

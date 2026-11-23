@@ -86,6 +86,7 @@ export function HeroMedia({
           alt={image.alt}
           fill
           sizes={sizes ?? (inset ? '(min-width: 80rem) 77.5rem, 100vw' : '100vw')}
+          quality={65}
           preload={preload}
           {...(preload ? { fetchPriority: 'high' as const } : {})}
           {...placeholderProps(image)}
@@ -101,7 +102,7 @@ export function HeroMedia({
           className={cn(
             'on-media relative w-full text-ink',
             (scrim === 'bottom' || scrim === 'left') && 'scrim-behind',
-            scrim === 'left' && 'md:flex md:w-fit md:max-w-full md:flex-1 md:flex-col md:justify-end md:scrim-behind-left',
+            scrim === 'left' && 'md:flex md:w-fit md:max-w-full md:flex-1 md:flex-col md:justify-end md:scrim-feather',
           )}
         >
           <div

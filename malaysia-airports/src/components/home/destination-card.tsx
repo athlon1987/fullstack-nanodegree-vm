@@ -1,13 +1,13 @@
-import Image from 'next/image';
 import type { CSSProperties } from 'react';
 import { localizeAirport, pick, type Airport, type Lang, type Terminal } from '@/content';
-import { ALL_IMAGES, objectPosition, type SiteImage } from '@/content/images';
+import { ALL_IMAGES, HOME_HERO_IMAGES, objectPosition, type SiteImage } from '@/content/images';
 import { getT } from '@/lib/i18n';
 import { cn } from '@/lib/cn';
 import { AirportVignette } from '@/components/art/airport-vignette';
 import { AirportCode } from '@/components/common/airport-code';
 import { sectionPath } from '@/components/shell/sections';
 import { CardLink } from '@/components/ui/card';
+import { DeferredImage } from '@/components/ui/deferred-image';
 import { Icon } from '@/components/ui/icon';
 
 /**
@@ -28,11 +28,15 @@ const GROUNDS: Record<string, string> = {
 
 /**
  * A photograph of the place from the library: never another place's, never the generic Malaysia
- * fallback (a card named Penang must show Penang). KLIA Terminal 2 has its own group.
+ * fallback (a card named Penang must show Penang). KLIA Terminal 2 has its own group. Redesign 1b:
+ * never the home hero's own photograph either, so the KLIA Terminal 1 card shows a second view of
+ * the terminal instead of repeating the picture at the top of the page.
  */
 export function placePhoto(slug: string, terminal?: string): SiteImage | undefined {
   const group = slug === 'kul' ? (terminal === 'T2' ? 'klia2' : 'klia') : undefined;
-  return ALL_IMAGES.find((image) => image.place === slug && (group ? image.group === group : true) && (slug !== 'kul' || image.subject === 'terminal' || image.subject === 'interior'));
+  const hero = HOME_HERO_IMAGES[0];
+  const candidates = ALL_IMAGES.filter((image) => image.place === slug && (group ? image.group === group : true) && (slug !== 'kul' || image.subject === 'terminal' || image.subject === 'interior'));
+  return candidates.find((image) => image.id !== hero) ?? candidates[0];
 }
 
 export interface DestinationCardProps {
@@ -71,13 +75,14 @@ export function DestinationCard({ airport: record, terminal, lang, shape = 'port
     >
       <div className="absolute inset-0 -z-10" style={photo ? undefined : ground}>
         {photo ? (
-          <Image
+          // Redesign 1b: requested only near the viewport, after hydration, so it never competes
+          // with the hero photograph on the first load (DeferredImage). Quality 60, AVIF or WebP.
+          <DeferredImage
             src={photo.src}
             alt=""
             fill
             sizes={sizes}
-            quality={75}
-            placeholder="blur"
+            quality={60}
             blurDataURL={photo.blurDataURL}
             style={{ objectPosition: objectPosition(photo) }}
             className="object-cover transition-[scale] duration-slower ease-out motion-ok:group-hover/card:scale-[1.04]"

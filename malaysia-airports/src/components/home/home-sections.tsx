@@ -15,7 +15,7 @@ import {
   type Source,
 } from '@/content';
 import { localizeAirport } from '@/content/airports';
-import { HOME_HERO_IMAGES, IMAGES, type SiteImage } from '@/content/images';
+import { DISCOVER_IMAGES, HOME_HERO_IMAGES, IMAGES, objectPosition, type SiteImage } from '@/content/images';
 import { ARRIVAL_TIME_RULE } from '@/content/planning-rules';
 import { getT } from '@/lib/i18n';
 import { cn } from '@/lib/cn';
@@ -28,6 +28,7 @@ import type { NoticeView } from '@/components/airport/notice-utils';
 import { FlightSearchBox } from '@/components/flights/flight-search-box';
 import { Badge } from '@/components/ui/badge';
 import { Container } from '@/components/ui/container';
+import { DeferredImage } from '@/components/ui/deferred-image';
 import { Icon } from '@/components/ui/icon';
 import { Section } from '@/components/ui/section';
 import { DemoMarkedList } from '@/components/common/demo-tag';
@@ -94,7 +95,7 @@ export function HomeHero({ lang, notices }: { lang: Lang; notices: readonly Noti
     <section
       aria-labelledby="home-title"
       data-hero-under-header=""
-      className="relative isolate -mt-header flex flex-col justify-end bg-midnight md:min-h-[calc(100svh-2rem)] lg:min-h-[min(62rem,calc(100svh-2rem))]"
+      className="relative isolate -mt-header flex flex-col justify-end overflow-x-clip bg-midnight md:min-h-[calc(100svh-2rem)] lg:min-h-[min(62rem,calc(100svh-2rem))]"
     >
       <HeroBackdrop photo={photo} lang={lang} />
       <Container className="flex flex-col gap-[clamp(0.625rem,1.5vh,1rem)] pt-[calc(var(--spacing-header)+clamp(1rem,3.5vh,3.5rem))] pb-[clamp(1.25rem,3.5vh,3rem)]">
@@ -103,7 +104,9 @@ export function HomeHero({ lang, notices }: { lang: Lang; notices: readonly Noti
             hero); 48 px between the h1 and the search; the example searches wait for focus. */}
         <div className="min-[90rem]:grid min-[90rem]:grid-cols-[minmax(0,1fr)_22rem] min-[90rem]:items-end min-[90rem]:gap-x-10">
           <div className="flex min-w-0 flex-col gap-[clamp(1rem,3vh,3rem)]">
-            <div className={cn('on-media max-w-[60rem] text-ink', photo && 'scrim-behind')}>
+            {/* Redesign 1b: over the photograph the words sit on a feathered scrim (no visible box);
+                the gold line keeps 4:1 or more over the brightest part of any photograph. */}
+            <div className={cn('on-media max-w-[60rem] text-ink', photo && 'scrim-feather')}>
               <p className="type-caption mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 font-semibold tracking-[0.16em] text-ink-2 uppercase max-sm:hidden [@media(max-height:46rem)]:hidden">
                 <span aria-hidden="true" className="h-px w-8 bg-gold-bright" />
                 <span lang="ms">{t('home.greeting')}</span>
@@ -328,6 +331,15 @@ const SHOP_CARD_GROUNDS = [
   'linear-gradient(150deg, #0d3b33 0%, #1f5e50 100%)',
 ] as const;
 
+/**
+ * Redesign 1b: the discover photographs of Malaysian food (and a street stall) behind the cards,
+ * decorative: they set the mood and do not claim to show any outlet. Food first, in the library's order.
+ */
+const SHOP_CARD_PHOTOS: SiteImage[] = (() => {
+  const pool = DISCOVER_IMAGES.map((id) => IMAGES[id] as SiteImage);
+  return [...pool.filter((image) => image.subject === 'food'), ...pool.filter((image) => image.id === 'george-town-street')];
+})();
+
 export function HomeShopDine({ lang }: { lang: Lang }) {
   const t = getT(lang);
   const outletCounts = Object.fromEntries(
@@ -372,25 +384,54 @@ export function HomeShopDine({ lang }: { lang: Lang }) {
           <ShopDineStrip outletCounts={outletCounts} usableFilters={usableFilters} />
         </div>
         <ul className="grid gap-3 sm:grid-cols-2">
-          {showcase.map((item, index) => (
-            <li
-              key={item.slug}
-              className={cn('on-media group/shop relative isolate flex min-h-44 flex-col justify-end overflow-hidden rounded-3xl p-5 text-ink shadow-md sm:p-6', index === 0 && 'sm:row-span-2 sm:min-h-[22rem]')}
-              style={{ backgroundImage: SHOP_CARD_GROUNDS[index % SHOP_CARD_GROUNDS.length] }}
-            >
-              <Icon name={index === 0 ? 'utensils' : index === 1 ? 'shopping-bag' : 'glass-water'} strokeWidth={0.75} className="absolute -top-4 -right-4 -z-10 size-36 text-[rgb(255_255_255/0.16)] transition-transform duration-slow ease-out motion-ok:group-hover/shop:scale-105" />
-              <span aria-hidden="true" className="type-display-md text-gold-bright tabular-nums">
-                {item.count}
-              </span>
-              <span className="sr-only">{t.count('home.shop.published', item.count, { airport: item.name })}</span>
-              <h3 className="type-title-md mt-1 text-ink">
-                <LocaleLink href={`/${item.slug}/shop-dine`} className="outline-none after:absolute after:inset-0 after:rounded-3xl focus-visible:after:focus-ring">
-                  {t('home.shop.browseAt', { airport: item.name })}
-                </LocaleLink>
-              </h3>
-              <p className="type-body-sm mt-1.5 line-clamp-2 text-ink-2">{item.names.join(' · ')}</p>
-            </li>
-          ))}
+          {showcase.map((item, index) => {
+            const photo = SHOP_CARD_PHOTOS[index];
+            return (
+              <li
+                key={item.slug}
+                className={cn('on-media group/shop relative isolate flex min-h-44 flex-col justify-end overflow-hidden rounded-3xl p-5 text-ink shadow-md sm:p-6', index === 0 && 'sm:row-span-2 sm:min-h-[22rem]', photo && 'min-h-52')}
+                style={photo ? undefined : { backgroundImage: SHOP_CARD_GROUNDS[index % SHOP_CARD_GROUNDS.length] }}
+              >
+                {photo ? (
+                  <div aria-hidden="true" className="absolute inset-0 -z-10 bg-midnight">
+                    <DeferredImage
+                      src={photo.src}
+                      alt=""
+                      fill
+                      sizes="(min-width: 64rem) 22vw, (min-width: 40rem) 50vw, 100vw"
+                      quality={60}
+                      blurDataURL={photo.blurDataURL}
+                      style={{ objectPosition: objectPosition(photo) }}
+                      className="object-cover transition-[scale] duration-slower ease-out motion-ok:group-hover/shop:scale-[1.04]"
+                    />
+                  </div>
+                ) : (
+                  <Icon name={index === 0 ? 'utensils' : index === 1 ? 'shopping-bag' : 'glass-water'} strokeWidth={0.75} className="absolute -top-4 -right-4 -z-10 size-36 text-[rgb(255_255_255/0.16)] transition-transform duration-slow ease-out motion-ok:group-hover/shop:scale-105" />
+                )}
+                {/* Over a photograph the words sit on a card-wide scrim (edge to edge, fading out in
+                    the 3rem above them; the text alpha under every line however tall the block
+                    grows). It is the block's own background, so the link's hit area stays the card. */}
+                <div
+                  className={cn(
+                    'flex flex-col',
+                    photo &&
+                      '-mx-5 -mb-5 rounded-b-[inherit] bg-[linear-gradient(to_top,color-mix(in_srgb,var(--color-scrim)_var(--scrim-text-alpha),transparent)_0,color-mix(in_srgb,var(--color-scrim)_var(--scrim-text-alpha),transparent)_calc(100%-3rem),transparent)] px-5 pt-12 pb-5 sm:-mx-6 sm:-mb-6 sm:px-6 sm:pt-14 sm:pb-6 hc:bg-[color-mix(in_srgb,var(--color-scrim)_92%,transparent)]',
+                  )}
+                >
+                  <span aria-hidden="true" className="type-display-md text-gold-bright tabular-nums">
+                    {item.count}
+                  </span>
+                  <span className="sr-only">{t.count('home.shop.published', item.count, { airport: item.name })}</span>
+                  <h3 className="type-title-md mt-1 text-ink">
+                    <LocaleLink href={`/${item.slug}/shop-dine`} className="outline-none after:absolute after:inset-0 after:rounded-3xl focus-visible:after:focus-ring">
+                      {t('home.shop.browseAt', { airport: item.name })}
+                    </LocaleLink>
+                  </h3>
+                  <p className="type-body-sm mt-1.5 line-clamp-2 text-ink-2">{item.names.join(' · ')}</p>
+                </div>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </Section>

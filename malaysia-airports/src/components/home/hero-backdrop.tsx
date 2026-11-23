@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import type { SiteImage } from '@/content/images';
-import { objectPosition } from '@/content/images';
 import type { Lang } from '@/content/types';
+import { cn } from '@/lib/cn';
+import { ART_DIRECTED_POSITION, artDirection } from '@/components/ui/media';
 import { HeroArt } from './hero-art';
 
 /**
@@ -9,12 +10,26 @@ import { HeroArt } from './hero-art';
  * library has one, otherwise the illustrated "KLIA at dusk" (`HeroArt`). Either way it fills the
  * hero's box, which is sized by its content, so nothing moves when the image arrives.
  *
- * The photograph is the page's LCP element: preloaded with high priority, `sizes="100vw"`, served
- * by next/image (WebP by default; AVIF once `images.formats` lists it), blur placeholder from the
- * library. Over a photograph two scrims keep text legible: one under the header (the navigation
- * sits there in white) and the headline block's own `scrim-behind` (set by the hero). The
- * illustration is dark where text sits, so it needs neither.
+ * The photograph is the page's LCP element (redesign 1b, docs/qa/fixes/redesign1b-integrate.md):
+ * in the static HTML, preloaded with `fetchPriority="high"`, never lazy, no entrance animation or
+ * transition, `sizes="100vw"`, quality 65, served as AVIF or WebP by next/image. Art direction: on
+ * a phone the hero is a tall slice of a wide photograph, so it is framed on the white column that
+ * fans out of the roof; from 768 px it is framed to the right, with the words on the left.
+ *
+ * Legibility: the veil under the header (`scrim-header`) and a soft depth at the foot, where the
+ * glass panels sit. The headline block carries its own feathered scrim (`scrim-feather`, set by the
+ * hero). The illustration is dark where text sits, so it needs neither.
  */
+/**
+ * Where the home hero's photograph is framed (fractions of the photograph). The KLIA Terminal 1
+ * canopy: the column node sits at about (0.66, 0.95) and its white branches fan up to the left and
+ * right. Phones see a slice about a fifth of its width, so the slice follows the main branch up to
+ * the roof; from 768 px the frame keeps the fan on the right, away from the words.
+ */
+const HOME_HERO_FRAMING: Partial<Record<string, Parameters<typeof artDirection>[1]>> = {
+  'klia-t1-canopy': { base: { x: 0.6, y: 0.5 }, md: { x: 0.8, y: 0.5 } },
+};
+
 export function HeroBackdrop({ photo, lang }: { photo?: SiteImage; lang: Lang }) {
   return (
     <div aria-hidden={photo ? undefined : true} className="absolute inset-0 -z-10 overflow-hidden bg-midnight">
@@ -25,25 +40,17 @@ export function HeroBackdrop({ photo, lang }: { photo?: SiteImage; lang: Lang })
             alt={photo.alt[lang]}
             fill
             sizes="100vw"
-            quality={75}
+            quality={65}
             preload
             fetchPriority="high"
             placeholder="blur"
             blurDataURL={photo.blurDataURL}
-            style={{ objectPosition: objectPosition(photo) }}
-            className="object-cover"
+            style={artDirection(photo.focal, HOME_HERO_FRAMING[photo.id])}
+            className={cn('object-cover', ART_DIRECTED_POSITION)}
           />
-          {/* The header zone: text alpha to the bottom of the header, fading out 6rem below it. */}
-          <span
-            aria-hidden="true"
-            className="absolute inset-x-0 top-0 h-[calc(var(--spacing-header)+6rem)]"
-            style={{
-              backgroundImage:
-                'linear-gradient(to bottom, color-mix(in srgb, var(--color-scrim) var(--scrim-text-alpha), transparent) 0, color-mix(in srgb, var(--color-scrim) var(--scrim-text-alpha), transparent) var(--spacing-header), transparent 100%)',
-            }}
-          />
+          <span aria-hidden="true" className="scrim-header absolute inset-x-0 top-0 h-[calc(var(--spacing-header)+6rem)]" />
           {/* Depth at the foot of the hero, where the glass panels sit. */}
-          <span aria-hidden="true" className="scrim-bottom absolute inset-x-0 bottom-0 h-2/3 opacity-70" />
+          <span aria-hidden="true" className="scrim-bottom absolute inset-x-0 bottom-0 h-2/3 opacity-55" />
         </>
       ) : (
         <HeroArt className="absolute inset-0" />

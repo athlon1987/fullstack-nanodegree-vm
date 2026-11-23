@@ -98,6 +98,7 @@ export function CardMedia({ image, aspect = 'landscape', sizes, preload = false,
         alt={image.alt}
         fill
         sizes={sizes ?? '(min-width: 64rem) 33vw, (min-width: 40rem) 50vw, 100vw'}
+        quality={60}
         preload={preload}
         {...(preload ? { fetchPriority: 'high' as const } : {})}
         {...placeholderProps(image)}

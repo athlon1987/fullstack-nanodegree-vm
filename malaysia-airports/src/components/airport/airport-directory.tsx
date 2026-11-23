@@ -168,6 +168,7 @@ export function AirportDirectoryView({ then, photos = {} }: AirportDirectoryView
               alt=""
               fill
               sizes="(min-width: 80rem) 33vw, (min-width: 40rem) 50vw, 100vw"
+              quality={60}
               {...placeholderProps(photo)}
               style={{ objectPosition: objectPosition(photo.focal) }}
               className="object-cover transition-[scale] duration-slower ease-out motion-ok:group-hover/media:scale-[1.04]"

@@ -423,12 +423,22 @@
     --glass-dark-alpha: 72%;
     --scrim-text-alpha: 78%;
     --scrim-edge-alpha: 35%;
+    /* Redesign 1b: the feathered scrim under a hero's words, and the veil under the header over a
+       hero (lighter on phones, where the header holds only the logo and the airport pill on its
+       own ground; the text alpha from 768 px, where the navigation links sit on it). */
+    --scrim-feather-alpha: 70%;
+    --scrim-header-alpha: 52%;
     --glass-blur: 20px;
     /* Patterns are masks, so they take any token colour. */
     --pattern-rebung: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='6'%3E%3Cpath d='M0 6 6 .5l6 5.5' fill='none' stroke='%23000'/%3E%3C/svg%3E");
     --pattern-rebung-lg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='20'%3E%3Cpath d='M1 20 12 2l11 18M6.5 20 12 11l5.5 9M12 20v-4' fill='none' stroke='%23000'/%3E%3C/svg%3E");
     --pattern-tabur: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Cpath d='M11 6.5 12.2 9.8 15.5 11 12.2 12.2 11 15.5 9.8 12.2 6.5 11 9.8 9.8zM33 28.5 34.2 31.8 37.5 33 34.2 34.2 33 37.5 31.8 34.2 28.5 33 31.8 31.8z'/%3E%3Ccircle cx='33' cy='11' r='1'/%3E%3Ccircle cx='11' cy='33' r='1'/%3E%3C/svg%3E");
     --pattern-weave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath d='M0 3h12M0 9h12M15 0v12M21 0v12M3 12v12M9 12v12M12 15h12M12 21h12' fill='none' stroke='%23000'/%3E%3C/svg%3E");
+  }
+  @media (min-width: 48rem) {
+    :root {
+      --scrim-header-alpha: var(--scrim-text-alpha);
+    }
   }
 
   /* The board and media scopes share the dark values, so every component works on them unchanged. */
@@ -1293,6 +1303,51 @@
     }
   }
 }
+/* Redesign 1b: the scrim for the words of a hero over a photograph, without the visible box of
+   `scrim-behind`. The layer runs off the left edge of the screen, holds the text alpha under the
+   whole block however tall or wide it grows (Malay, 125 % text) and feathers out 12rem to its right,
+   7rem above and 2rem below, so the photograph shows around the words. At 70 % white and the
+   secondary ink stay above 6:1 and the gold accent above 4:1 over a pure white photograph. The hero
+   clips it (`overflow-hidden` or `overflow-x-clip`). */
+@utility scrim-feather {
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -7rem -12rem -2rem -100vw;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: 0;
+    background-image: none;
+    background-color: color-mix(in srgb, var(--color-scrim) var(--scrim-feather-alpha), transparent);
+    -webkit-mask-image:
+      linear-gradient(to right, #000 calc(100% - 12rem), transparent),
+      linear-gradient(to bottom, transparent, #000 7rem, #000 calc(100% - 2rem), transparent);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(to right, #000 calc(100% - 12rem), transparent),
+      linear-gradient(to bottom, transparent, #000 7rem, #000 calc(100% - 2rem), transparent);
+    mask-composite: intersect;
+  }
+  :where([data-contrast='more'], [data-contrast='high']) &::before {
+    background-color: color-mix(in srgb, var(--color-scrim) 92%, transparent);
+  }
+  @media (forced-colors: active) {
+    &::before {
+      display: none;
+    }
+  }
+}
+/* The veil under the site header where a hero runs up beneath it: `--scrim-header-alpha` to the
+   bottom of the header, fading out 6rem below it. */
+@utility scrim-header {
+  background-image: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--color-scrim) var(--scrim-header-alpha), transparent) 0,
+    color-mix(in srgb, var(--color-scrim) var(--scrim-header-alpha), transparent) var(--spacing-header),
+    transparent calc(var(--spacing-header) + 6rem)
+  );
+}
 @utility scrim-full {
   background-color: color-mix(in srgb, var(--color-scrim) var(--scrim-edge-alpha), transparent);
 }
@@ -1452,7 +1507,8 @@ html:where([data-motion='reduce'], [data-motion='reduced'])::view-transition-new
   .scrim-bottom,
   .scrim-left,
   .scrim-top,
-  .scrim-full {
+  .scrim-full,
+  .scrim-header {
     display: none;
   }
 }

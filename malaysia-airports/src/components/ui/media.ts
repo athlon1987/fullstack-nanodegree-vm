@@ -1,4 +1,5 @@
 import type { StaticImageData } from 'next/image';
+import type { CSSProperties } from 'react';
 import type { Lang } from '@/content/types';
 
 /**
@@ -67,3 +68,25 @@ export function placeholderProps(image: MediaImage): { placeholder: 'blur' | 'em
   const blur = image.blurDataURL ?? (typeof image.src === 'object' ? image.src.blurDataURL : undefined);
   return blur ? { placeholder: 'blur', blurDataURL: blur } : { placeholder: 'empty' };
 }
+
+/** A focal point: fractions from the top left, 0 to 1. */
+export type Focal = { x: number; y: number };
+
+/**
+ * Art direction for a photograph that fills a box of a different shape per breakpoint (redesign
+ * 1b): a phone hero is a tall portrait slice of a wide photograph, a desktop hero a wide one, so
+ * one focal point rarely suits both. Returns CSS variables for `ART_DIRECTED_POSITION`: the base
+ * (phones), `md` (768 px) and `lg` (1024 px) positions, each falling back to the one below.
+ *
+ * @example
+ * <Image className={cn('object-cover', ART_DIRECTED_POSITION)} style={artDirection(photo.focal, { md: { x: 0.8, y: 0.5 } })} … />
+ */
+export function artDirection(focal: Focal | undefined, overrides: { base?: Focal; md?: Focal; lg?: Focal } = {}): CSSProperties {
+  const base = overrides.base ?? focal;
+  const md = overrides.md ?? base;
+  const lg = overrides.lg ?? md;
+  return { '--media-pos': objectPosition(base), '--media-pos-md': objectPosition(md), '--media-pos-lg': objectPosition(lg) } as CSSProperties;
+}
+
+/** The classes that read `artDirection`'s variables. */
+export const ART_DIRECTED_POSITION = '[object-position:var(--media-pos)] md:[object-position:var(--media-pos-md)] lg:[object-position:var(--media-pos-lg)]';

@@ -21,6 +21,7 @@ import { useFlightAlerts } from './flight-alerts';
 import { FlightWatcher } from './flight-watcher';
 import { flightTitle } from './flight-title';
 import { JOURNEY_EMPTY_HEADING_ID, JourneyEmpty } from './journey-empty';
+import type { MediaImage } from '@/components/ui/media';
 import { JourneyTimeline, modesForFlight, useJourneyPreferences } from './journey-timeline';
 import { NeedsControl } from './needs-control';
 import { ParkedCarCard, type CarParkOption } from './parked-car-card';
@@ -35,6 +36,8 @@ const ClearJourney = retryableLazy(() => import('./clear-journey').then((module)
 
 export interface MyJourneyProps {
   carParks: readonly CarParkOption[];
+  /** The photograph of the empty state (redesign 1b), prepared on the server. */
+  emptyPhoto?: MediaImage;
 }
 
 /** One airport's journey content, as `/[lang]/journey/content/[airport]` serves it. */
@@ -87,7 +90,7 @@ const STEPS_HEADING_ID = 'journey-steps-title';
  * out of the first screen and does not move. Each airport's notes and sources are fetched only
  * when a saved flight needs them.
  */
-export function MyJourney({ carParks }: MyJourneyProps) {
+export function MyJourney({ carParks, emptyPhoto }: MyJourneyProps) {
   const t = useT();
   const lang = useLang();
   const { journey, removeFlight } = useSavedJourney();
@@ -174,7 +177,7 @@ export function MyJourney({ carParks }: MyJourneyProps) {
       {/* A first-screen minimum: swapping the empty state for saved flights moves nothing in view. */}
       <div className="min-h-[70svh]">
         {journey.flights.length === 0 ? (
-          <JourneyEmpty />
+          <JourneyEmpty photo={emptyPhoto} />
         ) : (
           <section aria-labelledby={SAVED_FLIGHTS_HEADING_ID} className="flex flex-col gap-5">
             <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
