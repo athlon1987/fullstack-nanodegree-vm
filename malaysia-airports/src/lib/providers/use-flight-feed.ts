@@ -61,6 +61,13 @@ interface Held {
 /* Last good answer per board, shared by every page of this tab (survives client navigation). */
 const memory = new Map<string, Held>();
 const inFlight = new Set<string>();
+/*
+ * Round eight addendum (B-09): how the last request for a board failed, per board and bucket
+ * (`key|bucket`). A board already in flight for another component is not asked for twice, so
+ * without this a page whose boards were in someone else's failed request said "Loading" until
+ * the next 30-second bucket (the home's board preview, while the search's request failed).
+ */
+const failures = new Map<string, 'error' | 'timeout'>();
 const listeners = new Set<() => void>();
 let version = 0;
 
@@ -136,6 +143,7 @@ const BATCH_FROM = 3;
 export function clearFeedMemory(): void {
   memory.clear();
   inFlight.clear();
+  failures.clear();
   bump();
 }
 
@@ -184,7 +192,14 @@ export function useFlightFeed(
       return !(current && current.at === bucket && !current.day.stale) && !inFlight.has(`${key}|${bucket}`);
     });
     if (pending.length === 0) return;
-    for (const request of pending) inFlight.add(`${feedKey(request.airport, request.date, request.direction)}|${bucket}`);
+    let retried = false;
+    for (const request of pending) {
+      const flight = `${feedKey(request.airport, request.date, request.direction)}|${bucket}`;
+      inFlight.add(flight);
+      retried = failures.delete(flight) || retried;
+    }
+    // Asked again (Try again): every page that showed this failure shows "Loading" again.
+    if (retried) bump();
     // Boards of the same date and direction go in one request when there are several (round 2).
     const groups = new Map<string, FeedRequest[]>();
     for (const request of pending) groups.set(`${request.date}|${request.direction}`, [...(groups.get(`${request.date}|${request.direction}`) ?? []), request]);
@@ -200,10 +215,18 @@ export function useFlightFeed(
           const key = feedKey(request.airport, request.date, request.direction);
           inFlight.delete(`${key}|${bucket}`);
           const day = result.status === 'fulfilled' ? result.value.find((item) => item.airport === request.airport) : undefined;
-          if (day) memory.set(key, { day, at: bucket });
-          else failed = result.status === 'rejected' && result.reason instanceof Error && result.reason.name === 'AbortError' ? 'timeout' : 'error';
+          if (day) {
+            memory.set(key, { day, at: bucket });
+            failures.delete(`${key}|${bucket}`);
+          } else {
+            const kind = result.status === 'rejected' && result.reason instanceof Error && result.reason.name === 'AbortError' ? 'timeout' : 'error';
+            failures.set(`${key}|${bucket}`, kind);
+            failed = kind;
+          }
         }
       });
+      // Only the current bucket's failures matter; older ones are dropped so the map stays small.
+      for (const flight of failures.keys()) if (!flight.endsWith(`|${bucket}`)) failures.delete(flight);
       bump();
       if (!cancelled) setFailure(failed);
     });
@@ -222,6 +245,18 @@ export function useFlightFeed(
           .filter((day): day is FeedDay => Boolean(day));
   }, [signature, held]);
 
+  // A failed request for one of these boards in this bucket, whichever component asked (above).
+  const sharedFailure = useMemo(() => {
+    void held;
+    if (bucket === null || signature === '') return null;
+    for (const key of signature.split(',')) {
+      const found = failures.get(`${key}|${bucket}`);
+      if (found) return found;
+    }
+    return null;
+  }, [signature, bucket, held]);
+  const failed = failure ?? sharedFailure;
+
   const provider = useMemo(() => (days.length > 0 && now !== null ? new SnapshotFlightProvider(days, now) : null), [days, now]);
   const oldest = days.reduce<string | null>(
     (found, day) => (found === null || Date.parse(day.meta.generatedAt) < Date.parse(found) ? day.meta.generatedAt : found),
@@ -232,10 +267,10 @@ export function useFlightFeed(
   const missing = days.length < (signature === '' ? 0 : signature.split(',').length);
   const status: FeedStatus =
     days.length === 0
-      ? failure
+      ? failed
         ? 'error'
         : 'loading'
-      : failure || days.some((day) => day.stale) || (!paused && ageSeconds !== null && ageSeconds > 2 * refreshSeconds) || (missing && failure)
+      : failed || days.some((day) => day.stale) || (!paused && ageSeconds !== null && ageSeconds > 2 * refreshSeconds) || (missing && failed)
         ? 'stale'
         : 'live';
 
