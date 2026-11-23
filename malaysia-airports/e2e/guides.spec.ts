@@ -203,6 +203,11 @@ test.describe('fix round D', () => {
   test('KLIA facilities list Fast Track with its booking link (D-02)', async ({ page }) => {
     await page.goto('/en/kul/facilities');
     const main = page.getByRole('main');
+    // Intended change (redesign three, phone page length): below 768 px each group shows its first
+    // card and keeps the rest behind "Show N more"; Fast Track is the second card of "Other".
+    // The server HTML shows two cards per group; a phone moves the second into the disclosure once
+    // loaded, so wait for that summary rather than sampling it once.
+    if (page.viewportSize()!.width < 768) await main.locator('summary', { hasText: 'Show 2 more: Other' }).click();
     await expect(main.getByRole('heading', { name: 'Fast Track' }).first()).toBeVisible();
     await expect(main.getByText(/Not published in our sources: what it includes/).first()).toBeVisible();
   });

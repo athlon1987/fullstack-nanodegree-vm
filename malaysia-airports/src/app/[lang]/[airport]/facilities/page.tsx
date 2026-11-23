@@ -59,7 +59,7 @@ async function Facilities({ params }: { params: AirportPageParams }) {
           (prayer rooms, accessibility and assistance, toilets) as the answer beside the title. */}
       <ServiceIntro
         eyebrow={t('mapPages.frame.group')}
-        place={servicePlace(airport.slug, lang)}
+        place={servicePlace(airport.slug, lang, 'facilities')}
         title={t('nav.facilities')}
         summary={t('mapPages.facilities.lead', { airport: airport.shortName })}
         summaryClassName="max-sm:sr-only"

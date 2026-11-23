@@ -593,6 +593,14 @@ export const corporatePagesEn = {
     privacyAction: 'Privacy',
     aboutAction: 'About this prototype',
   },
+  // Redesign three (phone page length): on phones, About keeps secondary lists behind these lines.
+  aboutPhone: {
+    earlier: 'Show {count} earlier milestones, {from} to {to}',
+    management: 'Show the management team ({count})',
+    companies: 'Show the {count} group companies',
+    agreements: 'Show the {count} agreement details',
+    recognition: 'Show the {count} awards and ratings',
+  },
 };
 
 export const corporatePagesMs: typeof corporatePagesEn = {
@@ -1179,5 +1187,12 @@ export const corporatePagesMs: typeof corporatePagesEn = {
     },
     privacyAction: 'Privasi',
     aboutAction: 'Perihal prototaip ini',
+  },
+  aboutPhone: {
+    earlier: 'Tunjuk {count} peristiwa penting terdahulu, {from} hingga {to}',
+    management: 'Tunjuk pasukan pengurusan ({count})',
+    companies: 'Tunjuk {count} syarikat kumpulan',
+    agreements: 'Tunjuk {count} butiran perjanjian',
+    recognition: 'Tunjuk {count} anugerah dan penarafan',
   },
 };

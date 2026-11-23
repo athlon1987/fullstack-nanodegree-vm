@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { useAirportContext } from '@/lib/hooks/use-airport-context';
 import { useT } from '@/lib/i18n/client';
 import { LocaleLink } from '@/components/common/locale-link';
@@ -8,7 +7,8 @@ import { useSectionAvailability } from '@/components/shell/shell-context';
 import { sectionHref } from '@/components/shell/sections';
 import { buttonClasses } from '@/components/ui/button';
 import { cn } from '@/lib/cn';
-import { objectPosition, placeholderProps, type MediaImage } from '@/components/ui/media';
+import type { MediaImage } from '@/components/ui/media';
+import { Photo } from '@/components/ui/photo';
 import { Icon, type IconName } from '@/components/ui/icon';
 import { AirportVignette } from '@/components/art/airport-vignette';
 import { TaburField } from '@/components/art/patterns';
@@ -62,14 +62,11 @@ export function JourneyEmpty({ photo }: { photo?: MediaImage }) {
             className="float-right mb-3 ml-4 rounded-[2.25rem] bg-[linear-gradient(160deg,rgb(255_255_255/0.22),rgb(255_255_255/0.06))] p-1.5 shadow-lg ring-1 ring-white/15 sm:absolute sm:top-10 sm:right-10 sm:float-none sm:m-0 sm:rounded-[3.25rem] sm:p-2 lg:top-12 lg:right-12"
           >
             <div className="relative h-28 w-20 overflow-hidden rounded-[1.875rem] sm:h-48 sm:w-36 sm:rounded-[2.75rem] lg:h-52 lg:w-40">
-              <Image
-                src={photo.src}
+              <Photo
+                image={photo}
                 alt=""
-                fill
                 sizes="(min-width: 64rem) 10rem, (min-width: 40rem) 9rem, 5rem"
                 quality={60}
-                {...placeholderProps(photo)}
-                style={{ objectPosition: objectPosition(photo.focal) }}
                 className="object-cover"
               />
               <span className="absolute inset-0 rounded-[inherit] shadow-[inset_0_0_1.25rem_rgb(0_0_0/0.45)]" />

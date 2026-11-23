@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { cn } from '@/lib/cn';
@@ -22,7 +21,8 @@ import { Icon } from '@/components/ui/icon';
 import { NativeSelect } from '@/components/ui/native-select';
 import { SearchField } from '@/components/ui/search-field';
 import { SegmentedControl } from '@/components/ui/segmented-control';
-import { objectPosition, placeholderProps, type MediaImage } from '@/components/ui/media';
+import type { MediaImage } from '@/components/ui/media';
+import { Photo } from '@/components/ui/photo';
 import { AirportVignette } from '@/components/art/airport-vignette';
 import { MapMarker, NetworkMap } from './network-map';
 import { DEPTH_COPY, DEPTH_ORDER, airportDepthLabel } from './airport-depth';
@@ -175,10 +175,9 @@ export function AirportDirectoryView({ then, photos = {} }: AirportDirectoryView
       >
         <div aria-hidden="true" className="absolute inset-0 -z-10 overflow-hidden rounded-[inherit]">
           {photo ? (
-            <Image
-              src={photo.src}
+            <Photo
+              image={photo}
               alt=""
-              fill
               sizes={
                 shape === 'lead'
                   ? '(min-width: 80rem) 50vw, (min-width: 40rem) 100vw, 82vw'
@@ -187,8 +186,6 @@ export function AirportDirectoryView({ then, photos = {} }: AirportDirectoryView
                     : '(min-width: 80rem) 33vw, (min-width: 40rem) 50vw, 100vw'
               }
               quality={60}
-              {...placeholderProps(photo)}
-              style={{ objectPosition: objectPosition(photo.focal) }}
               className="object-cover transition-[scale] duration-slower ease-out motion-ok:group-hover/media:scale-[1.04]"
             />
           ) : (

@@ -41,12 +41,12 @@ export function FacilityCard({ facility, sources, showTerminal, airport, default
     <article
       id={facility.id}
       aria-labelledby={`${facility.id}-title`}
-      className="flex min-w-0 scroll-mt-32 flex-col rounded-2xl border border-line bg-surface p-5 shadow-sm target:border-ink target:shadow-lg sm:p-6"
+      className="flex min-w-0 scroll-mt-32 flex-col rounded-2xl border border-line bg-surface p-4 shadow-sm target:border-ink target:shadow-lg sm:p-6"
     >
       {/* Round 6 (review-3 9.1 item 8): the title is never narrower than its longest word
           ("ketidakupayaan" broke at 360 px and 125% text); the save button moves under it instead. */}
       <div className="flex flex-wrap items-start gap-3">
-        <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-primary-soft text-primary-ink">
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary-ink sm:size-12 sm:rounded-2xl">
           <Icon name={facility.icon} />
         </span>
         <h3 id={`${facility.id}-title`} className="type-title-lg flex-1 basis-0 self-center [overflow-wrap:normal] text-ink">
@@ -63,13 +63,14 @@ export function FacilityCard({ facility, sources, showTerminal, airport, default
         </div>
       ) : null}
 
-      <p className="type-body mt-4 text-ink-2">{facility.description}</p>
+      {/* Redesign three: tighter on phones (facilities was 14,483 px at 390 px); the same content. */}
+      <p className="type-body mt-3 text-ink-2 sm:mt-4">{facility.description}</p>
 
       {/* Round 6 (review-3 9.1 item 7): where and when stay on the card; who may use it, the area
           and the operator go behind a disclosure on phones when there are two or more of them or
           the access rules are long (facilities was 15,451 px at 390 px). Accessibility stays out. */}
       <FactList
-        className="mt-4"
+        className="mt-3 sm:mt-4"
         facts={[
           { label: t('mapPages.details.location'), value: facility.locationNote },
           { label: t('mapPages.details.level'), value: facility.levelName },
@@ -84,7 +85,7 @@ export function FacilityCard({ facility, sources, showTerminal, airport, default
         </MoreOnPhones>
       ) : null}
 
-      <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-1 pt-4">
+      <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-1 pt-3 sm:pt-4">
         {facility.mapHref ? (
           <LocaleLink
             href={facility.mapHref}

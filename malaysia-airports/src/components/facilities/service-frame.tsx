@@ -1,8 +1,8 @@
-import Image from 'next/image';
 import type { ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 import { Container } from '@/components/ui/container';
-import { objectPosition, placeholderProps, type MediaImage } from '@/components/ui/media';
+import type { MediaImage } from '@/components/ui/media';
+import { Photo } from '@/components/ui/photo';
 
 /*
  * The frame of the airport service pages (redesign stage two, Direction v2): terminal map,
@@ -63,22 +63,18 @@ export interface ServiceIntroProps {
 /**
  * The place band: a fixed height per breakpoint (no layout shift), full bleed under the airport's
  * section tabs, a soft shade at the foot only and the credit in the top corner (the answer panel
- * covers the lower right from `lg` up). Not preloaded: it is not the page's subject.
+ * covers the lower right from `lg` up).
+ *
+ * Redesign 3 (docs/qa/fixes/redesign3-perf.md): it is the largest paint on every screen size (412
+ * x 140 px on a phone, larger than the title), and React preloads any image that is not lazy, so it
+ * was always preloaded, at low priority. It is now the page's priority image (`fetchPriority`
+ * high), drawn by `Photo` without next/image's client code, and a phone's 140 px strip asks for
+ * quality 50.
  */
 function PlaceBand({ image, className }: { image: MediaImage; className?: string }) {
   return (
     <div data-place-band="" className={cn('relative isolate h-[8.75rem] overflow-hidden bg-midnight sm:h-44 lg:h-[13.75rem]', className)}>
-      <Image
-        src={image.src}
-        alt={image.alt}
-        fill
-        sizes="100vw"
-        quality={60}
-        loading="eager"
-        {...placeholderProps(image)}
-        style={{ objectPosition: objectPosition(image.focal) }}
-        className="-z-10 object-cover"
-      />
+      <Photo image={image} sizes="100vw" quality={60} phoneQuality={50} priority className="-z-10 object-cover" />
       <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-2/3 bg-linear-to-t from-[color-mix(in_srgb,var(--color-scrim)_38%,transparent)] to-transparent" />
       {image.credit ? (
         <p className="type-caption absolute top-2.5 right-3 max-w-[70%] truncate rounded-pill bg-[color-mix(in_srgb,var(--color-scrim)_78%,transparent)] px-2.5 py-0.5 text-on-midnight-dim">

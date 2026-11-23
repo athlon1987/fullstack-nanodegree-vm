@@ -21,11 +21,14 @@ test.describe('service pages, Direction v2 frame', () => {
     await expectNoAxeViolations(page);
   });
 
-  test('transport: only the KLIA Ekspres card carries a photograph, and it is its own train', async ({ page }) => {
+  test('transport: the KLIA Ekspres is the page\'s photograph, its own train, and no card repeats it', async ({ page }) => {
     await page.goto('/en/kul/transport');
     const results = page.getByRole('main').getByRole('list', { name: /Ways to travel between KLIA and KL Sentral/ });
-    await expect(results.getByRole('article', { name: /KLIA Ekspres/ }).locator('img[src*="klia-ekspres"]')).toHaveCount(1);
-    await expect(results.getByRole('article').locator('img')).toHaveCount(1);
+    // Intended change (redesign three, V6 item 5): the train opens the page in the place band (it was
+    // the KLIA aerial on all six KLIA service pages), so the KLIA Ekspres card no longer repeats it.
+    await expect(page.getByRole('main').locator('[data-place-band]:visible img[src*="klia-ekspres"]')).toHaveCount(1);
+    await expect(results.getByRole('article', { name: /KLIA Ekspres/ })).toBeVisible();
+    await expect(results.getByRole('article').locator('img')).toHaveCount(0);
   });
 
   test('shops, lounges and an outlet page: no outlet or lounge photograph is invented', async ({ page }) => {
@@ -39,12 +42,18 @@ test.describe('service pages, Direction v2 frame', () => {
     // Intended change (critique-redesign2 item 7, polish round): the shops panel no longer shows a
     // plate of nasi lemak (not taken at KLIA, and it over-promised a food hall over "1 place to eat
     // or drink"); the counts are the answer, and the page's place band shows KLIA itself.
+    // Intended change (redesign three, V6 item 5): the band shows the section's photograph, the
+    // overview's "Shops and food" dish (it was the KLIA aerial on all six KLIA service pages); the
+    // panel still has none.
     await page.goto('/en/kul/shop-dine');
     await expect(page.getByRole('main').getByRole('region', { name: 'At a glance' }).locator('img')).toHaveCount(0);
-    await expect(page.getByRole('main').locator('[data-place-band]:visible img[src*="terminal-1-aerial"]')).toHaveCount(1);
-    // The lounges panel keeps the overview's vetted section photograph (the KLIA Terminal 1 canopy).
+    await expect(page.getByRole('main').locator('[data-place-band]:visible img[src*="nasi-lemak"]')).toHaveCount(1);
+    // Intended change (redesign three, V6 item 5): the overview's vetted lounges photograph (the KLIA
+    // Terminal 1 canopy) moved from the panel to the band, so a phone no longer shows two
+    // photographs stacked on its first screen: exactly one picture, the canopy.
     await page.goto('/en/kul/lounges');
-    await expect(page.getByRole('main').getByRole('region', { name: 'At a glance' }).locator('img')).toHaveCount(1);
+    await expect(page.getByRole('main').getByRole('region', { name: 'At a glance' }).locator('img')).toHaveCount(0);
+    await expect(page.getByRole('main').locator('[data-place-band]:visible img[src*="terminal-1-canopy"]')).toHaveCount(1);
     await page.goto('/en/pen/lounges');
     // Penang has no vetted lounges photograph: the panel shows none rather than another airport's.
     await expect(page.getByRole('main').getByRole('region', { name: 'At a glance' }).locator('img')).toHaveCount(0);

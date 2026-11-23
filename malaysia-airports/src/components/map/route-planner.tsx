@@ -1,5 +1,6 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import type { PathResult, WalkProfile } from '@/lib/map';
 import { formatDistance, formatDuration, formatList } from '@/lib/format';
 import { cn } from '@/lib/cn';
@@ -9,9 +10,9 @@ import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { Badge } from '@/components/ui/badge';
 import { Callout } from '@/components/ui/callout';
 import { Chip } from '@/components/ui/chip';
-import { Icon, type IconKey } from '@/components/ui/icon';
+import { Icon, type IconKey, type IconName } from '@/components/ui/icon';
 import { IconButton } from '@/components/ui/icon-button';
-import { NativeSelect } from '@/components/ui/native-select';
+import { Field, controlClasses } from '@/components/ui/field';
 import { Switch } from '@/components/ui/switch';
 import { placeOptionLabels, type LevelView, type MapView, type RouteStep } from './map-logic';
 
@@ -278,14 +279,28 @@ export function RoutePlanner({
           name is not cut short in the field). */}
       <div className="mt-4 rounded-2xl bg-page-subtle p-3 sm:p-4">
         <div className="flex flex-col gap-3">
-          <NativeSelect id={ROUTE_FROM_ID} label={t('mapPages.route.from')} iconStart="circle-dot" value={fromId ?? ''} onChange={(event) => onFromChange(event.target.value || undefined)}>
+          <PlaceSelect
+            id={ROUTE_FROM_ID}
+            label={t('mapPages.route.from')}
+            icon="circle-dot"
+            value={fromId ?? ''}
+            shown={(fromId && labels.get(fromId)) || t('mapPages.route.choose')}
+            onChange={(value) => onFromChange(value || undefined)}
+          >
             <option value="">{t('mapPages.route.choose')}</option>
             {options}
-          </NativeSelect>
-          <NativeSelect id={ROUTE_TO_ID} label={t('mapPages.route.to')} iconStart="map-pin" value={toId ?? ''} onChange={(event) => onToChange(event.target.value || undefined)}>
+          </PlaceSelect>
+          <PlaceSelect
+            id={ROUTE_TO_ID}
+            label={t('mapPages.route.to')}
+            icon="map-pin"
+            value={toId ?? ''}
+            shown={(toId && labels.get(toId)) || t('mapPages.route.choose')}
+            onChange={(value) => onToChange(value || undefined)}
+          >
             <option value="">{t('mapPages.route.choose')}</option>
             {options}
-          </NativeSelect>
+          </PlaceSelect>
         </div>
       </div>
 
@@ -307,5 +322,51 @@ export function RoutePlanner({
       {part === 'all' && result ? <div className="mt-5 border-t border-line pt-5">{result}</div> : null}
 
     </section>
+  );
+}
+
+/**
+ * Redesign three (critique-redesign2 item 5, V6 item 4): From and To show the whole place name.
+ * A native `<select>` cuts its value at the field's width ("Departures drop-off · Lev…" at
+ * 1440 px), so the chosen name is drawn as text that wraps, and the real `<select>` lies over it,
+ * transparent: it keeps its label, its keyboard and the phone's own picker, and its focus ring is
+ * drawn on the field. The drawn text is hidden from assistive technology (the select says it).
+ */
+function PlaceSelect({
+  id,
+  label,
+  icon,
+  value,
+  shown,
+  onChange,
+  children,
+}: {
+  id: string;
+  label: string;
+  icon: IconName;
+  value: string;
+  shown: string;
+  onChange: (value: string) => void;
+  children: ReactNode;
+}) {
+  return (
+    <Field id={id} label={label}>
+      <div
+        className={cn(
+          controlClasses,
+          'relative flex h-auto min-h-12 items-center gap-3 py-2.5 pr-11 pl-4 has-[select:focus-visible]:focus-ring',
+          !value && 'text-ink-2',
+        )}
+      >
+        <Icon name={icon} className="shrink-0 text-ink-3" />
+        <span aria-hidden="true" className="type-body min-w-0 font-medium [overflow-wrap:anywhere] [text-wrap:pretty]">
+          {shown}
+        </span>
+        <Icon name="chevron-down" size="sm" strokeWidth={2} className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-ink-2" />
+        <select id={id} value={value} onChange={(event) => onChange(event.target.value)} className="absolute inset-0 size-full cursor-pointer appearance-none rounded-md opacity-0">
+          {children}
+        </select>
+      </div>
+    </Field>
   );
 }

@@ -213,7 +213,19 @@ async function unlabelledInView(page: Page, selector: string): Promise<{ total: 
     const items = [...document.querySelectorAll<HTMLElement>(sel)].filter((item) => item.getClientRects().length > 0);
     const unlabelled: string[] = [];
     for (const item of items) {
+      // Redesign 3 (docs/qa/fixes/redesign3-perf.md): sample once the browser has delivered the
+      // jump (its `scroll` event), then two frames as before. CSS now decides the floating label
+      // (a view timeline), but right after load Chrome sometimes delivers a programmatic jump a
+      // frame late to scroll events and scroll timelines alike, while layout already reports the
+      // new position (about 1 in 30 first jumps with 4 workers: no scroll event yet, so the screen
+      // had not moved either). The assertion is unchanged: every row needs a label in view.
+      const from = window.scrollY;
+      const delivered = new Promise((resolve) => {
+        window.addEventListener('scroll', resolve, { once: true, passive: true });
+        setTimeout(resolve, 500);
+      });
       item.scrollIntoView({ block: 'center' });
+      if (window.scrollY !== from) await delivered;
       await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
       const visible = [...document.querySelectorAll<HTMLElement>('[data-demo-banner], [data-provenance="demo"]')].some((marker) => {
         const box = marker.getBoundingClientRect();

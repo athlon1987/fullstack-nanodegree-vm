@@ -1,8 +1,8 @@
-import Image from 'next/image';
 import type { ElementType, HTMLAttributes, ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 import { LocaleLink } from '@/components/common/locale-link';
-import { objectPosition, placeholderProps, type MediaImage } from './media';
+import type { MediaImage } from './media';
+import { Photo } from './photo';
 
 const ASPECTS = {
   /** 4:5, the default: a tall, editorial tile. */
@@ -28,7 +28,7 @@ export interface MediaCardProps extends Omit<HTMLAttributes<HTMLElement>, 'title
   /** Reserved shape (no layout shift). The card still grows if its words need more room. */
   aspect?: keyof typeof ASPECTS;
   headingLevel?: 2 | 3 | 4;
-  /** next/image `sizes`. Default: full width on phones, half on tablets, a third on desktops. */
+  /** The image's `sizes`. Default: full width on phones, half on tablets, a third on desktops. */
   sizes?: string;
   preload?: boolean;
   as?: ElementType;
@@ -76,16 +76,12 @@ export function MediaCard({
     >
       <div className="surface-midnight absolute inset-0 -z-10 overflow-hidden rounded-[inherit]">
         {image ? (
-          <Image
-            src={image.src}
-            alt={image.alt}
-            fill
+          // Redesign 3: `Photo`, not next/image, so the guides' Client Component cards ship no image script.
+          <Photo
+            image={image}
             sizes={sizes ?? '(min-width: 64rem) 33vw, (min-width: 40rem) 50vw, 100vw'}
             quality={60}
-            preload={preload}
-            {...(preload ? { fetchPriority: 'high' as const } : {})}
-            {...placeholderProps(image)}
-            style={{ objectPosition: objectPosition(image.focal) }}
+            priority={preload}
             className="object-cover transition-[scale] duration-slower ease-out motion-ok:group-hover/media:scale-[1.05]"
           />
         ) : null}

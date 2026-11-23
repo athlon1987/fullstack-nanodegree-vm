@@ -218,6 +218,7 @@ export function ConciergeChat({ variant, initialQuestion, toolbarEnd }: Concierg
   };
   const logRef = useRef<HTMLOListElement>(null);
   const privacyRef = useRef<HTMLDivElement>(null);
+  const toolbarRef = useRef<HTMLDivElement>(null);
   const askedInitial = useRef<string | null>(null);
   const pendingInitial = useRef<string | null>(initialQuestion ?? null);
 
@@ -236,9 +237,14 @@ export function ConciergeChat({ variant, initialQuestion, toolbarEnd }: Concierg
         // Scrolled to the turn alone, that line's button was left half under the sticky header
         // (a partly hidden target: axe target-size on every phone run after the redesigned
         // header, round seven). Not when the line is tall (the opt-in form open).
+        // Redesign three: from the toolbar row ("Answering for" and "Clear conversation") down, so
+        // that row is not left half under the sticky header either (axe target-size on a Malay
+        // phone run once the page's gaps tightened).
         const privacy = privacyRef.current;
+        const toolbar = toolbarRef.current;
         const first = variant === 'page' && element !== null && element === logRef.current?.firstElementChild;
-        const target = first && privacy && privacy.getBoundingClientRect().height < window.innerHeight / 3 ? privacy : element;
+        const span = privacy && toolbar ? privacy.getBoundingClientRect().bottom - toolbar.getBoundingClientRect().top : Infinity;
+        const target = first && span < window.innerHeight / 3 ? toolbar : element;
         target?.scrollIntoView({ block: 'start', behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
       }
     });
@@ -352,12 +358,12 @@ export function ConciergeChat({ variant, initialQuestion, toolbarEnd }: Concierg
   const length = draft.length;
 
   return (
-    <div className={cn('@container flex flex-col', variant === 'panel' ? 'h-full min-h-0 gap-4' : 'gap-8')} onPointerEnter={prepare} onPointerDown={prepare} onFocus={prepare}>
+    <div className={cn('@container flex flex-col', variant === 'panel' ? 'h-full min-h-0 gap-4' : 'gap-5 sm:gap-8')} onPointerEnter={prepare} onPointerDown={prepare} onFocus={prepare}>
       <p role="status" aria-live="polite" aria-atomic="true" className="sr-only">
         {announcement}
       </p>
 
-      <div className={cn('flex items-center justify-between gap-x-4 gap-y-2', variant === 'page' && 'flex-wrap')}>
+      <div ref={toolbarRef} className={cn('flex items-center justify-between gap-x-4 gap-y-2', variant === 'page' && 'flex-wrap')}>
         <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
           <span className={cn('type-caption text-ink-2', variant === 'panel' && 'sr-only')}>{t('conciergePage.scope.label')}</span>
           {scopeLabel ? (

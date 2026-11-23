@@ -74,7 +74,7 @@ async function Transport({ params }: { params: AirportPageParams }) {
           above the warning, which still precedes every taxi and e-hailing option (C-02). */}
       <ServiceIntro
         eyebrow={t('transportPages.frame.group')}
-        place={servicePlace(airport.slug, lang)}
+        place={servicePlace(airport.slug, lang, 'transport')}
         title={t('transportPages.transport.title', { airport: airport.shortName })}
         summary={t('transportPages.frame.transportSummary')}
         summaryClassName="max-sm:sr-only"

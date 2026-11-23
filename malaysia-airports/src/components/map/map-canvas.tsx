@@ -12,6 +12,7 @@ import {
   fitView,
   panByPixels,
   placeLabels,
+  segmentHitsBox,
   viewBoxFor,
   zoomAround,
   type Bounds,
@@ -21,6 +22,7 @@ import {
   type LevelView,
   type MapView,
   type PoiView,
+  type Segment,
   type ViewState,
 } from './map-logic';
 
@@ -63,6 +65,8 @@ export interface MapCanvasProps {
    * (critique-redesign2 item 4): the tabs sit in the canvas's own bar, so the drawing starts higher.
    */
   toolbar?: ReactNode;
+  /** The drawing's size in pixels, whenever it changes (the explorer frames each level's first view for it). */
+  onFrameChange?: (frame: FrameSize) => void;
 }
 
 /** Labels win space in this order (higher first). */
@@ -119,6 +123,7 @@ export function MapCanvas({
   onLevelChange,
   onEscape,
   toolbar,
+  onFrameChange,
 }: MapCanvasProps) {
   const t = useT();
   const instructionsId = useId();
@@ -129,13 +134,20 @@ export function MapCanvas({
   const [hot, setHot] = useState<string | null>(null);
   const [dragging, setDragging] = useState(false);
   const drag = useRef<{ pointer: number; x: number; y: number; view: ViewState; moved: boolean } | null>(null);
+  const frameChange = useRef(onFrameChange);
+  useEffect(() => {
+    frameChange.current = onFrameChange;
+  });
 
   useEffect(() => {
     const element = frameRef.current;
     if (!element) return;
     const observer = new ResizeObserver(([entry]) => {
       const { width, height } = entry.contentRect;
-      if (width > 0 && height > 0) setFrame({ width, height });
+      if (width > 0 && height > 0) {
+        setFrame({ width, height });
+        frameChange.current?.({ width, height });
+      }
     });
     observer.observe(element);
     return () => observer.disconnect();
@@ -166,6 +178,19 @@ export function MapCanvas({
     return () => svg.removeEventListener('wheel', onWheel);
   }, []);
 
+  // The route in screen pixels: labels keep off it (critique-redesign2 item 5, V6 item 4).
+  const segments = useMemo(() => {
+    const out: Segment[] = [];
+    for (const line of routeLines) {
+      for (let index = 1; index < line.points.length; index++) {
+        const [ax, ay] = line.points[index - 1];
+        const [bx, by] = line.points[index];
+        out.push([(ax - box.x) * box.scale, (ay - box.y) * box.scale, (bx - box.x) * box.scale, (by - box.y) * box.scale]);
+      }
+    }
+    return out;
+  }, [routeLines, box.x, box.y, box.scale]);
+
   const zoneLabels = useMemo(() => {
     const out: { id: string; x: number; y: number; anchor: 'start' | 'middle'; text: string; screen: { x1: number; y1: number; x2: number; y2: number } }[] = [];
     for (const zone of map.zones) {
@@ -194,8 +219,12 @@ export function MapCanvas({
       const y = (poi.y - box.y) * box.scale;
       return { x1: x - radius - 4, y1: y - radius - 4, x2: x + radius + 4, y2: y + radius + 4 };
     });
-    return out.filter((label) => !markers.some((m) => label.screen.x1 < m.x2 && m.x1 < label.screen.x2 && label.screen.y1 < m.y2 && m.y1 < label.screen.y2));
-  }, [map.zones, level.id, box.scale, box.x, box.y, pois, radius]);
+    return out.filter(
+      (label) =>
+        !markers.some((m) => label.screen.x1 < m.x2 && m.x1 < label.screen.x2 && label.screen.y1 < m.y2 && m.y1 < label.screen.y2) &&
+        !segments.some((segment) => segmentHitsBox(segment, { x1: label.screen.x1 - 6, y1: label.screen.y1 - 6, x2: label.screen.x2 + 6, y2: label.screen.y2 + 6 })),
+    );
+  }, [map.zones, level.id, box.scale, box.x, box.y, pois, radius, segments]);
 
   const labelSides = useMemo(() => {
     const candidates: LabelCandidate[] = pois.map((poi) => {
@@ -206,9 +235,11 @@ export function MapCanvas({
       if (poi.id === selectedId) priority = 100;
       return { id: poi.id, x: screen.x, y: screen.y, text: poi.short, priority };
     });
-    const reserved = [{ x1: 0, y1: 0, x2: Math.min(frame.width, 380), y2: 56 }, ...zoneLabels.map((label) => label.screen)];
-    return placeLabels(candidates, frame, { radius: radius + 2, charWidth: CHAR_WIDTH, reserved });
-  }, [pois, box.x, box.y, box.scale, frame, hot, fromId, toId, selectedId, zoneLabels, radius]);
+    // Redesign three: no reserved corner any more (it kept labels out of the top 56 px for level
+    // chips that moved into the card's top bar in the polish), and the route is an obstacle.
+    const reserved = zoneLabels.map((label) => label.screen);
+    return placeLabels(candidates, frame, { radius: radius + 2, charWidth: CHAR_WIDTH, reserved, segments, segmentPad: 9 });
+  }, [pois, box.x, box.y, box.scale, frame, hot, fromId, toId, selectedId, zoneLabels, radius, segments]);
 
   const corridors = useMemo(() => {
     const nodes = new Map(map.nodes.map((node) => [node.id, node]));
@@ -223,7 +254,7 @@ export function MapCanvas({
 
   const pan = (dx: number, dy: number) => onViewChange(panByPixels(view, dx, dy, box.scale, bounds), true);
   const zoom = (factor: number) => onViewChange(zoomAround(view, factor, { x: view.cx, y: view.cy }, bounds), true);
-  const reset = () => onViewChange(fitView(bounds), true);
+  const reset = () => onViewChange(fitView(bounds, frame), true);
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.altKey || event.ctrlKey || event.metaKey) return;
@@ -308,7 +339,7 @@ export function MapCanvas({
         ref={frameRef}
         onKeyDown={onKeyDown}
         className={cn(
-          'relative col-span-full aspect-square w-full overflow-hidden border-t border-line bg-surface-sunken xs:aspect-[5/4] sm:aspect-[16/10] lg:aspect-auto lg:h-[min(calc(100dvh-30rem),42rem)] lg:min-h-[24rem]',
+          'relative col-span-full aspect-[5/4] w-full overflow-hidden border-t border-line bg-surface-sunken sm:aspect-[16/10] lg:aspect-auto lg:h-[min(calc(100dvh-30rem),42rem)] lg:min-h-[24rem]',
           'has-[[data-map-surface]:focus-visible]:focus-ring-inset',
         )}
       >

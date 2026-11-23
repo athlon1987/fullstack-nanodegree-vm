@@ -66,7 +66,7 @@ async function ShopDine({ params }: { params: AirportPageParams }) {
           kind, each row opening the directory filtered to it, under the section's photograph. */}
       <ServiceIntro
         eyebrow={t('commercePages.frame.group')}
-        place={servicePlace(airport.slug, lang)}
+        place={servicePlace(airport.slug, lang, 'shop-dine')}
         title={t('nav.shopDine')}
         summary={t('commercePages.lead')}
         summaryClassName="max-sm:sr-only"

@@ -70,7 +70,7 @@ async function Parking({ params }: { params: AirportPageParams }) {
           panel under the intro (C-01: on the first phone screen, before the calculator). */}
       <ServiceIntro
         eyebrow={t('transportPages.frame.group')}
-        place={servicePlace(airport.slug, lang)}
+        place={servicePlace(airport.slug, lang, 'parking')}
         title={t('transportPages.parking.title', { airport: airport.shortName })}
         summary={t('transportPages.parking.lead')}
         summaryClassName="max-sm:sr-only"

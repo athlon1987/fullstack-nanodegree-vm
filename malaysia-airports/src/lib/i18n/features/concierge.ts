@@ -329,6 +329,9 @@ export const conciergePageEn = {
     privateHint: 'Put together in your browser from verified content. Your question was not sent anywhere.',
     flightNeedsConsent: 'To use your saved flight, turn on the concierge service first.',
   },
+  // Redesign three (phone): the page opens with a compact header. One short line under the title;
+  // the full lead and the three steps sit behind "How answers are put together".
+  shortLead: 'Ask in your own words. Every answer shows where it comes from.',
 };
 
 export const conciergePageMs: typeof conciergePageEn = {
@@ -641,4 +644,5 @@ export const conciergePageMs: typeof conciergePageEn = {
     privateHint: 'Disusun dalam pelayar anda daripada kandungan yang disahkan. Soalan anda tidak dihantar ke mana-mana.',
     flightNeedsConsent: 'Untuk menggunakan penerbangan simpanan anda, hidupkan perkhidmatan Tanya Kami dahulu.',
   },
+  shortLead: 'Tanya dengan perkataan anda sendiri. Setiap jawapan menunjukkan sumbernya.',
 };

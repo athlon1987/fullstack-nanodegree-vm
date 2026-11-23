@@ -308,6 +308,12 @@ export interface Bounds {
   minY: number;
   maxX: number;
   maxY: number;
+  /**
+   * Redesign three: the extent of the level's places (no padding). The first view frames the
+   * places rather than the whole drawing, so a wide level on a phone is not a thin strip in the
+   * middle of an empty frame.
+   */
+  focus?: { minX: number; minY: number; maxX: number; maxY: number };
 }
 
 /** `k` is the zoom factor over "fit the level"; `cx`, `cy` the centre in map units. */
@@ -349,16 +355,59 @@ export function levelBounds(view: Pick<MapView, 'zones' | 'pois'>, levelId: stri
     ys.push(poi.y);
   }
   if (xs.length === 0) return { minX: 0, minY: 0, maxX: 1000, maxY: 600 };
-  return { minX: Math.min(...xs) - padding, minY: Math.min(...ys) - padding, maxX: Math.max(...xs) + padding, maxY: Math.max(...ys) + padding };
+  const px: number[] = [];
+  const py: number[] = [];
+  for (const poi of view.pois) {
+    if (poi.level !== levelId) continue;
+    px.push(poi.x);
+    py.push(poi.y);
+  }
+  return {
+    minX: Math.min(...xs) - padding,
+    minY: Math.min(...ys) - padding,
+    maxX: Math.max(...xs) + padding,
+    maxY: Math.max(...ys) + padding,
+    ...(px.length > 0 ? { focus: { minX: Math.min(...px), minY: Math.min(...py), maxX: Math.max(...px), maxY: Math.max(...py) } } : {}),
+  };
 }
 
-export function fitView(bounds: Bounds): ViewState {
-  return { k: 1, cx: (bounds.minX + bounds.maxX) / 2, cy: (bounds.minY + bounds.maxY) / 2 };
+/** Room kept around the places in the first view, in screen pixels: a marker and the start of its label. */
+export const FOCUS_MARGIN = 30;
+
+/**
+ * The first view of a level (zoom 1): the whole drawing where it fits the frame, otherwise its
+ * places, with the centre kept as close to the drawing's centre as the places allow.
+ */
+export function fitView(bounds: Bounds, frame: FrameSize = DEFAULT_FRAME): ViewState {
+  const centre = { x: (bounds.minX + bounds.maxX) / 2, y: (bounds.minY + bounds.maxY) / 2 };
+  const focus = bounds.focus;
+  if (!focus) return { k: 1, cx: centre.x, cy: centre.y };
+  const scale = baseScale(bounds, frame);
+  const margin = FOCUS_MARGIN / scale;
+  const axis = (mid: number, low: number, high: number, half: number) => {
+    // The visible half-width or half-height in map units; keep [low, high] (plus margin) inside it.
+    const from = high + margin - half;
+    const to = low - margin + half;
+    return from <= to ? Math.min(to, Math.max(from, mid)) : (low + high) / 2;
+  };
+  return { k: 1, cx: axis(centre.x, focus.minX, focus.maxX, frame.width / scale / 2), cy: axis(centre.y, focus.minY, focus.maxY, frame.height / scale / 2) };
 }
 
-/** Pixels per map unit at zoom 1. */
+/**
+ * Pixels per map unit at zoom 1. Redesign three: at least "contain" (the whole drawing fits);
+ * where the frame is much taller than the drawing is wide (a phone), up to the scale at which the
+ * level's places still fit with `FOCUS_MARGIN` around them, and never past "cover". On a wide
+ * frame the two are the same and nothing changes.
+ */
 export function baseScale(bounds: Bounds, frame: FrameSize): number {
-  return Math.min(frame.width / (bounds.maxX - bounds.minX), frame.height / (bounds.maxY - bounds.minY));
+  const width = bounds.maxX - bounds.minX;
+  const height = bounds.maxY - bounds.minY;
+  const contain = Math.min(frame.width / width, frame.height / height);
+  const focus = bounds.focus;
+  if (!focus) return contain;
+  const cover = Math.max(frame.width / width, frame.height / height);
+  const places = Math.min(Math.max(frame.width - 2 * FOCUS_MARGIN, 1) / Math.max(focus.maxX - focus.minX, 1), Math.max(frame.height - 2 * FOCUS_MARGIN, 1) / Math.max(focus.maxY - focus.minY, 1));
+  return Math.max(contain, Math.min(cover, places));
 }
 
 export function clampView(view: ViewState, bounds: Bounds): ViewState {
@@ -419,12 +468,59 @@ const overlaps = (a: Box, b: Box): boolean => a.x1 < b.x2 && b.x1 < a.x2 && a.y1
  * Place as many labels as fit without overlapping each other, the markers or the frame edge.
  * Returns the chosen side for each placed label.
  */
+/** A line segment in screen pixels (a piece of the drawn route). */
+export type Segment = readonly [number, number, number, number];
+
+/** Whether a segment crosses a box (Liang-Barsky clipping). */
+export function segmentHitsBox([x1, y1, x2, y2]: Segment, box: Box): boolean {
+  let t0 = 0;
+  let t1 = 1;
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  const edges: [number, number][] = [
+    [-dx, x1 - box.x1],
+    [dx, box.x2 - x1],
+    [-dy, y1 - box.y1],
+    [dy, box.y2 - y1],
+  ];
+  for (const [p, q] of edges) {
+    if (p === 0) {
+      if (q < 0) return false;
+      continue;
+    }
+    const r = q / p;
+    if (p < 0) t0 = Math.max(t0, r);
+    else t1 = Math.min(t1, r);
+    if (t0 > t1) return false;
+  }
+  return true;
+}
+
 export function placeLabels(
   candidates: readonly LabelCandidate[],
   frame: FrameSize,
-  options: { radius: number; charWidth?: number; height?: number; gap?: number; margin?: number; reserved?: readonly Box[] },
+  options: {
+    radius: number;
+    charWidth?: number;
+    height?: number;
+    gap?: number;
+    margin?: number;
+    reserved?: readonly Box[];
+    /**
+     * Redesign three (critique-redesign2 item 5): the drawn route, in screen pixels. A label is not
+     * placed across it ("Rows F and G" sat under the line); only the route's own start and end
+     * (priority 90 and up) may cross it when no other side is free.
+     */
+    segments?: readonly Segment[];
+    /** Half the route's drawn width with its halo, in pixels. */
+    segmentPad?: number;
+  },
 ): Map<string, LabelSide> {
-  const { radius, charWidth = 6.9, height = 18, gap = 6, margin = 4 } = options;
+  const { radius, charWidth = 6.9, height = 18, gap = 6, margin = 4, segments = [], segmentPad = 8 } = options;
+  const crossesRoute = (box: Box) => {
+    const padded = { x1: box.x1 - segmentPad, y1: box.y1 - segmentPad, x2: box.x2 + segmentPad, y2: box.y2 + segmentPad };
+    return segments.some((segment) => segmentHitsBox(segment, padded));
+  };
   const obstacles: Box[] = [
     ...(options.reserved ?? []),
     ...candidates.map((c) => ({ x1: c.x - radius, y1: c.y - radius, x2: c.x + radius, y2: c.y + radius })),
@@ -439,15 +535,13 @@ export function placeLabels(
       ['below', { x1: c.x - width / 2, y1: c.y + radius + 2, x2: c.x + width / 2, y2: c.y + radius + 2 + height }],
       ['above', { x1: c.x - width / 2, y1: c.y - radius - 2 - height, x2: c.x + width / 2, y2: c.y - radius - 2 }],
     ];
-    for (const [side, box] of boxes) {
-      const inside = box.x1 >= margin && box.y1 >= margin && box.x2 <= frame.width - margin && box.y2 <= frame.height - margin;
-      if (!inside) continue;
-      const own = { x1: c.x - radius, y1: c.y - radius, x2: c.x + radius, y2: c.y + radius };
-      if (obstacles.some((other) => !(other.x1 === own.x1 && other.y1 === own.y1) && overlaps(box, other))) continue;
-      placed.set(c.id, side);
-      obstacles.push(box);
-      break;
-    }
+    const own = { x1: c.x - radius, y1: c.y - radius, x2: c.x + radius, y2: c.y + radius };
+    const free = (box: Box) =>
+      box.x1 >= margin && box.y1 >= margin && box.x2 <= frame.width - margin && box.y2 <= frame.height - margin && !obstacles.some((other) => !(other.x1 === own.x1 && other.y1 === own.y1) && overlaps(box, other));
+    const choice = boxes.find(([, box]) => free(box) && !crossesRoute(box)) ?? (c.priority >= 90 ? boxes.find(([, box]) => free(box)) : undefined);
+    if (!choice) continue;
+    placed.set(c.id, choice[0]);
+    obstacles.push(choice[1]);
   }
   return placed;
 }

@@ -4,7 +4,7 @@
  * never import `@/content`.
  */
 import { FAQS, getGuide, getSource, hasTranslation, localizeAirport, pick, resolveSources, terminalLabel, type AirportContent, type GuideNote, type Lang, type LocalizedText, type Source } from '@/content';
-import { IMAGES, type ImageId } from '@/content/images';
+import { IMAGES, serviceImageFor, type ImageId } from '@/content/images';
 import { toMediaImage, type MediaImage } from '@/components/ui/media';
 import { PLANNER_MODES } from './transport-logic';
 import type { NoteView, TerminalInfo, ToutsView, TransportContext } from './transport-types';
@@ -91,12 +91,18 @@ export interface TransportPageModel {
  */
 const OPTION_PHOTOS: Readonly<Partial<Record<string, ImageId>>> = { 'kul-klia-ekspres': 'klia-ekspres' };
 
-/** The option photographs of an airport, by option id, in the page language (the card's title names the train, so the alt is dropped). */
+/**
+ * The option photographs of an airport, by option id, in the page language (the card's title names
+ * the train, so the alt is dropped). Redesign three: not when the page's place band already shows
+ * the same photograph (KLIA's transport page opens with the KLIA Ekspres now), so the train is not
+ * shown twice on one page.
+ */
 function optionPhotos(content: AirportContent, lang: Lang): Record<string, MediaImage> {
+  const band = serviceImageFor(content.airport.slug, 'transport')?.id;
   return Object.fromEntries(
     content.transport.flatMap((option) => {
       const id = OPTION_PHOTOS[option.id];
-      return id ? [[option.id, toMediaImage(IMAGES[id], lang, { decorative: true })]] : [];
+      return id && id !== band ? [[option.id, toMediaImage(IMAGES[id], lang, { decorative: true })]] : [];
     }),
   );
 }

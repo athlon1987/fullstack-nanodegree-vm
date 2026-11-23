@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState, useSyncExternalStore } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { facilityCategoryLabel } from '@/content/values';
 import type { FacilityCategory, Source, TerminalId } from '@/content/types';
@@ -116,6 +116,7 @@ function Directory({
   const active = activeFilterCount(filters);
   const update = (patch: Partial<FacilityFilters>) => write({ ...filters, ...patch });
   const collapseGroups = active === 0;
+  const shownInGroup = usePhoneWidth() ? GROUP_SHOWN_PHONE : GROUP_SHOWN;
   useOpenTargetDetails();
 
   return (
@@ -247,7 +248,7 @@ function Directory({
             {t('mapPages.facilities.emptyBody')}
           </EmptyState>
         ) : (
-          <div className="flex flex-col gap-14 @container">
+          <div className="flex flex-col gap-10 @container sm:gap-14">
             {groups.map((group) => {
               // Round 4 (A-14): one source list per section, not a toggle on every card. Each source
               // names the facilities it supports. The date is said once when the cards share it;
@@ -271,7 +272,7 @@ function Directory({
               );
               return (
                 <section key={group.id} aria-labelledby={`facility-group-${group.id}`}>
-                  <h2 id={`facility-group-${group.id}`} className="type-display-sm mb-5 flex items-center gap-3 text-ink">
+                  <h2 id={`facility-group-${group.id}`} className="type-display-sm mb-4 flex items-center gap-3 text-ink sm:mb-5">
                     {group.label}
                     <span className="type-data-sm rounded-pill bg-fill px-2.5 py-0.5 text-ink-2">{group.items.length}</span>
                   </h2>
@@ -279,15 +280,15 @@ function Directory({
                       cards and keeps the rest behind a disclosure on phones (the page was 15,451 px
                       at 390 px). A link to a card inside it opens it (`useOpenTargetDetails`). */}
                   <div className="grid gap-4 @3xl:grid-cols-2">
-                    {(collapseGroups ? group.items.slice(0, GROUP_SHOWN) : group.items).map(card)}
+                    {(collapseGroups ? group.items.slice(0, shownInGroup) : group.items).map(card)}
                   </div>
-                  {collapseGroups && group.items.length > GROUP_SHOWN ? (
+                  {collapseGroups && group.items.length > shownInGroup ? (
                     <MoreOnPhones
                       className="mt-3"
                       contentClassName="grid gap-4 @3xl:grid-cols-2 md:pt-4"
-                      summary={t('mapPages.facilities.moreInGroup', { count: group.items.length - GROUP_SHOWN, group: group.label })}
+                      summary={t('mapPages.facilities.moreInGroup', { count: group.items.length - shownInGroup, group: group.label })}
                     >
-                      {group.items.slice(GROUP_SHOWN).map(card)}
+                      {group.items.slice(shownInGroup).map(card)}
                     </MoreOnPhones>
                   ) : null}
                   {listed.sources.length > 0 || (sameDate && first.asOf) ? (
@@ -342,8 +343,35 @@ function Directory({
   );
 }
 
-/** Cards a group shows before "N more" on phones when no filter is chosen (round 6). */
-const GROUP_SHOWN = 3;
+/**
+ * Cards a group shows before "N more" on phones when no filter is chosen (round 6). Redesign three:
+ * two, not three (facilities was 14,483 px at 390 px), which also fills the two-column rows from
+ * 1024 px: with three, the third card sat alone on its row above the rest of the group.
+ */
+const GROUP_SHOWN = 2;
+/**
+ * Redesign three: below 768 px (where "N more" is a disclosure) a group shows its first card and
+ * keeps the rest behind "Show N more". The server HTML and the first render use `GROUP_SHOWN` (no
+ * hydration mismatch, nothing hidden without JavaScript); on a phone the extra cards move into the
+ * disclosure once loaded, below the first screen, where `MoreOnPhones` closes it.
+ */
+const GROUP_SHOWN_PHONE = 1;
+const PHONE_QUERY = '(max-width: 47.99rem)';
+
+function subscribePhoneWidth(onChange: () => void) {
+  const query = window.matchMedia(PHONE_QUERY);
+  query.addEventListener('change', onChange);
+  return () => query.removeEventListener('change', onChange);
+}
+
+/** Whether the window is narrower than `md` (48rem); `false` on the server and while hydrating. */
+function usePhoneWidth(): boolean {
+  return useSyncExternalStore(
+    subscribePhoneWidth,
+    () => window.matchMedia(PHONE_QUERY).matches,
+    () => false,
+  );
+}
 
 /**
  * A link to a card that sits in a closed disclosure (`#kul-t1-fast-track` from the overview or a

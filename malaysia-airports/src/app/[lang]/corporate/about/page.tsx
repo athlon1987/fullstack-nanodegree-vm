@@ -31,6 +31,7 @@ import { MilestoneList, type MilestoneView } from '@/components/corporate/milest
 import { PageSection } from '@/components/corporate/page-section';
 import { PersonList, type PersonView } from '@/components/corporate/person-list';
 import { PrototypeNote } from '@/components/corporate/prototype-note';
+import { MoreOnPhones } from '@/components/common/more-on-phones';
 import { Container } from '@/components/ui/container';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -70,6 +71,14 @@ export default async function CorporateAboutPage() {
     };
   });
   const checked = formatPartialDate(LEADERSHIP_CHECKED, lang);
+  // Redesign three (phone page length: about was 15,185 px at 390 px): on phones the latest
+  // milestones show and the earlier ones sit behind one line above them, so the timeline still
+  // reads oldest first; secondary lists below follow the same pattern (`MoreOnPhones`: open in the
+  // server HTML and from 768 px, closed on a phone once loaded below the first screen). Every
+  // heading, lead, "not published" note and provenance line outside those lists stays in view.
+  const latestShown = 4;
+  const earlier = milestones.slice(0, Math.max(0, milestones.length - latestShown));
+  const latest = milestones.slice(earlier.length);
   const managementSources = resolveCorporateSources(LEADERSHIP_MANAGEMENT.flatMap((person) => person.sources).filter((id, index, all) => all.indexOf(id) === index));
 
   const jump = [
@@ -95,7 +104,18 @@ export default async function CorporateAboutPage() {
       <Container className="flex flex-col gap-20 pt-12 pb-section sm:gap-24 sm:pt-16">
         <PageSection id="history" first number={1} title={t('corporatePages.about.history.title')} lead={t('corporatePages.about.history.lead')}>
           <div className="grid gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,1fr)_18rem]">
-            <MilestoneList items={milestones} />
+            <div className="min-w-0">
+              {earlier.length > 0 ? (
+                <MoreOnPhones
+                  className="mb-4 md:mb-0 md:border-b md:border-line md:pb-6"
+                  contentClassName="md:pt-0"
+                  summary={t('corporatePages.aboutPhone.earlier', { count: earlier.length, from: earlier[0].year, to: earlier[earlier.length - 1].year })}
+                >
+                  <MilestoneList items={earlier} />
+                </MoreOnPhones>
+              ) : null}
+              <MilestoneList items={latest} />
+            </div>
             <aside aria-labelledby="history-earlier" className="self-start rounded-2xl bg-page-subtle p-5 sm:p-6">
               <h3 id="history-earlier" className="type-title-sm text-ink">
                 {t('corporatePages.about.history.earlierTitle')}
@@ -120,7 +140,9 @@ export default async function CorporateAboutPage() {
             <div className="min-w-0">
               <h3 className="type-title-lg text-ink">{t('corporatePages.about.leadership.managementTitle')}</h3>
               <p className="type-body-sm mt-1.5 mb-4 max-w-reading text-ink-2">{t('corporatePages.about.leadership.managementNote', { date: checked })}</p>
-              <PersonList label={t('corporatePages.about.leadership.managementTitle')} people={LEADERSHIP_MANAGEMENT.map((person) => personView(person, lang, t))} />
+              <MoreOnPhones summary={t('corporatePages.aboutPhone.management', { count: LEADERSHIP_MANAGEMENT.length })} contentClassName="md:pt-0">
+                <PersonList label={t('corporatePages.about.leadership.managementTitle')} people={LEADERSHIP_MANAGEMENT.map((person) => personView(person, lang, t))} />
+              </MoreOnPhones>
               <FactMeta className="mt-4" provenance={provenanceOf(managementSources)} dateLabel={asOf(checked)} sources={managementSources} />
               <h4 className="type-title-sm mt-8 text-ink">{t('corporatePages.about.leadership.unnamedTitle')}</h4>
               <ul className="type-body-sm mt-2 grid list-disc gap-1 pl-5 text-ink-2 sm:grid-cols-2">
@@ -152,18 +174,24 @@ export default async function CorporateAboutPage() {
         </PageSection>
 
         <PageSection id="companies" number={5} title={t('corporatePages.about.companies.title')} lead={t('corporatePages.about.companies.lead')}>
-          <FactList facts={factViews(GROUP_COMPANIES, lang)} t={t} layout="rows" />
+          <MoreOnPhones summary={t('corporatePages.aboutPhone.companies', { count: GROUP_COMPANIES.length })} contentClassName="md:pt-0">
+            <FactList facts={factViews(GROUP_COMPANIES, lang)} t={t} layout="rows" />
+          </MoreOnPhones>
           <ExternalLink variant="action" href={CORPORATE_LINKS.subsidiaries.url} className="type-body-sm mt-3 text-ink">
             {t('corporatePages.about.companies.action')}
           </ExternalLink>
         </PageSection>
 
         <PageSection id="agreements" number={6} title={t('corporatePages.about.agreements.title')} lead={t('corporatePages.about.agreements.lead')}>
-          <FactList facts={factViews(OPERATING_AGREEMENT_FACTS, lang)} t={t} layout="rows" />
+          <MoreOnPhones summary={t('corporatePages.aboutPhone.agreements', { count: OPERATING_AGREEMENT_FACTS.length })} contentClassName="md:pt-0">
+            <FactList facts={factViews(OPERATING_AGREEMENT_FACTS, lang)} t={t} layout="rows" />
+          </MoreOnPhones>
         </PageSection>
 
         <PageSection id="recognition" number={7} title={t('corporatePages.about.recognition.title')} lead={t('corporatePages.about.recognition.lead')}>
-          <FactList facts={factViews(RECOGNITION_FACTS, lang)} t={t} layout="grid" />
+          <MoreOnPhones summary={t('corporatePages.aboutPhone.recognition', { count: RECOGNITION_FACTS.length })} contentClassName="md:pt-0">
+            <FactList facts={factViews(RECOGNITION_FACTS, lang)} t={t} layout="grid" />
+          </MoreOnPhones>
         </PageSection>
 
         <PrototypeNote t={t} officialUrl={CORPORATE_LINKS.corporateSite.url} />

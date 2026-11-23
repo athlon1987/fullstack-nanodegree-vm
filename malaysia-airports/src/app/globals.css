@@ -1684,6 +1684,44 @@ html[data-scroll-chrome='hidden'] {
     --spacing-sticky-bottom: 0px;
   }
 }
+/* Redesign 3 (verification V6 item 2): the flight board's floating Demo label shows once the
+   banner above the board has scrolled up behind the sticky edge (A-14: one Demo marker per view).
+   It used to wait for the scroll event and a React render, and on a busy phone a jump scroll
+   showed a frame with no label. Now a view timeline on the banner decides it: while the banner is
+   in view (inset by the sticky edge, as the script measured it) the animation holds the label
+   hidden; before and after that range the label shows. `animation-duration: auto` fills the
+   range; the reduced-motion rule's 0.01ms does as well.
+   `data-banner-out` is written by the board's script straight from the scroll event: it wins over
+   a timeline that is a frame late after a jump (seen once in about 50 jump scrolls right after
+   load), and it is the whole mechanism where scroll-driven animations are not supported. The
+   scope is only marked when the board has a banner; without one the label always shows. */
+[data-board-demo-scope] {
+  timeline-scope: --board-banner;
+}
+[data-board-demo-scope] [data-board-demo-marker]:not([data-banner-out]) {
+  visibility: hidden;
+}
+@supports (animation-timeline: view()) {
+  [data-board-banner] {
+    view-timeline-name: --board-banner;
+    view-timeline-axis: block;
+    view-timeline-inset: calc(var(--spacing-sticky) + 4px) 0px;
+  }
+  [data-board-demo-scope] [data-board-demo-marker]:not([data-banner-out]) {
+    visibility: visible;
+    animation-name: board-demo-hidden;
+    animation-duration: auto;
+    animation-timing-function: linear;
+    animation-fill-mode: none;
+    animation-timeline: --board-banner;
+  }
+}
+@keyframes board-demo-hidden {
+  from,
+  to {
+    visibility: hidden;
+  }
+}
 /* Short windows (400% zoom on a laptop is 320 x 256): nothing sticks to the bottom of the window.
    A stuck composer floated mid-screen and hid most of a focused suggestion (WCAG 2.4.12). */
 @media (max-height: 40rem) {

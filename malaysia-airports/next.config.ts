@@ -6,6 +6,7 @@ import { alternateLinkRules } from './src/lib/seo/link-headers';
 import { API_HEADERS, NOINDEX_HEADERS, ROUTE_SECURITY_OVERRIDES, overrideHeaders, securityHeaders } from './src/lib/seo/security-headers';
 import { EARLY_MODE_SCRIPT, EARLY_TAP_SCRIPT, SAVED_FLIGHT_FLAG_SCRIPT } from './src/lib/inline-scripts';
 import { PREFERENCES_INIT_SCRIPT } from './src/lib/preferences';
+import { IMAGE_DEVICE_SIZES, IMAGE_QUALITIES, IMAGE_SIZES } from './src/components/ui/image-config';
 
 /**
  * Platform settings: security headers, legacy redirects and the designed global 404 are owned by
@@ -64,11 +65,16 @@ const nextConfig: NextConfig = {
   },
   poweredByHeader: false,
   // Redesign stage 1b (docs/qa/fixes/redesign1b-integrate.md): photographs are served as AVIF
-  // where the browser accepts it (about 40 % smaller than WebP at the same look), else WebP. Every
-  // `quality` an `<Image>` uses must be listed: 65 for heroes, 60 for cards, 75 (the default) elsewhere.
+  // where the browser accepts it (about 40 % smaller than WebP at the same look), else WebP.
+  // Redesign 3 (docs/qa/fixes/redesign3-perf.md): the widths and qualities live in
+  // `src/components/ui/image-config.ts`, which `Photo` (the server-rendered photograph that
+  // replaced next/image's client component) reads too, so every URL it writes is one the
+  // optimizer accepts: 65 heroes, 60 cards, 75 the default, 55 and 50 the phone renditions.
   images: {
     formats: ['image/avif', 'image/webp'],
-    qualities: [60, 65, 75],
+    deviceSizes: IMAGE_DEVICE_SIZES,
+    imageSizes: IMAGE_SIZES,
+    qualities: IMAGE_QUALITIES,
   },
   // Verification round two: React's own `Link` preload header (the fonts) made Next.js copy the
   // response's whole `Link` value, including the canonical and hreflang links set below, into the

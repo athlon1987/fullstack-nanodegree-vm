@@ -26,6 +26,8 @@ import {
   splitLevelName,
   viewBoxFor,
   zoomAround,
+  baseScale,
+  segmentHitsBox,
 } from './map-logic';
 import { buildMapView, facilityViews, officialPages } from './map-view.server';
 
@@ -147,6 +149,40 @@ describe('view maths', () => {
     const fit = fitView(bounds);
     expect(fit.k).toBe(1);
     expect(clampView({ k: 99, cx: -500, cy: 9999 }, bounds)).toEqual({ k: 6, cx: bounds.minX, cy: bounds.maxY });
+  });
+
+  it('frames the places on a tall phone frame and keeps the whole drawing on a wide one (redesign three)', () => {
+    const phone = { width: 356, height: 285 };
+    const wide = { width: 800, height: 420 };
+    const width = bounds.maxX - bounds.minX;
+    const height = bounds.maxY - bounds.minY;
+    const contain = (frame: { width: number; height: number }) => Math.min(frame.width / width, frame.height / height);
+    expect(baseScale(bounds, phone)).toBeGreaterThan(contain(phone));
+    expect(baseScale(bounds, wide)).toBeGreaterThanOrEqual(contain(wide));
+    expect(baseScale(bounds, wide)).toBeLessThanOrEqual(Math.max(wide.width / width, wide.height / height));
+    // Every place of the level stays inside the first phone view.
+    const box = viewBoxFor(fitView(bounds, phone), bounds, phone);
+    for (const poi of view.pois.filter((item) => item.level === 'L5')) {
+      expect(poi.x).toBeGreaterThanOrEqual(box.x);
+      expect(poi.x).toBeLessThanOrEqual(box.x + box.width);
+      expect(poi.y).toBeGreaterThanOrEqual(box.y);
+      expect(poi.y).toBeLessThanOrEqual(box.y + box.height);
+    }
+  });
+
+  it('keeps labels off the route, except the route\'s own ends when nothing else is free', () => {
+    expect(segmentHitsBox([0, 0, 100, 100], { x1: 40, y1: 40, x2: 60, y2: 60 })).toBe(true);
+    expect(segmentHitsBox([0, 0, 100, 0], { x1: 40, y1: 10, x2: 60, y2: 20 })).toBe(false);
+    const frame = { width: 400, height: 300 };
+    // A horizontal route through the right of the marker: the label goes to another side.
+    const candidate = { id: 'a', x: 200, y: 150, text: 'Rows F and G', priority: 5 };
+    const route = [[205, 150, 380, 150]] as const;
+    const placed = placeLabels([candidate], frame, { radius: 12, segments: route });
+    expect(placed.get('a')).not.toBe('right');
+    // Boxed in by the route on every side: a plain label is dropped, an end of the route is not.
+    const all = [[0, 150, 400, 150], [200, 0, 200, 300], [0, 120, 400, 120], [0, 180, 400, 180]] as const;
+    expect(placeLabels([candidate], frame, { radius: 12, segments: all }).has('a')).toBe(false);
+    expect(placeLabels([{ ...candidate, priority: 90 }], frame, { radius: 12, segments: all }).has('a')).toBe(true);
   });
 
   it('zooms around an anchor without moving it', () => {

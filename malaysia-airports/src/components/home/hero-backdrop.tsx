@@ -1,8 +1,8 @@
-import Image from 'next/image';
 import type { SiteImage } from '@/content/images';
 import type { Lang } from '@/content/types';
 import { cn } from '@/lib/cn';
 import { ART_DIRECTED_POSITION, artDirection } from '@/components/ui/media';
+import { Photo } from '@/components/ui/photo';
 import { HeroArt } from './hero-art';
 
 /**
@@ -12,7 +12,8 @@ import { HeroArt } from './hero-art';
  *
  * The photograph is the page's LCP element (redesign 1b, docs/qa/fixes/redesign1b-integrate.md):
  * in the static HTML, preloaded with `fetchPriority="high"`, never lazy, no entrance animation or
- * transition, `sizes="100vw"`, quality 65, served as AVIF or WebP by next/image. Art direction: on
+ * transition, `sizes="100vw"`, quality 65 (55 for the phone renditions: a band above the
+ * words, redesign 3), served as AVIF or WebP by the image optimizer through `Photo` (no client code). Art direction: on
  * a phone the hero is a tall slice of a wide photograph, so it is framed on the white column that
  * fans out of the roof; from 768 px it is framed to the right, with the words on the left.
  *
@@ -45,16 +46,13 @@ export function HeroBackdrop({ photo, lang }: { photo?: SiteImage; lang: Lang })
     <div aria-hidden={photo ? undefined : true} className="absolute inset-0 -z-10 overflow-hidden bg-midnight max-md:bottom-auto max-md:h-[var(--hero-band,100%)]">
       {photo ? (
         <>
-          <Image
-            src={photo.src}
-            alt={photo.alt[lang]}
-            fill
+          <Photo
+            image={{ src: photo.src, alt: photo.alt[lang], blurDataURL: photo.blurDataURL }}
             sizes="100vw"
             quality={65}
-            preload
-            fetchPriority="high"
-            placeholder="blur"
-            blurDataURL={photo.blurDataURL}
+            phoneQuality={55}
+            priority
+            artDirected
             style={artDirection(photo.focal, HOME_HERO_FRAMING[photo.id])}
             className={cn('object-cover', ART_DIRECTED_POSITION)}
           />

@@ -1,7 +1,7 @@
-import Image from 'next/image';
 import type { ElementType, HTMLAttributes, ReactNode } from 'react';
 import { cn } from '@/lib/cn';
-import { objectPosition, placeholderProps, type MediaImage } from './media';
+import type { MediaImage } from './media';
+import { Photo } from './photo';
 
 /** Reserved heights. The box grows with its content, never shrinks below these. */
 const SIZES = {
@@ -34,7 +34,7 @@ export interface HeroMediaProps extends HTMLAttributes<HTMLElement> {
    * image per page. The heading over it stays in the static HTML (never behind a Suspense boundary).
    */
   preload?: boolean;
-  /** next/image `sizes`. Default `100vw` (or the page width when `inset`). */
+  /** The image's `sizes`. Default `100vw` (or the page width when `inset`). */
   sizes?: string;
   as?: ElementType;
   /** Classes for the content block (its width, alignment and padding). */
@@ -81,16 +81,14 @@ export function HeroMedia({
       {...rest}
     >
       <div className={cn('absolute inset-0 -z-10 overflow-hidden', inset && 'rounded-[inherit]')}>
-        <Image
-          src={image.src}
-          alt={image.alt}
-          fill
+        {/* Redesign 3: a server-rendered `<img>` (`Photo`), so a page with a hero ships no image
+            script. On a phone the words cover most of the photograph on their scrim: quality 55. */}
+        <Photo
+          image={image}
           sizes={sizes ?? (inset ? '(min-width: 80rem) 77.5rem, 100vw' : '100vw')}
           quality={65}
-          preload={preload}
-          {...(preload ? { fetchPriority: 'high' as const } : {})}
-          {...placeholderProps(image)}
-          style={{ objectPosition: objectPosition(image.focal) }}
+          phoneQuality={55}
+          priority={preload}
           className="object-cover"
         />
         {scrim === 'full' ? <span aria-hidden="true" className="absolute inset-0 scrim-full" /> : null}

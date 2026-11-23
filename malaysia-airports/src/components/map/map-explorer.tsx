@@ -25,6 +25,7 @@ import {
   CHECKPOINT_KINDS,
   clampView,
   filterCounts,
+  DEFAULT_FRAME,
   fitView,
   levelBounds,
   gatePlaceId,
@@ -34,6 +35,7 @@ import {
   routingModel,
   scoreMatch,
   searchText,
+  type FrameSize,
   type MapFilterId,
   type MapQuery,
   type MapView,
@@ -165,7 +167,13 @@ function MapWorkspace({ map, query, sources, facilitiesHref, officialMapUrl, off
   const activeStepKey = activeStep && steps.some((step) => step.key === activeStep) ? activeStep : null;
 
   const bounds = useMemo(() => levelBounds(map, level.id), [map, level.id]);
-  const view = views[level.id] ?? fitView(bounds);
+  // Redesign three: the drawing's size, reported by the canvas, frames each level's first view.
+  const [frame, setFrame] = useState<FrameSize>(DEFAULT_FRAME);
+  const view = views[level.id] ?? fitView(bounds, frame);
+  const frameRef = useRef(frame);
+  useEffect(() => {
+    frameRef.current = frame;
+  }, [frame]);
 
   // A selection that arrives through the URL (deep link, back or forward) is centred once.
   if (centredOn !== selected?.id) {
@@ -189,7 +197,7 @@ function MapWorkspace({ map, query, sources, facilitiesHref, officialMapUrl, off
   const changeView = useCallback(
     (levelId: string, next: ViewState, animate: boolean) => {
       cancelAnimationFrame(animation.current);
-      const start = viewsRef.current[levelId] ?? fitView(levelBounds(map, levelId));
+      const start = viewsRef.current[levelId] ?? fitView(levelBounds(map, levelId), frameRef.current);
       if (!animate || prefersReducedMotion()) {
         setViews((current) => ({ ...current, [levelId]: next }));
         return;
@@ -329,7 +337,7 @@ function MapWorkspace({ map, query, sources, facilitiesHref, officialMapUrl, off
     const complete = Boolean(fromId && toId && fromId !== toId);
     writeQuery({ from: fromId ?? null, to: toId ?? null, sf: stepFree ? '1' : null, ...(complete && startLevel ? { level: startLevel } : {}) });
     setActiveStep(null);
-    if (complete && startLevel) changeView(startLevel, fitView(levelBounds(map, startLevel)), startLevel === level.id);
+    if (complete && startLevel) changeView(startLevel, fitView(levelBounds(map, startLevel), frame), startLevel === level.id);
     setStatus(describe(fromId, toId, stepFree));
     if (complete) revealDrawing();
   };
@@ -494,6 +502,7 @@ function MapWorkspace({ map, query, sources, facilitiesHref, officialMapUrl, off
               onSelect={(id) => select(id, 'map')}
               onLevelChange={changeLevel}
               onEscape={clearSelection}
+              onFrameChange={setFrame}
             />
           </div>
           <MapLegend showRoute={Boolean(route)} />

@@ -185,7 +185,9 @@ test.describe('measurement hand-offs (6.1.9, E-17)', () => {
   ]) {
     test(`${path}: the ${name} link is a measured hand-off with a campaign`, async ({ page, context }) => {
       await context.route(host, (route) => route.fulfill({ status: 200, contentType: 'text/html', body: '<title>stub</title>' }));
-      await page.goto(path);
+      // Intended change (redesign three): on phones the Fast Track card is behind its group's
+      // "Show N more"; a link to the card opens that disclosure (as the overview's link does).
+      await page.goto(path === '/en/kul/facilities' ? `${path}#kul-t1-fast-track` : path);
       const link = page.locator(selector).first();
       await expect(link).toHaveAttribute('data-handoff', name);
       await expect(async () => {

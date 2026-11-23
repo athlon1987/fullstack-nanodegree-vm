@@ -1,8 +1,8 @@
-import Image from 'next/image';
 import type { ElementType, HTMLAttributes, ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 import { LocaleLink, type LocaleLinkProps } from '@/components/common/locale-link';
-import { objectPosition, placeholderProps, type MediaImage } from './media';
+import type { MediaImage } from './media';
+import { Photo } from './photo';
 
 /*
  * Direction v2: cards lift off the page by a soft, layered shadow and a hairline, not by an
@@ -78,7 +78,7 @@ export interface CardMediaProps extends Omit<HTMLAttributes<HTMLDivElement>, 'ch
   image: MediaImage;
   /** Reserved shape, so the card never shifts while the image loads. Default `landscape` (3:2). */
   aspect?: keyof typeof MEDIA_ASPECTS;
-  /** next/image `sizes`. Default: full width on phones, half on tablets, a third on desktops. */
+  /** The image's `sizes`. Default: full width on phones, half on tablets, a third on desktops. */
   sizes?: string;
   /** Only for a card that is the largest thing on the first screen. */
   preload?: boolean;
@@ -93,16 +93,11 @@ export interface CardMediaProps extends Omit<HTMLAttributes<HTMLDivElement>, 'ch
 export function CardMedia({ image, aspect = 'landscape', sizes, preload = false, overlay, className, ...rest }: CardMediaProps) {
   return (
     <div className={cn('relative isolate overflow-hidden rounded-t-[inherit] bg-fill', MEDIA_ASPECTS[aspect], className)} {...rest}>
-      <Image
-        src={image.src}
-        alt={image.alt}
-        fill
+      <Photo
+        image={image}
         sizes={sizes ?? '(min-width: 64rem) 33vw, (min-width: 40rem) 50vw, 100vw'}
         quality={60}
-        preload={preload}
-        {...(preload ? { fetchPriority: 'high' as const } : {})}
-        {...placeholderProps(image)}
-        style={{ objectPosition: objectPosition(image.focal) }}
+        priority={preload}
         className="-z-10 object-cover transition-[scale] duration-slower ease-out motion-ok:group-hover/card:scale-[1.04]"
       />
       {overlay ? <div className="absolute inset-x-3 top-3 flex flex-wrap items-start gap-2">{overlay}</div> : null}

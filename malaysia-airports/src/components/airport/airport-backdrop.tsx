@@ -1,11 +1,11 @@
 import type { CSSProperties } from 'react';
-import Image from 'next/image';
 import type { Lang } from '@/content';
 import { heroForAirport } from '@/content/images';
 import { cn } from '@/lib/cn';
 import { AirportVignette } from '@/components/art/airport-vignette';
 import { TaburField } from '@/components/art/patterns';
-import { ART_DIRECTED_POSITION, artDirection, objectPosition, placeholderProps, toMediaImage } from '@/components/ui/media';
+import { ART_DIRECTED_POSITION, artDirection, objectPosition, toMediaImage } from '@/components/ui/media';
+import { Photo } from '@/components/ui/photo';
 
 export interface AirportBackdropProps {
   /** Airport slug: `kul`. */
@@ -28,7 +28,7 @@ export function airportHasPhoto(slug: string): boolean {
 /**
  * The picture behind the airport header (redesign round one). With a photograph from the library
  * (`heroForAirport`: the airport's own, else a Malaysia image that shows no particular airport)
- * it is a full-bleed, decorative `next/image` (the airport's name is the heading beside it) with a
+ * it is a full-bleed, decorative photograph (the airport's name is the heading beside it) with a
  * soft veil; the words over it carry their own scrim (`scrim-behind`). Without one, a rich branded
  * midnight: two navy glows, a warm gold light, a field of songket stars and, on the hero, the
  * airport's own line drawing in light ink. Either way the box is sized by its parent, so nothing
@@ -77,15 +77,16 @@ export function AirportBackdrop({ slug, code, lang, variant }: AirportBackdropPr
       // (19rem, the whole frame of a wide photograph instead of a dark slice), melting into the
       // midnight ground under the words; the site header above has its own ground, so no top veil.
       <div aria-hidden="true" className="on-media absolute inset-0 -z-10 overflow-hidden bg-midnight max-sm:bottom-auto max-sm:h-[19rem]">
-        <Image
-          src={image.src}
+        {/* Redesign 3: `Photo` (no image script); the phone renditions (a 19rem band above the
+            words) at quality 55. */}
+        <Photo
+          image={image}
           alt=""
-          fill
           sizes="100vw"
           quality={65}
-          preload
-          fetchPriority="high"
-          {...placeholderProps(image)}
+          phoneQuality={55}
+          priority
+          artDirected
           style={artDirection(image.focal, framing)}
           className={cn('object-cover', ART_DIRECTED_POSITION)}
         />

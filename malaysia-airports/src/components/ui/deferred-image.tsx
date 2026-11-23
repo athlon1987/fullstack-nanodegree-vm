@@ -1,13 +1,22 @@
 'use client';
 
-import Image, { type ImageProps } from 'next/image';
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { Photo } from './photo';
 
-export interface DeferredImageProps extends Omit<ImageProps, 'loading' | 'preload' | 'priority' | 'fetchPriority' | 'placeholder'> {
+export interface DeferredImageProps {
+  /** A photo-library path (`/images/...`). */
+  src: string;
+  alt: string;
+  /** The box always fills its positioned parent (kept for the call sites' clarity). */
+  fill?: true;
+  sizes: string;
+  quality: number;
   /** The tiny placeholder shown until the photograph is requested (and while it loads). */
   blurDataURL?: string;
   /** How far outside the viewport the photograph is requested. Default: one viewport below and above. */
   rootMargin?: string;
+  className?: string;
+  style?: CSSProperties;
 }
 
 /**
@@ -21,7 +30,7 @@ export interface DeferredImageProps extends Omit<ImageProps, 'loading' | 'preloa
  * Until then the box shows the blurred placeholder, so the space is never empty and nothing moves.
  * Without JavaScript the placeholder stays.
  */
-export function DeferredImage({ blurDataURL, rootMargin = '100% 0px', className, style, alt, ...props }: DeferredImageProps) {
+export function DeferredImage({ src, alt, sizes, quality, blurDataURL, rootMargin = '100% 0px', className, style }: DeferredImageProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const [near, setNear] = useState(false);
 
@@ -42,7 +51,9 @@ export function DeferredImage({ blurDataURL, rootMargin = '100% 0px', className,
   }, [rootMargin]);
 
   if (near) {
-    return <Image alt={alt} className={className} style={style} {...props} {...(blurDataURL ? { placeholder: 'blur' as const, blurDataURL } : {})} />;
+    // Redesign 3: `Photo` (the optimizer's URLs, no next/image client code). Lazy as well, so a
+    // card scrolled near but not into view still waits for the browser's own threshold.
+    return <Photo image={{ src, alt, blurDataURL }} sizes={sizes} quality={quality} className={className} style={style} />;
   }
   const position = (style as CSSProperties | undefined)?.objectPosition;
   return (

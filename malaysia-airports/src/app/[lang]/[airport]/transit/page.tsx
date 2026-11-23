@@ -82,7 +82,7 @@ async function Transit({ params }: { params: AirportPageParams }) {
   const header = (
     <ServiceIntro
       eyebrow={t('mapPages.frame.group')}
-      place={servicePlace(airport.slug, lang)}
+      place={servicePlace(airport.slug, lang, 'transit')}
       title={t('guidePages.transit.title', { airport: airport.shortName })}
       summary={planner ? t('guidePages.transit.lead') : t('guidePages.transit.leadSimple', { airport: airport.shortName })}
       summaryClassName={planner ? 'max-sm:sr-only' : undefined}

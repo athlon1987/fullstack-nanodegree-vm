@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, useEffect, useState, type ReactNode } from 'react';
+import { Fragment, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 import { groupFlightsByHour, type Flight, type FlightDirection, type FlightHourGroup } from '@/lib/flights';
 import { useT } from '@/lib/i18n/client';
@@ -155,19 +155,21 @@ export function FlightBoard({
     return day ? t('flightPages.board.hourGroupDay', { time: group.label, day }) : t('flightPages.board.hourGroup', { time: group.label });
   };
   const groupCount = (group: FlightHourGroup) => t.count('flights.board.count', group.flights.length);
-  const [bannerInView, trackBanner] = useBannerInView(!hideBanner);
+  const trackBanner = useBannerOutFlag(!hideBanner);
   /*
    * Round 6 (review-3 9.1 item 7, A-14: one Demo marker per view). Every hour header carried its
    * own Demo label, so a view of a filtered board showed up to 18. Now one label floats over
    * whichever hour header is stuck at the top (a sticky layer of the header's height), and only
    * once the banner above has scrolled out of view: every view of the board still shows exactly
    * one label (content-integrity-01). The headers keep an invisible copy for its width.
+   *
+   * Redesign 3 (verification V6 item 2): CSS decides whether the banner is in view (a view
+   * timeline on the banner, `[data-board-demo-marker]` in globals.css), without waiting for a
+   * React render. `useBannerOutFlag` adds a flag straight from the scroll event, for the rare frame
+   * in which the timeline lags a jump scroll and for browsers without scroll-driven animations.
    */
   const groupMarker = (
-    <div
-      data-board-demo-marker=""
-      className={cn('pointer-events-none sticky top-sticky z-30 -mb-8 flex h-8 items-center justify-end px-4 sm:px-5', bannerInView && 'invisible')}
-    >
+    <div data-board-demo-marker="" className="pointer-events-none sticky top-sticky z-30 -mb-8 flex h-8 items-center justify-end px-4 sm:px-5">
       <DemoMark />
     </div>
   );
@@ -180,9 +182,9 @@ export function FlightBoard({
   return (
     // Redesign round one: banner and board read as one rounded, lifted panel. `overflow-clip`
     // (never hidden) keeps the corners without breaking the sticky hour headings.
-    <div className={cn('overflow-clip rounded-2xl shadow-lg dark:shadow-xl dark:ring-1 dark:ring-line-strong', className)}>
+    <div data-board-demo-scope={hideBanner ? undefined : ''} className={cn('overflow-clip rounded-2xl shadow-lg dark:shadow-xl dark:ring-1 dark:ring-line-strong', className)}>
       {hideBanner ? null : (
-        <div ref={trackBanner}>
+        <div ref={trackBanner} data-board-banner="">
           <DemoDataBanner attached compact={compactBanner} />
         </div>
       )}
@@ -337,36 +339,43 @@ export function FlightBoard({
 }
 
 /**
- * Whether the element passed to `ref` (the banner) can still be seen: its bottom is below the
- * sticky top edge that the hour headers stick to (`stickyTop` from the floating label's computed
- * `top`, which follows the header as it slides away). Starts `true` when `enabled`, the usual
- * case at load (the banner is at the top of the board), so the floating label does not flash
- * beside it. Checked once per frame while scrolling.
+ * Marks the board's floating Demo labels `data-banner-out` once the banner (the element passed to
+ * the returned ref) has scrolled up behind the sticky edge: its bottom at or above the edge the
+ * hour headers stick to (the label's computed `top`, which follows the header as it slides away)
+ * plus 4 px, or below the window. Redesign 3 (verification V6 item 2): the flag is written to the
+ * DOM in the scroll event itself, not through React state, so it is current before the next
+ * animation frame; it is re-applied after every render, as React may replace a label.
+ *
+ * Where scroll-driven animations run, CSS hides the label while the banner is in view and this
+ * flag only overrides a timeline that is a frame late (seen once in about 50 jump scrolls right
+ * after load). Elsewhere the flag is the whole mechanism: without it the label stays hidden, the
+ * usual case at load (the banner is at the top of the board), so it never flashes beside it.
  */
-function useBannerInView(enabled: boolean) {
+function useBannerOutFlag(enabled: boolean) {
   const [node, setNode] = useState<HTMLElement | null>(null);
-  const [visible, setVisible] = useState(enabled);
+  const update = useRef<() => void>(() => {});
   useEffect(() => {
-    if (!node) return;
-    let frame = 0;
-    const check = () => {
-      frame = 0;
-      const marker = node.parentElement?.querySelector<HTMLElement>('[data-board-demo-marker]');
-      const stickyTop = marker ? parseFloat(getComputedStyle(marker).top) || 0 : 0;
+    if (!node || !enabled) return;
+    const root = node.parentElement;
+    const apply = () => {
+      const markers = root ? [...root.querySelectorAll<HTMLElement>('[data-board-demo-marker]')] : [];
+      if (!markers.length) return;
+      const stickyTop = parseFloat(getComputedStyle(markers[0]).top) || 0;
       const box = node.getBoundingClientRect();
-      setVisible(box.bottom > stickyTop + 4 && box.top < window.innerHeight);
+      const out = !(box.bottom > stickyTop + 4 && box.top < window.innerHeight);
+      for (const marker of markers) marker.toggleAttribute('data-banner-out', out);
     };
-    const schedule = () => {
-      if (!frame) frame = requestAnimationFrame(check);
-    };
-    check();
-    window.addEventListener('scroll', schedule, { passive: true });
-    window.addEventListener('resize', schedule);
+    update.current = apply;
+    apply();
+    window.addEventListener('scroll', apply, { passive: true });
+    window.addEventListener('resize', apply);
     return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener('scroll', schedule);
-      window.removeEventListener('resize', schedule);
+      update.current = () => {};
+      window.removeEventListener('scroll', apply);
+      window.removeEventListener('resize', apply);
     };
-  }, [node]);
-  return [enabled && visible, setNode] as const;
+  }, [node, enabled]);
+  // After every render of the board: a re-rendered or new label gets the current flag.
+  useLayoutEffect(() => update.current());
+  return setNode;
 }

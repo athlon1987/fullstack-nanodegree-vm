@@ -23,7 +23,7 @@ import { sectionPath } from '@/components/shell/sections';
 import { Button } from '@/components/ui/button';
 import { ServiceBody, ServiceIntro } from '@/components/facilities/service-frame';
 import { servicePlace } from '@/components/facilities/service-place';
-import { GlancePanel, sectionPhoto } from '@/components/commerce/glance-panel';
+import { GlancePanel } from '@/components/commerce/glance-panel';
 import { Icon } from '@/components/ui/icon';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
 
@@ -116,11 +116,13 @@ async function Lounges({ params }: { params: AirportPageParams }) {
 
   return (
     <>
-      {/* Redesign stage two: the service-page frame; the answer is what the page lists, under the
-          photograph of the airport's own airside architecture (the overview's "Lounges" card). */}
+      {/* Redesign stage two: the service-page frame; the answer is what the page lists.
+          Redesign three: the photograph of the airport's own airside architecture (the overview's
+          "Lounges" card) is the place band now, and the panel has none: on a phone the band and the
+          panel's photograph were two pictures stacked on the first screen. */}
       <ServiceIntro
         eyebrow={t('commercePages.frame.group')}
-        place={servicePlace(airport.slug, lang)}
+        place={servicePlace(airport.slug, lang, 'lounges')}
         title={t('nav.lounges')}
         summary={t('commercePages.lounges.lead')}
         summaryClassName="max-sm:sr-only"
@@ -129,7 +131,6 @@ async function Lounges({ params }: { params: AirportPageParams }) {
           counts.length > 0 ? (
             <GlancePanel
               title={t('commercePages.frame.atAGlance')}
-              photo={sectionPhoto(airport.slug, 'lounges', lang)}
               rows={counts.map((entry) => ({ key: entry.category, icon: entry.category, label: t.count(`commercePages.lounges.count.${entry.category}`, entry.count) }))}
               footer={t('commercePages.frame.sides')}
             />

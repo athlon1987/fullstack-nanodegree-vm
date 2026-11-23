@@ -17,6 +17,9 @@ const H = 1000;
 /** The apron line: everything below is the lit, reflective ground. */
 const HORIZON = 742;
 
+/** A coordinate to a tenth, without trailing zeros. */
+const round = (value: number) => String(Math.round(value * 10) / 10);
+
 /** A small deterministic sequence (a linear congruential generator with a fixed seed). */
 function sequence(count: number, seed: number): number[] {
   const values: number[] = [];
@@ -54,7 +57,9 @@ const RIBS = COLUMNS.map((x) =>
     .map((t) => {
       const ex = x + t * 100;
       const ey = ROOF_LOW + 26 - (1 - Math.abs(t)) * 4 - Math.abs(t) * 20;
-      return `M${x + t * 6} ${CAPITAL}Q${x + t * 40} ${CAPITAL - 40} ${ex.toFixed(1)} ${ey.toFixed(1)}`;
+      // Rounded to a tenth (redesign 3): `x + t * 6` printed as "-5.5200000000000005", and this
+      // drawing is in every page's payload through the not-found page.
+      return `M${round(x + t * 6)} ${CAPITAL}Q${round(x + t * 40)} ${CAPITAL - 40} ${round(ex)} ${round(ey)}`;
     })
     .join(''),
 ).join('');

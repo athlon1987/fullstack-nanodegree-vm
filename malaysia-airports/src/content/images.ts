@@ -795,6 +795,26 @@ export const EXPLORE_IMAGES: Readonly<Partial<Record<string, Readonly<Partial<Re
   kch: { flights: 'kch-terminal' },
 };
 
+/**
+ * Redesign three (V6 item 5: the same KLIA aerial opened all six KLIA service pages): the place
+ * band of an airport's service pages, by section. Each is the airport's own photograph of what the
+ * page is about, or a Malaysian dish for food; a section that is not listed keeps the airport's
+ * first hero photograph (`heroForAirport`). Never another airport's terminal.
+ * KLIA: the KLIA Ekspres for transport, the Terminal 1 roof canopies for facilities, nasi lemak for
+ * shops and food (the overview's "Shops and food" card), the timber roof above the C gates for
+ * lounges (the overview's "Lounges" card), the jets in front of Terminal 1 for transit. Parking
+ * keeps the aerial (the library has no car park).
+ */
+export const SERVICE_IMAGES: Readonly<Partial<Record<string, Readonly<Partial<Record<string, ImageId>>>>>> = {
+  kul: { transport: 'klia-ekspres', facilities: 'klia-t1-roof', 'shop-dine': 'nasi-lemak', lounges: 'klia-t1-canopy', transit: 'aircraft-terminal-1' },
+};
+
+/** The place band of a service page: the section's own photograph where there is one, else the airport's. */
+export function serviceImageFor(code: string, section: string): SiteImage | undefined {
+  const id = SERVICE_IMAGES[code.toLowerCase()]?.[section];
+  return id === undefined ? heroForAirport(code) : IMAGES[id];
+}
+
 /** For airports without their own photo: a Malaysia image that shows no particular airport. */
 export const FALLBACK_HERO: ImageId | undefined = 'wing-window';
 
