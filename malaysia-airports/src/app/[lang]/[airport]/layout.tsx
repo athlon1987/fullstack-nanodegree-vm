@@ -44,6 +44,11 @@ async function Header({ params }: { params: AirportPageParams }) {
  * slim midnight band and, from `md` up, the section pill bar (48 px) under it. Without the bar's
  * room every section page moved down by 48 px when the header was revealed (desktop CLS 0.025 to
  * 0.026, round 4; round 5 fix). Redesign round one: the same midnight band and pill shapes.
+ * Round eight addendum: with a touch pointer the bar's pills are 44 px (`touch:h-11` in
+ * `SectionNav`), so the bar is 56 px there; at 48 px every section page on a touch screen of
+ * 768 px or wider moved down 8 px when the header was revealed after the first paint (10 px on
+ * KLIA, whose terminal pills add 2 px to the band; CLS 0.012 and 0.031 in the transport fare-row
+ * test on the phone project, under load).
  */
 function HeaderSkeleton() {
   return (
@@ -57,7 +62,7 @@ function HeaderSkeleton() {
         </Container>
       </div>
       <div data-airport-tabs-skeleton="" className="border-b border-line bg-page max-md:hidden">
-        <Container className="flex h-12 items-center gap-2">
+        <Container className="flex h-12 items-center gap-2 touch:h-14">
           {TAB_WIDTHS.map((width, index) => (
             <Skeleton key={index} className={`h-9 rounded-pill ${width}`} />
           ))}
