@@ -48,11 +48,17 @@ export function SourceNote({ sources, defaultOpen = false, citedBy, label, class
         className="type-caption -mx-1 inline-flex min-h-8 items-center gap-1 rounded-sm px-1 font-semibold text-ink-2 transition-colors duration-fast hover:text-ink touch:min-h-11"
       >
         <Icon name="file-text" size="xs" strokeWidth={1.75} />
-        {label ? <span aria-hidden="true">{label}</span> : null}
-        <span aria-hidden="true" className="tabular">
-          {label ? `(${sources.length})` : sources.length}
-        </span>
-        <span className="sr-only">{label ? `${label}: ${count}` : count}</span>
+        {/* Polish (critique-redesign2 item 14): the marker says "2 sources" in words (it was an icon, a
+            number and a chevron that did not say what they open). */}
+        {label ? (
+          <>
+            <span aria-hidden="true">{label}</span>
+            <span aria-hidden="true" className="tabular">{`(${sources.length})`}</span>
+            <span className="sr-only">{`${label}: ${count}`}</span>
+          </>
+        ) : (
+          <span className="tabular">{count}</span>
+        )}
         <Icon name="chevron-down" size="xs" strokeWidth={2} className="transition-transform duration-fast group-open/src:rotate-180" />
       </summary>
       <SourceItems sources={sources} citedBy={citedBy} />

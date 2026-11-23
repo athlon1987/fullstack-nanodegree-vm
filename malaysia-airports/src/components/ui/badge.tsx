@@ -21,6 +21,13 @@ export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   tone?: keyof typeof TONES;
   /** sm 20px, md 24px (default). */
   size?: keyof typeof SIZES;
+  /**
+   * `code` (default): the mono label for flight numbers, times, gates and airport codes.
+   * `label`: a place name ("Terminal 1", "KLIA Terminal 2") in the sans caption, semibold and
+   * sentence case on a neutral tint (critique-redesign2 item 15: set as code, place names were the
+   * noisiest marks on a card).
+   */
+  variant?: 'code' | 'label';
   children: ReactNode;
 }
 
@@ -29,7 +36,14 @@ export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
  *
  * @example <Badge tone="primary">{t('common.labels.new')}</Badge>
  */
-export function Badge({ tone = 'neutral', size = 'md', className, children, ...rest }: BadgeProps) {
+export function Badge({ tone = 'neutral', size = 'md', variant = 'code', className, children, ...rest }: BadgeProps) {
+  if (variant === 'label') {
+    return (
+      <span className={cn('type-caption inline-flex shrink-0 items-center rounded-pill bg-fill px-2.5 py-0.5 font-semibold text-ink-2', size === 'sm' ? 'min-h-badge-sm' : 'min-h-badge', className)} {...rest}>
+        {children}
+      </span>
+    );
+  }
   return (
     <span
       className={cn('type-data-xs inline-flex shrink-0 items-center justify-center rounded-xs border font-semibold', TONES[tone], SIZES[size], className)}

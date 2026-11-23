@@ -81,7 +81,6 @@ async function Guide({ params }: { params: PageProps<'/[lang]/guides/[topic]'>['
       <PageHero
         image={imageId ? toMediaImage(IMAGES[imageId], lang, { credit: true }) : undefined}
         tone="light"
-        emblem={view.icon}
         eyebrow={t('guidePages.guide.eyebrow')}
         title={view.title}
         lead={view.summary}

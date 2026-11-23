@@ -6,6 +6,7 @@ import { LocaleLink } from '@/components/common/locale-link';
 import { MissingPage } from '@/components/common/missing-page';
 import { PrototypeGapsLink } from '@/components/common/prototype-gaps-link';
 import { ServiceBody, ServiceHeading, ServiceIntro, SERVICE_JUMP } from '@/components/facilities/service-frame';
+import { servicePlace } from '@/components/facilities/service-place';
 import { TranslationNotice } from '@/components/common/translation-notice';
 import { CarParkList } from '@/components/parking/car-park-list';
 import { CarParkListFromUrl } from '@/components/parking/car-park-list-url';
@@ -13,7 +14,7 @@ import { parkingPageModel } from '@/components/parking/parking-data.server';
 import { ParkedCarControl } from '@/components/parking/parked-car-control';
 import { ParkingCalculator } from '@/components/parking/parking-calculator';
 import { ParkingCalculatorFromUrl } from '@/components/parking/parking-calculator-url';
-import { ParkingPriceMatrix } from '@/components/parking/parking-price-matrix';
+import { ParkingKeyAnswer, ParkingPriceMatrix } from '@/components/parking/parking-price-matrix';
 import { Icon } from '@/components/ui/icon';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
 
@@ -68,12 +69,15 @@ async function Parking({ params }: { params: AirportPageParams }) {
       {/* Redesign stage two: the service-page frame. The price matrix is the answer, the first
           panel under the intro (C-01: on the first phone screen, before the calculator). */}
       <ServiceIntro
-        eyebrow={airport.shortName}
+        eyebrow={t('transportPages.frame.group')}
+        place={servicePlace(airport.slug, lang)}
         title={t('transportPages.parking.title', { airport: airport.shortName })}
         summary={t('transportPages.parking.lead')}
         summaryClassName="max-sm:sr-only"
         breadcrumbs={<Breadcrumbs items={[{ label: airport.shortName, href: `/${airport.slug}` }, { label: t('nav.parking') }]} />}
         className="[&>div]:pb-5 sm:[&>div]:pb-10"
+        answer={<ParkingKeyAnswer data={data} t={t} lang={lang} />}
+        answerClassName="max-lg:hidden"
         meta={
           <nav aria-label={t('transportPages.transport.jumpsLabel')} className="flex flex-wrap gap-2">
             <a href="#parking-calculator-title" className={SERVICE_JUMP}>

@@ -263,47 +263,39 @@ export function OpsStatus({ airport, notices, sources = {}, services, terminal, 
           {lines === null ? (
             <div role="status" className="flex flex-col gap-3">
               <span className="sr-only">{t('common.labels.loading')}</span>
-              <Skeleton className="h-24 w-full rounded-xl" />
               <div className="grid gap-3 md:grid-cols-2">
-                <Skeleton className="h-36 w-full rounded-xl" />
-                <Skeleton className="h-36 w-full rounded-xl max-md:hidden" />
+                <Skeleton className="h-40 w-full rounded-xl" />
+                <Skeleton className="h-40 w-full rounded-xl" />
               </div>
+              <Skeleton className="h-5 w-2/3" />
             </div>
           ) : (
+            // Polish (critique-redesign2 item 23): the services with a notice or queue estimates are
+            // equal cards side by side; the services with no status share one footnote line (it was
+            // a grey "Status not available" box with chips that left an empty column).
             <div className="flex flex-col gap-3">
-              {alerts.length > 0 ? <ul className="flex flex-col gap-3">{alerts.map(alert)}</ul> : null}
-              {queues.length > 0 || quiet.length > 0 ? (
-                <div className={cn('grid items-start gap-3', queues.length > 0 && quiet.length > 0 && 'md:grid-cols-2')}>
-                  {queues.length > 0 ? <ul className="grid gap-3">{queues.map(queue)}</ul> : null}
-                  {quiet.length > 0 ? (
-                    <div className="rounded-xl bg-page-subtle px-4 py-3.5 sm:px-5">
-                      <p className="type-body-sm flex items-center gap-2 font-semibold text-ink">
-                        <Icon name="circle-help" size="sm" className="shrink-0 text-ink-2" />
-                        {t('flightPages.ops.unknown')}
-                      </p>
-                      <ul className="mt-2 flex flex-wrap gap-2">
-                        {quiet.map((item) => (
-                          <li
-                            key={item.service}
-                            data-ops-service={item.service}
-                            data-ops-state={item.state}
-                            className="type-body-sm inline-flex min-h-9 items-center gap-2 rounded-pill bg-surface px-3 text-ink ring-1 ring-line"
-                          >
-                            <Icon name={SERVICE_ICONS[item.service]} size="sm" className="shrink-0 text-ink-2" />
-                            {pick(item.name, lang)}
-                            <span className="sr-only">: {t('flightPages.ops.unknown')}</span>
-                          </li>
-                        ))}
-                      </ul>
-                      {where}
-                    </div>
-                  ) : (
-                    where
-                  )}
+              {alerts.length > 0 || queues.length > 0 ? (
+                <ul className={cn('grid items-stretch gap-3', alerts.length + queues.length > 1 && 'md:grid-cols-2')}>
+                  {alerts.map(alert)}
+                  {queues.map(queue)}
+                </ul>
+              ) : null}
+              {quiet.length > 0 ? (
+                <div data-ops-quiet="" className="type-body-sm flex flex-wrap items-center gap-x-1.5 gap-y-1 text-ink-2">
+                  <Icon name="circle-help" size="sm" className="shrink-0" />
+                  <span className="font-semibold text-ink">{t('flightPages.ops.unknown')}:</span>
+                  <ul className="contents">
+                    {quiet.map((item, index) => (
+                      <li key={item.service} data-ops-service={item.service} data-ops-state={item.state} className="inline">
+                        {pick(item.name, lang)}
+                        {index < quiet.length - 1 ? ', ' : null}
+                        <span className="sr-only">: {t('flightPages.ops.unknown')}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              ) : (
-                where
-              )}
+              ) : null}
+              {where}
             </div>
           )}
         </div>

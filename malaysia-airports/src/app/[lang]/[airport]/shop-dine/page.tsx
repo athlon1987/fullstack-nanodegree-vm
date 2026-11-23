@@ -12,7 +12,8 @@ import { OutletDirectory } from '@/components/commerce/outlet-directory';
 import { sectionPath } from '@/components/shell/sections';
 import { Button } from '@/components/ui/button';
 import { ServiceBody, ServiceIntro } from '@/components/facilities/service-frame';
-import { GlancePanel, sectionPhoto } from '@/components/commerce/glance-panel';
+import { servicePlace } from '@/components/facilities/service-place';
+import { GlancePanel } from '@/components/commerce/glance-panel';
 import { KIND_ICONS } from '@/components/commerce/category-art';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
 
@@ -64,7 +65,8 @@ async function ShopDine({ params }: { params: AirportPageParams }) {
       {/* Redesign stage two: the service-page frame; the answer is what the directory holds, by
           kind, each row opening the directory filtered to it, under the section's photograph. */}
       <ServiceIntro
-        eyebrow={airport.shortName}
+        eyebrow={t('commercePages.frame.group')}
+        place={servicePlace(airport.slug, lang)}
         title={t('nav.shopDine')}
         summary={t('commercePages.lead')}
         summaryClassName="max-sm:sr-only"
@@ -73,7 +75,6 @@ async function ShopDine({ params }: { params: AirportPageParams }) {
           items.length > 0 ? (
             <GlancePanel
               title={t('commercePages.frame.atAGlance')}
-              photo={sectionPhoto(airport.slug, 'shop-dine', lang)}
               rows={OUTLET_KINDS.flatMap((kind) => {
                 const count = items.filter((item) => item.kind === kind).length;
                 return count > 0 ? [{ key: kind, icon: KIND_ICONS[kind], label: t.count(`commercePages.frame.kindCount.${kind}`, count), href: `/${airport.slug}/shop-dine?kind=${kind}` }] : [];

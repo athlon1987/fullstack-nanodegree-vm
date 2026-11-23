@@ -67,7 +67,6 @@ export default async function AboutPrototypePage() {
       <CorporateHeader
         t={t}
         current={null}
-        emblem="flask-conical"
         title={t('corporatePages.prototype.title')}
         lead={t('corporatePages.prototype.lead')}
         meta={<JumpNav label={t('corporatePages.common.onThisPage')} items={jump} />}

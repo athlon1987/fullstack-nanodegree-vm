@@ -10,7 +10,8 @@ const TONES = {
   /** A white band (cards on it use `raised` or `sunken`). */
   surface: 'bg-surface',
   /** Warm ivory: one editorial band per page at most. */
-  ivory: 'bg-ivory',
+  // Polish (critique-redesign2 item 19): a fine gold hairline opens the ivory band (it held the band in dark mode).
+  ivory: 'bg-ivory border-t border-gold/35',
   /** Ink band with light text (the "all 39 airports" band, the footer). */
   inverse: 'bg-inverse text-on-inverse',
   /** The brand's midnight with a soft lift of light. Components inside take the light ink. */

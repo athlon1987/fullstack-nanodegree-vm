@@ -1,3 +1,4 @@
+import { cn } from '@/lib/cn';
 import { languageAlternates } from '@/lib/seo/metadata';
 import type { Metadata } from 'next';
 import { lang as routeLang } from 'next/root-params';
@@ -33,10 +34,13 @@ export default async function ConciergePage() {
     <>
       {/* Redesign stage two: the midnight band with the concierge's emblem; the conversation is a
           white card that rises into the band, the explanation and official contacts beside it. */}
+      {/* Polish (critique-redesign2 item 3): from 1024 px the band's right column explains how an
+          answer is put together (it was a sparkle emblem); smaller screens keep it beside the chat. */}
       <PageHero
         tone="midnight"
-        emblem="sparkles"
         eyebrow={t('conciergePage.eyebrow')}
+        asideClassName="max-lg:hidden"
+        aside={<HowAnswers id="concierge-how-band" title={t('conciergePage.aside.howTitle')} steps={how} tone="band" />}
         title={t('conciergePage.pageTitle')}
         lead={t('conciergePage.lead')}
         breadcrumbs={<Breadcrumbs items={[{ label: t('conciergePage.title') }]} />}
@@ -59,25 +63,8 @@ export default async function ConciergePage() {
           </I18nPageScope>
         </section>
 
-        <aside className="flex min-w-0 flex-col gap-10 lg:pt-10" aria-label={t('conciergePage.aside.howTitle')}>
-          <section aria-labelledby="concierge-how">
-            <h2 id="concierge-how" className="type-title-md mb-4 text-ink">
-              {t('conciergePage.aside.howTitle')}
-            </h2>
-            <ol className="flex flex-col gap-4">
-              {how.map((text, index) => (
-                <li key={text} className="flex items-start gap-3">
-                  <span
-                    aria-hidden="true"
-                    className="type-data-sm flex size-8 shrink-0 items-center justify-center rounded-pill bg-primary text-on-primary"
-                  >
-                    {index + 1}
-                  </span>
-                  <p className="type-body text-ink-2">{text}</p>
-                </li>
-              ))}
-            </ol>
-          </section>
+        <aside className="flex min-w-0 flex-col gap-10 lg:pt-10" aria-label={t('conciergePage.aside.contactsTitle')}>
+          <HowAnswers id="concierge-how" title={t('conciergePage.aside.howTitle')} steps={how} className="lg:hidden" />
 
           <ProvenanceLegend headingLevel={2} />
 
@@ -118,5 +105,30 @@ export default async function ConciergePage() {
         </aside>
       </Container>
     </>
+  );
+}
+
+/** The three steps of "How answers are put together": in the band's right column, or on the page. */
+function HowAnswers({ id, title, steps, tone = 'page', className }: { id: string; title: string; steps: readonly string[]; tone?: 'band' | 'page'; className?: string }) {
+  const band = tone === 'band';
+  return (
+    <section aria-labelledby={id} className={cn(band && 'glass-dark rounded-3xl p-5 sm:p-6', className)}>
+      <h2 id={id} className="type-title-md mb-4 text-ink">
+        {title}
+      </h2>
+      <ol className="flex flex-col gap-4">
+        {steps.map((text, index) => (
+          <li key={text} className="flex items-start gap-3">
+            <span
+              aria-hidden="true"
+              className={cn('type-data-sm flex size-8 shrink-0 items-center justify-center rounded-pill', band ? 'bg-gold text-on-gold' : 'bg-primary text-on-primary')}
+            >
+              {index + 1}
+            </span>
+            <p className={cn('text-ink-2', band ? 'type-body-sm' : 'type-body')}>{text}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
   );
 }

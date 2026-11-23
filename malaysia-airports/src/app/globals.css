@@ -457,7 +457,8 @@
     --color-surface: #10172e;
     --color-surface-raised: #172040;
     --color-surface-sunken: #04060f;
-    --color-ivory: #0f1426;
+    /* Polish (critique-redesign2 item 19): a raised navy, so the ivory band keeps its change of register in dark mode. */
+    --color-ivory: #141c3a;
     --color-ink: #f4f6fb;
     --color-ink-2: #c2c8db;
     --color-ink-3: #9aa2ba;
@@ -552,7 +553,7 @@
       --color-surface: #10172e;
       --color-surface-raised: #172040;
       --color-surface-sunken: #04060f;
-      --color-ivory: #0f1426;
+      --color-ivory: #141c3a;
       --color-ink: #f4f6fb;
       --color-ink-2: #c2c8db;
       --color-ink-3: #9aa2ba;

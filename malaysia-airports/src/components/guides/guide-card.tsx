@@ -76,11 +76,12 @@ export function GuideCard({ guide, emphasis = false, headingLevel = 3, size = 'd
 
   return (
     <Card as="li" interactive className={cn('flex h-full min-w-0 flex-col overflow-hidden', className)}>
-      <div aria-hidden="true" className="relative flex h-32 items-end justify-between overflow-hidden rounded-t-[inherit] bg-[linear-gradient(135deg,var(--color-primary-soft),var(--color-page-subtle)_75%)] px-5 pb-4 sm:px-6">
-        <span className="pattern-tabur-fade absolute inset-0 text-primary-ink opacity-[0.08]" />
-        <span className="relative flex size-14 items-center justify-center rounded-2xl bg-surface text-primary-ink shadow-md ring-1 ring-line">
-          <Icon name={guide.icon} size="lg" strokeWidth={1.5} />
-        </span>
+      {/* Polish (critique-redesign2 item 20): a midnight band with the guide's gold line icon (the
+          hub's closing band speaks this language), so the grid alternates photograph and midnight;
+          it was a pastel plate with a white tile that looked unfinished beside the photo cards. */}
+      <div aria-hidden="true" className="surface-midnight relative flex h-32 items-end justify-between overflow-hidden rounded-t-[inherit] px-5 pb-4 sm:px-6">
+        <span className="pattern-tabur-fade absolute inset-0 text-gold opacity-[0.12]" />
+        <Icon name={guide.icon} strokeWidth={1.25} className="relative size-14 text-gold-bright" />
         {startHere ? <span className="relative self-start pt-4">{startHere}</span> : null}
       </div>
       <div className="flex flex-1 flex-col gap-2 px-5 pt-5 pb-5 sm:px-6 sm:pb-6">

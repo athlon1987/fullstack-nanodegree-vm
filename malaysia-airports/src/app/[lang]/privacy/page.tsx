@@ -38,7 +38,6 @@ export default async function PrivacyPage() {
       <CorporateHeader
         t={t}
         current={null}
-        emblem="shield-check"
         title={t('corporatePages.privacy.title')}
         lead={t('corporatePages.privacy.lead')}
         meta={<JumpNav label={t('corporatePages.common.onThisPage')} items={jump} />}

@@ -139,8 +139,8 @@ export function ConciergeAnswerView({ answer, mode, note, onAsk, busy }: Concier
 
   return (
     <div className="@container flex min-w-0 flex-col gap-4">
-      <div className="flex flex-col gap-1.5">
-        <p className="type-body-lg text-ink">{answer.text}</p>
+      <div className="flex flex-col gap-2.5">
+        <p className="type-body-lg self-start rounded-3xl rounded-tl-md bg-page-subtle px-4 py-3 text-ink @md:px-5 @md:py-3.5">{answer.text}</p>
         {leadSource ? (
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
             <ProvenanceTag provenance={leadSource.provenance} length="short" />

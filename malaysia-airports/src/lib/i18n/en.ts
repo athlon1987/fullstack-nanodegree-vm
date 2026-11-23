@@ -968,6 +968,8 @@ export const en = {
     shown: { one: '{count} notice shown', other: '{count} notices shown' },
     none: 'No notices match these filters.',
     period: '{from} to {to}',
+    // Polish (critique-redesign2 item 3): the status card in the header's right column.
+    statusTitle: 'Notice status',
   },
   translation: {
     noticeTitle: 'Some content is in English',

@@ -228,6 +228,8 @@ export const commercePagesEn = {
   },
   // Redesign stage two (service-page frame): the answer panels of the directory and lounges pages.
   frame: {
+    // Polish (critique-redesign2 item 16): the eyebrow of the shops and lounges pages.
+    group: 'Shops and lounges',
     atAGlance: 'At a glance',
     confirmed: { one: '{count} place a named source confirms', other: '{count} places named sources confirm' },
     kindCount: {
@@ -463,6 +465,7 @@ export const commercePagesMs: typeof commercePagesEn = {
     facilitiesLink: 'Semua kemudahan dan perkhidmatan',
   },
   frame: {
+    group: 'Kedai dan ruang menunggu',
     atAGlance: 'Sepintas lalu',
     confirmed: { one: '{count} tempat yang disahkan oleh sumber yang dinamakan', other: '{count} tempat yang disahkan oleh sumber yang dinamakan' },
     kindCount: {

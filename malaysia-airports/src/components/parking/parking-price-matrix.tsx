@@ -57,7 +57,10 @@ export function ParkingPriceMatrix({ data, t, lang, transportLink }: ParkingPric
       {/* A scroll region, not `overflow-hidden`: at 320 px and 125% text the table is wider than
           the screen, and clipping hid the 7-day column and scrolled the page (verification round, A-16). */}
       <TableScroll label={t('transportPages.matrix.caption', { airport: data.airportName })} className="border-y border-line">
-        <table className="w-full border-collapse text-left">
+        {/* Polish (critique-redesign2 item 8): below 640 px each car park is a small grid, its name
+            across the full width and the three stays as three equal cells under it, instead of a
+            134 px name column three lines tall. Grid on the rows only: the markup stays a table. */}
+        <table className="w-full border-collapse text-left max-sm:block max-sm:[&_tbody]:block max-sm:[&_thead]:block max-sm:[&_tr]:grid max-sm:[&_tr]:grid-cols-3">
           <caption className="sr-only">{t('transportPages.matrix.caption', { airport: data.airportName })}</caption>
           <colgroup>
             <col />
@@ -67,7 +70,7 @@ export function ParkingPriceMatrix({ data, t, lang, transportLink }: ParkingPric
           </colgroup>
           <thead>
             <tr className="border-b border-line bg-page-subtle">
-              <th scope="col" className="type-caption py-2.5 pr-2 pl-4 font-semibold text-ink-2 sm:pl-7">
+              <th scope="col" className="type-caption py-2.5 pr-2 pl-4 font-semibold text-ink-2 max-sm:sr-only sm:pl-7">
                 {t('transportPages.parking.carPark')}
               </th>
               {MATRIX_DAYS.map((days) => (
@@ -80,7 +83,7 @@ export function ParkingPriceMatrix({ data, t, lang, transportLink }: ParkingPric
           {rows.map(({ carPark, cells }) => (
             <tbody key={carPark.id} data-car-park={carPark.id} className="border-b border-line last:border-b-0">
               <tr>
-                <th scope="row" className="pt-3.5 pr-2 pb-2 pl-4 align-top font-normal sm:pl-7">
+                <th scope="row" className="pt-3.5 pr-2 pb-2 pl-4 align-top font-normal max-sm:col-span-3 max-sm:pr-4 max-sm:pb-1 sm:pl-7">
                   <span className="type-body-sm sm:type-title-sm block font-semibold text-ink">{carPark.name}</span>
                   <span className="type-caption mt-0.5 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-ink-2">
                     {t(`transportPages.parking.types.${carPark.type}`)}
@@ -88,7 +91,7 @@ export function ParkingPriceMatrix({ data, t, lang, transportLink }: ParkingPric
                   </span>
                 </th>
                 {cells.every((cell) => cell.kind === 'none') ? (
-                  <td colSpan={MATRIX_DAYS.length} className="type-body-sm px-2 pt-3.5 pb-2 pr-4 text-right align-top font-medium text-ink-2 sm:pr-7">
+                  <td colSpan={MATRIX_DAYS.length} className="type-body-sm px-2 pt-3.5 pb-2 pr-4 text-right align-top font-medium text-ink-2 max-sm:col-span-3 max-sm:pt-1 max-sm:pl-4 max-sm:text-left sm:pr-7">
                     <span className="inline-flex items-center gap-1.5">
                       <Icon name="circle-dashed" size="sm" />
                       {t('transportPages.matrix.none')}
@@ -99,7 +102,7 @@ export function ParkingPriceMatrix({ data, t, lang, transportLink }: ParkingPric
                 )}
               </tr>
               <tr>
-                <td colSpan={MATRIX_DAYS.length + 1} className="px-4 pb-3.5 sm:px-7">
+                <td colSpan={MATRIX_DAYS.length + 1} className="px-4 pb-3.5 max-sm:col-span-3 sm:px-7">
                   <RowNote carPark={carPark} cells={cells} data={data} t={t} />
                 </td>
               </tr>
@@ -130,8 +133,62 @@ export function ParkingPriceMatrix({ data, t, lang, transportLink }: ParkingPric
   );
 }
 
+/**
+ * Polish (critique-redesign2 item 8): parking's key answer beside the title, as the other service
+ * pages have one: the lowest one-day figure in the matrix below, with the same "Estimated" tag and
+ * the same qualifier (a daily maximum is "at most, not verified"), the car park it belongs to and
+ * the booking hand-off. Renders nothing when no car park has a figure.
+ */
+export function ParkingKeyAnswer({ data, t, lang }: Omit<ParkingPriceMatrixProps, 'transportLink'>) {
+  const money = (amount: number) => formatCurrency(amount, lang, { alwaysShowSen: !Number.isInteger(amount) });
+  const best = data.carParks
+    .flatMap((carPark) => {
+      const cell = priceRow(carPark)[0];
+      if (!cell || cell.kind === 'none') return [];
+      const amount = cell.kind === 'reported' ? cell.min : cell.amount;
+      return [{ carPark, cell, amount }];
+    })
+    .sort((a, b) => a.amount - b.amount)[0];
+  if (!best) return null;
+  const verified = best.cell.kind === 'estimate';
+
+  return (
+    // Below 1024 px the price matrix itself follows the title (C-01: the matrix on the first phone
+    // screen), so this summary of it is for the wide intro only.
+    <section aria-labelledby="parking-answer-title" data-parking-answer="" className={cn(SERVICE_TOOL, 'p-5 max-lg:hidden sm:p-6')}>
+      {/* The qualifier is said in words under the figure (the matrix carries the "Estimated" tag). */}
+      <h2 id="parking-answer-title" className="type-title-md text-ink">
+        {t('transportPages.frame.parkingAnswerTitle')}
+      </h2>
+      <p className="mt-4 flex flex-wrap items-baseline gap-x-2 text-ink">
+        {verified ? null : (
+          <>
+            <span aria-hidden="true" className="type-display-sm text-ink-2">
+              ≤
+            </span>
+            <span className="sr-only">{t('transportPages.matrix.atMost')} </span>
+          </>
+        )}
+        <span className="type-display-sm tabular-nums">{best.cell.kind === 'reported' && best.cell.min !== best.cell.max ? `${money(best.cell.min)}–${money(best.cell.max)}` : money(best.amount)}</span>
+        <span className="type-body text-ink-2">{t('transportPages.frame.parkingAnswerPerDay')}</span>
+      </p>
+      <p className="type-title-sm mt-1 text-ink">{best.carPark.name}</p>
+      <p className="type-caption mt-0.5 text-ink-2">{t(verified ? 'transportPages.frame.parkingAnswerEstimate' : 'transportPages.frame.parkingAnswerAtMost')}</p>
+      <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
+        <ExternalLink href={data.officialUrl} variant="plain" className={buttonClasses({ variant: 'primary' })} data-handoff="parking-booking">
+          {t('transportPages.parking.bookAction')}
+        </ExternalLink>
+        <a href="#parking-prices-title" className="link-action type-body-sm text-ink">
+          {t('transportPages.frame.parkingAnswerCompare')}
+          <Icon name="arrow-down" size="sm" />
+        </a>
+      </div>
+    </section>
+  );
+}
+
 function MatrixCell({ cell, money, t }: { cell: PriceCell; money: (amount: number) => string; t: Translator }) {
-  const base = 'type-data-sm sm:type-data-md px-1 pt-3.5 pb-2 text-right align-top whitespace-nowrap last:pr-4 sm:px-2 sm:last:pr-7';
+  const base = 'type-data-sm sm:type-data-md px-1 pt-3.5 pb-2 text-right align-top whitespace-nowrap last:pr-4 max-sm:pt-1 sm:px-2 sm:last:pr-7';
   if (cell.kind === 'none') {
     return (
       <td className={cn(base, 'text-ink-2')}>

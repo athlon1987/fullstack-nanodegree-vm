@@ -11,6 +11,7 @@ import { facilityViews, needsTranslationNotice, officialPages, sourceLookup } fr
 import { Button } from '@/components/ui/button';
 import { FacilityQuickFinds } from '@/components/facilities/facility-quick-finds';
 import { ServiceBody, ServiceIntro } from '@/components/facilities/service-frame';
+import { servicePlace } from '@/components/facilities/service-place';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
 
 export const generateStaticParams = () => sectionStaticParams('facilities');
@@ -57,7 +58,8 @@ async function Facilities({ params }: { params: AirportPageParams }) {
       {/* Redesign stage two: the service-page frame, with the places travellers look for first
           (prayer rooms, accessibility and assistance, toilets) as the answer beside the title. */}
       <ServiceIntro
-        eyebrow={airport.shortName}
+        eyebrow={t('mapPages.frame.group')}
+        place={servicePlace(airport.slug, lang)}
         title={t('nav.facilities')}
         summary={t('mapPages.facilities.lead', { airport: airport.shortName })}
         summaryClassName="max-sm:sr-only"

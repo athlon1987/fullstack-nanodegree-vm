@@ -1,6 +1,8 @@
+import Image from 'next/image';
 import type { ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 import { Container } from '@/components/ui/container';
+import { objectPosition, placeholderProps, type MediaImage } from '@/components/ui/media';
 
 /*
  * The frame of the airport service pages (redesign stage two, Direction v2): terminal map,
@@ -37,11 +39,54 @@ export interface ServiceIntroProps {
    * it on phones. An answer that renders nothing leaves no gap.
    */
   answer?: ReactNode;
+  /** Classes for the answer's column (parking shows its answer from `lg` only: `max-lg:hidden`). */
+  answerClassName?: string;
   /** Quiet chips or in-page links under the summary. */
   meta?: ReactNode;
   /** One primary or secondary action. */
   actions?: ReactNode;
+  /**
+   * Redesign stage two polish (critique-redesign2 item 1): the airport's own photograph as a slim
+   * band above the intro (`servicePlace(slug, lang)` in `service-place.ts`), so a service page keeps the sense of place
+   * of the overview. No words sit on it: the key answer rises over its lower edge from `lg` up.
+   */
+  place?: MediaImage;
+  /**
+   * A tool page whose product must be in the first view (the terminal map, critique-redesign2
+   * item 4): breadcrumbs, then the title and the meta chips on one row; the summary is read by
+   * screen readers but not shown, and there is no eyebrow.
+   */
+  compact?: boolean;
   className?: string;
+}
+
+/**
+ * The place band: a fixed height per breakpoint (no layout shift), full bleed under the airport's
+ * section tabs, a soft shade at the foot only and the credit in the top corner (the answer panel
+ * covers the lower right from `lg` up). Not preloaded: it is not the page's subject.
+ */
+function PlaceBand({ image, className }: { image: MediaImage; className?: string }) {
+  return (
+    <div data-place-band="" className={cn('relative isolate h-[8.75rem] overflow-hidden bg-midnight sm:h-44 lg:h-[13.75rem]', className)}>
+      <Image
+        src={image.src}
+        alt={image.alt}
+        fill
+        sizes="100vw"
+        quality={60}
+        loading="eager"
+        {...placeholderProps(image)}
+        style={{ objectPosition: objectPosition(image.focal) }}
+        className="-z-10 object-cover"
+      />
+      <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-2/3 bg-linear-to-t from-[color-mix(in_srgb,var(--color-scrim)_38%,transparent)] to-transparent" />
+      {image.credit ? (
+        <p className="type-caption absolute top-2.5 right-3 max-w-[70%] truncate rounded-pill bg-[color-mix(in_srgb,var(--color-scrim)_78%,transparent)] px-2.5 py-0.5 text-on-midnight-dim">
+          {image.credit}
+        </p>
+      ) : null}
+    </div>
+  );
 }
 
 /**
@@ -50,17 +95,48 @@ export interface ServiceIntroProps {
  * the cool page grey separates it from the sections below without a rule. Static: the `h1` is in
  * the first HTML and never revealed by a script.
  */
-export function ServiceIntro({ eyebrow, title, summary, summaryClassName, breadcrumbs, answer, meta, actions, className }: ServiceIntroProps) {
+export function ServiceIntro({ eyebrow, title, summary, summaryClassName, breadcrumbs, answer, answerClassName, meta, actions, place, compact, className }: ServiceIntroProps) {
+  if (compact) {
+    return (
+      <header data-service-intro="" className={cn('bg-linear-to-b from-surface to-page', className)}>
+        <Container className="pt-3 pb-5 sm:pt-4 sm:pb-6">
+          {breadcrumbs ? (
+            <div data-page-breadcrumbs="" className="mb-3 sm:mb-4">
+              {breadcrumbs}
+            </div>
+          ) : null}
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            <h1 className="type-display-md text-balance text-ink">{title}</h1>
+            {meta ? <div className="flex flex-wrap items-center gap-2">{meta}</div> : null}
+          </div>
+          {summary ? <p className="sr-only">{summary}</p> : null}
+        </Container>
+      </header>
+    );
+  }
+  const crumbs = breadcrumbs ? (
+    <div data-page-breadcrumbs="" className={place ? 'mb-5 sm:mb-8' : 'mb-5 sm:mb-9'}>
+      {breadcrumbs}
+    </div>
+  ) : null;
   return (
     <header data-service-intro="" className={cn('bg-linear-to-b from-surface to-page', className)}>
-      <Container className={cn('pb-8 sm:pb-12', breadcrumbs ? 'pt-3 sm:pt-4' : 'pt-8 sm:pt-12')}>
-        {breadcrumbs ? (
-          <div data-page-breadcrumbs="" className="mb-5 sm:mb-9">
-            {breadcrumbs}
-          </div>
-        ) : null}
-        <div className="flex flex-col gap-6 sm:gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-14">
-          <div className="min-w-0 lg:max-w-[46rem] lg:flex-1">
+      {/* From 640 px the band opens the page; on a phone it follows the title (A-01: a section page
+          starts with its own heading on the first phone screen), full bleed, before the answer. One
+          image URL for both, so the phone downloads it once. */}
+      {place ? <PlaceBand image={place} className="max-sm:hidden" /> : null}
+      <Container className={cn('pb-8 sm:pb-12', breadcrumbs ? 'pt-3 sm:pt-4' : 'pt-8 sm:pt-12', place && 'pt-4 sm:pt-5')}>
+        {/* With a place band the breadcrumbs open the words' column, so the answer can rise over
+            the photograph's lower edge (the help centre's "rises into the band" move). */}
+        {place ? null : crumbs}
+        <div
+          className={cn(
+            'flex flex-col gap-6 sm:gap-8 lg:flex-row lg:justify-between lg:gap-14',
+            place ? 'lg:items-start' : 'lg:items-center',
+          )}
+        >
+          <div className={cn('min-w-0 lg:max-w-[46rem] lg:flex-1', place && 'lg:pt-1')}>
+            {place ? crumbs : null}
             {eyebrow ? (
               <p className="type-eyebrow mb-3 flex items-center gap-2.5 text-gold-ink">
                 <span aria-hidden="true" className="h-px w-7 bg-gold" />
@@ -72,8 +148,9 @@ export function ServiceIntro({ eyebrow, title, summary, summaryClassName, breadc
             {meta ? <div className="mt-5 flex flex-wrap items-center gap-2">{meta}</div> : null}
             {actions ? <div className="mt-6 flex flex-wrap items-center gap-3">{actions}</div> : null}
           </div>
+          {place ? <PlaceBand image={place} className="-mx-gutter sm:hidden" /> : null}
           {answer ? (
-            <div data-service-answer="" className="min-w-0 empty:hidden lg:w-[27rem] lg:shrink-0">
+            <div data-service-answer="" className={cn('relative min-w-0 empty:hidden lg:w-[27rem] lg:shrink-0', place && 'lg:-mt-[4.25rem]', answerClassName)}>
               {answer}
             </div>
           ) : null}

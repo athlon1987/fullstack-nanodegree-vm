@@ -307,6 +307,14 @@ export const transportPagesEn = {
   },
   // Redesign stage two (service-page frame): one-line summaries and the frame's quiet labels.
   frame: {
+    // Polish (critique-redesign2 item 16): the eyebrow names the page's group, not the airport again.
+    group: 'Getting here',
+    // Polish (critique-redesign2 item 8): parking's key answer beside the title.
+    parkingAnswerTitle: 'Lowest daily price we found',
+    parkingAnswerPerDay: 'a day',
+    parkingAnswerAtMost: 'Estimate: at most, not verified',
+    parkingAnswerEstimate: 'Estimate from the published tariff',
+    parkingAnswerCompare: 'Compare every car park',
     transportSummary: 'Published fares and journey times for every way in and out, each with its source and date.',
   },
 };
@@ -605,6 +613,12 @@ export const transportPagesMs: typeof transportPagesEn = {
     edit: 'Sunting',
   },
   frame: {
+    group: 'Ke lapangan terbang',
+    parkingAnswerTitle: 'Harga sehari terendah yang kami temui',
+    parkingAnswerPerDay: 'sehari',
+    parkingAnswerAtMost: 'Anggaran: paling tinggi, belum disahkan',
+    parkingAnswerEstimate: 'Anggaran daripada tarif yang diterbitkan',
+    parkingAnswerCompare: 'Bandingkan semua tempat letak kereta',
     transportSummary: 'Tambang dan masa perjalanan yang diterbitkan bagi setiap cara ke dan dari lapangan terbang, setiap satu dengan sumber dan tarikhnya.',
   },
 };

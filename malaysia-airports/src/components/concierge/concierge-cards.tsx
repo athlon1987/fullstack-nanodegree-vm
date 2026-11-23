@@ -106,7 +106,7 @@ function Facility({ card }: { card: FacilityCard }) {
       <CardHead
         icon={card.category}
         title={card.name}
-        meta={<><ProvenanceTag provenance={card.provenance} length="short" /><Badge size="sm">{card.place}</Badge>{zone ? <Badge size="sm">{zone}</Badge> : null}</>}
+        meta={<><ProvenanceTag provenance={card.provenance} length="short" /><Badge size="sm" variant="label">{card.place}</Badge>{zone ? <Badge size="sm" variant="label">{zone}</Badge> : null}</>}
       />
       {card.description ? <p className="type-body text-ink-2">{card.description}</p> : null}
       {card.location || card.hours ? (
@@ -136,7 +136,7 @@ function Outlet({ card }: { card: OutletCard }) {
       <CardHead
         icon="utensils"
         title={card.name}
-        meta={<><ProvenanceTag provenance={card.provenance} length="short" /><Badge size="sm">{card.place}</Badge>{card.halal ? <Badge size="sm" tone="positive">{t(`conciergePage.answer.halal.${card.halal}`)}</Badge> : null}</>}
+        meta={<><ProvenanceTag provenance={card.provenance} length="short" /><Badge size="sm" variant="label">{card.place}</Badge>{card.halal ? <Badge size="sm" variant="label" className="bg-positive-bg text-positive-fg">{t(`conciergePage.answer.halal.${card.halal}`)}</Badge> : null}</>}
       />
       {card.description ? <p className="type-body text-ink-2">{card.description}</p> : null}
       <dl className="grid gap-2">
@@ -157,7 +157,7 @@ function Transport({ card }: { card: TransportCard }) {
       <CardHead
         icon={card.mode}
         title={card.name}
-        meta={<><ProvenanceTag provenance={card.provenance} length="short" /><Badge size="sm">{card.modeLabel}</Badge>{card.highlight ? <Badge size="sm" tone="positive">{t(card.highlight === 'lowest-fare' ? 'conciergePage.answer.lowestFare' : 'conciergePage.answer.quickest')}</Badge> : null}</>}
+        meta={<><ProvenanceTag provenance={card.provenance} length="short" /><Badge size="sm" variant="label">{card.modeLabel}</Badge>{card.highlight ? <Badge size="sm" variant="label" className="bg-positive-bg text-positive-fg">{t(card.highlight === 'lowest-fare' ? 'conciergePage.answer.lowestFare' : 'conciergePage.answer.quickest')}</Badge> : null}</>}
       />
       {card.rows.length > 0 ? (
         <ul className="flex flex-col divide-y divide-line">
@@ -184,7 +184,7 @@ function CarPark({ card }: { card: CarParkCard }) {
   const t = useT();
   return (
     <div className={CARD}>
-      <CardHead icon="square-parking" title={card.name} meta={<><ProvenanceTag provenance={card.estimate ? 'estimated' : card.provenance} length="short" /><Badge size="sm">{card.place}</Badge></>} />
+      <CardHead icon="square-parking" title={card.name} meta={<><ProvenanceTag provenance={card.estimate ? 'estimated' : card.provenance} length="short" /><Badge size="sm" variant="label">{card.place}</Badge></>} />
       <dl className="grid gap-2">
         <Fact label={card.estimate ? t('conciergePage.answer.estimate') : t('conciergePage.answer.rates')}>
           {/* One fact, one answer (round 4, 6.1.3): the rate status in the parking page's words. */}
@@ -208,7 +208,8 @@ function CarPark({ card }: { card: CarParkCard }) {
 export function ConciergeCards({ cards, className }: { cards: readonly AnswerCard[]; className?: string }) {
   if (cards.length === 0) return null;
   return (
-    <ul className={cn('grid gap-3 @lg:grid-cols-2', className)}>
+    // Polish (critique-redesign2 item 12): one card per row at the conversation's width.
+    <ul className={cn('grid gap-3', className)}>
       {cards.map((card) => (
         <li key={`${card.type}:${card.id}`} className={cn('flex min-w-0', card.type === 'flight' && '@lg:col-span-2')}>
           <div className="flex w-full min-w-0 flex-col [&>*]:flex-1">

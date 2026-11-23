@@ -47,7 +47,11 @@ const FRAME =
   // 174 to 237 px when a delayed flight's answer arrived (CLS 0.106 at 1440, 0.081 at 390).
   'glass-dark flex flex-wrap items-center gap-x-4 gap-y-2 rounded-2xl px-4 py-3 sm:px-5 sm:py-3.5';
 /** The sentence: a fixed number of lines (`lh`: the paragraph's own line height, so it follows text size). */
-const SENTENCE = 'type-body min-w-0 flex-1 basis-64 text-ink line-clamp-3 h-[3lh] sm:line-clamp-2 sm:h-[2lh]';
+// Polish (critique-redesign2 item 22): from 1024 px, beside the title, the sentence takes the
+// panel's whole width (about 500 px a line instead of 380), the link under it, so "Check-in: Row X,…"
+// is no longer cut. Two lines, not three: a reserved third line stood empty above the breadcrumbs
+// for most flights (a departed flight's answer is one line).
+const SENTENCE = 'type-body min-w-0 flex-1 basis-64 text-ink line-clamp-3 h-[3lh] sm:line-clamp-2 sm:h-[2lh] lg:basis-full';
 /** The link's row: as tall as `link-action` (44 px on phones and touch screens, 32 px otherwise). */
 const LINK_ROW = 'flex min-h-8 items-center gap-3 max-md:min-h-11 touch:min-h-11';
 

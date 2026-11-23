@@ -964,6 +964,7 @@ export const ms: Dictionary = {
     shown: { one: '{count} notis dipaparkan', other: '{count} notis dipaparkan' },
     none: 'Tiada notis yang sepadan dengan penapis ini.',
     period: '{from} hingga {to}',
+    statusTitle: 'Status notis',
   },
   translation: {
     noticeTitle: 'Sebahagian kandungan dalam bahasa Inggeris',

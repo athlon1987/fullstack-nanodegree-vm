@@ -1,5 +1,6 @@
 import { ExternalLink } from '@/components/common/external-link';
 import { SourceNote } from '@/components/common/source-note';
+import { cn } from '@/lib/cn';
 import { Icon } from '@/components/ui/icon';
 import type { ContactView } from './help-views.server';
 
@@ -38,15 +39,18 @@ export function ContactList({ contacts }: { contacts: readonly ContactView[] }) 
  * A compact "Call Malaysia Airports" row for the top of Help (D-15): the published phone lines as
  * labelled `tel:` links, so a verified number is one tap away on a phone. Server-rendered.
  */
-export function CallRow({ contacts, title, allLabel, max = 2 }: { contacts: readonly ContactView[]; title: string; allLabel: string; max?: number }) {
+export function CallRow({ contacts, title, allLabel, max = 2, layout = 'row' }: { contacts: readonly ContactView[]; title: string; allLabel: string; max?: number; layout?: 'row' | 'card' }) {
   const phones = contacts.filter((contact) => contact.kind === 'phone' && contact.href?.startsWith('tel:')).slice(0, max);
   if (phones.length === 0) return null;
+  const card = layout === 'card';
   return (
-    <section aria-labelledby="help-call-title" className="flex flex-col gap-2">
-      <h2 id="help-call-title" className="type-title-sm text-ink">
+    // Polish (critique-redesign2 item 3): `card` is the help centre's key answer in the band's right
+    // column, the call lines stacked on smoky glass.
+    <section aria-labelledby="help-call-title" className={cn('flex flex-col gap-2', card && 'glass-dark gap-3 rounded-3xl p-5 sm:p-6')}>
+      <h2 id="help-call-title" className={cn('text-ink', card ? 'type-title-md' : 'type-title-sm')}>
         {title}
       </h2>
-      <ul className="flex flex-wrap gap-2">
+      <ul className={cn('flex gap-2', card ? 'flex-col items-start' : 'flex-wrap')}>
         {phones.map((phone) => (
           <li key={phone.id} className="min-w-0">
             <a

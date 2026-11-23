@@ -34,8 +34,14 @@ export function GuideIndex({ groups }: GuideIndexProps) {
     <div className="flex flex-col gap-16 sm:gap-20">
       {/* The filter sits on a white pill tray: one row on wide screens, wrapping on phones. */}
       <div className="flex flex-col gap-3 rounded-3xl bg-surface p-3 shadow-sm ring-1 ring-line sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:rounded-pill sm:py-2.5 sm:pr-6 sm:pl-3">
-        <div role="group" aria-label={t('guidePages.hub.filterLabel')} className="flex flex-wrap items-center gap-2">
-          <span aria-hidden="true" className="type-body-sm mr-1 pl-2 font-medium text-ink-2">
+        {/* Polish (critique-redesign2 item 10d): on a phone the chips are one swipeable row (they
+            stacked one per row: two never fit side by side in the tray), the scroll inside the tray. */}
+        <div
+          role="group"
+          aria-label={t('guidePages.hub.filterLabel')}
+          className="flex flex-wrap items-center gap-2 max-sm:-mx-3 max-sm:flex-nowrap max-sm:overflow-x-auto max-sm:px-3 max-sm:py-0.5 max-sm:[scrollbar-width:none]"
+        >
+          <span aria-hidden="true" className="type-body-sm mr-1 pl-2 font-medium text-ink-2 max-sm:hidden">
             {t('guidePages.hub.filterLabel')}
           </span>
           <FilterChip pressed={scope === null} onPressedChange={() => setScope(null)}>

@@ -207,6 +207,8 @@ export const mapPagesEn = {
   },
   // Redesign stage two (service-page frame): the facilities page's quick finds and the map's quiet labels.
   frame: {
+    // Polish (critique-redesign2 item 16): the eyebrow of the map, facilities and transit pages.
+    group: 'In the terminal',
     quickTitle: 'Most looked for',
     quickCount: { one: '{count} place', other: '{count} places' },
     quickMissing: 'Not published yet: ask at an information counter',
@@ -411,6 +413,7 @@ export const mapPagesMs: typeof mapPagesEn = {
     placeholderAction: 'Cari kaunter pertanyaan',
   },
   frame: {
+    group: 'Di dalam terminal',
     quickTitle: 'Paling kerap dicari',
     quickCount: { one: '{count} tempat', other: '{count} tempat' },
     quickMissing: 'Belum diterbitkan: tanya di kaunter pertanyaan',

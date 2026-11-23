@@ -59,7 +59,7 @@ export function FacilityCard({ facility, sources, showTerminal, airport, default
       {facility.provenance !== defaultProvenance || showTerminal ? (
         <div data-facility-tags="" className="mt-2 flex flex-wrap items-center gap-2">
           {facility.provenance !== defaultProvenance ? <ProvenanceTag provenance={facility.provenance} /> : null}
-          {showTerminal ? <Badge size="sm">{facility.terminalLabel}</Badge> : null}
+          {showTerminal ? <Badge size="sm" variant="label">{facility.terminalLabel}</Badge> : null}
         </div>
       ) : null}
 

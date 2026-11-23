@@ -97,7 +97,6 @@ async function HelpTopic({ params }: { params: PageProps<'/[lang]/help/[topic]'>
   const faqs = faqViews(lang, topic);
   const topicViews = helpTopicViews(lang);
   const others = topicViews.filter((item) => item.slug !== topic);
-  const icon = topicViews.find((item) => item.slug === topic)?.icon ?? 'circle-help';
   const related = TOPIC_RELATED[topic] ?? [];
   const official = officialLinks(topic, t);
 
@@ -107,7 +106,6 @@ async function HelpTopic({ params }: { params: PageProps<'/[lang]/help/[topic]'>
           white card, "still need help" as the one midnight card. */}
       <PageHero
         tone="light"
-        emblem={icon}
         eyebrow={t('guidePages.help.title')}
         title={title}
         lead={pick(record.summary, lang)}

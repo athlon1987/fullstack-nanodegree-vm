@@ -10,6 +10,7 @@ import { MissingPage } from '@/components/common/missing-page';
 import { ProvenanceLegend } from '@/components/common/provenance-legend';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { ServiceBody, ServiceHeading, ServiceIntro, SERVICE_ICON } from '@/components/facilities/service-frame';
+import { servicePlace } from '@/components/facilities/service-place';
 import { FactCard, type FactView } from '@/components/guides/fact-card';
 import { SectionSourceList } from '@/components/common/section-source-list';
 import { transitData, type RestView, type TransitData } from '@/components/guides/transit-data.server';
@@ -80,7 +81,8 @@ async function Transit({ params }: { params: AirportPageParams }) {
   // summary pinned at the top of the form while it is answered.
   const header = (
     <ServiceIntro
-      eyebrow={airport.shortName}
+      eyebrow={t('mapPages.frame.group')}
+      place={servicePlace(airport.slug, lang)}
       title={t('guidePages.transit.title', { airport: airport.shortName })}
       summary={planner ? t('guidePages.transit.lead') : t('guidePages.transit.leadSimple', { airport: airport.shortName })}
       summaryClassName={planner ? 'max-sm:sr-only' : undefined}

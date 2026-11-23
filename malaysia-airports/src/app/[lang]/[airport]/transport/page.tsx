@@ -17,6 +17,7 @@ import { DEFAULT_PLANNER_STATE, TransportPlanner } from '@/components/transport/
 import { TransportPlannerFromUrl } from '@/components/transport/transport-planner-url';
 import { Button } from '@/components/ui/button';
 import { ServiceBody, ServiceHeading, ServiceIntro, SERVICE_CARD, SERVICE_ICON, SERVICE_ICON_SM, SERVICE_JUMP, SERVICE_WELL } from '@/components/facilities/service-frame';
+import { servicePlace } from '@/components/facilities/service-place';
 import { cn } from '@/lib/cn';
 import { Icon } from '@/components/ui/icon';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
@@ -72,7 +73,8 @@ async function Transport({ params }: { params: AirportPageParams }) {
           fares, round 4's 6.1.6) sits beside the title from lg up and under it on phones, still
           above the warning, which still precedes every taxi and e-hailing option (C-02). */}
       <ServiceIntro
-        eyebrow={airport.shortName}
+        eyebrow={t('transportPages.frame.group')}
+        place={servicePlace(airport.slug, lang)}
         title={t('transportPages.transport.title', { airport: airport.shortName })}
         summary={t('transportPages.frame.transportSummary')}
         summaryClassName="max-sm:sr-only"

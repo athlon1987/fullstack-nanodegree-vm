@@ -15,11 +15,14 @@ import {
   type RestView,
 } from '@/components/commerce/commerce-view.server';
 import { LoungeCard } from '@/components/commerce/lounge-card';
+import { ProvenanceDefault } from '@/components/common/provenance-tag';
+import { sharedProvenance } from '@/components/common/shared-provenance';
 import { RestExplainer } from '@/components/commerce/rest-explainer';
 import { TerminalSections } from '@/components/commerce/terminal-sections';
 import { sectionPath } from '@/components/shell/sections';
 import { Button } from '@/components/ui/button';
 import { ServiceBody, ServiceIntro } from '@/components/facilities/service-frame';
+import { servicePlace } from '@/components/facilities/service-place';
 import { GlancePanel, sectionPhoto } from '@/components/commerce/glance-panel';
 import { Icon } from '@/components/ui/icon';
 import { I18nPageScope } from '@/lib/i18n/page-scope';
@@ -68,6 +71,9 @@ function SideGroups({ items, lang, level, idPrefix, showTerminal }: { items: Res
         const group = items.filter((item) => sideOf(item) === side);
         if (group.length === 0) return null;
         const id = `${idPrefix}-${side}`;
+        // Polish (critique-redesign2 item 14): the provenance most cards share is said once under the
+        // group's heading ("Official unless marked otherwise"); only a card that differs keeps a tag.
+        const shared = sharedProvenance(group);
         return (
           <section key={side} aria-labelledby={id}>
             <div className="mb-4 border-b border-line pb-2">
@@ -77,11 +83,12 @@ function SideGroups({ items, lang, level, idPrefix, showTerminal }: { items: Res
                 <span className="type-data-sm text-ink-3">{group.length}</span>
               </Heading>
               <p className="type-body-sm mt-1 text-ink-2">{t(`commercePages.lounges.groups.${side}Hint`)}</p>
+              {shared ? <ProvenanceDefault provenance={shared} className="mt-2" /> : null}
             </div>
             <ul className="grid gap-4 lg:grid-cols-2">
               {group.map((item) => (
                 <li key={item.id} className="flex min-w-0 [&>article]:flex-1">
-                  <LoungeCard item={item} lang={lang} showTerminal={showTerminal} headingLevel={level === 2 ? 3 : 4} />
+                  <LoungeCard item={item} lang={lang} showTerminal={showTerminal} headingLevel={level === 2 ? 3 : 4} defaultProvenance={shared} />
                 </li>
               ))}
             </ul>
@@ -112,7 +119,8 @@ async function Lounges({ params }: { params: AirportPageParams }) {
       {/* Redesign stage two: the service-page frame; the answer is what the page lists, under the
           photograph of the airport's own airside architecture (the overview's "Lounges" card). */}
       <ServiceIntro
-        eyebrow={airport.shortName}
+        eyebrow={t('commercePages.frame.group')}
+        place={servicePlace(airport.slug, lang)}
         title={t('nav.lounges')}
         summary={t('commercePages.lounges.lead')}
         summaryClassName="max-sm:sr-only"

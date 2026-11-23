@@ -6,7 +6,7 @@ import type { IconKey } from '@/components/ui/icon';
 import type { MediaImage } from '@/components/ui/media';
 import type { Translator } from '@/lib/i18n';
 import { CorporateNav } from './corporate-nav';
-import { CORPORATE_SECTIONS, type CorporateNavId } from './corporate-sections';
+import type { CorporateNavId } from './corporate-sections';
 
 export interface CorporateHeaderProps {
   t: Translator;
@@ -44,10 +44,12 @@ export function CorporateHeader({ t, current, title, lead, trail = [], meta, act
   return (
     <>
       {current !== null ? <CorporateNav current={current} t={t} /> : null}
+      {/* Polish (critique-redesign2 items 2 and 3): two page tops only, a photograph or the light
+          header; the ringed emblem (a placeholder beside the title) is gone. */}
       <PageHero
         image={image}
-        tone={current === null ? 'light' : 'midnight'}
-        emblem={emblem ?? CORPORATE_SECTIONS.find((section) => section.id === current)?.icon}
+        tone="light"
+        emblem={emblem}
         size={size}
         eyebrow={current !== null && current !== 'overview' ? t('corporatePages.nav.register') : undefined}
         title={title}

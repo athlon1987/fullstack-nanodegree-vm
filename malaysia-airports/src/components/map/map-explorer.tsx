@@ -12,6 +12,7 @@ import { SourceNote } from '@/components/common/source-note';
 import { AsOf, sourcesFor } from '@/components/facilities/facility-values';
 import { Button } from '@/components/ui/button';
 import { FilterChip } from '@/components/ui/filter-chip';
+import { cn } from '@/lib/cn';
 import { Icon } from '@/components/ui/icon';
 import { SearchField } from '@/components/ui/search-field';
 import { SegmentedControl } from '@/components/ui/segmented-control';
@@ -403,10 +404,11 @@ function MapWorkspace({ map, query, sources, facilitiesHref, officialMapUrl, off
 
   return (
     <div className="flex flex-col gap-14">
-      {/* Round 4 (6.1.6): on phones the order is search, From and To, the map, then the directions
-          and the filters, so a chosen route is drawn just below the controls instead of 600 px
-          above them. DOM order is the visual order at every width; on desktop the map stays
-          sticky in the right column beside the same four blocks. */}
+      {/* Polish (critique-redesign2 item 4): on phones the order is search, the map, From and To,
+          then the directions and the filters, so the drawing (and a deep link's route) is on the
+          first screen; it was two screens down, under the form (round 4 had put the form first).
+          DOM order is the visual order on phones; on desktop the map stays sticky in the right
+          column beside the four blocks, and focus goes search, map, route, places. */}
       <div className="grid gap-5 lg:grid-cols-[minmax(0,23rem)_minmax(0,1fr)] lg:grid-rows-[auto_auto_auto_1fr] lg:gap-x-8">
         <div className="min-w-0 lg:col-start-1 lg:row-start-1">
           <div role="search">
@@ -451,6 +453,52 @@ function MapWorkspace({ map, query, sources, facilitiesHref, officialMapUrl, off
             ) : null}
           </div>
         </div>
+        <div className="min-w-0 lg:sticky lg:top-[calc(var(--spacing-sticky)+1rem)] lg:col-start-2 lg:row-span-4 lg:row-start-1 lg:self-start">
+          {level.note ? <p className="type-body-sm mb-2 flex gap-2 text-ink-2"><Icon name="info" size="sm" className="mt-0.5" />{level.note}</p> : null}
+          <div ref={drawing}>
+            <MapCanvas
+              toolbar={
+                <SegmentedControl
+                  label={t('mapPages.levels.label')}
+                  value={level.id}
+                  onValueChange={changeLevel}
+                  // The hints ("departures", "arrivals") are read with each tab but not shown: the
+                  // three tabs then fit one row beside the disclaimer, and the level's note says more.
+                  className="max-sm:w-full max-sm:[&>div]:flex-nowrap max-sm:[&>div]:overflow-x-auto max-sm:[&>div]:[scrollbar-width:none] [&_label]:px-3 [&_label_.type-caption]:sr-only"
+                  // A level the route passes through carries a small dot (its room is kept on every tab,
+                  // so the tabs keep their width when a deep link's route arrives after hydration).
+                  options={map.levels.map((item) => ({
+                    value: item.id,
+                    label: (
+                      <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
+                        {item.label}
+                        <span aria-hidden="true" className={cn('size-1.5 rounded-full', routeLevels.has(item.id) ? 'bg-current' : 'bg-transparent')} />
+                      </span>
+                    ),
+                    hint: item.hint,
+                  }))}
+                />
+              }
+              map={map}
+              level={level}
+              pois={onLevel}
+              selectedId={selected?.id}
+              fromId={route ? from?.id : undefined}
+              toId={route ? to?.id : undefined}
+              routeLines={routeLines}
+              connectors={connectors}
+              stepActive={activeStepKey !== null}
+              view={view}
+              bounds={bounds}
+              onViewChange={(next, animate) => changeView(level.id, next, animate)}
+              onSelect={(id) => select(id, 'map')}
+              onLevelChange={changeLevel}
+              onEscape={clearSelection}
+            />
+          </div>
+          <MapLegend showRoute={Boolean(route)} />
+        </div>
+
         <div className="min-w-0 lg:col-start-1 lg:row-start-2">
           <RoutePlanner
             part="controls"
@@ -474,43 +522,6 @@ function MapWorkspace({ map, query, sources, facilitiesHref, officialMapUrl, off
             }}
             onStepSelect={selectStep}
           />
-        </div>
-
-        <div className="min-w-0 lg:sticky lg:top-[calc(var(--spacing-sticky)+1rem)] lg:col-start-2 lg:row-span-4 lg:row-start-1 lg:self-start">
-          <SegmentedControl
-            label={t('mapPages.levels.label')}
-            value={level.id}
-            onValueChange={changeLevel}
-            block
-            stackOnPhone
-            options={map.levels.map((item) => ({
-              value: item.id,
-              label: item.label,
-              hint: item.hint,
-              icon: routeLevels.has(item.id) ? 'route' : 'layers',
-            }))}
-          />
-          {level.note ? <p className="type-body-sm mt-2 flex gap-2 text-ink-2"><Icon name="info" size="sm" className="mt-0.5" />{level.note}</p> : null}
-          <div ref={drawing} className="mt-3">
-            <MapCanvas
-              map={map}
-              level={level}
-              pois={onLevel}
-              selectedId={selected?.id}
-              fromId={route ? from?.id : undefined}
-              toId={route ? to?.id : undefined}
-              routeLines={routeLines}
-              connectors={connectors}
-              stepActive={activeStepKey !== null}
-              view={view}
-              bounds={bounds}
-              onViewChange={(next, animate) => changeView(level.id, next, animate)}
-              onSelect={(id) => select(id, 'map')}
-              onLevelChange={changeLevel}
-              onEscape={clearSelection}
-            />
-          </div>
-          <MapLegend showRoute={Boolean(route)} />
         </div>
 
         <div className="flex min-w-0 flex-col gap-4 empty:hidden lg:col-start-1 lg:row-start-3">

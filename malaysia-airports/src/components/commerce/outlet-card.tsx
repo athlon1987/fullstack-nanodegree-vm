@@ -1,6 +1,6 @@
 'use client';
 
-import { CategoryArt, KIND_ICONS } from './category-art';
+import { CategoryMedallion, KIND_ICONS } from './category-art';
 import type { Source } from '@/content/types';
 import { useT } from '@/lib/i18n/client';
 import { cn } from '@/lib/cn';
@@ -45,10 +45,11 @@ export function OutletCard({ outlet, sources, showTerminal, proximity, headingLe
       aria-labelledby={`${outlet.id}-name`}
       className="group/card relative flex min-w-0 flex-col overflow-hidden rounded-2xl border border-line bg-surface shadow-sm transition-[border-color,box-shadow,translate] duration-base hover:border-line-strong hover:shadow-lg motion-ok:hover:-translate-y-0.5 has-[[data-card-link]:focus-visible]:focus-ring"
     >
-      {/* Redesign stage two: category art in the picture slot (no outlet has a licensed photograph). */}
-      <CategoryArt name={outlet.name} tone={outlet.kind} icon={KIND_ICONS[outlet.kind]} />
+      {/* Polish (critique-redesign2 item 6): no picture slot (no outlet has a licensed photograph,
+          and monogram art read as a missing image); the category's medallion leads the name. */}
       <div className="flex flex-1 flex-col p-5 sm:p-6">
         <div className="flex items-start gap-3.5">
+          <CategoryMedallion tone={outlet.kind} icon={KIND_ICONS[outlet.kind]} />
           <div className="min-w-0 flex-1">
             <p className="type-caption text-ink-2">
               {outlet.categoryLabel}

@@ -36,9 +36,15 @@ test.describe('service pages, Direction v2 frame', () => {
       // Cards (outlets, lounges) have category art only: no image inside any card.
       await expect(main.getByRole('article').locator('img')).toHaveCount(0);
     }
-    // The answer panel's photograph is the overview's vetted section photograph (a Malaysian dish for food at KLIA).
+    // Intended change (critique-redesign2 item 7, polish round): the shops panel no longer shows a
+    // plate of nasi lemak (not taken at KLIA, and it over-promised a food hall over "1 place to eat
+    // or drink"); the counts are the answer, and the page's place band shows KLIA itself.
     await page.goto('/en/kul/shop-dine');
-    await expect(page.getByRole('main').getByRole('region', { name: 'At a glance' }).locator('img[src*="nasi-lemak"]')).toHaveCount(1);
+    await expect(page.getByRole('main').getByRole('region', { name: 'At a glance' }).locator('img')).toHaveCount(0);
+    await expect(page.getByRole('main').locator('[data-place-band]:visible img[src*="terminal-1-aerial"]')).toHaveCount(1);
+    // The lounges panel keeps the overview's vetted section photograph (the KLIA Terminal 1 canopy).
+    await page.goto('/en/kul/lounges');
+    await expect(page.getByRole('main').getByRole('region', { name: 'At a glance' }).locator('img')).toHaveCount(1);
     await page.goto('/en/pen/lounges');
     // Penang has no vetted lounges photograph: the panel shows none rather than another airport's.
     await expect(page.getByRole('main').getByRole('region', { name: 'At a glance' }).locator('img')).toHaveCount(0);

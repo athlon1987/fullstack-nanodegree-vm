@@ -23,10 +23,12 @@ export default async function SearchPage() {
   return (
     <>
       {/* Redesign stage two: the quiet editorial header, then the search card and app-like results. */}
-      <PageHero tone="light" emblem="search" width="narrow" title={t('search.title')} lead={t('search.pageLead')} breadcrumbs={<Breadcrumbs items={[{ label: t('search.title') }]} />} />
+      {/* Polish (critique-redesign2 items 2 and 3): the header at page width like every page (the
+          h1 jumped from x 154 to x 326), no emblem; the body narrows, left-aligned. */}
+      <PageHero tone="light" title={t('search.title')} lead={t('search.pageLead')} breadcrumbs={<Breadcrumbs items={[{ label: t('search.title') }]} />} />
       {/* The results arrive after the index loads: the column reserves most of a screen, so the
           footer is never in the first view and is not pushed down while the visitor watches. */}
-      <Container size="narrow" className="min-h-[70vh] pb-section">
+      <Container className="min-h-[70vh] pb-section [&>*]:max-w-[52rem]">
         <Suspense
           fallback={
             // The same box as the search card (field plus padding), so nothing moves when it arrives.

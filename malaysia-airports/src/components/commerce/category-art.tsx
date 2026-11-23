@@ -33,7 +33,28 @@ export function monogram(name: string): string {
     .join('');
 }
 
-/** `card`: the band at the top of a directory card. `feature`: the large panel beside an outlet page's title. */
+/** The medallion's tint per tone: the category's soft tint, its icon in the category's ink. */
+const MEDALLION = {
+  dine: 'bg-gold-soft text-gold-ink',
+  shop: 'bg-primary-soft text-primary-ink',
+  service: 'bg-leaf-soft text-leaf',
+  lounge: 'bg-gold-soft text-gold-ink',
+} as const;
+
+/**
+ * Polish (critique-redesign2 item 6): the lead of a directory card, a 48 px round medallion with
+ * the category's icon on its tint, beside the name (Airbnb's list rows). It replaced the 96 px
+ * monogram band, whose repeated letters ("PP PP MA MA") read as missing images. Decorative.
+ */
+export function CategoryMedallion({ tone, icon, className }: { tone: CategoryArtTone; icon: IconKey; className?: string }) {
+  return (
+    <span aria-hidden="true" className={cn('flex size-12 shrink-0 items-center justify-center rounded-full', MEDALLION[tone], className)}>
+      <Icon name={icon} size="md" strokeWidth={1.75} />
+    </span>
+  );
+}
+
+/** `card`: the band at the top of a directory card (no longer used on cards). `feature`: the large panel beside an outlet page's title. */
 export function CategoryArt({ name, tone, icon, size = 'card', className }: { name: string; tone: CategoryArtTone; icon: IconKey; size?: 'card' | 'feature'; className?: string }) {
   const style = TONES[tone];
   const feature = size === 'feature';

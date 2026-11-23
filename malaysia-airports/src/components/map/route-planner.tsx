@@ -7,7 +7,6 @@ import { useLang, useT } from '@/lib/i18n/client';
 import type { Translator } from '@/lib/i18n/translate';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Callout } from '@/components/ui/callout';
 import { Chip } from '@/components/ui/chip';
 import { Icon, type IconKey } from '@/components/ui/icon';
@@ -256,17 +255,23 @@ export function RoutePlanner({
             <Icon name="route" className="text-primary-ink" />
             {t('mapPages.route.title')}
           </h2>
-          <p className="type-body-sm mt-1 text-ink-2">{t('mapPages.route.lead')}</p>
+          {/* Polish (critique-redesign2 item 4): the lead is read on phones but not shown, so the drawing
+              starts on the first screen; the controls keep one height before and after a deep link's
+              route is applied (no shift above the drawing). */}
+          <p className="type-body-sm mt-1 text-ink-2 max-sm:sr-only">{t('mapPages.route.lead')}</p>
         </div>
-        <IconButton
-          icon="arrow-left-right"
-          variant="secondary"
-          size="sm"
-          label={t('mapPages.route.swap')}
-          onClick={onSwap}
-          disabled={!fromId && !toId}
-          className="shrink-0 [&_svg]:rotate-90"
-        />
+        <div className="flex shrink-0 items-center gap-1.5">
+          <IconButton
+            icon="arrow-left-right"
+            variant="secondary"
+            size="sm"
+            label={t('mapPages.route.swap')}
+            onClick={onSwap}
+            disabled={!fromId && !toId}
+            className="shrink-0 [&_svg]:rotate-90"
+          />
+          <IconButton icon="x" variant="secondary" size="sm" label={t('mapPages.route.clear')} onClick={onClear} disabled={!fromId && !toId} className="shrink-0" />
+        </div>
       </div>
 
       {/* From and To in one well, like a travel app's route card (full width, so a long place
@@ -301,13 +306,6 @@ export function RoutePlanner({
 
       {part === 'all' && result ? <div className="mt-5 border-t border-line pt-5">{result}</div> : null}
 
-      {fromId || toId ? (
-        <div className="mt-4 border-t border-line pt-3">
-          <Button variant="quiet" size="sm" iconStart="x" onClick={onClear}>
-            {t('mapPages.route.clear')}
-          </Button>
-        </div>
-      ) : null}
     </section>
   );
 }

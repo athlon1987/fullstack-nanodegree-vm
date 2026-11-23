@@ -5,7 +5,6 @@ import { useT } from '@/lib/i18n/client';
 import { LocaleLink } from '@/components/common/locale-link';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { SourceNote } from '@/components/common/source-note';
-import { Callout } from '@/components/ui/callout';
 import { Icon } from '@/components/ui/icon';
 import { sourcesFor, type TransportContext } from './transport-types';
 
@@ -48,25 +47,32 @@ export function ToutsWarning({ context, variant = 'banner', mode = 'taxi', class
     );
   }
 
+  // Polish (critique-redesign2 item 9): a quieter warning with the same words, role and place: a
+  // white card with a 3 px amber edge and a small amber icon disc (it was a 194 px amber slab, half
+  // a phone screen, and an olive-brown fill in dark mode). The body keeps a reading measure.
   return (
-    <Callout
-      tone="warning"
-      icon="triangle-alert"
-      title={t('transportPages.touts.title')}
-      // Redesign stage two: a refined callout (the soft amber panel, the tone's round icon, one
-      // quiet provenance line), no longer a 2 px frame. The words, sources and link are unchanged.
-      className={cn('sm:p-6', className)}
-      actions={
-        <>
+    <div
+      role="note"
+      className={cn(
+        'relative isolate flex gap-3 overflow-hidden rounded-2xl border border-line bg-surface p-4 pl-5 shadow-xs sm:gap-3.5 sm:p-5 sm:pl-6 hc:border-warning-border',
+        className,
+      )}
+    >
+      <span aria-hidden="true" className="absolute inset-y-0 left-0 w-[3px] bg-warning-border" />
+      <span aria-hidden="true" className="mt-px flex size-6 shrink-0 items-center justify-center rounded-full bg-warning-bg text-warning-fg">
+        <Icon name="triangle-alert" size="xs" strokeWidth={2.25} />
+      </span>
+      <div className="min-w-0 flex-1">
+        <p className="type-title-sm text-ink">{t('transportPages.touts.title')}</p>
+        <p className="type-body-sm mt-1 max-w-reading text-ink-2">{touts.body}</p>
+        <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2">
           {help}
           <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
             <ProvenanceTag provenance={touts.provenance} length="short" />
             <SourceNote sources={sourcesFor(touts.sourceIds, context.sources)} />
           </span>
-        </>
-      }
-    >
-      <p>{touts.body}</p>
-    </Callout>
+        </div>
+      </div>
+    </div>
   );
 }

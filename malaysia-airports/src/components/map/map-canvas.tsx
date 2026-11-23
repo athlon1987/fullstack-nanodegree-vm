@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent } from 'react';
+import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n/client';
 import { Icon } from '@/components/ui/icon';
@@ -58,6 +58,11 @@ export interface MapCanvasProps {
   onSelect: (id: string) => void;
   onLevelChange: (id: string) => void;
   onEscape: () => void;
+  /**
+   * Controls for the card's top bar beside the disclaimer (the level tabs). Polish
+   * (critique-redesign2 item 4): the tabs sit in the canvas's own bar, so the drawing starts higher.
+   */
+  toolbar?: ReactNode;
 }
 
 /** Labels win space in this order (higher first). */
@@ -113,6 +118,7 @@ export function MapCanvas({
   onSelect,
   onLevelChange,
   onEscape,
+  toolbar,
 }: MapCanvasProps) {
   const t = useT();
   const instructionsId = useId();
@@ -280,20 +286,30 @@ export function MapCanvas({
   }
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-3xl border border-line bg-surface shadow-md">
+    <div className={cn('grid grid-cols-1 overflow-hidden rounded-3xl border border-line bg-surface shadow-md', toolbar && 'sm:grid-cols-[auto_minmax(0,1fr)]')}>
       {/* Round 4 (6.1.6): the disclaimer is a strip above the drawing, not an overlay on it, so no
           level chip, pin or label can ever cover it (on phones the "To Gates" chip did).
           Redesign stage two: a quiet chip in the card's top bar, the same words. */}
-      <p data-map-disclaimer="" className="type-caption mx-3 my-2.5 inline-flex items-center gap-1.5 self-start rounded-pill bg-fill px-3 py-1 font-medium text-ink-2">
-        <Icon name="flask-conical" size="xs" strokeWidth={2} className="shrink-0" />
-        {t('mapPages.schematicLabel')}
-      </p>
+      {/* Polish (critique-redesign2 item 4): the level tabs sit in the card's own top bar, beside the
+          disclaimer from 640 px (above it on a phone), so the drawing starts higher. The disclaimer
+          stays a strip of its own above the drawing. */}
+      {toolbar ? <div className="min-w-0 px-3 pt-2.5 sm:pb-2.5">{toolbar}</div> : null}
+      <p
+        data-map-disclaimer=""
+        className={cn(
+          'type-caption mx-3 my-2.5 inline-flex items-center gap-1.5 self-center justify-self-start rounded-pill bg-fill px-3 py-1 font-medium text-ink-2',
+          toolbar && 'sm:justify-self-end',
+        )}
+      >
+          <Icon name="flask-conical" size="xs" strokeWidth={2} className="shrink-0" />
+          {t('mapPages.schematicLabel')}
+        </p>
       {/* Round 6 (review-3 9.1 item 7): where the route changes level, as buttons in a strip
           above the drawing. Floating over the drawing, the "To Gates" chip covered the
           "Immigration and security" label (and "To Level 3" a check-in row): no chip is drawn
           over a place or its label any more. */}
       {connectors.length > 0 ? (
-        <div data-route-connectors="" className="flex flex-wrap items-center gap-x-3 gap-y-1.5 border-t border-line bg-surface px-4 py-2.5">
+        <div data-route-connectors="" className="col-span-full flex flex-wrap items-center gap-x-3 gap-y-1.5 border-t border-line bg-surface px-4 py-2.5">
           <span className="type-body-sm text-ink-2">{t('mapPages.canvas.continues')}</span>
           {connectors.map((connector) => (
             <button
@@ -312,7 +328,7 @@ export function MapCanvas({
         ref={frameRef}
         onKeyDown={onKeyDown}
         className={cn(
-          'relative aspect-square w-full overflow-hidden border-t border-line bg-surface-sunken xs:aspect-[5/4] sm:aspect-[16/10] lg:aspect-auto lg:h-[min(64vh,42rem)] lg:min-h-[26rem]',
+          'relative col-span-full aspect-square w-full overflow-hidden border-t border-line bg-surface-sunken xs:aspect-[5/4] sm:aspect-[16/10] lg:aspect-auto lg:h-[min(calc(100dvh-30rem),42rem)] lg:min-h-[24rem]',
           'has-[[data-map-surface]:focus-visible]:focus-ring-inset',
         )}
       >

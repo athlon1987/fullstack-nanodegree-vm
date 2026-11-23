@@ -53,7 +53,10 @@ test.describe('answer first and placement (6.1.6)', () => {
     await expect(summary.getByRole('link', { name: 'See the plan' })).toHaveAttribute('href', '#transit-verdict-title');
   });
 
-  test('map on a phone: From and To come before the drawing, and no chip covers the disclaimer', async ({ page }) => {
+  // Intended change (critique-redesign2 item 4, polish round): on a phone the drawing now comes
+  // first, on the first screen, with From and To right under it; round 4 had put the form first,
+  // which left a deep link's route two screens down (y 1,173 at 390 x 844).
+  test('map on a phone: the drawing is on the first screen, From and To follow it, and no chip covers the disclaimer', async ({ page }) => {
     await page.setViewportSize(phone);
     await page.goto('/en/kul/map?from=l5-kerb&to=g-gates-c');
     const main = page.getByRole('main');
@@ -62,7 +65,10 @@ test.describe('answer first and placement (6.1.6)', () => {
     await expect(disclaimer).toHaveText('Schematic demonstration map, not a floor plan');
     const fromBox = await from.boundingBox();
     const discBox = await disclaimer.boundingBox();
-    expect(fromBox!.y).toBeLessThan(discBox!.y);
+    const drawingBox = await main.locator('[data-map-surface]').boundingBox();
+    expect(discBox!.y).toBeLessThan(drawingBox!.y);
+    expect(drawingBox!.y).toBeLessThan(phone.height);
+    expect(drawingBox!.y).toBeLessThan(fromBox!.y);
     await expect(main.getByRole('region', { name: 'Your route' })).toBeVisible();
     // The disclaimer is a strip above the drawing: nothing inside the drawing can overlap it.
     const overlaps = await page.evaluate(() => {

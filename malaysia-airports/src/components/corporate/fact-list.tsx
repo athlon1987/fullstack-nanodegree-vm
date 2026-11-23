@@ -43,7 +43,7 @@ export function FactList({ facts, t, layout = 'grid', className }: FactListProps
           <dd
             className={cn(
               'text-ink',
-              figures ? 'type-display-sm tabular order-first pb-3 after:mt-3 after:block after:h-0.5 after:w-8 after:rounded-pill after:bg-gold' : 'type-title-md',
+              figures ? 'type-display-md tabular order-first pb-3 after:mt-3 after:block after:h-0.5 after:w-8 after:rounded-pill after:bg-gold' : 'type-title-md',
             )}
           >
             {fact.value}

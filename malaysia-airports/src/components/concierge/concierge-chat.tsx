@@ -150,7 +150,9 @@ function Turn({ turn, onAsk, onRetry, busy }: { turn: ConciergeTurn; onAsk: (que
         <span aria-hidden="true" className="surface-midnight mt-1 hidden size-9 shrink-0 items-center justify-center rounded-full text-gold-bright shadow-sm ring-1 ring-gold/50 @md:flex">
           <Icon name="sparkles" size="sm" />
         </span>
-        <div className="min-w-0 flex-1 rounded-3xl rounded-tl-md bg-page-subtle p-4 @md:p-5">
+        {/* Polish (critique-redesign2 item 12): no bubble around the whole answer; the sentence is the
+            bubble, and the cards follow it at the conversation's width (it was boxes in boxes). */}
+        <div className="min-w-0 flex-1 pt-0.5">
           <p className="sr-only">{t('conciergePage.log.concierge')}</p>
           {turn.status === 'done' && turn.answer ? (
             <ConciergeAnswerView answer={turn.answer} mode={turn.mode ?? 'grounded'} note={turn.note} onAsk={onAsk} busy={busy} />
@@ -204,7 +206,16 @@ export function ConciergeChat({ variant, initialQuestion, toolbarEnd }: Concierg
   /** The opt-in panel is open; `flight` when it was opened by the saved-flight switch. */
   const [optIn, setOptIn] = useState<null | 'service' | 'flight'>(null);
   const formRef = useRef<HTMLFormElement>(null);
-  const focusInput = () => formRef.current?.querySelector('input')?.focus();
+  // Polish (critique-redesign2 item 11): focus the script moves to the field after an answer is
+  // marked quiet (a 2 px navy ring, not the magenta keyboard ring) until the field loses it; a
+  // visitor who tabs to the field still gets the magenta ring.
+  const focusInput = () => {
+    const input = formRef.current?.querySelector('input');
+    if (!input) return;
+    input.dataset.quietFocus = '';
+    input.addEventListener('blur', () => delete input.dataset.quietFocus, { once: true });
+    input.focus();
+  };
   const logRef = useRef<HTMLOListElement>(null);
   const privacyRef = useRef<HTMLDivElement>(null);
   const askedInitial = useRef<string | null>(null);
@@ -352,7 +363,8 @@ export function ConciergeChat({ variant, initialQuestion, toolbarEnd }: Concierg
           {scopeLabel ? (
             <span className="type-body-sm inline-flex min-h-8 items-center gap-1 rounded-pill border border-line-strong bg-surface py-0.5 pr-0.5 pl-3 text-ink touch:min-h-11">
               <Icon name="map-pin" size="xs" className="text-ink-2" />
-              {scopeLabel}
+              {/* Polish (critique-redesign2 item 10c): "KLIA Terminal 1" never breaks inside the chip. */}
+              <span className="whitespace-nowrap">{scopeLabel}</span>
               <button
                 type="button"
                 onClick={clearScope}
@@ -426,7 +438,7 @@ export function ConciergeChat({ variant, initialQuestion, toolbarEnd }: Concierg
         )}
       >
         {/* One pill: the field and the send button. The pill carries the field's 3:1 boundary and its focus ring. */}
-        <div className="flex items-center gap-1.5 rounded-pill bg-surface p-1.5 shadow-md ring-1 ring-line-control transition-shadow duration-fast has-[input:focus-visible]:focus-ring">
+        <div className="flex items-center gap-1.5 rounded-pill bg-surface p-1.5 shadow-md ring-1 ring-line-control transition-shadow duration-fast has-[input:focus-visible:not([data-quiet-focus])]:focus-ring has-[input[data-quiet-focus]:focus]:ring-2 has-[input[data-quiet-focus]:focus]:ring-ink">
           <Input
             label={t('conciergePage.composer.label')}
             hideLabel

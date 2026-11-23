@@ -369,6 +369,9 @@ export function TransitPlanner({ data, initial }: TransitPlannerProps) {
  * form scrolls past, except on short windows (400% zoom), where nothing sticks. Hidden from `lg`,
  * where the card is beside the form. Not a live region: the form's status line announces changes.
  */
+/** A duration that never breaks inside itself ("1 h 50 min"): its spaces become no-break spaces. */
+const unbroken = (text: string) => text.replace(/ /g, '\u00a0');
+
 function VerdictSummary({ verdict, estimate, layover }: { verdict: TimeVerdict; estimate: { min: number; max: number }; layover: number }) {
   const t = useT();
   const lang = useLang();
@@ -390,8 +393,8 @@ function VerdictSummary({ verdict, estimate, layover }: { verdict: TimeVerdict; 
           <span aria-hidden="true"> · </span>
           <span className="sr-only">. </span>
           {t('guidePages.transit.time.summary', {
-            range: t('guidePages.transit.time.range', { min: formatDuration(estimate.min, lang), max: formatDuration(estimate.max, lang) }),
-            layover: formatDuration(layover, lang),
+            range: t('guidePages.transit.time.range', { min: unbroken(formatDuration(estimate.min, lang)), max: unbroken(formatDuration(estimate.max, lang)) }),
+            layover: unbroken(formatDuration(layover, lang)),
           })}
         </span>
       </p>
@@ -435,14 +438,16 @@ function VerdictCard({ verdict, estimate, layover, self, late }: { verdict: Time
       </div>
       {/* Round 6 (review-3 9.1 item 8): side by side while their labels fit, stacked when they do not
           ("penerbangan" broke in a 96 px column at 360 px and 125% text). */}
-      <dl className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,9rem),1fr))] gap-3">
+      {/* Polish (critique-redesign2 item 10b): stacked full width below 640 px ("55 min to 1 h 50 min"
+          broke over three lines in a 119 px box), and a duration never breaks inside itself. */}
+      <dl className="grid gap-3 sm:grid-cols-[repeat(auto-fit,minmax(min(100%,9rem),1fr))]">
         <div className="min-w-0 rounded-2xl bg-page-subtle p-4">
           <dt className="type-caption text-ink-2">{t('guidePages.transit.time.estimate')}</dt>
-          <dd className="type-data-lg mt-1.5 text-ink">{t('guidePages.transit.time.range', { min: formatDuration(estimate.min, lang), max: formatDuration(estimate.max, lang) })}</dd>
+          <dd className="type-data-lg mt-1.5 text-ink">{t('guidePages.transit.time.range', { min: unbroken(formatDuration(estimate.min, lang)), max: unbroken(formatDuration(estimate.max, lang)) })}</dd>
         </div>
         <div className="min-w-0 rounded-2xl bg-page-subtle p-4">
           <dt className="type-caption text-ink-2">{t('guidePages.transit.time.yours')}</dt>
-          <dd className="type-data-lg mt-1.5 text-ink">{formatDuration(layover, lang)}</dd>
+          <dd className="type-data-lg mt-1.5 text-ink">{unbroken(formatDuration(layover, lang))}</dd>
         </div>
       </dl>
       {self ? (

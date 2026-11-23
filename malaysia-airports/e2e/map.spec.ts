@@ -65,6 +65,17 @@ test.describe('terminal map', () => {
     await expectNoAxeViolations(page);
   });
 
+  test('with a route set, the drawing starts on the first screen (critique-redesign2 item 4)', async ({ page }, testInfo) => {
+    await page.goto('/en/kul/map?from=l5-kerb&to=g-gates-c');
+    await expect(page.getByRole('main').getByRole('region', { name: 'Your route' })).toBeVisible();
+    const box = (await page.getByRole('main').locator('[data-map-surface]').boundingBox())!;
+    const screen = page.viewportSize()!;
+    // Was y 686 of 900 at 1440 (214 px of drawing) and y 1,173 at 390 x 844.
+    expect(box.y, testInfo.project.name).toBeLessThan(screen.height);
+    if (testInfo.project.name === 'desktop') expect(box.y + box.height, 'the whole drawing at 1440 x 900').toBeLessThanOrEqual(screen.height);
+    else expect(box.y + 200, 'at least 200 px of drawing on a phone').toBeLessThan(screen.height);
+  });
+
   test('deep link to a route across levels, with step-free routing and keyboard zoom', async ({ page }) => {
     await page.goto('/en/kul/map?from=l5-kerb&to=g-gates-c');
     const directions = page.getByRole('main').getByRole('region', { name: 'Your route' });

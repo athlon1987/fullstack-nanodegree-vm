@@ -76,9 +76,37 @@ export default async function AccessibilityPage() {
     <>
       {/* Redesign stage two: the light editorial header with the accessibility emblem; the section
           links as pills; sections separated by space, the settings on the one subtle band. */}
+      {/* Polish (critique-redesign2 item 3): from 1024 px the right column is the first answer, how to
+          ask for assistance (it was a wheelchair emblem); smaller screens reach the section first. */}
       <PageHero
         tone="light"
-        emblem="accessibility"
+        asideClassName="max-lg:hidden"
+        aside={
+          <section aria-labelledby="hero-assistance-title" className="rounded-3xl border border-line bg-surface p-5 shadow-sm sm:p-6">
+            <h2 id="hero-assistance-title" className="type-title-md text-ink">
+              {t('guidePages.accessibility.assistance.title')}
+            </h2>
+            <p className="type-body-sm mt-1.5 text-ink-2">{t('guidePages.accessibility.assistance.lead')}</p>
+            <ul className="mt-3 flex flex-col">
+              {(
+                [
+                  ['plane', 'guidePages.accessibility.assistance.airlineTitle'],
+                  ['tower-control', 'guidePages.accessibility.assistance.airportTitle'],
+                ] as const
+              ).map(([icon, label]) => (
+                <li key={label}>
+                  <a href="#assistance-title" className="group flex min-h-12 items-center gap-3 rounded-2xl px-2 py-1.5 transition-colors duration-fast hover:bg-page-subtle">
+                    <span aria-hidden="true" className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary-ink">
+                      <Icon name={icon} size="sm" />
+                    </span>
+                    <span className="type-title-sm min-w-0 flex-1 text-ink">{t(label)}</span>
+                    <Icon name="arrow-down" size="sm" className="shrink-0 text-ink-3 transition-transform duration-fast motion-ok:group-hover:translate-y-0.5" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        }
         title={t('guidePages.accessibility.title')}
         lead={t('guidePages.accessibility.lead')}
         breadcrumbs={<Breadcrumbs items={[{ label: t('nav.help'), href: '/help' }, { label: t('guidePages.accessibility.title') }]} />}

@@ -13,8 +13,8 @@ import { FlightRow } from '@/components/flights/flight-row';
 import { overlays } from '@/components/shell/overlay-store';
 import { Button } from '@/components/ui/button';
 import { Card, CardLink } from '@/components/ui/card';
-import { Chip } from '@/components/ui/chip';
 import { FilterChip } from '@/components/ui/filter-chip';
+import { Badge } from '@/components/ui/badge';
 import { Icon } from '@/components/ui/icon';
 import { SearchField } from '@/components/ui/search-field';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -81,6 +81,8 @@ export function SearchResults() {
         }}
         className="flex flex-col gap-3 rounded-3xl bg-surface p-3 shadow-lg ring-1 ring-line sm:p-4"
       >
+        {/* Polish (critique-redesign2 item 11): with a query the visitor came to read the results, so
+            the field is not focused on arrival (its focus ring was the first thing seen). */}
         <SearchField
           label={t('search.label')}
           size="lg"
@@ -89,7 +91,7 @@ export function SearchResults() {
           placeholder={t('search.placeholder')}
           placeholderShort={t('search.title')}
           name="q"
-          autoFocus
+          autoFocus={query === ''}
         />
         {airport ? (
           <div role="group" aria-label={t('search.scopeLabel')} className="flex flex-wrap items-center gap-2 px-1">
@@ -134,11 +136,17 @@ export function SearchResults() {
 
       {results.groups.map((group) => (
         <section key={group.type} aria-labelledby={`search-${group.type}`} className="min-w-0">
+          {/* Polish (critique-redesign2 item 18): a list with hierarchy, one column, the type's icon on
+              the group heading instead of on every result, summaries kept to two lines, the airport
+              at the right. */}
           <h2 id={`search-${group.type}`} className="type-title-lg mb-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-ink">
+            <span aria-hidden="true" className={cn('flex size-9 shrink-0 items-center justify-center rounded-xl', group.type === 'unpublished' ? 'bg-gold-soft text-gold-ink' : 'bg-primary-soft text-primary-ink')}>
+              <Icon name={group.type} size="sm" />
+            </span>
             {t(`search.types.${group.type}` as `search.types.${SearchDocType}`)}
             <span className="type-data-sm inline-flex h-6 min-w-6 items-center justify-center rounded-pill bg-fill px-2 text-ink-2">{group.total}</span>
           </h2>
-          <ul className="grid gap-3 lg:grid-cols-2">
+          <ul className="grid gap-3">
             {group.hits.map((hit) => {
               const place = hit.airport ? getAirport(hit.airport) : undefined;
               const gap = hit.type === 'unpublished';
@@ -150,14 +158,8 @@ export function SearchResults() {
                   padding="sm"
                   // An honest "not published" answer (its title says so) is styled as help, not as an
                   // error: a dashed edge and a soft gold tile; its link leads to the official place to ask.
-                  className={cn('flex min-w-0 gap-4 rounded-2xl sm:p-5', gap && 'border-dashed border-line-strong bg-surface')}
+                  className={cn('flex min-w-0 items-start gap-4 rounded-2xl sm:px-5 sm:py-4', gap && 'border-dashed border-line-strong bg-surface')}
                 >
-                  <span
-                    aria-hidden="true"
-                    className={cn('flex size-11 shrink-0 items-center justify-center rounded-xl', gap ? 'bg-gold-soft text-gold-ink' : 'bg-primary-soft text-primary-ink')}
-                  >
-                    <Icon name={hit.type} />
-                  </span>
                   <div className="min-w-0 flex-1">
                     <h3 className="type-title-sm text-ink">
                       <CardLink href={hit.href} onClick={() => rememberSearch(text)}>
@@ -165,16 +167,16 @@ export function SearchResults() {
                       </CardLink>
                     </h3>
                     {hit.summary ? (
-                      <p className="type-body-sm mt-1 text-ink-2">
+                      <p className="type-body-sm mt-1 line-clamp-2 text-ink-2">
                         <Highlight text={hit.summary} query={text} />
                       </p>
                     ) : null}
-                    {place ? (
-                      <Chip className="mt-2.5" icon="map-pin">
-                        {place.shortName}
-                      </Chip>
-                    ) : null}
                   </div>
+                  {place ? (
+                    <Badge size="sm" variant="label" className="mt-0.5">
+                      {place.shortName}
+                    </Badge>
+                  ) : null}
                   <Icon name="arrow-right" size="sm" className="mt-1 shrink-0 text-ink-3 transition-transform duration-fast group-hover/card:translate-x-0.5 group-hover/card:text-ink" />
                 </Card>
               );

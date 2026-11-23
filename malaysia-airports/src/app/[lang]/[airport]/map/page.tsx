@@ -74,7 +74,8 @@ async function TerminalMap({ params }: { params: AirportPageParams }) {
     <>
       {/* Redesign stage two: the service-page frame; the facts of the drawing as quiet chips. */}
       <ServiceIntro
-        eyebrow={maps.length > 0 && isMultiTerminal(airport) ? maps.map((map) => map.terminalLabel).join(' · ') : airport.shortName}
+        eyebrow={t('mapPages.frame.group')}
+        compact={maps.length > 0}
         title={t('mapPages.title')}
         summary={maps.length > 0 ? t('mapPages.lead') : undefined}
         breadcrumbs={<Breadcrumbs items={[{ label: airport.shortName, href: `/${airport.slug}` }, { label: t('nav.map') }]} />}

@@ -4,6 +4,7 @@ import { lang as routeLang } from 'next/root-params';
 import { getNotices } from '@/content';
 import { getT, toLang } from '@/lib/i18n';
 import { NoticesBrowser } from '@/components/airport/notices-browser';
+import { NoticesStatus } from '@/components/airport/notices-status';
 import { toNoticeViews } from '@/components/airport/notice-views.server';
 import { Breadcrumbs } from '@/components/common/breadcrumbs';
 import { PageHero } from '@/components/guides/page-hero';
@@ -23,12 +24,22 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function NoticesPage() {
   const lang = toLang(await routeLang());
   const t = getT(lang);
+  const views = toNoticeViews(getNotices(), lang);
   return (
     <>
       {/* Redesign stage two: the quiet editorial header, a white filter tray, compact expandable notices. */}
-      <PageHero tone="light" emblem="megaphone" width="narrow" title={t('notices.title')} lead={t('noticesPage.lead')} breadcrumbs={<Breadcrumbs items={[{ label: t('notices.title') }]} />} />
-      <Container size="narrow" className="flex flex-col gap-12 pb-section">
-        <NoticesBrowser notices={toNoticeViews(getNotices(), lang)} />
+      {/* Polish (critique-redesign2 items 2, 3 and 17): the header at page width, its right column a
+          status card (what is in effect now, coming up and ended) instead of an emblem; the body
+          narrows, left-aligned. */}
+      <PageHero
+        tone="light"
+        title={t('notices.title')}
+        lead={t('noticesPage.lead')}
+        breadcrumbs={<Breadcrumbs items={[{ label: t('notices.title') }]} />}
+        aside={<NoticesStatus notices={views} />}
+      />
+      <Container className="flex flex-col gap-12 pb-section [&>*]:max-w-[56rem]">
+        <NoticesBrowser notices={views} />
         <ProvenanceLegend headingLevel={2} />
       </Container>
     </>

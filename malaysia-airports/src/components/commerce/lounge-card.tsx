@@ -1,4 +1,5 @@
-import { CategoryArt } from './category-art';
+import { cn } from '@/lib/cn';
+import { CategoryMedallion } from './category-art';
 import type { Lang } from '@/content/types';
 import { getT } from '@/lib/i18n';
 import { ExternalLink } from '@/components/common/external-link';
@@ -6,7 +7,6 @@ import { LocaleLink } from '@/components/common/locale-link';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
 import { SourceNote } from '@/components/common/source-note';
 import { Badge } from '@/components/ui/badge';
-import { Chip } from '@/components/ui/chip';
 import { Icon } from '@/components/ui/icon';
 import type { RestView } from './commerce-view.server';
 import { AsOfText, FactRows, HoursText } from './fact-rows';
@@ -17,25 +17,37 @@ export interface LoungeCardProps {
   lang: Lang;
   showTerminal: boolean;
   headingLevel?: 3 | 4;
+  /** The provenance the card's group states once; the card shows its own tag only when it differs. */
+  defaultProvenance?: RestView['provenance'];
 }
 
 /**
  * A lounge, hotel, rest service or shower: where it is and on which side of security, who may
  * use it as published, the operator's own page when the content cites it, and the sources.
  */
-export function LoungeCard({ item, lang, showTerminal, headingLevel = 4 }: LoungeCardProps) {
+export function LoungeCard({ item, lang, showTerminal, headingLevel = 4, defaultProvenance }: LoungeCardProps) {
   const t = getT(lang);
   const Heading = headingLevel === 3 ? 'h3' : 'h4';
   return (
     <article
       id={item.id}
       aria-labelledby={`${item.id}-title`}
-      className="flex min-w-0 scroll-mt-32 flex-col overflow-hidden rounded-2xl border border-line bg-surface shadow-sm target:border-ink target:shadow-lg"
+      className={cn(
+        'flex min-w-0 scroll-mt-32 flex-col overflow-hidden rounded-2xl border border-line bg-surface shadow-sm target:border-ink target:shadow-lg',
+        // Polish (critique-redesign2 item 6): the answer is the visual, a 4 px top edge in the side's
+        // colour (after security: leaf; before security: sand), instead of a monogram slab.
+        item.zone === 'airside' ? 'border-t-4 border-t-leaf' : item.zone === 'landside' ? 'border-t-4 border-t-gold' : undefined,
+      )}
     >
-      {/* Redesign stage two: category art in the picture slot (no lounge in our sources has a licensed photograph). */}
-      <CategoryArt name={item.name} tone={item.category === 'lounge' || item.category === 'hotel' ? 'lounge' : 'service'} icon={item.category} />
       <div className="flex flex-1 flex-col p-5 sm:p-6">
+        {item.zone === 'airside' || item.zone === 'landside' ? (
+          <p data-lounge-side={item.zone} className={cn('type-title-sm mb-3 flex items-center gap-2', item.zone === 'airside' ? 'text-leaf' : 'text-gold-ink')}>
+            <Icon name={item.zone === 'airside' ? 'scan-line' : 'door-open'} size="sm" />
+            {t(`commercePages.card.zone.${item.zone}`)}
+          </p>
+        ) : null}
         <div className="flex items-start gap-3.5">
+          <CategoryMedallion tone={item.category === 'lounge' || item.category === 'hotel' ? 'lounge' : 'service'} icon={item.category} />
           <div className="min-w-0 flex-1">
             <p className="type-caption text-ink-2">
               {item.categoryLabel}
@@ -45,11 +57,9 @@ export function LoungeCard({ item, lang, showTerminal, headingLevel = 4 }: Loung
             <Heading id={`${item.id}-title`} className="type-title-lg mt-0.5 text-ink">
               {item.name}
             </Heading>
-            <div className="mt-2 flex flex-wrap items-center gap-2">
-              <ProvenanceTag provenance={item.provenance} length="short" />
-              {showTerminal ? <Badge size="sm">{item.terminalLabel}</Badge> : null}
-              {item.zone === 'airside' ? <Chip icon="scan-line">{t('commercePages.card.zone.airside')}</Chip> : null}
-              {item.zone === 'landside' ? <Chip icon="door-open">{t('commercePages.card.zone.landside')}</Chip> : null}
+            <div className="mt-2 flex flex-wrap items-center gap-2 empty:hidden">
+              {item.provenance !== defaultProvenance ? <ProvenanceTag provenance={item.provenance} length="short" /> : null}
+              {showTerminal ? <Badge size="sm" variant="label">{item.terminalLabel}</Badge> : null}
               <OpenStatus hours={item.hours} />
             </div>
           </div>

@@ -1,12 +1,12 @@
 'use client';
 
-import { useId } from 'react';
+import { useId, type ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 import { Icon, type IconKey } from './icon';
 
 export interface SegmentedOption<T extends string = string> {
   value: T;
-  label: string;
+  label: ReactNode;
   icon?: IconKey;
   /** Small second line, for example "Door to gate". */
   hint?: string;
@@ -68,6 +68,10 @@ export function SegmentedControl<T extends string = string>({
         className={cn(
           'flex flex-wrap gap-1 rounded-[1.625rem] bg-fill p-1',
           stackOnPhone && 'sm:grid sm:auto-cols-fr sm:grid-flow-col',
+          // Polish (critique-redesign2 item 10a): an even number of options makes a 2 x 2 grid on a
+          // phone (four options wrapped 3 + 1, the last alone and centred); at a large text size the
+          // columns' minimum (in rem) drops it to one column, so no word ever breaks.
+          stackOnPhone && options.length % 2 === 0 && 'max-sm:grid max-sm:grid-cols-[repeat(auto-fit,minmax(min(100%,9.5rem),1fr))]',
           !block && 'inline-flex',
         )}
       >

@@ -28,15 +28,30 @@ export interface PageHeroProps {
    * `light` the quiet editorial header for reading pages (privacy, terms, a guide without a photograph).
    */
   tone?: 'midnight' | 'light';
-  /** A large line icon as the header's emblem from `lg` up (decorative), when there is no photograph. */
+  /**
+   * A large line icon as the header's emblem from `lg` up (decorative), when there is no photograph.
+   * Polish (critique-redesign2 item 3): only the offline page keeps one; every other page puts its
+   * key answer in `aside` or leaves the column to the words.
+   */
   emblem?: IconKey;
+  /**
+   * The key answer in the header's right column from `lg` up, under the words on smaller screens
+   * (the help centre's call lines, the notices' status, the assistance routes). Without a
+   * photograph only.
+   */
+  aside?: ReactNode;
+  /** Classes for the aside's column (for example `max-lg:hidden` when smaller screens show it elsewhere). */
+  asideClassName?: string;
   /** `lg` for landing pages (bigger title), `md` for everything else. */
   size?: 'md' | 'lg';
   /** Content under the words inside the band, for example the help centre's search. */
   children?: ReactNode;
   /** Classes for the outer element. */
   className?: string;
-  /** Narrower content column for focused tool pages (search, notices). */
+  /**
+   * Narrower content column. Polish (critique-redesign2 item 2): no page uses it now; a focused
+   * page narrows its body column, left-aligned, and the header keeps the page width.
+   */
   width?: 'page' | 'narrow';
 }
 
@@ -75,8 +90,13 @@ function Emblem({ icon, tone }: { icon: IconKey; tone: 'midnight' | 'light' }) {
  * Text over a photograph sits on `HeroMedia`'s scrim (4.5:1 over a white photograph); on the
  * midnight band it is an `on-media` scope (light ink, light focus ring).
  */
-export function PageHero({ title, lead, eyebrow, breadcrumbs, meta, actions, image, tone = 'midnight', emblem, size = 'md', children, className, width = 'page' }: PageHeroProps) {
-  const heading = <h1 className={cn('text-ink [text-wrap:balance]', size === 'lg' ? 'type-display-xl' : 'type-display-lg')}>{title}</h1>;
+export function PageHero({ title, lead, eyebrow, breadcrumbs, meta, actions, image, tone = 'midnight', emblem, aside, asideClassName, size = 'md', children, className, width = 'page' }: PageHeroProps) {
+  // Polish (critique-redesign2 item 26): over a photograph, a title longer than 45 characters
+  // ("Syarikat yang mengendalikan lapangan terbang Malaysia") steps down one display size, so it
+  // keeps to three lines on a phone and the lead stays in the photograph's calm part.
+  const long = Boolean(image) && typeof title === 'string' && title.length > 45;
+  const display = size === 'lg' ? (long ? 'type-display-lg' : 'type-display-xl') : long ? 'type-display-md' : 'type-display-lg';
+  const heading = <h1 className={cn('text-ink [text-wrap:balance]', display)}>{title}</h1>;
   const words = (
     <>
       {eyebrow ? <Kicker>{eyebrow}</Kicker> : null}
@@ -113,9 +133,15 @@ export function PageHero({ title, lead, eyebrow, breadcrumbs, meta, actions, ima
       )}
       <Container size={width} className={cn('pt-3 sm:pt-4', midnight ? 'pb-12 sm:pb-16' : 'pb-10 sm:pb-12')}>
         {breadcrumbs ? <div className="mb-8 sm:mb-12">{breadcrumbs}</div> : <div className="h-6 sm:h-10" />}
-        <div className="flex items-end justify-between gap-12">
+        <div className={cn('flex items-end justify-between gap-12', aside && 'max-lg:flex-col max-lg:items-stretch max-lg:gap-8 lg:items-start', aside && asideClassName?.includes('max-lg:hidden') && 'max-lg:gap-0')}>
           <div className="min-w-0 max-w-[52rem] flex-1">{words}</div>
-          {emblem ? <Emblem icon={emblem} tone={midnight ? 'midnight' : 'light'} /> : null}
+          {aside ? (
+            <div data-page-hero-aside="" className={cn('min-w-0 empty:hidden lg:w-[24rem] lg:shrink-0', asideClassName)}>
+              {aside}
+            </div>
+          ) : emblem ? (
+            <Emblem icon={emblem} tone={midnight ? 'midnight' : 'light'} />
+          ) : null}
         </div>
         {children ? <div className="mt-8 sm:mt-10">{children}</div> : null}
       </Container>
