@@ -304,26 +304,6 @@ export function MapCanvas({
           <Icon name="flask-conical" size="xs" strokeWidth={2} className="shrink-0" />
           {t('mapPages.schematicLabel')}
         </p>
-      {/* Round 6 (review-3 9.1 item 7): where the route changes level, as buttons in a strip
-          above the drawing. Floating over the drawing, the "To Gates" chip covered the
-          "Immigration and security" label (and "To Level 3" a check-in row): no chip is drawn
-          over a place or its label any more. */}
-      {connectors.length > 0 ? (
-        <div data-route-connectors="" className="col-span-full flex flex-wrap items-center gap-x-3 gap-y-1.5 border-t border-line bg-surface px-4 py-2.5">
-          <span className="type-body-sm text-ink-2">{t('mapPages.canvas.continues')}</span>
-          {connectors.map((connector) => (
-            <button
-              key={connector.key}
-              type="button"
-              onClick={() => onLevelChange(connector.toLevel)}
-              className="type-caption inline-flex min-h-8 items-center gap-1 rounded-pill bg-primary px-3 font-semibold whitespace-nowrap text-on-primary shadow-sm hover:bg-primary-hover focus-visible:focus-ring touch:min-h-11"
-            >
-              <Icon name={connector.direction === 'up' ? 'arrow-up' : 'arrow-down'} size="xs" strokeWidth={2.25} />
-              {t('mapPages.canvas.toLevel', { level: connector.label })}
-            </button>
-          ))}
-        </div>
-      ) : null}
       <div
         ref={frameRef}
         onKeyDown={onKeyDown}
@@ -469,7 +449,7 @@ export function MapCanvas({
         </svg>
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 border-t border-line bg-surface px-3 py-2">
+      <div className="col-span-full flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 border-t border-line bg-surface px-3 py-2">
         <a href="#map-places" className="link-action type-body-sm px-1.5 text-ink-2 hover:text-ink">
           {t('mapPages.canvas.skipToList')}
         </a>
@@ -484,6 +464,29 @@ export function MapCanvas({
           <IconButton size="sm" icon="locate-fixed" label={t('map.resetView')} onClick={reset} />
         </div>
       </div>
+      {/* Polish (critique-redesign2 item 4): the strip now closes the card, under the drawing: a deep
+          link's route arrives after hydration, and the strip appearing above the drawing moved the
+          whole drawing down by 53 px on the first screen (CLS 0.24 at 1440 x 900).
+          Round 6 (review-3 9.1 item 7): where the route changes level, as buttons in a strip
+          (it was above the drawing). Floating over the drawing, the "To Gates" chip covered the
+          "Immigration and security" label (and "To Level 3" a check-in row): no chip is drawn
+          over a place or its label any more. */}
+      {connectors.length > 0 ? (
+        <div data-route-connectors="" className="col-span-full flex flex-wrap items-center gap-x-3 gap-y-1.5 border-t border-line bg-surface px-4 py-2.5">
+          <span className="type-body-sm text-ink-2">{t('mapPages.canvas.continues')}</span>
+          {connectors.map((connector) => (
+            <button
+              key={connector.key}
+              type="button"
+              onClick={() => onLevelChange(connector.toLevel)}
+              className="type-caption inline-flex min-h-8 items-center gap-1 rounded-pill bg-primary px-3 font-semibold whitespace-nowrap text-on-primary shadow-sm hover:bg-primary-hover focus-visible:focus-ring touch:min-h-11"
+            >
+              <Icon name={connector.direction === 'up' ? 'arrow-up' : 'arrow-down'} size="xs" strokeWidth={2.25} />
+              {t('mapPages.canvas.toLevel', { level: connector.label })}
+            </button>
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 }

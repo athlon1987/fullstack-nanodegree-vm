@@ -1,6 +1,7 @@
 'use client';
 
 import { Fragment, useEffect, useState, type ReactNode } from 'react';
+import { flushSync } from 'react-dom';
 import { cn } from '@/lib/cn';
 import { groupFlightsByHour, type Flight, type FlightDirection, type FlightHourGroup } from '@/lib/flights';
 import { useT } from '@/lib/i18n/client';
@@ -342,6 +343,12 @@ export function FlightBoard({
  * `top`, which follows the header as it slides away). Starts `true` when `enabled`, the usual
  * case at load (the banner is at the top of the board), so the floating label does not flash
  * beside it. Checked once per frame while scrolling.
+ *
+ * Verification round eight: a scroll that takes the banner out of view commits the change in the
+ * same frame (`flushSync`). Left to React's scheduler, the floating label could appear a frame or
+ * two later on a busy phone, so a view of the board showed no Demo label at all for that moment
+ * (flights.spec "every board row has a demo label in view", 1 in 20 at 4 workers). Only a change
+ * of the value renders; an unchanged one bails out as before.
  */
 function useBannerInView(enabled: boolean) {
   const [node, setNode] = useState<HTMLElement | null>(null);
@@ -349,17 +356,19 @@ function useBannerInView(enabled: boolean) {
   useEffect(() => {
     if (!node) return;
     let frame = 0;
-    const check = () => {
+    const check = (sync: boolean) => {
       frame = 0;
       const marker = node.parentElement?.querySelector<HTMLElement>('[data-board-demo-marker]');
       const stickyTop = marker ? parseFloat(getComputedStyle(marker).top) || 0 : 0;
       const box = node.getBoundingClientRect();
-      setVisible(box.bottom > stickyTop + 4 && box.top < window.innerHeight);
+      const next = box.bottom > stickyTop + 4 && box.top < window.innerHeight;
+      if (sync) flushSync(() => setVisible(next));
+      else setVisible(next);
     };
     const schedule = () => {
-      if (!frame) frame = requestAnimationFrame(check);
+      if (!frame) frame = requestAnimationFrame(() => check(true));
     };
-    check();
+    check(false);
     window.addEventListener('scroll', schedule, { passive: true });
     window.addEventListener('resize', schedule);
     return () => {

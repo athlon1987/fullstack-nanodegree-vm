@@ -111,9 +111,22 @@ export function InPageFocus() {
       // overview's status lines) also calls preventDefault and then sets the fragment itself. Follow
       // such a click once the URL carries the fragment; other script-handled clicks stay alone.
       const handledByScript = event.defaultPrevented;
-      const schedule = (run: () => void) => (handledByScript ? window.setTimeout(run, 120) : requestAnimationFrame(run));
+      // Polish round: a script-handled click is followed once the URL carries the fragment, checked
+      // every 60 ms for up to 1.5 s (a single check at 120 ms missed a router that was still busy
+      // on a loaded page, and focus stayed on the link).
+      const schedule = (run: () => void) => {
+        if (!handledByScript) {
+          requestAnimationFrame(run);
+          return;
+        }
+        const started = Date.now();
+        const check = () => {
+          if (window.location.hash === url.hash) run();
+          else if (Date.now() - started < 1500) window.setTimeout(check, 60);
+        };
+        window.setTimeout(check, 60);
+      };
       schedule(() => {
-        if (handledByScript && window.location.hash !== url.hash) return;
         const focused = focusSection(id);
         window.clearInterval(follow);
         if (!focused) return;

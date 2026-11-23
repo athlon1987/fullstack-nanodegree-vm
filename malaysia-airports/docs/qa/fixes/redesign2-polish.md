@@ -7,18 +7,67 @@ dictionaries (keys appended only) and the end-to-end specs. Another engineer wor
 outside these paths was changed, and `src/content/images.ts` was not edited (the place band reuses the existing
 `heroForAirport`, so no image choice or focal point changed).
 
-__RESULTS__
+Measured on my own production builds (`NEXT_DIST_DIR=.next-polish3-prod NEXT_PUBLIC_SITE_URL=http://localhost:3354
+npx next build`, served by `next start -p 3354` with `TRUSTED_CLIENT_IP_HEADER=x-e2e-client-ip`), three builds:
+**build 1** (all must-fixes; the full suite found the two phone regressions in item 1), **build 2**
+`WqkbVNNFNDgxCukIMU6O4` (phone band under the title, items 12, 14, 23, the transit summary), **build 3**
+`UwihDi3GlhaihHu6Wn2l-` (the flight panel at two full-width lines, the same-page focus fix). One change came after the
+third build, which the build limit did not let me rebuild: the map's "The route continues" strip moved under the
+drawing (layout shift found on build 3, below) and the map card's bottom bar got `col-span-full`; that change was
+verified on the development server (`.next-polish3`, port 3344) only, as stated in the table.
+
+## Result
+
+| Check | After |
+|---|---|
+| End to end, **full suite**, both projects (desktop 1440 x 900, phone 390 x 844), against build 3 | **674 passed, 0 failed**, 32 skipped (project-specific) |
+| Same suite on build 1 / build 2 | 666 passed, 8 failed (below) / 672 passed, 2 failed (below) |
+| After build 3, on the development server: `map`, `layout-round4`, `access-round6`, the map and route tests | **26 passed**, 2 skipped |
+| Layout shift (`scripts/qa/layout-shift.mjs`, CPU 4x, 2 runs, phone and desktop) on build 3: transport (EN, MS), parking, lounges, shops and food, facilities, transit, notices, help, accessibility, search `?q=lounge`, concierge, the KLIA overview, `/ms/corporate` | **0 to 0.0036** on every one (the 0.0036 is the site header's own, on pages I did not touch too) |
+| Layout shift, map with `?from=l5-kerb&to=g-gates-c` | build 3: **0.244 at 1440** (the "route continues" strip appeared above the drawing after hydration, now that the drawing is in the first view), 0.036 / 0 at 390. Fixed after build 3 (strip under the drawing); development server: **0.0076 at 1440, 0.0036 at 390** |
+| Text over photographs | The only new text over a photograph is the place band's credit, on the same 78 % scrim pill as every hero credit (about 7.5:1 over a white pixel). No heading or answer sits on a photograph. |
+| Type sizes (A-14 count, `main`) | parking 9 at 1440 (unchanged from before the pass), 7 at 390; map 9 at 1440 (was 10); corporate hub 8 / 7 (unchanged); `polish-round5`, `layout-round4`, `speed-round5`, `ask-round6` size checks pass |
+| Sideways scroll | 0 px on every page measured |
+| `tsc --noEmit` | 0 errors |
+| `eslint src/components src/app src/lib/i18n` and the three changed specs | 0 problems |
+| `vitest run` | **616 / 616** |
+| Builds | 3 |
+
+**The failures and what they led to.** Build 1: `shell.spec` A-01 ("section pages start with their own heading", h1
+at most 200 px down on phones; it was at 328 px under the 140 px band) and `transport.spec` C-01 (the parking matrix
+on the first phone screen; 744 px). Both rules are right, so on phones the band now follows the title (one image URL,
+downloaded once) and parking's key answer shows from 1024 px only (on phones the matrix itself follows the title):
+h1 at **188 px**, matrix at **470 px**, the KLIA Ekspres fare still on the first phone screen at 125 % text in Malay
+(**717 px**). Build 2: `verify-round6` "the overview's link to its contacts moves focus there" failed under load
+(5 of 12 repeats): the same-page focus helper (`shell/route-focus.tsx`) checked once, 120 ms after a Next.js `Link`
+click, for the fragment in the URL; it now checks every 60 ms for up to 1.5 s (build 3: **20 of 20** repeats pass).
+`polish-round5` transport CLS failed once while another run was loading the machine and passed **6 of 6** alone.
+
+**Tests changed (intended appearance changes only, each commented in the spec):**
+`layout-round4.spec.ts` "map on a phone": the drawing now comes first and must be on the first screen, From and
+To follow it (round 4 had put the form first; that put a deep link's route at y 1,173). `map.spec.ts`: a new test
+that the drawing starts on the first screen with a route set, the whole drawing within 900 px at 1440 and at least
+200 px of it on a phone. `services-redesign2.spec.ts`: the shops panel has no photograph (item 7) and the page's
+place band shows KLIA's own; the lounges panel keeps its one photograph. No assertion was loosened.
+
+**Screens looked at** (11 images, contact sheets): transport 1440 and parking 390 (dev), the map with a route at
+1440 and 390 (dev), help and notices 1440, accessibility 1440 dark and search `?q=lounge` 1440, transport 390 Malay
+dark, corporate 390 Malay, guides hub 390 and transit 390, lounges 1440 and shops 390, KLIA overview "Services now"
+and a flight page 1440, parking 1440 with transport and facilities 390, corporate 1440 dark and guides 1440, the map
+1440 after the strip move with the flight page on build 3, and the concierge answering "How much does parking cost
+at KLIA?" at 1440. They found the sticky transit summary breaking "1 / h 50 min" (fixed with no-break spaces), the
+flight panel's empty third line (now two full-width lines) and the half-width map toolbar (fixed).
 
 ## Must fix
 
 | # | Item | Done | What changed, and why |
 |---|---|---|---|
-| 1 | A sense of place on the service pages | **Yes** (6 of 7 pages; map deliberately not) | New `place` prop on `ServiceIntro` (`facilities/service-frame.tsx`) draws the airport's own first hero photograph (`servicePlace(slug, lang)` in the new server-only `facilities/service-place.ts`, which calls `heroForAirport`: that airport's photograph, else the Malaysia fallback, never another airport's) as a full-bleed band under the section tabs: **220 px at 1440, 176 px at 640, 140 px at 390**, fixed heights (no layout shift), a bottom shade only, not preloaded (`loading="eager"`, the `h1` stays the static heading). Variant (a): no words on the photograph except its credit pill (top right, the same 78 % scrim pill as every hero credit); from `lg` the key-answer panel rises **48 px** over the photo's lower edge (the help centre's "rises into the band" move), the breadcrumbs open the words' column. On transport, parking, facilities, shops and food, lounges and transit. The **terminal map** does not get a band: item 4 asks for its drawing in the first view, which a 220 px band would push out again. `servicePlace` lives in its own server-only module because Client Components import `service-frame.tsx` (the 30-photo library must not ride into their bundles). |
+| 1 | A sense of place on the service pages | **Yes** (6 of 7 pages; map deliberately not) | New `place` prop on `ServiceIntro` (`facilities/service-frame.tsx`) draws the airport's own first hero photograph (`servicePlace(slug, lang)` in the new server-only `facilities/service-place.ts`, which calls `heroForAirport`: that airport's photograph, else the Malaysia fallback, never another airport's) as a full-bleed band under the section tabs (from 640 px) or right under the title (phones, so the `h1` stays on the first screen, A-01): **220 px at 1440, 176 px at 640, 140 px at 390**, fixed heights (no layout shift), a bottom shade only, not preloaded (`loading="eager"`, the `h1` stays the static heading). Variant (a): no words on the photograph except its credit pill (top right, the same 78 % scrim pill as every hero credit); from `lg` the key-answer panel rises **48 px** over the photo's lower edge (the help centre's "rises into the band" move), the breadcrumbs open the words' column. On transport, parking, facilities, shops and food, lounges and transit. The **terminal map** does not get a band: item 4 asks for its drawing in the first view, which a 220 px band would push out again. `servicePlace` lives in its own server-only module because Client Components import `service-frame.tsx` (the 30-photo library must not ride into their bundles). |
 | 2 | One page-top contract | **Yes** | Search and notices no longer narrow the header (`width="narrow"` dropped): the `h1` sits at **x 148 on every page** at 1440 (was 154 / 326), and the body column narrows instead, left-aligned (`[&>*]:max-w-[52rem]` on search, `56rem` on notices). Corporate sections, privacy, terms and about now use the light header like every non-photo page (`corporate-header.tsx`: `tone="light"`); the midnight band stays only where its right column carries content (help, concierge). |
 | 3 | Replace the ringed emblems with content | **Yes** | New `aside` / `asideClassName` props on `PageHero` (`guides/page-hero.tsx`), top-aligned with the title. **Help:** the two call lines as a glass card (`CallRow layout="card"`). **Notices:** a status card, "In effect now 5 · Coming up 1 · Ended 0" (new client `airport/notices-status.tsx`; the counts depend on the clock, so each row holds its place with a skeleton figure until hydration, no shift). **Accessibility:** an "Ask for assistance" card with the airline and airport routes (from 1024 px; on smaller screens the section itself comes first). **Concierge:** "How answers are put together" on smoky glass in the band from 1024 px (beside the chat below that). **Search:** nothing, the field spans the column. The emblem stays only on the offline page; it was also removed from privacy, terms, about, guide pages without a photo, help topics and the corporate sections. |
-| 4 | Terminal map: the route in the first view | **Yes** (except the two-line fields) | `ServiceIntro compact` (breadcrumbs, then the `h1` and the facts chip on one row, the lead read by screen readers only); the level tabs moved into the canvas card's own top bar beside the disclaimer (`MapCanvas toolbar`), tab hints read but not shown, a dot marks a level on the route (its room is kept on every tab, so the tabs do not change width when a deep link's route arrives after hydration); the clear button joined the swap button in the Directions heading row (the controls keep one height before and after hydration); canvas `h-[min(calc(100dvh-30rem),42rem)]` from `lg`. On phones the drawing now comes **right after the search field, before From and To** (DOM order = visual order). With `?from=l5-kerb&to=g-gates-c`: drawing top **y 476, bottom y 895 at 1440 x 900** (was y 686 with 214 px visible), **y 483 with 355 px visible at 390 x 844** (was y 1,173). Not done: From/To over two lines (a native `select` shows one line; the full name and level are in the route result). |
+| 4 | Terminal map: the route in the first view | **Yes** (except the two-line fields) | `ServiceIntro compact` (breadcrumbs, then the `h1` and the facts chip on one row, the lead read by screen readers only); the level tabs moved into the canvas card's own top bar beside the disclaimer (`MapCanvas toolbar`), tab hints read but not shown, a dot marks a level on the route (its room is kept on every tab, so the tabs do not change width when a deep link's route arrives after hydration); the clear button joined the swap button in the Directions heading row (the controls keep one height before and after hydration); canvas `h-[min(calc(100dvh-30rem),42rem)]` from `lg`; the "route continues" strip now closes the card under the drawing (it appeared above the drawing after hydration and moved it 53 px). On phones the drawing now comes **right after the search field, before From and To** (DOM order = visual order). With `?from=l5-kerb&to=g-gates-c`: drawing top **y 476, bottom y 895 at 1440 x 900** (build 3; about 50 px higher with the strip under it) (was y 686 with 214 px visible), **y 483 with 355 px visible at 390 x 844** (was y 1,173). Not done: From/To over two lines (a native `select` shows one line; the full name and level are in the route result). |
 | 6 | No monogram tiles on shops and lounges | **Yes** | `CategoryMedallion` (48 px round, the category's icon on its tint) leads each outlet and lounge card beside the name; the 96 px band is gone (about 100 px shorter per card). Lounge cards: a 4 px top edge in the side's colour (after security leaf, before security sand) and "After security" / "Before security" as the first line in `type-title-sm`. The outlet page keeps its large art. `services-redesign2` ("no image inside any card") still holds. |
-| 8 | Parking: fill the intro, fix the phone table | **Yes** | `ParkingKeyAnswer` (in `parking-price-matrix.tsx`): "Lowest daily price we found · ≤ RM 32 a day · Long Term Car Park (LTCP) · Estimate: at most, not verified", with "Book parking online" (a measured `parking-booking` hand-off) and "Compare every car park". The critique's "From RM 32" would have overstated a daily maximum, so the figure keeps the matrix's own "≤ / at most, not verified" wording; no provenance chip, to keep the page at the polish-round5 density budget (4 tags). Below 640 px each table row is a CSS grid on `tr`: the name across the full width, the three stays as three equal cells under it (the table markup and its row and column headers are unchanged). |
+| 8 | Parking: fill the intro, fix the phone table | **Yes** | `ParkingKeyAnswer` (in `parking-price-matrix.tsx`): "Lowest daily price we found · ≤ RM 32 a day · Long Term Car Park (LTCP) · Estimate: at most, not verified", with "Book parking online" (a measured `parking-booking` hand-off) and "Compare every car park", beside the title from 1024 px (on phones the matrix itself follows the title, C-01). The critique's "From RM 32" would have overstated a daily maximum, so the figure keeps the matrix's own "≤ / at most, not verified" wording; no provenance chip, to keep the page at the polish-round5 density budget (4 tags). Below 640 px each table row is a CSS grid on `tr`: the name across the full width, the three stays as three equal cells under it (the table markup and its row and column headers are unchanged). |
 | 10 | The four phone wraps | **Yes** | (a) `SegmentedControl stackOnPhone` with an even number of options is a 2 x 2 grid on phones, whose `9.5rem` column minimum drops it to one column at large text sizes (no mid-word break); (b) transit's two figures stack full width below 640 px and every duration uses no-break spaces (also in the sticky summary); (c) the concierge's "KLIA Terminal 1" chip label is `whitespace-nowrap`; (d) the guides hub chips are one swipeable row on phones (two never fit side by side in the tray, so wrapping still gave one per row). |
 | 11 | The magenta ring on first impressions | **Yes** | `/search?q=…` no longer autofocuses (`autoFocus={query === ''}`; the empty search page and the palette keep it). The concierge marks focus it moves to the field after an answer as quiet (`data-quiet-focus`, removed on blur): a 2 px navy ring; a visitor who tabs to the field still gets the magenta ring. (A text field matches `:focus-visible` on every focus, so the split is by who moved focus, not by the pseudo-class.) |
 
@@ -45,4 +94,28 @@ __RESULTS__
 | 25 | Motion | No | `@view-transition` only animates cross-document navigations, and the App Router's are same-document, so it would do nothing here; React's `<ViewTransition>` needs an experimental flag. Not worth the risk to the static shell. |
 | 26 | Malay `h1` length on photo heroes | **Yes** | Over a photograph a title longer than 45 characters steps down one display size: "Syarikat yang mengendalikan lapangan terbang Malaysia" now takes three lines on a phone (was four); the English hub title (41 characters) keeps its size. |
 
-__TAIL__
+## Files
+
+Components and pages: `facilities/service-frame.tsx` (place band, compact intro, `answerClassName`),
+`facilities/service-place.ts` (new), `facilities/facility-card.tsx`, `facilities/facility-values.tsx`,
+`guides/page-hero.tsx`, `guides/guide-card.tsx`, `guides/guide-index.tsx`, `guides/transit-planner.tsx`,
+`airport/notices-status.tsx` (new), `help/contact-list.tsx`, `commerce/category-art.tsx`, `commerce/outlet-card.tsx`,
+`commerce/lounge-card.tsx`, `parking/parking-price-matrix.tsx`, `transport/touts-warning.tsx`,
+`flights/flight-summary.tsx`, `flights/ops-status.tsx`, `concierge/concierge-chat.tsx`, `concierge/concierge-answer.tsx`,
+`concierge/concierge-cards.tsx`, `search/search-results.tsx`, `common/source-note.tsx`, `corporate/corporate-header.tsx`,
+`corporate/fact-list.tsx`, `map/map-canvas.tsx`, `map/map-explorer.tsx`, `map/route-planner.tsx`,
+`shell/route-focus.tsx`, `ui/badge.tsx`, `ui/segmented-control.tsx`, `ui/section.tsx`; the pages transport, parking,
+facilities, shops and food, lounges, transit and map under `src/app/[lang]/[airport]/`, and help, help topic,
+concierge, search, notices, accessibility, privacy, terms, about this prototype and guide topic under
+`src/app/[lang]/`; `src/app/globals.css` (dark `--color-ivory`). i18n, keys added only:
+`transportPages.frame.{group, parkingAnswerTitle, parkingAnswerPerDay, parkingAnswerAtMost, parkingAnswerEstimate,
+parkingAnswerCompare}`, `mapPages.frame.group`, `commercePages.frame.group`, `noticesPage.statusTitle`, each in English
+and Malay. Specs: `layout-round4.spec.ts`, `map.spec.ts`, `services-redesign2.spec.ts`.
+
+## Clean-up
+
+My development server (`.next-polish3`, port 3344) and production server (port 3354) were stopped by their own
+process groups; `.next-polish3` and `.next-polish3-prod` were deleted; the four `include` lines Next added to
+`tsconfig.json` for them were removed and the two imports it pointed at them in `next-env.d.ts` were set back to
+`./.next/types/…`. Temporary scripts and captures are in the scratch folder only (`rd2-polish3/`). No git command
+was run.
