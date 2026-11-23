@@ -1,0 +1,281 @@
+{
+ "key": "en-guides",
+ "url": "http://localhost:3100/en/guides",
+ "preset": "mobile (Lighthouse default)",
+ "profile": null,
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-23T14:21:45.995Z",
+ "median": {
+  "performance": 95,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 69,
+  "fcp_ms": 1372,
+  "lcp_ms": 2808,
+  "tbt_ms": 110,
+  "cls": 0,
+  "si_ms": 1372,
+  "totalBytes": 568752,
+  "requests": 46
+ },
+ "a11yFailures": [],
+ "rows": [
+  {
+   "finalUrl": "/en/guides",
+   "runtimeError": null,
+   "performance": 95,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 69,
+   "fcp_ms": 1372,
+   "lcp_ms": 2809,
+   "tbt_ms": 87,
+   "cls": 0,
+   "si_ms": 1372,
+   "totalBytes": 568754,
+   "requests": 46,
+   "benchmarkIndex": 1910.5,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en/guides",
+   "runtimeError": null,
+   "performance": 95,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 69,
+   "fcp_ms": 1372,
+   "lcp_ms": 2808,
+   "tbt_ms": 110,
+   "cls": 0,
+   "si_ms": 1372,
+   "totalBytes": 568752,
+   "requests": 46,
+   "benchmarkIndex": 2010.5,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en/guides",
+   "runtimeError": null,
+   "performance": 94,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 69,
+   "fcp_ms": 1367,
+   "lcp_ms": 2801,
+   "tbt_ms": 153,
+   "cls": 0,
+   "si_ms": 1367,
+   "totalBytes": 568752,
+   "requests": 46,
+   "benchmarkIndex": 1927.5,
+   "a11yFailures": []
+  }
+ ],
+ "medianRunIndex": 0,
+ "diagnostics": {
+  "observed": {
+   "fcp": 266,
+   "lcp": 266,
+   "dcl": 433,
+   "load": 434
+  },
+  "lcpElement": {
+   "selector": "main#main > header.relative > div.absolute > img.object-cover",
+   "label": "White branching columns under the timber-lined roof above the C gates at KLIA T…"
+  },
+  "lcpPhases": {
+   "timeToFirstByte": 18,
+   "resourceLoadDelay": 46,
+   "resourceLoadDuration": 67,
+   "elementRenderDelay": 135
+  },
+  "renderBlocking": [
+   {
+    "url": "/_next/static/chunks/416av_omt2lgt.css",
+    "bytes": 2464,
+    "ms": 161
+   },
+   {
+    "url": "/_next/static/chunks/3vz0r6frtzslb.css",
+    "bytes": 36249,
+    "ms": 461
+   }
+  ],
+  "longTasks": [
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 3945,
+    "dur": 166
+   },
+   {
+    "url": "Unattributable",
+    "start": 911,
+    "dur": 130
+   },
+   {
+    "url": "/en/guides",
+    "start": 1107,
+    "dur": 124
+   },
+   {
+    "url": "_lighthouse-eval.js",
+    "start": 2906,
+    "dur": 67
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4111,
+    "dur": 63
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4174,
+    "dur": 61
+   },
+   {
+    "url": "Unattributable",
+    "start": 1231,
+    "dur": 56
+   },
+   {
+    "url": "/en/guides",
+    "start": 1053,
+    "dur": 54
+   }
+  ],
+  "bootup": [
+   {
+    "url": "/en/guides",
+    "total": 855,
+    "scripting": 79
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "total": 720,
+    "scripting": 634
+   },
+   {
+    "url": "Unattributable",
+    "total": 560,
+    "scripting": 20
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "total": 150,
+    "scripting": 120
+   }
+  ],
+  "mainThread": {
+   "scriptEvaluation": 987,
+   "other": 770,
+   "styleLayout": 355,
+   "scriptParseCompile": 161,
+   "parseHTML": 159,
+   "paintCompositeRender": 71,
+   "garbageCollection": 33
+  },
+  "resources": {
+   "total": {
+    "n": 41,
+    "bytes": 568754
+   },
+   "script": {
+    "n": 23,
+    "bytes": 339864
+   },
+   "image": {
+    "n": 4,
+    "bytes": 57137
+   },
+   "document": {
+    "n": 1,
+    "bytes": 51458
+   },
+   "other": {
+    "n": 9,
+    "bytes": 41330
+   },
+   "font": {
+    "n": 2,
+    "bytes": 40252
+   },
+   "stylesheet": {
+    "n": 2,
+    "bytes": 38713
+   },
+   "media": {
+    "n": 0,
+    "bytes": 0
+   },
+   "third-party": {
+    "n": 0,
+    "bytes": 0
+   }
+  },
+  "topRequests": [
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "type": "Script",
+    "transfer": 73535
+   },
+   {
+    "url": "/en/guides",
+    "type": "Document",
+    "transfer": 51458
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "type": "Script",
+    "transfer": 47500
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "type": "Font",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/chunks/3vz0r6frtzslb.css",
+    "type": "Stylesheet",
+    "transfer": 36249
+   },
+   {
+    "url": "/_next/static/chunks/0-iz3bebgkpiu.js",
+    "type": "Script",
+    "transfer": 29368
+   },
+   {
+    "url": "/_next/image?url=%2Fimages%2Frail%2Fklia-ekspres.jpg&w=750&q=60",
+    "type": "Image",
+    "transfer": 21075
+   },
+   {
+    "url": "/_next/static/chunks/0d0t-4gzbsp9w.js",
+    "type": "Script",
+    "transfer": 18563
+   },
+   {
+    "url": "/_next/static/chunks/0tawepy8ew2-e.js",
+    "type": "Script",
+    "transfer": 16884
+   },
+   {
+    "url": "/_next/static/chunks/19obm51aqul1_.js",
+    "type": "Script",
+    "transfer": 14578
+   }
+  ],
+  "fonts": [
+   {
+    "url": "/_next/static/media/fraunces_wordmark_520-s.p.01133lvcr6pw1.woff2",
+    "transfer": 3855
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "transfer": 36397
+   }
+  ]
+ },
+ "caveat": "Lab measurement: Lighthouse with simulated (or, with --profile, applied) throttling against a local next start. Indicative only; not field data."
+}

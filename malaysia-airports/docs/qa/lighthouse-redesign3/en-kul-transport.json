@@ -1,0 +1,290 @@
+{
+ "key": "en-kul-transport",
+ "url": "http://localhost:3100/en/kul/transport",
+ "preset": "mobile (Lighthouse default)",
+ "profile": null,
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-23T14:20:11.487Z",
+ "median": {
+  "performance": 90,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 69,
+  "fcp_ms": 1376,
+  "lcp_ms": 3327,
+  "tbt_ms": 201,
+  "cls": 0.004,
+  "si_ms": 1379,
+  "totalBytes": 607718,
+  "requests": 45
+ },
+ "a11yFailures": [],
+ "rows": [
+  {
+   "finalUrl": "/en/kul/transport",
+   "runtimeError": null,
+   "performance": 90,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 69,
+   "fcp_ms": 1376,
+   "lcp_ms": 3065,
+   "tbt_ms": 201,
+   "cls": 0.004,
+   "si_ms": 1552,
+   "totalBytes": 607720,
+   "requests": 45,
+   "benchmarkIndex": 2044.5,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en/kul/transport",
+   "runtimeError": null,
+   "performance": 90,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 69,
+   "fcp_ms": 1364,
+   "lcp_ms": 3327,
+   "tbt_ms": 142,
+   "cls": 0,
+   "si_ms": 1364,
+   "totalBytes": 607718,
+   "requests": 45,
+   "benchmarkIndex": 2033,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en/kul/transport",
+   "runtimeError": null,
+   "performance": 88,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 69,
+   "fcp_ms": 1379,
+   "lcp_ms": 3358,
+   "tbt_ms": 238,
+   "cls": 0.004,
+   "si_ms": 1379,
+   "totalBytes": 607718,
+   "requests": 45,
+   "benchmarkIndex": 2056,
+   "a11yFailures": []
+  }
+ ],
+ "medianRunIndex": 0,
+ "diagnostics": {
+  "observed": {
+   "fcp": 396,
+   "lcp": 396,
+   "dcl": 645,
+   "load": 647
+  },
+  "lcpElement": {
+   "selector": "div.mx-auto > div.flex > div.relative > img.-z-10",
+   "label": "div.mx-auto > div.flex > div.relative > img.-z-10"
+  },
+  "lcpPhases": {
+   "timeToFirstByte": 32,
+   "resourceLoadDelay": 83,
+   "resourceLoadDuration": 72,
+   "elementRenderDelay": 210
+  },
+  "renderBlocking": [
+   {
+    "url": "/_next/static/chunks/3vz0r6frtzslb.css",
+    "bytes": 36249,
+    "ms": 463
+   },
+   {
+    "url": "/_next/static/chunks/416av_omt2lgt.css",
+    "bytes": 2464,
+    "ms": 163
+   }
+  ],
+  "longTasks": [
+   {
+    "url": "Unattributable",
+    "start": 913,
+    "dur": 240
+   },
+   {
+    "url": "/en/kul/transport",
+    "start": 1211,
+    "dur": 206
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4115,
+    "dur": 190
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4453,
+    "dur": 119
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4305,
+    "dur": 59
+   },
+   {
+    "url": "/en/kul/transport",
+    "start": 1504,
+    "dur": 58
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4364,
+    "dur": 56
+   },
+   {
+    "url": "_lighthouse-eval.js",
+    "start": 3077,
+    "dur": 55
+   }
+  ],
+  "bootup": [
+   {
+    "url": "/en/kul/transport",
+    "total": 1387,
+    "scripting": 92
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "total": 1273,
+    "scripting": 948
+   },
+   {
+    "url": "Unattributable",
+    "total": 677,
+    "scripting": 9
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "total": 151,
+    "scripting": 118
+   },
+   {
+    "url": "/_next/static/chunks/3vz0r6frtzslb.css",
+    "total": 51,
+    "scripting": 0
+   }
+  ],
+  "mainThread": {
+   "scriptEvaluation": 1298,
+   "other": 968,
+   "styleLayout": 901,
+   "parseHTML": 218,
+   "scriptParseCompile": 204,
+   "paintCompositeRender": 166,
+   "garbageCollection": 38
+  },
+  "resources": {
+   "total": {
+    "n": 43,
+    "bytes": 607720
+   },
+   "script": {
+    "n": 28,
+    "bytes": 391166
+   },
+   "document": {
+    "n": 1,
+    "bytes": 65727
+   },
+   "font": {
+    "n": 3,
+    "bytes": 56361
+   },
+   "other": {
+    "n": 8,
+    "bytes": 39342
+   },
+   "stylesheet": {
+    "n": 2,
+    "bytes": 38713
+   },
+   "image": {
+    "n": 1,
+    "bytes": 16411
+   },
+   "media": {
+    "n": 0,
+    "bytes": 0
+   },
+   "third-party": {
+    "n": 0,
+    "bytes": 0
+   }
+  },
+  "topRequests": [
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "type": "Script",
+    "transfer": 73535
+   },
+   {
+    "url": "/en/kul/transport",
+    "type": "Document",
+    "transfer": 65727
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "type": "Script",
+    "transfer": 47500
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "type": "Font",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/chunks/3vz0r6frtzslb.css",
+    "type": "Stylesheet",
+    "transfer": 36249
+   },
+   {
+    "url": "/_next/static/chunks/0-iz3bebgkpiu.js",
+    "type": "Script",
+    "transfer": 29368
+   },
+   {
+    "url": "/_next/static/chunks/0d0t-4gzbsp9w.js",
+    "type": "Script",
+    "transfer": 18563
+   },
+   {
+    "url": "/_next/image?url=%2Fimages%2Frail%2Fklia-ekspres.jpg&w=750&q=50",
+    "type": "Image",
+    "transfer": 16411
+   },
+   {
+    "url": "/_next/static/media/geist_mono_basic_wght_normal.0acs2vcv6dxqq.woff2",
+    "type": "Font",
+    "transfer": 16109
+   },
+   {
+    "url": "/_next/static/chunks/0-e1u36i7-0xx.js",
+    "type": "Script",
+    "transfer": 15721
+   }
+  ],
+  "fonts": [
+   {
+    "url": "/_next/static/media/fraunces_wordmark_520-s.p.01133lvcr6pw1.woff2",
+    "transfer": 3855
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/media/geist_mono_basic_wght_normal.0acs2vcv6dxqq.woff2",
+    "transfer": 16109
+   }
+  ]
+ },
+ "caveat": "Lab measurement: Lighthouse with simulated (or, with --profile, applied) throttling against a local next start. Indicative only; not field data."
+}
