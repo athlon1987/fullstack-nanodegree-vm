@@ -4,7 +4,8 @@ import type { NextConfig } from 'next';
 import { legacyRedirects } from './src/lib/seo/legacy-redirects';
 import { alternateLinkRules } from './src/lib/seo/link-headers';
 import { API_HEADERS, NOINDEX_HEADERS, ROUTE_SECURITY_OVERRIDES, overrideHeaders, securityHeaders } from './src/lib/seo/security-headers';
-import { EARLY_MODE_SCRIPT, EARLY_TAP_SCRIPT, MAP_ROUTE_NAMES_SCRIPT, MAP_ROUTE_STRIP_SCRIPT, SAVED_FLIGHT_FLAG_SCRIPT } from './src/lib/inline-scripts';
+import { EARLY_MODE_SCRIPT, EARLY_TAP_SCRIPT, SAVED_FLIGHT_FLAG_SCRIPT } from './src/lib/inline-scripts';
+import { MAP_ROUTE_NAMES_SCRIPT, MAP_ROUTE_STRIP_SCRIPT } from './src/lib/inline-scripts-map';
 import { PREFERENCES_INIT_SCRIPT } from './src/lib/preferences';
 import { IMAGE_DEVICE_SIZES, IMAGE_QUALITIES, IMAGE_SIZES } from './src/components/ui/image-config';
 

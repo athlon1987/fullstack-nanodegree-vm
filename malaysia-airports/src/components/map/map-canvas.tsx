@@ -4,7 +4,7 @@ import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent, type P
 import { cn } from '@/lib/cn';
 import { useHydrated } from '@/lib/hooks/use-store';
 import { useT } from '@/lib/i18n/client';
-import { MAP_ROUTE_STRIP_SCRIPT } from '@/lib/inline-scripts';
+import { MAP_ROUTE_STRIP_SCRIPT } from '@/lib/inline-scripts-map';
 import { Icon } from '@/components/ui/icon';
 import { IconButton } from '@/components/ui/icon-button';
 import {

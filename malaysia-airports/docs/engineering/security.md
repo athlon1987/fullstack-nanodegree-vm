@@ -102,7 +102,8 @@ below.
   now live as plain strings in `src/lib/inline-scripts.ts` and `src/lib/preferences.ts`, and
   `next.config.ts` puts all four SHA-256 hashes in the report-only policy. Reports now name only
   the framework's scripts. (Closing fix, 23 November 2026: a fifth and a sixth, the terminal map's
-  `MAP_ROUTE_NAMES_SCRIPT` and `MAP_ROUTE_STRIP_SCRIPT`, are hashed the same way.)
+  `MAP_ROUTE_NAMES_SCRIPT` and `MAP_ROUTE_STRIP_SCRIPT` in `src/lib/inline-scripts-map.ts`, are hashed
+  the same way.)
 - *Why not enforce hashes:* every prerendered page also carries the framework's own inline
   scripts: the RSC payload chunks (`self.__next_f.push([...])`, which embed that page's data), the
   bootstrap, and the `$RC`/`$RS` reveal scripts on pages with streamed boundaries. Their text

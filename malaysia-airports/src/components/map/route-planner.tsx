@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import type { PathResult, WalkProfile } from '@/lib/map';
 import { formatDistance, formatDuration, formatList } from '@/lib/format';
 import { cn } from '@/lib/cn';
-import { MAP_ROUTE_NAMES_SCRIPT } from '@/lib/inline-scripts';
+import { MAP_ROUTE_NAMES_SCRIPT } from '@/lib/inline-scripts-map';
 import { useLang, useT } from '@/lib/i18n/client';
 import type { Translator } from '@/lib/i18n/translate';
 import { ProvenanceTag } from '@/components/common/provenance-tag';
