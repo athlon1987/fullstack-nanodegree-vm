@@ -35,6 +35,10 @@ const GROUNDS: Record<string, string> = {
 /** Photographs a place card prefers, best first (ids from the library; the rest follow in library order). */
 const PLACE_PREFERENCE: Readonly<Partial<Record<string, readonly string[]>>> = {
   kul: ['klia-t1-aerial', 'klia-t1-airfield'],
+  // Redesign 1c: Mount Kinabalu is the home hero, so the Kota Kinabalu card takes the terminal
+  // across the airfield with the mountains behind (the terminal front has a name board that a
+  // card crop cuts mid-word).
+  bki: ['mount-kinabalu', 'bki-airfield'],
 };
 
 export function placePhoto(slug: string, terminal?: string): SiteImage | undefined {

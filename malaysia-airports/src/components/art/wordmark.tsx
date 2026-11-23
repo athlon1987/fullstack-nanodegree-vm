@@ -17,7 +17,7 @@ export interface WordmarkProps {
 }
 
 /**
- * The mark with "Malaysia Airports" set in the display face. Wrap it in the home link; the
+ * The mark with "Malaysia Airports" set in the wordmark face (Fraunces). Wrap it in the home link; the
  * name is real text, so the link needs no extra label.
  *
  * @example <LocaleLink href="/"><Wordmark name={t('common.appName')} /></LocaleLink>
@@ -27,7 +27,9 @@ export function Wordmark({ name, size = 'md', className, nameClassName }: Wordma
   return (
     <span className={cn('inline-flex items-center text-ink', s.gap, className)}>
       <BrandMark className={s.mark} />
-      <span className={cn('font-display leading-none font-[520] tracking-[-0.012em] whitespace-nowrap', s.text, nameClassName)}>{name}</span>
+      {/* Redesign 1c: `font-wordmark` is a 2 KB static instance of Fraunces (opsz 144, weight 520)
+          holding only these letters; the full face is no longer preloaded for it. */}
+      <span className={cn('font-wordmark leading-none font-[520] tracking-[-0.012em] whitespace-nowrap', s.text, nameClassName)}>{name}</span>
     </span>
   );
 }

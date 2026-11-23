@@ -289,13 +289,36 @@ test.describe('offline page', () => {
     await expect(page.getByText('You are online', { exact: true })).toBeVisible();
     await context.setOffline(true);
     await expect(page.getByText('You are offline', { exact: true })).toBeVisible();
-    const saving = await page.locator('[data-saving]').getAttribute('data-saving');
-    if (saving === 'on') {
-      await expect(page.getByRole('status').filter({ hasText: 'You are offline: showing saved information' })).toBeVisible();
+    // Redesign 1c (verification SA5 item 5): the card's saving state and the toast are read in one
+    // step, from one snapshot of the page. They used to be read at two moments, and a service
+    // worker taking control between them failed the test while the page agreed with itself.
+    const snapshot = () =>
+      page.evaluate(() => {
+        const card = document.querySelector('[data-saving]');
+        const visible = (node: Element) => (node as HTMLElement).checkVisibility?.() ?? true;
+        return {
+          saving: card?.getAttribute('data-saving') ?? null,
+          card: card?.textContent ?? '',
+          statuses: Array.from(document.querySelectorAll('[role="status"], output'))
+            .filter(visible)
+            .map((node) => node.textContent?.replace(/\s+/g, ' ').trim() ?? '')
+            .filter(Boolean),
+        };
+      });
+    // Wait for the toast, then judge that same snapshot (no second read).
+    let state = await snapshot();
+    await expect
+      .poll(async () => {
+        state = await snapshot();
+        return state.statuses.some((text) => text.includes('You are offline:'));
+      })
+      .toBe(true);
+    if (state.saving === 'on') {
+      expect(state.statuses, 'saving is on: the toast says so').toContainEqual(expect.stringContaining('You are offline: showing saved information'));
     } else {
-      await expect(page.getByRole('status').filter({ hasText: 'You are offline: nothing is saved on this device yet' })).toBeVisible();
-      await expect(page.getByRole('status').filter({ hasText: 'showing saved information' })).toHaveCount(0);
-      await expect(page.locator('[data-saving]')).not.toContainText('not switched on');
+      expect(state.statuses, `saving is "${state.saving}": the toast says nothing is saved`).toContainEqual(expect.stringContaining('You are offline: nothing is saved on this device yet'));
+      expect(state.statuses.filter((text) => text.includes('showing saved information'))).toEqual([]);
+      expect(state.card).not.toContain('not switched on');
     }
     await expectNoAxeViolations(page);
     await context.setOffline(false);

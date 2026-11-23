@@ -21,8 +21,8 @@ export const creditsPagesEn = {
   source: 'Original on Wikimedia Commons',
   changes: 'Changes',
   modified: {
-    resized: 'Resized and compressed',
-    cropped: 'Cropped, resized and compressed',
+    resized: 'Resized, colour-graded and compressed',
+    cropped: 'Cropped, resized, colour-graded and compressed',
   },
   groups: {
     klia: 'KLIA Terminal 1',
@@ -40,7 +40,7 @@ export const creditsPagesEn = {
   reuse: {
     heading: 'Using these photographs',
     body: 'You may reuse any of them under the licence shown, which allows commercial use. Credit the photographer as listed, link to the licence, and say if you changed the image. Under a ShareAlike licence, share your version under the same licence.',
-    changesBody: 'The versions on this site are resized to at most 2,560 pixels on the long edge, compressed and stripped of camera data; where a photo is cropped, the list says so. The originals are on Wikimedia Commons.',
+    changesBody: 'The versions on this site are resized to at most 2,560 pixels on the long edge, given one light colour grade so the set looks consistent (a little warmth, softer highlights, even contrast), compressed and stripped of camera data; where a photo is cropped, the list says so. The originals are on Wikimedia Commons.',
     replace: 'Malaysia Airports can replace these with its own photography without changing any page: every photograph and its credit is defined in one place.',
   },
 };
@@ -57,8 +57,8 @@ export const creditsPagesMs: typeof creditsPagesEn = {
   source: 'Gambar asal di Wikimedia Commons',
   changes: 'Perubahan',
   modified: {
-    resized: 'Saiz diubah dan dimampatkan',
-    cropped: 'Dipangkas, saiz diubah dan dimampatkan',
+    resized: 'Saiz diubah, warna dilaraskan dan dimampatkan',
+    cropped: 'Dipangkas, saiz diubah, warna dilaraskan dan dimampatkan',
   },
   groups: {
     klia: 'KLIA Terminal 1',
@@ -76,7 +76,7 @@ export const creditsPagesMs: typeof creditsPagesEn = {
   reuse: {
     heading: 'Menggunakan gambar ini',
     body: 'Anda boleh menggunakan semula mana-mana gambar ini di bawah lesen yang ditunjukkan, termasuk untuk tujuan komersial. Nyatakan nama jurugambar seperti yang disenaraikan, pautkan kepada lesen, dan nyatakan jika anda mengubah gambar itu. Bagi lesen ShareAlike, kongsi versi anda di bawah lesen yang sama.',
-    changesBody: 'Versi di laman ini diubah saiznya kepada paling banyak 2,560 piksel pada sisi panjang, dimampatkan dan dibuang data kameranya; jika gambar dipangkas, senarai ini menyatakannya. Gambar asal ada di Wikimedia Commons.',
+    changesBody: 'Versi di laman ini diubah saiznya kepada paling banyak 2,560 piksel pada sisi panjang, diberi satu pelarasan warna yang ringan supaya set ini kelihatan seragam (sedikit kehangatan, bahagian terang yang lebih lembut, kontras yang sekata), dimampatkan dan dibuang data kameranya; jika gambar dipangkas, senarai ini menyatakannya. Gambar asal ada di Wikimedia Commons.',
     replace: 'Malaysia Airports boleh menggantikan gambar ini dengan gambarnya sendiri tanpa mengubah mana-mana halaman: setiap gambar dan kreditnya ditetapkan di satu tempat.',
   },
 };

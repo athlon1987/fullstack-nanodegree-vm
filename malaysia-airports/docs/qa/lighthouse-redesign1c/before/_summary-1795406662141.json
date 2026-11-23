@@ -1,0 +1,54 @@
+{
+ "en": {
+  "performance": 85,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 69,
+  "fcp_ms": 1365,
+  "lcp_ms": 3773,
+  "tbt_ms": 215,
+  "cls": 0,
+  "si_ms": 1371,
+  "totalBytes": 690447,
+  "requests": 52
+ },
+ "ms": {
+  "performance": 89,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 69,
+  "fcp_ms": 1367,
+  "lcp_ms": 3530,
+  "tbt_ms": 152,
+  "cls": 0,
+  "si_ms": 1367,
+  "totalBytes": 691957,
+  "requests": 52
+ },
+ "en-kul": {
+  "performance": 87,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1373,
+  "lcp_ms": 3521,
+  "tbt_ms": 203,
+  "cls": 0.004,
+  "si_ms": 1379,
+  "totalBytes": 693851,
+  "requests": 49
+ },
+ "en-pen": {
+  "performance": 88,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1370,
+  "lcp_ms": 3671,
+  "tbt_ms": 135,
+  "cls": 0,
+  "si_ms": 1381,
+  "totalBytes": 691009,
+  "requests": 46
+ }
+}

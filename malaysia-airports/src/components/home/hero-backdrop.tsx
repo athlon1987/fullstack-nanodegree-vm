@@ -31,6 +31,10 @@ const HOME_HERO_FRAMING: Partial<Record<string, Parameters<typeof artDirection>[
   // Polish 1b: the Terminal 1 roof canopies against the sky. Phones (a band about as tall as it is
   // wide) keep the first canopies and the sky beside them; wide screens keep the canopy tops.
   'klia-t1-roof': { base: { x: 0.3, y: 0.45 }, md: { x: 0.5, y: 0.4 } },
+  // Redesign 1c: Mount Kinabalu at sunset. Phones (a band a little narrower than the photograph)
+  // keep the whole summit; wide screens keep the sunlit ridge above the forest, the summit to the
+  // right of the headline.
+  'mount-kinabalu': { base: { x: 0.5, y: 0.4 }, md: { x: 0.6, y: 0.42 } },
 };
 
 export function HeroBackdrop({ photo, lang }: { photo?: SiteImage; lang: Lang }) {

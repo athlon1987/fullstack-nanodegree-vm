@@ -1,6 +1,7 @@
 import { CLASSIFICATION_LABELS, airportSlugs, formatAsOf, getNotices, getSource, pick, resolveSources, type Provenance } from '@/content';
 import { GROUP_CONTACTS, terminalLabel } from '@/content/airports';
-import { AirportFlightSearch, AirportFlightTools } from '@/components/airport/airport-flight-tools';
+import { AirportFlightSearch } from '@/components/airport/airport-flight-search';
+import { LazyAirportFlightTools } from '@/components/airport/airport-flight-tools-lazy';
 import { opsServicesFor } from '@/lib/providers/demo-operations';
 import { cn } from '@/lib/cn';
 import { AirportBanner } from '@/components/airport/airport-header';
@@ -234,7 +235,7 @@ async function Overview({ params }: { params: AirportPageParams }) {
       ) : null}
 
       <Section spacing="md">
-        <AirportFlightTools slug={airport.slug} name={airport.shortName} hasFlights={sections.includes('flights')} />
+        <LazyAirportFlightTools slug={airport.slug} name={airport.shortName} hasFlights={sections.includes('flights')} />
       </Section>
 
       {bookable.length > 0 ? (

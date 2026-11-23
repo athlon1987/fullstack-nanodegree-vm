@@ -80,7 +80,11 @@ export function AirportBanner({ airport, lang, sections, search }: AirportHeader
         {/* Polish 1b (critique-redesign1b item 11): on a phone the photograph is a 19rem band of its
             own above the words (13rem of it clear), and their scrim rises only 2.5rem above them. */}
         <Container className={cn('relative pb-8 md:pb-12', photo ? 'pt-52 sm:pt-28 md:pt-20 lg:pt-24' : 'pt-7 sm:pt-12 md:pt-16 lg:pt-20')}>
-          <div className={cn('max-w-[56rem]', photo && 'scrim-feather max-sm:[--scrim-feather-top:2.5rem]')}>
+          {/* Redesign 1c: from 1024 px the photograph carries one cinematic shade (`hero-shade`,
+              set by AirportBackdrop) sized to this column, `min(56rem, 60vw)`, so the words need no
+              scrim of their own and the photograph reads as one picture; below 1024 px they keep
+              the feathered scrim. */}
+          <div className={cn('max-w-[56rem] lg:max-w-[min(56rem,60vw)]', photo && 'max-lg:scrim-feather max-sm:[--scrim-feather-top:2.5rem]')}>
             <div className="on-media text-ink">
               <p className="type-caption flex flex-wrap items-center gap-x-3 gap-y-1 font-semibold tracking-[0.16em] text-ink-2 uppercase">
                 <span aria-hidden="true" className="h-px w-8 bg-gold-bright" />
@@ -101,6 +105,9 @@ export function AirportBanner({ airport, lang, sections, search }: AirportHeader
                   <LocalTime showLabel timeZone={airport.timezone} className="flex-wrap whitespace-normal" />
                 </span>
                 {terminals.length > 0 ? <TerminalChips slug={airport.slug} terminals={terminals} /> : null}
+                {/* At the end of the line (ml-auto), so it does not move when the clock fills in after
+                    hydration. Redesign 1c: the shade holds its full strength to 6rem before the
+                    column's end, so this link stays on the dark part. */}
                 <LocaleLink href="/airports" className="link-action type-body-sm ml-auto text-ink max-sm:hidden">
                   {t('nav.airports')}
                   <Icon name="arrow-right" size="sm" strokeWidth={1.75} />

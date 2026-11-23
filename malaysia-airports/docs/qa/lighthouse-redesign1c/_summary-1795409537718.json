@@ -1,0 +1,15 @@
+{
+ "en-pen": {
+  "performance": 90,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1368,
+  "lcp_ms": 3349,
+  "tbt_ms": 187,
+  "cls": 0,
+  "si_ms": 1368,
+  "totalBytes": 631154,
+  "requests": 48
+ }
+}

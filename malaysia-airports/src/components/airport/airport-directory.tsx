@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { useMemo, useState } from 'react';
+import { cn } from '@/lib/cn';
 import { AIRPORTS, AIRPORT_CHOICES, CLASSIFICATION_LABELS, localizeAirport } from '@/content/airports';
 import { AIRPORT_CLASSIFICATIONS, pick } from '@/content/values';
 import type { Airport, AirportClassification } from '@/content/types';
@@ -148,10 +149,16 @@ export function AirportDirectoryView({ then, photos = {} }: AirportDirectoryView
    */
   const featured = (airport: Airport) => Boolean(photos[airport.slug]) || airportDepthLabel(availability, airport.slug) === 'guide';
 
-  const featureCard = (airport: Airport) => {
+  /**
+   * Redesign 1c: `shape` places the card. `grid` is a card in a group's grid; `lead` and `tile` are
+   * the photo-led first view (`lead` the large card of the mosaic, `tile` the others): on a phone a
+   * row of tall cards that scrolls sideways, from 640 px a mosaic.
+   */
+  const featureCard = (airport: Airport, shape: 'grid' | 'lead' | 'tile' = 'grid') => {
     const place = airport.city === airport.state ? airport.city : `${airport.city}, ${airport.state}`;
     const { link, chips } = parts(airport);
     const photo = photos[airport.slug];
+    const mosaic = shape !== 'grid';
     return (
       <Card
         as="li"
@@ -159,7 +166,12 @@ export function AirportDirectoryView({ then, photos = {} }: AirportDirectoryView
         interactive
         variant="midnight"
         data-airport={airport.slug}
-        className="group/media isolate flex min-h-[18rem] min-w-0 flex-col justify-end overflow-hidden rounded-2xl border-0 p-0 sm:min-h-[21rem]"
+        className={cn(
+          'group/media isolate flex min-w-0 flex-col justify-end overflow-hidden rounded-2xl border-0 p-0',
+          !mosaic && 'min-h-[18rem] sm:min-h-[21rem]',
+          mosaic && 'max-sm:min-h-[21rem] max-sm:w-[82%] max-sm:shrink-0 max-sm:snap-start sm:min-h-[13rem]',
+          shape === 'lead' && 'sm:col-span-2 xl:row-span-2 xl:min-h-[27rem]',
+        )}
       >
         <div aria-hidden="true" className="absolute inset-0 -z-10 overflow-hidden rounded-[inherit]">
           {photo ? (
@@ -167,7 +179,13 @@ export function AirportDirectoryView({ then, photos = {} }: AirportDirectoryView
               src={photo.src}
               alt=""
               fill
-              sizes="(min-width: 80rem) 33vw, (min-width: 40rem) 50vw, 100vw"
+              sizes={
+                shape === 'lead'
+                  ? '(min-width: 80rem) 50vw, (min-width: 40rem) 100vw, 82vw'
+                  : shape === 'tile'
+                    ? '(min-width: 80rem) 25vw, (min-width: 40rem) 50vw, 82vw'
+                    : '(min-width: 80rem) 33vw, (min-width: 40rem) 50vw, 100vw'
+              }
               quality={60}
               {...placeholderProps(photo)}
               style={{ objectPosition: objectPosition(photo.focal) }}
@@ -189,7 +207,7 @@ export function AirportDirectoryView({ then, photos = {} }: AirportDirectoryView
             them, instead of a veil over the whole card. */}
         <div className="scrim-behind flex flex-col gap-2 rounded-b-[inherit] p-5 pt-6 [--scrim-behind-fade:3rem] sm:p-6 sm:pt-8">
           <AirportCode code={airport.code} size="sm" className="inline-flex h-7 w-fit items-center rounded-pill bg-gold px-2.5 text-on-gold" />
-          <h3 className="type-title-lg text-ink">{link}</h3>
+          <h3 className={cn('text-ink', shape === 'lead' ? 'type-display-sm' : 'type-title-lg')}>{link}</h3>
           <p className="type-body-sm text-ink-2">{place}</p>
           <div className="mt-1">{chips}</div>
         </div>
@@ -221,6 +239,50 @@ export function AirportDirectoryView({ then, photos = {} }: AirportDirectoryView
   const last = selection ? AIRPORT_CHOICES.find((choice) => choice.airport === selection.airport && (choice.terminal ?? undefined) === selection.terminal) : undefined;
   const quick = last && !pinned.some((choice) => choice.id === last.id) ? [last, ...pinned] : pinned;
 
+  /**
+   * Redesign 1c (photo-led first view): a group whose airports all have photographs of their own
+   * (today the five international airports) opens the page, above the search and the filters, as
+   * a mosaic of large photo cards; the other groups follow the filters as before. The filters act
+   * on every group, this one included, so the search behaves exactly as it did.
+   */
+  const leadsWithPhotos = (classification: AirportClassification) => {
+    const all = airports.filter((airport) => airport.classification === classification);
+    return all.length > 0 && all.every((airport) => photos[airport.slug]);
+  };
+
+  const groupSection = (classification: AirportClassification) => {
+    const group = shown.filter((airport) => airport.classification === classification);
+    if (group.length === 0) return null;
+    const mosaic = leadsWithPhotos(classification);
+    return (
+      <section key={classification} aria-labelledby={`airports-${classification}`}>
+        <h2 id={`airports-${classification}`} className="type-display-sm mb-5 flex items-center gap-3 text-ink">
+          {t(GROUP_TITLES[classification])}
+          <span className="type-data-md rounded-pill bg-fill px-2.5 py-0.5 text-ink-2">{group.length}</span>
+        </h2>
+        {mosaic ? (
+          <ul
+            className={cn(
+              'max-sm:-mx-gutter max-sm:flex max-sm:snap-x max-sm:snap-mandatory max-sm:gap-3 max-sm:scroll-px-gutter max-sm:overflow-x-auto max-sm:overscroll-x-contain max-sm:px-gutter max-sm:pb-1 max-sm:[scrollbar-width:none] max-sm:[&::-webkit-scrollbar]:hidden',
+              'sm:grid sm:grid-cols-2 sm:gap-4 xl:grid-cols-4',
+            )}
+          >
+            {group.map((airport, index) => featureCard(airport, index === 0 ? 'lead' : 'tile'))}
+          </ul>
+        ) : (
+          <>
+            {group.some(featured) ? <ul className="mb-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">{group.filter(featured).map((airport) => featureCard(airport))}</ul> : null}
+            {group.some((airport) => !featured(airport)) ? (
+              <ul className="grid gap-x-6 gap-y-1 rounded-2xl border border-line bg-surface p-2 shadow-sm sm:p-3 lg:grid-cols-2">
+                {group.filter((airport) => !featured(airport)).map(row)}
+              </ul>
+            ) : null}
+          </>
+        )}
+      </section>
+    );
+  };
+
   return (
     <div className="flex flex-col gap-8 lg:gap-10">
       {targetLabel ? (
@@ -229,7 +291,9 @@ export function AirportDirectoryView({ then, photos = {} }: AirportDirectoryView
         </Callout>
       ) : null}
 
-      <section aria-labelledby="airports-quick-title" className="-mt-2 lg:-mt-4">
+      {AIRPORT_CLASSIFICATIONS.filter(leadsWithPhotos).map((classification) => groupSection(classification))}
+
+      <section aria-labelledby="airports-quick-title">
         <h2 id="airports-quick-title" className="type-eyebrow mb-2 text-ink-2">
           {t('shellExtras.directory.pinnedTitle')}
         </h2>
@@ -326,24 +390,7 @@ export function AirportDirectoryView({ then, photos = {} }: AirportDirectoryView
         </figure>
       </div>
 
-      {AIRPORT_CLASSIFICATIONS.map((classification) => {
-        const group = shown.filter((airport) => airport.classification === classification);
-        if (group.length === 0) return null;
-        return (
-          <section key={classification} aria-labelledby={`airports-${classification}`}>
-            <h2 id={`airports-${classification}`} className="type-display-sm mb-5 flex items-center gap-3 text-ink">
-              {t(GROUP_TITLES[classification])}
-              <span className="type-data-md rounded-pill bg-fill px-2.5 py-0.5 text-ink-2">{group.length}</span>
-            </h2>
-            {group.some(featured) ? <ul className="mb-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">{group.filter(featured).map(featureCard)}</ul> : null}
-            {group.some((airport) => !featured(airport)) ? (
-              <ul className="grid gap-x-6 gap-y-1 rounded-2xl border border-line bg-surface p-2 shadow-sm sm:p-3 lg:grid-cols-2">
-                {group.filter((airport) => !featured(airport)).map(row)}
-              </ul>
-            ) : null}
-          </section>
-        );
-      })}
+      {AIRPORT_CLASSIFICATIONS.filter((classification) => !leadsWithPhotos(classification)).map((classification) => groupSection(classification))}
 
       {shown.length === 0 ? (
         <div className="rounded-lg border border-line bg-page-subtle p-6">

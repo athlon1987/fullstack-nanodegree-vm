@@ -33,18 +33,19 @@ import { Icon } from '@/components/ui/icon';
 import { Section } from '@/components/ui/section';
 import { DemoMarkedList } from '@/components/common/demo-tag';
 import { ArrivalChecklist, type ArrivalChecklistItem } from './arrival-checklist';
-import { BoardPreview } from './board-preview';
-import { DepartingNow } from './departing-now';
-import { ConciergeQuestions } from './concierge-questions';
 import { DestinationCard } from './destination-card';
 import { HeroBackdrop } from './hero-backdrop';
 import { JourneyModes } from './journey-modes';
-import { JourneyTeaser, type TeaserOfficialFact } from './journey-teaser';
+import type { TeaserOfficialFact } from './journey-teaser';
 import { ModeQuickActions } from './mode-quick-actions';
 import { HomeOpsStatus } from './home-ops-status';
 import { NoticeStrip } from './notice-strip';
 import { SavedFlightFlag, SavedFlightSlot } from './saved-flight-slot';
-import { ShopDineStrip, type ShopDineFilter } from './shop-dine-strip';
+import type { ShopDineFilter } from './shop-dine-strip';
+// Redesign 1c: below the first screen, code-split ("Departing now" stays in the first load: it is
+// in the desktop first screen, and arriving late it moved the hero by 14 px, CLS 0.008).
+import { LazyBoardPreview, LazyConciergeQuestions, LazyJourneyTeaser, LazyShopDineStrip } from './lazy-sections';
+import { DepartingNow } from './departing-now';
 
 /* ---- First screen ---------------------------------------------------------------------------- */
 
@@ -182,7 +183,7 @@ export function HomeBoard({ lang }: { lang: Lang }) {
           container (the table layout from 1024 px, no empty column beside it), five rows on phones. */}
       <SectionHeading id="home-board-title" eyebrow={t('home.board.eyebrow')} title={t('home.v2.boardTitle')} lead={t('home.v2.boardLead')} />
       <DemoMarkedList className="min-w-0 max-sm:[&_ul>li:nth-child(n+6)]:hidden">
-        <BoardPreview rows={8} headingLevel={3} className="shadow-xl" />
+        <LazyBoardPreview rows={8} headingLevel={3} className="shadow-xl" />
       </DemoMarkedList>
     </Section>
   );
@@ -222,7 +223,7 @@ export function HomeJourney({ lang }: { lang: Lang }) {
           <ProvenanceLegend kinds={['official', 'estimated', 'suggestion']} />
           <p className="type-caption mt-3 text-ink-2">{t('journey.timeline.intro')}</p>
         </div>
-        <JourneyTeaser
+        <LazyJourneyTeaser
           facts={facts}
           arrival={{
             minutesBefore: ARRIVAL_TIME_RULE.minutesBefore,
@@ -387,7 +388,7 @@ export function HomeShopDine({ lang }: { lang: Lang }) {
       <div className="grid items-center gap-x-16 gap-y-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
         <div className="min-w-0">
           <SectionHeading id="home-shop-title" eyebrow={t('home.shop.eyebrow')} title={t('home.shop.title')} lead={t('home.shop.lead')} />
-          <ShopDineStrip outletCounts={outletCounts} usableFilters={usableFilters} />
+          <LazyShopDineStrip outletCounts={outletCounts} usableFilters={usableFilters} />
         </div>
         <ul className="grid gap-3 sm:grid-cols-2">
           {showcase.map((item, index) => {
@@ -457,7 +458,7 @@ export function HomeConcierge({ lang }: { lang: Lang }) {
       <div className="grid gap-x-16 gap-y-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)]">
         <div className="min-w-0">
           <SectionHeading id="home-concierge-title" eyebrow={t('home.concierge.eyebrow')} title={t('home.concierge.title')} lead={t('concierge.intro')} />
-          <ConciergeQuestions questions={[t('home.concierge.q1'), t('home.concierge.q2'), t('home.concierge.q3')]} />
+          <LazyConciergeQuestions questions={[t('home.concierge.q1'), t('home.concierge.q2'), t('home.concierge.q3')]} />
         </div>
         {note ? (
           <figure className="glass-dark min-w-0 self-start rounded-3xl">

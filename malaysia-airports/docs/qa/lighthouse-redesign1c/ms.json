@@ -1,0 +1,285 @@
+{
+ "key": "ms",
+ "url": "http://localhost:3296/ms",
+ "preset": "mobile (Lighthouse default)",
+ "profile": null,
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-23T04:49:03.870Z",
+ "median": {
+  "performance": 91,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 69,
+  "fcp_ms": 1370,
+  "lcp_ms": 3340,
+  "tbt_ms": 125,
+  "cls": 0,
+  "si_ms": 1370,
+  "totalBytes": 615077,
+  "requests": 55
+ },
+ "a11yFailures": [],
+ "rows": [
+  {
+   "finalUrl": "/ms",
+   "runtimeError": null,
+   "performance": 91,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 69,
+   "fcp_ms": 1373,
+   "lcp_ms": 3345,
+   "tbt_ms": 125,
+   "cls": 0,
+   "si_ms": 1373,
+   "totalBytes": 615077,
+   "requests": 55,
+   "benchmarkIndex": 2158,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/ms",
+   "runtimeError": null,
+   "performance": 91,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 69,
+   "fcp_ms": 1367,
+   "lcp_ms": 3042,
+   "tbt_ms": 195,
+   "cls": 0,
+   "si_ms": 1367,
+   "totalBytes": 618123,
+   "requests": 56,
+   "benchmarkIndex": 1883.5,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/ms",
+   "runtimeError": null,
+   "performance": 91,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 69,
+   "fcp_ms": 1370,
+   "lcp_ms": 3340,
+   "tbt_ms": 121,
+   "cls": 0,
+   "si_ms": 1370,
+   "totalBytes": 615058,
+   "requests": 55,
+   "benchmarkIndex": 1908,
+   "a11yFailures": []
+  }
+ ],
+ "medianRunIndex": 1,
+ "diagnostics": {
+  "observed": {
+   "fcp": 244,
+   "lcp": 244,
+   "dcl": 416,
+   "load": 418
+  },
+  "lcpElement": {
+   "selector": "main#main > section.relative > div.absolute > img.object-cover",
+   "label": "Gunung Kinabalu disinari cahaya petang di atas bukit-bukau berhutan, Sabah"
+  },
+  "lcpPhases": {
+   "timeToFirstByte": 14,
+   "resourceLoadDelay": 40,
+   "resourceLoadDuration": 29,
+   "elementRenderDelay": 161
+  },
+  "renderBlocking": [
+   {
+    "url": "/_next/static/chunks/18aaddm568ae9.css",
+    "bytes": 33852,
+    "ms": 458
+   },
+   {
+    "url": "/_next/static/chunks/416av_omt2lgt.css",
+    "bytes": 2464,
+    "ms": 158
+   }
+  ],
+  "longTasks": [
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4092,
+    "dur": 196
+   },
+   {
+    "url": "/ms",
+    "start": 1038,
+    "dur": 166
+   },
+   {
+    "url": "Unattributable",
+    "start": 908,
+    "dur": 80
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4518,
+    "dur": 80
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4598,
+    "dur": 79
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "start": 3378,
+    "dur": 79
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4329,
+    "dur": 72
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4764,
+    "dur": 70
+   }
+  ],
+  "bootup": [
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "total": 1440,
+    "scripting": 1197
+   },
+   {
+    "url": "/ms",
+    "total": 1198,
+    "scripting": 82
+   },
+   {
+    "url": "Unattributable",
+    "total": 556,
+    "scripting": 12
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "total": 204,
+    "scripting": 154
+   }
+  ],
+  "mainThread": {
+   "scriptEvaluation": 1578,
+   "other": 915,
+   "styleLayout": 576,
+   "scriptParseCompile": 220,
+   "parseHTML": 196,
+   "paintCompositeRender": 134,
+   "garbageCollection": 62
+  },
+  "resources": {
+   "total": {
+    "n": 48,
+    "bytes": 618123
+   },
+   "script": {
+    "n": 30,
+    "bytes": 381980
+   },
+   "document": {
+    "n": 1,
+    "bytes": 64843
+   },
+   "other": {
+    "n": 11,
+    "bytes": 62892
+   },
+   "font": {
+    "n": 3,
+    "bytes": 56361
+   },
+   "stylesheet": {
+    "n": 2,
+    "bytes": 36316
+   },
+   "image": {
+    "n": 1,
+    "bytes": 15731
+   },
+   "media": {
+    "n": 0,
+    "bytes": 0
+   },
+   "third-party": {
+    "n": 0,
+    "bytes": 0
+   }
+  },
+  "topRequests": [
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "type": "Script",
+    "transfer": 73535
+   },
+   {
+    "url": "/ms",
+    "type": "Document",
+    "transfer": 64843
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "type": "Script",
+    "transfer": 47500
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "type": "Font",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/chunks/18aaddm568ae9.css",
+    "type": "Stylesheet",
+    "transfer": 33852
+   },
+   {
+    "url": "/_next/static/chunks/1y6cqt8twi5k3.js",
+    "type": "Script",
+    "transfer": 23982
+   },
+   {
+    "url": "/_next/static/chunks/21y_j37winnmt.js",
+    "type": "Script",
+    "transfer": 18547
+   },
+   {
+    "url": "/_next/static/chunks/105dvqwmbblsv.js",
+    "type": "Script",
+    "transfer": 16542
+   },
+   {
+    "url": "/_next/static/media/geist_mono_basic_wght_normal.0acs2vcv6dxqq.woff2",
+    "type": "Font",
+    "transfer": 16109
+   },
+   {
+    "url": "/_next/image?url=%2Fimages%2Fsabah%2Fmount-kinabalu.jpg&w=750&q=65",
+    "type": "Image",
+    "transfer": 15731
+   }
+  ],
+  "fonts": [
+   {
+    "url": "/_next/static/media/fraunces_wordmark_520-s.p.01133lvcr6pw1.woff2",
+    "transfer": 3855
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/media/geist_mono_basic_wght_normal.0acs2vcv6dxqq.woff2",
+    "transfer": 16109
+   }
+  ]
+ },
+ "caveat": "Lab measurement: Lighthouse with simulated (or, with --profile, applied) throttling against a local next start. Indicative only; not field data."
+}

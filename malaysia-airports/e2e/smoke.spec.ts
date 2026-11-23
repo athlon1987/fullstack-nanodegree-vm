@@ -137,6 +137,32 @@ test.describe('airport context', () => {
     await expect(page.getByRole('note').filter({ hasText: 'continue to Parking' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Go to Parking at Kuala Lumpur International Airport' })).toHaveAttribute('href', '/en/kul/parking');
   });
+
+  // Redesign 1c: the directory's first screen is the airports' photographs, above the search and
+  // the filters, and the search still narrows every group, that one included.
+  test('the directory opens with photographs above the filters, and the search still narrows them', async ({ page }) => {
+    await page.goto('/en/airports');
+    const viewport = page.viewportSize();
+    const group = page.getByRole('main').getByRole('region', { name: /^International airports/ });
+    const firstPhoto = group.locator('img').first();
+    await expect(firstPhoto).toBeVisible();
+    const photo = await firstPhoto.boundingBox();
+    const filters = await page.getByRole('search', { name: 'Filter airports' }).boundingBox();
+    expect(photo && viewport && photo.y < viewport.height, 'a photograph in the first screen').toBe(true);
+    expect(photo && filters && photo.y < filters.y, 'the photographs come before the filters').toBe(true);
+    await expect(group.locator('[data-airport]')).toHaveCount(5);
+    const search = page.getByRole('search', { name: 'Filter airports' }).getByRole('searchbox');
+    // The field listens once the page has hydrated: retry the typing until it is heard.
+    await expect(async () => {
+      await search.fill('');
+      await search.fill('Penang');
+      await expect(group.locator('[data-airport]')).toHaveCount(1, { timeout: 1_000 });
+    }).toPass();
+    await expect(group.locator('[data-airport="pen"]')).toBeVisible();
+    await search.fill('Ipoh');
+    await expect(group).toHaveCount(0);
+    await expect(page.getByRole('main').locator('[data-airport="iph"]')).toBeVisible();
+  });
 });
 
 test.describe('shell', () => {

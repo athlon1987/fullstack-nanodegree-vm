@@ -9,7 +9,8 @@
  * credits, alt text and that no airport is shown with another airport's photo.
  *
  * STATUS: 30 photographs from Wikimedia Commons, chosen, licence-checked and processed on
- * 22 November 2026. What was chosen and rejected, and why: docs/design/photography.md.
+ * 22 November 2026, and colour-graded as one set on 23 November 2026 (redesign 1c). What was
+ * chosen and rejected, and why, and the grade: docs/design/photography.md.
  *
  * Every lookup can come back empty (`undefined`, or an empty list), so a page must always have
  * a designed treatment without a photo (a solid or gradient panel with the same reserved size).
@@ -50,8 +51,12 @@ export interface ImageCredit {
   licenceUrl: string;
   /** The file page on Wikimedia Commons. */
   sourceUrl: string;
-  /** What we changed: every file is resized and compressed; some are also cropped. */
-  modified: 'resized' | 'cropped and resized';
+  /**
+   * What we changed: every file is resized, colour-graded and compressed; some are also cropped.
+   * Redesign 1c: the whole library carries one subtle grade (slight warmth, controlled highlights,
+   * consistent contrast; `docs/design/photography.md`, "Colour grade"), so every value says so.
+   */
+  modified: 'resized and colour-graded' | 'cropped, resized and colour-graded';
   /** The crop, in words, when there is one. */
   crop?: string;
 }
@@ -88,13 +93,13 @@ const DATA = {
     subject: 'terminal',
     group: 'klia',
     focal: { x: 0.62, y: 0.45 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAIABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAQF/8QAHxAAAgICAQUAAAAAAAAAAAAAAQMAAhESYQUhMpHB/8QAFAEBAAAAAAAAAAAAAAAAAAAAAv/EABcRAQEBAQAAAAAAAAAAAAAAAAEAAhH/2gAMAwEAAhEDEQA/AMxaGiq66HIORYDxI+SpHR3uZmqiRt2HHPuIgDs9aS//2Q==',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAIABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAQF/8QAHxAAAgICAQUAAAAAAAAAAAAAAQMAAhESBSEyYcHw/8QAFQEBAQAAAAAAAAAAAAAAAAAAAgP/xAAWEQEBAQAAAAAAAAAAAAAAAAABAAL/2gAMAwEAAhEDEQA/AMtaWitK6HIORYDtI9SpPEOczNVkjboPHxiJMJ60l//Z',
     credit: {
       author: 'Eugene Ormandy',
       licence: 'CC0 1.0',
       licenceUrl: 'https://creativecommons.org/publicdomain/zero/1.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:Kuala_Lumpur_International_Airport_20240509.jpg',
-      modified: 'cropped and resized',
+      modified: 'cropped, resized and colour-graded',
       crop: 'Cropped to the upper 64 percent of the frame (the roof and columns), leaving out the walkway, passengers and construction hoardings below.',
     },
   },
@@ -110,13 +115,13 @@ const DATA = {
     subject: 'terminal',
     group: 'klia',
     focal: { x: 0.62, y: 0.5 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABQME/8QAIRABAAICAQMFAAAAAAAAAAAAAQIDABEhBBIxE0JhcaH/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFxEBAQEBAAAAAAAAAAAAAAAAAQACEv/aAAwDAQACEQMRAD8Ak23AzK7vTPdsD9c00997qErEPKSEPjBOltslKTKTJfO+cRpsmSNS19cYNs5L/9k=',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAwQFBv/EACEQAAIBAwMFAAAAAAAAAAAAAAECAwAEERMhMRIiQlGh/8QAFAEBAAAAAAAAAAAAAAAAAAAAAf/EABYRAQEBAAAAAAAAAAAAAAAAAAEAAv/aAAwDAQACEQMRAD8AAZpwC6xXGmPLIA+mm7fUuTiNpSAO5gwIB9Vn7OaR3ZncsTz1b1Vt5XDLhiN+BtQbZMl//9k=',
     credit: {
       author: 'Yu Chu Chin',
       licence: 'CC BY-SA 4.0',
       licenceUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:Aerial_photograph_of_Malaysia_on_15_January_2026_-_02.jpg',
-      modified: 'resized',
+      modified: 'resized and colour-graded',
     },
   },
   'klia-t1-roof': {
@@ -131,13 +136,13 @@ const DATA = {
     subject: 'terminal',
     group: 'klia',
     focal: { x: 0.35, y: 0.5 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAMABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABwQG/8QAIxAAAgEDAwQDAAAAAAAAAAAAAQIDAAQSBREhExYxQSKRof/EABUBAQEAAAAAAAAAAAAAAAAAAAAC/8QAFxEBAAMAAAAAAAAAAAAAAAAAAAERIf/aAAwDAQACEQMRAD8Azdo8um3imKLG5AIVmPC+RuPo0l6blbaXbh7jqkpkzuDuxPJNH8iLJYwyvy4hz39k5e6s7q1DFVCwAAcfDx+0jEW//9k=',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAMABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABgQH/8QAJBAAAgEEAQIHAAAAAAAAAAAAAQIDAAQSIQURQRMWIjFRkaH/xAAVAQEBAAAAAAAAAAAAAAAAAAABAv/EABURAQEAAAAAAAAAAAAAAAAAAAAR/9oADAMBAAIRAxEAPwA5avLx92pijxuACFZjpe3UfRrRePDW/GwB5/EJXJncbYndBHRXsoZG24hy6/Jy71X5nv8AEKFgAA16Pb9oTX//2Q==',
     credit: {
       author: 'Descon7',
       licence: 'CC BY-SA 3.0',
       licenceUrl: 'https://creativecommons.org/licenses/by-sa/3.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:KLIA_Main_terminal.JPG',
-      modified: 'resized',
+      modified: 'resized and colour-graded',
     },
   },
   'klia-t1-airfield': {
@@ -152,13 +157,13 @@ const DATA = {
     subject: 'terminal',
     group: 'klia',
     focal: { x: 0.45, y: 0.6 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAIABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAEF/8QAHhAAAQQBBQAAAAAAAAAAAAAAAQACAwQFERUhUZL/xAAUAQEAAAAAAAAAAAAAAAAAAAAC/8QAFxEAAwEAAAAAAAAAAAAAAAAAAAESE//aAAwDAQACEQMRAD8A0G56s5pIin8K75WA1MVgDss4RE9GGUf/2Q==',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAIABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAEF/8QAHxAAAQQABwAAAAAAAAAAAAAAAQACAwQFBhEhUZKx/8QAFQEBAQAAAAAAAAAAAAAAAAAAAQL/xAAXEQADAQAAAAAAAAAAAAAAAAAAARIT/9oADAMBAAIRAxEAPwDSbmGq5pIhsdFTj9YDUxWGjkx7eoidGTKP/9k=',
     credit: {
       author: 'Pangalau',
       licence: 'CC BY-SA 4.0',
       licenceUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:Kuala_Lumpur_International_Airport_2_2023_10.jpg',
-      modified: 'cropped and resized',
+      modified: 'cropped, resized and colour-graded',
       crop: 'Cropped at the bottom (to 79 percent of the height) to leave out the tail of a parked aircraft.',
     },
   },
@@ -174,13 +179,13 @@ const DATA = {
     subject: 'airside',
     group: 'klia',
     focal: { x: 0.6, y: 0.4 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAwT/xAAeEAACAgICAwAAAAAAAAAAAAABAgMRABIEITFhgf/EABUBAQEAAAAAAAAAAAAAAAAAAAEC/8QAFxEAAwEAAAAAAAAAAAAAAAAAAAERAv/aAAwDAQACEQMRAD8AgjnZtdyzWBdAeTiGRhJQcIoNEst/esCRQJ5wB0JVAHqsqkjReCrhQG2rJe44KzT/2Q==',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABAMF/8QAHxAAAgEEAgMAAAAAAAAAAAAAAQIDAAQREgUhMWGB/8QAFQEBAQAAAAAAAAAAAAAAAAAAAQL/xAAYEQADAQEAAAAAAAAAAAAAAAAAARECA//aAAwDAQACEQMRAD8Azorl203Z2yFzgDye6sZWEuA6ooOCXUH71RpVUXNwAAAJlUD1qaZLFGvHLIqgNuBUPpHBWaf/2Q==',
     credit: {
       author: 'Yu Chu Chin',
       licence: 'CC BY-SA 4.0',
       licenceUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:Aerial_photograph_of_Malaysia_on_15_January_2026_-_04.jpg',
-      modified: 'resized',
+      modified: 'resized and colour-graded',
     },
   },
   'klia2-terminal': {
@@ -195,13 +200,13 @@ const DATA = {
     subject: 'terminal',
     group: 'klia2',
     focal: { x: 0.6, y: 0.55 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAgX/xAAgEAACAQQBBQAAAAAAAAAAAAABAhEAAxIhBAUVMlFx/8QAFQEBAQAAAAAAAAAAAAAAAAAAAQL/xAAVEQEBAAAAAAAAAAAAAAAAAAAAEv/aAAwDAQACEQMRAD8ArjqXGZgFv2yRuFcGafcuPMZifQqBgiriFUCI0KK2beXgD93V0Jf/2Q==',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAgUG/8QAIRAAAgEDAwUAAAAAAAAAAAAAAQIRAAMhBBITBRUyUXH/xAAVAQEBAAAAAAAAAAAAAAAAAAAAAv/EABURAQEAAAAAAAAAAAAAAAAAAAAS/9oADAMBAAIRAxEAPwCyvVNK7AJqLZIzCuDNPummmOQT6GaznGirtCKAMYFFbFrd4A/c1VEv/9k=',
     credit: {
       author: 'Pangalau',
       licence: 'CC BY-SA 4.0',
       licenceUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:Kuala_Lumpur_International_Airport_2_2023_05.jpg',
-      modified: 'resized',
+      modified: 'resized and colour-graded',
     },
   },
   'aircraft-malaysia-airlines': {
@@ -216,13 +221,13 @@ const DATA = {
     subject: 'aircraft',
     group: 'aircraft',
     focal: { x: 0.4, y: 0.6 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAJABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAwAC/8QAIhAAAQMCBgMAAAAAAAAAAAAAAQACEQMEBRITISIxUXGh/8QAFAEBAAAAAAAAAAAAAAAAAAAAAf/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AJjG5QTiFUeQGF0fEOo+XgXNwRHEzG/ohHR7W6nSC//Z',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAJABADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAwD/xAAjEAABAwIFBQAAAAAAAAAAAAABAAIRAwQSExUhMSJRcYGh/8QAFAEBAAAAAAAAAAAAAAAAAAAAAf/EABURAQEAAAAAAAAAAAAAAAAAAAAh/9oADAMBAAIRAxEAPwCYwYQdQqjuAwuj4hzHy8C5uSI6TMb+CEdDk+klThBj/9k=',
     credit: {
       author: 'Bahnfrend',
       licence: 'CC BY-SA 4.0',
       licenceUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:Malaysia_Airlines_Airbus_A330_9M-MTA_Kuala_Lumpur_2024_(01).jpg',
-      modified: 'resized',
+      modified: 'resized and colour-graded',
     },
   },
   'apron-night': {
@@ -237,13 +242,13 @@ const DATA = {
     subject: 'aircraft',
     group: 'aircraft',
     focal: { x: 0.62, y: 0.55 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAwQFBv/EAB8QAAIBBAIDAAAAAAAAAAAAAAECAwAEBREhQVFhcf/EABUBAQEAAAAAAAAAAAAAAAAAAAID/8QAFxEBAQEBAAAAAAAAAAAAAAAAAQACE//aAAwDAQACEQMRAD8AzRxkaFS0NwicbLED71TkOEs5rdpReaPSDk790DH3U6W0zLM+9nkturEM0hUEt14qPRGZgb//2Q==',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAwQFBv/EAB4QAAICAgMBAQAAAAAAAAAAAAECAwQAEQUhQWHB/8QAFAEBAAAAAAAAAAAAAAAAAAAAA//EABcRAQEBAQAAAAAAAAAAAAAAAAEAAgP/2gAMAwEAAhEDEQA/AM2eNRSC0NhV67YgfmNw8LTlgaQW9HxR2d/cDQszpWmZZn3snZbeVoppCoJbzAeiMhgb/9k=',
     credit: {
       author: 'Bahnfrend',
       licence: 'CC BY-SA 4.0',
       licenceUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:AirAsia_Airbus_A320neo_9M-RAL_Kuala_Lumpur_2024_(01).jpg',
-      modified: 'resized',
+      modified: 'resized and colour-graded',
     },
   },
   'aircraft-terminal-1': {
@@ -258,13 +263,13 @@ const DATA = {
     subject: 'aircraft',
     group: 'aircraft',
     focal: { x: 0.5, y: 0.6 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAJABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABAMF/8QAHxAAAgEDBQEAAAAAAAAAAAAAAQIDAAQhERITMXEy/8QAFQEBAQAAAAAAAAAAAAAAAAAAAgP/xAAYEQEBAAMAAAAAAAAAAAAAAAABAAMREv/aAAwDAQACEQMRAD8APa8avHrKygHLFgT1V5oYHXck8hO3XDkHzIrJtvmmR9N5UjIrqXN//9k=',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAJABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABAMF/8QAHxAAAgEEAgMAAAAAAAAAAAAAAQIDAAQRITFxEhMy/8QAFQEBAQAAAAAAAAAAAAAAAAAAAgP/xAAXEQEBAQEAAAAAAAAAAAAAAAABABED/9oADAMBAAIRAxEAPwA9r61ePMrKAdksCeKvNDA6+STyE4zpyD1sVk23yaZHw3VROiuSwv/Z',
     credit: {
       author: 'Bahnfrend',
       licence: 'CC BY-SA 4.0',
       licenceUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:Airliners_Kuala_Lumpur_2025_(08).jpg',
-      modified: 'resized',
+      modified: 'resized and colour-graded',
     },
   },
   'klia-ekspres': {
@@ -279,13 +284,13 @@ const DATA = {
     subject: 'rail',
     group: 'rail',
     focal: { x: 0.35, y: 0.55 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAKABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABAMF/8QAIhAAAgICAAYDAAAAAAAAAAAAAQIDEQAEBRIhIjFBYXGx/8QAFAEBAAAAAAAAAAAAAAAAAAAAAv/EABYRAQEBAAAAAAAAAAAAAAAAAAAREv/aAAwDAQACEQMRAD8AzeG6kJFytEjO6xgXfkdfJ+sPtSCwIpV5bJKso/cHsgNL3AGqq/WXjVV2KCgC/Q+MNLL/2Q==',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAKABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAwQF/8QAIhAAAgICAAYDAAAAAAAAAAAAAQIDEQAEBRIhIjFBYXGR/8QAFAEBAAAAAAAAAAAAAAAAAAAAAv/EABYRAQEBAAAAAAAAAAAAAAAAAAAREv/aAAwDAQACEQMRAD8AzOG6kJFytEjO6xgXfkdfJ+sDbkFgRSryWSVZRf7keyA0vcAaqr9Y8aquxQUAX6HxgpZf/9k=',
     credit: {
       author: 'Wei Kakurai',
       licence: 'CC BY-SA 4.0',
       licenceUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:KLIA_Express_X1-02.jpg',
-      modified: 'resized',
+      modified: 'resized and colour-graded',
     },
   },
   'penang-bridge': {
@@ -300,13 +305,13 @@ const DATA = {
     subject: 'destination',
     group: 'penang',
     focal: { x: 0.4, y: 0.5 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAMABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABAUG/8QAIBAAAgIBAwUAAAAAAAAAAAAAAQIAAxEEEmEFISIxQv/EABQBAQAAAAAAAAAAAAAAAAAAAAL/xAAVEQEBAAAAAAAAAAAAAAAAAAAAAf/aAAwDAQACEQMRAD8AqU6pKkBKKB6HeJOtLL5JjgmZjpdr21C+xt1hyAT8jiMsvcbsGOjH/9k=',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAMABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABAUG/8QAIhAAAQMDAwUAAAAAAAAAAAAAAQACAwQREgUxYRQhIkJR/8QAFAEBAAAAAAAAAAAAAAAAAAAAAv/EABURAQEAAAAAAAAAAAAAAAAAAAAB/9oADAMBAAIRAxEAPwCvBWMhYCWNA2HfdJ6/Jvky3BKymkzSSxCokdlIbgE+o4+JslRIMrFKjH//2Q==',
     credit: {
       author: 'HundenvonPenang',
       licence: 'CC BY-SA 4.0',
       licenceUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:Penang_Bridge_Dec2024-1.jpg',
-      modified: 'resized',
+      modified: 'resized and colour-graded',
     },
   },
   'pen-terminal': {
@@ -321,13 +326,13 @@ const DATA = {
     subject: 'terminal',
     group: 'penang',
     focal: { x: 0.45, y: 0.55 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABAMF/8QAIRAAAgIBAgcAAAAAAAAAAAAAAQIAAxEjoQQFEhQhMnH/xAAVAQEBAAAAAAAAAAAAAAAAAAACA//EABgRAAIDAAAAAAAAAAAAAAAAAAABERNB/9oADAMBAAIRAxEAPwCNL8xRz0PW1ZPtYgztF9xcH1LUZQPOkBneY6uwUYYj4Yfir7VOBY0NzeE4R//Z',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAABAX/xAAhEAACAgECBwAAAAAAAAAAAAABAgADESOhBAUSFCEycf/EABUBAQEAAAAAAAAAAAAAAAAAAAID/8QAGREAAgMBAAAAAAAAAAAAAAAAAAECERNB/9oADAMBAAIRAxEAPwA9L8xRz0PW1ZPtYgztF9xcH1LUZQPOkBneR1dgowxHww/FX2qcCxoNpPhOkf/Z',
     credit: {
       author: 'HundenvonPenang',
       licence: 'CC BY-SA 4.0',
       licenceUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:Penang_International_Airport_Dec2024.jpg',
-      modified: 'cropped and resized',
+      modified: 'cropped, resized and colour-graded',
       crop: 'Cropped at the bottom (to 88 percent of the height) to leave out the rooftops in the foreground.',
     },
   },
@@ -343,13 +348,13 @@ const DATA = {
     subject: 'destination',
     group: 'penang',
     focal: { x: 0.5, y: 0.5 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABQED/8QAIBABAAIBBAIDAAAAAAAAAAAAAQMEAgARITESE0Jxof/EABUBAQEAAAAAAAAAAAAAAAAAAAEC/8QAFhEAAwAAAAAAAAAAAAAAAAAAAAEC/9oADAMBAAIRAxEAPwAn32DBWS3sTkW5Yz6Xh+9WSxYKMExNcM83kbOQeL0/jp7GrCxbOKnrPk6ymrxbZni8m3b1q1QuT//Z',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABQAD/8QAIhAAAgEEAgEFAAAAAAAAAAAAAQMCAAQRMRIhEyJCUXGh/8QAFAEBAAAAAAAAAAAAAAAAAAAAAv/EABYRAAMAAAAAAAAAAAAAAAAAAAABAv/aAAwDAQACEQMRAD8AK8zxEksusB4VkXEtE7+6mXDxZJaG3YnM9g3Escfn8pyNsoqwYkjgPcazaheJ+k99bOqSoTk//9k=',
     credit: {
       author: 'CEphoto, Uwe Aranas',
       licence: 'CC BY-SA 3.0',
       licenceUrl: 'https://creativecommons.org/licenses/by-sa/3.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:Penang_Malaysia-_Cheong-Fatt-Tze-Mansion-05.jpg',
-      modified: 'resized',
+      modified: 'resized and colour-graded',
     },
   },
   'george-town-street': {
@@ -364,13 +369,13 @@ const DATA = {
     subject: 'destination',
     group: 'penang',
     focal: { x: 0.45, y: 0.6 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABAEF/8QAIBAAAgICAgIDAAAAAAAAAAAAAQIDBBEhADESEwVBof/EABQBAQAAAAAAAAAAAAAAAAAAAAH/xAAYEQADAQEAAAAAAAAAAAAAAAAAAQIhMf/aAAwDAQACEQMRAD8AI9kTD0xyetSMyF28VOPrI3yvZkdaz1yhkdirKymRCMa33xEHx9WR/F4yVbsFzv8AebFCpXrYEMSoOtcatt4Eyl0//9k=',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABAAF/8QAHxAAAgICAgMBAAAAAAAAAAAAAQIDBAAhETESE4Gh/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABgRAAMBAQAAAAAAAAAAAAAAAAABAiEx/9oADAMBAAIRAxEAPwAr2RMPUknrBHMhdvEH6N5NYkda71ypd2KsrAyIRxrfeIhoVnbxeMkN2Cx3+5rUakFfgQxKg61irbeCZS6f/9k=',
     credit: {
       author: 'CEphoto, Uwe Aranas',
       licence: 'CC BY-SA 3.0',
       licenceUrl: 'https://creativecommons.org/licenses/by-sa/3.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:Penang_Malaysia_Bicycle-in-Lebuh-Penang-01.jpg',
-      modified: 'resized',
+      modified: 'resized and colour-graded',
     },
   },
   'khoo-kongsi': {
@@ -385,13 +390,13 @@ const DATA = {
     subject: 'destination',
     group: 'penang',
     focal: { x: 0.5, y: 0.5 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAgMEBf/EAB8QAAICAgIDAQAAAAAAAAAAAAECAxEAEiFRBCMxYf/EABQBAQAAAAAAAAAAAAAAAAAAAAT/xAAXEQADAQAAAAAAAAAAAAAAAAAAAQIx/9oADAMBAAIRAxEAPwDPlSUmNklcEg7amr5+4cAm9peVjqBrZuv3LlgiM8gKCk4UdYwePEJlUIKfhh3hXgxUf//Z',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAgT/xAAfEAACAgICAwEAAAAAAAAAAAABAgMRABIhUQQjMWH/xAAUAQEAAAAAAAAAAAAAAAAAAAAE/8QAFhEBAQEAAAAAAAAAAAAAAAAAAAER/9oADAMBAAIRAxEAPwCCVJSY2SVwSDtqavn7jgEvtLysdQNbN1+5csERnkBQUnCjrGPHiEygIKfhh3hKZr//2Q==',
     credit: {
       author: 'Supanut Arunoprayote',
       licence: 'CC BY 4.0',
       licenceUrl: 'https://creativecommons.org/licenses/by/4.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:Khoo_Kongsi_(II).jpg',
-      modified: 'resized',
+      modified: 'resized and colour-graded',
     },
   },
   'mount-kinabalu': {
@@ -406,13 +411,13 @@ const DATA = {
     subject: 'destination',
     group: 'sabah',
     focal: { x: 0.45, y: 0.35 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAQMEB//EACEQAAIBAwMFAAAAAAAAAAAAAAECAwAEEQYhMRITQZGx/8QAFAEBAAAAAAAAAAAAAAAAAAAAAf/EABcRAQEBAQAAAAAAAAAAAAAAAAEAAlH/2gAMAwEAAhEDEQA/ALZ9Rwd4i2aEoMAdQJJ9UYdTWoYLcqu/mMH4azqF2VjgkZ5p6uxG5PNJthDl/9k=',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAgMEB//EACAQAQABAwQDAQAAAAAAAAAAAAECAAMRBAYhMRNBkbH/xAAUAQEAAAAAAAAAAAAAAAAAAAAB/8QAGBEAAgMAAAAAAAAAAAAAAAAAAAECEVH/2gAMAwEAAhEDEQA/ALL+4bPlTTytMDAZFX5RWtx6YkR1EY8+4D+NZ9anIk4Uz3TozknK90qTB1h//9k=',
     credit: {
       author: 'Angah hfz',
       licence: 'CC BY-SA 4.0',
       licenceUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:Gunung_Kinabalu_during_sunset.jpg',
-      modified: 'resized',
+      modified: 'resized and colour-graded',
     },
   },
   'bki-terminal': {
@@ -427,13 +432,13 @@ const DATA = {
     subject: 'terminal',
     group: 'sabah',
     focal: { x: 0.5, y: 0.45 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAKABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAIDBP/EACMQAAEEAQEJAAAAAAAAAAAAAAEAAgURBDEDEhQhIiRRocH/xAAVAQEBAAAAAAAAAAAAAAAAAAACA//EABgRAAMBAQAAAAAAAAAAAAAAAAABIQMS/9oADAMBAAIRAxEAPwBROSpLgM958DhbQZmUdV5r+Qs9rp7WuFAGxaQAOn6qzQqPc4a71WoLVuj4h//Z',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAKABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAIDBP/EACMQAAEEAQEJAAAAAAAAAAAAAAEAAgURBCEDFCIkMUFRocH/xAAUAQEAAAAAAAAAAAAAAAAAAAAD/8QAGBEAAgMAAAAAAAAAAAAAAAAAAAEDEiH/2gAMAwEAAhEDEQA/AEEzJkkDOefA3a0GWkjV5jtBZ5Xp7WuHAGybQA4fqpMaYDnd7q0CkYlMP//Z',
     credit: {
       author: 'CEphoto, Uwe Aranas',
       licence: 'CC BY-SA 3.0',
       licenceUrl: 'https://creativecommons.org/licenses/by-sa/3.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:KotaKinabalu_Sabah_KKIA-02.jpg',
-      modified: 'resized',
+      modified: 'resized and colour-graded',
     },
   },
   'bki-airfield': {
@@ -448,13 +453,13 @@ const DATA = {
     subject: 'terminal',
     group: 'sabah',
     focal: { x: 0.45, y: 0.55 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAJABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAgMFBv/EAB4QAAEDBAMAAAAAAAAAAAAAAAEAAhEDBRJCIWGB/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAT/xAAZEQACAwEAAAAAAAAAAAAAAAAAAQIDEVH/2gAMAwEAAhEDEQA/AKNO81gBJZ5IRm9u5ygjp5WdbsmaqN3z6MR//9k=',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAJABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAgMEBv/EAB4QAAEDBAMAAAAAAAAAAAAAAAEAAhIDBRFCIWGB/8QAFQEBAQAAAAAAAAAAAAAAAAAAAQT/xAAZEQACAwEAAAAAAAAAAAAAAAAAAQIDEVH/2gAMAwEAAhEDEQA/AL6d7rACRZ5kIzfXcyiR08rNM2TdQoXfPo4j/9k=',
     credit: {
       author: 'Jahurz93',
       licence: 'CC BY 4.0',
       licenceUrl: 'https://creativecommons.org/licenses/by/4.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:Kota_Kinabalu_International_Airport_Terminal_1.jpg',
-      modified: 'resized',
+      modified: 'resized and colour-graded',
     },
   },
   'langkawi-beach': {
@@ -469,13 +474,13 @@ const DATA = {
     subject: 'destination',
     group: 'langkawi',
     focal: { x: 0.35, y: 0.55 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAJABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABAIF/8QAIhAAAgEDAgcAAAAAAAAAAAAAAQMAAgQRMUESEyEyNHGx/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAL/xAAWEQADAAAAAAAAAAAAAAAAAAAAAhP/2gAMAwEAAhEDEQA/AHmlF1nlLrJ02x9gGWTFs8bjAHUUsGc+9Jq2+0t/cJNWE1P/2Q==',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAJABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABQIE/8QAIhAAAQQBAgcAAAAAAAAAAAAAAQACAxEEEjETITI0QnGx/8QAFQEBAQAAAAAAAAAAAAAAAAAAAQP/xAAWEQADAAAAAAAAAAAAAAAAAAAAAhP/2gAMAwEAAhEDEQA/AN7mwZd8GJ5Ox2A+o2TBkil7XW0DmGyC791SZxvFXP1BTs4yU//Z',
     credit: {
       author: 'NickLubushko',
       licence: 'CC BY-SA 4.0',
       licenceUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:Cenang_Beach_view,_Langkawi.jpg',
-      modified: 'resized',
+      modified: 'resized and colour-graded',
     },
   },
   'lgk-terminal': {
@@ -490,13 +495,13 @@ const DATA = {
     subject: 'terminal',
     group: 'langkawi',
     focal: { x: 0.5, y: 0.55 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAIABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAIG/8QAHRAAAgMAAgMAAAAAAAAAAAAAAQIAAxEEEiFRYf/EABUBAQEAAAAAAAAAAAAAAAAAAAEC/8QAFREBAQAAAAAAAAAAAAAAAAAAAAH/2gAMAwEAAhEDEQA/AM/xKr2IW6p87ZuDyJfJoZUborgg+vsRJMf/2Q==',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAIABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAMF/8QAHRAAAgIDAAMAAAAAAAAAAAAAAQIAAwQREiFRYf/EABUBAQEAAAAAAAAAAAAAAAAAAAEC/8QAFREBAQAAAAAAAAAAAAAAAAAAAAH/2gAMAwEAAhEDEQA/AMHDqvYhbqn11oHQ8jcplY7LW3CuCD6+xEgx/9k=',
     credit: {
       author: 'CEphoto, Uwe Aranas',
       licence: 'CC BY-SA 3.0',
       licenceUrl: 'https://creativecommons.org/licenses/by-sa/3.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:Langkawi_Malaysia_Lankawi-International-Airport-01.jpg',
-      modified: 'resized',
+      modified: 'resized and colour-graded',
     },
   },
   'langkawi-sky-bridge': {
@@ -511,13 +516,13 @@ const DATA = {
     subject: 'destination',
     group: 'langkawi',
     focal: { x: 0.6, y: 0.45 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABAEG/8QAIxAAAQQBAQkAAAAAAAAAAAAAAQACAxEEBRITFiExYXKR0f/EABUBAQEAAAAAAAAAAAAAAAAAAAAD/8QAGREBAAIDAAAAAAAAAAAAAAAAAQACAxEh/9oADAMBAAIRAxEAPwBY1SDdl0gryeL9BG4lwG7YdBK2jyoA38WSxXuLBZ6qzgAE90crvkmUJ//Z',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABAEG/8QAIhAAAgEDAgcAAAAAAAAAAAAAAQIDAAQREiEFExYxYXKR/8QAFQEBAQAAAAAAAAAAAAAAAAAAAQP/xAAZEQEAAgMAAAAAAAAAAAAAAAABAAIDESH/2gAMAwEAAhEDEQA/AHDikHLLSDT7OM/BRupLFdQaCVcHbABzWStXYoN+9WcAAnzQ5XfJMqT/2Q==',
     credit: {
       author: 'Engin Akyurt',
       licence: 'CC0 1.0',
       licenceUrl: 'https://creativecommons.org/publicdomain/zero/1.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:Langkawi_Sky_Bridge_(November_2016).jpg',
-      modified: 'resized',
+      modified: 'resized and colour-graded',
     },
   },
   'langkawi-eagle-square': {
@@ -532,13 +537,13 @@ const DATA = {
     subject: 'destination',
     group: 'langkawi',
     focal: { x: 0.5, y: 0.5 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAQIDBP/EACEQAAIBAwUAAwAAAAAAAAAAAAEDAgAEIRESMUGhgcHR/8QAFAEBAAAAAAAAAAAAAAAAAAAAA//EABgRAAMBAQAAAAAAAAAAAAAAAAACERMU/9oADAMBAAIRAxEAPwC93YqVsYqW5DADCevOPKFtYwbCbGTC1RGZno40x81ig9rUqTOW5cQNAQOgf00jnMVaMWuRjE8j36FJ0NIHgtP/2Q==',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAQIDBP/EACEQAAIBAwUAAwAAAAAAAAAAAAEDAgAEIRESMUGhgcHR/8QAFAEBAAAAAAAAAAAAAAAAAAAAAv/EABcRAAMBAAAAAAAAAAAAAAAAAAACERT/2gAMAwEAAhEDEQA/AL3dkpWxipbkMAMJ6848oW1jBsJsZMLVEZmejjTHzWKD2NSpM5blxA0BA6B/TSOcxVqxa5GMTyPfoU9DSAzrT//Z',
     credit: {
       author: 'CEphoto, Uwe Aranas',
       licence: 'CC BY-SA 3.0',
       licenceUrl: 'https://creativecommons.org/licenses/by-sa/3.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:Langkawi_Malaysia_Dataran-Helang-01.jpg',
-      modified: 'resized',
+      modified: 'resized and colour-graded',
     },
   },
   'langkawi-paddy': {
@@ -553,13 +558,13 @@ const DATA = {
     subject: 'destination',
     group: 'langkawi',
     focal: { x: 0.5, y: 0.6 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAwIF/8QAIRAAAQMEAQUAAAAAAAAAAAAAAQIDEQAEBRIxMkFicZH/xAAVAQEBAAAAAAAAAAAAAAAAAAABBP/EABgRAAIDAAAAAAAAAAAAAAAAAAABAxEU/9oADAMBAAIRAxEAPwDMtX85bp1RejSIhbkx9FIleRcOz16d/F01CFqjqPFKFnUHv6qLRICo/9k=',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAgMF/8QAIRAAAQMEAQUAAAAAAAAAAAAAAgEDEgAEBREhMVJicZH/xAAVAQEBAAAAAAAAAAAAAAAAAAABBP/EABgRAAIDAAAAAAAAAAAAAAAAAAABAxEU/9oADAMBAAIRAxEAPwDOtH87bjEL1Ia1o3Ja+pTE8k4snr5Z+Lq0QMu5elVQyii8b9VBokBUf//Z',
     credit: {
       author: 'CEphoto, Uwe Aranas',
       licence: 'CC BY-SA 3.0',
       licenceUrl: 'https://creativecommons.org/licenses/by-sa/3.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:Langkawi_Malaysia_Rice-Paddy-01.jpg',
-      modified: 'resized',
+      modified: 'resized and colour-graded',
     },
   },
   'kuching-waterfront': {
@@ -574,13 +579,13 @@ const DATA = {
     subject: 'destination',
     group: 'kuching',
     focal: { x: 0.5, y: 0.5 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAEEBf/EACEQAAICAQQCAwAAAAAAAAAAAAEDAgQABRESIUFhcYGh/8QAFAEBAAAAAAAAAAAAAAAAAAAAA//EABkRAAIDAQAAAAAAAAAAAAAAAAABAxESIf/aAAwDAQACEQMRAD8A3X65XXUDa7Q/n1ERP76wqa5VeoFzIoYOjGZ2+98jNGrGsviiA8dDHVo1iyW6Yn5wFM9VQmOH/9k=',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAEEBf/EACAQAAICAQQDAQAAAAAAAAAAAAEDAgQABRESIRRBcYH/xAAVAQEBAAAAAAAAAAAAAAAAAAADBP/EABkRAAMAAwAAAAAAAAAAAAAAAAABEQMSIf/aAAwDAQACEQMRAD8A3H61XhVDUND+XURE46utVXqBbOKWDoxmdv3fJfBqxrL4ogPXQwrUqxZLdMT9ydZXZBdOH//Z',
     credit: {
       author: 'CEphoto, Uwe Aranas',
       licence: 'CC BY-SA 4.0',
       licenceUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:Kuching_Sarawak_Dewan-Undangan-Negeri-Sarawak-01.jpg',
-      modified: 'resized',
+      modified: 'resized and colour-graded',
     },
   },
   'kch-terminal': {
@@ -595,13 +600,13 @@ const DATA = {
     subject: 'terminal',
     group: 'kuching',
     focal: { x: 0.6, y: 0.45 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAANABADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAwX/xAAfEAACAQQCAwAAAAAAAAAAAAABAhEAAwQhEjEFImH/xAAVAQEBAAAAAAAAAAAAAAAAAAAAA//EABgRAAMBAQAAAAAAAAAAAAAAAAABAgQR/9oADAMBAAIRAxEAPwBs3MsYbFVJuMYhVYRvqWMCp1jzmlbLvWAOUFcdWcn5J0KU8VGkX161Q3kDqWPZ3sTStNJ8JqJP/9k=',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAANABADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAwX/xAAfEAACAQUBAAMAAAAAAAAAAAABAhEAAwQhMRIFUWH/xAAVAQEBAAAAAAAAAAAAAAAAAAABAv/EABgRAAMBAQAAAAAAAAAAAAAAAAABAgQR/9oADAMBAAIRAxEAPwBczLs4jeVJuMYhVYRv7YwKn2Pm9K2VdsAeoK46s5P5PBSnyvEXXNUN5A6lj072JorRSfCFCP/Z',
     credit: {
       author: 'Medelam',
       licence: 'CC BY-SA 4.0',
       licenceUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:Kuching_International_Airport_2024_01.jpg',
-      modified: 'resized',
+      modified: 'resized and colour-graded',
     },
   },
   'kl-petronas': {
@@ -616,13 +621,13 @@ const DATA = {
     subject: 'destination',
     group: 'kualaLumpur',
     focal: { x: 0.5, y: 0.45 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABAMG/8QAIhAAAQMDAwUAAAAAAAAAAAAAAQIDIQAEEgUxURETFCJh/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAP/xAAYEQACAwAAAAAAAAAAAAAAAAAAARETFP/aAAwDAQACEQMRAD8AWLllbi2wfdKsenP2r9kA4nc1kLa5eCw4HDkoSeaQ1qF2EvDyFwInaaaYJVo//9k=',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAABAb/xAAiEAABAwMDBQAAAAAAAAAAAAABAAIDBBIhETFRBRMUImH/xAAVAQEBAAAAAAAAAAAAAAAAAAAAA//EABcRAQEBAQAAAAAAAAAAAAAAAAEAExT/2gAMAwEAAhEDEQA/AFCpgfJJGD7sdbpz9SOyAbTuVG01VOHiQSG9wyeUiLqNYGzDyH4GNTtlOhKeRf/Z',
     credit: {
       author: 'CEphoto, Uwe Aranas',
       licence: 'CC BY-SA 3.0',
       licenceUrl: 'https://creativecommons.org/licenses/by-sa/3.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:Kuala_Lumpur_Malaysia_Skyline-03.jpg',
-      modified: 'resized',
+      modified: 'resized and colour-graded',
     },
   },
   'petronas-skybridge': {
@@ -637,13 +642,13 @@ const DATA = {
     subject: 'destination',
     group: 'kualaLumpur',
     focal: { x: 0.5, y: 0.4 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAECBf/EACAQAAEDAgcAAAAAAAAAAAAAAAEAAgMRISIyUXKCocH/xAAUAQEAAAAAAAAAAAAAAAAAAAAD/8QAFREBAQAAAAAAAAAAAAAAAAAAAEL/2gAMAwEAAhEDEQA/AM6IFziAaW0RK0tfd1cNe1UVpztTnzcfU8Bp/9k=',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAECBf/EACEQAAEDAwQDAAAAAAAAAAAAAAEAAhEDBCEiMTJBUoLB/8QAFAEBAAAAAAAAAAAAAAAAAAAAA//EABYRAQEBAAAAAAAAAAAAAAAAAABCEf/aAAwDAQACEQMRAD8AyaLS55AMY3hFVpY/Lp0zMR2ro4uCB4p3HP1+hPGhp//Z',
     credit: {
       author: 'Marcin Konsek',
       licence: 'CC BY-SA 4.0',
       licenceUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:2016_Kuala_Lumpur,_Petronas_Towers_(27).jpg',
-      modified: 'resized',
+      modified: 'resized and colour-graded',
     },
   },
   'nasi-lemak': {
@@ -658,13 +663,13 @@ const DATA = {
     subject: 'food',
     group: 'food',
     focal: { x: 0.55, y: 0.5 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAQMEBf/EACEQAAIBBAICAwAAAAAAAAAAAAECAwAEERIFITFRE0Fx/8QAFAEBAAAAAAAAAAAAAAAAAAAAAv/EABURAQEAAAAAAAAAAAAAAAAAAAAR/9oADAMBAAIRAxEAPwDDsuMe5i1hdAzHCrns99n8pnKq1pYxcc0MbMDt8w95qJ5ZLfUwtofGR6oRM0pLSMWPjs/VGE//2Q==',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAALABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAgMEBf/EACAQAAIBAwUBAQAAAAAAAAAAAAECAwQRIQAFEjFBE2H/xAAUAQEAAAAAAAAAAAAAAAAAAAAC/8QAFREBAQAAAAAAAAAAAAAAAAAAABH/2gAMAwEAAhEDEQA/AMah2t6qELC6BmNlW+TnJP5pm7K1JQRba0EbMDy+wPt841C80lNxMLcD1cd20MTtKS0jFj1k+aMN/9k=',
     credit: {
       author: 'مانفی',
       licence: 'CC BY-SA 4.0',
       licenceUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:Nasi_lemak_joh.jpg',
-      modified: 'resized',
+      modified: 'resized and colour-graded',
     },
   },
   'satay': {
@@ -679,13 +684,13 @@ const DATA = {
     subject: 'food',
     group: 'food',
     focal: { x: 0.55, y: 0.5 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAMABADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAABAP/xAAiEAACAgEEAQUAAAAAAAAAAAABAgMRBAAFMUESIVFxocH/xAAUAQEAAAAAAAAAAAAAAAAAAAAD/8QAFxEBAQEBAAAAAAAAAAAAAAAAAREAAv/aAAwDAQACEQMRAD8AFHh7Nh7fGmTFOMiQWsyGnHpzV149VobtDhoalCryjAm5B8dahJI8mDiTOfJ2QqSfZTQ+tPk2+CXCWZwS4QAG+uf3QPNYuagb/9k=',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAMABADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAABAP/xAAiEAACAwABAgcAAAAAAAAAAAABAgMEEQAxQQUSUWFxocH/xAAUAQEAAAAAAAAAAAAAAAAAAAAD/8QAGBEBAAMBAAAAAAAAAAAAAAAAAQACESH/2gAMAwEAAhEDEQA/ABR1PCKdCNLEc4sSDRMhxx75uZwbtFUQ5IFXqjAnZB8duReRno1JnPmcoVO+inB9cdJQgkprM4JcIBu9uv7wGu8WPoE//9k=',
     credit: {
       author: 'LoneCK88',
       licence: 'CC BY-SA 4.0',
       licenceUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:Satay_with_Nasi_Impit.jpg',
-      modified: 'resized',
+      modified: 'resized and colour-graded',
     },
   },
   'wing-window': {
@@ -700,13 +705,13 @@ const DATA = {
     subject: 'atmosphere',
     group: 'travel',
     focal: { x: 0.6, y: 0.5 },
-    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAMABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAwQG/8QAHhAAAgICAgMAAAAAAAAAAAAAAQIDEQAEEjEhQsH/xAAUAQEAAAAAAAAAAAAAAAAAAAAE/8QAFxEBAQEBAAAAAAAAAAAAAAAAAQIAEf/aAAwDAQACEQMRAD8Apl3pDs1IY0iU+KLch8xZt4CFpE3ULD0o2czcskhLcnZrY94ZduPeNmAnFp67/9k=',
+    blurDataURL: 'data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAMABADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAwb/xAAgEAACAQQBBQAAAAAAAAAAAAABAgMABBESBSExQUJx/8QAFAEBAAAAAAAAAAAAAAAAAAAABP/EABcRAQEBAQAAAAAAAAAAAAAAAAECAAP/2gAMAwEAAhEDEQA/AGm5CQ3WshjSJW6YLbj74ppr8CF5EvkLD0wcmpiWSQltpGbLHvRNI2uM02OYSYtUrv/Z',
     credit: {
       author: 'Marufish from Alor Setar, Malaysia',
       licence: 'CC BY-SA 2.0',
       licenceUrl: 'https://creativecommons.org/licenses/by-sa/2.0/',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:Birdeye_view_flight_from_Kuching_to_KLIA_(17159233693).jpg',
-      modified: 'cropped and resized',
+      modified: 'cropped, resized and colour-graded',
       crop: 'Cropped to the upper-left 86 percent of the frame, leaving out the edge of the cabin window.',
     },
   },
@@ -733,9 +738,14 @@ export function objectPosition(image: Pick<SiteImage, 'focal'>): string {
 }
 
 /** Candidates for the home page hero, best first. */
-// Polish 1b (critique-redesign1b item 3): the bright Terminal 1 roof canopies against the sky lead;
-// the timber ceiling (warm and low in contrast, it read as brown texture under the words) is second.
-export const HOME_HERO_IMAGES: readonly ImageId[] = ['klia-t1-roof', 'klia-t1-canopy', 'klia-t1-aerial'];
+// Redesign 1c (critique-redesign1b item 3): Mount Kinabalu in the evening light leads. Six library
+// photographs were judged in place behind the real headline and search at 1440 x 900 and 390 x 844
+// (the roof canopies, the 2026 aerial, the roofline across the airfield, this one, the Petronas
+// Towers, the apron at night): the overcast roof read gloomy, the aerial and the airfield as grey
+// texture under the veil, the towers stood behind the headline, and the apron at night is an
+// airline's aircraft. The warm summit is the one picture that still says "travel" through the scrims,
+// and on a phone the peak fills the band under the header. The aerial and the roof follow.
+export const HOME_HERO_IMAGES: readonly ImageId[] = ['mount-kinabalu', 'klia-t1-aerial', 'klia-t1-roof'];
 
 /** Destination cards (the places the airports serve), in display order. */
 export const DESTINATION_IMAGES: readonly ImageId[] = ['kl-petronas', 'penang-bridge', 'mount-kinabalu', 'langkawi-beach', 'kuching-waterfront', 'langkawi-sky-bridge', 'george-town-blue-mansion'];
@@ -748,9 +758,12 @@ export const DISCOVER_IMAGES: readonly ImageId[] = ['klia-t1-roof', 'nasi-lemak'
  * never another airport. Airports not listed get `FALLBACK_HERO`.
  */
 export const AIRPORT_HERO_IMAGES: Readonly<Partial<Record<string, readonly ImageId[]>>> = {
-  // Polish 1b (critique-redesign1b item 11): the terminal's roofline under the sky leads, bright on a
-  // phone too (the timber ceiling was a band of near-black there); the home hero has the roof canopies.
-  kul: ['klia-t1-airfield', 'klia-t1-canopy', 'klia-t1-aerial'],
+  // Redesign 1c: the 2026 aerial leads (the Terminal 1 roof, the pier and the aircraft alongside in the
+  // open right half of the cinematic shade; on a phone the terminal fills the band). Judged in place
+  // against the roofline across the airfield (polish 1b's choice: at 1440 px mostly sky, the domes
+  // hidden behind the search), the roof canopies, the timber ceiling and the jets taxiing past
+  // Terminal 1 (two airlines' liveries as the subject).
+  kul: ['klia-t1-aerial', 'klia-t1-airfield', 'klia-t1-canopy'],
   pen: ['pen-terminal', 'penang-bridge'],
   bki: ['bki-terminal', 'mount-kinabalu'],
   lgk: ['lgk-terminal', 'langkawi-beach'],
@@ -774,7 +787,9 @@ export const DIRECTORY_IMAGES: Readonly<Partial<Record<string, ImageId>>> = {
  * sections without one keep their line drawing.
  */
 export const EXPLORE_IMAGES: Readonly<Partial<Record<string, Readonly<Partial<Record<string, ImageId>>>>>> = {
-  kul: { flights: 'apron-night', map: 'klia-t1-aerial', 'shop-dine': 'nasi-lemak', lounges: 'klia-t1-canopy' },
+  // Redesign 1c: the aerial is now KLIA's hero, so the terminal map card shows the control tower and
+  // the airport roads from the air instead of repeating it.
+  kul: { flights: 'apron-night', map: 'klia-tower', 'shop-dine': 'nasi-lemak', lounges: 'klia-t1-canopy' },
   pen: { flights: 'pen-terminal', 'shop-dine': 'george-town-street' },
   bki: { flights: 'bki-airfield' },
   kch: { flights: 'kch-terminal' },

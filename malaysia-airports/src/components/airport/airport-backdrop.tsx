@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import Image from 'next/image';
 import type { Lang } from '@/content';
 import { heroForAirport } from '@/content/images';
@@ -38,18 +39,28 @@ export function airportHasPhoto(slug: string): boolean {
 /**
  * Framing per photograph (fractions of the photograph) where its focal point does not suit both a
  * phone (a tall slice) and a wide desktop band; others use their focal point everywhere.
+ *
+ * Redesign 1c: wide screens frame the subject in the open right half (the words and the shade
+ * hold the left), and each photograph can tune the cinematic shade (`hero-shade` in globals.css):
+ * `shade` is its alpha where the fall starts (default 0.66), `shadeEnd` at the right edge (default
+ * 0.1). Bright skies behind the words need a little more; every value is checked with the pixel
+ * contrast script (docs/qa/fixes/redesign1c.md).
  */
-const HERO_FRAMING: Partial<Record<string, Parameters<typeof artDirection>[1]>> = {
+const HERO_FRAMING: Partial<Record<string, Parameters<typeof artDirection>[1] & { shade?: number; shadeEnd?: number }>> = {
   // The KLIA Terminal 1 canopy: phones follow the main white branch up to the roof.
   'klia-t1-canopy': { base: { x: 0.58, y: 0.5 }, md: { x: 0.7, y: 0.6 } },
   // The KLIA Terminal 1 roofline across the airfield (polish 1b): phones centre the domes under the
   // sky; wide screens keep the whole row of domes with the sky above the words.
-  'klia-t1-airfield': { base: { x: 0.55, y: 0.55 }, md: { x: 0.5, y: 0.55 } },
+  'klia-t1-airfield': { base: { x: 0.55, y: 0.55 }, md: { x: 0.5, y: 0.55 }, shade: 0.7 },
+  // KLIA from the air (redesign 1c): the terminal roof and the pier sit in the open right half.
+  'klia-t1-aerial': { base: { x: 0.6, y: 0.5 }, md: { x: 0.62, y: 0.45 } },
   // Kota Kinabalu: keep the terminal's own name board in the band on wide screens.
   'bki-terminal': { md: { x: 0.55, y: 0.3 } },
   // Langkawi: frame low on wide screens, so the band shows the entrance doors under the
   // departures sign rather than the roof above it.
   'lgk-terminal': { md: { x: 0.55, y: 0.8 } },
+  // The fallback (a wing above islands): bright sea and cloud behind the words.
+  'wing-window': { shade: 0.7 },
 };
 
 export function AirportBackdrop({ slug, code, lang, variant }: AirportBackdropProps) {
@@ -57,6 +68,7 @@ export function AirportBackdrop({ slug, code, lang, variant }: AirportBackdropPr
   const hero = variant === 'hero';
   if (entry && hero) {
     const image = toMediaImage(entry, lang, { decorative: true });
+    const framing = HERO_FRAMING[entry.id];
     // The overview's hero (redesign 1b): in the static HTML, preloaded with high priority, quality
     // 65, AVIF or WebP, no animation. The words carry their own feathered scrim
     // (`scrim-feather`); the photograph keeps only a soft veil at the top and depth at the foot.
@@ -74,11 +86,20 @@ export function AirportBackdrop({ slug, code, lang, variant }: AirportBackdropPr
           preload
           fetchPriority="high"
           {...placeholderProps(image)}
-          style={artDirection(image.focal, HERO_FRAMING[entry.id])}
+          style={artDirection(image.focal, framing)}
           className={cn('object-cover', ART_DIRECTED_POSITION)}
         />
-        <span className="absolute inset-x-0 top-0 h-32 scrim-top opacity-50 max-sm:hidden" />
-        <span className="absolute inset-x-0 bottom-0 h-1/2 scrim-bottom opacity-40 max-sm:hidden" />
+        {/* Redesign 1c (verification SA5 item 4): from 1024 px one cinematic shade over the whole
+            photograph (dark under the words, an eased fall to the right edge, a bottom sinking into
+            the band, a light top veil), instead of a feathered panel behind the words whose edge
+            showed on bright skies. Between 640 and 1023 px the words span the band: a soft veil and
+            depth at the foot, and the words keep their own scrim. */}
+        <span
+          className="hero-shade absolute inset-0 max-lg:hidden"
+          style={{ '--hero-shade': framing?.shade, '--hero-shade-end': framing?.shadeEnd } as CSSProperties}
+        />
+        <span className="absolute inset-x-0 top-0 h-32 scrim-top opacity-50 max-sm:hidden lg:hidden" />
+        <span className="absolute inset-x-0 bottom-0 h-1/2 scrim-bottom opacity-40 max-sm:hidden lg:hidden" />
         <span className="absolute inset-x-0 bottom-0 h-16 bg-linear-to-t from-midnight to-transparent sm:hidden" />
       </div>
     );

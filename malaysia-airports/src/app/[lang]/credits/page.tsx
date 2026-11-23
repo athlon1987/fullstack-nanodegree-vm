@@ -96,7 +96,7 @@ function CreditItem({ image, lang, t }: { image: SiteImage; lang: Lang; t: Trans
             </ExternalLink>
           </dd>
           <dt className="font-medium text-ink">{t('creditsPages.changes')}</dt>
-          <dd className="min-w-0">{t(credit.modified === 'resized' ? 'creditsPages.modified.resized' : 'creditsPages.modified.cropped')}</dd>
+          <dd className="min-w-0">{t(credit.modified.startsWith('cropped') ? 'creditsPages.modified.cropped' : 'creditsPages.modified.resized')}</dd>
         </dl>
         <p className="type-body-sm mt-2">
           <ExternalLink href={credit.sourceUrl} aria-describedby={descriptionId}>

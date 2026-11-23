@@ -89,8 +89,11 @@ describe('photo library', () => {
         expect(credit.licenceUrl, id).toContain(`/licenses/${kind.toLowerCase()}/${version}/`);
       }
       expect(credit.sourceUrl, id).toMatch(/^https:\/\/commons\.wikimedia\.org\/wiki\/File:/);
-      expect(['resized', 'cropped and resized'], id).toContain(credit.modified);
-      if (credit.modified === 'cropped and resized') expect(credit.crop?.length, id).toBeGreaterThan(0);
+      // Redesign 1c: every file is colour-graded, and the credit says so (ShareAlike: say what changed).
+      expect(['resized and colour-graded', 'cropped, resized and colour-graded'], id).toContain(credit.modified);
+      expect(credit.modified, id).toMatch(/colour-graded/);
+      if (credit.modified.startsWith('cropped')) expect(credit.crop?.length, id).toBeGreaterThan(0);
+      else expect(credit.crop, id).toBeUndefined();
     }
   });
 

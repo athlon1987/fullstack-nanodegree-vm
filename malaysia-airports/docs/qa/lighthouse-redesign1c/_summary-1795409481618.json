@@ -1,0 +1,67 @@
+{
+ "en": {
+  "performance": 90,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 69,
+  "fcp_ms": 1363,
+  "lcp_ms": 3026,
+  "tbt_ms": 222,
+  "cls": 0,
+  "si_ms": 1363,
+  "totalBytes": 613416,
+  "requests": 55
+ },
+ "ms": {
+  "performance": 91,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 69,
+  "fcp_ms": 1370,
+  "lcp_ms": 3340,
+  "tbt_ms": 125,
+  "cls": 0,
+  "si_ms": 1370,
+  "totalBytes": 615077,
+  "requests": 55
+ },
+ "en-kul": {
+  "performance": 89,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1369,
+  "lcp_ms": 3484,
+  "tbt_ms": 164,
+  "cls": 0,
+  "si_ms": 1369,
+  "totalBytes": 642597,
+  "requests": 51
+ },
+ "en-pen": {
+  "performance": 92,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1365,
+  "lcp_ms": 3038,
+  "tbt_ms": 198,
+  "cls": 0,
+  "si_ms": 1381,
+  "totalBytes": 631163,
+  "requests": 48
+ },
+ "en-airports": {
+  "performance": 86,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1369,
+  "lcp_ms": 3731,
+  "tbt_ms": 182,
+  "cls": 0,
+  "si_ms": 1369,
+  "totalBytes": 569463,
+  "requests": 45
+ }
+}

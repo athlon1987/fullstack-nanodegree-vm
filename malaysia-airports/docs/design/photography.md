@@ -4,18 +4,33 @@ The photo library for the visual redesign: what it should contain, the licence r
 
 Code: `src/content/images.ts` (the library and its helpers), `src/content/images.test.ts` (the checks), `public/images/` (the files), `/[lang]/credits` (`src/app/[lang]/credits/page.tsx`, copy in `src/lib/i18n/features/credits.ts`).
 
-## Status: 30 photographs (22 to 23 November 2026)
+## Status: 30 photographs (22 to 23 November 2026), colour-graded as one set (redesign 1c)
 
-The library holds **30 photographs from Wikimedia Commons**, every one looked at before it was chosen, its licence and author read from its file page, and processed as in "Procedure". `public/images` is **11.22 MB** (11,765,206 bytes; limit 14 MB). `images.test.ts` passes with the "at least 24 photos and every use covered" test enabled (7 of 7), and the full unit suite passes (615 tests).
+The library holds **30 photographs from Wikimedia Commons**, every one looked at before it was chosen, its licence and author read from its file page, and processed as in "Procedure". On 23 November (redesign 1c, `docs/qa/fixes/redesign1c.md`) every file was re-exported from the downloaded Commons file with one subtle colour grade (see "Colour grade"), and each credit now says "colour-graded". `public/images` is **11.45 MB** (12,004,275 bytes; limit 14 MB). `images.test.ts` passes (7 of 7), including "at least 24 photos and every use covered" and the check that every credit records the grade.
 
-How the photos are used (all in `src/content/images.ts`):
+How the photos are used (all ids and lists in `src/content/images.ts`; this section follows the code):
 
-- **Home hero** (`HOME_HERO_IMAGES`): `klia-t1-canopy`, then `klia-t1-aerial`, `kl-petronas`.
-- **Airport heroes** (`AIRPORT_HERO_IMAGES`, the airport's own terminal first, then its place): KLIA `klia-t1-canopy`, `klia-t1-aerial`; Penang `pen-terminal`, `penang-bridge`; Kota Kinabalu `bki-terminal`, `mount-kinabalu`; Langkawi `lgk-terminal`, `langkawi-beach`; Kuching `kch-terminal`, `kuching-waterfront`.
+- **Home hero** (`HOME_HERO_IMAGES`, the first is shown): `mount-kinabalu`, then `klia-t1-aerial`, `klia-t1-roof`. Chosen in redesign 1c by judging six library photographs in place, behind the real headline and search, at 1,440 × 900 and 390 × 844: the roof canopies (overcast, gloomy under the veil), the 2026 aerial and the roofline across the airfield (grey texture under the scrims), Mount Kinabalu at sunset (warm, the summit fills the phone band under the header), the Petronas Towers (stood behind the headline) and the apron at night (an airline's aircraft as the subject). Framing per breakpoint: `HOME_HERO_FRAMING` in `src/components/home/hero-backdrop.tsx`.
+- **Airport heroes** (`AIRPORT_HERO_IMAGES`, the airport's own photographs first; the first is shown): KLIA `klia-t1-aerial`, `klia-t1-airfield`, `klia-t1-canopy` (redesign 1c: the aerial, judged in place against the roofline, the roof canopies, the ceiling and the jets taxiing past Terminal 1); Penang `pen-terminal`, `penang-bridge`; Kota Kinabalu `bki-terminal`, `mount-kinabalu`; Langkawi `lgk-terminal`, `langkawi-beach`; Kuching `kch-terminal`, `kuching-waterfront`. Framing and the strength of the cinematic shade per photograph: `HERO_FRAMING` in `src/components/airport/airport-backdrop.tsx` (see "Text over the photos").
 - **Every other airport** (Subang, Ipoh, Tawau and the rest) gets `FALLBACK_HERO` = `wing-window`: a wing above islands on a flight from Kuching to Kuala Lumpur. It shows no airport, and its alt text does not claim the islands are Malaysian (the file does not say).
-- **Destination cards** (`DESTINATION_IMAGES`): `kl-petronas`, `penang-bridge`, `mount-kinabalu`, `langkawi-beach`, `kuching-waterfront`, `langkawi-sky-bridge`, `george-town-blue-mansion`. The home's place cards (`placePhoto`) take the first photo of each place in credits order, so each group lists its best place photo first: KLIA T1 `klia-t1-canopy`, KLIA T2 `klia2-terminal`, Penang `penang-bridge`, Kota Kinabalu `mount-kinabalu`, Langkawi `langkawi-beach`, Kuching `kuching-waterfront`.
-- **Discover** (`DISCOVER_IMAGES`, the style guide shows the first three): `klia-t1-roof`, `nasi-lemak`, `klia-ekspres`, `satay`, `petronas-skybridge`, `khoo-kongsi`, `langkawi-eagle-square`, `george-town-street`, `langkawi-paddy`, `apron-night`, `aircraft-malaysia-airlines`, `klia-t1-aerial`.
-- In the library but in no list yet (for pages that want them): `klia-t1-airfield`, `klia-tower`, `aircraft-terminal-1`, `bki-airfield`.
+- **Home place cards** (`placePhoto` in `src/components/home/destination-card.tsx`): the place's photographs in credits order, the ones in `PLACE_PREFERENCE` first, never the home hero: KLIA Terminal 1 `klia-t1-aerial`, KLIA Terminal 2 `klia2-terminal`, Penang `penang-bridge`, Kota Kinabalu `bki-airfield` (Mount Kinabalu is the hero), Langkawi `langkawi-beach`, Kuching `kuching-waterfront`.
+- **Destination cards** (`DESTINATION_IMAGES`, also the style guide's pool): `kl-petronas`, `penang-bridge`, `mount-kinabalu`, `langkawi-beach`, `kuching-waterfront`, `langkawi-sky-bridge`, `george-town-blue-mansion`.
+- **Discover** (`DISCOVER_IMAGES`; the home's shop and dine strip takes its food photographs and `george-town-street`): `klia-t1-roof`, `nasi-lemak`, `klia-ekspres`, `satay`, `petronas-skybridge`, `khoo-kongsi`, `langkawi-eagle-square`, `george-town-street`, `langkawi-paddy`, `apron-night`, `aircraft-malaysia-airlines`, `klia-t1-aerial`.
+- **Airports directory** (`/airports`; `DIRECTORY_IMAGES`, else the airport's first hero): KLIA `klia-t1-aerial`, Penang `pen-terminal`, Kota Kinabalu `bki-airfield`, Langkawi `langkawi-beach`, Kuching `kch-terminal`. Redesign 1c: these five (the international group) open the page as a mosaic of large photo cards above the search and the filters.
+- **Explore cards on an airport overview** (`EXPLORE_IMAGES`): KLIA Flights `apron-night`, Terminal map `klia-tower` (redesign 1c: the aerial is now the hero), Shops and food `nasi-lemak`, Lounges `klia-t1-canopy`; Penang Flights `pen-terminal`, Shops and food `george-town-street`; Kota Kinabalu Flights `bki-airfield`; Kuching Flights `kch-terminal`.
+- In the library and credited but in no list: `aircraft-terminal-1` (two airlines' liveries are the subject; keep it for a flights page or drop it).
+
+### Colour grade (redesign 1c)
+
+One grade for the whole set, so the Wikimedia photographs (eleven photographers, 2010 to 2026, overcast and sunny) read as one brand. It is subtle by design: nothing a visitor would call a filter. Script: `grade.mjs` (session scratch folder of the redesign 1c log), run on the downloaded Commons files with the same crops, sizes and JPEG settings as the original export; the grade sits between the resize and the encode, on 8-bit sRGB:
+
+1. **Levels, adaptive but limited**: the 0.5th and 99.5th luminance percentiles move half way towards 4/255 and 246/255, each by at most 12/255. Hazy files gain depth (`klia-t1-aerial` black point 24 → 14, `klia-t1-airfield` and `bki-airfield` 35 → 23, `wing-window` 35 → 23); files that already reach black and white are left almost alone.
+2. **Consistent contrast**: the spread of luminance is pulled a third of the way towards a standard deviation of 0.215, limited to ×0.94 to ×1.10, around the photograph's own mid-grey (flat files such as the aerial, the tower, the bridge and the skybridge ×1.10; contrasty ones such as the roof canopies and Mount Kinabalu ×0.94).
+3. **Controlled highlights**: above 0.72 the tone curve rolls off smoothly so that white maps to 0.96: skies, clouds and white roofs keep their detail and nothing clips.
+4. **Slight warmth**: red ×1.018 (+1/255), blue ×0.968, weighted by lightness, so the light tones warm a little and the shadows stay neutral.
+5. **Vibrance +6 %**: more for muted colours than for saturated ones.
+
+Every credit's `modified` is now "resized and colour-graded" or "cropped, resized and colour-graded", the credits page says "Resized, colour-graded and compressed" (Malay "Saiz diubah, warna dilaraskan dan dimampatkan"), and its note on changes describes the grade. The licences are unchanged; ShareAlike files are shared under the same licence as before.
 
 ### Chosen
 
@@ -23,52 +38,54 @@ Licence, author and date are as the Commons file page states them (author withou
 
 | Id | What it shows (alt text, English) | Photographer, licence, date taken | File |
 |---|---|---|---|
-| `klia-t1-canopy` | White branching columns under the timber-lined roof above the C gates at KLIA Terminal 1, Sepang | Eugene Ormandy, CC0 1.0, 9 May 2024 | 2560×1229, 582 KB, cropped |
-| `klia-t1-aerial` | KLIA Terminal 1 from the air: the main terminal roof and the gate building, with aircraft parked alongside, Sepang | Yu Chu Chin, CC BY-SA 4.0, 15 January 2026 | 2560×1707, 521 KB |
-| `klia-t1-roof` | Curved roof canopies on tapered columns along the outside of the KLIA Terminal 1 main building, Sepang | Descon7, CC BY-SA 3.0, November 2010 | 1920×1440, 194 KB |
-| `klia-t1-airfield` | The roofline of KLIA Terminal 1 seen across the airfield, with forested hills behind, Sepang | Pangalau, CC BY-SA 4.0, 26 March 2023 | 1920×1011, 168 KB, cropped |
-| `klia-tower` | The KLIA air traffic control tower beside the airport hotel, seen from the air, Sepang | Yu Chu Chin, CC BY-SA 4.0, 15 January 2026 | 1920×1280, 365 KB |
-| `klia2-terminal` | An AirAsia aircraft at a gate of KLIA Terminal 2, with the control tower behind, Sepang | Pangalau, CC BY-SA 4.0, 26 March 2023 | 1920×1280, 153 KB |
-| `aircraft-malaysia-airlines` | A Malaysia Airlines Airbus A330 in a Malaysian flag livery at KLIA, Sepang | Bahnfrend, CC BY-SA 4.0, 23 February 2025 | 2560×1441, 305 KB |
-| `apron-night` | An AirAsia Airbus A320neo at a passenger bridge on the apron at KLIA at night, Sepang | Bahnfrend, CC BY-SA 4.0, 18 August 2024 | 1920×1279, 234 KB |
+| `klia-t1-canopy` | White branching columns under the timber-lined roof above the C gates at KLIA Terminal 1, Sepang | Eugene Ormandy, CC0 1.0, 9 May 2024 | 2560×1229, 573 KB, cropped |
+| `klia-t1-aerial` | KLIA Terminal 1 from the air: the main terminal roof and the gate building, with aircraft parked alongside, Sepang | Yu Chu Chin, CC BY-SA 4.0, 15 January 2026 | 2560×1707, 580 KB |
+| `klia-t1-roof` | Curved roof canopies on tapered columns along the outside of the KLIA Terminal 1 main building, Sepang | Descon7, CC BY-SA 3.0, November 2010 | 1920×1440, 184 KB |
+| `klia-t1-airfield` | The roofline of KLIA Terminal 1 seen across the airfield, with forested hills behind, Sepang | Pangalau, CC BY-SA 4.0, 26 March 2023 | 1920×1011, 182 KB, cropped |
+| `klia-tower` | The KLIA air traffic control tower beside the airport hotel, seen from the air, Sepang | Yu Chu Chin, CC BY-SA 4.0, 15 January 2026 | 1920×1280, 419 KB |
+| `klia2-terminal` | An AirAsia aircraft at a gate of KLIA Terminal 2, with the control tower behind, Sepang | Pangalau, CC BY-SA 4.0, 26 March 2023 | 1920×1280, 168 KB |
+| `aircraft-malaysia-airlines` | A Malaysia Airlines Airbus A330 in a Malaysian flag livery at KLIA, Sepang | Bahnfrend, CC BY-SA 4.0, 23 February 2025 | 2560×1441, 318 KB |
+| `apron-night` | An AirAsia Airbus A320neo at a passenger bridge on the apron at KLIA at night, Sepang | Bahnfrend, CC BY-SA 4.0, 18 August 2024 | 1920×1279, 227 KB |
 | `aircraft-terminal-1` | Malaysia Airlines and Batik Air jets on the taxiway in front of KLIA Terminal 1, Sepang | Bahnfrend, CC BY-SA 4.0, 23 February 2025 | 1920×1069, 252 KB |
-| `klia-ekspres` | A KLIA Ekspres train, the non-stop rail service between KL Sentral and KLIA | Wei Kakurai, CC BY-SA 4.0, 20 August 2022 | 1920×1200, 353 KB |
-| `penang-bridge` | The Penang Bridge across the Penang Strait on a misty morning | HundenvonPenang, CC BY-SA 4.0, 23 December 2024 | 2560×1920, 493 KB |
-| `pen-terminal` | Penang International Airport across the airfield, with Bayan Lepas and the hills of Penang Island behind | HundenvonPenang, CC BY-SA 4.0, 8 December 2024 | 2560×1689, 632 KB, cropped |
-| `george-town-blue-mansion` | Louvred windows on the indigo walls of the Cheong Fatt Tze Mansion, the Blue Mansion, George Town, Penang | CEphoto, Uwe Aranas, CC BY-SA 3.0, 8 January 2014 | 1920×1280, 329 KB |
-| `george-town-street` | A bicycle stall selling coconuts on Lebuh Penang, George Town, Penang | CEphoto, Uwe Aranas, CC BY-SA 3.0, 8 January 2014 | 1920×1280, 492 KB |
-| `khoo-kongsi` | Carved and gilded roof beams inside the Khoo Kongsi clan house, George Town, Penang | Supanut Arunoprayote, CC BY 4.0, 15 January 2020 | 1920×1280, 592 KB |
-| `mount-kinabalu` | Mount Kinabalu in the evening light above forested hills, Sabah | Angah hfz, CC BY-SA 4.0, 2 March 2019 | 2560×1707, 472 KB |
-| `bki-terminal` | The entrance of Kota Kinabalu International Airport, with flowering shrubs in front | CEphoto, Uwe Aranas, CC BY-SA 3.0, 19 April 2015 | 2560×1585, 673 KB |
-| `bki-airfield` | Terminal 1 of Kota Kinabalu International Airport across the airfield, with mountains behind | Jahurz93, CC BY 4.0, 27 January 2025 | 1920×1080, 329 KB |
-| `langkawi-beach` | Rocks, palms and white sand at Pantai Cenang, Langkawi | NickLubushko, CC BY-SA 4.0, 1 March 2015 | 1920×1080, 279 KB |
-| `lgk-terminal` | The departures entrance of Langkawi International Airport, signed Perlepasan and Departure | CEphoto, Uwe Aranas, CC BY-SA 3.0, 13 January 2014 | 2560×1327, 332 KB |
-| `langkawi-sky-bridge` | The curved Langkawi Sky Bridge hanging from a single pylon above the rainforest of Gunung Mat Cincang | Engin Akyurt, CC0 1.0, 18 November 2016 | 1920×1281, 387 KB |
+| `klia-ekspres` | A KLIA Ekspres train, the non-stop rail service between KL Sentral and KLIA | Wei Kakurai, CC BY-SA 4.0, 20 August 2022 | 1920×1200, 359 KB |
+| `penang-bridge` | The Penang Bridge across the Penang Strait on a misty morning | HundenvonPenang, CC BY-SA 4.0, 23 December 2024 | 2560×1920, 551 KB |
+| `pen-terminal` | Penang International Airport across the airfield, with Bayan Lepas and the hills of Penang Island behind | HundenvonPenang, CC BY-SA 4.0, 8 December 2024 | 2560×1689, 637 KB, cropped |
+| `george-town-blue-mansion` | Louvred windows on the indigo walls of the Cheong Fatt Tze Mansion, the Blue Mansion, George Town, Penang | CEphoto, Uwe Aranas, CC BY-SA 3.0, 8 January 2014 | 1920×1280, 314 KB |
+| `george-town-street` | A bicycle stall selling coconuts on Lebuh Penang, George Town, Penang | CEphoto, Uwe Aranas, CC BY-SA 3.0, 8 January 2014 | 1920×1280, 475 KB |
+| `khoo-kongsi` | Carved and gilded roof beams inside the Khoo Kongsi clan house, George Town, Penang | Supanut Arunoprayote, CC BY 4.0, 15 January 2020 | 1920×1280, 583 KB |
+| `mount-kinabalu` | Mount Kinabalu in the evening light above forested hills, Sabah | Angah hfz, CC BY-SA 4.0, 2 March 2019 | 2560×1707, 455 KB |
+| `bki-terminal` | The entrance of Kota Kinabalu International Airport, with flowering shrubs in front | CEphoto, Uwe Aranas, CC BY-SA 3.0, 19 April 2015 | 2560×1585, 643 KB |
+| `bki-airfield` | Terminal 1 of Kota Kinabalu International Airport across the airfield, with mountains behind | Jahurz93, CC BY 4.0, 27 January 2025 | 1920×1080, 348 KB |
+| `langkawi-beach` | Rocks, palms and white sand at Pantai Cenang, Langkawi | NickLubushko, CC BY-SA 4.0, 1 March 2015 | 1920×1080, 305 KB |
+| `lgk-terminal` | The departures entrance of Langkawi International Airport, signed Perlepasan and Departure | CEphoto, Uwe Aranas, CC BY-SA 3.0, 13 January 2014 | 2560×1327, 363 KB |
+| `langkawi-sky-bridge` | The curved Langkawi Sky Bridge hanging from a single pylon above the rainforest of Gunung Mat Cincang | Engin Akyurt, CC0 1.0, 18 November 2016 | 1920×1281, 385 KB |
 | `langkawi-eagle-square` | The eagle statue at Dataran Helang (Eagle Square), Kuah, Langkawi, framed by white gateways | CEphoto, Uwe Aranas, CC BY-SA 3.0, 12 January 2014 | 1920×1280, 230 KB |
-| `langkawi-paddy` | Green rice paddies and a scarecrow below forested hills on Langkawi | CEphoto, Uwe Aranas, CC BY-SA 3.0, 12 January 2014 | 1920×1280, 519 KB |
-| `kuching-waterfront` | The Sarawak State Legislative Assembly building across the Sarawak River from the Kuching Waterfront, with a river boat | CEphoto, Uwe Aranas, CC BY-SA 4.0, 16 July 2017 | 2560×1707, 545 KB |
-| `kch-terminal` | The curved roof canopies of the terminal at Kuching International Airport | Medelam, CC BY-SA 4.0, 28 July 2024 | 1920×1533, 535 KB |
-| `kl-petronas` | The Petronas Twin Towers and Menara Kuala Lumpur rising above the trees of Kuala Lumpur | CEphoto, Uwe Aranas, CC BY-SA 3.0, 8 August 2012 | 1920×1280, 330 KB |
-| `petronas-skybridge` | The skybridge between the two Petronas Twin Towers, seen from below, Kuala Lumpur | Marcin Konsek, CC BY-SA 4.0, 6 March 2016 | 1920×1280, 332 KB |
-| `nasi-lemak` | A plate of nasi lemak with fried chicken, a fried egg, sambal, cucumber and peanuts, and a young coconut to drink | مانفی, CC BY-SA 4.0, 5 September 2015 | 1920×1289, 252 KB |
-| `satay` | Skewers of satay with peanut sauce, nasi impit rice cakes and cucumber | LoneCK88, CC BY-SA 4.0, 2 December 2018 | 1920×1440, 363 KB |
-| `wing-window` | An aircraft wing above islands and scattered cloud, seen from a window seat on a flight from Kuching to Kuala Lumpur | Marufish from Alor Setar, Malaysia, CC BY-SA 2.0, 16 May 2015 | 2560×1920, 249 KB, cropped |
+| `langkawi-paddy` | Green rice paddies and a scarecrow below forested hills on Langkawi | CEphoto, Uwe Aranas, CC BY-SA 3.0, 12 January 2014 | 1920×1280, 538 KB |
+| `kuching-waterfront` | The Sarawak State Legislative Assembly building across the Sarawak River from the Kuching Waterfront, with a river boat | CEphoto, Uwe Aranas, CC BY-SA 4.0, 16 July 2017 | 2560×1707, 526 KB |
+| `kch-terminal` | The curved roof canopies of the terminal at Kuching International Airport | Medelam, CC BY-SA 4.0, 28 July 2024 | 1920×1533, 511 KB |
+| `kl-petronas` | The Petronas Twin Towers and Menara Kuala Lumpur rising above the trees of Kuala Lumpur | CEphoto, Uwe Aranas, CC BY-SA 3.0, 8 August 2012 | 1920×1280, 344 KB |
+| `petronas-skybridge` | The skybridge between the two Petronas Twin Towers, seen from below, Kuala Lumpur | Marcin Konsek, CC BY-SA 4.0, 6 March 2016 | 1920×1280, 358 KB |
+| `nasi-lemak` | A plate of nasi lemak with fried chicken, a fried egg, sambal, cucumber and peanuts, and a young coconut to drink | مانفی, CC BY-SA 4.0, 5 September 2015 | 1920×1289, 266 KB |
+| `satay` | Skewers of satay with peanut sauce, nasi impit rice cakes and cucumber | LoneCK88, CC BY-SA 4.0, 2 December 2018 | 1920×1440, 350 KB |
+| `wing-window` | An aircraft wing above islands and scattered cloud, seen from a window seat on a flight from Kuching to Kuala Lumpur | Marufish from Alor Setar, Malaysia, CC BY-SA 2.0, 16 May 2015 | 2560×1920, 279 KB, cropped |
 
 Crops (also in each entry's `credit.crop`): `klia-t1-canopy` keeps the upper 64 percent (roof and columns; leaves out the walkway, passengers and construction hoardings); `klia-t1-airfield` keeps the upper 79 percent (leaves out the tail of a parked aircraft); `pen-terminal` keeps the upper 88 percent (leaves out foreground rooftops); `wing-window` keeps the upper-left 86 percent (leaves out the edge of the cabin window).
 
 Dates worth knowing: `klia-t1-roof` (2010), `kl-petronas` (2012), the CEphoto photos of George Town, Langkawi and Kota Kinabalu (2014 to 2015) and `langkawi-beach` (2015) are older, but each shows something that has not changed (the KLIA roof, the towers, heritage buildings, a beach, the airport buildings). The 2009 Kuala Lumpur skyline was rejected for that reason (see "Rejected"). Recheck `lgk-terminal` and `bki-terminal` against the airports today before a public launch.
 
-Quality and size: JPEG quality 80 (mozjpeg, progressive, sRGB, metadata stripped); 76 for `pen-terminal` and `bki-terminal` and 74 for `khoo-kongsi`, the three most detailed files. Heroes are saved at 2,560 px on the long edge, cards at 1,920 px. Four photos are 1,920 px because that is the largest version this environment could download (see "Access"): `klia-ekspres`, `langkawi-beach`, `kch-terminal` and `kl-petronas`; `kch-terminal` is an airport hero at 1,920 px and is sharp at that size.
+Quality and size: JPEG quality 80 (mozjpeg, progressive, sRGB, metadata stripped); 76 for `pen-terminal` and `bki-terminal` and 74 for `khoo-kongsi`, the three most detailed files. Heroes are saved at 2,560 px on the long edge, cards at 1,920 px. Four photos are 1,920 px because that is the largest version this environment could download (see "Access"): `klia-ekspres`, `langkawi-beach`, `kch-terminal` and `kl-petronas`; `kch-terminal` is an airport hero at 1,920 px and is sharp at that size. Since redesign 1c the home hero (`mount-kinabalu`) and KLIA's hero (`klia-t1-aerial`) are 2,560 px files; `klia-t1-roof` and `klia-t1-airfield`, heroes until then, stay 1,920 px (their originals are 3,840 px if either leads again). The sizes in the table are after the colour grade.
 
-### Text over the photos (measured 23 November, development server)
+### Text over the photos
 
-Measured with the text made transparent: the brightest pixel behind each line of light text (the darkest behind dark text), at 1,440 × 900 in English and light mode and 390 × 844 in Malay and dark mode.
+How the words stay legible over a photograph (code: `src/app/globals.css`, `src/components/airport/airport-backdrop.tsx`, `src/components/home/hero-backdrop.tsx`):
 
-- **Home hero** with `klia-t1-canopy`: every text run passes. Lowest: the gold headline line at 6.79:1 (1,440) and 7.95:1 (390), because it sits on the hero's own scrim.
-- **Airport banners**: the name, eyebrow and time on the `scrim-behind` panel pass, **but two things fail on every photographed airport**, whatever the photo, and need a page fix (not in the photo library's files):
-  1. **The search heading "Find a flight at …" / "Cari penerbangan di …"** (`AirportFlightSearch` with `onMedia`, `src/components/airport/airport-flight-tools.tsx`, the `h2` at line 49) sits on the photograph with no scrim: 2.37 to 4.26:1 at 1,440 and 2.46 to 3.96:1 at 390 (KLIA 2.43 and 3.11, Penang 2.38 and 2.46, Kota Kinabalu 2.42 and 3.96, Langkawi 4.26 and 2.63, Kuching 2.37 and 2.75; Subang with the fallback passes at 1,440, 5.21, and fails at 390, 4.21). Give the heading its own scrim (`scrim-behind`) or move it into the panel.
-  2. **The airport code at the start of the time line** ("KCH", "PEN", "BKI") at 1,440 px: its first letters overlap the panel's rounded bottom-left corner, where the photo shows through (2.73 to 3.73:1). Inset the line or square that corner.
-- **Destination and discover cards and the credits page**: the card names sit on the cards' own scrims; the credits page has text beside the thumbnails, not over them.
+- **Airport heroes from 1,024 px (redesign 1c)**: one cinematic shade over the whole photograph (`hero-shade`), not a panel behind the words. Left to right it is dark under the words' column (`min(56rem, 60vw)` from the page's text edge) and falls with an eased curve over the rest of the width, so the right of the picture keeps almost all its light; a bottom gradient sinks the photograph into the band's midnight under the search, and a light top veil meets the header. Per photograph, `HERO_FRAMING` sets the wide-screen framing (the subject in the open right half) and the shade's strength (`shade`, default 0.66 where the fall starts; 0.7 for the bright skies of `klia-t1-airfield` and `wing-window`). High contrast raises it to 0.86. Below 1,024 px the words keep their feathered scrim; on phones the photograph is a band above the words.
+- **Home hero**: the veil under the header, a feathered scrim behind the headline and a bottom third behind the glass tiles; the search, the mode switch, the tiles and "Departing now" are panels of their own.
+- **Cards** (destinations, discover, directory, Explore): a scrim only under the words, fading out 3rem above them.
+
+Measured on the redesign 1c production build (`docs/qa/fixes/redesign1c.md`, item 1; the integrate, polish and verification method: every visible text run over a photograph, the brightest 1 % of the pixels behind it, large text held to 4.5:1 as well): **3,559 runs on 120 page loads, 0 under 4.5:1**, lowest 5.36:1 (the home's gold line "rancang perjalanan anda." at 1,440 px). Pages: the home, the six airport heroes (KLIA, Penang, Kota Kinabalu, Langkawi, Kuching, and Subang for the fallback), the directory and the credits page; 390, 1,280, 1,440 and 1,920 px; light, dark, high-contrast light and dark; English and Malay. Over the airport heroes: every `h1` 7.01 or more, "All airports" 6.29 or more, "Find a flight at …" 9.47 or more. axe: 0 violations on all 120 loads.
+
+Known weakness: Langkawi's photograph (`lgk-terminal`) has "Perlepasan / Departure" across its top third, which sits behind the words on wide screens (legible, 6.29:1 or more, but busy). Its beach (`langkawi-beach`, the directory's card) would make a calmer hero; or replace the file with Malaysia Airports' own photograph.
 
 ### Access and request counts (22 to 23 November)
 
@@ -101,7 +118,7 @@ What works from this environment (for the next pass): category and file pages on
 - **Loading**: the largest above-the-fold photo gets `preload` (Next 16 replaces `priority`), everything else stays lazy. Give `sizes` that match the layout.
 - **Motion**: no Ken Burns pans or zooms unless they stop under `prefers-reduced-motion` and the site's own motion setting.
 - **Import from Server Components** and pass the one `SiteImage` to a Client Component as a prop: the blur placeholders make the module about 1 KB per photo.
-- AVIF: `next/image` serves WebP only by default. `images: { formats: ['image/avif', 'image/webp'] }` in `next.config.ts` (platform owner) adds AVIF; the default quality allowlist is `[75]`.
+- AVIF: `next/image` serves WebP only by default; `images: { formats: ['image/avif', 'image/webp'], qualities: [60, 65, 75] }` in `next.config.ts` adds AVIF (heroes use quality 65, cards 60).
 
 ## Licence rules
 
@@ -266,7 +283,7 @@ Throwaway scripts outside the repository (Node, `curl` so the session proxy appl
 2. **Find candidates** on ordinary wiki pages, not the API (it refuses this environment): category pages (`/wiki/Category:<name>`) list each file with its pixel size, so keep JPEG landscapes at least 1,600 px wide. Useful starting points: the airport categories and their "Interior of …", "Aircraft at …", "by year" and "Aerial photographs of …" subcategories, "Quality images of <state>", "Featured pictures of Malaysia", and the place and food categories ("Penang Bridge", "Remote views of Mount Kinabalu", "Cenang Beach", "Kuching Waterfront", "Nasi lemak", "Satay in Malaysia", "Desiro ET 425 M" for the KLIA Ekspres trains). Web search engines index Commons file pages poorly; they did not help.
 3. **Previews**: the 1,280 px thumbnail from `https://thumb.wikimedia.org/wikipedia/commons/thumb/<a>/<ab>/<name>/1280px-<name>` (`<a>/<ab>` from the MD5 of the file name with underscores); contact sheets of six; then each shortlisted photo on its own, and 100 percent crops of the processed file to check sharpness.
 4. **Licence and author** from each shortlisted file page (`/wiki/File:<name>`): the elements with class `licensetpl_short`, `licensetpl_link`, `licensetpl_attr` and `licensetpl_attr_req`, and the `fileinfotpl_aut`, `fileinfotpl_src` and `fileinfotpl_date` rows (the page writes the underscore in these names as `&#95;`; decode it first). Check the rules in "Licence rules"; look for deletion notices and personality-rights or trademark templates.
-5. **Download the chosen files** from the same host at the 3,840 px bucket when the original is wider than 3,840 px, otherwise at the 1,920 px bucket (a 2,560 px request is refused with HTTP 400, and originals were refused). Then `sharp(file).rotate()`, optional `extract()` crop (fractions of the downloaded file, recorded in words), `resize({ width: <2560 for heroes, 1920 for cards>, height: same, fit: 'inside', withoutEnlargement: true })`, `toColorspace('srgb')`, `jpeg({ quality: 80, mozjpeg: true, progressive: true })` (lower for very detailed files to keep the folder under 14 MB). Metadata is dropped by default. Blur placeholder: the result resized to 16 px wide, JPEG quality 50, as a base64 data URL.
+5. **Download the chosen files** from the same host at the 3,840 px bucket when the original is wider than 3,840 px, otherwise at the 1,920 px bucket (a 2,560 px request is refused with HTTP 400, and originals were refused). Then `sharp(file).rotate()`, optional `extract()` crop (fractions of the downloaded file, recorded in words), `resize({ width: <2560 for heroes, 1920 for cards>, height: same, fit: 'inside', withoutEnlargement: true })`, `toColorspace('srgb')`, the colour grade ("Colour grade"; since redesign 1c), `jpeg({ quality: 80, mozjpeg: true, progressive: true })` (lower for very detailed files to keep the folder under 14 MB). Metadata is dropped by default. Blur placeholder: the graded result resized to 16 px wide, JPEG quality 50, as a base64 data URL. Record `modified` as "resized and colour-graded" or "cropped, resized and colour-graded".
 6. **Write `images.ts`** from the chosen list: id, file, group, place, subject, focal point, alt text in both languages, uses (home, destination, discover), `heroFor` airports and the fallback. Licence names are normalised to `ALLOWED_LICENCES` ("CC0" to "CC0 1.0", "CC BY-SA 4.0 international" to "CC BY-SA 4.0"); licence URLs use `https` and end in `/`; the author has markup removed. Update the STATUS line.
 7. `npx vitest run src/content/images.test.ts`, then look at the credits page and every page that shows a photo, at 1,440 x 900 and 390 x 844, light and dark, English and Malay.
 
@@ -287,10 +304,9 @@ Photos for airports without one (Subang, Ipoh, Tawau and the rest) are added the
 
 ## Notes for the team
 
-- **Airport banner (page owner, before release)**: the search heading over the photo fails 4.5:1 on every photographed airport, and the airport code touches the panel's rounded corner; see "Text over the photos" for the numbers and the fix.
-- **Shell (footer)**: the library now has photos, so add the "Photo credits" link to `/credits` in the footer's "Transparency and legal" column (`IMAGE_COUNT > 0` from `@/content/images`). The `creditsPages` namespace is server-only (`SCOPED_NAMESPACES`), so a Client Component footer needs its own label key (for example `footer.photoCredits`: "Photo credits" / "Kredit foto") or the label passed from a Server Component.
 - **Every page with a photo slot**: keep the no-photo state: a photo can be withdrawn, and the lists are typed to allow it.
-- **Crop notes**: each cropped photo's `credit.crop` describes the crop in English; the credits page shows only "Cropped, resized and compressed" (enough for the licences). Showing the description would need a Malay version.
-- **Unused photos**: `klia-t1-airfield`, `klia-tower`, `aircraft-terminal-1` and `bki-airfield` are in the library (and credited) but in no list; use them for section backgrounds (flights, Terminal 1, Kota Kinabalu) or drop them.
-- **Platform**: AVIF needs `images.formats` in `next.config.ts` (see above).
-- **Shared files changed** (one line each, to register the copy namespace): `src/lib/i18n/en.ts` and `src/lib/i18n/ms.ts` (import and `creditsPages` entry), `src/lib/i18n/index.ts` (`'creditsPages'` added to `SCOPED_NAMESPACES`), `src/lib/i18n/i18n.test.ts` (`creditsPages: []` in the map of places allowed to read scoped namespaces, which its type requires).
+- **Crop notes**: each cropped photo's `credit.crop` describes the crop in English; the credits page shows only "Cropped, resized, colour-graded and compressed" (enough for the licences). Showing the description would need a Malay version.
+- **A new or replaced photograph** goes through the same grade, so the set stays one look; check the text over it with the pixel contrast script and tune its `HERO_FRAMING` entry if it is an airport hero.
+- **Unused photo**: `aircraft-terminal-1` is in the library (and credited) but in no list.
+- **Platform**: AVIF is on (`images.formats` in `next.config.ts`); every `quality` an `<Image>` uses must be in `images.qualities` (60, 65, 75).
+- **Before a public launch** (verification SA5 item 7): compare the Langkawi departures entrance (2014) and the Kota Kinabalu terminal front (2015) with the airports today, and tell the client these are Wikimedia Commons photographs under CC licences, credited on `/credits`, until Malaysia Airports' own photography replaces them.

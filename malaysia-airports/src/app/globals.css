@@ -213,8 +213,9 @@
   /* --- Type families (the variables come from next/font in src/fonts) ---
      heading  Hanken Grotesk: every `type-display-*` and `type-title-*` (big, confident, tight)
      sans     Hanken Grotesk: all interface and reading text
-     serif    Fraunces: the wordmark and rare editorial accents (`type-serif-*`). `font-display` is
-              kept as an alias of `font-serif` for the wordmark.
+     wordmark Fraunces (a 2 KB static instance holding only the wordmark's letters): `font-wordmark`
+     serif    Fraunces: rare editorial accents (`type-serif-*`). `font-display` is kept as an alias
+              of `font-serif`.
      mono     Geist Mono: times, gates, codes and tables (`type-data-*`) */
   --font-heading: var(--font-hanken), system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-sans: var(--font-hanken), system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -222,6 +223,8 @@
   --font-serif--font-variation-settings: 'opsz' 144;
   --font-display: var(--font-fraunces), 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
   --font-display--font-variation-settings: 'opsz' 144;
+  /* Redesign 1c: the wordmark's own face, so no page preloads the whole of Fraunces for it. */
+  --font-wordmark: var(--font-fraunces-wordmark), 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
   /* --- Type sizes (prefer the composite `type-*` utilities below) --- */
@@ -737,8 +740,13 @@
   /* tokens:hc-dark:start */
   html[data-theme='dark'][data-contrast='more'],
   html[data-theme='dark'][data-contrast='high'],
-  html[data-contrast='more'] :is(.surface-board, .on-media),
-  html[data-contrast='high'] :is(.surface-board, .on-media) {
+  /* Redesign 1c: one class per selector rather than `:is(.surface-board, .on-media)`, so the browser
+     files these rules under the class and tries them only on those elements (an `:is()` list is
+     tried against every element in every style recalculation). Same elements, same specificity. */
+  html[data-contrast='more'] .surface-board,
+  html[data-contrast='more'] .on-media,
+  html[data-contrast='high'] .surface-board,
+  html[data-contrast='high'] .on-media {
     --color-page: #000000;
     --color-page-subtle: #05081a;
     --color-surface: #070b20;
@@ -1354,6 +1362,51 @@
 }
 @utility scrim-full {
   background-color: color-mix(in srgb, var(--color-scrim) var(--scrim-edge-alpha), transparent);
+}
+
+/* Redesign 1c (verification SA5 item 4): the cinematic shade of a wide airport hero, one layer
+   over the whole photograph instead of a feathered panel behind the words. Three gradients:
+   - left to right: dark under the words, then an eased fall (smoothstep, eight stops, no visible
+     edge) from 6rem before the end of the words' column to the right edge, where the photograph
+     keeps almost all of its light;
+   - bottom: the photograph sinks into the band's midnight under the search;
+   - top: a light veil, so a bright sky meets the header softly.
+   The words' column is the page container's text column, `min(56rem, 60vw)` wide (the banner sets
+   the same width on the words), so the shade follows the layout at every width. Strength per
+   photograph: `--hero-shade` (alpha where the fall starts; the words' left part gets up to 0.12
+   more) and `--hero-shade-end` (alpha at the right edge), set by `AirportBackdrop` from the
+   photograph's framing; checked with the pixel contrast script against the brightest pixels behind
+   every text run. Use it from 1024 px up, where the words leave room for the picture. */
+@utility hero-shade {
+  --hs-a: var(--hero-shade, 0.66);
+  --hs-z: var(--hero-shade-end, 0.1);
+  --hs-x0: max(var(--spacing-gutter), calc((100% - var(--container-page)) / 2 + var(--spacing-gutter)));
+  --hs-f: calc(var(--hs-x0) + min(56rem, 60vw) - 6rem);
+  --hs-w: calc(100% - var(--hs-f));
+  --hs-d: calc(var(--hs-z) - var(--hs-a));
+  background-image:
+    linear-gradient(to bottom, rgb(5 9 24 / 0.3) 0, rgb(5 9 24 / 0) 8rem),
+    linear-gradient(to top, rgb(7 12 34 / 0.85) 0, rgb(7 12 34 / 0.45) 18%, rgb(7 12 34 / 0) 45%),
+    linear-gradient(
+      to right,
+      rgb(5 9 24 / calc(var(--hs-a) + 0.12)) 0,
+      rgb(5 9 24 / calc(var(--hs-a) + 0.06)) calc(var(--hs-x0) + 30rem),
+      rgb(5 9 24 / var(--hs-a)) var(--hs-f),
+      rgb(5 9 24 / calc(var(--hs-a) + var(--hs-d) * 0.061)) calc(var(--hs-f) + var(--hs-w) * 0.15),
+      rgb(5 9 24 / calc(var(--hs-a) + var(--hs-d) * 0.216)) calc(var(--hs-f) + var(--hs-w) * 0.3),
+      rgb(5 9 24 / calc(var(--hs-a) + var(--hs-d) * 0.425)) calc(var(--hs-f) + var(--hs-w) * 0.45),
+      rgb(5 9 24 / calc(var(--hs-a) + var(--hs-d) * 0.648)) calc(var(--hs-f) + var(--hs-w) * 0.6),
+      rgb(5 9 24 / calc(var(--hs-a) + var(--hs-d) * 0.844)) calc(var(--hs-f) + var(--hs-w) * 0.75),
+      rgb(5 9 24 / calc(var(--hs-a) + var(--hs-d) * 0.972)) calc(var(--hs-f) + var(--hs-w) * 0.9),
+      rgb(5 9 24 / var(--hs-z)) 100%
+    );
+  :where([data-contrast='more'], [data-contrast='high']) & {
+    --hs-a: 0.86;
+    --hs-z: 0.55;
+  }
+  @media (forced-colors: active) {
+    background-image: none;
+  }
 }
 
 /* A midnight band: the brand base with a soft lift of navy light from the top. Pair it with
