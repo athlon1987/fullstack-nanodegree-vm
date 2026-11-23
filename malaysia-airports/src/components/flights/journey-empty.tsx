@@ -76,7 +76,8 @@ export function JourneyEmpty({ photo }: { photo?: MediaImage }) {
             </div>
           </div>
         ) : null}
-        <div className={cn(photo && 'sm:pr-48 lg:pr-56')}>
+        {/* Beside the window, at least as tall as it, so the steps start below it. */}
+        <div className={cn(photo && 'sm:min-h-[13rem] sm:pr-48 lg:min-h-[14rem] lg:pr-56')}>
           <p className="type-eyebrow text-gold-bright">{t('flightPages.look.emptyKicker')}</p>
           <h2 id={JOURNEY_EMPTY_HEADING_ID} tabIndex={-1} className="type-display-md mt-2 max-w-[34rem] text-balance text-ink">
             {t('flightPages.journey.empty.title')}

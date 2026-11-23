@@ -779,7 +779,8 @@ function departingSteps(context: Context): Draft[] {
     steps.push({
       id: 'check-in',
       kind: 'check-in',
-      time: opensAt ?? closesAt,
+      // The rail prints this time beside "Check-in closed at …", so it is the closing time, never the opening.
+      time: closesAt,
       endTime: closesAt,
       title: lt(`Check-in closed at ${closes}`, `Daftar masuk ditutup pada ${closes}`),
       body: lt(

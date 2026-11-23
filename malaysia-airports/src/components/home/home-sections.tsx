@@ -152,7 +152,7 @@ export function HomeHero({ lang, notices }: { lang: Lang; notices: readonly Noti
         {arrival ? <ArrivalChecklist item={arrival} /> : null}
       </Container>
       {photo ? (
-        <p className="type-caption absolute right-3 bottom-2 z-10 rounded-pill bg-[color-mix(in_srgb,var(--color-scrim)_78%,transparent)] px-2.5 py-0.5 text-xs text-on-midnight-dim max-md:hidden">
+        <p className="type-caption absolute right-3 bottom-2 z-10 rounded-pill bg-[color-mix(in_srgb,var(--color-scrim)_78%,transparent)] px-2.5 py-0.5 text-on-midnight-dim max-md:hidden">
           {`${lang === 'ms' ? 'Foto' : 'Photo'}: ${photo.credit.author}, ${photo.credit.licence}`}
         </p>
       ) : null}

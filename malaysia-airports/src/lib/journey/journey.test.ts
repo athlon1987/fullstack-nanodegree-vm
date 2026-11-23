@@ -284,6 +284,17 @@ describe('buildJourney: the current step follows start, end and flight status (B
     expect(checkIn.body.en).toMatch(/If you have checked in, carry on to security/);
   });
 
+  it('times a closed check-in at its closing time on a delayed flight, never when the counters opened', () => {
+    const steps = departing(
+      international({ status: 'delayed', estimated: '2026-11-17T15:30:00+08:00', checkInRow: 'H', checkInCounters: '1-18' }),
+      '13:10',
+    );
+    const checkIn = step(steps, 'check-in');
+    expect(checkIn.title.en).toBe('Check-in closed at 13:00');
+    expect(checkIn.time).toBe('2026-11-17T13:00:00+08:00');
+    expect(checkIn.time).not.toBe('2026-11-17T11:00:00+08:00');
+  });
+
   it('keeps check-in current while it is open', () => {
     expect(current(departing(international({ status: 'check-in-open', checkInRow: 'H' }), '12:59'))).toEqual(['check-in']);
   });

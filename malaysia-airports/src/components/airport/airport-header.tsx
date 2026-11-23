@@ -109,7 +109,7 @@ export function AirportBanner({ airport, lang, sections, search }: AirportHeader
           </div>
         </Container>
         {credit ? (
-          <p className="on-media type-caption absolute right-3 bottom-3 max-w-[60%] rounded-pill bg-[color-mix(in_srgb,var(--color-scrim)_78%,transparent)] px-2.5 py-0.5 text-xs text-on-midnight-dim max-md:hidden">
+          <p className="on-media type-caption absolute right-3 bottom-3 max-w-[60%] rounded-pill bg-[color-mix(in_srgb,var(--color-scrim)_78%,transparent)] px-2.5 py-0.5 text-on-midnight-dim max-md:hidden">
             {credit}
           </p>
         ) : null}

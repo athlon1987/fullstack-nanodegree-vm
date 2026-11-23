@@ -1,0 +1,291 @@
+{
+ "key": "en",
+ "url": "http://localhost:3297/en",
+ "preset": "mobile (Lighthouse default)",
+ "profile": {
+  "name": "slow4g-applied",
+  "rtt": 150,
+  "down": 1638,
+  "up": 750,
+  "cpu": 4
+ },
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-23T01:22:57.793Z",
+ "median": {
+  "performance": 81,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 69,
+  "fcp_ms": 2071,
+  "lcp_ms": 2071,
+  "tbt_ms": 616,
+  "cls": 0,
+  "si_ms": 2351,
+  "totalBytes": 583636,
+  "requests": 41
+ },
+ "a11yFailures": [],
+ "rows": [
+  {
+   "finalUrl": "/en",
+   "runtimeError": null,
+   "performance": 81,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 69,
+   "fcp_ms": 2057,
+   "lcp_ms": 2057,
+   "tbt_ms": 616,
+   "cls": 0,
+   "si_ms": 2330,
+   "totalBytes": 583637,
+   "requests": 41,
+   "benchmarkIndex": 2185,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en",
+   "runtimeError": null,
+   "performance": 80,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 69,
+   "fcp_ms": 2071,
+   "lcp_ms": 2071,
+   "tbt_ms": 693,
+   "cls": 0,
+   "si_ms": 2361,
+   "totalBytes": 583636,
+   "requests": 41,
+   "benchmarkIndex": 2181,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en",
+   "runtimeError": null,
+   "performance": 83,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 69,
+   "fcp_ms": 2083,
+   "lcp_ms": 2083,
+   "tbt_ms": 561,
+   "cls": 0,
+   "si_ms": 2351,
+   "totalBytes": 583636,
+   "requests": 41,
+   "benchmarkIndex": 2044,
+   "a11yFailures": []
+  }
+ ],
+ "medianRunIndex": 0,
+ "diagnostics": {
+  "observed": {
+   "fcp": 2057,
+   "lcp": 2057,
+   "dcl": 3156,
+   "load": 4708
+  },
+  "lcpElement": {
+   "selector": "main#main > section.relative > div.absolute > img.object-cover",
+   "label": "White branching columns under the timber-lined roof above the C gates at KLIA T…"
+  },
+  "lcpPhases": {
+   "timeToFirstByte": 15,
+   "resourceLoadDelay": 638,
+   "resourceLoadDuration": 973,
+   "elementRenderDelay": 432
+  },
+  "renderBlocking": [
+   {
+    "url": "/_next/static/chunks/0zq279hre48kn.css",
+    "bytes": 32597,
+    "ms": 1054
+   },
+   {
+    "url": "/_next/static/chunks/15hzgv72ioqav.css",
+    "bytes": 2364,
+    "ms": 754
+   }
+  ],
+  "longTasks": [
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 3597,
+    "dur": 265
+   },
+   {
+    "url": "/en",
+    "start": 2502,
+    "dur": 151
+   },
+   {
+    "url": "/en",
+    "start": 6014,
+    "dur": 123
+   },
+   {
+    "url": "/en",
+    "start": 2201,
+    "dur": 113
+   },
+   {
+    "url": "/en",
+    "start": 1905,
+    "dur": 109
+   },
+   {
+    "url": "/en",
+    "start": 2390,
+    "dur": 97
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 5121,
+    "dur": 75
+   },
+   {
+    "url": "/en",
+    "start": 3949,
+    "dur": 64
+   }
+  ],
+  "bootup": [
+   {
+    "url": "/en",
+    "total": 1701,
+    "scripting": 39
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "total": 1158,
+    "scripting": 1028
+   },
+   {
+    "url": "Unattributable",
+    "total": 494,
+    "scripting": 8
+   },
+   {
+    "url": "/_next/static/chunks/31iotgli_5iv3.js",
+    "total": 52,
+    "scripting": 36
+   }
+  ],
+  "mainThread": {
+   "scriptEvaluation": 1175,
+   "styleLayout": 932,
+   "other": 902,
+   "parseHTML": 182,
+   "paintCompositeRender": 178,
+   "scriptParseCompile": 151,
+   "garbageCollection": 43
+  },
+  "resources": {
+   "total": {
+    "n": 33,
+    "bytes": 583637
+   },
+   "script": {
+    "n": 21,
+    "bytes": 299529
+   },
+   "font": {
+    "n": 3,
+    "bytes": 130216
+   },
+   "document": {
+    "n": 1,
+    "bytes": 62643
+   },
+   "other": {
+    "n": 5,
+    "bytes": 38943
+   },
+   "stylesheet": {
+    "n": 2,
+    "bytes": 34961
+   },
+   "image": {
+    "n": 1,
+    "bytes": 17345
+   },
+   "media": {
+    "n": 0,
+    "bytes": 0
+   },
+   "third-party": {
+    "n": 0,
+    "bytes": 0
+   }
+  },
+  "topRequests": [
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "type": "Script",
+    "transfer": 73535
+   },
+   {
+    "url": "/_next/static/media/fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+    "type": "Font",
+    "transfer": 68998
+   },
+   {
+    "url": "/en",
+    "type": "Document",
+    "transfer": 62643
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "type": "Script",
+    "transfer": 47500
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "type": "Font",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/chunks/0zq279hre48kn.css",
+    "type": "Stylesheet",
+    "transfer": 32597
+   },
+   {
+    "url": "/_next/static/media/geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+    "type": "Font",
+    "transfer": 24821
+   },
+   {
+    "url": "/en/flights/feed?date=2026-11-23&dir=d&at=1795396890000&airports=kul,pen,bki,kch,lgk,szb",
+    "type": "Fetch",
+    "transfer": 17696
+   },
+   {
+    "url": "/_next/static/chunks/24kz2dtu9d2ne.js",
+    "type": "Script",
+    "transfer": 17689
+   },
+   {
+    "url": "/_next/image?url=%2Fimages%2Fklia%2Fterminal-1-canopy.jpg&w=750&q=65",
+    "type": "Image",
+    "transfer": 17345
+   }
+  ],
+  "fonts": [
+   {
+    "url": "/_next/static/media/fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+    "transfer": 68998
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/media/geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+    "transfer": 24821
+   }
+  ]
+ },
+ "caveat": "Lab measurement: Lighthouse with simulated (or, with --profile, applied) throttling against a local next start. Indicative only; not field data."
+}

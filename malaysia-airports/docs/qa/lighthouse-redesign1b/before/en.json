@@ -1,0 +1,285 @@
+{
+ "key": "en",
+ "url": "http://localhost:3297/en",
+ "preset": "mobile (Lighthouse default)",
+ "profile": null,
+ "runs": 3,
+ "validRuns": 3,
+ "measured": "2026-11-23T00:15:44.272Z",
+ "median": {
+  "performance": 85,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 69,
+  "fcp_ms": 1377,
+  "lcp_ms": 3906,
+  "tbt_ms": 176,
+  "cls": 0,
+  "si_ms": 1377,
+  "totalBytes": 848388,
+  "requests": 55
+ },
+ "a11yFailures": [],
+ "rows": [
+  {
+   "finalUrl": "/en",
+   "runtimeError": null,
+   "performance": 72,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 69,
+   "fcp_ms": 1396,
+   "lcp_ms": 4779,
+   "tbt_ms": 435,
+   "cls": 0,
+   "si_ms": 1653,
+   "totalBytes": 848332,
+   "requests": 55,
+   "benchmarkIndex": 1929.5,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en",
+   "runtimeError": null,
+   "performance": 85,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 69,
+   "fcp_ms": 1377,
+   "lcp_ms": 3906,
+   "tbt_ms": 176,
+   "cls": 0,
+   "si_ms": 1377,
+   "totalBytes": 848388,
+   "requests": 55,
+   "benchmarkIndex": 1802.5,
+   "a11yFailures": []
+  },
+  {
+   "finalUrl": "/en",
+   "runtimeError": null,
+   "performance": 87,
+   "accessibility": 100,
+   "bestPractices": 96,
+   "seo": 69,
+   "fcp_ms": 1371,
+   "lcp_ms": 3887,
+   "tbt_ms": 110,
+   "cls": 0,
+   "si_ms": 1371,
+   "totalBytes": 848391,
+   "requests": 55,
+   "benchmarkIndex": 2010.5,
+   "a11yFailures": []
+  }
+ ],
+ "medianRunIndex": 1,
+ "diagnostics": {
+  "observed": {
+   "fcp": 300,
+   "lcp": 300,
+   "dcl": 458,
+   "load": 468
+  },
+  "lcpElement": {
+   "selector": "main#main > section.relative > div.absolute > img.object-cover",
+   "label": "White branching columns under the timber-lined roof above the C gates at KLIA T…"
+  },
+  "lcpPhases": {
+   "timeToFirstByte": 15,
+   "resourceLoadDelay": 35,
+   "resourceLoadDuration": 48,
+   "elementRenderDelay": 202
+  },
+  "renderBlocking": [
+   {
+    "url": "/_next/static/chunks/1ehse3l2pyqk4.css",
+    "bytes": 31733,
+    "ms": 464
+   },
+   {
+    "url": "/_next/static/chunks/15hzgv72ioqav.css",
+    "bytes": 2364,
+    "ms": 164
+   }
+  ],
+  "longTasks": [
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4554,
+    "dur": 210
+   },
+   {
+    "url": "/en",
+    "start": 1106,
+    "dur": 175
+   },
+   {
+    "url": "Unattributable",
+    "start": 914,
+    "dur": 130
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4931,
+    "dur": 103
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 5111,
+    "dur": 97
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 4840,
+    "dur": 91
+   },
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "start": 5034,
+    "dur": 77
+   },
+   {
+    "url": "/en",
+    "start": 1358,
+    "dur": 68
+   }
+  ],
+  "bootup": [
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "total": 1362,
+    "scripting": 1123
+   },
+   {
+    "url": "/en",
+    "total": 1324,
+    "scripting": 113
+   },
+   {
+    "url": "Unattributable",
+    "total": 512,
+    "scripting": 11
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "total": 156,
+    "scripting": 103
+   }
+  ],
+  "mainThread": {
+   "scriptEvaluation": 1474,
+   "other": 884,
+   "styleLayout": 603,
+   "parseHTML": 188,
+   "scriptParseCompile": 177,
+   "paintCompositeRender": 160,
+   "garbageCollection": 112
+  },
+  "resources": {
+   "total": {
+    "n": 49,
+    "bytes": 848388
+   },
+   "script": {
+    "n": 27,
+    "bytes": 380658
+   },
+   "image": {
+    "n": 6,
+    "bytes": 181860
+   },
+   "font": {
+    "n": 3,
+    "bytes": 130216
+   },
+   "document": {
+    "n": 1,
+    "bytes": 63120
+   },
+   "other": {
+    "n": 10,
+    "bytes": 58437
+   },
+   "stylesheet": {
+    "n": 2,
+    "bytes": 34097
+   },
+   "media": {
+    "n": 0,
+    "bytes": 0
+   },
+   "third-party": {
+    "n": 0,
+    "bytes": 0
+   }
+  },
+  "topRequests": [
+   {
+    "url": "/_next/static/chunks/3iz8_hoapa1o_.js",
+    "type": "Script",
+    "transfer": 73535
+   },
+   {
+    "url": "/_next/static/media/fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+    "type": "Font",
+    "transfer": 68998
+   },
+   {
+    "url": "/en",
+    "type": "Document",
+    "transfer": 63120
+   },
+   {
+    "url": "/_next/image?url=%2Fimages%2Fklia%2Fterminal-1-canopy.jpg&w=750&q=75",
+    "type": "Image",
+    "transfer": 58033
+   },
+   {
+    "url": "/_next/static/chunks/3cyy9enzkmp3k.js",
+    "type": "Script",
+    "transfer": 47500
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "type": "Font",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/chunks/1ehse3l2pyqk4.css",
+    "type": "Stylesheet",
+    "transfer": 31733
+   },
+   {
+    "url": "/_next/image?url=%2Fimages%2Fkuching%2Fwaterfront.jpg&w=640&q=75",
+    "type": "Image",
+    "transfer": 29366
+   },
+   {
+    "url": "/_next/image?url=%2Fimages%2Fsabah%2Fmount-kinabalu.jpg&w=640&q=75",
+    "type": "Image",
+    "transfer": 26562
+   },
+   {
+    "url": "/_next/image?url=%2Fimages%2Flangkawi%2Fpantai-cenang.jpg&w=640&q=75",
+    "type": "Image",
+    "transfer": 25769
+   }
+  ],
+  "fonts": [
+   {
+    "url": "/_next/static/media/fraunces_latin_opsz_normal-s.p.17h97bimeg07z.woff2",
+    "transfer": 68998
+   },
+   {
+    "url": "/_next/static/media/hanken_grotesk_latin_wght_normal-s.p.3241148m1u9do.woff2",
+    "transfer": 36397
+   },
+   {
+    "url": "/_next/static/media/geist_mono_latin_wght_normal.1t7tphccnfzmb.woff2",
+    "transfer": 24821
+   }
+  ]
+ },
+ "caveat": "Lab measurement: Lighthouse with simulated (or, with --profile, applied) throttling against a local next start. Indicative only; not field data."
+}

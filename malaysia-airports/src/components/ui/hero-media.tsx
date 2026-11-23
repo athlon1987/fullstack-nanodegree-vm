@@ -73,7 +73,7 @@ export function HeroMedia({
   return (
     <Comp
       className={cn(
-        'relative isolate flex flex-col justify-end bg-midnight [--hero-inline-start:max(var(--spacing-gutter),calc((100vw_-_77.5rem)/2_+_var(--spacing-gutter)))]',
+        'relative isolate flex flex-col justify-end overflow-hidden bg-midnight [--hero-inline-start:max(var(--spacing-gutter),calc((100vw_-_77.5rem)/2_+_var(--spacing-gutter)))]',
         SIZES[size],
         inset && 'mx-gutter overflow-hidden rounded-3xl shadow-lg',
         className,
@@ -119,7 +119,7 @@ export function HeroMedia({
       ) : null}
       {creditText ? (
         // Phones: under the words (never over them); wider screens: the bottom-right corner.
-        <p className="type-caption relative z-10 mx-gutter mb-3 self-end rounded-pill bg-[color-mix(in_srgb,var(--color-scrim)_78%,transparent)] px-2.5 py-0.5 text-xs text-on-midnight-dim md:absolute md:right-3 md:bottom-3 md:m-0 md:max-w-[60%]">
+        <p className="type-caption relative z-10 mx-gutter mb-3 self-end rounded-pill bg-[color-mix(in_srgb,var(--color-scrim)_78%,transparent)] px-2.5 py-0.5 text-on-midnight-dim md:absolute md:right-3 md:bottom-3 md:m-0 md:max-w-[60%]">
           {creditText}
         </p>
       ) : null}

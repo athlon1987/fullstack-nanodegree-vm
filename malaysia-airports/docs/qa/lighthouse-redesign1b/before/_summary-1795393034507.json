@@ -1,0 +1,41 @@
+{
+ "en": {
+  "performance": 85,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 69,
+  "fcp_ms": 1377,
+  "lcp_ms": 3906,
+  "tbt_ms": 176,
+  "cls": 0,
+  "si_ms": 1377,
+  "totalBytes": 848388,
+  "requests": 55
+ },
+ "en-kul": {
+  "performance": 86,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1370,
+  "lcp_ms": 3801,
+  "tbt_ms": 160,
+  "cls": 0,
+  "si_ms": 1389,
+  "totalBytes": 731746,
+  "requests": 46
+ },
+ "flight-page": {
+  "performance": 78,
+  "accessibility": 100,
+  "bestPractices": 96,
+  "seo": 66,
+  "fcp_ms": 1515,
+  "lcp_ms": 4383,
+  "tbt_ms": 291,
+  "cls": 0.004,
+  "si_ms": 1515,
+  "totalBytes": 801351,
+  "requests": 52
+ }
+}

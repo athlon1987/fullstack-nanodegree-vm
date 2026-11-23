@@ -42,9 +42,11 @@ export function airportHasPhoto(slug: string): boolean {
 const HERO_FRAMING: Partial<Record<string, Parameters<typeof artDirection>[1]>> = {
   // The KLIA Terminal 1 canopy: phones follow the main white branch up to the roof.
   'klia-t1-canopy': { base: { x: 0.58, y: 0.5 }, md: { x: 0.7, y: 0.6 } },
-  // Kota Kinabalu and Langkawi: keep the terminal's own name board in the band on wide screens.
+  // Kota Kinabalu: keep the terminal's own name board in the band on wide screens.
   'bki-terminal': { md: { x: 0.55, y: 0.3 } },
-  'lgk-terminal': { md: { x: 0.55, y: 0.35 } },
+  // Langkawi: frame low on wide screens, so the band shows the entrance doors under the
+  // departures sign rather than the roof above it.
+  'lgk-terminal': { md: { x: 0.55, y: 0.8 } },
 };
 
 export function AirportBackdrop({ slug, code, lang, variant }: AirportBackdropProps) {
